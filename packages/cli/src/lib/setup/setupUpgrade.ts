@@ -320,7 +320,7 @@ export class Upgrade {
         forceDowngrade: boolean,
         autoConfirm: boolean,
         upgradeAll: boolean
-    ) {
+    ): Promise<void> {
         let sources: Record<string, any>;
         if (!repoUrlOrObject || !tools.isObject(repoUrlOrObject)) {
             try {

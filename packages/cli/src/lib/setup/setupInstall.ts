@@ -684,7 +684,7 @@ export class Install {
         }
     }
 
-    async callInstallOfAdapter(adapter: string, config: Record<string, any>) {
+    async callInstallOfAdapter(adapter: string, config: Record<string, any>): Promise<string | void> {
         if (config.common.install) {
             // Install node modules
             let cmd = 'node ';
@@ -1199,7 +1199,7 @@ export class Install {
      * @param adapter The adapter to enumerate the states for
      * @param instance The instance to enumerate the states for (optional)
      */
-    async _enumerateAdapterStateObjects(knownObjIDs: string[], adapter: string, instance?: number) {
+    async _enumerateAdapterStateObjects(knownObjIDs: string[], adapter: string, instance?: number): Promise<void> {
         const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
         const sysAdapterRegex = new RegExp(`^system\\.adapter\\.${adapter}${instance ? `\\.${instance}` : ''}\\.`);
 

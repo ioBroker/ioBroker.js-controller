@@ -233,7 +233,7 @@ export interface AdapterClass {
 
     // TODO correct types needed
     getHistoryAsync(...args: any[]): Promise<any>;
-    /** Deletes a state from the states DB, but not the associated object. Consider using @link{deleteState} instead */
+    /** Deletes a state from the states DB, but not the associated object. Consider using deleteState instead */
     delStateAsync(id: string, options?: unknown): Promise<void>;
     /** Deletes a state from the states DB, but not the associated object */
     delForeignStateAsync(id: string, options?: unknown): Promise<void>;
@@ -1122,11 +1122,9 @@ export class AdapterClass extends EventEmitter {
         /**
          * Promise-version of Adapter.setBinaryState
          *
-         * @param {string} id of state
-         * @param {Buffer} binary data
-         * @param {object} [options] optional
-         * @return {Promise}
-         *
+         * @param id of state
+         * @param binary data
+         * @param options optional
          */
         this.setForeignBinaryStateAsync = tools.promisify(this.setForeignBinaryState, this);
 
@@ -1134,10 +1132,9 @@ export class AdapterClass extends EventEmitter {
          * Async version of setBinaryState
          *
          *
-         * @param {string} id of state
-         * @param {Buffer} binary data
-         * @param {object} [options] optional
-         * @param {Promise<void>}
+         * @param id of state
+         * @param binary data
+         * @param options optional
          */
         this.setBinaryStateAsync = tools.promisify(this.setBinaryState, this);
 
@@ -1151,18 +1148,16 @@ export class AdapterClass extends EventEmitter {
         /**
          * Promisified version of getBinaryState
          *
-         * @param {string} id The state ID
-         * @param {object} options optional
-         * @return {Promise<Buffer>}
+         * @param id The state ID
+         * @param options optional
          */
         this.getBinaryStateAsync = tools.promisify(this.getBinaryState, this);
 
         /**
          * Promise-version of Adapter.delForeignBinaryState
          *
-         * @param {string} id
-         * @param {object} [options]
-         * @return {Promise<void>}
+         * @param id
+         * @param options
          *
          */
         this.delForeignBinaryStateAsync = tools.promisify(this.delForeignBinaryState, this);
@@ -1170,10 +1165,8 @@ export class AdapterClass extends EventEmitter {
         /**
          * Promise-version of Adapter.delBinaryState
          *
-         * @param {string} id
-         * @param {object} [options]
-         * @return {Promise<void>}
-         *
+         * @param id
+         * @param options
          */
         this.delBinaryStateAsync = tools.promisify(this.delBinaryState, this);
 
@@ -2776,7 +2769,7 @@ export class AdapterClass extends EventEmitter {
     /**
      * Get all states, channels and devices of this adapter.
      *
-     * @param {(objects: Record<string, ioBroker.Object>) => void} callback return result
+     * @param callback return result
      *        <pre><code>
      *            function (objects) {
      *                for (var id in objects) {
@@ -2906,10 +2899,10 @@ export class AdapterClass extends EventEmitter {
      * </code></pre>
      *
      *
-     * @param {string} id object ID, that must be extended
-     * @param {object} obj part that must be extended
-     * @param {object} [options] optional user context
-     * @param {ioBroker.ExtendObjectCallback} [callback] return result
+     * @param id object ID, that must be extended
+     * @param obj part that must be extended
+     * @param options optional user context
+     * @param callback return result
      *        <pre><code>
      *            function (err, obj) {
      *                if (err) adapter.log.error(err);
@@ -3134,14 +3127,14 @@ export class AdapterClass extends EventEmitter {
     ): void;
 
     /**
-     * Same as {@link Adapter.setObject}, but for any object.
+     * Same as {@link AdapterClass.setObject}, but for any object.
      *
      * ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC98989.1.STATE"
      *
-     * @param {string} id object ID, that must be overwritten or created.
-     * @param {object} obj new object
-     * @param {object} [options] optional user context
-     * @param {ioBroker.SetObjectCallback} [callback] return result
+     * @param id object ID, that must be overwritten or created.
+     * @param obj new object
+     * @param options optional user context
+     * @param callback return result
      *        <pre><code>
      *            function (err, obj) {
      *              // obj is {id: id}
@@ -3241,14 +3234,14 @@ export class AdapterClass extends EventEmitter {
     ): void;
 
     /**
-     * Same as {@link Adapter.extendObject}, but for any object.
+     * Same as {@link AdapterClass.extendObject}, but for any object.
      *
      * ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC98989.1.STATE"
      *
-     * @param {string} id object ID, that must be extended
-     * @param {object} obj part that must be extended
-     * @param {object} [options] optional user context, or use attribute preserve e.g. {preserve: {common: ['name']}} to preserve common.name
-     * @param {ioBroker.SetObjectCallback} [callback] return result
+     * @param id object ID, that must be extended
+     * @param obj part that must be extended
+     * @param options optional user context, or use attribute preserve e.g. {preserve: {common: ['name']}} to preserve common.name
+     * @param callback return result
      *        <pre><code>
      *            function (err, obj) {
      *                // obj is {"id": id}
@@ -3440,9 +3433,9 @@ export class AdapterClass extends EventEmitter {
      *
      * It is not required, that ID consists namespace. E.g. to get object of "adapterName.X.myObject", only "myObject" is required as ID.
      *
-     * @param {string} id exactly object ID (without namespace)
-     * @param {object} [options] optional user context
-     * @param {ioBroker.GetObjectCallback} callback return result
+     * @param id exactly object ID (without namespace)
+     * @param options optional user context
+     * @param callback return result
      *        <pre><code>
      *            function (err, obj) {
      *              if (err) adapter.log.error('Cannot get object: ' + err);
@@ -3495,11 +3488,11 @@ export class AdapterClass extends EventEmitter {
      * It is required, that ID consists namespace in startkey and endkey. E.g. {startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '.\u9999'}
      * to get all objects of the instance.
      *
-     * @param {string} design name of the design
-     * @param {string} search name of the view
-     * @param {object} params object containing startkey: first id to include in result; endkey: last id to include in result
-     * @param {object} options
-     * @param {ioBroker.GetObjectViewCallback} callback return result
+     * @param design name of the design
+     * @param search name of the view
+     * @param params object containing startkey: first id to include in result; endkey: last id to include in result
+     * @param options
+     * @param callback return result
      *      <pre><code>
      *          function (err, doc) {
      *              if (doc && doc.rows) {
@@ -3605,9 +3598,9 @@ export class AdapterClass extends EventEmitter {
      * to get all objects of the instance.
      *
      *
-     * @param {object} params
-     * @param {object} options
-     * @param {ioBroker.GetObjectListCallback} callback
+     * @param params
+     * @param options
+     * @param callback
      *      <pre><code>
      *          function (err, res) {
      *              if (res && res.rows) {
@@ -3666,9 +3659,9 @@ export class AdapterClass extends EventEmitter {
      *      });
      * </code></pre>
      *
-     * @param {string} _enum enum name, e.g. 'rooms', 'function' or '' (all enums)
-     * @param {object} [options] optional user context
-     * @param {ioBroker.GetEnumCallback} callback return result
+     * @param _enum enum name, e.g. 'rooms', 'function' or '' (all enums)
+     * @param options optional user context
+     * @param callback return result
      *        <pre><code>
      *            function (err, enums, requestEnum) {
      *              // requestEnum is _enum
@@ -3745,9 +3738,9 @@ export class AdapterClass extends EventEmitter {
      *
      * Get enums of specified tree or all enums if nothing specified as object with values.
      *
-     * @param {string|array} _enumList enum name or names, e.g. ['rooms', 'function']
-     * @param {object} [options] optional user context
-     * @param {ioBroker.GetEnumsCallback} callback return result
+     * @param _enumList enum name or names, e.g. ['rooms', 'function']
+     * @param options optional user context
+     * @param callback return result
      *        <pre><code>
      *            function (err, enums) {
      *              // requestEnum is _enum
@@ -3941,11 +3934,11 @@ export class AdapterClass extends EventEmitter {
      *        </code></pre>
      *
 
-     * @param {string} pattern object ID/wildchars
-     * @param {string} type type of object: 'state', 'channel' or 'device'. Default - 'state'
-     * @param {string|string[]} enums object ID, that must be overwritten or created.
-     * @param {object} [options] optional user context
-     * @param {ioBroker.GetObjectsCallback} callback return result
+     * @param pattern object ID/wildchars
+     * @param type type of object: 'state', 'channel' or 'device'. Default - 'state'
+     * @param enums object ID, that must be overwritten or created.
+     * @param options optional user context
+     * @param callback return result
      *        <pre><code>
      *            function (err, obj) {
      *              if (err) adapter.log.error('Cannot get object: ' + err);
@@ -4088,10 +4081,10 @@ export class AdapterClass extends EventEmitter {
      *
      * Find object by the exact name or ID.
      *
-     * @param {string} id exactly object ID (without namespace)
-     * @param {string} type optional common.type of state: 'number', 'string', 'boolean', 'file', ...
-     * @param {object} options optional user context
-     * @param {ioBroker.FindObjectCallback} callback return result
+     * @param id exactly object ID (without namespace)
+     * @param type optional common.type of state: 'number', 'string', 'boolean', 'file', ...
+     * @param options optional user context
+     * @param callback return result
      *        <pre><code>
      *            adapter.findForeignObject('Some name', function (err, id, name) {
      *              if (err) adapter.log.error('Cannot get object: ' + err);
@@ -4142,9 +4135,9 @@ export class AdapterClass extends EventEmitter {
      *
      * ID must be specified with namespace.
      *
-     * @param {string} id exactly object ID (with namespace)
-     * @param {object} [options] optional user context
-     * @param {ioBroker.GetObjectCallback} callback return result
+     * @param id exactly object ID (with namespace)
+     * @param options optional user context
+     * @param callback return result
      *        <pre><code>
      *            function (err, obj) {
      *              if (err) adapter.log.error('Cannot get object: ' + err);
@@ -4208,9 +4201,9 @@ export class AdapterClass extends EventEmitter {
      *
      * The corresponding state will be deleted too if the object has type "state".
      *
-     * @param {string} id exactly object ID (without namespace)
-     * @param {object} [options] optional user context. E.g. recursive option could be true
-     * @param {ioBroker.ErrorCallback} [callback] return result
+     * @param id exactly object ID (without namespace)
+     * @param options optional user context. E.g. recursive option could be true
+     * @param callback return result
      *        <pre><code>
      *            function (err) {
      *              if (err) adapter.log.error('Cannot delete object: ' + err);
@@ -4265,9 +4258,9 @@ export class AdapterClass extends EventEmitter {
      *
      * The full ID with namespace must be specified. The corresponding state will be deleted too if the object has type "state".
      *
-     * @param {string} id exactly object ID (with namespace)
-     * @param {object} [options] optional user context or {recursive:true} to delete all underlying objects
-     * @param {ioBroker.ErrorCallback} [callback] return result
+     * @param id exactly object ID (with namespace)
+     * @param options optional user context or {recursive:true} to delete all underlying objects
+     * @param callback return result
      *        <pre><code>
      *            function (err) {
      *              if (err) adapter.log.error('Cannot delete object: ' + err);
@@ -4376,9 +4369,9 @@ export class AdapterClass extends EventEmitter {
     /**
      * Subscribe for the changes of objects in this instance.
      *
-     * @param {string} pattern pattern like 'channel.*' or '*' (all objects of this adapter) - without namespaces
-     * @param {object} [options] optional user context
-     * @param {ioBroker.ErrorCallback} [callback] optional returns result
+     * @param pattern pattern like 'channel.*' or '*' (all objects of this adapter) - without namespaces
+     * @param options optional user context
+     * @param callback optional returns result
      *        <pre><code>
      *            function (err) {
      *              if (err) adapter.log.error('Cannot subscribe object: ' + err);
@@ -4419,9 +4412,9 @@ export class AdapterClass extends EventEmitter {
     /**
      * Unsubscribe on the changes of objects in this instance.
      *
-     * @param {string} pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
-     * @param {object} [options] optional user context
-     * @param {ioBroker.ErrorCallback} [callback] optional returns result
+     * @param pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
+     * @param options optional user context
+     * @param callback optional returns result
      *        <pre><code>
      *            function (err) {
      *              if (err) adapter.log.error('Cannot unsubscribe object: ' + err);
@@ -4463,9 +4456,9 @@ export class AdapterClass extends EventEmitter {
     /**
      * Subscribe for the changes of objects in any instance.
      *
-     * @param {string} pattern pattern like 'channel.*' or '*' (all objects) - without namespaces. You can use array of patterns
-     * @param {object} [options] optional user context
-     * @param {ioBroker.ErrorCallback} [callback] optional returns result
+     * @param pattern pattern like 'channel.*' or '*' (all objects) - without namespaces. You can use array of patterns
+     * @param options optional user context
+     * @param callback optional returns result
      *        <pre><code>
      *            function (err) {
      *              if (err) adapter.log.error('Cannot subscribe object: ' + err);
@@ -4501,9 +4494,9 @@ export class AdapterClass extends EventEmitter {
     /**
      * Unsubscribe for the patterns on all objects.
      *
-     * @param {string} pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
-     * @param {object} [options] optional user context
-     * @param {ioBroker.ErrorCallback} [callback] optional returns result
+     * @param pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
+     * @param options optional user context
+     * @param callback optional returns result
      *        <pre><code>
      *            function (err) {
      *              if (err) adapter.log.error('Cannot unsubscribe object: ' + err);
@@ -4542,10 +4535,9 @@ export class AdapterClass extends EventEmitter {
     /**
      * Subscribe for the changes of files in specific instance.
      * This is async function!
-     * @param {string} id adapter ID like 'vis.0' or 'vis.admin'
-     * @param {string} pattern pattern like 'channel.*' or '*' (all files) - without namespaces. You can use array of patterns
-     * @param {object} [options] optional user context
-     * @returns {Promise<>}
+     * @param id adapter ID like 'vis.0' or 'vis.admin'
+     * @param pattern pattern like 'channel.*' or '*' (all files) - without namespaces. You can use array of patterns
+     * @param options optional user context
      */
     subscribeForeignFiles(id: unknown, pattern: unknown, options?: unknown) {
         if (!adapterObjects) {
@@ -4571,10 +4563,9 @@ export class AdapterClass extends EventEmitter {
     /**
      * Unsubscribe for the changes of files on specific instance.
      * This is async function!
-     * @param {string} id adapter ID like 'vis.0' or 'vis.admin'
-     * @param {string} pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
-     * @param {object} [options] optional user context
-     * @returns {Promise<>}
+     * @param id adapter ID like 'vis.0' or 'vis.admin'
+     * @param pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
+     * @param options optional user context
      */
     unsubscribeForeignFiles(id: unknown, pattern: unknown, options?: unknown) {
         if (!pattern) {
@@ -4609,22 +4600,21 @@ export class AdapterClass extends EventEmitter {
         callback?: ioBroker.SetObjectCallback
     ): Promise<void | ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>> | void;
     /**
-     * Same as {@link Adapter.setObject}, but with check if the object exists.
+     * Same as {@link AdapterClass.setObject}, but with check if the object exists.
      *
      * Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
      * New object will be created only if no object exists with such ID.
      *
-     * @param {string} id object ID, that must be overwritten or created.
-     * @param {object} obj new object
-     * @param {object} [options] optional user context
-     * @param {ioBroker.SetObjectCallback} [callback] return result
+     * @param id object ID, that must be overwritten or created.
+     * @param obj new object
+     * @param optional user context
+     * @param callback return result
      *        <pre><code>
      *            function (err, obj) {
      *              // obj is {id: id}
      *              if (err) adapter.log.error('Cannot write object: ' + err);
      *            }
      *        </code></pre>
-     * @returns {Promise<{id: string}>}
      */
     setObjectNotExists(
         id: unknown,
@@ -4711,22 +4701,21 @@ export class AdapterClass extends EventEmitter {
     ): void;
 
     /**
-     * Same as {@link Adapter.setForeignObject}, but with check if the object exists.
+     * Same as {@link AdapterClass.setForeignObject}, but with check if the object exists.
      *
      * ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC98989.1.STATE".
      * New object will be created only if no object exists with such ID.
      *
-     * @param {string} id object ID, that must be overwritten or created.
-     * @param {object} obj new object
-     * @param {object} [options] optional user context
-     * @param {ioBroker.SetObjectCallback} [callback] return result
+     * @param id object ID, that must be overwritten or created.
+     * @param obj new object
+     * @param options user context
+     * @param callback return result
      *        <pre><code>
      *            function (err, obj) {
      *              // obj is {id: id}
      *              if (err) adapter.log.error('Cannot write object: ' + err);
      *            }
      *        </code></pre>
-     * @returns {Promise<{id: string}>}
      */
     setForeignObjectNotExists(
         id: unknown,
@@ -5186,9 +5175,9 @@ export class AdapterClass extends EventEmitter {
     /**
      * Delete device with all its channels and states.
      *
-     * @param {string} deviceName is the part of ID like: adapter.instance.<deviceName>
-     * @param {object} [options] optional user context
-     * @param {ioBroker.ErrorCallback} [callback] return result
+     * @param deviceName is the part of ID like: adapter.instance.<deviceName>
+     * @param optional user context
+     * @param callback return result
      *        <pre><code>
      *            function (err) {
      *              if (err) adapter.log.error('Cannot delete device: ' + err);
@@ -5507,10 +5496,10 @@ export class AdapterClass extends EventEmitter {
      * Deletes channel and udnerlying structure
      * @alais deleteChannel
      *
-     * @param {string} parentDevice is the part of ID like: adapter.instance.<deviceName>
-     * @param {string} channelName is the part of ID like: adapter.instance.<deviceName>.<channelName>
-     * @param {object} [options] optional user context
-     * @param {ioBroker.ErrorCallback} [callback] return result
+     * @param parentDevice is the part of ID like: adapter.instance.<deviceName>
+     * @param channelName is the part of ID like: adapter.instance.<deviceName>.<channelName>
+     * @param optionsoptional user context
+     * @param callback return result
      *        <pre><code>
      *            function (err) {
      *              if (err) adapter.log.error('Cannot delete device: ' + err);
@@ -6230,10 +6219,10 @@ export class AdapterClass extends EventEmitter {
      *      });
      * </code></pre>
      *
-     * @param {string} _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
-     * @param {string} path path to file without adapter name. E.g. If you want to update "/vis.0/main/*", here must be "/main/*" and _adapter must be equal to "vis.0".
-     * @param {object} options data with mode
-     * @param {function} callback return result
+     * @param _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
+     * @param path path to file without adapter name. E.g. If you want to update "/vis.0/main/*", here must be "/main/*" and _adapter must be equal to "vis.0".
+     * @param options data with mode
+     * @param callback return result
      *        <pre><code>
      *            function (err, processedFiles) {
      *                list of processed files with new groups
@@ -6277,10 +6266,10 @@ export class AdapterClass extends EventEmitter {
      *      });
      * </code></pre>
      *
-     * @param {string} _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
-     * @param {string} path path to file without adapter name. E.g. If you want to update "/vis.0/main/*", here must be "/main/*" and _adapter must be equal to "vis.0".
-     * @param {object} options data with owner and ownerGroup
-     * @param {function} callback return result
+     * @param _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
+     * @param path path to file without adapter name. E.g. If you want to update "/vis.0/main/*", here must be "/main/*" and _adapter must be equal to "vis.0".
+     * @param options data with owner and ownerGroup
+     * @param callback return result
      *        <pre><code>
      *            function (err, processedFiles) {
      *                list of processed files with new groups
@@ -6325,10 +6314,10 @@ export class AdapterClass extends EventEmitter {
      *      });
      * </code></pre>
      *
-     * @param {string} _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
-     * @param {string} path path to direcory without adapter name. E.g. If you want to read "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
-     * @param {object} options optional user context
-     * @param {ioBroker.ReadDirCallback} callback return result
+     * @param _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
+     * @param path path to direcory without adapter name. E.g. If you want to read "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
+     * @param options optional user context
+     * @param callback return result
      *        <pre><code>
      *            function (err, filesOrDirs) {
      *                // filesOrDirs is array with elements like
@@ -6472,10 +6461,10 @@ export class AdapterClass extends EventEmitter {
      *      });
      * </code></pre>
      *
-     * @param {string} _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
-     * @param {string} filename path to file without adapter name. E.g. If you want to read "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
-     * @param {object} options optional user context
-     * @param {ioBroker.ReadFileCallback} callback return result
+     * @param _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
+     * @param filename path to file without adapter name. E.g. If you want to read "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
+     * @param options optional user context
+     * @param callback return result
      *        <pre><code>
      *            function (err, data) {
      *                // data is utf8 or binary Buffer depends on the file extension.
@@ -6527,11 +6516,11 @@ export class AdapterClass extends EventEmitter {
      *      });
      * </code></pre>
      *
-     * @param {string} _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
-     * @param {string} filename path to file without adapter name. E.g. If you want to read "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
-     * @param {object} data data as UTF8 string or buffer depends on the file extension.
-     * @param {object} [options] optional user context
-     * @param {ioBroker.ErrorCallback} [callback] return result
+     * @param _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
+     * @param filename path to file without adapter name. E.g. If you want to read "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
+     * @param data data as UTF8 string or buffer depends on the file extension.
+     * @param options optional user context
+     * @param callback return result
      *        <pre><code>
      *            function (err) {
      *
@@ -6577,10 +6566,10 @@ export class AdapterClass extends EventEmitter {
     /**
      * Checks if file exists in DB.
      *
-     * @param {string} _adapter adapter name
-     * @param {string} filename path to file without adapter name. E.g. If you want to check "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
-     * @param {object} [options] optional user context
-     * @param {function} [callback] cb function if none provided, a promise is returned
+     * @param _adapter adapter name
+     * @param filename path to file without adapter name. E.g. If you want to check "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
+     * @param options optional user context
+     * @param callback cb function if none provided, a promise is returned
      */
     async fileExists(
         _adapter: unknown,
@@ -6821,10 +6810,10 @@ export class AdapterClass extends EventEmitter {
      * This function sends a message to specific instance or all instances of some specific adapter.
      * If no instance given (e.g. "pushover"), the callback argument will be ignored. Because normally many responses will come.
      *
-     * @param {string} instanceName name of the instance where the message must be sent to. E.g. "pushover.0" or "system.adapter.pushover.0".
-     * @param {string} command command name, like "send", "browse", "list". Command is depend on target adapter implementation.
-     * @param {object} message object that will be given as argument for request
-     * @param {function(any):any} [callback] optional return result
+     * @param instanceName name of the instance where the message must be sent to. E.g. "pushover.0" or "system.adapter.pushover.0".
+     * @param command command name, like "send", "browse", "list". Command is depend on target adapter implementation.
+     * @param message object that will be given as argument for request
+     * @param callback optional return result
      *        <pre><code>
      *            function (result) {
      *              // result is target adapter specific and can vary from adapter to adapter
@@ -6980,10 +6969,10 @@ export class AdapterClass extends EventEmitter {
      * This function sends a message to specific host or all hosts.
      * If no host name given (e.g. null), the callback argument will be ignored. Because normally many responses will come.
      *
-     * @param {any} hostName name of the host where the message must be send to. E.g. "myPC" or "system.host.myPC". If argument is empty, the message will be sent to all hosts.
-     * @param {string} command command name. One of: "cmdExec", "getRepository", "getInstalled", "getVersion", "getDiagData", "getLocationOnDisk", "getDevList", "getLogs", "delLogs", "readDirAsZip", "writeDirAsZip", "readObjectsAsZip", "writeObjectsAsZip", "checkLogging". Commands can be checked in controller.js (function processMessage)
-     * @param {object} message object that will be given as argument for request
-     * @param {function(any):any} [callback] optional return result
+     * @param hostName name of the host where the message must be send to. E.g. "myPC" or "system.host.myPC". If argument is empty, the message will be sent to all hosts.
+     * @param command command name. One of: "cmdExec", "getRepository", "getInstalled", "getVersion", "getDiagData", "getLocationOnDisk", "getDevList", "getLogs", "delLogs", "readDirAsZip", "writeDirAsZip", "readObjectsAsZip", "writeObjectsAsZip", "checkLogging". Commands can be checked in controller.js (function processMessage)
+     * @param message object that will be given as argument for request
+     * @param callback optional return result
      *        <pre><code>
      *            function (result) {
      *              // result is target adapter specific and can vary from command to command
@@ -7104,9 +7093,9 @@ export class AdapterClass extends EventEmitter {
     /**
      * Send notification with given scope and category to host of this adapter
      *
-     * @param {string} scope - scope to be addressed
-     * @param {string|null} category - to be addressed, if null message will be checked by regex of given scope
-     * @param {string} message - message to be stored/checked
+     * @param scope - scope to be addressed
+     * @param category - to be addressed, if null message will be checked by regex of given scope
+     * @param message - message to be stored/checked
      */
     async registerNotification(scope: unknown, category: unknown, message: unknown): Promise<void> {
         if (!adapterStates) {
@@ -7165,8 +7154,8 @@ export class AdapterClass extends EventEmitter {
      * Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
      * ack, options and callback are optional
      *
-     * @param {string} id object ID of the state.
-     * @param {object|string|number|boolean} state simple value or object with attribues.
+     * @param id object ID of the state.
+     * @param state simple value or object with attribues.
      *  If state is object and ack exists too as function argument, function argument has priority.
      *  <pre><code>
      *      {
@@ -7180,9 +7169,9 @@ export class AdapterClass extends EventEmitter {
      *          lc:     timestampMS       // default - automatic calculation
      *      }
      *  </code></pre>
-     * @param {boolean} [ack] optional is command(false) or status(true)
-     * @param {object} [options] optional user context
-     * @param {ioBroker.SetStateCallback} [callback] optional return error and id
+     * @param ack optional is command(false) or status(true)
+     * @param options optional user context
+     * @param callback optional return error and id
      *        <pre><code>
      *            function (err, id) {
      *              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);
@@ -7907,11 +7896,11 @@ export class AdapterClass extends EventEmitter {
      * Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
      * ack, options and callback are optional
      *
-     * @param {string} id object ID of the state.
-     * @param {object|string|number|boolean} state simple value or object with attribues.
-     * @param {boolean} [ack] optional is command(false) or status(true)
-     * @param {object} [options] optional user context
-     * @param {ioBroker.SetStateChangedCallback} [callback] optional return error, id and notChanged
+     * @param id object ID of the state.
+     * @param state simple value or object with attribues.
+     * @param ack optional is command(false) or status(true)
+     * @param options optional user context
+     * @param callback optional return error, id and notChanged
      *        <pre><code>
      *            function (err, id, notChanged) {
      *              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);
@@ -8052,8 +8041,8 @@ export class AdapterClass extends EventEmitter {
      * This function can write values into states DB for all instances and system states too.
      * ack, options and callback are optional
      *
-     * @param {string} id object ID of the state.
-     * @param {object|string|number|boolean} state simple value or object with attribues.
+     * @param id object ID of the state.
+     * @param state simple value or object with attribues.
      *  If state is object, so the ack will be ignored and must be included into object.
      *  <pre><code>
      *      {
@@ -8067,9 +8056,9 @@ export class AdapterClass extends EventEmitter {
      *          lc:     timestampMS       // default - automatic calculation
      *      }
      *  </code></pre>
-     * @param {boolean} [ack] optional is command(false) or status(true)
-     * @param {object} [options] optional user context
-     * @param {ioBroker.SetStateCallback} [callback] optional return error and id
+     * @param ack optional is command(false) or status(true)
+     * @param options optional user context
+     * @param callback optional return error and id
      *        <pre><code>
      *            function (err, id) {
      *              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);
@@ -8361,8 +8350,8 @@ export class AdapterClass extends EventEmitter {
      * This function can write values into states DB for all instances and system states too.
      * ack, options and callback are optional
      *
-     * @param {string} id object ID of the state.
-     * @param {object|string|number|boolean} state simple value or object with attribues.
+     * @param id object ID of the state.
+     * @param state simple value or object with attribues.
      *  If state is object and ack exists too as function argument, function argument has priority.
      *  <pre><code>
      *      {
@@ -8376,9 +8365,9 @@ export class AdapterClass extends EventEmitter {
      *          lc:     timestampMS       // default - automatic calculation
      *      }
      *  </code></pre>
-     * @param {boolean} [ack] optional is command(false) or status(true)
-     * @param {object} [options] optional user context
-     * @param {ioBroker.SetStateChangedCallback} [callback] optional return error and id
+     * @param ack optional is command(false) or status(true)
+     * @param options optional user context
+     * @param callback optional return error and id
      *        <pre><code>
      *            function (err, id) {
      *              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);
@@ -8472,9 +8461,9 @@ export class AdapterClass extends EventEmitter {
      * This function can read values from states DB for this adapter.
      * Only Ids that belong to this adapter can be read. So the function automatically adds "adapter.X." to ID.
      *
-     * @param {string} id object ID of the state.
-     * @param {object} options optional user context
-     * @param {ioBroker.GetStateCallback} callback return result
+     * @param id object ID of the state.
+     * @param options optional user context
+     * @param callback return result
      *        <pre><code>
      *            function (err, state) {
      *              if (err) adapter.log.error('Cannot read value: ' + err);
@@ -8502,9 +8491,9 @@ export class AdapterClass extends EventEmitter {
      *
      * This function can read values from states DB for all instances and adapters. It expects the full path of object ID.
      *
-     * @param {string} id object ID of the state.
-     * @param {object} options optional user context
-     * @param {ioBroker.GetStateCallback} callback return result
+     * @param id object ID of the state.
+     * @param options optional user context
+     * @param callback return result
      *        <pre><code>
      *            function (err, state) {
      *              if (err) adapter.log.error('Cannot read value: ' + err);
@@ -8805,9 +8794,9 @@ export class AdapterClass extends EventEmitter {
      *      - count - Same as max, but calculate number of values (nulls will be calculated).
      *      - none - No aggregation at all. Only raw values in given period.
      *
-     * @param {string} id object ID of the state.
-     * @param {object} options see function description
-     * @param {ioBroker.GetHistoryCallback} callback return result
+     * @param id object ID of the state.
+     * @param options see function description
+     * @param callback return result
      *        <pre><code>
      *            function (error, result, step, sessionId) {
      *              if (error) adapter.log.error('Cannot read value: ' + err);
@@ -8877,8 +8866,8 @@ export class AdapterClass extends EventEmitter {
      * Convert "adapter.instance.D.C.S" in object {device: D, channel: C, state: S}
      * Convert ID to {device: D, channel: C, state: S}
      *
-     * @param {string} id short or long string of ID like "stateID" or "adapterName.0.stateID".
-     * @return {object} parsed ID as an object
+     * @param id short or long string of ID like "stateID" or "adapterName.0.stateID".
+     * @return parsed ID as an object
      */
     idToDCS(id: unknown): {
         device: string;
@@ -8912,9 +8901,9 @@ export class AdapterClass extends EventEmitter {
      *
      * No error is returned if state does not exist.
      *
-     * @param {string} id exactly object ID (without namespace)
-     * @param {object} [options] optional user context
-     * @param {ioBroker.ErrorCallback} [callback] return result
+     * @param id exactly object ID (without namespace)
+     * @param options optional user context
+     * @param callback return result
      *        <pre><code>
      *            function (err) {
      *              if (err) adapter.log.error('Cannot delete object: ' + err);
@@ -8961,9 +8950,9 @@ export class AdapterClass extends EventEmitter {
      *
      * No error is returned if state does not exist.
      *
-     * @param {string} id long string for ID like "adapterName.0.stateID".
-     * @param {object} [options] optional argument to describe the user context
-     * @param {ioBroker.ErrorCallback} [callback] return result function (err) {}
+     * @param id long string for ID like "adapterName.0.stateID".
+     * @param options optional argument to describe the user context
+     * @param callbackreturn result function (err) {}
      */
     delForeignState(id: unknown, options: unknown, callback?: unknown) {
         if (typeof options === 'function') {
@@ -9026,9 +9015,9 @@ export class AdapterClass extends EventEmitter {
      *     });
      * </code></pre>
      *
-     * @param {string} pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
-     * @param {object} options optional argument to describe the user context
-     * @param {ioBroker.GetStatesCallback} callback return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...}
+     * @param pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
+     * @param options optional argument to describe the user context
+     * @param callback return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...}
      */
     getStates(pattern: unknown, options: any, callback?: any) {
         // we use any types here, because validation takes place in foreign method
@@ -9151,9 +9140,9 @@ export class AdapterClass extends EventEmitter {
      *     });
      * </code></pre>
      *
-     * @param {string | string[]} pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
-     * @param {object} options optional argument to describe the user context
-     * @param {ioBroker.GetStatesCallback} callback return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...}
+     * @param pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
+     * @param options optional argument to describe the user context
+     * @param callback return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...}
      */
     getForeignStates(pattern: unknown, options: unknown, callback?: unknown) {
         if (typeof options === 'function') {
@@ -9410,9 +9399,9 @@ export class AdapterClass extends EventEmitter {
      *     adapter.subscribeForeignStates('adapterName.X.*');
      * </code></pre>
      *
-     * @param {string | string[]} pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
-     * @param {object} [options] optional argument to describe the user context
-     * @param {ioBroker.ErrorCallback} [callback] return result function (err) {}
+     * @param pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
+     * @param options optional argument to describe the user context
+     * @param callback return result function (err) {}
      */
     subscribeForeignStates(pattern: unknown, options: unknown, callback?: unknown) {
         pattern = pattern || '*';
@@ -9652,9 +9641,9 @@ export class AdapterClass extends EventEmitter {
      *     adapter.unsubscribeForeignStates('adapterName.X.*'); // Valid unsubscribe
      * </code></pre>
      *
-     * @param {string | string[]} pattern string in form 'adapter.0.*'. Must be the same as subscribe.
-     * @param {object} [options] optional argument to describe the user context
-     * @param {ioBroker.ErrorCallback} [callback] return result function (err) {}
+     * @param pattern string in form 'adapter.0.*'. Must be the same as subscribe.
+     * @param options]optional argument to describe the user context
+     * @param callback return result function (err) {}
      */
     unsubscribeForeignStates(pattern: unknown, options: unknown, callback?: unknown) {
         pattern = pattern || '*';
@@ -9797,9 +9786,9 @@ export class AdapterClass extends EventEmitter {
      *     adapter.subscribeStates('*'); // subscribe for all states of this adapter
      * </code></pre>
      *
-     * @param {string} pattern string in form 'adapter.0.*' or like this. Only string allowed
-     * @param {object} [options] optional argument to describe the user context
-     * @param {ioBroker.ErrorCallback} [callback]
+     * @param pattern string in form 'adapter.0.*' or like this. Only string allowed
+     * @param options optional argument to describe the user context
+     * @param callback
      */
     subscribeStates(pattern: unknown, options: unknown, callback?: unknown) {
         // Todo check rights for options
@@ -9842,9 +9831,9 @@ export class AdapterClass extends EventEmitter {
      *     adapter.unsubscribeForeignStates('*');    // Valid unsubscribe
      * </code></pre>
      *
-     * @param {string} pattern string in form 'adapter.0.*'. Must be the same as subscribe.
-     * @param {object} [options] optional argument to describe the user context
-     * @param {ioBroker.ErrorCallback} [callback]
+     * @param pattern string in form 'adapter.0.*'. Must be the same as subscribe.
+     * @param options optional argument to describe the user context
+     * @param callback
      */
     unsubscribeStates(pattern: unknown, options: unknown, callback?: unknown) {
         // Todo check rights for options
@@ -9879,10 +9868,10 @@ export class AdapterClass extends EventEmitter {
      * Write binary block into redis, e.g image
      *
      *
-     * @param {string} id of state
-     * @param {Buffer} binary data
-     * @param {object} [options] optional
-     * @param {ioBroker.ErrorCallback} [callback]
+     * @param id of state
+     * @param binary data
+     * @param options optional
+     * @param callback
      *
      */
     setForeignBinaryState(id: unknown, binary: unknown, options: unknown, callback?: unknown) {
@@ -10020,10 +10009,10 @@ export class AdapterClass extends EventEmitter {
      * Same as setForeignBinaryState but prefixes the own namespace to the id
      *
      *
-     * @param {string} id of state
-     * @param {Buffer} binary data
-     * @param {object} [options] optional
-     * @param {ioBroker.ErrorCallback} [callback]
+     * @param id of state
+     * @param binary data
+     * @param options optional
+     * @param callback
      */
     setBinaryState(id: any, binary: any, options: any, callback?: any): void {
         // we just keep any types here, because setForeign method will validate
@@ -10038,9 +10027,9 @@ export class AdapterClass extends EventEmitter {
     /**
      * Read a binary block from redis, e.g. an image
      *
-     * @param {string} id The state ID
-     * @param {object} options optional
-     * @param {ioBroker.GetBinaryStateCallback} callback
+     * @param id The state ID
+     * @param options optional
+     * @param callback
      */
     getForeignBinaryState(id: unknown, options: unknown, callback?: unknown) {
         if (typeof options === 'function') {
@@ -10112,9 +10101,9 @@ export class AdapterClass extends EventEmitter {
     /**
      * Same as getForeignBinaryState but prefixes the own namespace to the id
      *
-     * @param {string} id The state ID
-     * @param {object} options optional
-     * @param {ioBroker.GetBinaryStateCallback} callback
+     * @param id The state ID
+     * @param options optional
+     * @param callback
      */
     getBinaryState(id: any, options: any, callback?: any) {
         // we use any types here, because validation takes place in foreign method
@@ -10130,9 +10119,9 @@ export class AdapterClass extends EventEmitter {
      * Deletes binary state
      *
      *
-     * @param {string} id
-     * @param {object} [options]
-     * @param {ioBroker.ErrorCallback} [callback]
+     * @param id
+     * @param options
+     * @param callback
      *
      */
     delForeignBinaryState(id: unknown, options: unknown, callback?: unknown) {
@@ -10188,9 +10177,9 @@ export class AdapterClass extends EventEmitter {
     /**
      * Deletes binary state but prefixes the own namespace to the id
      *
-     * @param {string} id
-     * @param {object} [options]
-     * @param {ioBroker.ErrorCallback} [callback]
+     * @param id
+     * @param options
+     * @param callback
      *
      */
     delBinaryState(id: any, options: any, callback?: any) {
@@ -10223,8 +10212,8 @@ export class AdapterClass extends EventEmitter {
     /**
      * Return plugin configuration
      *
-     * @param name {string} name of the plugin to return
-     * @returns {object} plugin configuration or null if not existent or not isActive
+     * @param name name of the plugin to return
+     * @returns plugin configuration or null if not existent or not isActive
      */
     getPluginConfig(name: unknown): Record<string, any> | null {
         if (!this.pluginHandler) {
@@ -10268,8 +10257,8 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * This method returns the list of license that can be used by this adapter
-     * @param {boolean} all if return the licenses, that used by other instances (true) or only for this instance (false)
-     * @returns {Promise<object[]>} list of suitable licenses
+     * @param all if return the licenses, that used by other instances (true) or only for this instance (false)
+     * @returns list of suitable licenses
      */
     async getSuitableLicenses(all: unknown) {
         const licenses: Record<string, any>[] = [];
