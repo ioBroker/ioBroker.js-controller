@@ -4,6 +4,8 @@
 
 [<internal>](../modules/internal_.md).StateACL
 
+Defines access rights for a single state object
+
 ## Hierarchy
 
 - [`ObjectACL`](internal_.ObjectACL.md)
@@ -25,6 +27,8 @@
 
 • **object**: `number`
 
+Linux-type permissions defining access to this object
+
 #### Inherited from
 
 [ObjectACL](internal_.ObjectACL.md).[object](internal_.ObjectACL.md#object)
@@ -38,6 +42,8 @@ ___
 ### owner
 
 • **owner**: `string`
+
+Full name of the user who owns this object, e.g. "system.user.admin"
 
 #### Inherited from
 
@@ -53,6 +59,8 @@ ___
 
 • **ownerGroup**: `string`
 
+Full name of the group who owns this object, e.g. "system.group.administrator"
+
 #### Inherited from
 
 [ObjectACL](internal_.ObjectACL.md).[ownerGroup](internal_.ObjectACL.md#ownergroup)
@@ -66,6 +74,8 @@ ___
 ### state
 
 • **state**: `number`
+
+Linux-type permissions defining access to this state
 
 #### Defined in
 

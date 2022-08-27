@@ -4,6 +4,8 @@
 
 [<internal>](../modules/internal_.md).ChownFileResult
 
+Contains the return values of chownFile
+
 ## Table of contents
 
 ### Properties
@@ -22,6 +24,8 @@
 
 • **acl**: [`FileACL`](internal_.FileACL.md)
 
+Access rights
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:1845
@@ -31,6 +35,8 @@ ___
 ### createdAt
 
 • **createdAt**: `number`
+
+Date of creation
 
 #### Defined in
 
@@ -42,6 +48,8 @@ ___
 
 • **file**: `string`
 
+Name of the file or directory
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:1839
@@ -51,6 +59,8 @@ ___
 ### isDir
 
 • **isDir**: `boolean`
+
+Whether this is a directory or a file
 
 #### Defined in
 
@@ -62,6 +72,8 @@ ___
 
 • **modifiedAt**: `number`
 
+Date of last modification
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:1847
@@ -72,6 +84,8 @@ ___
 
 • **path**: `string`
 
+The parent directory of the processed file or directory
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:1837
@@ -81,6 +95,8 @@ ___
 ### stats
 
 • **stats**: [`Stats`](../classes/internal_.Stats.md)
+
+File system stats
 
 #### Defined in
 

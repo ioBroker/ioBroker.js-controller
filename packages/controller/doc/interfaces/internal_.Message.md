@@ -4,6 +4,8 @@
 
 [<internal>](../modules/internal_.md).Message
 
+A message being passed between adapter instances
+
 ## Table of contents
 
 ### Properties
@@ -20,6 +22,8 @@
 
 • **\_id**: `number`
 
+ID of this message
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:229
@@ -29,6 +33,8 @@ ___
 ### callback
 
 • **callback**: [`MessageCallbackInfo`](internal_.MessageCallbackInfo.md)
+
+Callback information. This is set when the source expects a response
 
 #### Defined in
 
@@ -40,6 +46,8 @@ ___
 
 • **command**: `string`
 
+The command to be executed
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:223
@@ -50,6 +58,8 @@ ___
 
 • **from**: `string`
 
+The source of this message
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:227
@@ -59,6 +69,8 @@ ___
 ### message
 
 • **message**: [`MessagePayload`](../modules/internal_.md#messagepayload)
+
+The message payload
 
 #### Defined in
 

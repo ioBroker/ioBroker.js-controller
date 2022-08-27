@@ -83,6 +83,8 @@ ___
 
 • `Optional` **signal**: [`AbortSignal`](../modules/internal_.md#abortsignal)
 
+When provided the corresponding `AbortController` can be used to cancel an asynchronous action.
+
 #### Inherited from
 
 [Abortable](internal_.EventEmitter.Abortable.md).[signal](internal_.EventEmitter.Abortable.md#signal)

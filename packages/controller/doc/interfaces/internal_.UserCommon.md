@@ -39,6 +39,8 @@ ___
 
 • `Optional` **dontDelete**: ``true``
 
+When set to true, this object may not be deleted
+
 #### Inherited from
 
 [ObjectCommon](internal_.ObjectCommon.md).[dontDelete](internal_.ObjectCommon.md#dontdelete)
@@ -53,6 +55,8 @@ ___
 
 • **enabled**: `boolean`
 
+Whether this user is enabled
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:334
@@ -62,6 +66,8 @@ ___
 ### expert
 
 • `Optional` **expert**: ``true``
+
+When set to true, this object is only visible when expert mode is turned on in admin
 
 #### Inherited from
 
@@ -77,6 +83,8 @@ ___
 
 • `Optional` **icon**: `string`
 
+Icon for this object
+
 #### Inherited from
 
 [ObjectCommon](internal_.ObjectCommon.md).[icon](internal_.ObjectCommon.md#icon)
@@ -90,6 +98,8 @@ ___
 ### name
 
 • **name**: `string`
+
+The username
 
 #### Overrides
 
@@ -105,6 +115,8 @@ ___
 
 • **password**: `string`
 
+The hashed password
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:332
@@ -114,6 +126,8 @@ ___
 ### role
 
 • `Optional` **role**: `string`
+
+role of the object
 
 #### Inherited from
 

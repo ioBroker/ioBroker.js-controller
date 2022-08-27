@@ -4,6 +4,8 @@
 
 [<internal>](../modules/internal_.md).GetObjectViewParams
 
+Parameters for adapter.getObjectView
+
 ## Table of contents
 
 ### Properties
@@ -18,6 +20,8 @@
 
 • `Optional` **endkey**: `string`
 
+Last id to include in the return list
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:172
@@ -28,6 +32,8 @@ ___
 
 • `Optional` **include\_docs**: `boolean`
 
+Whether docs should be included in the return list
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:174
@@ -37,6 +43,8 @@ ___
 ### startkey
 
 • `Optional` **startkey**: `string`
+
+First id to include in the return list
 
 #### Defined in
 

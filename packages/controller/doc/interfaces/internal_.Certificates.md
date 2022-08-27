@@ -18,6 +18,8 @@
 
 • **ca**: (`string` \| [`Buffer`](../modules/internal_.md#buffer))[]
 
+chained CA certificates
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:203
@@ -28,6 +30,8 @@ ___
 
 • **cert**: `string` \| [`Buffer`](../modules/internal_.md#buffer)
 
+public certificate
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:201
@@ -37,6 +41,8 @@ ___
 ### key
 
 • **key**: `string` \| [`Buffer`](../modules/internal_.md#buffer)
+
+private key file
 
 #### Defined in
 

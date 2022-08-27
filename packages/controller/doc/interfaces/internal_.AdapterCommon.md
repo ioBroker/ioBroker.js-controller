@@ -88,6 +88,8 @@
 
 • `Optional` **adminColumns**: `any`[]
 
+Custom attributes to be shown in admin in the object browser
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:384
@@ -98,15 +100,17 @@ ___
 
 • `Optional` **adminTab**: `Object`
 
+Settings for custom Admin Tabs
+
 #### Type declaration
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `fa-icon?` | `string` |  |
-| `ignoreConfigUpdate?` | `boolean` |  |
-| `link?` | `string` |  |
+| `fa-icon?` | `string` | Icon name for FontAwesome |
+| `ignoreConfigUpdate?` | `boolean` | If true, the Tab is not reloaded when the configuration changes |
+| `link?` | `string` | Which URL should be loaded in the tab. Supports placeholders like http://%ip%:%port% |
 | `name?` | `string` | - |
-| `singleton?` | `boolean` |  |
+| `singleton?` | `boolean` | If true, only one instance of this tab will be created for all instances |
 
 #### Defined in
 
@@ -128,6 +132,8 @@ ___
 
 • `Optional` **availableModes**: [`InstanceMode`](../modules/internal_.md#instancemode)[]
 
+Possible values for the instance mode (if more than one is possible)
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:399
@@ -137,6 +143,8 @@ ___
 ### blockly
 
 • `Optional` **blockly**: `boolean`
+
+Whether this adapter includes custom blocks for Blockly. If true, `admin/blockly.js` must exist.
 
 #### Defined in
 
@@ -148,6 +156,8 @@ ___
 
 • `Optional` **compact**: `boolean`
 
+If true, this adapter can be started in compact mode (in the same process as other adpaters)
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:405
@@ -157,6 +167,12 @@ ___
 ### connectionType
 
 • `Optional` **connectionType**: ``"local"`` \| ``"cloud"``
+
+Where the adapter will get its data from. Set this together with
+
+**`See`**
+
+dataSource
 
 #### Defined in
 
@@ -178,6 +194,8 @@ ___
 
 • `Optional` **dataFolder**: `string`
 
+The directory relative to iobroker-data where the adapter stores the data. Supports the placeholder `%INSTANCE%`. This folder will be backed up and restored automatically.
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:407
@@ -187,6 +205,12 @@ ___
 ### dataSource
 
 • `Optional` **dataSource**: ``"push"`` \| ``"poll"`` \| ``"assumption"``
+
+How the adapter will mainly receive its data. Set this together with
+
+**`See`**
+
+connectionType
 
 #### Defined in
 
@@ -198,6 +222,8 @@ ___
 
 • `Optional` **dependencies**: [`Record`](../modules/internal_.md#record)<`string`, `string`\>[]
 
+A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter.
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:411
@@ -208,6 +234,8 @@ ___
 
 • `Optional` **docs**: [`Partial`](../modules/internal_.md#partial)<[`Record`](../modules/internal_.md#record)<[`Languages`](../modules/internal_.md#languages), `string` \| `string`[]\>\>
 
+Which files outside of the README.md have documentation for the adapter
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:413
@@ -217,6 +245,8 @@ ___
 ### dontDelete
 
 • `Optional` **dontDelete**: ``true``
+
+When set to true, this object may not be deleted
 
 #### Inherited from
 
@@ -232,6 +262,8 @@ ___
 
 • **enabled**: `boolean`
 
+Whether new instances should be enabled by default. *Should* be `false`!
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:415
@@ -242,6 +274,8 @@ ___
 
 • `Optional` **eraseOnUpload**: `boolean`
 
+If true, all previous data in the target directory (web) should be deleted before uploading
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:417
@@ -251,6 +285,8 @@ ___
 ### expert
 
 • `Optional` **expert**: ``true``
+
+When set to true, this object is only visible when expert mode is turned on in admin
 
 #### Inherited from
 
@@ -266,6 +302,8 @@ ___
 
 • `Optional` **extIcon**: `string`
 
+URL of an external icon that is shown for adapters that are not installed
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:419
@@ -276,6 +314,8 @@ ___
 
 • `Optional` **getHistory**: `boolean`
 
+Whether this adapter responds to `getHistory` messages
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:421
@@ -285,6 +325,8 @@ ___
 ### icon
 
 • `Optional` **icon**: `string`
+
+Filename of the local icon which is shown for installed adapters. Should be located in the `admin` directory
 
 #### Overrides
 
@@ -299,6 +341,8 @@ ___
 ### installedVersion
 
 • **installedVersion**: `string`
+
+Which version of this adapter is installed
 
 #### Defined in
 
@@ -320,6 +364,14 @@ ___
 
 • `Optional` **localLink**: `string`
 
+**`Deprecated`**
+
+Use
+
+**`See`**
+
+localLinks
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:430
@@ -329,6 +381,8 @@ ___
 ### localLinks
 
 • `Optional` **localLinks**: [`Record`](../modules/internal_.md#record)<`string`, `string`\>
+
+A dictionary of links to web services this adapter provides
 
 #### Defined in
 
@@ -350,6 +404,8 @@ ___
 
 • `Optional` **logTransporter**: `boolean`
 
+Whether this adapter receives logs from other hosts and adapters (e.g. to strore them somewhere)
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:433
@@ -359,6 +415,8 @@ ___
 ### main
 
 • `Optional` **main**: `string`
+
+Path to the start file of the adapter. Should be the same as in `package.json`
 
 #### Defined in
 
@@ -370,6 +428,8 @@ ___
 
 • **materialize**: `boolean`
 
+Whether the admin configuration dialog is written in materialize style. Required for Admin 3+
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:439
@@ -380,6 +440,8 @@ ___
 
 • **materializeTab**: `boolean`
 
+Whether the admin tab is written in materialize style. Required for Admin 3+
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:437
@@ -389,6 +451,8 @@ ___
 ### messagebox
 
 • `Optional` **messagebox**: ``true``
+
+If `true`, the object `system.adapter.<adaptername>.<adapterinstance>.messagebox will be created to send messages to the adapter (used for email, pushover, etc...)
 
 #### Defined in
 
@@ -410,6 +474,8 @@ ___
 
 • **name**: `string`
 
+Name of the adapter (without leading `ioBroker.`)
+
 #### Overrides
 
 [ObjectCommon](internal_.ObjectCommon.md).[name](internal_.ObjectCommon.md#name)
@@ -424,6 +490,8 @@ ___
 
 • `Optional` **noConfig**: ``true``
 
+If `true`, no configuration dialog will be shown
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:446
@@ -433,6 +501,8 @@ ___
 ### noIntro
 
 • `Optional` **noIntro**: ``true``
+
+If `true`, this adapter's instances will not be shown in the admin overview screen. Useful for icon sets and widgets...
 
 #### Defined in
 
@@ -444,6 +514,8 @@ ___
 
 • `Optional` **noRepository**: ``true``
 
+Set to `true` if the adapter is not available in the official ioBroker repositories.
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:450
@@ -453,6 +525,8 @@ ___
 ### nogit
 
 • `Optional` **nogit**: ``true``
+
+If `true`, manual installation from GitHub is not possible
 
 #### Defined in
 
@@ -464,6 +538,8 @@ ___
 
 • `Optional` **nondeletable**: ``true``
 
+If `true`, this adapter cannot be deleted or updated manually.
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:454
@@ -473,6 +549,8 @@ ___
 ### onlyWWW
 
 • `Optional` **onlyWWW**: `boolean`
+
+If `true`, this "adapter" only contains HTML files and no main executable
 
 #### Defined in
 
@@ -484,6 +562,8 @@ ___
 
 • `Optional` **os**: ``"linux"`` \| ``"darwin"`` \| ``"win32"`` \| (``"linux"`` \| ``"darwin"`` \| ``"win32"``)[]
 
+Which OSes this adapter supports
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:467
@@ -494,13 +574,15 @@ ___
 
 • `Optional` **osDependencies**: `Object`
 
+Used to configure native (OS) dependencies of this adapter that need to be installed with system package manager before installing the adapter
+
 #### Type declaration
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `darwin` | `string`[] |  |
-| `linux` | `string`[] |  |
-| `win32` | `string`[] |  |
+| `darwin` | `string`[] | For OSX |
+| `linux` | `string`[] | For Linux |
+| `win32` | `string`[] | For Windows |
 
 #### Defined in
 
@@ -522,6 +604,8 @@ ___
 
 • `Optional` **preserveSettings**: `string` \| `string`[]
 
+The keys of common attributes (e.g. `history`) which are not deleted in a `setObject` call even if they are not present. Deletion must be done explicitly by setting them to `null`.
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:470
@@ -532,6 +616,8 @@ ___
 
 • `Optional` **restartAdapters**: `string`[]
 
+Which adapters must be restarted after installing or updating this adapter.
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:472
@@ -541,6 +627,8 @@ ___
 ### role
 
 • `Optional` **role**: `string`
+
+role of the object
 
 #### Inherited from
 
@@ -555,6 +643,8 @@ ___
 ### schedule
 
 • `Optional` **schedule**: `string`
+
+If the adapter runs in `schedule` mode, this contains the CRON
 
 #### Defined in
 
@@ -576,6 +666,8 @@ ___
 
 • `Optional` **singleton**: `boolean`
 
+Whether this adapter may only be installed once in the whole system
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:479
@@ -585,6 +677,8 @@ ___
 ### singletonHost
 
 • `Optional` **singletonHost**: `boolean`
+
+Whether this adapter may only be installed once per host
 
 #### Defined in
 
@@ -596,6 +690,8 @@ ___
 
 • `Optional` **stopBeforeUpdate**: `boolean`
 
+Whether the adapter must be stopped before an update
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:481
@@ -605,6 +701,8 @@ ___
 ### stopTimeout
 
 • `Optional` **stopTimeout**: `number`
+
+Overrides the default timeout that ioBroker will wait before force-stopping the adapter
 
 #### Defined in
 
@@ -636,6 +734,8 @@ ___
 
 • `Optional` **supportCustoms**: `boolean`
 
+If `true`, this adapter provides custom per-state settings. Requires a `custom_m.html` file in the `admin` directory.
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:487
@@ -645,6 +745,8 @@ ___
 ### supportStopInstance
 
 • `Optional` **supportStopInstance**: `boolean`
+
+Whether the adapter supports the signal stopInstance via messagebox
 
 #### Defined in
 
@@ -656,6 +758,14 @@ ___
 
 • `Optional` **title**: `string`
 
+**`Deprecated`**
+
+The name of this adapter to be shown in the admin UI. Use
+
+**`See`**
+
+titleLang instead.
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:493
@@ -665,6 +775,8 @@ ___
 ### titleLang
 
 • `Optional` **titleLang**: [`Record`](../modules/internal_.md#record)<[`Languages`](../modules/internal_.md#languages), `string`\>
+
+The translated names of this adapter to be shown in the admin UI
 
 #### Defined in
 
@@ -676,6 +788,8 @@ ___
 
 • `Optional` **type**: `string`
 
+The type of this adapter
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:495
@@ -685,6 +799,8 @@ ___
 ### unsafePerm
 
 • `Optional` **unsafePerm**: ``true``
+
+If `true`, the `npm` package must be installed with the `--unsafe-perm` flag
 
 #### Defined in
 
@@ -696,6 +812,8 @@ ___
 
 • **version**: `string`
 
+The available version in the ioBroker repo.
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:499
@@ -705,6 +823,8 @@ ___
 ### wakeup
 
 • `Optional` **wakeup**: `boolean`
+
+If `true`, the adapter will be started if any value is written into `system.adapter.<name>.<instance>.wakeup. Normally the adapter should stop after processing the event.
 
 #### Defined in
 
@@ -716,6 +836,8 @@ ___
 
 • `Optional` **webByVersion**: `boolean`
 
+Include the adapter version in the URL of the web adapter, e.g. `http://ip:port/1.2.3/material` instead of `http://ip:port/material`
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:503
@@ -726,6 +848,8 @@ ___
 
 • `Optional` **webExtendable**: `boolean`
 
+Whether the web server in this adapter can be extended with plugin/extensions
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:505
@@ -735,6 +859,12 @@ ___
 ### webExtension
 
 • `Optional` **webExtension**: `string`
+
+Relative path to a module that contains an extension for the web adapter. Use together with
+
+**`See`**
+
+native.webInstance to configure which instances this affects
 
 #### Defined in
 
@@ -766,6 +896,8 @@ ___
 
 • `Optional` **welcomeScreen**: [`WelcomeScreenEntry`](../modules/internal_.md#welcomescreenentry)[]
 
+A list of pages that should be shown on the "web" index page
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:511
@@ -775,6 +907,8 @@ ___
 ### welcomeScreenPro
 
 • `Optional` **welcomeScreenPro**: [`WelcomeScreenEntry`](../modules/internal_.md#welcomescreenentry)[]
+
+A list of pages that should be shown on the ioBroker cloud index page
 
 #### Defined in
 

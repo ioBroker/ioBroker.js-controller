@@ -54,6 +54,8 @@
 
 • **\_id**: `string`
 
+The ID of this object
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:530
@@ -133,6 +135,8 @@ ___
 ### user
 
 • `Optional` **user**: `string`
+
+The user who created or updated this object
 
 #### Defined in
 

@@ -24,6 +24,8 @@
 
 • **ack**: `boolean`
 
+Direction flag: false for desired value and true for actual value. Default: false.
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:42
@@ -33,6 +35,8 @@ ___
 ### c
 
 • `Optional` **c**: `string`
+
+Optional comment
 
 #### Defined in
 
@@ -44,6 +48,8 @@ ___
 
 • `Optional` **expire**: `number`
 
+Optional time in seconds after which the state is reset to null
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:57
@@ -53,6 +59,8 @@ ___
 ### from
 
 • **from**: `string`
+
+Name of the adapter instance which set the value, e.g. "system.adapter.web.0"
 
 #### Defined in
 
@@ -64,6 +72,8 @@ ___
 
 • **lc**: `number`
 
+Unix timestamp of the last time the value changed
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:48
@@ -73,6 +83,8 @@ ___
 ### q
 
 • `Optional` **q**: [`StateQuality`](../enums/internal_.StateQuality.md)
+
+Optional quality of the state value
 
 #### Defined in
 
@@ -84,6 +96,8 @@ ___
 
 • **ts**: `number`
 
+Unix timestamp. Default: current time
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:45
@@ -94,6 +108,8 @@ ___
 
 • `Optional` **user**: `string`
 
+The user who set this value
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:54
@@ -103,6 +119,8 @@ ___
 ### val
 
 • **val**: [`StateValue`](../modules/internal_.md#statevalue)
+
+The value of the state.
 
 #### Defined in
 

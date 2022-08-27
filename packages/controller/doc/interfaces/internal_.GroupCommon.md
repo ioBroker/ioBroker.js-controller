@@ -29,6 +29,8 @@
 
 • **acl**: [`Omit`](../modules/internal_.md#omit)<[`PermissionSet`](internal_.PermissionSet.md), ``"user"`` \| ``"groups"``\>
 
+The default permissions of this group
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:346
@@ -49,6 +51,8 @@ ___
 
 • `Optional` **dontDelete**: ``true``
 
+When set to true, this object may not be deleted
+
 #### Inherited from
 
 [ObjectCommon](internal_.ObjectCommon.md).[dontDelete](internal_.ObjectCommon.md#dontdelete)
@@ -62,6 +66,8 @@ ___
 ### expert
 
 • `Optional` **expert**: ``true``
+
+When set to true, this object is only visible when expert mode is turned on in admin
 
 #### Inherited from
 
@@ -77,6 +83,8 @@ ___
 
 • `Optional` **icon**: `string`
 
+Icon for this object
+
 #### Inherited from
 
 [ObjectCommon](internal_.ObjectCommon.md).[icon](internal_.ObjectCommon.md#icon)
@@ -91,6 +99,8 @@ ___
 
 • **members**: `string`[]
 
+The users of this group
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:344
@@ -100,6 +110,8 @@ ___
 ### name
 
 • **name**: `string`
+
+The name of this group
 
 #### Overrides
 
@@ -114,6 +126,8 @@ ___
 ### role
 
 • `Optional` **role**: `string`
+
+role of the object
 
 #### Inherited from
 

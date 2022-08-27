@@ -41,6 +41,8 @@ ___
 
 • `Optional` **dontDelete**: ``true``
 
+When set to true, this object may not be deleted
+
 #### Inherited from
 
 [ObjectCommon](internal_.ObjectCommon.md).[dontDelete](internal_.ObjectCommon.md#dontdelete)
@@ -65,6 +67,8 @@ ___
 
 • `Optional` **expert**: ``true``
 
+When set to true, this object is only visible when expert mode is turned on in admin
+
 #### Inherited from
 
 [ObjectCommon](internal_.ObjectCommon.md).[expert](internal_.ObjectCommon.md#expert)
@@ -79,6 +83,8 @@ ___
 
 • **host**: `string`
 
+The name of the host where this instance is running
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:272
@@ -88,6 +94,8 @@ ___
 ### icon
 
 • `Optional` **icon**: `string`
+
+Icon for this object
 
 #### Inherited from
 
@@ -103,6 +111,8 @@ ___
 
 • **mode**: [`InstanceMode`](../modules/internal_.md#instancemode)
 
+How and when this instance should be started
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:275
@@ -112,6 +122,8 @@ ___
 ### name
 
 • **name**: [`StringOrTranslated`](../modules/internal_.md#stringortranslated)
+
+The name of this object as a simple string or an object with translations
 
 #### Inherited from
 
@@ -127,6 +139,8 @@ ___
 
 • `Optional` **role**: `string`
 
+role of the object
+
 #### Inherited from
 
 [ObjectCommon](internal_.ObjectCommon.md).[role](internal_.ObjectCommon.md#role)
@@ -140,6 +154,11 @@ ___
 ### tier
 
 • `Optional` **tier**: ``1`` \| ``2`` \| ``3``
+
+The starting priority of this adapter:
+- **1:** Logic adapters
+- **2:** Data providers
+- **3:** All other adapters
 
 #### Defined in
 

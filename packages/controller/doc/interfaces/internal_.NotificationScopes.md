@@ -4,6 +4,8 @@
 
 [<internal>](../modules/internal_.md).NotificationScopes
 
+Predefined notification scopes and their categories
+
 ## Table of contents
 
 ### Properties

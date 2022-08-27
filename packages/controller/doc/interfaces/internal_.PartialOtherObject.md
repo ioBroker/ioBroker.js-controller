@@ -4,6 +4,8 @@
 
 [<internal>](../modules/internal_.md).PartialOtherObject
 
+Make all properties in T optional
+
 ## Hierarchy
 
 - [`Partial`](../modules/internal_.md#partial)<[`Omit`](../modules/internal_.md#omit)<[`OtherObject`](internal_.OtherObject.md), ``"common"``\>\>
@@ -29,6 +31,8 @@
 ### \_id
 
 • `Optional` **\_id**: `string`
+
+The ID of this object
 
 #### Inherited from
 
@@ -137,6 +141,8 @@ ___
 ### user
 
 • `Optional` **user**: `string`
+
+The user who created or updated this object
 
 #### Inherited from
 

@@ -48,6 +48,8 @@
 
 • `Optional` **dontDelete**: ``true``
 
+When set to true, this object may not be deleted
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:148
@@ -57,6 +59,8 @@ ___
 ### expert
 
 • `Optional` **expert**: ``true``
+
+When set to true, this object is only visible when expert mode is turned on in admin
 
 #### Defined in
 
@@ -68,6 +72,8 @@ ___
 
 • `Optional` **icon**: `string`
 
+Icon for this object
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:156
@@ -78,6 +84,8 @@ ___
 
 • **name**: [`StringOrTranslated`](../modules/internal_.md#stringortranslated)
 
+The name of this object as a simple string or an object with translations
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:145
@@ -87,6 +95,8 @@ ___
 ### role
 
 • `Optional` **role**: `string`
+
+role of the object
 
 #### Defined in
 

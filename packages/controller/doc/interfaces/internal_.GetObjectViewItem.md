@@ -29,6 +29,8 @@
 
 • **id**: `string`
 
+The ID of this object
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:1868
@@ -38,6 +40,8 @@ ___
 ### value
 
 • **value**: ``null`` \| `T`
+
+A copy of the object from the DB
 
 #### Defined in
 

@@ -20,6 +20,8 @@
 
 • `Optional` **recursive**: `boolean`
 
+Whether all child objects should be deleted aswell
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:269

@@ -4,6 +4,8 @@
 
 [<internal>](../modules/internal_.md).ReadDirResult
 
+Contains the return values of readDir
+
 ## Table of contents
 
 ### Properties
@@ -21,6 +23,8 @@
 
 • `Optional` **acl**: [`EvaluatedFileACL`](internal_.EvaluatedFileACL.md)
 
+Access rights
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:1822
@@ -30,6 +34,8 @@ ___
 ### createdAt
 
 • `Optional` **createdAt**: `number`
+
+Date of creation
 
 #### Defined in
 
@@ -41,6 +47,8 @@ ___
 
 • **file**: `string`
 
+Name of the file or directory
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:1814
@@ -50,6 +58,8 @@ ___
 ### isDir
 
 • **isDir**: `boolean`
+
+Whether this is a directory or a file
 
 #### Defined in
 
@@ -61,6 +71,8 @@ ___
 
 • `Optional` **modifiedAt**: `number`
 
+Date of last modification
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:1824
@@ -70,6 +82,8 @@ ___
 ### stats
 
 • **stats**: [`Stats`](../classes/internal_.Stats.md) \| [`Record`](../modules/internal_.md#record)<`string`, `never`\>
+
+File system stats
 
 #### Defined in
 

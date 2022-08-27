@@ -24,6 +24,8 @@
 
 • **level**: [`LogLevel`](../modules/internal_.md#loglevel)
 
+Verbosity of the log output
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:194
@@ -33,6 +35,8 @@ node_modules/@types/iobroker/index.d.ts:194
 ### debug
 
 ▸ **debug**(`message`): `void`
+
+log message with debug level
 
 #### Parameters
 
@@ -54,6 +58,8 @@ ___
 
 ▸ **error**(`message`): `void`
 
+log message with error severity
+
 #### Parameters
 
 | Name | Type |
@@ -73,6 +79,8 @@ ___
 ### info
 
 ▸ **info**(`message`): `void`
+
+log message with info level (default output level for all adapters)
 
 #### Parameters
 
@@ -94,6 +102,8 @@ ___
 
 ▸ **silly**(`message`): `void`
 
+log message with silly level
+
 #### Parameters
 
 | Name | Type |
@@ -113,6 +123,8 @@ ___
 ### warn
 
 ▸ **warn**(`message`): `void`
+
+log message with warning severity
 
 #### Parameters
 

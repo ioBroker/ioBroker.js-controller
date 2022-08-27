@@ -38,6 +38,8 @@ ___
 
 • `Optional` **dontDelete**: ``true``
 
+When set to true, this object may not be deleted
+
 #### Inherited from
 
 [ObjectCommon](internal_.ObjectCommon.md).[dontDelete](internal_.ObjectCommon.md#dontdelete)
@@ -51,6 +53,8 @@ ___
 ### expert
 
 • `Optional` **expert**: ``true``
+
+When set to true, this object is only visible when expert mode is turned on in admin
 
 #### Inherited from
 
@@ -66,6 +70,8 @@ ___
 
 • `Optional` **icon**: `string`
 
+Icon for this object
+
 #### Inherited from
 
 [ObjectCommon](internal_.ObjectCommon.md).[icon](internal_.ObjectCommon.md#icon)
@@ -80,6 +86,8 @@ ___
 
 • **name**: [`StringOrTranslated`](../modules/internal_.md#stringortranslated)
 
+The name of this object as a simple string or an object with translations
+
 #### Inherited from
 
 [ObjectCommon](internal_.ObjectCommon.md).[name](internal_.ObjectCommon.md#name)
@@ -93,6 +101,8 @@ ___
 ### role
 
 • `Optional` **role**: `string`
+
+role of the object
 
 #### Inherited from
 

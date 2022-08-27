@@ -186,6 +186,8 @@ ___
 
 • `Optional` **signal**: [`AbortSignal`](../modules/internal_.md#abortsignal)
 
+When provided the corresponding `AbortController` can be used to cancel an asynchronous action.
+
 #### Inherited from
 
 [DuplexOptions](internal_.internal.DuplexOptions.md).[signal](internal_.internal.DuplexOptions.md#signal)

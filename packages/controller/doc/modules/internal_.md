@@ -6,7 +6,7 @@
 
 ### Namespaces
 
-- [&quot;/home/moritz/workspaces/ioBroker.js-controller/node\_modules/@types/node-schedule/index&quot;](internal_.__home_moritz_workspaces_ioBroker_js_controller_node_modules__types_node_schedule_index_.md)
+- [&quot;/home/runner/work/ioBroker.js-controller/ioBroker.js-controller/node\_modules/@types/node-schedule/index&quot;](internal_.__home_runner_work_ioBroker_js_controller_ioBroker_js_controller_node_modules__types_node_schedule_index_.md)
 - [&quot;node:stream/consumers&quot;](internal_._node_stream_consumers_.md)
 - [&quot;node:stream/promises&quot;](internal_._node_stream_promises_.md)
 - [EventEmitter](internal_.EventEmitter.md)
@@ -332,11 +332,14 @@
 
 - [AbortSignal](internal_.md#abortsignal)
 - [Buffer](internal_.md#buffer)
-- [Error](internal_.md#error)
 - [ExceptionHandler](internal_.md#exceptionhandler)
-- [Object](internal_.md#object-1)
 - [RejectionHandler](internal_.md#rejectionhandler)
 - [SharedArrayBuffer](internal_.md#sharedarraybuffer)
+
+### Functions
+
+- [Error](internal_.md#error)
+- [Object](internal_.md#object-1)
 
 ## Type Aliases
 
@@ -363,6 +366,8 @@ ___
 ### AdapterScopedObject
 
 Ƭ **AdapterScopedObject**: [`FolderObject`](../interfaces/internal_.FolderObject.md) \| [`DeviceObject`](../interfaces/internal_.DeviceObject.md) \| [`ChannelObject`](../interfaces/internal_.ChannelObject.md) \| [`StateObject`](../interfaces/internal_.StateObject.md)
+
+All objects that usually appear in an adapter scope
 
 #### Defined in
 
@@ -458,7 +463,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:149](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L149)
+[packages/adapter/src/lib/_Types.ts:149](https://github.com/ioBroker/ioBroker.js-controller/blob/c03ca562/packages/adapter/src/lib/_Types.ts#L149)
 
 ___
 
@@ -482,13 +487,15 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/adapter/utils.ts#L10)
+[packages/adapter/src/lib/adapter/utils.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/c03ca562/packages/adapter/src/lib/adapter/utils.ts#L10)
 
 ___
 
 ### CallbackReturnTypeOf
 
 Ƭ **CallbackReturnTypeOf**<`T`\>: [`SecondParameterOf`](internal_.md#secondparameterof)<`T`\>
+
+Infers the return type from a callback-style API and and leaves null and undefined in
 
 #### Type parameters
 
@@ -558,7 +565,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:136](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L136)
+[packages/adapter/src/lib/_Types.ts:136](https://github.com/ioBroker/ioBroker.js-controller/blob/c03ca562/packages/adapter/src/lib/_Types.ts#L136)
 
 ___
 
@@ -583,7 +590,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L116)
+[packages/adapter/src/lib/_Types.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/c03ca562/packages/adapter/src/lib/_Types.ts#L116)
 
 ___
 
@@ -593,7 +600,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:89](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L89)
+[packages/adapter/src/lib/_Types.ts:89](https://github.com/ioBroker/ioBroker.js-controller/blob/c03ca562/packages/adapter/src/lib/_Types.ts#L89)
 
 ___
 
@@ -632,7 +639,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:145](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L145)
+[packages/adapter/src/lib/_Types.ts:145](https://github.com/ioBroker/ioBroker.js-controller/blob/c03ca562/packages/adapter/src/lib/_Types.ts#L145)
 
 ___
 
@@ -712,6 +719,8 @@ ___
 
 ▸ (`err?`): `void`
 
+Special variant of ErrorCallback for methods where Node.js returns an ErrnoException
+
 ##### Parameters
 
 | Name | Type |
@@ -779,6 +788,8 @@ ___
 ### Exclude
 
 Ƭ **Exclude**<`T`, `U`\>: `T` extends `U` ? `never` : `T`
+
+Exclude from T those types that are assignable to U
 
 #### Type parameters
 
@@ -935,7 +946,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:158](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L158)
+[packages/adapter/src/lib/_Types.ts:158](https://github.com/ioBroker/ioBroker.js-controller/blob/c03ca562/packages/adapter/src/lib/_Types.ts#L158)
 
 ___
 
@@ -960,7 +971,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L175)
+[packages/adapter/src/lib/_Types.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/c03ca562/packages/adapter/src/lib/_Types.ts#L175)
 
 ___
 
@@ -1426,7 +1437,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:8](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/adapter/utils.ts#L8)
+[packages/adapter/src/lib/adapter/utils.ts:8](https://github.com/ioBroker/ioBroker.js-controller/blob/c03ca562/packages/adapter/src/lib/adapter/utils.ts#L8)
 
 ___
 
@@ -1562,7 +1573,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:91](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L91)
+[packages/adapter/src/lib/_Types.ts:91](https://github.com/ioBroker/ioBroker.js-controller/blob/c03ca562/packages/adapter/src/lib/_Types.ts#L91)
 
 ___
 
@@ -1658,6 +1669,8 @@ ___
 
 Ƭ **NonNullCallbackReturnTypeOf**<`T`\>: [`Exclude`](internal_.md#exclude)<[`SecondParameterOf`](internal_.md#secondparameterof)<`T`\>, ``null`` \| `undefined`\>
 
+Infers the return type from a callback-style API and strips out null and undefined
+
 #### Type parameters
 
 | Name | Type |
@@ -1673,6 +1686,8 @@ ___
 ### NonNullable
 
 Ƭ **NonNullable**<`T`\>: `T` extends ``null`` \| `undefined` ? `never` : `T`
+
+Exclude null and undefined from T
 
 #### Type parameters
 
@@ -1742,6 +1757,8 @@ ___
 
 Ƭ **ObjectType**: ``"state"`` \| ``"channel"`` \| ``"device"`` \| ``"folder"`` \| ``"enum"`` \| ``"adapter"`` \| ``"config"`` \| ``"group"`` \| ``"host"`` \| ``"instance"`` \| ``"meta"`` \| ``"script"`` \| ``"user"`` \| ``"chart"``
 
+Defines the existing object types in ioBroker
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:38
@@ -1751,6 +1768,8 @@ ___
 ### Omit
 
 Ƭ **Omit**<`T`, `K`\>: [`Pick`](internal_.md#pick)<`T`, [`Exclude`](internal_.md#exclude)<keyof `T`, `K`\>\>
+
+Construct a type with the properties of T except for those in type K.
 
 #### Type parameters
 
@@ -1777,7 +1796,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:4](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/adapter/utils.ts#L4)
+[packages/adapter/src/lib/adapter/utils.ts:4](https://github.com/ioBroker/ioBroker.js-controller/blob/c03ca562/packages/adapter/src/lib/adapter/utils.ts#L4)
 
 ___
 
@@ -1787,13 +1806,15 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/adapter/utils.ts#L11)
+[packages/adapter/src/lib/adapter/utils.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/c03ca562/packages/adapter/src/lib/adapter/utils.ts#L11)
 
 ___
 
 ### Partial
 
 Ƭ **Partial**<`T`\>: { [P in keyof T]?: T[P] }
+
+Make all properties in T optional
 
 #### Type parameters
 
@@ -1829,13 +1850,15 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:12](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/adapter/utils.ts#L12)
+[packages/adapter/src/lib/adapter/utils.ts:12](https://github.com/ioBroker/ioBroker.js-controller/blob/c03ca562/packages/adapter/src/lib/adapter/utils.ts#L12)
 
 ___
 
 ### Pick
 
 Ƭ **Pick**<`T`, `K`\>: { [P in K]: T[P] }
+
+From T, pick a set of properties whose keys are in the union K
 
 #### Type parameters
 
@@ -1972,6 +1995,8 @@ ___
 ### Record
 
 Ƭ **Record**<`K`, `T`\>: { [P in K]: T }
+
+Construct a type with a set of properties K of type T
 
 #### Type parameters
 
@@ -2230,7 +2255,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:182](https://github.com/ioBroker/ioBroker.js-controller/blob/a1d9b783/packages/adapter/src/lib/_Types.ts#L182)
+[packages/adapter/src/lib/_Types.ts:182](https://github.com/ioBroker/ioBroker.js-controller/blob/c03ca562/packages/adapter/src/lib/_Types.ts#L182)
 
 ___
 
@@ -2352,6 +2377,8 @@ node_modules/@types/node/buffer.d.ts:171
 
 #### Defined in
 
+node_modules/@types/node/globals.d.ts:60
+
 node_modules/@types/node/globals.d.ts:72
 
 ___
@@ -2362,17 +2389,9 @@ ___
 
 #### Defined in
 
+node_modules/@types/node/buffer.d.ts:531
+
 node_modules/@types/node/buffer.d.ts:2105
-
-___
-
-### Error
-
-• **Error**: `ErrorConstructor`
-
-#### Defined in
-
-node_modules/typescript/lib/lib.es5.d.ts:1039
 
 ___
 
@@ -2382,17 +2401,9 @@ ___
 
 #### Defined in
 
+node_modules/winston/index.d.ts:22
+
 node_modules/winston/index.d.ts:178
-
-___
-
-### Object
-
-• **Object**: `ObjectConstructor`
-
-#### Defined in
-
-node_modules/typescript/lib/lib.es5.d.ts:275
 
 ___
 
@@ -2401,6 +2412,8 @@ ___
 • **RejectionHandler**: [`RejectionHandler`](internal_.md#rejectionhandler)
 
 #### Defined in
+
+node_modules/winston/index.d.ts:37
 
 node_modules/winston/index.d.ts:179
 
@@ -2412,4 +2425,60 @@ ___
 
 #### Defined in
 
+node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts:24
+
 node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts:42
+
+## Functions
+
+### Error
+
+▸ **Error**(`message?`): [`Error`](internal_.md#error)
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `message?` | `string` |
+
+#### Returns
+
+[`Error`](internal_.md#error)
+
+#### Defined in
+
+node_modules/typescript/lib/lib.es5.d.ts:1035
+
+___
+
+### Object
+
+▸ **Object**(): `any`
+
+Provides functionality common to all JavaScript objects.
+
+#### Returns
+
+`any`
+
+#### Defined in
+
+node_modules/typescript/lib/lib.es5.d.ts:156
+
+▸ **Object**(`value`): `any`
+
+Provides functionality common to all JavaScript objects.
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `value` | `any` |
+
+#### Returns
+
+`any`
+
+#### Defined in
+
+node_modules/typescript/lib/lib.es5.d.ts:157

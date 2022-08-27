@@ -4,6 +4,8 @@
 
 [<internal>](../modules/internal_.md).ObjectACL
 
+Defines access rights for a single object
+
 ## Hierarchy
 
 - **`ObjectACL`**
@@ -24,6 +26,8 @@
 
 • **object**: `number`
 
+Linux-type permissions defining access to this object
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:29
@@ -34,6 +38,8 @@ ___
 
 • **owner**: `string`
 
+Full name of the user who owns this object, e.g. "system.user.admin"
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:25
@@ -43,6 +49,8 @@ ___
 ### ownerGroup
 
 • **ownerGroup**: `string`
+
+Full name of the group who owns this object, e.g. "system.group.administrator"
 
 #### Defined in
 

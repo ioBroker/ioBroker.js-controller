@@ -4,6 +4,8 @@
 
 [<internal>](../modules/internal_.md).PluginBase
 
+Base class for ioBroker Plugins
+
 ## Table of contents
 
 ### Constructors
@@ -50,11 +52,14 @@
 
 • **new PluginBase**(`settings`)
 
+Constructor for Plugin class
+This method is called by js-controller/adapter process internally when initializing the plugin.
+
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `settings` | [`PluginSettings`](../interfaces/internal_.PluginSettings.md) |  |
+| Name | Type |
+| :------ | :------ |
+| `settings` | [`PluginSettings`](../interfaces/internal_.PluginSettings.md) |
 
 #### Defined in
 
@@ -195,11 +200,11 @@ node_modules/@iobroker/plugin-base/lib/PluginBase.d.ts:22
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `pluginConfig` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |  |
-| `activate` | `string` \| `boolean` |  |
-| `callback` | [`InitCallback`](../modules/internal_.md#initcallback) |  |
+| Name | Type |
+| :------ | :------ |
+| `pluginConfig` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
+| `activate` | `string` \| `boolean` |
+| `callback` | [`InitCallback`](../modules/internal_.md#initcallback) |
 
 #### Returns
 
@@ -215,9 +220,13 @@ ___
 
 ▸ **destroy**(): `boolean`
 
+Method which is called on a clean end of the process to pot. clean up used resources
+
 #### Returns
 
 `boolean`
+
+The return value indicates if the exit was successful. If no action needs to be taken, you should return true.
 
 #### Defined in
 
@@ -229,13 +238,15 @@ ___
 
 ▸ **extendObject**(`id`, `obj`, `callback?`): `void`
 
+Set/Extend an Object in Objects DB
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` |  |
-| `obj` | [`Object`](../modules/internal_.md#object) |  |
-| `callback?` | [`ExtendObjectCallback`](../modules/internal_.md#extendobjectcallback) | - |
+| `id` | `string` | id of the object to set/extend |
+| `obj` | [`Object`](../modules/internal_.md#object) | object to set |
+| `callback?` | [`ExtendObjectCallback`](../modules/internal_.md#extendobjectcallback) | Will be called with the result |
 
 #### Returns
 
@@ -251,16 +262,20 @@ ___
 
 ▸ **extendObjectAsync**(`id`, `obj`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
+Set/Extend an Object in Objects DB
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` |  |
-| `obj` | `object` |  |
+| `id` | `string` | id of the object to set/extend |
+| `obj` | `object` | object to set |
 
 #### Returns
 
 [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+
+Promise with result or error
 
 #### Defined in
 
@@ -272,12 +287,14 @@ ___
 
 ▸ **getObject**(`id`, `callback`): `void`
 
+Get an Object from Objects DB
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` |  |
-| `callback` | [`GetObjectCallback`](../modules/internal_.md#getobjectcallback)<`string`\> |  |
+| `id` | `string` | id of the object to retrieve |
+| `callback` | [`GetObjectCallback`](../modules/internal_.md#getobjectcallback)<`string`\> | Will be called with the result |
 
 #### Returns
 
@@ -293,15 +310,19 @@ ___
 
 ▸ **getObjectAsync**(`id`): `Promise`<`undefined` \| ``null`` \| [`Object`](../modules/internal_.md#object)\>
 
+Get an Object from Objects DB
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` |  |
+| `id` | `string` | id of the object to retrieve |
 
 #### Returns
 
 `Promise`<`undefined` \| ``null`` \| [`Object`](../modules/internal_.md#object)\>
+
+Promise with result or error
 
 #### Defined in
 
@@ -313,12 +334,14 @@ ___
 
 ▸ **getState**(`id`, `callback`): `void`
 
+Get a State from State DB
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` |  |
-| `callback` | [`GetStateCallback`](../modules/internal_.md#getstatecallback) |  |
+| `id` | `string` | id of the state to retrieve |
+| `callback` | [`GetStateCallback`](../modules/internal_.md#getstatecallback) | Will be called with the result |
 
 #### Returns
 
@@ -334,15 +357,19 @@ ___
 
 ▸ **getStateAsync**(`id`): [`GetStatePromise`](../modules/internal_.md#getstatepromise)
 
+Get a State from State DB
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` |  |
+| `id` | `string` | id of the state to retrieve |
 
 #### Returns
 
 [`GetStatePromise`](../modules/internal_.md#getstatepromise)
+
+Promise with error or result
 
 #### Defined in
 
@@ -354,12 +381,14 @@ ___
 
 ▸ **init**(`pluginConfig`, `callback`): `void`
 
+Method for Plugin developer to initialize his Plugin
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `pluginConfig` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |  |
-| `callback` | [`InitCallback`](../modules/internal_.md#initcallback) |  |
+| `pluginConfig` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> | plugin configuration from config files |
+| `callback` | [`InitCallback`](../modules/internal_.md#initcallback) | Will be called when done. On err or `initSuccessful === false` the plugin instance will be discarded. |
 
 #### Returns
 
@@ -375,13 +404,15 @@ ___
 
 ▸ **initPlugin**(`pluginConfig`, `parentConfig`, `callback`): `Promise`<`void`\>
 
+Initialize plugin, internal method
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `pluginConfig` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |  |
-| `parentConfig` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |  |
-| `callback` | [`InitCallback`](../modules/internal_.md#initcallback) |  |
+| `pluginConfig` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> | plugin configuration from config files |
+| `parentConfig` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> | io-package from parent module where plugin is used in |
+| `callback` | [`InitCallback`](../modules/internal_.md#initcallback) | Will be called when done. On err or `initSuccessful === false` the plugin instance will be discarded. |
 
 #### Returns
 
@@ -397,11 +428,13 @@ ___
 
 ▸ **setActive**(`active`): `Promise`<`void`\>
 
+Set the Active flag for the plugin
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `active` | `boolean` |  |
+| `active` | `boolean` | true/false if active |
 
 #### Returns
 
@@ -417,12 +450,15 @@ ___
 
 ▸ **setDatabase**(`objectsDb`, `statesDb`): `void`
 
+Set the objects and states database to be used internally
+This method is called by js-controller/adapter process internally when initializing the plugin.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `objectsDb` | `any` |  |
-| `statesDb` | `any` |  |
+| `objectsDb` | `any` | objects DB instance |
+| `statesDb` | `any` | states DB instance |
 
 #### Returns
 
@@ -438,13 +474,15 @@ ___
 
 ▸ **setObject**(`id`, `obj`, `callback?`): `void`
 
+Set an Object in Objects DB
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` |  |
-| `obj` | [`Object`](../modules/internal_.md#object) |  |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | - |
+| `id` | `string` | id of the object to set |
+| `obj` | [`Object`](../modules/internal_.md#object) | object to set |
+| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | Will be called with the result |
 
 #### Returns
 
@@ -460,16 +498,20 @@ ___
 
 ▸ **setObjectAsync**(`id`, `obj`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
+Set an Object in Objects DB
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` |  |
-| `obj` | [`Object`](../modules/internal_.md#object) |  |
+| `id` | `string` | id of the object to set |
+| `obj` | [`Object`](../modules/internal_.md#object) | object to set |
 
 #### Returns
 
 [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+
+Promise with error or result
 
 #### Defined in
 
@@ -481,13 +523,15 @@ ___
 
 ▸ **setState**(`id`, `state`, `callback?`): `void`
 
+Set a State in State DB
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` |  |
-| `state` | [`Partial`](../modules/internal_.md#partial)<[`State`](../interfaces/internal_.State.md)\> |  |
-| `callback?` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | - |
+| `id` | `string` | id of the state to set |
+| `state` | [`Partial`](../modules/internal_.md#partial)<[`State`](../interfaces/internal_.State.md)\> | state value to set |
+| `callback?` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | Will be called with the result |
 
 #### Returns
 
@@ -503,16 +547,20 @@ ___
 
 ▸ **setStateAsync**(`id`, `state`): `Promise`<`undefined` \| ``null`` \| [`State`](../interfaces/internal_.State.md)\>
 
+Set a State in State DB
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` |  |
-| `state` | [`Partial`](../modules/internal_.md#partial)<[`State`](../interfaces/internal_.State.md)\> |  |
+| `id` | `string` | id of the state to set |
+| `state` | [`Partial`](../modules/internal_.md#partial)<[`State`](../interfaces/internal_.State.md)\> | state value to set |
 
 #### Returns
 
 `Promise`<`undefined` \| ``null`` \| [`State`](../interfaces/internal_.State.md)\>
+
+Promise with error or result
 
 #### Defined in
 

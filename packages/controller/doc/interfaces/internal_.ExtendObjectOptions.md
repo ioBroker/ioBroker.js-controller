@@ -20,6 +20,8 @@
 
 • `Optional` **preserve**: [`ExtendObjectOptionsPreserve`](internal_.ExtendObjectOptionsPreserve.md)
 
+Which properties of the original object should be preserved
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:280

@@ -30,6 +30,8 @@
 
 • **\_id**: `string`
 
+The ID of this object
+
 #### Inherited from
 
 [BaseObject](internal_.BaseObject.md).[_id](internal_.BaseObject.md#_id)
@@ -141,6 +143,8 @@ ___
 ### user
 
 • `Optional` **user**: `string`
+
+The user who created or updated this object
 
 #### Inherited from
 

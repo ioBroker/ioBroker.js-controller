@@ -25,6 +25,8 @@
 
 • **constructor**: `Function`
 
+The initial value of Object.prototype.constructor is the standard built-in Object constructor.
+
 #### Defined in
 
 node_modules/typescript/lib/lib.es5.d.ts:124
@@ -35,11 +37,13 @@ node_modules/typescript/lib/lib.es5.d.ts:124
 
 ▸ **hasOwnProperty**(`v`): `boolean`
 
+Determines whether an object has a property with the specified name.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `v` | [`PropertyKey`](../modules/internal_.md#propertykey) |  |
+| `v` | [`PropertyKey`](../modules/internal_.md#propertykey) | A property name. |
 
 #### Returns
 
@@ -55,11 +59,13 @@ ___
 
 ▸ **isPrototypeOf**(`v`): `boolean`
 
+Determines whether an object exists in another object's prototype chain.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `v` | [`Object`](../modules/internal_.md#object-1) |  |
+| `v` | [`Object`](../modules/internal_.md#object-1) | Another object whose prototype chain is to be checked. |
 
 #### Returns
 
@@ -75,11 +81,13 @@ ___
 
 ▸ **propertyIsEnumerable**(`v`): `boolean`
 
+Determines whether a specified property is enumerable.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `v` | [`PropertyKey`](../modules/internal_.md#propertykey) |  |
+| `v` | [`PropertyKey`](../modules/internal_.md#propertykey) | A property name. |
 
 #### Returns
 
@@ -95,6 +103,8 @@ ___
 
 ▸ **toLocaleString**(): `string`
 
+Returns a date converted to a string using the current locale.
+
 #### Returns
 
 `string`
@@ -109,6 +119,8 @@ ___
 
 ▸ **toString**(): `string`
 
+Returns a string representation of an object.
+
 #### Returns
 
 `string`
@@ -122,6 +134,8 @@ ___
 ### valueOf
 
 ▸ **valueOf**(): [`Object`](../modules/internal_.md#object-1)
+
+Returns the primitive value of the specified object.
 
 #### Returns
 

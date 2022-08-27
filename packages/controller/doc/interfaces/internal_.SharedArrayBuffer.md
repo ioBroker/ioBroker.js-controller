@@ -42,6 +42,8 @@ ___
 
 • `Readonly` **byteLength**: `number`
 
+Read-only. The length of the ArrayBuffer (in bytes).
+
 #### Defined in
 
 node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts:28
@@ -51,6 +53,8 @@ node_modules/typescript/lib/lib.es2017.sharedmemory.d.ts:28
 ### slice
 
 ▸ **slice**(`begin`, `end?`): [`SharedArrayBuffer`](../modules/internal_.md#sharedarraybuffer)
+
+Returns a section of an SharedArrayBuffer.
 
 #### Parameters
 

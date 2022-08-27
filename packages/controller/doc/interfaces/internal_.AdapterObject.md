@@ -32,6 +32,8 @@
 
 • **\_id**: `string`
 
+The ID of this object
+
 #### Inherited from
 
 [BaseObject](internal_.BaseObject.md).[_id](internal_.BaseObject.md#_id)
@@ -73,6 +75,8 @@ ___
 ### encryptedNative
 
 • `Optional` **encryptedNative**: `string`[]
+
+Like protectedNative, but the properties are also encrypted and decrypted automatically
 
 #### Defined in
 
@@ -126,6 +130,8 @@ ___
 
 • `Optional` **protectedNative**: `string`[]
 
+An array of `native` properties which cannot be accessed from outside the defining adapter
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:608
@@ -163,6 +169,8 @@ ___
 ### user
 
 • `Optional` **user**: `string`
+
+The user who created or updated this object
 
 #### Inherited from
 

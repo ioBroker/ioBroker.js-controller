@@ -24,6 +24,8 @@
 
 • `Optional` **signal**: [`AbortSignal`](../modules/internal_.md#abortsignal)
 
+When provided the corresponding `AbortController` can be used to cancel an asynchronous action.
+
 #### Defined in
 
 node_modules/@types/node/events.d.ts:289

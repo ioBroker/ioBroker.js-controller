@@ -44,6 +44,12 @@ ___
 
 ▸ **hasRef**(): `boolean`
 
+If true, the `Timeout` object will keep the Node.js event loop active.
+
+**`Since`**
+
+v11.0.0
+
 #### Returns
 
 `boolean`
@@ -80,9 +86,23 @@ ___
 
 ▸ **refresh**(): [`Timeout`](internal_.Timeout.md)
 
+Sets the timer's start time to the current time, and reschedules the timer to
+call its callback at the previously specified duration adjusted to the current
+time. This is useful for refreshing a timer without allocating a new
+JavaScript object.
+
+Using this on a timer that has already called its callback will reactivate the
+timer.
+
+**`Since`**
+
+v10.2.0
+
 #### Returns
 
 [`Timeout`](internal_.Timeout.md)
+
+a reference to `timeout`
 
 #### Overrides
 

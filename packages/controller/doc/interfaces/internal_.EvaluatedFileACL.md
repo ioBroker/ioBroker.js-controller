@@ -4,6 +4,8 @@
 
 [<internal>](../modules/internal_.md).EvaluatedFileACL
 
+Defines access rights for a single file, applied to a user or group
+
 ## Hierarchy
 
 - [`FileACL`](internal_.FileACL.md)
@@ -26,6 +28,8 @@
 
 • **owner**: `string`
 
+Full name of the user who owns this file, e.g. "system.user.admin"
+
 #### Inherited from
 
 [FileACL](internal_.FileACL.md).[owner](internal_.FileACL.md#owner)
@@ -39,6 +43,8 @@ ___
 ### ownerGroup
 
 • **ownerGroup**: `string`
+
+Full name of the group who owns this file, e.g. "system.group.administrator"
 
 #### Inherited from
 
@@ -54,6 +60,8 @@ ___
 
 • **permissions**: `number`
 
+Linux-type permissions defining access to this file
+
 #### Inherited from
 
 [FileACL](internal_.FileACL.md).[permissions](internal_.FileACL.md#permissions)
@@ -68,6 +76,8 @@ ___
 
 • **read**: `boolean`
 
+Whether the user may read the file
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:17
@@ -77,6 +87,8 @@ ___
 ### write
 
 • **write**: `boolean`
+
+Whether the user may write the file
 
 #### Defined in
 

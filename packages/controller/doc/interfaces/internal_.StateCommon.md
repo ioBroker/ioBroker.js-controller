@@ -42,13 +42,15 @@
 
 • `Optional` **alias**: `Object`
 
+Configures this state as an alias for another state
+
 #### Type declaration
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` \| { `read`: `string` ; `write`: `string`  } |  |
-| `read?` | `string` |  |
-| `write?` | `string` |  |
+| `id` | `string` \| { `read`: `string` ; `write`: `string`  } | The target state id |
+| `read?` | `string` | An optional conversion function when reading, e.g. `"(val − 32) * 5/9"` |
+| `write?` | `string` | An optional conversion function when reading, e.g. `"(val * 9/5) + 32"` |
 
 #### Defined in
 
@@ -60,6 +62,8 @@ ___
 
 • `Optional` **custom**: [`Record`](../modules/internal_.md#record)<`string`, `any`\>
 
+Custom settings for this state
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:227
@@ -69,6 +73,8 @@ ___
 ### def
 
 • `Optional` **def**: `any`
+
+the default value
 
 #### Defined in
 
@@ -80,6 +86,8 @@ ___
 
 • `Optional` **defAck**: `boolean`
 
+the default status of the ack flag
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:185
@@ -90,6 +98,8 @@ ___
 
 • `Optional` **desc**: [`StringOrTranslated`](../modules/internal_.md#stringortranslated)
 
+description of this state
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:173
@@ -99,6 +109,8 @@ ___
 ### dontDelete
 
 • `Optional` **dontDelete**: ``true``
+
+When set to true, this object may not be deleted
 
 #### Inherited from
 
@@ -114,6 +126,8 @@ ___
 
 • `Optional` **expert**: ``true``
 
+When set to true, this object is only visible when expert mode is turned on in admin
+
 #### Inherited from
 
 [ObjectCommon](internal_.ObjectCommon.md).[expert](internal_.ObjectCommon.md#expert)
@@ -128,6 +142,8 @@ ___
 
 • `Optional` **history**: `any`
 
+attached history information
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:224
@@ -137,6 +153,8 @@ ___
 ### icon
 
 • `Optional` **icon**: `string`
+
+Icon for this object
 
 #### Inherited from
 
@@ -152,6 +170,8 @@ ___
 
 • `Optional` **max**: `number`
 
+maximum value
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:167
@@ -162,6 +182,8 @@ ___
 
 • `Optional` **min**: `number`
 
+minimum value
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:165
@@ -171,6 +193,8 @@ ___
 ### name
 
 • **name**: [`StringOrTranslated`](../modules/internal_.md#stringortranslated)
+
+The name of this object as a simple string or an object with translations
 
 #### Inherited from
 
@@ -186,6 +210,8 @@ ___
 
 • **read**: `boolean`
 
+if this state is readable
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:176
@@ -195,6 +221,8 @@ ___
 ### role
 
 • **role**: `string`
+
+role of the state (used in user interfaces to indicate which widget to choose)
 
 #### Overrides
 
@@ -210,6 +238,9 @@ ___
 
 • `Optional` **smartName**: `string` \| { `de`: `undefined` \| `string` ; `en`: `undefined` \| `string` ; `es`: `undefined` \| `string` ; `fr`: `undefined` \| `string` ; `it`: `undefined` \| `string` ; `nl`: `undefined` \| `string` ; `pl`: `undefined` \| `string` ; `pt`: `undefined` \| `string` ; `ru`: `undefined` \| `string` ; `zh-cn`: `undefined` \| `string`  } & { `byOn?`: ``null`` \| `string` ; `smartType?`: ``null`` \| `string`  }
 
+Settings for IOT adapters and how the state should be named in e.g. Alexa.
+The string "ignore" is a special case, causing the state to be ignored.
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:233
@@ -219,6 +250,23 @@ ___
 ### states
 
 • `Optional` **states**: `string` \| `string`[] \| [`Record`](../modules/internal_.md#record)<`string`, `string`\>
+
+Dictionary of possible values for this state in the form
+```jsonc
+{
+    "internal value 1": "displayed value 1",
+    "internal value 2": "displayed value 2",
+    // ...
+}
+```
+
+or as an array:
+```jsonc
+[ "value 1", "value 2", // ... ]
+```
+
+In old ioBroker versions, this could also be a string of the form
+`"val1:text1;val2:text2"` (now deprecated)
 
 #### Defined in
 
@@ -230,6 +278,8 @@ ___
 
 • `Optional` **step**: `number`
 
+allowed interval for numeric values
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:169
@@ -239,6 +289,8 @@ ___
 ### type
 
 • `Optional` **type**: [`CommonType`](../modules/internal_.md#commontype)
+
+Type of this state. See https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#state-commonrole for a detailed description
 
 #### Defined in
 
@@ -250,6 +302,8 @@ ___
 
 • `Optional` **unit**: `string`
 
+unit of the value
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:171
@@ -260,6 +314,8 @@ ___
 
 • `Optional` **workingID**: `string`
 
+ID of a helper state indicating if the handler of this state is working
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:221
@@ -269,6 +325,8 @@ ___
 ### write
 
 • **write**: `boolean`
+
+if this state is writable
 
 #### Defined in
 

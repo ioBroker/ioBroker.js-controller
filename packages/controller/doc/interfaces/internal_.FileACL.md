@@ -4,6 +4,8 @@
 
 [<internal>](../modules/internal_.md).FileACL
 
+Defines access rights for a single file
+
 ## Hierarchy
 
 - **`FileACL`**
@@ -24,6 +26,8 @@
 
 • **owner**: `string`
 
+Full name of the user who owns this file, e.g. "system.user.admin"
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:8
@@ -34,6 +38,8 @@ ___
 
 • **ownerGroup**: `string`
 
+Full name of the group who owns this file, e.g. "system.group.administrator"
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:10
@@ -43,6 +49,8 @@ ___
 ### permissions
 
 • **permissions**: `number`
+
+Linux-type permissions defining access to this file
 
 #### Defined in
 

@@ -10,11 +10,13 @@
 
 ▸ **AsyncGeneratorFunction**(...`args`): [`AsyncGenerator`](internal_.AsyncGenerator.md)<`unknown`, `any`, `unknown`\>
 
+Creates a new AsyncGenerator object.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `...args` | `any`[] |  |
+| `...args` | `any`[] | A list of arguments the function accepts. |
 
 #### Returns
 
@@ -42,11 +44,13 @@ node_modules/typescript/lib/lib.es2018.asyncgenerator.d.ts:41
 
 • **new AsyncGeneratorFunction**(...`args`)
 
+Creates a new AsyncGenerator object.
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `...args` | `any`[] |  |
+| `...args` | `any`[] | A list of arguments the function accepts. |
 
 #### Defined in
 
@@ -58,6 +62,8 @@ node_modules/typescript/lib/lib.es2018.asyncgenerator.d.ts:36
 
 • `Readonly` **length**: `number`
 
+The length of the arguments.
+
 #### Defined in
 
 node_modules/typescript/lib/lib.es2018.asyncgenerator.d.ts:45
@@ -68,6 +74,8 @@ ___
 
 • `Readonly` **name**: `string`
 
+Returns the name of the function.
+
 #### Defined in
 
 node_modules/typescript/lib/lib.es2018.asyncgenerator.d.ts:49
@@ -77,6 +85,8 @@ ___
 ### prototype
 
 • `Readonly` **prototype**: [`AsyncGenerator`](internal_.AsyncGenerator.md)<`unknown`, `any`, `unknown`\>
+
+A reference to the prototype.
 
 #### Defined in
 

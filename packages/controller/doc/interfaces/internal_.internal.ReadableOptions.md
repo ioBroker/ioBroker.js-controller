@@ -103,6 +103,8 @@ ___
 
 • `Optional` **signal**: [`AbortSignal`](../modules/internal_.md#abortsignal)
 
+When provided the corresponding `AbortController` can be used to cancel an asynchronous action.
+
 #### Inherited from
 
 [StreamOptions](internal_.internal.StreamOptions.md).[signal](internal_.internal.StreamOptions.md#signal)

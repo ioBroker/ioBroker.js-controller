@@ -23,6 +23,8 @@
 
 • **controllerVersion**: `string`
 
+The version of the installed JS-Controller
+
 #### Defined in
 
 node_modules/@iobroker/plugin-base/lib/types.d.ts:36
@@ -32,6 +34,8 @@ ___
 ### iobrokerConfig
 
 • **iobrokerConfig**: [`Record`](../modules/internal_.md#record)<`string`, `any`\>
+
+The complete ioBroker configuration object
 
 #### Defined in
 
@@ -43,6 +47,8 @@ ___
 
 • **log**: [`Logger`](internal_.Logger-1.md)
 
+The logger object to use for logging
+
 #### Defined in
 
 node_modules/@iobroker/plugin-base/lib/types.d.ts:30
@@ -52,6 +58,8 @@ ___
 ### parentNamespace
 
 • **parentNamespace**: `string`
+
+The object namespace for the parent of the plugin, e.g. `system.adapter.<adaptername>.0`, or `system.host.<hostname>.`
 
 #### Defined in
 
@@ -63,6 +71,8 @@ ___
 
 • **parentPackage**: [`Record`](../modules/internal_.md#record)<`string`, `any`\>
 
+The package.json contents from the "parent" (adapter/controller) which uses this plugin
+
 #### Defined in
 
 node_modules/@iobroker/plugin-base/lib/types.d.ts:34
@@ -72,6 +82,8 @@ ___
 ### pluginLogNamespace
 
 • **pluginLogNamespace**: `string`
+
+The namespace which will be used for logging
 
 #### Defined in
 
@@ -83,6 +95,8 @@ ___
 
 • **pluginNamespace**: `string`
 
+The object namespace for the plugin, e.g. `system.adapter.<adaptername>.0.plugins.name`, or `system.host.<hostname>.plugins.name`
+
 #### Defined in
 
 node_modules/@iobroker/plugin-base/lib/types.d.ts:26
@@ -92,6 +106,8 @@ ___
 ### pluginScope
 
 • **pluginScope**: ``"adapter"`` \| ``"controller"``
+
+The scope in which the plugin will be executed
 
 #### Defined in
 

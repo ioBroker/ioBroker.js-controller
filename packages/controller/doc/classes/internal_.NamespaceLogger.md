@@ -33,8 +33,8 @@
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `namespaceLog` | `string` |  |
-| `logger` | [`Logger`](../interfaces/internal_.Logger-1.md) |  |
+| `namespaceLog` | `string` | Logging namespace to prefix |
+| `logger` | [`Logger`](../interfaces/internal_.Logger-1.md) | logger instance |
 
 #### Defined in
 
@@ -68,9 +68,9 @@ node_modules/@iobroker/plugin-base/lib/NamespaceLogger.d.ts:8
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `msg` | `string` |  |
+| Name | Type |
+| :------ | :------ |
+| `msg` | `string` |
 
 #### Returns
 
@@ -88,9 +88,9 @@ ___
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `msg` | `string` |  |
+| Name | Type |
+| :------ | :------ |
+| `msg` | `string` |
 
 #### Returns
 
@@ -108,9 +108,9 @@ ___
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `msg` | `string` |  |
+| Name | Type |
+| :------ | :------ |
+| `msg` | `string` |
 
 #### Returns
 
@@ -128,9 +128,9 @@ ___
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `msg` | `string` |  |
+| Name | Type |
+| :------ | :------ |
+| `msg` | `string` |
 
 #### Returns
 
@@ -148,9 +148,9 @@ ___
 
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `msg` | `string` |  |
+| Name | Type |
+| :------ | :------ |
+| `msg` | `string` |
 
 #### Returns
 

@@ -24,6 +24,8 @@
 
 • **doc**: [`Object`](../modules/internal_.md#object)
 
+The same as @link{value}
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:1879
@@ -33,6 +35,8 @@ ___
 ### id
 
 • **id**: `string`
+
+The ID of this object
 
 #### Inherited from
 
@@ -47,6 +51,8 @@ ___
 ### value
 
 • **value**: [`Object`](../modules/internal_.md#object)
+
+A copy of the object
 
 #### Overrides
 

@@ -4,6 +4,8 @@
 
 [<internal>](../modules/internal_.md).PartialAdapterObject
 
+Make all properties in T optional
+
 ## Hierarchy
 
 - [`Partial`](../modules/internal_.md#partial)<[`Omit`](../modules/internal_.md#omit)<[`AdapterObject`](internal_.AdapterObject.md), ``"common"``\>\>
@@ -31,6 +33,8 @@
 ### \_id
 
 • `Optional` **\_id**: `string`
+
+The ID of this object
 
 #### Inherited from
 
@@ -69,6 +73,8 @@ ___
 ### encryptedNative
 
 • `Optional` **encryptedNative**: `string`[]
+
+Like protectedNative, but the properties are also encrypted and decrypted automatically
 
 #### Inherited from
 
@@ -126,6 +132,8 @@ ___
 
 • `Optional` **protectedNative**: `string`[]
 
+An array of `native` properties which cannot be accessed from outside the defining adapter
+
 #### Inherited from
 
 Partial.protectedNative
@@ -167,6 +175,8 @@ ___
 ### user
 
 • `Optional` **user**: `string`
+
+The user who created or updated this object
 
 #### Inherited from
 

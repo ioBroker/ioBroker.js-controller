@@ -4,6 +4,8 @@
 
 [<internal>](../modules/internal_.md).MessageCallbackInfo
 
+Callback information for a passed message
+
 ## Table of contents
 
 ### Properties
@@ -29,6 +31,8 @@ ___
 
 • **id**: `number`
 
+ID of this callback
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:213
@@ -39,6 +43,8 @@ ___
 
 • **message**: [`MessagePayload`](../modules/internal_.md#messagepayload)
 
+The original message payload
+
 #### Defined in
 
 node_modules/@types/iobroker/index.d.ts:211
@@ -48,6 +54,8 @@ ___
 ### time
 
 • **time**: `number`
+
+Timestamp of this message
 
 #### Defined in
 

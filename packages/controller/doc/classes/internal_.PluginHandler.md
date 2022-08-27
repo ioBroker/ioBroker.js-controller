@@ -4,6 +4,8 @@
 
 [<internal>](../modules/internal_.md).PluginHandler
 
+Base handler for ioBroker Plugins
+
 ## Table of contents
 
 ### Constructors
@@ -38,11 +40,13 @@
 
 • **new PluginHandler**(`settings`)
 
+Constructor for PluginHandler
+
 #### Parameters
 
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `settings` | [`PluginHandlerSettings`](../interfaces/internal_.PluginHandlerSettings.md) |  |
+| Name | Type |
+| :------ | :------ |
+| `settings` | [`PluginHandlerSettings`](../interfaces/internal_.PluginHandlerSettings.md) |
 
 #### Defined in
 
@@ -84,12 +88,14 @@ node_modules/@iobroker/plugin-base/lib/PluginHandler.d.ts:13
 
 ▸ **addPlugins**(`configs`, `resolveDirs`): `void`
 
+Add plugins to the handler, resolve and require the plugin code and create instance
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `configs` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |  |
-| `resolveDirs` | `string` \| `string`[] |  |
+| `configs` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> | object with keys for plugin names and their configuration |
+| `resolveDirs` | `string` \| `string`[] | Resolve directories for plugins |
 
 #### Returns
 
@@ -105,12 +111,14 @@ ___
 
 ▸ **destroy**(`name`, `force?`): `boolean`
 
+Destroy one plugin instance
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `name` | `string` |  |
-| `force?` | `boolean` | - |
+| `name` | `string` | name of the plugin to destroy |
+| `force?` | `boolean` | true to consider plugin as destroyed also if false is returned from plugin |
 
 #### Returns
 
@@ -126,6 +134,8 @@ ___
 
 ▸ **destroyAll**(): `void`
 
+Destroy all plugin instances
+
 #### Returns
 
 `void`
@@ -140,15 +150,19 @@ ___
 
 ▸ **getPluginConfig**(`name`): ``null`` \| [`Record`](../modules/internal_.md#record)<`string`, `any`\>
 
+Return plugin configuration
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `name` | `string` |  |
+| `name` | `string` | name of the plugin to return |
 
 #### Returns
 
 ``null`` \| [`Record`](../modules/internal_.md#record)<`string`, `any`\>
+
+plugin configuration or null if not existent or not isActive
 
 #### Defined in
 
@@ -160,15 +174,19 @@ ___
 
 ▸ **getPluginInstance**(`name`): ``null`` \| [`PluginBase`](internal_.PluginBase.md)
 
+Return plugin instance
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `name` | `string` |  |
+| `name` | `string` | name of the plugin to return |
 
 #### Returns
 
 ``null`` \| [`PluginBase`](internal_.PluginBase.md)
+
+plugin instance or null if not existent or not isActive
 
 #### Defined in
 
@@ -180,13 +198,15 @@ ___
 
 ▸ **initPlugin**(`name`, `parentConfig`, `callback?`): `void`
 
+Initialize one Plugins
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `name` | `string` |  |
-| `parentConfig` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |  |
-| `callback?` | (`error?`: `string`) => `void` | - |
+| `name` | `string` | name of the plugin |
+| `parentConfig` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> | io-package of the parent module that uses the plugins (adapter/controller) |
+| `callback?` | (`error?`: `string`) => `void` | callback function which is called after initialization is done for all plugins |
 
 #### Returns
 
@@ -202,12 +222,14 @@ ___
 
 ▸ **initPlugins**(`parentConfig`, `callback`): `void`
 
+Initialize all Plugins that are registered
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `parentConfig` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |  |
-| `callback` | (`error?`: `string`) => `void` |  |
+| `parentConfig` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> | io-package of the parent module that uses the plugins (adapter/controller) |
+| `callback` | (`error?`: `string`) => `void` | callback function which is called after initialization is done for all plugins |
 
 #### Returns
 
@@ -223,13 +245,15 @@ ___
 
 ▸ **instanciatePlugin**(`name`, `config`, `resolveDirs`): `void`
 
+Resole, Require and Instanciate Plugins
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `name` | `string` |  |
-| `config` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |  |
-| `resolveDirs` | `string` \| `string`[] |  |
+| `name` | `string` | name of the plugin |
+| `config` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> | plugin configuration |
+| `resolveDirs` | `string` \| `string`[] | Resolve directories |
 
 #### Returns
 
@@ -245,15 +269,19 @@ ___
 
 ▸ **isPluginActive**(`name`): `boolean`
 
+Return if plugin is active
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `name` | `string` |  |
+| `name` | `string` | name of the plugin to check |
 
 #### Returns
 
 `boolean`
+
+true/false if plugin is successfully isActive
 
 #### Defined in
 
@@ -265,15 +293,19 @@ ___
 
 ▸ **isPluginInstanciated**(`name`): `boolean`
 
+Return if plugin is isActive
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `name` | `string` |  |
+| `name` | `string` | name of the plugin to check |
 
 #### Returns
 
 `boolean`
+
+true/false if plugin is successfully isActive
 
 #### Defined in
 
@@ -285,15 +317,19 @@ ___
 
 ▸ **pluginExists**(`name`): `boolean`
 
+Return if plugin exists
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `name` | `string` |  |
+| `name` | `string` | name of the plugin to check |
 
 #### Returns
 
 `boolean`
+
+true/false if plugin was configured somewhere
 
 #### Defined in
 
@@ -305,13 +341,15 @@ ___
 
 ▸ **setDatabaseForPlugin**(`name`, `objectsDb`, `statesDb`): `void`
 
+Set Objects and States databases for all isActive plugins
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `name` | `string` |  |
-| `objectsDb` | `any` |  |
-| `statesDb` | `any` |  |
+| `name` | `string` | name of the plugin |
+| `objectsDb` | `any` | objects DB instance |
+| `statesDb` | `any` | states DB instance |
 
 #### Returns
 
@@ -327,12 +365,14 @@ ___
 
 ▸ **setDatabaseForPlugins**(`objectsDb`, `statesDb`): `void`
 
+Set Objects and States databases for all isActive plugins
+
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `objectsDb` | `any` |  |
-| `statesDb` | `any` |  |
+| `objectsDb` | `any` | objects DB instance |
+| `statesDb` | `any` | states DB instance |
 
 #### Returns
 

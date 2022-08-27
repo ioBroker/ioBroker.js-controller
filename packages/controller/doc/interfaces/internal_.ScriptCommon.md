@@ -36,6 +36,8 @@
 
 • `Optional` **compiled**: `string`
 
+If the script uses a compiled language like TypeScript, this contains the compilation output
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:367
@@ -66,6 +68,8 @@ ___
 
 • `Optional` **declarations**: `string`
 
+If the script uses a compiled language like TypeScript, this contains the generated declarations (global scripts only)
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:369
@@ -75,6 +79,8 @@ ___
 ### dontDelete
 
 • `Optional` **dontDelete**: ``true``
+
+When set to true, this object may not be deleted
 
 #### Inherited from
 
@@ -90,6 +96,8 @@ ___
 
 • **enabled**: `boolean`
 
+Whether this script should be executed
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:363
@@ -99,6 +107,8 @@ ___
 ### engine
 
 • **engine**: `string`
+
+The instance id of the instance which executes this script
 
 #### Defined in
 
@@ -110,6 +120,8 @@ ___
 
 • **engineType**: `string`
 
+Defines the type of the script, e.g. TypeScript/ts, JavaScript/js or Blockly
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:355
@@ -119,6 +131,8 @@ ___
 ### expert
 
 • `Optional` **expert**: ``true``
+
+When set to true, this object is only visible when expert mode is turned on in admin
 
 #### Inherited from
 
@@ -134,6 +148,8 @@ ___
 
 • `Optional` **icon**: `string`
 
+Icon for this object
+
 #### Inherited from
 
 [ObjectCommon](internal_.ObjectCommon.md).[icon](internal_.ObjectCommon.md#icon)
@@ -147,6 +163,8 @@ ___
 ### name
 
 • **name**: `string`
+
+The name of this object as a simple string or an object with translations
 
 #### Overrides
 
@@ -162,6 +180,8 @@ ___
 
 • `Optional` **role**: `string`
 
+role of the object
+
 #### Inherited from
 
 [ObjectCommon](internal_.ObjectCommon.md).[role](internal_.ObjectCommon.md#role)
@@ -176,6 +196,8 @@ ___
 
 • **source**: `string`
 
+The source code of this script
+
 #### Defined in
 
 node_modules/@types/iobroker/objects.d.ts:359
@@ -185,6 +207,8 @@ ___
 ### sourceHash
 
 • `Optional` **sourceHash**: `string`
+
+Is used to determine whether a script has changed and needs to be recompiled
 
 #### Defined in
 
