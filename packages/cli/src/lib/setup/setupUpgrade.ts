@@ -105,7 +105,7 @@ export class Upgrade {
                         relevantAdapters.splice(relevantAdapters.indexOf(relAdapter), 1);
                         oneAdapterAdded = true;
                     } else {
-                        const allDeps = {
+                        const allDeps: Record<string, string> = {
                             ...tools.parseDependencies(repo[relAdapter].dependencies),
                             ...tools.parseDependencies(repo[relAdapter].globalDependencies)
                         };
