@@ -308,7 +308,7 @@ export class Upgrade {
     /**
      * Try to async upgrade adapter from given source with some checks
      *
-     * @param repoUrl url of the selected repository or parsed repo
+     * @param repoUrlOrObject url of the selected repository or parsed repo
      * @param adapter name of the adapter
      * @param forceDowngrade flag to force downgrade
      * @param autoConfirm automatically confirm the tty questions (bypass)
@@ -349,7 +349,7 @@ export class Upgrade {
                 await this.install.installOSPackages(ioPack!.common.osDependencies);
             }
 
-            // Upload www and admin files of adapter into CouchDB
+            // Upload www and admin files of adapter
             await this.upload.uploadAdapter(name, false, true);
             // extend all adapter instance default configs with current config
             // (introduce potentially new attributes while keeping current settings)

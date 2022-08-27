@@ -24,4 +24,4 @@
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:51](https://github.com/ioBroker/ioBroker.js-controller/blob/163cf2e8/packages/adapter/src/lib/_Types.ts#L51)
+[packages/adapter/src/lib/_Types.ts:51](https://github.com/ioBroker/ioBroker.js-controller/blob/b556621c/packages/adapter/src/lib/_Types.ts#L51)
