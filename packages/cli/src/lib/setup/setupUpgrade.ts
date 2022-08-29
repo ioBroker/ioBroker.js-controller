@@ -85,7 +85,7 @@ export class Upgrade {
             const adapterDir = tools.getAdapterDir(adapter);
             if (adapterDir && fs.existsSync(path.join(adapterDir, 'io-package.json'))) {
                 const ioInstalled = fs.readJsonSync(path.join(adapterDir, 'io-package.json'));
-                if (!tools.upToDate(repo[adapter].version, installedVersion)) {
+                if (!tools.upToDate(repo[adapter].version, ioInstalled.common.version)) {
                     // not up to date, we need to put it into account for our dependency check
                     relevantAdapters.push(adapter);
                 }
@@ -334,6 +334,9 @@ export class Upgrade {
             sources = repoUrlOrObject;
         }
 
+        /** Repository entry of this adapter */
+        const repoAdapter: Record<string, any> = sources[adapter];
+
         // TODO: not really adapter object but close enough
         const finishUpgrade = async (name: string, ioPack?: ioBroker.AdapterObject) => {
             if (!ioPack) {
@@ -389,10 +392,10 @@ export class Upgrade {
             );
         }
         // Get the url of io-package.json or direct the version
-        if (!sources[adapter]) {
+        if (!repoAdapter) {
             console.log(`Adapter "${adapter}" is not in the repository and cannot be updated.`);
         }
-        if (sources[adapter].controller) {
+        if (repoAdapter.controller) {
             return console.log(
                 `Cannot update ${adapter} using this command. Please use "iobroker upgrade self" instead!`
             );
@@ -435,8 +438,8 @@ export class Upgrade {
             const isDowngrade = semver.lt(targetVersion, installedVersion);
 
             // if information in repo files -> show news
-            if (sources[adapter] && sources[adapter].news) {
-                const news = sources[adapter].news;
+            if (repoAdapter && repoAdapter.news) {
+                const news = repoAdapter.news;
 
                 let first = true;
                 // check if upgrade or downgrade
@@ -512,7 +515,7 @@ export class Upgrade {
                         `Would you like to ${
                             isUpgrade ? 'upgrade' : 'downgrade'
                         } ${adapter} from @${installedVersion} to @${
-                            version || sources[adapter].version
+                            version || repoAdapter.version
                         } now? [(y)es, (n)o]: `,
                         {
                             defaultInput: 'n'
@@ -521,7 +524,7 @@ export class Upgrade {
                 } else {
                     answer = rl.question(
                         `Would you like to reinstall version ${
-                            version || sources[adapter].version
+                            version || repoAdapter.version
                         } of ${adapter} now? [(y)es, (n)o]: `,
                         {
                             defaultInput: 'n'
@@ -539,10 +542,10 @@ export class Upgrade {
         };
 
         // If version is included in repository
-        if (sources[adapter].version) {
+        if (repoAdapter.version) {
             if (!forceDowngrade) {
                 try {
-                    await this._checkDependencies(sources[adapter].dependencies, sources[adapter].globalDependencies);
+                    await this._checkDependencies(repoAdapter.dependencies, repoAdapter.globalDependencies);
                 } catch (err) {
                     return console.error(`Cannot check dependencies: ${err.message}`);
                 }
@@ -550,8 +553,7 @@ export class Upgrade {
 
             if (
                 !forceDowngrade &&
-                (sources[adapter].version === installedVersion ||
-                    tools.upToDate(sources[adapter].version, installedVersion))
+                (repoAdapter.version === installedVersion || tools.upToDate(repoAdapter.version, installedVersion))
             ) {
                 return console.log(
                     `Adapter "${adapter}"${
@@ -559,7 +561,7 @@ export class Upgrade {
                     } is up to date.`
                 );
             } else {
-                const targetVersion = version || sources[adapter].version;
+                const targetVersion = version || repoAdapter.version;
                 try {
                     if (!showUpgradeDialog(installedVersion, targetVersion, adapter)) {
                         return console.log(`No upgrade of "${adapter}" desired.`);
@@ -577,11 +579,11 @@ export class Upgrade {
                 await finishUpgrade(packetName);
                 await this.install.enableInstances(stoppedList, true);
             }
-        } else if (sources[adapter].meta) {
+        } else if (repoAdapter.meta) {
             // Read repository from url or file
-            const ioPack = (await tools.getJsonAsync(sources[adapter].meta)) as ioBroker.AdapterObject;
+            const ioPack = (await tools.getJsonAsync(repoAdapter.meta)) as ioBroker.AdapterObject;
             if (!ioPack) {
-                return console.error(`Cannot parse file${sources[adapter].meta}`);
+                return console.error(`Cannot parse file${repoAdapter.meta}`);
             }
 
             if (!forceDowngrade) {
@@ -679,16 +681,21 @@ export class Upgrade {
                 } is not installed.`
             );
         }
-        if (!sources[installed.common.name]) {
+
+        const controllerName = installed.common.name;
+        /** Repository entry of the controller */
+        const repoController = sources[controllerName];
+
+        if (!repoController) {
             // no info for controller
-            return console.error(`Cannot find this controller "${installed.common.name}" in repository.`);
+            return console.error(`Cannot find this controller "${controllerName}" in repository.`);
         }
 
-        if (sources[installed.common.name].version) {
+        if (repoController.version) {
             if (
                 !forceDowngrade &&
-                (sources[installed.common.name].version === installed.common.version ||
-                    tools.upToDate(sources[installed.common.name].version, installed.common.version))
+                (repoController.version === installed.common.version ||
+                    tools.upToDate(repoController.version, installed.common.version))
             ) {
                 console.log(
                     `Host    "${this.hostname}"${
@@ -698,20 +705,14 @@ export class Upgrade {
             } else if (controllerRunning) {
                 console.warn(`Controller is running. Please stop ioBroker first.`);
             } else {
-                console.log(
-                    `Update ${installed.common.name} from @${installed.common.version} to @${
-                        sources[installed.common.name].version
-                    }`
-                );
+                console.log(`Update ${controllerName} from @${installed.common.version} to @${repoController.version}`);
                 // Get the controller from web site
-                await this.install.downloadPacket(
-                    sources,
-                    `${installed.common.name}@${sources[installed.common.name].version}`,
-                    { stopDb: true }
-                );
+                await this.install.downloadPacket(sources, `${controllerName}@${repoController.version}`, {
+                    stopDb: true
+                });
             }
         } else {
-            const ioPack = await tools.getJsonAsync(sources[installed.common.name].meta);
+            const ioPack = await tools.getJsonAsync(repoController.meta);
             if ((!ioPack || !ioPack.common) && !forceDowngrade) {
                 return console.warn(
                     `Cannot read version. Write "${tools.appName} upgrade self --force" to upgrade controller anyway.`
@@ -737,7 +738,7 @@ export class Upgrade {
             } else if (controllerRunning) {
                 console.warn(`Controller is running. Please stop ioBroker first.`);
             } else {
-                const name = ioPack && ioPack.common && ioPack.common.name ? ioPack.common.name : installed.common.name;
+                const name = ioPack && ioPack.common && ioPack.common.name ? ioPack.common.name : controllerName;
                 console.log(`Update ${name} from @${installed.common.version} to ${version}`);
                 // Get the controller from web site
                 await this.install.downloadPacket(sources, name + version, { stopDb: true });
