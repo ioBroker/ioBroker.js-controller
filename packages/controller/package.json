@@ -83,6 +83,7 @@
     "url": "https://github.com/ioBroker/ioBroker.js-controller"
   },
   "scripts": {
+    "build": "tsc -b tsconfig.build.json",
     "preinstall": "node lib/preinstallCheck.js",
     "install": "node iobroker.js setup first",
     "start": "node iobroker.js start",
@@ -96,7 +97,7 @@
     "test-redis-sentinel": "mocha test/redis-sentinel/ --exit",
     "coverage": "node node_modules/istanbul/lib/cli.js cover --config istanbul.yml node_modules/mocha/bin/_mocha ./test -- --ui bdd -R spec"
   },
-  "main": "main.js",
+  "main": "build/main.js",
   "license": "MIT",
   "files": [
     "conf/",

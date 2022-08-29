@@ -27,7 +27,7 @@ v0.1.26
 
   ↳↳ [`AdapterClass`](AdapterClass.md)
 
-  ↳↳ [`Job`](internal_.__home_runner_work_ioBroker_js_controller_ioBroker_js_controller_node_modules__types_node_schedule_index_.Job.md)
+  ↳↳ [`Job`](internal_.__home_moritz_workspaces_ioBroker_js_controller_node_modules__types_node_schedule_index_.Job.md)
 
   ↳↳ [`internal`](internal_.internal-1.md)
 
