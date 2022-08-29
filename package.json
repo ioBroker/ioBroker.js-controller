@@ -69,6 +69,7 @@
   },
   "scripts": {
     "prebuild": "rimraf packages/*/build packages/*/*.tsbuildinfo",
+    "build:doc": "typedoc --excludeExternals --excludeProtected --excludePrivate --plugin typedoc-plugin-missing-exports --plugin typedoc-plugin-markdown packages/adapter/src/lib/adapter/adapter.ts --out packages/controller/doc",
     "build:ts": "lerna run build",
     "build": "npm run build:ts",
     "preinstall": "lerna run preinstall",

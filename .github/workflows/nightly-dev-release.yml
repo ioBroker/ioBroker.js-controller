@@ -59,6 +59,10 @@ jobs:
       if: steps.changes.outputs.result == 'ok'
       run: npm run build
 
+    - name: Build Docs
+      if: steps.changes.outputs.result == 'ok'
+      run: npm run build:doc
+
     - name: Run scripts
       if: steps.changes.outputs.result == 'ok'
       run: npm run preinstall && npm run install
