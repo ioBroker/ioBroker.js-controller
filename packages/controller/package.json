@@ -84,7 +84,7 @@
   },
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "preinstall": "node lib/preinstallCheck.js",
+    "preinstall": "node build/lib/preinstallCheck.js",
     "install": "node iobroker.js setup first",
     "start": "node iobroker.js start",
     "stop": "node iobroker.js stop",
