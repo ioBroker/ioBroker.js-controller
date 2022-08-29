@@ -477,17 +477,15 @@ export class Install {
 
                     // we check, that all existing instances match - respect different versions for local and global deps
                     for (const instance of locInstances) {
+                        // @ts-expect-error InstaceCommon has version: TODO fix types
+                        const instanceVersion = instance.value!.common.version;
                         if (
-                            // @ts-expect-error InstaceCommon has version: TODO fix types
-                            !semver.satisfies(instance.value!.common.version, deps[dName], {
+                            !semver.satisfies(instanceVersion, deps[dName], {
                                 includePrerelease: true
                             })
                         ) {
                             console.error(
-                                `host.${hostname} Invalid version of "${dName}". Installed "${
-                                    // @ts-expect-error InstaceCommon has version: TODO fix types
-                                    instance.value!.common.version
-                                }", required "${deps[dName]}"`
+                                `host.${hostname} Invalid version of "${dName}". Installed "${instanceVersion}", required "${deps[dName]}"`
                             );
                             return this.processExit(EXIT_CODES.INVALID_DEPENDENCY_VERSION);
                         } else {
@@ -496,17 +494,15 @@ export class Install {
                     }
 
                     for (const instance of gInstances) {
+                        // @ts-expect-error InstaceCommon has version: TODO fix types
+                        const instanceVersion = instance.value!.common.version;
                         if (
-                            // @ts-expect-error InstaceCommon has version: TODO fix tpes
-                            !semver.satisfies(instance.value!.common.version, globalDeps[dName], {
+                            !semver.satisfies(instanceVersion, globalDeps[dName], {
                                 includePrerelease: true
                             })
                         ) {
                             console.error(
-                                `host.${hostname} Invalid version of "${dName}". Installed "${
-                                    // @ts-expect-error InstaceCommon has version: TODO fix tpes
-                                    instance.value!.common.version
-                                }", required "${globalDeps[dName]}"`
+                                `host.${hostname} Invalid version of "${dName}". Installed "${instanceVersion}", required "${globalDeps[dName]}"`
                             );
                             return this.processExit(EXIT_CODES.INVALID_DEPENDENCY_VERSION);
                         } else {

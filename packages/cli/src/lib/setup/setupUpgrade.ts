@@ -238,19 +238,17 @@ export class Upgrade {
                     let isFound = false;
                     // we check, that all instances match - respect different local and global dep versions
                     for (const instance of locInstances) {
+                        // @ts-expect-error InstaceCommon has version: TODO fix types
+                        const instanceVersion = instance.value!.common.version;
                         try {
                             if (
-                                // @ts-expect-error InstaceCommon has version: TODO fix types
-                                !semver.satisfies(instance.value!.common.version, deps[dName], {
+                                !semver.satisfies(instanceVersion, deps[dName], {
                                     includePrerelease: true
                                 })
                             ) {
                                 return Promise.reject(
                                     new Error(
-                                        `Invalid version of "${dName}". Installed "${
-                                            // @ts-expect-error InstaceCommon has version: TODO fix types
-                                            instance.value!.common.version
-                                        }", required "${deps[dName]}`
+                                        `Invalid version of "${dName}". Installed "${instanceVersion}", required "${deps[dName]}`
                                     )
                                 );
                             }
@@ -258,10 +256,7 @@ export class Upgrade {
                             console.log(`Can not check dependency requirement: ${err.message}`);
                             return Promise.reject(
                                 new Error(
-                                    `Invalid version of "${dName}". Installed "${
-                                        // @ts-expect-error InstaceCommon has version: TODO fix types
-                                        instance.value!.common.version
-                                    }", required "${deps[dName]}`
+                                    `Invalid version of "${dName}". Installed "${instanceVersion}", required "${deps[dName]}`
                                 )
                             );
                         }
@@ -269,19 +264,17 @@ export class Upgrade {
                     }
 
                     for (const instance of gInstances) {
+                        // @ts-expect-error InstaceCommon has version: TODO fix types
+                        const instanceVersion = instance.value!.common.version;
                         try {
                             if (
-                                // @ts-expect-error InstaceCommon has version: TODO fix types
-                                !semver.satisfies(instance.value!.common.version, globalDeps[dName], {
+                                !semver.satisfies(instanceVersion, globalDeps[dName], {
                                     includePrerelease: true
                                 })
                             ) {
                                 return Promise.reject(
                                     new Error(
-                                        `Invalid version of "${dName}". Installed "${
-                                            // @ts-expect-error InstaceCommon has version: TODO fix types
-                                            instance.value!.common.version
-                                        }", required "${globalDeps[dName]}`
+                                        `Invalid version of "${dName}". Installed "${instanceVersion}", required "${globalDeps[dName]}`
                                     )
                                 );
                             }
@@ -289,10 +282,7 @@ export class Upgrade {
                             console.log(`Can not check dependency requirement: ${err.message}`);
                             return Promise.reject(
                                 new Error(
-                                    `Invalid version of "${dName}". Installed "${
-                                        // @ts-expect-error InstaceCommon has version: TODO fix types
-                                        instance.value!.common.version
-                                    }", required "${globalDeps[dName]}`
+                                    `Invalid version of "${dName}". Installed "${instanceVersion}", required "${globalDeps[dName]}`
                                 )
                             );
                         }
