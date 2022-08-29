@@ -1405,7 +1405,9 @@ export class AdapterClass extends EventEmitter {
      * @param port port number to start the search for free port
      * @param [host] optional hostname for the port search
      * @param callback return result
-     *        ```jsfunction (port) {}```
+     *        ```js
+     *        function (port) {}
+     *        ```
      */
     getPort(port: unknown, host: unknown, callback?: unknown): void {
         if (!port) {

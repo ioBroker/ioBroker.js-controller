@@ -19,6 +19,7 @@ import { Upload } from './setupUpload';
 import { PacketManager } from './setupPacketManager';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
+import type { GetRepository, ProcessExit } from '../_Types';
 
 const hostname = tools.getHostName();
 const osPlatform = process.platform;
@@ -28,10 +29,10 @@ const RECOMMENDED_NPM_VERSION = 8;
 
 export interface CLIInstallOptions {
     params: Record<string, any>;
-    getRepository: (repoName: string | undefined, params: Record<string, any>) => Record<string, any>;
+    getRepository: GetRepository;
     states?: StatesRedisClient;
     objects: ObjectsRedisClient;
-    processExit: (exitCode?: number) => void;
+    processExit: ProcessExit;
 }
 
 type Dependencies = string[] | Record<string, string>[] | string | Record<string, string>;
@@ -61,9 +62,9 @@ export class Install {
     private readonly isRootOnUnix: boolean;
     private readonly objects: ObjectsRedisClient;
     private readonly states: StatesRedisClient;
-    private readonly processExit: CLIInstallOptions['processExit'];
-    private readonly getRepository: CLIInstallOptions['getRepository'];
-    private readonly params: CLIInstallOptions['params'];
+    private readonly processExit: ProcessExit;
+    private readonly getRepository: GetRepository;
+    private readonly params: Record<string, any>;
     private readonly tarballRegex: RegExp;
     private upload: Upload;
     private packetManager?: PacketManager;
@@ -526,7 +527,7 @@ export class Install {
         let adapterConf: Record<string, any>;
         if (!_adapterConf) {
             const adapterDir = tools.getAdapterDir(adapter);
-            if (!adapterDir || !fs.existsSync(`${adapterDir}/io-package.json`)) {
+            if (!adapterDir || !fs.existsSync(path.join(adapterDir, 'io-package.json'))) {
                 const message = `Adapter directory "${adapterDir}" does not exists`;
                 console.error(`host.${hostname} ${message}`);
                 throw new Error(message);
@@ -601,7 +602,7 @@ export class Install {
 
         console.log(`host.${hostname} install adapter ${fullName}`);
 
-        if (!fs.existsSync(`${adapterDir}/io-package.json`)) {
+        if (!adapterDir || !fs.existsSync(path.join(adapterDir, 'io-package.json'))) {
             if (_installCount === 2) {
                 console.error(`host.${hostname} Cannot install ${adapter}`);
                 return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
@@ -616,7 +617,7 @@ export class Install {
         }
         let adapterConf: ioBroker.AdapterObject;
         try {
-            adapterConf = fs.readJSONSync(`${adapterDir}/io-package.json`);
+            adapterConf = fs.readJSONSync(path.join(adapterDir, 'io-package.json'));
         } catch (err) {
             console.error(`host.${hostname} error: reading io-package.json ${err.message}`);
             return this.processExit(EXIT_CODES.INVALID_IO_PACKAGE_JSON);
@@ -629,8 +630,7 @@ export class Install {
                     `host.${hostname} Adapter does not support current os. Required ${adapterConf.common.os}. Actual platform: ${osPlatform}`
                 );
                 return this.processExit(EXIT_CODES.INVALID_OS);
-                // @ts-expect-error yes we want to check if it's in it ;-)
-            } else if (Array.isArray(adapterConf.common.os) && !adapterConf.common.os.includes(osPlatform)) {
+            } else if (Array.isArray(adapterConf.common.os) && !adapterConf.common.os.includes(osPlatform as any)) {
                 console.error(
                     `host.${hostname} Adapter does not support current os. Required one of ${adapterConf.common.os.join(
                         ', '
@@ -643,7 +643,7 @@ export class Install {
         let engineVersion;
         try {
             // read directly from disk and not via require to allow "on the fly" updates of adapters.
-            const p = JSON.parse(fs.readFileSync(`${adapterDir}/package.json`, 'utf8'));
+            const p = fs.readJSONSync(path.join(adapterDir, 'package.json'), 'utf8');
             engineVersion = p && p.engines && p.engines.node;
         } catch {
             console.error(`host.${hostname}: Cannot read and parse "${adapterDir}/package.json"`);
@@ -857,7 +857,12 @@ export class Install {
 
         const adapterDir = tools.getAdapterDir(adapter);
 
-        if (adapterDir && fs.existsSync(path.join(adapterDir, 'www'))) {
+        if (!adapterDir) {
+            console.error(`host.${hostname} error: reading io-package.json ${err.message}`);
+            return this.processExit(EXIT_CODES.INVALID_IO_PACKAGE_JSON);
+        }
+
+        if (fs.existsSync(path.join(adapterDir, 'www'))) {
             objs.push({
                 _id: `system.adapter.${adapter}.upload`,
                 type: 'state',
@@ -878,7 +883,7 @@ export class Install {
         let adapterConf: Record<string, any>;
 
         try {
-            adapterConf = fs.readJSONSync(`${adapterDir}/io-package.json`);
+            adapterConf = fs.readJSONSync(path.join(adapterDir, 'io-package.json'));
         } catch (err) {
             console.error(`host.${hostname} error: reading io-package.json ${err.message}`);
             return this.processExit(EXIT_CODES.INVALID_IO_PACKAGE_JSON);

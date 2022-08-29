@@ -14,16 +14,18 @@ import { Upload } from './setupUpload';
 import { Install } from './setupInstall';
 import rl from 'readline-sync';
 import tty from 'tty';
+import path from 'path';
 import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
+import type { GetRepository, ProcessExit } from '../_Types';
 
 const debug = Debug('iobroker:cli');
 
 type IoPackDependencies = string[] | Record<string, any>[] | Record<string, any>;
 
 interface CLIUpgradeOptions {
-    processExit: (exitCode?: number) => void;
+    processExit: ProcessExit;
     restartController: () => void;
-    getRepository: (repoName: string | undefined, params: Record<string, any>) => Record<string, any>;
+    getRepository: GetRepository;
     objects: ObjectsInRedisClient;
     params: Record<string, any>;
 }
@@ -33,9 +35,9 @@ export class Upgrade {
     private readonly upload: Upload;
     private readonly install: Install;
     private objects: ObjectsInRedisClient;
-    private readonly processExit: CLIUpgradeOptions['processExit'];
-    private readonly params: CLIUpgradeOptions['params'];
-    private readonly getRepository: CLIUpgradeOptions['getRepository'];
+    private readonly processExit: ProcessExit;
+    private readonly params: Record<string, any>;
+    private readonly getRepository: GetRepository;
 
     constructor(options: CLIUpgradeOptions) {
         options = options || {};
@@ -81,9 +83,9 @@ export class Upgrade {
                 continue;
             }
             const adapterDir = tools.getAdapterDir(adapter);
-            if (fs.existsSync(`${adapterDir}/io-package.json`)) {
-                const ioInstalled = fs.readJsonSync(`${adapterDir}/io-package.json`);
-                if (!tools.upToDate(repo[adapter].version, ioInstalled.common.version)) {
+            if (adapterDir && fs.existsSync(path.join(adapterDir, 'io-package.json'))) {
+                const ioInstalled = fs.readJsonSync(path.join(adapterDir, 'io-package.json'));
+                if (!tools.upToDate(repo[adapter].version, installedVersion)) {
                     // not up to date, we need to put it into account for our dependency check
                     relevantAdapters.push(adapter);
                 }
@@ -336,17 +338,24 @@ export class Upgrade {
         const finishUpgrade = async (name: string, ioPack?: ioBroker.AdapterObject) => {
             if (!ioPack) {
                 const adapterDir = tools.getAdapterDir(name);
+
+                if (!adapterDir) {
+                    console.error(`Cannot find io-package.json in ${adapterDir}`);
+                    return this.processExit(EXIT_CODES.MISSING_ADAPTER_FILES);
+                }
+
                 try {
-                    ioPack = fs.readJSONSync(`${adapterDir}/io-package.json`);
+                    // close enough to an AdapterObject
+                    ioPack = fs.readJSONSync(path.join(adapterDir, 'io-package.json')) as ioBroker.AdapterObject;
                 } catch {
                     console.error(`Cannot find io-package.json in ${adapterDir}`);
                     return this.processExit(EXIT_CODES.MISSING_ADAPTER_FILES);
                 }
             }
 
-            if (ioPack!.common.osDependencies) {
+            if (ioPack.common.osDependencies) {
                 // install linux/osx libraries
-                await this.install.installOSPackages(ioPack!.common.osDependencies);
+                await this.install.installOSPackages(ioPack.common.osDependencies);
             }
 
             // Upload www and admin files of adapter
@@ -372,7 +381,7 @@ export class Upgrade {
         const adapterDir = tools.getAdapterDir(adapter);
 
         // Read actual description of installed adapter with version
-        if (!version && !fs.existsSync(`${adapterDir}/io-package.json`)) {
+        if (!adapterDir || (!version && !fs.existsSync(path.join(adapterDir, 'io-package.json')))) {
             return console.log(
                 `Adapter "${adapter}"${
                     adapter.length < 15 ? new Array(15 - adapter.length).join(' ') : ''
@@ -390,13 +399,15 @@ export class Upgrade {
         }
 
         // TODO: not 100 % true but should be correct enough
-        let ioInstalled: Partial<ioBroker.AdapterObject>;
-        if (fs.existsSync(`${adapterDir}/io-package.json`)) {
+        let ioInstalled: Pick<ioBroker.AdapterObject, 'common'>;
+        if (adapterDir && fs.existsSync(path.join(adapterDir, 'io-package.json'))) {
             ioInstalled = fs.readJsonSync(`${adapterDir}/io-package.json`);
         } else {
             // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
             ioInstalled = { common: { version: '0.0.0' } };
         }
+
+        const installedVersion = ioInstalled.common.version;
 
         /**
          * We show changelog (news) and ask user if he really wants to upgrade but only if fd is associated with a tty, returns true if upgrade desired
@@ -498,9 +509,11 @@ export class Upgrade {
                         );
                     }
                     answer = rl.question(
-                        `Would you like to ${isUpgrade ? 'upgrade' : 'downgrade'} ${adapter} from @${
-                            ioInstalled.common!.version
-                        } to @${version || sources[adapter].version} now? [(y)es, (n)o]: `,
+                        `Would you like to ${
+                            isUpgrade ? 'upgrade' : 'downgrade'
+                        } ${adapter} from @${installedVersion} to @${
+                            version || sources[adapter].version
+                        } now? [(y)es, (n)o]: `,
                         {
                             defaultInput: 'n'
                         }
@@ -537,8 +550,8 @@ export class Upgrade {
 
             if (
                 !forceDowngrade &&
-                (sources[adapter].version === ioInstalled.common!.version ||
-                    tools.upToDate(sources[adapter].version, ioInstalled.common!.version))
+                (sources[adapter].version === installedVersion ||
+                    tools.upToDate(sources[adapter].version, installedVersion))
             ) {
                 return console.log(
                     `Adapter "${adapter}"${
@@ -548,13 +561,13 @@ export class Upgrade {
             } else {
                 const targetVersion = version || sources[adapter].version;
                 try {
-                    if (!showUpgradeDialog(ioInstalled.common!.version, targetVersion, adapter)) {
+                    if (!showUpgradeDialog(installedVersion, targetVersion, adapter)) {
                         return console.log(`No upgrade of "${adapter}" desired.`);
                     }
                 } catch (err) {
                     console.log(`Can not check version information to display upgrade infos: ${err.message}`);
                 }
-                console.log(`Update ${adapter} from @${ioInstalled.common!.version} to @${targetVersion}`);
+                console.log(`Update ${adapter} from @${installedVersion} to @${targetVersion}`);
                 // Get the adapter from web site
                 // @ts-expect-error it could also call processExit internally but we want change it in future anyway
                 const { packetName, stoppedList } = await this.install.downloadPacket(
@@ -582,8 +595,8 @@ export class Upgrade {
 
             if (
                 !version &&
-                (ioPack.common.version === ioInstalled.common!.version ||
-                    (!forceDowngrade && tools.upToDate(ioPack.common.version, ioInstalled.common!.version)))
+                (ioPack.common.version === installedVersion ||
+                    (!forceDowngrade && tools.upToDate(ioPack.common.version, installedVersion)))
             ) {
                 console.log(
                     `Adapter "${adapter}"${
@@ -594,13 +607,13 @@ export class Upgrade {
                 // Get the adapter from web site
                 const targetVersion = version || ioPack.common.version;
                 try {
-                    if (!showUpgradeDialog(ioInstalled.common!.version, targetVersion, adapter)) {
+                    if (!showUpgradeDialog(installedVersion, targetVersion, adapter)) {
                         return console.log(`No upgrade of "${adapter}" desired.`);
                     }
                 } catch (err) {
                     console.log(`Can not check version information to display upgrade infos: ${err.message}`);
                 }
-                console.log(`Update ${adapter} from @${ioInstalled.common!.version} to @${targetVersion}`);
+                console.log(`Update ${adapter} from @${installedVersion} to @${targetVersion}`);
                 // @ts-expect-error it could also call processExit internally but we want change it in future anyway
                 const { packetName, stoppedList } = await this.install.downloadPacket(
                     sources,
@@ -612,14 +625,14 @@ export class Upgrade {
         } else {
             if (forceDowngrade) {
                 try {
-                    if (!showUpgradeDialog(ioInstalled.common!.version, version, adapter)) {
+                    if (!showUpgradeDialog(installedVersion, version, adapter)) {
                         return console.log(`No upgrade of "${adapter}" desired.`);
                     }
                 } catch (err) {
                     console.log(`Can not check version information to display upgrade infos: ${err.message}`);
                 }
                 console.warn(`Unable to get version for "${adapter}". Update anyway.`);
-                console.log(`Update ${adapter} from @${ioInstalled.common!.version} to @${version}`);
+                console.log(`Update ${adapter} from @${installedVersion} to @${version}`);
                 // Get the adapter from web site
                 // @ts-expect-error it could also call processExit internally but we want change it in future anyway
                 const { packetName, stoppedList } = await this.install.downloadPacket(sources, `${adapter}@${version}`);
