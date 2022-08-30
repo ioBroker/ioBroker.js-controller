@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:142](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L142)
+[packages/adapter/src/lib/_Types.ts:142](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L142)
 
 ___
 
@@ -31,17 +31,17 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:140](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L140)
+[packages/adapter/src/lib/_Types.ts:140](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L140)
 
 ___
 
 ### options
 
-• `Optional` **options**: ``null`` \| [`Record`](../modules/internal_.md#record)<`string`, `any`\>
+• `Optional` **options**: ``null`` \| `Record`<`string`, `any`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:141](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L141)
+[packages/adapter/src/lib/_Types.ts:141](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L141)
 
 ___
 
@@ -51,4 +51,4 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:139](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L139)
+[packages/adapter/src/lib/_Types.ts:139](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L139)

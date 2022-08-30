@@ -16,11 +16,11 @@
 
 ### callback
 
-• `Optional` **callback**: [`GetBinaryStateCallback`](../modules/internal_.md#getbinarystatecallback)
+• `Optional` **callback**: `GetBinaryStateCallback`
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:335](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L335)
+[packages/adapter/src/lib/_Types.ts:338](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L338)
 
 ___
 
@@ -30,14 +30,14 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:333](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L333)
+[packages/adapter/src/lib/_Types.ts:336](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L336)
 
 ___
 
 ### options
 
-• **options**: [`Record`](../modules/internal_.md#record)<`string`, `any`\>
+• **options**: `Record`<`string`, `any`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:334](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L334)
+[packages/adapter/src/lib/_Types.ts:337](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L337)

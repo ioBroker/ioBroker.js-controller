@@ -17,21 +17,21 @@
 
 ### callback
 
-• `Optional` **callback**: [`ErrorCallback`](../modules/internal_.md#errorcallback)
+• `Optional` **callback**: `ErrorCallback`
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:97](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L97)
+[packages/adapter/src/lib/_Types.ts:97](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L97)
 
 ___
 
 ### data
 
-• **data**: [`Record`](../modules/internal_.md#record)<`string`, `any`\>
+• **data**: `Record`<`string`, `any`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:96](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L96)
+[packages/adapter/src/lib/_Types.ts:96](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L96)
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:94](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L94)
+[packages/adapter/src/lib/_Types.ts:94](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L94)
 
 ___
 
@@ -51,4 +51,4 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:95](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L95)
+[packages/adapter/src/lib/_Types.ts:95](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L95)

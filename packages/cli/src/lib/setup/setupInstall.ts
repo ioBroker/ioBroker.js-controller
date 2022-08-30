@@ -13,27 +13,26 @@ import path from 'path';
 import semver from 'semver';
 import child_process from 'child_process';
 import axios from 'axios';
-import { platform } from 'os';
 import deepClone from 'deep-clone';
 import { URL } from 'url';
 import { Upload } from './setupUpload';
 import { PacketManager } from './setupPacketManager';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
+import type { GetRepository, ProcessExit } from '../_Types';
 
 const hostname = tools.getHostName();
-const osPlatform = platform();
+const osPlatform = process.platform;
 
 /** Note: this is duplicated in preinstallCheck */
 const RECOMMENDED_NPM_VERSION = 8;
 
 export interface CLIInstallOptions {
     params: Record<string, any>;
-    // TODO type it as soon as we have typed setup.js where this function origins
-    getRepository: any;
-    states: StatesRedisClient;
+    getRepository: GetRepository;
+    states?: StatesRedisClient;
     objects: ObjectsRedisClient;
-    processExit: (exitCode?: number) => void;
+    processExit: ProcessExit;
 }
 
 type Dependencies = string[] | Record<string, string>[] | string | Record<string, string>;
@@ -58,13 +57,13 @@ interface CreateInstanceOptions {
     port?: number;
 }
 
-class Install {
+export class Install {
     private unsafePermAlways: string[];
     private readonly isRootOnUnix: boolean;
     private readonly objects: ObjectsRedisClient;
     private readonly states: StatesRedisClient;
-    private readonly processExit: (exitCode?: number) => void;
-    private readonly getRepository: any;
+    private readonly processExit: ProcessExit;
+    private readonly getRepository: GetRepository;
     private readonly params: Record<string, any>;
     private readonly tarballRegex: RegExp;
     private upload: Upload;
@@ -137,7 +136,7 @@ class Install {
      * @param stoppedList
      */
     async downloadPacket(
-        repoUrl: string | undefined,
+        repoUrl: string | undefined | Record<string, any>,
         packetName: string,
         options?: CLIDownloadPacketOptions,
         stoppedList?: ioBroker.InstanceObject[]
@@ -150,7 +149,7 @@ class Install {
         stoppedList = stoppedList || [];
         let sources: Record<string, any>;
 
-        if (!repoUrl || typeof repoUrl !== 'object') {
+        if (!repoUrl || !tools.isObject(repoUrl)) {
             try {
                 sources = await this.getRepository(repoUrl, this.params);
             } catch (err) {
@@ -187,7 +186,7 @@ class Install {
 
         // Check if flag stopBeforeUpdate is true or on windows we stop because of issue #1436
         if (
-            ((sources[packetName] && sources[packetName].stopBeforeUpdate) || process.platform === 'win32') &&
+            ((sources[packetName] && sources[packetName].stopBeforeUpdate) || osPlatform === 'win32') &&
             !stoppedList.length
         ) {
             stoppedList = await this._getInstancesOfAdapter(packetName);
@@ -478,17 +477,15 @@ class Install {
 
                     // we check, that all existing instances match - respect different versions for local and global deps
                     for (const instance of locInstances) {
+                        // @ts-expect-error InstaceCommon has version: TODO fix types
+                        const instanceVersion = instance.value!.common.version;
                         if (
-                            // @ts-expect-error InstaceCommon has version: TODO fix tpes
-                            !semver.satisfies(instance.value!.common.version, deps[dName], {
+                            !semver.satisfies(instanceVersion, deps[dName], {
                                 includePrerelease: true
                             })
                         ) {
                             console.error(
-                                `host.${hostname} Invalid version of "${dName}". Installed "${
-                                    // @ts-expect-error InstaceCommon has version: TODO fix tpes
-                                    instance.value!.common.version
-                                }", required "${deps[dName]}"`
+                                `host.${hostname} Invalid version of "${dName}". Installed "${instanceVersion}", required "${deps[dName]}"`
                             );
                             return this.processExit(EXIT_CODES.INVALID_DEPENDENCY_VERSION);
                         } else {
@@ -497,17 +494,15 @@ class Install {
                     }
 
                     for (const instance of gInstances) {
+                        // @ts-expect-error InstaceCommon has version: TODO fix types
+                        const instanceVersion = instance.value!.common.version;
                         if (
-                            // @ts-expect-error InstaceCommon has version: TODO fix tpes
-                            !semver.satisfies(instance.value!.common.version, globalDeps[dName], {
+                            !semver.satisfies(instanceVersion, globalDeps[dName], {
                                 includePrerelease: true
                             })
                         ) {
                             console.error(
-                                `host.${hostname} Invalid version of "${dName}". Installed "${
-                                    // @ts-expect-error InstaceCommon has version: TODO fix tpes
-                                    instance.value!.common.version
-                                }", required "${globalDeps[dName]}"`
+                                `host.${hostname} Invalid version of "${dName}". Installed "${instanceVersion}", required "${globalDeps[dName]}"`
                             );
                             return this.processExit(EXIT_CODES.INVALID_DEPENDENCY_VERSION);
                         } else {
@@ -528,7 +523,7 @@ class Install {
         let adapterConf: Record<string, any>;
         if (!_adapterConf) {
             const adapterDir = tools.getAdapterDir(adapter);
-            if (!adapterDir || !fs.existsSync(`${adapterDir}/io-package.json`)) {
+            if (!adapterDir || !fs.existsSync(path.join(adapterDir, 'io-package.json'))) {
                 const message = `Adapter directory "${adapterDir}" does not exists`;
                 console.error(`host.${hostname} ${message}`);
                 throw new Error(message);
@@ -603,7 +598,7 @@ class Install {
 
         console.log(`host.${hostname} install adapter ${fullName}`);
 
-        if (!fs.existsSync(adapterDir + '/io-package.json')) {
+        if (!adapterDir || !fs.existsSync(path.join(adapterDir, 'io-package.json'))) {
             if (_installCount === 2) {
                 console.error(`host.${hostname} Cannot install ${adapter}`);
                 return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
@@ -616,9 +611,9 @@ class Install {
             await this.enableInstances(stoppedList, true); // even if unlikely make sure to reenable disabled instances
             return adapter;
         }
-        let adapterConf;
+        let adapterConf: ioBroker.AdapterObject;
         try {
-            adapterConf = fs.readJSONSync(`${adapterDir}/io-package.json`);
+            adapterConf = fs.readJSONSync(path.join(adapterDir, 'io-package.json'));
         } catch (err) {
             console.error(`host.${hostname} error: reading io-package.json ${err.message}`);
             return this.processExit(EXIT_CODES.INVALID_IO_PACKAGE_JSON);
@@ -631,22 +626,20 @@ class Install {
                     `host.${hostname} Adapter does not support current os. Required ${adapterConf.common.os}. Actual platform: ${osPlatform}`
                 );
                 return this.processExit(EXIT_CODES.INVALID_OS);
-            } else {
-                if (!adapterConf.common.os.includes(osPlatform)) {
-                    console.error(
-                        `host.${hostname} Adapter does not support current os. Required one of ${adapterConf.common.os.join(
-                            ', '
-                        )}. Actual platform: ${osPlatform}`
-                    );
-                    return this.processExit(EXIT_CODES.INVALID_OS);
-                }
+            } else if (Array.isArray(adapterConf.common.os) && !adapterConf.common.os.includes(osPlatform as any)) {
+                console.error(
+                    `host.${hostname} Adapter does not support current os. Required one of ${adapterConf.common.os.join(
+                        ', '
+                    )}. Actual platform: ${osPlatform}`
+                );
+                return this.processExit(EXIT_CODES.INVALID_OS);
             }
         }
 
         let engineVersion;
         try {
             // read directly from disk and not via require to allow "on the fly" updates of adapters.
-            const p = JSON.parse(fs.readFileSync(adapterDir + '/package.json', 'utf8'));
+            const p = fs.readJSONSync(path.join(adapterDir, 'package.json'), 'utf8');
             engineVersion = p && p.engines && p.engines.node;
         } catch {
             console.error(`host.${hostname}: Cannot read and parse "${adapterDir}/package.json"`);
@@ -662,14 +655,9 @@ class Install {
             }
         }
 
-        if (adapterConf.common.osDependencies && adapterConf.common.osDependencies[process.platform]) {
+        if (adapterConf.common.osDependencies) {
             // install linux/osx libraries
-            try {
-                this.packetManager = this.packetManager || new PacketManager();
-                await this.packetManager.install(adapterConf.common.osDependencies[process.platform]);
-            } catch (err) {
-                console.error(`host.${hostname} Could not install required OS packages: ${err.message}`);
-            }
+            await this.installOSPackages(adapterConf.common.osDependencies);
         }
 
         await this.upload.uploadAdapter(adapter, true, true);
@@ -680,7 +668,19 @@ class Install {
         return adapter;
     }
 
-    async callInstallOfAdapter(adapter: string, config: Record<string, any>) {
+    async installOSPackages(osDependencies: NonNullable<ioBroker.AdapterCommon['osDependencies']>): Promise<void> {
+        if (osPlatform in osDependencies) {
+            try {
+                this.packetManager = this.packetManager || new PacketManager();
+                // @ts-expect-error we have checked that platform is a valid key
+                await this.packetManager.install(osDependencies[osPlatform]);
+            } catch (err) {
+                console.error(`host.${hostname} Could not install required OS packages: ${err.message}`);
+            }
+        }
+    }
+
+    async callInstallOfAdapter(adapter: string, config: Record<string, any>): Promise<string | void> {
         if (config.common.install) {
             // Install node modules
             let cmd = 'node ';
@@ -853,7 +853,12 @@ class Install {
 
         const adapterDir = tools.getAdapterDir(adapter);
 
-        if (adapterDir && fs.existsSync(path.join(adapterDir, 'www'))) {
+        if (!adapterDir) {
+            console.error(`host.${hostname} error: reading io-package.json ${err.message}`);
+            return this.processExit(EXIT_CODES.INVALID_IO_PACKAGE_JSON);
+        }
+
+        if (fs.existsSync(path.join(adapterDir, 'www'))) {
             objs.push({
                 _id: `system.adapter.${adapter}.upload`,
                 type: 'state',
@@ -874,7 +879,7 @@ class Install {
         let adapterConf: Record<string, any>;
 
         try {
-            adapterConf = fs.readJSONSync(`${adapterDir}/io-package.json`);
+            adapterConf = fs.readJSONSync(path.join(adapterDir, 'io-package.json'));
         } catch (err) {
             console.error(`host.${hostname} error: reading io-package.json ${err.message}`);
             return this.processExit(EXIT_CODES.INVALID_IO_PACKAGE_JSON);
@@ -1195,7 +1200,7 @@ class Install {
      * @param adapter The adapter to enumerate the states for
      * @param instance The instance to enumerate the states for (optional)
      */
-    async _enumerateAdapterStateObjects(knownObjIDs: string[], adapter: string, instance?: number) {
+    async _enumerateAdapterStateObjects(knownObjIDs: string[], adapter: string, instance?: number): Promise<void> {
         const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
         const sysAdapterRegex = new RegExp(`^system\\.adapter\\.${adapter}${instance ? `\\.${instance}` : ''}\\.`);
 
@@ -1703,7 +1708,7 @@ class Install {
         /** list of stopped instances for windows */
         let stoppedList: ioBroker.InstanceObject[] = [];
 
-        if (process.platform === 'win32') {
+        if (osPlatform === 'win32') {
             stoppedList = await this._getInstancesOfAdapter(name);
             await this.enableInstances(stoppedList, false);
         }
@@ -1908,5 +1913,3 @@ class Install {
         return instances as ioBroker.InstanceObject[];
     }
 }
-
-module.exports = { Install };

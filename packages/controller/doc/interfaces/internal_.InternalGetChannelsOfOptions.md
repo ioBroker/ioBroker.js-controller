@@ -16,21 +16,21 @@
 
 ### callback
 
-• `Optional` **callback**: [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`ChannelObject`](internal_.ChannelObject.md)\>
+• `Optional` **callback**: `GetObjectsCallback3`<`ChannelObject`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:219](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L219)
+[packages/adapter/src/lib/_Types.ts:222](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L222)
 
 ___
 
 ### options
 
-• `Optional` **options**: ``null`` \| [`Record`](../modules/internal_.md#record)<`string`, `any`\>
+• `Optional` **options**: ``null`` \| `Record`<`string`, `any`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:220](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L220)
+[packages/adapter/src/lib/_Types.ts:223](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L223)
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:218](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L218)
+[packages/adapter/src/lib/_Types.ts:221](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L221)

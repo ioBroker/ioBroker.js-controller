@@ -9,7 +9,7 @@ How the initialization happens:
 
 ## Hierarchy
 
-- [`EventEmitter`](internal_.EventEmitter-1.md)
+- `EventEmitter`
 
   ↳ **`AdapterClass`**
 
@@ -19,45 +19,10 @@ How the initialization happens:
 
 - [constructor](AdapterClass.md#constructor)
 
-### Properties
-
-- [FORBIDDEN\_CHARS](AdapterClass.md#forbidden_chars)
-- [adapterConfig](AdapterClass.md#adapterconfig)
-- [adapterDir](AdapterClass.md#adapterdir)
-- [adapterReady](AdapterClass.md#adapterready)
-- [common](AdapterClass.md#common)
-- [config](AdapterClass.md#config)
-- [connected](AdapterClass.md#connected)
-- [dateFormat](AdapterClass.md#dateformat)
-- [host](AdapterClass.md#host)
-- [instance](AdapterClass.md#instance)
-- [ioPack](AdapterClass.md#iopack)
-- [isFloatComma](AdapterClass.md#isfloatcomma)
-- [kill](AdapterClass.md#kill)
-- [language](AdapterClass.md#language)
-- [latitude](AdapterClass.md#latitude)
-- [log](AdapterClass.md#log)
-- [longitude](AdapterClass.md#longitude)
-- [name](AdapterClass.md#name)
-- [namespace](AdapterClass.md#namespace)
-- [oObjects](AdapterClass.md#oobjects)
-- [oStates](AdapterClass.md#ostates)
-- [pack](AdapterClass.md#pack)
-- [processLog](AdapterClass.md#processlog)
-- [requireLog](AdapterClass.md#requirelog)
-- [stop](AdapterClass.md#stop)
-- [systemConfig](AdapterClass.md#systemconfig)
-- [version](AdapterClass.md#version)
-- [captureRejectionSymbol](AdapterClass.md#capturerejectionsymbol)
-- [captureRejections](AdapterClass.md#capturerejections)
-- [defaultMaxListeners](AdapterClass.md#defaultmaxlisteners)
-- [errorMonitor](AdapterClass.md#errormonitor)
-
 ### Methods
 
 - [addChannelToEnum](AdapterClass.md#addchanneltoenum)
 - [addChannelToEnumAsync](AdapterClass.md#addchanneltoenumasync)
-- [addListener](AdapterClass.md#addlistener)
 - [addStateToEnum](AdapterClass.md#addstatetoenum)
 - [addStateToEnumAsync](AdapterClass.md#addstatetoenumasync)
 - [calculatePermissions](AdapterClass.md#calculatepermissions)
@@ -106,9 +71,7 @@ How the initialization happens:
 - [deleteStateFromEnumAsync](AdapterClass.md#deletestatefromenumasync)
 - [destroySession](AdapterClass.md#destroysession)
 - [disable](AdapterClass.md#disable)
-- [emit](AdapterClass.md#emit)
 - [encrypt](AdapterClass.md#encrypt)
-- [eventNames](AdapterClass.md#eventnames)
 - [extendForeignObject](AdapterClass.md#extendforeignobject)
 - [extendForeignObjectAsync](AdapterClass.md#extendforeignobjectasync)
 - [extendObject](AdapterClass.md#extendobject)
@@ -148,7 +111,6 @@ How the initialization happens:
 - [getForeignStatesAsync](AdapterClass.md#getforeignstatesasync)
 - [getHistory](AdapterClass.md#gethistory)
 - [getHistoryAsync](AdapterClass.md#gethistoryasync)
-- [getMaxListeners](AdapterClass.md#getmaxlisteners)
 - [getObject](AdapterClass.md#getobject)
 - [getObjectAsync](AdapterClass.md#getobjectasync)
 - [getObjectList](AdapterClass.md#getobjectlist)
@@ -169,23 +131,13 @@ How the initialization happens:
 - [getSuitableLicenses](AdapterClass.md#getsuitablelicenses)
 - [getUserID](AdapterClass.md#getuserid)
 - [idToDCS](AdapterClass.md#idtodcs)
-- [listenerCount](AdapterClass.md#listenercount)
-- [listeners](AdapterClass.md#listeners)
 - [mkdir](AdapterClass.md#mkdir)
 - [mkdirAsync](AdapterClass.md#mkdirasync)
-- [off](AdapterClass.md#off)
-- [on](AdapterClass.md#on)
-- [once](AdapterClass.md#once)
-- [prependListener](AdapterClass.md#prependlistener)
-- [prependOnceListener](AdapterClass.md#prependoncelistener)
-- [rawListeners](AdapterClass.md#rawlisteners)
 - [readDir](AdapterClass.md#readdir)
 - [readDirAsync](AdapterClass.md#readdirasync)
 - [readFile](AdapterClass.md#readfile)
 - [readFileAsync](AdapterClass.md#readfileasync)
 - [registerNotification](AdapterClass.md#registernotification)
-- [removeAllListeners](AdapterClass.md#removealllisteners)
-- [removeListener](AdapterClass.md#removelistener)
 - [rename](AdapterClass.md#rename)
 - [renameAsync](AdapterClass.md#renameasync)
 - [restart](AdapterClass.md#restart)
@@ -207,7 +159,6 @@ How the initialization happens:
 - [setForeignStateChanged](AdapterClass.md#setforeignstatechanged)
 - [setForeignStateChangedAsync](AdapterClass.md#setforeignstatechangedasync)
 - [setInterval](AdapterClass.md#setinterval)
-- [setMaxListeners](AdapterClass.md#setmaxlisteners)
 - [setObject](AdapterClass.md#setobject)
 - [setObjectAsync](AdapterClass.md#setobjectasync)
 - [setObjectNotExists](AdapterClass.md#setobjectnotexists)
@@ -245,10 +196,6 @@ How the initialization happens:
 - [updateConfig](AdapterClass.md#updateconfig)
 - [writeFile](AdapterClass.md#writefile)
 - [writeFileAsync](AdapterClass.md#writefileasync)
-- [getEventListeners](AdapterClass.md#geteventlisteners)
-- [listenerCount](AdapterClass.md#listenercount-1)
-- [on](AdapterClass.md#on-1)
-- [once](AdapterClass.md#once-1)
 
 ## Constructors
 
@@ -262,419 +209,9 @@ How the initialization happens:
 | :------ | :------ |
 | `options` | `string` \| [`AdapterOptions`](../interfaces/internal_.AdapterOptions.md) |
 
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[constructor](internal_.EventEmitter-1.md#constructor)
-
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:654](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L654)
-
-## Properties
-
-### FORBIDDEN\_CHARS
-
-• `Protected` `Readonly` **FORBIDDEN\_CHARS**: `RegExp` = `FORBIDDEN_CHARS`
-
-A RegExp to test for forbidden chars in object IDs
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:598](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L598)
-
-___
-
-### adapterConfig
-
-• `Protected` `Optional` **adapterConfig**: ``null`` \| [`AdapterOptions`](../interfaces/internal_.AdapterOptions.md) \| [`InstanceObject`](../interfaces/internal_.InstanceObject.md)
-
-contents of io-package.json
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:616](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L616)
-
-___
-
-### adapterDir
-
-• `Protected` **adapterDir**: `string`
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:618](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L618)
-
-___
-
-### adapterReady
-
-• `Protected` **adapterReady**: `boolean` = `false`
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:565](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L565)
-
-___
-
-### common
-
-• `Protected` `Optional` **common**: [`Record`](../modules/internal_.md#record)<`string`, `any`\>
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:641](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L641)
-
-___
-
-### config
-
-• `Protected` `Optional` **config**: [`Record`](../modules/internal_.md#record)<`string`, `any`\>
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:639](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L639)
-
-___
-
-### connected
-
-• `Protected` `Optional` **connected**: `boolean`
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:617](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L617)
-
-___
-
-### dateFormat
-
-• `Protected` `Optional` **dateFormat**: `any`
-
-the configured date format of system.config, only available if requested via AdapterOptions `useFormatDate`
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:628](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L628)
-
-___
-
-### host
-
-• `Protected` `Optional` **host**: `string`
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:640](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L640)
-
-___
-
-### instance
-
-• `Protected` `Optional` **instance**: `number`
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:612](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L612)
-
-___
-
-### ioPack
-
-• `Protected` **ioPack**: [`Record`](../modules/internal_.md#record)<`string`, `any`\>
-
-contents of io-package.json
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:622](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L622)
-
-___
-
-### isFloatComma
-
-• `Protected` `Optional` **isFloatComma**: `boolean`
-
-if float comma instead of dot is used, only available if requested via AdapterOptions `useFormatDate`
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:630](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L630)
-
-___
-
-### kill
-
-• `Protected` `Optional` **kill**: () => `Promise`<`void`\>
-
-#### Type declaration
-
-▸ (): `Promise`<`void`\>
-
-##### Returns
-
-`Promise`<`void`\>
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:645](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L645)
-
-___
-
-### language
-
-• `Protected` `Optional` **language**: [`Languages`](../modules/internal_.md#languages)
-
-configured language of system.config, only available if requested via AdapterOptions `useFormatDate`
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:632](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L632)
-
-___
-
-### latitude
-
-• `Protected` `Optional` **latitude**: `number`
-
-latitude configured in system.config, only available if requested via AdapterOptions `useFormatDate`
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:636](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L636)
-
-___
-
-### log
-
-• `Protected` `Optional` **log**: [`Log`](internal_.Log.md)
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:584](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L584)
-
-___
-
-### longitude
-
-• `Protected` `Optional` **longitude**: `number`
-
-longitude configured in system.config, only available if requested via AdapterOptions `useFormatDate`
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:634](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L634)
-
-___
-
-### name
-
-• `Protected` **name**: `string`
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:591](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L591)
-
-___
-
-### namespace
-
-• `Protected` **namespace**: \`${string}.${number}\`
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:590](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L590)
-
-___
-
-### oObjects
-
-• `Protected` `Optional` **oObjects**: [`Record`](../modules/internal_.md#record)<`string`, `undefined` \| [`Object`](../modules/internal_.md#object)\>
-
-Contains a live cache of the adapter's objects.
-NOTE: This is only defined if the adapter was initialized with the option objects: true.
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:577](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L577)
-
-___
-
-### oStates
-
-• `Protected` `Optional` **oStates**: [`Record`](../modules/internal_.md#record)<`string`, `undefined` \| [`State`](../interfaces/internal_.State.md)\>
-
-Contains a live cache of the adapter's states.
-NOTE: This is only defined if the adapter was initialized with the option states: true.
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:572](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L572)
-
-___
-
-### pack
-
-• `Protected` `Optional` **pack**: [`Record`](../modules/internal_.md#record)<`string`, `any`\>
-
-contents of package.json
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:620](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L620)
-
-___
-
-### processLog
-
-• `Protected` `Optional` **processLog**: (`msg`: `any`) => `void`
-
-#### Type declaration
-
-▸ (`msg`): `void`
-
-##### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `msg` | `any` |
-
-##### Returns
-
-`void`
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:646](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L646)
-
-___
-
-### requireLog
-
-• `Protected` `Optional` **requireLog**: (`_isActive`: `boolean`) => `void`
-
-#### Type declaration
-
-▸ (`_isActive`): `void`
-
-##### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `_isActive` | `boolean` |
-
-##### Returns
-
-`void`
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:647](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L647)
-
-___
-
-### stop
-
-• `Protected` `Optional` **stop**: () => `Promise`<`void`\>
-
-#### Type declaration
-
-▸ (): `Promise`<`void`\>
-
-##### Returns
-
-`Promise`<`void`\>
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:643](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L643)
-
-___
-
-### systemConfig
-
-• `Protected` `Optional` **systemConfig**: [`Record`](../modules/internal_.md#record)<`string`, `any`\>
-
-contents of iobroker.json if required via AdapterOptions
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:626](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L626)
-
-___
-
-### version
-
-• `Protected` `Optional` **version**: `string`
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:644](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L644)
-
-___
-
-### captureRejectionSymbol
-
-▪ `Static` `Readonly` **captureRejectionSymbol**: typeof [`captureRejectionSymbol`](AdapterClass.md#capturerejectionsymbol)
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[captureRejectionSymbol](internal_.EventEmitter-1.md#capturerejectionsymbol)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:273
-
-___
-
-### captureRejections
-
-▪ `Static` **captureRejections**: `boolean`
-
-Sets or gets the default captureRejection value for all emitters.
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[captureRejections](internal_.EventEmitter-1.md#capturerejections)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:278
-
-___
-
-### defaultMaxListeners
-
-▪ `Static` **defaultMaxListeners**: `number`
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[defaultMaxListeners](internal_.EventEmitter-1.md#defaultmaxlisteners)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:279
-
-___
-
-### errorMonitor
-
-▪ `Static` `Readonly` **errorMonitor**: typeof [`errorMonitor`](AdapterClass.md#errormonitor)
-
-This symbol shall be used to install a listener for only monitoring `'error'`
-events. Listeners installed using this symbol are called before the regular
-`'error'` listeners are called.
-
-Installing a listener using this symbol does not change the behavior once an
-`'error'` event is emitted, therefore the process will still crash if no
-regular `'error'` listener is installed.
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[errorMonitor](internal_.EventEmitter-1.md#errormonitor)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:272
+[packages/adapter/src/lib/adapter/adapter.ts:654](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L654)
 
 ## Methods
 
@@ -690,7 +227,7 @@ node_modules/@types/node/events.d.ts:272
 | `addTo` | `string` |
 | `parentDevice` | `string` |
 | `channelName` | `string` |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
+| `callback?` | `ErrorCallback` |
 
 #### Returns
 
@@ -698,7 +235,7 @@ node_modules/@types/node/events.d.ts:272
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5249](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5249)
+[packages/adapter/src/lib/adapter/adapter.ts:5242](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5242)
 
 ▸ **addChannelToEnum**(`enumName`, `addTo`, `parentDevice`, `channelName`, `options`, `callback?`): `void`
 
@@ -711,7 +248,7 @@ node_modules/@types/node/events.d.ts:272
 | `parentDevice` | `string` |
 | `channelName` | `string` |
 | `options` | `unknown` |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
+| `callback?` | `ErrorCallback` |
 
 #### Returns
 
@@ -719,7 +256,7 @@ node_modules/@types/node/events.d.ts:272
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5256](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5256)
+[packages/adapter/src/lib/adapter/adapter.ts:5249](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5249)
 
 ___
 
@@ -743,38 +280,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:180](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L180)
-
-___
-
-### addListener
-
-▸ **addListener**(`eventName`, `listener`): [`AdapterClass`](AdapterClass.md)
-
-Alias for `emitter.on(eventName, listener)`.
-
-**`Since`**
-
-v0.1.26
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `eventName` | `string` \| `symbol` |
-| `listener` | (...`args`: `any`[]) => `void` |
-
-#### Returns
-
-[`AdapterClass`](AdapterClass.md)
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[addListener](internal_.EventEmitter-1.md#addlistener)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:299
+[packages/adapter/src/lib/adapter/adapter.ts:180](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L180)
 
 ___
 
@@ -791,7 +297,7 @@ ___
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
 | `stateName` | `string` |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
+| `callback?` | `ErrorCallback` |
 
 #### Returns
 
@@ -799,7 +305,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5935](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5935)
+[packages/adapter/src/lib/adapter/adapter.ts:5928](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5928)
 
 ▸ **addStateToEnum**(`enumName`, `addTo`, `parentDevice`, `parentChannel`, `stateName`, `options`, `callback?`): `void`
 
@@ -813,7 +319,7 @@ ___
 | `parentChannel` | `string` |
 | `stateName` | `string` |
 | `options` | `unknown` |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
+| `callback?` | `ErrorCallback` |
 
 #### Returns
 
@@ -821,7 +327,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5943](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5943)
+[packages/adapter/src/lib/adapter/adapter.ts:5936](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5936)
 
 ___
 
@@ -846,13 +352,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:197](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L197)
+[packages/adapter/src/lib/adapter/adapter.ts:197](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L197)
 
 ___
 
 ### calculatePermissions
 
-▸ **calculatePermissions**(`user`, `commandsPermissions`, `options?`, `callback?`): `Promise`<`void` \| [`PermissionSet`](../interfaces/internal_.PermissionSet.md)\>
+▸ **calculatePermissions**(`user`, `commandsPermissions`, `options?`, `callback?`): `Promise`<`void` \| `PermissionSet`\>
 
 get the user permissions
 
@@ -864,19 +370,19 @@ The function reads permissions of user's groups (it can be more than one) and me
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `user` | `string` | user name as text |
-| `commandsPermissions` | [`CommandsPermissions`](../modules/internal_.md#commandspermissions) | object that describes the access rights like     <pre><code>         // static information         var commandsPermissions = {            getObject:          {type: 'object',    operation: 'read'},            getObjects:         {type: 'object',    operation: 'list'},            getObjectView:      {type: 'object',    operation: 'list'},            setObject:          {type: 'object',    operation: 'write'},            subscribeObjects:   {type: 'object',    operation: 'read'},            unsubscribeObjects: {type: 'object',    operation: 'read'},            subscribeFiles:     {type: 'object',    operation: 'read'},            unsubscribeFiles:   {type: 'object',    operation: 'read'},             getStates:          {type: 'state',     operation: 'list'},            getState:           {type: 'state',     operation: 'read'},            setState:           {type: 'state',     operation: 'write'},            getStateHistory:    {type: 'state',     operation: 'read'},            subscribe:          {type: 'state',     operation: 'read'},            unsubscribe:        {type: 'state',     operation: 'read'},            getVersion:         {type: '',          operation: ''},             httpGet:            {type: 'other',     operation: 'http'},            sendTo:             {type: 'other',     operation: 'sendto'},            sendToHost:         {type: 'other',     operation: 'sendto'},             readFile:           {type: 'file',      operation: 'read'},            readFile64:         {type: 'file',      operation: 'read'},            writeFile:          {type: 'file',      operation: 'write'},            writeFile64:        {type: 'file',      operation: 'write'},            unlink:             {type: 'file',      operation: 'delete'},            rename:             {type: 'file',      operation: 'write'},            mkdir:              {type: 'file',      operation: 'write'},            readDir:            {type: 'file',      operation: 'list'},            chmodFile:          {type: 'file',      operation: 'write'},            chownFile:          {type: 'file',      operation: 'write'},             authEnabled:        {type: '',          operation: ''},            disconnect:         {type: '',          operation: ''},            listPermissions:    {type: '',          operation: ''},            getUserPermissions: {type: 'object',    operation: 'read'}         };        </code></pre> |
-| `options?` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> | optional user context |
-| `callback?` | [`CalculatePermissionsCallback`](../modules/internal_.md#calculatepermissionscallback) | return result        <pre><code>            function (acl) {              // Access control object for admin looks like:              // {              //    file: {              //         read:       true,              //         write:      true,              //         'delete':   true,              //         create:     true,              //         list:       true              //     },              //     object: {              //         read:       true,              //         write:      true,              //         'delete':   true,              //         list:       true              //     },              //     state: {              //         read:       true,              //         write:      true,              //         'delete':   true,              //         create:     true,              //         list:       true              //     },              //     user: 'admin',              //     users:  {              //         read:       true,              //         write:      true,              //         create:     true,              //         'delete':   true,              //         list:       true              //     },              //     other: {              //         execute:    true,              //         http:       true,              //         sendto:     true              //     },              //     groups: ['administrator'] // can be more than one              // }            }        </code></pre> |
+| `commandsPermissions` | [`CommandsPermissions`](../modules/internal_.md#commandspermissions) | object that describes the access rights like     ```js         // static information         var commandsPermissions = {            getObject:          {type: 'object',    operation: 'read'},            getObjects:         {type: 'object',    operation: 'list'},            getObjectView:      {type: 'object',    operation: 'list'},            setObject:          {type: 'object',    operation: 'write'},            subscribeObjects:   {type: 'object',    operation: 'read'},            unsubscribeObjects: {type: 'object',    operation: 'read'},            subscribeFiles:     {type: 'object',    operation: 'read'},            unsubscribeFiles:   {type: 'object',    operation: 'read'},             getStates:          {type: 'state',     operation: 'list'},            getState:           {type: 'state',     operation: 'read'},            setState:           {type: 'state',     operation: 'write'},            getStateHistory:    {type: 'state',     operation: 'read'},            subscribe:          {type: 'state',     operation: 'read'},            unsubscribe:        {type: 'state',     operation: 'read'},            getVersion:         {type: '',          operation: ''},             httpGet:            {type: 'other',     operation: 'http'},            sendTo:             {type: 'other',     operation: 'sendto'},            sendToHost:         {type: 'other',     operation: 'sendto'},             readFile:           {type: 'file',      operation: 'read'},            readFile64:         {type: 'file',      operation: 'read'},            writeFile:          {type: 'file',      operation: 'write'},            writeFile64:        {type: 'file',      operation: 'write'},            unlink:             {type: 'file',      operation: 'delete'},            rename:             {type: 'file',      operation: 'write'},            mkdir:              {type: 'file',      operation: 'write'},            readDir:            {type: 'file',      operation: 'list'},            chmodFile:          {type: 'file',      operation: 'write'},            chownFile:          {type: 'file',      operation: 'write'},             authEnabled:        {type: '',          operation: ''},            disconnect:         {type: '',          operation: ''},            listPermissions:    {type: '',          operation: ''},            getUserPermissions: {type: 'object',    operation: 'read'}         };        ``` |
+| `options?` | `Record`<`string`, `any`\> | optional user context |
+| `callback?` | [`CalculatePermissionsCallback`](../modules/internal_.md#calculatepermissionscallback) | return result        ```js            function (acl) {              // Access control object for admin looks like:              // {              //    file: {              //         read:       true,              //         write:      true,              //         'delete':   true,              //         create:     true,              //         list:       true              //     },              //     object: {              //         read:       true,              //         write:      true,              //         'delete':   true,              //         list:       true              //     },              //     state: {              //         read:       true,              //         write:      true,              //         'delete':   true,              //         create:     true,              //         list:       true              //     },              //     user: 'admin',              //     users:  {              //         read:       true,              //         write:      true,              //         create:     true,              //         'delete':   true,              //         list:       true              //     },              //     other: {              //         execute:    true,              //         http:       true,              //         sendto:     true              //     },              //     groups: ['administrator'] // can be more than one              // }            }        ``` |
 
 #### Returns
 
-`Promise`<`void` \| [`PermissionSet`](../interfaces/internal_.PermissionSet.md)\>
+`Promise`<`void` \| `PermissionSet`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1810](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L1810)
+[packages/adapter/src/lib/adapter/adapter.ts:1805](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L1805)
 
-▸ **calculatePermissions**(`user`, `commandsPermissions`, `callback?`): `Promise`<`void` \| [`PermissionSet`](../interfaces/internal_.PermissionSet.md)\>
+▸ **calculatePermissions**(`user`, `commandsPermissions`, `callback?`): `Promise`<`void` \| `PermissionSet`\>
 
 get the user permissions
 
@@ -888,22 +394,22 @@ The function reads permissions of user's groups (it can be more than one) and me
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `user` | `string` | user name as text |
-| `commandsPermissions` | [`CommandsPermissions`](../modules/internal_.md#commandspermissions) | object that describes the access rights like     <pre><code>         // static information         var commandsPermissions = {            getObject:          {type: 'object',    operation: 'read'},            getObjects:         {type: 'object',    operation: 'list'},            getObjectView:      {type: 'object',    operation: 'list'},            setObject:          {type: 'object',    operation: 'write'},            subscribeObjects:   {type: 'object',    operation: 'read'},            unsubscribeObjects: {type: 'object',    operation: 'read'},            subscribeFiles:     {type: 'object',    operation: 'read'},            unsubscribeFiles:   {type: 'object',    operation: 'read'},             getStates:          {type: 'state',     operation: 'list'},            getState:           {type: 'state',     operation: 'read'},            setState:           {type: 'state',     operation: 'write'},            getStateHistory:    {type: 'state',     operation: 'read'},            subscribe:          {type: 'state',     operation: 'read'},            unsubscribe:        {type: 'state',     operation: 'read'},            getVersion:         {type: '',          operation: ''},             httpGet:            {type: 'other',     operation: 'http'},            sendTo:             {type: 'other',     operation: 'sendto'},            sendToHost:         {type: 'other',     operation: 'sendto'},             readFile:           {type: 'file',      operation: 'read'},            readFile64:         {type: 'file',      operation: 'read'},            writeFile:          {type: 'file',      operation: 'write'},            writeFile64:        {type: 'file',      operation: 'write'},            unlink:             {type: 'file',      operation: 'delete'},            rename:             {type: 'file',      operation: 'write'},            mkdir:              {type: 'file',      operation: 'write'},            readDir:            {type: 'file',      operation: 'list'},            chmodFile:          {type: 'file',      operation: 'write'},            chownFile:          {type: 'file',      operation: 'write'},             authEnabled:        {type: '',          operation: ''},            disconnect:         {type: '',          operation: ''},            listPermissions:    {type: '',          operation: ''},            getUserPermissions: {type: 'object',    operation: 'read'}         };        </code></pre> |
-| `callback?` | [`CalculatePermissionsCallback`](../modules/internal_.md#calculatepermissionscallback) | return result        <pre><code>            function (acl) {              // Access control object for admin looks like:              // {              //    file: {              //         read:       true,              //         write:      true,              //         'delete':   true,              //         create:     true,              //         list:       true              //     },              //     object: {              //         read:       true,              //         write:      true,              //         'delete':   true,              //         list:       true              //     },              //     state: {              //         read:       true,              //         write:      true,              //         'delete':   true,              //         create:     true,              //         list:       true              //     },              //     user: 'admin',              //     users:  {              //         read:       true,              //         write:      true,              //         create:     true,              //         'delete':   true,              //         list:       true              //     },              //     other: {              //         execute:    true,              //         http:       true,              //         sendto:     true              //     },              //     groups: ['administrator'] // can be more than one              // }            }        </code></pre> |
+| `commandsPermissions` | [`CommandsPermissions`](../modules/internal_.md#commandspermissions) | object that describes the access rights like     ```js         // static information         var commandsPermissions = {            getObject:          {type: 'object',    operation: 'read'},            getObjects:         {type: 'object',    operation: 'list'},            getObjectView:      {type: 'object',    operation: 'list'},            setObject:          {type: 'object',    operation: 'write'},            subscribeObjects:   {type: 'object',    operation: 'read'},            unsubscribeObjects: {type: 'object',    operation: 'read'},            subscribeFiles:     {type: 'object',    operation: 'read'},            unsubscribeFiles:   {type: 'object',    operation: 'read'},             getStates:          {type: 'state',     operation: 'list'},            getState:           {type: 'state',     operation: 'read'},            setState:           {type: 'state',     operation: 'write'},            getStateHistory:    {type: 'state',     operation: 'read'},            subscribe:          {type: 'state',     operation: 'read'},            unsubscribe:        {type: 'state',     operation: 'read'},            getVersion:         {type: '',          operation: ''},             httpGet:            {type: 'other',     operation: 'http'},            sendTo:             {type: 'other',     operation: 'sendto'},            sendToHost:         {type: 'other',     operation: 'sendto'},             readFile:           {type: 'file',      operation: 'read'},            readFile64:         {type: 'file',      operation: 'read'},            writeFile:          {type: 'file',      operation: 'write'},            writeFile64:        {type: 'file',      operation: 'write'},            unlink:             {type: 'file',      operation: 'delete'},            rename:             {type: 'file',      operation: 'write'},            mkdir:              {type: 'file',      operation: 'write'},            readDir:            {type: 'file',      operation: 'list'},            chmodFile:          {type: 'file',      operation: 'write'},            chownFile:          {type: 'file',      operation: 'write'},             authEnabled:        {type: '',          operation: ''},            disconnect:         {type: '',          operation: ''},            listPermissions:    {type: '',          operation: ''},            getUserPermissions: {type: 'object',    operation: 'read'}         };        ``` |
+| `callback?` | [`CalculatePermissionsCallback`](../modules/internal_.md#calculatepermissionscallback) | return result        ```js            function (acl) {              // Access control object for admin looks like:              // {              //    file: {              //         read:       true,              //         write:      true,              //         'delete':   true,              //         create:     true,              //         list:       true              //     },              //     object: {              //         read:       true,              //         write:      true,              //         'delete':   true,              //         list:       true              //     },              //     state: {              //         read:       true,              //         write:      true,              //         'delete':   true,              //         create:     true,              //         list:       true              //     },              //     user: 'admin',              //     users:  {              //         read:       true,              //         write:      true,              //         create:     true,              //         'delete':   true,              //         list:       true              //     },              //     other: {              //         execute:    true,              //         http:       true,              //         sendto:     true              //     },              //     groups: ['administrator'] // can be more than one              // }            }        ``` |
 
 #### Returns
 
-`Promise`<`void` \| [`PermissionSet`](../interfaces/internal_.PermissionSet.md)\>
+`Promise`<`void` \| `PermissionSet`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1816](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L1816)
+[packages/adapter/src/lib/adapter/adapter.ts:1811](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L1811)
 
 ___
 
 ### calculatePermissionsAsync
 
-▸ **calculatePermissionsAsync**(`user`, `commandsPermissions`, `options?`): `Promise`<[`PermissionSet`](../interfaces/internal_.PermissionSet.md)\>
+▸ **calculatePermissionsAsync**(`user`, `commandsPermissions`, `options?`): `Promise`<`PermissionSet`\>
 
 <INTERNAL> Determines the users permissions
 
@@ -917,11 +423,11 @@ ___
 
 #### Returns
 
-`Promise`<[`PermissionSet`](../interfaces/internal_.PermissionSet.md)\>
+`Promise`<`PermissionSet`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:287](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L287)
+[packages/adapter/src/lib/adapter/adapter.ts:287](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L287)
 
 ___
 
@@ -939,8 +445,8 @@ This function used mostly internally and the adapter developer do not require it
 | :------ | :------ | :------ |
 | `user` | `string` | user name as text |
 | `group` | `string` | group name |
-| `options` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> | optional user context |
-| `callback?` | [`CheckGroupCallback`](../modules/internal_.md#checkgroupcallback) | return result        <pre><code>            function (result) {              if (result) adapter.log.debug('User exists and in the group');            }        </code></pre> |
+| `options` | `Record`<`string`, `any`\> | optional user context |
+| `callback?` | [`CheckGroupCallback`](../modules/internal_.md#checkgroupcallback) | return result        ```js            function (result) {              if (result) adapter.log.debug('User exists and in the group');            }        ``` |
 
 #### Returns
 
@@ -948,7 +454,7 @@ This function used mostly internally and the adapter developer do not require it
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1726](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L1726)
+[packages/adapter/src/lib/adapter/adapter.ts:1721](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L1721)
 
 ▸ **checkGroup**(`user`, `group`, `callback?`): `Promise`<`void`\>
 
@@ -962,7 +468,7 @@ This function used mostly internally and the adapter developer do not require it
 | :------ | :------ | :------ |
 | `user` | `string` | user name as text |
 | `group` | `string` | group name |
-| `callback?` | [`CheckGroupCallback`](../modules/internal_.md#checkgroupcallback) | return result        <pre><code>            function (result) {              if (result) adapter.log.debug('User exists and in the group');            }        </code></pre> |
+| `callback?` | [`CheckGroupCallback`](../modules/internal_.md#checkgroupcallback) | return result        ```js            function (result) {              if (result) adapter.log.debug('User exists and in the group');            }        ``` |
 
 #### Returns
 
@@ -970,7 +476,7 @@ This function used mostly internally and the adapter developer do not require it
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1727](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L1727)
+[packages/adapter/src/lib/adapter/adapter.ts:1722](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L1722)
 
 ___
 
@@ -994,7 +500,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:285](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L285)
+[packages/adapter/src/lib/adapter/adapter.ts:285](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L285)
 
 ___
 
@@ -1010,8 +516,8 @@ validates user and password
 | :------ | :------ | :------ |
 | `user` | `string` | user name as text |
 | `pw` | `string` | password as text |
-| `options` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> | optional user context |
-| `callback` | [`CheckPasswordCallback`](../modules/internal_.md#checkpasswordcallback) | return result        <pre><code>            function (result) {              if (result) adapter.log.debug('User is valid');            }        </code></pre> |
+| `options` | `Record`<`string`, `any`\> | optional user context |
+| `callback` | [`CheckPasswordCallback`](../modules/internal_.md#checkpasswordcallback) | return result        ```js            function (result) {              if (result) adapter.log.debug('User is valid');            }        ``` |
 
 #### Returns
 
@@ -1019,7 +525,7 @@ validates user and password
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1487](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L1487)
+[packages/adapter/src/lib/adapter/adapter.ts:1482](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L1482)
 
 ▸ **checkPassword**(`user`, `pw`, `callback`): `Promise`<`void`\>
 
@@ -1031,7 +537,7 @@ validates user and password
 | :------ | :------ | :------ |
 | `user` | `string` | user name as text |
 | `pw` | `string` | password as text |
-| `callback` | [`CheckPasswordCallback`](../modules/internal_.md#checkpasswordcallback) | return result        <pre><code>            function (result) {              if (result) adapter.log.debug('User is valid');            }        </code></pre> |
+| `callback` | [`CheckPasswordCallback`](../modules/internal_.md#checkpasswordcallback) | return result        ```js            function (result) {              if (result) adapter.log.debug('User is valid');            }        ``` |
 
 #### Returns
 
@@ -1039,7 +545,7 @@ validates user and password
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1493](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L1493)
+[packages/adapter/src/lib/adapter/adapter.ts:1488](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L1488)
 
 ___
 
@@ -1063,7 +569,7 @@ Validates username and password
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:281](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L281)
+[packages/adapter/src/lib/adapter/adapter.ts:281](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L281)
 
 ___
 
@@ -1074,12 +580,12 @@ ___
 Change file access rights
 
 This function updates the file access rights
-<pre><code>
+```js
      adapter.chmodFile('vis.0', '/main/vis-views.json', {mode: 0x644}, function (err, processed) {
        if (err) adapter.log.error('Cannot read file: ' + err);
        console.log('New files: ' + JSON.stringify(processed));
      });
-</code></pre>
+```
 
 #### Parameters
 
@@ -1087,8 +593,8 @@ This function updates the file access rights
 | :------ | :------ | :------ |
 | `adapter` | ``null`` \| `string` | - |
 | `path` | `string` | path to file without adapter name. E.g. If you want to update "/vis.0/main/*", here must be "/main/*" and _adapter must be equal to "vis.0". |
-| `options` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> \| { `mode`: `string` \| `number`  } | data with mode |
-| `callback` | [`ChownFileCallback`](../modules/internal_.md#chownfilecallback) | return result        <pre><code>            function (err, processedFiles) {                list of processed files with new groups            }        </code></pre> |
+| `options` | `Record`<`string`, `any`\> \| { `mode`: `string` \| `number`  } | data with mode |
+| `callback` | `ChownFileCallback` | return result        ```js            function (err, processedFiles) {                list of processed files with new groups            }        ``` |
 
 #### Returns
 
@@ -1096,19 +602,19 @@ This function updates the file access rights
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6213](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6213)
+[packages/adapter/src/lib/adapter/adapter.ts:6206](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6206)
 
 ▸ **chmodFile**(`adapter`, `path`, `callback`): `void`
 
 Change file access rights
 
 This function updates the file access rights
-<pre><code>
+```js
      adapter.chmodFile('vis.0', '/main/vis-views.json', {mode: 0x644}, function (err, processed) {
        if (err) adapter.log.error('Cannot read file: ' + err);
        console.log('New files: ' + JSON.stringify(processed));
      });
-</code></pre>
+```
 
 #### Parameters
 
@@ -1116,7 +622,7 @@ This function updates the file access rights
 | :------ | :------ | :------ |
 | `adapter` | ``null`` \| `string` | - |
 | `path` | `string` | path to file without adapter name. E.g. If you want to update "/vis.0/main/*", here must be "/main/*" and _adapter must be equal to "vis.0". |
-| `callback` | [`ChownFileCallback`](../modules/internal_.md#chownfilecallback) | return result        <pre><code>            function (err, processedFiles) {                list of processed files with new groups            }        </code></pre> |
+| `callback` | `ChownFileCallback` | return result        ```js            function (err, processedFiles) {                list of processed files with new groups            }        ``` |
 
 #### Returns
 
@@ -1124,13 +630,13 @@ This function updates the file access rights
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6220](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6220)
+[packages/adapter/src/lib/adapter/adapter.ts:6213](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6213)
 
 ___
 
 ### chmodFileAsync
 
-▸ **chmodFileAsync**(`adapter`, `path`, `options`): `Promise`<{ `entries`: [`ChownFileResult`](../interfaces/internal_.ChownFileResult.md)[] ; `id`: `string`  }\>
+▸ **chmodFileAsync**(`adapter`, `path`, `options`): `Promise`<{ `entries`: `ChownFileResult`[] ; `id`: `string`  }\>
 
 Changes access rights of all files in the adapter directory
 
@@ -1140,15 +646,15 @@ Changes access rights of all files in the adapter directory
 | :------ | :------ |
 | `adapter` | ``null`` \| `string` |
 | `path` | `string` |
-| `options` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> \| { `mode`: `string` \| `number`  } |
+| `options` | `Record`<`string`, `any`\> \| { `mode`: `string` \| `number`  } |
 
 #### Returns
 
-`Promise`<{ `entries`: [`ChownFileResult`](../interfaces/internal_.ChownFileResult.md)[] ; `id`: `string`  }\>
+`Promise`<{ `entries`: `ChownFileResult`[] ; `id`: `string`  }\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:213](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L213)
+[packages/adapter/src/lib/adapter/adapter.ts:213](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L213)
 
 ___
 
@@ -1159,12 +665,12 @@ ___
 Change file owner
 
 This function updates the file owner and ownerGroup
-<pre><code>
+```js
      adapter.chownFile('vis.0', '/main/vis-views.json', {owner: 'newOwner', ownerGroup: 'newgroup'}, function (err, processed) {
        if (err) adapter.log.error('Cannot read file: ' + err);
        console.log('New files: ' + JSON.stringify(processed));
      });
-</code></pre>
+```
 
 #### Parameters
 
@@ -1173,7 +679,7 @@ This function updates the file owner and ownerGroup
 | `_adapter` | `string` | adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken. |
 | `path` | `string` | path to file without adapter name. E.g. If you want to update "/vis.0/main/*", here must be "/main/*" and _adapter must be equal to "vis.0". |
 | `options` | `unknown` | data with owner and ownerGroup |
-| `callback` | (`err?`: ``null`` \| [`Error`](../modules/internal_.md#error), `processedFiles?`: `any`) => `void` | return result        <pre><code>            function (err, processedFiles) {                list of processed files with new groups            }        </code></pre> |
+| `callback` | (`err?`: ``null`` \| `Error`, `processedFiles?`: `any`) => `void` | return result        ```js            function (err, processedFiles) {                list of processed files with new groups            }        ``` |
 
 #### Returns
 
@@ -1181,19 +687,19 @@ This function updates the file owner and ownerGroup
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6260](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6260)
+[packages/adapter/src/lib/adapter/adapter.ts:6253](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6253)
 
 ▸ **chownFile**(`_adapter`, `path`, `callback`): `void`
 
 Change file owner
 
 This function updates the file owner and ownerGroup
-<pre><code>
+```js
      adapter.chownFile('vis.0', '/main/vis-views.json', {owner: 'newOwner', ownerGroup: 'newgroup'}, function (err, processed) {
        if (err) adapter.log.error('Cannot read file: ' + err);
        console.log('New files: ' + JSON.stringify(processed));
      });
-</code></pre>
+```
 
 #### Parameters
 
@@ -1201,7 +707,7 @@ This function updates the file owner and ownerGroup
 | :------ | :------ | :------ |
 | `_adapter` | `string` | adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken. |
 | `path` | `string` | path to file without adapter name. E.g. If you want to update "/vis.0/main/*", here must be "/main/*" and _adapter must be equal to "vis.0". |
-| `callback` | (`err?`: ``null`` \| [`Error`](../modules/internal_.md#error), `processedFiles?`: `any`) => `void` | return result        <pre><code>            function (err, processedFiles) {                list of processed files with new groups            }        </code></pre> |
+| `callback` | (`err?`: ``null`` \| `Error`, `processedFiles?`: `any`) => `void` | return result        ```js            function (err, processedFiles) {                list of processed files with new groups            }        ``` |
 
 #### Returns
 
@@ -1209,7 +715,7 @@ This function updates the file owner and ownerGroup
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6267](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6267)
+[packages/adapter/src/lib/adapter/adapter.ts:6260](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6260)
 
 ___
 
@@ -1229,7 +735,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:219](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L219)
+[packages/adapter/src/lib/adapter/adapter.ts:219](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L219)
 
 ___
 
@@ -1244,7 +750,7 @@ but it check the running intervals on unload
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `interval` | [`Timeout`](../interfaces/internal_.Timeout.md) | interval object |
+| `interval` | `Timeout` | interval object |
 
 #### Returns
 
@@ -1252,7 +758,7 @@ but it check the running intervals on unload
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2538](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L2538)
+[packages/adapter/src/lib/adapter/adapter.ts:2535](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L2535)
 
 ___
 
@@ -1267,7 +773,7 @@ but it check the running timers on unload
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `timer` | [`Timeout`](../interfaces/internal_.Timeout.md) | the timer object |
+| `timer` | `Timeout` | the timer object |
 
 #### Returns
 
@@ -1275,7 +781,7 @@ but it check the running timers on unload
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2461](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L2461)
+[packages/adapter/src/lib/adapter/adapter.ts:2458](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L2458)
 
 ___
 
@@ -1289,7 +795,7 @@ ___
 | :------ | :------ |
 | `parentDevice` | `string` |
 | `channelName` | `string` |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
+| `callback?` | `SetObjectCallback` |
 
 #### Returns
 
@@ -1297,7 +803,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4890](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4890)
+[packages/adapter/src/lib/adapter/adapter.ts:4883](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4883)
 
 ▸ **createChannel**(`parentDevice`, `channelName`, `roleOrCommon`, `callback?`): `void`
 
@@ -1307,8 +813,8 @@ ___
 | :------ | :------ |
 | `parentDevice` | `string` |
 | `channelName` | `string` |
-| `roleOrCommon` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`ChannelCommon`](../interfaces/internal_.ChannelCommon.md)\> |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
+| `roleOrCommon` | `string` \| `Partial`<`ChannelCommon`\> |
+| `callback?` | `SetObjectCallback` |
 
 #### Returns
 
@@ -1316,7 +822,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4891](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4891)
+[packages/adapter/src/lib/adapter/adapter.ts:4884](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4884)
 
 ▸ **createChannel**(`parentDevice`, `channelName`, `roleOrCommon`, `native`, `callback?`): `void`
 
@@ -1326,9 +832,9 @@ ___
 | :------ | :------ |
 | `parentDevice` | `string` |
 | `channelName` | `string` |
-| `roleOrCommon` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`ChannelCommon`](../interfaces/internal_.ChannelCommon.md)\> |
-| `native` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
+| `roleOrCommon` | `string` \| `Partial`<`ChannelCommon`\> |
+| `native` | `Record`<`string`, `any`\> |
+| `callback?` | `SetObjectCallback` |
 
 #### Returns
 
@@ -1336,7 +842,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4897](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4897)
+[packages/adapter/src/lib/adapter/adapter.ts:4890](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4890)
 
 ▸ **createChannel**(`parentDevice`, `channelName`, `roleOrCommon`, `native`, `options`, `callback?`): `void`
 
@@ -1346,10 +852,10 @@ ___
 | :------ | :------ |
 | `parentDevice` | `string` |
 | `channelName` | `string` |
-| `roleOrCommon` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`ChannelCommon`](../interfaces/internal_.ChannelCommon.md)\> |
-| `native` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
+| `roleOrCommon` | `string` \| `Partial`<`ChannelCommon`\> |
+| `native` | `Record`<`string`, `any`\> |
 | `options` | `unknown` |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
+| `callback?` | `SetObjectCallback` |
 
 #### Returns
 
@@ -1357,13 +863,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4904](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4904)
+[packages/adapter/src/lib/adapter/adapter.ts:4897](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4897)
 
 ___
 
 ### createChannelAsync
 
-▸ **createChannelAsync**(`parentDevice`, `channelName`, `roleOrCommon?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+▸ **createChannelAsync**(`parentDevice`, `channelName`, `roleOrCommon?`): `SetObjectPromise`
 
 Creates an object with type channel. It must be located under a device
 
@@ -1373,17 +879,17 @@ Creates an object with type channel. It must be located under a device
 | :------ | :------ |
 | `parentDevice` | `string` |
 | `channelName` | `string` |
-| `roleOrCommon?` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`ChannelCommon`](../interfaces/internal_.ChannelCommon.md)\> |
+| `roleOrCommon?` | `string` \| `Partial`<`ChannelCommon`\> |
 
 #### Returns
 
-[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+`SetObjectPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:454](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L454)
+[packages/adapter/src/lib/adapter/adapter.ts:454](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L454)
 
-▸ **createChannelAsync**(`parentDevice`, `channelName`, `roleOrCommon`, `native?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+▸ **createChannelAsync**(`parentDevice`, `channelName`, `roleOrCommon`, `native?`): `SetObjectPromise`
 
 #### Parameters
 
@@ -1391,18 +897,18 @@ Creates an object with type channel. It must be located under a device
 | :------ | :------ |
 | `parentDevice` | `string` |
 | `channelName` | `string` |
-| `roleOrCommon` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`ChannelCommon`](../interfaces/internal_.ChannelCommon.md)\> |
-| `native?` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
+| `roleOrCommon` | `string` \| `Partial`<`ChannelCommon`\> |
+| `native?` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+`SetObjectPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:459](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L459)
+[packages/adapter/src/lib/adapter/adapter.ts:459](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L459)
 
-▸ **createChannelAsync**(`parentDevice`, `channelName`, `roleOrCommon`, `native`, `options?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+▸ **createChannelAsync**(`parentDevice`, `channelName`, `roleOrCommon`, `native`, `options?`): `SetObjectPromise`
 
 #### Parameters
 
@@ -1410,17 +916,17 @@ Creates an object with type channel. It must be located under a device
 | :------ | :------ |
 | `parentDevice` | `string` |
 | `channelName` | `string` |
-| `roleOrCommon` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`ChannelCommon`](../interfaces/internal_.ChannelCommon.md)\> |
-| `native` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
+| `roleOrCommon` | `string` \| `Partial`<`ChannelCommon`\> |
+| `native` | `Record`<`string`, `any`\> |
 | `options?` | `unknown` |
 
 #### Returns
 
-[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+`SetObjectPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:465](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L465)
+[packages/adapter/src/lib/adapter/adapter.ts:465](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L465)
 
 ___
 
@@ -1433,7 +939,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `deviceName` | `string` |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
+| `callback?` | `SetObjectCallback` |
 
 #### Returns
 
@@ -1441,7 +947,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4816](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4816)
+[packages/adapter/src/lib/adapter/adapter.ts:4809](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4809)
 
 ▸ **createDevice**(`deviceName`, `common`, `callback?`): `void`
 
@@ -1450,8 +956,8 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `deviceName` | `string` |
-| `common` | [`Partial`](../modules/internal_.md#partial)<[`DeviceCommon`](../interfaces/internal_.DeviceCommon.md)\> |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
+| `common` | `Partial`<`DeviceCommon`\> |
+| `callback?` | `SetObjectCallback` |
 
 #### Returns
 
@@ -1459,7 +965,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4817](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4817)
+[packages/adapter/src/lib/adapter/adapter.ts:4810](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4810)
 
 ▸ **createDevice**(`deviceName`, `common`, `native`, `callback?`): `void`
 
@@ -1468,9 +974,9 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `deviceName` | `string` |
-| `common` | [`Partial`](../modules/internal_.md#partial)<[`DeviceCommon`](../interfaces/internal_.DeviceCommon.md)\> |
-| `native` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
+| `common` | `Partial`<`DeviceCommon`\> |
+| `native` | `Record`<`string`, `any`\> |
+| `callback?` | `SetObjectCallback` |
 
 #### Returns
 
@@ -1478,7 +984,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4822](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4822)
+[packages/adapter/src/lib/adapter/adapter.ts:4815](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4815)
 
 ▸ **createDevice**(`deviceName`, `common`, `native`, `options`, `callback?`): `void`
 
@@ -1487,10 +993,10 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `deviceName` | `string` |
-| `common` | [`Partial`](../modules/internal_.md#partial)<[`DeviceCommon`](../interfaces/internal_.DeviceCommon.md)\> |
-| `native` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
+| `common` | `Partial`<`DeviceCommon`\> |
+| `native` | `Record`<`string`, `any`\> |
 | `options` | `unknown` |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
+| `callback?` | `SetObjectCallback` |
 
 #### Returns
 
@@ -1498,13 +1004,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4828](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4828)
+[packages/adapter/src/lib/adapter/adapter.ts:4821](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4821)
 
 ___
 
 ### createDeviceAsync
 
-▸ **createDeviceAsync**(`deviceName`, `common?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+▸ **createDeviceAsync**(`deviceName`, `common?`): `SetObjectPromise`
 
 creates an object with type device
 
@@ -1513,52 +1019,52 @@ creates an object with type device
 | Name | Type |
 | :------ | :------ |
 | `deviceName` | `string` |
-| `common?` | [`Partial`](../modules/internal_.md#partial)<[`DeviceCommon`](../interfaces/internal_.DeviceCommon.md)\> |
+| `common?` | `Partial`<`DeviceCommon`\> |
 
 #### Returns
 
-[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+`SetObjectPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:433](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L433)
+[packages/adapter/src/lib/adapter/adapter.ts:433](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L433)
 
-▸ **createDeviceAsync**(`deviceName`, `common`, `native?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+▸ **createDeviceAsync**(`deviceName`, `common`, `native?`): `SetObjectPromise`
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `deviceName` | `string` |
-| `common` | [`Partial`](../modules/internal_.md#partial)<[`DeviceCommon`](../interfaces/internal_.DeviceCommon.md)\> |
-| `native?` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
+| `common` | `Partial`<`DeviceCommon`\> |
+| `native?` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+`SetObjectPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:434](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L434)
+[packages/adapter/src/lib/adapter/adapter.ts:434](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L434)
 
-▸ **createDeviceAsync**(`deviceName`, `common`, `native`, `options?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+▸ **createDeviceAsync**(`deviceName`, `common`, `native`, `options?`): `SetObjectPromise`
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `deviceName` | `string` |
-| `common` | [`Partial`](../modules/internal_.md#partial)<[`DeviceCommon`](../interfaces/internal_.DeviceCommon.md)\> |
-| `native` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
+| `common` | `Partial`<`DeviceCommon`\> |
+| `native` | `Record`<`string`, `any`\> |
 | `options?` | `unknown` |
 
 #### Returns
 
-[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+`SetObjectPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L439)
+[packages/adapter/src/lib/adapter/adapter.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L439)
 
 ___
 
@@ -1573,7 +1079,7 @@ ___
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
 | `stateName` | `string` |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
+| `callback?` | `SetObjectCallback` |
 
 #### Returns
 
@@ -1581,7 +1087,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4975](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4975)
+[packages/adapter/src/lib/adapter/adapter.ts:4968](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4968)
 
 ▸ **createState**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `callback?`): `void`
 
@@ -1592,8 +1098,8 @@ ___
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
 | `stateName` | `string` |
-| `roleOrCommon` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`StateCommon`](../interfaces/internal_.StateCommon.md)\> |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
+| `roleOrCommon` | `string` \| `Partial`<`StateCommon`\> |
+| `callback?` | `SetObjectCallback` |
 
 #### Returns
 
@@ -1601,7 +1107,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4981](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4981)
+[packages/adapter/src/lib/adapter/adapter.ts:4974](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4974)
 
 ▸ **createState**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `native`, `callback?`): `void`
 
@@ -1612,9 +1118,9 @@ ___
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
 | `stateName` | `string` |
-| `roleOrCommon` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`StateCommon`](../interfaces/internal_.StateCommon.md)\> |
-| `native` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
+| `roleOrCommon` | `string` \| `Partial`<`StateCommon`\> |
+| `native` | `Record`<`string`, `any`\> |
+| `callback?` | `SetObjectCallback` |
 
 #### Returns
 
@@ -1622,7 +1128,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4988](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4988)
+[packages/adapter/src/lib/adapter/adapter.ts:4981](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4981)
 
 ▸ **createState**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `native`, `options`, `callback?`): `void`
 
@@ -1633,10 +1139,10 @@ ___
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
 | `stateName` | `string` |
-| `roleOrCommon` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`StateCommon`](../interfaces/internal_.StateCommon.md)\> |
-| `native` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
+| `roleOrCommon` | `string` \| `Partial`<`StateCommon`\> |
+| `native` | `Record`<`string`, `any`\> |
 | `options` | `unknown` |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
+| `callback?` | `SetObjectCallback` |
 
 #### Returns
 
@@ -1644,13 +1150,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4996](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4996)
+[packages/adapter/src/lib/adapter/adapter.ts:4989](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4989)
 
 ___
 
 ### createStateAsync
 
-▸ **createStateAsync**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+▸ **createStateAsync**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon?`): `SetObjectPromise`
 
 Creates a state and the corresponding object. It must be located in a channel under a device
 
@@ -1661,17 +1167,17 @@ Creates a state and the corresponding object. It must be located in a channel un
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
 | `stateName` | `string` |
-| `roleOrCommon?` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`StateCommon`](../interfaces/internal_.StateCommon.md)\> |
+| `roleOrCommon?` | `string` \| `Partial`<`StateCommon`\> |
 
 #### Returns
 
-[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+`SetObjectPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:476](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L476)
+[packages/adapter/src/lib/adapter/adapter.ts:476](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L476)
 
-▸ **createStateAsync**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `native?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+▸ **createStateAsync**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `native?`): `SetObjectPromise`
 
 #### Parameters
 
@@ -1680,18 +1186,18 @@ Creates a state and the corresponding object. It must be located in a channel un
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
 | `stateName` | `string` |
-| `roleOrCommon` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`StateCommon`](../interfaces/internal_.StateCommon.md)\> |
-| `native?` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
+| `roleOrCommon` | `string` \| `Partial`<`StateCommon`\> |
+| `native?` | `Record`<`string`, `any`\> |
 
 #### Returns
 
-[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+`SetObjectPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:482](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L482)
+[packages/adapter/src/lib/adapter/adapter.ts:482](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L482)
 
-▸ **createStateAsync**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `native`, `options?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+▸ **createStateAsync**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `native`, `options?`): `SetObjectPromise`
 
 #### Parameters
 
@@ -1700,17 +1206,17 @@ Creates a state and the corresponding object. It must be located in a channel un
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
 | `stateName` | `string` |
-| `roleOrCommon` | `string` \| [`Partial`](../modules/internal_.md#partial)<[`StateCommon`](../interfaces/internal_.StateCommon.md)\> |
-| `native` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
+| `roleOrCommon` | `string` \| `Partial`<`StateCommon`\> |
+| `native` | `Record`<`string`, `any`\> |
 | `options?` | `unknown` |
 
 #### Returns
 
-[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+`SetObjectPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:489](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L489)
+[packages/adapter/src/lib/adapter/adapter.ts:489](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L489)
 
 ___
 
@@ -1733,7 +1239,7 @@ Decrypt the password/value with given key
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1185](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L1185)
+[packages/adapter/src/lib/adapter/adapter.ts:1178](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L1178)
 
 ▸ **decrypt**(`value`): `string`
 
@@ -1751,7 +1257,7 @@ Decrypt the password/value with given key
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1186](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L1186)
+[packages/adapter/src/lib/adapter/adapter.ts:1179](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L1179)
 
 ___
 
@@ -1766,7 +1272,7 @@ Deletes binary state but prefixes the own namespace to the id
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
+| `callback?` | `ErrorCallback` |
 
 #### Returns
 
@@ -1774,7 +1280,7 @@ Deletes binary state but prefixes the own namespace to the id
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10185](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L10185)
+[packages/adapter/src/lib/adapter/adapter.ts:10189](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L10189)
 
 ▸ **delBinaryState**(`id`, `options`, `callback?`): `void`
 
@@ -1786,7 +1292,7 @@ Deletes binary state but prefixes the own namespace to the id
 | :------ | :------ |
 | `id` | `string` |
 | `options` | `unknown` |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
+| `callback?` | `ErrorCallback` |
 
 #### Returns
 
@@ -1794,7 +1300,7 @@ Deletes binary state but prefixes the own namespace to the id
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10186](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L10186)
+[packages/adapter/src/lib/adapter/adapter.ts:10190](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L10190)
 
 ___
 
@@ -1818,7 +1324,7 @@ Deletes a binary state from the states DB
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:273](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L273)
+[packages/adapter/src/lib/adapter/adapter.ts:273](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L273)
 
 ___
 
@@ -1834,7 +1340,7 @@ Deletes a given file
 | :------ | :------ |
 | `adapterName` | ``null`` \| `string` |
 | `path` | `string` |
-| `callback` | [`ErrnoCallback`](../modules/internal_.md#errnocallback) |
+| `callback` | `ErrnoCallback` |
 
 #### Returns
 
@@ -1842,7 +1348,7 @@ Deletes a given file
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:371](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L371)
+[packages/adapter/src/lib/adapter/adapter.ts:371](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L371)
 
 ▸ **delFile**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -1853,7 +1359,7 @@ Deletes a given file
 | `adapterName` | ``null`` \| `string` |
 | `path` | `string` |
 | `options` | `unknown` |
-| `callback` | [`ErrnoCallback`](../modules/internal_.md#errnocallback) |
+| `callback` | `ErrnoCallback` |
 
 #### Returns
 
@@ -1861,7 +1367,7 @@ Deletes a given file
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:372](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L372)
+[packages/adapter/src/lib/adapter/adapter.ts:372](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L372)
 
 ___
 
@@ -1885,7 +1391,7 @@ Deletes a given file
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:225](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L225)
+[packages/adapter/src/lib/adapter/adapter.ts:225](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L225)
 
 ___
 
@@ -1900,7 +1406,7 @@ Deletes binary state
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
+| `callback?` | `ErrorCallback` |
 
 #### Returns
 
@@ -1908,7 +1414,7 @@ Deletes binary state
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10126](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L10126)
+[packages/adapter/src/lib/adapter/adapter.ts:10130](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L10130)
 
 ▸ **delForeignBinaryState**(`id`, `options`, `callback?`): `void`
 
@@ -1920,7 +1426,7 @@ Deletes binary state
 | :------ | :------ |
 | `id` | `string` |
 | `options` | `unknown` |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
+| `callback?` | `ErrorCallback` |
 
 #### Returns
 
@@ -1928,7 +1434,7 @@ Deletes binary state
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10127](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L10127)
+[packages/adapter/src/lib/adapter/adapter.ts:10131](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L10131)
 
 ___
 
@@ -1951,7 +1457,7 @@ Deletes a binary state from the states DB. The ID will not be prefixed with the 
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:267](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L267)
+[packages/adapter/src/lib/adapter/adapter.ts:267](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L267)
 
 ___
 
@@ -1968,7 +1474,7 @@ The full ID with namespace must be specified. The corresponding state will be de
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | exactly object ID (with namespace) |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | return result        <pre><code>            function (err) {              if (err) adapter.log.error('Cannot delete object: ' + err);            }        </code></pre> |
+| `callback?` | `ErrorCallback` | return result        ```js            function (err) {              if (err) adapter.log.error('Cannot delete object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -1976,7 +1482,7 @@ The full ID with namespace must be specified. The corresponding state will be de
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4260](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4260)
+[packages/adapter/src/lib/adapter/adapter.ts:4257](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4257)
 
 ▸ **delForeignObject**(`id`, `options`, `callback?`): `void`
 
@@ -1989,8 +1495,8 @@ The full ID with namespace must be specified. The corresponding state will be de
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | exactly object ID (with namespace) |
-| `options` | [`DelObjectOptions`](../interfaces/internal_.DelObjectOptions.md) | optional user context or {recursive:true} to delete all underlying objects |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | return result        <pre><code>            function (err) {              if (err) adapter.log.error('Cannot delete object: ' + err);            }        </code></pre> |
+| `options` | `DelObjectOptions` | optional user context or `{ recursive: true }` to delete all underlying objects |
+| `callback?` | `ErrorCallback` | return result        ```js            function (err) {              if (err) adapter.log.error('Cannot delete object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -1998,7 +1504,7 @@ The full ID with namespace must be specified. The corresponding state will be de
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4261](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4261)
+[packages/adapter/src/lib/adapter/adapter.ts:4258](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4258)
 
 ___
 
@@ -2013,7 +1519,7 @@ Deletes an object (which might not belong to this adapter) from the object db
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `options?` | [`DelObjectOptions`](../interfaces/internal_.DelObjectOptions.md) |
+| `options?` | `DelObjectOptions` |
 
 #### Returns
 
@@ -2021,7 +1527,7 @@ Deletes an object (which might not belong to this adapter) from the object db
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:158](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L158)
+[packages/adapter/src/lib/adapter/adapter.ts:158](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L158)
 
 ___
 
@@ -2043,7 +1549,7 @@ No error is returned if state does not exist.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | long string for ID like "adapterName.0.stateID". |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | return result function (err) {} |
+| `callback?` | `ErrorCallback` | - |
 
 #### Returns
 
@@ -2051,7 +1557,7 @@ No error is returned if state does not exist.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8955](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L8955)
+[packages/adapter/src/lib/adapter/adapter.ts:8948](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L8948)
 
 ▸ **delForeignState**(`id`, `options`, `callback?`): `void`
 
@@ -2070,7 +1576,7 @@ No error is returned if state does not exist.
 | :------ | :------ | :------ |
 | `id` | `string` | long string for ID like "adapterName.0.stateID". |
 | `options` | `unknown` | optional argument to describe the user context |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | return result function (err) {} |
+| `callback?` | `ErrorCallback` | - |
 
 #### Returns
 
@@ -2078,7 +1584,7 @@ No error is returned if state does not exist.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8956](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L8956)
+[packages/adapter/src/lib/adapter/adapter.ts:8949](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L8949)
 
 ___
 
@@ -2101,7 +1607,7 @@ Deletes a state from the states DB, but not the associated object
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:239](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L239)
+[packages/adapter/src/lib/adapter/adapter.ts:239](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L239)
 
 ___
 
@@ -2121,7 +1627,7 @@ The corresponding state will be deleted too if the object has type "state".
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | exactly object ID (without namespace) |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | return result        <pre><code>            function (err) {              if (err) adapter.log.error('Cannot delete object: ' + err);            }        </code></pre> |
+| `callback?` | `ErrorCallback` | return result        ```js            function (err) {              if (err) adapter.log.error('Cannot delete object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -2129,7 +1635,7 @@ The corresponding state will be deleted too if the object has type "state".
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4200](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4200)
+[packages/adapter/src/lib/adapter/adapter.ts:4197](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4197)
 
 ▸ **delObject**(`id`, `options?`, `callback?`): `void`
 
@@ -2145,8 +1651,8 @@ The corresponding state will be deleted too if the object has type "state".
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | exactly object ID (without namespace) |
-| `options?` | ``null`` \| [`DelObjectOptions`](../interfaces/internal_.DelObjectOptions.md) | optional user context. E.g. recursive option could be true |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | return result        <pre><code>            function (err) {              if (err) adapter.log.error('Cannot delete object: ' + err);            }        </code></pre> |
+| `options?` | ``null`` \| `DelObjectOptions` | optional user context. E.g. recursive option could be true |
+| `callback?` | `ErrorCallback` | return result        ```js            function (err) {              if (err) adapter.log.error('Cannot delete object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -2154,7 +1660,7 @@ The corresponding state will be deleted too if the object has type "state".
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4201](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4201)
+[packages/adapter/src/lib/adapter/adapter.ts:4198](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4198)
 
 ___
 
@@ -2169,7 +1675,7 @@ Deletes an object from the object db
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `options?` | [`DelObjectOptions`](../interfaces/internal_.DelObjectOptions.md) |
+| `options?` | `DelObjectOptions` |
 
 #### Returns
 
@@ -2177,7 +1683,7 @@ Deletes an object from the object db
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:156](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L156)
+[packages/adapter/src/lib/adapter/adapter.ts:156](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L156)
 
 ___
 
@@ -2202,7 +1708,7 @@ No error is returned if state does not exist.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | exactly object ID (without namespace) |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | return result        <pre><code>            function (err) {              if (err) adapter.log.error('Cannot delete object: ' + err);            }        </code></pre> |
+| `callback?` | `ErrorCallback` | return result        ```js            function (err) {              if (err) adapter.log.error('Cannot delete object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -2210,7 +1716,7 @@ No error is returned if state does not exist.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8903](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L8903)
+[packages/adapter/src/lib/adapter/adapter.ts:8896](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L8896)
 
 ▸ **delState**(`id`, `options`, `callback?`): `void`
 
@@ -2232,7 +1738,7 @@ No error is returned if state does not exist.
 | :------ | :------ | :------ |
 | `id` | `string` | exactly object ID (without namespace) |
 | `options` | `unknown` | optional user context |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | return result        <pre><code>            function (err) {              if (err) adapter.log.error('Cannot delete object: ' + err);            }        </code></pre> |
+| `callback?` | `ErrorCallback` | return result        ```js            function (err) {              if (err) adapter.log.error('Cannot delete object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -2240,7 +1746,7 @@ No error is returned if state does not exist.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8904](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L8904)
+[packages/adapter/src/lib/adapter/adapter.ts:8897](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L8897)
 
 ___
 
@@ -2248,7 +1754,7 @@ ___
 
 ▸ **delStateAsync**(`id`, `options?`): `Promise`<`void`\>
 
-Deletes a state from the states DB, but not the associated object. Consider using @link{deleteState} instead
+Deletes a state from the states DB, but not the associated object. Consider using deleteState instead
 
 #### Parameters
 
@@ -2263,7 +1769,7 @@ Deletes a state from the states DB, but not the associated object. Consider usin
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:237](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L237)
+[packages/adapter/src/lib/adapter/adapter.ts:237](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L237)
 
 ___
 
@@ -2288,7 +1794,7 @@ promise when timeout is over
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2476](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L2476)
+[packages/adapter/src/lib/adapter/adapter.ts:2473](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L2473)
 
 ___
 
@@ -2307,7 +1813,7 @@ deleteChannel
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `channelName` | `string` | is the part of ID like: adapter.instance.<deviceName>.<channelName> |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | return result        <pre><code>            function (err) {              if (err) adapter.log.error('Cannot delete device: ' + err);            }        </code></pre> |
+| `callback?` | `ErrorCallback` | return result        ```js            function (err) {              if (err) adapter.log.error('Cannot delete device: ' + err);            }        ``` |
 
 #### Returns
 
@@ -2315,7 +1821,7 @@ deleteChannel
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5497](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5497)
+[packages/adapter/src/lib/adapter/adapter.ts:5490](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5490)
 
 ▸ **deleteChannel**(`channelName`, `options?`, `callback?`): `void`
 
@@ -2330,8 +1836,8 @@ deleteChannel
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `channelName` | `string` | is the part of ID like: adapter.instance.<deviceName>.<channelName> |
-| `options?` | `unknown` | optional user context |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | return result        <pre><code>            function (err) {              if (err) adapter.log.error('Cannot delete device: ' + err);            }        </code></pre> |
+| `options?` | `unknown` | - |
+| `callback?` | `ErrorCallback` | return result        ```js            function (err) {              if (err) adapter.log.error('Cannot delete device: ' + err);            }        ``` |
 
 #### Returns
 
@@ -2339,7 +1845,7 @@ deleteChannel
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5498](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5498)
+[packages/adapter/src/lib/adapter/adapter.ts:5491](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5491)
 
 ▸ **deleteChannel**(`parentDevice`, `channelName`, `options?`, `callback?`): `void`
 
@@ -2355,8 +1861,8 @@ deleteChannel
 | :------ | :------ | :------ |
 | `parentDevice` | `string` | is the part of ID like: adapter.instance.<deviceName> |
 | `channelName` | `string` | is the part of ID like: adapter.instance.<deviceName>.<channelName> |
-| `options?` | `unknown` | optional user context |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | return result        <pre><code>            function (err) {              if (err) adapter.log.error('Cannot delete device: ' + err);            }        </code></pre> |
+| `options?` | `unknown` | - |
+| `callback?` | `ErrorCallback` | return result        ```js            function (err) {              if (err) adapter.log.error('Cannot delete device: ' + err);            }        ``` |
 
 #### Returns
 
@@ -2364,7 +1870,7 @@ deleteChannel
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5499](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5499)
+[packages/adapter/src/lib/adapter/adapter.ts:5492](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5492)
 
 ___
 
@@ -2387,7 +1893,7 @@ Deletes a channel and its states. It must have been created with createChannel
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:501](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L501)
+[packages/adapter/src/lib/adapter/adapter.ts:501](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L501)
 
 ▸ **deleteChannelAsync**(`parentDevice`, `channelName`, `options?`): `Promise`<`void`\>
 
@@ -2405,7 +1911,7 @@ Deletes a channel and its states. It must have been created with createChannel
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:502](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L502)
+[packages/adapter/src/lib/adapter/adapter.ts:502](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L502)
 
 ___
 
@@ -2420,7 +1926,7 @@ ___
 | `enumName` | `string` |
 | `parentDevice` | `string` |
 | `channelName` | `string` |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
+| `callback?` | `ErrorCallback` |
 
 #### Returns
 
@@ -2428,7 +1934,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5382](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5382)
+[packages/adapter/src/lib/adapter/adapter.ts:5375](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5375)
 
 ▸ **deleteChannelFromEnum**(`enumName`, `parentDevice`, `channelName`, `options`, `callback?`): `void`
 
@@ -2440,7 +1946,7 @@ ___
 | `parentDevice` | `string` |
 | `channelName` | `string` |
 | `options` | `unknown` |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
+| `callback?` | `ErrorCallback` |
 
 #### Returns
 
@@ -2448,7 +1954,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5388](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5388)
+[packages/adapter/src/lib/adapter/adapter.ts:5381](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5381)
 
 ___
 
@@ -2471,7 +1977,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:187](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L187)
+[packages/adapter/src/lib/adapter/adapter.ts:187](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L187)
 
 ___
 
@@ -2486,7 +1992,7 @@ Delete device with all its channels and states.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `deviceName` | `string` | is the part of ID like: adapter.instance.<deviceName> |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | return result        <pre><code>            function (err) {              if (err) adapter.log.error('Cannot delete device: ' + err);            }        </code></pre> |
+| `callback?` | `ErrorCallback` | return result        ```js            function (err) {              if (err) adapter.log.error('Cannot delete device: ' + err);            }        ``` |
 
 #### Returns
 
@@ -2494,7 +2000,7 @@ Delete device with all its channels and states.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5183](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5183)
+[packages/adapter/src/lib/adapter/adapter.ts:5176](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5176)
 
 ▸ **deleteDevice**(`deviceName`, `options`, `callback?`): `void`
 
@@ -2505,8 +2011,8 @@ Delete device with all its channels and states.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `deviceName` | `string` | is the part of ID like: adapter.instance.<deviceName> |
-| `options` | `unknown` | optional user context |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | return result        <pre><code>            function (err) {              if (err) adapter.log.error('Cannot delete device: ' + err);            }        </code></pre> |
+| `options` | `unknown` | - |
+| `callback?` | `ErrorCallback` | return result        ```js            function (err) {              if (err) adapter.log.error('Cannot delete device: ' + err);            }        ``` |
 
 #### Returns
 
@@ -2514,7 +2020,7 @@ Delete device with all its channels and states.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5184](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5184)
+[packages/adapter/src/lib/adapter/adapter.ts:5177](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5177)
 
 ___
 
@@ -2537,7 +2043,7 @@ deletes a device, its channels and states
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:179](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L179)
+[packages/adapter/src/lib/adapter/adapter.ts:179](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L179)
 
 ___
 
@@ -2551,7 +2057,7 @@ ___
 | :------ | :------ |
 | `stateName` | `string` |
 | `options?` | `unknown` |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
+| `callback?` | `ErrorCallback` |
 
 #### Returns
 
@@ -2559,7 +2065,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5605](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5605)
+[packages/adapter/src/lib/adapter/adapter.ts:5598](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5598)
 
 ▸ **deleteState**(`parentChannel`, `stateName`, `options?`, `callback?`): `void`
 
@@ -2570,7 +2076,7 @@ ___
 | `parentChannel` | `string` |
 | `stateName` | `string` |
 | `options?` | `unknown` |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
+| `callback?` | `ErrorCallback` |
 
 #### Returns
 
@@ -2578,7 +2084,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5606](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5606)
+[packages/adapter/src/lib/adapter/adapter.ts:5599](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5599)
 
 ▸ **deleteState**(`parentDevice`, `parentChannel`, `stateName`, `options?`, `callback?`): `void`
 
@@ -2590,7 +2096,7 @@ ___
 | `parentChannel` | `string` |
 | `stateName` | `string` |
 | `options?` | `unknown` |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
+| `callback?` | `ErrorCallback` |
 
 #### Returns
 
@@ -2598,7 +2104,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5607](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5607)
+[packages/adapter/src/lib/adapter/adapter.ts:5600](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5600)
 
 ___
 
@@ -2621,7 +2127,7 @@ Deletes a state. It must have been created with createState
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L507)
+[packages/adapter/src/lib/adapter/adapter.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L507)
 
 ▸ **deleteStateAsync**(`parentChannel`, `stateName`, `options?`): `Promise`<`void`\>
 
@@ -2639,7 +2145,7 @@ Deletes a state. It must have been created with createState
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:508](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L508)
+[packages/adapter/src/lib/adapter/adapter.ts:508](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L508)
 
 ▸ **deleteStateAsync**(`parentDevice`, `parentChannel`, `stateName`, `options?`): `Promise`<`void`\>
 
@@ -2658,7 +2164,7 @@ Deletes a state. It must have been created with createState
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:509](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L509)
+[packages/adapter/src/lib/adapter/adapter.ts:509](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L509)
 
 ___
 
@@ -2674,7 +2180,7 @@ ___
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
 | `stateName` | `string` |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
+| `callback?` | `ErrorCallback` |
 
 #### Returns
 
@@ -2682,7 +2188,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6082](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6082)
+[packages/adapter/src/lib/adapter/adapter.ts:6075](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6075)
 
 ▸ **deleteStateFromEnum**(`enumName`, `parentDevice`, `parentChannel`, `stateName`, `options`, `callback?`): `void`
 
@@ -2695,7 +2201,7 @@ ___
 | `parentChannel` | `string` |
 | `stateName` | `string` |
 | `options` | `unknown` |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
+| `callback?` | `ErrorCallback` |
 
 #### Returns
 
@@ -2703,7 +2209,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6089](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6089)
+[packages/adapter/src/lib/adapter/adapter.ts:6082](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6082)
 
 ___
 
@@ -2727,7 +2233,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:205](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L205)
+[packages/adapter/src/lib/adapter/adapter.ts:205](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L205)
 
 ___
 
@@ -2740,7 +2246,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
+| `callback?` | `ErrorCallback` |
 
 #### Returns
 
@@ -2748,90 +2254,23 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1270](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L1270)
+[packages/adapter/src/lib/adapter/adapter.ts:1263](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L1263)
 
 ___
 
 ### disable
 
-▸ **disable**(): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+▸ **disable**(): `SetObjectPromise`
 
 Disables and stops the adapter instance.
 
 #### Returns
 
-[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+`SetObjectPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2354](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L2354)
-
-___
-
-### emit
-
-▸ **emit**(`eventName`, ...`args`): `boolean`
-
-Synchronously calls each of the listeners registered for the event named`eventName`, in the order they were registered, passing the supplied arguments
-to each.
-
-Returns `true` if the event had listeners, `false` otherwise.
-
-```js
-const EventEmitter = require('events');
-const myEmitter = new EventEmitter();
-
-// First listener
-myEmitter.on('event', function firstListener() {
-  console.log('Helloooo! first listener');
-});
-// Second listener
-myEmitter.on('event', function secondListener(arg1, arg2) {
-  console.log(`event with parameters ${arg1}, ${arg2} in second listener`);
-});
-// Third listener
-myEmitter.on('event', function thirdListener(...args) {
-  const parameters = args.join(', ');
-  console.log(`event with parameters ${parameters} in third listener`);
-});
-
-console.log(myEmitter.listeners('event'));
-
-myEmitter.emit('event', 1, 2, 3, 4, 5);
-
-// Prints:
-// [
-//   [Function: firstListener],
-//   [Function: secondListener],
-//   [Function: thirdListener]
-// ]
-// Helloooo! first listener
-// event with parameters 1, 2 in second listener
-// event with parameters 1, 2, 3, 4, 5 in third listener
-```
-
-**`Since`**
-
-v0.1.26
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `eventName` | `string` \| `symbol` |
-| `...args` | `any`[] |
-
-#### Returns
-
-`boolean`
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[emit](internal_.EventEmitter-1.md#emit)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:555
+[packages/adapter/src/lib/adapter/adapter.ts:2351](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L2351)
 
 ___
 
@@ -2854,7 +2293,7 @@ Encrypt the password/value with given key
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1205](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L1205)
+[packages/adapter/src/lib/adapter/adapter.ts:1198](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L1198)
 
 ▸ **encrypt**(`value`): `string`
 
@@ -2872,45 +2311,7 @@ Encrypt the password/value with given key
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1206](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L1206)
-
-___
-
-### eventNames
-
-▸ **eventNames**(): (`string` \| `symbol`)[]
-
-Returns an array listing the events for which the emitter has registered
-listeners. The values in the array are strings or `Symbol`s.
-
-```js
-const EventEmitter = require('events');
-const myEE = new EventEmitter();
-myEE.on('foo', () => {});
-myEE.on('bar', () => {});
-
-const sym = Symbol('symbol');
-myEE.on(sym, () => {});
-
-console.log(myEE.eventNames());
-// Prints: [ 'foo', 'bar', Symbol(symbol) ]
-```
-
-**`Since`**
-
-v6.0.0
-
-#### Returns
-
-(`string` \| `symbol`)[]
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[eventNames](internal_.EventEmitter-1.md#eventnames)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:614
+[packages/adapter/src/lib/adapter/adapter.ts:1199](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L1199)
 
 ___
 
@@ -2918,7 +2319,7 @@ ___
 
 ▸ **extendForeignObject**<`T`\>(`id`, `objPart`, `callback?`): `void`
 
-Same as Adapter.extendObject, but for any object.
+Same as [extendObject](AdapterClass.md#extendobject), but for any object.
 
 ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC98989.1.STATE"
 
@@ -2933,8 +2334,8 @@ ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC989
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `T` | object ID, that must be extended |
-| `objPart` | [`PartialObjectWorker`](../modules/internal_.md#partialobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"write"``\>\> | - |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | return result        <pre><code>            function (err, obj) {                // obj is {"id": id}                if (err) adapter.log.error(err);            }        </code></pre> |
+| `objPart` | `PartialObjectWorker`<`ObjectIdToObjectType`<`T`, ``"write"``\>\> | - |
+| `callback?` | `SetObjectCallback` | return result        ```js            function (err, obj) {                // obj is {"id": id}                if (err) adapter.log.error(err);            }        ``` |
 
 #### Returns
 
@@ -2942,11 +2343,11 @@ ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC989
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3231](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3231)
+[packages/adapter/src/lib/adapter/adapter.ts:3228](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3228)
 
 ▸ **extendForeignObject**<`T`\>(`id`, `objPart`, `options`, `callback?`): `void`
 
-Same as Adapter.extendObject, but for any object.
+Same as [extendObject](AdapterClass.md#extendobject), but for any object.
 
 ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC98989.1.STATE"
 
@@ -2961,9 +2362,9 @@ ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC989
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `T` | object ID, that must be extended |
-| `objPart` | [`PartialObjectWorker`](../modules/internal_.md#partialobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"write"``\>\> | - |
-| `options` | [`ExtendObjectOptions`](../interfaces/internal_.ExtendObjectOptions.md) | optional user context, or use attribute preserve e.g. {preserve: {common: ['name']}} to preserve common.name |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | return result        <pre><code>            function (err, obj) {                // obj is {"id": id}                if (err) adapter.log.error(err);            }        </code></pre> |
+| `objPart` | `PartialObjectWorker`<`ObjectIdToObjectType`<`T`, ``"write"``\>\> | - |
+| `options` | `ExtendObjectOptions` | optional user context, or use attribute preserve e.g. `{preserve: {common: ['name']}}` to preserve common.name |
+| `callback?` | `SetObjectCallback` | return result        ```js            function (err, obj) {                // obj is {"id": id}                if (err) adapter.log.error(err);            }        ``` |
 
 #### Returns
 
@@ -2971,13 +2372,13 @@ ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC989
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3236](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3236)
+[packages/adapter/src/lib/adapter/adapter.ts:3233](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3233)
 
 ___
 
 ### extendForeignObjectAsync
 
-▸ **extendForeignObjectAsync**<`T`\>(`id`, `objPart`, `options?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+▸ **extendForeignObjectAsync**<`T`\>(`id`, `objPart`, `options?`): `SetObjectPromise`
 
 Extend an object (which might not belong to this adapter) and create it if it might not exist
 
@@ -2992,16 +2393,16 @@ Extend an object (which might not belong to this adapter) and create it if it mi
 | Name | Type |
 | :------ | :------ |
 | `id` | `T` |
-| `objPart` | [`PartialObjectWorker`](../modules/internal_.md#partialobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"write"``\>\> |
-| `options?` | [`ExtendObjectOptions`](../interfaces/internal_.ExtendObjectOptions.md) |
+| `objPart` | `PartialObjectWorker`<`ObjectIdToObjectType`<`T`, ``"write"``\>\> |
+| `options?` | `ExtendObjectOptions` |
 
 #### Returns
 
-[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+`SetObjectPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:128](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L128)
+[packages/adapter/src/lib/adapter/adapter.ts:128](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L128)
 
 ___
 
@@ -3012,7 +2413,7 @@ ___
 Extend some object and create it if it does not exist
 
 You can change or extend some object. E.g existing object is:
-<pre><code>
+```js
     {
          common: {
              name: 'Adapter name',
@@ -3023,11 +2424,11 @@ You can change or extend some object. E.g existing object is:
              unused: 'text'
          }
     }
-</code></pre>
+```
 
 If following object will be passed as argument
 
-<pre><code>
+```js
     {
          common: {
              desc: 'New description',
@@ -3038,10 +2439,10 @@ If following object will be passed as argument
              unused: null
          }
     }
-</code></pre>
+```
 
 We will get as output:
-<pre><code>
+```js
     {
          common: {
              desc: 'New description',
@@ -3052,7 +2453,7 @@ We will get as output:
          native: {
          }
     }
-</code></pre>
+```
 
 #### Parameters
 
@@ -3060,7 +2461,7 @@ We will get as output:
 | :------ | :------ | :------ |
 | `id` | `string` | object ID, that must be extended |
 | `objPart` | `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` | - |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | return result        <pre><code>            function (err, obj) {                if (err) adapter.log.error(err);                // obj is {"id": id}            }        </code></pre> |
+| `callback?` | `SetObjectCallback` | return result        ```js            function (err, obj) {                if (err) adapter.log.error(err);                // obj is {"id": id}            }        ``` |
 
 #### Returns
 
@@ -3068,14 +2469,14 @@ We will get as output:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2854](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L2854)
+[packages/adapter/src/lib/adapter/adapter.ts:2851](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L2851)
 
 ▸ **extendObject**(`id`, `objPart`, `options`, `callback?`): `void`
 
 Extend some object and create it if it does not exist
 
 You can change or extend some object. E.g existing object is:
-<pre><code>
+```js
     {
          common: {
              name: 'Adapter name',
@@ -3086,11 +2487,11 @@ You can change or extend some object. E.g existing object is:
              unused: 'text'
          }
     }
-</code></pre>
+```
 
 If following object will be passed as argument
 
-<pre><code>
+```js
     {
          common: {
              desc: 'New description',
@@ -3101,10 +2502,10 @@ If following object will be passed as argument
              unused: null
          }
     }
-</code></pre>
+```
 
 We will get as output:
-<pre><code>
+```js
     {
          common: {
              desc: 'New description',
@@ -3115,7 +2516,7 @@ We will get as output:
          native: {
          }
     }
-</code></pre>
+```
 
 #### Parameters
 
@@ -3123,8 +2524,8 @@ We will get as output:
 | :------ | :------ | :------ |
 | `id` | `string` | object ID, that must be extended |
 | `objPart` | `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` | - |
-| `options` | [`ExtendObjectOptions`](../interfaces/internal_.ExtendObjectOptions.md) | optional user context |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | return result        <pre><code>            function (err, obj) {                if (err) adapter.log.error(err);                // obj is {"id": id}            }        </code></pre> |
+| `options` | `ExtendObjectOptions` | optional user context |
+| `callback?` | `SetObjectCallback` | return result        ```js            function (err, obj) {                if (err) adapter.log.error(err);                // obj is {"id": id}            }        ``` |
 
 #### Returns
 
@@ -3132,13 +2533,13 @@ We will get as output:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2855](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L2855)
+[packages/adapter/src/lib/adapter/adapter.ts:2852](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L2852)
 
 ___
 
 ### extendObjectAsync
 
-▸ **extendObjectAsync**(`id`, `objPart`, `options?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+▸ **extendObjectAsync**(`id`, `objPart`, `options?`): `SetObjectPromise`
 
 Extend an object and create it if it might not exist
 
@@ -3148,15 +2549,15 @@ Extend an object and create it if it might not exist
 | :------ | :------ |
 | `id` | `string` |
 | `objPart` | `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` \| `Object` |
-| `options?` | [`ExtendObjectOptions`](../interfaces/internal_.ExtendObjectOptions.md) |
+| `options?` | `ExtendObjectOptions` |
 
 #### Returns
 
-[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+`SetObjectPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:114](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L114)
+[packages/adapter/src/lib/adapter/adapter.ts:114](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L114)
 
 ___
 
@@ -3172,7 +2573,7 @@ Checks if file exists in DB.
 | :------ | :------ | :------ |
 | `adapterName` | ``null`` \| `string` | - |
 | `path` | `string` | - |
-| `callback` | [`GenericCallback`](../modules/internal_.md#genericcallback)<`boolean`\> | cb function if none provided, a promise is returned |
+| `callback` | `GenericCallback`<`boolean`\> | cb function if none provided, a promise is returned |
 
 #### Returns
 
@@ -3180,7 +2581,7 @@ Checks if file exists in DB.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6569](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6569)
+[packages/adapter/src/lib/adapter/adapter.ts:6562](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6562)
 
 ▸ **fileExists**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -3193,7 +2594,7 @@ Checks if file exists in DB.
 | `adapterName` | ``null`` \| `string` | - |
 | `path` | `string` | - |
 | `options` | `unknown` | optional user context |
-| `callback` | [`GenericCallback`](../modules/internal_.md#genericcallback)<`boolean`\> | cb function if none provided, a promise is returned |
+| `callback` | `GenericCallback`<`boolean`\> | cb function if none provided, a promise is returned |
 
 #### Returns
 
@@ -3201,7 +2602,7 @@ Checks if file exists in DB.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6570](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6570)
+[packages/adapter/src/lib/adapter/adapter.ts:6563](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6563)
 
 ___
 
@@ -3225,7 +2626,7 @@ Checks if a file exists in the DB
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:232](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L232)
+[packages/adapter/src/lib/adapter/adapter.ts:232](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L232)
 
 ___
 
@@ -3243,7 +2644,7 @@ Find object by the exact name or ID.
 | :------ | :------ | :------ |
 | `idOrName` | `string` | - |
 | `type` | `string` | optional common.type of state: 'number', 'string', 'boolean', 'file', ... |
-| `callback` | [`FindObjectCallback`](../modules/internal_.md#findobjectcallback) | return result        <pre><code>            adapter.findForeignObject('Some name', function (err, id, name) {              if (err) adapter.log.error('Cannot get object: ' + err);              adapter.log.debug('ID of object with name "' + name + '" is "' + id + '"');            }        </code></pre> |
+| `callback` | `FindObjectCallback` | return result        ```js            adapter.findForeignObject('Some name', function (err, id, name) {              if (err) adapter.log.error('Cannot get object: ' + err);              adapter.log.debug('ID of object with name "' + name + '" is "' + id + '"');            }        ``` |
 
 #### Returns
 
@@ -3251,7 +2652,7 @@ Find object by the exact name or ID.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4083](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4083)
+[packages/adapter/src/lib/adapter/adapter.ts:4080](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4080)
 
 ▸ **findForeignObject**(`idOrName`, `type`, `options`, `callback`): `void`
 
@@ -3266,7 +2667,7 @@ Find object by the exact name or ID.
 | `idOrName` | `string` | - |
 | `type` | `string` | optional common.type of state: 'number', 'string', 'boolean', 'file', ... |
 | `options` | `unknown` | optional user context |
-| `callback` | [`FindObjectCallback`](../modules/internal_.md#findobjectcallback) | return result        <pre><code>            adapter.findForeignObject('Some name', function (err, id, name) {              if (err) adapter.log.error('Cannot get object: ' + err);              adapter.log.debug('ID of object with name "' + name + '" is "' + id + '"');            }        </code></pre> |
+| `callback` | `FindObjectCallback` | return result        ```js            adapter.findForeignObject('Some name', function (err, id, name) {              if (err) adapter.log.error('Cannot get object: ' + err);              adapter.log.debug('ID of object with name "' + name + '" is "' + id + '"');            }        ``` |
 
 #### Returns
 
@@ -3274,7 +2675,7 @@ Find object by the exact name or ID.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4084](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4084)
+[packages/adapter/src/lib/adapter/adapter.ts:4081](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4081)
 
 ___
 
@@ -3297,7 +2698,7 @@ Finds an object by its ID or name
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:449](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L449)
+[packages/adapter/src/lib/adapter/adapter.ts:449](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L449)
 
 ___
 
@@ -3318,7 +2719,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6652](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6652)
+[packages/adapter/src/lib/adapter/adapter.ts:6645](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6645)
 
 ▸ **formatDate**(`dateObj`, `isDuration`, `format`): `string`
 
@@ -3336,7 +2737,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6653](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6653)
+[packages/adapter/src/lib/adapter/adapter.ts:6646](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6646)
 
 ___
 
@@ -3357,7 +2758,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6617](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6617)
+[packages/adapter/src/lib/adapter/adapter.ts:6610](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6610)
 
 ▸ **formatValue**(`value`, `decimals`, `format`): `string`
 
@@ -3375,13 +2776,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6618](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6618)
+[packages/adapter/src/lib/adapter/adapter.ts:6611](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6611)
 
 ___
 
 ### getAdapterObjects
 
-▸ **getAdapterObjects**(`callback`): `Promise`<`void` \| [`Record`](../modules/internal_.md#record)<`string`, [`AdapterScopedObject`](../modules/internal_.md#adapterscopedobject)\>\>
+▸ **getAdapterObjects**(`callback`): `Promise`<`void` \| `Record`<`string`, `AdapterScopedObject`\>\>
 
 Get all states, channels and devices of this adapter.
 
@@ -3389,31 +2790,31 @@ Get all states, channels and devices of this adapter.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `callback` | (`objects`: [`Record`](../modules/internal_.md#record)<`string`, [`AdapterScopedObject`](../modules/internal_.md#adapterscopedobject)\>) => `void` | return result        <pre><code>            function (objects) {                for (var id in objects) {                    adapter.log.debug(id);                }            }        </code></pre> |
+| `callback` | (`objects`: `Record`<`string`, `AdapterScopedObject`\>) => `void` | return result        ```js            function (objects) {                for (var id in objects) {                    adapter.log.debug(id);                }            }        ``` |
 
 #### Returns
 
-`Promise`<`void` \| [`Record`](../modules/internal_.md#record)<`string`, [`AdapterScopedObject`](../modules/internal_.md#adapterscopedobject)\>\>
+`Promise`<`void` \| `Record`<`string`, `AdapterScopedObject`\>\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2772](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L2772)
+[packages/adapter/src/lib/adapter/adapter.ts:2769](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L2769)
 
 ___
 
 ### getAdapterObjectsAsync
 
-▸ **getAdapterObjectsAsync**(): `Promise`<[`Record`](../modules/internal_.md#record)<`string`, [`AdapterScopedObject`](../modules/internal_.md#adapterscopedobject)\>\>
+▸ **getAdapterObjectsAsync**(): `Promise`<`Record`<`string`, `AdapterScopedObject`\>\>
 
 Get all states, channels, devices and folders of this adapter
 
 #### Returns
 
-`Promise`<[`Record`](../modules/internal_.md#record)<`string`, [`AdapterScopedObject`](../modules/internal_.md#adapterscopedobject)\>\>
+`Promise`<`Record`<`string`, `AdapterScopedObject`\>\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:303](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L303)
+[packages/adapter/src/lib/adapter/adapter.ts:303](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L303)
 
 ___
 
@@ -3428,7 +2829,7 @@ Same as getForeignBinaryState but prefixes the own namespace to the id
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | The state ID |
-| `callback` | [`GetBinaryStateCallback`](../modules/internal_.md#getbinarystatecallback) |  |
+| `callback` | `GetBinaryStateCallback` |  |
 
 #### Returns
 
@@ -3436,7 +2837,7 @@ Same as getForeignBinaryState but prefixes the own namespace to the id
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10109](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L10109)
+[packages/adapter/src/lib/adapter/adapter.ts:10113](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L10113)
 
 ▸ **getBinaryState**(`id`, `options`, `callback`): `void`
 
@@ -3448,7 +2849,7 @@ Same as getForeignBinaryState but prefixes the own namespace to the id
 | :------ | :------ | :------ |
 | `id` | `string` | The state ID |
 | `options` | `unknown` | optional |
-| `callback` | [`GetBinaryStateCallback`](../modules/internal_.md#getbinarystatecallback) |  |
+| `callback` | `GetBinaryStateCallback` |  |
 
 #### Returns
 
@@ -3456,13 +2857,13 @@ Same as getForeignBinaryState but prefixes the own namespace to the id
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10110](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L10110)
+[packages/adapter/src/lib/adapter/adapter.ts:10114](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L10114)
 
 ___
 
 ### getBinaryStateAsync
 
-▸ **getBinaryStateAsync**(`id`, `options?`): [`GetBinaryStatePromise`](../modules/internal_.md#getbinarystatepromise)
+▸ **getBinaryStateAsync**(`id`, `options?`): `GetBinaryStatePromise`
 
 Despite the naming convention, this method doesn't prepend the adapter namespace. Use getForeignBinaryStateAsync instead.
 Reads a binary state from Redis
@@ -3476,11 +2877,11 @@ Reads a binary state from Redis
 
 #### Returns
 
-[`GetBinaryStatePromise`](../modules/internal_.md#getbinarystatepromise)
+`GetBinaryStatePromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:265](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L265)
+[packages/adapter/src/lib/adapter/adapter.ts:265](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L265)
 
 ___
 
@@ -3501,7 +2902,7 @@ The result can be directly used for creation of https server.
 | `publicName?` | `string` | public certificate name |
 | `privateName?` | `string` | private certificate name |
 | `chainedName?` | `string` | optional chained certificate name |
-| `callback?` | [`GetCertificatesCallback`](../modules/internal_.md#getcertificatescallback) | return result        <pre><code>            function (err, certs, letsEncrypt) {              adapter.log.debug('private key: ' + certs.key);              adapter.log.debug('public cert: ' + certs.cert);              adapter.log.debug('chained cert: ' + certs.ca);            }        </code></pre> |
+| `callback?` | [`GetCertificatesCallback`](../modules/internal_.md#getcertificatescallback) | return result        ```js            function (err, certs, letsEncrypt) {              adapter.log.debug('private key: ' + certs.key);              adapter.log.debug('public cert: ' + certs.cert);              adapter.log.debug('chained cert: ' + certs.ca);            }        ``` |
 
 #### Returns
 
@@ -3509,7 +2910,7 @@ The result can be directly used for creation of https server.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2198](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L2198)
+[packages/adapter/src/lib/adapter/adapter.ts:2195](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L2195)
 
 ___
 
@@ -3529,7 +2930,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:301](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L301)
+[packages/adapter/src/lib/adapter/adapter.ts:301](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L301)
 
 ___
 
@@ -3543,7 +2944,7 @@ Returns a list of all channels in this adapter instance
 
 | Name | Type |
 | :------ | :------ |
-| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)\> |
+| `callback` | `GetObjectsCallback3`<`ChannelObject`\> |
 
 #### Returns
 
@@ -3551,7 +2952,7 @@ Returns a list of all channels in this adapter instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:521](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L521)
+[packages/adapter/src/lib/adapter/adapter.ts:521](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L521)
 
 ▸ **getChannels**(`parentDevice`, `callback`): `void`
 
@@ -3560,7 +2961,7 @@ Returns a list of all channels in this adapter instance
 | Name | Type |
 | :------ | :------ |
 | `parentDevice` | `string` |
-| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)\> |
+| `callback` | `GetObjectsCallback3`<`ChannelObject`\> |
 
 #### Returns
 
@@ -3568,7 +2969,7 @@ Returns a list of all channels in this adapter instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:522](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L522)
+[packages/adapter/src/lib/adapter/adapter.ts:522](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L522)
 
 ▸ **getChannels**(`parentDevice`, `options`, `callback`): `void`
 
@@ -3578,7 +2979,7 @@ Returns a list of all channels in this adapter instance
 | :------ | :------ |
 | `parentDevice` | `string` |
 | `options` | `unknown` |
-| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)\> |
+| `callback` | `GetObjectsCallback3`<`ChannelObject`\> |
 
 #### Returns
 
@@ -3586,25 +2987,25 @@ Returns a list of all channels in this adapter instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:523](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L523)
+[packages/adapter/src/lib/adapter/adapter.ts:523](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L523)
 
 ___
 
 ### getChannelsAsync
 
-▸ **getChannelsAsync**(): `Promise`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)[]\>
+▸ **getChannelsAsync**(): `Promise`<`ChannelObject`[]\>
 
 Returns a list of all channels in this adapter instance
 
 #### Returns
 
-`Promise`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)[]\>
+`Promise`<`ChannelObject`[]\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:533](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L533)
+[packages/adapter/src/lib/adapter/adapter.ts:533](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L533)
 
-▸ **getChannelsAsync**(`parentDevice`, `options?`): `Promise`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)[]\>
+▸ **getChannelsAsync**(`parentDevice`, `options?`): `Promise`<`ChannelObject`[]\>
 
 #### Parameters
 
@@ -3615,11 +3016,11 @@ Returns a list of all channels in this adapter instance
 
 #### Returns
 
-`Promise`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)[]\>
+`Promise`<`ChannelObject`[]\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:534](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L534)
+[packages/adapter/src/lib/adapter/adapter.ts:534](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L534)
 
 ___
 
@@ -3631,7 +3032,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)\> |
+| `callback` | `GetObjectsCallback3`<`ChannelObject`\> |
 
 #### Returns
 
@@ -3639,7 +3040,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5761](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5761)
+[packages/adapter/src/lib/adapter/adapter.ts:5754](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5754)
 
 ▸ **getChannelsOf**(`parentDevice`, `callback`): `void`
 
@@ -3648,7 +3049,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `parentDevice` | `string` |
-| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)\> |
+| `callback` | `GetObjectsCallback3`<`ChannelObject`\> |
 
 #### Returns
 
@@ -3656,7 +3057,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5762](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5762)
+[packages/adapter/src/lib/adapter/adapter.ts:5755](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5755)
 
 ▸ **getChannelsOf**(`parentDevice`, `options`, `callback`): `void`
 
@@ -3666,7 +3067,7 @@ ___
 | :------ | :------ |
 | `parentDevice` | `string` |
 | `options` | `unknown` |
-| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)\> |
+| `callback` | `GetObjectsCallback3`<`ChannelObject`\> |
 
 #### Returns
 
@@ -3674,25 +3075,25 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5763](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5763)
+[packages/adapter/src/lib/adapter/adapter.ts:5756](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5756)
 
 ___
 
 ### getChannelsOfAsync
 
-▸ **getChannelsOfAsync**(): `Promise`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)[]\>
+▸ **getChannelsOfAsync**(): `Promise`<`ChannelObject`[]\>
 
 Returns a list of all channels in this adapter instance
 
 #### Returns
 
-`Promise`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)[]\>
+`Promise`<`ChannelObject`[]\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:515](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L515)
+[packages/adapter/src/lib/adapter/adapter.ts:515](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L515)
 
-▸ **getChannelsOfAsync**(`parentDevice`, `options?`): `Promise`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)[]\>
+▸ **getChannelsOfAsync**(`parentDevice`, `options?`): `Promise`<`ChannelObject`[]\>
 
 #### Parameters
 
@@ -3703,11 +3104,11 @@ Returns a list of all channels in this adapter instance
 
 #### Returns
 
-`Promise`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)[]\>
+`Promise`<`ChannelObject`[]\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:516](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L516)
+[packages/adapter/src/lib/adapter/adapter.ts:516](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L516)
 
 ___
 
@@ -3719,7 +3120,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`DeviceObject`](../interfaces/internal_.DeviceObject.md)\> |
+| `callback` | `GetObjectsCallback3`<`DeviceObject`\> |
 
 #### Returns
 
@@ -3727,7 +3128,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5707](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5707)
+[packages/adapter/src/lib/adapter/adapter.ts:5700](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5700)
 
 ▸ **getDevices**(`options`, `callback`): `void`
 
@@ -3736,7 +3137,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `options` | `unknown` |
-| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`DeviceObject`](../interfaces/internal_.DeviceObject.md)\> |
+| `callback` | `GetObjectsCallback3`<`DeviceObject`\> |
 
 #### Returns
 
@@ -3744,13 +3145,13 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5708](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5708)
+[packages/adapter/src/lib/adapter/adapter.ts:5701](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5701)
 
 ___
 
 ### getDevicesAsync
 
-▸ **getDevicesAsync**(`options?`): `Promise`<[`DeviceObject`](../interfaces/internal_.DeviceObject.md)[]\>
+▸ **getDevicesAsync**(`options?`): `Promise`<`DeviceObject`[]\>
 
 Returns a list of all devices in this adapter instance
 
@@ -3762,11 +3163,11 @@ Returns a list of all devices in this adapter instance
 
 #### Returns
 
-`Promise`<[`DeviceObject`](../interfaces/internal_.DeviceObject.md)[]\>
+`Promise`<`DeviceObject`[]\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:195](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L195)
+[packages/adapter/src/lib/adapter/adapter.ts:195](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L195)
 
 ___
 
@@ -3791,7 +3192,7 @@ It returns promise if no callback is provided.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2371](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L2371)
+[packages/adapter/src/lib/adapter/adapter.ts:2368](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L2368)
 
 ___
 
@@ -3803,7 +3204,7 @@ Get the enum tree.
 
 Get enums of specified tree or all enums if nothing specified as object with values.
 If getEnum called with no enum specified, all enums will be returned:
-<pre><code>
+```js
      adapter.getEnums(function (err, enums, requestEnum) {
        // All enums
        if (err) adapter.log.error('Cannot get object: ' + err);
@@ -3811,13 +3212,13 @@ If getEnum called with no enum specified, all enums will be returned:
           adapter.log.debug('Enum "' + e + '" has following members: ' + enums[e].common.members.join(', '));
        }
      });
-</code></pre>
+```
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `callback` | [`GetEnumCallback`](../modules/internal_.md#getenumcallback) | return result        <pre><code>            function (err, enums, requestEnum) {              // requestEnum is _enum              if (err) adapter.log.error('Cannot get object: ' + err);              for (var e in enums) {                 adapter.log.debug('Enum "' + e + '" has following members: ' + enums[e].common.members.join(', '));              }            }        </code></pre> |
+| `callback` | `GetEnumCallback` | return result        ```js            function (err, enums, requestEnum) {              // requestEnum is _enum              if (err) adapter.log.error('Cannot get object: ' + err);              for (var e in enums) {                 adapter.log.debug('Enum "' + e + '" has following members: ' + enums[e].common.members.join(', '));              }            }        ``` |
 
 #### Returns
 
@@ -3825,7 +3226,7 @@ If getEnum called with no enum specified, all enums will be returned:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3650](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3650)
+[packages/adapter/src/lib/adapter/adapter.ts:3647](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3647)
 
 ▸ **getEnum**(`name`, `callback`): `void`
 
@@ -3833,7 +3234,7 @@ Get the enum tree.
 
 Get enums of specified tree or all enums if nothing specified as object with values.
 If getEnum called with no enum specified, all enums will be returned:
-<pre><code>
+```js
      adapter.getEnums(function (err, enums, requestEnum) {
        // All enums
        if (err) adapter.log.error('Cannot get object: ' + err);
@@ -3841,14 +3242,14 @@ If getEnum called with no enum specified, all enums will be returned:
           adapter.log.debug('Enum "' + e + '" has following members: ' + enums[e].common.members.join(', '));
        }
      });
-</code></pre>
+```
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `name` | `string` | - |
-| `callback` | [`GetEnumCallback`](../modules/internal_.md#getenumcallback) | return result        <pre><code>            function (err, enums, requestEnum) {              // requestEnum is _enum              if (err) adapter.log.error('Cannot get object: ' + err);              for (var e in enums) {                 adapter.log.debug('Enum "' + e + '" has following members: ' + enums[e].common.members.join(', '));              }            }        </code></pre> |
+| `callback` | `GetEnumCallback` | return result        ```js            function (err, enums, requestEnum) {              // requestEnum is _enum              if (err) adapter.log.error('Cannot get object: ' + err);              for (var e in enums) {                 adapter.log.debug('Enum "' + e + '" has following members: ' + enums[e].common.members.join(', '));              }            }        ``` |
 
 #### Returns
 
@@ -3856,7 +3257,7 @@ If getEnum called with no enum specified, all enums will be returned:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3651](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3651)
+[packages/adapter/src/lib/adapter/adapter.ts:3648](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3648)
 
 ▸ **getEnum**(`name`, `options`, `callback`): `void`
 
@@ -3864,7 +3265,7 @@ Get the enum tree.
 
 Get enums of specified tree or all enums if nothing specified as object with values.
 If getEnum called with no enum specified, all enums will be returned:
-<pre><code>
+```js
      adapter.getEnums(function (err, enums, requestEnum) {
        // All enums
        if (err) adapter.log.error('Cannot get object: ' + err);
@@ -3872,7 +3273,7 @@ If getEnum called with no enum specified, all enums will be returned:
           adapter.log.debug('Enum "' + e + '" has following members: ' + enums[e].common.members.join(', '));
        }
      });
-</code></pre>
+```
 
 #### Parameters
 
@@ -3880,7 +3281,7 @@ If getEnum called with no enum specified, all enums will be returned:
 | :------ | :------ | :------ |
 | `name` | `string` | - |
 | `options` | `unknown` | optional user context |
-| `callback` | [`GetEnumCallback`](../modules/internal_.md#getenumcallback) | return result        <pre><code>            function (err, enums, requestEnum) {              // requestEnum is _enum              if (err) adapter.log.error('Cannot get object: ' + err);              for (var e in enums) {                 adapter.log.debug('Enum "' + e + '" has following members: ' + enums[e].common.members.join(', '));              }            }        </code></pre> |
+| `callback` | `GetEnumCallback` | return result        ```js            function (err, enums, requestEnum) {              // requestEnum is _enum              if (err) adapter.log.error('Cannot get object: ' + err);              for (var e in enums) {                 adapter.log.debug('Enum "' + e + '" has following members: ' + enums[e].common.members.join(', '));              }            }        ``` |
 
 #### Returns
 
@@ -3888,13 +3289,13 @@ If getEnum called with no enum specified, all enums will be returned:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3652](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3652)
+[packages/adapter/src/lib/adapter/adapter.ts:3649](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3649)
 
 ___
 
 ### getEnumAsync
 
-▸ **getEnumAsync**(`name`, `options?`): `Promise`<{ `requestEnum`: `string` ; `result`: [`Record`](../modules/internal_.md#record)<`string`, `any`\>  }\>
+▸ **getEnumAsync**(`name`, `options?`): `Promise`<{ `requestEnum`: `string` ; `result`: `Record`<`string`, `any`\>  }\>
 
 Returns the enum tree, filtered by the optional enum name
 
@@ -3907,11 +3308,11 @@ Returns the enum tree, filtered by the optional enum name
 
 #### Returns
 
-`Promise`<{ `requestEnum`: `string` ; `result`: [`Record`](../modules/internal_.md#record)<`string`, `any`\>  }\>
+`Promise`<{ `requestEnum`: `string` ; `result`: `Record`<`string`, `any`\>  }\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:152](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L152)
+[packages/adapter/src/lib/adapter/adapter.ts:152](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L152)
 
 ___
 
@@ -3927,7 +3328,7 @@ Get enums of specified tree or all enums if nothing specified as object with val
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `callback` | [`GetEnumsCallback`](../modules/internal_.md#getenumscallback) | return result        <pre><code>            function (err, enums) {              // requestEnum is _enum              if (err) adapter.log.error('Cannot get object: ' + err);              // Result is like              // {              //    "enum.rooms": {              //       "enum.rooms.livingroom": {              //           common: {              //              members: ['ID1', 'ID2']              //           }              //       },              //       "enum.rooms.sleepingroom": {              //           common: {              //              members: ['ID3', 'ID4']              //           }              //       }              //    },              //    "enum.functions": {              //       "enum.rooms.light": {              //           common: {              //              members: ['ID1', 'ID6']              //           }              //       },              //       "enum.rooms.weather": {              //           common: {              //              members: ['ID4', 'ID7']              //           }              //       }              //    }              // }            }        </code></pre> |
+| `callback` | `GetEnumsCallback` | return result        ```js            function (err, enums) {              // requestEnum is _enum              if (err) adapter.log.error('Cannot get object: ' + err);              // Result is like              // {              //    "enum.rooms": {              //       "enum.rooms.livingroom": {              //           common: {              //              members: ['ID1', 'ID2']              //           }              //       },              //       "enum.rooms.sleepingroom": {              //           common: {              //              members: ['ID3', 'ID4']              //           }              //       }              //    },              //    "enum.functions": {              //       "enum.rooms.light": {              //           common: {              //              members: ['ID1', 'ID6']              //           }              //       },              //       "enum.rooms.weather": {              //           common: {              //              members: ['ID4', 'ID7']              //           }              //       }              //    }              // }            }        ``` |
 
 #### Returns
 
@@ -3935,7 +3336,7 @@ Get enums of specified tree or all enums if nothing specified as object with val
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3739](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3739)
+[packages/adapter/src/lib/adapter/adapter.ts:3736](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3736)
 
 ▸ **getEnums**(`enumList`, `callback`): `void`
 
@@ -3947,8 +3348,8 @@ Get enums of specified tree or all enums if nothing specified as object with val
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `enumList` | [`EnumList`](../modules/internal_.md#enumlist) | - |
-| `callback` | [`GetEnumsCallback`](../modules/internal_.md#getenumscallback) | return result        <pre><code>            function (err, enums) {              // requestEnum is _enum              if (err) adapter.log.error('Cannot get object: ' + err);              // Result is like              // {              //    "enum.rooms": {              //       "enum.rooms.livingroom": {              //           common: {              //              members: ['ID1', 'ID2']              //           }              //       },              //       "enum.rooms.sleepingroom": {              //           common: {              //              members: ['ID3', 'ID4']              //           }              //       }              //    },              //    "enum.functions": {              //       "enum.rooms.light": {              //           common: {              //              members: ['ID1', 'ID6']              //           }              //       },              //       "enum.rooms.weather": {              //           common: {              //              members: ['ID4', 'ID7']              //           }              //       }              //    }              // }            }        </code></pre> |
+| `enumList` | `EnumList` | - |
+| `callback` | `GetEnumsCallback` | return result        ```js            function (err, enums) {              // requestEnum is _enum              if (err) adapter.log.error('Cannot get object: ' + err);              // Result is like              // {              //    "enum.rooms": {              //       "enum.rooms.livingroom": {              //           common: {              //              members: ['ID1', 'ID2']              //           }              //       },              //       "enum.rooms.sleepingroom": {              //           common: {              //              members: ['ID3', 'ID4']              //           }              //       }              //    },              //    "enum.functions": {              //       "enum.rooms.light": {              //           common: {              //              members: ['ID1', 'ID6']              //           }              //       },              //       "enum.rooms.weather": {              //           common: {              //              members: ['ID4', 'ID7']              //           }              //       }              //    }              // }            }        ``` |
 
 #### Returns
 
@@ -3956,7 +3357,7 @@ Get enums of specified tree or all enums if nothing specified as object with val
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3740](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3740)
+[packages/adapter/src/lib/adapter/adapter.ts:3737](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3737)
 
 ▸ **getEnums**(`enumList`, `options`, `callback`): `void`
 
@@ -3968,9 +3369,9 @@ Get enums of specified tree or all enums if nothing specified as object with val
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `enumList` | [`EnumList`](../modules/internal_.md#enumlist) | - |
+| `enumList` | `EnumList` | - |
 | `options` | `unknown` | optional user context |
-| `callback` | [`GetEnumsCallback`](../modules/internal_.md#getenumscallback) | return result        <pre><code>            function (err, enums) {              // requestEnum is _enum              if (err) adapter.log.error('Cannot get object: ' + err);              // Result is like              // {              //    "enum.rooms": {              //       "enum.rooms.livingroom": {              //           common: {              //              members: ['ID1', 'ID2']              //           }              //       },              //       "enum.rooms.sleepingroom": {              //           common: {              //              members: ['ID3', 'ID4']              //           }              //       }              //    },              //    "enum.functions": {              //       "enum.rooms.light": {              //           common: {              //              members: ['ID1', 'ID6']              //           }              //       },              //       "enum.rooms.weather": {              //           common: {              //              members: ['ID4', 'ID7']              //           }              //       }              //    }              // }            }        </code></pre> |
+| `callback` | `GetEnumsCallback` | return result        ```js            function (err, enums) {              // requestEnum is _enum              if (err) adapter.log.error('Cannot get object: ' + err);              // Result is like              // {              //    "enum.rooms": {              //       "enum.rooms.livingroom": {              //           common: {              //              members: ['ID1', 'ID2']              //           }              //       },              //       "enum.rooms.sleepingroom": {              //           common: {              //              members: ['ID3', 'ID4']              //           }              //       }              //    },              //    "enum.functions": {              //       "enum.rooms.light": {              //           common: {              //              members: ['ID1', 'ID6']              //           }              //       },              //       "enum.rooms.weather": {              //           common: {              //              members: ['ID4', 'ID7']              //           }              //       }              //    }              // }            }        ``` |
 
 #### Returns
 
@@ -3978,13 +3379,13 @@ Get enums of specified tree or all enums if nothing specified as object with val
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3741](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3741)
+[packages/adapter/src/lib/adapter/adapter.ts:3738](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3738)
 
 ___
 
 ### getEnumsAsync
 
-▸ **getEnumsAsync**(`enumList`, `options?`): [`GetEnumsPromise`](../modules/internal_.md#getenumspromise)
+▸ **getEnumsAsync**(`enumList`, `options?`): `GetEnumsPromise`
 
 Returns the enum tree, filtered by the optional enum name
 
@@ -3992,16 +3393,16 @@ Returns the enum tree, filtered by the optional enum name
 
 | Name | Type |
 | :------ | :------ |
-| `enumList` | [`EnumList`](../modules/internal_.md#enumlist) |
+| `enumList` | `EnumList` |
 | `options?` | `unknown` |
 
 #### Returns
 
-[`GetEnumsPromise`](../modules/internal_.md#getenumspromise)
+`GetEnumsPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:154](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L154)
+[packages/adapter/src/lib/adapter/adapter.ts:154](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L154)
 
 ___
 
@@ -4016,7 +3417,7 @@ Read a binary block from redis, e.g. an image
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | The state ID |
-| `callback` | [`GetBinaryStateCallback`](../modules/internal_.md#getbinarystatecallback) |  |
+| `callback` | `GetBinaryStateCallback` |  |
 
 #### Returns
 
@@ -4024,7 +3425,7 @@ Read a binary block from redis, e.g. an image
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10035](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L10035)
+[packages/adapter/src/lib/adapter/adapter.ts:10039](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L10039)
 
 ▸ **getForeignBinaryState**(`id`, `options`, `callback`): `void`
 
@@ -4036,7 +3437,7 @@ Read a binary block from redis, e.g. an image
 | :------ | :------ | :------ |
 | `id` | `string` | The state ID |
 | `options` | `unknown` | optional |
-| `callback` | [`GetBinaryStateCallback`](../modules/internal_.md#getbinarystatecallback) |  |
+| `callback` | `GetBinaryStateCallback` |  |
 
 #### Returns
 
@@ -4044,13 +3445,13 @@ Read a binary block from redis, e.g. an image
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10036](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L10036)
+[packages/adapter/src/lib/adapter/adapter.ts:10040](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L10040)
 
 ___
 
 ### getForeignBinaryStateAsync
 
-▸ **getForeignBinaryStateAsync**(`id`, `options?`): [`GetBinaryStatePromise`](../modules/internal_.md#getbinarystatepromise)
+▸ **getForeignBinaryStateAsync**(`id`, `options?`): `GetBinaryStatePromise`
 
 #### Parameters
 
@@ -4061,11 +3462,11 @@ ___
 
 #### Returns
 
-[`GetBinaryStatePromise`](../modules/internal_.md#getbinarystatepromise)
+`GetBinaryStatePromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:260](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L260)
+[packages/adapter/src/lib/adapter/adapter.ts:260](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L260)
 
 ___
 
@@ -4088,7 +3489,7 @@ ID must be specified with namespace.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `T` | exactly object ID (with namespace) |
-| `callback` | [`GetObjectCallback`](../modules/internal_.md#getobjectcallback)<`T`\> | return result        <pre><code>            function (err, obj) {              if (err) adapter.log.error('Cannot get object: ' + err);            }        </code></pre> |
+| `callback` | `GetObjectCallback`<`T`\> | return result        ```js            function (err, obj) {              if (err) adapter.log.error('Cannot get object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -4096,7 +3497,7 @@ ID must be specified with namespace.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4137](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4137)
+[packages/adapter/src/lib/adapter/adapter.ts:4134](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4134)
 
 ▸ **getForeignObject**<`T`\>(`id`, `options`, `callback`): [`MaybePromise`](../modules/internal_.md#maybepromise)
 
@@ -4116,7 +3517,7 @@ ID must be specified with namespace.
 | :------ | :------ | :------ |
 | `id` | `T` | exactly object ID (with namespace) |
 | `options` | `unknown` | optional user context |
-| `callback` | [`GetObjectCallback`](../modules/internal_.md#getobjectcallback)<`T`\> | return result        <pre><code>            function (err, obj) {              if (err) adapter.log.error('Cannot get object: ' + err);            }        </code></pre> |
+| `callback` | `GetObjectCallback`<`T`\> | return result        ```js            function (err, obj) {              if (err) adapter.log.error('Cannot get object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -4124,13 +3525,13 @@ ID must be specified with namespace.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4138](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4138)
+[packages/adapter/src/lib/adapter/adapter.ts:4135](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4135)
 
 ___
 
 ### getForeignObjectAsync
 
-▸ **getForeignObjectAsync**<`T`\>(`id`, `options?`): [`GetObjectPromise`](../modules/internal_.md#getobjectpromise)<`T`\>
+▸ **getForeignObjectAsync**<`T`\>(`id`, `options?`): `GetObjectPromise`<`T`\>
 
 Reads an object (which might not belong to this adapter) from the object db
 
@@ -4149,11 +3550,11 @@ Reads an object (which might not belong to this adapter) from the object db
 
 #### Returns
 
-[`GetObjectPromise`](../modules/internal_.md#getobjectpromise)<`T`\>
+`GetObjectPromise`<`T`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:306](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L306)
+[packages/adapter/src/lib/adapter/adapter.ts:306](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L306)
 
 ___
 
@@ -4165,7 +3566,7 @@ Get objects by pattern, by specific type and resolve their enums.
 
 Get all objects in the system of specified type. E.g.:
 
-       <pre><code>
+       ```js
            adapter.getForeignObjects('hm-rega.0.*', 'state', ['rooms', 'functions'], function (err, objs) {
              if (err) adapter.log.error('Cannot get object: ' + err);
              // objs look like:
@@ -4189,14 +3590,14 @@ Get all objects in the system of specified type. E.g.:
              //       }
              //    }
            }
-       </code></pre>
+       ```
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` | object ID/wildchars |
-| `callback` | [`GetObjectsCallback`](../modules/internal_.md#getobjectscallback) | return result        <pre><code>            function (err, obj) {              if (err) adapter.log.error('Cannot get object: ' + err);            }        </code></pre> |
+| `callback` | `GetObjectsCallback` | return result        ```js            function (err, obj) {              if (err) adapter.log.error('Cannot get object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -4204,7 +3605,7 @@ Get all objects in the system of specified type. E.g.:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3886](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3886)
+[packages/adapter/src/lib/adapter/adapter.ts:3883](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3883)
 
 ▸ **getForeignObjects**(`pattern`, `options`, `callback`): `void`
 
@@ -4212,7 +3613,7 @@ Get objects by pattern, by specific type and resolve their enums.
 
 Get all objects in the system of specified type. E.g.:
 
-       <pre><code>
+       ```js
            adapter.getForeignObjects('hm-rega.0.*', 'state', ['rooms', 'functions'], function (err, objs) {
              if (err) adapter.log.error('Cannot get object: ' + err);
              // objs look like:
@@ -4236,7 +3637,7 @@ Get all objects in the system of specified type. E.g.:
              //       }
              //    }
            }
-       </code></pre>
+       ```
 
 #### Parameters
 
@@ -4244,7 +3645,7 @@ Get all objects in the system of specified type. E.g.:
 | :------ | :------ | :------ |
 | `pattern` | `string` | object ID/wildchars |
 | `options` | `unknown` | optional user context |
-| `callback` | [`GetObjectsCallback`](../modules/internal_.md#getobjectscallback) | return result        <pre><code>            function (err, obj) {              if (err) adapter.log.error('Cannot get object: ' + err);            }        </code></pre> |
+| `callback` | `GetObjectsCallback` | return result        ```js            function (err, obj) {              if (err) adapter.log.error('Cannot get object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -4252,7 +3653,7 @@ Get all objects in the system of specified type. E.g.:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3887](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3887)
+[packages/adapter/src/lib/adapter/adapter.ts:3884](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3884)
 
 ▸ **getForeignObjects**<`T`\>(`pattern`, `type`, `callback`): `void`
 
@@ -4260,7 +3661,7 @@ Get objects by pattern, by specific type and resolve their enums.
 
 Get all objects in the system of specified type. E.g.:
 
-       <pre><code>
+       ```js
            adapter.getForeignObjects('hm-rega.0.*', 'state', ['rooms', 'functions'], function (err, objs) {
              if (err) adapter.log.error('Cannot get object: ' + err);
              // objs look like:
@@ -4284,13 +3685,13 @@ Get all objects in the system of specified type. E.g.:
              //       }
              //    }
            }
-       </code></pre>
+       ```
 
 #### Type parameters
 
 | Name | Type |
 | :------ | :------ |
-| `T` | extends [`ObjectType`](../modules/internal_.md#objecttype) |
+| `T` | extends `ObjectType` |
 
 #### Parameters
 
@@ -4298,7 +3699,7 @@ Get all objects in the system of specified type. E.g.:
 | :------ | :------ | :------ |
 | `pattern` | `string` | object ID/wildchars |
 | `type` | `T` | type of object: 'state', 'channel' or 'device'. Default - 'state' |
-| `callback` | [`GetObjectsCallbackTyped`](../modules/internal_.md#getobjectscallbacktyped)<`T`\> | return result        <pre><code>            function (err, obj) {              if (err) adapter.log.error('Cannot get object: ' + err);            }        </code></pre> |
+| `callback` | `GetObjectsCallbackTyped`<`T`\> | return result        ```js            function (err, obj) {              if (err) adapter.log.error('Cannot get object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -4306,7 +3707,7 @@ Get all objects in the system of specified type. E.g.:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3888](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3888)
+[packages/adapter/src/lib/adapter/adapter.ts:3885](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3885)
 
 ▸ **getForeignObjects**<`T`\>(`pattern`, `type`, `enums`, `callback`): `void`
 
@@ -4314,7 +3715,7 @@ Get objects by pattern, by specific type and resolve their enums.
 
 Get all objects in the system of specified type. E.g.:
 
-       <pre><code>
+       ```js
            adapter.getForeignObjects('hm-rega.0.*', 'state', ['rooms', 'functions'], function (err, objs) {
              if (err) adapter.log.error('Cannot get object: ' + err);
              // objs look like:
@@ -4338,13 +3739,13 @@ Get all objects in the system of specified type. E.g.:
              //       }
              //    }
            }
-       </code></pre>
+       ```
 
 #### Type parameters
 
 | Name | Type |
 | :------ | :------ |
-| `T` | extends [`ObjectType`](../modules/internal_.md#objecttype) |
+| `T` | extends `ObjectType` |
 
 #### Parameters
 
@@ -4352,8 +3753,8 @@ Get all objects in the system of specified type. E.g.:
 | :------ | :------ | :------ |
 | `pattern` | `string` | object ID/wildchars |
 | `type` | `T` | type of object: 'state', 'channel' or 'device'. Default - 'state' |
-| `enums` | [`EnumList`](../modules/internal_.md#enumlist) | object ID, that must be overwritten or created. |
-| `callback` | [`GetObjectsCallbackTyped`](../modules/internal_.md#getobjectscallbacktyped)<`T`\> | return result        <pre><code>            function (err, obj) {              if (err) adapter.log.error('Cannot get object: ' + err);            }        </code></pre> |
+| `enums` | `EnumList` | object ID, that must be overwritten or created. |
+| `callback` | `GetObjectsCallbackTyped`<`T`\> | return result        ```js            function (err, obj) {              if (err) adapter.log.error('Cannot get object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -4361,7 +3762,7 @@ Get all objects in the system of specified type. E.g.:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3893](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3893)
+[packages/adapter/src/lib/adapter/adapter.ts:3890](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3890)
 
 ▸ **getForeignObjects**<`T`\>(`pattern`, `type`, `options`, `callback`): `void`
 
@@ -4369,7 +3770,7 @@ Get objects by pattern, by specific type and resolve their enums.
 
 Get all objects in the system of specified type. E.g.:
 
-       <pre><code>
+       ```js
            adapter.getForeignObjects('hm-rega.0.*', 'state', ['rooms', 'functions'], function (err, objs) {
              if (err) adapter.log.error('Cannot get object: ' + err);
              // objs look like:
@@ -4393,13 +3794,13 @@ Get all objects in the system of specified type. E.g.:
              //       }
              //    }
            }
-       </code></pre>
+       ```
 
 #### Type parameters
 
 | Name | Type |
 | :------ | :------ |
-| `T` | extends [`ObjectType`](../modules/internal_.md#objecttype) |
+| `T` | extends `ObjectType` |
 
 #### Parameters
 
@@ -4408,7 +3809,7 @@ Get all objects in the system of specified type. E.g.:
 | `pattern` | `string` | object ID/wildchars |
 | `type` | `T` | type of object: 'state', 'channel' or 'device'. Default - 'state' |
 | `options` | `unknown` | optional user context |
-| `callback` | [`GetObjectsCallbackTyped`](../modules/internal_.md#getobjectscallbacktyped)<`T`\> | return result        <pre><code>            function (err, obj) {              if (err) adapter.log.error('Cannot get object: ' + err);            }        </code></pre> |
+| `callback` | `GetObjectsCallbackTyped`<`T`\> | return result        ```js            function (err, obj) {              if (err) adapter.log.error('Cannot get object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -4416,7 +3817,7 @@ Get all objects in the system of specified type. E.g.:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3899](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3899)
+[packages/adapter/src/lib/adapter/adapter.ts:3896](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3896)
 
 ▸ **getForeignObjects**<`T`\>(`pattern`, `type`, `enums`, `options`, `callback`): `void`
 
@@ -4424,7 +3825,7 @@ Get objects by pattern, by specific type and resolve their enums.
 
 Get all objects in the system of specified type. E.g.:
 
-       <pre><code>
+       ```js
            adapter.getForeignObjects('hm-rega.0.*', 'state', ['rooms', 'functions'], function (err, objs) {
              if (err) adapter.log.error('Cannot get object: ' + err);
              // objs look like:
@@ -4448,13 +3849,13 @@ Get all objects in the system of specified type. E.g.:
              //       }
              //    }
            }
-       </code></pre>
+       ```
 
 #### Type parameters
 
 | Name | Type |
 | :------ | :------ |
-| `T` | extends [`ObjectType`](../modules/internal_.md#objecttype) |
+| `T` | extends `ObjectType` |
 
 #### Parameters
 
@@ -4462,9 +3863,9 @@ Get all objects in the system of specified type. E.g.:
 | :------ | :------ | :------ |
 | `pattern` | `string` | object ID/wildchars |
 | `type` | `T` | type of object: 'state', 'channel' or 'device'. Default - 'state' |
-| `enums` | ``null`` \| [`EnumList`](../modules/internal_.md#enumlist) | object ID, that must be overwritten or created. |
+| `enums` | ``null`` \| `EnumList` | object ID, that must be overwritten or created. |
 | `options` | `unknown` | optional user context |
-| `callback` | [`GetObjectsCallbackTyped`](../modules/internal_.md#getobjectscallbacktyped)<`T`\> | return result        <pre><code>            function (err, obj) {              if (err) adapter.log.error('Cannot get object: ' + err);            }        </code></pre> |
+| `callback` | `GetObjectsCallbackTyped`<`T`\> | return result        ```js            function (err, obj) {              if (err) adapter.log.error('Cannot get object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -4472,13 +3873,13 @@ Get all objects in the system of specified type. E.g.:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3905](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3905)
+[packages/adapter/src/lib/adapter/adapter.ts:3902](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3902)
 
 ___
 
 ### getForeignObjectsAsync
 
-▸ **getForeignObjectsAsync**<`T`\>(`pattern`, `type`, `enums`, `options?`): [`GetObjectsPromiseTyped`](../modules/internal_.md#getobjectspromisetyped)<`T`\>
+▸ **getForeignObjectsAsync**<`T`\>(`pattern`, `type`, `enums`, `options?`): `GetObjectsPromiseTyped`<`T`\>
 
 Get foreign objects by pattern, by specific type and resolve their enums.
 
@@ -4486,7 +3887,7 @@ Get foreign objects by pattern, by specific type and resolve their enums.
 
 | Name | Type |
 | :------ | :------ |
-| `T` | extends [`ObjectType`](../modules/internal_.md#objecttype) |
+| `T` | extends `ObjectType` |
 
 #### Parameters
 
@@ -4494,24 +3895,24 @@ Get foreign objects by pattern, by specific type and resolve their enums.
 | :------ | :------ |
 | `pattern` | `string` |
 | `type` | `T` |
-| `enums` | [`EnumList`](../modules/internal_.md#enumlist) |
+| `enums` | `EnumList` |
 | `options?` | `unknown` |
 
 #### Returns
 
-[`GetObjectsPromiseTyped`](../modules/internal_.md#getobjectspromisetyped)<`T`\>
+`GetObjectsPromiseTyped`<`T`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:417](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L417)
+[packages/adapter/src/lib/adapter/adapter.ts:417](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L417)
 
-▸ **getForeignObjectsAsync**<`T`\>(`pattern`, `type`, `options?`): [`GetObjectsPromiseTyped`](../modules/internal_.md#getobjectspromisetyped)<`T`\>
+▸ **getForeignObjectsAsync**<`T`\>(`pattern`, `type`, `options?`): `GetObjectsPromiseTyped`<`T`\>
 
 #### Type parameters
 
 | Name | Type |
 | :------ | :------ |
-| `T` | extends [`ObjectType`](../modules/internal_.md#objecttype) |
+| `T` | extends `ObjectType` |
 
 #### Parameters
 
@@ -4523,13 +3924,13 @@ Get foreign objects by pattern, by specific type and resolve their enums.
 
 #### Returns
 
-[`GetObjectsPromiseTyped`](../modules/internal_.md#getobjectspromisetyped)<`T`\>
+`GetObjectsPromiseTyped`<`T`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:423](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L423)
+[packages/adapter/src/lib/adapter/adapter.ts:423](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L423)
 
-▸ **getForeignObjectsAsync**(`pattern`, `options?`): [`GetObjectsPromise`](../modules/internal_.md#getobjectspromise)
+▸ **getForeignObjectsAsync**(`pattern`, `options?`): `GetObjectsPromise`
 
 #### Parameters
 
@@ -4540,11 +3941,11 @@ Get foreign objects by pattern, by specific type and resolve their enums.
 
 #### Returns
 
-[`GetObjectsPromise`](../modules/internal_.md#getobjectspromise)
+`GetObjectsPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:428](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L428)
+[packages/adapter/src/lib/adapter/adapter.ts:428](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L428)
 
 ___
 
@@ -4565,7 +3966,7 @@ explanation
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID of the state. |
-| `callback` | [`GetStateCallback`](../modules/internal_.md#getstatecallback) | return result        <pre><code>            function (err, state) {              if (err) adapter.log.error('Cannot read value: ' + err);            }        </code></pre>         See possible attributes of the state in |
+| `callback` | `GetStateCallback` | return result        ```js            function (err, state) {              if (err) adapter.log.error('Cannot read value: ' + err);            }        ```         See possible attributes of the state in |
 
 #### Returns
 
@@ -4573,7 +3974,7 @@ explanation
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8497](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L8497)
+[packages/adapter/src/lib/adapter/adapter.ts:8490](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L8490)
 
 ▸ **getForeignState**(`id`, `options`, `callback`): `void`
 
@@ -4591,7 +3992,7 @@ explanation
 | :------ | :------ | :------ |
 | `id` | `string` | object ID of the state. |
 | `options` | `unknown` | optional user context |
-| `callback` | [`GetStateCallback`](../modules/internal_.md#getstatecallback) | return result        <pre><code>            function (err, state) {              if (err) adapter.log.error('Cannot read value: ' + err);            }        </code></pre>         See possible attributes of the state in |
+| `callback` | `GetStateCallback` | return result        ```js            function (err, state) {              if (err) adapter.log.error('Cannot read value: ' + err);            }        ```         See possible attributes of the state in |
 
 #### Returns
 
@@ -4599,13 +4000,13 @@ explanation
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8498](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L8498)
+[packages/adapter/src/lib/adapter/adapter.ts:8491](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L8491)
 
 ___
 
 ### getForeignStateAsync
 
-▸ **getForeignStateAsync**(`id`, `options?`): [`GetStatePromise`](../modules/internal_.md#getstatepromise)
+▸ **getForeignStateAsync**(`id`, `options?`): `GetStatePromise`
 
 Read a value (which might not belong to this adapter) from the states DB.
 
@@ -4618,11 +4019,11 @@ Read a value (which might not belong to this adapter) from the states DB.
 
 #### Returns
 
-[`GetStatePromise`](../modules/internal_.md#getstatepromise)
+`GetStatePromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L279)
+[packages/adapter/src/lib/adapter/adapter.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L279)
 
 ___
 
@@ -4633,20 +4034,20 @@ ___
 Read all states of all adapters (and system states), that pass the pattern
 
 Allows to read all states of current adapter according to pattern. To read all states of current adapter use:
-<pre><code>
+```js
     adapter.getStates('*', function (err, states) {
         for (var id in states) {
              adapter.log.debug('"' + id + '" = "' + states[id].val);
         }
     });
-</code></pre>
+```
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` \| `string`[] | string in form 'adapter.0.*' or like this. It can be array of IDs too. |
-| `callback` | [`GetStatesCallback`](../modules/internal_.md#getstatescallback) | return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...} |
+| `callback` | `GetStatesCallback` | return result ```js function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...} ``` |
 
 #### Returns
 
@@ -4654,20 +4055,20 @@ Allows to read all states of current adapter according to pattern. To read all s
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9139](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L9139)
+[packages/adapter/src/lib/adapter/adapter.ts:9138](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L9138)
 
 ▸ **getForeignStates**(`pattern`, `options`, `callback`): `void`
 
 Read all states of all adapters (and system states), that pass the pattern
 
 Allows to read all states of current adapter according to pattern. To read all states of current adapter use:
-<pre><code>
+```js
     adapter.getStates('*', function (err, states) {
         for (var id in states) {
              adapter.log.debug('"' + id + '" = "' + states[id].val);
         }
     });
-</code></pre>
+```
 
 #### Parameters
 
@@ -4675,7 +4076,7 @@ Allows to read all states of current adapter according to pattern. To read all s
 | :------ | :------ | :------ |
 | `pattern` | `string` \| `string`[] | string in form 'adapter.0.*' or like this. It can be array of IDs too. |
 | `options` | `unknown` | optional argument to describe the user context |
-| `callback` | [`GetStatesCallback`](../modules/internal_.md#getstatescallback) | return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...} |
+| `callback` | `GetStatesCallback` | return result ```js function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...} ``` |
 
 #### Returns
 
@@ -4683,13 +4084,13 @@ Allows to read all states of current adapter according to pattern. To read all s
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9140](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L9140)
+[packages/adapter/src/lib/adapter/adapter.ts:9139](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L9139)
 
 ___
 
 ### getForeignStatesAsync
 
-▸ **getForeignStatesAsync**(`pattern`, `options?`): [`GetStatesPromise`](../modules/internal_.md#getstatespromise)
+▸ **getForeignStatesAsync**(`pattern`, `options?`): `GetStatesPromise`
 
 Read all states (which might not belong to this adapter) which match the given pattern
 
@@ -4702,11 +4103,11 @@ Read all states (which might not belong to this adapter) which match the given p
 
 #### Returns
 
-[`GetStatesPromise`](../modules/internal_.md#getstatespromise)
+`GetStatesPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:243](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L243)
+[packages/adapter/src/lib/adapter/adapter.ts:243](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L243)
 
 ___
 
@@ -4751,8 +4152,8 @@ explanation
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID of the state. |
-| `options` | [`GetHistoryOptions`](../interfaces/internal_.GetHistoryOptions.md) | see function description |
-| `callback` | [`GetHistoryCallback`](../modules/internal_.md#gethistorycallback) | return result        <pre><code>            function (error, result, step, sessionId) {              if (error) adapter.log.error('Cannot read value: ' + err);            }        </code></pre>         See possible attributes of the state in |
+| `options` | `GetHistoryOptions` | see function description |
+| `callback` | `GetHistoryCallback` | return result        ```js            function (error, result, step, sessionId) {              if (error) adapter.log.error('Cannot read value: ' + err);            }        ```         See possible attributes of the state in |
 
 #### Returns
 
@@ -4760,7 +4161,7 @@ explanation
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8776](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L8776)
+[packages/adapter/src/lib/adapter/adapter.ts:8769](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L8769)
 
 ▸ **getHistory**(`id`, `callback`): `void`
 
@@ -4801,7 +4202,7 @@ explanation
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID of the state. |
-| `callback` | [`GetHistoryCallback`](../modules/internal_.md#gethistorycallback) | return result        <pre><code>            function (error, result, step, sessionId) {              if (error) adapter.log.error('Cannot read value: ' + err);            }        </code></pre>         See possible attributes of the state in |
+| `callback` | `GetHistoryCallback` | return result        ```js            function (error, result, step, sessionId) {              if (error) adapter.log.error('Cannot read value: ' + err);            }        ```         See possible attributes of the state in |
 
 #### Returns
 
@@ -4809,7 +4210,7 @@ explanation
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8777](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L8777)
+[packages/adapter/src/lib/adapter/adapter.ts:8770](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L8770)
 
 ___
 
@@ -4829,32 +4230,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:235](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L235)
-
-___
-
-### getMaxListeners
-
-▸ **getMaxListeners**(): `number`
-
-Returns the current max listener value for the `EventEmitter` which is either
-set by `emitter.setMaxListeners(n)` or defaults to [defaultMaxListeners](AdapterClass.md#defaultmaxlisteners).
-
-**`Since`**
-
-v1.0.0
-
-#### Returns
-
-`number`
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[getMaxListeners](internal_.EventEmitter-1.md#getmaxlisteners)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:471
+[packages/adapter/src/lib/adapter/adapter.ts:235](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L235)
 
 ___
 
@@ -4871,7 +4247,7 @@ It is not required, that ID consists namespace. E.g. to get object of "adapterNa
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | exactly object ID (without namespace) |
-| `callback` | [`GetObjectCallback`](../modules/internal_.md#getobjectcallback)<`string`\> | return result        <pre><code>            function (err, obj) {              if (err) adapter.log.error('Cannot get object: ' + err);            }        </code></pre> |
+| `callback` | `GetObjectCallback`<`string`\> | return result        ```js            function (err, obj) {              if (err) adapter.log.error('Cannot get object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -4879,7 +4255,7 @@ It is not required, that ID consists namespace. E.g. to get object of "adapterNa
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3435](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3435)
+[packages/adapter/src/lib/adapter/adapter.ts:3432](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3432)
 
 ▸ **getObject**(`id`, `options`, `callback`): `void`
 
@@ -4893,7 +4269,7 @@ It is not required, that ID consists namespace. E.g. to get object of "adapterNa
 | :------ | :------ | :------ |
 | `id` | `string` | exactly object ID (without namespace) |
 | `options` | `unknown` | optional user context |
-| `callback` | [`GetObjectCallback`](../modules/internal_.md#getobjectcallback)<`string`\> | return result        <pre><code>            function (err, obj) {              if (err) adapter.log.error('Cannot get object: ' + err);            }        </code></pre> |
+| `callback` | `GetObjectCallback`<`string`\> | return result        ```js            function (err, obj) {              if (err) adapter.log.error('Cannot get object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -4901,13 +4277,13 @@ It is not required, that ID consists namespace. E.g. to get object of "adapterNa
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3436](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3436)
+[packages/adapter/src/lib/adapter/adapter.ts:3433](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3433)
 
 ___
 
 ### getObjectAsync
 
-▸ **getObjectAsync**(`id`, `options?`): [`GetObjectPromise`](../modules/internal_.md#getobjectpromise)<`string`\>
+▸ **getObjectAsync**(`id`, `options?`): `GetObjectPromise`<`string`\>
 
 Reads an object from the object db
 
@@ -4920,11 +4296,11 @@ Reads an object from the object db
 
 #### Returns
 
-[`GetObjectPromise`](../modules/internal_.md#getobjectpromise)<`string`\>
+`GetObjectPromise`<`string`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:134](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L134)
+[packages/adapter/src/lib/adapter/adapter.ts:134](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L134)
 
 ___
 
@@ -4934,15 +4310,15 @@ ___
 
 Read object list from DB.
 
-It is required, that ID consists namespace in startkey and endkey. E.g. {startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '.\u9999'}
+It is required, that ID consists namespace in startkey and endkey. E.g. `{startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '.\u9999'}`
 to get all objects of the instance.
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `params` | ``null`` \| [`GetObjectViewParams`](../interfaces/internal_.GetObjectViewParams.md) |  |
-| `callback` | [`GetObjectListCallback`](../modules/internal_.md#getobjectlistcallback) | <pre><code>          function (err, res) {              if (res && res.rows) {                   for (var i = 0; i < res.rows.length; i++) {                       var id  = res.rows[i].id;                       var obj = res.rows[i].value;                       console.log('Found ' + id + ': ' + JSON.stringify(obj));                   }                   if (!res.rows.length) console.log('No objects found.');              } else {                  console.log('No objects found: ' + err);              }          }       </code></pre> |
+| `params` | ``null`` \| `GetObjectViewParams` |  |
+| `callback` | `GetObjectListCallback` | ```js          function (err, res) {              if (res && res.rows) {                   for (var i = 0; i < res.rows.length; i++) {                       var id  = res.rows[i].id;                       var obj = res.rows[i].value;                       console.log('Found ' + id + ': ' + JSON.stringify(obj));                   }                   if (!res.rows.length) console.log('No objects found.');              } else {                  console.log('No objects found: ' + err);              }          }       ``` |
 
 #### Returns
 
@@ -4950,22 +4326,22 @@ to get all objects of the instance.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3594](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3594)
+[packages/adapter/src/lib/adapter/adapter.ts:3591](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3591)
 
 ▸ **getObjectList**(`params`, `options`, `callback`): `void`
 
 Read object list from DB.
 
-It is required, that ID consists namespace in startkey and endkey. E.g. {startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '.\u9999'}
+It is required, that ID consists namespace in startkey and endkey. E.g. `{startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '.\u9999'}`
 to get all objects of the instance.
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `params` | ``null`` \| [`GetObjectViewParams`](../interfaces/internal_.GetObjectViewParams.md) |  |
-| `options` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> \| { `sorted?`: `boolean`  } |  |
-| `callback` | [`GetObjectListCallback`](../modules/internal_.md#getobjectlistcallback) | <pre><code>          function (err, res) {              if (res && res.rows) {                   for (var i = 0; i < res.rows.length; i++) {                       var id  = res.rows[i].id;                       var obj = res.rows[i].value;                       console.log('Found ' + id + ': ' + JSON.stringify(obj));                   }                   if (!res.rows.length) console.log('No objects found.');              } else {                  console.log('No objects found: ' + err);              }          }       </code></pre> |
+| `params` | ``null`` \| `GetObjectViewParams` |  |
+| `options` | `Record`<`string`, `any`\> \| { `sorted?`: `boolean`  } |  |
+| `callback` | `GetObjectListCallback` | ```js          function (err, res) {              if (res && res.rows) {                   for (var i = 0; i < res.rows.length; i++) {                       var id  = res.rows[i].id;                       var obj = res.rows[i].value;                       console.log('Found ' + id + ': ' + JSON.stringify(obj));                   }                   if (!res.rows.length) console.log('No objects found.');              } else {                  console.log('No objects found: ' + err);              }          }       ``` |
 
 #### Returns
 
@@ -4973,13 +4349,13 @@ to get all objects of the instance.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3595](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3595)
+[packages/adapter/src/lib/adapter/adapter.ts:3592](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3592)
 
 ___
 
 ### getObjectListAsync
 
-▸ **getObjectListAsync**(`params`, `options?`): [`GetObjectListPromise`](../modules/internal_.md#getobjectlistpromise)
+▸ **getObjectListAsync**(`params`, `options?`): `GetObjectListPromise`
 
 Returns a list of objects with id between params.startkey and params.endkey
 
@@ -4987,16 +4363,16 @@ Returns a list of objects with id between params.startkey and params.endkey
 
 | Name | Type |
 | :------ | :------ |
-| `params` | ``null`` \| [`GetObjectViewParams`](../interfaces/internal_.GetObjectViewParams.md) |
-| `options?` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> \| { `sorted?`: `boolean`  } |
+| `params` | ``null`` \| `GetObjectViewParams` |
+| `options?` | `Record`<`string`, `any`\> \| { `sorted?`: `boolean`  } |
 
 #### Returns
 
-[`GetObjectListPromise`](../modules/internal_.md#getobjectlistpromise)
+`GetObjectListPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:147](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L147)
+[packages/adapter/src/lib/adapter/adapter.ts:147](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L147)
 
 ___
 
@@ -5006,7 +4382,7 @@ ___
 
 Read object view from DB.
 
-It is required, that ID consists namespace in startkey and endkey. E.g. {startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '.\u9999'}
+It is required, that ID consists namespace in startkey and endkey. E.g. `{startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '.\u9999'}`
 to get all objects of the instance.
 
 #### Type parameters
@@ -5022,8 +4398,8 @@ to get all objects of the instance.
 | :------ | :------ | :------ |
 | `design` | `Design` | name of the design |
 | `search` | `Search` | name of the view |
-| `params` | `undefined` \| ``null`` \| [`GetObjectViewParams`](../interfaces/internal_.GetObjectViewParams.md) | object containing startkey: first id to include in result; endkey: last id to include in result |
-| `callback` | [`GetObjectViewCallback`](../modules/internal_.md#getobjectviewcallback)<[`InferGetObjectViewItemType`](../modules/internal_.md#infergetobjectviewitemtype)<`Design`, `Search`\>\> | return result      <pre><code>          function (err, doc) {              if (doc && doc.rows) {                   for (var i = 0; i < doc.rows.length; i++) {                       var id  = doc.rows[i].id;                        var obj = doc.rows[i].value;                        console.log('Found ' + id + ': ' + JSON.stringify(obj));                   }                           if (!doc.rows.length) console.log('No objects found.');               } else {                   console.log('No objects found: ' + err);               }           }           </code></pre> |
+| `params` | `undefined` \| ``null`` \| `GetObjectViewParams` | object containing startkey: first id to include in result; endkey: last id to include in result |
+| `callback` | `GetObjectViewCallback`<`InferGetObjectViewItemType`<`Design`, `Search`\>\> | return result      ```js          function (err, doc) {              if (doc && doc.rows) {                   for (var i = 0; i < doc.rows.length; i++) {                       var id  = doc.rows[i].id;                        var obj = doc.rows[i].value;                        console.log('Found ' + id + ': ' + JSON.stringify(obj));                   }                           if (!doc.rows.length) console.log('No objects found.');               } else {                   console.log('No objects found: ' + err);               }           }           ``` |
 
 #### Returns
 
@@ -5031,13 +4407,13 @@ to get all objects of the instance.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3478](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3478)
+[packages/adapter/src/lib/adapter/adapter.ts:3475](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3475)
 
 ▸ **getObjectView**<`Design`, `Search`\>(`design`, `search`, `params`, `options`, `callback`): `void`
 
 Read object view from DB.
 
-It is required, that ID consists namespace in startkey and endkey. E.g. {startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '.\u9999'}
+It is required, that ID consists namespace in startkey and endkey. E.g. `{startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '.\u9999'}`
 to get all objects of the instance.
 
 #### Type parameters
@@ -5053,9 +4429,9 @@ to get all objects of the instance.
 | :------ | :------ | :------ |
 | `design` | `Design` | name of the design |
 | `search` | `Search` | name of the view |
-| `params` | `undefined` \| ``null`` \| [`GetObjectViewParams`](../interfaces/internal_.GetObjectViewParams.md) | object containing startkey: first id to include in result; endkey: last id to include in result |
+| `params` | `undefined` \| ``null`` \| `GetObjectViewParams` | object containing startkey: first id to include in result; endkey: last id to include in result |
 | `options` | `unknown` |  |
-| `callback` | [`GetObjectViewCallback`](../modules/internal_.md#getobjectviewcallback)<[`InferGetObjectViewItemType`](../modules/internal_.md#infergetobjectviewitemtype)<`Design`, `Search`\>\> | return result      <pre><code>          function (err, doc) {              if (doc && doc.rows) {                   for (var i = 0; i < doc.rows.length; i++) {                       var id  = doc.rows[i].id;                        var obj = doc.rows[i].value;                        console.log('Found ' + id + ': ' + JSON.stringify(obj));                   }                           if (!doc.rows.length) console.log('No objects found.');               } else {                   console.log('No objects found: ' + err);               }           }           </code></pre> |
+| `callback` | `GetObjectViewCallback`<`InferGetObjectViewItemType`<`Design`, `Search`\>\> | return result      ```js          function (err, doc) {              if (doc && doc.rows) {                   for (var i = 0; i < doc.rows.length; i++) {                       var id  = doc.rows[i].id;                        var obj = doc.rows[i].value;                        console.log('Found ' + id + ': ' + JSON.stringify(obj));                   }                           if (!doc.rows.length) console.log('No objects found.');               } else {                   console.log('No objects found: ' + err);               }           }           ``` |
 
 #### Returns
 
@@ -5063,13 +4439,13 @@ to get all objects of the instance.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3484](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3484)
+[packages/adapter/src/lib/adapter/adapter.ts:3481](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3481)
 
 ___
 
 ### getObjectViewAsync
 
-▸ **getObjectViewAsync**<`Design`, `Search`\>(`design`, `search`, `params`, `options?`): [`GetObjectViewPromise`](../modules/internal_.md#getobjectviewpromise)<[`InferGetObjectViewItemType`](../modules/internal_.md#infergetobjectviewitemtype)<`Design`, `Search`\>\>
+▸ **getObjectViewAsync**<`Design`, `Search`\>(`design`, `search`, `params`, `options?`): `GetObjectViewPromise`<`InferGetObjectViewItemType`<`Design`, `Search`\>\>
 
 Query a predefined object view (similar to SQL stored procedures) and return the results
 For a detailed description refer to https://github.com/ioBroker/ioBroker/wiki/Adapter-Development-Documentation#object-fields
@@ -5088,22 +4464,22 @@ or http://guide.couchdb.org/editions/1/en/views.html
 | :------ | :------ |
 | `design` | `Design` |
 | `search` | `Search` |
-| `params` | `undefined` \| ``null`` \| [`GetObjectViewParams`](../interfaces/internal_.GetObjectViewParams.md) |
+| `params` | `undefined` \| ``null`` \| `GetObjectViewParams` |
 | `options?` | `unknown` |
 
 #### Returns
 
-[`GetObjectViewPromise`](../modules/internal_.md#getobjectviewpromise)<[`InferGetObjectViewItemType`](../modules/internal_.md#infergetobjectviewitemtype)<`Design`, `Search`\>\>
+`GetObjectViewPromise`<`InferGetObjectViewItemType`<`Design`, `Search`\>\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:140](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L140)
+[packages/adapter/src/lib/adapter/adapter.ts:140](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L140)
 
 ___
 
 ### getPluginConfig
 
-▸ **getPluginConfig**(`name`): ``null`` \| [`Record`](../modules/internal_.md#record)<`string`, `any`\>
+▸ **getPluginConfig**(`name`): ``null`` \| `Record`<`string`, `any`\>
 
 Return plugin configuration
 
@@ -5111,23 +4487,23 @@ Return plugin configuration
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `name` | `string` | {string} name of the plugin to return |
+| `name` | `string` | name of the plugin to return |
 
 #### Returns
 
-``null`` \| [`Record`](../modules/internal_.md#record)<`string`, `any`\>
+``null`` \| `Record`<`string`, `any`\>
 
 plugin configuration or null if not existent or not isActive
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10221](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L10221)
+[packages/adapter/src/lib/adapter/adapter.ts:10225](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L10225)
 
 ___
 
 ### getPluginInstance
 
-▸ **getPluginInstance**(`name`): ``null`` \| [`Plugin`](../modules/internal_.md#plugin)
+▸ **getPluginInstance**(`name`): ``null`` \| `Plugin`
 
 Return plugin instance
 
@@ -5135,17 +4511,17 @@ Return plugin instance
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `name` | `string` | {string} name of the plugin to return |
+| `name` | `string` | name of the plugin to return |
 
 #### Returns
 
-``null`` \| [`Plugin`](../modules/internal_.md#plugin)
+``null`` \| `Plugin`
 
 plugin instance or null if not existent or not isActive
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10203](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L10203)
+[packages/adapter/src/lib/adapter/adapter.ts:10207](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L10207)
 
 ___
 
@@ -5156,11 +4532,11 @@ ___
 Helper function to find next free port
 
 Looks for first free TCP port starting with given one:
-<pre><code>
+```js
     adapter.getPort(8081, function (port) {
         adapter.log.debug('Following port is free: ' + port);
     });
-</code></pre>
+```
 
 #### Parameters
 
@@ -5168,7 +4544,7 @@ Looks for first free TCP port starting with given one:
 | :------ | :------ | :------ |
 | `port` | `number` | port number to start the search for free port |
 | `host?` | `string` | optional hostname for the port search |
-| `callback?` | (`port`: `number`) => `void` | return result        <pre><code>function (port) {}</code></pre> |
+| `callback?` | (`port`: `number`) => `void` | return result        ```js        function (port) {}        ``` |
 
 #### Returns
 
@@ -5176,25 +4552,25 @@ Looks for first free TCP port starting with given one:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1399](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L1399)
+[packages/adapter/src/lib/adapter/adapter.ts:1392](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L1392)
 
 ▸ **getPort**(`port`, `callback?`): `void`
 
 Helper function to find next free port
 
 Looks for first free TCP port starting with given one:
-<pre><code>
+```js
     adapter.getPort(8081, function (port) {
         adapter.log.debug('Following port is free: ' + port);
     });
-</code></pre>
+```
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `port` | `number` | port number to start the search for free port |
-| `callback?` | (`port`: `number`) => `void` | return result        <pre><code>function (port) {}</code></pre> |
+| `callback?` | (`port`: `number`) => `void` | return result        ```js        function (port) {}        ``` |
 
 #### Returns
 
@@ -5202,7 +4578,7 @@ Looks for first free TCP port starting with given one:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1400](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L1400)
+[packages/adapter/src/lib/adapter/adapter.ts:1393](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L1393)
 
 ___
 
@@ -5224,7 +4600,7 @@ Helper function that looks for first free TCP port starting with the given one.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L277)
+[packages/adapter/src/lib/adapter/adapter.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L277)
 
 ___
 
@@ -5237,7 +4613,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `callback` | [`GetSessionCallback`](../modules/internal_.md#getsessioncallback) |
+| `callback` | `GetSessionCallback` |
 
 #### Returns
 
@@ -5245,7 +4621,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1226](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L1226)
+[packages/adapter/src/lib/adapter/adapter.ts:1219](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L1219)
 
 ___
 
@@ -5267,7 +4643,7 @@ explanation
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID of the state. |
-| `callback` | [`GetStateCallback`](../modules/internal_.md#getstatecallback) | return result        <pre><code>            function (err, state) {              if (err) adapter.log.error('Cannot read value: ' + err);            }        </code></pre>         See possible attributes of the state in |
+| `callback` | `GetStateCallback` | return result        ```js            function (err, state) {              if (err) adapter.log.error('Cannot read value: ' + err);            }        ```         See possible attributes of the state in |
 
 #### Returns
 
@@ -5275,7 +4651,7 @@ explanation
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8466](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L8466)
+[packages/adapter/src/lib/adapter/adapter.ts:8459](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L8459)
 
 ▸ **getState**(`id`, `options`, `callback`): `void`
 
@@ -5294,7 +4670,7 @@ explanation
 | :------ | :------ | :------ |
 | `id` | `string` | object ID of the state. |
 | `options` | `unknown` | optional user context |
-| `callback` | [`GetStateCallback`](../modules/internal_.md#getstatecallback) | return result        <pre><code>            function (err, state) {              if (err) adapter.log.error('Cannot read value: ' + err);            }        </code></pre>         See possible attributes of the state in |
+| `callback` | `GetStateCallback` | return result        ```js            function (err, state) {              if (err) adapter.log.error('Cannot read value: ' + err);            }        ```         See possible attributes of the state in |
 
 #### Returns
 
@@ -5302,13 +4678,13 @@ explanation
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8467](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L8467)
+[packages/adapter/src/lib/adapter/adapter.ts:8460](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L8460)
 
 ___
 
 ### getStateAsync
 
-▸ **getStateAsync**(`id`, `options?`): [`GetStatePromise`](../modules/internal_.md#getstatepromise)
+▸ **getStateAsync**(`id`, `options?`): `GetStatePromise`
 
 Read a value from the states DB.
 
@@ -5321,11 +4697,11 @@ Read a value from the states DB.
 
 #### Returns
 
-[`GetStatePromise`](../modules/internal_.md#getstatepromise)
+`GetStatePromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:164](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L164)
+[packages/adapter/src/lib/adapter/adapter.ts:164](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L164)
 
 ___
 
@@ -5336,20 +4712,20 @@ ___
 Read all states of this adapter, that pass the pattern
 
 Allows to read all states of current adapter according to pattern. To read all states of current adapter use:
-<pre><code>
+```js
     adapter.getStates('*', function (err, states) {
         for (var id in states) {
              adapter.log.debug('"' + id + '" = "' + states[id].val);
         }
     });
-</code></pre>
+```
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` | string in form 'adapter.0.*' or like this. It can be array of IDs too. |
-| `callback` | [`GetStatesCallback`](../modules/internal_.md#getstatescallback) | return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...} |
+| `callback` | `GetStatesCallback` | return result ```js function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...} ``` |
 
 #### Returns
 
@@ -5357,20 +4733,20 @@ Allows to read all states of current adapter according to pattern. To read all s
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9014](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L9014)
+[packages/adapter/src/lib/adapter/adapter.ts:9010](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L9010)
 
 ▸ **getStates**(`pattern`, `options`, `callback`): `void`
 
 Read all states of this adapter, that pass the pattern
 
 Allows to read all states of current adapter according to pattern. To read all states of current adapter use:
-<pre><code>
+```js
     adapter.getStates('*', function (err, states) {
         for (var id in states) {
              adapter.log.debug('"' + id + '" = "' + states[id].val);
         }
     });
-</code></pre>
+```
 
 #### Parameters
 
@@ -5378,7 +4754,7 @@ Allows to read all states of current adapter according to pattern. To read all s
 | :------ | :------ | :------ |
 | `pattern` | `string` | string in form 'adapter.0.*' or like this. It can be array of IDs too. |
 | `options` | `unknown` | optional argument to describe the user context |
-| `callback` | [`GetStatesCallback`](../modules/internal_.md#getstatescallback) | return result function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...} |
+| `callback` | `GetStatesCallback` | return result ```js function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...} ``` |
 
 #### Returns
 
@@ -5386,13 +4762,13 @@ Allows to read all states of current adapter according to pattern. To read all s
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9015](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L9015)
+[packages/adapter/src/lib/adapter/adapter.ts:9011](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L9011)
 
 ___
 
 ### getStatesAsync
 
-▸ **getStatesAsync**(`pattern`, `options?`): [`GetStatesPromise`](../modules/internal_.md#getstatespromise)
+▸ **getStatesAsync**(`pattern`, `options?`): `GetStatesPromise`
 
 Read all states of this adapter which match the given pattern
 
@@ -5405,11 +4781,11 @@ Read all states of this adapter which match the given pattern
 
 #### Returns
 
-[`GetStatesPromise`](../modules/internal_.md#getstatespromise)
+`GetStatesPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:241](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L241)
+[packages/adapter/src/lib/adapter/adapter.ts:241](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L241)
 
 ___
 
@@ -5421,7 +4797,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`StateObject`](../interfaces/internal_.StateObject.md)\> |
+| `callback` | `GetObjectsCallback3`<`StateObject`\> |
 
 #### Returns
 
@@ -5429,7 +4805,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5830](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5830)
+[packages/adapter/src/lib/adapter/adapter.ts:5823](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5823)
 
 ▸ **getStatesOf**(`parentDevice`, `callback`): `void`
 
@@ -5438,7 +4814,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `parentDevice` | `string` |
-| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`StateObject`](../interfaces/internal_.StateObject.md)\> |
+| `callback` | `GetObjectsCallback3`<`StateObject`\> |
 
 #### Returns
 
@@ -5446,7 +4822,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5831](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5831)
+[packages/adapter/src/lib/adapter/adapter.ts:5824](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5824)
 
 ▸ **getStatesOf**(`parentDevice`, `parentChannel`, `callback`): `void`
 
@@ -5456,7 +4832,7 @@ ___
 | :------ | :------ |
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
-| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`StateObject`](../interfaces/internal_.StateObject.md)\> |
+| `callback` | `GetObjectsCallback3`<`StateObject`\> |
 
 #### Returns
 
@@ -5464,7 +4840,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5832](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5832)
+[packages/adapter/src/lib/adapter/adapter.ts:5825](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5825)
 
 ▸ **getStatesOf**(`parentDevice`, `parentChannel`, `options`, `callback`): `void`
 
@@ -5475,7 +4851,7 @@ ___
 | `parentDevice` | `string` |
 | `parentChannel` | `string` |
 | `options` | `unknown` |
-| `callback` | [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`StateObject`](../interfaces/internal_.StateObject.md)\> |
+| `callback` | `GetObjectsCallback3`<`StateObject`\> |
 
 #### Returns
 
@@ -5483,25 +4859,25 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5837](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L5837)
+[packages/adapter/src/lib/adapter/adapter.ts:5830](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L5830)
 
 ___
 
 ### getStatesOfAsync
 
-▸ **getStatesOfAsync**(): `Promise`<[`StateObject`](../interfaces/internal_.StateObject.md)[]\>
+▸ **getStatesOfAsync**(): `Promise`<`StateObject`[]\>
 
 Returns a list of all states in this adapter instance
 
 #### Returns
 
-`Promise`<[`StateObject`](../interfaces/internal_.StateObject.md)[]\>
+`Promise`<`StateObject`[]\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:541](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L541)
+[packages/adapter/src/lib/adapter/adapter.ts:541](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L541)
 
-▸ **getStatesOfAsync**(`parentDevice`, `parentChannel?`): `Promise`<[`StateObject`](../interfaces/internal_.StateObject.md)[]\>
+▸ **getStatesOfAsync**(`parentDevice`, `parentChannel?`): `Promise`<`StateObject`[]\>
 
 #### Parameters
 
@@ -5512,13 +4888,13 @@ Returns a list of all states in this adapter instance
 
 #### Returns
 
-`Promise`<[`StateObject`](../interfaces/internal_.StateObject.md)[]\>
+`Promise`<`StateObject`[]\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:542](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L542)
+[packages/adapter/src/lib/adapter/adapter.ts:542](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L542)
 
-▸ **getStatesOfAsync**(`parentDevice`, `parentChannel`, `options?`): `Promise`<[`StateObject`](../interfaces/internal_.StateObject.md)[]\>
+▸ **getStatesOfAsync**(`parentDevice`, `parentChannel`, `options?`): `Promise`<`StateObject`[]\>
 
 #### Parameters
 
@@ -5530,11 +4906,11 @@ Returns a list of all states in this adapter instance
 
 #### Returns
 
-`Promise`<[`StateObject`](../interfaces/internal_.StateObject.md)[]\>
+`Promise`<`StateObject`[]\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:543](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L543)
+[packages/adapter/src/lib/adapter/adapter.ts:543](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L543)
 
 ___
 
@@ -5558,7 +4934,7 @@ list of suitable licenses
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10267](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L10267)
+[packages/adapter/src/lib/adapter/adapter.ts:10271](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L10271)
 
 ___
 
@@ -5580,7 +4956,7 @@ Return ID of given username
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1589](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L1589)
+[packages/adapter/src/lib/adapter/adapter.ts:1584](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L1584)
 
 ___
 
@@ -5590,8 +4966,8 @@ ___
 
 Convert ID into object with device's, channel's and state's name.
 
-Convert "adapter.instance.D.C.S" in object {device: D, channel: C, state: S}
-Convert ID to {device: D, channel: C, state: S}
+Convert "adapter.instance.D.C.S" in object `{device: D, channel: C, state: S}`
+Convert ID to `{device: D, channel: C, state: S}`
 
 #### Parameters
 
@@ -5607,75 +4983,7 @@ parsed ID as an object
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8868](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L8868)
-
-___
-
-### listenerCount
-
-▸ **listenerCount**(`eventName`): `number`
-
-Returns the number of listeners listening to the event named `eventName`.
-
-**`Since`**
-
-v3.2.0
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `eventName` | `string` \| `symbol` | The name of the event being listened for |
-
-#### Returns
-
-`number`
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[listenerCount](internal_.EventEmitter-1.md#listenercount)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:561
-
-___
-
-### listeners
-
-▸ **listeners**(`eventName`): `Function`[]
-
-Returns a copy of the array of listeners for the event named `eventName`.
-
-```js
-server.on('connection', (stream) => {
-  console.log('someone connected!');
-});
-console.log(util.inspect(server.listeners('connection')));
-// Prints: [ [Function] ]
-```
-
-**`Since`**
-
-v0.1.26
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `eventName` | `string` \| `symbol` |
-
-#### Returns
-
-`Function`[]
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[listeners](internal_.EventEmitter-1.md#listeners)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:484
+[packages/adapter/src/lib/adapter/adapter.ts:8861](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L8861)
 
 ___
 
@@ -5689,7 +4997,7 @@ ___
 | :------ | :------ |
 | `adapterName` | ``null`` \| `string` |
 | `path` | `string` |
-| `callback` | [`ErrnoCallback`](../modules/internal_.md#errnocallback) |
+| `callback` | `ErrnoCallback` |
 
 #### Returns
 
@@ -5697,7 +5005,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6434](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6434)
+[packages/adapter/src/lib/adapter/adapter.ts:6427](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6427)
 
 ▸ **mkdir**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -5708,7 +5016,7 @@ ___
 | `adapterName` | ``null`` \| `string` |
 | `path` | `string` |
 | `options` | `unknown` |
-| `callback` | [`ErrnoCallback`](../modules/internal_.md#errnocallback) |
+| `callback` | `ErrnoCallback` |
 
 #### Returns
 
@@ -5716,7 +5024,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6435](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6435)
+[packages/adapter/src/lib/adapter/adapter.ts:6428](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6428)
 
 ___
 
@@ -5738,283 +5046,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:227](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L227)
-
-___
-
-### off
-
-▸ **off**(`eventName`, `listener`): [`AdapterClass`](AdapterClass.md)
-
-Alias for `emitter.removeListener()`.
-
-**`Since`**
-
-v10.0.0
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `eventName` | `string` \| `symbol` |
-| `listener` | (...`args`: `any`[]) => `void` |
-
-#### Returns
-
-[`AdapterClass`](AdapterClass.md)
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[off](internal_.EventEmitter-1.md#off)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:444
-
-___
-
-### on
-
-▸ **on**(`eventName`, `listener`): [`AdapterClass`](AdapterClass.md)
-
-Adds the `listener` function to the end of the listeners array for the
-event named `eventName`. No checks are made to see if the `listener` has
-already been added. Multiple calls passing the same combination of `eventName`and `listener` will result in the `listener` being added, and called, multiple
-times.
-
-```js
-server.on('connection', (stream) => {
-  console.log('someone connected!');
-});
-```
-
-Returns a reference to the `EventEmitter`, so that calls can be chained.
-
-By default, event listeners are invoked in the order they are added. The`emitter.prependListener()` method can be used as an alternative to add the
-event listener to the beginning of the listeners array.
-
-```js
-const myEE = new EventEmitter();
-myEE.on('foo', () => console.log('a'));
-myEE.prependListener('foo', () => console.log('b'));
-myEE.emit('foo');
-// Prints:
-//   b
-//   a
-```
-
-**`Since`**
-
-v0.1.101
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `eventName` | `string` \| `symbol` | The name of the event. |
-| `listener` | (...`args`: `any`[]) => `void` | The callback function |
-
-#### Returns
-
-[`AdapterClass`](AdapterClass.md)
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[on](internal_.EventEmitter-1.md#on)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:330
-
-___
-
-### once
-
-▸ **once**(`eventName`, `listener`): [`AdapterClass`](AdapterClass.md)
-
-Adds a **one-time**`listener` function for the event named `eventName`. The
-next time `eventName` is triggered, this listener is removed and then invoked.
-
-```js
-server.once('connection', (stream) => {
-  console.log('Ah, we have our first user!');
-});
-```
-
-Returns a reference to the `EventEmitter`, so that calls can be chained.
-
-By default, event listeners are invoked in the order they are added. The`emitter.prependOnceListener()` method can be used as an alternative to add the
-event listener to the beginning of the listeners array.
-
-```js
-const myEE = new EventEmitter();
-myEE.once('foo', () => console.log('a'));
-myEE.prependOnceListener('foo', () => console.log('b'));
-myEE.emit('foo');
-// Prints:
-//   b
-//   a
-```
-
-**`Since`**
-
-v0.3.0
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `eventName` | `string` \| `symbol` | The name of the event. |
-| `listener` | (...`args`: `any`[]) => `void` | The callback function |
-
-#### Returns
-
-[`AdapterClass`](AdapterClass.md)
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[once](internal_.EventEmitter-1.md#once)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:359
-
-___
-
-### prependListener
-
-▸ **prependListener**(`eventName`, `listener`): [`AdapterClass`](AdapterClass.md)
-
-Adds the `listener` function to the _beginning_ of the listeners array for the
-event named `eventName`. No checks are made to see if the `listener` has
-already been added. Multiple calls passing the same combination of `eventName`and `listener` will result in the `listener` being added, and called, multiple
-times.
-
-```js
-server.prependListener('connection', (stream) => {
-  console.log('someone connected!');
-});
-```
-
-Returns a reference to the `EventEmitter`, so that calls can be chained.
-
-**`Since`**
-
-v6.0.0
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `eventName` | `string` \| `symbol` | The name of the event. |
-| `listener` | (...`args`: `any`[]) => `void` | The callback function |
-
-#### Returns
-
-[`AdapterClass`](AdapterClass.md)
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[prependListener](internal_.EventEmitter-1.md#prependlistener)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:579
-
-___
-
-### prependOnceListener
-
-▸ **prependOnceListener**(`eventName`, `listener`): [`AdapterClass`](AdapterClass.md)
-
-Adds a **one-time**`listener` function for the event named `eventName` to the_beginning_ of the listeners array. The next time `eventName` is triggered, this
-listener is removed, and then invoked.
-
-```js
-server.prependOnceListener('connection', (stream) => {
-  console.log('Ah, we have our first user!');
-});
-```
-
-Returns a reference to the `EventEmitter`, so that calls can be chained.
-
-**`Since`**
-
-v6.0.0
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `eventName` | `string` \| `symbol` | The name of the event. |
-| `listener` | (...`args`: `any`[]) => `void` | The callback function |
-
-#### Returns
-
-[`AdapterClass`](AdapterClass.md)
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[prependOnceListener](internal_.EventEmitter-1.md#prependoncelistener)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:595
-
-___
-
-### rawListeners
-
-▸ **rawListeners**(`eventName`): `Function`[]
-
-Returns a copy of the array of listeners for the event named `eventName`,
-including any wrappers (such as those created by `.once()`).
-
-```js
-const emitter = new EventEmitter();
-emitter.once('log', () => console.log('log once'));
-
-// Returns a new Array with a function `onceWrapper` which has a property
-// `listener` which contains the original listener bound above
-const listeners = emitter.rawListeners('log');
-const logFnWrapper = listeners[0];
-
-// Logs "log once" to the console and does not unbind the `once` event
-logFnWrapper.listener();
-
-// Logs "log once" to the console and removes the listener
-logFnWrapper();
-
-emitter.on('log', () => console.log('log persistently'));
-// Will return a new Array with a single function bound by `.on()` above
-const newListeners = emitter.rawListeners('log');
-
-// Logs "log persistently" twice
-newListeners[0]();
-emitter.emit('log');
-```
-
-**`Since`**
-
-v9.4.0
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `eventName` | `string` \| `symbol` |
-
-#### Returns
-
-`Function`[]
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[rawListeners](internal_.EventEmitter-1.md#rawlisteners)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:514
+[packages/adapter/src/lib/adapter/adapter.ts:227](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L227)
 
 ___
 
@@ -6026,7 +5058,7 @@ Read directory from DB.
 
 This function reads the content of directory from DB for given adapter and path.
 If getEnum called with no enum specified, all enums will be returned:
-<pre><code>
+```js
      adapter.readDir('vis.0', '/main/', function (err, filesOrDirs) {
        // All enums
        if (err) adapter.log.error('Cannot read directory: ' + err);
@@ -6036,7 +5068,7 @@ If getEnum called with no enum specified, all enums will be returned:
           }
       }
      });
-</code></pre>
+```
 
 #### Parameters
 
@@ -6044,7 +5076,7 @@ If getEnum called with no enum specified, all enums will be returned:
 | :------ | :------ | :------ |
 | `adapterName` | ``null`` \| `string` | - |
 | `path` | `string` | path to direcory without adapter name. E.g. If you want to read "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0". |
-| `callback` | [`ReadDirCallback`](../modules/internal_.md#readdircallback) | return result        <pre><code>            function (err, filesOrDirs) {                // filesOrDirs is array with elements like                // {                //      file:       'views.json,                //      stats:      node.js stats object like https://nodejs.org/api/fs.html#fs_class_fs_stats ,                //      isDir:      true/false,                //      acl:        access control list object,                //      modifiedAt: time when modified,                //      createdAt:  time when created                // }            }        </code></pre> |
+| `callback` | `ReadDirCallback` | return result        ```js            function (err, filesOrDirs) {                // filesOrDirs is array with elements like                // {                //      file:       'views.json,                //      stats:      node.js stats object like https://nodejs.org/api/fs.html#fs_class_fs_stats ,                //      isDir:      true/false,                //      acl:        access control list object,                //      modifiedAt: time when modified,                //      createdAt:  time when created                // }            }        ``` |
 
 #### Returns
 
@@ -6052,7 +5084,7 @@ If getEnum called with no enum specified, all enums will be returned:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6308](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6308)
+[packages/adapter/src/lib/adapter/adapter.ts:6301](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6301)
 
 ▸ **readDir**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -6060,7 +5092,7 @@ Read directory from DB.
 
 This function reads the content of directory from DB for given adapter and path.
 If getEnum called with no enum specified, all enums will be returned:
-<pre><code>
+```js
      adapter.readDir('vis.0', '/main/', function (err, filesOrDirs) {
        // All enums
        if (err) adapter.log.error('Cannot read directory: ' + err);
@@ -6070,7 +5102,7 @@ If getEnum called with no enum specified, all enums will be returned:
           }
       }
      });
-</code></pre>
+```
 
 #### Parameters
 
@@ -6079,7 +5111,7 @@ If getEnum called with no enum specified, all enums will be returned:
 | `adapterName` | ``null`` \| `string` | - |
 | `path` | `string` | path to direcory without adapter name. E.g. If you want to read "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0". |
 | `options` | `unknown` | optional user context |
-| `callback` | [`ReadDirCallback`](../modules/internal_.md#readdircallback) | return result        <pre><code>            function (err, filesOrDirs) {                // filesOrDirs is array with elements like                // {                //      file:       'views.json,                //      stats:      node.js stats object like https://nodejs.org/api/fs.html#fs_class_fs_stats ,                //      isDir:      true/false,                //      acl:        access control list object,                //      modifiedAt: time when modified,                //      createdAt:  time when created                // }            }        </code></pre> |
+| `callback` | `ReadDirCallback` | return result        ```js            function (err, filesOrDirs) {                // filesOrDirs is array with elements like                // {                //      file:       'views.json,                //      stats:      node.js stats object like https://nodejs.org/api/fs.html#fs_class_fs_stats ,                //      isDir:      true/false,                //      acl:        access control list object,                //      modifiedAt: time when modified,                //      createdAt:  time when created                // }            }        ``` |
 
 #### Returns
 
@@ -6087,13 +5119,13 @@ If getEnum called with no enum specified, all enums will be returned:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6309](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6309)
+[packages/adapter/src/lib/adapter/adapter.ts:6302](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6302)
 
 ___
 
 ### readDirAsync
 
-▸ **readDirAsync**(`adapterName`, `path`, `options?`): [`ReadDirPromise`](../modules/internal_.md#readdirpromise)
+▸ **readDirAsync**(`adapterName`, `path`, `options?`): `ReadDirPromise`
 
 reads the content of directory from DB for given adapter and path
 
@@ -6107,11 +5139,11 @@ reads the content of directory from DB for given adapter and path
 
 #### Returns
 
-[`ReadDirPromise`](../modules/internal_.md#readdirpromise)
+`ReadDirPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:221](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L221)
+[packages/adapter/src/lib/adapter/adapter.ts:221](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L221)
 
 ___
 
@@ -6122,13 +5154,13 @@ ___
 Read file from DB.
 
 This function reads the content of one file from DB for given adapter and file name.
-<pre><code>
+```js
      adapter.readFile('vis.0', '/main/vis-views.json', function (err, data) {
        // All enums
        if (err) adapter.log.error('Cannot read file: ' + err);
        console.log('Content of file is: ' + data);
      });
-</code></pre>
+```
 
 #### Parameters
 
@@ -6136,7 +5168,7 @@ This function reads the content of one file from DB for given adapter and file n
 | :------ | :------ | :------ |
 | `adapterName` | ``null`` \| `string` | - |
 | `path` | `string` | - |
-| `callback` | [`ReadFileCallback`](../modules/internal_.md#readfilecallback) | return result        <pre><code>            function (err, data) {                // data is utf8 or binary Buffer depends on the file extension.            }        </code></pre> |
+| `callback` | `ReadFileCallback` | return result        ```js            function (err, data) {                // data is utf8 or binary Buffer depends on the file extension.            }        ``` |
 
 #### Returns
 
@@ -6144,20 +5176,20 @@ This function reads the content of one file from DB for given adapter and file n
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6460](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6460)
+[packages/adapter/src/lib/adapter/adapter.ts:6453](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6453)
 
 ▸ **readFile**(`adapterName`, `path`, `options`, `callback`): `void`
 
 Read file from DB.
 
 This function reads the content of one file from DB for given adapter and file name.
-<pre><code>
+```js
      adapter.readFile('vis.0', '/main/vis-views.json', function (err, data) {
        // All enums
        if (err) adapter.log.error('Cannot read file: ' + err);
        console.log('Content of file is: ' + data);
      });
-</code></pre>
+```
 
 #### Parameters
 
@@ -6166,7 +5198,7 @@ This function reads the content of one file from DB for given adapter and file n
 | `adapterName` | ``null`` \| `string` | - |
 | `path` | `string` | - |
 | `options` | `unknown` | optional user context |
-| `callback` | [`ReadFileCallback`](../modules/internal_.md#readfilecallback) | return result        <pre><code>            function (err, data) {                // data is utf8 or binary Buffer depends on the file extension.            }        </code></pre> |
+| `callback` | `ReadFileCallback` | return result        ```js            function (err, data) {                // data is utf8 or binary Buffer depends on the file extension.            }        ``` |
 
 #### Returns
 
@@ -6174,13 +5206,13 @@ This function reads the content of one file from DB for given adapter and file n
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6461](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6461)
+[packages/adapter/src/lib/adapter/adapter.ts:6454](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6454)
 
 ___
 
 ### readFileAsync
 
-▸ **readFileAsync**(`adapterName`, `path`, `options?`): [`ReadFilePromise`](../modules/internal_.md#readfilepromise)
+▸ **readFileAsync**(`adapterName`, `path`, `options?`): `ReadFilePromise`
 
 reads the content of directory from DB for given adapter and path
 
@@ -6194,11 +5226,11 @@ reads the content of directory from DB for given adapter and path
 
 #### Returns
 
-[`ReadFilePromise`](../modules/internal_.md#readfilepromise)
+`ReadFilePromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:229](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L229)
+[packages/adapter/src/lib/adapter/adapter.ts:229](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L229)
 
 ___
 
@@ -6219,7 +5251,7 @@ Send notification with given scope and category to host of this adapter
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `scope` | `Scope` | scope to be addressed |
-| `category` | ``null`` \| [`NotificationScopes`](../interfaces/internal_.NotificationScopes.md)[`Scope`] | to be addressed, if null message will be checked by regex of given scope |
+| `category` | ``null`` \| `NotificationScopes`[`Scope`] | to be addressed, if null message will be checked by regex of given scope |
 | `message` | `string` | message to be stored/checked |
 
 #### Returns
@@ -6228,149 +5260,7 @@ Send notification with given scope and category to host of this adapter
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7098](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L7098)
-
-___
-
-### removeAllListeners
-
-▸ **removeAllListeners**(`event?`): [`AdapterClass`](AdapterClass.md)
-
-Removes all listeners, or those of the specified `eventName`.
-
-It is bad practice to remove listeners added elsewhere in the code,
-particularly when the `EventEmitter` instance was created by some other
-component or module (e.g. sockets or file streams).
-
-Returns a reference to the `EventEmitter`, so that calls can be chained.
-
-**`Since`**
-
-v0.1.26
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `event?` | `string` \| `symbol` |
-
-#### Returns
-
-[`AdapterClass`](AdapterClass.md)
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[removeAllListeners](internal_.EventEmitter-1.md#removealllisteners)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:455
-
-___
-
-### removeListener
-
-▸ **removeListener**(`eventName`, `listener`): [`AdapterClass`](AdapterClass.md)
-
-Removes the specified `listener` from the listener array for the event named`eventName`.
-
-```js
-const callback = (stream) => {
-  console.log('someone connected!');
-};
-server.on('connection', callback);
-// ...
-server.removeListener('connection', callback);
-```
-
-`removeListener()` will remove, at most, one instance of a listener from the
-listener array. If any single listener has been added multiple times to the
-listener array for the specified `eventName`, then `removeListener()` must be
-called multiple times to remove each instance.
-
-Once an event is emitted, all listeners attached to it at the
-time of emitting are called in order. This implies that any`removeListener()` or `removeAllListeners()` calls _after_ emitting and_before_ the last listener finishes execution will
-not remove them from`emit()` in progress. Subsequent events behave as expected.
-
-```js
-const myEmitter = new MyEmitter();
-
-const callbackA = () => {
-  console.log('A');
-  myEmitter.removeListener('event', callbackB);
-};
-
-const callbackB = () => {
-  console.log('B');
-};
-
-myEmitter.on('event', callbackA);
-
-myEmitter.on('event', callbackB);
-
-// callbackA removes listener callbackB but it will still be called.
-// Internal listener array at time of emit [callbackA, callbackB]
-myEmitter.emit('event');
-// Prints:
-//   A
-//   B
-
-// callbackB is now removed.
-// Internal listener array [callbackA]
-myEmitter.emit('event');
-// Prints:
-//   A
-```
-
-Because listeners are managed using an internal array, calling this will
-change the position indices of any listener registered _after_ the listener
-being removed. This will not impact the order in which listeners are called,
-but it means that any copies of the listener array as returned by
-the `emitter.listeners()` method will need to be recreated.
-
-When a single function has been added as a handler multiple times for a single
-event (as in the example below), `removeListener()` will remove the most
-recently added instance. In the example the `once('ping')`listener is removed:
-
-```js
-const ee = new EventEmitter();
-
-function pong() {
-  console.log('pong');
-}
-
-ee.on('ping', pong);
-ee.once('ping', pong);
-ee.removeListener('ping', pong);
-
-ee.emit('ping');
-ee.emit('ping');
-```
-
-Returns a reference to the `EventEmitter`, so that calls can be chained.
-
-**`Since`**
-
-v0.1.26
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `eventName` | `string` \| `symbol` |
-| `listener` | (...`args`: `any`[]) => `void` |
-
-#### Returns
-
-[`AdapterClass`](AdapterClass.md)
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[removeListener](internal_.EventEmitter-1.md#removelistener)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:439
+[packages/adapter/src/lib/adapter/adapter.ts:7091](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L7091)
 
 ___
 
@@ -6385,7 +5275,7 @@ ___
 | `adapterName` | ``null`` \| `string` |
 | `oldName` | `string` |
 | `newName` | `string` |
-| `callback` | [`ErrnoCallback`](../modules/internal_.md#errnocallback) |
+| `callback` | `ErrnoCallback` |
 
 #### Returns
 
@@ -6393,7 +5283,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6400](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6400)
+[packages/adapter/src/lib/adapter/adapter.ts:6393](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6393)
 
 ▸ **rename**(`adapterName`, `oldName`, `newName`, `options`, `callback`): `void`
 
@@ -6405,7 +5295,7 @@ ___
 | `oldName` | `string` |
 | `newName` | `string` |
 | `options` | `unknown` |
-| `callback` | [`ErrnoCallback`](../modules/internal_.md#errnocallback) |
+| `callback` | `ErrnoCallback` |
 
 #### Returns
 
@@ -6413,7 +5303,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6401](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6401)
+[packages/adapter/src/lib/adapter/adapter.ts:6394](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6394)
 
 ___
 
@@ -6436,7 +5326,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:226](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L226)
+[packages/adapter/src/lib/adapter/adapter.ts:226](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L226)
 
 ___
 
@@ -6452,7 +5342,7 @@ Restarts an instance of the adapter.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2304](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L2304)
+[packages/adapter/src/lib/adapter/adapter.ts:2301](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L2301)
 
 ___
 
@@ -6470,8 +5360,8 @@ If no instance given (e.g. "pushover"), the callback argument will be ignored. B
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `instanceName` | `string` | name of the instance where the message must be sent to. E.g. "pushover.0" or "system.adapter.pushover.0". |
-| `message` | [`MessagePayload`](../modules/internal_.md#messagepayload) | object that will be given as argument for request |
-| `callback?` | [`MessageCallback`](../modules/internal_.md#messagecallback) \| [`MessageCallbackInfo`](../interfaces/internal_.MessageCallbackInfo.md) | optional return result        <pre><code>            function (result) {              // result is target adapter specific and can vary from adapter to adapter              if (!result) adapter.log.error('No response received');            }        </code></pre> |
+| `message` | `MessagePayload` | object that will be given as argument for request |
+| `callback?` | `MessageCallback` \| `MessageCallbackInfo` | optional return result        ```js            function (result) {              // result is target adapter specific and can vary from adapter to adapter              if (!result) adapter.log.error('No response received');            }        ``` |
 
 #### Returns
 
@@ -6479,7 +5369,7 @@ If no instance given (e.g. "pushover"), the callback argument will be ignored. B
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6806](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6806)
+[packages/adapter/src/lib/adapter/adapter.ts:6799](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6799)
 
 ▸ **sendTo**(`instanceName`, `command`, `message`, `callback?`): `void`
 
@@ -6494,8 +5384,8 @@ If no instance given (e.g. "pushover"), the callback argument will be ignored. B
 | :------ | :------ | :------ |
 | `instanceName` | `string` | name of the instance where the message must be sent to. E.g. "pushover.0" or "system.adapter.pushover.0". |
 | `command` | `string` | command name, like "send", "browse", "list". Command is depend on target adapter implementation. |
-| `message` | [`MessagePayload`](../modules/internal_.md#messagepayload) | object that will be given as argument for request |
-| `callback?` | [`MessageCallback`](../modules/internal_.md#messagecallback) \| [`MessageCallbackInfo`](../interfaces/internal_.MessageCallbackInfo.md) | optional return result        <pre><code>            function (result) {              // result is target adapter specific and can vary from adapter to adapter              if (!result) adapter.log.error('No response received');            }        </code></pre> |
+| `message` | `MessagePayload` | object that will be given as argument for request |
+| `callback?` | `MessageCallback` \| `MessageCallbackInfo` | optional return result        ```js            function (result) {              // result is target adapter specific and can vary from adapter to adapter              if (!result) adapter.log.error('No response received');            }        ``` |
 
 #### Returns
 
@@ -6503,13 +5393,13 @@ If no instance given (e.g. "pushover"), the callback argument will be ignored. B
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6811](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6811)
+[packages/adapter/src/lib/adapter/adapter.ts:6804](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6804)
 
 ___
 
 ### sendToAsync
 
-▸ **sendToAsync**(`instanceName`, `message`): `Promise`<`undefined` \| [`Message`](../interfaces/internal_.Message.md)\>
+▸ **sendToAsync**(`instanceName`, `message`): `Promise`<`undefined` \| `Message`\>
 
 Sends a message to a specific instance or all instances of some specific adapter.
 
@@ -6518,17 +5408,17 @@ Sends a message to a specific instance or all instances of some specific adapter
 | Name | Type |
 | :------ | :------ |
 | `instanceName` | `string` |
-| `message` | [`MessagePayload`](../modules/internal_.md#messagepayload) |
+| `message` | `MessagePayload` |
 
 #### Returns
 
-`Promise`<`undefined` \| [`Message`](../interfaces/internal_.Message.md)\>
+`Promise`<`undefined` \| `Message`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:361](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L361)
+[packages/adapter/src/lib/adapter/adapter.ts:361](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L361)
 
-▸ **sendToAsync**(`instanceName`, `command`, `message`): `Promise`<`undefined` \| [`Message`](../interfaces/internal_.Message.md)\>
+▸ **sendToAsync**(`instanceName`, `command`, `message`): `Promise`<`undefined` \| `Message`\>
 
 #### Parameters
 
@@ -6536,15 +5426,15 @@ Sends a message to a specific instance or all instances of some specific adapter
 | :------ | :------ |
 | `instanceName` | `string` |
 | `command` | `string` |
-| `message` | [`MessagePayload`](../modules/internal_.md#messagepayload) |
+| `message` | `MessagePayload` |
 
 #### Returns
 
-`Promise`<`undefined` \| [`Message`](../interfaces/internal_.Message.md)\>
+`Promise`<`undefined` \| `Message`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:362](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L362)
+[packages/adapter/src/lib/adapter/adapter.ts:362](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L362)
 
 ___
 
@@ -6562,8 +5452,8 @@ If no host name given (e.g. null), the callback argument will be ignored. Becaus
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `hostName` | `string` | name of the host where the message must be send to. E.g. "myPC" or "system.host.myPC". If argument is empty, the message will be sent to all hosts. |
-| `message` | [`MessagePayload`](../modules/internal_.md#messagepayload) | object that will be given as argument for request |
-| `callback?` | [`MessageCallback`](../modules/internal_.md#messagecallback) \| [`MessageCallbackInfo`](../interfaces/internal_.MessageCallbackInfo.md) | optional return result        <pre><code>            function (result) {              // result is target adapter specific and can vary from command to command              if (!result) adapter.log.error('No response received');            }        </code></pre> |
+| `message` | `MessagePayload` | object that will be given as argument for request |
+| `callback?` | `MessageCallback` \| `MessageCallbackInfo` | optional return result        ```js            function (result) {              // result is target adapter specific and can vary from command to command              if (!result) adapter.log.error('No response received');            }        ``` |
 
 #### Returns
 
@@ -6571,7 +5461,7 @@ If no host name given (e.g. null), the callback argument will be ignored. Becaus
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6965](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6965)
+[packages/adapter/src/lib/adapter/adapter.ts:6958](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6958)
 
 ▸ **sendToHost**(`hostName`, `command`, `message`, `callback?`): `void`
 
@@ -6586,8 +5476,8 @@ If no host name given (e.g. null), the callback argument will be ignored. Becaus
 | :------ | :------ | :------ |
 | `hostName` | `string` | name of the host where the message must be send to. E.g. "myPC" or "system.host.myPC". If argument is empty, the message will be sent to all hosts. |
 | `command` | `string` | command name. One of: "cmdExec", "getRepository", "getInstalled", "getVersion", "getDiagData", "getLocationOnDisk", "getDevList", "getLogs", "delLogs", "readDirAsZip", "writeDirAsZip", "readObjectsAsZip", "writeObjectsAsZip", "checkLogging". Commands can be checked in controller.js (function processMessage) |
-| `message` | [`MessagePayload`](../modules/internal_.md#messagepayload) | object that will be given as argument for request |
-| `callback?` | [`MessageCallback`](../modules/internal_.md#messagecallback) \| [`MessageCallbackInfo`](../interfaces/internal_.MessageCallbackInfo.md) | optional return result        <pre><code>            function (result) {              // result is target adapter specific and can vary from command to command              if (!result) adapter.log.error('No response received');            }        </code></pre> |
+| `message` | `MessagePayload` | object that will be given as argument for request |
+| `callback?` | `MessageCallback` \| `MessageCallbackInfo` | optional return result        ```js            function (result) {              // result is target adapter specific and can vary from command to command              if (!result) adapter.log.error('No response received');            }        ``` |
 
 #### Returns
 
@@ -6595,13 +5485,13 @@ If no host name given (e.g. null), the callback argument will be ignored. Becaus
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6970](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6970)
+[packages/adapter/src/lib/adapter/adapter.ts:6963](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6963)
 
 ___
 
 ### sendToHostAsync
 
-▸ **sendToHostAsync**(`hostName`, `message`): `Promise`<`undefined` \| [`Message`](../interfaces/internal_.Message.md)\>
+▸ **sendToHostAsync**(`hostName`, `message`): `Promise`<`undefined` \| `Message`\>
 
 Sends a message to a specific host or all hosts.
 
@@ -6610,17 +5500,17 @@ Sends a message to a specific host or all hosts.
 | Name | Type |
 | :------ | :------ |
 | `hostName` | `string` |
-| `message` | [`MessagePayload`](../modules/internal_.md#messagepayload) |
+| `message` | `MessagePayload` |
 
 #### Returns
 
-`Promise`<`undefined` \| [`Message`](../interfaces/internal_.Message.md)\>
+`Promise`<`undefined` \| `Message`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:351](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L351)
+[packages/adapter/src/lib/adapter/adapter.ts:351](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L351)
 
-▸ **sendToHostAsync**(`hostName`, `command`, `message`): `Promise`<`undefined` \| [`Message`](../interfaces/internal_.Message.md)\>
+▸ **sendToHostAsync**(`hostName`, `command`, `message`): `Promise`<`undefined` \| `Message`\>
 
 #### Parameters
 
@@ -6628,15 +5518,15 @@ Sends a message to a specific host or all hosts.
 | :------ | :------ |
 | `hostName` | `string` |
 | `command` | `string` |
-| `message` | [`MessagePayload`](../modules/internal_.md#messagepayload) |
+| `message` | `MessagePayload` |
 
 #### Returns
 
-`Promise`<`undefined` \| [`Message`](../interfaces/internal_.Message.md)\>
+`Promise`<`undefined` \| `Message`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:352](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L352)
+[packages/adapter/src/lib/adapter/adapter.ts:352](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L352)
 
 ___
 
@@ -6651,8 +5541,8 @@ Same as setForeignBinaryState but prefixes the own namespace to the id
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | of state |
-| `binary` | [`Buffer`](../modules/internal_.md#buffer) | data |
-| `callback` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) |  |
+| `binary` | `Buffer` | data |
+| `callback` | `SetStateCallback` |  |
 
 #### Returns
 
@@ -6660,7 +5550,7 @@ Same as setForeignBinaryState but prefixes the own namespace to the id
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10016](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L10016)
+[packages/adapter/src/lib/adapter/adapter.ts:10020](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L10020)
 
 ▸ **setBinaryState**(`id`, `binary`, `options`, `callback`): `void`
 
@@ -6671,9 +5561,9 @@ Same as setForeignBinaryState but prefixes the own namespace to the id
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | of state |
-| `binary` | [`Buffer`](../modules/internal_.md#buffer) | data |
+| `binary` | `Buffer` | data |
 | `options` | `unknown` | optional |
-| `callback` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) |  |
+| `callback` | `SetStateCallback` |  |
 
 #### Returns
 
@@ -6681,13 +5571,13 @@ Same as setForeignBinaryState but prefixes the own namespace to the id
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10017](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L10017)
+[packages/adapter/src/lib/adapter/adapter.ts:10021](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L10021)
 
 ___
 
 ### setBinaryStateAsync
 
-▸ **setBinaryStateAsync**(`id`, `binary`, `options?`): [`SetStatePromise`](../modules/internal_.md#setstatepromise)
+▸ **setBinaryStateAsync**(`id`, `binary`, `options?`): `SetStatePromise`
 
 Despite the naming convention, this method doesn't prepend the adapter namespace. Use setForeignBinaryStateAsync instead.
 Writes a binary state into Redis
@@ -6697,16 +5587,16 @@ Writes a binary state into Redis
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `binary` | [`Buffer`](../modules/internal_.md#buffer) |
+| `binary` | `Buffer` |
 | `options?` | `unknown` |
 
 #### Returns
 
-[`SetStatePromise`](../modules/internal_.md#setstatepromise)
+`SetStatePromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:259](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L259)
+[packages/adapter/src/lib/adapter/adapter.ts:259](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L259)
 
 ___
 
@@ -6732,7 +5622,7 @@ Set capabilities of the given executable. Only works on Linux systems.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:120](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L120)
+[packages/adapter/src/lib/adapter/adapter.ts:120](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L120)
 
 ___
 
@@ -6747,8 +5637,8 @@ Write binary block into redis, e.g image
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | of state |
-| `binary` | [`Buffer`](../modules/internal_.md#buffer) | data |
-| `callback` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) |  |
+| `binary` | `Buffer` | data |
+| `callback` | `SetStateCallback` |  |
 
 #### Returns
 
@@ -6756,7 +5646,7 @@ Write binary block into redis, e.g image
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9875](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L9875)
+[packages/adapter/src/lib/adapter/adapter.ts:9879](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L9879)
 
 ▸ **setForeignBinaryState**(`id`, `binary`, `options`, `callback`): `void`
 
@@ -6767,9 +5657,9 @@ Write binary block into redis, e.g image
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | of state |
-| `binary` | [`Buffer`](../modules/internal_.md#buffer) | data |
+| `binary` | `Buffer` | data |
 | `options` | `unknown` | optional |
-| `callback` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) |  |
+| `callback` | `SetStateCallback` |  |
 
 #### Returns
 
@@ -6777,13 +5667,13 @@ Write binary block into redis, e.g image
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9876](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L9876)
+[packages/adapter/src/lib/adapter/adapter.ts:9880](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L9880)
 
 ___
 
 ### setForeignBinaryStateAsync
 
-▸ **setForeignBinaryStateAsync**(`id`, `binary`, `options?`): [`SetStatePromise`](../modules/internal_.md#setstatepromise)
+▸ **setForeignBinaryStateAsync**(`id`, `binary`, `options?`): `SetStatePromise`
 
 Writes a binary state into Redis. The ID will not be prefixed with the adapter namespace.
 
@@ -6792,16 +5682,16 @@ Writes a binary state into Redis. The ID will not be prefixed with the adapter n
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `binary` | [`Buffer`](../modules/internal_.md#buffer) |
+| `binary` | `Buffer` |
 | `options?` | `unknown` |
 
 #### Returns
 
-[`SetStatePromise`](../modules/internal_.md#setstatepromise)
+`SetStatePromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:253](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L253)
+[packages/adapter/src/lib/adapter/adapter.ts:253](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L253)
 
 ___
 
@@ -6809,7 +5699,7 @@ ___
 
 ▸ **setForeignObject**<`T`\>(`id`, `obj`, `callback?`): `void`
 
-Same as Adapter.setObject, but for any object.
+Same as [setObject](AdapterClass.md#setobject), but for any object.
 
 ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC98989.1.STATE"
 
@@ -6824,8 +5714,8 @@ ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC989
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `T` | object ID, that must be overwritten or created. |
-| `obj` | [`SettableObjectWorker`](../modules/internal_.md#settableobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"write"``\>\> | new object |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | return result        <pre><code>            function (err, obj) {              // obj is {id: id}              if (err) adapter.log.error('Cannot write object: ' + err);            }        </code></pre> |
+| `obj` | `SettableObjectWorker`<`ObjectIdToObjectType`<`T`, ``"write"``\>\> | new object |
+| `callback?` | `SetObjectCallback` | return result        ```js            function (err, obj) {              // obj is {id: id}              if (err) adapter.log.error('Cannot write object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -6833,11 +5723,11 @@ ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC989
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3124](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3124)
+[packages/adapter/src/lib/adapter/adapter.ts:3121](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3121)
 
 ▸ **setForeignObject**<`T`\>(`id`, `obj`, `options`, `callback?`): `void`
 
-Same as Adapter.setObject, but for any object.
+Same as [setObject](AdapterClass.md#setobject), but for any object.
 
 ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC98989.1.STATE"
 
@@ -6852,9 +5742,9 @@ ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC989
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `T` | object ID, that must be overwritten or created. |
-| `obj` | [`SettableObjectWorker`](../modules/internal_.md#settableobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"write"``\>\> | new object |
+| `obj` | `SettableObjectWorker`<`ObjectIdToObjectType`<`T`, ``"write"``\>\> | new object |
 | `options` | `unknown` | optional user context |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | return result        <pre><code>            function (err, obj) {              // obj is {id: id}              if (err) adapter.log.error('Cannot write object: ' + err);            }        </code></pre> |
+| `callback?` | `SetObjectCallback` | return result        ```js            function (err, obj) {              // obj is {id: id}              if (err) adapter.log.error('Cannot write object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -6862,13 +5752,13 @@ ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC989
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3129](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L3129)
+[packages/adapter/src/lib/adapter/adapter.ts:3126](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L3126)
 
 ___
 
 ### setForeignObjectAsync
 
-▸ **setForeignObjectAsync**<`T`\>(`id`, `obj`, `options?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+▸ **setForeignObjectAsync**<`T`\>(`id`, `obj`, `options?`): `SetObjectPromise`
 
 Creates or overwrites an object (which might not belong to this adapter) in the object db
 
@@ -6883,16 +5773,16 @@ Creates or overwrites an object (which might not belong to this adapter) in the 
 | Name | Type |
 | :------ | :------ |
 | `id` | `T` |
-| `obj` | [`SettableObjectWorker`](../modules/internal_.md#settableobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"write"``\>\> |
+| `obj` | `SettableObjectWorker`<`ObjectIdToObjectType`<`T`, ``"write"``\>\> |
 | `options?` | `unknown` |
 
 #### Returns
 
-[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+`SetObjectPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:295](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L295)
+[packages/adapter/src/lib/adapter/adapter.ts:295](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L295)
 
 ___
 
@@ -6900,7 +5790,7 @@ ___
 
 ▸ **setForeignObjectNotExists**<`T`\>(`id`, `obj`, `callback?`): `void`
 
-Same as Adapter.setForeignObject, but with check if the object exists.
+Same as [setForeignObject](AdapterClass.md#setforeignobject), but with check if the object exists.
 
 ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC98989.1.STATE".
 New object will be created only if no object exists with such ID.
@@ -6916,8 +5806,8 @@ New object will be created only if no object exists with such ID.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `T` | object ID, that must be overwritten or created. |
-| `obj` | [`SettableObjectWorker`](../modules/internal_.md#settableobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"write"``\>\> | new object |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | return result        <pre><code>            function (err, obj) {              // obj is {id: id}              if (err) adapter.log.error('Cannot write object: ' + err);            }        </code></pre> |
+| `obj` | `SettableObjectWorker`<`ObjectIdToObjectType`<`T`, ``"write"``\>\> | new object |
+| `callback?` | `SetObjectCallback` | return result        ```js            function (err, obj) {              // obj is {id: id}              if (err) adapter.log.error('Cannot write object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -6925,11 +5815,11 @@ New object will be created only if no object exists with such ID.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4701](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4701)
+[packages/adapter/src/lib/adapter/adapter.ts:4695](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4695)
 
 ▸ **setForeignObjectNotExists**<`T`\>(`id`, `obj`, `options`, `callback?`): `void`
 
-Same as Adapter.setForeignObject, but with check if the object exists.
+Same as [setForeignObject](AdapterClass.md#setforeignobject), but with check if the object exists.
 
 ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC98989.1.STATE".
 New object will be created only if no object exists with such ID.
@@ -6945,9 +5835,9 @@ New object will be created only if no object exists with such ID.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `T` | object ID, that must be overwritten or created. |
-| `obj` | [`SettableObjectWorker`](../modules/internal_.md#settableobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"write"``\>\> | new object |
-| `options` | `unknown` | optional user context |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | return result        <pre><code>            function (err, obj) {              // obj is {id: id}              if (err) adapter.log.error('Cannot write object: ' + err);            }        </code></pre> |
+| `obj` | `SettableObjectWorker`<`ObjectIdToObjectType`<`T`, ``"write"``\>\> | new object |
+| `options` | `unknown` | user context |
+| `callback?` | `SetObjectCallback` | return result        ```js            function (err, obj) {              // obj is {id: id}              if (err) adapter.log.error('Cannot write object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -6955,13 +5845,13 @@ New object will be created only if no object exists with such ID.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4706](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4706)
+[packages/adapter/src/lib/adapter/adapter.ts:4700](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4700)
 
 ___
 
 ### setForeignObjectNotExistsAsync
 
-▸ **setForeignObjectNotExistsAsync**<`T`\>(`id`, `obj`, `options?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+▸ **setForeignObjectNotExistsAsync**<`T`\>(`id`, `obj`, `options?`): `SetObjectPromise`
 
 Creates an object (which might not belong to this adapter) in the object db. Existing objects are not overwritten.
 
@@ -6976,16 +5866,16 @@ Creates an object (which might not belong to this adapter) in the object db. Exi
 | Name | Type |
 | :------ | :------ |
 | `id` | `T` |
-| `obj` | [`SettableObjectWorker`](../modules/internal_.md#settableobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"write"``\>\> |
+| `obj` | `SettableObjectWorker`<`ObjectIdToObjectType`<`T`, ``"write"``\>\> |
 | `options?` | `unknown` |
 
 #### Returns
 
-[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+`SetObjectPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:172](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L172)
+[packages/adapter/src/lib/adapter/adapter.ts:172](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L172)
 
 ___
 
@@ -7003,8 +5893,8 @@ ack, options and callback are optional
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID of the state. |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) | simple value or object with attribues.  If state is object, so the ack will be ignored and must be included into object.  <pre><code>      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  </code></pre> |
-| `callback?` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | optional return error and id        <pre><code>            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        </code></pre> |
+| `state` | `State` \| `SettableState` \| `StateValue` | simple value or object with attribues.  If state is object, so the ack will be ignored and must be included into object.  ```js      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  ``` |
+| `callback?` | `SetStateCallback` | optional return error and id        ```js            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        ``` |
 
 #### Returns
 
@@ -7012,7 +5902,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8024](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L8024)
+[packages/adapter/src/lib/adapter/adapter.ts:8017](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L8017)
 
 ▸ **setForeignState**(`id`, `state`, `ack`, `callback?`): `void`
 
@@ -7026,9 +5916,9 @@ ack, options and callback are optional
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID of the state. |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) | simple value or object with attribues.  If state is object, so the ack will be ignored and must be included into object.  <pre><code>      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  </code></pre> |
+| `state` | `State` \| `SettableState` \| `StateValue` | simple value or object with attribues.  If state is object, so the ack will be ignored and must be included into object.  ```js      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  ``` |
 | `ack` | `boolean` | optional is command(false) or status(true) |
-| `callback?` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | optional return error and id        <pre><code>            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        </code></pre> |
+| `callback?` | `SetStateCallback` | optional return error and id        ```js            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        ``` |
 
 #### Returns
 
@@ -7036,7 +5926,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8029](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L8029)
+[packages/adapter/src/lib/adapter/adapter.ts:8022](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L8022)
 
 ▸ **setForeignState**(`id`, `state`, `options`, `callback?`): `void`
 
@@ -7050,9 +5940,9 @@ ack, options and callback are optional
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID of the state. |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) | simple value or object with attribues.  If state is object, so the ack will be ignored and must be included into object.  <pre><code>      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  </code></pre> |
+| `state` | `State` \| `SettableState` \| `StateValue` | simple value or object with attribues.  If state is object, so the ack will be ignored and must be included into object.  ```js      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  ``` |
 | `options` | `unknown` | optional user context |
-| `callback?` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | optional return error and id        <pre><code>            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        </code></pre> |
+| `callback?` | `SetStateCallback` | optional return error and id        ```js            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        ``` |
 
 #### Returns
 
@@ -7060,7 +5950,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8035](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L8035)
+[packages/adapter/src/lib/adapter/adapter.ts:8028](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L8028)
 
 ▸ **setForeignState**(`id`, `state`, `ack`, `options`, `callback?`): `void`
 
@@ -7074,10 +5964,10 @@ ack, options and callback are optional
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID of the state. |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) | simple value or object with attribues.  If state is object, so the ack will be ignored and must be included into object.  <pre><code>      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  </code></pre> |
+| `state` | `State` \| `SettableState` \| `StateValue` | simple value or object with attribues.  If state is object, so the ack will be ignored and must be included into object.  ```js      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  ``` |
 | `ack` | `boolean` | optional is command(false) or status(true) |
 | `options` | `unknown` | optional user context |
-| `callback?` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | optional return error and id        <pre><code>            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        </code></pre> |
+| `callback?` | `SetStateCallback` | optional return error and id        ```js            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        ``` |
 
 #### Returns
 
@@ -7085,13 +5975,13 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8041](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L8041)
+[packages/adapter/src/lib/adapter/adapter.ts:8034](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L8034)
 
 ___
 
 ### setForeignStateAsync
 
-▸ **setForeignStateAsync**(`id`, `state`, `ack?`): [`SetStatePromise`](../modules/internal_.md#setstatepromise)
+▸ **setForeignStateAsync**(`id`, `state`, `ack?`): `SetStatePromise`
 
 Writes a value (which might not belong to this adapter) into the states DB.
 
@@ -7100,53 +5990,53 @@ Writes a value (which might not belong to this adapter) into the states DB.
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
+| `state` | `State` \| `SettableState` \| `StateValue` |
 | `ack?` | `boolean` |
 
 #### Returns
 
-[`SetStatePromise`](../modules/internal_.md#setstatepromise)
+`SetStatePromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:397](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L397)
+[packages/adapter/src/lib/adapter/adapter.ts:397](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L397)
 
-▸ **setForeignStateAsync**(`id`, `state`, `options?`): [`SetStatePromise`](../modules/internal_.md#setstatepromise)
+▸ **setForeignStateAsync**(`id`, `state`, `options?`): `SetStatePromise`
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
+| `state` | `State` \| `SettableState` \| `StateValue` |
 | `options?` | `unknown` |
 
 #### Returns
 
-[`SetStatePromise`](../modules/internal_.md#setstatepromise)
+`SetStatePromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:402](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L402)
+[packages/adapter/src/lib/adapter/adapter.ts:402](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L402)
 
-▸ **setForeignStateAsync**(`id`, `state`, `ack`, `options`): [`SetStatePromise`](../modules/internal_.md#setstatepromise)
+▸ **setForeignStateAsync**(`id`, `state`, `ack`, `options`): `SetStatePromise`
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
+| `state` | `State` \| `SettableState` \| `StateValue` |
 | `ack` | `boolean` |
 | `options` | `unknown` |
 
 #### Returns
 
-[`SetStatePromise`](../modules/internal_.md#setstatepromise)
+`SetStatePromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:407](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L407)
+[packages/adapter/src/lib/adapter/adapter.ts:407](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L407)
 
 ___
 
@@ -7164,8 +6054,8 @@ ack, options and callback are optional
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID of the state. |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) | simple value or object with attribues.  If state is object and ack exists too as function argument, function argument has priority.  <pre><code>      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  </code></pre> |
-| `callback?` | [`SetStateChangedCallback`](../modules/internal_.md#setstatechangedcallback) | optional return error and id        <pre><code>            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        </code></pre> |
+| `state` | `State` \| `SettableState` \| `StateValue` | simple value or object with attribues.  If state is object and ack exists too as function argument, function argument has priority.  ```js      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  ``` |
+| `callback?` | `SetStateChangedCallback` | optional return error and id        ```js            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        ``` |
 
 #### Returns
 
@@ -7173,7 +6063,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8333](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L8333)
+[packages/adapter/src/lib/adapter/adapter.ts:8326](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L8326)
 
 ▸ **setForeignStateChanged**(`id`, `state`, `ack`, `callback?`): `void`
 
@@ -7187,9 +6077,9 @@ ack, options and callback are optional
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID of the state. |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) | simple value or object with attribues.  If state is object and ack exists too as function argument, function argument has priority.  <pre><code>      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  </code></pre> |
+| `state` | `State` \| `SettableState` \| `StateValue` | simple value or object with attribues.  If state is object and ack exists too as function argument, function argument has priority.  ```js      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  ``` |
 | `ack` | `boolean` | optional is command(false) or status(true) |
-| `callback?` | [`SetStateChangedCallback`](../modules/internal_.md#setstatechangedcallback) | optional return error and id        <pre><code>            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        </code></pre> |
+| `callback?` | `SetStateChangedCallback` | optional return error and id        ```js            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        ``` |
 
 #### Returns
 
@@ -7197,7 +6087,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8338](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L8338)
+[packages/adapter/src/lib/adapter/adapter.ts:8331](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L8331)
 
 ▸ **setForeignStateChanged**(`id`, `state`, `options`, `callback?`): `void`
 
@@ -7211,9 +6101,9 @@ ack, options and callback are optional
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID of the state. |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) | simple value or object with attribues.  If state is object and ack exists too as function argument, function argument has priority.  <pre><code>      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  </code></pre> |
+| `state` | `State` \| `SettableState` \| `StateValue` | simple value or object with attribues.  If state is object and ack exists too as function argument, function argument has priority.  ```js      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  ``` |
 | `options` | `unknown` | optional user context |
-| `callback?` | [`SetStateChangedCallback`](../modules/internal_.md#setstatechangedcallback) | optional return error and id        <pre><code>            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        </code></pre> |
+| `callback?` | `SetStateChangedCallback` | optional return error and id        ```js            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        ``` |
 
 #### Returns
 
@@ -7221,7 +6111,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8344](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L8344)
+[packages/adapter/src/lib/adapter/adapter.ts:8337](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L8337)
 
 ▸ **setForeignStateChanged**(`id`, `state`, `ack`, `options`, `callback?`): `void`
 
@@ -7235,10 +6125,10 @@ ack, options and callback are optional
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID of the state. |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) | simple value or object with attribues.  If state is object and ack exists too as function argument, function argument has priority.  <pre><code>      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  </code></pre> |
+| `state` | `State` \| `SettableState` \| `StateValue` | simple value or object with attribues.  If state is object and ack exists too as function argument, function argument has priority.  ```js      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  ``` |
 | `ack` | `boolean` | optional is command(false) or status(true) |
 | `options` | `unknown` | optional user context |
-| `callback?` | [`SetStateChangedCallback`](../modules/internal_.md#setstatechangedcallback) | optional return error and id        <pre><code>            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        </code></pre> |
+| `callback?` | `SetStateChangedCallback` | optional return error and id        ```js            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        ``` |
 
 #### Returns
 
@@ -7246,13 +6136,13 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8350](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L8350)
+[packages/adapter/src/lib/adapter/adapter.ts:8343](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L8343)
 
 ___
 
 ### setForeignStateChangedAsync
 
-▸ **setForeignStateChangedAsync**(`id`, `state`, `ack?`): [`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
+▸ **setForeignStateChangedAsync**(`id`, `state`, `ack?`): `SetStateChangedPromise`
 
 Writes a value (which might not belong to this adapter) into the states DB only if it has changed.
 
@@ -7261,59 +6151,59 @@ Writes a value (which might not belong to this adapter) into the states DB only 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
+| `state` | `State` \| `SettableState` \| `StateValue` |
 | `ack?` | `boolean` |
 
 #### Returns
 
-[`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
+`SetStateChangedPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:311](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L311)
+[packages/adapter/src/lib/adapter/adapter.ts:311](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L311)
 
-▸ **setForeignStateChangedAsync**(`id`, `state`, `options?`): [`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
+▸ **setForeignStateChangedAsync**(`id`, `state`, `options?`): `SetStateChangedPromise`
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
+| `state` | `State` \| `SettableState` \| `StateValue` |
 | `options?` | `unknown` |
 
 #### Returns
 
-[`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
+`SetStateChangedPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L316)
+[packages/adapter/src/lib/adapter/adapter.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L316)
 
-▸ **setForeignStateChangedAsync**(`id`, `state`, `ack`, `options`): [`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
+▸ **setForeignStateChangedAsync**(`id`, `state`, `ack`, `options`): `SetStateChangedPromise`
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
+| `state` | `State` \| `SettableState` \| `StateValue` |
 | `ack` | `boolean` |
 | `options` | `unknown` |
 
 #### Returns
 
-[`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
+`SetStateChangedPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:321](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L321)
+[packages/adapter/src/lib/adapter/adapter.ts:321](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L321)
 
 ___
 
 ### setInterval
 
-▸ **setInterval**(`cb`, `timeout`, ...`args`): `void` \| [`Timeout`](../interfaces/internal_.Timeout.md)
+▸ **setInterval**(`cb`, `timeout`, ...`args`): `void` \| `Timeout`
 
 Same as setInterval
 but it clears the running intervals on unload
@@ -7329,48 +6219,13 @@ does not work after unload has been called
 
 #### Returns
 
-`void` \| [`Timeout`](../interfaces/internal_.Timeout.md)
+`void` \| `Timeout`
 
 interval interval object
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2504](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L2504)
-
-___
-
-### setMaxListeners
-
-▸ **setMaxListeners**(`n`): [`AdapterClass`](AdapterClass.md)
-
-By default `EventEmitter`s will print a warning if more than `10` listeners are
-added for a particular event. This is a useful default that helps finding
-memory leaks. The `emitter.setMaxListeners()` method allows the limit to be
-modified for this specific `EventEmitter` instance. The value can be set to`Infinity` (or `0`) to indicate an unlimited number of listeners.
-
-Returns a reference to the `EventEmitter`, so that calls can be chained.
-
-**`Since`**
-
-v0.3.5
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `n` | `number` |
-
-#### Returns
-
-[`AdapterClass`](AdapterClass.md)
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[setMaxListeners](internal_.EventEmitter-1.md#setmaxlisteners)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:465
+[packages/adapter/src/lib/adapter/adapter.ts:2501](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L2501)
 
 ___
 
@@ -7384,7 +6239,7 @@ This function can create or overwrite objects in objectDB for this adapter.
 Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
 <b>common</b>, <b>native</b> and <b>type</b> attributes are mandatory and it will be checked.
 Additionally type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.g.:
-<pre><code>{
+```js{
     common: {
          name: 'object name',
          type: 'number', // string, boolean, object, mixed, array
@@ -7392,15 +6247,15 @@ Additionally type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.g
     },
     native: {},
     type: 'state' // channel, device
-}</code></pre>
+}```
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | [`ID`](../modules/internal_.md#id) | object ID, that must be overwritten or created. |
-| `obj` | [`Omit`](../modules/internal_.md#omit)<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } | new object |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | return result        <pre><code>            function (err, obj) {              // obj is {id: id}              if (err) adapter.log.error('Cannot write object: ' + err);            }        </code></pre> |
+| `obj` | `Omit`<`StateObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`ChannelObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`DeviceObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`FolderObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`EnumObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`MetaObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`HostObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`AdapterObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`InstanceObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`UserObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`GroupObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`ScriptObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`OtherObject`, ``"_id"`` \| ``"acl"``\> & {} | new object |
+| `callback?` | `SetObjectCallback` | return result        ```js            function (err, obj) {              // obj is {id: id}              if (err) adapter.log.error('Cannot write object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -7408,7 +6263,7 @@ Additionally type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.g
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2552](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L2552)
+[packages/adapter/src/lib/adapter/adapter.ts:2549](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L2549)
 
 ▸ **setObject**(`id`, `obj`, `options`, `callback?`): `Promise`<`void`\>
 
@@ -7418,7 +6273,7 @@ This function can create or overwrite objects in objectDB for this adapter.
 Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
 <b>common</b>, <b>native</b> and <b>type</b> attributes are mandatory and it will be checked.
 Additionally type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.g.:
-<pre><code>{
+```js{
     common: {
          name: 'object name',
          type: 'number', // string, boolean, object, mixed, array
@@ -7426,16 +6281,16 @@ Additionally type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.g
     },
     native: {},
     type: 'state' // channel, device
-}</code></pre>
+}```
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | [`ID`](../modules/internal_.md#id) | object ID, that must be overwritten or created. |
-| `obj` | [`Omit`](../modules/internal_.md#omit)<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } | new object |
+| `obj` | `Omit`<`StateObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`ChannelObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`DeviceObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`FolderObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`EnumObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`MetaObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`HostObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`AdapterObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`InstanceObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`UserObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`GroupObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`ScriptObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`OtherObject`, ``"_id"`` \| ``"acl"``\> & {} | new object |
 | `options` | `unknown` | optional user context |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | return result        <pre><code>            function (err, obj) {              // obj is {id: id}              if (err) adapter.log.error('Cannot write object: ' + err);            }        </code></pre> |
+| `callback?` | `SetObjectCallback` | return result        ```js            function (err, obj) {              // obj is {id: id}              if (err) adapter.log.error('Cannot write object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -7443,7 +6298,7 @@ Additionally type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.g
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2553](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L2553)
+[packages/adapter/src/lib/adapter/adapter.ts:2550](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L2550)
 
 ▸ **setObject**(`id`, `obj`, `callback?`): `Promise`<`void`\>
 
@@ -7453,7 +6308,7 @@ This function can create or overwrite objects in objectDB for this adapter.
 Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
 <b>common</b>, <b>native</b> and <b>type</b> attributes are mandatory and it will be checked.
 Additionally type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.g.:
-<pre><code>{
+```js{
     common: {
          name: 'object name',
          type: 'number', // string, boolean, object, mixed, array
@@ -7461,15 +6316,15 @@ Additionally type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.g
     },
     native: {},
     type: 'state' // channel, device
-}</code></pre>
+}```
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | [`ID`](../modules/internal_.md#id) | object ID, that must be overwritten or created. |
-| `obj` | [`Omit`](../modules/internal_.md#omit)<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } | new object |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | return result        <pre><code>            function (err, obj) {              // obj is {id: id}              if (err) adapter.log.error('Cannot write object: ' + err);            }        </code></pre> |
+| `obj` | `Omit`<`StateObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`ChannelObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`DeviceObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`FolderObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`EnumObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`MetaObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`HostObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`AdapterObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`InstanceObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`UserObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`GroupObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`ScriptObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`OtherObject`, ``"_id"`` \| ``"acl"``\> & {} | new object |
+| `callback?` | `SetObjectCallback` | return result        ```js            function (err, obj) {              // obj is {id: id}              if (err) adapter.log.error('Cannot write object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -7477,13 +6332,13 @@ Additionally type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.g
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2559](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L2559)
+[packages/adapter/src/lib/adapter/adapter.ts:2556](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L2556)
 
 ___
 
 ### setObjectAsync
 
-▸ **setObjectAsync**(`id`, `obj`, `options?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+▸ **setObjectAsync**(`id`, `obj`, `options?`): `SetObjectPromise`
 
 Creates or overwrites an object in the object db
 
@@ -7492,47 +6347,24 @@ Creates or overwrites an object in the object db
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `obj` | [`Omit`](../modules/internal_.md#omit)<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } |
+| `obj` | `Omit`<`StateObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`ChannelObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`DeviceObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`FolderObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`EnumObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`MetaObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`HostObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`AdapterObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`InstanceObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`UserObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`GroupObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`ScriptObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`OtherObject`, ``"_id"`` \| ``"acl"``\> & {} |
 | `options?` | `unknown` |
 
 #### Returns
 
-[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+`SetObjectPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:293](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L293)
+[packages/adapter/src/lib/adapter/adapter.ts:293](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L293)
 
 ___
 
 ### setObjectNotExists
 
-▸ **setObjectNotExists**(`id`, `obj`, `callback?`): `void` \| `Promise`<`undefined` \| `void` \| { `id`: `string`  }\>
+▸ **setObjectNotExists**(`id`, `obj`, `callback?`): `void` \| `Promise`<`undefined` \| `void` \| {}\>
 
-Same as Adapter.setObject, but with check if the object exists.
-
-Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
-New object will be created only if no object exists with such ID.
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `id` | `string` | object ID, that must be overwritten or created. |
-| `obj` | [`Omit`](../modules/internal_.md#omit)<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } | new object |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | return result        <pre><code>            function (err, obj) {              // obj is {id: id}              if (err) adapter.log.error('Cannot write object: ' + err);            }        </code></pre> |
-
-#### Returns
-
-`void` \| `Promise`<`undefined` \| `void` \| { `id`: `string`  }\>
-
-#### Defined in
-
-[packages/adapter/src/lib/adapter/adapter.ts:4600](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4600)
-
-▸ **setObjectNotExists**(`id`, `obj`, `options`, `callback?`): `void` \| `Promise`<`undefined` \| `void` \| { `id`: `string`  }\>
-
-Same as Adapter.setObject, but with check if the object exists.
+Same as [setObject](AdapterClass.md#setobject), but with check if the object exists.
 
 Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
 New object will be created only if no object exists with such ID.
@@ -7542,23 +6374,46 @@ New object will be created only if no object exists with such ID.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID, that must be overwritten or created. |
-| `obj` | [`Omit`](../modules/internal_.md#omit)<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } | new object |
-| `options` | `unknown` | optional user context |
-| `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | return result        <pre><code>            function (err, obj) {              // obj is {id: id}              if (err) adapter.log.error('Cannot write object: ' + err);            }        </code></pre> |
+| `obj` | `Omit`<`StateObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`ChannelObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`DeviceObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`FolderObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`EnumObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`MetaObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`HostObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`AdapterObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`InstanceObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`UserObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`GroupObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`ScriptObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`OtherObject`, ``"_id"`` \| ``"acl"``\> & {} | new object |
+| `callback?` | `SetObjectCallback` | return result        ```js            function (err, obj) {              // obj is {id: id}              if (err) adapter.log.error('Cannot write object: ' + err);            }        ``` |
 
 #### Returns
 
-`void` \| `Promise`<`undefined` \| `void` \| { `id`: `string`  }\>
+`void` \| `Promise`<`undefined` \| `void` \| {}\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4605](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4605)
+[packages/adapter/src/lib/adapter/adapter.ts:4595](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4595)
+
+▸ **setObjectNotExists**(`id`, `obj`, `options`, `callback?`): `void` \| `Promise`<`undefined` \| `void` \| {}\>
+
+Same as [setObject](AdapterClass.md#setobject), but with check if the object exists.
+
+Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
+New object will be created only if no object exists with such ID.
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `id` | `string` | object ID, that must be overwritten or created. |
+| `obj` | `Omit`<`StateObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`ChannelObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`DeviceObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`FolderObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`EnumObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`MetaObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`HostObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`AdapterObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`InstanceObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`UserObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`GroupObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`ScriptObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`OtherObject`, ``"_id"`` \| ``"acl"``\> & {} | new object |
+| `options` | `unknown` | - |
+| `callback?` | `SetObjectCallback` | return result        ```js            function (err, obj) {              // obj is {id: id}              if (err) adapter.log.error('Cannot write object: ' + err);            }        ``` |
+
+#### Returns
+
+`void` \| `Promise`<`undefined` \| `void` \| {}\>
+
+#### Defined in
+
+[packages/adapter/src/lib/adapter/adapter.ts:4600](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4600)
 
 ___
 
 ### setObjectNotExistsAsync
 
-▸ **setObjectNotExistsAsync**(`id`, `obj`, `options?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+▸ **setObjectNotExistsAsync**(`id`, `obj`, `options?`): `SetObjectPromise`
 
 Creates an object in the object db. Existing objects are not overwritten.
 
@@ -7567,16 +6422,16 @@ Creates an object in the object db. Existing objects are not overwritten.
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `obj` | [`Omit`](../modules/internal_.md#omit)<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| [`Omit`](../modules/internal_.md#omit)<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } |
+| `obj` | `Omit`<`StateObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`ChannelObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`DeviceObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`FolderObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`EnumObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`MetaObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`HostObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`AdapterObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`InstanceObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`UserObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`GroupObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`ScriptObject`, ``"_id"`` \| ``"acl"``\> & {} \| `Omit`<`OtherObject`, ``"_id"`` \| ``"acl"``\> & {} |
 | `options?` | `unknown` |
 
 #### Returns
 
-[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+`SetObjectPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:170](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L170)
+[packages/adapter/src/lib/adapter/adapter.ts:170](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L170)
 
 ___
 
@@ -7592,8 +6447,8 @@ sets the user's password
 | :------ | :------ | :------ |
 | `user` | `string` | user name as text |
 | `pw` | `string` | password as text |
-| `options` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> | optional user context |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | return result        <pre><code>            function (err) {              if (err) adapter.log.error('Cannot set password: ' + err);            }        </code></pre> |
+| `options` | `Record`<`string`, `any`\> | optional user context |
+| `callback?` | `ErrorCallback` | return result        ```js            function (err) {              if (err) adapter.log.error('Cannot set password: ' + err);            }        ``` |
 
 #### Returns
 
@@ -7601,7 +6456,7 @@ sets the user's password
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1620](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L1620)
+[packages/adapter/src/lib/adapter/adapter.ts:1615](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L1615)
 
 ▸ **setPassword**(`user`, `pw`, `callback?`): `Promise`<`void`\>
 
@@ -7613,7 +6468,7 @@ sets the user's password
 | :------ | :------ | :------ |
 | `user` | `string` | user name as text |
 | `pw` | `string` | password as text |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | return result        <pre><code>            function (err) {              if (err) adapter.log.error('Cannot set password: ' + err);            }        </code></pre> |
+| `callback?` | `ErrorCallback` | return result        ```js            function (err) {              if (err) adapter.log.error('Cannot set password: ' + err);            }        ``` |
 
 #### Returns
 
@@ -7621,7 +6476,7 @@ sets the user's password
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1627](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L1627)
+[packages/adapter/src/lib/adapter/adapter.ts:1622](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L1622)
 
 ___
 
@@ -7645,7 +6500,7 @@ Sets a new password for the given user
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:283](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L283)
+[packages/adapter/src/lib/adapter/adapter.ts:283](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L283)
 
 ___
 
@@ -7659,8 +6514,8 @@ ___
 | :------ | :------ |
 | `id` | `string` |
 | `ttl` | `number` |
-| `data` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
+| `data` | `Record`<`string`, `any`\> |
+| `callback?` | `ErrorCallback` |
 
 #### Returns
 
@@ -7668,7 +6523,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1247](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L1247)
+[packages/adapter/src/lib/adapter/adapter.ts:1240](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L1240)
 
 ___
 
@@ -7687,8 +6542,8 @@ ack, options and callback are optional
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` \| [`IdObject`](../interfaces/internal_.IdObject.md) | object ID of the state. |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) | simple value or object with attribues.  If state is object and ack exists too as function argument, function argument has priority.  <pre><code>      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  </code></pre> |
-| `callback?` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | optional return error and id        <pre><code>            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        </code></pre> |
+| `state` | `State` \| `SettableState` \| `StateValue` | simple value or object with attribues.  If state is object and ack exists too as function argument, function argument has priority.  ```js      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  ``` |
+| `callback?` | `SetStateCallback` | optional return error and id        ```js            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        ``` |
 
 #### Returns
 
@@ -7696,7 +6551,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7136](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L7136)
+[packages/adapter/src/lib/adapter/adapter.ts:7129](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L7129)
 
 ▸ **setState**(`id`, `state`, `ack`, `callback?`): `void`
 
@@ -7711,9 +6566,9 @@ ack, options and callback are optional
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` \| [`IdObject`](../interfaces/internal_.IdObject.md) | object ID of the state. |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) | simple value or object with attribues.  If state is object and ack exists too as function argument, function argument has priority.  <pre><code>      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  </code></pre> |
+| `state` | `State` \| `SettableState` \| `StateValue` | simple value or object with attribues.  If state is object and ack exists too as function argument, function argument has priority.  ```js      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  ``` |
 | `ack` | `boolean` | optional is command(false) or status(true) |
-| `callback?` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | optional return error and id        <pre><code>            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        </code></pre> |
+| `callback?` | `SetStateCallback` | optional return error and id        ```js            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        ``` |
 
 #### Returns
 
@@ -7721,7 +6576,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7141](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L7141)
+[packages/adapter/src/lib/adapter/adapter.ts:7134](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L7134)
 
 ▸ **setState**(`id`, `state`, `options`, `callback?`): `void`
 
@@ -7736,9 +6591,9 @@ ack, options and callback are optional
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` \| [`IdObject`](../interfaces/internal_.IdObject.md) | object ID of the state. |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) | simple value or object with attribues.  If state is object and ack exists too as function argument, function argument has priority.  <pre><code>      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  </code></pre> |
+| `state` | `State` \| `SettableState` \| `StateValue` | simple value or object with attribues.  If state is object and ack exists too as function argument, function argument has priority.  ```js      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  ``` |
 | `options` | `unknown` | optional user context |
-| `callback?` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | optional return error and id        <pre><code>            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        </code></pre> |
+| `callback?` | `SetStateCallback` | optional return error and id        ```js            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        ``` |
 
 #### Returns
 
@@ -7746,7 +6601,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7147](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L7147)
+[packages/adapter/src/lib/adapter/adapter.ts:7140](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L7140)
 
 ▸ **setState**(`id`, `state`, `ack`, `options`, `callback?`): `void`
 
@@ -7761,10 +6616,10 @@ ack, options and callback are optional
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` \| [`IdObject`](../interfaces/internal_.IdObject.md) | object ID of the state. |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) | simple value or object with attribues.  If state is object and ack exists too as function argument, function argument has priority.  <pre><code>      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  </code></pre> |
+| `state` | `State` \| `SettableState` \| `StateValue` | simple value or object with attribues.  If state is object and ack exists too as function argument, function argument has priority.  ```js      {          val:    value,          ack:    true\|false,       // default - false; is command(false) or status(true)          ts:     timestampMS,      // default - now          q:      qualityAsNumber,  // default - 0 (ok)          from:   origin,           // default - this adapter          c:      comment,          // default - empty          expire: expireInSeconds   // default - 0          lc:     timestampMS       // default - automatic calculation      }  ``` |
 | `ack` | `boolean` | optional is command(false) or status(true) |
 | `options` | `unknown` | optional user context |
-| `callback?` | [`SetStateCallback`](../modules/internal_.md#setstatecallback) | optional return error and id        <pre><code>            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        </code></pre> |
+| `callback?` | `SetStateCallback` | optional return error and id        ```js            function (err, id) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);            }        ``` |
 
 #### Returns
 
@@ -7772,13 +6627,13 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7153](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L7153)
+[packages/adapter/src/lib/adapter/adapter.ts:7146](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L7146)
 
 ___
 
 ### setStateAsync
 
-▸ **setStateAsync**(`id`, `state`, `ack?`): [`SetStatePromise`](../modules/internal_.md#setstatepromise)
+▸ **setStateAsync**(`id`, `state`, `ack?`): `SetStatePromise`
 
 Writes a value into the states DB.
 
@@ -7787,53 +6642,53 @@ Writes a value into the states DB.
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
+| `state` | `State` \| `SettableState` \| `StateValue` |
 | `ack?` | `boolean` |
 
 #### Returns
 
-[`SetStatePromise`](../modules/internal_.md#setstatepromise)
+`SetStatePromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:377](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L377)
+[packages/adapter/src/lib/adapter/adapter.ts:377](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L377)
 
-▸ **setStateAsync**(`id`, `state`, `options?`): [`SetStatePromise`](../modules/internal_.md#setstatepromise)
+▸ **setStateAsync**(`id`, `state`, `options?`): `SetStatePromise`
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
+| `state` | `State` \| `SettableState` \| `StateValue` |
 | `options?` | `unknown` |
 
 #### Returns
 
-[`SetStatePromise`](../modules/internal_.md#setstatepromise)
+`SetStatePromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:382](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L382)
+[packages/adapter/src/lib/adapter/adapter.ts:382](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L382)
 
-▸ **setStateAsync**(`id`, `state`, `ack`, `options`): [`SetStatePromise`](../modules/internal_.md#setstatepromise)
+▸ **setStateAsync**(`id`, `state`, `ack`, `options`): `SetStatePromise`
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
+| `state` | `State` \| `SettableState` \| `StateValue` |
 | `ack` | `boolean` |
 | `options` | `unknown` |
 
 #### Returns
 
-[`SetStatePromise`](../modules/internal_.md#setstatepromise)
+`SetStatePromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:387](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L387)
+[packages/adapter/src/lib/adapter/adapter.ts:387](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L387)
 
 ___
 
@@ -7852,8 +6707,8 @@ ack, options and callback are optional
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID of the state. |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) | simple value or object with attribues. |
-| `callback?` | [`SetStateChangedCallback`](../modules/internal_.md#setstatechangedcallback) | optional return error, id and notChanged        <pre><code>            function (err, id, notChanged) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);              if (!notChanged) adapter.log.debug('Value was changed');            }        </code></pre> |
+| `state` | `State` \| `SettableState` \| `StateValue` | simple value or object with attribues. |
+| `callback?` | `SetStateChangedCallback` | optional return error, id and notChanged        ```js            function (err, id, notChanged) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);              if (!notChanged) adapter.log.debug('Value was changed');            }        ``` |
 
 #### Returns
 
@@ -7861,7 +6716,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7878](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L7878)
+[packages/adapter/src/lib/adapter/adapter.ts:7871](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L7871)
 
 ▸ **setStateChanged**(`id`, `state`, `ack`, `callback?`): `void`
 
@@ -7876,9 +6731,9 @@ ack, options and callback are optional
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID of the state. |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) | simple value or object with attribues. |
+| `state` | `State` \| `SettableState` \| `StateValue` | simple value or object with attribues. |
 | `ack` | `boolean` | optional is command(false) or status(true) |
-| `callback?` | [`SetStateChangedCallback`](../modules/internal_.md#setstatechangedcallback) | optional return error, id and notChanged        <pre><code>            function (err, id, notChanged) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);              if (!notChanged) adapter.log.debug('Value was changed');            }        </code></pre> |
+| `callback?` | `SetStateChangedCallback` | optional return error, id and notChanged        ```js            function (err, id, notChanged) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);              if (!notChanged) adapter.log.debug('Value was changed');            }        ``` |
 
 #### Returns
 
@@ -7886,7 +6741,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7883](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L7883)
+[packages/adapter/src/lib/adapter/adapter.ts:7876](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L7876)
 
 ▸ **setStateChanged**(`id`, `state`, `options`, `callback?`): `void`
 
@@ -7901,9 +6756,9 @@ ack, options and callback are optional
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID of the state. |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) | simple value or object with attribues. |
+| `state` | `State` \| `SettableState` \| `StateValue` | simple value or object with attribues. |
 | `options` | `unknown` | optional user context |
-| `callback?` | [`SetStateChangedCallback`](../modules/internal_.md#setstatechangedcallback) | optional return error, id and notChanged        <pre><code>            function (err, id, notChanged) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);              if (!notChanged) adapter.log.debug('Value was changed');            }        </code></pre> |
+| `callback?` | `SetStateChangedCallback` | optional return error, id and notChanged        ```js            function (err, id, notChanged) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);              if (!notChanged) adapter.log.debug('Value was changed');            }        ``` |
 
 #### Returns
 
@@ -7911,7 +6766,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7889](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L7889)
+[packages/adapter/src/lib/adapter/adapter.ts:7882](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L7882)
 
 ▸ **setStateChanged**(`id`, `state`, `ack`, `options`, `callback?`): `void`
 
@@ -7926,10 +6781,10 @@ ack, options and callback are optional
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID of the state. |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) | simple value or object with attribues. |
+| `state` | `State` \| `SettableState` \| `StateValue` | simple value or object with attribues. |
 | `ack` | `boolean` | optional is command(false) or status(true) |
 | `options` | `unknown` | optional user context |
-| `callback?` | [`SetStateChangedCallback`](../modules/internal_.md#setstatechangedcallback) | optional return error, id and notChanged        <pre><code>            function (err, id, notChanged) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);              if (!notChanged) adapter.log.debug('Value was changed');            }        </code></pre> |
+| `callback?` | `SetStateChangedCallback` | optional return error, id and notChanged        ```js            function (err, id, notChanged) {              if (err) adapter.log.error('Cannot set value for "' + id + '": ' + err);              if (!notChanged) adapter.log.debug('Value was changed');            }        ``` |
 
 #### Returns
 
@@ -7937,13 +6792,13 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7895](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L7895)
+[packages/adapter/src/lib/adapter/adapter.ts:7888](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L7888)
 
 ___
 
 ### setStateChangedAsync
 
-▸ **setStateChangedAsync**(`id`, `state`, `ack?`): [`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
+▸ **setStateChangedAsync**(`id`, `state`, `ack?`): `SetStateChangedPromise`
 
 Writes a value into the states DB only if it has changed.
 
@@ -7952,59 +6807,59 @@ Writes a value into the states DB only if it has changed.
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
+| `state` | `State` \| `SettableState` \| `StateValue` |
 | `ack?` | `boolean` |
 
 #### Returns
 
-[`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
+`SetStateChangedPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:331](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L331)
+[packages/adapter/src/lib/adapter/adapter.ts:331](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L331)
 
-▸ **setStateChangedAsync**(`id`, `state`, `options?`): [`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
+▸ **setStateChangedAsync**(`id`, `state`, `options?`): `SetStateChangedPromise`
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
+| `state` | `State` \| `SettableState` \| `StateValue` |
 | `options?` | `unknown` |
 
 #### Returns
 
-[`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
+`SetStateChangedPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:336](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L336)
+[packages/adapter/src/lib/adapter/adapter.ts:336](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L336)
 
-▸ **setStateChangedAsync**(`id`, `state`, `ack`, `options`): [`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
+▸ **setStateChangedAsync**(`id`, `state`, `ack`, `options`): `SetStateChangedPromise`
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `state` | [`State`](../interfaces/internal_.State.md) \| [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue) |
+| `state` | `State` \| `SettableState` \| `StateValue` |
 | `ack` | `boolean` |
 | `options` | `unknown` |
 
 #### Returns
 
-[`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
+`SetStateChangedPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:341](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L341)
+[packages/adapter/src/lib/adapter/adapter.ts:341](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L341)
 
 ___
 
 ### setTimeout
 
-▸ **setTimeout**(`cb`, `timeout`, ...`args`): `void` \| [`Timeout`](../interfaces/internal_.Timeout.md)
+▸ **setTimeout**(`cb`, `timeout`, ...`args`): `void` \| `Timeout`
 
 Same as setTimeout
 but it clears the running timers on unload
@@ -8020,13 +6875,13 @@ does not work after unload has been called
 
 #### Returns
 
-`void` \| [`Timeout`](../interfaces/internal_.Timeout.md)
+`void` \| `Timeout`
 
 timer id
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2422](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L2422)
+[packages/adapter/src/lib/adapter/adapter.ts:2419](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L2419)
 
 ___
 
@@ -8042,7 +6897,7 @@ This is async function!
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` | pattern like 'channel.*' or '*' (all files) - without namespaces. You can use array of patterns |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
+| `callback?` | `ErrorCallback` | - |
 
 #### Returns
 
@@ -8050,7 +6905,7 @@ This is async function!
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4539](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4539)
+[packages/adapter/src/lib/adapter/adapter.ts:4536](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4536)
 
 ▸ **subscribeForeignFiles**(`pattern`, `options`, `callback?`): `void`
 
@@ -8063,7 +6918,7 @@ This is async function!
 | :------ | :------ | :------ |
 | `pattern` | `string` | pattern like 'channel.*' or '*' (all files) - without namespaces. You can use array of patterns |
 | `options` | `unknown` | optional user context |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
+| `callback?` | `ErrorCallback` | - |
 
 #### Returns
 
@@ -8071,7 +6926,7 @@ This is async function!
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4540](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4540)
+[packages/adapter/src/lib/adapter/adapter.ts:4537](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4537)
 
 ___
 
@@ -8086,7 +6941,7 @@ Subscribe for the changes of objects in any instance.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` | pattern like 'channel.*' or '*' (all objects) - without namespaces. You can use array of patterns |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | optional returns result        <pre><code>            function (err) {              if (err) adapter.log.error('Cannot subscribe object: ' + err);            }        </code></pre> |
+| `callback?` | `ErrorCallback` | optional returns result        ```js            function (err) {              if (err) adapter.log.error('Cannot subscribe object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -8094,7 +6949,7 @@ Subscribe for the changes of objects in any instance.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4460](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4460)
+[packages/adapter/src/lib/adapter/adapter.ts:4457](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4457)
 
 ▸ **subscribeForeignObjects**(`pattern`, `options`, `callback?`): `void`
 
@@ -8106,7 +6961,7 @@ Subscribe for the changes of objects in any instance.
 | :------ | :------ | :------ |
 | `pattern` | `string` | pattern like 'channel.*' or '*' (all objects) - without namespaces. You can use array of patterns |
 | `options` | `unknown` | optional user context |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | optional returns result        <pre><code>            function (err) {              if (err) adapter.log.error('Cannot subscribe object: ' + err);            }        </code></pre> |
+| `callback?` | `ErrorCallback` | optional returns result        ```js            function (err) {              if (err) adapter.log.error('Cannot subscribe object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -8114,7 +6969,7 @@ Subscribe for the changes of objects in any instance.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4461](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4461)
+[packages/adapter/src/lib/adapter/adapter.ts:4458](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4458)
 
 ___
 
@@ -8137,7 +6992,7 @@ Subscribe to changes of objects (which might not belong to this adapter)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:166](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L166)
+[packages/adapter/src/lib/adapter/adapter.ts:166](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L166)
 
 ___
 
@@ -8148,16 +7003,16 @@ ___
 Subscribe for changes on all states of all adapters (and system states), that pass the pattern
 
 Allows to Subscribe on changes all states of all instances according to pattern. E.g. to read all states of 'adapterName.X' instance use:
-<pre><code>
+```js
     adapter.subscribeForeignStates('adapterName.X.*');
-</code></pre>
+```
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` \| `string`[] | string in form 'adapter.0.*' or like this. It can be array of IDs too. |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | return result function (err) {} |
+| `callback?` | `ErrorCallback` | return result ```function (err) {}``` |
 
 #### Returns
 
@@ -8165,16 +7020,16 @@ Allows to Subscribe on changes all states of all instances according to pattern.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9402](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L9402)
+[packages/adapter/src/lib/adapter/adapter.ts:9404](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L9404)
 
 ▸ **subscribeForeignStates**(`pattern`, `options`, `callback?`): `void`
 
 Subscribe for changes on all states of all adapters (and system states), that pass the pattern
 
 Allows to Subscribe on changes all states of all instances according to pattern. E.g. to read all states of 'adapterName.X' instance use:
-<pre><code>
+```js
     adapter.subscribeForeignStates('adapterName.X.*');
-</code></pre>
+```
 
 #### Parameters
 
@@ -8182,7 +7037,7 @@ Allows to Subscribe on changes all states of all instances according to pattern.
 | :------ | :------ | :------ |
 | `pattern` | `string` \| `string`[] | string in form 'adapter.0.*' or like this. It can be array of IDs too. |
 | `options` | `unknown` | optional argument to describe the user context |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | return result function (err) {} |
+| `callback?` | `ErrorCallback` | return result ```function (err) {}``` |
 
 #### Returns
 
@@ -8190,7 +7045,7 @@ Allows to Subscribe on changes all states of all instances according to pattern.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9403](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L9403)
+[packages/adapter/src/lib/adapter/adapter.ts:9405](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L9405)
 
 ___
 
@@ -8213,7 +7068,7 @@ Subscribe to changes of states (which might not belong to this adapter)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:245](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L245)
+[packages/adapter/src/lib/adapter/adapter.ts:245](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L245)
 
 ___
 
@@ -8228,7 +7083,7 @@ Subscribe for the changes of objects in this instance.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` | pattern like 'channel.*' or '*' (all objects of this adapter) - without namespaces |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | optional returns result        <pre><code>            function (err) {              if (err) adapter.log.error('Cannot subscribe object: ' + err);            }        </code></pre> |
+| `callback?` | `ErrorCallback` | optional returns result        ```js            function (err) {              if (err) adapter.log.error('Cannot subscribe object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -8236,7 +7091,7 @@ Subscribe for the changes of objects in this instance.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4373](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4373)
+[packages/adapter/src/lib/adapter/adapter.ts:4370](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4370)
 
 ▸ **subscribeObjects**(`pattern`, `options`, `callback?`): `void`
 
@@ -8248,7 +7103,7 @@ Subscribe for the changes of objects in this instance.
 | :------ | :------ | :------ |
 | `pattern` | `string` | pattern like 'channel.*' or '*' (all objects of this adapter) - without namespaces |
 | `options` | `unknown` | optional user context |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | optional returns result        <pre><code>            function (err) {              if (err) adapter.log.error('Cannot subscribe object: ' + err);            }        </code></pre> |
+| `callback?` | `ErrorCallback` | optional returns result        ```js            function (err) {              if (err) adapter.log.error('Cannot subscribe object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -8256,7 +7111,7 @@ Subscribe for the changes of objects in this instance.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4374](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4374)
+[packages/adapter/src/lib/adapter/adapter.ts:4371](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4371)
 
 ___
 
@@ -8279,7 +7134,7 @@ Subscribe to changes of objects in this instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:160](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L160)
+[packages/adapter/src/lib/adapter/adapter.ts:160](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L160)
 
 ___
 
@@ -8290,16 +7145,16 @@ ___
 Subscribe for changes on all states of this instance, that pass the pattern
 
 Allows to Subscribe on changes all states of current adapter according to pattern. To read all states of current adapter use:
-<pre><code>
+```js
     adapter.subscribeStates('*'); // subscribe for all states of this adapter
-</code></pre>
+```
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` | string in form 'adapter.0.*' or like this. Only string allowed |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |  |
+| `callback?` | `ErrorCallback` |  |
 
 #### Returns
 
@@ -8307,16 +7162,16 @@ Allows to Subscribe on changes all states of current adapter according to patter
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9789](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L9789)
+[packages/adapter/src/lib/adapter/adapter.ts:9793](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L9793)
 
 ▸ **subscribeStates**(`pattern`, `options`, `callback?`): `void`
 
 Subscribe for changes on all states of this instance, that pass the pattern
 
 Allows to Subscribe on changes all states of current adapter according to pattern. To read all states of current adapter use:
-<pre><code>
+```js
     adapter.subscribeStates('*'); // subscribe for all states of this adapter
-</code></pre>
+```
 
 #### Parameters
 
@@ -8324,7 +7179,7 @@ Allows to Subscribe on changes all states of current adapter according to patter
 | :------ | :------ | :------ |
 | `pattern` | `string` | string in form 'adapter.0.*' or like this. Only string allowed |
 | `options` | `unknown` | optional argument to describe the user context |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |  |
+| `callback?` | `ErrorCallback` |  |
 
 #### Returns
 
@@ -8332,7 +7187,7 @@ Allows to Subscribe on changes all states of current adapter according to patter
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9790](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L9790)
+[packages/adapter/src/lib/adapter/adapter.ts:9794](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L9794)
 
 ___
 
@@ -8355,7 +7210,7 @@ Subscribe to changes of states in this instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:249](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L249)
+[packages/adapter/src/lib/adapter/adapter.ts:249](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L249)
 
 ___
 
@@ -8366,11 +7221,11 @@ ___
 Method to check for available Features for adapter development
 
 Use it like ...
-<pre><code>
+```js
     if (adapter.supportsFeature && adapter.supportsFeature('ALIAS')) {
         ...
     }
-</code></pre>
+```
 
 #### Parameters
 
@@ -8386,7 +7241,7 @@ true/false if the feature is in the list of supported features
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1463](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L1463)
+[packages/adapter/src/lib/adapter/adapter.ts:1458](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L1458)
 
 ___
 
@@ -8410,7 +7265,7 @@ Sometimes, the adapter must be stopped if some libraries are missing.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1313](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L1313)
+[packages/adapter/src/lib/adapter/adapter.ts:1306](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L1306)
 
 ▸ **terminate**(`reason?`, `exitCode?`): `never`
 
@@ -8431,7 +7286,7 @@ Sometimes, the adapter must be stopped if some libraries are missing.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1314](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L1314)
+[packages/adapter/src/lib/adapter/adapter.ts:1307](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L1307)
 
 ___
 
@@ -8445,7 +7300,7 @@ ___
 | :------ | :------ |
 | `adapterName` | ``null`` \| `string` |
 | `path` | `string` |
-| `callback` | [`ErrnoCallback`](../modules/internal_.md#errnocallback) |
+| `callback` | `ErrnoCallback` |
 
 #### Returns
 
@@ -8453,7 +7308,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6372](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6372)
+[packages/adapter/src/lib/adapter/adapter.ts:6365](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6365)
 
 ▸ **unlink**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -8464,7 +7319,7 @@ ___
 | `adapterName` | ``null`` \| `string` |
 | `path` | `string` |
 | `options` | `unknown` |
-| `callback` | [`ErrnoCallback`](../modules/internal_.md#errnocallback) |
+| `callback` | `ErrnoCallback` |
 
 #### Returns
 
@@ -8472,7 +7327,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6373](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6373)
+[packages/adapter/src/lib/adapter/adapter.ts:6366](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6366)
 
 ___
 
@@ -8496,7 +7351,7 @@ Deletes a given file
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:223](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L223)
+[packages/adapter/src/lib/adapter/adapter.ts:223](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L223)
 
 ___
 
@@ -8512,7 +7367,7 @@ This is async function!
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` | pattern like 'channel.*' or '*' (all objects) - without namespaces |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
+| `callback?` | `ErrorCallback` | - |
 
 #### Returns
 
@@ -8520,7 +7375,7 @@ This is async function!
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4568](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4568)
+[packages/adapter/src/lib/adapter/adapter.ts:4564](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4564)
 
 ▸ **unsubscribeForeignFiles**(`pattern`, `options`, `callback?`): `void`
 
@@ -8533,7 +7388,7 @@ This is async function!
 | :------ | :------ | :------ |
 | `pattern` | `string` | pattern like 'channel.*' or '*' (all objects) - without namespaces |
 | `options` | `unknown` | optional user context |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | - |
+| `callback?` | `ErrorCallback` | - |
 
 #### Returns
 
@@ -8541,7 +7396,7 @@ This is async function!
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4569](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4569)
+[packages/adapter/src/lib/adapter/adapter.ts:4565](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4565)
 
 ___
 
@@ -8556,7 +7411,7 @@ Unsubscribe for the patterns on all objects.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` | pattern like 'channel.*' or '*' (all objects) - without namespaces |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | optional returns result        <pre><code>            function (err) {              if (err) adapter.log.error('Cannot unsubscribe object: ' + err);            }        </code></pre> |
+| `callback?` | `ErrorCallback` | optional returns result        ```js            function (err) {              if (err) adapter.log.error('Cannot unsubscribe object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -8564,7 +7419,7 @@ Unsubscribe for the patterns on all objects.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4498](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4498)
+[packages/adapter/src/lib/adapter/adapter.ts:4495](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4495)
 
 ▸ **unsubscribeForeignObjects**(`pattern`, `options`, `callback?`): `void`
 
@@ -8576,7 +7431,7 @@ Unsubscribe for the patterns on all objects.
 | :------ | :------ | :------ |
 | `pattern` | `string` | pattern like 'channel.*' or '*' (all objects) - without namespaces |
 | `options` | `unknown` | optional user context |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | optional returns result        <pre><code>            function (err) {              if (err) adapter.log.error('Cannot unsubscribe object: ' + err);            }        </code></pre> |
+| `callback?` | `ErrorCallback` | optional returns result        ```js            function (err) {              if (err) adapter.log.error('Cannot unsubscribe object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -8584,7 +7439,7 @@ Unsubscribe for the patterns on all objects.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4499](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4499)
+[packages/adapter/src/lib/adapter/adapter.ts:4496](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4496)
 
 ___
 
@@ -8607,7 +7462,7 @@ Unsubscribe from changes of objects (which might not belong to this adapter)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:168](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L168)
+[packages/adapter/src/lib/adapter/adapter.ts:168](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L168)
 
 ___
 
@@ -8618,19 +7473,18 @@ ___
 Unsubscribe for changes for given pattern
 
 This function allows to unsubscribe from changes. The pattern must be equal to requested one.
-
-<pre><code>
+```js
     adapter.subscribeForeignStates('adapterName.X.*');
     adapter.unsubscribeForeignStates('adapterName.X.abc*'); // This will not work
     adapter.unsubscribeForeignStates('adapterName.X.*'); // Valid unsubscribe
-</code></pre>
+```
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` | string in form 'adapter.0.*'. Must be the same as subscribe. |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | return result function (err) {} |
+| `callback?` | `ErrorCallback` | return result ```js function (err) {} ``` |
 
 #### Returns
 
@@ -8638,27 +7492,26 @@ This function allows to unsubscribe from changes. The pattern must be equal to r
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9641](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L9641)
+[packages/adapter/src/lib/adapter/adapter.ts:9643](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L9643)
 
 ▸ **unsubscribeForeignStates**(`pattern`, `options`, `callback?`): `void`
 
 Unsubscribe for changes for given pattern
 
 This function allows to unsubscribe from changes. The pattern must be equal to requested one.
-
-<pre><code>
+```js
     adapter.subscribeForeignStates('adapterName.X.*');
     adapter.unsubscribeForeignStates('adapterName.X.abc*'); // This will not work
     adapter.unsubscribeForeignStates('adapterName.X.*'); // Valid unsubscribe
-</code></pre>
+```
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` | string in form 'adapter.0.*'. Must be the same as subscribe. |
-| `options` | `unknown` | optional argument to describe the user context |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | return result function (err) {} |
+| `options` | `unknown` | - |
+| `callback?` | `ErrorCallback` | return result ```js function (err) {} ``` |
 
 #### Returns
 
@@ -8666,7 +7519,7 @@ This function allows to unsubscribe from changes. The pattern must be equal to r
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9642](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L9642)
+[packages/adapter/src/lib/adapter/adapter.ts:9644](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L9644)
 
 ___
 
@@ -8689,7 +7542,7 @@ Subscribe from changes of states (which might not belong to this adapter)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:247](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L247)
+[packages/adapter/src/lib/adapter/adapter.ts:247](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L247)
 
 ___
 
@@ -8704,7 +7557,7 @@ Unsubscribe on the changes of objects in this instance.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` | pattern like 'channel.*' or '*' (all objects) - without namespaces |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | optional returns result        <pre><code>            function (err) {              if (err) adapter.log.error('Cannot unsubscribe object: ' + err);            }        </code></pre> |
+| `callback?` | `ErrorCallback` | optional returns result        ```js            function (err) {              if (err) adapter.log.error('Cannot unsubscribe object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -8712,7 +7565,7 @@ Unsubscribe on the changes of objects in this instance.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4416](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4416)
+[packages/adapter/src/lib/adapter/adapter.ts:4413](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4413)
 
 ▸ **unsubscribeObjects**(`pattern`, `options`, `callback?`): `void`
 
@@ -8724,7 +7577,7 @@ Unsubscribe on the changes of objects in this instance.
 | :------ | :------ | :------ |
 | `pattern` | `string` | pattern like 'channel.*' or '*' (all objects) - without namespaces |
 | `options` | `unknown` | optional user context |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | optional returns result        <pre><code>            function (err) {              if (err) adapter.log.error('Cannot unsubscribe object: ' + err);            }        </code></pre> |
+| `callback?` | `ErrorCallback` | optional returns result        ```js            function (err) {              if (err) adapter.log.error('Cannot unsubscribe object: ' + err);            }        ``` |
 
 #### Returns
 
@@ -8732,7 +7585,7 @@ Unsubscribe on the changes of objects in this instance.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4417](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L4417)
+[packages/adapter/src/lib/adapter/adapter.ts:4414](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L4414)
 
 ___
 
@@ -8755,7 +7608,7 @@ Unsubscribe from changes of objects in this instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:162](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L162)
+[packages/adapter/src/lib/adapter/adapter.ts:162](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L162)
 
 ___
 
@@ -8767,18 +7620,18 @@ Unsubscribe for changes for given pattern for own states.
 
 This function allows to unsubscribe from changes. The pattern must be equal to requested one.
 
-<pre><code>
+```js
     adapter.subscribeForeignStates('*');
     adapter.unsubscribeForeignStates('abc*'); // This will not work
     adapter.unsubscribeForeignStates('*');    // Valid unsubscribe
-</code></pre>
+```
 
 #### Parameters
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `pattern` | `string` | string in form 'adapter.0.*'. Must be the same as subscribe. |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |  |
+| `callback?` | `ErrorCallback` |  |
 
 #### Returns
 
@@ -8786,7 +7639,7 @@ This function allows to unsubscribe from changes. The pattern must be equal to r
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9831](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L9831)
+[packages/adapter/src/lib/adapter/adapter.ts:9835](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L9835)
 
 ▸ **unsubscribeStates**(`pattern`, `options`, `callback?`): `void`
 
@@ -8794,11 +7647,11 @@ Unsubscribe for changes for given pattern for own states.
 
 This function allows to unsubscribe from changes. The pattern must be equal to requested one.
 
-<pre><code>
+```js
     adapter.subscribeForeignStates('*');
     adapter.unsubscribeForeignStates('abc*'); // This will not work
     adapter.unsubscribeForeignStates('*');    // Valid unsubscribe
-</code></pre>
+```
 
 #### Parameters
 
@@ -8806,7 +7659,7 @@ This function allows to unsubscribe from changes. The pattern must be equal to r
 | :------ | :------ | :------ |
 | `pattern` | `string` | string in form 'adapter.0.*'. Must be the same as subscribe. |
 | `options` | `unknown` | optional argument to describe the user context |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |  |
+| `callback?` | `ErrorCallback` |  |
 
 #### Returns
 
@@ -8814,7 +7667,7 @@ This function allows to unsubscribe from changes. The pattern must be equal to r
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9832](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L9832)
+[packages/adapter/src/lib/adapter/adapter.ts:9836](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L9836)
 
 ___
 
@@ -8837,13 +7690,13 @@ Subscribe from changes of states in this instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L251)
+[packages/adapter/src/lib/adapter/adapter.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L251)
 
 ___
 
 ### updateConfig
 
-▸ **updateConfig**(`newConfig`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+▸ **updateConfig**(`newConfig`): `SetObjectPromise`
 
 Updates the adapter config with new values. Only a subset of the configuration has to be provided,
 since merging with the existing config is done automatically, e.g. like this:
@@ -8856,15 +7709,15 @@ After updating the configuration, the adapter is automatically restarted.
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `newConfig` | [`Record`](../modules/internal_.md#record)<`string`, `any`\> | The new config values to be stored |
+| `newConfig` | `Record`<`string`, `any`\> | The new config values to be stored |
 
 #### Returns
 
-[`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
+`SetObjectPromise`
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2313](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L2313)
+[packages/adapter/src/lib/adapter/adapter.ts:2310](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L2310)
 
 ___
 
@@ -8875,11 +7728,11 @@ ___
 Write file to DB.
 
 This function writes the content of one file into DB for given adapter and file name.
-<pre><code>
+```js
      adapter.writeFile('vis.0', '/main/vis-views.json', data, function (err) {
        err && adapter.log.error('Cannot write file: ' + err);
      });
-</code></pre>
+```
 
 #### Parameters
 
@@ -8887,8 +7740,8 @@ This function writes the content of one file into DB for given adapter and file 
 | :------ | :------ | :------ |
 | `adapterName` | ``null`` \| `string` | - |
 | `path` | `string` | - |
-| `data` | `string` \| [`Buffer`](../modules/internal_.md#buffer) | data as UTF8 string or buffer depends on the file extension. |
-| `callback` | [`ErrnoCallback`](../modules/internal_.md#errnocallback) | return result        <pre><code>            function (err) {             }        </code></pre> |
+| `data` | `string` \| `Buffer` | data as UTF8 string or buffer depends on the file extension. |
+| `callback` | `ErrnoCallback` | return result        ```js            function (err) {             }        ``` |
 
 #### Returns
 
@@ -8896,18 +7749,18 @@ This function writes the content of one file into DB for given adapter and file 
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6511](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6511)
+[packages/adapter/src/lib/adapter/adapter.ts:6504](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6504)
 
 ▸ **writeFile**(`adapterName`, `path`, `data`, `options`, `callback`): `void`
 
 Write file to DB.
 
 This function writes the content of one file into DB for given adapter and file name.
-<pre><code>
+```js
      adapter.writeFile('vis.0', '/main/vis-views.json', data, function (err) {
        err && adapter.log.error('Cannot write file: ' + err);
      });
-</code></pre>
+```
 
 #### Parameters
 
@@ -8915,9 +7768,9 @@ This function writes the content of one file into DB for given adapter and file 
 | :------ | :------ | :------ |
 | `adapterName` | ``null`` \| `string` | - |
 | `path` | `string` | - |
-| `data` | `string` \| [`Buffer`](../modules/internal_.md#buffer) | data as UTF8 string or buffer depends on the file extension. |
+| `data` | `string` \| `Buffer` | data as UTF8 string or buffer depends on the file extension. |
 | `options` | `unknown` | optional user context |
-| `callback` | [`ErrnoCallback`](../modules/internal_.md#errnocallback) | return result        <pre><code>            function (err) {             }        </code></pre> |
+| `callback` | `ErrnoCallback` | return result        ```js            function (err) {             }        ``` |
 
 #### Returns
 
@@ -8925,7 +7778,7 @@ This function writes the content of one file into DB for given adapter and file 
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6512](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L6512)
+[packages/adapter/src/lib/adapter/adapter.ts:6505](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L6505)
 
 ___
 
@@ -8939,7 +7792,7 @@ ___
 | :------ | :------ |
 | `adapterName` | ``null`` \| `string` |
 | `path` | `string` |
-| `data` | `string` \| [`Buffer`](../modules/internal_.md#buffer) |
+| `data` | `string` \| `Buffer` |
 | `options?` | `unknown` |
 
 #### Returns
@@ -8948,320 +7801,4 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:230](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/adapter/adapter.ts#L230)
-
-___
-
-### getEventListeners
-
-▸ `Static` **getEventListeners**(`emitter`, `name`): `Function`[]
-
-Returns a copy of the array of listeners for the event named `eventName`.
-
-For `EventEmitter`s this behaves exactly the same as calling `.listeners` on
-the emitter.
-
-For `EventTarget`s this is the only way to get the event listeners for the
-event target. This is useful for debugging and diagnostic purposes.
-
-```js
-const { getEventListeners, EventEmitter } = require('events');
-
-{
-  const ee = new EventEmitter();
-  const listener = () => console.log('Events are fun');
-  ee.on('foo', listener);
-  getEventListeners(ee, 'foo'); // [listener]
-}
-{
-  const et = new EventTarget();
-  const listener = () => console.log('Events are fun');
-  et.addEventListener('foo', listener);
-  getEventListeners(et, 'foo'); // [listener]
-}
-```
-
-**`Since`**
-
-v15.2.0, v14.17.0
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `emitter` | `EventEmitter` \| [`DOMEventTarget`](../interfaces/internal_.DOMEventTarget.md) |
-| `name` | `string` \| `symbol` |
-
-#### Returns
-
-`Function`[]
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[getEventListeners](internal_.EventEmitter-1.md#geteventlisteners)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:262
-
-___
-
-### listenerCount
-
-▸ `Static` **listenerCount**(`emitter`, `eventName`): `number`
-
-A class method that returns the number of listeners for the given `eventName`registered on the given `emitter`.
-
-```js
-const { EventEmitter, listenerCount } = require('events');
-const myEmitter = new EventEmitter();
-myEmitter.on('event', () => {});
-myEmitter.on('event', () => {});
-console.log(listenerCount(myEmitter, 'event'));
-// Prints: 2
-```
-
-**`Since`**
-
-v0.9.12
-
-**`Deprecated`**
-
-Since v3.2.0 - Use `listenerCount` instead.
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `emitter` | `EventEmitter` | The emitter to query |
-| `eventName` | `string` \| `symbol` | The event name |
-
-#### Returns
-
-`number`
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[listenerCount](internal_.EventEmitter-1.md#listenercount-1)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:234
-
-___
-
-### on
-
-▸ `Static` **on**(`emitter`, `eventName`, `options?`): [`AsyncIterableIterator`](../interfaces/internal_.AsyncIterableIterator.md)<`any`\>
-
-```js
-const { on, EventEmitter } = require('events');
-
-(async () => {
-  const ee = new EventEmitter();
-
-  // Emit later on
-  process.nextTick(() => {
-    ee.emit('foo', 'bar');
-    ee.emit('foo', 42);
-  });
-
-  for await (const event of on(ee, 'foo')) {
-    // The execution of this inner block is synchronous and it
-    // processes one event at a time (even with await). Do not use
-    // if concurrent execution is required.
-    console.log(event); // prints ['bar'] [42]
-  }
-  // Unreachable here
-})();
-```
-
-Returns an `AsyncIterator` that iterates `eventName` events. It will throw
-if the `EventEmitter` emits `'error'`. It removes all listeners when
-exiting the loop. The `value` returned by each iteration is an array
-composed of the emitted event arguments.
-
-An `AbortSignal` can be used to cancel waiting on events:
-
-```js
-const { on, EventEmitter } = require('events');
-const ac = new AbortController();
-
-(async () => {
-  const ee = new EventEmitter();
-
-  // Emit later on
-  process.nextTick(() => {
-    ee.emit('foo', 'bar');
-    ee.emit('foo', 42);
-  });
-
-  for await (const event of on(ee, 'foo', { signal: ac.signal })) {
-    // The execution of this inner block is synchronous and it
-    // processes one event at a time (even with await). Do not use
-    // if concurrent execution is required.
-    console.log(event); // prints ['bar'] [42]
-  }
-  // Unreachable here
-})();
-
-process.nextTick(() => ac.abort());
-```
-
-**`Since`**
-
-v13.6.0, v12.16.0
-
-#### Parameters
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `emitter` | `EventEmitter` | - |
-| `eventName` | `string` | The name of the event being listened for |
-| `options?` | [`StaticEventEmitterOptions`](../interfaces/internal_.StaticEventEmitterOptions.md) | - |
-
-#### Returns
-
-[`AsyncIterableIterator`](../interfaces/internal_.AsyncIterableIterator.md)<`any`\>
-
-that iterates `eventName` events emitted by the `emitter`
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[on](internal_.EventEmitter-1.md#on-1)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:217
-
-___
-
-### once
-
-▸ `Static` **once**(`emitter`, `eventName`, `options?`): `Promise`<`any`[]\>
-
-Creates a `Promise` that is fulfilled when the `EventEmitter` emits the given
-event or that is rejected if the `EventEmitter` emits `'error'` while waiting.
-The `Promise` will resolve with an array of all the arguments emitted to the
-given event.
-
-This method is intentionally generic and works with the web platform [EventTarget](https://dom.spec.whatwg.org/#interface-eventtarget) interface, which has no special`'error'` event
-semantics and does not listen to the `'error'` event.
-
-```js
-const { once, EventEmitter } = require('events');
-
-async function run() {
-  const ee = new EventEmitter();
-
-  process.nextTick(() => {
-    ee.emit('myevent', 42);
-  });
-
-  const [value] = await once(ee, 'myevent');
-  console.log(value);
-
-  const err = new Error('kaboom');
-  process.nextTick(() => {
-    ee.emit('error', err);
-  });
-
-  try {
-    await once(ee, 'myevent');
-  } catch (err) {
-    console.log('error happened', err);
-  }
-}
-
-run();
-```
-
-The special handling of the `'error'` event is only used when `events.once()`is used to wait for another event. If `events.once()` is used to wait for the
-'`error'` event itself, then it is treated as any other kind of event without
-special handling:
-
-```js
-const { EventEmitter, once } = require('events');
-
-const ee = new EventEmitter();
-
-once(ee, 'error')
-  .then(([err]) => console.log('ok', err.message))
-  .catch((err) => console.log('error', err.message));
-
-ee.emit('error', new Error('boom'));
-
-// Prints: ok boom
-```
-
-An `AbortSignal` can be used to cancel waiting for the event:
-
-```js
-const { EventEmitter, once } = require('events');
-
-const ee = new EventEmitter();
-const ac = new AbortController();
-
-async function foo(emitter, event, signal) {
-  try {
-    await once(emitter, event, { signal });
-    console.log('event emitted!');
-  } catch (error) {
-    if (error.name === 'AbortError') {
-      console.error('Waiting for the event was canceled!');
-    } else {
-      console.error('There was an error', error.message);
-    }
-  }
-}
-
-foo(ee, 'foo', ac.signal);
-ac.abort(); // Abort waiting for the event
-ee.emit('foo'); // Prints: Waiting for the event was canceled!
-```
-
-**`Since`**
-
-v11.13.0, v10.16.0
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `emitter` | [`NodeEventTarget`](../interfaces/internal_.NodeEventTarget.md) |
-| `eventName` | `string` \| `symbol` |
-| `options?` | [`StaticEventEmitterOptions`](../interfaces/internal_.StaticEventEmitterOptions.md) |
-
-#### Returns
-
-`Promise`<`any`[]\>
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[once](internal_.EventEmitter-1.md#once-1)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:157
-
-▸ `Static` **once**(`emitter`, `eventName`, `options?`): `Promise`<`any`[]\>
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `emitter` | [`DOMEventTarget`](../interfaces/internal_.DOMEventTarget.md) |
-| `eventName` | `string` |
-| `options?` | [`StaticEventEmitterOptions`](../interfaces/internal_.StaticEventEmitterOptions.md) |
-
-#### Returns
-
-`Promise`<`any`[]\>
-
-#### Inherited from
-
-[EventEmitter](internal_.EventEmitter-1.md).[once](internal_.EventEmitter-1.md#once-1)
-
-#### Defined in
-
-node_modules/@types/node/events.d.ts:158
+[packages/adapter/src/lib/adapter/adapter.ts:230](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/adapter/adapter.ts#L230)

@@ -19,11 +19,11 @@
 
 ### callback
 
-• `Optional` **callback**: [`ErrorCallback`](../modules/internal_.md#errorcallback)
+• `Optional` **callback**: `ErrorCallback`
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:399](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L399)
+[packages/adapter/src/lib/_Types.ts:402](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L402)
 
 ___
 
@@ -33,17 +33,17 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:394](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L394)
+[packages/adapter/src/lib/_Types.ts:397](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L397)
 
 ___
 
 ### options
 
-• `Optional` **options**: ``null`` \| [`Record`](../modules/internal_.md#record)<`string`, `any`\>
+• `Optional` **options**: ``null`` \| `Record`<`string`, `any`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:398](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L398)
+[packages/adapter/src/lib/_Types.ts:401](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L401)
 
 ___
 
@@ -53,7 +53,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:396](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L396)
+[packages/adapter/src/lib/_Types.ts:399](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L399)
 
 ___
 
@@ -63,7 +63,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:395](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L395)
+[packages/adapter/src/lib/_Types.ts:398](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L398)
 
 ___
 
@@ -73,4 +73,4 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:397](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L397)
+[packages/adapter/src/lib/_Types.ts:400](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L400)

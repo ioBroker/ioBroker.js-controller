@@ -17,11 +17,11 @@
 
 ### callback
 
-• `Optional` **callback**: [`MessageCallback`](../modules/internal_.md#messagecallback) \| [`MessageCallbackInfo`](internal_.MessageCallbackInfo.md)
+• `Optional` **callback**: `MessageCallback` \| `MessageCallbackInfo`
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:317](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L317)
+[packages/adapter/src/lib/_Types.ts:320](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L320)
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:315](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L315)
+[packages/adapter/src/lib/_Types.ts:318](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L318)
 
 ___
 
@@ -41,14 +41,14 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:314](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L314)
+[packages/adapter/src/lib/_Types.ts:317](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L317)
 
 ___
 
 ### message
 
-• **message**: [`MessagePayload`](../modules/internal_.md#messagepayload)
+• **message**: `MessagePayload`
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L316)
+[packages/adapter/src/lib/_Types.ts:319](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L319)

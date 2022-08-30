@@ -16,21 +16,21 @@
 
 ### callback
 
-• **callback**: [`GetStatesCallback`](../modules/internal_.md#getstatescallback)
+• **callback**: `GetStatesCallback`
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:329](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L329)
+[packages/adapter/src/lib/_Types.ts:332](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L332)
 
 ___
 
 ### options
 
-• **options**: [`Record`](../modules/internal_.md#record)<`string`, `any`\>
+• **options**: `Record`<`string`, `any`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:328](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L328)
+[packages/adapter/src/lib/_Types.ts:331](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L331)
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L327)
+[packages/adapter/src/lib/_Types.ts:330](https://github.com/ioBroker/ioBroker.js-controller/blob/96971c83/packages/adapter/src/lib/_Types.ts#L330)

@@ -40,7 +40,8 @@
   },
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "postbuild": "cpy ./cert ../build/ --cwd=src && typedoc --excludePrivate --plugin typedoc-plugin-missing-exports --plugin typedoc-plugin-markdown src/lib/adapter/adapter.ts --out ../controller/doc"
+    "postbuild": "cpy ./cert ../build/ --cwd=src",
+    "build:doc": "typedoc --excludeExternals --excludeProtected --excludePrivate --plugin typedoc-plugin-missing-exports --plugin typedoc-plugin-markdown src/lib/adapter/adapter.ts --out ../controller/doc"
   },
   "main": "build/index.js",
   "types": "build/index.d.ts",
