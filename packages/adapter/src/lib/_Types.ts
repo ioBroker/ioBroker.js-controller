@@ -142,9 +142,12 @@ export interface InternalCheckGroupOptions {
     callback?: CheckGroupCallback;
 }
 
-export type CommandsPermissions = {
-    [permission: string]: { type: 'object' | 'state' | '' | 'other' | 'file'; operation: string };
+export type CommandsPermissionsEntry = { type: 'object' | 'state' | '' | 'other' | 'file'; operation: string };
+export type CommandsPermissionsObject = {
+    [permission: string]: CommandsPermissionsEntry;
 };
+
+export type CommandsPermissions = CommandsPermissionsObject | CommandsPermissionsEntry[];
 
 export type CalculatePermissionsCallback = (result: ioBroker.PermissionSet) => void;
 

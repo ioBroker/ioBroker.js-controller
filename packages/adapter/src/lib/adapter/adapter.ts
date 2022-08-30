@@ -1921,7 +1921,9 @@ export class AdapterClass extends EventEmitter {
         }
 
         Utils.assertString(user, 'user');
-        Utils.assertObject(commandsPermissions, 'commandsPermissions');
+        if (!Array.isArray(commandsPermissions)) {
+            Utils.assertObject(commandsPermissions, 'commandsPermissions');
+        }
         if (options !== undefined && options !== null) {
             Utils.assertObject(options, 'options');
         }
