@@ -73,6 +73,8 @@
 - [CheckPasswordCallback](internal_.md#checkpasswordcallback)
 - [CheckStateCommand](internal_.md#checkstatecommand)
 - [CommandsPermissions](internal_.md#commandspermissions)
+- [CommandsPermissionsEntry](internal_.md#commandspermissionsentry)
+- [CommandsPermissionsObject](internal_.md#commandspermissionsobject)
 - [GetCertificatesCallback](internal_.md#getcertificatescallback)
 - [GetEncryptedConfigCallback](internal_.md#getencryptedconfigcallback)
 - [ID](internal_.md#id)
@@ -104,7 +106,7 @@
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:149](https://github.com/ioBroker/ioBroker.js-controller/blob/7c11c7b9/packages/adapter/src/lib/_Types.ts#L149)
+[packages/adapter/src/lib/_Types.ts:152](https://github.com/ioBroker/ioBroker.js-controller/blob/4278a7c8/packages/adapter/src/lib/_Types.ts#L152)
 
 ___
 
@@ -128,7 +130,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/7c11c7b9/packages/adapter/src/lib/adapter/utils.ts#L10)
+[packages/adapter/src/lib/adapter/utils.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/4278a7c8/packages/adapter/src/lib/adapter/utils.ts#L10)
 
 ___
 
@@ -178,7 +180,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:136](https://github.com/ioBroker/ioBroker.js-controller/blob/7c11c7b9/packages/adapter/src/lib/_Types.ts#L136)
+[packages/adapter/src/lib/_Types.ts:136](https://github.com/ioBroker/ioBroker.js-controller/blob/4278a7c8/packages/adapter/src/lib/_Types.ts#L136)
 
 ___
 
@@ -203,7 +205,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/7c11c7b9/packages/adapter/src/lib/_Types.ts#L116)
+[packages/adapter/src/lib/_Types.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/4278a7c8/packages/adapter/src/lib/_Types.ts#L116)
 
 ___
 
@@ -213,21 +215,48 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:89](https://github.com/ioBroker/ioBroker.js-controller/blob/7c11c7b9/packages/adapter/src/lib/_Types.ts#L89)
+[packages/adapter/src/lib/_Types.ts:89](https://github.com/ioBroker/ioBroker.js-controller/blob/4278a7c8/packages/adapter/src/lib/_Types.ts#L89)
 
 ___
 
 ### CommandsPermissions
 
-Ƭ **CommandsPermissions**: `Object`
-
-#### Index signature
-
-▪ [permission: `string`]: { `operation`: `string` ; `type`: ``"object"`` \| ``"state"`` \| ``""`` \| ``"other"`` \| ``"file"``  }
+Ƭ **CommandsPermissions**: [`CommandsPermissionsObject`](internal_.md#commandspermissionsobject) \| [`CommandsPermissionsEntry`](internal_.md#commandspermissionsentry)[]
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:145](https://github.com/ioBroker/ioBroker.js-controller/blob/7c11c7b9/packages/adapter/src/lib/_Types.ts#L145)
+[packages/adapter/src/lib/_Types.ts:150](https://github.com/ioBroker/ioBroker.js-controller/blob/4278a7c8/packages/adapter/src/lib/_Types.ts#L150)
+
+___
+
+### CommandsPermissionsEntry
+
+Ƭ **CommandsPermissionsEntry**: `Object`
+
+#### Type declaration
+
+| Name | Type |
+| :------ | :------ |
+| `operation` | `string` |
+| `type` | ``"object"`` \| ``"state"`` \| ``""`` \| ``"other"`` \| ``"file"`` |
+
+#### Defined in
+
+[packages/adapter/src/lib/_Types.ts:145](https://github.com/ioBroker/ioBroker.js-controller/blob/4278a7c8/packages/adapter/src/lib/_Types.ts#L145)
+
+___
+
+### CommandsPermissionsObject
+
+Ƭ **CommandsPermissionsObject**: `Object`
+
+#### Index signature
+
+▪ [permission: `string`]: [`CommandsPermissionsEntry`](internal_.md#commandspermissionsentry)
+
+#### Defined in
+
+[packages/adapter/src/lib/_Types.ts:146](https://github.com/ioBroker/ioBroker.js-controller/blob/4278a7c8/packages/adapter/src/lib/_Types.ts#L146)
 
 ___
 
@@ -253,7 +282,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:158](https://github.com/ioBroker/ioBroker.js-controller/blob/7c11c7b9/packages/adapter/src/lib/_Types.ts#L158)
+[packages/adapter/src/lib/_Types.ts:161](https://github.com/ioBroker/ioBroker.js-controller/blob/4278a7c8/packages/adapter/src/lib/_Types.ts#L161)
 
 ___
 
@@ -278,7 +307,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/7c11c7b9/packages/adapter/src/lib/_Types.ts#L175)
+[packages/adapter/src/lib/_Types.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/4278a7c8/packages/adapter/src/lib/_Types.ts#L178)
 
 ___
 
@@ -288,7 +317,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:8](https://github.com/ioBroker/ioBroker.js-controller/blob/7c11c7b9/packages/adapter/src/lib/adapter/utils.ts#L8)
+[packages/adapter/src/lib/adapter/utils.ts:8](https://github.com/ioBroker/ioBroker.js-controller/blob/4278a7c8/packages/adapter/src/lib/adapter/utils.ts#L8)
 
 ___
 
@@ -298,7 +327,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:91](https://github.com/ioBroker/ioBroker.js-controller/blob/7c11c7b9/packages/adapter/src/lib/_Types.ts#L91)
+[packages/adapter/src/lib/_Types.ts:91](https://github.com/ioBroker/ioBroker.js-controller/blob/4278a7c8/packages/adapter/src/lib/_Types.ts#L91)
 
 ___
 
@@ -314,7 +343,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:4](https://github.com/ioBroker/ioBroker.js-controller/blob/7c11c7b9/packages/adapter/src/lib/adapter/utils.ts#L4)
+[packages/adapter/src/lib/adapter/utils.ts:4](https://github.com/ioBroker/ioBroker.js-controller/blob/4278a7c8/packages/adapter/src/lib/adapter/utils.ts#L4)
 
 ___
 
@@ -324,7 +353,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/7c11c7b9/packages/adapter/src/lib/adapter/utils.ts#L11)
+[packages/adapter/src/lib/adapter/utils.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/4278a7c8/packages/adapter/src/lib/adapter/utils.ts#L11)
 
 ___
 
@@ -334,7 +363,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:12](https://github.com/ioBroker/ioBroker.js-controller/blob/7c11c7b9/packages/adapter/src/lib/adapter/utils.ts#L12)
+[packages/adapter/src/lib/adapter/utils.ts:12](https://github.com/ioBroker/ioBroker.js-controller/blob/4278a7c8/packages/adapter/src/lib/adapter/utils.ts#L12)
 
 ___
 
@@ -358,4 +387,4 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:182](https://github.com/ioBroker/ioBroker.js-controller/blob/7c11c7b9/packages/adapter/src/lib/_Types.ts#L182)
+[packages/adapter/src/lib/_Types.ts:185](https://github.com/ioBroker/ioBroker.js-controller/blob/4278a7c8/packages/adapter/src/lib/_Types.ts#L185)
