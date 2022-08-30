@@ -1761,7 +1761,7 @@ export class AdapterClass extends EventEmitter {
 
     private async _checkGroup(options: InternalCheckGroupOptions): Promise<void> {
         if (options.user && !options.user.startsWith('system.user.')) {
-            // its not yet a `system.user.xy` id, thus we assume it's a username
+            // it's not yet a `system.user.xy` id, thus we assume it's a username
             if (!this.usernames[options.user]) {
                 // we did not find the id of the username in our cache -> update cache
                 try {
