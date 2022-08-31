@@ -18,11 +18,11 @@
 
 ### callback
 
-• `Optional` **callback**: [`GetObjectViewCallback`](../modules/internal_.md#getobjectviewcallback)<[`AnyObject`](../modules/internal_.md#anyobject)\>
+• `Optional` **callback**: `GetObjectViewCallback`<`AnyObject`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:232](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L232)
+[packages/adapter/src/lib/_Types.ts:235](https://github.com/ioBroker/ioBroker.js-controller/blob/aa1243a8/packages/adapter/src/lib/_Types.ts#L235)
 
 ___
 
@@ -32,27 +32,27 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:228](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L228)
+[packages/adapter/src/lib/_Types.ts:231](https://github.com/ioBroker/ioBroker.js-controller/blob/aa1243a8/packages/adapter/src/lib/_Types.ts#L231)
 
 ___
 
 ### options
 
-• `Optional` **options**: ``null`` \| [`Record`](../modules/internal_.md#record)<`string`, `any`\>
+• `Optional` **options**: ``null`` \| `Record`<`string`, `any`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:231](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L231)
+[packages/adapter/src/lib/_Types.ts:234](https://github.com/ioBroker/ioBroker.js-controller/blob/aa1243a8/packages/adapter/src/lib/_Types.ts#L234)
 
 ___
 
 ### params
 
-• **params**: [`GetObjectViewParams`](internal_.GetObjectViewParams.md)
+• **params**: `GetObjectViewParams`
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:230](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L230)
+[packages/adapter/src/lib/_Types.ts:233](https://github.com/ioBroker/ioBroker.js-controller/blob/aa1243a8/packages/adapter/src/lib/_Types.ts#L233)
 
 ___
 
@@ -62,4 +62,4 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:229](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L229)
+[packages/adapter/src/lib/_Types.ts:232](https://github.com/ioBroker/ioBroker.js-controller/blob/aa1243a8/packages/adapter/src/lib/_Types.ts#L232)

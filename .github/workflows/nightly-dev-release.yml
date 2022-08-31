@@ -35,7 +35,7 @@ jobs:
         echo "Checking for changes since last tag $LAST_TAG"
 
         # Figure out if anything changed in the package directories
-        CHANGES=$(git diff "$LAST_TAG" --name-only | grep -E "^packages\/" || true)
+        CHANGES=$(git diff "$LAST_TAG" --name-only | grep -E "^packages\/" | grep -v "^packages\/controller\/doc\/" || true)
         if [ -z "$CHANGES" ] ; then
           echo "🔸 No package changes since latest version, aborting..."
           echo "::set-output name=result::unchanged"
@@ -58,6 +58,10 @@ jobs:
     - name: Build TS files
       if: steps.changes.outputs.result == 'ok'
       run: npm run build
+
+    - name: Build Docs
+      if: steps.changes.outputs.result == 'ok'
+      run: npm run build:doc
 
     - name: Run scripts
       if: steps.changes.outputs.result == 'ok'

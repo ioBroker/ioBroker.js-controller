@@ -19,5 +19,6 @@ module.exports = {
     setupPacketManager: require('./lib/setup/setupPacketManager').PacketManager,
     setupUpload: require('./lib/setup/setupUpload').Upload,
     setupInstall: require('./lib/setup/setupInstall').Install,
-    setupBackup: require('./lib/setup/setupBackup').BackupRestore
+    setupBackup: require('./lib/setup/setupBackup').BackupRestore,
+    setupUpgrade: require('./lib/setup/setupUpgrade').Upgrade
 };

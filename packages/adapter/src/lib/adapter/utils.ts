@@ -245,7 +245,7 @@ export class Utils {
     static assertString(value: unknown, name: string): asserts value is string {
         if (typeof value !== 'string') {
             throw new Error(
-                `Paramter "${name}" needs to be of type "string" but type "${typeof value}" has been passed`
+                `Parameter "${name}" needs to be of type "string" but type "${typeof value}" has been passed`
             );
         }
     }
@@ -258,13 +258,13 @@ export class Utils {
     static assertPattern(value: unknown, name: string): asserts value is Pattern {
         if (typeof value !== 'string' && !Array.isArray(value)) {
             throw new Error(
-                `Paramter "${name}" needs to be of type "string" or an array of type "string", "${typeof value}" has been passed`
+                `Parameter "${name}" needs to be of type "string" or an array of type "string", "${typeof value}" has been passed`
             );
         } else if (Array.isArray(value)) {
             for (const entry of value) {
                 if (typeof entry !== 'string') {
                     throw new Error(
-                        `Paramter "${name}" needs to be of type "string" or an array of type "string", but the array contains a value of type "${typeof value}"`
+                        `Parameter "${name}" needs to be of type "string" or an array of type "string", but the array contains a value of type "${typeof value}"`
                     );
                 }
             }
@@ -279,7 +279,7 @@ export class Utils {
     static assertBoolean(value: unknown, name: string): asserts value is boolean {
         if (typeof value !== 'boolean') {
             throw new Error(
-                `Paramter "${name}" needs to be of type "boolean" but type "${typeof value}" has been passed`
+                `Parameter "${name}" needs to be of type "boolean" but type "${typeof value}" has been passed`
             );
         }
     }
@@ -292,7 +292,7 @@ export class Utils {
     static assertNumber(value: unknown, name: string): asserts value is number {
         if (typeof value !== 'number') {
             throw new Error(
-                `Paramter "${name}" needs to be of type "number" but type "${typeof value}" has been passed`
+                `Parameter "${name}" needs to be of type "number" but type "${typeof value}" has been passed`
             );
         }
     }
@@ -304,7 +304,7 @@ export class Utils {
      */
     static assertObject(value: unknown, name: string): asserts value is Record<string, any> {
         if (!tools.isObject(value)) {
-            throw new Error(`Paramter "${name}" needs to be a real object but type "${typeof value}" has been passed`);
+            throw new Error(`Parameter "${name}" needs to be a real object but type "${typeof value}" has been passed`);
         }
     }
 
@@ -315,7 +315,7 @@ export class Utils {
      */
     static assertBuffer(value: unknown, name: string): asserts value is Buffer {
         if (!Buffer.isBuffer(value)) {
-            throw new Error(`Paramter "${name}" needs to be a Buffer but type "${typeof value}" has been passed`);
+            throw new Error(`Parameter "${name}" needs to be a Buffer but type "${typeof value}" has been passed`);
         }
     }
 
@@ -327,7 +327,7 @@ export class Utils {
     static assertOptionalCallback(value: unknown, name: string): asserts value is OptionalCallback {
         if (value && typeof value !== 'function') {
             throw new Error(
-                `Paramter "${name}" needs to be of type "null", "undefined" or "function" but type "${typeof value}" has been passed`
+                `Parameter "${name}" needs to be of type "null", "undefined" or "function" but type "${typeof value}" has been passed`
             );
         }
     }
@@ -340,7 +340,7 @@ export class Utils {
     static assertCallback(value: unknown, name: string): asserts value is Callback {
         if (typeof value !== 'function') {
             throw new Error(
-                `Paramter "${name}" needs to be of type "function" but type "${typeof value}" has been passed`
+                `Parameter "${name}" needs to be of type "function" but type "${typeof value}" has been passed`
             );
         }
     }

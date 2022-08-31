@@ -760,7 +760,7 @@ export async function getJson(
  * @param agent optional agent identifier like "Windows Chrome 12.56"
  * @returns json object
  */
-export async function getJsonAsync(urlOrPath: string, agent: string): Promise<Record<string, any> | null> {
+export async function getJsonAsync(urlOrPath: string, agent?: string): Promise<Record<string, any> | null> {
     agent = agent || '';
 
     let sources = {};
@@ -2524,7 +2524,7 @@ export function isObject(it: any): it is Record<string, any> {
     // typeof null === 'object'
     // typeof [] === 'object'
     // [] instanceof Object === true
-    return Object.prototype.toString.call(it) === '[object Object]'; // this code is 25% faster then below one
+    return Object.prototype.toString.call(it) === '[object Object]'; // this code is 25% faster than below one
     // return it && typeof it === 'object' && !(it instanceof Array);
 }
 
@@ -2789,7 +2789,7 @@ export function parseDependencies(
  *
  * @param obj an object which will be validated
  * @param extend (optional) if true checks will allow more optional cases for extendObject calls
- * @throws Error if a property has the wrong type or obj.type is non existing
+ * @throws Error if a property has the wrong type or obj.type is non-existing
  */
 export function validateGeneralObjectProperties(obj: any, extend?: boolean): void {
     // designs have no type but have attribute views

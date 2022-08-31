@@ -20,8 +20,8 @@
 
 | Name | Type |
 | :------ | :------ |
-| `level` | [`LogLevel`](../modules/internal_.md#loglevel) |
+| `level` | `LogLevel` |
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:51](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L51)
+[packages/adapter/src/lib/_Types.ts:51](https://github.com/ioBroker/ioBroker.js-controller/blob/aa1243a8/packages/adapter/src/lib/_Types.ts#L51)

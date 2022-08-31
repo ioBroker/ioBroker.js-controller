@@ -28,17 +28,17 @@
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:264](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L264)
+[packages/adapter/src/lib/_Types.ts:267](https://github.com/ioBroker/ioBroker.js-controller/blob/aa1243a8/packages/adapter/src/lib/_Types.ts#L267)
 
 ___
 
 ### callback
 
-• `Optional` **callback**: [`SetStateCallback`](../modules/internal_.md#setstatecallback)
+• `Optional` **callback**: `SetStateCallback`
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:266](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L266)
+[packages/adapter/src/lib/_Types.ts:269](https://github.com/ioBroker/ioBroker.js-controller/blob/aa1243a8/packages/adapter/src/lib/_Types.ts#L269)
 
 ___
 
@@ -48,24 +48,24 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:262](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L262)
+[packages/adapter/src/lib/_Types.ts:265](https://github.com/ioBroker/ioBroker.js-controller/blob/aa1243a8/packages/adapter/src/lib/_Types.ts#L265)
 
 ___
 
 ### options
 
-• `Optional` **options**: ``null`` \| [`Record`](../modules/internal_.md#record)<`string`, `any`\>
+• `Optional` **options**: ``null`` \| `Record`<`string`, `any`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:265](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L265)
+[packages/adapter/src/lib/_Types.ts:268](https://github.com/ioBroker/ioBroker.js-controller/blob/aa1243a8/packages/adapter/src/lib/_Types.ts#L268)
 
 ___
 
 ### state
 
-• **state**: [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue)
+• **state**: `SettableState` \| `StateValue`
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:263](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L263)
+[packages/adapter/src/lib/_Types.ts:266](https://github.com/ioBroker/ioBroker.js-controller/blob/aa1243a8/packages/adapter/src/lib/_Types.ts#L266)

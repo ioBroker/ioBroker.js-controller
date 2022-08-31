@@ -15,11 +15,11 @@
 
 ### callback
 
-• **callback**: [`GetSessionCallback`](../modules/internal_.md#getsessioncallback)
+• **callback**: `GetSessionCallback`
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:102](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L102)
+[packages/adapter/src/lib/_Types.ts:102](https://github.com/ioBroker/ioBroker.js-controller/blob/aa1243a8/packages/adapter/src/lib/_Types.ts#L102)
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:101](https://github.com/ioBroker/ioBroker.js-controller/blob/f39ffe6c/packages/adapter/src/lib/_Types.ts#L101)
+[packages/adapter/src/lib/_Types.ts:101](https://github.com/ioBroker/ioBroker.js-controller/blob/aa1243a8/packages/adapter/src/lib/_Types.ts#L101)
