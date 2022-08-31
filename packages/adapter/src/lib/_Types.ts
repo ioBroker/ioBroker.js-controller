@@ -213,7 +213,7 @@ export interface InternalGetObjectsOptions {
     pattern: string;
     type?: string;
     enums?: ioBroker.EnumList | null;
-    options?: unknown;
+    options?: Record<string, any> | null;
     callback?: ioBroker.GetObjectsCallbackTyped<any>;
 }
 

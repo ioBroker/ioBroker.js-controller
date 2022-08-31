@@ -3991,6 +3991,10 @@ export class AdapterClass extends EventEmitter {
             Utils.assertString(type, 'type');
         }
 
+        if (options !== null && options !== undefined) {
+            Utils.assertObject(options, 'options');
+        }
+
         return this._getForeignObjects({
             pattern,
             type,
@@ -4000,12 +4004,14 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private _getForeignObjects(options: InternalGetObjectsOptions) {
-        let params = {};
-        if (options.pattern && options.pattern !== '*') {
+    private _getForeignObjects(_options: InternalGetObjectsOptions) {
+        const { options, callback, type, pattern, enums } = _options;
+
+        let params: ioBroker.GetObjectViewParams = {};
+        if (pattern && pattern !== '*') {
             params = {
-                startkey: options.pattern.replace(/\*/g, ''),
-                endkey: options.pattern.replace(/\*/g, '\u9999')
+                startkey: pattern.replace(/\*/g, ''),
+                endkey: pattern.replace(/\*/g, '\u9999')
             };
         }
 
@@ -4013,19 +4019,19 @@ export class AdapterClass extends EventEmitter {
             this._logger.info(
                 `${this.namespaceLog} getForeignObjects not processed because Objects database not connected`
             );
-            return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        adapterObjects.getObjectView('system', options.type || 'state', params, options, async (err, res) => {
+        adapterObjects.getObjectView('system', type || 'state', params, options, async (err, res) => {
             if (err) {
-                return tools.maybeCallbackWithError(options.callback, err);
+                return tools.maybeCallbackWithError(callback, err);
             }
 
             // don't forget, that enums returns names in row[x].id and not IDs, you can find id in rows[x].value._id
             let _enums;
-            if (options.enums) {
+            if (enums) {
                 try {
-                    _enums = await this.getEnumsAsync(options.enums, null);
+                    _enums = await this.getEnumsAsync(enums, null);
                 } catch (e) {
                     this._logger.warn(`Cannot get enums on getForeignObjects: ${e.message}`);
                 }
@@ -4038,7 +4044,7 @@ export class AdapterClass extends EventEmitter {
                         // It is not so important warning, so print it as debug
                         this._logger.debug(
                             `${this.namespaceLog} getEnums(${JSON.stringify(
-                                options.enums
+                                enums
                             )}) returned an enum without a value at index ${i}, obj - ${JSON.stringify(row)}`
                         );
                         continue;
@@ -4072,7 +4078,7 @@ export class AdapterClass extends EventEmitter {
                     }
                 }
             }
-            return tools.maybeCallbackWithError(options.callback, null, list);
+            return tools.maybeCallbackWithError(callback, null, list);
         });
     }
 
