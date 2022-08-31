@@ -2914,7 +2914,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    extendObject(id: unknown, obj: unknown, options: unknown, callback?: unknown) {
+    extendObject(id: unknown, obj: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -3446,7 +3446,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    getObject(id: unknown, options: unknown, callback?: unknown) {
+    getObject(id: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -3620,7 +3620,7 @@ export class AdapterClass extends EventEmitter {
      *          }
      *       ```
      */
-    getObjectList(params: unknown, options: unknown, callback?: unknown) {
+    getObjectList(params: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -3676,7 +3676,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    getEnum(_enum: unknown, options?: unknown, callback?: unknown) {
+    getEnum(_enum: unknown, options?: unknown, callback?: unknown): any {
         if (typeof _enum === 'function') {
             callback = _enum;
             options = null;
@@ -4102,7 +4102,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    findForeignObject(id: unknown, type: unknown, options: unknown, callback?: unknown) {
+    findForeignObject(id: unknown, type: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -4220,7 +4220,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    delObject(id: unknown, options: unknown, callback?: unknown) {
+    delObject(id: unknown, options: unknown, callback?: unknown): any {
         Utils.assertString(id, 'id');
 
         // delObject does the same as delForeignObject, but fixes the ID first
@@ -4277,7 +4277,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    delForeignObject(id: unknown, options: unknown, callback?: unknown) {
+    delForeignObject(id: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -4388,7 +4388,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    subscribeObjects(pattern: unknown, options: unknown, callback?: unknown) {
+    subscribeObjects(pattern: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = undefined;
@@ -4431,7 +4431,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    unsubscribeObjects(pattern: unknown, options: unknown, callback?: unknown) {
+    unsubscribeObjects(pattern: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = undefined;
@@ -4475,7 +4475,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    subscribeForeignObjects(pattern: unknown, options: unknown, callback?: unknown) {
+    subscribeForeignObjects(pattern: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = undefined;
@@ -4513,7 +4513,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    unsubscribeForeignObjects(pattern: unknown, options: unknown, callback?: unknown) {
+    unsubscribeForeignObjects(pattern: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = undefined;
@@ -4549,7 +4549,7 @@ export class AdapterClass extends EventEmitter {
      * @param pattern pattern like 'channel.*' or '*' (all files) - without namespaces. You can use array of patterns
      * @param options optional user context
      */
-    subscribeForeignFiles(id: unknown, pattern: unknown, options?: unknown) {
+    subscribeForeignFiles(id: unknown, pattern: unknown, options?: unknown): any {
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} subscribeForeignFiles not processed because Objects database not connected`
@@ -4577,7 +4577,7 @@ export class AdapterClass extends EventEmitter {
      * @param pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
      * @param options optional user context
      */
-    unsubscribeForeignFiles(id: unknown, pattern: unknown, options?: unknown) {
+    unsubscribeForeignFiles(id: unknown, pattern: unknown, options?: unknown): any {
         if (!pattern) {
             pattern = '*';
         }
@@ -4617,7 +4617,7 @@ export class AdapterClass extends EventEmitter {
      *
      * @param id object ID, that must be overwritten or created.
      * @param obj new object
-     * @param optional user context
+     * @param options optional user context
      * @param callback return result
      *        ```js
      *            function (err, obj) {
@@ -4832,7 +4832,7 @@ export class AdapterClass extends EventEmitter {
         callback?: ioBroker.SetObjectCallback
     ): void;
 
-    createDevice(deviceName: unknown, common: unknown, _native?: unknown, options?: unknown, callback?: unknown) {
+    createDevice(deviceName: unknown, common: unknown, _native?: unknown, options?: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -4917,7 +4917,7 @@ export class AdapterClass extends EventEmitter {
         _native?: unknown,
         options?: unknown,
         callback?: unknown
-    ) {
+    ): any {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5009,7 +5009,7 @@ export class AdapterClass extends EventEmitter {
         _native?: unknown,
         options?: unknown,
         callback?: unknown
-    ) {
+    ): any {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5186,7 +5186,7 @@ export class AdapterClass extends EventEmitter {
      * Delete device with all its channels and states.
      *
      * @param deviceName is the part of ID like: adapter.instance.<deviceName>
-     * @param optional user context
+     * @param options optional user context
      * @param callback return result
      *        ```js
      *            function (err) {
@@ -5194,7 +5194,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    deleteDevice(deviceName: unknown, options: unknown, callback?: unknown) {
+    deleteDevice(deviceName: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5398,7 +5398,7 @@ export class AdapterClass extends EventEmitter {
         channelName: unknown,
         options: unknown,
         callback?: unknown
-    ) {
+    ): any {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5508,7 +5508,7 @@ export class AdapterClass extends EventEmitter {
      *
      * @param parentDevice is the part of ID like: adapter.instance.<deviceName>
      * @param channelName is the part of ID like: adapter.instance.<deviceName>.<channelName>
-     * @param optionsoptional user context
+     * @param options optional user context
      * @param callback return result
      *        ```js
      *            function (err) {
@@ -5516,7 +5516,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    deleteChannel(parentDevice: unknown, channelName: unknown, options?: unknown, callback?: unknown) {
+    deleteChannel(parentDevice: unknown, channelName: unknown, options?: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5617,7 +5617,7 @@ export class AdapterClass extends EventEmitter {
         stateName: unknown,
         options?: unknown,
         callback?: unknown
-    ) {
+    ): any {
         if (typeof parentChannel === 'function' && stateName === undefined) {
             stateName = parentDevice;
             callback = parentChannel;
@@ -5706,7 +5706,7 @@ export class AdapterClass extends EventEmitter {
     getDevices(callback: ioBroker.GetObjectsCallback3<ioBroker.DeviceObject>): void;
     getDevices(options: unknown, callback: ioBroker.GetObjectsCallback3<ioBroker.DeviceObject>): void;
 
-    getDevices(options: unknown, callback?: unknown) {
+    getDevices(options: unknown, callback?: unknown): any {
         if (typeof options === 'function' && typeof callback === 'object') {
             const tmp = callback;
             callback = options;
@@ -5764,7 +5764,7 @@ export class AdapterClass extends EventEmitter {
         options: unknown,
         callback: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>
     ): void;
-    getChannelsOf(parentDevice: unknown, options?: unknown, callback?: unknown) {
+    getChannelsOf(parentDevice: unknown, options?: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5839,7 +5839,7 @@ export class AdapterClass extends EventEmitter {
         options: unknown,
         callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>
     ): void;
-    getStatesOf(parentDevice: unknown, parentChannel?: unknown, options?: unknown, callback?: unknown) {
+    getStatesOf(parentDevice: unknown, parentChannel?: unknown, options?: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5956,7 +5956,7 @@ export class AdapterClass extends EventEmitter {
         stateName: unknown,
         options: unknown,
         callback?: unknown
-    ) {
+    ): any {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -6100,7 +6100,7 @@ export class AdapterClass extends EventEmitter {
         stateName: unknown,
         options: unknown,
         callback?: unknown
-    ) {
+    ): any {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -6239,7 +6239,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    chmodFile(_adapter: unknown, path: unknown, options: unknown, callback?: unknown) {
+    chmodFile(_adapter: unknown, path: unknown, options: unknown, callback?: unknown): any {
         if (_adapter === null) {
             _adapter = this.name;
         }
@@ -6286,7 +6286,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    chownFile(_adapter: unknown, path: unknown, options: unknown, callback?: unknown) {
+    chownFile(_adapter: unknown, path: unknown, options: unknown, callback?: unknown): any {
         if (_adapter === null) {
             _adapter = this.name;
         }
@@ -6342,7 +6342,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    readDir(_adapter: unknown, path: unknown, options: unknown, callback?: unknown) {
+    readDir(_adapter: unknown, path: unknown, options: unknown, callback?: unknown): any {
         if (_adapter === null) {
             _adapter = this.name;
         }
@@ -6370,7 +6370,7 @@ export class AdapterClass extends EventEmitter {
     // public signature
     unlink(adapterName: string | null, path: string, callback: ioBroker.ErrnoCallback): void;
     unlink(adapterName: string | null, path: string, options: unknown, callback: ioBroker.ErrnoCallback): void;
-    unlink(_adapter: unknown, name: unknown, options: unknown, callback?: unknown) {
+    unlink(_adapter: unknown, name: unknown, options: unknown, callback?: unknown): any {
         if (_adapter === null) {
             _adapter = this.name;
         }
@@ -6405,7 +6405,7 @@ export class AdapterClass extends EventEmitter {
         callback: ioBroker.ErrnoCallback
     ): void;
 
-    rename(_adapter: unknown, oldName: unknown, newName: unknown, options: unknown, callback?: unknown) {
+    rename(_adapter: unknown, oldName: unknown, newName: unknown, options: unknown, callback?: unknown): any {
         if (_adapter === null) {
             _adapter = this.name;
         }
@@ -6432,7 +6432,7 @@ export class AdapterClass extends EventEmitter {
 
     mkdir(adapterName: string | null, path: string, callback: ioBroker.ErrnoCallback): void;
     mkdir(adapterName: string | null, path: string, options: unknown, callback: ioBroker.ErrnoCallback): void;
-    mkdir(_adapter: unknown, dirname: unknown, options: unknown, callback?: unknown) {
+    mkdir(_adapter: unknown, dirname: unknown, options: unknown, callback?: unknown): any {
         if (_adapter === null) {
             _adapter = this.name;
         }
@@ -6481,7 +6481,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    readFile(_adapter: unknown, filename: unknown, options: unknown, callback?: unknown) {
+    readFile(_adapter: unknown, filename: unknown, options: unknown, callback?: unknown): any {
         if (_adapter === null) {
             _adapter = this.name;
         }
@@ -6615,7 +6615,7 @@ export class AdapterClass extends EventEmitter {
     // external signatures
     formatValue(value: number | string, format: any): string;
     formatValue(value: number | string, decimals: number, format: any): string;
-    formatValue(value: unknown, decimals: unknown, _format?: unknown) {
+    formatValue(value: unknown, decimals: unknown, _format?: unknown): any {
         if (typeof decimals !== 'number') {
             _format = decimals;
             decimals = 2;
@@ -6651,7 +6651,7 @@ export class AdapterClass extends EventEmitter {
     formatDate(dateObj: string | Date | number, format: string): string;
     formatDate(dateObj: string | Date | number, isDuration: boolean | string, format: string): string;
 
-    formatDate(dateObj: unknown, isDuration: unknown, _format?: unknown) {
+    formatDate(dateObj: unknown, isDuration: unknown, _format?: unknown): any {
         if ((typeof isDuration === 'string' && isDuration.toLowerCase() === 'duration') || isDuration === true) {
             isDuration = true;
         }
@@ -6831,7 +6831,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    sendTo(instanceName: unknown, command: unknown, message: unknown, callback?: unknown) {
+    sendTo(instanceName: unknown, command: unknown, message: unknown, callback?: unknown): any {
         if (typeof message === 'function' && typeof callback === 'undefined') {
             callback = message;
             message = undefined;
@@ -6990,7 +6990,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    sendToHost(hostName: unknown, command: unknown, message: unknown, callback?: unknown) {
+    sendToHost(hostName: unknown, command: unknown, message: unknown, callback?: unknown): any {
         if (typeof message === 'undefined') {
             message = command;
             command = 'send';
@@ -7188,7 +7188,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    setState(id: unknown, state: unknown, ack: unknown, options?: unknown, callback?: unknown) {
+    setState(id: unknown, state: unknown, ack: unknown, options?: unknown, callback?: unknown): any {
         if (typeof state === 'object' && typeof ack !== 'boolean') {
             callback = options;
             options = ack;
@@ -7918,7 +7918,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    setStateChanged(id: unknown, state: unknown, ack: unknown, options?: unknown, callback?: unknown) {
+    setStateChanged(id: unknown, state: unknown, ack: unknown, options?: unknown, callback?: unknown): any {
         if (typeof state === 'object' && typeof ack !== 'boolean') {
             callback = options;
             options = ack;
@@ -8075,7 +8075,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    async setForeignState(id: any, state: any, ack: any, options?: any, callback?: any) {
+    async setForeignState(id: any, state: any, ack: any, options?: any, callback?: any): Promise<any> {
         if (typeof state === 'object' && typeof ack !== 'boolean') {
             callback = options;
             options = ack;
@@ -8384,7 +8384,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    setForeignStateChanged(id: any, state: any, ack: any, options?: any, callback?: any) {
+    setForeignStateChanged(id: any, state: any, ack: any, options?: any, callback?: any): any {
         if (typeof state === 'object' && typeof ack !== 'boolean') {
             callback = options;
             options = ack;
@@ -8482,7 +8482,7 @@ export class AdapterClass extends EventEmitter {
      *
      *        See possible attributes of the state in @setState explanation
      */
-    getState(id: unknown, options: any, callback?: any) {
+    getState(id: unknown, options: any, callback?: any): any {
         // we use any types here, because validation takes place in foreign method
         // get state does the same as getForeignState but fixes the id first
 
@@ -8512,7 +8512,7 @@ export class AdapterClass extends EventEmitter {
      *
      *        See possible attributes of the state in @setState explanation
      */
-    getForeignState(id: unknown, options: unknown, callback?: unknown) {
+    getForeignState(id: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -8815,7 +8815,7 @@ export class AdapterClass extends EventEmitter {
      *
      *        See possible attributes of the state in @setState explanation
      */
-    getHistory(id: unknown, options: unknown, callback?: unknown) {
+    getHistory(id: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -8920,7 +8920,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    delState(id: unknown, options: unknown, callback?: unknown) {
+    delState(id: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -8962,12 +8962,12 @@ export class AdapterClass extends EventEmitter {
      *
      * @param id long string for ID like "adapterName.0.stateID".
      * @param options optional argument to describe the user context
-     * @param callbackreturn result
+     * @param callback return result
      * ```js
      * function (err) {}
      * ```
      */
-    delForeignState(id: unknown, options: unknown, callback?: unknown) {
+    delForeignState(id: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -9035,7 +9035,7 @@ export class AdapterClass extends EventEmitter {
      * function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...}
      * ```
      */
-    getStates(pattern: unknown, options: any, callback?: any) {
+    getStates(pattern: unknown, options: any, callback?: any): any {
         // we use any types here, because validation takes place in foreign method
         if (typeof options === 'function') {
             callback = options;
@@ -9163,7 +9163,7 @@ export class AdapterClass extends EventEmitter {
      * function (err, states) {}, where states is an object like {"ID1": {"val": 1, "ack": true}, "ID2": {"val": 2, "ack": false}, ...}
      * ```
      */
-    getForeignStates(pattern: unknown, options: unknown, callback?: unknown) {
+    getForeignStates(pattern: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -9422,7 +9422,7 @@ export class AdapterClass extends EventEmitter {
      * @param options optional argument to describe the user context
      * @param callback return result ```function (err) {}```
      */
-    subscribeForeignStates(pattern: unknown, options: unknown, callback?: unknown) {
+    subscribeForeignStates(pattern: unknown, options: unknown, callback?: unknown): any {
         pattern = pattern || '*';
 
         if (typeof options === 'function') {
@@ -9666,7 +9666,7 @@ export class AdapterClass extends EventEmitter {
      * function (err) {}
      * ```
      */
-    unsubscribeForeignStates(pattern: unknown, options: unknown, callback?: unknown) {
+    unsubscribeForeignStates(pattern: unknown, options: unknown, callback?: unknown): any {
         pattern = pattern || '*';
 
         // Todo check rights for options
@@ -9811,7 +9811,7 @@ export class AdapterClass extends EventEmitter {
      * @param options optional argument to describe the user context
      * @param callback
      */
-    subscribeStates(pattern: unknown, options: unknown, callback?: unknown) {
+    subscribeStates(pattern: unknown, options: unknown, callback?: unknown): any {
         // Todo check rights for options
         if (typeof options === 'function') {
             callback = options;
@@ -9856,7 +9856,7 @@ export class AdapterClass extends EventEmitter {
      * @param options optional argument to describe the user context
      * @param callback
      */
-    unsubscribeStates(pattern: unknown, options: unknown, callback?: unknown) {
+    unsubscribeStates(pattern: unknown, options: unknown, callback?: unknown): any {
         // Todo check rights for options
         if (typeof options === 'function') {
             callback = options;
@@ -9895,7 +9895,7 @@ export class AdapterClass extends EventEmitter {
      * @param callback
      *
      */
-    setForeignBinaryState(id: unknown, binary: unknown, options: unknown, callback?: unknown) {
+    setForeignBinaryState(id: unknown, binary: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -10052,7 +10052,7 @@ export class AdapterClass extends EventEmitter {
      * @param options optional
      * @param callback
      */
-    getForeignBinaryState(id: unknown, options: unknown, callback?: unknown) {
+    getForeignBinaryState(id: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -10126,7 +10126,7 @@ export class AdapterClass extends EventEmitter {
      * @param options optional
      * @param callback
      */
-    getBinaryState(id: any, options: any, callback?: any) {
+    getBinaryState(id: any, options: any, callback?: any): any {
         // we use any types here, because validation takes place in foreign method
         // TODO: fixId as soon as all adapters are migrated to setForeignBinaryState
         // id =this._utils.fixId(id);
@@ -10145,7 +10145,7 @@ export class AdapterClass extends EventEmitter {
      * @param callback
      *
      */
-    delForeignBinaryState(id: unknown, options: unknown, callback?: unknown) {
+    delForeignBinaryState(id: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -10203,7 +10203,7 @@ export class AdapterClass extends EventEmitter {
      * @param callback
      *
      */
-    delBinaryState(id: any, options: any, callback?: any) {
+    delBinaryState(id: any, options: any, callback?: any): any {
         // we use any types here, because validation takes place in foreign method
         // TODO: call fixId as soon as adapters are migrated to setForeignBinaryState
         // id = this._utils.fixId(id, false);
@@ -10281,7 +10281,7 @@ export class AdapterClass extends EventEmitter {
      * @param all if return the licenses, that used by other instances (true) or only for this instance (false)
      * @returns list of suitable licenses
      */
-    async getSuitableLicenses(all: unknown) {
+    async getSuitableLicenses(all: unknown): Promise<any> {
         const licenses: Record<string, any>[] = [];
         try {
             const obj = await this.getForeignObjectAsync('system.licenses');
