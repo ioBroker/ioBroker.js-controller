@@ -100,7 +100,7 @@
   "license": "MIT",
   "files": [
     "conf/",
-    "lib/",
+    "build/",
     "_service_iobroker.bat",
     "compactgroupController.js",
     "controller.js",
