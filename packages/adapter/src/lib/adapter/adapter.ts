@@ -6846,9 +6846,17 @@ export class AdapterClass extends EventEmitter {
         if (typeof message !== 'string') {
             Utils.assertObject(message, 'message');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
 
-        return this._sendTo({ instanceName, command, message, callback });
+        if (!tools.isObject(callback)) {
+            Utils.assertOptionalCallback(callback, 'callback');
+        }
+
+        return this._sendTo({
+            instanceName,
+            command,
+            message,
+            callback: callback as ioBroker.MessageCallbackInfo | ioBroker.MessageCallback
+        });
     }
 
     private async _sendTo(_options: InternalSendToOptions) {
@@ -7001,9 +7009,17 @@ export class AdapterClass extends EventEmitter {
         if (typeof message !== 'string') {
             Utils.assertObject(message, 'message');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
 
-        return this._sendToHost({ hostName, command, message, callback });
+        if (!tools.isObject(callback)) {
+            Utils.assertOptionalCallback(callback, 'callback');
+        }
+
+        return this._sendToHost({
+            hostName,
+            command,
+            message,
+            callback: callback as ioBroker.MessageCallback | ioBroker.MessageCallbackInfo
+        });
     }
 
     private async _sendToHost(_options: InternalSendToHostOptions) {

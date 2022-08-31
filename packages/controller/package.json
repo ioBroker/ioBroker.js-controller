@@ -101,7 +101,6 @@
   "files": [
     "conf/",
     "build/",
-    "lib/",
     "_service_iobroker.bat",
     "compactgroupController.js",
     "controller.js",
