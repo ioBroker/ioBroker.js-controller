@@ -4035,7 +4035,7 @@ export class AdapterClass extends EventEmitter {
                 for (let i = 0; i < res.rows.length; i++) {
                     const row = res.rows[i];
                     if (!row.value) {
-                        // it is more an unimportant warning as debug
+                        // It is not so important warning, so print it as debug
                         this._logger.debug(
                             `${this.namespaceLog} getEnums(${JSON.stringify(
                                 options.enums
