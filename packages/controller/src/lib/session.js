@@ -1,5 +1,5 @@
 'use strict';
-
+/** @type any */
 module.exports = function (session, defaultTtl) {
     const Store = session.Store;
     defaultTtl = defaultTtl || 3600;
@@ -17,8 +17,6 @@ module.exports = function (session, defaultTtl) {
         Store.call(this, options);
     }
 
-    // Object.getPrototypeOf(AdapterStore.prototype) ?
-    // AdapterStore.prototype.__proto__ = Store.prototype;
     AdapterStore.prototype = Object.create(Store.prototype);
 
     /**
