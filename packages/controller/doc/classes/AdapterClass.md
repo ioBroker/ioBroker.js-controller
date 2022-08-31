@@ -211,7 +211,7 @@ How the initialization happens:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:654](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L654)
+[packages/adapter/src/lib/adapter/adapter.ts:654](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L654)
 
 ## Methods
 
@@ -235,7 +235,7 @@ How the initialization happens:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5248](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5248)
+[packages/adapter/src/lib/adapter/adapter.ts:5248](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5248)
 
 ▸ **addChannelToEnum**(`enumName`, `addTo`, `parentDevice`, `channelName`, `options`, `callback?`): `void`
 
@@ -256,7 +256,7 @@ How the initialization happens:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5255](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5255)
+[packages/adapter/src/lib/adapter/adapter.ts:5255](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5255)
 
 ___
 
@@ -280,7 +280,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:180](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L180)
+[packages/adapter/src/lib/adapter/adapter.ts:180](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L180)
 
 ___
 
@@ -305,7 +305,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5934](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5934)
+[packages/adapter/src/lib/adapter/adapter.ts:5934](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5934)
 
 ▸ **addStateToEnum**(`enumName`, `addTo`, `parentDevice`, `parentChannel`, `stateName`, `options`, `callback?`): `void`
 
@@ -327,7 +327,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5942](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5942)
+[packages/adapter/src/lib/adapter/adapter.ts:5942](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5942)
 
 ___
 
@@ -352,7 +352,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:197](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L197)
+[packages/adapter/src/lib/adapter/adapter.ts:197](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L197)
 
 ___
 
@@ -380,7 +380,7 @@ The function reads permissions of user's groups (it can be more than one) and me
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1805](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L1805)
+[packages/adapter/src/lib/adapter/adapter.ts:1805](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L1805)
 
 ▸ **calculatePermissions**(`user`, `commandsPermissions`, `callback?`): `Promise`<`void` \| `PermissionSet`\>
 
@@ -403,7 +403,7 @@ The function reads permissions of user's groups (it can be more than one) and me
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1811](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L1811)
+[packages/adapter/src/lib/adapter/adapter.ts:1811](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L1811)
 
 ___
 
@@ -427,7 +427,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:287](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L287)
+[packages/adapter/src/lib/adapter/adapter.ts:287](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L287)
 
 ___
 
@@ -454,7 +454,7 @@ This function used mostly internally and the adapter developer do not require it
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1721](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L1721)
+[packages/adapter/src/lib/adapter/adapter.ts:1721](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L1721)
 
 ▸ **checkGroup**(`user`, `group`, `callback?`): `Promise`<`void`\>
 
@@ -476,7 +476,7 @@ This function used mostly internally and the adapter developer do not require it
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1722](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L1722)
+[packages/adapter/src/lib/adapter/adapter.ts:1722](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L1722)
 
 ___
 
@@ -500,7 +500,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:285](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L285)
+[packages/adapter/src/lib/adapter/adapter.ts:285](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L285)
 
 ___
 
@@ -525,7 +525,7 @@ validates user and password
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1482](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L1482)
+[packages/adapter/src/lib/adapter/adapter.ts:1482](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L1482)
 
 ▸ **checkPassword**(`user`, `pw`, `callback`): `Promise`<`void`\>
 
@@ -545,7 +545,7 @@ validates user and password
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1488](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L1488)
+[packages/adapter/src/lib/adapter/adapter.ts:1488](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L1488)
 
 ___
 
@@ -569,7 +569,7 @@ Validates username and password
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:281](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L281)
+[packages/adapter/src/lib/adapter/adapter.ts:281](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L281)
 
 ___
 
@@ -602,7 +602,7 @@ This function updates the file access rights
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6212](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6212)
+[packages/adapter/src/lib/adapter/adapter.ts:6212](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6212)
 
 ▸ **chmodFile**(`adapter`, `path`, `callback`): `void`
 
@@ -630,7 +630,7 @@ This function updates the file access rights
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6219](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6219)
+[packages/adapter/src/lib/adapter/adapter.ts:6219](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6219)
 
 ___
 
@@ -654,7 +654,7 @@ Changes access rights of all files in the adapter directory
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:213](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L213)
+[packages/adapter/src/lib/adapter/adapter.ts:213](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L213)
 
 ___
 
@@ -687,7 +687,7 @@ This function updates the file owner and ownerGroup
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6259](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6259)
+[packages/adapter/src/lib/adapter/adapter.ts:6259](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6259)
 
 ▸ **chownFile**(`_adapter`, `path`, `callback`): `void`
 
@@ -715,7 +715,7 @@ This function updates the file owner and ownerGroup
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6266](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6266)
+[packages/adapter/src/lib/adapter/adapter.ts:6266](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6266)
 
 ___
 
@@ -735,7 +735,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:219](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L219)
+[packages/adapter/src/lib/adapter/adapter.ts:219](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L219)
 
 ___
 
@@ -758,7 +758,7 @@ but it check the running intervals on unload
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2535](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L2535)
+[packages/adapter/src/lib/adapter/adapter.ts:2535](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L2535)
 
 ___
 
@@ -781,7 +781,7 @@ but it check the running timers on unload
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2458](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L2458)
+[packages/adapter/src/lib/adapter/adapter.ts:2458](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L2458)
 
 ___
 
@@ -803,7 +803,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4889](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4889)
+[packages/adapter/src/lib/adapter/adapter.ts:4889](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4889)
 
 ▸ **createChannel**(`parentDevice`, `channelName`, `roleOrCommon`, `callback?`): `void`
 
@@ -822,7 +822,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4890](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4890)
+[packages/adapter/src/lib/adapter/adapter.ts:4890](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4890)
 
 ▸ **createChannel**(`parentDevice`, `channelName`, `roleOrCommon`, `native`, `callback?`): `void`
 
@@ -842,7 +842,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4896](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4896)
+[packages/adapter/src/lib/adapter/adapter.ts:4896](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4896)
 
 ▸ **createChannel**(`parentDevice`, `channelName`, `roleOrCommon`, `native`, `options`, `callback?`): `void`
 
@@ -863,7 +863,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4903](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4903)
+[packages/adapter/src/lib/adapter/adapter.ts:4903](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4903)
 
 ___
 
@@ -887,7 +887,7 @@ Creates an object with type channel. It must be located under a device
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:454](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L454)
+[packages/adapter/src/lib/adapter/adapter.ts:454](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L454)
 
 ▸ **createChannelAsync**(`parentDevice`, `channelName`, `roleOrCommon`, `native?`): `SetObjectPromise`
 
@@ -906,7 +906,7 @@ Creates an object with type channel. It must be located under a device
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:459](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L459)
+[packages/adapter/src/lib/adapter/adapter.ts:459](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L459)
 
 ▸ **createChannelAsync**(`parentDevice`, `channelName`, `roleOrCommon`, `native`, `options?`): `SetObjectPromise`
 
@@ -926,7 +926,7 @@ Creates an object with type channel. It must be located under a device
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:465](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L465)
+[packages/adapter/src/lib/adapter/adapter.ts:465](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L465)
 
 ___
 
@@ -947,7 +947,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4815](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4815)
+[packages/adapter/src/lib/adapter/adapter.ts:4815](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4815)
 
 ▸ **createDevice**(`deviceName`, `common`, `callback?`): `void`
 
@@ -965,7 +965,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4816](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4816)
+[packages/adapter/src/lib/adapter/adapter.ts:4816](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4816)
 
 ▸ **createDevice**(`deviceName`, `common`, `native`, `callback?`): `void`
 
@@ -984,7 +984,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4821](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4821)
+[packages/adapter/src/lib/adapter/adapter.ts:4821](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4821)
 
 ▸ **createDevice**(`deviceName`, `common`, `native`, `options`, `callback?`): `void`
 
@@ -1004,7 +1004,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4827](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4827)
+[packages/adapter/src/lib/adapter/adapter.ts:4827](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4827)
 
 ___
 
@@ -1027,7 +1027,7 @@ creates an object with type device
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:433](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L433)
+[packages/adapter/src/lib/adapter/adapter.ts:433](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L433)
 
 ▸ **createDeviceAsync**(`deviceName`, `common`, `native?`): `SetObjectPromise`
 
@@ -1045,7 +1045,7 @@ creates an object with type device
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:434](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L434)
+[packages/adapter/src/lib/adapter/adapter.ts:434](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L434)
 
 ▸ **createDeviceAsync**(`deviceName`, `common`, `native`, `options?`): `SetObjectPromise`
 
@@ -1064,7 +1064,7 @@ creates an object with type device
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L439)
+[packages/adapter/src/lib/adapter/adapter.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L439)
 
 ___
 
@@ -1087,7 +1087,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4974](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4974)
+[packages/adapter/src/lib/adapter/adapter.ts:4974](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4974)
 
 ▸ **createState**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `callback?`): `void`
 
@@ -1107,7 +1107,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4980](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4980)
+[packages/adapter/src/lib/adapter/adapter.ts:4980](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4980)
 
 ▸ **createState**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `native`, `callback?`): `void`
 
@@ -1128,7 +1128,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4987](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4987)
+[packages/adapter/src/lib/adapter/adapter.ts:4987](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4987)
 
 ▸ **createState**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `native`, `options`, `callback?`): `void`
 
@@ -1150,7 +1150,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4995](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4995)
+[packages/adapter/src/lib/adapter/adapter.ts:4995](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4995)
 
 ___
 
@@ -1175,7 +1175,7 @@ Creates a state and the corresponding object. It must be located in a channel un
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:476](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L476)
+[packages/adapter/src/lib/adapter/adapter.ts:476](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L476)
 
 ▸ **createStateAsync**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `native?`): `SetObjectPromise`
 
@@ -1195,7 +1195,7 @@ Creates a state and the corresponding object. It must be located in a channel un
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:482](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L482)
+[packages/adapter/src/lib/adapter/adapter.ts:482](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L482)
 
 ▸ **createStateAsync**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `native`, `options?`): `SetObjectPromise`
 
@@ -1216,7 +1216,7 @@ Creates a state and the corresponding object. It must be located in a channel un
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:489](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L489)
+[packages/adapter/src/lib/adapter/adapter.ts:489](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L489)
 
 ___
 
@@ -1239,7 +1239,7 @@ Decrypt the password/value with given key
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1178](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L1178)
+[packages/adapter/src/lib/adapter/adapter.ts:1178](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L1178)
 
 ▸ **decrypt**(`value`): `string`
 
@@ -1257,7 +1257,7 @@ Decrypt the password/value with given key
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1179](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L1179)
+[packages/adapter/src/lib/adapter/adapter.ts:1179](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L1179)
 
 ___
 
@@ -1280,7 +1280,7 @@ Deletes binary state but prefixes the own namespace to the id
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10195](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L10195)
+[packages/adapter/src/lib/adapter/adapter.ts:10211](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L10211)
 
 ▸ **delBinaryState**(`id`, `options`, `callback?`): `void`
 
@@ -1300,7 +1300,7 @@ Deletes binary state but prefixes the own namespace to the id
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10196](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L10196)
+[packages/adapter/src/lib/adapter/adapter.ts:10212](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L10212)
 
 ___
 
@@ -1324,7 +1324,7 @@ Deletes a binary state from the states DB
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:273](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L273)
+[packages/adapter/src/lib/adapter/adapter.ts:273](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L273)
 
 ___
 
@@ -1348,7 +1348,7 @@ Deletes a given file
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:371](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L371)
+[packages/adapter/src/lib/adapter/adapter.ts:371](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L371)
 
 ▸ **delFile**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -1367,7 +1367,7 @@ Deletes a given file
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:372](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L372)
+[packages/adapter/src/lib/adapter/adapter.ts:372](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L372)
 
 ___
 
@@ -1391,7 +1391,7 @@ Deletes a given file
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:225](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L225)
+[packages/adapter/src/lib/adapter/adapter.ts:225](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L225)
 
 ___
 
@@ -1414,7 +1414,7 @@ Deletes binary state
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10136](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L10136)
+[packages/adapter/src/lib/adapter/adapter.ts:10152](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L10152)
 
 ▸ **delForeignBinaryState**(`id`, `options`, `callback?`): `void`
 
@@ -1434,7 +1434,7 @@ Deletes binary state
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10137](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L10137)
+[packages/adapter/src/lib/adapter/adapter.ts:10153](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L10153)
 
 ___
 
@@ -1457,7 +1457,7 @@ Deletes a binary state from the states DB. The ID will not be prefixed with the 
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:267](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L267)
+[packages/adapter/src/lib/adapter/adapter.ts:267](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L267)
 
 ___
 
@@ -1482,7 +1482,7 @@ The full ID with namespace must be specified. The corresponding state will be de
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4263](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4263)
+[packages/adapter/src/lib/adapter/adapter.ts:4263](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4263)
 
 ▸ **delForeignObject**(`id`, `options`, `callback?`): `void`
 
@@ -1504,7 +1504,7 @@ The full ID with namespace must be specified. The corresponding state will be de
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4264](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4264)
+[packages/adapter/src/lib/adapter/adapter.ts:4264](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4264)
 
 ___
 
@@ -1527,7 +1527,7 @@ Deletes an object (which might not belong to this adapter) from the object db
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:158](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L158)
+[packages/adapter/src/lib/adapter/adapter.ts:158](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L158)
 
 ___
 
@@ -1557,7 +1557,7 @@ No error is returned if state does not exist.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8954](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L8954)
+[packages/adapter/src/lib/adapter/adapter.ts:8970](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L8970)
 
 ▸ **delForeignState**(`id`, `options`, `callback?`): `void`
 
@@ -1584,7 +1584,7 @@ No error is returned if state does not exist.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8955](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L8955)
+[packages/adapter/src/lib/adapter/adapter.ts:8971](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L8971)
 
 ___
 
@@ -1607,7 +1607,7 @@ Deletes a state from the states DB, but not the associated object
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:239](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L239)
+[packages/adapter/src/lib/adapter/adapter.ts:239](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L239)
 
 ___
 
@@ -1635,7 +1635,7 @@ The corresponding state will be deleted too if the object has type "state".
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4203](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4203)
+[packages/adapter/src/lib/adapter/adapter.ts:4203](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4203)
 
 ▸ **delObject**(`id`, `options?`, `callback?`): `void`
 
@@ -1660,7 +1660,7 @@ The corresponding state will be deleted too if the object has type "state".
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4204](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4204)
+[packages/adapter/src/lib/adapter/adapter.ts:4204](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4204)
 
 ___
 
@@ -1683,7 +1683,7 @@ Deletes an object from the object db
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:156](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L156)
+[packages/adapter/src/lib/adapter/adapter.ts:156](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L156)
 
 ___
 
@@ -1716,7 +1716,7 @@ No error is returned if state does not exist.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8902](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L8902)
+[packages/adapter/src/lib/adapter/adapter.ts:8918](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L8918)
 
 ▸ **delState**(`id`, `options`, `callback?`): `void`
 
@@ -1746,7 +1746,7 @@ No error is returned if state does not exist.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8903](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L8903)
+[packages/adapter/src/lib/adapter/adapter.ts:8919](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L8919)
 
 ___
 
@@ -1769,7 +1769,7 @@ Deletes a state from the states DB, but not the associated object. Consider usin
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:237](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L237)
+[packages/adapter/src/lib/adapter/adapter.ts:237](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L237)
 
 ___
 
@@ -1794,7 +1794,7 @@ promise when timeout is over
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2473](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L2473)
+[packages/adapter/src/lib/adapter/adapter.ts:2473](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L2473)
 
 ___
 
@@ -1821,7 +1821,7 @@ deleteChannel
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5496](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5496)
+[packages/adapter/src/lib/adapter/adapter.ts:5496](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5496)
 
 ▸ **deleteChannel**(`channelName`, `options?`, `callback?`): `void`
 
@@ -1845,7 +1845,7 @@ deleteChannel
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5497](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5497)
+[packages/adapter/src/lib/adapter/adapter.ts:5497](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5497)
 
 ▸ **deleteChannel**(`parentDevice`, `channelName`, `options?`, `callback?`): `void`
 
@@ -1870,7 +1870,7 @@ deleteChannel
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5498](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5498)
+[packages/adapter/src/lib/adapter/adapter.ts:5498](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5498)
 
 ___
 
@@ -1893,7 +1893,7 @@ Deletes a channel and its states. It must have been created with createChannel
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:501](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L501)
+[packages/adapter/src/lib/adapter/adapter.ts:501](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L501)
 
 ▸ **deleteChannelAsync**(`parentDevice`, `channelName`, `options?`): `Promise`<`void`\>
 
@@ -1911,7 +1911,7 @@ Deletes a channel and its states. It must have been created with createChannel
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:502](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L502)
+[packages/adapter/src/lib/adapter/adapter.ts:502](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L502)
 
 ___
 
@@ -1934,7 +1934,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5381](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5381)
+[packages/adapter/src/lib/adapter/adapter.ts:5381](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5381)
 
 ▸ **deleteChannelFromEnum**(`enumName`, `parentDevice`, `channelName`, `options`, `callback?`): `void`
 
@@ -1954,7 +1954,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5387](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5387)
+[packages/adapter/src/lib/adapter/adapter.ts:5387](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5387)
 
 ___
 
@@ -1977,7 +1977,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:187](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L187)
+[packages/adapter/src/lib/adapter/adapter.ts:187](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L187)
 
 ___
 
@@ -2000,7 +2000,7 @@ Delete device with all its channels and states.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5182](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5182)
+[packages/adapter/src/lib/adapter/adapter.ts:5182](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5182)
 
 ▸ **deleteDevice**(`deviceName`, `options`, `callback?`): `void`
 
@@ -2020,7 +2020,7 @@ Delete device with all its channels and states.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5183](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5183)
+[packages/adapter/src/lib/adapter/adapter.ts:5183](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5183)
 
 ___
 
@@ -2043,7 +2043,7 @@ deletes a device, its channels and states
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:179](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L179)
+[packages/adapter/src/lib/adapter/adapter.ts:179](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L179)
 
 ___
 
@@ -2065,7 +2065,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5604](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5604)
+[packages/adapter/src/lib/adapter/adapter.ts:5604](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5604)
 
 ▸ **deleteState**(`parentChannel`, `stateName`, `options?`, `callback?`): `void`
 
@@ -2084,7 +2084,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5605](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5605)
+[packages/adapter/src/lib/adapter/adapter.ts:5605](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5605)
 
 ▸ **deleteState**(`parentDevice`, `parentChannel`, `stateName`, `options?`, `callback?`): `void`
 
@@ -2104,7 +2104,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5606](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5606)
+[packages/adapter/src/lib/adapter/adapter.ts:5606](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5606)
 
 ___
 
@@ -2127,7 +2127,7 @@ Deletes a state. It must have been created with createState
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L507)
+[packages/adapter/src/lib/adapter/adapter.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L507)
 
 ▸ **deleteStateAsync**(`parentChannel`, `stateName`, `options?`): `Promise`<`void`\>
 
@@ -2145,7 +2145,7 @@ Deletes a state. It must have been created with createState
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:508](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L508)
+[packages/adapter/src/lib/adapter/adapter.ts:508](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L508)
 
 ▸ **deleteStateAsync**(`parentDevice`, `parentChannel`, `stateName`, `options?`): `Promise`<`void`\>
 
@@ -2164,7 +2164,7 @@ Deletes a state. It must have been created with createState
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:509](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L509)
+[packages/adapter/src/lib/adapter/adapter.ts:509](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L509)
 
 ___
 
@@ -2188,7 +2188,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6081](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6081)
+[packages/adapter/src/lib/adapter/adapter.ts:6081](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6081)
 
 ▸ **deleteStateFromEnum**(`enumName`, `parentDevice`, `parentChannel`, `stateName`, `options`, `callback?`): `void`
 
@@ -2209,7 +2209,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6088](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6088)
+[packages/adapter/src/lib/adapter/adapter.ts:6088](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6088)
 
 ___
 
@@ -2233,7 +2233,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:205](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L205)
+[packages/adapter/src/lib/adapter/adapter.ts:205](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L205)
 
 ___
 
@@ -2254,7 +2254,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1263](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L1263)
+[packages/adapter/src/lib/adapter/adapter.ts:1263](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L1263)
 
 ___
 
@@ -2270,7 +2270,7 @@ Disables and stops the adapter instance.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2351](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L2351)
+[packages/adapter/src/lib/adapter/adapter.ts:2351](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L2351)
 
 ___
 
@@ -2293,7 +2293,7 @@ Encrypt the password/value with given key
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1198](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L1198)
+[packages/adapter/src/lib/adapter/adapter.ts:1198](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L1198)
 
 ▸ **encrypt**(`value`): `string`
 
@@ -2311,7 +2311,7 @@ Encrypt the password/value with given key
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1199](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L1199)
+[packages/adapter/src/lib/adapter/adapter.ts:1199](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L1199)
 
 ___
 
@@ -2343,7 +2343,7 @@ ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC989
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3228](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3228)
+[packages/adapter/src/lib/adapter/adapter.ts:3228](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3228)
 
 ▸ **extendForeignObject**<`T`\>(`id`, `objPart`, `options`, `callback?`): `void`
 
@@ -2372,7 +2372,7 @@ ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC989
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3233](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3233)
+[packages/adapter/src/lib/adapter/adapter.ts:3233](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3233)
 
 ___
 
@@ -2402,7 +2402,7 @@ Extend an object (which might not belong to this adapter) and create it if it mi
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:128](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L128)
+[packages/adapter/src/lib/adapter/adapter.ts:128](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L128)
 
 ___
 
@@ -2469,7 +2469,7 @@ We will get as output:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2851](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L2851)
+[packages/adapter/src/lib/adapter/adapter.ts:2851](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L2851)
 
 ▸ **extendObject**(`id`, `objPart`, `options`, `callback?`): `void`
 
@@ -2533,7 +2533,7 @@ We will get as output:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2852](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L2852)
+[packages/adapter/src/lib/adapter/adapter.ts:2852](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L2852)
 
 ___
 
@@ -2557,7 +2557,7 @@ Extend an object and create it if it might not exist
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:114](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L114)
+[packages/adapter/src/lib/adapter/adapter.ts:114](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L114)
 
 ___
 
@@ -2581,7 +2581,7 @@ Checks if file exists in DB.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6568](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6568)
+[packages/adapter/src/lib/adapter/adapter.ts:6568](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6568)
 
 ▸ **fileExists**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -2602,7 +2602,7 @@ Checks if file exists in DB.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6569](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6569)
+[packages/adapter/src/lib/adapter/adapter.ts:6569](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6569)
 
 ___
 
@@ -2626,7 +2626,7 @@ Checks if a file exists in the DB
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:232](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L232)
+[packages/adapter/src/lib/adapter/adapter.ts:232](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L232)
 
 ___
 
@@ -2652,7 +2652,7 @@ Find object by the exact name or ID.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4086](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4086)
+[packages/adapter/src/lib/adapter/adapter.ts:4086](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4086)
 
 ▸ **findForeignObject**(`idOrName`, `type`, `options`, `callback`): `void`
 
@@ -2675,7 +2675,7 @@ Find object by the exact name or ID.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4087](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4087)
+[packages/adapter/src/lib/adapter/adapter.ts:4087](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4087)
 
 ___
 
@@ -2698,7 +2698,7 @@ Finds an object by its ID or name
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:449](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L449)
+[packages/adapter/src/lib/adapter/adapter.ts:449](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L449)
 
 ___
 
@@ -2719,7 +2719,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6651](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6651)
+[packages/adapter/src/lib/adapter/adapter.ts:6651](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6651)
 
 ▸ **formatDate**(`dateObj`, `isDuration`, `format`): `string`
 
@@ -2737,7 +2737,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6652](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6652)
+[packages/adapter/src/lib/adapter/adapter.ts:6652](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6652)
 
 ___
 
@@ -2758,7 +2758,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6616](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6616)
+[packages/adapter/src/lib/adapter/adapter.ts:6616](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6616)
 
 ▸ **formatValue**(`value`, `decimals`, `format`): `string`
 
@@ -2776,7 +2776,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6617](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6617)
+[packages/adapter/src/lib/adapter/adapter.ts:6617](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6617)
 
 ___
 
@@ -2798,7 +2798,7 @@ Get all states, channels and devices of this adapter.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2769](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L2769)
+[packages/adapter/src/lib/adapter/adapter.ts:2769](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L2769)
 
 ___
 
@@ -2814,7 +2814,7 @@ Get all states, channels, devices and folders of this adapter
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:303](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L303)
+[packages/adapter/src/lib/adapter/adapter.ts:303](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L303)
 
 ___
 
@@ -2837,7 +2837,7 @@ Same as getForeignBinaryState but prefixes the own namespace to the id
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10119](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L10119)
+[packages/adapter/src/lib/adapter/adapter.ts:10135](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L10135)
 
 ▸ **getBinaryState**(`id`, `options`, `callback`): `void`
 
@@ -2857,7 +2857,7 @@ Same as getForeignBinaryState but prefixes the own namespace to the id
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10120](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L10120)
+[packages/adapter/src/lib/adapter/adapter.ts:10136](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L10136)
 
 ___
 
@@ -2881,7 +2881,7 @@ Reads a binary state from Redis
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:265](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L265)
+[packages/adapter/src/lib/adapter/adapter.ts:265](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L265)
 
 ___
 
@@ -2910,7 +2910,7 @@ The result can be directly used for creation of https server.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2195](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L2195)
+[packages/adapter/src/lib/adapter/adapter.ts:2195](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L2195)
 
 ___
 
@@ -2930,7 +2930,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:301](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L301)
+[packages/adapter/src/lib/adapter/adapter.ts:301](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L301)
 
 ___
 
@@ -2952,7 +2952,7 @@ Returns a list of all channels in this adapter instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:521](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L521)
+[packages/adapter/src/lib/adapter/adapter.ts:521](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L521)
 
 ▸ **getChannels**(`parentDevice`, `callback`): `void`
 
@@ -2969,7 +2969,7 @@ Returns a list of all channels in this adapter instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:522](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L522)
+[packages/adapter/src/lib/adapter/adapter.ts:522](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L522)
 
 ▸ **getChannels**(`parentDevice`, `options`, `callback`): `void`
 
@@ -2987,7 +2987,7 @@ Returns a list of all channels in this adapter instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:523](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L523)
+[packages/adapter/src/lib/adapter/adapter.ts:523](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L523)
 
 ___
 
@@ -3003,7 +3003,7 @@ Returns a list of all channels in this adapter instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:533](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L533)
+[packages/adapter/src/lib/adapter/adapter.ts:533](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L533)
 
 ▸ **getChannelsAsync**(`parentDevice`, `options?`): `Promise`<`ChannelObject`[]\>
 
@@ -3020,7 +3020,7 @@ Returns a list of all channels in this adapter instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:534](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L534)
+[packages/adapter/src/lib/adapter/adapter.ts:534](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L534)
 
 ___
 
@@ -3040,7 +3040,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5760](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5760)
+[packages/adapter/src/lib/adapter/adapter.ts:5760](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5760)
 
 ▸ **getChannelsOf**(`parentDevice`, `callback`): `void`
 
@@ -3057,7 +3057,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5761](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5761)
+[packages/adapter/src/lib/adapter/adapter.ts:5761](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5761)
 
 ▸ **getChannelsOf**(`parentDevice`, `options`, `callback`): `void`
 
@@ -3075,7 +3075,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5762](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5762)
+[packages/adapter/src/lib/adapter/adapter.ts:5762](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5762)
 
 ___
 
@@ -3091,7 +3091,7 @@ Returns a list of all channels in this adapter instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:515](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L515)
+[packages/adapter/src/lib/adapter/adapter.ts:515](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L515)
 
 ▸ **getChannelsOfAsync**(`parentDevice`, `options?`): `Promise`<`ChannelObject`[]\>
 
@@ -3108,7 +3108,7 @@ Returns a list of all channels in this adapter instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:516](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L516)
+[packages/adapter/src/lib/adapter/adapter.ts:516](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L516)
 
 ___
 
@@ -3128,7 +3128,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5706](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5706)
+[packages/adapter/src/lib/adapter/adapter.ts:5706](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5706)
 
 ▸ **getDevices**(`options`, `callback`): `void`
 
@@ -3145,7 +3145,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5707](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5707)
+[packages/adapter/src/lib/adapter/adapter.ts:5707](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5707)
 
 ___
 
@@ -3167,7 +3167,7 @@ Returns a list of all devices in this adapter instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:195](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L195)
+[packages/adapter/src/lib/adapter/adapter.ts:195](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L195)
 
 ___
 
@@ -3192,7 +3192,7 @@ It returns promise if no callback is provided.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2368](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L2368)
+[packages/adapter/src/lib/adapter/adapter.ts:2368](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L2368)
 
 ___
 
@@ -3226,7 +3226,7 @@ If getEnum called with no enum specified, all enums will be returned:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3647](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3647)
+[packages/adapter/src/lib/adapter/adapter.ts:3647](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3647)
 
 ▸ **getEnum**(`name`, `callback`): `void`
 
@@ -3257,7 +3257,7 @@ If getEnum called with no enum specified, all enums will be returned:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3648](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3648)
+[packages/adapter/src/lib/adapter/adapter.ts:3648](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3648)
 
 ▸ **getEnum**(`name`, `options`, `callback`): `void`
 
@@ -3289,7 +3289,7 @@ If getEnum called with no enum specified, all enums will be returned:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3649](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3649)
+[packages/adapter/src/lib/adapter/adapter.ts:3649](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3649)
 
 ___
 
@@ -3312,7 +3312,7 @@ Returns the enum tree, filtered by the optional enum name
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:152](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L152)
+[packages/adapter/src/lib/adapter/adapter.ts:152](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L152)
 
 ___
 
@@ -3336,7 +3336,7 @@ Get enums of specified tree or all enums if nothing specified as object with val
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3736](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3736)
+[packages/adapter/src/lib/adapter/adapter.ts:3736](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3736)
 
 ▸ **getEnums**(`enumList`, `callback`): `void`
 
@@ -3357,7 +3357,7 @@ Get enums of specified tree or all enums if nothing specified as object with val
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3737](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3737)
+[packages/adapter/src/lib/adapter/adapter.ts:3737](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3737)
 
 ▸ **getEnums**(`enumList`, `options`, `callback`): `void`
 
@@ -3379,7 +3379,7 @@ Get enums of specified tree or all enums if nothing specified as object with val
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3738](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3738)
+[packages/adapter/src/lib/adapter/adapter.ts:3738](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3738)
 
 ___
 
@@ -3402,7 +3402,7 @@ Returns the enum tree, filtered by the optional enum name
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:154](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L154)
+[packages/adapter/src/lib/adapter/adapter.ts:154](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L154)
 
 ___
 
@@ -3425,7 +3425,7 @@ Read a binary block from redis, e.g. an image
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10045](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L10045)
+[packages/adapter/src/lib/adapter/adapter.ts:10061](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L10061)
 
 ▸ **getForeignBinaryState**(`id`, `options`, `callback`): `void`
 
@@ -3445,7 +3445,7 @@ Read a binary block from redis, e.g. an image
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10046](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L10046)
+[packages/adapter/src/lib/adapter/adapter.ts:10062](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L10062)
 
 ___
 
@@ -3466,7 +3466,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:260](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L260)
+[packages/adapter/src/lib/adapter/adapter.ts:260](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L260)
 
 ___
 
@@ -3497,7 +3497,7 @@ ID must be specified with namespace.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4140](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4140)
+[packages/adapter/src/lib/adapter/adapter.ts:4140](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4140)
 
 ▸ **getForeignObject**<`T`\>(`id`, `options`, `callback`): [`MaybePromise`](../modules/internal_.md#maybepromise)
 
@@ -3525,7 +3525,7 @@ ID must be specified with namespace.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4141](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4141)
+[packages/adapter/src/lib/adapter/adapter.ts:4141](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4141)
 
 ___
 
@@ -3554,7 +3554,7 @@ Reads an object (which might not belong to this adapter) from the object db
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:306](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L306)
+[packages/adapter/src/lib/adapter/adapter.ts:306](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L306)
 
 ___
 
@@ -3605,7 +3605,7 @@ Get all objects in the system of specified type. E.g.:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3883](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3883)
+[packages/adapter/src/lib/adapter/adapter.ts:3883](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3883)
 
 ▸ **getForeignObjects**(`pattern`, `options`, `callback`): `void`
 
@@ -3653,7 +3653,7 @@ Get all objects in the system of specified type. E.g.:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3884](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3884)
+[packages/adapter/src/lib/adapter/adapter.ts:3884](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3884)
 
 ▸ **getForeignObjects**<`T`\>(`pattern`, `type`, `callback`): `void`
 
@@ -3707,7 +3707,7 @@ Get all objects in the system of specified type. E.g.:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3885](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3885)
+[packages/adapter/src/lib/adapter/adapter.ts:3885](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3885)
 
 ▸ **getForeignObjects**<`T`\>(`pattern`, `type`, `enums`, `callback`): `void`
 
@@ -3762,7 +3762,7 @@ Get all objects in the system of specified type. E.g.:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3890](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3890)
+[packages/adapter/src/lib/adapter/adapter.ts:3890](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3890)
 
 ▸ **getForeignObjects**<`T`\>(`pattern`, `type`, `options`, `callback`): `void`
 
@@ -3817,7 +3817,7 @@ Get all objects in the system of specified type. E.g.:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3896](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3896)
+[packages/adapter/src/lib/adapter/adapter.ts:3896](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3896)
 
 ▸ **getForeignObjects**<`T`\>(`pattern`, `type`, `enums`, `options`, `callback`): `void`
 
@@ -3873,7 +3873,7 @@ Get all objects in the system of specified type. E.g.:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3902](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3902)
+[packages/adapter/src/lib/adapter/adapter.ts:3902](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3902)
 
 ___
 
@@ -3904,7 +3904,7 @@ Get foreign objects by pattern, by specific type and resolve their enums.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:417](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L417)
+[packages/adapter/src/lib/adapter/adapter.ts:417](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L417)
 
 ▸ **getForeignObjectsAsync**<`T`\>(`pattern`, `type`, `options?`): `GetObjectsPromiseTyped`<`T`\>
 
@@ -3928,7 +3928,7 @@ Get foreign objects by pattern, by specific type and resolve their enums.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:423](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L423)
+[packages/adapter/src/lib/adapter/adapter.ts:423](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L423)
 
 ▸ **getForeignObjectsAsync**(`pattern`, `options?`): `GetObjectsPromise`
 
@@ -3945,7 +3945,7 @@ Get foreign objects by pattern, by specific type and resolve their enums.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:428](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L428)
+[packages/adapter/src/lib/adapter/adapter.ts:428](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L428)
 
 ___
 
@@ -3974,7 +3974,7 @@ explanation
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8496](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L8496)
+[packages/adapter/src/lib/adapter/adapter.ts:8512](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L8512)
 
 ▸ **getForeignState**(`id`, `options`, `callback`): `void`
 
@@ -4000,7 +4000,7 @@ explanation
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8497](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L8497)
+[packages/adapter/src/lib/adapter/adapter.ts:8513](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L8513)
 
 ___
 
@@ -4023,7 +4023,7 @@ Read a value (which might not belong to this adapter) from the states DB.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L279)
+[packages/adapter/src/lib/adapter/adapter.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L279)
 
 ___
 
@@ -4055,7 +4055,7 @@ Allows to read all states of current adapter according to pattern. To read all s
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9144](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L9144)
+[packages/adapter/src/lib/adapter/adapter.ts:9160](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L9160)
 
 ▸ **getForeignStates**(`pattern`, `options`, `callback`): `void`
 
@@ -4084,7 +4084,7 @@ Allows to read all states of current adapter according to pattern. To read all s
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9145](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L9145)
+[packages/adapter/src/lib/adapter/adapter.ts:9161](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L9161)
 
 ___
 
@@ -4107,7 +4107,7 @@ Read all states (which might not belong to this adapter) which match the given p
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:243](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L243)
+[packages/adapter/src/lib/adapter/adapter.ts:243](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L243)
 
 ___
 
@@ -4161,7 +4161,7 @@ explanation
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8775](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L8775)
+[packages/adapter/src/lib/adapter/adapter.ts:8791](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L8791)
 
 ▸ **getHistory**(`id`, `callback`): `void`
 
@@ -4210,7 +4210,7 @@ explanation
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8776](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L8776)
+[packages/adapter/src/lib/adapter/adapter.ts:8792](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L8792)
 
 ___
 
@@ -4230,7 +4230,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:235](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L235)
+[packages/adapter/src/lib/adapter/adapter.ts:235](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L235)
 
 ___
 
@@ -4255,7 +4255,7 @@ It is not required, that ID consists namespace. E.g. to get object of "adapterNa
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3432](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3432)
+[packages/adapter/src/lib/adapter/adapter.ts:3432](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3432)
 
 ▸ **getObject**(`id`, `options`, `callback`): `void`
 
@@ -4277,7 +4277,7 @@ It is not required, that ID consists namespace. E.g. to get object of "adapterNa
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3433](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3433)
+[packages/adapter/src/lib/adapter/adapter.ts:3433](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3433)
 
 ___
 
@@ -4300,7 +4300,7 @@ Reads an object from the object db
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:134](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L134)
+[packages/adapter/src/lib/adapter/adapter.ts:134](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L134)
 
 ___
 
@@ -4326,7 +4326,7 @@ to get all objects of the instance.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3591](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3591)
+[packages/adapter/src/lib/adapter/adapter.ts:3591](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3591)
 
 ▸ **getObjectList**(`params`, `options`, `callback`): `void`
 
@@ -4349,7 +4349,7 @@ to get all objects of the instance.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3592](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3592)
+[packages/adapter/src/lib/adapter/adapter.ts:3592](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3592)
 
 ___
 
@@ -4372,7 +4372,7 @@ Returns a list of objects with id between params.startkey and params.endkey
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:147](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L147)
+[packages/adapter/src/lib/adapter/adapter.ts:147](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L147)
 
 ___
 
@@ -4407,7 +4407,7 @@ to get all objects of the instance.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3475](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3475)
+[packages/adapter/src/lib/adapter/adapter.ts:3475](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3475)
 
 ▸ **getObjectView**<`Design`, `Search`\>(`design`, `search`, `params`, `options`, `callback`): `void`
 
@@ -4439,7 +4439,7 @@ to get all objects of the instance.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3481](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3481)
+[packages/adapter/src/lib/adapter/adapter.ts:3481](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3481)
 
 ___
 
@@ -4473,7 +4473,7 @@ or http://guide.couchdb.org/editions/1/en/views.html
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:140](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L140)
+[packages/adapter/src/lib/adapter/adapter.ts:140](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L140)
 
 ___
 
@@ -4497,7 +4497,7 @@ plugin configuration or null if not existent or not isActive
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10231](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L10231)
+[packages/adapter/src/lib/adapter/adapter.ts:10247](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L10247)
 
 ___
 
@@ -4521,7 +4521,7 @@ plugin instance or null if not existent or not isActive
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10213](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L10213)
+[packages/adapter/src/lib/adapter/adapter.ts:10229](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L10229)
 
 ___
 
@@ -4552,7 +4552,7 @@ Looks for first free TCP port starting with given one:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1392](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L1392)
+[packages/adapter/src/lib/adapter/adapter.ts:1392](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L1392)
 
 ▸ **getPort**(`port`, `callback?`): `void`
 
@@ -4578,7 +4578,7 @@ Looks for first free TCP port starting with given one:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1393](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L1393)
+[packages/adapter/src/lib/adapter/adapter.ts:1393](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L1393)
 
 ___
 
@@ -4600,7 +4600,7 @@ Helper function that looks for first free TCP port starting with the given one.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L277)
+[packages/adapter/src/lib/adapter/adapter.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L277)
 
 ___
 
@@ -4621,7 +4621,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1219](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L1219)
+[packages/adapter/src/lib/adapter/adapter.ts:1219](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L1219)
 
 ___
 
@@ -4651,7 +4651,7 @@ explanation
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8465](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L8465)
+[packages/adapter/src/lib/adapter/adapter.ts:8481](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L8481)
 
 ▸ **getState**(`id`, `options`, `callback`): `void`
 
@@ -4678,7 +4678,7 @@ explanation
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8466](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L8466)
+[packages/adapter/src/lib/adapter/adapter.ts:8482](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L8482)
 
 ___
 
@@ -4701,7 +4701,7 @@ Read a value from the states DB.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:164](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L164)
+[packages/adapter/src/lib/adapter/adapter.ts:164](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L164)
 
 ___
 
@@ -4733,7 +4733,7 @@ Allows to read all states of current adapter according to pattern. To read all s
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9016](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L9016)
+[packages/adapter/src/lib/adapter/adapter.ts:9032](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L9032)
 
 ▸ **getStates**(`pattern`, `options`, `callback`): `void`
 
@@ -4762,7 +4762,7 @@ Allows to read all states of current adapter according to pattern. To read all s
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9017](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L9017)
+[packages/adapter/src/lib/adapter/adapter.ts:9033](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L9033)
 
 ___
 
@@ -4785,7 +4785,7 @@ Read all states of this adapter which match the given pattern
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:241](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L241)
+[packages/adapter/src/lib/adapter/adapter.ts:241](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L241)
 
 ___
 
@@ -4805,7 +4805,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5829](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5829)
+[packages/adapter/src/lib/adapter/adapter.ts:5829](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5829)
 
 ▸ **getStatesOf**(`parentDevice`, `callback`): `void`
 
@@ -4822,7 +4822,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5830](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5830)
+[packages/adapter/src/lib/adapter/adapter.ts:5830](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5830)
 
 ▸ **getStatesOf**(`parentDevice`, `parentChannel`, `callback`): `void`
 
@@ -4840,7 +4840,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5831](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5831)
+[packages/adapter/src/lib/adapter/adapter.ts:5831](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5831)
 
 ▸ **getStatesOf**(`parentDevice`, `parentChannel`, `options`, `callback`): `void`
 
@@ -4859,7 +4859,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:5836](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L5836)
+[packages/adapter/src/lib/adapter/adapter.ts:5836](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L5836)
 
 ___
 
@@ -4875,7 +4875,7 @@ Returns a list of all states in this adapter instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:541](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L541)
+[packages/adapter/src/lib/adapter/adapter.ts:541](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L541)
 
 ▸ **getStatesOfAsync**(`parentDevice`, `parentChannel?`): `Promise`<`StateObject`[]\>
 
@@ -4892,7 +4892,7 @@ Returns a list of all states in this adapter instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:542](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L542)
+[packages/adapter/src/lib/adapter/adapter.ts:542](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L542)
 
 ▸ **getStatesOfAsync**(`parentDevice`, `parentChannel`, `options?`): `Promise`<`StateObject`[]\>
 
@@ -4910,7 +4910,7 @@ Returns a list of all states in this adapter instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:543](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L543)
+[packages/adapter/src/lib/adapter/adapter.ts:543](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L543)
 
 ___
 
@@ -4934,7 +4934,7 @@ list of suitable licenses
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10277](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L10277)
+[packages/adapter/src/lib/adapter/adapter.ts:10293](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L10293)
 
 ___
 
@@ -4956,7 +4956,7 @@ Return ID of given username
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1584](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L1584)
+[packages/adapter/src/lib/adapter/adapter.ts:1584](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L1584)
 
 ___
 
@@ -4983,7 +4983,7 @@ parsed ID as an object
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8867](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L8867)
+[packages/adapter/src/lib/adapter/adapter.ts:8883](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L8883)
 
 ___
 
@@ -5005,7 +5005,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6433](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6433)
+[packages/adapter/src/lib/adapter/adapter.ts:6433](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6433)
 
 ▸ **mkdir**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -5024,7 +5024,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6434](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6434)
+[packages/adapter/src/lib/adapter/adapter.ts:6434](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6434)
 
 ___
 
@@ -5046,7 +5046,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:227](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L227)
+[packages/adapter/src/lib/adapter/adapter.ts:227](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L227)
 
 ___
 
@@ -5084,7 +5084,7 @@ If getEnum called with no enum specified, all enums will be returned:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6307](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6307)
+[packages/adapter/src/lib/adapter/adapter.ts:6307](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6307)
 
 ▸ **readDir**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -5119,7 +5119,7 @@ If getEnum called with no enum specified, all enums will be returned:
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6308](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6308)
+[packages/adapter/src/lib/adapter/adapter.ts:6308](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6308)
 
 ___
 
@@ -5143,7 +5143,7 @@ reads the content of directory from DB for given adapter and path
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:221](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L221)
+[packages/adapter/src/lib/adapter/adapter.ts:221](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L221)
 
 ___
 
@@ -5176,7 +5176,7 @@ This function reads the content of one file from DB for given adapter and file n
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6459](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6459)
+[packages/adapter/src/lib/adapter/adapter.ts:6459](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6459)
 
 ▸ **readFile**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -5206,7 +5206,7 @@ This function reads the content of one file from DB for given adapter and file n
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6460](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6460)
+[packages/adapter/src/lib/adapter/adapter.ts:6460](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6460)
 
 ___
 
@@ -5230,7 +5230,7 @@ reads the content of directory from DB for given adapter and path
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:229](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L229)
+[packages/adapter/src/lib/adapter/adapter.ts:229](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L229)
 
 ___
 
@@ -5260,7 +5260,7 @@ Send notification with given scope and category to host of this adapter
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7097](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L7097)
+[packages/adapter/src/lib/adapter/adapter.ts:7113](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L7113)
 
 ___
 
@@ -5283,7 +5283,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6399](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6399)
+[packages/adapter/src/lib/adapter/adapter.ts:6399](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6399)
 
 ▸ **rename**(`adapterName`, `oldName`, `newName`, `options`, `callback`): `void`
 
@@ -5303,7 +5303,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6400](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6400)
+[packages/adapter/src/lib/adapter/adapter.ts:6400](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6400)
 
 ___
 
@@ -5326,7 +5326,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:226](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L226)
+[packages/adapter/src/lib/adapter/adapter.ts:226](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L226)
 
 ___
 
@@ -5342,7 +5342,7 @@ Restarts an instance of the adapter.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2301](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L2301)
+[packages/adapter/src/lib/adapter/adapter.ts:2301](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L2301)
 
 ___
 
@@ -5369,7 +5369,7 @@ If no instance given (e.g. "pushover"), the callback argument will be ignored. B
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6805](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6805)
+[packages/adapter/src/lib/adapter/adapter.ts:6805](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6805)
 
 ▸ **sendTo**(`instanceName`, `command`, `message`, `callback?`): `void`
 
@@ -5393,7 +5393,7 @@ If no instance given (e.g. "pushover"), the callback argument will be ignored. B
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6810](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6810)
+[packages/adapter/src/lib/adapter/adapter.ts:6810](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6810)
 
 ___
 
@@ -5416,7 +5416,7 @@ Sends a message to a specific instance or all instances of some specific adapter
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:361](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L361)
+[packages/adapter/src/lib/adapter/adapter.ts:361](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L361)
 
 ▸ **sendToAsync**(`instanceName`, `command`, `message`): `Promise`<`undefined` \| `Message`\>
 
@@ -5434,7 +5434,7 @@ Sends a message to a specific instance or all instances of some specific adapter
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:362](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L362)
+[packages/adapter/src/lib/adapter/adapter.ts:362](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L362)
 
 ___
 
@@ -5461,7 +5461,7 @@ If no host name given (e.g. null), the callback argument will be ignored. Becaus
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6964](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6964)
+[packages/adapter/src/lib/adapter/adapter.ts:6972](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6972)
 
 ▸ **sendToHost**(`hostName`, `command`, `message`, `callback?`): `void`
 
@@ -5485,7 +5485,7 @@ If no host name given (e.g. null), the callback argument will be ignored. Becaus
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6969](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6969)
+[packages/adapter/src/lib/adapter/adapter.ts:6977](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6977)
 
 ___
 
@@ -5508,7 +5508,7 @@ Sends a message to a specific host or all hosts.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:351](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L351)
+[packages/adapter/src/lib/adapter/adapter.ts:351](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L351)
 
 ▸ **sendToHostAsync**(`hostName`, `command`, `message`): `Promise`<`undefined` \| `Message`\>
 
@@ -5526,7 +5526,7 @@ Sends a message to a specific host or all hosts.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:352](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L352)
+[packages/adapter/src/lib/adapter/adapter.ts:352](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L352)
 
 ___
 
@@ -5550,7 +5550,7 @@ Same as setForeignBinaryState but prefixes the own namespace to the id
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10026](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L10026)
+[packages/adapter/src/lib/adapter/adapter.ts:10042](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L10042)
 
 ▸ **setBinaryState**(`id`, `binary`, `options`, `callback`): `void`
 
@@ -5571,7 +5571,7 @@ Same as setForeignBinaryState but prefixes the own namespace to the id
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:10027](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L10027)
+[packages/adapter/src/lib/adapter/adapter.ts:10043](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L10043)
 
 ___
 
@@ -5596,7 +5596,7 @@ Writes a binary state into Redis
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:259](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L259)
+[packages/adapter/src/lib/adapter/adapter.ts:259](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L259)
 
 ___
 
@@ -5622,7 +5622,7 @@ Set capabilities of the given executable. Only works on Linux systems.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:120](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L120)
+[packages/adapter/src/lib/adapter/adapter.ts:120](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L120)
 
 ___
 
@@ -5646,7 +5646,7 @@ Write binary block into redis, e.g image
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9885](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L9885)
+[packages/adapter/src/lib/adapter/adapter.ts:9901](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L9901)
 
 ▸ **setForeignBinaryState**(`id`, `binary`, `options`, `callback`): `void`
 
@@ -5667,7 +5667,7 @@ Write binary block into redis, e.g image
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9886](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L9886)
+[packages/adapter/src/lib/adapter/adapter.ts:9902](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L9902)
 
 ___
 
@@ -5691,7 +5691,7 @@ Writes a binary state into Redis. The ID will not be prefixed with the adapter n
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:253](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L253)
+[packages/adapter/src/lib/adapter/adapter.ts:253](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L253)
 
 ___
 
@@ -5723,7 +5723,7 @@ ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC989
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3121](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3121)
+[packages/adapter/src/lib/adapter/adapter.ts:3121](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3121)
 
 ▸ **setForeignObject**<`T`\>(`id`, `obj`, `options`, `callback?`): `void`
 
@@ -5752,7 +5752,7 @@ ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC989
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:3126](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L3126)
+[packages/adapter/src/lib/adapter/adapter.ts:3126](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L3126)
 
 ___
 
@@ -5782,7 +5782,7 @@ Creates or overwrites an object (which might not belong to this adapter) in the 
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:295](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L295)
+[packages/adapter/src/lib/adapter/adapter.ts:295](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L295)
 
 ___
 
@@ -5815,7 +5815,7 @@ New object will be created only if no object exists with such ID.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4701](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4701)
+[packages/adapter/src/lib/adapter/adapter.ts:4701](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4701)
 
 ▸ **setForeignObjectNotExists**<`T`\>(`id`, `obj`, `options`, `callback?`): `void`
 
@@ -5845,7 +5845,7 @@ New object will be created only if no object exists with such ID.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4706](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4706)
+[packages/adapter/src/lib/adapter/adapter.ts:4706](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4706)
 
 ___
 
@@ -5875,7 +5875,7 @@ Creates an object (which might not belong to this adapter) in the object db. Exi
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:172](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L172)
+[packages/adapter/src/lib/adapter/adapter.ts:172](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L172)
 
 ___
 
@@ -5902,7 +5902,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8023](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L8023)
+[packages/adapter/src/lib/adapter/adapter.ts:8039](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L8039)
 
 ▸ **setForeignState**(`id`, `state`, `ack`, `callback?`): `void`
 
@@ -5926,7 +5926,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8028](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L8028)
+[packages/adapter/src/lib/adapter/adapter.ts:8044](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L8044)
 
 ▸ **setForeignState**(`id`, `state`, `options`, `callback?`): `void`
 
@@ -5950,7 +5950,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8034](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L8034)
+[packages/adapter/src/lib/adapter/adapter.ts:8050](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L8050)
 
 ▸ **setForeignState**(`id`, `state`, `ack`, `options`, `callback?`): `void`
 
@@ -5975,7 +5975,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8040](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L8040)
+[packages/adapter/src/lib/adapter/adapter.ts:8056](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L8056)
 
 ___
 
@@ -5999,7 +5999,7 @@ Writes a value (which might not belong to this adapter) into the states DB.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:397](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L397)
+[packages/adapter/src/lib/adapter/adapter.ts:397](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L397)
 
 ▸ **setForeignStateAsync**(`id`, `state`, `options?`): `SetStatePromise`
 
@@ -6017,7 +6017,7 @@ Writes a value (which might not belong to this adapter) into the states DB.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:402](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L402)
+[packages/adapter/src/lib/adapter/adapter.ts:402](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L402)
 
 ▸ **setForeignStateAsync**(`id`, `state`, `ack`, `options`): `SetStatePromise`
 
@@ -6036,7 +6036,7 @@ Writes a value (which might not belong to this adapter) into the states DB.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:407](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L407)
+[packages/adapter/src/lib/adapter/adapter.ts:407](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L407)
 
 ___
 
@@ -6063,7 +6063,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8332](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L8332)
+[packages/adapter/src/lib/adapter/adapter.ts:8348](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L8348)
 
 ▸ **setForeignStateChanged**(`id`, `state`, `ack`, `callback?`): `void`
 
@@ -6087,7 +6087,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8337](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L8337)
+[packages/adapter/src/lib/adapter/adapter.ts:8353](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L8353)
 
 ▸ **setForeignStateChanged**(`id`, `state`, `options`, `callback?`): `void`
 
@@ -6111,7 +6111,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8343](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L8343)
+[packages/adapter/src/lib/adapter/adapter.ts:8359](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L8359)
 
 ▸ **setForeignStateChanged**(`id`, `state`, `ack`, `options`, `callback?`): `void`
 
@@ -6136,7 +6136,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:8349](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L8349)
+[packages/adapter/src/lib/adapter/adapter.ts:8365](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L8365)
 
 ___
 
@@ -6160,7 +6160,7 @@ Writes a value (which might not belong to this adapter) into the states DB only 
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:311](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L311)
+[packages/adapter/src/lib/adapter/adapter.ts:311](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L311)
 
 ▸ **setForeignStateChangedAsync**(`id`, `state`, `options?`): `SetStateChangedPromise`
 
@@ -6178,7 +6178,7 @@ Writes a value (which might not belong to this adapter) into the states DB only 
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L316)
+[packages/adapter/src/lib/adapter/adapter.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L316)
 
 ▸ **setForeignStateChangedAsync**(`id`, `state`, `ack`, `options`): `SetStateChangedPromise`
 
@@ -6197,7 +6197,7 @@ Writes a value (which might not belong to this adapter) into the states DB only 
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:321](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L321)
+[packages/adapter/src/lib/adapter/adapter.ts:321](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L321)
 
 ___
 
@@ -6225,7 +6225,7 @@ interval interval object
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2501](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L2501)
+[packages/adapter/src/lib/adapter/adapter.ts:2501](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L2501)
 
 ___
 
@@ -6263,7 +6263,7 @@ Additionally type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.g
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2549](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L2549)
+[packages/adapter/src/lib/adapter/adapter.ts:2549](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L2549)
 
 ▸ **setObject**(`id`, `obj`, `options`, `callback?`): `Promise`<`void`\>
 
@@ -6298,7 +6298,7 @@ Additionally type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.g
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2550](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L2550)
+[packages/adapter/src/lib/adapter/adapter.ts:2550](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L2550)
 
 ▸ **setObject**(`id`, `obj`, `callback?`): `Promise`<`void`\>
 
@@ -6332,7 +6332,7 @@ Additionally type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.g
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2556](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L2556)
+[packages/adapter/src/lib/adapter/adapter.ts:2556](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L2556)
 
 ___
 
@@ -6356,7 +6356,7 @@ Creates or overwrites an object in the object db
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:293](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L293)
+[packages/adapter/src/lib/adapter/adapter.ts:293](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L293)
 
 ___
 
@@ -6383,7 +6383,7 @@ New object will be created only if no object exists with such ID.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4601](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4601)
+[packages/adapter/src/lib/adapter/adapter.ts:4601](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4601)
 
 ▸ **setObjectNotExists**(`id`, `obj`, `options`, `callback?`): `void` \| `Promise`<`undefined` \| `void` \| {}\>
 
@@ -6407,7 +6407,7 @@ New object will be created only if no object exists with such ID.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4606](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4606)
+[packages/adapter/src/lib/adapter/adapter.ts:4606](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4606)
 
 ___
 
@@ -6431,7 +6431,7 @@ Creates an object in the object db. Existing objects are not overwritten.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:170](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L170)
+[packages/adapter/src/lib/adapter/adapter.ts:170](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L170)
 
 ___
 
@@ -6456,7 +6456,7 @@ sets the user's password
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1615](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L1615)
+[packages/adapter/src/lib/adapter/adapter.ts:1615](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L1615)
 
 ▸ **setPassword**(`user`, `pw`, `callback?`): `Promise`<`void`\>
 
@@ -6476,7 +6476,7 @@ sets the user's password
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1622](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L1622)
+[packages/adapter/src/lib/adapter/adapter.ts:1622](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L1622)
 
 ___
 
@@ -6500,7 +6500,7 @@ Sets a new password for the given user
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:283](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L283)
+[packages/adapter/src/lib/adapter/adapter.ts:283](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L283)
 
 ___
 
@@ -6523,7 +6523,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1240](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L1240)
+[packages/adapter/src/lib/adapter/adapter.ts:1240](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L1240)
 
 ___
 
@@ -6551,7 +6551,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7135](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L7135)
+[packages/adapter/src/lib/adapter/adapter.ts:7151](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L7151)
 
 ▸ **setState**(`id`, `state`, `ack`, `callback?`): `void`
 
@@ -6576,7 +6576,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7140](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L7140)
+[packages/adapter/src/lib/adapter/adapter.ts:7156](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L7156)
 
 ▸ **setState**(`id`, `state`, `options`, `callback?`): `void`
 
@@ -6601,7 +6601,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7146](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L7146)
+[packages/adapter/src/lib/adapter/adapter.ts:7162](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L7162)
 
 ▸ **setState**(`id`, `state`, `ack`, `options`, `callback?`): `void`
 
@@ -6627,7 +6627,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7152](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L7152)
+[packages/adapter/src/lib/adapter/adapter.ts:7168](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L7168)
 
 ___
 
@@ -6651,7 +6651,7 @@ Writes a value into the states DB.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:377](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L377)
+[packages/adapter/src/lib/adapter/adapter.ts:377](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L377)
 
 ▸ **setStateAsync**(`id`, `state`, `options?`): `SetStatePromise`
 
@@ -6669,7 +6669,7 @@ Writes a value into the states DB.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:382](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L382)
+[packages/adapter/src/lib/adapter/adapter.ts:382](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L382)
 
 ▸ **setStateAsync**(`id`, `state`, `ack`, `options`): `SetStatePromise`
 
@@ -6688,7 +6688,7 @@ Writes a value into the states DB.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:387](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L387)
+[packages/adapter/src/lib/adapter/adapter.ts:387](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L387)
 
 ___
 
@@ -6716,7 +6716,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7877](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L7877)
+[packages/adapter/src/lib/adapter/adapter.ts:7893](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L7893)
 
 ▸ **setStateChanged**(`id`, `state`, `ack`, `callback?`): `void`
 
@@ -6741,7 +6741,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7882](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L7882)
+[packages/adapter/src/lib/adapter/adapter.ts:7898](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L7898)
 
 ▸ **setStateChanged**(`id`, `state`, `options`, `callback?`): `void`
 
@@ -6766,7 +6766,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7888](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L7888)
+[packages/adapter/src/lib/adapter/adapter.ts:7904](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L7904)
 
 ▸ **setStateChanged**(`id`, `state`, `ack`, `options`, `callback?`): `void`
 
@@ -6792,7 +6792,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:7894](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L7894)
+[packages/adapter/src/lib/adapter/adapter.ts:7910](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L7910)
 
 ___
 
@@ -6816,7 +6816,7 @@ Writes a value into the states DB only if it has changed.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:331](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L331)
+[packages/adapter/src/lib/adapter/adapter.ts:331](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L331)
 
 ▸ **setStateChangedAsync**(`id`, `state`, `options?`): `SetStateChangedPromise`
 
@@ -6834,7 +6834,7 @@ Writes a value into the states DB only if it has changed.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:336](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L336)
+[packages/adapter/src/lib/adapter/adapter.ts:336](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L336)
 
 ▸ **setStateChangedAsync**(`id`, `state`, `ack`, `options`): `SetStateChangedPromise`
 
@@ -6853,7 +6853,7 @@ Writes a value into the states DB only if it has changed.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:341](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L341)
+[packages/adapter/src/lib/adapter/adapter.ts:341](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L341)
 
 ___
 
@@ -6881,7 +6881,7 @@ timer id
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2419](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L2419)
+[packages/adapter/src/lib/adapter/adapter.ts:2419](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L2419)
 
 ___
 
@@ -6905,7 +6905,7 @@ This is async function!
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4542](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4542)
+[packages/adapter/src/lib/adapter/adapter.ts:4542](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4542)
 
 ▸ **subscribeForeignFiles**(`pattern`, `options`, `callback?`): `void`
 
@@ -6926,7 +6926,7 @@ This is async function!
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4543](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4543)
+[packages/adapter/src/lib/adapter/adapter.ts:4543](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4543)
 
 ___
 
@@ -6949,7 +6949,7 @@ Subscribe for the changes of objects in any instance.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4463](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4463)
+[packages/adapter/src/lib/adapter/adapter.ts:4463](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4463)
 
 ▸ **subscribeForeignObjects**(`pattern`, `options`, `callback?`): `void`
 
@@ -6969,7 +6969,7 @@ Subscribe for the changes of objects in any instance.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4464](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4464)
+[packages/adapter/src/lib/adapter/adapter.ts:4464](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4464)
 
 ___
 
@@ -6992,7 +6992,7 @@ Subscribe to changes of objects (which might not belong to this adapter)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:166](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L166)
+[packages/adapter/src/lib/adapter/adapter.ts:166](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L166)
 
 ___
 
@@ -7020,7 +7020,7 @@ Allows to Subscribe on changes all states of all instances according to pattern.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9410](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L9410)
+[packages/adapter/src/lib/adapter/adapter.ts:9426](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L9426)
 
 ▸ **subscribeForeignStates**(`pattern`, `options`, `callback?`): `void`
 
@@ -7045,7 +7045,7 @@ Allows to Subscribe on changes all states of all instances according to pattern.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9411](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L9411)
+[packages/adapter/src/lib/adapter/adapter.ts:9427](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L9427)
 
 ___
 
@@ -7068,7 +7068,7 @@ Subscribe to changes of states (which might not belong to this adapter)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:245](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L245)
+[packages/adapter/src/lib/adapter/adapter.ts:245](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L245)
 
 ___
 
@@ -7091,7 +7091,7 @@ Subscribe for the changes of objects in this instance.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4376](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4376)
+[packages/adapter/src/lib/adapter/adapter.ts:4376](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4376)
 
 ▸ **subscribeObjects**(`pattern`, `options`, `callback?`): `void`
 
@@ -7111,7 +7111,7 @@ Subscribe for the changes of objects in this instance.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4377](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4377)
+[packages/adapter/src/lib/adapter/adapter.ts:4377](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4377)
 
 ___
 
@@ -7134,7 +7134,7 @@ Subscribe to changes of objects in this instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:160](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L160)
+[packages/adapter/src/lib/adapter/adapter.ts:160](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L160)
 
 ___
 
@@ -7162,7 +7162,7 @@ Allows to Subscribe on changes all states of current adapter according to patter
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9799](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L9799)
+[packages/adapter/src/lib/adapter/adapter.ts:9815](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L9815)
 
 ▸ **subscribeStates**(`pattern`, `options`, `callback?`): `void`
 
@@ -7187,7 +7187,7 @@ Allows to Subscribe on changes all states of current adapter according to patter
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9800](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L9800)
+[packages/adapter/src/lib/adapter/adapter.ts:9816](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L9816)
 
 ___
 
@@ -7210,7 +7210,7 @@ Subscribe to changes of states in this instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:249](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L249)
+[packages/adapter/src/lib/adapter/adapter.ts:249](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L249)
 
 ___
 
@@ -7241,7 +7241,7 @@ true/false if the feature is in the list of supported features
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1458](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L1458)
+[packages/adapter/src/lib/adapter/adapter.ts:1458](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L1458)
 
 ___
 
@@ -7265,7 +7265,7 @@ Sometimes, the adapter must be stopped if some libraries are missing.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1306](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L1306)
+[packages/adapter/src/lib/adapter/adapter.ts:1306](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L1306)
 
 ▸ **terminate**(`reason?`, `exitCode?`): `never`
 
@@ -7286,7 +7286,7 @@ Sometimes, the adapter must be stopped if some libraries are missing.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:1307](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L1307)
+[packages/adapter/src/lib/adapter/adapter.ts:1307](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L1307)
 
 ___
 
@@ -7308,7 +7308,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6371](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6371)
+[packages/adapter/src/lib/adapter/adapter.ts:6371](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6371)
 
 ▸ **unlink**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -7327,7 +7327,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6372](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6372)
+[packages/adapter/src/lib/adapter/adapter.ts:6372](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6372)
 
 ___
 
@@ -7351,7 +7351,7 @@ Deletes a given file
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:223](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L223)
+[packages/adapter/src/lib/adapter/adapter.ts:223](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L223)
 
 ___
 
@@ -7375,7 +7375,7 @@ This is async function!
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4570](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4570)
+[packages/adapter/src/lib/adapter/adapter.ts:4570](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4570)
 
 ▸ **unsubscribeForeignFiles**(`pattern`, `options`, `callback?`): `void`
 
@@ -7396,7 +7396,7 @@ This is async function!
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4571](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4571)
+[packages/adapter/src/lib/adapter/adapter.ts:4571](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4571)
 
 ___
 
@@ -7419,7 +7419,7 @@ Unsubscribe for the patterns on all objects.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4501](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4501)
+[packages/adapter/src/lib/adapter/adapter.ts:4501](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4501)
 
 ▸ **unsubscribeForeignObjects**(`pattern`, `options`, `callback?`): `void`
 
@@ -7439,7 +7439,7 @@ Unsubscribe for the patterns on all objects.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4502](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4502)
+[packages/adapter/src/lib/adapter/adapter.ts:4502](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4502)
 
 ___
 
@@ -7462,7 +7462,7 @@ Unsubscribe from changes of objects (which might not belong to this adapter)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:168](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L168)
+[packages/adapter/src/lib/adapter/adapter.ts:168](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L168)
 
 ___
 
@@ -7492,7 +7492,7 @@ This function allows to unsubscribe from changes. The pattern must be equal to r
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9649](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L9649)
+[packages/adapter/src/lib/adapter/adapter.ts:9665](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L9665)
 
 ▸ **unsubscribeForeignStates**(`pattern`, `options`, `callback?`): `void`
 
@@ -7519,7 +7519,7 @@ This function allows to unsubscribe from changes. The pattern must be equal to r
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9650](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L9650)
+[packages/adapter/src/lib/adapter/adapter.ts:9666](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L9666)
 
 ___
 
@@ -7542,7 +7542,7 @@ Subscribe from changes of states (which might not belong to this adapter)
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:247](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L247)
+[packages/adapter/src/lib/adapter/adapter.ts:247](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L247)
 
 ___
 
@@ -7565,7 +7565,7 @@ Unsubscribe on the changes of objects in this instance.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4419](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4419)
+[packages/adapter/src/lib/adapter/adapter.ts:4419](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4419)
 
 ▸ **unsubscribeObjects**(`pattern`, `options`, `callback?`): `void`
 
@@ -7585,7 +7585,7 @@ Unsubscribe on the changes of objects in this instance.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:4420](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L4420)
+[packages/adapter/src/lib/adapter/adapter.ts:4420](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L4420)
 
 ___
 
@@ -7608,7 +7608,7 @@ Unsubscribe from changes of objects in this instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:162](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L162)
+[packages/adapter/src/lib/adapter/adapter.ts:162](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L162)
 
 ___
 
@@ -7639,7 +7639,7 @@ This function allows to unsubscribe from changes. The pattern must be equal to r
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9841](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L9841)
+[packages/adapter/src/lib/adapter/adapter.ts:9857](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L9857)
 
 ▸ **unsubscribeStates**(`pattern`, `options`, `callback?`): `void`
 
@@ -7667,7 +7667,7 @@ This function allows to unsubscribe from changes. The pattern must be equal to r
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:9842](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L9842)
+[packages/adapter/src/lib/adapter/adapter.ts:9858](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L9858)
 
 ___
 
@@ -7690,7 +7690,7 @@ Subscribe from changes of states in this instance
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L251)
+[packages/adapter/src/lib/adapter/adapter.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L251)
 
 ___
 
@@ -7717,7 +7717,7 @@ After updating the configuration, the adapter is automatically restarted.
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:2310](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L2310)
+[packages/adapter/src/lib/adapter/adapter.ts:2310](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L2310)
 
 ___
 
@@ -7749,7 +7749,7 @@ This function writes the content of one file into DB for given adapter and file 
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6510](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6510)
+[packages/adapter/src/lib/adapter/adapter.ts:6510](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6510)
 
 ▸ **writeFile**(`adapterName`, `path`, `data`, `options`, `callback`): `void`
 
@@ -7778,7 +7778,7 @@ This function writes the content of one file into DB for given adapter and file 
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:6511](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L6511)
+[packages/adapter/src/lib/adapter/adapter.ts:6511](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L6511)
 
 ___
 
@@ -7801,4 +7801,4 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/adapter.ts:230](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe5b81a/packages/adapter/src/lib/adapter/adapter.ts#L230)
+[packages/adapter/src/lib/adapter/adapter.ts:230](https://github.com/ioBroker/ioBroker.js-controller/blob/3ce6f5f8/packages/adapter/src/lib/adapter/adapter.ts#L230)
