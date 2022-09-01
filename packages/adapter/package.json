@@ -5,7 +5,7 @@
     "node": ">=12.0.0"
   },
   "dependencies": {
-    "@alcalzone/pak": "^0.7.0",
+    "@alcalzone/pak": "^0.8.1",
     "@iobroker/db-objects-file": "file:../db-objects-file",
     "@iobroker/db-objects-jsonl": "file:../db-objects-jsonl",
     "@iobroker/db-objects-redis": "file:../db-objects-redis",
