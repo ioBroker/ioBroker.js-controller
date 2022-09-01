@@ -9685,7 +9685,7 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertCallback(callback, 'callback');
+        Utils.assertOptionalCallback(callback, 'callback');
 
         if (pattern instanceof RegExp) {
             return tools.maybeCallbackWithError(
