@@ -4,6 +4,10 @@
 /* jshint expr: true */
 'use strict';
 
+/**
+ * Contains tests directly interacting with DB
+ */
+
 function register(it, expect, context) {
     const testName = context.name + ' objects: ';
 
@@ -379,6 +383,19 @@ function register(it, expect, context) {
         // put it back on
         context.objects.useSets = true;
         await context.objects.loadLuaScripts();
+    });
+
+    it(testName + 'Should check object existence', async () => {
+        // object should not exist
+        let exists = await context.objects.objectExists('test.0.objectExistenceCheck');
+        expect(exists).to.be.false;
+
+        // create object
+        await context.objects.setObjectAsync('test.0.objectExistenceCheck', { type: 'meta' });
+
+        // object should now exist
+        exists = await context.objects.objectExists('test.0.objectExistenceCheck');
+        expect(exists).to.be.true;
     });
 
     it(testName + 'should create and read file', done => {

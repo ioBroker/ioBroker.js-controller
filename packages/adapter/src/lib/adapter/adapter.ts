@@ -3429,6 +3429,60 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    objectExists(id: string, options?: Record<string, any>): Promise<boolean>;
+
+    /**
+     * Checks if an object exists to the given id, id will be fixed first
+     *
+     * @param id id of the object
+     * @param options optional user context
+     */
+    objectExists(id: unknown, options: unknown): Promise<boolean> {
+        if (!adapterObjects) {
+            this._logger.info(`${this.namespaceLog} objectExists not processed because Objects database not connected`);
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        Utils.assertString(id, 'id');
+        if (options !== undefined) {
+            Utils.assertObject(options, 'options');
+        }
+
+        id = this._utils.fixId(id);
+
+        this._utils.validateId(id, false, null);
+
+        return adapterObjects.objectExists(id, options);
+    }
+
+    // external signature
+    foreignObjectExists(id: string, options?: Record<string, any>): Promise<boolean>;
+
+    /**
+     * Checks if an object exists to the given id
+     *
+     * @param id id of the object
+     * @param options optional user context
+     */
+    foreignObjectExists(id: unknown, options: unknown): Promise<boolean> {
+        if (!adapterObjects) {
+            this._logger.info(
+                `${this.namespaceLog} foreignObjectExists not processed because Objects database not connected`
+            );
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        Utils.assertString(id, 'id');
+        if (options !== undefined) {
+            Utils.assertObject(options, 'options');
+        }
+
+        this._utils.validateId(id, true, null);
+
+        return adapterObjects.objectExists(id, options);
+    }
+
+    // external signature
     getObject(id: string, callback: ioBroker.GetObjectCallback): void;
     getObject(id: string, options: unknown, callback: ioBroker.GetObjectCallback): void;
 
@@ -4161,6 +4215,9 @@ export class AdapterClass extends EventEmitter {
         }
 
         Utils.assertOptionalCallback(callback, 'callback');
+        if (options !== undefined && options !== null) {
+            Utils.assertObject(options, 'options');
+        }
 
         try {
             this._utils.validateId(id, true, options);
@@ -4672,7 +4729,7 @@ export class AdapterClass extends EventEmitter {
         // check if object already exists
         let objExists;
         try {
-            objExists = await adapterObjects.objectExists(options.id, options);
+            objExists = await adapterObjects.objectExists(options.id, options.options);
         } catch (e) {
             return tools.maybeCallbackWithError(
                 options.callback,

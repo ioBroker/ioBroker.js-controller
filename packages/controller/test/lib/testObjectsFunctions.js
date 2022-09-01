@@ -4,7 +4,9 @@
 /* jshint expr:true */
 'use strict';
 
-// const promiseSequence = require('../../lib/tools').promiseSequence;
+/**
+ * Contains tests interacting with DB via adapter.ts
+ */
 
 /**
  * @typedef {{adapter: {[fnName: string]: (...args: any[]) => any}}} Context
@@ -13,7 +15,7 @@
  * @param {Context} context
  */
 function register(it, expect, context) {
-    const testName = context.name + ' ' + context.adapterShortName + ' adapter: ';
+    const testName = `${context.name} ${context.adapterShortName} adapter: `;
     const gid = 'myTestObject';
 
     // setObject positive
@@ -36,11 +38,11 @@ function register(it, expect, context) {
             },
             function (err) {
                 expect(err).to.be.null;
-                context.objects.getObject(context.adapterShortName + '.0.' + gid, function (err, obj) {
+                context.objects.getObject(`${context.adapterShortName}.0.${gid}`, function (err, obj) {
                     expect(err).to.be.not.ok;
                     expect(obj).to.be.ok;
                     expect(obj.native).to.be.ok;
-                    expect(obj._id).equal(context.adapterShortName + '.0.' + gid);
+                    expect(obj._id).equal(`${context.adapterShortName}.0.${gid}`);
                     expect(obj.common.name).equal('test1');
                     expect(obj.type).equal('state');
                     //expect(obj.acl).to.be.ok;
@@ -1503,15 +1505,30 @@ function register(it, expect, context) {
     });
 
     it(testName + 'Should check object existence', async () => {
+        const id = 'objectExistenceCheckAdapter';
         // object should not exist
-        let exists = await context.objects.objectExists('test.0.objectExistenceCheck');
+        let exists = await context.adapter.objectExists(id);
         expect(exists).to.be.false;
 
         // create object
-        await context.objects.setObjectAsync('test.0.objectExistenceCheck', { type: 'meta' });
+        await context.adapter.setObjectAsync(id, { type: 'meta' });
 
         // object should now exist
-        exists = await context.objects.objectExists('test.0.objectExistenceCheck');
+        exists = await context.adapter.objectExists(id);
+        expect(exists).to.be.true;
+    });
+
+    it(testName + 'Should check foreign object existence', async () => {
+        const id = `${context.adapterShortName}.0.objectForeignExistenceCheckAdapter`;
+        // object should not exist
+        let exists = await context.adapter.foreignObjectExists(id);
+        expect(exists).to.be.false;
+
+        // create object
+        await context.adapter.setForeignObjectAsync(id, { type: 'meta' });
+
+        // object should now exist
+        exists = await context.adapter.foreignObjectExists(id);
         expect(exists).to.be.true;
     });
 
