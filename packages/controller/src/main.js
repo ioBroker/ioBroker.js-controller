@@ -17,15 +17,15 @@ const path = require('path');
 const cp = require('child_process');
 const semver = require('semver');
 const restart = require('./lib/restart');
-const ioPackage = require('./io-package.json');
 const { tools: dbTools } = require('@iobroker/js-controller-common-db');
-const version = ioPackage.common.version;
 const pidUsage = require('pidusage');
 const deepClone = require('deep-clone');
 const { isDeepStrictEqual, inspect } = require('util');
 const { tools, EXIT_CODES, logger: toolsLogger } = require('@iobroker/js-controller-common');
 const { PluginHandler } = require('@iobroker/plugin-base');
 const NotificationHandler = require('./lib/notificationHandler');
+const ioPackage = require(path.join(tools.getControllerDir(), 'io-package.json'));
+const version = ioPackage.common.version;
 const controllerVersions = {};
 
 let pluginHandler;
