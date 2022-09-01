@@ -6804,13 +6804,13 @@ export class AdapterClass extends EventEmitter {
 
     sendTo(
         instanceName: string,
-        message: ioBroker.MessagePayload,
+        message: any,
         callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo
     ): void;
     sendTo(
         instanceName: string,
         command: string,
-        message: ioBroker.MessagePayload,
+        message: any,
         callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo
     ): void;
 
@@ -6843,9 +6843,6 @@ export class AdapterClass extends EventEmitter {
 
         Utils.assertString(instanceName, 'instanceName');
         Utils.assertString(command, 'command');
-        if (typeof message !== 'string') {
-            Utils.assertObject(message, 'message');
-        }
 
         if (!tools.isObject(callback)) {
             Utils.assertOptionalCallback(callback, 'callback');
@@ -6971,13 +6968,13 @@ export class AdapterClass extends EventEmitter {
 
     sendToHost(
         hostName: string,
-        message: ioBroker.MessagePayload,
+        message: any,
         callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo
     ): void;
     sendToHost(
         hostName: string,
         command: string,
-        message: ioBroker.MessagePayload,
+        message: any,
         callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo
     ): void;
 
@@ -7006,9 +7003,6 @@ export class AdapterClass extends EventEmitter {
 
         Utils.assertString(hostName, 'hostName');
         Utils.assertString(command, 'command');
-        if (typeof message !== 'string') {
-            Utils.assertObject(message, 'message');
-        }
 
         if (!tools.isObject(callback)) {
             Utils.assertOptionalCallback(callback, 'callback');

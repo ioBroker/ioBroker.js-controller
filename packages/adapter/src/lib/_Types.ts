@@ -309,14 +309,14 @@ export interface InternalAddChannelToEnumOptions {
 export interface InternalSendToOptions {
     instanceName: string;
     command: string;
-    message: ioBroker.MessagePayload;
+    message: any;
     callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo;
 }
 
 export interface InternalSendToHostOptions {
     hostName: string;
     command: string;
-    message: ioBroker.MessagePayload;
+    message: any;
     callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo;
 }
 
