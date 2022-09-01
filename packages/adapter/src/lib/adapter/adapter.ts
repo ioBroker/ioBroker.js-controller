@@ -3429,7 +3429,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    objectExists(id: string, options?: Record<string, any>): Promise<boolean>;
+    objectExists(id: string, options?: Record<string, any>): Promise<boolean> | void;
 
     /**
      * Checks if an object exists to the given id, id will be fixed first
@@ -3437,10 +3437,10 @@ export class AdapterClass extends EventEmitter {
      * @param id id of the object
      * @param options optional user context
      */
-    objectExists(id: unknown, options: unknown): Promise<boolean> {
+    objectExists(id: unknown, options: unknown): Promise<boolean> | void {
         if (!adapterObjects) {
             this._logger.info(`${this.namespaceLog} objectExists not processed because Objects database not connected`);
-            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+            return;
         }
 
         Utils.assertString(id, 'id');
@@ -3456,7 +3456,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    foreignObjectExists(id: string, options?: Record<string, any>): Promise<boolean>;
+    foreignObjectExists(id: string, options?: Record<string, any>): Promise<boolean> | void;
 
     /**
      * Checks if an object exists to the given id
@@ -3464,12 +3464,12 @@ export class AdapterClass extends EventEmitter {
      * @param id id of the object
      * @param options optional user context
      */
-    foreignObjectExists(id: unknown, options: unknown): Promise<boolean> {
+    foreignObjectExists(id: unknown, options: unknown): Promise<boolean> | void {
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} foreignObjectExists not processed because Objects database not connected`
             );
-            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+            return;
         }
 
         Utils.assertString(id, 'id');
