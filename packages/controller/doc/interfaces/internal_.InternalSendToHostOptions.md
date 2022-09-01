@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:320](https://github.com/ioBroker/ioBroker.js-controller/blob/89131c78/packages/adapter/src/lib/_Types.ts#L320)
+[packages/adapter/src/lib/_Types.ts:320](https://github.com/ioBroker/ioBroker.js-controller/blob/67ac1b73/packages/adapter/src/lib/_Types.ts#L320)
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:318](https://github.com/ioBroker/ioBroker.js-controller/blob/89131c78/packages/adapter/src/lib/_Types.ts#L318)
+[packages/adapter/src/lib/_Types.ts:318](https://github.com/ioBroker/ioBroker.js-controller/blob/67ac1b73/packages/adapter/src/lib/_Types.ts#L318)
 
 ___
 
@@ -41,14 +41,14 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:317](https://github.com/ioBroker/ioBroker.js-controller/blob/89131c78/packages/adapter/src/lib/_Types.ts#L317)
+[packages/adapter/src/lib/_Types.ts:317](https://github.com/ioBroker/ioBroker.js-controller/blob/67ac1b73/packages/adapter/src/lib/_Types.ts#L317)
 
 ___
 
 ### message
 
-• **message**: `MessagePayload`
+• **message**: `any`
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:319](https://github.com/ioBroker/ioBroker.js-controller/blob/89131c78/packages/adapter/src/lib/_Types.ts#L319)
+[packages/adapter/src/lib/_Types.ts:319](https://github.com/ioBroker/ioBroker.js-controller/blob/67ac1b73/packages/adapter/src/lib/_Types.ts#L319)
