@@ -10,7 +10,7 @@
     "winston-syslog": "^2.6.0"
   },
   "dependencies": {
-    "@alcalzone/pak": "^0.7.0",
+    "@alcalzone/pak": "^0.8.1",
     "axios": "^0.27.2",
     "ci-info": "^3.3.0",
     "deep-clone": "^3.0.3",
