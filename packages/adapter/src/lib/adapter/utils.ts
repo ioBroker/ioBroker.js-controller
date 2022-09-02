@@ -17,6 +17,12 @@ export interface IdObject {
     state?: string;
 }
 
+export interface ValidateIdOptions {
+    /** in maintenance mode we can access ivnalid ids to delete them, only works with the admin user */
+    maintenance?: boolean;
+    user?: string;
+}
+
 export class Utils {
     private readonly objects: any;
     private readonly states: any;
@@ -160,7 +166,7 @@ export class Utils {
      * @param options optional
      * @throws Error when id is invalid
      */
-    validateId(id: string | any, isForeignId: boolean, options: any): asserts id is ID {
+    validateId(id: string | any, isForeignId: boolean, options?: ValidateIdOptions | null): asserts id is ID {
         // there is special maintenance mode to clear the DB from invalid IDs
         if (options && options.maintenance && options.user === SYSTEM_ADMIN_USER) {
             return;

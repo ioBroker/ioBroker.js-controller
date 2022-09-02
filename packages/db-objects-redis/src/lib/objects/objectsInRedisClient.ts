@@ -1274,7 +1274,7 @@ export class ObjectsInRedisClient {
      * @param id id of the object
      * @param options optional user context
      */
-    async objectExists(id: string, options: CallOptions): Promise<boolean> {
+    async objectExists(id: string, options?: CallOptions | null): Promise<boolean> {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
