@@ -3429,7 +3429,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    objectExists(id: string, options?: Record<string, any>): Promise<boolean> | void;
+    objectExists(id: string, options?: Record<string, any> | null): Promise<boolean | void>;
 
     /**
      * Checks if an object exists to the given id, id will be fixed first
@@ -3437,14 +3437,14 @@ export class AdapterClass extends EventEmitter {
      * @param id id of the object
      * @param options optional user context
      */
-    objectExists(id: unknown, options: unknown): Promise<boolean> | void {
+    objectExists(id: unknown, options: unknown | null): Promise<boolean | void> {
         if (!adapterObjects) {
             this._logger.info(`${this.namespaceLog} objectExists not processed because Objects database not connected`);
-            return;
+            return Promise.resolve();
         }
 
         Utils.assertString(id, 'id');
-        if (options !== undefined) {
+        if (options !== undefined && options !== null) {
             Utils.assertObject(options, 'options');
         }
 
@@ -3456,7 +3456,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    foreignObjectExists(id: string, options?: Record<string, any>): Promise<boolean> | void;
+    foreignObjectExists(id: string, options?: Record<string, any> | null): Promise<boolean | void>;
 
     /**
      * Checks if an object exists to the given id
@@ -3464,16 +3464,16 @@ export class AdapterClass extends EventEmitter {
      * @param id id of the object
      * @param options optional user context
      */
-    foreignObjectExists(id: unknown, options: unknown): Promise<boolean> | void {
+    foreignObjectExists(id: unknown, options: unknown): Promise<boolean | void> {
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} foreignObjectExists not processed because Objects database not connected`
             );
-            return;
+            return Promise.resolve();
         }
 
         Utils.assertString(id, 'id');
-        if (options !== undefined) {
+        if (options !== undefined && options !== null) {
             Utils.assertObject(options, 'options');
         }
 
