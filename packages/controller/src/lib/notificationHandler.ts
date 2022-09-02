@@ -4,24 +4,117 @@
  *  2021 foxriver76 <moritz.heusinger@gmail.com>
  */
 
-const fs = require('fs-extra');
-const { tools } = require('@iobroker/js-controller-common');
-const path = require('path');
+import fs from 'fs-extra';
+import { tools } from '@iobroker/js-controller-common';
+import path from 'path';
+import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
+import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
+import type Winston from 'winston';
 
-class NotificationHandler {
-    /**
-     * Create a new instance of NotificationHandler
-     *
-     * @param {object} settings - settings like states/objects db
-     */
-    constructor(settings) {
+export interface NotificationHandlerSettings {
+    host: string;
+    states: StatesInRedisClient;
+    objects: ObjectsInRedisClient;
+    log: Winston.Logger;
+    logPrefix: string;
+}
+
+interface MultilingualObject {
+    en: string;
+    [otherLanguages: string]: string;
+}
+
+export interface NotificationsConfigEntry {
+    /** e.g. system */
+    scope: string;
+    /** multilingual name */
+    name: MultilingualObject;
+    /** multilingual description */
+    description: MultilingualObject;
+    categories: CategoryConfigEntry[];
+}
+
+export type Severity = 'info' | 'notify' | 'alert';
+
+export interface CategoryConfigEntry {
+    category: string;
+    name: MultilingualObject;
+    /** `info` will only be shown by admin, while `notify` might also be used by messaging adapters, `alert` ensures both */
+    severity: Severity;
+    description: MultilingualObject;
+    regex: string[];
+    limit: number;
+}
+
+interface NotificationMessageObject {
+    message: string;
+    ts: number;
+}
+
+interface NotificationsObject {
+    [scope: string]: {
+        [category: string]: {
+            [instance: string]: NotificationMessageObject[];
+        };
+    };
+}
+
+export interface FilteredNotificationInformation {
+    [scope: string]: {
+        description: MultilingualObject;
+        name: MultilingualObject;
+        categories: {
+            [category: string]: {
+                description: MultilingualObject;
+                name: MultilingualObject;
+                severity: Severity;
+                instances: {
+                    [instance: string]: {
+                        messages: NotificationMessageObject[];
+                    };
+                };
+            };
+        };
+    };
+}
+
+interface NotificationSetupObject {
+    [scope: string]: {
+        // @ts-expect-error: fixme the index signature overrides the named property type but on usage it works
+        name: MultilingualObject;
+        // @ts-expect-error: fixme the index signature overrides the named property type but on usage it works
+        description: MultilingualObject;
+        [category: string]: {
+            regex: RegExp[];
+            limit: number;
+            name: MultilingualObject;
+            severity: Severity;
+            description: MultilingualObject;
+        };
+    };
+}
+
+interface ScopeStateValue {
+    [category: string]: {
+        count: number;
+    };
+}
+
+export class NotificationHandler {
+    private states: StatesInRedisClient;
+    private objects: ObjectsInRedisClient;
+    private log: Winston.Logger;
+    private currentNotifications: NotificationsObject = {};
+    // default data dir is relative to controllerDir
+    private readonly dataDir = path.join(tools.getControllerDir(), tools.getDefaultDataDir());
+    private readonly setup: NotificationSetupObject = {};
+    private readonly logPrefix: string;
+    private readonly host: string;
+
+    constructor(settings: NotificationHandlerSettings) {
         this.states = settings.states;
         this.objects = settings.objects;
         this.log = settings.log;
-        this.currentNotifications = {};
-        this.setup = {};
-        // default data dir is relative to controllerDir
-        this.dataDir = path.join(tools.getControllerDir(), tools.getDefaultDataDir());
         this.logPrefix = settings.logPrefix;
         this.host = settings.host;
 
@@ -31,10 +124,8 @@ class NotificationHandler {
 
     /**
      * Get all adapter instances on this host and store their notifications config - and clears up removed instances notifications - should be called once after init
-     *
-     * @return {Promise<void>}
      */
-    async getSetupOfAllAdaptersFromHost() {
+    async getSetupOfAllAdaptersFromHost(): Promise<void> {
         // create initial notifications object
         let obj;
         try {
@@ -115,10 +206,9 @@ class NotificationHandler {
     /**
      * Add a new category to the given scope with provided optional list of regex
      *
-     * @param {object[]} notifications - notifications array
-     * @return Promise<void>
+     * @param notifications - notifications array
      */
-    async addConfig(notifications) {
+    async addConfig(notifications: NotificationsConfigEntry[]): Promise<void> {
         // if valid attributes, store it
         if (Array.isArray(notifications)) {
             for (const scopeObj of notifications) {
@@ -146,26 +236,30 @@ class NotificationHandler {
                         });
                     } catch (e) {
                         this.log.error(
-                            `${this.logPrefix} Could not create notifications object for category "${scopeObj.category}": ${e.message}`
+                            `${this.logPrefix} Could not create notifications object for scope "${scopeObj.scope}": ${e.message}`
                         );
                     }
                 }
 
-                if (Array.isArray(scopeObj.categories)) {
+                if (Array.isArray(scopeObj.categories) && scopeObj.categories.length) {
+                    // only if scope has at least one category
+                    this.setup[scopeObj.scope] = this.setup[scopeObj.scope] || {
+                        name: scopeObj.name,
+                        description: scopeObj.description
+                    };
+
                     for (const categoryObj of scopeObj.categories) {
-                        this.setup[scopeObj.scope] = this.setup[scopeObj.scope] || {};
                         this.setup[scopeObj.scope][categoryObj.category] =
                             this.setup[scopeObj.scope][categoryObj.category] || {};
                         try {
-                            // regex is an array
-                            let regex = categoryObj.regex;
-                            if (Array.isArray(regex)) {
-                                for (const i in regex) {
-                                    regex[i] = new RegExp(categoryObj.regex[i]);
+                            let regex: RegExp[] = [];
+                            if (Array.isArray(categoryObj.regex)) {
+                                for (const regexString of categoryObj.regex) {
+                                    regex.push(new RegExp(regexString));
                                 }
-                            } else if (typeof regex === 'string') {
+                            } else if (typeof categoryObj.regex === 'string') {
                                 // if someone passes string, convert to single entry array
-                                regex = [new RegExp(regex)];
+                                regex = [new RegExp(categoryObj.regex)];
                             }
 
                             // we overwrite config, maybe it would also make sense to only add the new regex to existing ones
@@ -178,7 +272,9 @@ class NotificationHandler {
                             };
                         } catch (e) {
                             this.log.error(
-                                `${this.logPrefix} Cannot store ${categoryObj.regex} for scope "${scopeObj.scope}", category "${categoryObj.category}": ${e.message}`
+                                `${this.logPrefix} Cannot store ${JSON.stringify(categoryObj.regex)} for scope "${
+                                    scopeObj.scope
+                                }", category "${categoryObj.category}": ${e.message}`
                             );
                         }
                     }
@@ -190,13 +286,17 @@ class NotificationHandler {
     /**
      * Add a message to the scope and category
      *
-     * @param {string} scope - scope of the message
-     * @param {string|null|undefined} category - category of the message, if non we check against regex of scope
-     * @param {string} message - message to add
-     * @param {string} instance - instance e.g. hm-rpc.1 or hostname, if hostname it needs to be prefixed like system.host.rpi
-     * @return Promise <void>
+     * @param scope - scope of the message
+     * @param category - category of the message, if non we check against regex of scope
+     * @param message - message to add
+     * @param instance - instance e.g. hm-rpc.1 or hostname, if hostname it needs to be prefixed like system.host.rpi
      */
-    async addMessage(scope, category, message, instance) {
+    async addMessage(
+        scope: string,
+        category: string | null | undefined,
+        message: string,
+        instance: string
+    ): Promise<void> {
         if (typeof instance !== 'string') {
             this.log.error(
                 `${this.logPrefix} [addMessage] Instance has to be of type "string", got "${typeof instance}"`
@@ -209,10 +309,10 @@ class NotificationHandler {
         }
 
         // get state of the scope
-        let stateVal = {};
+        let stateVal: ScopeStateValue = {};
         try {
             const state = await this.states.getStateAsync(`system.host.${this.host}.notifications.${scope}`);
-            stateVal = state && state.val ? JSON.parse(state.val) : {};
+            stateVal = state?.val ? JSON.parse(state.val as string) : {};
         } catch (e) {
             this.log.error(`${this.logPrefix} Could not get state for scope "${scope}": ${e.message}`);
         }
@@ -275,12 +375,10 @@ class NotificationHandler {
 
     /**
      * Updates all scope states by current notifications in RAM
-     *
-     * @private
      */
-    async _updateScopeStates() {
+    private async _updateScopeStates(): Promise<void> {
         for (const scope of Object.keys(this.currentNotifications)) {
-            const stateVal = {};
+            const stateVal: ScopeStateValue = {};
 
             for (const category of Object.keys(this.currentNotifications[scope])) {
                 // count number of instances with this error
@@ -305,12 +403,10 @@ class NotificationHandler {
     /**
      * Check the given message against all regular expressions of the given scope
      *
-     * @param {string} scope - scope of the message
-     * @param {string} message - message to check
-     * @return {any[]}
-     * @private
+     * @param scope - scope of the message
+     * @param message - message to check
      */
-    _parseText(scope, message) {
+    private _parseText(scope: string, message: string): string[] {
         const categories = [];
         if (this.setup[scope]) {
             for (const category of Object.keys(this.setup[scope])) {
@@ -338,7 +434,7 @@ class NotificationHandler {
      *
      * @private
      */
-    _loadNotifications() {
+    _loadNotifications(): void {
         try {
             this.currentNotifications = fs.readJSONSync(path.join(this.dataDir, 'notifications.json'));
         } catch (e) {
@@ -350,7 +446,7 @@ class NotificationHandler {
     /**
      * Save current notifications to file
      */
-    storeNotifications() {
+    storeNotifications(): void {
         try {
             fs.writeJSONSync(path.join(this.dataDir, 'notifications.json'), this.currentNotifications);
         } catch (e) {
@@ -361,13 +457,16 @@ class NotificationHandler {
     /**
      * Returns the stored notifications matching the filters with description and name
      *
-     * @param {string|null|undefined} scopeFilter - scope of notifications
-     * @param {string|null|undefined} categoryFilter - category of notifications
-     * @param {string|null|undefined} instanceFilter - instance of notifications
-     * @return {object}
+     * @param scopeFilter - scope of notifications
+     * @param categoryFilter - category of notifications
+     * @param instanceFilter - instance of notifications
      */
-    getFilteredInformation(scopeFilter, categoryFilter, instanceFilter) {
-        const res = {};
+    getFilteredInformation(
+        scopeFilter: string | null | undefined,
+        categoryFilter: string | null | undefined,
+        instanceFilter: string | null | undefined
+    ): FilteredNotificationInformation {
+        const res: Partial<FilteredNotificationInformation> = {};
         for (const scope of Object.keys(this.currentNotifications)) {
             if (scopeFilter && scopeFilter !== scope) {
                 // scope filtered out
@@ -379,9 +478,7 @@ class NotificationHandler {
                 continue;
             }
 
-            res[scope] = { categories: {} };
-            res[scope].description = this.setup[scope].description;
-            res[scope].name = this.setup[scope].name;
+            res[scope] = { categories: {}, description: this.setup[scope].description, name: this.setup[scope].name };
 
             for (const category of Object.keys(this.currentNotifications[scope])) {
                 if (categoryFilter && categoryFilter !== category) {
@@ -394,10 +491,12 @@ class NotificationHandler {
                     continue;
                 }
 
-                res[scope].categories[category] = { instances: {} };
-                res[scope].categories[category].description = this.setup[scope][category].description;
-                res[scope].categories[category].name = this.setup[scope][category].name;
-                res[scope].categories[category].severity = this.setup[scope][category].severity;
+                res[scope]!.categories[category] = {
+                    instances: {},
+                    description: this.setup[scope][category].description,
+                    name: this.setup[scope][category].name,
+                    severity: this.setup[scope][category].severity
+                };
 
                 for (const instance of Object.keys(this.currentNotifications[scope][category])) {
                     if (instanceFilter && instanceFilter !== instance) {
@@ -405,24 +504,27 @@ class NotificationHandler {
                         continue;
                     }
 
-                    res[scope].categories[category].instances[instance] = {};
-                    res[scope].categories[category].instances[instance].messages =
-                        this.currentNotifications[scope][category][instance];
+                    res[scope]!.categories[category].instances[instance] = {
+                        messages: this.currentNotifications[scope][category][instance]
+                    };
                 }
             }
         }
-        return res;
+        return res as FilteredNotificationInformation;
     }
 
     /**
      * Clears the stored notifications matching the filters
      *
-     * @param {string|null|undefined} scopeFilter - scope of notifications
-     * @param {string|null|undefined} categoryFilter - category of notifications
-     * @param {string|null|undefined} instanceFilter - instance of notifications
-     * @return Promise<void>
+     * @param scopeFilter - scope of notifications
+     * @param categoryFilter - category of notifications
+     * @param instanceFilter - instance of notifications
      */
-    async clearNotifications(scopeFilter, categoryFilter, instanceFilter) {
+    async clearNotifications(
+        scopeFilter: string | null | undefined,
+        categoryFilter: string | null | undefined,
+        instanceFilter: string | null | undefined
+    ): Promise<void> {
         for (const scope of Object.keys(this.currentNotifications)) {
             if (this.currentNotifications[scope] === null) {
                 delete this.currentNotifications[scope];
@@ -433,10 +535,10 @@ class NotificationHandler {
                 continue;
             }
 
-            let stateVal = {};
+            let stateVal: ScopeStateValue = {};
             try {
                 const state = await this.states.getStateAsync(`system.host.${this.host}.notifications.${scope}`);
-                stateVal = state && state.val ? JSON.parse(state.val) : {};
+                stateVal = state && state.val ? JSON.parse(state.val as string) : {};
             } catch (e) {
                 this.log.error(`${this.logPrefix} Could not get state for scope "${scope}": ${e.message}`);
             }
@@ -490,12 +592,9 @@ class NotificationHandler {
     /**
      * Check if given scope exists in config
      *
-     * @param {string} scope - scope to be checked for
-     * @return {boolean}
+     * @param scope - scope to be checked for
      */
-    scopeExists(scope) {
+    scopeExists(scope: string): boolean {
         return !!this.setup[scope];
     }
 }
-
-module.exports = NotificationHandler;
