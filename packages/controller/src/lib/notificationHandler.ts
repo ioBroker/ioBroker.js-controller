@@ -431,10 +431,8 @@ export class NotificationHandler {
 
     /**
      * Load notifications from file
-     *
-     * @private
      */
-    _loadNotifications(): void {
+    private _loadNotifications(): void {
         try {
             this.currentNotifications = fs.readJSONSync(path.join(this.dataDir, 'notifications.json'));
         } catch (e) {
@@ -526,7 +524,7 @@ export class NotificationHandler {
         instanceFilter: string | null | undefined
     ): Promise<void> {
         for (const scope of Object.keys(this.currentNotifications)) {
-            if (this.currentNotifications[scope] === null) {
+            if (!this.currentNotifications[scope]) {
                 delete this.currentNotifications[scope];
                 continue;
             }
