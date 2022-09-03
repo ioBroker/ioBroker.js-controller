@@ -264,7 +264,7 @@ export class NotificationHandler {
 
                             // we overwrite config, maybe it would also make sense to only add the new regex to existing ones
                             this.setup[scopeObj.scope][categoryObj.category] = {
-                                regex: regex || [],
+                                regex,
                                 limit: categoryObj.limit,
                                 name: categoryObj.name,
                                 severity: categoryObj.severity,
