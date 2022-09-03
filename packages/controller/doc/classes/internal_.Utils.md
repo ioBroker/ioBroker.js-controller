@@ -47,7 +47,7 @@ Utils for internal adapter.js usage
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:37](https://github.com/ioBroker/ioBroker.js-controller/blob/74ea8583/packages/adapter/src/lib/adapter/utils.ts#L37)
+[packages/adapter/src/lib/adapter/utils.ts:43](https://github.com/ioBroker/ioBroker.js-controller/blob/c20b6373/packages/adapter/src/lib/adapter/utils.ts#L43)
 
 ## Methods
 
@@ -70,7 +70,7 @@ Adds the namespace to the id if it is missing, if an object is passed it will be
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:354](https://github.com/ioBroker/ioBroker.js-controller/blob/74ea8583/packages/adapter/src/lib/adapter/utils.ts#L354)
+[packages/adapter/src/lib/adapter/utils.ts:360](https://github.com/ioBroker/ioBroker.js-controller/blob/c20b6373/packages/adapter/src/lib/adapter/utils.ts#L360)
 
 ___
 
@@ -94,13 +94,13 @@ additionally it rounds state values whose objects have a common.step attribute d
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:60](https://github.com/ioBroker/ioBroker.js-controller/blob/74ea8583/packages/adapter/src/lib/adapter/utils.ts#L60)
+[packages/adapter/src/lib/adapter/utils.ts:66](https://github.com/ioBroker/ioBroker.js-controller/blob/c20b6373/packages/adapter/src/lib/adapter/utils.ts#L66)
 
 ___
 
 ### validateId
 
-▸ **validateId**(`id`, `isForeignId`, `options`): asserts id is ID
+▸ **validateId**(`id`, `isForeignId`, `options?`): asserts id is ID
 
 Checks if a passed ID is valid. Throws an error if id is invalid
 
@@ -114,7 +114,7 @@ Error when id is invalid
 | :------ | :------ | :------ |
 | `id` | `any` | id to check or object with properties device, channel and state |
 | `isForeignId` | `boolean` | true&false if the ID is a foreign/full ID or only an "adapter local" id |
-| `options` | `any` | optional |
+| `options?` | ``null`` \| [`ValidateIdOptions`](../interfaces/internal_.ValidateIdOptions.md) | optional |
 
 #### Returns
 
@@ -122,7 +122,7 @@ asserts id is ID
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:163](https://github.com/ioBroker/ioBroker.js-controller/blob/74ea8583/packages/adapter/src/lib/adapter/utils.ts#L163)
+[packages/adapter/src/lib/adapter/utils.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/c20b6373/packages/adapter/src/lib/adapter/utils.ts#L169)
 
 ___
 
@@ -144,7 +144,7 @@ Validates the object-type argument that is passed to setState
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:385](https://github.com/ioBroker/ioBroker.js-controller/blob/74ea8583/packages/adapter/src/lib/adapter/utils.ts#L385)
+[packages/adapter/src/lib/adapter/utils.ts:391](https://github.com/ioBroker/ioBroker.js-controller/blob/c20b6373/packages/adapter/src/lib/adapter/utils.ts#L391)
 
 ___
 
@@ -167,7 +167,7 @@ asserts value is boolean
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/74ea8583/packages/adapter/src/lib/adapter/utils.ts#L279)
+[packages/adapter/src/lib/adapter/utils.ts:285](https://github.com/ioBroker/ioBroker.js-controller/blob/c20b6373/packages/adapter/src/lib/adapter/utils.ts#L285)
 
 ___
 
@@ -190,7 +190,7 @@ asserts value is Buffer
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/74ea8583/packages/adapter/src/lib/adapter/utils.ts#L316)
+[packages/adapter/src/lib/adapter/utils.ts:322](https://github.com/ioBroker/ioBroker.js-controller/blob/c20b6373/packages/adapter/src/lib/adapter/utils.ts#L322)
 
 ___
 
@@ -213,7 +213,7 @@ asserts value is Callback
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:340](https://github.com/ioBroker/ioBroker.js-controller/blob/74ea8583/packages/adapter/src/lib/adapter/utils.ts#L340)
+[packages/adapter/src/lib/adapter/utils.ts:346](https://github.com/ioBroker/ioBroker.js-controller/blob/c20b6373/packages/adapter/src/lib/adapter/utils.ts#L346)
 
 ___
 
@@ -236,7 +236,7 @@ asserts value is number
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:292](https://github.com/ioBroker/ioBroker.js-controller/blob/74ea8583/packages/adapter/src/lib/adapter/utils.ts#L292)
+[packages/adapter/src/lib/adapter/utils.ts:298](https://github.com/ioBroker/ioBroker.js-controller/blob/c20b6373/packages/adapter/src/lib/adapter/utils.ts#L298)
 
 ___
 
@@ -259,7 +259,7 @@ asserts value is Record<string, any\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:305](https://github.com/ioBroker/ioBroker.js-controller/blob/74ea8583/packages/adapter/src/lib/adapter/utils.ts#L305)
+[packages/adapter/src/lib/adapter/utils.ts:311](https://github.com/ioBroker/ioBroker.js-controller/blob/c20b6373/packages/adapter/src/lib/adapter/utils.ts#L311)
 
 ___
 
@@ -282,7 +282,7 @@ asserts value is OptionalCallback
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/74ea8583/packages/adapter/src/lib/adapter/utils.ts#L327)
+[packages/adapter/src/lib/adapter/utils.ts:333](https://github.com/ioBroker/ioBroker.js-controller/blob/c20b6373/packages/adapter/src/lib/adapter/utils.ts#L333)
 
 ___
 
@@ -305,7 +305,7 @@ asserts value is Pattern
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:258](https://github.com/ioBroker/ioBroker.js-controller/blob/74ea8583/packages/adapter/src/lib/adapter/utils.ts#L258)
+[packages/adapter/src/lib/adapter/utils.ts:264](https://github.com/ioBroker/ioBroker.js-controller/blob/c20b6373/packages/adapter/src/lib/adapter/utils.ts#L264)
 
 ___
 
@@ -328,7 +328,7 @@ asserts value is string
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:245](https://github.com/ioBroker/ioBroker.js-controller/blob/74ea8583/packages/adapter/src/lib/adapter/utils.ts#L245)
+[packages/adapter/src/lib/adapter/utils.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/c20b6373/packages/adapter/src/lib/adapter/utils.ts#L251)
 
 ___
 
@@ -352,4 +352,4 @@ error description
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:235](https://github.com/ioBroker/ioBroker.js-controller/blob/74ea8583/packages/adapter/src/lib/adapter/utils.ts#L235)
+[packages/adapter/src/lib/adapter/utils.ts:241](https://github.com/ioBroker/ioBroker.js-controller/blob/c20b6373/packages/adapter/src/lib/adapter/utils.ts#L241)
