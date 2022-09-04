@@ -35,7 +35,7 @@
     "deep-clone": "^3.0.3",
     "fs-extra": "^10.1.0",
     "jsonwebtoken": "^8.5.1",
-    "jszip": "^3.7.0",
+    "jszip": "^3.10.1",
     "loadavg-windows": "^1.1.1",
     "mime": "^3.0.0",
     "node-schedule": "^2.1.0",
