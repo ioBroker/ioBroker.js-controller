@@ -78,19 +78,19 @@ export interface FilteredNotificationInformation {
     };
 }
 
+interface NotificationSetupCategory {
+    regex: RegExp[];
+    limit: number;
+    name: MultilingualObject;
+    severity: Severity;
+    description: MultilingualObject;
+}
+
 interface NotificationSetupObject {
     [scope: string]: {
-        // @ts-expect-error: fixme the index signature overrides the named property type but on usage it works
         name: MultilingualObject;
-        // @ts-expect-error: fixme the index signature overrides the named property type but on usage it works
         description: MultilingualObject;
-        [category: string]: {
-            regex: RegExp[];
-            limit: number;
-            name: MultilingualObject;
-            severity: Severity;
-            description: MultilingualObject;
-        };
+        categories: Record<string, NotificationSetupCategory>;
     };
 }
 
@@ -245,12 +245,13 @@ export class NotificationHandler {
                     // only if scope has at least one category
                     this.setup[scopeObj.scope] = this.setup[scopeObj.scope] || {
                         name: scopeObj.name,
-                        description: scopeObj.description
+                        description: scopeObj.description,
+                        categories: {}
                     };
 
                     for (const categoryObj of scopeObj.categories) {
-                        this.setup[scopeObj.scope][categoryObj.category] =
-                            this.setup[scopeObj.scope][categoryObj.category] || {};
+                        this.setup[scopeObj.scope].categories[categoryObj.category] =
+                            this.setup[scopeObj.scope].categories[categoryObj.category] || {};
                         try {
                             let regex: RegExp[] = [];
                             if (Array.isArray(categoryObj.regex)) {
@@ -263,7 +264,7 @@ export class NotificationHandler {
                             }
 
                             // we overwrite config, maybe it would also make sense to only add the new regex to existing ones
-                            this.setup[scopeObj.scope][categoryObj.category] = {
+                            this.setup[scopeObj.scope].categories[categoryObj.category] = {
                                 regex,
                                 limit: categoryObj.limit,
                                 name: categoryObj.name,
@@ -332,7 +333,7 @@ export class NotificationHandler {
                 this.currentNotifications[scope][_category][instance] =
                     this.currentNotifications[scope][_category][instance] || [];
 
-                if (!this.setup[scope] || !this.setup[scope][_category]) {
+                if (!this.setup[scope]?.categories[_category]) {
                     // no setup for this instance/category combination found - so nothing to add
                     this.log.warn(
                         `${this.logPrefix} No configuration found for scope "${scope}" and category "${_category}"`
@@ -342,7 +343,7 @@ export class NotificationHandler {
 
                 // if limit exceeded, remove last element - use while if it somehow grew too big
                 while (
-                    this.setup[scope][_category].limit <
+                    this.setup[scope].categories[_category].limit <
                     this.currentNotifications[scope][_category][instance].length + 1
                 ) {
                     this.currentNotifications[scope][_category][instance].pop();
@@ -409,13 +410,13 @@ export class NotificationHandler {
     private _parseText(scope: string, message: string): string[] {
         const categories = [];
         if (this.setup[scope]) {
-            for (const category of Object.keys(this.setup[scope])) {
-                if (!this.setup[scope][category]) {
+            for (const category of Object.keys(this.setup[scope].categories)) {
+                if (!this.setup[scope].categories[category]) {
                     continue;
                 }
 
                 // check all regular expressions for this category
-                for (const regex of this.setup[scope][category].regex) {
+                for (const regex of this.setup[scope].categories[category].regex) {
                     if (regex.test(message)) {
                         // matching category
                         categories.push(category);
@@ -484,16 +485,16 @@ export class NotificationHandler {
                     continue;
                 }
 
-                if (!this.setup[scope][category]) {
+                if (!this.setup[scope].categories[category]) {
                     // no category set up
                     continue;
                 }
 
                 res[scope]!.categories[category] = {
                     instances: {},
-                    description: this.setup[scope][category].description,
-                    name: this.setup[scope][category].name,
-                    severity: this.setup[scope][category].severity
+                    description: this.setup[scope].categories[category].description,
+                    name: this.setup[scope].categories[category].name,
+                    severity: this.setup[scope].categories[category].severity
                 };
 
                 for (const instance of Object.keys(this.currentNotifications[scope][category])) {
