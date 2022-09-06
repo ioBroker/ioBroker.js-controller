@@ -44,7 +44,19 @@
     "build:doc": "typedoc --excludeExternals --excludeProtected --excludePrivate --plugin typedoc-plugin-missing-exports --plugin typedoc-plugin-markdown src/lib/adapter/adapter.ts --out ../controller/doc"
   },
   "main": "build/index.js",
+  "exports": {
+    ".": "./build/index.js",
+    "./package.json": "./package.json",
+    "./adapter": "./build/lib/adapter/adapter.js"
+  },
   "types": "build/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "adapter": [
+        "./build/lib/adapter/adapter.d.ts"
+      ]
+    }
+  },
   "license": "MIT",
   "publishConfig": {
     "access": "public"
