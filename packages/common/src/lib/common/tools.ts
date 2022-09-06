@@ -2149,10 +2149,11 @@ export function getDefaultDataDir(): string {
     // if debugging with npm5
     if (fs.existsSync(`${__dirname}/../../../node_modules/${_appName}.js-controller`)) {
         return `../${_appName}-data/`;
-    } else {
-        // If installed with npm
-        return `../../${_appName}-data/`;
     }
+
+    // If installed with npm
+    //    /opt/iobroker/node_modules/iobroker.js-controller/build
+    return `../../../${_appName}-data/`;
 }
 
 /**
