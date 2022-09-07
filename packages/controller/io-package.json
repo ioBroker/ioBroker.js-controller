@@ -934,7 +934,7 @@
           "limit": 1
         },
         {
-          "category": "blacklisted",
+          "category": "blocklisted",
           "name": {
             "en": "Instance was deactivated",
             "de": "Instanz wurde deaktiviert",
@@ -949,7 +949,7 @@
           },
           "severity": "alert",
           "description": {
-            "en": "Installed version was blacklisted by ioBroker team.\nPlease update adapter to official version in repository before enabling it.\nInstance must be enabled manually.",
+            "en": "Installed version was blocklisted by ioBroker team.\nPlease update adapter to official version in repository before enabling it.\nInstance must be enabled manually.",
             "de": "Installierte Version wurde von ioBroker Team zurückgezogen.\nBitte aktualisieren Sie den Adapter auf die offizielle Version im Repository, bevor Sie ihn aktivieren.\nDie Instanz muss manuell aktiviert werden.",
             "ru": "Установленная версия была отозвана назад командой ioBroker.\nПеред включением обновите адаптер до официальной версии в репозитории.\nЭкземпляр должен быть активирован вручную.",
             "pt": "A versão instalada foi bloqueada pela equipe ioBroker.\nPor favor, atualize o adaptador para versão mais recente ou disponível antes de habilitar.\nA instância deve ser activada manualmente.",
