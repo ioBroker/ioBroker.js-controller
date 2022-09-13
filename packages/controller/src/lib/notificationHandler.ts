@@ -11,6 +11,8 @@ import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type Winston from 'winston';
 
+type MultilingualObject = Exclude<ioBroker.StringOrTranslated, string>;
+
 export interface NotificationHandlerSettings {
     host: string;
     states: StatesInRedisClient;
@@ -23,9 +25,9 @@ export interface NotificationsConfigEntry {
     /** e.g. system */
     scope: string;
     /** multilingual name */
-    name: ioBroker.StringOrTranslated;
+    name: MultilingualObject;
     /** multilingual description */
-    description: ioBroker.StringOrTranslated;
+    description: MultilingualObject;
     categories: CategoryConfigEntry[];
 }
 
@@ -33,10 +35,10 @@ export type Severity = 'info' | 'notify' | 'alert';
 
 export interface CategoryConfigEntry {
     category: string;
-    name: ioBroker.StringOrTranslated;
+    name: MultilingualObject;
     /** `info` will only be shown by admin, while `notify` might also be used by messaging adapters, `alert` ensures both */
     severity: Severity;
-    description: ioBroker.StringOrTranslated;
+    description: MultilingualObject;
     regex: string[];
     limit: number;
 }
@@ -56,12 +58,12 @@ interface NotificationsObject {
 
 export interface FilteredNotificationInformation {
     [scope: string]: {
-        description: ioBroker.StringOrTranslated;
-        name: ioBroker.StringOrTranslated;
+        description: MultilingualObject;
+        name: MultilingualObject;
         categories: {
             [category: string]: {
-                description: ioBroker.StringOrTranslated;
-                name: ioBroker.StringOrTranslated;
+                description: MultilingualObject;
+                name: MultilingualObject;
                 severity: Severity;
                 instances: {
                     [instance: string]: {
@@ -76,15 +78,15 @@ export interface FilteredNotificationInformation {
 interface NotificationSetupCategory {
     regex: RegExp[];
     limit: number;
-    name: ioBroker.StringOrTranslated;
+    name: MultilingualObject;
     severity: Severity;
-    description: ioBroker.StringOrTranslated;
+    description: MultilingualObject;
 }
 
 interface NotificationSetupObject {
     [scope: string]: {
-        name: ioBroker.StringOrTranslated;
-        description: ioBroker.StringOrTranslated;
+        name: MultilingualObject;
+        description: MultilingualObject;
         categories: {
             [category: string]: NotificationSetupCategory;
         };
