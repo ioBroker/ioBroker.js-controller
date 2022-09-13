@@ -19,18 +19,13 @@ export interface NotificationHandlerSettings {
     logPrefix: string;
 }
 
-interface MultilingualObject {
-    en: string;
-    [otherLanguages: string]: string;
-}
-
 export interface NotificationsConfigEntry {
     /** e.g. system */
     scope: string;
     /** multilingual name */
-    name: MultilingualObject;
+    name: ioBroker.StringOrTranslated;
     /** multilingual description */
-    description: MultilingualObject;
+    description: ioBroker.StringOrTranslated;
     categories: CategoryConfigEntry[];
 }
 
@@ -38,10 +33,10 @@ export type Severity = 'info' | 'notify' | 'alert';
 
 export interface CategoryConfigEntry {
     category: string;
-    name: MultilingualObject;
+    name: ioBroker.StringOrTranslated;
     /** `info` will only be shown by admin, while `notify` might also be used by messaging adapters, `alert` ensures both */
     severity: Severity;
-    description: MultilingualObject;
+    description: ioBroker.StringOrTranslated;
     regex: string[];
     limit: number;
 }
@@ -61,12 +56,12 @@ interface NotificationsObject {
 
 export interface FilteredNotificationInformation {
     [scope: string]: {
-        description: MultilingualObject;
-        name: MultilingualObject;
+        description: ioBroker.StringOrTranslated;
+        name: ioBroker.StringOrTranslated;
         categories: {
             [category: string]: {
-                description: MultilingualObject;
-                name: MultilingualObject;
+                description: ioBroker.StringOrTranslated;
+                name: ioBroker.StringOrTranslated;
                 severity: Severity;
                 instances: {
                     [instance: string]: {
@@ -81,16 +76,18 @@ export interface FilteredNotificationInformation {
 interface NotificationSetupCategory {
     regex: RegExp[];
     limit: number;
-    name: MultilingualObject;
+    name: ioBroker.StringOrTranslated;
     severity: Severity;
-    description: MultilingualObject;
+    description: ioBroker.StringOrTranslated;
 }
 
 interface NotificationSetupObject {
     [scope: string]: {
-        name: MultilingualObject;
-        description: MultilingualObject;
-        categories: Record<string, NotificationSetupCategory>;
+        name: ioBroker.StringOrTranslated;
+        description: ioBroker.StringOrTranslated;
+        categories: {
+            [category: string]: NotificationSetupCategory;
+        };
     };
 }
 
@@ -410,16 +407,16 @@ export class NotificationHandler {
     private _parseText(scope: string, message: string): string[] {
         const categories = [];
         if (this.setup[scope]) {
-            for (const category of Object.keys(this.setup[scope].categories)) {
-                if (!this.setup[scope].categories[category]) {
+            for (const [categoryId, categoryObj] of Object.entries(this.setup[scope].categories)) {
+                if (!categoryObj) {
                     continue;
                 }
 
                 // check all regular expressions for this category
-                for (const regex of this.setup[scope].categories[category].regex) {
+                for (const regex of categoryObj.regex) {
                     if (regex.test(message)) {
                         // matching category
-                        categories.push(category);
+                        categories.push(categoryId);
                         // no further testing needed for this category
                         break;
                     }
@@ -465,7 +462,7 @@ export class NotificationHandler {
         categoryFilter: string | null | undefined,
         instanceFilter: string | null | undefined
     ): FilteredNotificationInformation {
-        const res: Partial<FilteredNotificationInformation> = {};
+        const res: FilteredNotificationInformation = {};
         for (const scope of Object.keys(this.currentNotifications)) {
             if (scopeFilter && scopeFilter !== scope) {
                 // scope filtered out
@@ -485,16 +482,18 @@ export class NotificationHandler {
                     continue;
                 }
 
-                if (!this.setup[scope].categories[category]) {
+                const categoryObj = this.setup[scope].categories[category];
+
+                if (!categoryObj) {
                     // no category set up
                     continue;
                 }
 
-                res[scope]!.categories[category] = {
+                res[scope].categories[category] = {
                     instances: {},
-                    description: this.setup[scope].categories[category].description,
-                    name: this.setup[scope].categories[category].name,
-                    severity: this.setup[scope].categories[category].severity
+                    description: categoryObj.description,
+                    name: categoryObj.name,
+                    severity: categoryObj.severity
                 };
 
                 for (const instance of Object.keys(this.currentNotifications[scope][category])) {
@@ -503,7 +502,7 @@ export class NotificationHandler {
                         continue;
                     }
 
-                    res[scope]!.categories[category].instances[instance] = {
+                    res[scope].categories[category].instances[instance] = {
                         messages: this.currentNotifications[scope][category][instance]
                     };
                 }
