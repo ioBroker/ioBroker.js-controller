@@ -408,10 +408,6 @@ export class NotificationHandler {
         const categories = [];
         if (this.setup[scope]) {
             for (const [categoryId, categoryObj] of Object.entries(this.setup[scope].categories)) {
-                if (!categoryObj) {
-                    continue;
-                }
-
                 // check all regular expressions for this category
                 for (const regex of categoryObj.regex) {
                     if (regex.test(message)) {
