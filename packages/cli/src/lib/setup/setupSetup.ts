@@ -538,6 +538,10 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                     states: statesOld,
                     isOffline
                 } = await this.dbConnectAsync(false, this.params);
+
+                this.objects = objectsOld;
+                this.states = statesOld;
+
                 if (!isOffline) {
                     console.error(COLOR_RED);
                     console.error('Cannot migrate DB while js-controller is still running!');
@@ -584,6 +588,10 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                         true,
                         Object.assign(this.params, { timeout: 20000 })
                     );
+
+                    this.objects = objectsNew;
+                    this.states = statesNew;
+
                     if (!statesNew || !objectsNew) {
                         console.error(COLOR_RED);
                         console.log(
@@ -596,6 +604,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
                         return EXIT_CODES.MIGRATION_ERROR;
                     }
+
                     const backupRestore = new BackupRestore({
                         states: statesNew,
                         objects: objectsNew,
