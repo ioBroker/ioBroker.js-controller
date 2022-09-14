@@ -68,6 +68,8 @@ export class Setup {
         this.cleanDatabase = options.cleanDatabase;
         this.resetDbConnect = options.resetDbConnect;
         this.restartController = options.restartController;
+
+        this.dbSetup = this.dbSetup.bind(this);
     }
 
     mkpathSync(rootpath: string, _dirpath: string) {
