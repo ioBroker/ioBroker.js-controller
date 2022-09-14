@@ -3325,9 +3325,9 @@ function dbConnect(onlyCheck, params, callback) {
  * `{objects: any, states: any, isOffline?: boolean, objectsDBType?: string, config}`
  */
 function dbConnectAsync(onlyCheck, params) {
-    return new Promise((resolve, reject) =>
-        dbConnect(onlyCheck, params, (err, objects, states, isOffline, objectsDBType, config) =>
-            err ? reject(err) : resolve({ objects, states, isOffline, objectsDBType, config })
+    return new Promise(resolve =>
+        dbConnect(onlyCheck, params, (objects, states, isOffline, objectsDBType, config) =>
+            resolve({ objects, states, isOffline, objectsDBType, config })
         )
     );
 }
