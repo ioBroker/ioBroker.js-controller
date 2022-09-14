@@ -588,7 +588,7 @@ export class Install {
     /**
      * Installs given adapter
      */
-    private async installAdapter(adapter: string, repoUrl?: string, _installCount?: number): Promise<string | void> {
+    async installAdapter(adapter: string, repoUrl?: string, _installCount?: number): Promise<string | void> {
         _installCount = _installCount || 0;
         const fullName = adapter;
         if (adapter.includes('@')) {

@@ -18,16 +18,20 @@ export function statesDbHasServer(dbType: string): boolean {
 /**
  * Allows to find out if a given objects dbType offers a server which runs on this host and listens (locally or globally/by IP)
  * @param dbType database type
- * @param host configured db host
+ * @param host configured db host - multihost (array) will always return false
  * @param checkIfLocalOnly if true the method checks if the server listens to local connections only; else also external connection options are checked
  * @returns true if a server listens on this host (locally or globally/by IP)
  */
-export function isLocalObjectsDbServer(dbType: string, host: string, checkIfLocalOnly: boolean = false): boolean {
+export function isLocalObjectsDbServer(
+    dbType: string,
+    host: string | string[],
+    checkIfLocalOnly: boolean = false
+): boolean {
     if (!objectsDbHasServer(dbType)) {
         return false; // if no server it can not be a local server
     }
     let result = host === 'localhost' || host === '127.0.0.1'; // reachable locally only
-    if (!checkIfLocalOnly) {
+    if (!checkIfLocalOnly && !Array.isArray(host)) {
         const ownIps = tools.findIPs();
         result = result || host === '0.0.0.0' || ownIps.includes(host);
     }
@@ -37,16 +41,16 @@ export function isLocalObjectsDbServer(dbType: string, host: string, checkIfLoca
 /**
  * Allows to find out if a given states dbType offers a server which runs on this host and listens (locally or globally/by IP)
  * @param dbType database type
- * @param host configured db host
+ * @param host configured db host - multihost (array) will always return false
  * @param checkIfLocalOnly if true the method checks if the server listens to local connections only; else also external connection options are checked
  * @returns true if a server listens on this host (locally or globally/by IP)
  */
-export function isLocalStatesDbServer(dbType: string, host: string, checkIfLocalOnly = false): boolean {
+export function isLocalStatesDbServer(dbType: string, host: string | string[], checkIfLocalOnly = false): boolean {
     if (!statesDbHasServer(dbType)) {
         return false; // if no server it can not be a local server
     }
     let result = host === 'localhost' || host === '127.0.0.1'; // reachable locally only
-    if (!checkIfLocalOnly) {
+    if (!checkIfLocalOnly && !Array.isArray(host)) {
         const ownIps = tools.findIPs();
         result = result || host === '0.0.0.0' || ownIps.includes(host);
     }

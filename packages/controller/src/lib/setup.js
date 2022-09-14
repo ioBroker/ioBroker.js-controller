@@ -570,9 +570,9 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'setup': {
-            const Setup = require('./setup/setupSetup.js');
+            const Setup = require('@iobroker/js-controller-cli').setupSetup;
             const setup = new Setup({
-                dbConnect,
+                dbConnectAsync,
                 processExit: callback,
                 cleanDatabase,
                 restartController,
@@ -580,7 +580,8 @@ async function processCommand(command, args, params, callback) {
                 params
             });
             if (args[0] === 'custom' || params.custom) {
-                setup.setupCustom(callback);
+                const exitCode = await setup.setupCustom();
+                callback(exitCode);
             } else {
                 let isFirst;
                 let isRedis;
@@ -3010,7 +3011,7 @@ async function getRepository(repoName, params) {
     }
 }
 
-async function resetDbConnect(_callback) {
+async function resetDbConnect() {
     if (objects) {
         await objects.destroy();
         objects = null;
