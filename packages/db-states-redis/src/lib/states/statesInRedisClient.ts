@@ -909,7 +909,7 @@ export class StateRedisClient {
 
     async getStates(
         keys: string[],
-        callback: (err: Error | undefined | null, states?: (ioBroker.State | null)[]) => void,
+        callback?: (err: Error | undefined | null, states?: (ioBroker.State | null)[]) => void,
         dontModify?: boolean
     ): Promise<(ioBroker.State | null)[] | void> {
         if (!keys || !Array.isArray(keys)) {
@@ -1055,7 +1055,7 @@ export class StateRedisClient {
 
     async getKeys(
         pattern: string,
-        callback: ioBroker.GetConfigKeysCallback,
+        callback?: ioBroker.GetConfigKeysCallback,
         dontModify?: boolean
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetConfigKeysCallback> | void> {
         if (!pattern || typeof pattern !== 'string') {

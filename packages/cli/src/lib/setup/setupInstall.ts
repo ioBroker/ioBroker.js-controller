@@ -1308,7 +1308,6 @@ export class Install {
             `system.adapter.${adapter}.${instance ? instance + '.' : ''}*`
         ]) {
             try {
-                // @ts-expect-error #1917
                 const ids = await this.states.getKeys(pattern);
                 if (ids && ids.length) {
                     // add non-duplicates to the list
