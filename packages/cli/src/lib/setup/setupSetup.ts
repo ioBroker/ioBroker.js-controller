@@ -539,9 +539,6 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                     isOffline
                 } = await this.dbConnectAsync(false, this.params);
 
-                this.objects = objectsOld;
-                this.states = statesOld;
-
                 if (!isOffline) {
                     console.error(COLOR_RED);
                     console.error('Cannot migrate DB while js-controller is still running!');
@@ -584,10 +581,10 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                     console.log('');
                     console.log(`Connecting to new DB "${newConfig.objects.type}" (can take up to 20s) ...`);
 
-                    const { objects: objectsNew, states: statesNew } = await this.dbConnectAsync(
-                        true,
-                        Object.assign(this.params, { timeout: 20000 })
-                    );
+                    const { objects: objectsNew, states: statesNew } = await this.dbConnectAsync(true, {
+                        ...this.params,
+                        timeout: 20000
+                    });
 
                     this.objects = objectsNew;
                     this.states = statesNew;
