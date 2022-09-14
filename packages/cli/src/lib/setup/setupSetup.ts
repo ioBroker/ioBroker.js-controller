@@ -72,7 +72,7 @@ export class Setup {
         this.dbSetup = this.dbSetup.bind(this);
     }
 
-    mkpathSync(rootpath: string, _dirpath: string) {
+    mkpathSync(rootpath: string, _dirpath: string): void {
         // Remove filename
         const dirpath = _dirpath.split('/');
         dirpath.pop();
@@ -311,7 +311,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
      * @param callback
      * @param checkCertificateOnly
      */
-    async setupObjects(callback: () => void, checkCertificateOnly?: boolean) {
+    async setupObjects(callback: () => void, checkCertificateOnly?: boolean): Promise<void> {
         const { states: _states, objects: _objects } = await this.dbConnectAsync(false, this.params);
         this.objects = _objects;
         this.states = _states;
@@ -1046,7 +1046,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         }
     }
 
-    setup(callback: (isCreated?: boolean) => void, ignoreIfExist: boolean, useRedis: boolean) {
+    setup(callback: (isCreated?: boolean) => void, ignoreIfExist: boolean, useRedis: boolean): void {
         let config;
         let isCreated = false;
         const platform = os.platform();
