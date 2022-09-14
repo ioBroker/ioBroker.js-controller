@@ -23,10 +23,7 @@ interface DbConnectAsyncReturn {
     objectsDBType?: string;
 }
 
-export type DbConnectAsync = (
-    onlyCheckOrParams?: boolean | Record<string, any>,
-    params?: Record<string, any>
-) => Promise<DbConnectAsyncReturn>;
+export type DbConnectAsync = (onlyCheck: boolean, params?: Record<string, any>) => Promise<DbConnectAsyncReturn>;
 export type RestartController = () => void;
 export type ResetDbConnect = () => Promise<void>;
 

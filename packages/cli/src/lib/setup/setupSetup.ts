@@ -310,7 +310,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
      * @param checkCertificateOnly
      */
     async setupObjects(callback: () => void, checkCertificateOnly?: boolean) {
-        const { states: _states, objects: _objects } = await this.dbConnectAsync(this.params);
+        const { states: _states, objects: _objects } = await this.dbConnectAsync(false, this.params);
         this.objects = _objects;
         this.states = _states;
         const iopkg = fs.readJsonSync(path.join(CONTROLLER_DIR, 'io-package.json'));
@@ -531,7 +531,11 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             if (answer === 'Y' || answer === 'y' || answer === 'J' || answer === 'j') {
                 console.log(`Connecting to previous DB "${oldConfig.objects.type}"...`);
 
-                const { objects: objectsOld, states: statesOld, isOffline } = await this.dbConnectAsync(this.params);
+                const {
+                    objects: objectsOld,
+                    states: statesOld,
+                    isOffline
+                } = await this.dbConnectAsync(false, this.params);
                 if (!isOffline) {
                     console.error(COLOR_RED);
                     console.error('Cannot migrate DB while js-controller is still running!');
