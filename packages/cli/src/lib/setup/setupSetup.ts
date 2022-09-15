@@ -939,7 +939,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                     defaultInput: tools.getDefaultDataDir()
                 });
 
-                const validationInfo = tools.isValidDataDir(dir);
+                const validationInfo = tools.validateDataDir(dir);
 
                 validDataDir = validationInfo.valid;
 

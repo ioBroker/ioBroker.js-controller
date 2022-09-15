@@ -3820,7 +3820,7 @@ export interface DataDirValidation {
  *
  * @param dataDir dataDir to check
  */
-export function isValidDataDir(dataDir: string): DataDirValidation {
+export function validateDataDir(dataDir: string): DataDirValidation {
     if (!path.isAbsolute(dataDir)) {
         dataDir = path.normalize(path.join(getControllerDir(), dataDir));
     }
