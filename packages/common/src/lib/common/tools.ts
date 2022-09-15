@@ -3805,6 +3805,35 @@ export function compressFileGZip(
     });
 }
 
+export interface DataDirValidation {
+    /** if data directory is valid */
+    valid: boolean;
+    /** absolute path it resolves too */
+    path: string;
+    /** reason of rejection */
+    reason: string;
+}
+
+/**
+ * Validate if the dir, is a valid dataDir
+ * Data dirs in node_modules are not allowed, note that dataDirs are relative to js-controller dir or absolute
+ *
+ * @param dataDir dataDir to check
+ */
+export function isValidDataDir(dataDir: string): DataDirValidation {
+    if (!path.isAbsolute(dataDir)) {
+        dataDir = path.normalize(path.join(getControllerDir(), dataDir));
+    }
+
+    const isValid = !dataDir.includes('node_modules');
+
+    return {
+        valid: isValid,
+        path: dataDir,
+        reason: isValid ? 'Valid data directory' : 'Data directory is not allowed to point into node_modules folder'
+    };
+}
+
 /**
  * If an array is passed it will be stringified, else the parameter is returned
  * @param maybeArr parameter which will be stringified if it is an array

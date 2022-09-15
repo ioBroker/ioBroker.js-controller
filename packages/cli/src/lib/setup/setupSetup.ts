@@ -932,9 +932,24 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         let hname;
 
         if (dbTools.isLocalStatesDbServer(stype, sHost) || dbTools.isLocalObjectsDbServer(otype, oHost)) {
-            dir = rl.question(`Data directory (file), default[${tools.getDefaultDataDir()}]: `, {
-                defaultInput: tools.getDefaultDataDir()
-            });
+            let validDataDir = false;
+
+            while (!validDataDir) {
+                dir = rl.question(`Data directory (file), default[${tools.getDefaultDataDir()}]: `, {
+                    defaultInput: tools.getDefaultDataDir()
+                });
+
+                const validationInfo = tools.isValidDataDir(dir);
+
+                validDataDir = validationInfo.valid;
+
+                if (!validDataDir) {
+                    console.warn(
+                        `${COLOR_YELLOW}The data directory is invalid. ${validationInfo.reason}${COLOR_RESET}`
+                    );
+                    console.warn(`The current directory resolves to "${validationInfo.path}"`);
+                }
+            }
 
             hname = rl.question(
                 `Host name of this machine [${
@@ -1206,7 +1221,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                 config = fs.readJSONSync(configFileName);
                 if (!Object.prototype.hasOwnProperty.call(config, 'dataDir')) {
                     // Workaround: there was a bug with admin v5 which could remove the dataDir attribute -> fix this
-                    // TODO: remove it as soon as all adapters are fixed which use systemConfig.dataDir
+                    // TODO: remove it as soon as all adapters are fixed which use systemConfig.dataDir, with v4.2 we can for sure remove this
                     config.dataDir = tools.getDefaultDataDir();
                     fs.writeJSONSync(configFileName, config, { spaces: 2 });
                 }
