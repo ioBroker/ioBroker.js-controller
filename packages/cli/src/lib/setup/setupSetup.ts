@@ -631,7 +631,6 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
                         resolve(exitCode ? EXIT_CODES.MIGRATION_ERROR : EXIT_CODES.NO_ERROR);
                     });
-                    resolve(EXIT_CODES.NO_ERROR);
                 });
             } else if (!newObjectsHasServer) {
                 console.log('');
