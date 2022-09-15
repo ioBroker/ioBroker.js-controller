@@ -1,6 +1,6 @@
 {
   "name": "@iobroker/db-states-redis",
-  "version": "4.1.0-alpha.0-20220914-0021bff7",
+  "version": "4.1.0-alpha.0-20220915-3090c793",
   "engines": {
     "node": ">=12.0.0"
   },
