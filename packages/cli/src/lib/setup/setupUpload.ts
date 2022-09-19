@@ -666,7 +666,8 @@ export class Upload {
                 'mode',
                 'loglevel',
                 'enabled',
-                'custom'
+                'custom',
+                'tier'
             ];
 
             for (const attr of Object.keys(additional)) {
