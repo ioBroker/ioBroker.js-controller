@@ -51,8 +51,12 @@ function normalizeJsonlOptions(conf = {}) {
     /** @type {import("@alcalzone/jsonl-db").JsonlDBOptions<any>} */
     const ret = {
         autoCompress: {
+            // Compress when the number of uncompressed entries has grown a lot
             sizeFactor: 10,
-            sizeFactorMinimumSize: 50000
+            sizeFactorMinimumSize: 50000,
+            // Compress at least daily to avoid a huge file when DBs have few objects
+            // but big binary states are updated regularly
+            intervalMs: 1000 * 60 * 60 * 24
         },
         ignoreReadErrors: true,
         throttleFS: {
