@@ -725,7 +725,7 @@ async function processCommand(command, args, params, callback) {
                             }
 
                             if (migrated) {
-                                const NotificationHandler = require('./../lib/notificationHandler');
+                                const { NotificationHandler } = require('./../lib/notificationHandler');
 
                                 const hostname = tools.getHostName();
 
