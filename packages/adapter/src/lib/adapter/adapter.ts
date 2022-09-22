@@ -7791,7 +7791,6 @@ export class AdapterClass extends EventEmitter {
                     }
                 }
 
-                options._objects = undefined;
                 // @ts-expect-error fix it
                 return tools.maybeCallbackWithError(callback, null, ids, objs);
             } else {
