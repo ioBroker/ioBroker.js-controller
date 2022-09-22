@@ -97,7 +97,8 @@ import type {
     InternalSubscribeOptions,
     InternalUpdateConfigOptions,
     TimeoutCallback,
-    MaybePromise
+    MaybePromise,
+    SetStateChangedRes
 } from '../_Types';
 
 // keep them outside until we have migrated to TS, else devs can access them
@@ -417,7 +418,7 @@ export interface AdapterClass {
     getForeignObjectsAsync<T extends ioBroker.ObjectType>(
         pattern: string,
         type: T,
-        enums: ioBroker.EnumList,
+        enums?: ioBroker.EnumList | null,
         options?: unknown
     ): ioBroker.GetObjectsPromiseTyped<T>;
     getForeignObjectsAsync<T extends ioBroker.ObjectType>(
@@ -7501,124 +7502,134 @@ export class AdapterClass extends EventEmitter {
     }
 
     // Cache will be cleared if user or group changes.. Important! only if subscribed.
-    private _getUserGroups(options: GetUserGroupsOptions, callback: (options?: Record<string, any>) => void) {
+    private async _getUserGroups(options: GetUserGroupsOptions): Promise<GetUserGroupsOptions> {
         if (this.users[options.user]) {
             options.groups = this.users[options.user].groups;
             options.acl = this.users[options.user].acl;
-            return tools.maybeCallback(callback, options);
+            return options;
         }
         options.groups = [];
-        this.getForeignObject(options.user, null, (err, userAcl) => {
-            if (!userAcl) {
-                // User does not exists
-                this._logger.error(`${this.namespaceLog} unknown user "${options.user}"`);
-                return tools.maybeCallback(callback, options);
-            } else {
-                this.getForeignObjects('*', 'group', null, null, async (err, groups) => {
-                    // aggregate all groups permissions, where this user is
-                    if (groups) {
-                        for (const group of Object.values(groups)) {
-                            if (group.common.members.includes(options.user)) {
-                                options.groups.push(group._id);
-                            }
-                        }
-                    }
+        let userAcl: ioBroker.UserObject | null | undefined;
+        try {
+            userAcl = await this.getForeignObjectAsync(options.user, null);
+        } catch {
+            // ignore
+        }
 
-                    // read all groups for this user
-                    this.users[options.user] = {
-                        groups: options.groups,
-                        // @ts-expect-error TODO: UserCommon has no acl
-                        acl: userAcl.common?.acl || {}
-                    };
-                    await this._getGroups(options.groups);
-                    // combine all rights
-                    const user = this.users[options.user];
-                    for (const gName of options.groups) {
-                        if (!this.groups[gName].common?.acl) {
-                            continue;
-                        }
-                        const group = this.groups[gName];
-
-                        if (group.common?.acl?.file) {
-                            if (!user.acl || !user.acl.file) {
-                                user.acl = user.acl || {};
-                                user.acl.file = user.acl.file || {};
-
-                                user.acl.file.create = group.common.acl.file.create;
-                                user.acl.file.read = group.common.acl.file.read;
-                                user.acl.file.write = group.common.acl.file.write;
-                                user.acl.file.delete = group.common.acl.file.delete;
-                                user.acl.file.list = group.common.acl.file.list;
-                            } else {
-                                user.acl.file.create = user.acl.file.create || group.common.acl.file.create;
-                                user.acl.file.read = user.acl.file.read || group.common.acl.file.read;
-                                user.acl.file.write = user.acl.file.write || group.common.acl.file.write;
-                                user.acl.file.delete = user.acl.file.delete || group.common.acl.file.delete;
-                                user.acl.file.list = user.acl.file.list || group.common.acl.file.list;
-                            }
-                        }
-
-                        if (group.common?.acl?.object) {
-                            if (!user.acl || !user.acl.object) {
-                                user.acl = user.acl || {};
-                                user.acl.object = user.acl.object || {};
-
-                                user.acl.object.create = group.common.acl.object.create;
-                                user.acl.object.read = group.common.acl.object.read;
-                                user.acl.object.write = group.common.acl.object.write;
-                                user.acl.object.delete = group.common.acl.object.delete;
-                                user.acl.object.list = group.common.acl.object.list;
-                            } else {
-                                user.acl.object.create = user.acl.object.create || group.common.acl.object.create;
-                                user.acl.object.read = user.acl.object.read || group.common.acl.object.read;
-                                user.acl.object.write = user.acl.object.write || group.common.acl.object.write;
-                                user.acl.object.delete = user.acl.object.delete || group.common.acl.object.delete;
-                                user.acl.object.list = user.acl.object.list || group.common.acl.object.list;
-                            }
-                        }
-
-                        if (group.common?.acl?.users) {
-                            if (!user.acl || !user.acl.users) {
-                                user.acl = user.acl || {};
-                                user.acl.users = user.acl.users || {};
-
-                                user.acl.users.create = group.common.acl.users.create;
-                                user.acl.users.read = group.common.acl.users.read;
-                                user.acl.users.write = group.common.acl.users.write;
-                                user.acl.users.delete = group.common.acl.users.delete;
-                                user.acl.users.list = group.common.acl.users.list;
-                            } else {
-                                user.acl.users.create = user.acl.users.create || group.common.acl.users.create;
-                                user.acl.users.read = user.acl.users.read || group.common.acl.users.read;
-                                user.acl.users.write = user.acl.users.write || group.common.acl.users.write;
-                                user.acl.users.delete = user.acl.users.delete || group.common.acl.users.delete;
-                                user.acl.users.list = user.acl.users.list || group.common.acl.users.list;
-                            }
-                        }
-                        if (group.common?.acl?.state) {
-                            if (!user.acl || !user.acl.state) {
-                                user.acl = user.acl || {};
-                                user.acl.state = user.acl.state || {};
-
-                                user.acl.state.create = group.common.acl.state.create;
-                                user.acl.state.read = group.common.acl.state.read;
-                                user.acl.state.write = group.common.acl.state.write;
-                                user.acl.state.delete = group.common.acl.state.delete;
-                                user.acl.state.list = group.common.acl.state.list;
-                            } else {
-                                user.acl.state.create = user.acl.state.create || group.common.acl.state.create;
-                                user.acl.state.read = user.acl.state.read || group.common.acl.state.read;
-                                user.acl.state.write = user.acl.state.write || group.common.acl.state.write;
-                                user.acl.state.delete = user.acl.state.delete || group.common.acl.state.delete;
-                                user.acl.state.list = user.acl.state.list || group.common.acl.state.list;
-                            }
-                        }
-                    }
-                    options.acl = user.acl;
-                    return tools.maybeCallback(callback, options);
-                });
+        if (!userAcl) {
+            // User does not exists
+            this._logger.error(`${this.namespaceLog} unknown user "${options.user}"`);
+            return options;
+        } else {
+            let groups;
+            try {
+                groups = await this.getForeignObjectsAsync('*', 'group', null, null);
+            } catch {
+                // ignore
             }
-        });
+
+            // aggregate all groups permissions, where this user is
+            if (groups) {
+                for (const group of Object.values(groups)) {
+                    if (group.common.members.includes(options.user)) {
+                        options.groups.push(group._id);
+                    }
+                }
+            }
+
+            // read all groups for this user
+            this.users[options.user] = {
+                groups: options.groups,
+                // @ts-expect-error TODO: UserCommon has no acl
+                acl: userAcl.common?.acl || {}
+            };
+            await this._getGroups(options.groups);
+            // combine all rights
+            const user = this.users[options.user];
+            for (const gName of options.groups) {
+                if (!this.groups[gName].common?.acl) {
+                    continue;
+                }
+                const group = this.groups[gName];
+
+                if (group.common?.acl?.file) {
+                    if (!user.acl || !user.acl.file) {
+                        user.acl = user.acl || {};
+                        user.acl.file = user.acl.file || {};
+
+                        user.acl.file.create = group.common.acl.file.create;
+                        user.acl.file.read = group.common.acl.file.read;
+                        user.acl.file.write = group.common.acl.file.write;
+                        user.acl.file.delete = group.common.acl.file.delete;
+                        user.acl.file.list = group.common.acl.file.list;
+                    } else {
+                        user.acl.file.create = user.acl.file.create || group.common.acl.file.create;
+                        user.acl.file.read = user.acl.file.read || group.common.acl.file.read;
+                        user.acl.file.write = user.acl.file.write || group.common.acl.file.write;
+                        user.acl.file.delete = user.acl.file.delete || group.common.acl.file.delete;
+                        user.acl.file.list = user.acl.file.list || group.common.acl.file.list;
+                    }
+                }
+
+                if (group.common?.acl?.object) {
+                    if (!user.acl || !user.acl.object) {
+                        user.acl = user.acl || {};
+                        user.acl.object = user.acl.object || {};
+
+                        user.acl.object.create = group.common.acl.object.create;
+                        user.acl.object.read = group.common.acl.object.read;
+                        user.acl.object.write = group.common.acl.object.write;
+                        user.acl.object.delete = group.common.acl.object.delete;
+                        user.acl.object.list = group.common.acl.object.list;
+                    } else {
+                        user.acl.object.create = user.acl.object.create || group.common.acl.object.create;
+                        user.acl.object.read = user.acl.object.read || group.common.acl.object.read;
+                        user.acl.object.write = user.acl.object.write || group.common.acl.object.write;
+                        user.acl.object.delete = user.acl.object.delete || group.common.acl.object.delete;
+                        user.acl.object.list = user.acl.object.list || group.common.acl.object.list;
+                    }
+                }
+
+                if (group.common?.acl?.users) {
+                    if (!user.acl || !user.acl.users) {
+                        user.acl = user.acl || {};
+                        user.acl.users = user.acl.users || {};
+
+                        user.acl.users.create = group.common.acl.users.create;
+                        user.acl.users.read = group.common.acl.users.read;
+                        user.acl.users.write = group.common.acl.users.write;
+                        user.acl.users.delete = group.common.acl.users.delete;
+                        user.acl.users.list = group.common.acl.users.list;
+                    } else {
+                        user.acl.users.create = user.acl.users.create || group.common.acl.users.create;
+                        user.acl.users.read = user.acl.users.read || group.common.acl.users.read;
+                        user.acl.users.write = user.acl.users.write || group.common.acl.users.write;
+                        user.acl.users.delete = user.acl.users.delete || group.common.acl.users.delete;
+                        user.acl.users.list = user.acl.users.list || group.common.acl.users.list;
+                    }
+                }
+                if (group.common?.acl?.state) {
+                    if (!user.acl || !user.acl.state) {
+                        user.acl = user.acl || {};
+                        user.acl.state = user.acl.state || {};
+
+                        user.acl.state.create = group.common.acl.state.create;
+                        user.acl.state.read = group.common.acl.state.read;
+                        user.acl.state.write = group.common.acl.state.write;
+                        user.acl.state.delete = group.common.acl.state.delete;
+                        user.acl.state.list = group.common.acl.state.list;
+                    } else {
+                        user.acl.state.create = user.acl.state.create || group.common.acl.state.create;
+                        user.acl.state.read = user.acl.state.read || group.common.acl.state.read;
+                        user.acl.state.write = user.acl.state.write || group.common.acl.state.write;
+                        user.acl.state.delete = user.acl.state.delete || group.common.acl.state.delete;
+                        user.acl.state.list = user.acl.state.list || group.common.acl.state.list;
+                    }
+                }
+            }
+            options.acl = user.acl;
+            return options;
+        }
     }
 
     private _checkState(obj: ioBroker.StateObject, options: Record<string, any>, command: CheckStateCommand) {
@@ -7751,18 +7762,17 @@ export class AdapterClass extends EventEmitter {
         callback: (err?: Error, ids?: string[], objs?: ioBroker.StateObject[]) => void,
         _helper?: any
     ): void;
-    private _checkStates(
+    private async _checkStates(
         ids: string | string[],
-        options: Record<string, any>,
+        options: Partial<GetUserGroupsOptions>,
         command: CheckStateCommand,
         callback:
             | ((err?: Error, ids?: string[], objs?: ioBroker.StateObject[]) => void)
             | ((err?: Error, obj?: ioBroker.StateObject) => void),
         _helper?: any
-    ): void {
+    ): Promise<void> {
         if (!options.groups) {
-            // @ts-expect-error ts not able to combine the overloads
-            return this._getUserGroups(options, () => this._checkStates(ids, options, command, callback));
+            options = await this._getUserGroups(options as GetUserGroupsOptions);
         }
 
         if (Array.isArray(ids)) {
@@ -7822,7 +7832,7 @@ export class AdapterClass extends EventEmitter {
                 });
             }
         } else {
-            let originalChecked: boolean;
+            let originalChecked: boolean | undefined;
 
             if (options.checked !== undefined) {
                 originalChecked = options.checked;
@@ -7837,24 +7847,25 @@ export class AdapterClass extends EventEmitter {
                 // @ts-expect-error fix it
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
             }
-            adapterObjects.getObject(ids, options, (err, obj) => {
-                if (originalChecked !== undefined) {
-                    options.checked = originalChecked;
-                } else {
-                    options.checked = undefined;
-                }
-                if (err) {
-                    // @ts-expect-error fix it
-                    return tools.maybeCallbackWithError(callback, err, { _id: ids });
-                } else {
-                    if (!this._checkState(obj as ioBroker.StateObject, options, command)) {
-                        // @ts-expect-error fix it
-                        return tools.maybeCallbackWithError(callback, ERROR_PERMISSION, { _id: ids });
-                    }
-                }
+            let obj;
+            try {
+                obj = await adapterObjects.getObject(ids, options);
+            } catch (e) {
                 // @ts-expect-error fix it
-                return tools.maybeCallbackWithError(callback, null, obj);
-            });
+                return tools.maybeCallbackWithError(callback, err, { _id: ids });
+            }
+            if (originalChecked !== undefined) {
+                options.checked = originalChecked;
+            } else {
+                options.checked = undefined;
+            }
+
+            if (!this._checkState(obj as ioBroker.StateObject, options, command)) {
+                // @ts-expect-error fix it
+                return tools.maybeCallbackWithError(callback, ERROR_PERMISSION, { _id: ids });
+            }
+            // @ts-expect-error fix it
+            return tools.maybeCallbackWithError(callback, null, obj);
         }
     }
 
@@ -7872,72 +7883,68 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    private _setStateChangedHelper(
-        id: string,
-        state: ioBroker.SettableState,
-        callback: (err?: Error | null, id?: string, changed?: boolean) => void
-    ) {
+    private async _setStateChangedHelper(id: string, state: ioBroker.SettableState): Promise<SetStateChangedRes> {
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} setStateChanged not processed because Objects database not connected`
             );
 
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         if (id.startsWith(ALIAS_STARTS_WITH)) {
-            adapterObjects.getObject(id, (err, obj) => {
-                if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
-                    // id can be string or can have attribute write
-                    const aliasId =
-                        typeof obj.common.alias.id.write === 'string' ? obj.common.alias.id.write : obj.common.alias.id;
-                    this._setStateChangedHelper(aliasId, state, callback);
-                } else {
-                    this._logger.warn(`${this.namespaceLog} ${err ? err.message : `Alias ${id} has no target 1`}`);
-                    return tools.maybeCallbackWithError(callback, err ? err.message : `Alias ${id} has no target`);
-                }
-            });
+            let obj;
+            let err;
+            try {
+                obj = await adapterObjects.getObject(id);
+            } catch (e) {
+                err = e;
+            }
+            if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
+                // id can be string or can have attribute write
+                const aliasId =
+                    typeof obj.common.alias.id.write === 'string' ? obj.common.alias.id.write : obj.common.alias.id;
+                return this._setStateChangedHelper(aliasId, state);
+            } else {
+                this._logger.warn(`${this.namespaceLog} ${err ? err.message : `Alias ${id} has no target 1`}`);
+                throw new Error(err ? err.message : `Alias ${id} has no target`);
+            }
         } else {
-            this.getForeignState(id, null, async (err, oldState) => {
-                if (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                } else {
-                    let differ = false;
-                    if (!oldState) {
-                        differ = true;
-                    } else if (state.val !== oldState.val) {
-                        differ = true;
-                    } else if (state.ack !== undefined && state.ack !== oldState.ack) {
-                        differ = true;
-                    } else if (state.q !== undefined && state.q !== oldState.q) {
-                        differ = true;
-                    } else if (state.ts !== undefined && state.ts !== oldState.ts) {
-                        differ = true;
-                    } else if (state.c !== undefined && state.c !== oldState.c) {
-                        // if comment changed
-                        differ = true;
-                    } else if (state.expire !== undefined && state.expire !== oldState.expire) {
-                        differ = true;
-                    } else if (state.from !== undefined && state.from !== oldState.from) {
-                        differ = true;
-                    } else if (state.user !== undefined && state.user !== oldState.user) {
-                        differ = true;
-                    }
+            const oldState = await this.getForeignStateAsync(id, null);
 
-                    if (differ) {
-                        if (this.performStrictObjectChecks) {
-                            // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                            await this._utils.performStrictObjectCheck(id, state);
-                        }
-                        this.outputCount++;
-                        adapterStates!.setState(id, state, () => {
-                            return tools.maybeCallbackWithError(callback, null, id, false);
-                        });
-                    } else {
-                        return tools.maybeCallbackWithError(callback, null, id, true);
-                    }
+            let differ = false;
+            if (!oldState) {
+                differ = true;
+            } else if (state.val !== oldState.val) {
+                differ = true;
+            } else if (state.ack !== undefined && state.ack !== oldState.ack) {
+                differ = true;
+            } else if (state.q !== undefined && state.q !== oldState.q) {
+                differ = true;
+            } else if (state.ts !== undefined && state.ts !== oldState.ts) {
+                differ = true;
+            } else if (state.c !== undefined && state.c !== oldState.c) {
+                // if comment changed
+                differ = true;
+            } else if (state.expire !== undefined && state.expire !== oldState.expire) {
+                differ = true;
+            } else if (state.from !== undefined && state.from !== oldState.from) {
+                differ = true;
+            } else if (state.user !== undefined && state.user !== oldState.user) {
+                differ = true;
+            }
+
+            if (differ) {
+                if (this.performStrictObjectChecks) {
+                    // validate that object exists, read-only logic ok, type ok, etc. won't throw now
+                    await this._utils.performStrictObjectCheck(id, state);
                 }
-            });
+                this.outputCount++;
+                await adapterStates!.setState(id, state);
+                return { id, changed: true };
+            } else {
+                return { id, changed: false };
+            }
         }
     }
 
@@ -8019,7 +8026,7 @@ export class AdapterClass extends EventEmitter {
         return this._setStateChanged({ id, state: state as ioBroker.SettableState, ack, options, callback });
     }
 
-    private _setStateChanged(_options: InternalSetStateChanedOptions) {
+    private async _setStateChanged(_options: InternalSetStateChanedOptions): Promise<void> {
         const { id, ack, options, callback, state } = _options;
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
@@ -8072,18 +8079,20 @@ export class AdapterClass extends EventEmitter {
                 ? stateObj.from
                 : `system.adapter.${this.namespace}`;
         if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-            this._checkStates(fixedId, options, 'setState', err => {
+            this._checkStates(fixedId, options, 'setState', async err => {
                 if (err) {
                     // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                     return tools.maybeCallbackWithError(callback, err);
                 } else {
+                    const res = await this._setStateChangedHelper(fixedId, stateObj);
                     // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                    this._setStateChangedHelper(fixedId, stateObj, callback);
+                    return tools.maybeCallbackWithError(callback, null, res.id, res.changed);
                 }
             });
         } else {
+            const res = await this._setStateChangedHelper(fixedId, stateObj);
             // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-            this._setStateChangedHelper(fixedId, stateObj, callback);
+            return tools.maybeCallbackWithError(callback, null, res.id, res.changed);
         }
     }
 
@@ -8451,7 +8460,13 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    setForeignStateChanged(id: any, state: any, ack: any, options?: any, callback?: any): any {
+    async setForeignStateChanged(
+        id: any,
+        state: any,
+        ack: any,
+        options?: any,
+        callback?: any
+    ): Promise<void | [id: string, changed: boolean]> {
         if (typeof state === 'object' && typeof ack !== 'boolean') {
             callback = options;
             options = ack;
@@ -8517,15 +8532,17 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-            this._checkStates(id, options, 'setState', err => {
+            this._checkStates(id, options, 'setState', async err => {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
                 } else {
-                    this._setStateChangedHelper(id, state, callback);
+                    const res = await this._setStateChangedHelper(id, state);
+                    return tools.maybeCallbackWithError(callback, null, res.id, res.changed);
                 }
             });
         } else {
-            this._setStateChangedHelper(id, state, callback);
+            const res = await this._setStateChangedHelper(id, state);
+            return tools.maybeCallbackWithError(callback, null, res.id, res.changed);
         }
     }
 
@@ -8594,7 +8611,7 @@ export class AdapterClass extends EventEmitter {
         return this._getForeignState({ id, options, callback });
     }
 
-    private _getForeignState(_options: InternalGetStateOptions) {
+    private async _getForeignState(_options: InternalGetStateOptions) {
         const { id, options, callback } = _options;
 
         if (!adapterStates) {
@@ -8652,52 +8669,39 @@ export class AdapterClass extends EventEmitter {
                             }
 
                             if (aliasId) {
-                                if (this.oStates && this.oStates[aliasId]) {
-                                    this._checkStates(aliasId, options, 'getState', (err, sourceObj) => {
-                                        if (err) {
+                                this._checkStates(aliasId, options, 'getState', async (err, sourceObj) => {
+                                    if (err) {
+                                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                                        return tools.maybeCallbackWithError(callback, err);
+                                    }
+
+                                    let state: ioBroker.State | undefined | null;
+                                    if (this.oStates && this.oStates[aliasId]) {
+                                        state = deepClone(this.oStates[aliasId]);
+                                    } else {
+                                        this.inputCount++;
+                                        try {
+                                            // @ts-expect-error void return possible fix it
+                                            state = await adapterStates!.getState(aliasId);
+                                        } catch (e) {
                                             // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                                             return tools.maybeCallbackWithError(callback, err);
-                                        } else {
-                                            // @ts-expect-error better read before doing async stuff
-                                            const state = deepClone(this.oStates[aliasId]);
-                                            return tools.maybeCallbackWithError(
-                                                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                                                callback,
-                                                err,
-                                                tools.formatAliasValue(
-                                                    sourceObj && (sourceObj.common as any),
-                                                    obj.common,
-                                                    state,
-                                                    this._logger,
-                                                    this.namespaceLog
-                                                )
-                                            );
                                         }
-                                    });
-                                } else {
-                                    this._checkStates(aliasId, options, 'getState', (err, sourceObj) => {
-                                        if (err) {
-                                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                                            return tools.maybeCallbackWithError(callback, err);
-                                        } else {
-                                            this.inputCount++;
-                                            adapterStates!.getState(aliasId, (err, state) =>
-                                                tools.maybeCallbackWithError(
-                                                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                                                    callback,
-                                                    err,
-                                                    tools.formatAliasValue(
-                                                        sourceObj && (sourceObj.common as any),
-                                                        obj.common,
-                                                        state,
-                                                        this._logger,
-                                                        this.namespaceLog
-                                                    )
-                                                )
-                                            );
-                                        }
-                                    });
-                                }
+                                    }
+
+                                    return tools.maybeCallbackWithError(
+                                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                                        callback,
+                                        err,
+                                        tools.formatAliasValue(
+                                            sourceObj && (sourceObj.common as any),
+                                            obj.common,
+                                            state,
+                                            this._logger,
+                                            this.namespaceLog
+                                        )
+                                    );
+                                });
                             }
                         } else {
                             this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 8`);
@@ -8717,69 +8721,70 @@ export class AdapterClass extends EventEmitter {
             });
         } else {
             if (id.startsWith(ALIAS_STARTS_WITH)) {
-                adapterObjects.getObject(id, (err, obj) => {
-                    if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
-                        // id can be string or can have attribute id.read
-                        const aliasId =
-                            typeof obj.common.alias.id.read === 'string'
-                                ? obj.common.alias.id.read
-                                : obj.common.alias.id;
+                // TODO: optimize the alias GET performance and refactor it in a method with the duplicate code above
+                let obj;
+                try {
+                    obj = await adapterObjects.getObject(id);
+                } catch {
+                    // ignore
+                }
 
-                        // validate here because we use objects/states db directly
-                        try {
-                            this._utils.validateId(aliasId, true, null);
-                        } catch (e) {
-                            this._logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
-                            return tools.maybeCallbackWithError(
-                                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                                callback,
-                                `Error validating alias id of ${id}: ${e.message}`
-                            );
-                        }
+                if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
+                    // id can be string or can have attribute id.read
+                    const aliasId =
+                        typeof obj.common.alias.id.read === 'string' ? obj.common.alias.id.read : obj.common.alias.id;
 
-                        adapterObjects!.getObject(aliasId, (err, sourceObj) => {
-                            if (err) {
-                                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                                return tools.maybeCallbackWithError(callback, err);
-                            }
-                            if (this.oStates && this.oStates[aliasId]) {
-                                const state = deepClone(this.oStates[aliasId]);
-                                return tools.maybeCallbackWithError(
-                                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                                    callback,
-                                    err,
-                                    tools.formatAliasValue(
-                                        sourceObj && (sourceObj.common as any),
-                                        obj.common,
-                                        state,
-                                        this._logger,
-                                        this.namespaceLog
-                                    )
-                                );
-                            } else {
-                                this.inputCount++;
-                                adapterStates!.getState(aliasId, (err, state) => {
-                                    return tools.maybeCallbackWithError(
-                                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                                        callback,
-                                        err,
-                                        tools.formatAliasValue(
-                                            sourceObj && (sourceObj.common as any),
-                                            obj.common,
-                                            state,
-                                            this._logger,
-                                            this.namespaceLog
-                                        )
-                                    );
-                                });
-                            }
-                        });
-                    } else {
-                        this._logger.warn(`${this.namespaceLog} ${err ? err.message : `Alias ${id} has no target 9`}`);
-                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                        return tools.maybeCallbackWithError(callback, err ? err.message : `Alias ${id} has no target`);
+                    // validate here because we use objects/states db directly
+                    try {
+                        this._utils.validateId(aliasId, true, null);
+                    } catch (e) {
+                        this._logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
+                        return tools.maybeCallbackWithError(
+                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                            callback,
+                            `Error validating alias id of ${id}: ${e.message}`
+                        );
                     }
-                });
+
+                    let sourceObj;
+                    try {
+                        sourceObj = await adapterObjects!.getObject(aliasId);
+                    } catch (e) {
+                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                        return tools.maybeCallbackWithError(callback, e);
+                    }
+
+                    let state: ioBroker.State | undefined | null;
+                    if (this.oStates && this.oStates[aliasId]) {
+                        state = deepClone(this.oStates[aliasId]);
+                    } else {
+                        this.inputCount++;
+                        try {
+                            // @ts-expect-error void return possible fix it
+                            state = await adapterStates!.getState(aliasId);
+                        } catch (e) {
+                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                            return tools.maybeCallbackWithError(callback, err);
+                        }
+                    }
+
+                    return tools.maybeCallbackWithError(
+                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                        callback,
+                        null,
+                        tools.formatAliasValue(
+                            sourceObj && (sourceObj.common as any),
+                            obj.common,
+                            state,
+                            this._logger,
+                            this.namespaceLog
+                        )
+                    );
+                } else {
+                    this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 9`);
+                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                    return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
+                }
             } else {
                 if (this.oStates && this.oStates[id]) {
                     // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
@@ -11055,7 +11060,7 @@ export class AdapterClass extends EventEmitter {
                         } // If reconnected in the meantime, do not terminate
                         this._logger &&
                             this._logger.warn(
-                                this.namespaceLog + ' Cannot connect/reconnect to states DB. Terminating'
+                                `${this.namespaceLog} Cannot connect/reconnect to states DB. Terminating`
                             );
                         this.terminate(EXIT_CODES.NO_ERROR);
                     }, 5000);

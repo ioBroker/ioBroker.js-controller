@@ -81,6 +81,11 @@ export interface AliasTargetEntry {
     unit?: string;
 }
 
+export interface SetStateChangedRes {
+    changed: boolean;
+    id: string;
+}
+
 export interface GetUserGroupsOptions {
     user: `system.user.${string}`;
     [other: string]: any;
