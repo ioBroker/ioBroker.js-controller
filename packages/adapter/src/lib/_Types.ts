@@ -87,7 +87,7 @@ export interface CheckStatesResult {
 }
 
 export interface SetStateChangedResult {
-    changed: boolean;
+    notChanged: boolean;
     id: string;
 }
 

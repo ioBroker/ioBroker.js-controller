@@ -7201,30 +7201,30 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    setState(
+    setState<T extends ioBroker.SetStateCallback | undefined>(
         id: string | IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-        callback?: ioBroker.SetStateCallback
-    ): void;
-    setState(
-        id: string | IdObject,
-        state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-        ack: boolean,
-        callback?: ioBroker.SetStateCallback
-    ): void;
-    setState(
-        id: string | IdObject,
-        state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-        options: unknown,
-        callback?: ioBroker.SetStateCallback
-    ): void;
-    setState(
+        callback?: T
+    ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
+    setState<T extends ioBroker.SetStateCallback>(
         id: string | IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
+        callback?: T
+    ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
+    setState<T extends ioBroker.SetStateCallback>(
+        id: string | IdObject,
+        state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         options: unknown,
-        callback?: ioBroker.SetStateCallback
-    ): void;
+        callback?: T
+    ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
+    setState<T extends ioBroker.SetStateCallback>(
+        id: string | IdObject,
+        state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+        ack: boolean,
+        options: unknown,
+        callback?: T
+    ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
 
     /**
      * Writes value into states DB.
@@ -7257,7 +7257,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    setState(id: unknown, state: unknown, ack: unknown, options?: unknown, callback?: unknown): any {
+    setState(id: unknown, state: unknown, ack: unknown, options?: unknown, callback?: unknown): Promise<void | string> {
         if (typeof state === 'object' && typeof ack !== 'boolean') {
             callback = options;
             options = ack;
@@ -7291,7 +7291,7 @@ export class AdapterClass extends EventEmitter {
         return this._setState({ id, state: state as ioBroker.SettableState, ack, options, callback });
     }
 
-    private async _setState(_options: InternalSetStateOptions) {
+    private async _setState(_options: InternalSetStateOptions): Promise<void | string> {
         const { state, ack, options, callback } = _options;
         const { id } = _options;
 
@@ -7837,9 +7837,9 @@ export class AdapterClass extends EventEmitter {
                 }
                 this.outputCount++;
                 await adapterStates!.setState(id, state);
-                return { id, changed: true };
+                return { id, notChanged: false };
             } else {
-                return { id, changed: false };
+                return { id, notChanged: true };
             }
         }
     }
@@ -7984,11 +7984,11 @@ export class AdapterClass extends EventEmitter {
 
             const res = await this._setStateChangedHelper(fixedId, stateObj);
             // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-            return tools.maybeCallbackWithError(callback, null, res.id, res.changed);
+            return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
         } else {
             const res = await this._setStateChangedHelper(fixedId, stateObj);
             // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-            return tools.maybeCallbackWithError(callback, null, res.id, res.changed);
+            return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
         }
     }
 
@@ -8433,10 +8433,10 @@ export class AdapterClass extends EventEmitter {
             }
 
             const res = await this._setStateChangedHelper(id, state);
-            return tools.maybeCallbackWithError(callback, null, res.id, res.changed);
+            return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
         } else {
             const res = await this._setStateChangedHelper(id, state);
-            return tools.maybeCallbackWithError(callback, null, res.id, res.changed);
+            return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
         }
     }
 
@@ -8460,7 +8460,7 @@ export class AdapterClass extends EventEmitter {
      *
      *        See possible attributes of the state in @setState explanation
      */
-    getState(id: unknown, options: any, callback?: any): any {
+    getState(id: unknown, options: any, callback?: any): ioBroker.GetStatePromise {
         // we use any types here, because validation takes place in foreign method
         // get state does the same as getForeignState but fixes the id first
 
@@ -8471,8 +8471,8 @@ export class AdapterClass extends EventEmitter {
         return this.getForeignState(fixedId, options, callback);
     }
 
-    getForeignState(id: string, callback: ioBroker.GetStateCallback): void;
-    getForeignState(id: string, options: unknown, callback: ioBroker.GetStateCallback): void;
+    getForeignState(id: string, callback: ioBroker.GetStateCallback): ioBroker.GetStatePromise;
+    getForeignState(id: string, options: unknown, callback: ioBroker.GetStateCallback): ioBroker.GetStatePromise;
 
     /**
      * Read value from states DB for any instance and system state.
@@ -8490,7 +8490,11 @@ export class AdapterClass extends EventEmitter {
      *
      *        See possible attributes of the state in @setState explanation
      */
-    getForeignState(id: unknown, options: unknown, callback?: unknown): any {
+    getForeignState(
+        id: unknown,
+        options: unknown,
+        callback?: unknown
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetStateCallback> | void> {
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -8505,7 +8509,9 @@ export class AdapterClass extends EventEmitter {
         return this._getForeignState({ id, options, callback });
     }
 
-    private async _getForeignState(_options: InternalGetStateOptions) {
+    private async _getForeignState(
+        _options: InternalGetStateOptions
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetStateCallback> | void> {
         const { id, options, callback } = _options;
 
         if (!adapterStates) {
@@ -8548,6 +8554,7 @@ export class AdapterClass extends EventEmitter {
             // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
             return tools.maybeCallbackWithError(callback, e);
         }
+
         if (id.startsWith(ALIAS_STARTS_WITH)) {
             // TODO: optimize alias GET performance
             if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
