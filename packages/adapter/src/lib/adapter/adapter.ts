@@ -8581,7 +8581,7 @@ export class AdapterClass extends EventEmitter {
                             sourceObj = (await this._checkStates(aliasId, options as GetUserGroupsOptions, 'getState'))
                                 .objs[0];
                         } else {
-                            obj = (await adapterObjects.getObject(aliasId, options)) as
+                            sourceObj = (await adapterObjects.getObject(aliasId, options)) as
                                 | ioBroker.StateObject
                                 | null
                                 | undefined;
@@ -8611,7 +8611,7 @@ export class AdapterClass extends EventEmitter {
                         null,
                         tools.formatAliasValue(
                             sourceObj && (sourceObj.common as any),
-                            obj!.common,
+                            obj.common,
                             state,
                             this._logger,
                             this.namespaceLog
