@@ -7344,83 +7344,73 @@ export class AdapterClass extends EventEmitter {
                 : `system.adapter.${this.namespace}`;
         stateObj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
 
+        let permCheckRequired = false;
         if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-            let obj: ioBroker.StateObject;
-            try {
-                obj = (await this._checkStates(fixedId, options, 'setState')).objs[0];
-            } catch (e) {
-                return tools.maybeCallbackWithError(callback, e);
-            }
+            permCheckRequired = true;
+        }
 
-            if (!adapterObjects) {
-                // if objects is no longer existing, we do not need to unsubscribe
-                this._logger.info(
-                    `${this.namespaceLog} setForeignState not processed because Objects database not connected`
-                );
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            if (this.performStrictObjectChecks) {
-                // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                await this._utils.performStrictObjectCheck(fixedId, stateObj);
-            }
-
-            if (fixedId.startsWith(ALIAS_STARTS_WITH)) {
-                // write alias
-                if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
-                    // id can be string or can have attribute write
-                    const aliasId =
-                        // @ts-expect-error fix later on
-                        typeof obj.common.alias.id.write === 'string'
-                            ? // @ts-expect-error fix later on
-                              obj.common.alias.id.write
-                            : obj.common.alias.id;
-
-                    // validate here because we use objects/states db directly
-                    try {
-                        this._utils.validateId(aliasId, true, null);
-                    } catch (e) {
-                        this._logger.warn(`${this.namespaceLog} Error validating alias id of ${fixedId}: ${e.message}`);
-                        return tools.maybeCallbackWithError(
-                            callback,
-                            `Error validating alias id of ${fixedId}: ${e.message}`
-                        );
-                    }
-
-                    // check the rights
-                    let targetObj;
-                    try {
-                        targetObj = (await this._checkStates(aliasId, options, 'setState')).objs[0];
-                    } catch (e) {
-                        return tools.maybeCallbackWithError(callback, e);
-                    }
-
-                    if (!adapterStates) {
-                        // if states is no longer existing, we do not need to unsubscribe
-                        this._logger.info(
-                            `${this.namespaceLog} setForeignState not processed because States database not connected`
-                        );
-                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                    }
-
-                    // write target state
-                    this.outputCount++;
-                    adapterStates.setState(
-                        aliasId,
-                        tools.formatAliasValue(
-                            obj && obj.common,
-                            targetObj && (targetObj.common as any),
-                            stateObj as ioBroker.State,
-                            this._logger,
-                            this.namespaceLog
-                        ),
-                        callback
-                    );
-                } else {
-                    this._logger.warn(`${this.namespaceLog} ${`Alias ${fixedId} has no target 2`}`);
-                    return tools.maybeCallbackWithError(callback, `Alias ${fixedId} has no target`);
-                }
+        let obj: ioBroker.StateObject | null | undefined;
+        try {
+            if (permCheckRequired) {
+                obj = (await this._checkStates(fixedId, options as GetUserGroupsOptions, 'setState')).objs[0];
             } else {
+                obj = (await adapterObjects.getObject(fixedId, options)) as ioBroker.StateObject | null | undefined;
+            }
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
+        }
+
+        if (!adapterObjects) {
+            // if objects is no longer existing, we do not need to unsubscribe
+            this._logger.info(
+                `${this.namespaceLog} setForeignState not processed because Objects database not connected`
+            );
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        if (this.performStrictObjectChecks) {
+            // validate that object exists, read-only logic ok, type ok, etc. won't throw now
+            await this._utils.performStrictObjectCheck(fixedId, stateObj);
+        }
+
+        if (fixedId.startsWith(ALIAS_STARTS_WITH)) {
+            // write alias
+            if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
+                // id can be string or can have attribute write
+                const aliasId =
+                    // @ts-expect-error fix later on
+                    typeof obj.common.alias.id.write === 'string'
+                        ? // @ts-expect-error fix later on
+                          obj.common.alias.id.write
+                        : obj.common.alias.id;
+
+                // validate here because we use objects/states db directly
+                try {
+                    this._utils.validateId(aliasId, true, null);
+                } catch (e) {
+                    this._logger.warn(`${this.namespaceLog} Error validating alias id of ${fixedId}: ${e.message}`);
+                    return tools.maybeCallbackWithError(
+                        callback,
+                        `Error validating alias id of ${fixedId}: ${e.message}`
+                    );
+                }
+
+                // check the rights
+                let targetObj;
+                try {
+                    if (permCheckRequired) {
+                        targetObj = (await this._checkStates(aliasId, options as GetUserGroupsOptions, 'setState'))
+                            .objs[0];
+                    } else {
+                        targetObj = (await adapterObjects.getObject(aliasId, options)) as
+                            | ioBroker.StateObject
+                            | null
+                            | undefined;
+                    }
+                } catch (e) {
+                    return tools.maybeCallbackWithError(callback, e);
+                }
+
                 if (!adapterStates) {
                     // if states is no longer existing, we do not need to unsubscribe
                     this._logger.info(
@@ -7429,76 +7419,34 @@ export class AdapterClass extends EventEmitter {
                     return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                 }
 
+                // write target state
                 this.outputCount++;
-                adapterStates.setState(fixedId, stateObj, callback);
+                return adapterStates.setState(
+                    aliasId,
+                    tools.formatAliasValue(
+                        obj && obj.common,
+                        targetObj && (targetObj.common as any),
+                        stateObj as ioBroker.State,
+                        this._logger,
+                        this.namespaceLog
+                    ),
+                    callback
+                );
+            } else {
+                this._logger.warn(`${this.namespaceLog} ${`Alias ${fixedId} has no target 2`}`);
+                return tools.maybeCallbackWithError(callback, `Alias ${fixedId} has no target`);
             }
         } else {
-            if (fixedId.startsWith(ALIAS_STARTS_WITH)) {
-                // write alias
-                // read alias id
-                adapterObjects.getObject(fixedId, options, (err, obj) => {
-                    if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
-                        const aliasId =
-                            typeof obj.common.alias.id.write === 'string'
-                                ? obj.common.alias.id.write
-                                : obj.common.alias.id;
-
-                        // validate here because we use objects/states db directly
-                        try {
-                            this._utils.validateId(aliasId, true, null);
-                        } catch (e) {
-                            this._logger.warn(
-                                `${this.namespaceLog} Error validating alias id of ${fixedId}: ${e.message}`
-                            );
-                            return tools.maybeCallbackWithError(
-                                callback,
-                                `Error validating alias id of ${fixedId}: ${e.message}`
-                            );
-                        }
-
-                        // read object for formatting
-                        adapterObjects!.getObject(aliasId, options, (err, targetObj) => {
-                            // write target state
-                            this.outputCount++;
-                            adapterStates!.setState(
-                                aliasId,
-                                tools.formatAliasValue(
-                                    obj && obj.common,
-                                    targetObj && (targetObj.common as any),
-                                    stateObj as ioBroker.State,
-                                    this._logger,
-                                    this.namespaceLog
-                                ),
-                                callback
-                            );
-                        });
-                    } else {
-                        this._logger.warn(
-                            `${this.namespaceLog} ${err ? err.message : `Alias ${fixedId} has no target 3`}`
-                        );
-                        return tools.maybeCallbackWithError(
-                            callback,
-                            err ? err.message : `Alias ${fixedId} has no target`
-                        );
-                    }
-                });
-            } else {
-                if (this.performStrictObjectChecks) {
-                    // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                    await this._utils.performStrictObjectCheck(fixedId, stateObj);
-                }
-
-                if (!adapterStates) {
-                    // if states is no longer existing, we do not need to set
-                    this._logger.info(
-                        `${this.namespaceLog} setState not processed because States database not connected`
-                    );
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                this.outputCount++;
-                adapterStates.setState(fixedId, stateObj, callback);
+            if (!adapterStates) {
+                // if states is no longer existing, we do not need to unsubscribe
+                this._logger.info(
+                    `${this.namespaceLog} setForeignState not processed because States database not connected`
+                );
+                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
             }
+
+            this.outputCount++;
+            return adapterStates.setState(fixedId, stateObj, callback);
         }
     }
 
