@@ -8584,116 +8584,57 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, err);
         }
 
+        let permCheckRequired = false;
         if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-            let obj: ioBroker.StateObject;
-            try {
-                obj = (await this._checkStates(id, options, 'getState')).objs[0];
-            } catch (e) {
-                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                return tools.maybeCallbackWithError(callback, e);
-            }
-            if (id.startsWith(ALIAS_STARTS_WITH)) {
-                if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
-                    // id can be string or can have attribute id.read
-                    const aliasId =
-                        // @ts-expect-error
-                        typeof obj.common.alias.id.read === 'string'
-                            ? // @ts-expect-error
-                              obj.common.alias.id.read
-                            : obj.common.alias.id;
+            permCheckRequired = true;
+        }
 
-                    // validate here because we use objects/states db directly
-                    try {
-                        this._utils.validateId(aliasId, true, null);
-                    } catch (e) {
-                        this._logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
-                        return tools.maybeCallbackWithError(
-                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                            callback,
-                            `Error validating alias id of ${id}: ${e.message}`
-                        );
-                    }
-
-                    if (aliasId) {
-                        let sourceObj;
-                        try {
-                            sourceObj = (await this._checkStates(aliasId, options, 'getState')).objs[0];
-                        } catch (e) {
-                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                            return tools.maybeCallbackWithError(callback, e);
-                        }
-
-                        let state: ioBroker.State | undefined | null;
-                        if (this.oStates && this.oStates[aliasId]) {
-                            state = deepClone(this.oStates[aliasId]);
-                        } else {
-                            this.inputCount++;
-                            try {
-                                // @ts-expect-error void return possible fix it
-                                state = await adapterStates!.getState(aliasId);
-                            } catch (e) {
-                                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                                return tools.maybeCallbackWithError(callback, err);
-                            }
-                        }
-
-                        return tools.maybeCallbackWithError(
-                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                            callback,
-                            null,
-                            tools.formatAliasValue(
-                                sourceObj && (sourceObj.common as any),
-                                obj.common,
-                                state,
-                                this._logger,
-                                this.namespaceLog
-                            )
-                        );
-                    }
-                } else {
-                    this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 8`);
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                    return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
-                }
+        let obj: ioBroker.StateObject | null | undefined;
+        try {
+            if (permCheckRequired) {
+                obj = (await this._checkStates(id, options as GetUserGroupsOptions, 'getState')).objs[0];
             } else {
-                if (this.oStates && this.oStates[id]) {
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                    return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
-                } else {
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                    adapterStates!.getState(id, callback);
-                }
+                obj = (await adapterObjects.getObject(id, options)) as ioBroker.StateObject | null | undefined;
             }
-        } else {
-            if (id.startsWith(ALIAS_STARTS_WITH)) {
-                // TODO: optimize the alias GET performance and refactor it in a method with the duplicate code above
-                let obj;
+        } catch (e) {
+            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+            return tools.maybeCallbackWithError(callback, e);
+        }
+        if (id.startsWith(ALIAS_STARTS_WITH)) {
+            // TODO: optimize alias GET performance
+            if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
+                // id can be string or can have attribute id.read
+                const aliasId =
+                    // @ts-expect-error
+                    typeof obj.common.alias.id.read === 'string'
+                        ? // @ts-expect-error
+                          obj.common.alias.id.read
+                        : obj.common.alias.id;
+
+                // validate here because we use objects/states db directly
                 try {
-                    obj = await adapterObjects.getObject(id);
-                } catch {
-                    // ignore
+                    this._utils.validateId(aliasId, true, null);
+                } catch (e) {
+                    this._logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
+                    return tools.maybeCallbackWithError(
+                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                        callback,
+                        `Error validating alias id of ${id}: ${e.message}`
+                    );
                 }
 
-                if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
-                    // id can be string or can have attribute id.read
-                    const aliasId =
-                        typeof obj.common.alias.id.read === 'string' ? obj.common.alias.id.read : obj.common.alias.id;
-
-                    // validate here because we use objects/states db directly
-                    try {
-                        this._utils.validateId(aliasId, true, null);
-                    } catch (e) {
-                        this._logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
-                        return tools.maybeCallbackWithError(
-                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                            callback,
-                            `Error validating alias id of ${id}: ${e.message}`
-                        );
-                    }
-
+                if (aliasId) {
                     let sourceObj;
                     try {
-                        sourceObj = await adapterObjects!.getObject(aliasId);
+                        if (permCheckRequired) {
+                            sourceObj = (await this._checkStates(aliasId, options as GetUserGroupsOptions, 'getState'))
+                                .objs[0];
+                        } else {
+                            obj = (await adapterObjects.getObject(aliasId, options)) as
+                                | ioBroker.StateObject
+                                | null
+                                | undefined;
+                        }
                     } catch (e) {
                         // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                         return tools.maybeCallbackWithError(callback, e);
@@ -8719,26 +8660,25 @@ export class AdapterClass extends EventEmitter {
                         null,
                         tools.formatAliasValue(
                             sourceObj && (sourceObj.common as any),
-                            obj.common,
+                            obj!.common,
                             state,
                             this._logger,
                             this.namespaceLog
                         )
                     );
-                } else {
-                    this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 9`);
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                    return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
                 }
             } else {
-                if (this.oStates && this.oStates[id]) {
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                    return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
-                } else {
-                    this.inputCount++;
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                    adapterStates.getState(id, callback);
-                }
+                this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 8`);
+                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
+            }
+        } else {
+            if (this.oStates && this.oStates[id]) {
+                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
+            } else {
+                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                return adapterStates!.getState(id, callback);
             }
         }
     }
