@@ -98,7 +98,8 @@ import type {
     InternalUpdateConfigOptions,
     TimeoutCallback,
     MaybePromise,
-    SetStateChangedRes
+    SetStateChangedResult,
+    CheckStatesResult
 } from '../_Types';
 
 // keep them outside until we have migrated to TS, else devs can access them
@@ -7344,93 +7345,93 @@ export class AdapterClass extends EventEmitter {
         stateObj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
 
         if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-            this._checkStates(fixedId, options, 'setState', async (err, obj) => {
-                if (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                } else {
-                    if (!adapterObjects) {
-                        // if objects is no longer existing, we do not need to unsubscribe
+            let obj: ioBroker.StateObject;
+            try {
+                obj = (await this._checkStates(fixedId, options, 'setState')).objs[0];
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
+
+            if (!adapterObjects) {
+                // if objects is no longer existing, we do not need to unsubscribe
+                this._logger.info(
+                    `${this.namespaceLog} setForeignState not processed because Objects database not connected`
+                );
+                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            }
+
+            if (this.performStrictObjectChecks) {
+                // validate that object exists, read-only logic ok, type ok, etc. won't throw now
+                await this._utils.performStrictObjectCheck(fixedId, stateObj);
+            }
+
+            if (fixedId.startsWith(ALIAS_STARTS_WITH)) {
+                // write alias
+                if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
+                    // id can be string or can have attribute write
+                    const aliasId =
+                        // @ts-expect-error fix later on
+                        typeof obj.common.alias.id.write === 'string'
+                            ? // @ts-expect-error fix later on
+                              obj.common.alias.id.write
+                            : obj.common.alias.id;
+
+                    // validate here because we use objects/states db directly
+                    try {
+                        this._utils.validateId(aliasId, true, null);
+                    } catch (e) {
+                        this._logger.warn(`${this.namespaceLog} Error validating alias id of ${fixedId}: ${e.message}`);
+                        return tools.maybeCallbackWithError(
+                            callback,
+                            `Error validating alias id of ${fixedId}: ${e.message}`
+                        );
+                    }
+
+                    // check the rights
+                    let targetObj;
+                    try {
+                        targetObj = (await this._checkStates(aliasId, options, 'setState')).objs[0];
+                    } catch (e) {
+                        return tools.maybeCallbackWithError(callback, e);
+                    }
+
+                    if (!adapterStates) {
+                        // if states is no longer existing, we do not need to unsubscribe
                         this._logger.info(
-                            `${this.namespaceLog} setForeignState not processed because Objects database not connected`
+                            `${this.namespaceLog} setForeignState not processed because States database not connected`
                         );
                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                     }
 
-                    if (this.performStrictObjectChecks) {
-                        // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                        await this._utils.performStrictObjectCheck(fixedId, stateObj);
-                    }
-
-                    if (fixedId.startsWith(ALIAS_STARTS_WITH)) {
-                        // write alias
-                        if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
-                            // id can be string or can have attribute write
-                            const aliasId =
-                                // @ts-expect-error fix later on
-                                typeof obj.common.alias.id.write === 'string'
-                                    ? // @ts-expect-error fix later on
-                                      obj.common.alias.id.write
-                                    : obj.common.alias.id;
-
-                            // validate here because we use objects/states db directly
-                            try {
-                                this._utils.validateId(aliasId, true, null);
-                            } catch (e) {
-                                this._logger.warn(
-                                    `${this.namespaceLog} Error validating alias id of ${fixedId}: ${e.message}`
-                                );
-                                return tools.maybeCallbackWithError(
-                                    callback,
-                                    `Error validating alias id of ${fixedId}: ${e.message}`
-                                );
-                            }
-
-                            // check the rights
-                            this._checkStates(aliasId, options, 'setState', (err, targetObj) => {
-                                if (err) {
-                                    return tools.maybeCallbackWithError(callback, err);
-                                } else {
-                                    if (!adapterStates) {
-                                        // if states is no longer existing, we do not need to unsubscribe
-                                        this._logger.info(
-                                            `${this.namespaceLog} setForeignState not processed because States database not connected`
-                                        );
-                                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                                    }
-
-                                    // write target state
-                                    this.outputCount++;
-                                    adapterStates.setState(
-                                        aliasId,
-                                        tools.formatAliasValue(
-                                            obj && obj.common,
-                                            targetObj && (targetObj.common as any),
-                                            stateObj as ioBroker.State,
-                                            this._logger,
-                                            this.namespaceLog
-                                        ),
-                                        callback
-                                    );
-                                }
-                            });
-                        } else {
-                            this._logger.warn(`${this.namespaceLog} ${`Alias ${fixedId} has no target 2`}`);
-                            return tools.maybeCallbackWithError(callback, `Alias ${fixedId} has no target`);
-                        }
-                    } else {
-                        if (!adapterStates) {
-                            // if states is no longer existing, we do not need to unsubscribe
-                            this._logger.info(
-                                `${this.namespaceLog} setForeignState not processed because States database not connected`
-                            );
-                            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                        }
-
-                        this.outputCount++;
-                        adapterStates.setState(fixedId, stateObj, callback);
-                    }
+                    // write target state
+                    this.outputCount++;
+                    adapterStates.setState(
+                        aliasId,
+                        tools.formatAliasValue(
+                            obj && obj.common,
+                            targetObj && (targetObj.common as any),
+                            stateObj as ioBroker.State,
+                            this._logger,
+                            this.namespaceLog
+                        ),
+                        callback
+                    );
+                } else {
+                    this._logger.warn(`${this.namespaceLog} ${`Alias ${fixedId} has no target 2`}`);
+                    return tools.maybeCallbackWithError(callback, `Alias ${fixedId} has no target`);
                 }
-            });
+            } else {
+                if (!adapterStates) {
+                    // if states is no longer existing, we do not need to unsubscribe
+                    this._logger.info(
+                        `${this.namespaceLog} setForeignState not processed because States database not connected`
+                    );
+                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                }
+
+                this.outputCount++;
+                adapterStates.setState(fixedId, stateObj, callback);
+            }
         } else {
             if (fixedId.startsWith(ALIAS_STARTS_WITH)) {
                 // write alias
@@ -7746,125 +7747,73 @@ export class AdapterClass extends EventEmitter {
         return true;
     }
 
-    // with string, we have only one object in callback
-    private _checkStates(
-        id: string,
-        options: Record<string, any>,
-        command: CheckStateCommand,
-        callback: (err?: Error, obj?: ioBroker.StateObject) => void,
-        _helper?: any
-    ): void;
-    // else multiple objects
-    private _checkStates(
-        ids: string[],
-        options: Record<string, any>,
-        command: CheckStateCommand,
-        callback: (err?: Error, ids?: string[], objs?: ioBroker.StateObject[]) => void,
-        _helper?: any
-    ): void;
     private async _checkStates(
         ids: string | string[],
         options: Partial<GetUserGroupsOptions>,
-        command: CheckStateCommand,
-        callback:
-            | ((err?: Error, ids?: string[], objs?: ioBroker.StateObject[]) => void)
-            | ((err?: Error, obj?: ioBroker.StateObject) => void),
-        _helper?: any
-    ): Promise<void> {
+        command: CheckStateCommand
+    ): Promise<CheckStatesResult> {
         if (!options.groups) {
             options = await this._getUserGroups(options as GetUserGroupsOptions);
         }
 
-        if (Array.isArray(ids)) {
+        if (!Array.isArray(ids)) {
+            ids = [ids];
+        }
+
+        if (options._objects) {
             if (!ids.length) {
-                // @ts-expect-error fix it
-                return tools.maybeCallbackWithError(callback, null, ids);
+                return { ids, objs: [] };
             }
 
-            if (options._objects) {
-                const ids: string[] = [];
-                const objs: ioBroker.StateObject[] = [];
-                for (const obj of options._objects) {
-                    if (obj && this._checkState(obj, options, command)) {
-                        ids.push(obj._id);
-                        objs.push(obj);
-                    }
+            const objs: ioBroker.StateObject[] = [];
+            for (const obj of options._objects) {
+                if (obj && this._checkState(obj, options, command)) {
+                    ids.push(obj._id);
+                    objs.push(obj);
+                }
+            }
+
+            return { ids, objs };
+        } else {
+            const objs: ioBroker.StateObject[] = [];
+
+            for (const id of ids) {
+                let originalChecked: boolean | undefined;
+
+                if (options.checked !== undefined) {
+                    originalChecked = options.checked;
                 }
 
-                // @ts-expect-error fix it
-                return tools.maybeCallbackWithError(callback, null, ids, objs);
-            } else {
-                _helper = _helper || {
-                    i: 0,
-                    objs: options._objects || [],
-                    errors: []
-                };
+                options.checked = true;
 
-                // this must be a serial call
-                this._checkStates(ids[_helper.i], options, command, (err, obj) => {
-                    if (err && obj) {
-                        _helper.errors.push(obj._id);
-                    }
+                if (!adapterObjects) {
+                    this._logger.info(
+                        `${this.namespaceLog} checkStates not processed because Objects database not connected`
+                    );
 
-                    if (obj) {
-                        _helper.objs[_helper.i] = obj;
-                    }
+                    throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+                }
+                let obj;
+                try {
+                    obj = await adapterObjects.getObject(id, options);
+                } catch (e) {
+                    throw new Error(`Error on id "${id}": ${e.message}`);
+                }
 
-                    // if finished
-                    if (_helper.i + 1 >= ids.length) {
-                        if (_helper.errors.length) {
-                            for (let j = ids.length - 1; j >= 0; j--) {
-                                if (_helper.errors.includes(ids[j])) {
-                                    ids.splice(j, 1);
-                                    _helper.objs.splice(j, 1);
-                                }
-                            }
-                        }
+                objs.push(obj as ioBroker.StateObject);
 
-                        // @ts-expect-error fix it
-                        return tools.maybeCallbackWithError(callback, null, ids, _helper.objs);
-                    } else {
-                        _helper.i++;
-                        // @ts-expect-error fix later on
-                        setImmediate(() => this._checkStates(ids, options, command, callback, _helper));
-                    }
-                });
-            }
-        } else {
-            let originalChecked: boolean | undefined;
+                if (originalChecked !== undefined) {
+                    options.checked = originalChecked;
+                } else {
+                    options.checked = undefined;
+                }
 
-            if (options.checked !== undefined) {
-                originalChecked = options.checked;
+                if (!this._checkState(obj as ioBroker.StateObject, options, command)) {
+                    throw new Error(`Error on id "${id}": ${ERROR_PERMISSION}`);
+                }
             }
 
-            options.checked = true;
-
-            if (!adapterObjects) {
-                this._logger.info(
-                    `${this.namespaceLog} checkStates not processed because Objects database not connected`
-                );
-                // @ts-expect-error fix it
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-            let obj;
-            try {
-                obj = await adapterObjects.getObject(ids, options);
-            } catch (e) {
-                // @ts-expect-error fix it
-                return tools.maybeCallbackWithError(callback, err, { _id: ids });
-            }
-            if (originalChecked !== undefined) {
-                options.checked = originalChecked;
-            } else {
-                options.checked = undefined;
-            }
-
-            if (!this._checkState(obj as ioBroker.StateObject, options, command)) {
-                // @ts-expect-error fix it
-                return tools.maybeCallbackWithError(callback, ERROR_PERMISSION, { _id: ids });
-            }
-            // @ts-expect-error fix it
-            return tools.maybeCallbackWithError(callback, null, obj);
+            return { ids, objs };
         }
     }
 
@@ -7882,7 +7831,7 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    private async _setStateChangedHelper(id: string, state: ioBroker.SettableState): Promise<SetStateChangedRes> {
+    private async _setStateChangedHelper(id: string, state: ioBroker.SettableState): Promise<SetStateChangedResult> {
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} setStateChanged not processed because Objects database not connected`
@@ -8078,16 +8027,16 @@ export class AdapterClass extends EventEmitter {
                 ? stateObj.from
                 : `system.adapter.${this.namespace}`;
         if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-            this._checkStates(fixedId, options, 'setState', async err => {
-                if (err) {
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                    return tools.maybeCallbackWithError(callback, err);
-                } else {
-                    const res = await this._setStateChangedHelper(fixedId, stateObj);
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                    return tools.maybeCallbackWithError(callback, null, res.id, res.changed);
-                }
-            });
+            try {
+                await this._checkStates(fixedId, options, 'setState');
+            } catch (e) {
+                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                return tools.maybeCallbackWithError(callback, e);
+            }
+
+            const res = await this._setStateChangedHelper(fixedId, stateObj);
+            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+            return tools.maybeCallbackWithError(callback, null, res.id, res.changed);
         } else {
             const res = await this._setStateChangedHelper(fixedId, stateObj);
             // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
@@ -8222,10 +8171,54 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-            this._checkStates(id, options, 'setState', async (err, obj) => {
-                if (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                } else {
+            let obj: ioBroker.StateObject;
+            try {
+                obj = (await this._checkStates(id, options, 'setState')).objs[0];
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
+            if (!adapterStates) {
+                // if states is no longer existing, we do not need to unsubscribe
+                this._logger.info(
+                    `${this.namespaceLog} setForeignState not processed because States database not connected`
+                );
+                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            }
+
+            if (this.performStrictObjectChecks) {
+                // validate that object exists, read-only logic ok, type ok, etc. won't throw now
+                await this._utils.performStrictObjectCheck(id, state);
+            }
+
+            if (id.startsWith(ALIAS_STARTS_WITH)) {
+                // write alias
+                if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
+                    // id can be string or can have attribute write
+                    const aliasId =
+                        // @ts-expect-error
+                        typeof obj.common.alias.id.write === 'string'
+                            ? // @ts-expect-error
+                              obj.common.alias.id.write
+                            : obj.common.alias.id;
+
+                    // validate here because we use objects/states db directly
+                    try {
+                        this._utils.validateId(aliasId, true, null);
+                    } catch (e) {
+                        this._logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
+                        return tools.maybeCallbackWithError(
+                            callback,
+                            `Error validating alias id of ${id}: ${e.message}`
+                        );
+                    }
+
+                    let targetObj;
+                    // check the rights
+                    try {
+                        targetObj = (await this._checkStates(aliasId, options, 'setState')).objs[0];
+                    } catch (e) {
+                        return tools.maybeCallbackWithError(callback, e);
+                    }
                     if (!adapterStates) {
                         // if states is no longer existing, we do not need to unsubscribe
                         this._logger.info(
@@ -8234,80 +8227,34 @@ export class AdapterClass extends EventEmitter {
                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                     }
 
-                    if (this.performStrictObjectChecks) {
-                        // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                        await this._utils.performStrictObjectCheck(id, state);
-                    }
-
-                    if (id.startsWith(ALIAS_STARTS_WITH)) {
-                        // write alias
-                        if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
-                            // id can be string or can have attribute write
-                            const aliasId =
-                                // @ts-expect-error
-                                typeof obj.common.alias.id.write === 'string'
-                                    ? // @ts-expect-error
-                                      obj.common.alias.id.write
-                                    : obj.common.alias.id;
-
-                            // validate here because we use objects/states db directly
-                            try {
-                                this._utils.validateId(aliasId, true, null);
-                            } catch (e) {
-                                this._logger.warn(
-                                    `${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`
-                                );
-                                return tools.maybeCallbackWithError(
-                                    callback,
-                                    `Error validating alias id of ${id}: ${e.message}`
-                                );
-                            }
-
-                            // check the rights
-                            this._checkStates(aliasId, options, 'setState', (err, targetObj) => {
-                                if (err) {
-                                    return tools.maybeCallbackWithError(callback, err);
-                                } else {
-                                    if (!adapterStates) {
-                                        // if states is no longer existing, we do not need to unsubscribe
-                                        this._logger.info(
-                                            `${this.namespaceLog} setForeignState not processed because States database not connected`
-                                        );
-                                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                                    }
-
-                                    this.outputCount++;
-                                    adapterStates.setState(
-                                        aliasId,
-                                        tools.formatAliasValue(
-                                            obj && obj.common,
-                                            targetObj && (targetObj.common as any),
-                                            state,
-                                            this._logger,
-                                            this.namespaceLog
-                                        ),
-                                        callback
-                                    );
-                                }
-                            });
-                        } else {
-                            this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 4`);
-                            return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
-                        }
-                    } else {
-                        if (!adapterStates) {
-                            // if states is no longer existing, we do not need to unsubscribe
-                            this._logger.info(
-                                `${this.namespaceLog} setForeignState not processed because States database not connected`
-                            );
-                            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                        }
-
-                        this.outputCount++;
-                        adapterStates.setState(id, state, callback);
-                    }
+                    this.outputCount++;
+                    adapterStates.setState(
+                        aliasId,
+                        tools.formatAliasValue(
+                            obj && obj.common,
+                            targetObj && (targetObj.common as any),
+                            state,
+                            this._logger,
+                            this.namespaceLog
+                        ),
+                        callback
+                    );
+                } else {
+                    this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 4`);
+                    return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
                 }
-            });
+            } else {
+                if (!adapterStates) {
+                    // if states is no longer existing, we do not need to unsubscribe
+                    this._logger.info(
+                        `${this.namespaceLog} setForeignState not processed because States database not connected`
+                    );
+                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                }
+
+                this.outputCount++;
+                adapterStates.setState(id, state, callback);
+            }
         } else {
             // write alias
             if (id.startsWith(ALIAS_STARTS_WITH)) {
@@ -8531,14 +8478,14 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-            this._checkStates(id, options, 'setState', async err => {
-                if (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                } else {
-                    const res = await this._setStateChangedHelper(id, state);
-                    return tools.maybeCallbackWithError(callback, null, res.id, res.changed);
-                }
-            });
+            try {
+                await this._checkStates(id, options, 'setState');
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
+
+            const res = await this._setStateChangedHelper(id, state);
+            return tools.maybeCallbackWithError(callback, null, res.id, res.changed);
         } else {
             const res = await this._setStateChangedHelper(id, state);
             return tools.maybeCallbackWithError(callback, null, res.id, res.changed);
@@ -8638,86 +8585,85 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-            this._checkStates(id, options, 'getState', (err, obj) => {
-                if (err) {
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                    return tools.maybeCallbackWithError(callback, err);
-                } else {
-                    if (id.startsWith(ALIAS_STARTS_WITH)) {
-                        if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
-                            // id can be string or can have attribute id.read
-                            const aliasId =
-                                // @ts-expect-error
-                                typeof obj.common.alias.id.read === 'string'
-                                    ? // @ts-expect-error
-                                      obj.common.alias.id.read
-                                    : obj.common.alias.id;
+            let obj: ioBroker.StateObject;
+            try {
+                obj = (await this._checkStates(id, options, 'getState')).objs[0];
+            } catch (e) {
+                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                return tools.maybeCallbackWithError(callback, e);
+            }
+            if (id.startsWith(ALIAS_STARTS_WITH)) {
+                if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
+                    // id can be string or can have attribute id.read
+                    const aliasId =
+                        // @ts-expect-error
+                        typeof obj.common.alias.id.read === 'string'
+                            ? // @ts-expect-error
+                              obj.common.alias.id.read
+                            : obj.common.alias.id;
 
-                            // validate here because we use objects/states db directly
-                            try {
-                                this._utils.validateId(aliasId, true, null);
-                            } catch (e) {
-                                this._logger.warn(
-                                    `${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`
-                                );
-                                return tools.maybeCallbackWithError(
-                                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                                    callback,
-                                    `Error validating alias id of ${id}: ${e.message}`
-                                );
-                            }
-
-                            if (aliasId) {
-                                this._checkStates(aliasId, options, 'getState', async (err, sourceObj) => {
-                                    if (err) {
-                                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                                        return tools.maybeCallbackWithError(callback, err);
-                                    }
-
-                                    let state: ioBroker.State | undefined | null;
-                                    if (this.oStates && this.oStates[aliasId]) {
-                                        state = deepClone(this.oStates[aliasId]);
-                                    } else {
-                                        this.inputCount++;
-                                        try {
-                                            // @ts-expect-error void return possible fix it
-                                            state = await adapterStates!.getState(aliasId);
-                                        } catch (e) {
-                                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                                            return tools.maybeCallbackWithError(callback, err);
-                                        }
-                                    }
-
-                                    return tools.maybeCallbackWithError(
-                                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                                        callback,
-                                        err,
-                                        tools.formatAliasValue(
-                                            sourceObj && (sourceObj.common as any),
-                                            obj.common,
-                                            state,
-                                            this._logger,
-                                            this.namespaceLog
-                                        )
-                                    );
-                                });
-                            }
-                        } else {
-                            this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 8`);
+                    // validate here because we use objects/states db directly
+                    try {
+                        this._utils.validateId(aliasId, true, null);
+                    } catch (e) {
+                        this._logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
+                        return tools.maybeCallbackWithError(
                             // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                            return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
-                        }
-                    } else {
-                        if (this.oStates && this.oStates[id]) {
-                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                            return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
-                        } else {
-                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                            adapterStates!.getState(id, callback);
-                        }
+                            callback,
+                            `Error validating alias id of ${id}: ${e.message}`
+                        );
                     }
+
+                    if (aliasId) {
+                        let sourceObj;
+                        try {
+                            sourceObj = (await this._checkStates(aliasId, options, 'getState')).objs[0];
+                        } catch (e) {
+                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                            return tools.maybeCallbackWithError(callback, e);
+                        }
+
+                        let state: ioBroker.State | undefined | null;
+                        if (this.oStates && this.oStates[aliasId]) {
+                            state = deepClone(this.oStates[aliasId]);
+                        } else {
+                            this.inputCount++;
+                            try {
+                                // @ts-expect-error void return possible fix it
+                                state = await adapterStates!.getState(aliasId);
+                            } catch (e) {
+                                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                                return tools.maybeCallbackWithError(callback, err);
+                            }
+                        }
+
+                        return tools.maybeCallbackWithError(
+                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                            callback,
+                            null,
+                            tools.formatAliasValue(
+                                sourceObj && (sourceObj.common as any),
+                                obj.common,
+                                state,
+                                this._logger,
+                                this.namespaceLog
+                            )
+                        );
+                    }
+                } else {
+                    this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 8`);
+                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                    return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
                 }
-            });
+            } else {
+                if (this.oStates && this.oStates[id]) {
+                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                    return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
+                } else {
+                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                    adapterStates!.getState(id, callback);
+                }
+            }
         } else {
             if (id.startsWith(ALIAS_STARTS_WITH)) {
                 // TODO: optimize the alias GET performance and refactor it in a method with the duplicate code above
@@ -9053,7 +8999,7 @@ export class AdapterClass extends EventEmitter {
         return this._delForeignState({ id, options, callback });
     }
 
-    private _delForeignState(_options: InternalDelStateOptions) {
+    private async _delForeignState(_options: InternalDelStateOptions) {
         const { id, options, callback } = _options;
 
         if (!adapterStates) {
@@ -9071,16 +9017,13 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-            this._checkStates(id, options, 'delState', err => {
-                if (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                } else {
-                    adapterStates!.delState(id, callback);
-                }
-            });
-        } else {
-            adapterStates.delState(id, callback);
+            try {
+                await this._checkStates(id, options, 'delState');
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
         }
+        adapterStates.delState(id, callback);
     }
 
     // external signature
@@ -9253,7 +9196,7 @@ export class AdapterClass extends EventEmitter {
         return this._getForeignStates({ pattern, options: options || {}, callback });
     }
 
-    private _getForeignStates(_options: InternalGetStatesOptions) {
+    private async _getForeignStates(_options: InternalGetStatesOptions) {
         const { options, pattern, callback } = _options;
 
         if (!adapterStates) {
@@ -9277,14 +9220,13 @@ export class AdapterClass extends EventEmitter {
         // if pattern is array
         if (Array.isArray(pattern)) {
             if (options.user && options.user !== SYSTEM_ADMIN_USER) {
-                this._checkStates(pattern, options, 'getState', (err, keys, objs) => {
-                    if (err) {
-                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                        return tools.maybeCallbackWithError(callback, err);
-                    } else {
-                        this._processStates(keys as string[], objs as ioBroker.StateObject[], callback);
-                    }
-                });
+                try {
+                    const { objs, ids } = await this._checkStates(pattern, options, 'getState');
+                    this._processStates(ids, objs, callback);
+                } catch (e) {
+                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                    return tools.maybeCallbackWithError(callback, e);
+                }
             } else {
                 this._processStates(pattern, options && options._objects, callback);
             }
@@ -10043,51 +9985,52 @@ export class AdapterClass extends EventEmitter {
 
         if (options.user !== SYSTEM_ADMIN_USER) {
             // always read according object to set the binary flag
-            this._checkStates(id, options, 'setState', (err, obj) => {
-                if (!err && !obj) {
-                    return tools.maybeCallbackWithError(callback, 'Object does not exist');
-                } else if (!err && obj && !('binary' in obj)) {
-                    // @ts-expect-error probably need to adjust types
-                    obj.binary = true;
+            let obj;
+            try {
+                obj = (await this._checkStates(id, options, 'setState')).objs[0];
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
 
-                    if (!adapterObjects) {
-                        this._logger.info(
-                            `${this.namespaceLog} setBinaryState not processed because Objects database not connected`
-                        );
-                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                    }
+            if (obj && !('binary' in obj)) {
+                // @ts-expect-error probably need to adjust types
+                obj.binary = true;
 
-                    adapterObjects.setObject(id, obj, err => {
-                        if (err) {
-                            return tools.maybeCallbackWithError(callback, err);
-                        } else {
-                            if (!adapterStates) {
-                                // if states is no longer existing, we do not need to unsubscribe
-                                this._logger.info(
-                                    `${this.namespaceLog} setBinaryState not processed because States database not connected`
-                                );
-                                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                            }
-
-                            this.outputCount++;
-                            adapterStates.setBinaryState(id, binary, callback);
-                        }
-                    });
-                } else if (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                } else {
-                    if (!adapterStates) {
-                        // if states is no longer existing, we do not need to unsubscribe
-                        this._logger.info(
-                            `${this.namespaceLog} setBinaryState not processed because States database not connected`
-                        );
-                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                    }
-
-                    this.outputCount++;
-                    adapterStates.setBinaryState(id, binary, callback);
+                if (!adapterObjects) {
+                    this._logger.info(
+                        `${this.namespaceLog} setBinaryState not processed because Objects database not connected`
+                    );
+                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                 }
-            });
+
+                adapterObjects.setObject(id, obj, err => {
+                    if (err) {
+                        return tools.maybeCallbackWithError(callback, err);
+                    } else {
+                        if (!adapterStates) {
+                            // if states is no longer existing, we do not need to unsubscribe
+                            this._logger.info(
+                                `${this.namespaceLog} setBinaryState not processed because States database not connected`
+                            );
+                            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                        }
+
+                        this.outputCount++;
+                        adapterStates.setBinaryState(id, binary, callback);
+                    }
+                });
+            } else {
+                if (!adapterStates) {
+                    // if states is no longer existing, we do not need to unsubscribe
+                    this._logger.info(
+                        `${this.namespaceLog} setBinaryState not processed because States database not connected`
+                    );
+                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                }
+
+                this.outputCount++;
+                adapterStates.setBinaryState(id, binary, callback);
+            }
         } else {
             this.outputCount++;
             adapterStates.setBinaryState(id, binary, callback);
@@ -10138,7 +10081,7 @@ export class AdapterClass extends EventEmitter {
         return this._getForeignBinaryState({ id, options: options || {}, callback });
     }
 
-    private _getForeignBinaryState(_options: InternalGetBinaryStateOption) {
+    private async _getForeignBinaryState(_options: InternalGetBinaryStateOption) {
         const { id, options, callback } = _options;
 
         if (!adapterStates) {
@@ -10160,30 +10103,32 @@ export class AdapterClass extends EventEmitter {
             options.user = SYSTEM_ADMIN_USER;
         }
         // always read according object to set the binary flag
-        this._checkStates(id, options, 'getState', (err, obj) => {
-            if (err) {
-                return tools.maybeCallbackWithError(callback, err);
-            } else {
-                adapterStates!.getBinaryState(id, (err, data) => {
-                    if (!err && data && obj && !('binary' in obj)) {
-                        // @ts-expect-error type adjustment needed?
-                        obj.binary = true;
-                        adapterObjects!.setObject(id, obj, err => {
-                            if (err) {
-                                return tools.maybeCallbackWithError(callback, err);
-                            } else {
-                                return tools.maybeCallbackWithError(callback, null, data);
-                            }
-                        });
+        let obj: ioBroker.StateObject;
+
+        try {
+            obj = (await this._checkStates(id, options, 'getState')).objs[0];
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
+        }
+
+        adapterStates!.getBinaryState(id, (err, data) => {
+            if (!err && data && obj && !('binary' in obj)) {
+                // @ts-expect-error type adjustment needed?
+                obj.binary = true;
+                adapterObjects!.setObject(id, obj, err => {
+                    if (err) {
+                        return tools.maybeCallbackWithError(callback, err);
                     } else {
-                        // if no buffer, and state marked as not binary
-                        if (!err && !data && obj && !('binary' in obj)) {
-                            return tools.maybeCallbackWithError(callback, 'State is not binary');
-                        } else {
-                            return tools.maybeCallbackWithError(callback, err, data);
-                        }
+                        return tools.maybeCallbackWithError(callback, null, data);
                     }
                 });
+            } else {
+                // if no buffer, and state marked as not binary
+                if (!err && !data && obj && !('binary' in obj)) {
+                    return tools.maybeCallbackWithError(callback, 'State is not binary');
+                } else {
+                    return tools.maybeCallbackWithError(callback, err, data);
+                }
             }
         });
     }
@@ -10231,7 +10176,7 @@ export class AdapterClass extends EventEmitter {
         return this._delForeignBinaryState({ id, options: options || {}, callback });
     }
 
-    private _delForeignBinaryState(_options: InternalDelBinaryStateOptions) {
+    private async _delForeignBinaryState(_options: InternalDelBinaryStateOptions) {
         const { id, options, callback } = _options;
 
         if (!adapterStates) {
@@ -10249,14 +10194,14 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (options.user && options.user !== SYSTEM_ADMIN_USER) {
-            this._checkStates(id, options, 'delState', err => {
-                if (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                } else {
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455 fix delBinaryState Callback
-                    adapterStates!.delBinaryState(id, callback);
-                }
-            });
+            try {
+                await this._checkStates(id, options, 'delState');
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
+
+            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455 fix delBinaryState Callback
+            adapterStates!.delBinaryState(id, callback);
         } else {
             // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455 fix delBinaryState Callback
             adapterStates.delBinaryState(id, callback);

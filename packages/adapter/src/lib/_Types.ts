@@ -81,7 +81,12 @@ export interface AliasTargetEntry {
     unit?: string;
 }
 
-export interface SetStateChangedRes {
+export interface CheckStatesResult {
+    objs: ioBroker.StateObject[];
+    ids: string[];
+}
+
+export interface SetStateChangedResult {
     changed: boolean;
     id: string;
 }
