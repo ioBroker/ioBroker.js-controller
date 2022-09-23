@@ -7741,14 +7741,10 @@ export class AdapterClass extends EventEmitter {
 
                     throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
                 }
-                let obj;
-                try {
-                    obj = await adapterObjects.getObject(id, options);
-                } catch (e) {
-                    throw new Error(`Error on id "${id}": ${e.message}`);
-                }
 
-                objs.push(obj as ioBroker.StateObject);
+                const obj = (await adapterObjects.getObject(id, options)) as ioBroker.StateObject;
+
+                objs.push(obj);
 
                 if (originalChecked !== undefined) {
                     options.checked = originalChecked;
@@ -7756,8 +7752,8 @@ export class AdapterClass extends EventEmitter {
                     options.checked = undefined;
                 }
 
-                if (!this._checkState(obj as ioBroker.StateObject, options, command)) {
-                    throw new Error(`Error on id "${id}": ${ERROR_PERMISSION}`);
+                if (!this._checkState(obj, options, command)) {
+                    throw new Error(ERROR_PERMISSION);
                 }
             }
 
