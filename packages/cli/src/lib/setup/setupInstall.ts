@@ -45,7 +45,10 @@ interface DownloadPacketReturnObject {
 export interface CLIDownloadPacketOptions {
     /** will stop the db before upgrade ONLY use it for controller upgrade */
     stopDb?: boolean;
-    [other: string]: any;
+    /** name of the packet */
+    packetName?: string;
+    /** if unsafe-perm flag is required */
+    unsafePerm?: boolean;
 }
 
 interface CreateInstanceOptions {
@@ -58,7 +61,6 @@ interface CreateInstanceOptions {
 }
 
 export class Install {
-    private unsafePermAlways: string[];
     private readonly isRootOnUnix: boolean;
     private readonly objects: ObjectsRedisClient;
     private readonly states: StatesRedisClient;
@@ -70,13 +72,6 @@ export class Install {
     private packetManager?: PacketManager;
 
     constructor(options: CLIInstallOptions) {
-        // todo solve it somehow
-        this.unsafePermAlways = [
-            `${tools.appName.toLowerCase()}.zwave`,
-            `${tools.appName.toLowerCase()}.amazon-dash`,
-            `${tools.appName.toLowerCase()}.xbox`
-        ];
-
         this.isRootOnUnix = typeof process.getuid === 'function' && process.getuid() === 0;
 
         options = options || {};
@@ -174,7 +169,7 @@ export class Install {
             version = parts[1];
         } else {
             // always take version from repository
-            if (sources[packetName] && sources[packetName].version) {
+            if (sources[packetName]?.version) {
                 version = sources[packetName].version;
             } else {
                 version = '';
@@ -182,13 +177,10 @@ export class Install {
         }
         options.packetName = packetName;
 
-        options.unsafePerm = sources[packetName] && sources[packetName].unsafePerm;
+        options.unsafePerm = sources[packetName]?.unsafePerm;
 
         // Check if flag stopBeforeUpdate is true or on windows we stop because of issue #1436
-        if (
-            ((sources[packetName] && sources[packetName].stopBeforeUpdate) || osPlatform === 'win32') &&
-            !stoppedList.length
-        ) {
+        if ((sources[packetName]?.stopBeforeUpdate || osPlatform === 'win32') && !stoppedList.length) {
             stoppedList = await this._getInstancesOfAdapter(packetName);
             await this.enableInstances(stoppedList, false);
         }
@@ -269,7 +261,7 @@ export class Install {
      */
     private async _npmInstallWithCheck(
         npmUrl: string,
-        options: Record<string, any>,
+        options: CLIDownloadPacketOptions,
         debug: boolean
     ): Promise<void | { installDir: string; _url: string }> {
         // Get npm version
@@ -322,15 +314,12 @@ export class Install {
         }
     }
 
-    private async _npmInstall(npmUrl: string, options: Record<string, any>, debug: boolean) {
+    private async _npmInstall(npmUrl: string, options: CLIDownloadPacketOptions, debug: boolean) {
         if (typeof options !== 'object') {
             options = {};
         }
 
-        // zwave for example requires always unsafe-perm option
-        if (this.unsafePermAlways.some(adapter => npmUrl.includes(adapter))) {
-            options.unsafePerm = true;
-        } else if (this.isRootOnUnix) {
+        if (this.isRootOnUnix) {
             // If ioBroker or the CLI is executed as root on unix platforms,
             // not providing the --unsafe-perm options means that every pre/postinstall
             // script fails when it uses npm commands.
@@ -351,7 +340,7 @@ export class Install {
             // TODO: There's probably a better way to figure this out
             let packetDirName: string;
             if (options.packetName) {
-                packetDirName = tools.appName.toLowerCase() + '.' + options.packetName;
+                packetDirName = `${tools.appName.toLowerCase()}.${options.packetName}`;
             } else {
                 packetDirName = npmUrl.toLowerCase();
                 // If the user installed a git commit-ish, the url contains stuff that doesn't belong in a folder name
@@ -984,7 +973,7 @@ export class Install {
      */
     private async _enumerateAdapterInstances(
         knownObjIDs: string[],
-        notDeleted: any[],
+        notDeleted: string[],
         adapter: string,
         instance?: number
     ): Promise<void> {
