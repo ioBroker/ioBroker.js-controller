@@ -819,7 +819,8 @@
         },
         "eraseOnUpload": {
           "description": "erase all previous data in the directory before upload",
-          "type": "boolean"
+          "type": "boolean",
+          "default": true
         },
         "extIcon": {
           "description": "Link to external icon for uninstalled adapters. Normally on GitHub",
