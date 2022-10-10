@@ -735,11 +735,11 @@ export class AdapterClass extends EventEmitter {
 
         this.performStrictObjectChecks = this._options.strictObjectChecks !== false;
 
-        if (!this._options.name) {
+        this.name = this._options.name;
+
+        if (!this.name) {
             throw new Error('No name of adapter!');
         }
-
-        this.name = this._options.name;
 
         const instance = parseInt(
             this._options.compactInstance !== undefined
@@ -750,7 +750,7 @@ export class AdapterClass extends EventEmitter {
             10
         );
 
-        this.namespace = `${this._options.name}.${instance}`;
+        this.namespace = `${this.name}.${instance}`;
         this.namespaceLog = this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
         this._namespaceRegExp = new RegExp(`^${`${this.namespace}.`.replace(/\./g, '\\.')}`); // cache the regex object 'adapter.0.'
 
@@ -765,10 +765,10 @@ export class AdapterClass extends EventEmitter {
         if (this._options.dirname) {
             this.adapterDir = this._options.dirname.replace(/\\/g, '/');
         } else {
-            const adapterDir = tools.getAdapterDir(this._options.name);
+            const adapterDir = tools.getAdapterDir(this.name);
 
             if (!adapterDir) {
-                this._logger.error(`${this.namespaceLog} Cannot find directory of adapter ${this._options.name}`);
+                this._logger.error(`${this.namespaceLog} Cannot find directory of adapter ${this.name}`);
                 this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
             }
 
@@ -4130,6 +4130,23 @@ export class AdapterClass extends EventEmitter {
                             }
                         }
                     }
+                    // remove protectedNative if not admin, not cloud or not own adapter
+                    if (
+                        row.value &&
+                        'protectedNative' in row.value &&
+                        Array.isArray(row.value.protectedNative) &&
+                        row.value.native &&
+                        id &&
+                        id.startsWith('system.adapter.') &&
+                        this.name !== 'admin' &&
+                        this.name !== 'cloud' &&
+                        this.name !== 'iot' &&
+                        this.name !== id.split('.')[2]
+                    ) {
+                        for (const attr of row.value.protectedNative) {
+                            delete row.value.native[attr];
+                        } // endFor
+                    } // endIf
                 }
             }
             return tools.maybeCallbackWithError(callback, null, list);
@@ -4237,16 +4254,18 @@ export class AdapterClass extends EventEmitter {
         }
 
         adapterObjects.getObject(options.id, options, (err, obj) => {
-            const adapterName = this.namespace.split('.')[0];
-            // remove protectedNative if not admin or own adapter
+            // remove protectedNative if not admin, not cloud or not own adapter
             if (
                 obj &&
                 'protectedNative' in obj &&
                 Array.isArray(obj.protectedNative) &&
                 obj._id &&
                 obj._id.startsWith('system.adapter.') &&
-                adapterName !== 'admin' &&
-                adapterName !== obj._id.split('.')[2]
+                obj.native &&
+                this.name !== 'admin' &&
+                this.name !== 'cloud' &&
+                this.name !== 'iot' &&
+                this.name !== obj._id.split('.')[2]
             ) {
                 for (const attr of obj.protectedNative) {
                     delete obj.native[attr];
@@ -11290,15 +11309,17 @@ export class AdapterClass extends EventEmitter {
                 }
 
                 // remove protectedNative if not admin or own adapter
-                const adapterName = this.namespace.split('.')[0];
                 if (
                     obj &&
                     'protectedNative' in obj &&
                     Array.isArray(obj.protectedNative) &&
                     obj._id &&
                     obj._id.startsWith('system.adapter.') &&
-                    adapterName !== 'admin' &&
-                    adapterName !== obj._id.split('.')[2]
+                    obj.native &&
+                    this.name !== 'admin' &&
+                    this.name !== 'cloud' &&
+                    this.name !== 'iot' &&
+                    this.name !== obj._id.split('.')[2]
                 ) {
                     for (const attr of obj.protectedNative) {
                         delete obj.native[attr];
@@ -11363,7 +11384,7 @@ export class AdapterClass extends EventEmitter {
                         killRes.val === -1
                     ) {
                         this._logger.error(
-                            `${this.namespaceLog} ${this._options.name}.${this.instance} needs to be stopped because not correctly started in compact mode`
+                            `${this.namespaceLog} ${this.namespace} needs to be stopped because not correctly started in compact mode`
                         );
                         this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
                     } else if (
@@ -11378,7 +11399,7 @@ export class AdapterClass extends EventEmitter {
                         killRes.val !== process.pid
                     ) {
                         this._logger.error(
-                            `${this.namespaceLog} ${this._options.name}.${this.instance} invalid process id scenario ${killRes.val} vs. own ID ${process.pid}. Stopping`
+                            `${this.namespaceLog} ${this.namespace} invalid process id scenario ${killRes.val} vs. own ID ${process.pid}. Stopping`
                         );
                         this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
                     } else if (
@@ -11388,17 +11409,13 @@ export class AdapterClass extends EventEmitter {
                         resAlive.ack &&
                         !this._config.forceIfDisabled
                     ) {
-                        this._logger.error(
-                            `${this.namespaceLog} ${this._options.name}.${this.instance} already running`
-                        );
+                        this._logger.error(`${this.namespaceLog} ${this.namespace} already running`);
                         this.terminate(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
                     } else {
                         adapterObjects!.getObject(`system.adapter.${this.namespace}`, (err, res) => {
                             // TODO: ts infers AdapterObject instead of InstanceObject
                             if ((err || !res) && !this._config.isInstall) {
-                                this._logger.error(
-                                    `${this.namespaceLog} ${this._options.name}.${this.instance} invalid config`
-                                );
+                                this._logger.error(`${this.namespaceLog} ${this.namespace} invalid config`);
                                 this.terminate(EXIT_CODES.INVALID_ADAPTER_CONFIG);
                             } else {
                                 this._initAdapter(res);
@@ -11482,7 +11499,7 @@ export class AdapterClass extends EventEmitter {
                         name = tmp[1];
                         instance = parseInt(tmp[2]) || 0;
                     } else {
-                        name = this._options.name;
+                        name = this.name;
                         instance = 0;
                         adapterConfig = adapterConfig || {
                             // @ts-expect-error protectedNative exists on instance objects
@@ -11554,7 +11571,7 @@ export class AdapterClass extends EventEmitter {
                     }
                 } else {
                     // @ts-expect-error
-                    this.name = adapterConfig.name || this._options.name;
+                    this.name = adapterConfig.name || this.name;
                     // @ts-expect-error
                     this.instance = adapterConfig.instance || 0;
                     this.namespace = `${this.name}.${this.instance!}`;
@@ -11888,9 +11905,7 @@ export class AdapterClass extends EventEmitter {
                     objs.push(obj);
                 } else {
                     this._logger.error(
-                        `${this.namespaceLog} ${this._options.name}.${
-                            this.instance
-                        } invalid instance object: ${JSON.stringify(obj)}`
+                        `${this.namespaceLog} ${this.namespace} invalid instance object: ${JSON.stringify(obj)}`
                     );
                 }
             }
