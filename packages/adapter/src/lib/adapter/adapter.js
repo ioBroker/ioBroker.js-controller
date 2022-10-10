@@ -3169,6 +3169,8 @@ function Adapter(options) {
                     obj._id &&
                     obj._id.startsWith('system.adapter.') &&
                     adapterName !== 'admin' &&
+                    adapterName !== 'cloud' &&
+                    adapterName !== 'iot' &&
                     adapterName !== obj._id.split('.')[2]
                 ) {
                     for (const attr of obj.protectedNative) {
