@@ -18,7 +18,8 @@
   "scripts": {
     "build:api": "ts-node build.ts"
   },
-  "types": "./index.d.ts",
+  "main": "",
+  "types": "index.d.ts",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
@@ -26,6 +27,7 @@
   "files": [
     "build/",
     "index.d.ts",
-    "objects.d.ts"
+    "objects.d.ts",
+    "LICENSE"
   ]
 }

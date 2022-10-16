@@ -3520,15 +3520,12 @@ export class ObjectsInRedisClient {
                     // preserve only relevant for StateCommon TODO: maybe better a type guard to be specific
                     let objCommon: ioBroker.StateCommon = obj.common as ioBroker.StateCommon;
                     // remove settings if desired
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                     if (objCommon && objCommon[commonSetting] === null) {
-                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                         delete objCommon[commonSetting];
                     } else if (
                         // if old setting present and new setting is absent
                         // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                         oldObj.common[commonSetting] !== undefined &&
-                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                         (!objCommon || objCommon[commonSetting] === undefined)
                     ) {
                         objCommon = objCommon || {};
