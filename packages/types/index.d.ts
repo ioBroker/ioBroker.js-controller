@@ -9,6 +9,7 @@
 // The definitions may change with updates to ioBroker.js-controller
 
 /// <reference types="node" />
+// eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="./objects.d.ts" />
 import * as fs from 'fs';
 export {}; // avoids exporting AtLeastOne into the global scope
@@ -340,7 +341,7 @@ declare global {
             strictObjectChecks?: boolean;
         } // end interface AdapterOptions
 
-        // tslint:disable-next-line:no-empty-interface
+        // eslint-disable-next-line @typescript-eslint/no-empty-interface
         interface AdapterConfig {
             // This is a stub to be augmented in every adapter
         }

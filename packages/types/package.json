@@ -16,14 +16,16 @@
     "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/types"
   },
   "scripts": {
-    "build": "ts-node build.ts"
+    "build:api": "ts-node build.ts"
   },
-  "types": "build/types.d.ts",
+  "types": "./index.d.ts",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
   "files": [
-    "build/"
+    "build/",
+    "index.d.ts",
+    "objects.d.ts"
   ]
 }

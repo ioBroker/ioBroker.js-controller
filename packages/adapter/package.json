@@ -25,6 +25,9 @@
     "readline": "^1.3.0",
     "semver": "^7.3.7"
   },
+  "devDependencies": {
+    "@iobroker/types": "file:../types"
+  },
   "keywords": [
     "ioBroker"
   ],
