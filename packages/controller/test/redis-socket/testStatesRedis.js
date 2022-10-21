@@ -29,39 +29,38 @@ function cleanDbs() {
 }
 
 describe('States-Redis-Socket: Test states', function () {
-    before('States-Redis-Socket: Start js-controller', function (_done) {
+    before('States-Redis-Socket: Start js-controller', async function () {
         this.timeout(10000);
         cleanDbs();
 
-        setup.startController(
-            {
-                objects: {
-                    dataDir: dataDir,
-                    onChange: (id, _obj) => {
-                        console.log('object changed. ' + id);
-                    }
-                },
-                states: {
-                    type: 'redis',
-                    host: '/var/run/redis.sock',
-                    port: 0,
-                    onChange: (id, state) => {
-                        console.log('Redis-state-Socket changed. ' + id);
-                        if (onStatesChanged) {
-                            onStatesChanged(id, state);
-                        }
-                    }
+        const { objects: _objects, states: _states } = await setup.startController({
+            objects: {
+                dataDir: dataDir,
+                onChange: (id, _obj) => {
+                    console.log('object changed. ' + id);
                 }
             },
-            (_objects, _states) => {
-                objects = _objects;
-                states = _states;
-                states.subscribe('*');
-                expect(objects).to.be.ok;
-                expect(states).to.be.ok;
-                setTimeout(_done, 5000);
+            states: {
+                type: 'redis',
+                host: '/var/run/redis.sock',
+                port: 0,
+                onChange: (id, state) => {
+                    console.log('Redis-state-Socket changed. ' + id);
+                    if (onStatesChanged) {
+                        onStatesChanged(id, state);
+                    }
+                }
             }
-        );
+        });
+
+        objects = _objects;
+        states = _states;
+        states.subscribe('*');
+        expect(objects).to.be.ok;
+        expect(states).to.be.ok;
+        await new Promise(resolve => {
+            setTimeout(() => resolve(), 5000);
+        });
     });
 
     it('States-Redis-Socket: should setState', function (done) {
@@ -93,10 +92,8 @@ describe('States-Redis-Socket: Test states', function () {
         });
     });
 
-    after('States-Redis-Socket: Stop js-controller', function (done) {
+    after('States-Redis-Socket: Stop js-controller', async function () {
         this.timeout(5000);
-        setup.stopController(function () {
-            done();
-        });
+        await setup.stopController();
     });
 });

@@ -28,33 +28,29 @@ function cleanDbs() {
 }
 
 describe('States: Test states in File-Redis', function () {
-    before('States: Start js-controller', function (_done) {
+    before('States: Start js-controller', async function () {
         this.timeout(3000);
         cleanDbs();
 
-        setup.startController(
-            {
-                objects: {
-                    dataDir: dataDir,
-                    onChange: (id, _obj) => console.log('object changed. ' + id)
-                },
-                states: {
-                    dataDir: dataDir,
-                    onChange: (id, state) => {
-                        console.log('state changed. ' + id);
-                        onStatesChanged && onStatesChanged(id, state);
-                    }
-                }
+        const { objects: _objects, states: _states } = await setup.startController({
+            objects: {
+                dataDir: dataDir,
+                onChange: (id, _obj) => console.log('object changed. ' + id)
             },
-            function (_objects, _states) {
-                objects = _objects;
-                states = _states;
-                states.subscribe('*');
-                expect(objects).to.be.ok;
-                expect(states).to.be.ok;
-                _done();
+            states: {
+                dataDir: dataDir,
+                onChange: (id, state) => {
+                    console.log('state changed. ' + id);
+                    onStatesChanged && onStatesChanged(id, state);
+                }
             }
-        );
+        });
+
+        objects = _objects;
+        states = _states;
+        states.subscribe('*');
+        expect(objects).to.be.ok;
+        expect(states).to.be.ok;
     });
 
     it('States: should setState', function (done) {
@@ -105,8 +101,11 @@ describe('States: Test states in File-Redis', function () {
         states.setStateAsync(testID, 2);
     });
 
-    after('States: Stop js-controller', function (done) {
+    after('States: Stop js-controller', async function () {
         this.timeout(5000);
-        setup.stopController(() => setTimeout(done, 2000));
+        await setup.stopController();
+        await new Promise(resolve => {
+            setTimeout(() => resolve(), 2_000);
+        });
     });
 });

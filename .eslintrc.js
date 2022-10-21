@@ -63,7 +63,7 @@ module.exports = {
         'no-unneeded-ternary': 'error'
     },
     parserOptions: {
-        ecmaVersion: 2019
+        ecmaVersion: 2021
     },
     overrides: [
         // we need ts parser for ts files

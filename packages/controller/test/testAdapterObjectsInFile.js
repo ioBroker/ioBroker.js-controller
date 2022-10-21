@@ -16,39 +16,38 @@ const context = {
 };
 
 describe(textName + ' Test Objects File-Redis', function () {
-    before(textName + ' Start js-controller', function (_done) {
+    before(textName + ' Start js-controller', async function () {
         this.timeout(3000);
 
-        setup.startController(
-            {
-                objects: {
-                    dataDir: __dirname + '/../tmp/data',
-                    onChange: function (id, _obj) {
-                        console.log('object changed. ' + id);
-                    }
-                },
-                states: {
-                    dataDir: __dirname + '/../tmp/data',
-                    onChange: function (id, _state) {
-                        console.log('state changed. ' + id);
-                    }
+        const { objects: _objects, states: _states } = await setup.startController({
+            objects: {
+                dataDir: `${__dirname}/../tmp/data`,
+                onChange: function (id, _obj) {
+                    console.log('object changed. ' + id);
                 }
             },
-            function (_objects, _states) {
-                objects = _objects;
-                states = _states;
-                context.objects = _objects;
-                expect(objects).to.be.ok;
-                expect(states).to.be.ok;
-                _done();
+            states: {
+                dataDir: `${__dirname}/../tmp/data`,
+                onChange: function (id, _state) {
+                    console.log('state changed. ' + id);
+                }
             }
-        );
+        });
+
+        objects = _objects;
+        states = _states;
+        context.objects = _objects;
+        expect(objects).to.be.ok;
+        expect(states).to.be.ok;
     });
 
     tests.register(it, expect, context);
 
-    after(textName + ' Stop js-controller', function (done) {
+    after(textName + ' Stop js-controller', async function () {
         this.timeout(5000);
-        setup.stopController(() => setTimeout(done, 2000));
+        await setup.stopController();
+        await new Promise(resolve => {
+            setTimeout(() => resolve(), 2_000);
+        });
     });
 });

@@ -7,9 +7,7 @@
 // check if tmp directory exists
 const fs = require('fs-extra');
 const path = require('path');
-const rootDir = path.normalize(__dirname + '/../../');
-//const pkg           = require(rootDir + 'package.json');
-//const debug         = typeof v8debug === 'object';
+const rootDir = path.normalize(`${__dirname}/../../`);
 
 function getAppName() {
     const parts = __dirname.replace(/\\/g, '/').split('/');
@@ -24,7 +22,7 @@ let states;
 // ensure the temp dir is empty, because content of data/files etc is created and checked for existence in some tests
 fs.emptyDirSync(`${rootDir}tmp`);
 
-function startController(options, callback) {
+function startController(options) {
     if (!options) {
         options = {};
     }
@@ -45,129 +43,131 @@ function startController(options, callback) {
     iobrokerJSON.states.host = options.states.host || '127.0.0.1';
     fs.writeJSONSync(path.join(rootDir, 'data', appName + '.json'), iobrokerJSON, { spaces: 2 });
 
-    const settingsObjects = {
-        connection: {
-            type: options.objects.type || 'file',
-            host: options.objects.host || '127.0.0.1',
-            port: options.objects.port === undefined ? 19001 : options.objects.port,
-            user: options.objects.user || '',
-            pass: options.objects.pass || '',
-            redisNamespace: options.objects.redisNamespace || '',
-            noFileCache: options.objects.noFileCache === undefined ? options.objects.noFileCache : true,
-            connectTimeout: options.objects.connectTimeout || 2000,
-            dataDir: options.objects.dataDir || '',
-            enhancedLogging: true
-        },
-        logger: options.objects.logger ||
-            options.logger || {
-                silly: msg => console.log(msg),
-                debug: msg => console.log(msg),
-                info: msg => console.log(msg),
-                warn: msg => console.warn(msg),
-                error: msg => console.error(msg)
+    return new Promise(resolve => {
+        const settingsObjects = {
+            connection: {
+                type: options.objects.type || 'file',
+                host: options.objects.host || '127.0.0.1',
+                port: options.objects.port === undefined ? 19001 : options.objects.port,
+                user: options.objects.user || '',
+                pass: options.objects.pass || '',
+                redisNamespace: options.objects.redisNamespace || '',
+                noFileCache: options.objects.noFileCache === undefined ? options.objects.noFileCache : true,
+                connectTimeout: options.objects.connectTimeout || 2000,
+                dataDir: options.objects.dataDir || '',
+                enhancedLogging: true
             },
-        connected: () => {
-            // clear all objects
-            objects.destroyDB(async () => {
-                await objects.activateSets();
-                // we need to read the sets lua scripts
-                await objects.loadLuaScripts();
-                isObjectConnected = true;
-                if (isStatesConnected && states) {
-                    console.log('startController: started!');
-                    callback && callback(objects, states);
-                }
-            });
-        },
-        change: options.objects.onChange || null
-    };
+            logger: options.objects.logger ||
+                options.logger || {
+                    silly: msg => console.log(msg),
+                    debug: msg => console.log(msg),
+                    info: msg => console.log(msg),
+                    warn: msg => console.warn(msg),
+                    error: msg => console.error(msg)
+                },
+            connected: () => {
+                // clear all objects
+                objects.destroyDB(async () => {
+                    await objects.activateSets();
+                    // we need to read the sets lua scripts
+                    await objects.loadLuaScripts();
+                    isObjectConnected = true;
+                    if (isStatesConnected && states) {
+                        console.log('startController: started!');
+                        resolve({ objects, states });
+                    }
+                });
+            },
+            change: options.objects.onChange || null
+        };
 
-    let Objects;
+        let Objects;
 
-    if (options.objects) {
-        if (!options.objects.type || options.objects.type === 'file') {
+        if (options.objects) {
+            if (!options.objects.type || options.objects.type === 'file') {
+                console.log('Used class for Objects: Objects Server');
+                Objects = require('@iobroker/db-objects-file').Server;
+            } else if (options.objects.type === 'redis') {
+                console.log('Used class for Objects: Objects Redis Client');
+                Objects = require('@iobroker/db-objects-redis').Client;
+            } else {
+                console.log(`Used custom class for Objects (assume Server available): Objects ${options.objects.type}`);
+                Objects = require(`@iobroker/db-objects-${options.objects.type}`).Server;
+            }
+        } else {
             console.log('Used class for Objects: Objects Server');
             Objects = require('@iobroker/db-objects-file').Server;
-        } else if (options.objects.type === 'redis') {
-            console.log('Used class for Objects: Objects Redis Client');
-            Objects = require('@iobroker/db-objects-redis').Client;
-        } else {
-            console.log(`Used custom class for Objects (assume Server available): Objects ${options.objects.type}`);
-            Objects = require(`@iobroker/db-objects-${options.objects.type}`).Server;
         }
-    } else {
-        console.log('Used class for Objects: Objects Server');
-        Objects = require('@iobroker/db-objects-file').Server;
-    }
 
-    objects = new Objects(settingsObjects);
+        objects = new Objects(settingsObjects);
 
-    let States;
-    // Just open in memory DB itself
-    if (options.states) {
-        if (!options.states.type || options.states.type === 'file') {
+        let States;
+        // Just open in memory DB itself
+        if (options.states) {
+            if (!options.states.type || options.states.type === 'file') {
+                console.log('Used class for States: States Server');
+                States = require('@iobroker/db-states-file').Server;
+            } else if (options.states.type === 'redis') {
+                console.log('Used class for States: States Redis Client');
+                States = require('@iobroker/db-states-redis').Client;
+            } else {
+                console.log(`Used custom class for States (assume Server available): States ${options.states.type}`);
+                States = require(`@iobroker/db-states-${options.states.type}`).Server;
+            }
+        } else {
             console.log('Used class for States: States Server');
             States = require('@iobroker/db-states-file').Server;
-        } else if (options.states.type === 'redis') {
-            console.log('Used class for States: States Redis Client');
-            States = require('@iobroker/db-states-redis').Client;
-        } else {
-            console.log(`Used custom class for States (assume Server available): States ${options.states.type}`);
-            States = require(`@iobroker/db-states-${options.states.type}`).Server;
         }
-    } else {
-        console.log('Used class for States: States Server');
-        States = require('@iobroker/db-states-file').Server;
-    }
 
-    const settingsStates = {
-        connection: {
-            options: {
-                auth_pass: null,
-                retry_max_delay: 15000
+        const settingsStates = {
+            connection: {
+                options: {
+                    auth_pass: null,
+                    retry_max_delay: 15000
+                },
+                type: options.states.type || 'file',
+                host: options.states.host || '127.0.0.1',
+                port: options.states.port === undefined ? 19000 : options.states.port,
+                user: options.states.user || '',
+                pass: options.states.pass || '',
+                dataDir: options.states.dataDir || '',
+                enhancedLogging: true
             },
-            type: options.states.type || 'file',
-            host: options.states.host || '127.0.0.1',
-            port: options.states.port === undefined ? 19000 : options.states.port,
-            user: options.states.user || '',
-            pass: options.states.pass || '',
-            dataDir: options.states.dataDir || '',
-            enhancedLogging: true
-        },
-        logger: options.states.logger ||
-            options.logger || {
-                silly: msg => console.log(msg),
-                debug: msg => console.log(msg),
-                info: msg => console.log(msg),
-                warn: msg => console.warn(msg),
-                error: msg => console.error(msg)
-            },
-        connected: () => {
-            if (settingsStates.connection.type === 'redis') {
-                states.destroyDB(() => {
+            logger: options.states.logger ||
+                options.logger || {
+                    silly: msg => console.log(msg),
+                    debug: msg => console.log(msg),
+                    info: msg => console.log(msg),
+                    warn: msg => console.warn(msg),
+                    error: msg => console.error(msg)
+                },
+            connected: () => {
+                if (settingsStates.connection.type === 'redis') {
+                    states.destroyDB(() => {
+                        console.log('States ok');
+                        isStatesConnected = true;
+                        if (isObjectConnected && objects) {
+                            console.log('startController: started!');
+                            resolve({ objects, states });
+                        }
+                    });
+                } else {
                     console.log('States ok');
                     isStatesConnected = true;
                     if (isObjectConnected && objects) {
                         console.log('startController: started!');
-                        callback && callback(objects, states);
+                        resolve({ objects, states });
                     }
-                });
-            } else {
-                console.log('States ok');
-                isStatesConnected = true;
-                if (isObjectConnected && objects) {
-                    console.log('startController: started!');
-                    callback && callback(objects, states);
                 }
-            }
-        },
-        change: options.states.onChange || null
-    };
+            },
+            change: options.states.onChange || null
+        };
 
-    states = new States(settingsStates);
+        states = new States(settingsStates);
+    });
 }
 
-async function stopController(cb) {
+async function stopController() {
     if (objects) {
         await objects.destroy();
         objects = null;
@@ -175,11 +175,6 @@ async function stopController(cb) {
     if (states) {
         await states.destroy();
         states = null;
-    }
-
-    if (cb) {
-        cb(true);
-        cb = null;
     }
 }
 
