@@ -1,6 +1,5 @@
 import { expect } from 'chai';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const setup = require('./lib/setup4controller');
+import { startController, stopController } from './lib/setup4controller';
 import fs from 'fs';
 import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
 import type { StateRedisClient } from '@iobroker/db-states-redis/build/lib/states/statesInRedisClient';
@@ -29,7 +28,7 @@ describe('States-Redis: Test states in Redis', function () {
         this.timeout(10000);
         cleanDbs();
 
-        const { objects: _objects, states: _states } = await setup.startController({
+        const { objects: _objects, states: _states } = await startController({
             objects: {
                 dataDir: dataDir,
                 onChange: (id: string, _obj: ioBroker.AnyObject) => console.log('object changed. ' + id)
@@ -106,13 +105,13 @@ describe('States-Redis: Test states in Redis', function () {
         };
 
         states!.setStateAsync(testID, 2);
-    }).timeout(10000);
+    }).timeout(10_000);
 
     // todo: write more tests
 
     after('States-Redis: Stop js-controller', async function () {
         this.timeout(5_000);
-        await setup.stopController();
+        await stopController();
         await new Promise<void>(resolve => {
             setTimeout(() => resolve(), 2_000);
         });

@@ -1,7 +1,8 @@
 import fs from 'fs';
 import path from 'path';
 import { expect } from 'chai';
-const setup = require(path.join(__dirname, '..', 'lib', 'setup4controller'));
+import { startController, stopController } from '../lib/setup4controller';
+
 const dataDir = path.join(__dirname, '..', '..', 'tmp', 'data');
 let objects = null;
 let states = null;
@@ -24,10 +25,10 @@ function cleanDbs() {
 
 describe('States-Redis-Socket: Test states', function () {
     before('States-Redis-Socket: Start js-controller', async function () {
-        this.timeout(10000);
+        this.timeout(10_000);
         cleanDbs();
 
-        const { objects: _objects, states: _states } = await setup.startController({
+        const { objects: _objects, states: _states } = await startController({
             objects: {
                 dataDir: dataDir,
                 onChange: (id, _obj) => {
@@ -58,7 +59,7 @@ describe('States-Redis-Socket: Test states', function () {
     });
 
     it('States-Redis-Socket: should setState', function (done) {
-        this.timeout(10000);
+        this.timeout(10_000);
 
         const testID = 'testObject.0.test1';
         onStatesChanged = (id, state) => {
@@ -87,7 +88,7 @@ describe('States-Redis-Socket: Test states', function () {
     });
 
     after('States-Redis-Socket: Stop js-controller', async function () {
-        this.timeout(5000);
-        await setup.stopController();
+        this.timeout(5_000);
+        await stopController();
     });
 });

@@ -4,9 +4,8 @@ import { expect } from 'chai';
 import { exec } from 'child_process';
 import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
 import type { StateRedisClient } from '@iobroker/db-states-redis/build/lib/states/statesInRedisClient';
+import { startController, stopController } from '../lib/setup4controller';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const setup = require(path.join(__dirname, '..', 'lib', 'setup4controller'));
 const dataDir = path.join(__dirname, '..', '..', 'tmp', 'data');
 let objects: ObjectsInRedisClient | null = null;
 let states: StateRedisClient | null = null;
@@ -29,10 +28,10 @@ function cleanDbs() {
 
 describe('States-Redis-Sentinel: Test states', function () {
     before('States-Redis-Sentinel: Start js-controller', async function () {
-        this.timeout(10000);
+        this.timeout(10_000);
         cleanDbs();
 
-        const { objects: _objects, states: _states } = await setup.startController({
+        const { objects: _objects, states: _states } = await startController({
             objects: {
                 dataDir: dataDir,
                 onChange: (id: string, _obj: ioBroker.AnyObject) => {
@@ -145,11 +144,11 @@ describe('States-Redis-Sentinel: Test states', function () {
             states!.setState(testID, sendCounter++, function (err) {
                 expect(err).to.be.not.ok;
             });
-        }, 1000);
+        }, 1_000);
     });
 
     after('States-Redis-Sentinel: Stop js-controller', async function () {
-        this.timeout(5000);
-        await setup.stopController();
+        this.timeout(5_000);
+        await stopController();
     });
 });
