@@ -672,6 +672,7 @@ export class Install {
         if (osPlatform in osDependencies) {
             try {
                 this.packetManager = this.packetManager || new PacketManager();
+                await this.packetManager.update();
                 // @ts-expect-error we have checked that platform is a valid key
                 await this.packetManager.install(osDependencies[osPlatform]);
             } catch (err) {
