@@ -1,14 +1,19 @@
 import { expect } from 'chai';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const setup = require(__dirname + '/lib/setup4controller');
+import { startController, stopController } from './lib/setup4controller';
 let objects = null;
 let states = null;
 const textName = 'Redis ';
+
+import fs from 'fs';
+import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const tests = require('./lib/testObjects');
-import fs from 'fs';
 
-const context = {
+interface Context {
+    objects: ObjectsInRedisClient | null;
+    name: string;
+}
+const context: Context = {
     objects: null,
     name: textName
 };
@@ -35,7 +40,7 @@ describe(textName + 'Test Objects Redis', function () {
     before(textName + 'Start js-controller', async function () {
         this.timeout(23000);
 
-        const { objects: _objects, states: _states } = await setup.startController({
+        const { objects: _objects, states: _states } = await startController({
             objects: objectsConfig,
             states: {
                 dataDir: __dirname + '/../tmp/data',
@@ -56,7 +61,7 @@ describe(textName + 'Test Objects Redis', function () {
 
     after(textName + 'Stop js-controller', async function () {
         this.timeout(5_000);
-        await setup.stopController();
+        await stopController();
         await new Promise<void>(resolve => {
             setTimeout(() => resolve(), 2_000);
         });

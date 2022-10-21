@@ -1,7 +1,5 @@
 {
-  "packages": [
-    "packages/*"
-  ],
+  "useWorkspaces": true,
   "version": "4.1.0-alpha.0-20220922-bbca310b",
   "//": "Set up some command options",
   "command": {
