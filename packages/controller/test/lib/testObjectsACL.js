@@ -121,17 +121,15 @@ function register(it, expect, context) {
             );
     }).timeout(2000);
 
-    it(textName + 'invalid user name must be checked #1', () => {
+    it(textName + 'invalid user name must be checked #1', async () => {
         const objects = context.objects;
-        return objects
-            .getObject(secretId, { user: 'admin' })
-            .then(_obj => {
-                expect(1).to.be.equal('Never happens');
-            })
-            .catch(err => {
-                console.error(err.message);
-                expect(err.message).to.be.equal('permissionError');
-            });
+        try {
+            await objects.getObject(secretId, { user: 'admin' });
+            expect(1).to.be.equal('Never happens');
+        } catch (e) {
+            console.error(e.message);
+            expect(e.message).to.be.equal('permissionError');
+        }
     }).timeout(2000);
 
     it(textName + 'invalid user name must be checked #2', () => {
