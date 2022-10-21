@@ -1,12 +1,19 @@
 import { expect } from 'chai';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const setup = require('./lib/setup4controller');
+import { startController, stopController } from './lib/setup4controller';
+import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
+
 let objects = null;
 let states = null;
 const textName = 'File';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const tests = require('./lib/testObjects');
-const context = {
+
+interface Context {
+    objects: ObjectsInRedisClient | null;
+    name: string;
+}
+
+const context: Context = {
     objects: null,
     name: textName
 };
@@ -15,7 +22,7 @@ describe(textName + ' Test Objects File-Redis', function () {
     before(textName + ' Start js-controller', async function () {
         this.timeout(3000);
 
-        const { objects: _objects, states: _states } = await setup.startController({
+        const { objects: _objects, states: _states } = await startController({
             objects: {
                 dataDir: `${__dirname}/../tmp/data`,
                 onChange: function (id: string, _obj: ioBroker.AnyObject) {
@@ -41,7 +48,7 @@ describe(textName + ' Test Objects File-Redis', function () {
 
     after(textName + ' Stop js-controller', async function () {
         this.timeout(5_000);
-        await setup.stopController();
+        await stopController();
         await new Promise<void>(resolve => {
             setTimeout(() => resolve(), 2_000);
         });

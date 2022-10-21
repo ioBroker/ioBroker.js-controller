@@ -1,34 +1,35 @@
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node:true */
-/* jshint expr:true */
-'use strict';
+import fs from 'fs-extra';
+import path from 'path';
+import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
+import type { StateRedisClient } from '@iobroker/db-states-redis/build/lib/states/statesInRedisClient';
 
-// check if tmp directory exists
-const fs = require('fs-extra');
-const path = require('path');
-const rootDir = path.normalize(`${__dirname}/../../`);
+export const rootDir = path.normalize(`${__dirname}/../../`);
 
-function getAppName() {
+interface StartControllerReturnObject {
+    states: StateRedisClient | null;
+    objects: ObjectsInRedisClient | null;
+}
+
+function getAppName(): string {
     const parts = __dirname.replace(/\\/g, '/').split('/');
     return parts[parts.length - 5].split('.')[0];
 }
 
-const appName = getAppName().toLowerCase();
+export const appName = getAppName().toLowerCase();
 
-let objects;
-let states;
+let objects: ObjectsInRedisClient | null;
+let states: StateRedisClient | null;
 
 // ensure the temp dir is empty, because content of data/files etc is created and checked for existence in some tests
 fs.emptyDirSync(`${rootDir}tmp`);
 
-function startController(options) {
+export function startController(options: Record<string, any>): Promise<StartControllerReturnObject> {
     if (!options) {
         options = {};
     }
 
-    let isObjectConnected;
-    let isStatesConnected;
+    let isObjectConnected: boolean;
+    let isStatesConnected: boolean;
 
     console.log('startController...');
 
@@ -59,18 +60,18 @@ function startController(options) {
             },
             logger: options.objects.logger ||
                 options.logger || {
-                    silly: msg => console.log(msg),
-                    debug: msg => console.log(msg),
-                    info: msg => console.log(msg),
-                    warn: msg => console.warn(msg),
-                    error: msg => console.error(msg)
+                    silly: (msg: string) => console.log(msg),
+                    debug: (msg: string) => console.log(msg),
+                    info: (msg: string) => console.log(msg),
+                    warn: (msg: string) => console.warn(msg),
+                    error: (msg: string) => console.error(msg)
                 },
             connected: () => {
                 // clear all objects
-                objects.destroyDB(async () => {
-                    await objects.activateSets();
+                objects!.destroyDB(null, async () => {
+                    await objects!.activateSets();
                     // we need to read the sets lua scripts
-                    await objects.loadLuaScripts();
+                    await objects!.loadLuaScripts();
                     isObjectConnected = true;
                     if (isStatesConnected && states) {
                         console.log('startController: started!');
@@ -86,16 +87,20 @@ function startController(options) {
         if (options.objects) {
             if (!options.objects.type || options.objects.type === 'file') {
                 console.log('Used class for Objects: Objects Server');
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
                 Objects = require('@iobroker/db-objects-file').Server;
             } else if (options.objects.type === 'redis') {
                 console.log('Used class for Objects: Objects Redis Client');
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
                 Objects = require('@iobroker/db-objects-redis').Client;
             } else {
                 console.log(`Used custom class for Objects (assume Server available): Objects ${options.objects.type}`);
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
                 Objects = require(`@iobroker/db-objects-${options.objects.type}`).Server;
             }
         } else {
             console.log('Used class for Objects: Objects Server');
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
             Objects = require('@iobroker/db-objects-file').Server;
         }
 
@@ -106,16 +111,20 @@ function startController(options) {
         if (options.states) {
             if (!options.states.type || options.states.type === 'file') {
                 console.log('Used class for States: States Server');
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
                 States = require('@iobroker/db-states-file').Server;
             } else if (options.states.type === 'redis') {
                 console.log('Used class for States: States Redis Client');
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
                 States = require('@iobroker/db-states-redis').Client;
             } else {
                 console.log(`Used custom class for States (assume Server available): States ${options.states.type}`);
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
                 States = require(`@iobroker/db-states-${options.states.type}`).Server;
             }
         } else {
             console.log('Used class for States: States Server');
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
             States = require('@iobroker/db-states-file').Server;
         }
 
@@ -135,15 +144,15 @@ function startController(options) {
             },
             logger: options.states.logger ||
                 options.logger || {
-                    silly: msg => console.log(msg),
-                    debug: msg => console.log(msg),
-                    info: msg => console.log(msg),
-                    warn: msg => console.warn(msg),
-                    error: msg => console.error(msg)
+                    silly: (msg: string) => console.log(msg),
+                    debug: (msg: string) => console.log(msg),
+                    info: (msg: string) => console.log(msg),
+                    warn: (msg: string) => console.warn(msg),
+                    error: (msg: string) => console.error(msg)
                 },
             connected: () => {
                 if (settingsStates.connection.type === 'redis') {
-                    states.destroyDB(() => {
+                    states!.destroyDB(() => {
                         console.log('States ok');
                         isStatesConnected = true;
                         if (isObjectConnected && objects) {
@@ -167,7 +176,7 @@ function startController(options) {
     });
 }
 
-async function stopController() {
+export async function stopController(): Promise<void> {
     if (objects) {
         await objects.destroy();
         objects = null;
@@ -176,11 +185,4 @@ async function stopController() {
         await states.destroy();
         states = null;
     }
-}
-
-if (require.main !== module) {
-    module.exports.startController = startController;
-    module.exports.stopController = stopController;
-    module.exports.appName = appName;
-    module.exports.rootDir = rootDir;
 }
