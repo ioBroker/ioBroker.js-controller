@@ -1,12 +1,6 @@
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node:true */
-/* jshint expr:true */
-'use strict';
-
-const fs = require('fs');
-const path = require('path');
-const expect = require('chai').expect;
+import fs from 'fs';
+import path from 'path';
+import { expect } from 'chai';
 const setup = require(path.join(__dirname, '..', 'lib', 'setup4controller'));
 const dataDir = path.join(__dirname, '..', '..', 'tmp', 'data');
 let objects = null;

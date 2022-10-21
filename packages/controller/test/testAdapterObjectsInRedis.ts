@@ -1,16 +1,12 @@
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node:true */
-/* jshint expr:true */
-'use strict';
-
-const expect = require('chai').expect;
+import { expect } from 'chai';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const setup = require(__dirname + '/lib/setup4controller');
 let objects = null;
 let states = null;
 const textName = 'Redis ';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const tests = require('./lib/testObjects');
-const fs = require('fs');
+import fs from 'fs';
 
 const context = {
     objects: null,
@@ -30,7 +26,7 @@ const objectsConfig = {
     redisNamespace: 'testOnlyObjects',
     noFileCache: true,
     connectTimeout: 2000,
-    onChange: (id, _obj) => {
+    onChange: (id: string, _obj: ioBroker.AnyObject) => {
         console.log(`object changed. ${id}`);
     }
 };
@@ -43,7 +39,7 @@ describe(textName + 'Test Objects Redis', function () {
             objects: objectsConfig,
             states: {
                 dataDir: __dirname + '/../tmp/data',
-                onChange: (id, _state) => {
+                onChange: (id: string, _state: ioBroker.State) => {
                     console.log('state changed. ' + id);
                 }
             }
@@ -59,9 +55,9 @@ describe(textName + 'Test Objects Redis', function () {
     tests.register(it, expect, context);
 
     after(textName + 'Stop js-controller', async function () {
-        this.timeout(5000);
+        this.timeout(5_000);
         await setup.stopController();
-        await new Promise(resolve => {
+        await new Promise<void>(resolve => {
             setTimeout(() => resolve(), 2_000);
         });
     });

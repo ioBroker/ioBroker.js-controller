@@ -1,15 +1,12 @@
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node:true */
-/* jshint expr:true */
-'use strict';
-
-const expect = require('chai').expect;
+import { expect } from 'chai';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const setup = require('./lib/setup4controller');
-const fs = require('fs');
-let objects = null;
-let states = null;
-let onStatesChanged = null;
+import fs from 'fs';
+import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
+import type { StateRedisClient } from '@iobroker/db-states-redis/build/lib/states/statesInRedisClient';
+let objects: ObjectsInRedisClient | null = null;
+let states: StateRedisClient | null = null;
+let onStatesChanged: ioBroker.StateChangeHandler | null = null;
 const dataDir = __dirname + '/../tmp/data';
 
 function cleanDbs() {
@@ -35,11 +32,11 @@ describe('States: Test states in File-Redis', function () {
         const { objects: _objects, states: _states } = await setup.startController({
             objects: {
                 dataDir: dataDir,
-                onChange: (id, _obj) => console.log('object changed. ' + id)
+                onChange: (id: string, _obj: ioBroker.AnyObject) => console.log('object changed. ' + id)
             },
             states: {
                 dataDir: dataDir,
-                onChange: (id, state) => {
+                onChange: (id: string, state: ioBroker.State) => {
                     console.log('state changed. ' + id);
                     onStatesChanged && onStatesChanged(id, state);
                 }
@@ -48,7 +45,7 @@ describe('States: Test states in File-Redis', function () {
 
         objects = _objects;
         states = _states;
-        states.subscribe('*');
+        states!.subscribe('*');
         expect(objects).to.be.ok;
         expect(states).to.be.ok;
     });
@@ -58,24 +55,24 @@ describe('States: Test states in File-Redis', function () {
         onStatesChanged = function (id, state) {
             if (id === testID) {
                 expect(state).to.be.ok;
-                expect(state.val).to.be.equal(1);
-                expect(state.ack).to.be.false;
-                expect(state.ts).to.be.ok;
-                expect(state.q).to.be.equal(0);
+                expect(state!.val).to.be.equal(1);
+                expect(state!.ack).to.be.false;
+                expect(state!.ts).to.be.ok;
+                expect(state!.q).to.be.equal(0);
 
-                states.getState(testID, (err, state) => {
+                states!.getState(testID, (err, state) => {
                     expect(err).to.be.not.ok;
                     expect(state).to.be.ok;
-                    expect(state.val).to.be.equal(1);
-                    expect(state.ack).to.be.false;
-                    expect(state.ts).to.be.ok;
-                    expect(state.q).to.be.equal(0);
+                    expect(state!.val).to.be.equal(1);
+                    expect(state!.ack).to.be.false;
+                    expect(state!.ts).to.be.ok;
+                    expect(state!.q).to.be.equal(0);
                     done();
                 });
             }
         };
 
-        states.setState(testID, 1, err => expect(err).to.be.not.ok);
+        states!.setState(testID, 1, err => expect(err).to.be.not.ok);
     });
 
     it('States: should setState async', done => {
@@ -83,28 +80,29 @@ describe('States: Test states in File-Redis', function () {
         onStatesChanged = async (id, state) => {
             if (id === testID) {
                 expect(state).to.be.ok;
-                expect(state.val).to.be.equal(2);
-                expect(state.ack).to.be.false;
-                expect(state.ts).to.be.ok;
-                expect(state.q).to.be.equal(0);
+                expect(state!.val).to.be.equal(2);
+                expect(state!.ack).to.be.false;
+                expect(state!.ts).to.be.ok;
+                expect(state!.q).to.be.equal(0);
 
-                state = await states.getStateAsync(testID);
+                // @ts-expect-error adding types alter on
+                state = await states!.getStateAsync(testID);
                 expect(state).to.be.ok;
-                expect(state.val).to.be.equal(2);
-                expect(state.ack).to.be.false;
-                expect(state.ts).to.be.ok;
-                expect(state.q).to.be.equal(0);
+                expect(state!.val).to.be.equal(2);
+                expect(state!.ack).to.be.false;
+                expect(state!.ts).to.be.ok;
+                expect(state!.q).to.be.equal(0);
                 done();
             }
         };
 
-        states.setStateAsync(testID, 2);
+        states!.setStateAsync(testID, 2);
     });
 
     after('States: Stop js-controller', async function () {
         this.timeout(5000);
         await setup.stopController();
-        await new Promise(resolve => {
+        await new Promise<void>(resolve => {
             setTimeout(() => resolve(), 2_000);
         });
     });

@@ -1,18 +1,16 @@
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node:true */
-/* jshint expr:true */
-'use strict';
+import fs from 'fs';
+import path from 'path';
+import { expect } from 'chai';
+import { exec } from 'child_process';
+import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
+import type { StateRedisClient } from '@iobroker/db-states-redis/build/lib/states/statesInRedisClient';
 
-const fs = require('fs');
-const path = require('path');
-const expect = require('chai').expect;
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const setup = require(path.join(__dirname, '..', 'lib', 'setup4controller'));
-const { exec } = require('child_process');
 const dataDir = path.join(__dirname, '..', '..', 'tmp', 'data');
-let objects = null;
-let states = null;
-let onStatesChanged = null;
+let objects: ObjectsInRedisClient | null = null;
+let states: StateRedisClient | null = null;
+let onStatesChanged: ioBroker.StateChangeHandler | null = null;
 
 function cleanDbs() {
     if (fs.existsSync(path.join(dataDir, 'objects.json'))) {
@@ -37,7 +35,7 @@ describe('States-Redis-Sentinel: Test states', function () {
         const { objects: _objects, states: _states } = await setup.startController({
             objects: {
                 dataDir: dataDir,
-                onChange: (id, _obj) => {
+                onChange: (id: string, _obj: ioBroker.AnyObject) => {
                     console.log('object changed. ' + id);
                 }
             },
@@ -45,7 +43,7 @@ describe('States-Redis-Sentinel: Test states', function () {
                 type: 'redis',
                 host: ['127.0.0.1', '127.0.0.1', '127.0.0.1'],
                 port: [26380, 26381, 26382],
-                onChange: (id, state) => {
+                onChange: (id: string, state: ioBroker.State) => {
                     console.log('Redis-state-Sentinel changed. ' + id);
                     if (onStatesChanged) {
                         onStatesChanged(id, state);
@@ -56,10 +54,10 @@ describe('States-Redis-Sentinel: Test states', function () {
 
         objects = _objects;
         states = _states;
-        states.subscribe('*');
+        states!.subscribe('*');
         expect(objects).to.be.ok;
         expect(states).to.be.ok;
-        await new Promise(resolve => {
+        await new Promise<void>(resolve => {
             setTimeout(() => resolve(), 5_000);
         });
     });
@@ -71,24 +69,24 @@ describe('States-Redis-Sentinel: Test states', function () {
         onStatesChanged = (id, state) => {
             if (id === testID) {
                 expect(state).to.be.ok;
-                expect(state.val).to.be.equal(1);
-                expect(state.ack).to.be.false;
-                expect(state.ts).to.be.ok;
-                expect(state.q).to.be.equal(0);
+                expect(state!.val).to.be.equal(1);
+                expect(state!.ack).to.be.false;
+                expect(state!.ts).to.be.ok;
+                expect(state!.q).to.be.equal(0);
 
-                states.getState(testID, (err, state) => {
+                states!.getState(testID, (err, state) => {
                     expect(err).to.be.not.ok;
                     expect(state).to.be.ok;
-                    expect(state.val).to.be.equal(1);
-                    expect(state.ack).to.be.false;
-                    expect(state.ts).to.be.ok;
-                    expect(state.q).to.be.equal(0);
+                    expect(state!.val).to.be.equal(1);
+                    expect(state!.ack).to.be.false;
+                    expect(state!.ts).to.be.ok;
+                    expect(state!.q).to.be.equal(0);
                     done();
                 });
             }
         };
 
-        states.setState(testID, 1, function (err) {
+        states!.setState(testID, 1, function (err) {
             expect(err).to.be.not.ok;
         });
     });
@@ -101,28 +99,29 @@ describe('States-Redis-Sentinel: Test states', function () {
         const testID = 'testObject.0.test1';
         onStatesChanged = (id, state) => {
             if (id === testID) {
-                console.log('Receive state value: ' + state.val);
+                console.log('Receive state value: ' + state!.val);
                 expect(state).to.be.ok;
-                if (state.val !== sendCounter - 1) {
+                if (state!.val !== sendCounter - 1) {
                     // timing special case for failover ... sometimes we loose some resubmits
                     // we need to accept that for now
-                    expect(state.val).to.be.equal(receiveCounter + 1);
+                    expect(state!.val).to.be.equal(receiveCounter + 1);
                 }
                 receiveCounter++;
-                expect(state.ack).to.be.false;
-                expect(state.ts).to.be.ok;
-                expect(state.q).to.be.equal(0);
+                expect(state!.ack).to.be.false;
+                expect(state!.ts).to.be.ok;
+                expect(state!.q).to.be.equal(0);
 
-                states.getState(testID, (err, state) => {
+                states!.getState(testID, (err, state) => {
                     expect(err).to.be.not.ok;
                     expect(state).to.be.ok;
-                    expect(state.val).to.be.equal(sendCounter - 1);
-                    expect(state.ack).to.be.false;
-                    expect(state.ts).to.be.ok;
-                    expect(state.q).to.be.equal(0);
-                    console.log('Get state: ' + state.val);
+                    expect(state!.val).to.be.equal(sendCounter - 1);
+                    expect(state!.ack).to.be.false;
+                    expect(state!.ts).to.be.ok;
+                    expect(state!.q).to.be.equal(0);
+                    console.log('Get state: ' + state!.val);
 
                     if (receiveCounter === 30) {
+                        // eslint-disable-next-line @typescript-eslint/no-use-before-define
                         clearInterval(stateInterval);
                         done();
                     }
@@ -143,7 +142,7 @@ describe('States-Redis-Sentinel: Test states', function () {
 
         const stateInterval = setInterval(() => {
             console.log('Set state: ' + sendCounter);
-            states.setState(testID, sendCounter++, function (err) {
+            states!.setState(testID, sendCounter++, function (err) {
                 expect(err).to.be.not.ok;
             });
         }, 1000);

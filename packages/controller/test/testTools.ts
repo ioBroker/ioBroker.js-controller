@@ -1,7 +1,5 @@
-'use strict';
-
-const { expect } = require('chai');
-const { FORBIDDEN_CHARS, execAsync } = require('@iobroker/js-controller-common').tools;
+import { expect } from 'chai';
+import { FORBIDDEN_CHARS, execAsync } from '@iobroker/js-controller-common/tools';
 
 describe('test tools.js helpers', () => {
     it('FORBIDDEN_CHARS', () => {
@@ -20,6 +18,6 @@ describe('test tools.js helpers', () => {
 
     it('execAsync', async () => {
         const res = await execAsync('echo test');
-        expect(res.stdout.trim()).to.be.equal('test');
+        expect((res.stdout as string).trim()).to.be.equal('test');
     });
 });
