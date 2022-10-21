@@ -175,15 +175,6 @@ function register(it, expect, context) {
     it(textName + 'default acl from system.config should be used', async () => {
         const objects = context.objects;
 
-        // hack for redis, because testing setup missing setup first logic
-        objects.defaultNewAcl = {
-            object: 1636,
-            state: 1636,
-            file: 1636,
-            owner: 'system.user.governor',
-            ownerGroup: 'system.group.senatorGroup'
-        };
-
         await objects.setObjectAsync('test.defAck', { type: 'state' });
         const obj = await objects.getObjectAsync('test.defAck');
 
