@@ -5888,13 +5888,13 @@ export class AdapterClass extends EventEmitter {
     getStatesOf(callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>): void;
     getStatesOf(parentDevice: string, callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>): void;
     getStatesOf(
-        parentDevice: string,
-        parentChannel: string,
+        parentDevice: string | null | undefined,
+        parentChannel: string | null | undefined,
         callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>
     ): void;
     getStatesOf(
-        parentDevice: string,
-        parentChannel: string,
+        parentDevice: string | null | undefined,
+        parentChannel: string | null | undefined,
         options: unknown,
         callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>
     ): void;
@@ -5917,8 +5917,15 @@ export class AdapterClass extends EventEmitter {
         }
 
         Utils.assertCallback(callback, 'callback');
-        Utils.assertString(parentDevice, 'parentDevice');
-        Utils.assertString(parentChannel, 'parentChannel');
+
+        if (parentDevice !== null && parentDevice !== undefined) {
+            Utils.assertString(parentDevice, 'parentDevice');
+        }
+
+        if (parentChannel !== null && parentChannel !== undefined) {
+            Utils.assertString(parentChannel, 'parentChannel');
+        }
+
         if (options !== null && options !== undefined) {
             Utils.assertObject(options, 'options');
         }

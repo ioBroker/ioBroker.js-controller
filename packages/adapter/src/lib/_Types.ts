@@ -387,8 +387,8 @@ export interface InternalGetDevicesOptions {
 }
 
 export interface InternalGetStatesOfOptions {
-    parentDevice: string;
-    parentChannel: string;
+    parentDevice: string | null | undefined;
+    parentChannel: string | null | undefined;
     options?: Record<string, any> | null;
     callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>;
 }
