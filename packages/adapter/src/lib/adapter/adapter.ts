@@ -10104,8 +10104,7 @@ export class AdapterClass extends EventEmitter {
      */
     setBinaryState(id: any, binary: any, options: any, callback?: any): void {
         // we just keep any types here, because setForeign method will validate
-        // TODO: call fixId as soon as adapters are migrated to setForeignBinaryState
-        // id = this._utils.fixId(id, false);
+        id = this._utils.fixId(id, false);
         return this.setForeignBinaryState(id, binary, options, callback);
     }
 
@@ -10195,8 +10194,7 @@ export class AdapterClass extends EventEmitter {
      */
     getBinaryState(id: any, options: any, callback?: any): any {
         // we use any types here, because validation takes place in foreign method
-        // TODO: fixId as soon as all adapters are migrated to setForeignBinaryState
-        // id =this._utils.fixId(id);
+        id = this._utils.fixId(id);
         return this.getForeignBinaryState(id, options, callback);
     }
 
