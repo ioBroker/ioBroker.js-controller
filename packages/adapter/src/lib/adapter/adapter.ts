@@ -37,7 +37,8 @@ import {
     ACCESS_GROUP_WRITE,
     ACCESS_GROUP_READ,
     ACCESS_USER_WRITE,
-    ACCESS_USER_READ
+    ACCESS_USER_READ,
+    NO_PROTECT_ADAPTERS
 } from './constants';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import type {
@@ -4138,9 +4139,7 @@ export class AdapterClass extends EventEmitter {
                         row.value.native &&
                         id &&
                         id.startsWith('system.adapter.') &&
-                        this.name !== 'admin' &&
-                        this.name !== 'cloud' &&
-                        this.name !== 'iot' &&
+                        !NO_PROTECT_ADAPTERS.includes(this.name) &&
                         this.name !== id.split('.')[2]
                     ) {
                         for (const attr of row.value.protectedNative) {
@@ -4262,9 +4261,7 @@ export class AdapterClass extends EventEmitter {
                 obj._id &&
                 obj._id.startsWith('system.adapter.') &&
                 obj.native &&
-                this.name !== 'admin' &&
-                this.name !== 'cloud' &&
-                this.name !== 'iot' &&
+                !NO_PROTECT_ADAPTERS.includes(this.name) &&
                 this.name !== obj._id.split('.')[2]
             ) {
                 for (const attr of obj.protectedNative) {
@@ -11316,9 +11313,7 @@ export class AdapterClass extends EventEmitter {
                     obj._id &&
                     obj._id.startsWith('system.adapter.') &&
                     obj.native &&
-                    this.name !== 'admin' &&
-                    this.name !== 'cloud' &&
-                    this.name !== 'iot' &&
+                    !NO_PROTECT_ADAPTERS.includes(this.name) &&
                     this.name !== obj._id.split('.')[2]
                 ) {
                     for (const attr of obj.protectedNative) {
