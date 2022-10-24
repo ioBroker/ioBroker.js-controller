@@ -1370,9 +1370,9 @@ export interface RepositoryFile {
  */
 export async function getRepositoryFileAsync(
     url: string,
-    hash: string,
-    force: boolean,
-    _actualRepo: RepositoryFile
+    hash?: string,
+    force?: boolean,
+    _actualRepo?: RepositoryFile
 ): Promise<RepositoryFile> {
     let _hash;
     let data;
@@ -2013,10 +2013,7 @@ function makeid(length: number) {
  *            }
  *        </code></pre>
  */
-export async function getHostInfo(
-    objects: any,
-    callback: (result?: Record<string, any>) => void
-): Promise<Record<string, any>> {
+export async function getHostInfo(objects: any): Promise<Record<string, any>> {
     if (diskusage) {
         try {
             diskusage = diskusage || require('diskusage');
@@ -2053,7 +2050,7 @@ export async function getHostInfo(
 
     // Check if repositories exists
     const allRepos: Record<string, any> = {};
-    if (systemRepos && systemRepos.native && systemRepos.native.repositories) {
+    if (systemRepos?.native?.repositories && systemConfig) {
         const repos: string[] = Array.isArray(systemConfig.common.activeRepo)
             ? systemConfig.common.activeRepo
             : [systemConfig.common.activeRepo];
@@ -2083,7 +2080,6 @@ export async function getHostInfo(
     } catch (e) {
         console.error(`Cannot get disk information: ${e.message}`);
     }
-    callback && callback(data);
 
     return data;
 }

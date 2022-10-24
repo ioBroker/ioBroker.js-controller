@@ -17,7 +17,7 @@ export interface NotificationHandlerSettings {
     host: string;
     states: StatesInRedisClient;
     objects: ObjectsInRedisClient;
-    log: Winston.Logger;
+    log: Winston.Logger | Console;
     logPrefix: string;
 }
 
@@ -102,7 +102,7 @@ interface ScopeStateValue {
 export class NotificationHandler {
     private states: StatesInRedisClient;
     private objects: ObjectsInRedisClient;
-    private log: Winston.Logger;
+    private log: Winston.Logger | Console;
     private currentNotifications: NotificationsObject = {};
     // default data dir is relative to controllerDir
     private readonly dataDir = path.join(tools.getControllerDir(), tools.getDefaultDataDir());

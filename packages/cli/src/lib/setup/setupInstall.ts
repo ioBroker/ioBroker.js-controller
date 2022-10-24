@@ -577,7 +577,7 @@ export class Install {
     /**
      * Installs given adapter
      */
-    private async installAdapter(adapter: string, repoUrl?: string, _installCount?: number): Promise<string | void> {
+    async installAdapter(adapter: string, repoUrl?: string, _installCount?: number): Promise<string | void> {
         _installCount = _installCount || 0;
         const fullName = adapter;
         if (adapter.includes('@')) {
@@ -1260,7 +1260,6 @@ export class Install {
         const sysAdapterRegex = new RegExp(`^system\\.adapter\\.${adapter}${instance ? `\\.${instance}` : ''}\\.`);
 
         try {
-            // @ts-expect-error #1917
             const doc = await this.objects.getObjectListAsync({ include_docs: true });
             if (doc && doc.rows && doc.rows.length) {
                 // add non-duplicates to the list
@@ -1885,7 +1884,6 @@ export class Install {
      */
     private async _getInstancesOfAdapter(adapter: string): Promise<ioBroker.InstanceObject[]> {
         const instances = [];
-        // @ts-expect-error fixed with #1917
         const doc = await this.objects.getObjectListAsync({
             startkey: `system.adapter.${adapter}.`,
             endkey: `system.adapter.${adapter}.\u9999`

@@ -7,34 +7,45 @@
  *
  */
 
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node: true */
-'use strict';
-// TODO need info about progress of stopping
+import fs from 'fs-extra';
+import { tools } from '@iobroker/js-controller-common';
+import cli from '@iobroker/js-controller-cli';
+import { EXIT_CODES } from '@iobroker/js-controller-common';
+import deepClone from 'deep-clone';
+import { isDeepStrictEqual } from 'util';
+import Debug from 'debug';
+import { tools as dbTools, getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
+import path from 'path';
+import { PluginHandler } from '@iobroker/plugin-base';
+import yargs from 'yargs';
+import type {
+    CLICommandContext,
+    CLICommandOptions,
+    DBConnectCallback
+} from '@iobroker/js-controller-cli/build/lib/cli/cliCommand';
+import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
+import type { StateRedisClient } from '@iobroker/db-states-redis/build/lib/states/statesInRedisClient';
 
-const fs = require('fs-extra');
-const { tools } = require('@iobroker/js-controller-common');
-const cli = require('@iobroker/js-controller-cli');
-const { EXIT_CODES } = require('@iobroker/js-controller-common');
-const deepClone = require('deep-clone');
-const { isDeepStrictEqual } = require('util');
-const debug = require('debug')('iobroker:cli');
-const { tools: dbTools, getObjectsConstructor, getStatesConstructor } = require('@iobroker/js-controller-common-db');
-const path = require('path');
-const { PluginHandler } = require('@iobroker/plugin-base');
+const debug = Debug('iobroker:cli');
 
-let pluginHandler;
+let pluginHandler: InstanceType<typeof PluginHandler>;
 
-// @ts-ignore
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 require('events').EventEmitter.prototype._maxListeners = 100;
 process.setMaxListeners(0);
 
-/** @type {import('yargs')} */
-let yargs;
+let _yargs: yargs.Argv;
 
-function initYargs() {
-    yargs = require('yargs')
+type ExitCodeCb = (exitCode?: number) => void;
+
+interface InternalRebuildOptions {
+    cwd?: string;
+    module?: string;
+    debug: boolean;
+}
+
+function initYargs(): yargs.Argv {
+    _yargs = yargs
         .scriptName(tools.appName)
         .locale('en') // otherwise it could be mixed, because our implementations are in english
         .version(false) // disable yargs own version handling, because we have our own depending on passed instances
@@ -466,42 +477,47 @@ function initYargs() {
         .command(['version [<adapter>]', 'v [<adapter>]'], 'Show version of js-controller or specified adapter')
         .wrap(null);
 
-    return yargs;
+    return _yargs;
 }
 
 /**
  * Show yargs help, if processCommand is used as import, yargs won't be initialized
- * @param {object?} _yargs - yargs instance
+ * @param _yargs - yargs instance
  */
-function showHelp(_yargs) {
+function showHelp(_yargs?: yargs.Argv) {
     if (_yargs) {
         _yargs.showHelp();
-    } else if (yargs) {
+    } else {
         yargs.showHelp();
     }
 }
 
-let Objects; // constructor
-let objects; // instance
-let States; // constructor
-let states; // instance
+let Objects: any; // constructor
+let objects: ObjectsInRedisClient | null; // instance
+let States: any; // constructor
+let states: StateRedisClient | null; // instance
 
 /**
  * Process the given CLI command
  *
- * @param {string|number} command - command to execute
- * @param {any[]} args - arguments passed to yargs
- * @param {object} params - object with parsed params by yargs, e. g. --force is params.force
- * @param {(exitCode?: number) => void} callback
+ * @param command - command to execute
+ * @param args - arguments passed to yargs
+ * @param params - object with parsed params by yargs, e. g. --force is params.force
+ * @param callback
  */
-async function processCommand(command, args, params, callback) {
+async function processCommand(
+    command: string | number,
+    args: any[],
+    params: Record<string, any>,
+    callback: ExitCodeCb
+): Promise<void> {
     if (typeof args === 'function') {
         callback = args;
-        args = null;
+        args = [];
     }
     if (typeof params === 'function') {
-        callback = params;
-        params = null;
+        callback = params as ExitCodeCb;
+        params = {};
     }
     if (!params) {
         params = {};
@@ -513,12 +529,10 @@ async function processCommand(command, args, params, callback) {
         callback = processExit;
     }
 
-    /** @type {CLICommandContext} */
-    const commandContext = { dbConnect, callback, showHelp };
-    /** @type {CLICommandOptions} */
-    const commandOptions = Object.assign({}, params, commandContext);
+    const commandContext: CLICommandContext = { dbConnect, callback, showHelp };
+    const commandOptions: CLICommandOptions = Object.assign({}, params, commandContext);
     debug(`commandOptions: ${JSON.stringify(commandOptions)}`);
-    debug(`args: ${args}`);
+    debug(`args: ${JSON.stringify(args)}`);
 
     switch (command) {
         case 'start':
@@ -557,6 +571,7 @@ async function processCommand(command, args, params, callback) {
             Objects = getObjectsConstructor();
             const repoUrl = args[0]; // Repo url or name
             dbConnect(params, async (_objects, _states) => {
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
                 const Repo = require('./setup/setupRepo.js');
                 const repo = new Repo({
                     objects: _objects,
@@ -570,6 +585,7 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'setup': {
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
             const Setup = require('./setup/setupSetup.js');
             const setup = new Setup({
                 dbConnect,
@@ -582,8 +598,8 @@ async function processCommand(command, args, params, callback) {
             if (args[0] === 'custom' || params.custom) {
                 setup.setupCustom(callback);
             } else {
-                let isFirst;
-                let isRedis;
+                let isFirst = false;
+                let isRedis = false;
 
                 // we support "first" and "redis" without "--" flag
                 for (const arg of args) {
@@ -602,10 +618,10 @@ async function processCommand(command, args, params, callback) {
                     async () => {
                         if (isFirst) {
                             // Creates all instances that are needed on a fresh installation
-                            const Install = require('@iobroker/js-controller-cli').setupInstall;
+                            const Install = (await import('@iobroker/js-controller-cli')).setupInstall;
                             const install = new Install({
-                                objects,
-                                states,
+                                objects: objects!,
+                                states: states!,
                                 getRepository,
                                 processExit: callback,
                                 params
@@ -621,12 +637,12 @@ async function processCommand(command, args, params, callback) {
                                         let otherInstanceExists = false;
                                         try {
                                             // check if another instance exists
-                                            const res = await objects.getObjectViewAsync('system', 'instance', {
+                                            const res = await objects!.getObjectViewAsync('system', 'instance', {
                                                 startkey: `system.adapter.${instance}`,
                                                 endkey: `system.adapter.${instance}\u9999`
                                             });
 
-                                            otherInstanceExists = res && res.rows && res.rows.length;
+                                            otherInstanceExists = !!res?.rows?.length;
                                         } catch {
                                             // ignore - on install we have no object views
                                         }
@@ -655,6 +671,7 @@ async function processCommand(command, args, params, callback) {
 
                         // we update existing things, in first as well as normnal setup
                         // Rename repositories
+                        // eslint-disable-next-line @typescript-eslint/no-var-requires
                         const Repo = require('./setup/setupRepo.js');
                         const repo = new Repo({ objects, states });
 
@@ -671,7 +688,7 @@ async function processCommand(command, args, params, callback) {
 
                         // there has been a bug that user can upload js-controller
                         try {
-                            await objects.delObjectAsync('system.adapter.js-controller');
+                            await objects!.delObjectAsync('system.adapter.js-controller');
                         } catch {
                             // ignore
                         }
@@ -725,13 +742,13 @@ async function processCommand(command, args, params, callback) {
                             }
 
                             if (migrated) {
-                                const { NotificationHandler } = require('./../lib/notificationHandler');
+                                const { NotificationHandler } = await import('./../lib/notificationHandler');
 
                                 const hostname = tools.getHostName();
 
                                 const notificationSettings = {
-                                    states: states,
-                                    objects: objects,
+                                    states: states!,
+                                    objects: objects!,
                                     log: console,
                                     logPrefix: '',
                                     host: hostname
@@ -792,10 +809,10 @@ async function processCommand(command, args, params, callback) {
             url = url.trim();
 
             dbConnect(params, async () => {
-                const Install = require('@iobroker/js-controller-cli').setupInstall;
+                const Install = (await import('@iobroker/js-controller-cli')).setupInstall;
                 const install = new Install({
-                    objects,
-                    states,
+                    objects: objects!,
+                    states: states!,
                     getRepository,
                     processExit: callback,
                     params
@@ -816,7 +833,8 @@ async function processCommand(command, args, params, callback) {
             Objects = getObjectsConstructor();
             dbConnect(params, async objects => {
                 try {
-                    const data = await tools.getHostInfo(objects);
+                    const data = await tools.getHostInfo(objects!);
+                    // eslint-disable-next-line @typescript-eslint/no-var-requires
                     const formatters = require('./formatters');
                     const formatInfo = {
                         Uptime: formatters.formatSeconds,
@@ -830,6 +848,7 @@ async function processCommand(command, args, params, callback) {
                     for (const attr of Object.keys(data)) {
                         console.log(
                             `${attr}${attr.length < 16 ? new Array(16 - attr.length).join(' ') : ''}: ${
+                                // @ts-expect-error would need checks
                                 formatInfo[attr] ? formatInfo[attr](data[attr]) : data[attr] || ''
                             }`
                         );
@@ -895,10 +914,10 @@ async function processCommand(command, args, params, callback) {
             const adapterDir = tools.getAdapterDir(name);
 
             dbConnect(params, async () => {
-                const Install = require('@iobroker/js-controller-cli').setupInstall;
+                const Install = (await import('@iobroker/js-controller-cli')).setupInstall;
                 const install = new Install({
-                    objects,
-                    states,
+                    objects: objects!,
+                    states: states!,
                     getRepository,
                     processExit: callback,
                     params
@@ -908,7 +927,7 @@ async function processCommand(command, args, params, callback) {
                     // if host argument provided we should check, that host actually exists in mh environment
                     let obj;
                     try {
-                        obj = await objects.getObjectAsync(`system.host.${params.host}`);
+                        obj = await objects!.getObjectAsync(`system.host.${params.host}`);
                     } catch (err) {
                         console.warn(`Could not check existence of host "${params.host}": ${err.message}`);
                     }
@@ -919,8 +938,9 @@ async function processCommand(command, args, params, callback) {
                     }
                 }
 
-                if (!fs.existsSync(adapterDir)) {
+                if (!adapterDir || !fs.existsSync(adapterDir)) {
                     try {
+                        // @ts-expect-error check or handle null return value
                         const { stoppedList } = await install.downloadPacket(repoUrl, installName);
                         await install.installAdapter(installName, repoUrl);
                         await install.enableInstances(stoppedList, true); // even if unlikely make sure to reenable disabled instances
@@ -949,7 +969,7 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'rebuild': {
-            const options = { debug: process.argv.includes('--debug') };
+            const options: InternalRebuildOptions = { debug: process.argv.includes('--debug') };
 
             if (commandOptions.path) {
                 if (path.isAbsolute(commandOptions.path)) {
@@ -993,19 +1013,23 @@ async function processCommand(command, args, params, callback) {
 
                     if (name === 'all') {
                         try {
-                            const objs = await objects.getObjectListAsync({
+                            const objs = await objects!.getObjectListAsync({
                                 startkey: 'system.adapter.',
                                 endkey: 'system.adapter.\u9999'
                             });
-                            const adapters = [];
-                            for (let i = 0; i < objs.rows.length; i++) {
-                                if (objs.rows[i].value.type !== 'adapter') {
-                                    continue;
-                                }
-                                adapters.push(objs.rows[i].value.common.name);
-                            }
 
-                            await upload.uploadAdapterFullAsync(adapters);
+                            if (objs) {
+                                const adapters = [];
+
+                                for (let i = 0; i < objs.rows.length; i++) {
+                                    if (objs.rows[i].value.type !== 'adapter') {
+                                        continue;
+                                    }
+                                    adapters.push(objs.rows[i].value.common.name);
+                                }
+
+                                await upload.uploadAdapterFullAsync(adapters);
+                            }
                             callback();
                         } catch (err) {
                             console.error(`Cannot upload all adapters: ${err.message}`);
@@ -1090,10 +1114,10 @@ async function processCommand(command, args, params, callback) {
 
             if (instance || instance === 0) {
                 dbConnect(params, async () => {
-                    const Install = require('@iobroker/js-controller-cli').setupInstall;
+                    const Install = (await import('@iobroker/js-controller-cli')).setupInstall;
                     const install = new Install({
-                        objects,
-                        states,
+                        objects: objects!,
+                        states: states!,
                         getRepository,
                         processExit: callback,
                         params
@@ -1105,10 +1129,10 @@ async function processCommand(command, args, params, callback) {
                 });
             } else {
                 dbConnect(params, async () => {
-                    const Install = require('@iobroker/js-controller-cli').setupInstall;
+                    const Install = (await import('@iobroker/js-controller-cli')).setupInstall;
                     const install = new Install({
-                        objects,
-                        states,
+                        objects: objects!,
+                        states: states!,
                         getRepository,
                         processExit: callback,
                         params
@@ -1121,7 +1145,7 @@ async function processCommand(command, args, params, callback) {
             break;
         }
         case 'unsetup': {
-            const rl = require('readline').createInterface({
+            const rl = (await import('readline')).createInterface({
                 input: process.stdin,
                 output: process.stdout
             });
@@ -1173,17 +1197,16 @@ async function processCommand(command, args, params, callback) {
         case 'upgrade': {
             Objects = getObjectsConstructor();
 
-            let adapter = cli.tools.normalizeAdapterName(args[0]);
+            let adapter: string | null = cli.tools.normalizeAdapterName(args[0]);
 
             if (adapter === 'all') {
                 adapter = null;
             }
 
             dbConnect(params, async () => {
-                const Upgrade = require('@iobroker/js-controller-cli').setupUpgrade;
+                const Upgrade = (await import('@iobroker/js-controller-cli')).setupUpgrade;
                 const upgrade = new Upgrade({
-                    objects,
-                    states,
+                    objects: objects!,
                     getRepository,
                     params,
                     processExit: callback,
@@ -1193,8 +1216,8 @@ async function processCommand(command, args, params, callback) {
                 if (adapter) {
                     try {
                         if (adapter === 'self') {
-                            const hostAlive = await states.getStateAsync(`system.host.${tools.getHostName()}.alive`);
-                            await upgrade.upgradeController('', params.force || params.f, hostAlive && hostAlive.val);
+                            const hostAlive = await states!.getStateAsync(`system.host.${tools.getHostName()}.alive`);
+                            await upgrade.upgradeController('', params.force || params.f, !!hostAlive?.val);
                         } else {
                             await upgrade.upgradeAdapter(
                                 '',
@@ -1260,7 +1283,7 @@ async function processCommand(command, args, params, callback) {
         }
 
         case 'restore': {
-            const Backup = require('@iobroker/js-controller-cli').setupBackup;
+            const Backup = (await import('@iobroker/js-controller-cli')).setupBackup;
 
             dbConnect(params, (_obj, _stat, isNotRun) => {
                 if (!isNotRun) {
@@ -1269,8 +1292,8 @@ async function processCommand(command, args, params, callback) {
                 }
 
                 const backup = new Backup({
-                    states,
-                    objects,
+                    states: states!,
+                    objects: objects!,
                     cleanDatabase,
                     restartController,
                     processExit: callback
@@ -1288,12 +1311,12 @@ async function processCommand(command, args, params, callback) {
 
         case 'backup': {
             const name = args[0];
-            const Backup = require('@iobroker/js-controller-cli').setupBackup;
+            const Backup = (await import('@iobroker/js-controller-cli')).setupBackup;
 
             dbConnect(params, async () => {
                 const backup = new Backup({
-                    states,
-                    objects,
+                    states: states!,
+                    objects: objects!,
                     cleanDatabase,
                     restartController,
                     processExit: callback
@@ -1301,7 +1324,7 @@ async function processCommand(command, args, params, callback) {
 
                 try {
                     const filePath = await backup.createBackup(name);
-                    console.log(`Backup created: ${filePath}`);
+                    console.log(`Backup created: ${filePath!}`);
                     console.log('This backup can only be restored with js-controller version up from 4.1');
                     return void callback(EXIT_CODES.NO_ERROR);
                 } catch (err) {
@@ -1314,11 +1337,11 @@ async function processCommand(command, args, params, callback) {
 
         case 'validate': {
             const name = args[0];
-            const Backup = require('@iobroker/js-controller-cli').setupBackup;
+            const Backup = (await import('@iobroker/js-controller-cli')).setupBackup;
             dbConnect(params, async () => {
                 const backup = new Backup({
-                    states,
-                    objects,
+                    states: states!,
+                    objects: objects!,
                     cleanDatabase,
                     restartController,
                     processExit: callback
@@ -1338,13 +1361,12 @@ async function processCommand(command, args, params, callback) {
 
         case 'l':
         case 'list': {
-            dbConnect(params, (_objects, _states, _isOffline, _objectsType, config) => {
-                const { setupList: List } = require('@iobroker/js-controller-cli');
+            dbConnect(params, async (_objects, _states, _isOffline, _objectsType) => {
+                const { setupList: List } = await import('@iobroker/js-controller-cli');
                 const list = new List({
-                    states,
-                    objects,
-                    processExit: callback,
-                    config
+                    states: states!,
+                    objects: objects!,
+                    processExit: callback
                 });
                 list.list(args[0], args[1], params);
             });
@@ -1366,21 +1388,21 @@ async function processCommand(command, args, params, callback) {
                 }
 
                 if (pattern === '*') {
-                    objects.getObjectList(
+                    objects!.getObjectList(
                         {
                             startkey: 'system.adapter.',
                             endkey: 'system.adapter.\u9999'
                         },
                         (err, arr) => {
                             if (!err && arr && arr.rows) {
-                                const files = [];
+                                const files: any[] = [];
                                 let count = 0;
                                 for (let i = 0; i < arr.rows.length; i++) {
                                     if (arr.rows[i].value.type !== 'adapter') {
                                         continue;
                                     }
                                     count++;
-                                    objects.touch(
+                                    objects!.touch(
                                         arr.rows[i].value.common.name,
                                         '*',
                                         { user: 'system.user.admin' },
@@ -1468,7 +1490,7 @@ async function processCommand(command, args, params, callback) {
                         },
                         (err, arr) => {
                             if (!err && arr && arr.rows) {
-                                const files = [];
+                                const files: any[] = [];
                                 let count = 0;
                                 for (let i = 0; i < arr.rows.length; i++) {
                                     if (arr.rows[i].value.type !== 'adapter') {
@@ -1574,7 +1596,7 @@ async function processCommand(command, args, params, callback) {
                         },
                         (err, arr) => {
                             if (!err && arr && arr.rows) {
-                                const files = [];
+                                const files: any[] = [];
                                 let count = 0;
                                 for (let i = 0; i < arr.rows.length; i++) {
                                     if (arr.rows[i].value.type !== 'adapter') {
@@ -1628,7 +1650,7 @@ async function processCommand(command, args, params, callback) {
                     const id = parts.shift();
                     const path = parts.join('/');
 
-                    objects.chmodFile(id, path, { user: 'system.user.admin', mode: mode }, (err, processed) => {
+                    objects!.chmodFile(id, path, { user: 'system.user.admin', mode: mode }, (err, processed) => {
                         if (err) {
                             console.error(err);
                         } else {
@@ -1684,21 +1706,21 @@ async function processCommand(command, args, params, callback) {
                 }
 
                 if (pattern === '*') {
-                    objects.getObjectList(
+                    objects!.getObjectList(
                         {
                             startkey: 'system.adapter.',
                             endkey: 'system.adapter.\u9999'
                         },
                         (err, arr) => {
                             if (!err && arr && arr.rows) {
-                                const files = [];
+                                const files: any[] = [];
                                 let count = 0;
                                 for (let i = 0; i < arr.rows.length; i++) {
                                     if (arr.rows[i].value.type !== 'adapter') {
                                         continue;
                                     }
                                     count++;
-                                    objects.chownFile(
+                                    objects!.chownFile(
                                         arr.rows[i].value.common.name,
                                         '*',
                                         {
@@ -1706,12 +1728,12 @@ async function processCommand(command, args, params, callback) {
                                             owner: user,
                                             ownerGroup: group
                                         },
-                                        (err, processed, _id) => {
+                                        async (err, processed, _id) => {
                                             if (!err && processed) {
                                                 files.push({ id: _id, processed: processed });
                                             }
                                             if (!--count) {
-                                                const { setupList: List } = require('@iobroker/js-controller-cli');
+                                                const { setupList: List } = await import('@iobroker/js-controller-cli');
                                                 const list = new List({
                                                     states,
                                                     objects,
@@ -1789,6 +1811,7 @@ async function processCommand(command, args, params, callback) {
             }
 
             dbConnect(params, () => {
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
                 const Users = require('./setup/setupUsers.js');
                 const users = new Users({
                     objects,
@@ -1798,7 +1821,7 @@ async function processCommand(command, args, params, callback) {
                 const group = params.ingroup || 'system.group.administrator';
 
                 if (command === 'add') {
-                    users.addUserPrompt(user, group, password, err => {
+                    users.addUserPrompt(user, group, password, (err: any) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -1808,7 +1831,7 @@ async function processCommand(command, args, params, callback) {
                         }
                     });
                 } else if (command === 'del' || command === 'delete') {
-                    users.delUser(user, err => {
+                    users.delUser(user, (err: any) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -1818,7 +1841,7 @@ async function processCommand(command, args, params, callback) {
                         }
                     });
                 } else if (command === 'check') {
-                    users.checkUserPassword(user, password, err => {
+                    users.checkUserPassword(user, password, (err: any) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -1828,7 +1851,7 @@ async function processCommand(command, args, params, callback) {
                         }
                     });
                 } else if (command === 'set' || command === 'passwd') {
-                    users.setUserPassword(user, password, err => {
+                    users.setUserPassword(user, password, (err: any) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -1838,7 +1861,7 @@ async function processCommand(command, args, params, callback) {
                         }
                     });
                 } else if (command === 'enable' || command === 'e') {
-                    users.enableUser(user, true, err => {
+                    users.enableUser(user, true, (err: any) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -1848,7 +1871,7 @@ async function processCommand(command, args, params, callback) {
                         }
                     });
                 } else if (command === 'disable' || command === 'd') {
-                    users.enableUser(user, false, err => {
+                    users.enableUser(user, false, (err: any) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -1858,7 +1881,7 @@ async function processCommand(command, args, params, callback) {
                         }
                     });
                 } else if (command === 'get') {
-                    users.getUser(user, (err, isEnabled) => {
+                    users.getUser(user, (err: any, isEnabled: any) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -1901,6 +1924,7 @@ async function processCommand(command, args, params, callback) {
             }
 
             dbConnect(params, () => {
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
                 const Users = require('./setup/setupUsers.js');
                 const users = new Users({
                     objects,
@@ -1926,7 +1950,7 @@ async function processCommand(command, args, params, callback) {
                         console.warn('Please define user name: "group userdel groupName userName"');
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                     }
-                    users.removeUserFromGroup(user, group, err => {
+                    users.removeUserFromGroup(user, group, (err: any) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -1936,7 +1960,7 @@ async function processCommand(command, args, params, callback) {
                         }
                     });
                 } else if (command === 'add') {
-                    users.addGroup(group, err => {
+                    users.addGroup(group, (err: any) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -1946,7 +1970,7 @@ async function processCommand(command, args, params, callback) {
                         }
                     });
                 } else if (command === 'del' || command === 'delete') {
-                    users.delGroup(group, err => {
+                    users.delGroup(group, (err: any) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -1956,7 +1980,7 @@ async function processCommand(command, args, params, callback) {
                         }
                     });
                 } else if (command === 'list' || command === 'l') {
-                    users.getGroup(group, (err, isEnabled, list) => {
+                    users.getGroup(group, (err: any, isEnabled: boolean, list: any[]) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -1973,7 +1997,7 @@ async function processCommand(command, args, params, callback) {
                         }
                     });
                 } else if (command === 'enable' || command === 'e') {
-                    users.enableGroup(group, true, err => {
+                    users.enableGroup(group, true, (err: any) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -1983,7 +2007,7 @@ async function processCommand(command, args, params, callback) {
                         }
                     });
                 } else if (command === 'disable' || command === 'd') {
-                    users.enableGroup(group, false, err => {
+                    users.enableGroup(group, false, (err: any) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -1993,7 +2017,7 @@ async function processCommand(command, args, params, callback) {
                         }
                     });
                 } else if (command === 'get') {
-                    users.getGroup(group, (err, isEnabled, _list) => {
+                    users.getGroup(group, (err: any, isEnabled: boolean) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -2018,12 +2042,13 @@ async function processCommand(command, args, params, callback) {
             const password = params.password;
 
             dbConnect(params, () => {
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
                 const Users = require('./setup/setupUsers.js');
                 const users = new Users({
                     objects,
                     processExit: callback
                 });
-                users.addUserPrompt(user, group, password, err => {
+                users.addUserPrompt(user, group, password, (err: any) => {
                     if (err) {
                         console.error(err);
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -2040,12 +2065,13 @@ async function processCommand(command, args, params, callback) {
             const user = args[0];
             const password = params.password;
             dbConnect(params, () => {
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
                 const Users = require('./setup/setupUsers.js');
                 const users = new Users({
                     objects,
                     processExit: callback
                 });
-                users.setUserPassword(user, password, err => {
+                users.setUserPassword(user, password, (err: any) => {
                     if (err) {
                         console.error(err);
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -2065,12 +2091,13 @@ async function processCommand(command, args, params, callback) {
             const user = args[0];
 
             dbConnect(params, () => {
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
                 const Users = require('./setup/setupUsers.js');
                 const users = new Users({
                     objects,
                     processExit: callback
                 });
-                users.delUser(user, err => {
+                users.delUser(user, (err: any) => {
                     if (err) {
                         console.error(err);
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -2090,8 +2117,8 @@ async function processCommand(command, args, params, callback) {
                 engines: {
                     node: '>=12'
                 },
-                optionalDependencies: {},
-                dependencies: {},
+                optionalDependencies: {} as Record<string, string>,
+                dependencies: {} as Record<string, string>,
                 author: 'bluefox <dogafox@gmail.com>'
             };
             json.dependencies[`${tools.appName}.js-controller`] = '*';
@@ -2134,7 +2161,7 @@ async function processCommand(command, args, params, callback) {
                 return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
             }
             dbConnect(params, () => {
-                objects.getObject('system.adapter.' + instance, (err, obj) => {
+                objects!.getObject('system.adapter.' + instance, (err, obj) => {
                     if (!err && obj) {
                         let changed = false;
                         for (let a = 0; a < process.argv.length; a++) {
@@ -2179,7 +2206,7 @@ async function processCommand(command, args, params, callback) {
                         if (changed) {
                             obj.from = 'system.host.' + tools.getHostName() + '.cli';
                             obj.ts = new Date().getTime();
-                            objects.setObject('system.adapter.' + instance, obj, () => {
+                            objects!.setObject('system.adapter.' + instance, obj, () => {
                                 console.log(`Instance settings for "${instance}" are changed.`);
                                 return void callback();
                             });
@@ -2208,6 +2235,7 @@ async function processCommand(command, args, params, callback) {
                 widgetset = widgetset.substring(4);
             }
 
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
             const VisDebug = require('./setup/setupVisDebug.js');
 
             dbConnect(params, _objects => {
@@ -2280,12 +2308,12 @@ async function processCommand(command, args, params, callback) {
                         return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                     }
 
-                    objects.readFile(adapt, parts.join('/'), (err, data) => {
+                    objects.readFile(adapt, parts.join('/'), null, (err, data) => {
                         err && console.error(err);
                         if (data) {
                             const destFilename = path.join('/');
                             fs.writeFileSync(destFilename, data);
-                            console.log('File "' + toRead + '" stored as "' + destFilename + '"');
+                            console.log(`File "${toRead}" stored as "${destFilename}"`);
                         }
                         return void callback(EXIT_CODES.NO_ERROR);
                     });
@@ -2344,7 +2372,7 @@ async function processCommand(command, args, params, callback) {
                     }
 
                     objects.writeFile(adapt, destFilename, data, _err => {
-                        console.log('File "' + toRead + '" stored as "' + destFilename + '"');
+                        console.log(`File "${toRead}" stored as "${destFilename}"`);
                         return void callback(EXIT_CODES.NO_ERROR);
                     });
                 } else if (cmd === 'del' || cmd === 'rm' || cmd === 'unlink') {
@@ -2366,9 +2394,9 @@ async function processCommand(command, args, params, callback) {
                         return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                     }
 
-                    objects.unlink(adapt, parts.join('/'), err => {
+                    objects.unlink(adapt, parts.join('/'), null, err => {
                         err && console.error(err);
-                        !err && console.log('File "' + toDelete + '" was deleted');
+                        !err && console.log(`File "${toDelete}" was deleted`);
                         return void callback(EXIT_CODES.NO_ERROR);
                     });
                 } else if (cmd === 'sync') {
@@ -2377,6 +2405,7 @@ async function processCommand(command, args, params, callback) {
                         console.log('File Sync is only available when database type "file" is used.');
                         return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                     }
+                    // @ts-expect-error look in depth how to handle
                     if (!objects.syncFileDirectory || !objects.dirExists) {
                         // functionality only exists in server class
                         console.log(
@@ -2390,10 +2419,11 @@ async function processCommand(command, args, params, callback) {
                         const objExists = await objects.objectExists('meta.user');
                         if (objExists) {
                             // check if dir is missing
+                            // @ts-expect-error look in depth how to handle
                             const dirExists = objects.dirExists('meta.user');
                             if (!dirExists) {
                                 // create meta.user, so users see them as upload target
-                                await objects.mkdirAsync('meta.user');
+                                await objects!.mkdirAsync('meta.user');
                                 console.log('Successfully created "meta.user" directory');
                             }
                         }
@@ -2793,12 +2823,11 @@ async function processCommand(command, args, params, callback) {
 }
 
 /**
- * Exits the process and saves objects before exit
+ * Exits the process and saves objects before exit - never resolves
  *
- * @param {number?} exitCode
- * @return {Promise<void>} Never resolves
+ * @param  exitCode
  */
-async function processExit(exitCode) {
+async function processExit(exitCode?: number): Promise<never> {
     if (pluginHandler) {
         pluginHandler.destroyAll();
     }
@@ -2826,7 +2855,7 @@ const OBJECTS_THAT_CANNOT_BE_DELETED = [
     'system.user.admin'
 ];
 
-async function delObjects(ids) {
+async function delObjects(ids: string[]): Promise<void> {
     if (ids && ids.length) {
         for (let i = 0; i < ids.length; i++) {
             const id = ids[i];
@@ -2841,7 +2870,7 @@ async function delObjects(ids) {
     }
 }
 
-async function delStates() {
+async function delStates(): Promise<number> {
     const keys = await states.getKeys('*');
     if (keys) {
         console.log(`clean ${keys.length} states...`);
@@ -2859,10 +2888,9 @@ async function delStates() {
 /**
  * Cleans the database
  *
- * @param {boolean} isDeleteDb - if whole db should be destroyed
- * @return {Promise<number>}
+ * @param isDeleteDb - if whole db should be destroyed
  */
-async function cleanDatabase(isDeleteDb) {
+async function cleanDatabase(isDeleteDb: boolean): Promise<number> {
     if (isDeleteDb) {
         await objects.destroyDBAsync();
         // Clean up states
@@ -2889,11 +2917,11 @@ async function cleanDatabase(isDeleteDb) {
     }
 }
 
-function unsetup(params, callback) {
+function unsetup(params: Record<string, any>, callback: ExitCodeCb) {
     dbConnect(params, () => {
         objects.delObject('system.meta.uuid', err => {
             if (err) {
-                console.log('uuid cannot be deleted: ' + err);
+                console.log(`uuid cannot be deleted: ${err}`);
             } else {
                 console.log('system.meta.uuid deleted');
             }
@@ -2912,7 +2940,7 @@ function unsetup(params, callback) {
 
                     objects.setObject('system.config', obj, err => {
                         if (err) {
-                            console.log('not found: ' + err);
+                            console.log(`not found: ${err}`);
                             return void callback(EXIT_CODES.CANNOT_SET_OBJECT);
                         } else {
                             console.log('system.config reset');
@@ -2931,10 +2959,9 @@ function unsetup(params, callback) {
 /**
  * Spawns a process which restarts the controller
  */
-function restartController() {
-    const { spawn } = require('child_process');
-
+async function restartController(): Promise<void> {
     console.log('Starting node restart.js');
+    const { spawn } = await import('child_process');
 
     const child = spawn('node', [`${__dirname}/restart.js`], {
         detached: true,
@@ -2945,7 +2972,7 @@ function restartController() {
     child.unref();
 }
 
-async function getRepository(repoName, params) {
+async function getRepository(repoName?: string, params?: Record<string, any>) {
     params = params || {};
 
     if (!objects) {
@@ -2953,20 +2980,18 @@ async function getRepository(repoName, params) {
     }
 
     if (!repoName || repoName === 'auto') {
-        const systemConfig = await objects.getObjectAsync('system.config');
-        repoName = systemConfig.common.activeRepo;
+        const systemConfig = await objects!.getObjectAsync('system.config');
+        repoName = systemConfig!.common.activeRepo;
     }
 
-    if (!Array.isArray(repoName)) {
-        repoName = [repoName];
-    }
+    const repoArr = !Array.isArray(repoName) ? [repoName!] : repoName!;
 
     const systemRepos = await objects.getObjectAsync('system.repositories');
     const allSources = {};
     let changed = false;
     let anyFound = false;
-    for (let r = 0; r < repoName.length; r++) {
-        const repo = repoName[r];
+    for (let r = 0; r < repoArr.length; r++) {
+        const repo = repoArr[r];
         if (systemRepos.native.repositories[repo]) {
             if (typeof systemRepos.native.repositories[repo] === 'string') {
                 systemRepos.native.repositories[repo] = {
@@ -3004,13 +3029,14 @@ async function getRepository(repoName, params) {
                 systemRepos.native.repositories
             ).join(' | ')}>`
         );
+        // @ts-expect-error throw code or description?
         throw new Error(EXIT_CODES.INVALID_REPO);
     } else {
         return allSources;
     }
 }
 
-async function resetDbConnect(_callback) {
+async function resetDbConnect() {
     if (objects) {
         await objects.destroy();
         objects = null;
@@ -3027,29 +3053,12 @@ async function resetDbConnect(_callback) {
     }
 }
 
-// function showConfig(config, root) {
-//     root = root || [];
-//     const prefix = root.join('/').toUpperCase();
-//     for (const attr in config) {
-//         if (!config.hasOwnProperty(attr)) continue;
-//         if (attr.match(/comment$/i)) continue;
-//         if (typeof config[attr] === 'object') {
-//             const nextRoot = deepClone(root);
-//             nextRoot.push(attr);
-//             showConfig(config[attr], nextRoot);
-//         } else {
-//             console.log(`${prefix}${(prefix ? '/' : '') + attr}: ` + config[attr]);
-//         }
-//     }
-// }
-
 /**
  * Checks if system is offline
  *
- * @param {boolean} onlyCheck - returns true then
- * @returns {Promise<boolean>}
+ * @param onlyCheck - returns true then
  */
-async function checkSystemOffline(onlyCheck) {
+async function checkSystemOffline(onlyCheck: boolean): Promise<boolean> {
     if (!objects || !states) {
         // should never happen
         return true;
@@ -3066,10 +3075,9 @@ async function checkSystemOffline(onlyCheck) {
 /**
  * Initialize plugins from io-pack and config json
  *
- * @param {object} config - parsed content of iobroker.json
- * returns {Promise<void>}
+ * @param config - parsed content of iobroker.json
  */
-function initializePlugins(config) {
+function initializePlugins(config: Record<string, any>): Promise<void> {
     const ioPackage = fs.readJsonSync(path.join(tools.getControllerDir(), 'io-package.json'));
     const packageJson = fs.readJsonSync(path.join(tools.getControllerDir(), 'package.json'));
     const hostname = tools.getHostName();
@@ -3080,11 +3088,17 @@ function initializePlugins(config) {
         scope: 'controller',
         log: {
             // cli should be clean, only log warn/error
-            silly: _msg => {},
-            debug: _msg => {},
-            info: _msg => {},
-            warn: msg => console.log(msg),
-            error: msg => console.log(msg)
+            silly: (_msg: string) => {
+                /** do not log on this level */
+            },
+            debug: (_msg: string) => {
+                /** do not log on this level */
+            },
+            info: (_msg: string) => {
+                /** do not log on this level */
+            },
+            warn: (msg: string) => console.log(msg),
+            error: (msg: string) => console.log(msg)
         },
         iobrokerConfig: config,
         parentPackage: packageJson,
@@ -3101,13 +3115,18 @@ function initializePlugins(config) {
     });
 }
 
+function dbConnect(params: Record<string, any>, callback: DBConnectCallback): void;
+function dbConnect(onlyCheck: boolean, params: Record<string, any>, callback: DBConnectCallback): void;
 /**
- * Connects to the DB or tests the connection. The callback has the following signature:
- * `(objects: any, states: any, isOffline?: boolean, objectsDBType?: string) => void`
+ * Connects to the DB or tests the connection.
  */
-function dbConnect(onlyCheck, params, callback) {
+function dbConnect(
+    onlyCheck: boolean | Record<string, any>,
+    params: Record<string, any> | DBConnectCallback,
+    callback?: DBConnectCallback
+): void {
     if (typeof onlyCheck === 'object') {
-        callback = params;
+        callback = params as DBConnectCallback;
         params = onlyCheck;
         onlyCheck = false;
     }
@@ -3116,9 +3135,14 @@ function dbConnect(onlyCheck, params, callback) {
         onlyCheck = false;
     }
     if (typeof params === 'function') {
-        callback = params;
-        params = null;
+        callback = params as DBConnectCallback;
+        params = {};
     }
+
+    if (!callback) {
+        throw new Error('No callback for dbConnect');
+    }
+
     params = params || {};
 
     const config = fs.readJSONSync(tools.getConfigFileName());
@@ -3155,15 +3179,21 @@ function dbConnect(onlyCheck, params, callback) {
             }
             if (dbTools.objectsDbHasServer(config.objects.type)) {
                 // Just open in memory DB itself
-                Objects = require(`@iobroker/db-objects-${config.objects.type}`).Server;
+                Objects = (await import(`@iobroker/db-objects-${config.objects.type}`)).Server;
                 objects = new Objects({
                     connection: config.objects,
                     logger: {
-                        silly: _msg => {},
-                        debug: _msg => {},
-                        info: _msg => {},
-                        warn: msg => console.log(msg),
-                        error: msg => console.log(msg)
+                        silly: (_msg: string) => {
+                            /** do not log on this level */
+                        },
+                        debug: (_msg: string) => {
+                            /** do not log on this level */
+                        },
+                        info: (_msg: string) => {
+                            /** do not log on this level */
+                        },
+                        warn: (msg: string) => console.log(msg),
+                        error: (msg: string) => console.log(msg)
                     },
                     connected: async () => {
                         isObjectConnected = true;
@@ -3182,8 +3212,8 @@ function dbConnect(onlyCheck, params, callback) {
                     `No connection to objects ${config.objects.host}:${config.objects.port}[${config.objects.type}]`
                 );
                 if (onlyCheck) {
-                    callback && callback(objects, states, true, config.objects.type, config);
-                    callback = null;
+                    callback && callback(objects!, states, true, config.objects.type, config);
+                    callback = undefined;
                 } else {
                     return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
                 }
@@ -3198,15 +3228,22 @@ function dbConnect(onlyCheck, params, callback) {
             }
             if (dbTools.statesDbHasServer(config.states.type)) {
                 // Just open in memory DB itself
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
                 States = require(`@iobroker/db-states-${config.states.type}`).Server;
                 states = new States({
                     connection: config.states,
                     logger: {
-                        silly: _msg => {},
-                        debug: _msg => {},
-                        info: _msg => {},
-                        warn: msg => console.log(msg),
-                        error: msg => console.log(msg)
+                        silly: (_msg: string) => {
+                            /** do not log on this level */
+                        },
+                        debug: (_msg: string) => {
+                            /** do not log on this level */
+                        },
+                        info: (_msg: string) => {
+                            /** do not log on this level */
+                        },
+                        warn: (msg: string) => console.log(msg),
+                        error: (msg: string) => console.log(msg)
                     },
                     connected: async () => {
                         isStatesConnected = true;
@@ -3220,13 +3257,15 @@ function dbConnect(onlyCheck, params, callback) {
                         }
                     },
                     // react on change
+                    // @ts-expect-error do we need types here?
                     change: (id, msg) => states.onChange && states.onChange(id, msg)
                 });
-                states.onChange = null; // here the custom onChange handler could be installed
+                // @ts-expect-error do we need types here?
+                states!.onChange = null; // here the custom onChange handler could be installed
             } else {
                 if (states) {
                     // Destroy Client we tried to connect with
-                    await states.destroy();
+                    await (states as StateRedisClient).destroy();
                     states = null;
                 }
                 if (objects) {
@@ -3239,7 +3278,7 @@ function dbConnect(onlyCheck, params, callback) {
                 );
                 if (onlyCheck) {
                     callback && callback(objects, states, true, config.objects.type, config);
-                    callback = null;
+                    callback = undefined;
                 } else {
                     return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
                 }
@@ -3255,10 +3294,11 @@ function dbConnect(onlyCheck, params, callback) {
             console.log('No connection to databases possible ...');
             if (onlyCheck) {
                 callback && callback(null, null, true, config.objects.type, config);
-                callback = null;
+                callback = undefined;
             } else {
                 return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
             }
+            // @ts-expect-error fix it
         }, (params.timeout || 10000) + config.objects.connectTimeout);
     }, params.timeout || config.objects.connectTimeout * 2);
 
@@ -3266,11 +3306,17 @@ function dbConnect(onlyCheck, params, callback) {
     objects = new Objects({
         connection: config.objects,
         logger: {
-            silly: _msg => {},
-            debug: _msg => {},
-            info: _msg => {},
-            warn: msg => console.log(msg),
-            error: msg => console.log(msg)
+            silly: (_msg: string) => {
+                /** do not log on this level */
+            },
+            debug: (_msg: string) => {
+                /** do not log on this level */
+            },
+            info: (_msg: string) => {
+                /** do not log on this level */
+            },
+            warn: (msg: string) => console.log(msg),
+            error: (msg: string) => console.log(msg)
         },
         connected: async () => {
             if (isObjectConnected) {
@@ -3279,13 +3325,13 @@ function dbConnect(onlyCheck, params, callback) {
             isObjectConnected = true;
 
             if (isStatesConnected && typeof callback === 'function') {
-                const isOffline = await checkSystemOffline(onlyCheck);
+                const isOffline = await checkSystemOffline(onlyCheck as boolean);
                 try {
                     await initializePlugins(config);
                 } catch {
                     // ignore in silence
                 }
-                callback(objects, states, isOffline, config.objects.type, config);
+                callback(objects!, states, isOffline, config.objects.type, config);
             }
         }
     });
@@ -3293,11 +3339,17 @@ function dbConnect(onlyCheck, params, callback) {
     states = new States({
         connection: config.states,
         logger: {
-            silly: _msg => {},
-            debug: _msg => {},
-            info: _msg => {},
-            warn: msg => console.log(msg),
-            error: msg => console.log(msg)
+            silly: (_msg: string) => {
+                /** do not log on this level */
+            },
+            debug: (_msg: string) => {
+                /** do not log on this level */
+            },
+            info: (_msg: string) => {
+                /** do not log on this level */
+            },
+            warn: (msg: string) => console.log(msg),
+            error: (msg: string) => console.log(msg)
         },
         connected: async () => {
             if (isStatesConnected) {
@@ -3306,27 +3358,27 @@ function dbConnect(onlyCheck, params, callback) {
             isStatesConnected = true;
 
             if (isObjectConnected && typeof callback === 'function') {
-                const isOffline = await checkSystemOffline(onlyCheck);
+                const isOffline = await checkSystemOffline(onlyCheck as boolean);
                 try {
                     await initializePlugins(config);
                 } catch {
                     // ignore in silence
                 }
-                callback(objects, states, isOffline, config.objects.type, config);
+                callback(objects!, states, isOffline, config.objects.type, config);
             }
         },
+        // @ts-expect-error types missing?
         change: (id, state) => states.onChange && states.onChange(id, state)
     });
 }
 
 /**
- * Connects to the DB or tests the connection. The response has the following structure:
- * `{objects: any, states: any, isOffline?: boolean, objectsDBType?: string, config}`
+ * Connects to the DB or tests the connection.
  */
-function dbConnectAsync(onlyCheck, params) {
-    return new Promise((resolve, reject) =>
-        dbConnect(onlyCheck, params, (err, objects, states, isOffline, objectsDBType, config) =>
-            err ? reject(err) : resolve({ objects, states, isOffline, objectsDBType, config })
+function dbConnectAsync(onlyCheck: boolean, params?: Record<string, any>): Promise<Record<string, any>> {
+    return new Promise(resolve =>
+        dbConnect(onlyCheck, params || {}, (objects, states, isOffline, objectsDBType, config) =>
+            resolve({ objects, states, isOffline, objectsDBType, config })
         )
     );
 }
@@ -3334,6 +3386,7 @@ function dbConnectAsync(onlyCheck, params) {
 module.exports.execute = function () {
     // direct call
     const _yargs = initYargs();
+    // @ts-expect-error fix it
     const command = _yargs.argv._[0];
 
     const args = [];
