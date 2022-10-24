@@ -47,7 +47,7 @@ interface RedisConnectionOptions extends ConnectionOptions {
     redisNamespace?: string;
 }
 
-interface ObjectsSettings {
+export interface ObjectsSettings {
     connected: () => void;
     controller?: boolean;
     primaryHostLost?: () => void;

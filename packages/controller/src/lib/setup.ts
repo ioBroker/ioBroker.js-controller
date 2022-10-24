@@ -493,9 +493,9 @@ function showHelp(_yargs?: yargs.Argv) {
     }
 }
 
-let Objects: any; // constructor
+let Objects: typeof ObjectsInRedisClient | null; // constructor
 let objects: ObjectsInRedisClient | null; // instance
-let States: any; // constructor
+let States: typeof StateRedisClient | null; // constructor
 let states: StateRedisClient | null; // instance
 
 /**
@@ -849,7 +849,7 @@ async function processCommand(
                     for (const attr of Object.keys(data)) {
                         console.log(
                             `${attr}${attr.length < 16 ? new Array(16 - attr.length).join(' ') : ''}: ${
-                                // @ts-expect-error would need checks
+                                // @ts-expect-error todo would need checks
                                 formatInfo[attr] ? formatInfo[attr](data[attr]) : data[attr] || ''
                             }`
                         );
@@ -941,7 +941,7 @@ async function processCommand(
 
                 if (!adapterDir || !fs.existsSync(adapterDir)) {
                     try {
-                        // @ts-expect-error check or handle null return value
+                        // @ts-expect-error todo check or handle null return value
                         const { stoppedList } = await install.downloadPacket(repoUrl, installName);
                         await install.installAdapter(installName, repoUrl);
                         await install.enableInstances(stoppedList, true); // even if unlikely make sure to reenable disabled instances
@@ -1009,8 +1009,8 @@ async function processCommand(
             const subTree = args[1];
             if (name) {
                 dbConnect(params, async () => {
-                    const Upload = require('@iobroker/js-controller-cli').setupUpload;
-                    const upload = new Upload({ states, objects });
+                    const Upload = (await import('@iobroker/js-controller-cli')).setupUpload;
+                    const upload = new Upload({ states: states!, objects: objects! });
 
                     if (name === 'all') {
                         try {
@@ -1022,11 +1022,16 @@ async function processCommand(
                             if (objs) {
                                 const adapters = [];
 
-                                for (let i = 0; i < objs.rows.length; i++) {
-                                    if (objs.rows[i].value.type !== 'adapter') {
+                                for (const row of objs.rows) {
+                                    if (row.value.type !== 'adapter') {
                                         continue;
                                     }
-                                    adapters.push(objs.rows[i].value.common.name);
+
+                                    adapters.push(
+                                        tools.isObject(row.value.common.name)
+                                            ? row.value.common.name.en
+                                            : row.value.common.name
+                                    );
                                 }
 
                                 await upload.uploadAdapterFullAsync(adapters);
@@ -1407,7 +1412,7 @@ async function processCommand(
                                         arr.rows[i].value.common.name as string,
                                         '*',
                                         { user: 'system.user.admin' },
-                                        // @ts-expect-error this looks wrong, we have no cb args other than err
+                                        // @ts-expect-error todo this looks wrong, we have no cb args other than err
                                         async (err, processed, _id) => {
                                             if (!err && processed) {
                                                 files.push({ id: _id, processed: processed });
@@ -1447,7 +1452,7 @@ async function processCommand(
                     const id = parts.shift();
                     const path = parts.join('/');
 
-                    // @ts-expect-error processed should not exist, how to proceeed?
+                    // @ts-expect-error todo processed should not exist, how to proceeed?
                     objects!.touch(id, path, { user: 'system.user.admin' }, async (err, processed) => {
                         if (err) {
                             console.error(err);
@@ -1504,16 +1509,16 @@ async function processCommand(
                                         arr.rows[i].value.common.name as string,
                                         '*',
                                         { user: 'system.user.admin' },
-                                        // @ts-expect-error id should not exist according to types check it
-                                        (err, processed, _id) => {
+                                        // @ts-expect-error todo id should not exist according to types check it
+                                        async (err, processed, _id) => {
                                             if (!err && processed) {
                                                 files.push({ id: _id, processed: processed });
                                             }
                                             if (!--count) {
-                                                const { setupList: List } = require('@iobroker/js-controller-cli');
+                                                const { setupList: List } = await import('@iobroker/js-controller-cli');
                                                 const list = new List({
-                                                    states,
-                                                    objects,
+                                                    states: states!,
+                                                    objects: objects!,
                                                     processExit: callback
                                                 });
                                                 files.sort((a, b) => a.id.localeCompare(b.id));
@@ -1545,20 +1550,21 @@ async function processCommand(
                     const id = parts.shift();
                     const path = parts.join('/');
 
-                    objects!.rm(id, path, { user: 'system.user.admin' }, (err, processed) => {
+                    objects!.rm(id, path, { user: 'system.user.admin' }, async (err, processed) => {
                         if (err) {
                             console.error(err);
                         } else {
                             if (processed) {
-                                const { setupList: List } = require('@iobroker/js-controller-cli');
+                                const { setupList: List } = await import('@iobroker/js-controller-cli');
                                 const list = new List({
-                                    states,
-                                    objects,
+                                    states: states!,
+                                    objects: objects!,
                                     processExit: callback
                                 });
                                 list.showFileHeader();
-                                for (let i = 0; i < processed.length; i++) {
-                                    list.showFile(id, processed[i].path, processed[i]);
+                                for (const file of processed) {
+                                    // @ts-expect-error todo types adjustment needed
+                                    list.showFile(id, file.path, file);
                                 }
                             }
                         }
@@ -1614,16 +1620,16 @@ async function processCommand(
                                             user: 'system.user.admin',
                                             mode
                                         },
-                                        // @ts-expect-error _id should not exist how to handle
-                                        (err, processed, _id) => {
+                                        // @ts-expect-error todo _id should not exist how to handle
+                                        async (err, processed, _id) => {
                                             if (!err && processed) {
                                                 files.push({ id: _id, processed: processed });
                                             }
                                             if (!--count) {
-                                                const { setupList: List } = require('@iobroker/js-controller-cli');
+                                                const { setupList: List } = await import('@iobroker/js-controller-cli');
                                                 const list = new List({
-                                                    states,
-                                                    objects,
+                                                    states: states!,
+                                                    objects: objects!,
                                                     processExit: callback
                                                 });
                                                 files.sort((a, b) => a.id.localeCompare(b.id));
@@ -1655,20 +1661,21 @@ async function processCommand(
                     const id = parts.shift();
                     const path = parts.join('/');
 
-                    objects!.chmodFile(id, path, { user: 'system.user.admin', mode: mode }, (err, processed) => {
+                    objects!.chmodFile(id, path, { user: 'system.user.admin', mode: mode }, async (err, processed) => {
                         if (err) {
                             console.error(err);
                         } else {
                             if (processed) {
-                                const { setupList: List } = require('@iobroker/js-controller-cli');
+                                const { setupList: List } = await import('@iobroker/js-controller-cli');
                                 const list = new List({
-                                    states,
-                                    objects,
+                                    states: states!,
+                                    objects: objects!,
                                     processExit: callback
                                 });
                                 list.showFileHeader();
-                                for (let i = 0; i < processed.length; i++) {
-                                    list.showFile(id, processed[i].path, processed[i]);
+                                for (const file of processed) {
+                                    // @ts-expect-error todo types adjustment needed
+                                    list.showFile(id, file.path, file);
                                 }
                             }
                         }
@@ -1733,7 +1740,7 @@ async function processCommand(
                                             owner: user,
                                             ownerGroup: group
                                         },
-                                        // @ts-expect-error _id should not exist how to handle
+                                        // @ts-expect-error todo _id should not exist how to handle
                                         async (err, processed, _id) => {
                                             if (!err && processed) {
                                                 files.push({ id: _id, processed: processed });
@@ -1782,21 +1789,22 @@ async function processCommand(
                             owner: user,
                             ownerGroup: group
                         },
-                        (err, processed) => {
+                        async (err, processed) => {
                             if (err) {
                                 console.error(err);
                             } else {
                                 // call here list
                                 if (processed) {
-                                    const { setupList: List } = require('@iobroker/js-controller-cli');
+                                    const { setupList: List } = await import('@iobroker/js-controller-cli');
                                     const list = new List({
-                                        states,
-                                        objects,
+                                        states: states!,
+                                        objects: objects!,
                                         processExit: callback
                                     });
                                     list.showFileHeader();
-                                    for (let i = 0; i < processed.length; i++) {
-                                        list.showFile(id, processed[i].path, processed[i]);
+                                    for (const file of processed) {
+                                        // @ts-expect-error todo types adjustment needed
+                                        list.showFile(id, file.path, file);
                                     }
                                 }
                             }
@@ -2130,7 +2138,7 @@ async function processCommand(
             json.dependencies[`${tools.appName}.js-controller`] = '*';
             json.dependencies[`${tools.appName}.admin`] = '*';
 
-            // @ts-expect-error fix it
+            // @ts-expect-error todo fix it
             tools.getRepositoryFile(null, null, (_err, sources, _sourcesHash) => {
                 if (sources) {
                     for (const s in sources) {
@@ -2411,7 +2419,7 @@ async function processCommand(
                         console.log('File Sync is not available when database type "redis" is used.');
                         return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                     }
-                    // @ts-expect-error look in depth how to handle
+                    // @ts-expect-error todo look in depth how to handle
                     if (!objects.syncFileDirectory || !objects.dirExists) {
                         // functionality only exists in server class
                         console.log(
@@ -2425,7 +2433,7 @@ async function processCommand(
                         const objExists = await objects.objectExists('meta.user');
                         if (objExists) {
                             // check if dir is missing
-                            // @ts-expect-error look in depth how to handle
+                            // @ts-expect-error todo look in depth how to handle
                             const dirExists = objects.dirExists('meta.user');
                             if (!dirExists) {
                                 // create meta.user, so users see them as upload target
@@ -2438,7 +2446,7 @@ async function processCommand(
                     }
 
                     try {
-                        // @ts-expect-error types needed for this one? but only exists sometimes..
+                        // @ts-expect-error todo types needed for this one? but only exists sometimes..
                         const { numberSuccess, notifications } = objects.syncFileDirectory(args[1]);
                         console.log(`${numberSuccess} file(s) successfully synchronized with ioBroker storage`);
                         if (notifications.length) {
@@ -2526,7 +2534,7 @@ async function processCommand(
                                     if (parts.length === 3) {
                                         states!.pushMessage(res.rows[i]!.id, {
                                             command: 'checkLogging',
-                                            // @ts-expect-error type adjustment needed if allowed
+                                            // @ts-expect-error todo type adjustment needed if allowed
                                             message: null,
                                             from: 'console'
                                         });
@@ -2559,6 +2567,7 @@ async function processCommand(
             }
 
             dbConnect(params, async (_objects, _states) => {
+                // eslint-disable-next-line @typescript-eslint/no-var-requires
                 const Repo = require('./setup/setupRepo.js');
                 const repo = new Repo({
                     objects: _objects,
@@ -2668,6 +2677,7 @@ async function processCommand(
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
                 dbConnect(params, () => {
+                    // eslint-disable-next-line @typescript-eslint/no-var-requires
                     const Multihost = require('./setup/setupMultihost.js');
                     const mh = new Multihost({
                         params,
@@ -2697,7 +2707,7 @@ async function processCommand(
                                     `system.host.${tools.getHostName()}`,
                                     {
                                         command: 'updateMultihost',
-                                        // @ts-expect-error type adjustment needed if allowed
+                                        // @ts-expect-error todo type adjustment needed if allowed
                                         message: null,
                                         from: 'setup'
                                     },
@@ -2715,7 +2725,7 @@ async function processCommand(
                                     `system.host.${tools.getHostName()}`,
                                     {
                                         command: 'updateMultihost',
-                                        // @ts-expect-error type adjustment needed if allowed
+                                        // @ts-expect-error todo type adjustment needed if allowed
                                         message: null,
                                         from: 'setup'
                                     },
@@ -2752,6 +2762,7 @@ async function processCommand(
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
                 dbConnect(params, async () => {
+                    // eslint-disable-next-line @typescript-eslint/no-var-requires
                     const Vendor = require('./setup/setupVendor');
                     const vendor = new Vendor({ objects });
 
@@ -2795,6 +2806,7 @@ async function processCommand(
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
                 dbConnect(params, async () => {
+                    // eslint-disable-next-line @typescript-eslint/no-var-requires
                     const License = require('./setup/setupLicense');
                     const license = new License({ objects });
                     try {
@@ -2931,7 +2943,7 @@ function unsetup(params: Record<string, any>, callback: ExitCodeCb) {
     dbConnect(params, () => {
         objects!.delObject('system.meta.uuid', err => {
             if (err) {
-                console.log(`uuid cannot be deleted: ${err}`);
+                console.log(`uuid cannot be deleted: ${err.message}`);
             } else {
                 console.log('system.meta.uuid deleted');
             }
@@ -2950,7 +2962,7 @@ function unsetup(params: Record<string, any>, callback: ExitCodeCb) {
 
                     objects!.setObject('system.config', obj as any, err => {
                         if (err) {
-                            console.log(`not found: ${err}`);
+                            console.log(`not found: ${err.message}`);
                             return void callback(EXIT_CODES.CANNOT_SET_OBJECT);
                         } else {
                             console.log('system.config reset');
@@ -3039,7 +3051,7 @@ async function getRepository(repoName?: string, params?: Record<string, any>) {
                 systemRepos.native.repositories
             ).join(' | ')}>`
         );
-        // @ts-expect-error throw code or description?
+        // @ts-expect-error todo throw code or description?
         throw new Error(EXIT_CODES.INVALID_REPO);
     } else {
         return allSources;
@@ -3192,7 +3204,7 @@ function dbConnect(
             if (dbTools.objectsDbHasServer(config.objects.type)) {
                 // Just open in memory DB itself
                 Objects = (await import(`@iobroker/db-objects-${config.objects.type}`)).Server;
-                objects = new Objects({
+                objects = new Objects!({
                     connection: config.objects,
                     logger: {
                         silly: (_msg: string) => {
@@ -3242,7 +3254,8 @@ function dbConnect(
                 // Just open in memory DB itself
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
                 States = require(`@iobroker/db-states-${config.states.type}`).Server;
-                states = new States({
+
+                states = new States!({
                     connection: config.states,
                     logger: {
                         silly: (_msg: string) => {
@@ -3269,10 +3282,10 @@ function dbConnect(
                         }
                     },
                     // react on change
-                    // @ts-expect-error do we need types here?
-                    change: (id, msg) => states.onChange && states.onChange(id, msg)
+                    // @ts-expect-error todo according to types and first look states.onchange does not exist
+                    change: (id, msg) => states?.onChange(id, msg)
                 });
-                // @ts-expect-error do we need types here?
+                // @ts-expect-error todo according to types and first look states.onchange does not exist
                 states!.onChange = null; // here the custom onChange handler could be installed
             } else {
                 if (states) {
@@ -3305,18 +3318,18 @@ function dbConnect(
 
             console.log('No connection to databases possible ...');
             if (onlyCheck) {
-                // @ts-expect-error make a conditional return type to allow it if onlycheck true?
+                // @ts-expect-error todo make a conditional return type to allow it if onlycheck true?
                 callback && callback(null, null, true, config.objects.type, config);
                 callback = undefined;
             } else {
                 return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
             }
-            // @ts-expect-error fix it
+            // @ts-expect-error todo fix it
         }, (params.timeout || 10000) + config.objects.connectTimeout);
     }, params.timeout || config.objects.connectTimeout * 2);
 
     // try to connect as client
-    objects = new Objects({
+    objects = new Objects!({
         connection: config.objects,
         logger: {
             silly: (_msg: string) => {
@@ -3349,7 +3362,7 @@ function dbConnect(
         }
     });
 
-    states = new States({
+    states = new States!({
         connection: config.states,
         logger: {
             silly: (_msg: string) => {
@@ -3380,8 +3393,8 @@ function dbConnect(
                 callback(objects!, states!, isOffline, config.objects.type, config);
             }
         },
-        // @ts-expect-error types missing?
-        change: (id, state) => states.onChange && states.onChange(id, state)
+        // @ts-expect-error todo according to types and first look states.onchange does not exist
+        change: (id, state) => states?.onChange(id, state)
     });
 }
 
@@ -3399,7 +3412,7 @@ function dbConnectAsync(onlyCheck: boolean, params?: Record<string, any>): Promi
 module.exports.execute = function () {
     // direct call
     const _yargs = initYargs();
-    // @ts-expect-error fix it
+    // @ts-expect-error todo fix it
     const command = _yargs.argv._[0];
 
     const args = [];

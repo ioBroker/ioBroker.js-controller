@@ -45,7 +45,7 @@ interface InternalLogObject extends LogObject {
 
 type ChangeFunction = (id: string, state: ioBroker.State | null) => void;
 
-interface StatesSettings {
+export interface StatesSettings {
     connected?: () => void;
     disconnected?: () => void;
     changeUser?: ChangeFunction;
