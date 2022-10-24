@@ -2407,8 +2407,8 @@ async function processCommand(
                     });
                 } else if (cmd === 'sync') {
                     // Sync
-                    if (objectType !== 'file') {
-                        console.log('File Sync is only available when database type "file" is used.');
+                    if (objectType === 'redis') {
+                        console.log('File Sync is not available when database type "redis" is used.');
                         return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                     }
                     // @ts-expect-error look in depth how to handle
