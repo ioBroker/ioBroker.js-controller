@@ -145,7 +145,7 @@
             "en"
           ],
           "patternProperties": {
-            "en|de|ru|pt|nl|fr|it|es|pl|zh-cn": {
+            "en|de|ru|pt|nl|fr|it|es|pl|uk|zh-cn": {
               "type": [
                 "string",
                 "array"
