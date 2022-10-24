@@ -4,8 +4,8 @@ import type { Client as StatesClient } from '@iobroker/db-states-redis';
 export type DBConnectCallback = (
     objects: ObjectsClient,
     states: StatesClient,
-    isOffline?: boolean,
-    objectsDBType?: string,
+    isOffline: boolean,
+    objectsDBType: string,
     /** the iobroker.json config file */
     config?: Record<string, any>
 ) => void;

@@ -208,7 +208,6 @@ export class Upload {
             this.callbacks[`_${obj.callback.id}`] = { cb: callback };
 
             // we cannot receive answers from hosts in CLI, so this command is "fire and forget"
-            // @ts-expect-error fixed with #1917
             this.states.pushMessage(host, obj);
         });
     }

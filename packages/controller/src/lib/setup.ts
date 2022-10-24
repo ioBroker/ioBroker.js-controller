@@ -25,6 +25,7 @@ import type {
 } from '@iobroker/js-controller-cli/build/lib/cli/cliCommand';
 import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
 import type { StateRedisClient } from '@iobroker/db-states-redis/build/lib/states/statesInRedisClient';
+import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 
 const debug = Debug('iobroker:cli');
 
@@ -1403,18 +1404,19 @@ async function processCommand(
                                     }
                                     count++;
                                     objects!.touch(
-                                        arr.rows[i].value.common.name,
+                                        arr.rows[i].value.common.name as string,
                                         '*',
                                         { user: 'system.user.admin' },
-                                        (err, processed, _id) => {
+                                        // @ts-expect-error this looks wrong, we have no cb args other than err
+                                        async (err, processed, _id) => {
                                             if (!err && processed) {
                                                 files.push({ id: _id, processed: processed });
                                             }
                                             if (!--count) {
-                                                const { setupList: List } = require('@iobroker/js-controller-cli');
+                                                const { setupList: List } = await import('@iobroker/js-controller-cli');
                                                 const list = new List({
-                                                    states,
-                                                    objects,
+                                                    states: states!,
+                                                    objects: objects!,
                                                     processExit: callback
                                                 });
                                                 files.sort((a, b) => a.id.localeCompare(b.id));
@@ -1445,15 +1447,16 @@ async function processCommand(
                     const id = parts.shift();
                     const path = parts.join('/');
 
-                    objects.touch(id, path, { user: 'system.user.admin' }, (err, processed) => {
+                    // @ts-expect-error processed should not exist, how to proceeed?
+                    objects!.touch(id, path, { user: 'system.user.admin' }, async (err, processed) => {
                         if (err) {
                             console.error(err);
                         } else {
                             if (processed) {
-                                const { setupList: List } = require('@iobroker/js-controller-cli');
+                                const { setupList: List } = await import('@iobroker/js-controller-cli');
                                 const list = new List({
-                                    states,
-                                    objects,
+                                    states: states!,
+                                    objects: objects!,
                                     processExit: callback
                                 });
                                 for (let i = 0; i < processed.length; i++) {
@@ -1483,7 +1486,7 @@ async function processCommand(
                 }
 
                 if (pattern === '*') {
-                    objects.getObjectList(
+                    objects!.getObjectList(
                         {
                             startkey: 'system.adapter.',
                             endkey: 'system.adapter.\u9999'
@@ -1497,10 +1500,11 @@ async function processCommand(
                                         continue;
                                     }
                                     count++;
-                                    objects.rm(
-                                        arr.rows[i].value.common.name,
+                                    objects!.rm(
+                                        arr.rows[i].value.common.name as string,
                                         '*',
                                         { user: 'system.user.admin' },
+                                        // @ts-expect-error id should not exist according to types check it
                                         (err, processed, _id) => {
                                             if (!err && processed) {
                                                 files.push({ id: _id, processed: processed });
@@ -1541,7 +1545,7 @@ async function processCommand(
                     const id = parts.shift();
                     const path = parts.join('/');
 
-                    objects.rm(id, path, { user: 'system.user.admin' }, (err, processed) => {
+                    objects!.rm(id, path, { user: 'system.user.admin' }, (err, processed) => {
                         if (err) {
                             console.error(err);
                         } else {
@@ -1589,7 +1593,7 @@ async function processCommand(
                 }
 
                 if (pattern === '*') {
-                    objects.getObjectList(
+                    objects!.getObjectList(
                         {
                             startkey: 'system.adapter.',
                             endkey: 'system.adapter.\u9999'
@@ -1603,13 +1607,14 @@ async function processCommand(
                                         continue;
                                     }
                                     count++;
-                                    objects.chmodFile(
-                                        arr.rows[i].value.common.name,
+                                    objects!.chmodFile(
+                                        arr.rows[i].value.common.name as string,
                                         '*',
                                         {
                                             user: 'system.user.admin',
                                             mode
                                         },
+                                        // @ts-expect-error _id should not exist how to handle
                                         (err, processed, _id) => {
                                             if (!err && processed) {
                                                 files.push({ id: _id, processed: processed });
@@ -1721,13 +1726,14 @@ async function processCommand(
                                     }
                                     count++;
                                     objects!.chownFile(
-                                        arr.rows[i].value.common.name,
+                                        arr.rows[i].value.common.name as string,
                                         '*',
                                         {
                                             user: 'system.user.admin',
                                             owner: user,
                                             ownerGroup: group
                                         },
+                                        // @ts-expect-error _id should not exist how to handle
                                         async (err, processed, _id) => {
                                             if (!err && processed) {
                                                 files.push({ id: _id, processed: processed });
@@ -1735,8 +1741,8 @@ async function processCommand(
                                             if (!--count) {
                                                 const { setupList: List } = await import('@iobroker/js-controller-cli');
                                                 const list = new List({
-                                                    states,
-                                                    objects,
+                                                    states: states!,
+                                                    objects: objects!,
                                                     processExit: callback
                                                 });
                                                 files.sort((a, b) => a.id.localeCompare(b.id));
@@ -1768,7 +1774,7 @@ async function processCommand(
                     const id = parts.shift();
                     const path = parts.join('/');
 
-                    objects.chownFile(
+                    objects!.chownFile(
                         id,
                         path,
                         {
@@ -1936,7 +1942,7 @@ async function processCommand(
                         console.warn('Please define user name: "group useradd groupName userName"');
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                     }
-                    users.addUserToGroup(user, group, err => {
+                    users.addUserToGroup(user, group, (err: any) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -2124,6 +2130,7 @@ async function processCommand(
             json.dependencies[`${tools.appName}.js-controller`] = '*';
             json.dependencies[`${tools.appName}.admin`] = '*';
 
+            // @ts-expect-error fix it
             tools.getRepositoryFile(null, null, (_err, sources, _sourcesHash) => {
                 if (sources) {
                     for (const s in sources) {
@@ -2171,8 +2178,7 @@ async function processCommand(
                                 !process.argv[a + 1].startsWith('--')
                             ) {
                                 const attr = process.argv[a].substring(2);
-                                /** @type {number | string | boolean} */
-                                let val = process.argv[a + 1];
+                                let val: number | string | boolean = process.argv[a + 1];
                                 if (val === '__EMPTY__') {
                                     val = '';
                                 } else if (val === 'true') {
@@ -2432,12 +2438,13 @@ async function processCommand(
                     }
 
                     try {
+                        // @ts-expect-error types needed for this one? but only exists sometimes..
                         const { numberSuccess, notifications } = objects.syncFileDirectory(args[1]);
                         console.log(`${numberSuccess} file(s) successfully synchronized with ioBroker storage`);
                         if (notifications.length) {
                             console.log();
                             console.log('The following notifications happened during sync: ');
-                            notifications.forEach(el => console.log('- ' + el));
+                            notifications.forEach((el: string) => console.log('- ' + el));
                         }
                         return void callback(EXIT_CODES.NO_ERROR);
                     } catch (err) {
@@ -2512,13 +2519,14 @@ async function processCommand(
                         },
                         null,
                         (err, res) => {
-                            if (!err && res.rows.length) {
+                            if (!err && res?.rows.length) {
                                 for (let i = 0; i < res.rows.length; i++) {
-                                    const parts = res.rows[i].id.split('.');
+                                    const parts = res.rows[i]!.id.split('.');
                                     // ignore system.host.name.alive and so on
                                     if (parts.length === 3) {
-                                        states.pushMessage(res.rows[i].id, {
+                                        states!.pushMessage(res.rows[i]!.id, {
                                             command: 'checkLogging',
+                                            // @ts-expect-error type adjustment needed if allowed
                                             message: null,
                                             from: 'console'
                                         });
@@ -2670,7 +2678,7 @@ async function processCommand(
                     if (cmd === 's' || cmd === 'status') {
                         mh.status(() => void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP));
                     } else if (cmd === 'b' || cmd === 'browse') {
-                        mh.browse((err, list) => {
+                        mh.browse((err: any, list: any) => {
                             if (err) {
                                 console.error(err);
                                 return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -2680,15 +2688,16 @@ async function processCommand(
                             }
                         });
                     } else if (cmd === 'e' || cmd === 'enable') {
-                        mh.enable(true, err => {
+                        mh.enable(true, (err: any) => {
                             if (err) {
                                 console.error(err);
                                 return void callback(EXIT_CODES.CANNOT_ENABLE_MULTIHOST);
                             } else {
-                                states.pushMessage(
+                                states!.pushMessage(
                                     `system.host.${tools.getHostName()}`,
                                     {
                                         command: 'updateMultihost',
+                                        // @ts-expect-error type adjustment needed if allowed
                                         message: null,
                                         from: 'setup'
                                     },
@@ -2697,15 +2706,16 @@ async function processCommand(
                             }
                         });
                     } else if (cmd === 'd' || cmd === 'disable') {
-                        mh.enable(false, err => {
+                        mh.enable(false, (err: any) => {
                             if (err) {
                                 console.error(err);
                                 return void callback(EXIT_CODES.CANNOT_ENABLE_MULTIHOST);
                             } else {
-                                states.pushMessage(
+                                states!.pushMessage(
                                     `system.host.${tools.getHostName()}`,
                                     {
                                         command: 'updateMultihost',
+                                        // @ts-expect-error type adjustment needed if allowed
                                         message: null,
                                         from: 'setup'
                                     },
@@ -2714,7 +2724,7 @@ async function processCommand(
                             }
                         });
                     } else if (cmd === 'c' || cmd === 'connect') {
-                        mh.connect(args[1], args[2], err => {
+                        mh.connect(args[1], args[2], (err: any) => {
                             if (err) {
                                 console.error(err);
                             }
@@ -2861,7 +2871,7 @@ async function delObjects(ids: string[]): Promise<void> {
             const id = ids[i];
             if (!OBJECTS_THAT_CANNOT_BE_DELETED.includes(id)) {
                 try {
-                    await objects.delObjectAsync(id);
+                    await objects!.delObjectAsync(id);
                 } catch (err) {
                     console.warn(`[Not critical] Cannot delete object ${id}: ${JSON.stringify(err)}`);
                 }
@@ -2871,12 +2881,12 @@ async function delObjects(ids: string[]): Promise<void> {
 }
 
 async function delStates(): Promise<number> {
-    const keys = await states.getKeys('*');
+    const keys = await states!.getKeys('*');
     if (keys) {
         console.log(`clean ${keys.length} states...`);
         for (let i = 0; i < keys.length; i++) {
             try {
-                await states.delState(keys[i]);
+                await states!.delState(keys[i]);
             } catch (err) {
                 console.error(`[Not critical] Cannot delete state ${keys[i]}: ${err.message}`);
             }
@@ -2892,17 +2902,17 @@ async function delStates(): Promise<number> {
  */
 async function cleanDatabase(isDeleteDb: boolean): Promise<number> {
     if (isDeleteDb) {
-        await objects.destroyDBAsync();
+        await objects!.destroyDBAsync();
         // Clean up states
         const keysCount = await delStates();
         return keysCount;
     } else {
         // Clean only objects, not the views
-        let ids = [];
+        let ids: string[] = [];
 
         try {
-            const res = await objects.getObjectListAsync({ startkey: '\u0000', endkey: '\u9999' });
-            if (res.rows.length) {
+            const res = await objects!.getObjectListAsync({ startkey: '\u0000', endkey: '\u9999' });
+            if (res?.rows.length) {
                 console.log(`clean ${res.rows.length} objects...`);
                 ids = res.rows.map(e => e.id);
             }
@@ -2919,14 +2929,14 @@ async function cleanDatabase(isDeleteDb: boolean): Promise<number> {
 
 function unsetup(params: Record<string, any>, callback: ExitCodeCb) {
     dbConnect(params, () => {
-        objects.delObject('system.meta.uuid', err => {
+        objects!.delObject('system.meta.uuid', err => {
             if (err) {
                 console.log(`uuid cannot be deleted: ${err}`);
             } else {
                 console.log('system.meta.uuid deleted');
             }
-            objects.getObject('system.config', (_err, obj) => {
-                if (obj.common.licenseConfirmed || obj.common.language || (obj.native && obj.native.secret)) {
+            objects!.getObject('system.config', (_err, obj) => {
+                if (obj?.common.licenseConfirmed || obj?.common.language || obj?.native?.secret) {
                     obj.common.licenseConfirmed = false;
                     obj.common.language = '';
                     // allow with parameter --keepsecret to not delete the secret
@@ -2935,10 +2945,10 @@ function unsetup(params: Record<string, any>, callback: ExitCodeCb) {
                         obj.native && delete obj.native.secret;
                     }
 
-                    obj.from = 'system.host.' + tools.getHostName() + '.cli';
+                    obj.from = `system.host.${tools.getHostName()}.cli`;
                     obj.ts = new Date().getTime();
 
-                    objects.setObject('system.config', obj, err => {
+                    objects!.setObject('system.config', obj as any, err => {
                         if (err) {
                             console.log(`not found: ${err}`);
                             return void callback(EXIT_CODES.CANNOT_SET_OBJECT);
@@ -2976,7 +2986,7 @@ async function getRepository(repoName?: string, params?: Record<string, any>) {
     params = params || {};
 
     if (!objects) {
-        await dbConnectAsync(params);
+        await dbConnectAsync(params as any);
     }
 
     if (!repoName || repoName === 'auto') {
@@ -2986,7 +2996,7 @@ async function getRepository(repoName?: string, params?: Record<string, any>) {
 
     const repoArr = !Array.isArray(repoName) ? [repoName!] : repoName!;
 
-    const systemRepos = await objects.getObjectAsync('system.repositories');
+    const systemRepos = (await objects!.getObjectAsync('system.repositories'))!;
     const allSources = {};
     let changed = false;
     let anyFound = false;
@@ -3019,7 +3029,7 @@ async function getRepository(repoName?: string, params?: Record<string, any>) {
         }
 
         if (changed) {
-            await objects.setObjectAsync('system.repositories', systemRepos);
+            await objects!.setObjectAsync('system.repositories', systemRepos);
         }
     }
 
@@ -3082,7 +3092,7 @@ function initializePlugins(config: Record<string, any>): Promise<void> {
     const packageJson = fs.readJsonSync(path.join(tools.getControllerDir(), 'package.json'));
     const hostname = tools.getHostName();
 
-    const pluginSettings = {
+    const pluginSettings: PluginHandlerSettings = {
         namespace: `system.host.${hostname}`,
         logNamespace: `host.${hostname}`,
         scope: 'controller',
@@ -3098,7 +3108,8 @@ function initializePlugins(config: Record<string, any>): Promise<void> {
                 /** do not log on this level */
             },
             warn: (msg: string) => console.log(msg),
-            error: (msg: string) => console.log(msg)
+            error: (msg: string) => console.log(msg),
+            level: 'warn'
         },
         iobrokerConfig: config,
         parentPackage: packageJson,
@@ -3111,18 +3122,19 @@ function initializePlugins(config: Record<string, any>): Promise<void> {
     pluginHandler.setDatabaseForPlugins(objects, states);
 
     return new Promise(resolve => {
-        pluginHandler.initPlugins(ioPackage, resolve);
+        pluginHandler.initPlugins(ioPackage, () => resolve());
     });
 }
 
+function dbConnect(callback: DBConnectCallback): void;
 function dbConnect(params: Record<string, any>, callback: DBConnectCallback): void;
 function dbConnect(onlyCheck: boolean, params: Record<string, any>, callback: DBConnectCallback): void;
 /**
  * Connects to the DB or tests the connection.
  */
 function dbConnect(
-    onlyCheck: boolean | Record<string, any>,
-    params: Record<string, any> | DBConnectCallback,
+    onlyCheck: boolean | Record<string, any> | DBConnectCallback,
+    params?: Record<string, any> | DBConnectCallback,
     callback?: DBConnectCallback
 ): void {
     if (typeof onlyCheck === 'object') {
@@ -3203,7 +3215,7 @@ function dbConnect(
                             } catch {
                                 // ignore in silence
                             }
-                            return void callback(objects, states, true, config.objects.type, config);
+                            return void callback(objects!, states!, true, config.objects.type, config);
                         }
                     }
                 });
@@ -3212,7 +3224,7 @@ function dbConnect(
                     `No connection to objects ${config.objects.host}:${config.objects.port}[${config.objects.type}]`
                 );
                 if (onlyCheck) {
-                    callback && callback(objects!, states, true, config.objects.type, config);
+                    callback && callback(objects!, states!, true, config.objects.type, config);
                     callback = undefined;
                 } else {
                     return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
@@ -3253,7 +3265,7 @@ function dbConnect(
                             } catch {
                                 // ignore in silence
                             }
-                            return void callback(objects, states, true, config.objects.type, config);
+                            return void callback(objects!, states!, true, config.objects.type, config);
                         }
                     },
                     // react on change
@@ -3277,7 +3289,7 @@ function dbConnect(
                     `No connection to states ${config.states.host}:${config.states.port}[${config.states.type}]`
                 );
                 if (onlyCheck) {
-                    callback && callback(objects, states, true, config.objects.type, config);
+                    callback && callback(objects!, states!, true, config.objects.type, config);
                     callback = undefined;
                 } else {
                     return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
@@ -3293,6 +3305,7 @@ function dbConnect(
 
             console.log('No connection to databases possible ...');
             if (onlyCheck) {
+                // @ts-expect-error make a conditional return type to allow it if onlycheck true?
                 callback && callback(null, null, true, config.objects.type, config);
                 callback = undefined;
             } else {
@@ -3331,7 +3344,7 @@ function dbConnect(
                 } catch {
                     // ignore in silence
                 }
-                callback(objects!, states, isOffline, config.objects.type, config);
+                callback(objects!, states!, isOffline, config.objects.type, config);
             }
         }
     });
@@ -3364,7 +3377,7 @@ function dbConnect(
                 } catch {
                     // ignore in silence
                 }
-                callback(objects!, states, isOffline, config.objects.type, config);
+                callback(objects!, states!, isOffline, config.objects.type, config);
             }
         },
         // @ts-expect-error types missing?
@@ -3403,7 +3416,7 @@ module.exports.execute = function () {
     processCommand(command, args, _yargs.argv, processExit);
 };
 
-process.on('unhandledRejection', e => {
+process.on('unhandledRejection', (e: any) => {
     console.error(`Uncaught Rejection: ${e.stack || e}`);
     processExit(EXIT_CODES.UNCAUGHT_EXCEPTION);
 });

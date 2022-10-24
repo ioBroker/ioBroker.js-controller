@@ -288,7 +288,6 @@ export class BackupRestore {
         const r = new RegExp(`^system\\.host\\.${hostname}\\.(\\w+)$`);
 
         try {
-            // @ts-expect-error #1917
             const keys = await this.states.getKeys('*');
 
             // NOTE for all "replace" with $$$$ ... result will be just $$

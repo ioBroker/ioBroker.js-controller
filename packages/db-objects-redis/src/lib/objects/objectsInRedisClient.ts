@@ -4939,7 +4939,7 @@ export class ObjectsInRedisClient {
         }
     }
 
-    destroyDB(options: CallOptions | null, callback: ioBroker.ErrorCallback): void {
+    destroyDB(options: CallOptions | null | undefined, callback: ioBroker.ErrorCallback): void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -4959,7 +4959,7 @@ export class ObjectsInRedisClient {
         });
     }
 
-    destroyDBAsync(options: CallOptions): Promise<void> {
+    destroyDBAsync(options?: CallOptions): Promise<void> {
         return new Promise<void>((resolve, reject) => this.destroyDB(options, err => (err ? reject(err) : resolve())));
     }
 
