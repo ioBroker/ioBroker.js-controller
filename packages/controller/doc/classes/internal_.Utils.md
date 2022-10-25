@@ -47,7 +47,7 @@ Utils for internal adapter.js usage
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:43](https://github.com/ioBroker/ioBroker.js-controller/blob/c4a73b71/packages/adapter/src/lib/adapter/utils.ts#L43)
+[packages/adapter/src/lib/adapter/utils.ts:43](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/adapter/utils.ts#L43)
 
 ## Methods
 
@@ -70,7 +70,7 @@ Adds the namespace to the id if it is missing, if an object is passed it will be
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:360](https://github.com/ioBroker/ioBroker.js-controller/blob/c4a73b71/packages/adapter/src/lib/adapter/utils.ts#L360)
+[packages/adapter/src/lib/adapter/utils.ts:360](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/adapter/utils.ts#L360)
 
 ___
 
@@ -94,7 +94,7 @@ additionally it rounds state values whose objects have a common.step attribute d
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:66](https://github.com/ioBroker/ioBroker.js-controller/blob/c4a73b71/packages/adapter/src/lib/adapter/utils.ts#L66)
+[packages/adapter/src/lib/adapter/utils.ts:66](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/adapter/utils.ts#L66)
 
 ___
 
@@ -122,7 +122,7 @@ asserts id is ID
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/c4a73b71/packages/adapter/src/lib/adapter/utils.ts#L169)
+[packages/adapter/src/lib/adapter/utils.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/adapter/utils.ts#L169)
 
 ___
 
@@ -144,7 +144,7 @@ Validates the object-type argument that is passed to setState
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:391](https://github.com/ioBroker/ioBroker.js-controller/blob/c4a73b71/packages/adapter/src/lib/adapter/utils.ts#L391)
+[packages/adapter/src/lib/adapter/utils.ts:391](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/adapter/utils.ts#L391)
 
 ___
 
@@ -167,7 +167,7 @@ asserts value is boolean
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:285](https://github.com/ioBroker/ioBroker.js-controller/blob/c4a73b71/packages/adapter/src/lib/adapter/utils.ts#L285)
+[packages/adapter/src/lib/adapter/utils.ts:285](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/adapter/utils.ts#L285)
 
 ___
 
@@ -190,7 +190,7 @@ asserts value is Buffer
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:322](https://github.com/ioBroker/ioBroker.js-controller/blob/c4a73b71/packages/adapter/src/lib/adapter/utils.ts#L322)
+[packages/adapter/src/lib/adapter/utils.ts:322](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/adapter/utils.ts#L322)
 
 ___
 
@@ -213,7 +213,7 @@ asserts value is Callback
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:346](https://github.com/ioBroker/ioBroker.js-controller/blob/c4a73b71/packages/adapter/src/lib/adapter/utils.ts#L346)
+[packages/adapter/src/lib/adapter/utils.ts:346](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/adapter/utils.ts#L346)
 
 ___
 
@@ -236,7 +236,7 @@ asserts value is number
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:298](https://github.com/ioBroker/ioBroker.js-controller/blob/c4a73b71/packages/adapter/src/lib/adapter/utils.ts#L298)
+[packages/adapter/src/lib/adapter/utils.ts:298](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/adapter/utils.ts#L298)
 
 ___
 
@@ -259,7 +259,7 @@ asserts value is Record<string, any\>
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:311](https://github.com/ioBroker/ioBroker.js-controller/blob/c4a73b71/packages/adapter/src/lib/adapter/utils.ts#L311)
+[packages/adapter/src/lib/adapter/utils.ts:311](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/adapter/utils.ts#L311)
 
 ___
 
@@ -282,7 +282,7 @@ asserts value is OptionalCallback
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:333](https://github.com/ioBroker/ioBroker.js-controller/blob/c4a73b71/packages/adapter/src/lib/adapter/utils.ts#L333)
+[packages/adapter/src/lib/adapter/utils.ts:333](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/adapter/utils.ts#L333)
 
 ___
 
@@ -305,7 +305,7 @@ asserts value is Pattern
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:264](https://github.com/ioBroker/ioBroker.js-controller/blob/c4a73b71/packages/adapter/src/lib/adapter/utils.ts#L264)
+[packages/adapter/src/lib/adapter/utils.ts:264](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/adapter/utils.ts#L264)
 
 ___
 
@@ -328,7 +328,7 @@ asserts value is string
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/c4a73b71/packages/adapter/src/lib/adapter/utils.ts#L251)
+[packages/adapter/src/lib/adapter/utils.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/adapter/utils.ts#L251)
 
 ___
 
@@ -352,4 +352,4 @@ error description
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:241](https://github.com/ioBroker/ioBroker.js-controller/blob/c4a73b71/packages/adapter/src/lib/adapter/utils.ts#L241)
+[packages/adapter/src/lib/adapter/utils.ts:241](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/adapter/utils.ts#L241)
