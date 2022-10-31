@@ -41,6 +41,8 @@ export interface AdapterOptions {
     unload?: ioBroker.UnloadHandler;
     /** called when adapter is ready */
     ready?: ioBroker.ReadyHandler;
+    /** called when adapter is installed */
+    install?: ioBroker.ReadyHandler;
     /** called on reconnection to DB */
     reconnect?: () => MaybePromise;
     /** Handler to handle uncaught exceptions, return true if no further handling required */
