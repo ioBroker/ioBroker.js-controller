@@ -39,7 +39,7 @@
     "@types/pidusage": "^2.0.2",
     "@types/readline-sync": "^1.4.4",
     "@types/semver": "^7.3.10",
-    "@types/tar": "^6.1.1",
+    "@types/tar": "^6.1.3",
     "@types/triple-beam": "^1.3.2",
     "@types/winston-syslog": "^2.4.0",
     "@types/yargs": "^17.0.8",
