@@ -50,7 +50,7 @@
     "cpy-cli": "^4.2.0",
     "eslint": "^8.14.0",
     "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.0.0",
+    "eslint-plugin-prettier": "^4.2.1",
     "fs-extra": "^10.1.0",
     "get-spdx-license-ids": "^2.1.0",
     "gulp": "^4.0.2",
