@@ -15,8 +15,11 @@
     "type": "git",
     "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/types"
   },
+  "dependencies": {
+    "@iobroker/js-controller-adapter": "file:packages/adapter"
+  },
   "scripts": {
-    "build:api": "ts-node build.ts"
+    "build": "ts-node build.ts"
   },
   "main": "",
   "types": "index.d.ts",
