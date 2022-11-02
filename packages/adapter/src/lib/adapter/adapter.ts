@@ -21,7 +21,7 @@ import type NodeSchedule from 'node-schedule';
 import { version as controllerVersion } from '@iobroker/js-controller-adapter/package.json';
 
 import { Log } from './log';
-import { ID, IdObject, Utils } from './utils';
+import { IdObject, Utils } from './utils';
 
 const { FORBIDDEN_CHARS } = tools;
 import {
@@ -571,25 +571,25 @@ export class AdapterClass extends EventEmitter {
      * Contains a live cache of the adapter's states.
      * NOTE: This is only defined if the adapter was initialized with the option states: true.
      */
-    protected oStates?: Record<string, ioBroker.State | undefined>;
+    oStates?: Record<string, ioBroker.State | undefined>;
     /**
      * Contains a live cache of the adapter's objects.
      * NOTE: This is only defined if the adapter was initialized with the option objects: true.
      */
-    protected oObjects?: Record<string, ioBroker.Object | undefined>;
+    oObjects?: Record<string, ioBroker.Object | undefined>;
     private _stopInProgress: boolean = false;
     private _callbackId: number = 1;
     private _firstConnection: boolean = true;
     private readonly _timers = new Set<NodeJS.Timeout>();
     private readonly _intervals = new Set<NodeJS.Timeout>();
     private readonly _delays = new Set<NodeJS.Timeout>();
-    protected log?: Log;
-    private readonly performStrictObjectChecks: boolean;
+    log?: Log;
+    performStrictObjectChecks: boolean;
     private readonly _logger: Winston.Logger;
     private _restartScheduleJob: any;
     private _schedule: typeof NodeSchedule | undefined;
     private namespaceLog: string;
-    protected namespace: `${string}.${number}`;
+    namespace: `${string}.${number}`;
     protected name: string;
     private _systemSecret?: string;
     /** Whether the adapter has already terminated */
@@ -597,7 +597,7 @@ export class AdapterClass extends EventEmitter {
     /** The cache of usernames */
     private usernames: Record<string, { id: string }> = {};
     /** A RegExp to test for forbidden chars in object IDs */
-    protected readonly FORBIDDEN_CHARS: RegExp = FORBIDDEN_CHARS;
+    readonly FORBIDDEN_CHARS: RegExp = FORBIDDEN_CHARS;
     private inputCount: number = 0;
     private outputCount: number = 0;
     /** The cache of users */
@@ -2548,14 +2548,14 @@ export class AdapterClass extends EventEmitter {
         this._intervals.delete(interval as any);
     }
 
-    setObject(id: ID, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
+    setObject(id: string, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
     setObject(
-        id: ID,
+        id: string,
         obj: ioBroker.SettableObject,
         options: unknown,
         callback?: ioBroker.SetObjectCallback
     ): Promise<void>;
-    setObject(id: ID, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
+    setObject(id: string, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
     /**
      * Creates or overwrites object in objectDB.
      *
@@ -4851,7 +4851,7 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    private _DCS2ID(device: string, channel: string, stateOrPoint?: boolean | string): ID {
+    private _DCS2ID(device: string, channel: string, stateOrPoint?: boolean | string): string {
         let id = '';
         if (device) {
             id += device;
@@ -4867,7 +4867,7 @@ export class AdapterClass extends EventEmitter {
         } else if (stateOrPoint === true && id) {
             id += '.';
         }
-        return id as ID;
+        return id;
     }
 
     // external signatures

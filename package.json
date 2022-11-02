@@ -64,6 +64,7 @@
     "sinon": "^13.0.2",
     "sinon-chai": "^3.7.0",
     "ts-node": "^10.9.1",
+    "tsd": "^0.24.1",
     "typedoc": "^0.23.11",
     "typedoc-plugin-markdown": "^3.13.5",
     "typedoc-plugin-missing-exports": "^1.0.0",
@@ -80,6 +81,7 @@
     "lint": "eslint .",
     "prettier": "eslint . --fix",
     "test": "mocha packages/controller/test --exit",
+    "test-types": "tsd packages/types/",
     "test-jsonl": "mocha packages/controller/test/jsonl/ --exit",
     "test-redis-socket": "mocha packages/controller/test/redis-socket/ --exit",
     "test-redis-sentinel": "mocha packages/controller/test/redis-sentinel/ --exit"

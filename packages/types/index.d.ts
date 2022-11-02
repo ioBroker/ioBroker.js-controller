@@ -1,7 +1,7 @@
 // Type definitions for ioBroker 4.0
 // Project: https://github.com/ioBroker/ioBroker, http://iobroker.net
 // Definitions by: AlCalzone <https://github.com/AlCalzone>
-// Definitions: https://github.com/DefinitelyTyped/DefinitelyTyped
+// Definitions: https://github.com/iobroker/iobroker.js-controller
 // TypeScript Version: 4.5
 
 // Note: This is not the definition for the package `iobroker`,
@@ -11,6 +11,7 @@
 /// <reference types="node" />
 // eslint-disable-next-line @typescript-eslint/triple-slash-reference
 /// <reference path="./objects.d.ts" />
+
 import { AdapterClass, AdapterOptions as _AdapterOptions } from './build/types';
 import * as fs from 'fs';
 export {}; // avoids exporting AtLeastOne into the global scope

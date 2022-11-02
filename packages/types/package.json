@@ -16,7 +16,7 @@
     "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/types"
   },
   "dependencies": {
-    "@iobroker/js-controller-adapter": "file:packages/adapter"
+    "@iobroker/js-controller-adapter": "file:../adapter"
   },
   "scripts": {
     "build": "ts-node build.ts"

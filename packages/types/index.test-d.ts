@@ -121,7 +121,7 @@ function messageHandler(msg: ioBroker.Message) {
 }
 
 function unloadHandler(callback: ioBroker.EmptyCallback) {
-    adapter.log.info('shutting down');
+    adapter.log!.info('shutting down');
     callback();
 }
 
@@ -130,7 +130,7 @@ adapter.setState('state.name', 'value');
 adapter.setState('state.name', 'value', true);
 adapter.setState('state.name', 'value', (err, id) => {});
 adapter.setState('state.name', { val: 'value', ack: true });
-adapter.setState('state.name', { val: 'value', ack: true }, (err, id) => {});
+adapter.setState('state.name', { val: 'value', ack: true }, (_err, _id) => {});
 
 adapter.setStateAsync('state.name', 'value').then(id => id.toLowerCase());
 adapter.setStateAsync('state.name', 'value', true).then(id => id.toLowerCase());
@@ -138,9 +138,9 @@ adapter.setStateAsync('state.name', { val: 'value', ack: true }).then(id => id.t
 
 adapter.setStateChanged('state.name', 'value');
 adapter.setStateChanged('state.name', 'value', true);
-adapter.setStateChanged('state.name', 'value', (err, id) => {});
+adapter.setStateChanged('state.name', 'value', (_err, _id) => {});
 adapter.setStateChanged('state.name', { val: 'value', ack: true });
-adapter.setStateChanged('state.name', { val: 'value', ack: true }, (err, id) => {});
+adapter.setStateChanged('state.name', { val: 'value', ack: true }, (_err, _id) => {});
 
 adapter.setStateChangedAsync('state.name', 'value').then(id => id.toLowerCase());
 adapter.setStateChangedAsync('state.name', 'value', true).then(id => id.toLowerCase());
@@ -148,9 +148,9 @@ adapter.setStateChangedAsync('state.name', { val: 'value', ack: true }).then(id 
 
 adapter.setForeignState('state.name', 'value');
 adapter.setForeignState('state.name', 'value', true);
-adapter.setForeignState('state.name', 'value', (err, id) => {});
+adapter.setForeignState('state.name', 'value', (_err, _id) => {});
 adapter.setForeignState('state.name', { val: 'value', ack: true });
-adapter.setForeignState('state.name', { val: 'value', ack: true }, (err, id) => {});
+adapter.setForeignState('state.name', { val: 'value', ack: true }, (_err, _id) => {});
 
 adapter.setForeignStateAsync('state.name', 'value').then(id => id.toLowerCase());
 adapter.setForeignStateAsync('state.name', 'value', true).then(id => id.toLowerCase());
@@ -158,9 +158,9 @@ adapter.setForeignStateAsync('state.name', { val: 'value', ack: true }).then(id 
 
 adapter.setForeignStateChanged('state.name', 'value');
 adapter.setForeignStateChanged('state.name', 'value', true);
-adapter.setForeignStateChanged('state.name', 'value', (err, id) => {});
+adapter.setForeignStateChanged('state.name', 'value', (_err, _id) => {});
 adapter.setForeignStateChanged('state.name', { val: 'value', ack: true });
-adapter.setForeignStateChanged('state.name', { val: 'value', ack: true }, (err, id) => {});
+adapter.setForeignStateChanged('state.name', { val: 'value', ack: true }, (_err, _id) => {});
 
 adapter.setForeignStateChangedAsync('state.name', 'value').then(id => id.toLowerCase());
 adapter.setForeignStateChangedAsync('state.name', 'value', true).then(id => id.toLowerCase());
@@ -176,9 +176,9 @@ adapter.getForeignBinaryState('state.id', (err, state) => state && state.writeUI
 adapter.getForeignBinaryStateAsync('state.id').then(state => state && state.writeUInt16BE(0, 0));
 
 adapter.setObject('obj.id', { type: 'device', common: { name: 'foo' }, native: {} });
-adapter.setObject('obj.id', { type: 'device', common: { name: 'foo' }, native: {} }, (err, id) => {});
+adapter.setObject('obj.id', { type: 'device', common: { name: 'foo' }, native: {} }, (_err, _id) => {});
 adapter.setForeignObject('obj.id', { type: 'device', common: { name: 'foo' }, native: {} });
-adapter.setForeignObject('obj.id', { type: 'device', common: { name: 'foo' }, native: {} }, (err, id) => {});
+adapter.setForeignObject('obj.id', { type: 'device', common: { name: 'foo' }, native: {} }, (_err, _id) => {});
 
 adapter
     .setObjectAsync('obj.id', { type: 'device', common: { name: 'foo' }, native: {} })
@@ -188,9 +188,9 @@ adapter
     .then(({ id }) => id.toLowerCase());
 
 adapter.setObjectNotExists('obj.id', { type: 'device', common: { name: 'foo' }, native: {} });
-adapter.setObjectNotExists('obj.id', { type: 'device', common: { name: 'foo' }, native: {} }, (err, id) => {});
+adapter.setObjectNotExists('obj.id', { type: 'device', common: { name: 'foo' }, native: {} }, (err, _id) => {});
 adapter.setForeignObjectNotExists('obj.id', { type: 'device', common: { name: 'foo' }, native: {} });
-adapter.setForeignObjectNotExists('obj.id', { type: 'device', common: { name: 'foo' }, native: {} }, (err, id) => {});
+adapter.setForeignObjectNotExists('obj.id', { type: 'device', common: { name: 'foo' }, native: {} }, (_err, _id) => {});
 
 adapter
     .setObjectNotExistsAsync('obj.id', { type: 'device', common: { name: 'foo' }, native: {} })
@@ -199,8 +199,8 @@ adapter
     .setForeignObjectNotExistsAsync('obj.id', { type: 'device', common: { name: 'foo' }, native: {} })
     .then(({ id }) => id.toLowerCase());
 
-adapter.getObject('obj.id', (err, obj) => {});
-adapter.getForeignObject('obj.id', (err, obj) => {});
+adapter.getObject('obj.id', (_err, _obj) => {});
+adapter.getForeignObject('obj.id', (_err, _obj) => {});
 
 adapter.getObjectAsync('obj.id').then(obj => obj && obj._id.toLowerCase());
 adapter.getForeignObjectAsync('obj.id').then(obj => obj && obj._id.toLowerCase());
@@ -236,7 +236,7 @@ adapter.setObject('id', {
 adapter.setObject(
     'id',
     // missing property type
-    // $ExpectError
+    // @ts-expect-error
     {
         common: {
             type: 'array',
@@ -256,7 +256,7 @@ adapter.setObject(
 adapter.setObject(
     'id',
     // missing property common
-    // $ExpectError
+    // @ts-expect-error
     {
         type: 'state',
         native: {},
@@ -268,7 +268,7 @@ adapter.setObject(
 adapter.setObject(
     'id',
     // missing property common.role
-    // $ExpectError
+    // @ts-expect-error
     {
         type: 'state',
         common: {
@@ -288,7 +288,7 @@ adapter.setObject(
 //     },
 //     native: {
 //         // Date is not allowed here
-//         // $ExpectError
+//         // @ts-expect-error
 //         date: new Date(),
 //     },
 // });
@@ -401,13 +401,13 @@ adapter.unsubscribeForeignStates('*');
 adapter.encrypt('top secret').toLocaleLowerCase();
 adapter.decrypt('garbled nonsense').toLocaleLowerCase();
 
-adapter.log.info('msg');
-adapter.log.debug('msg');
-adapter.log.warn('msg');
-adapter.log.error('msg');
-adapter.log.silly('msg');
+adapter.log!.info('msg');
+adapter.log!.debug('msg');
+adapter.log!.warn('msg');
+adapter.log!.error('msg');
+adapter.log!.silly('msg');
 
-switch (adapter.log.level) {
+switch (adapter.log!.level) {
     case 'debug':
     case 'error':
     case 'info':
@@ -415,7 +415,7 @@ switch (adapter.log.level) {
     case 'warn':
         break;
     default:
-        assertNever(adapter.log.level);
+        assertNever(adapter.log!.level as never);
 }
 
 adapter.sendTo('foo.0', 'command', 'message');
@@ -462,7 +462,7 @@ adapter.sendToHostAsync('host-foo', 'message').then(handleMessageResponse);
 adapter.sendToHostAsync('host-foo', 'command', { msg: 'message' }).then(handleMessageResponse);
 adapter.sendToHostAsync('host-foo', { msg: 'message' }).then(handleMessageResponse);
 
-function handleError(err?: string) {}
+function handleError(_err?: string) {}
 adapter.subscribeStates('*', handleError);
 adapter.subscribeForeignStates('*', handleError);
 adapter.unsubscribeStates('*', handleError);
@@ -477,7 +477,7 @@ adapter.subscribeForeignObjectsAsync('*').catch(handleError);
 adapter.unsubscribeObjectsAsync('*').catch(handleError);
 adapter.unsubscribeForeignObjectsAsync('*').catch(handleError);
 
-adapter.getHistory('state.id', {}, (err, result?: ioBroker.GetHistoryResult) => {});
+adapter.getHistory('state.id', {}, (_err, _result?: ioBroker.GetHistoryResult) => {});
 
 (() => adapter.terminate())();
 (() => adapter.terminate(1))();
@@ -492,27 +492,27 @@ adapter.supportsFeature && !!adapter.supportsFeature('foo');
     config && config.x;
 };
 
-// $ExpectError
+// @ts-expect-error
 adapter.states.getStates();
-// $ExpectError
+// @ts-expect-error
 adapter.objects.getObjectView();
 
 adapter.oObjects && adapter.oObjects.foo && adapter.oObjects.foo._id.toString();
 adapter.oStates && adapter.oStates.foo && adapter.oStates.foo.val;
 
 // Repro from https://github.com/ioBroker/adapter-core/issues/3
-const repro1: ioBroker.ObjectChangeHandler = (id, obj) => {
+const _repro1: ioBroker.ObjectChangeHandler = (id, obj) => {
     if (!obj || !obj.common) {
         return;
     }
     if (obj.common.custom) {
-        const test1: ioBroker.StateCommon = obj.common;
+        const _test1: ioBroker.StateCommon = obj.common;
     }
     obj && obj.common && obj.common.custom && obj.common.custom['adapter.0'] && obj.common.custom['adapter.0'].enabled;
 };
 
 // Repro from https://github.com/ioBroker/adapter-core/issues/4
-function repro2() {
+function _repro2() {
     // Prepare custom object
     const obj = {
         common: {
@@ -521,11 +521,12 @@ function repro2() {
             }
         }
     };
-    adapter.extendForeignObject('obj.id', obj, err => {});
+
+    adapter.extendForeignObject('obj.id', obj, _err => {});
 }
 
 // repro from https://github.com/ioBroker/adapter-core/issues/6
-function repro3() {
+function _repro3() {
     adapter.getDevices((error, deviceList) => {
         if (deviceList) {
             deviceList; // $ExpectType DeviceObject[]
@@ -555,7 +556,7 @@ function repro3() {
     });
 }
 
-const folderObj: ioBroker.FolderObject = {
+const _folderObj: ioBroker.FolderObject = {
     _id: 'id',
     type: 'folder',
     common: {
@@ -569,7 +570,7 @@ const folderObj: ioBroker.FolderObject = {
 // This used to be an error: https://github.com/ioBroker/ioBroker.js-controller/issues/782
 // With JS-Controller 3.3 it no longer is.
 adapter.setState('id', { ack: false });
-// $ExpectError
+// @ts-expect-error
 adapter.setState('id', {});
 
 // null is a valid state value
@@ -587,69 +588,69 @@ adapter.delForeignBinaryState('id');
 adapter.delForeignBinaryStateAsync('id').then(() => null);
 
 // Objects and arrays are not valid state values
-// $ExpectError
+// @ts-expect-error
 adapter.setState('id', { an: 'object' });
-// $ExpectError
+// @ts-expect-error
 adapter.setForeignState('id', { an: 'object' });
-// $ExpectError
+// @ts-expect-error
 adapter.setStateAsync('id', { an: 'object' });
-// $ExpectError
+// @ts-expect-error
 adapter.setForeignStateAsync('id', { an: 'object' });
-// $ExpectError
+// @ts-expect-error
 adapter.setStateChanged('id', { an: 'object' });
-// $ExpectError
+// @ts-expect-error
 adapter.setForeignStateChanged('id', { an: 'object' });
-// $ExpectError
+// @ts-expect-error
 adapter.setStateChangedAsync('id', { an: 'object' });
-// $ExpectError
+// @ts-expect-error
 adapter.setForeignStateChangedAsync('id', { an: 'object' });
-// $ExpectError
+// @ts-expect-error
 adapter.setState('id', ['an', 'array']);
-// $ExpectError
+// @ts-expect-error
 adapter.setForeignState('id', ['an', 'array']);
-// $ExpectError
+// @ts-expect-error
 adapter.setStateAsync('id', ['an', 'array']);
-// $ExpectError
+// @ts-expect-error
 adapter.setForeignStateAsync('id', ['an', 'array']);
-// $ExpectError
+// @ts-expect-error
 adapter.setStateChanged('id', ['an', 'array']);
-// $ExpectError
+// @ts-expect-error
 adapter.setForeignStateChanged('id', ['an', 'array']);
-// $ExpectError
+// @ts-expect-error
 adapter.setStateChangedAsync('id', ['an', 'array']);
-// $ExpectError
+// @ts-expect-error
 adapter.setForeignStateChangedAsync('id', ['an', 'array']);
-// $ExpectError
+// @ts-expect-error
 adapter.setState('id', { val: { an: 'object' } });
-// $ExpectError
+// @ts-expect-error
 adapter.setForeignState('id', { val: { an: 'object' } });
-// $ExpectError
+// @ts-expect-error
 adapter.setStateAsync('id', { val: { an: 'object' } });
-// $ExpectError
+// @ts-expect-error
 adapter.setForeignStateAsync('id', { val: { an: 'object' } });
-// $ExpectError
+// @ts-expect-error
 adapter.setStateChanged('id', { val: { an: 'object' } });
-// $ExpectError
+// @ts-expect-error
 adapter.setForeignStateChanged('id', { val: { an: 'object' } });
-// $ExpectError
+// @ts-expect-error
 adapter.setStateChangedAsync('id', { val: { an: 'object' } });
-// $ExpectError
+// @ts-expect-error
 adapter.setForeignStateChangedAsync('id', { val: { an: 'object' } });
-// $ExpectError
+// @ts-expect-error
 adapter.setState('id', { val: ['an', 'array'] });
-// $ExpectError
+// @ts-expect-error
 adapter.setForeignState('id', { val: ['an', 'array'] });
-// $ExpectError
+// @ts-expect-error
 adapter.setStateAsync('id', { val: ['an', 'array'] });
-// $ExpectError
+// @ts-expect-error
 adapter.setForeignStateAsync('id', { val: ['an', 'array'] });
-// $ExpectError
+// @ts-expect-error
 adapter.setStateChanged('id', { val: ['an', 'array'] });
-// $ExpectError
+// @ts-expect-error
 adapter.setForeignStateChanged('id', { val: ['an', 'array'] });
-// $ExpectError
+// @ts-expect-error
 adapter.setStateChangedAsync('id', { val: ['an', 'array'] });
-// $ExpectError
+// @ts-expect-error
 adapter.setForeignStateChangedAsync('id', { val: ['an', 'array'] });
 
 // Allow alias states
@@ -678,20 +679,20 @@ declare let enumObj: ioBroker.EnumObject;
 enumObj.common.members && enumObj.common.members.map(() => 1);
 
 // Adapter.clearTimeout and clearInterval are not compatible with the builtins
-adapter.clearTimeout(adapter.setTimeout(() => {}, 10));
-adapter.clearInterval(adapter.setInterval(() => {}, 10));
-// $ExpectError
+adapter.clearTimeout(adapter.setTimeout(() => {}, 10)!);
+adapter.clearInterval(adapter.setInterval(() => {}, 10)!);
+// @ts-expect-error
 clearTimeout(adapter.setTimeout(() => {}, 10));
-// $ExpectError
+// @ts-expect-error
 clearInterval(adapter.setInterval(() => {}, 10));
-// $ExpectError
+// todo types need to be implemented to not allow interchanging between nodejs and iob timers @ts-expect-error
 adapter.clearTimeout(setTimeout(() => {}, 10));
-// $ExpectError
+// todo types need to be implemented to not allow interchanging between nodejs and iob timers @ts-expect-error
 adapter.clearInterval(setInterval(() => {}, 10));
 // And they must not be switched
-// $ExpectError
+// @ts-expect-error
 adapter.clearInterval(adapter.setTimeout(() => {}, 10));
-// $ExpectError
+// @ts-expect-error
 adapter.clearTimeout(adapter.setInterval(() => {}, 10));
 
 // Error callbacks were changed to Error objects
@@ -705,7 +706,7 @@ adapter.delFile(null, 'foo', err => {
 });
 
 adapter.FORBIDDEN_CHARS.test('foo');
-// $ExpectError
+// @ts-expect-error
 adapter.FORBIDDEN_CHARS = /_/;
 
 // Repro from ioBroker.i2c
@@ -737,7 +738,7 @@ adapter.FORBIDDEN_CHARS = /_/;
 }
 
 // Test some of the more uncommon object types
-const adapterObject: ioBroker.AdapterObject = {
+const _adapterObject: ioBroker.AdapterObject = {
     _id: '',
     type: 'adapter',
     native: {},
@@ -765,35 +766,35 @@ const adapterObject: ioBroker.AdapterObject = {
     }
 };
 
-const folderObject: ioBroker.FolderObject = {
+const _folderObject: ioBroker.FolderObject = {
     _id: '',
     type: 'folder',
     common: { name: 'My Folder' },
     native: {}
 };
 
-const enumObject: ioBroker.EnumObject = {
+const _enumObject: ioBroker.EnumObject = {
     _id: '',
     type: 'enum',
     common: { name: 'My Enum', members: [] },
     native: {}
 };
 
-const metaObject: ioBroker.MetaObject = {
+const _metaObject: ioBroker.MetaObject = {
     _id: '',
     type: 'meta',
     common: { type: 'meta.folder', name: 'foobar' },
     native: {}
 };
 
-const instanceObject: ioBroker.InstanceObject = {
+const _instanceObject: ioBroker.InstanceObject = {
     _id: '',
     type: 'instance',
     common: { enabled: true, host: 'my host', mode: 'daemon', name: 'instance 1' },
     native: {}
 };
 
-const userObject: ioBroker.UserObject = {
+const _userObject: ioBroker.UserObject = {
     _id: '',
     type: 'user',
     common: { name: 'me', password: '*****', enabled: true },
@@ -802,11 +803,13 @@ const userObject: ioBroker.UserObject = {
 
 // Ensure that getForeignObject tries to resolve a specific object type
 async () => {
-    let inst: ioBroker.InstanceObject | null | undefined;
-    inst = await adapter.getForeignObjectAsync('system.adapter.admin.0');
+    const inst: ioBroker.InstanceObject | null | undefined = await adapter.getForeignObjectAsync(
+        'system.adapter.admin.0'
+    );
 
-    let adptr: ioBroker.AdapterObject | null | undefined;
-    adptr = await adapter.getForeignObjectAsync('system.adapter.admin');
+    const adptr: ioBroker.AdapterObject | null | undefined = await adapter.getForeignObjectAsync(
+        'system.adapter.admin'
+    );
 
     let meta: ioBroker.MetaObject | null | undefined;
     meta = await adapter.getForeignObjectAsync('admin.0');
@@ -820,8 +823,9 @@ async () => {
     chnl = await adapter.getForeignObjectAsync('script.js.global');
     chnl = await adapter.getForeignObjectAsync('admin.777.info');
 
-    let state: ioBroker.StateObject | null | undefined;
-    state = await adapter.getForeignObjectAsync('system.adapter.admin.0.foobar');
+    const state: ioBroker.StateObject | null | undefined = await adapter.getForeignObjectAsync(
+        'system.adapter.admin.0.foobar'
+    );
 
     let scrChnl: ioBroker.ChannelObject | ioBroker.ScriptObject | null | undefined;
     scrChnl = await adapter.getForeignObjectAsync('script.js.my-script');
@@ -831,14 +835,13 @@ async () => {
     enm = await adapter.getForeignObjectAsync('enum.functions');
     enm = await adapter.getForeignObjectAsync('enum.functions.light');
 
-    let group: ioBroker.GroupObject | null | undefined;
-    group = await adapter.getForeignObjectAsync('system.group.admin.faz');
+    const group: ioBroker.GroupObject | null | undefined = await adapter.getForeignObjectAsync(
+        'system.group.admin.faz'
+    );
 
-    let user: ioBroker.UserObject | null | undefined;
-    user = await adapter.getForeignObjectAsync('system.user.admin.faz');
+    const user: ioBroker.UserObject | null | undefined = await adapter.getForeignObjectAsync('system.user.admin.faz');
 
-    let host: ioBroker.HostObject | null | undefined;
-    host = await adapter.getForeignObjectAsync('system.host.my-hostname');
+    const host: ioBroker.HostObject | null | undefined = await adapter.getForeignObjectAsync('system.host.my-hostname');
 
     let config: (ioBroker.OtherObject & { type: 'config' }) | null | undefined;
     config = await adapter.getForeignObjectAsync('system.repositories');
@@ -859,18 +862,17 @@ async () => {
 
     // combined
     const idCombined = '' as 'enum.functions' | 'script.js.global';
-    let combined: ioBroker.ChannelObject | ioBroker.EnumObject | null | undefined;
-    combined = await adapter.getForeignObjectAsync(idCombined);
+    const combined: ioBroker.ChannelObject | ioBroker.EnumObject | null | undefined =
+        await adapter.getForeignObjectAsync(idCombined);
 
     // unknown id
-    let unknown: ioBroker.Object | null | undefined;
-    unknown = await adapter.getForeignObjectAsync('');
+    const unknown: ioBroker.Object | null | undefined = await adapter.getForeignObjectAsync('');
 };
 
 // Ensure that setForeignObject tries to resolve a specific object type
-async () => {
+() => {
     adapter.setForeignObject('system.host.my-hostname', {
-        // $ExpectError
+        // @ts-expect-error
         type: 'not-host'
     });
 
@@ -902,7 +904,7 @@ async () => {
 }
 {
     const stateObj: ioBroker.SettableDeviceObject = {
-        // $ExpectError
+        // @ts-expect-error
         type: 'state',
         common: {
             name: 'Dummy name'
@@ -919,7 +921,7 @@ async () => {
 };
 
 // Test registerNotification
-// $ExpectError
+// @ts-expect-error
 adapter.registerNotification('foobar', 'accessErrors', 'This is a problem!');
 adapter.registerNotification('system', 'accessErrors', 'This is a problem!');
 adapter.registerNotification('system', null, 'This is a problem!');
@@ -927,9 +929,9 @@ adapter.registerNotification('system', null, 'This is a problem!');
 // https://github.com/ioBroker/adapter-core/issues/429
 adapter.namespace === 'foo-bar.0';
 adapter.namespace === 'foooooo.10';
-// $ExpectError
+// @ts-expect-error
 adapter.namespace === 'foo.bar.0';
-// $ExpectError
+// @ts-expect-error
 adapter.namespace === 'foo-bar.a';
 adapter.getForeignObjectAsync(`system.adapter.${adapter.namespace}`).then(o => {
     // $ExpectType InstanceObject
@@ -944,7 +946,7 @@ adapter.performStrictObjectChecks = true;
 function testSettableState(arg: ioBroker.SettableState): void {
     if (arg.val !== undefined && arg.val !== null) {
         arg.val.toString(); // OK
-        // $ExpectError
+        // @ts-expect-error
         arg.ts.toString();
         if (arg.ts !== undefined && arg.ts !== null) {
             arg.ts.toString(); // OK
