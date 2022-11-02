@@ -23,7 +23,7 @@
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:402](https://github.com/ioBroker/ioBroker.js-controller/blob/bbca310b/packages/adapter/src/lib/_Types.ts#L402)
+[packages/adapter/src/lib/_Types.ts:412](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/_Types.ts#L412)
 
 ___
 
@@ -33,7 +33,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:397](https://github.com/ioBroker/ioBroker.js-controller/blob/bbca310b/packages/adapter/src/lib/_Types.ts#L397)
+[packages/adapter/src/lib/_Types.ts:407](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/_Types.ts#L407)
 
 ___
 
@@ -43,7 +43,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:401](https://github.com/ioBroker/ioBroker.js-controller/blob/bbca310b/packages/adapter/src/lib/_Types.ts#L401)
+[packages/adapter/src/lib/_Types.ts:411](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/_Types.ts#L411)
 
 ___
 
@@ -53,7 +53,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:399](https://github.com/ioBroker/ioBroker.js-controller/blob/bbca310b/packages/adapter/src/lib/_Types.ts#L399)
+[packages/adapter/src/lib/_Types.ts:409](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/_Types.ts#L409)
 
 ___
 
@@ -63,7 +63,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:398](https://github.com/ioBroker/ioBroker.js-controller/blob/bbca310b/packages/adapter/src/lib/_Types.ts#L398)
+[packages/adapter/src/lib/_Types.ts:408](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/_Types.ts#L408)
 
 ___
 
@@ -73,4 +73,4 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:400](https://github.com/ioBroker/ioBroker.js-controller/blob/bbca310b/packages/adapter/src/lib/_Types.ts#L400)
+[packages/adapter/src/lib/_Types.ts:410](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/_Types.ts#L410)

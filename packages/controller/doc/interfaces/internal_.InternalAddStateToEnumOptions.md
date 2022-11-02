@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:388](https://github.com/ioBroker/ioBroker.js-controller/blob/bbca310b/packages/adapter/src/lib/_Types.ts#L388)
+[packages/adapter/src/lib/_Types.ts:398](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/_Types.ts#L398)
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:393](https://github.com/ioBroker/ioBroker.js-controller/blob/bbca310b/packages/adapter/src/lib/_Types.ts#L393)
+[packages/adapter/src/lib/_Types.ts:403](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/_Types.ts#L403)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:387](https://github.com/ioBroker/ioBroker.js-controller/blob/bbca310b/packages/adapter/src/lib/_Types.ts#L387)
+[packages/adapter/src/lib/_Types.ts:397](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/_Types.ts#L397)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:392](https://github.com/ioBroker/ioBroker.js-controller/blob/bbca310b/packages/adapter/src/lib/_Types.ts#L392)
+[packages/adapter/src/lib/_Types.ts:402](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/_Types.ts#L402)
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:390](https://github.com/ioBroker/ioBroker.js-controller/blob/bbca310b/packages/adapter/src/lib/_Types.ts#L390)
+[packages/adapter/src/lib/_Types.ts:400](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/_Types.ts#L400)
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:389](https://github.com/ioBroker/ioBroker.js-controller/blob/bbca310b/packages/adapter/src/lib/_Types.ts#L389)
+[packages/adapter/src/lib/_Types.ts:399](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/_Types.ts#L399)
 
 ___
 
@@ -84,4 +84,4 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:391](https://github.com/ioBroker/ioBroker.js-controller/blob/bbca310b/packages/adapter/src/lib/_Types.ts#L391)
+[packages/adapter/src/lib/_Types.ts:401](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/_Types.ts#L401)

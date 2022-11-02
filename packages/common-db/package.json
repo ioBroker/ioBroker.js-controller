@@ -1,48 +1,48 @@
 {
-  "name": "@iobroker/js-controller-common-db",
-  "version": "4.1.0-alpha.0-20220922-bbca310b",
-  "engines": {
-    "node": ">=12.0.0"
-  },
-  "optionalDependencies": {
-    "winston-seq-updated": "^1.0.4",
-    "winston-syslog": "^2.6.0"
-  },
-  "dependencies": {
-    "@iobroker/db-objects-file": "file:../db-objects-file",
-    "@iobroker/db-objects-jsonl": "file:../db-objects-jsonl",
-    "@iobroker/db-objects-redis": "file:../db-objects-redis",
-    "@iobroker/db-states-file": "file:../db-states-file",
-    "@iobroker/db-states-jsonl": "file:../db-states-jsonl",
-    "@iobroker/db-states-redis": "file:../db-states-redis",
-    "@iobroker/js-controller-common": "file:../common",
-    "fs-extra": "^10.1.0"
-  },
-  "keywords": [
-    "ioBroker"
-  ],
-  "author": "bluefox <dogafox@gmail.com>",
-  "contributors": [
-    "bluefox <dogafox@gmail.com>",
-    "Apollon77 <iobroker@fischer-ka.de>",
-    "foxriver76 <moritz.heusinger@gmail.com>"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/common"
-  },
-  "scripts": {
-    "build": "tsc -b tsconfig.build.json"
-  },
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
-  "files": [
-    "build/lib/",
-    "build/index.js",
-    "build/index.d.ts"
-  ]
+    "name": "@iobroker/js-controller-common-db",
+    "version": "4.1.0-alpha.0-20221025-8243bedf",
+    "engines": {
+        "node": ">=12.0.0"
+    },
+    "optionalDependencies": {
+        "winston-seq-updated": "^1.0.4",
+        "winston-syslog": "^2.6.0"
+    },
+    "dependencies": {
+        "@iobroker/db-objects-file": "file:../db-objects-file",
+        "@iobroker/db-objects-jsonl": "file:../db-objects-jsonl",
+        "@iobroker/db-objects-redis": "file:../db-objects-redis",
+        "@iobroker/db-states-file": "file:../db-states-file",
+        "@iobroker/db-states-jsonl": "file:../db-states-jsonl",
+        "@iobroker/db-states-redis": "file:../db-states-redis",
+        "@iobroker/js-controller-common": "file:../common",
+        "fs-extra": "^10.1.0"
+    },
+    "keywords": [
+        "ioBroker"
+    ],
+    "author": "bluefox <dogafox@gmail.com>",
+    "contributors": [
+        "bluefox <dogafox@gmail.com>",
+        "Apollon77 <iobroker@fischer-ka.de>",
+        "foxriver76 <moritz.heusinger@gmail.com>"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/common"
+    },
+    "scripts": {
+        "build": "tsc -b tsconfig.build.json"
+    },
+    "main": "build/index.js",
+    "types": "build/index.d.ts",
+    "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "build/lib/",
+        "build/index.js",
+        "build/index.d.ts"
+    ]
 }

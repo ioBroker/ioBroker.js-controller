@@ -31,8 +31,8 @@ export class PacketManager {
 
     constructor(options: PacketManagerOptions = { logLevel: LOG_LEVELS.info }) {
         // detect apt, apt-get or yum
-        this.manager = (options && options.manager) || '';
-        this.logger = (options && options.logger) || {
+        this.manager = options?.manager || '';
+        this.logger = options?.logger || {
             silly: text => options.logLevel >= LOG_LEVELS.silly && console.log(text),
             info: text => options.logLevel >= LOG_LEVELS.info && console.log(text),
             log: text => options.logLevel >= LOG_LEVELS.log && console.log(text),
@@ -51,7 +51,7 @@ export class PacketManager {
             if (!this.manager) {
                 const manager = await this._detectManager();
                 if (manager) {
-                    this.logger && this.logger.debug(`Detected packet manager: ${manager}`);
+                    this.logger?.debug(`Detected packet manager: ${manager}`);
                     // Check if sudo is available for packet manager and store information
                     this.sudo = (await this._isSudoAvailable()) && (await this._isSudoAvailableForManager());
                 }
@@ -59,7 +59,7 @@ export class PacketManager {
 
             // Check if dpkg is available
             this.dpkg = await this._isDpkgAvailable();
-            this.logger && this.logger.debug(`Detected dpkg: ${this.dpkg}`);
+            this.logger?.debug(`Detected dpkg: ${this.dpkg}`);
         }
     }
 
@@ -98,7 +98,7 @@ export class PacketManager {
             ) {
                 return true;
             } else {
-                this.logger && this.logger.error(`Cannot detect dpkg: ${err.stderr || err.stdout || err}`);
+                this.logger?.error(`Cannot detect dpkg: ${err.stderr || err.stdout || err}`);
                 return false;
             }
         }
@@ -113,7 +113,7 @@ export class PacketManager {
             if ((err.stdout && err.stdout.includes('sudo -h')) || (err.stderr && err.stderr.includes('sudo -h'))) {
                 return true;
             } else {
-                this.logger && this.logger.error(`Cannot detect sudo: ${err.stderr || err.stdout || err}`);
+                this.logger?.error(`Cannot detect sudo: ${err.stderr || err.stdout || err}`);
                 return false;
             }
         }
@@ -124,8 +124,7 @@ export class PacketManager {
             await execAsync(`sudo -n ${this.manager} -v`);
             return true;
         } catch (err) {
-            this.logger &&
-                this.logger.error(`Cannot detect \\"sudo -n ${this.manager} -v\\": ${err.stderr || err.stdout || err}`);
+            this.logger?.error(`Cannot detect \\"sudo -n ${this.manager} -v\\": ${err.stderr || err.stdout || err}`);
             return false;
         }
     }
@@ -140,7 +139,25 @@ export class PacketManager {
                 return cmd;
             }
         }
-        this.logger && this.logger.info('No supported packet manager found');
+        this.logger?.info('No supported packet manager found');
+    }
+
+    /**
+     * Updates the sources if apt is used
+     */
+    async update(): Promise<void> {
+        await this.ready();
+
+        if (this.manager !== 'apt' && this.manager !== 'apt-get') {
+            // ignore
+            return;
+        }
+
+        try {
+            await execAsync(`${(this.sudo ? 'sudo ' : '') + this.manager} update`);
+        } catch (e) {
+            this.logger?.warn(`Cannot update apt sources: ${e.message}`);
+        }
     }
 
     private async _listPackages(): Promise<string> {
@@ -199,7 +216,7 @@ export class PacketManager {
                     await this._installPacket(packet);
                 } catch (err) {
                     failed.push(packet);
-                    this.logger.error(`Cannot install "${packet}": ${err.stderr || err.stdout || err}`);
+                    this.logger?.error(`Cannot install "${packet}": ${err.stderr || err.stdout || err}`);
                     // Continue with the next packet
                 }
             }

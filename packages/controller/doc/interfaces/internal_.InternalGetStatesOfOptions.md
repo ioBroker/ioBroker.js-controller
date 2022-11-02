@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:383](https://github.com/ioBroker/ioBroker.js-controller/blob/bbca310b/packages/adapter/src/lib/_Types.ts#L383)
+[packages/adapter/src/lib/_Types.ts:393](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/_Types.ts#L393)
 
 ___
 
@@ -31,24 +31,24 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:382](https://github.com/ioBroker/ioBroker.js-controller/blob/bbca310b/packages/adapter/src/lib/_Types.ts#L382)
+[packages/adapter/src/lib/_Types.ts:392](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/_Types.ts#L392)
 
 ___
 
 ### parentChannel
 
-• **parentChannel**: `string`
+• **parentChannel**: `undefined` \| ``null`` \| `string`
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:381](https://github.com/ioBroker/ioBroker.js-controller/blob/bbca310b/packages/adapter/src/lib/_Types.ts#L381)
+[packages/adapter/src/lib/_Types.ts:391](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/_Types.ts#L391)
 
 ___
 
 ### parentDevice
 
-• **parentDevice**: `string`
+• **parentDevice**: `undefined` \| ``null`` \| `string`
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:380](https://github.com/ioBroker/ioBroker.js-controller/blob/bbca310b/packages/adapter/src/lib/_Types.ts#L380)
+[packages/adapter/src/lib/_Types.ts:390](https://github.com/ioBroker/ioBroker.js-controller/blob/8243bedf/packages/adapter/src/lib/_Types.ts#L390)
