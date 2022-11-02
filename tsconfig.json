@@ -19,7 +19,15 @@
     "skipLibCheck": true,
     // Enable syntax help for importes JSON files
     "resolveJsonModule": true,
-    "useUnknownInCatchVariables": false
+    "useUnknownInCatchVariables": false,
+    "typeRoots": [
+      "node_modules/@types",
+      "packages"
+    ],
+    "types": [
+      "node",
+      "@iobroker/types"
+    ]
   },
   "include": [
     "packages/**/*.js",
