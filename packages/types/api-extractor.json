@@ -1,6 +1,6 @@
 {
   "$schema": "https://developer.microsoft.com/json-schemas/api-extractor/v7/api-extractor.schema.json",
-  "mainEntryPointFilePath": "../adapter/build/lib/adapter/adapter.d.ts",
+  "mainEntryPointFilePath": "../adapter/build/index.d.ts",
   "tsdocMetadata": {
     "enabled": false
   },

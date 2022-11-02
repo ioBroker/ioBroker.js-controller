@@ -92,7 +92,7 @@ import type {
     InternalSetObjectOptions,
     InternalSetPasswordOptions,
     InternalSetSessionOptions,
-    InternalSetStateChanedOptions,
+    InternalSetStateChangedOptions,
     InternalSetStateOptions,
     InternalSubscribeOptions,
     InternalUpdateConfigOptions,
@@ -7925,21 +7925,19 @@ export class AdapterClass extends EventEmitter {
         return this._setStateChanged({ id, state: state as ioBroker.SettableState, ack, options, callback });
     }
 
-    private async _setStateChanged(_options: InternalSetStateChanedOptions): Promise<void> {
+    private async _setStateChanged(_options: InternalSetStateChangedOptions): Promise<void> {
         const { id, ack, options, callback, state } = _options;
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(
                 `${this.namespaceLog} setStateChanged not processed because States database not connected`
             );
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         try {
             this._utils.validateId(id, false, null);
         } catch (err) {
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
             return tools.maybeCallbackWithError(callback, err);
         }
 
@@ -7952,7 +7950,6 @@ export class AdapterClass extends EventEmitter {
             try {
                 this._utils.validateSetStateObjectArgument(state);
             } catch (e) {
-                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                 return tools.maybeCallbackWithError(callback, e);
             }
             stateObj = state;
@@ -7964,7 +7961,6 @@ export class AdapterClass extends EventEmitter {
 
         if (stateObj.val === undefined && !Object.keys(stateObj).length) {
             // undefined is not allowed as state.val -> return
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
             return tools.maybeCallbackWithError(callback, 'undefined is not a valid state value');
         }
 
@@ -7981,16 +7977,15 @@ export class AdapterClass extends EventEmitter {
             try {
                 await this._checkStates(fixedId, options, 'setState');
             } catch (e) {
-                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                 return tools.maybeCallbackWithError(callback, e);
             }
 
             const res = await this._setStateChangedHelper(fixedId, stateObj);
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+            // @ts-expect-error todo fix it
             return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
         } else {
             const res = await this._setStateChangedHelper(fixedId, stateObj);
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+            // @ts-expect-error todo fix it
             return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
         }
     }

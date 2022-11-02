@@ -391,7 +391,7 @@ declare global {
         type SetStateCallback = (err?: Error | null, id?: string) => void;
         type SetStatePromise = Promise<NonNullCallbackReturnTypeOf<SetStateCallback>>;
 
-        type SetStateChangedCallback = (err: Error | null, id?: string, notChanged?: boolean) => void;
+        type SetStateChangedCallback = (err?: Error | null, id?: string, notChanged?: boolean) => void;
         type SetStateChangedPromise = Promise<NonNullCallbackReturnTypeOf<SetStateChangedCallback>>;
 
         type DeleteStateCallback = (err?: Error | null, id?: string) => void;
