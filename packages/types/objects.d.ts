@@ -144,7 +144,8 @@ declare global {
                 : AnyObject;
 
         type Languages = 'en' | 'de' | 'ru' | 'pt' | 'nl' | 'fr' | 'it' | 'es' | 'pl' | 'zh-cn';
-        type StringOrTranslated = string | { [lang in Languages]?: string };
+        /** For objects we require the English language to be present */
+        type StringOrTranslated = string | ({ en: string } & { [lang in Languages]?: string });
 
         type CommonType = 'number' | 'string' | 'boolean' | 'array' | 'object' | 'mixed' | 'file';
 

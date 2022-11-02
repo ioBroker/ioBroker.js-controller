@@ -8261,7 +8261,7 @@ export class AdapterClass extends EventEmitter {
                             adapterStates.setState(
                                 aliasId,
                                 tools.formatAliasValue(
-                                    obj && obj.common,
+                                    obj.common!,
                                     targetObj && (targetObj.common as any),
                                     state,
                                     this._logger,
