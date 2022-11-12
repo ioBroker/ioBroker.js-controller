@@ -36,12 +36,12 @@ module.exports = class CLIProcess extends CLICommand {
         } else if (/\.\d+$/.test(adapterName)) {
             this.setAdapterInstanceEnabled(adapterName, true);
         } else {
-            this.setAdapterEnabled(adapterName, true);
+            this.setAdapterEnabled(adapterName, true, args[1] === 'all');
         }
     }
 
     /**
-     * Restarts one or more adapters or the js-controller
+     * Restarts one or more instances or the js-controller
      * @param {any[]} args
      */
     restart(args) {
@@ -51,7 +51,7 @@ module.exports = class CLIProcess extends CLICommand {
         } else if (/\.\d+$/.test(adapterName)) {
             this.setAdapterInstanceEnabled(adapterName, true, /* restartIfRunning */ true);
         } else {
-            this.setAdapterEnabled(adapterName, true, /* restartIfRunning */ true);
+            this.setAdapterEnabled(adapterName, true, /* restartIfRunning */ true, args[1] === 'all');
         }
     }
 
@@ -68,7 +68,7 @@ module.exports = class CLIProcess extends CLICommand {
         } else if (/\.\d+$/.test(adapterName)) {
             this.setAdapterInstanceEnabled(adapterName, false);
         } else {
-            this.setAdapterEnabled(adapterName, false);
+            this.setAdapterEnabled(adapterName, false, args[1] === 'all');
         }
     }
 
@@ -92,12 +92,14 @@ module.exports = class CLIProcess extends CLICommand {
     }
 
     /**
-     * Starts or stops a single adapter. If there are multiple instances this fails
+     * Starts or stops a single or all instances of adapter.
+     * If there are multiple instances this fails if flag allInstances is not set.
      * @param {string} adapter The adapter to start
      * @param {boolean} enabled
      * @param {boolean} [restartIfRunning=false] Whether running instances should be restarted
+     * @param {boolean} [allInstances=false] Whether all running instances should be restarted
      */
-    setAdapterEnabled(adapter, enabled, restartIfRunning) {
+    setAdapterEnabled(adapter, enabled, restartIfRunning, allInstances) {
         const { callback, dbConnect } = this.options;
         dbConnect(async objects => {
             // Due to the many return locations we cannot simply chain the promises here
@@ -106,7 +108,7 @@ module.exports = class CLIProcess extends CLICommand {
                 // Enumerate all adapter instances
                 const adapterInstances = await enumInstances(objects, adapter);
                 // If there are multiple instances for this adapter, ask the user to specify which one
-                if (adapterInstances.length > 1) {
+                if (adapterInstances.length > 1 && !allInstances) {
                     CLI.error.specifyInstance(
                         adapter,
                         adapterInstances.map(obj => obj._id.substring('system.adapter.'.length))
@@ -116,8 +118,10 @@ module.exports = class CLIProcess extends CLICommand {
                     CLI.error.noInstancesFound(adapter);
                     return void callback(EXIT_CODES.UNKNOWN_ERROR);
                 }
-                const instance = adapterInstances[0];
-                await setInstanceEnabled(objects, instance, enabled, restartIfRunning);
+                for (let i = 0; i < adapterInstances.length; i++) {
+                    const instance = adapterInstances[i];
+                    await setInstanceEnabled(objects, instance, enabled, restartIfRunning);
+                }
                 return void callback();
             } catch (err) {
                 CLI.error.unknown(err.message);
