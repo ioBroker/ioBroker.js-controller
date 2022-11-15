@@ -786,187 +786,187 @@ export class AdapterClass extends EventEmitter {
 
         // Create dynamic methods
         /**
-         * Promise-version of Adapter.getPort
+         * Promise-version of `Adapter.getPort`
          */
         this.getPortAsync = tools.promisifyNoError(this.getPort, this);
 
         /**
-         * Promise-version of Adapter.checkPassword
+         * Promise-version of `Adapter.checkPassword`
          */
         this.checkPasswordAsync = tools.promisifyNoError(this.checkPassword, this);
 
         /**
-         * Promise-version of Adapter.setPassword
+         * Promise-version of `Adapter.setPassword`
          */
         this.setPasswordAsync = tools.promisify(this.setPassword, this);
 
         /**
-         * Promise-version of Adapter.checkGroup
+         * Promise-version of `Adapter.checkGroup`
          */
         this.checkGroupAsync = tools.promisifyNoError(this.checkGroup, this);
 
         /**
-         * Promise-version of Adapter.calculatePermissions
+         * Promise-version of `Adapter.calculatePermissions`
          */
         this.calculatePermissionsAsync = tools.promisifyNoError(this.calculatePermissions, this);
 
         /**
-         * Promise-version of Adapter.getCertificates
+         * Promise-version of `Adapter.getCertificates`
          */
         this.getCertificatesAsync = tools.promisify(this.getCertificates, this);
 
         /**
-         * Promise-version of Adapter.setObject
+         * Promise-version of `Adapter.setObject`
          */
         this.setObjectAsync = tools.promisify(this.setObject, this);
 
         /**
-         * Promise-version of Adapter.getAdapterObjects
+         * Promise-version of `Adapter.getAdapterObjects`
          */
         this.getAdapterObjectsAsync = tools.promisifyNoError(this.getAdapterObjects, this);
 
         /**
-         * Promise-version of Adapter.extendObject
+         * Promise-version of `Adapter.extendObject`
          */
         this.extendObjectAsync = tools.promisify(this.extendObject, this);
 
         /**
-         * Promise-version of Adapter.setForeignObject
+         * Promise-version of `Adapter.setForeignObject`
          */
         this.setForeignObjectAsync = tools.promisify(this.setForeignObject, this);
 
         /**
-         * Promise-version of Adapter.extendForeignObject
+         * Promise-version of `Adapter.extendForeignObject`
          */
         this.extendForeignObjectAsync = tools.promisify(this.extendForeignObject, this);
 
         /**
-         * Promise-version of Adapter.getObject
+         * Promise-version of `Adapter.getObject`
          */
         this.getObjectAsync = tools.promisify(this.getObject, this);
 
         /**
-         * Promise-version of Adapter.getObjectView
+         * Promise-version of `Adapter.getObjectView`
          */
         this.getObjectViewAsync = tools.promisify(this.getObjectView, this);
 
         /**
-         * Promise-version of Adapter.getObjectList
+         * Promise-version of `Adapter.getObjectList`
          */
         this.getObjectListAsync = tools.promisify(this.getObjectList, this);
 
         /**
-         * Promise-version of Adapter.getEnum
+         * Promise-version of `Adapter.getEnum`
          */
         this.getEnumAsync = tools.promisify(this.getEnum, this, ['result', 'requestEnum']);
 
         /**
-         * Promise-version of Adapter.getEnums
+         * Promise-version of `Adapter.getEnums`
          */
         this.getEnumsAsync = tools.promisify(this.getEnums, this);
 
         /**
-         * Promise-version of Adapter.getForeignObjects
+         * Promise-version of `Adapter.getForeignObjects`
          */
         this.getForeignObjectsAsync = tools.promisify(this.getForeignObjects, this);
 
         /**
-         * Promise-version of Adapter.findForeignObject
+         * Promise-version of `Adapter.findForeignObject`
          */
         this.findForeignObjectAsync = tools.promisify(this.findForeignObject, this, ['id', 'name']);
 
         /**
-         * Promise-version of Adapter.getForeignObject
+         * Promise-version of `Adapter.getForeignObject`
          */
         this.getForeignObjectAsync = tools.promisify(this.getForeignObject, this);
 
         /**
-         * Promise-version of Adapter.delObject
+         * Promise-version of `Adapter.delObject`
          */
         this.delObjectAsync = tools.promisify(this.delObject, this);
 
         /**
-         * Promise-version of Adapter.delForeignObject
+         * Promise-version of `Adapter.delForeignObject`
          */
         this.delForeignObjectAsync = tools.promisify(this.delForeignObject, this);
 
         /**
-         * Promise-version of Adapter.subscribeObjects
+         * Promise-version of `Adapter.subscribeObjects`
          */
         this.subscribeObjectsAsync = tools.promisify(this.subscribeObjects, this);
 
         /**
-         * Promise-version of Adapter.unsubscribeObjects
+         * Promise-version of `Adapter.unsubscribeObjects`
          */
         this.unsubscribeObjectsAsync = tools.promisify(this.unsubscribeObjects, this);
 
         /**
-         * Promise-version of Adapter.subscribeForeignObjects
+         * Promise-version of `Adapter.subscribeForeignObjects`
          */
         this.subscribeForeignObjectsAsync = tools.promisify(this.subscribeForeignObjects, this);
 
         /**
-         * Promise-version of Adapter.unsubscribeForeignObjects
+         * Promise-version of `Adapter.unsubscribeForeignObjects`
          */
         this.unsubscribeForeignObjectsAsync = tools.promisify(this.unsubscribeForeignObjects, this);
 
         /**
-         * Promise-version of Adapter.setObjectNotExists
+         * Promise-version of `Adapter.setObjectNotExists`
          */
         this.setObjectNotExistsAsync = tools.promisify(this.setObjectNotExists, this);
 
         /**
-         * Promise-version of Adapter.setForeignObjectNotExists
+         * Promise-version of `Adapter.setForeignObjectNotExists`
          */
         this.setForeignObjectNotExistsAsync = tools.promisify(this.setForeignObjectNotExists, this);
 
         /**
-         * Promise-version of Adapter.createDevice
+         * Promise-version of `Adapter.createDevice`
          */
         this.createDeviceAsync = tools.promisify(this.createDevice, this);
 
         /**
-         * Promise-version of Adapter.createChannel
+         * Promise-version of `Adapter.createChannel`
          */
         this.createChannelAsync = tools.promisify(this.createChannel, this);
 
         /**
-         * Promise-version of Adapter.createState
+         * Promise-version of `Adapter.createState`
          */
         this.createStateAsync = tools.promisify(this.createState, this);
 
         /**
-         * Promise-version of Adapter.deleteDevice
+         * Promise-version of `Adapter.deleteDevice`
          */
         this.deleteDeviceAsync = tools.promisify(this.deleteDevice, this);
 
         /**
-         * Promise-version of Adapter.addChannelToEnum
+         * Promise-version of `Adapter.addChannelToEnum`
          */
         this.addChannelToEnumAsync = tools.promisify(this.addChannelToEnum, this);
 
         /**
-         * Promise-version of Adapter.deleteChannelFromEnum
+         * Promise-version of `Adapter.deleteChannelFromEnum`
          */
         this.deleteChannelFromEnumAsync = tools.promisify(this.deleteChannelFromEnum, this);
 
         /**
-         * Promise-version of Adapter.deleteChannel
+         * Promise-version of `Adapter.deleteChannel`
          */
         this.deleteChannelAsync = tools.promisify(this.deleteChannel, this);
 
         /**
-         * Promise-version of Adapter.deleteState
+         * Promise-version of `Adapter.deleteState`
          */
         this.deleteStateAsync = tools.promisify(this.deleteState, this);
 
         /**
-         * Promise-version of Adapter.getDevices
+         * Promise-version of `Adapter.getDevices`
          */
         this.getDevicesAsync = tools.promisify(this.getDevices, this);
 
         /**
-         * Promise-version of Adapter.getChannelsOf
+         * Promise-version of `Adapter.getChannelsOf`
          */
         this.getChannelsOfAsync = tools.promisify(this.getChannelsOf, this);
 
@@ -974,37 +974,37 @@ export class AdapterClass extends EventEmitter {
         this.getChannelsAsync = this.getChannelsOfAsync;
 
         /**
-         * Promise-version of Adapter.getStatesOf
+         * Promise-version of `Adapter.getStatesOf`
          */
         this.getStatesOfAsync = tools.promisify(this.getStatesOf, this);
 
         /**
-         * Promise-version of Adapter.addStateToEnum
+         * Promise-version of `Adapter.addStateToEnum`
          */
         this.addStateToEnumAsync = tools.promisify(this.addStateToEnum, this);
 
         /**
-         * Promise-version of Adapter.deleteStateFromEnum
+         * Promise-version of `Adapter.deleteStateFromEnum`
          */
         this.deleteStateFromEnumAsync = tools.promisify(this.deleteStateFromEnum, this);
 
         /**
-         * Promise-version of Adapter.chmodFile
+         * Promise-version of `Adapter.chmodFile`
          */
         this.chmodFileAsync = tools.promisify(this.chmodFile, this);
 
         /**
-         * Promise-version of Adapter.chownFile
+         * Promise-version of `Adapter.chownFile`
          */
         this.chownFileAsync = tools.promisify(this.chownFile, this);
 
         /**
-         * Promise-version of Adapter.readDir
+         * Promise-version of `Adapter.readDir`
          */
         this.readDirAsync = tools.promisify(this.readDir, this);
 
         /**
-         * Promise-version of Adapter.unlink
+         * Promise-version of `Adapter.unlink`
          */
         this.unlinkAsync = tools.promisify(this.unlink, this);
 
@@ -1012,117 +1012,117 @@ export class AdapterClass extends EventEmitter {
         this.delFileAsync = this.unlinkAsync;
 
         /**
-         * Promise-version of Adapter.rename
+         * Promise-version of `Adapter.rename`
          */
         this.renameAsync = tools.promisify(this.rename, this);
 
         /**
-         * Promise-version of Adapter.mkdir
+         * Promise-version of `Adapter.mkdir`
          */
         this.mkdirAsync = tools.promisify(this.mkdir, this);
 
         /**
-         * Promise-version of Adapter.readFile
+         * Promise-version of `Adapter.readFile`
          */
         this.readFileAsync = tools.promisify(this.readFile, this, ['file', 'mimeType']);
 
         /**
-         * Promise-version of Adapter.writeFile
+         * Promise-version of `Adapter.writeFile`
          */
         this.writeFileAsync = tools.promisify(this.writeFile, this);
 
         /**
-         * Promise-version of Adapter.fileExists
+         * Promise-version of `Adapter.fileExists`
          */
         this.fileExistsAsync = tools.promisify(this.fileExists, this);
 
         /**
-         * Promise-version of Adapter.sendTo
+         * Promise-version of `Adapter.sendTo`
          */
         this.sendToAsync = tools.promisifyNoError(this.sendTo, this);
 
         /**
-         * Promise-version of Adapter.sendToHost
+         * Promise-version of `Adapter.sendToHost`
          */
         this.sendToHostAsync = tools.promisifyNoError(this.sendToHost, this);
 
         /**
-         * Promise-version of Adapter.setState
+         * Promise-version of `Adapter.setState`
          */
         this.setStateAsync = tools.promisify(this.setState, this);
 
         /**
-         * Promise-version of Adapter.setStateChanged
+         * Promise-version of `Adapter.setStateChanged`
          */
         this.setStateChangedAsync = tools.promisify(this.setStateChanged, this, ['id', 'notChanged']);
 
         /**
-         * Promise-version of Adapter.setForeignState
+         * Promise-version of `Adapter.setForeignState`
          */
         this.setForeignStateAsync = tools.promisify(this.setForeignState, this);
 
         /**
-         * Promise-version of Adapter.setForeignStateChanged
+         * Promise-version of `Adapter.setForeignStateChanged`
          */
         this.setForeignStateChangedAsync = tools.promisify(this.setForeignStateChanged, this);
 
         /**
-         * Promise-version of Adapter.getState
+         * Promise-version of `Adapter.getState`
          */
         this.getStateAsync = tools.promisify(this.getState, this);
 
         /**
-         * Promise-version of Adapter.getForeignState
+         * Promise-version of `Adapter.getForeignState`
          */
         this.getForeignStateAsync = tools.promisify(this.getForeignState, this);
 
         /**
-         * Promise-version of Adapter.getHistory
+         * Promise-version of `Adapter.getHistory`
          */
         this.getHistoryAsync = tools.promisify(this.getHistory, this, ['result', 'step', 'sessionId']);
 
         /**
-         * Promise-version of Adapter.delState
+         * Promise-version of `Adapter.delState`
          */
         this.delStateAsync = tools.promisify(this.delState, this);
 
         /**
-         * Promise-version of Adapter.delForeignState
+         * Promise-version of `Adapter.delForeignState`
          */
         this.delForeignStateAsync = tools.promisify(this.delForeignState, this);
 
         /**
-         * Promise-version of Adapter.getStates
+         * Promise-version of `Adapter.getStates`
          */
         this.getStatesAsync = tools.promisify(this.getStates, this);
 
         /**
-         * Promise-version of Adapter.getForeignStates
+         * Promise-version of `Adapter.getForeignStates`
          */
         this.getForeignStatesAsync = tools.promisify(this.getForeignStates, this);
 
         /**
-         * Promise-version of Adapter.subscribeForeignStates
+         * Promise-version of `Adapter.subscribeForeignStates`
          */
         this.subscribeForeignStatesAsync = tools.promisify(this.subscribeForeignStates, this);
 
         /**
-         * Promise-version of Adapter.unsubscribeForeignStates
+         * Promise-version of `Adapter.unsubscribeForeignStates`
          */
         this.unsubscribeForeignStatesAsync = tools.promisify(this.unsubscribeForeignStates, this);
 
         /**
-         * Promise-version of Adapter.subscribeStates
+         * Promise-version of `Adapter.subscribeStates`
          */
         this.subscribeStatesAsync = tools.promisify(this.subscribeStates, this);
 
         /**
-         * Promise-version of Adapter.unsubscribeStates
+         * Promise-version of `Adapter.unsubscribeStates`
          */
         this.unsubscribeStatesAsync = tools.promisify(this.unsubscribeStates, this);
 
         /**
-         * Promise-version of Adapter.setBinaryState
+         * Promise-version of `Adapter.setBinaryState`
          *
          * @param id of state
          * @param binary data
@@ -1141,7 +1141,7 @@ export class AdapterClass extends EventEmitter {
         this.setBinaryStateAsync = tools.promisify(this.setBinaryState, this);
 
         /**
-         * Promise-version of Adapter.getBinaryState
+         * Promise-version of `Adapter.getBinaryState`
          *
          *
          */
@@ -1156,7 +1156,7 @@ export class AdapterClass extends EventEmitter {
         this.getBinaryStateAsync = tools.promisify(this.getBinaryState, this);
 
         /**
-         * Promise-version of Adapter.delForeignBinaryState
+         * Promise-version of `Adapter.delForeignBinaryState`
          *
          * @param id
          * @param options
@@ -1165,7 +1165,7 @@ export class AdapterClass extends EventEmitter {
         this.delForeignBinaryStateAsync = tools.promisify(this.delForeignBinaryState, this);
 
         /**
-         * Promise-version of Adapter.delBinaryState
+         * Promise-version of `Adapter.delBinaryState`
          *
          * @param id
          * @param options
@@ -1526,7 +1526,7 @@ export class AdapterClass extends EventEmitter {
 
     private async _checkPassword(options: InternalCheckPasswordOptions): Promise<void> {
         if (options.user && !options.user.startsWith('system.user.')) {
-            // its not yet a `system.user.xy` id, thus we assume it's a username
+            // it's not yet a `system.user.xy` id, thus we assume it's a username
             if (!this.usernames[options.user]) {
                 // we did not find the id of the username in our cache -> update cache
                 try {
@@ -1535,7 +1535,7 @@ export class AdapterClass extends EventEmitter {
                     this._logger.error(`${this.namespaceLog} ${e.message}`);
                 }
                 if (!this.usernames[options.user]) {
-                    // user still not there, its no valid user -> fallback to legacy check
+                    // user still not there, it's no valid user -> fallback to legacy check
                     options.user = `system.user.${options.user
                         .toString()
                         .replace(this.FORBIDDEN_CHARS, '_')
@@ -1562,7 +1562,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     /**
-     * This method update the cached values in this.usernames
+     * This method update the cached values in `this.usernames`
      */
     private async _updateUsernameCache(): Promise<void> {
         try {
@@ -1654,7 +1654,7 @@ export class AdapterClass extends EventEmitter {
 
     private async _setPassword(options: InternalSetPasswordOptions) {
         if (options.user && !options.user.startsWith('system.user.')) {
-            // its not yet a `system.user.xy` id, thus we assume it's a username
+            // it's not yet a `system.user.xy` id, thus we assume it's a username
             if (!this.usernames[options.user]) {
                 // we did not find the id of the username in our cache -> update cache
                 try {
@@ -1768,7 +1768,7 @@ export class AdapterClass extends EventEmitter {
                 }
 
                 if (!this.usernames[options.user]) {
-                    // user still not there, its no valid user -> fallback
+                    // user still not there, it's no valid user -> fallback
                     options.user = `system.user.${options.user
                         .toString()
                         .replace(this.FORBIDDEN_CHARS, '_')
@@ -1938,7 +1938,7 @@ export class AdapterClass extends EventEmitter {
         options: InternalCalculatePermissionsOptions
     ): Promise<void | ioBroker.PermissionSet> {
         if (options.user && !options.user.startsWith('system.user.')) {
-            // its not yet a `system.user.xy` id, thus we assume it's a username
+            // it's not yet a `system.user.xy` id, thus we assume it's a username
             if (!this.usernames[options.user]) {
                 // we did not find the id of the username in our cache -> update cache
                 try {
@@ -2122,7 +2122,7 @@ export class AdapterClass extends EventEmitter {
                         this._options.unload(finishUnload);
                     } else {
                         // The method takes no arguments, so it must return a Promise
-                        // @ts-expect-error already fixed in latest types
+                        // @ts-expect-error already fixed in the latest types
                         const unloadPromise = this._options.unload();
                         if (unloadPromise instanceof Promise) {
                             // Call finishUnload in the case of success and failure
@@ -2174,7 +2174,7 @@ export class AdapterClass extends EventEmitter {
     private _readFileCertificate(cert: string): string {
         if (typeof cert === 'string') {
             try {
-                // if length < 1024 its no valid cert, so we assume a path to a valid certificate
+                // if length < 1024 it's no valid cert, so we assume a path to a valid certificate
                 if (cert.length < 1024 && fs.existsSync(cert)) {
                     const certFile = cert;
                     cert = fs.readFileSync(certFile, 'utf8');
@@ -2461,7 +2461,7 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Same as clearTimeout
-     * but it check the running timers on unload
+     * but it checks the running timers on unload
      *
      * @param timer - the timer object
      */
@@ -2475,8 +2475,8 @@ export class AdapterClass extends EventEmitter {
     delay(timeout: number): Promise<void>;
 
     /**
-     * delays the fullfillment of the promise the amount of time.
-     * it will not fullfill during and after adapter shutdown
+     * delays the fulfillment of the promise the amount of time.
+     * it will not fulfill during and after adapter shutdown
      *
      * @param timeout - timeout in milliseconds
      * @returns promise when timeout is over
@@ -2538,7 +2538,7 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Same as clearInterval
-     * but it check the running intervals on unload
+     * but it checks the running intervals on unload
      *
      * @param interval - interval object
      */
@@ -2561,8 +2561,8 @@ export class AdapterClass extends EventEmitter {
      *
      * This function can create or overwrite objects in objectDB for this adapter.
      * Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
-     * <b>common</b>, <b>native</b> and <b>type</b> attributes are mandatory and it will be checked.
-     * Additionally type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.g.:
+     * <b>common</b>, <b>native</b> and <b>type</b> attributes are mandatory, and it will be checked.
+     * Additionally, type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.g.:
      * ```js{
      *     common: {
      *          name: 'object name',
@@ -2691,7 +2691,7 @@ export class AdapterClass extends EventEmitter {
 
             if (!Object.prototype.hasOwnProperty.call(options.obj.common, 'name')) {
                 options.obj.common.name = options.id;
-                // it is more an unimportant warning as debug
+                // it is a more unimportant warning as debug
                 this._logger.debug(
                     `${this.namespaceLog} setObject ${options.id} (type=${options.obj.type}) property common.name missing, using id as name`
                 );
@@ -2861,7 +2861,7 @@ export class AdapterClass extends EventEmitter {
     /**
      * Extend some object and create it if it does not exist
      *
-     * You can change or extend some object. E.g existing object is:
+     * You can change or extend some object. E.g. existing object is:
      * ```js
      *     {
      *          common: {
@@ -3994,7 +3994,7 @@ export class AdapterClass extends EventEmitter {
      *        ```
      *
 
-     * @param pattern object ID/wildchars
+     * @param pattern object ID/wildcards
      * @param type type of object: 'state', 'channel' or 'device'. Default - 'state'
      * @param enums object ID, that must be overwritten or created.
      * @param options optional user context
@@ -4265,7 +4265,7 @@ export class AdapterClass extends EventEmitter {
     /**
      * Delete an object of this instance.
      *
-     * It is not required to provice the adapter namespace, because it will automatically be added.
+     * It is not required to provide the adapter namespace, because it will automatically be added.
      * E.g. to delete "adapterName.X.myObject", only "myObject" is required as ID.
      *
      * The corresponding state will be deleted too if the object has type "state".
@@ -6384,7 +6384,7 @@ export class AdapterClass extends EventEmitter {
      *        if (err) adapter.log.error('Cannot read directory: ' + err);
      *        if (filesOrDirs) {
      *           for (var f = 0; f < filesOrDirs.length; f++) {
-     *              adapter.log.debug('Directory main has following files and dirs: ' + filesOrDirs[f].file + '[dir - ' + filesOrDirs[f].isDir + ']');
+     *              adapter.log.debug('Directory main has the following files and dirs: ' + filesOrDirs[f].file + '[dir - ' + filesOrDirs[f].isDir + ']');
      *           }
      *       }
      *      });
@@ -7050,7 +7050,7 @@ export class AdapterClass extends EventEmitter {
      * This function sends a message to specific host or all hosts.
      * If no host name given (e.g. null), the callback argument will be ignored. Because normally many responses will come.
      *
-     * @param hostName name of the host where the message must be send to. E.g. "myPC" or "system.host.myPC". If argument is empty, the message will be sent to all hosts.
+     * @param hostName name of the host where the message must be sent to. E.g. "myPC" or "system.host.myPC". If argument is empty, the message will be sent to all hosts.
      * @param command command name. One of: "cmdExec", "getRepository", "getInstalled", "getVersion", "getDiagData", "getLocationOnDisk", "getDevList", "getLogs", "delLogs", "readDirAsZip", "writeDirAsZip", "readObjectsAsZip", "writeObjectsAsZip", "checkLogging". Commands can be checked in controller.js (function processMessage)
      * @param message object that will be given as argument for request
      * @param callback optional return result
@@ -7457,7 +7457,7 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    // Cache will be cleared if user or group changes.. Important! only if subscribed.
+    // Cache will be cleared if user or group changes. Important! only if subscribed.
     private async _getUserGroups(options: GetUserGroupsOptions): Promise<GetUserGroupsOptions> {
         if (this.users[options.user]) {
             options.groups = this.users[options.user].groups;
@@ -8698,7 +8698,7 @@ export class AdapterClass extends EventEmitter {
      *
      * Possible options:
      *
-     *  - instance - (optional) name of instance, where to read the historian data, e.g. 'history.0', 'sql.1'. By default will be taken from system settings.
+     *  - instance - (optional) name of instance, where to read the historian data, e.g. 'history.0', 'sql.1'. By default, will be taken from system settings.
      *  - start - (optional) time in ms - Date.now()', by default is (now - 1 week)
      *  - end - (optional) time in ms - Date.now()', by default is (now + 5000 seconds)
      *  - step - (optional) used in aggregate (m4, max, min, average, total) step in ms of intervals
@@ -8708,7 +8708,7 @@ export class AdapterClass extends EventEmitter {
      *  - q - if q field should be included in answer
      *  - addId - if id field should be included in answer
      *  - limit - do not return more entries than limit
-     *  - ignoreNull - if null values should be include (false), replaced by last not null value (true) or replaced with 0 (0)
+     *  - ignoreNull - if null values should be included (false), replaced by last not null value (true) or replaced with 0 (0)
      *  - sessionId - (optional) identifier of request, will be returned back in the answer
      *  - aggregate - aggregate method:
      *      - minmax - used special algorithm. Splice the whole time range in small intervals and find for every interval max, min, start and end values.
@@ -8940,7 +8940,7 @@ export class AdapterClass extends EventEmitter {
      *     });
      * ```
      *
-     * @param pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
+     * @param pattern string in form 'adapter.0.*' or like this. It can be an array of IDs too.
      * @param options optional argument to describe the user context
      * @param callback return result
      * ```js
@@ -9068,7 +9068,7 @@ export class AdapterClass extends EventEmitter {
      *     });
      * ```
      *
-     * @param pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
+     * @param pattern string in form 'adapter.0.*' or like this. It can be an array of IDs too.
      * @param options optional argument to describe the user context
      * @param callback return result
      * ```js
@@ -9260,7 +9260,7 @@ export class AdapterClass extends EventEmitter {
 
                 if (sourceObj && sourceObj.common) {
                     if (!this.aliases.has(sourceObj._id)) {
-                        // TODO what means this, we ensured alias existed, did some async stuff now its gone -> alias has been deleted?
+                        // TODO what means this, we ensured alias existed, did some async stuff now it's gone -> alias has been deleted?
                         this._logger.error(
                             `${
                                 this.namespaceLog
@@ -9329,7 +9329,7 @@ export class AdapterClass extends EventEmitter {
      *     adapter.subscribeForeignStates('adapterName.X.*');
      * ```
      *
-     * @param pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
+     * @param pattern string in form 'adapter.0.*' or like this. It can be an array of IDs too.
      * @param options optional argument to describe the user context
      * @param callback return result ```function (err) {}```
      */
@@ -9432,7 +9432,7 @@ export class AdapterClass extends EventEmitter {
                     (aliasPattern.startsWith(ALIAS_STARTS_WITH) || aliasPattern.includes('*')) &&
                     !this.aliasPatterns.has(aliasPattern)
                 ) {
-                    // its a new alias conform pattern to store
+                    // it's a new alias conform pattern to store
                     this.aliasPatterns.add(aliasPattern);
                 }
             }
@@ -9449,7 +9449,7 @@ export class AdapterClass extends EventEmitter {
 
                 for (const aliasObj of aliasObjs) {
                     if (aliasObj) {
-                        // @ts-expect-error check if alias subscribe also takes non state objects and then ignores
+                        // @ts-expect-error check if alias subscribe also takes non-state objects and then ignores
                         promises.push(new Promise(resolve => this._addAliasSubscribe(aliasObj, aliasObj._id, resolve)));
                     }
                 }
@@ -9480,7 +9480,7 @@ export class AdapterClass extends EventEmitter {
                     const objs = await this.getForeignObjectsAsync(pattern, null, null, options);
                     const promises = [];
                     if (!this.aliasPatterns.has(pattern)) {
-                        // its a new pattern to store
+                        // it's a new pattern to store
                         this.aliasPatterns.add(pattern);
                     }
 
@@ -9797,7 +9797,7 @@ export class AdapterClass extends EventEmitter {
     setForeignBinaryState(id: string, binary: Buffer, options: unknown, callback: ioBroker.SetStateCallback): void;
 
     /**
-     * Write binary block into redis, e.g image
+     * Write binary block into redis, e.g. image
      *
      *
      * @param id of state
@@ -11022,7 +11022,7 @@ export class AdapterClass extends EventEmitter {
                     //     ]
                     // };
 
-                    // if this.aliases is empty, or no target found its a new alias
+                    // if `this.aliases` is empty, or no target found, it's a new alias
                     let isNewAlias = true;
 
                     for (const [sourceId, alias] of this.aliases) {
@@ -11498,7 +11498,7 @@ export class AdapterClass extends EventEmitter {
                             : this.ioPack && this.ioPack.common
                             ? this.ioPack.common.version
                             : 'unknown';
-                    // display if it's a non official version - only if installedFrom is explicitly given and differs it's not npm
+                    // display if it's a non-official version - only if installedFrom is explicitly given and differs it's not npm
                     const isNpmVersion =
                         !this.ioPack ||
                         !this.ioPack.common ||
@@ -11618,7 +11618,7 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
-        // catch it on windows
+        // catch it on Windows
         if (this.getPortRunning && err && err.message === 'listen EADDRINUSE') {
             const { host, port, callback } = this.getPortRunning;
             this._logger.warn(
@@ -11716,7 +11716,7 @@ export class AdapterClass extends EventEmitter {
                         }
 
                         if (obj.type === 'state' && obj.common.def !== undefined) {
-                            // default value given - if obj non existing we have to set it
+                            // default value given - if obj non-existing we have to set it
                             try {
                                 const checkObj = await this.getForeignObjectAsync(obj._id);
                                 if (!checkObj) {
