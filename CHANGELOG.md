@@ -3,6 +3,11 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+## __WORK IN PROGRESS__
+* (Bluefox) Exclude iot and cloud from masking special properties
+* (AlCalzone) Add time based JSONL compaction (once a day)
+* (Apollon77/foxriver76) Optimize message sequence id generation
+
 ## 4.0.23 (2022-04-19)
 * (AlCalzone) normalize JSONL options to prevent issues because of admin adding empty setting objects
 * (Apollon77/foxriver76) Prevent some crash cases reported by Sentry

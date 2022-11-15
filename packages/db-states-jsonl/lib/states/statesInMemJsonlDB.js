@@ -52,7 +52,10 @@ function normalizeJsonlOptions(conf = {}) {
     const ret = {
         autoCompress: {
             sizeFactor: 10,
-            sizeFactorMinimumSize: 50000
+            sizeFactorMinimumSize: 50000,
+            // Compress at least daily to avoid a huge file when DBs have few objects
+            // but big objects are updated regularly (e.g. the repositories)
+            intervalMs: 1000 * 60 * 60 * 24
         },
         ignoreReadErrors: true,
         throttleFS: {
