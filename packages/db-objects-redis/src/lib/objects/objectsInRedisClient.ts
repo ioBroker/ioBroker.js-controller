@@ -3856,7 +3856,7 @@ export class ObjectsInRedisClient {
             wildCardLastPos = false; // TODO do in LUA
         }
 
-        // if start and and end keys are equal modify end key
+        // if start and end keys are equal modify end key
         if (params.startkey === params.endkey) {
             params.endkey = `${params.endkey}\u0000`;
         }
