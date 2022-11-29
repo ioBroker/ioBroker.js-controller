@@ -10186,14 +10186,15 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    getSuitableLicenses(all: boolean): Promise<any[]>;
+    getSuitableLicenses(all?: boolean, adapterName?: string): Promise<any[]>;
 
     /**
      * This method returns the list of license that can be used by this adapter
      * @param all if return the licenses, that used by other instances (true) or only for this instance (false)
+     * @param adapterName Return licenses for specific adapter
      * @returns list of suitable licenses
      */
-    async getSuitableLicenses(all: unknown): Promise<any> {
+    async getSuitableLicenses(all?: boolean, adapterName?: string): Promise<any> {
         const licenses: Record<string, any>[] = [];
         try {
             const obj = await this.getForeignObjectAsync('system.licenses');
@@ -10221,7 +10222,7 @@ export class AdapterClass extends EventEmitter {
                                 new Date(decoded.valid_till).getTime() > now)
                         ) {
                             if (
-                                decoded.name.startsWith(`iobroker.${this.name}`) &&
+                                decoded.name.startsWith(`iobroker.${adapterName || this.name}`) &&
                                 (all || !license.usedBy || license.usedBy === this.namespace)
                             ) {
                                 // Licenses for version ranges 0.x and 1.x are handled identically and are valid for both version ranges.
