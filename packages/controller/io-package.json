@@ -934,7 +934,7 @@
           "limit": 1
         },
         {
-          "category": "blocklisted",
+          "category": "blockedVersions",
           "name": {
             "en": "Instance was deactivated",
             "de": "Instanz wurde deaktiviert",
@@ -958,7 +958,8 @@
             "it": "La versione installata è stata bloccata dal team ioBroker.\nSi prega di aggiornare l'adattatore alla versione più recente o disponibile prima di abilitarlo.\nL'istanza deve essere abilitata manualmente.",
             "es": "La versión instalada fue bloqueada por el equipo de ioBroker.\nPor favor, actualice el adaptador a la versión nueva o disponible antes de habilitarlo.\nLa instalación debe ser activada manualmente.",
             "pl": "Wersja została zablokowana przez zespół ioBroker.\nZastosowanie adapter do nowszej lub dostępnej wersji, zanim można go uzyskać.\nInstytucja musi być poddana ręcznie.",
-            "zh-cn": "总的版本被零星球队阻挠。.\n请提供最新资料。.\n必须能够以手工方式进行。."
+            "zh-cn": "总的版本被零星球队阻挠。.\n请提供最新资料。.\n必须能够以手工方式进行。.",
+            "uk": "Установлену версію було заблоковано командою ioBroker.\nБудь ласка, оновіть адаптер до офіційної версії в репозиторії, перш ніж увімкнути його.\nЕкземпляр потрібно ввімкнути вручну."
           },
           "regex": [],
           "limit": 1
