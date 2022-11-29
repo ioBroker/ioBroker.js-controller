@@ -118,8 +118,7 @@ module.exports = class CLIProcess extends CLICommand {
                     CLI.error.noInstancesFound(adapter);
                     return void callback(EXIT_CODES.UNKNOWN_ERROR);
                 }
-                for (let i = 0; i < adapterInstances.length; i++) {
-                    const instance = adapterInstances[i];
+                for (const instance of adapterInstances) {
                     await setInstanceEnabled(objects, instance, enabled, restartIfRunning);
                 }
                 return void callback();
