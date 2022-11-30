@@ -53,6 +53,11 @@ const {
     ACCESS_USER_READ
 } = require('./constants');
 
+const dns = require('dns');
+if (typeof dns.setDefaultResultOrder === 'function') {
+    dns.setDefaultResultOrder('ipv4first');
+}
+
 /**
  * Adapter class
  *

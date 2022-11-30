@@ -26,6 +26,12 @@ const { isDeepStrictEqual, inspect } = require('util');
 const { tools, EXIT_CODES, logger: toolsLogger } = require('@iobroker/js-controller-common');
 const { PluginHandler } = require('@iobroker/plugin-base');
 const NotificationHandler = require('./lib/notificationHandler');
+
+const dns = require('dns');
+if (typeof dns.setDefaultResultOrder === 'function') {
+    dns.setDefaultResultOrder('ipv4first');
+}
+
 const controllerVersions = {};
 
 let pluginHandler;
