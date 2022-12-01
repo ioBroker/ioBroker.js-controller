@@ -351,6 +351,7 @@ function getMac(callback) {
  */
 function isDocker() {
     try {
+        // deprecated, works only with docker daemon
         fs.statSync('/.dockerenv');
         return true;
     } catch {
@@ -359,6 +360,15 @@ function isDocker() {
 
     try {
         // check docker group
+        // ioBroker docker image specific, will be created during build process
+        fs.statSync('/opt/scripts/.docker_config/.thisisdocker');
+        return true;
+    } catch {
+        // ignore error
+    }
+
+    try {
+        // check docker group, works in most cases, but not on arm
         return fs.readFileSync('/proc/self/cgroup', 'utf8').includes('docker');
     } catch {
         return false;
