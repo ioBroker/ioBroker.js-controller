@@ -1,6 +1,6 @@
 {
     "packages": ["packages/*"],
-    "version": "4.1.0-alpha.0-20221130-33a5e85a",
+    "version": "4.1.0-alpha.0-20221201-8b30b890",
     "//": "Set up some command options",
     "command": {
         "//": "Running a script should show the output while it is generated",
