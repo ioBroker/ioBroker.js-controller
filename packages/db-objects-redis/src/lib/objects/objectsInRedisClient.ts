@@ -3955,7 +3955,7 @@ export class ObjectsInRedisClient {
             func &&
             func.map &&
             this.scripts.script &&
-            func.map.indexOf('doc.common.engineType') !== -1
+            func.map.includes('doc.common.engineType')
         ) {
             let cursor = '0';
             let filterRequired = true;
@@ -4009,12 +4009,11 @@ export class ObjectsInRedisClient {
             return tools.maybeCallbackWithError(callback, null, result);
         } else if (
             // filter by hm-rega programs
-
             wildCardLastPos &&
             func &&
             func.map &&
             this.scripts.programs &&
-            func.map.indexOf("doc.native.TypeName === 'PROGRAM'") !== -1
+            func.map.includes("doc.native.TypeName === 'PROGRAM'")
         ) {
             let cursor = '0';
             let filterRequired = true;
@@ -4070,7 +4069,7 @@ export class ObjectsInRedisClient {
             func &&
             func.map &&
             this.scripts.variables &&
-            func.map.indexOf("doc.native.TypeName === 'ALARMDP'") !== -1
+            func.map.includes("doc.native.TypeName === 'ALARMDP'")
         ) {
             let cursor = '0';
             let filterRequired = true;
@@ -4126,7 +4125,7 @@ export class ObjectsInRedisClient {
             func &&
             func.map &&
             this.scripts.custom &&
-            func.map.indexOf('doc.common.custom') !== -1
+            func.map.includes('doc.common.custom')
         ) {
             let cursor = '0';
             let filterRequired = true;
@@ -4158,6 +4157,8 @@ export class ObjectsInRedisClient {
                     filterRequired = false;
                 }
 
+                const useFullObject = func.map.includes('emit(doc._id, doc)');
+
                 for (const _obj of objs) {
                     let obj: ioBroker.AnyObject;
                     try {
@@ -4168,7 +4169,11 @@ export class ObjectsInRedisClient {
                     }
 
                     if (obj && obj.common && obj.common.custom) {
-                        result.rows.push({ id: obj._id, value: obj.common.custom });
+                        if (useFullObject) {
+                            result.rows.push({ id: obj._id, value: obj });
+                        } else {
+                            result.rows.push({ id: obj._id, value: obj.common.custom });
+                        }
                     }
                 }
             } while (cursor !== '0');
