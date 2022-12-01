@@ -1,4 +1,3 @@
-'use strict';
 import { tools } from '@iobroker/js-controller-common';
 
 /**

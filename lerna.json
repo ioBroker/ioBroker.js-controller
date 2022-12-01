@@ -1,5 +1,5 @@
 {
-    "packages": ["packages/*"],
+    "useWorkspaces": true,
     "version": "4.1.0-alpha.0-20221201-8b30b890",
     "//": "Set up some command options",
     "command": {
