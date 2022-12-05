@@ -24,6 +24,11 @@ const { tools: dbTools, getObjectsConstructor, getStatesConstructor } = require(
 const path = require('path');
 const { PluginHandler } = require('@iobroker/plugin-base');
 
+const dns = require('dns');
+if (typeof dns.setDefaultResultOrder === 'function') {
+    dns.setDefaultResultOrder('ipv4first');
+}
+
 let pluginHandler;
 
 // @ts-ignore
