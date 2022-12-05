@@ -3,15 +3,15 @@
  * not installed yet, so the version checks get a bit messy
  */
 
+import path from 'path';
+import child_process from 'child_process';
+
 const RECOMMENDED_NPM_VERSION = 8;
 /** Time to wait for npm version determiantion */
 const EXEC_TIMEOUT = 10_000;
 /** Duplicated from exitCodes */
 const EXIT_CODE_CANNOT_INSTALL_NPM_PACKET = 25;
 const VERSION_COMMAND = 'npm -v';
-
-import path from 'path';
-import child_process from 'child_process';
 
 type VersionString = `${number}.${number}.${number}`;
 type VersionObject = { major: number; minor: number; build: number };
