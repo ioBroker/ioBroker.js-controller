@@ -69,7 +69,7 @@ function initYargs() {
             }
         })
         .command(
-            'start [all|<adapter>.<instance>|<adapter> all]',
+            'start [all|<adapter>.<instance>|<adapter>]',
             'Starts the js-controller or a specified adapter instance or all instances of an adapter',
             yargs => {
                 yargs
@@ -78,14 +78,14 @@ function initYargs() {
             }
         )
         .command(
-            'stop [<adapter>.<instance>|<adapter> all]',
+            'stop [<adapter>.<instance>|<adapter>]',
             'stops the js-controller or a specified adapter instance or all instances of an adapter',
             yargs => {
                 yargs.command('<adapter>[.<instance>]', 'Stops a specified adapter instance');
             }
         )
         .command(
-            ['restart [<adapter>.<instance>|<adapter> all]', 'r [<adapter>.<instance>|<adapter> all]'],
+            ['restart [<adapter>.<instance>|<adapter>]', 'r [<adapter>.<instance>|<adapter>]'],
             'Restarts js-controller or a specified adapter instance or all instances of an adapter',
             yargs => {
                 yargs.command('<adapter>[.<instance>]', 'Restarts a specified adapter instance', {});
