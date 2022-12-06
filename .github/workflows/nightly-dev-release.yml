@@ -7,7 +7,7 @@ on:
 
 jobs:
   publish-config:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     strategy:
       matrix:
@@ -35,7 +35,7 @@ jobs:
         echo "Checking for changes since last tag $LAST_TAG"
 
         # Figure out if anything changed in the package directories
-        CHANGES=$(git diff "$LAST_TAG" --name-only | grep -E "^packages\/" | grep -v "^packages\/controller\/doc\/" || true)
+        CHANGES=$(git diff "$LAST_TAG" --name-only | grep -E "^packages\/" | grep -vE "^packages\/controller\/doc\/" || true)
         if [ -z "$CHANGES" ] ; then
           echo "🔸 No package changes since latest version, aborting..."
           echo "::set-output name=result::unchanged"
@@ -130,12 +130,12 @@ jobs:
 
     - name: Create Github Release
       if: steps.changes.outputs.result == 'ok'
-      uses: actions/create-release@v1
+      uses: ncipollo/release-action@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: v${{ steps.version.outputs.result }}
-        release_name: Release v${{ steps.version.outputs.result }}
+        tag: v${{ steps.version.outputs.result }}
+        name: Release v${{ steps.version.outputs.result }}
         draft: false
         prerelease: true
         body: 'nightly release'

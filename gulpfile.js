@@ -61,7 +61,7 @@ gulp.task('updateRepo', done => {
 });
 
 gulp.task('renameFiles', done => {
-    fs.unlink(__dirname + '/lib/img/iobroker.png');
+    fs.unlink(__dirname + '/iobroker.png');
     if (fs.existsSync(__dirname + '/iobroker')) {
         fs.renameSync(__dirname + '/iobroker', __dirname + '/' + appName);
     }

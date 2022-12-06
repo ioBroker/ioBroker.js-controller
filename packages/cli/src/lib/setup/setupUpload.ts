@@ -611,9 +611,10 @@ export class Upload {
         }
 
         if (forceUpload) {
-            if (cfg && cfg.common && cfg.common.eraseOnUpload) {
+            // only skip if explicitly opted out
+            if (cfg?.common?.eraseOnUpload !== false) {
                 const { filesToDelete } = await this.collectExistingFilesToDelete(
-                    isAdmin ? adapter + '.admin' : adapter,
+                    isAdmin ? `${adapter}.admin` : adapter,
                     '/',
                     logger
                 );
@@ -666,7 +667,8 @@ export class Upload {
                 'mode',
                 'loglevel',
                 'enabled',
-                'custom'
+                'custom',
+                'tier'
             ];
 
             for (const attr of Object.keys(additional)) {

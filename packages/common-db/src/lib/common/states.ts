@@ -1,5 +1,3 @@
-'use strict';
-
 import * as fs from 'fs-extra';
 import { tools } from '@iobroker/js-controller-common';
 

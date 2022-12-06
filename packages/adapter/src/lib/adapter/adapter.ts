@@ -97,7 +97,9 @@ import type {
     InternalSubscribeOptions,
     InternalUpdateConfigOptions,
     TimeoutCallback,
-    MaybePromise
+    MaybePromise,
+    SetStateChangedResult,
+    CheckStatesResult
 } from '../_Types';
 
 // keep them outside until we have migrated to TS, else devs can access them
@@ -417,7 +419,7 @@ export interface AdapterClass {
     getForeignObjectsAsync<T extends ioBroker.ObjectType>(
         pattern: string,
         type: T,
-        enums: ioBroker.EnumList,
+        enums?: ioBroker.EnumList | null,
         options?: unknown
     ): ioBroker.GetObjectsPromiseTyped<T>;
     getForeignObjectsAsync<T extends ioBroker.ObjectType>(
@@ -784,187 +786,187 @@ export class AdapterClass extends EventEmitter {
 
         // Create dynamic methods
         /**
-         * Promise-version of Adapter.getPort
+         * Promise-version of `Adapter.getPort`
          */
         this.getPortAsync = tools.promisifyNoError(this.getPort, this);
 
         /**
-         * Promise-version of Adapter.checkPassword
+         * Promise-version of `Adapter.checkPassword`
          */
         this.checkPasswordAsync = tools.promisifyNoError(this.checkPassword, this);
 
         /**
-         * Promise-version of Adapter.setPassword
+         * Promise-version of `Adapter.setPassword`
          */
         this.setPasswordAsync = tools.promisify(this.setPassword, this);
 
         /**
-         * Promise-version of Adapter.checkGroup
+         * Promise-version of `Adapter.checkGroup`
          */
         this.checkGroupAsync = tools.promisifyNoError(this.checkGroup, this);
 
         /**
-         * Promise-version of Adapter.calculatePermissions
+         * Promise-version of `Adapter.calculatePermissions`
          */
         this.calculatePermissionsAsync = tools.promisifyNoError(this.calculatePermissions, this);
 
         /**
-         * Promise-version of Adapter.getCertificates
+         * Promise-version of `Adapter.getCertificates`
          */
         this.getCertificatesAsync = tools.promisify(this.getCertificates, this);
 
         /**
-         * Promise-version of Adapter.setObject
+         * Promise-version of `Adapter.setObject`
          */
         this.setObjectAsync = tools.promisify(this.setObject, this);
 
         /**
-         * Promise-version of Adapter.getAdapterObjects
+         * Promise-version of `Adapter.getAdapterObjects`
          */
         this.getAdapterObjectsAsync = tools.promisifyNoError(this.getAdapterObjects, this);
 
         /**
-         * Promise-version of Adapter.extendObject
+         * Promise-version of `Adapter.extendObject`
          */
         this.extendObjectAsync = tools.promisify(this.extendObject, this);
 
         /**
-         * Promise-version of Adapter.setForeignObject
+         * Promise-version of `Adapter.setForeignObject`
          */
         this.setForeignObjectAsync = tools.promisify(this.setForeignObject, this);
 
         /**
-         * Promise-version of Adapter.extendForeignObject
+         * Promise-version of `Adapter.extendForeignObject`
          */
         this.extendForeignObjectAsync = tools.promisify(this.extendForeignObject, this);
 
         /**
-         * Promise-version of Adapter.getObject
+         * Promise-version of `Adapter.getObject`
          */
         this.getObjectAsync = tools.promisify(this.getObject, this);
 
         /**
-         * Promise-version of Adapter.getObjectView
+         * Promise-version of `Adapter.getObjectView`
          */
         this.getObjectViewAsync = tools.promisify(this.getObjectView, this);
 
         /**
-         * Promise-version of Adapter.getObjectList
+         * Promise-version of `Adapter.getObjectList`
          */
         this.getObjectListAsync = tools.promisify(this.getObjectList, this);
 
         /**
-         * Promise-version of Adapter.getEnum
+         * Promise-version of `Adapter.getEnum`
          */
         this.getEnumAsync = tools.promisify(this.getEnum, this, ['result', 'requestEnum']);
 
         /**
-         * Promise-version of Adapter.getEnums
+         * Promise-version of `Adapter.getEnums`
          */
         this.getEnumsAsync = tools.promisify(this.getEnums, this);
 
         /**
-         * Promise-version of Adapter.getForeignObjects
+         * Promise-version of `Adapter.getForeignObjects`
          */
         this.getForeignObjectsAsync = tools.promisify(this.getForeignObjects, this);
 
         /**
-         * Promise-version of Adapter.findForeignObject
+         * Promise-version of `Adapter.findForeignObject`
          */
         this.findForeignObjectAsync = tools.promisify(this.findForeignObject, this, ['id', 'name']);
 
         /**
-         * Promise-version of Adapter.getForeignObject
+         * Promise-version of `Adapter.getForeignObject`
          */
         this.getForeignObjectAsync = tools.promisify(this.getForeignObject, this);
 
         /**
-         * Promise-version of Adapter.delObject
+         * Promise-version of `Adapter.delObject`
          */
         this.delObjectAsync = tools.promisify(this.delObject, this);
 
         /**
-         * Promise-version of Adapter.delForeignObject
+         * Promise-version of `Adapter.delForeignObject`
          */
         this.delForeignObjectAsync = tools.promisify(this.delForeignObject, this);
 
         /**
-         * Promise-version of Adapter.subscribeObjects
+         * Promise-version of `Adapter.subscribeObjects`
          */
         this.subscribeObjectsAsync = tools.promisify(this.subscribeObjects, this);
 
         /**
-         * Promise-version of Adapter.unsubscribeObjects
+         * Promise-version of `Adapter.unsubscribeObjects`
          */
         this.unsubscribeObjectsAsync = tools.promisify(this.unsubscribeObjects, this);
 
         /**
-         * Promise-version of Adapter.subscribeForeignObjects
+         * Promise-version of `Adapter.subscribeForeignObjects`
          */
         this.subscribeForeignObjectsAsync = tools.promisify(this.subscribeForeignObjects, this);
 
         /**
-         * Promise-version of Adapter.unsubscribeForeignObjects
+         * Promise-version of `Adapter.unsubscribeForeignObjects`
          */
         this.unsubscribeForeignObjectsAsync = tools.promisify(this.unsubscribeForeignObjects, this);
 
         /**
-         * Promise-version of Adapter.setObjectNotExists
+         * Promise-version of `Adapter.setObjectNotExists`
          */
         this.setObjectNotExistsAsync = tools.promisify(this.setObjectNotExists, this);
 
         /**
-         * Promise-version of Adapter.setForeignObjectNotExists
+         * Promise-version of `Adapter.setForeignObjectNotExists`
          */
         this.setForeignObjectNotExistsAsync = tools.promisify(this.setForeignObjectNotExists, this);
 
         /**
-         * Promise-version of Adapter.createDevice
+         * Promise-version of `Adapter.createDevice`
          */
         this.createDeviceAsync = tools.promisify(this.createDevice, this);
 
         /**
-         * Promise-version of Adapter.createChannel
+         * Promise-version of `Adapter.createChannel`
          */
         this.createChannelAsync = tools.promisify(this.createChannel, this);
 
         /**
-         * Promise-version of Adapter.createState
+         * Promise-version of `Adapter.createState`
          */
         this.createStateAsync = tools.promisify(this.createState, this);
 
         /**
-         * Promise-version of Adapter.deleteDevice
+         * Promise-version of `Adapter.deleteDevice`
          */
         this.deleteDeviceAsync = tools.promisify(this.deleteDevice, this);
 
         /**
-         * Promise-version of Adapter.addChannelToEnum
+         * Promise-version of `Adapter.addChannelToEnum`
          */
         this.addChannelToEnumAsync = tools.promisify(this.addChannelToEnum, this);
 
         /**
-         * Promise-version of Adapter.deleteChannelFromEnum
+         * Promise-version of `Adapter.deleteChannelFromEnum`
          */
         this.deleteChannelFromEnumAsync = tools.promisify(this.deleteChannelFromEnum, this);
 
         /**
-         * Promise-version of Adapter.deleteChannel
+         * Promise-version of `Adapter.deleteChannel`
          */
         this.deleteChannelAsync = tools.promisify(this.deleteChannel, this);
 
         /**
-         * Promise-version of Adapter.deleteState
+         * Promise-version of `Adapter.deleteState`
          */
         this.deleteStateAsync = tools.promisify(this.deleteState, this);
 
         /**
-         * Promise-version of Adapter.getDevices
+         * Promise-version of `Adapter.getDevices`
          */
         this.getDevicesAsync = tools.promisify(this.getDevices, this);
 
         /**
-         * Promise-version of Adapter.getChannelsOf
+         * Promise-version of `Adapter.getChannelsOf`
          */
         this.getChannelsOfAsync = tools.promisify(this.getChannelsOf, this);
 
@@ -972,37 +974,37 @@ export class AdapterClass extends EventEmitter {
         this.getChannelsAsync = this.getChannelsOfAsync;
 
         /**
-         * Promise-version of Adapter.getStatesOf
+         * Promise-version of `Adapter.getStatesOf`
          */
         this.getStatesOfAsync = tools.promisify(this.getStatesOf, this);
 
         /**
-         * Promise-version of Adapter.addStateToEnum
+         * Promise-version of `Adapter.addStateToEnum`
          */
         this.addStateToEnumAsync = tools.promisify(this.addStateToEnum, this);
 
         /**
-         * Promise-version of Adapter.deleteStateFromEnum
+         * Promise-version of `Adapter.deleteStateFromEnum`
          */
         this.deleteStateFromEnumAsync = tools.promisify(this.deleteStateFromEnum, this);
 
         /**
-         * Promise-version of Adapter.chmodFile
+         * Promise-version of `Adapter.chmodFile`
          */
         this.chmodFileAsync = tools.promisify(this.chmodFile, this);
 
         /**
-         * Promise-version of Adapter.chownFile
+         * Promise-version of `Adapter.chownFile`
          */
         this.chownFileAsync = tools.promisify(this.chownFile, this);
 
         /**
-         * Promise-version of Adapter.readDir
+         * Promise-version of `Adapter.readDir`
          */
         this.readDirAsync = tools.promisify(this.readDir, this);
 
         /**
-         * Promise-version of Adapter.unlink
+         * Promise-version of `Adapter.unlink`
          */
         this.unlinkAsync = tools.promisify(this.unlink, this);
 
@@ -1010,117 +1012,117 @@ export class AdapterClass extends EventEmitter {
         this.delFileAsync = this.unlinkAsync;
 
         /**
-         * Promise-version of Adapter.rename
+         * Promise-version of `Adapter.rename`
          */
         this.renameAsync = tools.promisify(this.rename, this);
 
         /**
-         * Promise-version of Adapter.mkdir
+         * Promise-version of `Adapter.mkdir`
          */
         this.mkdirAsync = tools.promisify(this.mkdir, this);
 
         /**
-         * Promise-version of Adapter.readFile
+         * Promise-version of `Adapter.readFile`
          */
         this.readFileAsync = tools.promisify(this.readFile, this, ['file', 'mimeType']);
 
         /**
-         * Promise-version of Adapter.writeFile
+         * Promise-version of `Adapter.writeFile`
          */
         this.writeFileAsync = tools.promisify(this.writeFile, this);
 
         /**
-         * Promise-version of Adapter.fileExists
+         * Promise-version of `Adapter.fileExists`
          */
         this.fileExistsAsync = tools.promisify(this.fileExists, this);
 
         /**
-         * Promise-version of Adapter.sendTo
+         * Promise-version of `Adapter.sendTo`
          */
         this.sendToAsync = tools.promisifyNoError(this.sendTo, this);
 
         /**
-         * Promise-version of Adapter.sendToHost
+         * Promise-version of `Adapter.sendToHost`
          */
         this.sendToHostAsync = tools.promisifyNoError(this.sendToHost, this);
 
         /**
-         * Promise-version of Adapter.setState
+         * Promise-version of `Adapter.setState`
          */
         this.setStateAsync = tools.promisify(this.setState, this);
 
         /**
-         * Promise-version of Adapter.setStateChanged
+         * Promise-version of `Adapter.setStateChanged`
          */
         this.setStateChangedAsync = tools.promisify(this.setStateChanged, this, ['id', 'notChanged']);
 
         /**
-         * Promise-version of Adapter.setForeignState
+         * Promise-version of `Adapter.setForeignState`
          */
         this.setForeignStateAsync = tools.promisify(this.setForeignState, this);
 
         /**
-         * Promise-version of Adapter.setForeignStateChanged
+         * Promise-version of `Adapter.setForeignStateChanged`
          */
         this.setForeignStateChangedAsync = tools.promisify(this.setForeignStateChanged, this);
 
         /**
-         * Promise-version of Adapter.getState
+         * Promise-version of `Adapter.getState`
          */
         this.getStateAsync = tools.promisify(this.getState, this);
 
         /**
-         * Promise-version of Adapter.getForeignState
+         * Promise-version of `Adapter.getForeignState`
          */
         this.getForeignStateAsync = tools.promisify(this.getForeignState, this);
 
         /**
-         * Promise-version of Adapter.getHistory
+         * Promise-version of `Adapter.getHistory`
          */
         this.getHistoryAsync = tools.promisify(this.getHistory, this, ['result', 'step', 'sessionId']);
 
         /**
-         * Promise-version of Adapter.delState
+         * Promise-version of `Adapter.delState`
          */
         this.delStateAsync = tools.promisify(this.delState, this);
 
         /**
-         * Promise-version of Adapter.delForeignState
+         * Promise-version of `Adapter.delForeignState`
          */
         this.delForeignStateAsync = tools.promisify(this.delForeignState, this);
 
         /**
-         * Promise-version of Adapter.getStates
+         * Promise-version of `Adapter.getStates`
          */
         this.getStatesAsync = tools.promisify(this.getStates, this);
 
         /**
-         * Promise-version of Adapter.getForeignStates
+         * Promise-version of `Adapter.getForeignStates`
          */
         this.getForeignStatesAsync = tools.promisify(this.getForeignStates, this);
 
         /**
-         * Promise-version of Adapter.subscribeForeignStates
+         * Promise-version of `Adapter.subscribeForeignStates`
          */
         this.subscribeForeignStatesAsync = tools.promisify(this.subscribeForeignStates, this);
 
         /**
-         * Promise-version of Adapter.unsubscribeForeignStates
+         * Promise-version of `Adapter.unsubscribeForeignStates`
          */
         this.unsubscribeForeignStatesAsync = tools.promisify(this.unsubscribeForeignStates, this);
 
         /**
-         * Promise-version of Adapter.subscribeStates
+         * Promise-version of `Adapter.subscribeStates`
          */
         this.subscribeStatesAsync = tools.promisify(this.subscribeStates, this);
 
         /**
-         * Promise-version of Adapter.unsubscribeStates
+         * Promise-version of `Adapter.unsubscribeStates`
          */
         this.unsubscribeStatesAsync = tools.promisify(this.unsubscribeStates, this);
 
         /**
-         * Promise-version of Adapter.setBinaryState
+         * Promise-version of `Adapter.setBinaryState`
          *
          * @param id of state
          * @param binary data
@@ -1139,7 +1141,7 @@ export class AdapterClass extends EventEmitter {
         this.setBinaryStateAsync = tools.promisify(this.setBinaryState, this);
 
         /**
-         * Promise-version of Adapter.getBinaryState
+         * Promise-version of `Adapter.getBinaryState`
          *
          *
          */
@@ -1154,7 +1156,7 @@ export class AdapterClass extends EventEmitter {
         this.getBinaryStateAsync = tools.promisify(this.getBinaryState, this);
 
         /**
-         * Promise-version of Adapter.delForeignBinaryState
+         * Promise-version of `Adapter.delForeignBinaryState`
          *
          * @param id
          * @param options
@@ -1163,7 +1165,7 @@ export class AdapterClass extends EventEmitter {
         this.delForeignBinaryStateAsync = tools.promisify(this.delForeignBinaryState, this);
 
         /**
-         * Promise-version of Adapter.delBinaryState
+         * Promise-version of `Adapter.delBinaryState`
          *
          * @param id
          * @param options
@@ -1524,7 +1526,7 @@ export class AdapterClass extends EventEmitter {
 
     private async _checkPassword(options: InternalCheckPasswordOptions): Promise<void> {
         if (options.user && !options.user.startsWith('system.user.')) {
-            // its not yet a `system.user.xy` id, thus we assume it's a username
+            // it's not yet a `system.user.xy` id, thus we assume it's a username
             if (!this.usernames[options.user]) {
                 // we did not find the id of the username in our cache -> update cache
                 try {
@@ -1533,7 +1535,7 @@ export class AdapterClass extends EventEmitter {
                     this._logger.error(`${this.namespaceLog} ${e.message}`);
                 }
                 if (!this.usernames[options.user]) {
-                    // user still not there, its no valid user -> fallback to legacy check
+                    // user still not there, it's no valid user -> fallback to legacy check
                     options.user = `system.user.${options.user
                         .toString()
                         .replace(this.FORBIDDEN_CHARS, '_')
@@ -1560,7 +1562,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     /**
-     * This method update the cached values in this.usernames
+     * This method update the cached values in `this.usernames`
      */
     private async _updateUsernameCache(): Promise<void> {
         try {
@@ -1652,7 +1654,7 @@ export class AdapterClass extends EventEmitter {
 
     private async _setPassword(options: InternalSetPasswordOptions) {
         if (options.user && !options.user.startsWith('system.user.')) {
-            // its not yet a `system.user.xy` id, thus we assume it's a username
+            // it's not yet a `system.user.xy` id, thus we assume it's a username
             if (!this.usernames[options.user]) {
                 // we did not find the id of the username in our cache -> update cache
                 try {
@@ -1766,7 +1768,7 @@ export class AdapterClass extends EventEmitter {
                 }
 
                 if (!this.usernames[options.user]) {
-                    // user still not there, its no valid user -> fallback
+                    // user still not there, it's no valid user -> fallback
                     options.user = `system.user.${options.user
                         .toString()
                         .replace(this.FORBIDDEN_CHARS, '_')
@@ -1936,7 +1938,7 @@ export class AdapterClass extends EventEmitter {
         options: InternalCalculatePermissionsOptions
     ): Promise<void | ioBroker.PermissionSet> {
         if (options.user && !options.user.startsWith('system.user.')) {
-            // its not yet a `system.user.xy` id, thus we assume it's a username
+            // it's not yet a `system.user.xy` id, thus we assume it's a username
             if (!this.usernames[options.user]) {
                 // we did not find the id of the username in our cache -> update cache
                 try {
@@ -2120,7 +2122,7 @@ export class AdapterClass extends EventEmitter {
                         this._options.unload(finishUnload);
                     } else {
                         // The method takes no arguments, so it must return a Promise
-                        // @ts-expect-error already fixed in latest types
+                        // @ts-expect-error already fixed in the latest types
                         const unloadPromise = this._options.unload();
                         if (unloadPromise instanceof Promise) {
                             // Call finishUnload in the case of success and failure
@@ -2172,7 +2174,7 @@ export class AdapterClass extends EventEmitter {
     private _readFileCertificate(cert: string): string {
         if (typeof cert === 'string') {
             try {
-                // if length < 1024 its no valid cert, so we assume a path to a valid certificate
+                // if length < 1024 it's no valid cert, so we assume a path to a valid certificate
                 if (cert.length < 1024 && fs.existsSync(cert)) {
                     const certFile = cert;
                     cert = fs.readFileSync(certFile, 'utf8');
@@ -2459,7 +2461,7 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Same as clearTimeout
-     * but it check the running timers on unload
+     * but it checks the running timers on unload
      *
      * @param timer - the timer object
      */
@@ -2473,8 +2475,8 @@ export class AdapterClass extends EventEmitter {
     delay(timeout: number): Promise<void>;
 
     /**
-     * delays the fullfillment of the promise the amount of time.
-     * it will not fullfill during and after adapter shutdown
+     * delays the fulfillment of the promise the amount of time.
+     * it will not fulfill during and after adapter shutdown
      *
      * @param timeout - timeout in milliseconds
      * @returns promise when timeout is over
@@ -2536,7 +2538,7 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Same as clearInterval
-     * but it check the running intervals on unload
+     * but it checks the running intervals on unload
      *
      * @param interval - interval object
      */
@@ -2559,8 +2561,8 @@ export class AdapterClass extends EventEmitter {
      *
      * This function can create or overwrite objects in objectDB for this adapter.
      * Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
-     * <b>common</b>, <b>native</b> and <b>type</b> attributes are mandatory and it will be checked.
-     * Additionally type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.g.:
+     * <b>common</b>, <b>native</b> and <b>type</b> attributes are mandatory, and it will be checked.
+     * Additionally, type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.g.:
      * ```js{
      *     common: {
      *          name: 'object name',
@@ -2689,7 +2691,7 @@ export class AdapterClass extends EventEmitter {
 
             if (!Object.prototype.hasOwnProperty.call(options.obj.common, 'name')) {
                 options.obj.common.name = options.id;
-                // it is more an unimportant warning as debug
+                // it is a more unimportant warning as debug
                 this._logger.debug(
                     `${this.namespaceLog} setObject ${options.id} (type=${options.obj.type}) property common.name missing, using id as name`
                 );
@@ -2859,7 +2861,7 @@ export class AdapterClass extends EventEmitter {
     /**
      * Extend some object and create it if it does not exist
      *
-     * You can change or extend some object. E.g existing object is:
+     * You can change or extend some object. E.g. existing object is:
      * ```js
      *     {
      *          common: {
@@ -3992,7 +3994,7 @@ export class AdapterClass extends EventEmitter {
      *        ```
      *
 
-     * @param pattern object ID/wildchars
+     * @param pattern object ID/wildcards
      * @param type type of object: 'state', 'channel' or 'device'. Default - 'state'
      * @param enums object ID, that must be overwritten or created.
      * @param options optional user context
@@ -4263,7 +4265,7 @@ export class AdapterClass extends EventEmitter {
     /**
      * Delete an object of this instance.
      *
-     * It is not required to provice the adapter namespace, because it will automatically be added.
+     * It is not required to provide the adapter namespace, because it will automatically be added.
      * E.g. to delete "adapterName.X.myObject", only "myObject" is required as ID.
      *
      * The corresponding state will be deleted too if the object has type "state".
@@ -5886,13 +5888,13 @@ export class AdapterClass extends EventEmitter {
     getStatesOf(callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>): void;
     getStatesOf(parentDevice: string, callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>): void;
     getStatesOf(
-        parentDevice: string,
-        parentChannel: string,
+        parentDevice: string | null | undefined,
+        parentChannel: string | null | undefined,
         callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>
     ): void;
     getStatesOf(
-        parentDevice: string,
-        parentChannel: string,
+        parentDevice: string | null | undefined,
+        parentChannel: string | null | undefined,
         options: unknown,
         callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>
     ): void;
@@ -5915,8 +5917,15 @@ export class AdapterClass extends EventEmitter {
         }
 
         Utils.assertCallback(callback, 'callback');
-        Utils.assertString(parentDevice, 'parentDevice');
-        Utils.assertString(parentChannel, 'parentChannel');
+
+        if (parentDevice !== null && parentDevice !== undefined) {
+            Utils.assertString(parentDevice, 'parentDevice');
+        }
+
+        if (parentChannel !== null && parentChannel !== undefined) {
+            Utils.assertString(parentChannel, 'parentChannel');
+        }
+
         if (options !== null && options !== undefined) {
             Utils.assertObject(options, 'options');
         }
@@ -6375,7 +6384,7 @@ export class AdapterClass extends EventEmitter {
      *        if (err) adapter.log.error('Cannot read directory: ' + err);
      *        if (filesOrDirs) {
      *           for (var f = 0; f < filesOrDirs.length; f++) {
-     *              adapter.log.debug('Directory main has following files and dirs: ' + filesOrDirs[f].file + '[dir - ' + filesOrDirs[f].isDir + ']');
+     *              adapter.log.debug('Directory main has the following files and dirs: ' + filesOrDirs[f].file + '[dir - ' + filesOrDirs[f].isDir + ']');
      *           }
      *       }
      *      });
@@ -7041,7 +7050,7 @@ export class AdapterClass extends EventEmitter {
      * This function sends a message to specific host or all hosts.
      * If no host name given (e.g. null), the callback argument will be ignored. Because normally many responses will come.
      *
-     * @param hostName name of the host where the message must be send to. E.g. "myPC" or "system.host.myPC". If argument is empty, the message will be sent to all hosts.
+     * @param hostName name of the host where the message must be sent to. E.g. "myPC" or "system.host.myPC". If argument is empty, the message will be sent to all hosts.
      * @param command command name. One of: "cmdExec", "getRepository", "getInstalled", "getVersion", "getDiagData", "getLocationOnDisk", "getDevList", "getLogs", "delLogs", "readDirAsZip", "writeDirAsZip", "readObjectsAsZip", "writeObjectsAsZip", "checkLogging". Commands can be checked in controller.js (function processMessage)
      * @param message object that will be given as argument for request
      * @param callback optional return result
@@ -7199,30 +7208,30 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    setState(
+    setState<T extends ioBroker.SetStateCallback | undefined>(
         id: string | IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-        callback?: ioBroker.SetStateCallback
-    ): void;
-    setState(
-        id: string | IdObject,
-        state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-        ack: boolean,
-        callback?: ioBroker.SetStateCallback
-    ): void;
-    setState(
-        id: string | IdObject,
-        state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-        options: unknown,
-        callback?: ioBroker.SetStateCallback
-    ): void;
-    setState(
+        callback?: T
+    ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
+    setState<T extends ioBroker.SetStateCallback>(
         id: string | IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
+        callback?: T
+    ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
+    setState<T extends ioBroker.SetStateCallback>(
+        id: string | IdObject,
+        state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         options: unknown,
-        callback?: ioBroker.SetStateCallback
-    ): void;
+        callback?: T
+    ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
+    setState<T extends ioBroker.SetStateCallback>(
+        id: string | IdObject,
+        state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
+        ack: boolean,
+        options: unknown,
+        callback?: T
+    ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
 
     /**
      * Writes value into states DB.
@@ -7255,7 +7264,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    setState(id: unknown, state: unknown, ack: unknown, options?: unknown, callback?: unknown): any {
+    setState(id: unknown, state: unknown, ack: unknown, options?: unknown, callback?: unknown): Promise<void | string> {
         if (typeof state === 'object' && typeof ack !== 'boolean') {
             callback = options;
             options = ack;
@@ -7289,7 +7298,7 @@ export class AdapterClass extends EventEmitter {
         return this._setState({ id, state: state as ioBroker.SettableState, ack, options, callback });
     }
 
-    private async _setState(_options: InternalSetStateOptions) {
+    private async _setState(_options: InternalSetStateOptions): Promise<void | string> {
         const { state, ack, options, callback } = _options;
         const { id } = _options;
 
@@ -7342,283 +7351,241 @@ export class AdapterClass extends EventEmitter {
                 : `system.adapter.${this.namespace}`;
         stateObj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
 
+        let permCheckRequired = false;
         if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-            this._checkStates(fixedId, options, 'setState', async (err, obj) => {
-                if (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                } else {
-                    if (!adapterObjects) {
-                        // if objects is no longer existing, we do not need to unsubscribe
-                        this._logger.info(
-                            `${this.namespaceLog} setForeignState not processed because Objects database not connected`
-                        );
-                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                    }
+            permCheckRequired = true;
+        }
 
-                    if (this.performStrictObjectChecks) {
-                        // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                        await this._utils.performStrictObjectCheck(fixedId, stateObj);
-                    }
-
-                    if (fixedId.startsWith(ALIAS_STARTS_WITH)) {
-                        // write alias
-                        if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
-                            // id can be string or can have attribute write
-                            const aliasId =
-                                // @ts-expect-error fix later on
-                                typeof obj.common.alias.id.write === 'string'
-                                    ? // @ts-expect-error fix later on
-                                      obj.common.alias.id.write
-                                    : obj.common.alias.id;
-
-                            // validate here because we use objects/states db directly
-                            try {
-                                this._utils.validateId(aliasId, true, null);
-                            } catch (e) {
-                                this._logger.warn(
-                                    `${this.namespaceLog} Error validating alias id of ${fixedId}: ${e.message}`
-                                );
-                                return tools.maybeCallbackWithError(
-                                    callback,
-                                    `Error validating alias id of ${fixedId}: ${e.message}`
-                                );
-                            }
-
-                            // check the rights
-                            this._checkStates(aliasId, options, 'setState', (err, targetObj) => {
-                                if (err) {
-                                    return tools.maybeCallbackWithError(callback, err);
-                                } else {
-                                    if (!adapterStates) {
-                                        // if states is no longer existing, we do not need to unsubscribe
-                                        this._logger.info(
-                                            `${this.namespaceLog} setForeignState not processed because States database not connected`
-                                        );
-                                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                                    }
-
-                                    // write target state
-                                    this.outputCount++;
-                                    adapterStates.setState(
-                                        aliasId,
-                                        tools.formatAliasValue(
-                                            obj && obj.common,
-                                            targetObj && (targetObj.common as any),
-                                            stateObj as ioBroker.State,
-                                            this._logger,
-                                            this.namespaceLog
-                                        ),
-                                        callback
-                                    );
-                                }
-                            });
-                        } else {
-                            this._logger.warn(`${this.namespaceLog} ${`Alias ${fixedId} has no target 2`}`);
-                            return tools.maybeCallbackWithError(callback, `Alias ${fixedId} has no target`);
-                        }
-                    } else {
-                        if (!adapterStates) {
-                            // if states is no longer existing, we do not need to unsubscribe
-                            this._logger.info(
-                                `${this.namespaceLog} setForeignState not processed because States database not connected`
-                            );
-                            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                        }
-
-                        this.outputCount++;
-                        adapterStates.setState(fixedId, stateObj, callback);
-                    }
-                }
-            });
-        } else {
-            if (fixedId.startsWith(ALIAS_STARTS_WITH)) {
-                // write alias
-                // read alias id
-                adapterObjects.getObject(fixedId, options, (err, obj) => {
-                    if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
-                        const aliasId =
-                            typeof obj.common.alias.id.write === 'string'
-                                ? obj.common.alias.id.write
-                                : obj.common.alias.id;
-
-                        // validate here because we use objects/states db directly
-                        try {
-                            this._utils.validateId(aliasId, true, null);
-                        } catch (e) {
-                            this._logger.warn(
-                                `${this.namespaceLog} Error validating alias id of ${fixedId}: ${e.message}`
-                            );
-                            return tools.maybeCallbackWithError(
-                                callback,
-                                `Error validating alias id of ${fixedId}: ${e.message}`
-                            );
-                        }
-
-                        // read object for formatting
-                        adapterObjects!.getObject(aliasId, options, (err, targetObj) => {
-                            // write target state
-                            this.outputCount++;
-                            adapterStates!.setState(
-                                aliasId,
-                                tools.formatAliasValue(
-                                    obj && obj.common,
-                                    targetObj && (targetObj.common as any),
-                                    stateObj as ioBroker.State,
-                                    this._logger,
-                                    this.namespaceLog
-                                ),
-                                callback
-                            );
-                        });
-                    } else {
-                        this._logger.warn(
-                            `${this.namespaceLog} ${err ? err.message : `Alias ${fixedId} has no target 3`}`
-                        );
-                        return tools.maybeCallbackWithError(
-                            callback,
-                            err ? err.message : `Alias ${fixedId} has no target`
-                        );
-                    }
-                });
+        let obj: ioBroker.StateObject | null | undefined;
+        try {
+            if (permCheckRequired) {
+                obj = (await this._checkStates(fixedId, options as GetUserGroupsOptions, 'setState')).objs[0];
             } else {
-                if (this.performStrictObjectChecks) {
-                    // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                    await this._utils.performStrictObjectCheck(fixedId, stateObj);
+                obj = (await adapterObjects.getObject(fixedId, options)) as ioBroker.StateObject | null | undefined;
+            }
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
+        }
+
+        if (!adapterObjects) {
+            // if objects is no longer existing, we do not need to unsubscribe
+            this._logger.info(
+                `${this.namespaceLog} setForeignState not processed because Objects database not connected`
+            );
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        if (this.performStrictObjectChecks) {
+            // validate that object exists, read-only logic ok, type ok, etc. won't throw now
+            await this._utils.performStrictObjectCheck(fixedId, stateObj);
+        }
+
+        if (fixedId.startsWith(ALIAS_STARTS_WITH)) {
+            // write alias
+            if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
+                // id can be string or can have attribute write
+                const aliasId =
+                    // @ts-expect-error fix later on
+                    typeof obj.common.alias.id.write === 'string'
+                        ? // @ts-expect-error fix later on
+                          obj.common.alias.id.write
+                        : obj.common.alias.id;
+
+                // validate here because we use objects/states db directly
+                try {
+                    this._utils.validateId(aliasId, true, null);
+                } catch (e) {
+                    this._logger.warn(`${this.namespaceLog} Error validating alias id of ${fixedId}: ${e.message}`);
+                    return tools.maybeCallbackWithError(
+                        callback,
+                        `Error validating alias id of ${fixedId}: ${e.message}`
+                    );
+                }
+
+                // check the rights
+                let targetObj;
+                try {
+                    if (permCheckRequired) {
+                        targetObj = (await this._checkStates(aliasId, options as GetUserGroupsOptions, 'setState'))
+                            .objs[0];
+                    } else {
+                        targetObj = (await adapterObjects.getObject(aliasId, options)) as
+                            | ioBroker.StateObject
+                            | null
+                            | undefined;
+                    }
+                } catch (e) {
+                    return tools.maybeCallbackWithError(callback, e);
                 }
 
                 if (!adapterStates) {
-                    // if states is no longer existing, we do not need to set
+                    // if states is no longer existing, we do not need to unsubscribe
                     this._logger.info(
-                        `${this.namespaceLog} setState not processed because States database not connected`
+                        `${this.namespaceLog} setForeignState not processed because States database not connected`
                     );
                     return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                 }
 
+                // write target state
                 this.outputCount++;
-                adapterStates.setState(fixedId, stateObj, callback);
+                return adapterStates.setState(
+                    aliasId,
+                    tools.formatAliasValue(
+                        obj && obj.common,
+                        targetObj && (targetObj.common as any),
+                        stateObj as ioBroker.State,
+                        this._logger,
+                        this.namespaceLog
+                    ),
+                    callback
+                );
+            } else {
+                this._logger.warn(`${this.namespaceLog} ${`Alias ${fixedId} has no target 2`}`);
+                return tools.maybeCallbackWithError(callback, `Alias ${fixedId} has no target`);
             }
+        } else {
+            if (!adapterStates) {
+                // if states is no longer existing, we do not need to unsubscribe
+                this._logger.info(
+                    `${this.namespaceLog} setForeignState not processed because States database not connected`
+                );
+                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            }
+
+            this.outputCount++;
+            return adapterStates.setState(fixedId, stateObj, callback);
         }
     }
 
-    // Cache will be cleared if user or group changes.. Important! only if subscribed.
-    private _getUserGroups(options: GetUserGroupsOptions, callback: (options?: Record<string, any>) => void) {
+    // Cache will be cleared if user or group changes. Important! only if subscribed.
+    private async _getUserGroups(options: GetUserGroupsOptions): Promise<GetUserGroupsOptions> {
         if (this.users[options.user]) {
             options.groups = this.users[options.user].groups;
             options.acl = this.users[options.user].acl;
-            return tools.maybeCallback(callback, options);
+            return options;
         }
         options.groups = [];
-        this.getForeignObject(options.user, null, (err, userAcl) => {
-            if (!userAcl) {
-                // User does not exists
-                this._logger.error(`${this.namespaceLog} unknown user "${options.user}"`);
-                return tools.maybeCallback(callback, options);
-            } else {
-                this.getForeignObjects('*', 'group', null, null, async (err, groups) => {
-                    // aggregate all groups permissions, where this user is
-                    if (groups) {
-                        for (const group of Object.values(groups)) {
-                            if (group.common.members.includes(options.user)) {
-                                options.groups.push(group._id);
-                            }
-                        }
-                    }
+        let userAcl: ioBroker.UserObject | null | undefined;
+        try {
+            userAcl = await this.getForeignObjectAsync(options.user, null);
+        } catch {
+            // ignore
+        }
 
-                    // read all groups for this user
-                    this.users[options.user] = {
-                        groups: options.groups,
-                        // @ts-expect-error TODO: UserCommon has no acl
-                        acl: userAcl.common?.acl || {}
-                    };
-                    await this._getGroups(options.groups);
-                    // combine all rights
-                    const user = this.users[options.user];
-                    for (const gName of options.groups) {
-                        if (!this.groups[gName].common?.acl) {
-                            continue;
-                        }
-                        const group = this.groups[gName];
-
-                        if (group.common?.acl?.file) {
-                            if (!user.acl || !user.acl.file) {
-                                user.acl = user.acl || {};
-                                user.acl.file = user.acl.file || {};
-
-                                user.acl.file.create = group.common.acl.file.create;
-                                user.acl.file.read = group.common.acl.file.read;
-                                user.acl.file.write = group.common.acl.file.write;
-                                user.acl.file.delete = group.common.acl.file.delete;
-                                user.acl.file.list = group.common.acl.file.list;
-                            } else {
-                                user.acl.file.create = user.acl.file.create || group.common.acl.file.create;
-                                user.acl.file.read = user.acl.file.read || group.common.acl.file.read;
-                                user.acl.file.write = user.acl.file.write || group.common.acl.file.write;
-                                user.acl.file.delete = user.acl.file.delete || group.common.acl.file.delete;
-                                user.acl.file.list = user.acl.file.list || group.common.acl.file.list;
-                            }
-                        }
-
-                        if (group.common?.acl?.object) {
-                            if (!user.acl || !user.acl.object) {
-                                user.acl = user.acl || {};
-                                user.acl.object = user.acl.object || {};
-
-                                user.acl.object.create = group.common.acl.object.create;
-                                user.acl.object.read = group.common.acl.object.read;
-                                user.acl.object.write = group.common.acl.object.write;
-                                user.acl.object.delete = group.common.acl.object.delete;
-                                user.acl.object.list = group.common.acl.object.list;
-                            } else {
-                                user.acl.object.create = user.acl.object.create || group.common.acl.object.create;
-                                user.acl.object.read = user.acl.object.read || group.common.acl.object.read;
-                                user.acl.object.write = user.acl.object.write || group.common.acl.object.write;
-                                user.acl.object.delete = user.acl.object.delete || group.common.acl.object.delete;
-                                user.acl.object.list = user.acl.object.list || group.common.acl.object.list;
-                            }
-                        }
-
-                        if (group.common?.acl?.users) {
-                            if (!user.acl || !user.acl.users) {
-                                user.acl = user.acl || {};
-                                user.acl.users = user.acl.users || {};
-
-                                user.acl.users.create = group.common.acl.users.create;
-                                user.acl.users.read = group.common.acl.users.read;
-                                user.acl.users.write = group.common.acl.users.write;
-                                user.acl.users.delete = group.common.acl.users.delete;
-                                user.acl.users.list = group.common.acl.users.list;
-                            } else {
-                                user.acl.users.create = user.acl.users.create || group.common.acl.users.create;
-                                user.acl.users.read = user.acl.users.read || group.common.acl.users.read;
-                                user.acl.users.write = user.acl.users.write || group.common.acl.users.write;
-                                user.acl.users.delete = user.acl.users.delete || group.common.acl.users.delete;
-                                user.acl.users.list = user.acl.users.list || group.common.acl.users.list;
-                            }
-                        }
-                        if (group.common?.acl?.state) {
-                            if (!user.acl || !user.acl.state) {
-                                user.acl = user.acl || {};
-                                user.acl.state = user.acl.state || {};
-
-                                user.acl.state.create = group.common.acl.state.create;
-                                user.acl.state.read = group.common.acl.state.read;
-                                user.acl.state.write = group.common.acl.state.write;
-                                user.acl.state.delete = group.common.acl.state.delete;
-                                user.acl.state.list = group.common.acl.state.list;
-                            } else {
-                                user.acl.state.create = user.acl.state.create || group.common.acl.state.create;
-                                user.acl.state.read = user.acl.state.read || group.common.acl.state.read;
-                                user.acl.state.write = user.acl.state.write || group.common.acl.state.write;
-                                user.acl.state.delete = user.acl.state.delete || group.common.acl.state.delete;
-                                user.acl.state.list = user.acl.state.list || group.common.acl.state.list;
-                            }
-                        }
-                    }
-                    options.acl = user.acl;
-                    return tools.maybeCallback(callback, options);
-                });
+        if (!userAcl) {
+            // User does not exists
+            this._logger.error(`${this.namespaceLog} unknown user "${options.user}"`);
+            return options;
+        } else {
+            let groups;
+            try {
+                groups = await this.getForeignObjectsAsync('*', 'group', null, null);
+            } catch {
+                // ignore
             }
-        });
+
+            // aggregate all groups permissions, where this user is
+            if (groups) {
+                for (const group of Object.values(groups)) {
+                    if (group.common.members.includes(options.user)) {
+                        options.groups.push(group._id);
+                    }
+                }
+            }
+
+            // read all groups for this user
+            this.users[options.user] = {
+                groups: options.groups,
+                // @ts-expect-error TODO: UserCommon has no acl
+                acl: userAcl.common?.acl || {}
+            };
+            await this._getGroups(options.groups);
+            // combine all rights
+            const user = this.users[options.user];
+            for (const gName of options.groups) {
+                if (!this.groups[gName].common?.acl) {
+                    continue;
+                }
+                const group = this.groups[gName];
+
+                if (group.common?.acl?.file) {
+                    if (!user.acl || !user.acl.file) {
+                        user.acl = user.acl || {};
+                        user.acl.file = user.acl.file || {};
+
+                        user.acl.file.create = group.common.acl.file.create;
+                        user.acl.file.read = group.common.acl.file.read;
+                        user.acl.file.write = group.common.acl.file.write;
+                        user.acl.file.delete = group.common.acl.file.delete;
+                        user.acl.file.list = group.common.acl.file.list;
+                    } else {
+                        user.acl.file.create = user.acl.file.create || group.common.acl.file.create;
+                        user.acl.file.read = user.acl.file.read || group.common.acl.file.read;
+                        user.acl.file.write = user.acl.file.write || group.common.acl.file.write;
+                        user.acl.file.delete = user.acl.file.delete || group.common.acl.file.delete;
+                        user.acl.file.list = user.acl.file.list || group.common.acl.file.list;
+                    }
+                }
+
+                if (group.common?.acl?.object) {
+                    if (!user.acl || !user.acl.object) {
+                        user.acl = user.acl || {};
+                        user.acl.object = user.acl.object || {};
+
+                        user.acl.object.create = group.common.acl.object.create;
+                        user.acl.object.read = group.common.acl.object.read;
+                        user.acl.object.write = group.common.acl.object.write;
+                        user.acl.object.delete = group.common.acl.object.delete;
+                        user.acl.object.list = group.common.acl.object.list;
+                    } else {
+                        user.acl.object.create = user.acl.object.create || group.common.acl.object.create;
+                        user.acl.object.read = user.acl.object.read || group.common.acl.object.read;
+                        user.acl.object.write = user.acl.object.write || group.common.acl.object.write;
+                        user.acl.object.delete = user.acl.object.delete || group.common.acl.object.delete;
+                        user.acl.object.list = user.acl.object.list || group.common.acl.object.list;
+                    }
+                }
+
+                if (group.common?.acl?.users) {
+                    if (!user.acl || !user.acl.users) {
+                        user.acl = user.acl || {};
+                        user.acl.users = user.acl.users || {};
+
+                        user.acl.users.create = group.common.acl.users.create;
+                        user.acl.users.read = group.common.acl.users.read;
+                        user.acl.users.write = group.common.acl.users.write;
+                        user.acl.users.delete = group.common.acl.users.delete;
+                        user.acl.users.list = group.common.acl.users.list;
+                    } else {
+                        user.acl.users.create = user.acl.users.create || group.common.acl.users.create;
+                        user.acl.users.read = user.acl.users.read || group.common.acl.users.read;
+                        user.acl.users.write = user.acl.users.write || group.common.acl.users.write;
+                        user.acl.users.delete = user.acl.users.delete || group.common.acl.users.delete;
+                        user.acl.users.list = user.acl.users.list || group.common.acl.users.list;
+                    }
+                }
+                if (group.common?.acl?.state) {
+                    if (!user.acl || !user.acl.state) {
+                        user.acl = user.acl || {};
+                        user.acl.state = user.acl.state || {};
+
+                        user.acl.state.create = group.common.acl.state.create;
+                        user.acl.state.read = group.common.acl.state.read;
+                        user.acl.state.write = group.common.acl.state.write;
+                        user.acl.state.delete = group.common.acl.state.delete;
+                        user.acl.state.list = group.common.acl.state.list;
+                    } else {
+                        user.acl.state.create = user.acl.state.create || group.common.acl.state.create;
+                        user.acl.state.read = user.acl.state.read || group.common.acl.state.read;
+                        user.acl.state.write = user.acl.state.write || group.common.acl.state.write;
+                        user.acl.state.delete = user.acl.state.delete || group.common.acl.state.delete;
+                        user.acl.state.list = user.acl.state.list || group.common.acl.state.list;
+                    }
+                }
+            }
+            options.acl = user.acl;
+            return options;
+        }
     }
 
     private _checkState(obj: ioBroker.StateObject, options: Record<string, any>, command: CheckStateCommand) {
@@ -7735,126 +7702,69 @@ export class AdapterClass extends EventEmitter {
         return true;
     }
 
-    // with string, we have only one object in callback
-    private _checkStates(
-        id: string,
-        options: Record<string, any>,
-        command: CheckStateCommand,
-        callback: (err?: Error, obj?: ioBroker.StateObject) => void,
-        _helper?: any
-    ): void;
-    // else multiple objects
-    private _checkStates(
-        ids: string[],
-        options: Record<string, any>,
-        command: CheckStateCommand,
-        callback: (err?: Error, ids?: string[], objs?: ioBroker.StateObject[]) => void,
-        _helper?: any
-    ): void;
-    private _checkStates(
+    private async _checkStates(
         ids: string | string[],
-        options: Record<string, any>,
-        command: CheckStateCommand,
-        callback:
-            | ((err?: Error, ids?: string[], objs?: ioBroker.StateObject[]) => void)
-            | ((err?: Error, obj?: ioBroker.StateObject) => void),
-        _helper?: any
-    ): void {
+        options: Partial<GetUserGroupsOptions>,
+        command: CheckStateCommand
+    ): Promise<CheckStatesResult> {
         if (!options.groups) {
-            // @ts-expect-error ts not able to combine the overloads
-            return this._getUserGroups(options, () => this._checkStates(ids, options, command, callback));
+            options = await this._getUserGroups(options as GetUserGroupsOptions);
         }
 
-        if (Array.isArray(ids)) {
+        if (!Array.isArray(ids)) {
+            ids = [ids];
+        }
+
+        if (options._objects) {
             if (!ids.length) {
-                // @ts-expect-error fix it
-                return tools.maybeCallbackWithError(callback, null, ids);
+                return { ids, objs: [] };
             }
 
-            if (options._objects) {
-                const ids: string[] = [];
-                const objs: ioBroker.StateObject[] = [];
-                for (const obj of options._objects) {
-                    if (obj && this._checkState(obj, options, command)) {
-                        ids.push(obj._id);
-                        objs.push(obj);
-                    }
+            const objs: ioBroker.StateObject[] = [];
+            for (const obj of options._objects) {
+                if (obj && this._checkState(obj, options, command)) {
+                    ids.push(obj._id);
+                    objs.push(obj);
+                }
+            }
+
+            return { ids, objs };
+        } else {
+            const objs: ioBroker.StateObject[] = [];
+
+            for (const id of ids) {
+                let originalChecked: boolean | undefined;
+
+                if (options.checked !== undefined) {
+                    originalChecked = options.checked;
                 }
 
-                options._objects = undefined;
-                // @ts-expect-error fix it
-                return tools.maybeCallbackWithError(callback, null, ids, objs);
-            } else {
-                _helper = _helper || {
-                    i: 0,
-                    objs: options._objects || [],
-                    errors: []
-                };
+                options.checked = true;
 
-                // this must be a serial call
-                this._checkStates(ids[_helper.i], options, command, (err, obj) => {
-                    if (err && obj) {
-                        _helper.errors.push(obj._id);
-                    }
+                if (!adapterObjects) {
+                    this._logger.info(
+                        `${this.namespaceLog} checkStates not processed because Objects database not connected`
+                    );
 
-                    if (obj) {
-                        _helper.objs[_helper.i] = obj;
-                    }
+                    throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+                }
 
-                    // if finished
-                    if (_helper.i + 1 >= ids.length) {
-                        if (_helper.errors.length) {
-                            for (let j = ids.length - 1; j >= 0; j--) {
-                                if (_helper.errors.includes(ids[j])) {
-                                    ids.splice(j, 1);
-                                    _helper.objs.splice(j, 1);
-                                }
-                            }
-                        }
+                const obj = (await adapterObjects.getObject(id, options)) as ioBroker.StateObject;
 
-                        // @ts-expect-error fix it
-                        return tools.maybeCallbackWithError(callback, null, ids, _helper.objs);
-                    } else {
-                        _helper.i++;
-                        // @ts-expect-error fix later on
-                        setImmediate(() => this._checkStates(ids, options, command, callback, _helper));
-                    }
-                });
-            }
-        } else {
-            let originalChecked: boolean;
+                objs.push(obj);
 
-            if (options.checked !== undefined) {
-                originalChecked = options.checked;
-            }
-
-            options.checked = true;
-
-            if (!adapterObjects) {
-                this._logger.info(
-                    `${this.namespaceLog} checkStates not processed because Objects database not connected`
-                );
-                // @ts-expect-error fix it
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-            adapterObjects.getObject(ids, options, (err, obj) => {
                 if (originalChecked !== undefined) {
                     options.checked = originalChecked;
                 } else {
                     options.checked = undefined;
                 }
-                if (err) {
-                    // @ts-expect-error fix it
-                    return tools.maybeCallbackWithError(callback, err, { _id: ids });
-                } else {
-                    if (!this._checkState(obj as ioBroker.StateObject, options, command)) {
-                        // @ts-expect-error fix it
-                        return tools.maybeCallbackWithError(callback, ERROR_PERMISSION, { _id: ids });
-                    }
+
+                if (!this._checkState(obj, options, command)) {
+                    throw new Error(ERROR_PERMISSION);
                 }
-                // @ts-expect-error fix it
-                return tools.maybeCallbackWithError(callback, null, obj);
-            });
+            }
+
+            return { ids, objs };
         }
     }
 
@@ -7872,72 +7782,68 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    private _setStateChangedHelper(
-        id: string,
-        state: ioBroker.SettableState,
-        callback: (err?: Error | null, id?: string, changed?: boolean) => void
-    ) {
+    private async _setStateChangedHelper(id: string, state: ioBroker.SettableState): Promise<SetStateChangedResult> {
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} setStateChanged not processed because Objects database not connected`
             );
 
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         if (id.startsWith(ALIAS_STARTS_WITH)) {
-            adapterObjects.getObject(id, (err, obj) => {
-                if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
-                    // id can be string or can have attribute write
-                    const aliasId =
-                        typeof obj.common.alias.id.write === 'string' ? obj.common.alias.id.write : obj.common.alias.id;
-                    this._setStateChangedHelper(aliasId, state, callback);
-                } else {
-                    this._logger.warn(`${this.namespaceLog} ${err ? err.message : `Alias ${id} has no target 1`}`);
-                    return tools.maybeCallbackWithError(callback, err ? err.message : `Alias ${id} has no target`);
-                }
-            });
+            let obj;
+            let err;
+            try {
+                obj = await adapterObjects.getObject(id);
+            } catch (e) {
+                err = e;
+            }
+            if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
+                // id can be string or can have attribute write
+                const aliasId =
+                    typeof obj.common.alias.id.write === 'string' ? obj.common.alias.id.write : obj.common.alias.id;
+                return this._setStateChangedHelper(aliasId, state);
+            } else {
+                this._logger.warn(`${this.namespaceLog} ${err ? err.message : `Alias ${id} has no target 1`}`);
+                throw new Error(err ? err.message : `Alias ${id} has no target`);
+            }
         } else {
-            this.getForeignState(id, null, async (err, oldState) => {
-                if (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                } else {
-                    let differ = false;
-                    if (!oldState) {
-                        differ = true;
-                    } else if (state.val !== oldState.val) {
-                        differ = true;
-                    } else if (state.ack !== undefined && state.ack !== oldState.ack) {
-                        differ = true;
-                    } else if (state.q !== undefined && state.q !== oldState.q) {
-                        differ = true;
-                    } else if (state.ts !== undefined && state.ts !== oldState.ts) {
-                        differ = true;
-                    } else if (state.c !== undefined && state.c !== oldState.c) {
-                        // if comment changed
-                        differ = true;
-                    } else if (state.expire !== undefined && state.expire !== oldState.expire) {
-                        differ = true;
-                    } else if (state.from !== undefined && state.from !== oldState.from) {
-                        differ = true;
-                    } else if (state.user !== undefined && state.user !== oldState.user) {
-                        differ = true;
-                    }
+            const oldState = await this.getForeignStateAsync(id, null);
 
-                    if (differ) {
-                        if (this.performStrictObjectChecks) {
-                            // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                            await this._utils.performStrictObjectCheck(id, state);
-                        }
-                        this.outputCount++;
-                        adapterStates!.setState(id, state, () => {
-                            return tools.maybeCallbackWithError(callback, null, id, false);
-                        });
-                    } else {
-                        return tools.maybeCallbackWithError(callback, null, id, true);
-                    }
+            let differ = false;
+            if (!oldState) {
+                differ = true;
+            } else if (state.val !== oldState.val) {
+                differ = true;
+            } else if (state.ack !== undefined && state.ack !== oldState.ack) {
+                differ = true;
+            } else if (state.q !== undefined && state.q !== oldState.q) {
+                differ = true;
+            } else if (state.ts !== undefined && state.ts !== oldState.ts) {
+                differ = true;
+            } else if (state.c !== undefined && state.c !== oldState.c) {
+                // if comment changed
+                differ = true;
+            } else if (state.expire !== undefined && state.expire !== oldState.expire) {
+                differ = true;
+            } else if (state.from !== undefined && state.from !== oldState.from) {
+                differ = true;
+            } else if (state.user !== undefined && state.user !== oldState.user) {
+                differ = true;
+            }
+
+            if (differ) {
+                if (this.performStrictObjectChecks) {
+                    // validate that object exists, read-only logic ok, type ok, etc. won't throw now
+                    await this._utils.performStrictObjectCheck(id, state);
                 }
-            });
+                this.outputCount++;
+                await adapterStates!.setState(id, state);
+                return { id, notChanged: false };
+            } else {
+                return { id, notChanged: true };
+            }
         }
     }
 
@@ -8019,7 +7925,7 @@ export class AdapterClass extends EventEmitter {
         return this._setStateChanged({ id, state: state as ioBroker.SettableState, ack, options, callback });
     }
 
-    private _setStateChanged(_options: InternalSetStateChanedOptions) {
+    private async _setStateChanged(_options: InternalSetStateChanedOptions): Promise<void> {
         const { id, ack, options, callback, state } = _options;
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
@@ -8072,18 +7978,20 @@ export class AdapterClass extends EventEmitter {
                 ? stateObj.from
                 : `system.adapter.${this.namespace}`;
         if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-            this._checkStates(fixedId, options, 'setState', err => {
-                if (err) {
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                    return tools.maybeCallbackWithError(callback, err);
-                } else {
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                    this._setStateChangedHelper(fixedId, stateObj, callback);
-                }
-            });
-        } else {
+            try {
+                await this._checkStates(fixedId, options, 'setState');
+            } catch (e) {
+                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                return tools.maybeCallbackWithError(callback, e);
+            }
+
+            const res = await this._setStateChangedHelper(fixedId, stateObj);
             // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-            this._setStateChangedHelper(fixedId, stateObj, callback);
+            return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
+        } else {
+            const res = await this._setStateChangedHelper(fixedId, stateObj);
+            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+            return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
         }
     }
 
@@ -8214,10 +8122,54 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-            this._checkStates(id, options, 'setState', async (err, obj) => {
-                if (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                } else {
+            let obj: ioBroker.StateObject;
+            try {
+                obj = (await this._checkStates(id, options, 'setState')).objs[0];
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
+            if (!adapterStates) {
+                // if states is no longer existing, we do not need to unsubscribe
+                this._logger.info(
+                    `${this.namespaceLog} setForeignState not processed because States database not connected`
+                );
+                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            }
+
+            if (this.performStrictObjectChecks) {
+                // validate that object exists, read-only logic ok, type ok, etc. won't throw now
+                await this._utils.performStrictObjectCheck(id, state);
+            }
+
+            if (id.startsWith(ALIAS_STARTS_WITH)) {
+                // write alias
+                if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
+                    // id can be string or can have attribute write
+                    const aliasId =
+                        // @ts-expect-error
+                        typeof obj.common.alias.id.write === 'string'
+                            ? // @ts-expect-error
+                              obj.common.alias.id.write
+                            : obj.common.alias.id;
+
+                    // validate here because we use objects/states db directly
+                    try {
+                        this._utils.validateId(aliasId, true, null);
+                    } catch (e) {
+                        this._logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
+                        return tools.maybeCallbackWithError(
+                            callback,
+                            `Error validating alias id of ${id}: ${e.message}`
+                        );
+                    }
+
+                    let targetObj;
+                    // check the rights
+                    try {
+                        targetObj = (await this._checkStates(aliasId, options, 'setState')).objs[0];
+                    } catch (e) {
+                        return tools.maybeCallbackWithError(callback, e);
+                    }
                     if (!adapterStates) {
                         // if states is no longer existing, we do not need to unsubscribe
                         this._logger.info(
@@ -8226,80 +8178,34 @@ export class AdapterClass extends EventEmitter {
                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                     }
 
-                    if (this.performStrictObjectChecks) {
-                        // validate that object exists, read-only logic ok, type ok, etc. won't throw now
-                        await this._utils.performStrictObjectCheck(id, state);
-                    }
-
-                    if (id.startsWith(ALIAS_STARTS_WITH)) {
-                        // write alias
-                        if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
-                            // id can be string or can have attribute write
-                            const aliasId =
-                                // @ts-expect-error
-                                typeof obj.common.alias.id.write === 'string'
-                                    ? // @ts-expect-error
-                                      obj.common.alias.id.write
-                                    : obj.common.alias.id;
-
-                            // validate here because we use objects/states db directly
-                            try {
-                                this._utils.validateId(aliasId, true, null);
-                            } catch (e) {
-                                this._logger.warn(
-                                    `${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`
-                                );
-                                return tools.maybeCallbackWithError(
-                                    callback,
-                                    `Error validating alias id of ${id}: ${e.message}`
-                                );
-                            }
-
-                            // check the rights
-                            this._checkStates(aliasId, options, 'setState', (err, targetObj) => {
-                                if (err) {
-                                    return tools.maybeCallbackWithError(callback, err);
-                                } else {
-                                    if (!adapterStates) {
-                                        // if states is no longer existing, we do not need to unsubscribe
-                                        this._logger.info(
-                                            `${this.namespaceLog} setForeignState not processed because States database not connected`
-                                        );
-                                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                                    }
-
-                                    this.outputCount++;
-                                    adapterStates.setState(
-                                        aliasId,
-                                        tools.formatAliasValue(
-                                            obj && obj.common,
-                                            targetObj && (targetObj.common as any),
-                                            state,
-                                            this._logger,
-                                            this.namespaceLog
-                                        ),
-                                        callback
-                                    );
-                                }
-                            });
-                        } else {
-                            this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 4`);
-                            return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
-                        }
-                    } else {
-                        if (!adapterStates) {
-                            // if states is no longer existing, we do not need to unsubscribe
-                            this._logger.info(
-                                `${this.namespaceLog} setForeignState not processed because States database not connected`
-                            );
-                            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                        }
-
-                        this.outputCount++;
-                        adapterStates.setState(id, state, callback);
-                    }
+                    this.outputCount++;
+                    adapterStates.setState(
+                        aliasId,
+                        tools.formatAliasValue(
+                            obj && obj.common,
+                            targetObj && (targetObj.common as any),
+                            state,
+                            this._logger,
+                            this.namespaceLog
+                        ),
+                        callback
+                    );
+                } else {
+                    this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 4`);
+                    return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
                 }
-            });
+            } else {
+                if (!adapterStates) {
+                    // if states is no longer existing, we do not need to unsubscribe
+                    this._logger.info(
+                        `${this.namespaceLog} setForeignState not processed because States database not connected`
+                    );
+                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                }
+
+                this.outputCount++;
+                adapterStates.setState(id, state, callback);
+            }
         } else {
             // write alias
             if (id.startsWith(ALIAS_STARTS_WITH)) {
@@ -8451,7 +8357,13 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    setForeignStateChanged(id: any, state: any, ack: any, options?: any, callback?: any): any {
+    async setForeignStateChanged(
+        id: any,
+        state: any,
+        ack: any,
+        options?: any,
+        callback?: any
+    ): Promise<void | [id: string, changed: boolean]> {
         if (typeof state === 'object' && typeof ack !== 'boolean') {
             callback = options;
             options = ack;
@@ -8517,15 +8429,17 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-            this._checkStates(id, options, 'setState', err => {
-                if (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                } else {
-                    this._setStateChangedHelper(id, state, callback);
-                }
-            });
+            try {
+                await this._checkStates(id, options, 'setState');
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
+
+            const res = await this._setStateChangedHelper(id, state);
+            return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
         } else {
-            this._setStateChangedHelper(id, state, callback);
+            const res = await this._setStateChangedHelper(id, state);
+            return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
         }
     }
 
@@ -8549,7 +8463,7 @@ export class AdapterClass extends EventEmitter {
      *
      *        See possible attributes of the state in @setState explanation
      */
-    getState(id: unknown, options: any, callback?: any): any {
+    getState(id: unknown, options: any, callback?: any): ioBroker.GetStatePromise {
         // we use any types here, because validation takes place in foreign method
         // get state does the same as getForeignState but fixes the id first
 
@@ -8560,8 +8474,8 @@ export class AdapterClass extends EventEmitter {
         return this.getForeignState(fixedId, options, callback);
     }
 
-    getForeignState(id: string, callback: ioBroker.GetStateCallback): void;
-    getForeignState(id: string, options: unknown, callback: ioBroker.GetStateCallback): void;
+    getForeignState(id: string, callback: ioBroker.GetStateCallback): ioBroker.GetStatePromise;
+    getForeignState(id: string, options: unknown, callback: ioBroker.GetStateCallback): ioBroker.GetStatePromise;
 
     /**
      * Read value from states DB for any instance and system state.
@@ -8579,7 +8493,11 @@ export class AdapterClass extends EventEmitter {
      *
      *        See possible attributes of the state in @setState explanation
      */
-    getForeignState(id: unknown, options: unknown, callback?: unknown): any {
+    getForeignState(
+        id: unknown,
+        options: unknown,
+        callback?: unknown
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetStateCallback> | void> {
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -8594,7 +8512,9 @@ export class AdapterClass extends EventEmitter {
         return this._getForeignState({ id, options, callback });
     }
 
-    private _getForeignState(_options: InternalGetStateOptions) {
+    private async _getForeignState(
+        _options: InternalGetStateOptions
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetStateCallback> | void> {
         const { id, options, callback } = _options;
 
         if (!adapterStates) {
@@ -8621,174 +8541,102 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, err);
         }
 
+        let permCheckRequired = false;
         if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-            this._checkStates(id, options, 'getState', (err, obj) => {
-                if (err) {
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                    return tools.maybeCallbackWithError(callback, err);
-                } else {
-                    if (id.startsWith(ALIAS_STARTS_WITH)) {
-                        if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
-                            // id can be string or can have attribute id.read
-                            const aliasId =
-                                // @ts-expect-error
-                                typeof obj.common.alias.id.read === 'string'
-                                    ? // @ts-expect-error
-                                      obj.common.alias.id.read
-                                    : obj.common.alias.id;
+            permCheckRequired = true;
+        }
 
-                            // validate here because we use objects/states db directly
-                            try {
-                                this._utils.validateId(aliasId, true, null);
-                            } catch (e) {
-                                this._logger.warn(
-                                    `${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`
-                                );
-                                return tools.maybeCallbackWithError(
-                                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                                    callback,
-                                    `Error validating alias id of ${id}: ${e.message}`
-                                );
-                            }
-
-                            if (aliasId) {
-                                if (this.oStates && this.oStates[aliasId]) {
-                                    this._checkStates(aliasId, options, 'getState', (err, sourceObj) => {
-                                        if (err) {
-                                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                                            return tools.maybeCallbackWithError(callback, err);
-                                        } else {
-                                            // @ts-expect-error better read before doing async stuff
-                                            const state = deepClone(this.oStates[aliasId]);
-                                            return tools.maybeCallbackWithError(
-                                                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                                                callback,
-                                                err,
-                                                tools.formatAliasValue(
-                                                    sourceObj && (sourceObj.common as any),
-                                                    obj.common,
-                                                    state,
-                                                    this._logger,
-                                                    this.namespaceLog
-                                                )
-                                            );
-                                        }
-                                    });
-                                } else {
-                                    this._checkStates(aliasId, options, 'getState', (err, sourceObj) => {
-                                        if (err) {
-                                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                                            return tools.maybeCallbackWithError(callback, err);
-                                        } else {
-                                            this.inputCount++;
-                                            adapterStates!.getState(aliasId, (err, state) =>
-                                                tools.maybeCallbackWithError(
-                                                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                                                    callback,
-                                                    err,
-                                                    tools.formatAliasValue(
-                                                        sourceObj && (sourceObj.common as any),
-                                                        obj.common,
-                                                        state,
-                                                        this._logger,
-                                                        this.namespaceLog
-                                                    )
-                                                )
-                                            );
-                                        }
-                                    });
-                                }
-                            }
-                        } else {
-                            this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 8`);
-                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                            return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
-                        }
-                    } else {
-                        if (this.oStates && this.oStates[id]) {
-                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                            return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
-                        } else {
-                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                            adapterStates!.getState(id, callback);
-                        }
-                    }
-                }
-            });
-        } else {
-            if (id.startsWith(ALIAS_STARTS_WITH)) {
-                adapterObjects.getObject(id, (err, obj) => {
-                    if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
-                        // id can be string or can have attribute id.read
-                        const aliasId =
-                            typeof obj.common.alias.id.read === 'string'
-                                ? obj.common.alias.id.read
-                                : obj.common.alias.id;
-
-                        // validate here because we use objects/states db directly
-                        try {
-                            this._utils.validateId(aliasId, true, null);
-                        } catch (e) {
-                            this._logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
-                            return tools.maybeCallbackWithError(
-                                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                                callback,
-                                `Error validating alias id of ${id}: ${e.message}`
-                            );
-                        }
-
-                        adapterObjects!.getObject(aliasId, (err, sourceObj) => {
-                            if (err) {
-                                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                                return tools.maybeCallbackWithError(callback, err);
-                            }
-                            if (this.oStates && this.oStates[aliasId]) {
-                                const state = deepClone(this.oStates[aliasId]);
-                                return tools.maybeCallbackWithError(
-                                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                                    callback,
-                                    err,
-                                    tools.formatAliasValue(
-                                        sourceObj && (sourceObj.common as any),
-                                        obj.common,
-                                        state,
-                                        this._logger,
-                                        this.namespaceLog
-                                    )
-                                );
-                            } else {
-                                this.inputCount++;
-                                adapterStates!.getState(aliasId, (err, state) => {
-                                    return tools.maybeCallbackWithError(
-                                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                                        callback,
-                                        err,
-                                        tools.formatAliasValue(
-                                            sourceObj && (sourceObj.common as any),
-                                            obj.common,
-                                            state,
-                                            this._logger,
-                                            this.namespaceLog
-                                        )
-                                    );
-                                });
-                            }
-                        });
-                    } else {
-                        this._logger.warn(`${this.namespaceLog} ${err ? err.message : `Alias ${id} has no target 9`}`);
-                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                        return tools.maybeCallbackWithError(callback, err ? err.message : `Alias ${id} has no target`);
-                    }
-                });
+        let obj: ioBroker.StateObject | null | undefined;
+        try {
+            if (permCheckRequired) {
+                obj = (await this._checkStates(id, options as GetUserGroupsOptions, 'getState')).objs[0];
             } else {
-                if (this.oStates && this.oStates[id]) {
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                    return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
-                } else {
-                    this.inputCount++;
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                    adapterStates.getState(id, callback);
+                obj = (await adapterObjects.getObject(id, options)) as ioBroker.StateObject | null | undefined;
+            }
+        } catch (e) {
+            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+            return tools.maybeCallbackWithError(callback, e);
+        }
+
+        if (id.startsWith(ALIAS_STARTS_WITH)) {
+            // TODO: optimize alias GET performance
+            if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
+                // id can be string or can have attribute id.read
+                const aliasId =
+                    // @ts-expect-error
+                    typeof obj.common.alias.id.read === 'string'
+                        ? // @ts-expect-error
+                          obj.common.alias.id.read
+                        : obj.common.alias.id;
+
+                // validate here because we use objects/states db directly
+                try {
+                    this._utils.validateId(aliasId, true, null);
+                } catch (e) {
+                    this._logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
+                    return tools.maybeCallbackWithError(
+                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                        callback,
+                        `Error validating alias id of ${id}: ${e.message}`
+                    );
                 }
+
+                if (aliasId) {
+                    let sourceObj;
+                    try {
+                        if (permCheckRequired) {
+                            sourceObj = (await this._checkStates(aliasId, options as GetUserGroupsOptions, 'getState'))
+                                .objs[0];
+                        } else {
+                            sourceObj = (await adapterObjects.getObject(aliasId, options)) as
+                                | ioBroker.StateObject
+                                | null
+                                | undefined;
+                        }
+                    } catch (e) {
+                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                        return tools.maybeCallbackWithError(callback, e);
+                    }
+
+                    let state: ioBroker.State | undefined | null;
+                    if (this.oStates && this.oStates[aliasId]) {
+                        state = deepClone(this.oStates[aliasId]);
+                    } else {
+                        this.inputCount++;
+                        try {
+                            // @ts-expect-error void return possible fix it
+                            state = await adapterStates!.getState(aliasId);
+                        } catch (e) {
+                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                            return tools.maybeCallbackWithError(callback, err);
+                        }
+                    }
+
+                    return tools.maybeCallbackWithError(
+                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                        callback,
+                        null,
+                        tools.formatAliasValue(
+                            sourceObj && (sourceObj.common as any),
+                            obj.common,
+                            state,
+                            this._logger,
+                            this.namespaceLog
+                        )
+                    );
+                }
+            } else {
+                this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 8`);
+                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
+            }
+        } else {
+            if (this.oStates && this.oStates[id]) {
+                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
+            } else {
+                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                return adapterStates!.getState(id, callback);
             }
         }
     }
@@ -8850,7 +8698,7 @@ export class AdapterClass extends EventEmitter {
      *
      * Possible options:
      *
-     *  - instance - (optional) name of instance, where to read the historian data, e.g. 'history.0', 'sql.1'. By default will be taken from system settings.
+     *  - instance - (optional) name of instance, where to read the historian data, e.g. 'history.0', 'sql.1'. By default, will be taken from system settings.
      *  - start - (optional) time in ms - Date.now()', by default is (now - 1 week)
      *  - end - (optional) time in ms - Date.now()', by default is (now + 5000 seconds)
      *  - step - (optional) used in aggregate (m4, max, min, average, total) step in ms of intervals
@@ -8860,7 +8708,7 @@ export class AdapterClass extends EventEmitter {
      *  - q - if q field should be included in answer
      *  - addId - if id field should be included in answer
      *  - limit - do not return more entries than limit
-     *  - ignoreNull - if null values should be include (false), replaced by last not null value (true) or replaced with 0 (0)
+     *  - ignoreNull - if null values should be included (false), replaced by last not null value (true) or replaced with 0 (0)
      *  - sessionId - (optional) identifier of request, will be returned back in the answer
      *  - aggregate - aggregate method:
      *      - minmax - used special algorithm. Splice the whole time range in small intervals and find for every interval max, min, start and end values.
@@ -9049,7 +8897,7 @@ export class AdapterClass extends EventEmitter {
         return this._delForeignState({ id, options, callback });
     }
 
-    private _delForeignState(_options: InternalDelStateOptions) {
+    private async _delForeignState(_options: InternalDelStateOptions) {
         const { id, options, callback } = _options;
 
         if (!adapterStates) {
@@ -9067,16 +8915,13 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
-            this._checkStates(id, options, 'delState', err => {
-                if (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                } else {
-                    adapterStates!.delState(id, callback);
-                }
-            });
-        } else {
-            adapterStates.delState(id, callback);
+            try {
+                await this._checkStates(id, options, 'delState');
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
         }
+        adapterStates.delState(id, callback);
     }
 
     // external signature
@@ -9095,7 +8940,7 @@ export class AdapterClass extends EventEmitter {
      *     });
      * ```
      *
-     * @param pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
+     * @param pattern string in form 'adapter.0.*' or like this. It can be an array of IDs too.
      * @param options optional argument to describe the user context
      * @param callback return result
      * ```js
@@ -9223,7 +9068,7 @@ export class AdapterClass extends EventEmitter {
      *     });
      * ```
      *
-     * @param pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
+     * @param pattern string in form 'adapter.0.*' or like this. It can be an array of IDs too.
      * @param options optional argument to describe the user context
      * @param callback return result
      * ```js
@@ -9249,7 +9094,7 @@ export class AdapterClass extends EventEmitter {
         return this._getForeignStates({ pattern, options: options || {}, callback });
     }
 
-    private _getForeignStates(_options: InternalGetStatesOptions) {
+    private async _getForeignStates(_options: InternalGetStatesOptions) {
         const { options, pattern, callback } = _options;
 
         if (!adapterStates) {
@@ -9273,14 +9118,13 @@ export class AdapterClass extends EventEmitter {
         // if pattern is array
         if (Array.isArray(pattern)) {
             if (options.user && options.user !== SYSTEM_ADMIN_USER) {
-                this._checkStates(pattern, options, 'getState', (err, keys, objs) => {
-                    if (err) {
-                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                        return tools.maybeCallbackWithError(callback, err);
-                    } else {
-                        this._processStates(keys as string[], objs as ioBroker.StateObject[], callback);
-                    }
-                });
+                try {
+                    const { objs, ids } = await this._checkStates(pattern, options, 'getState');
+                    this._processStates(ids, objs, callback);
+                } catch (e) {
+                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+                    return tools.maybeCallbackWithError(callback, e);
+                }
             } else {
                 this._processStates(pattern, options && options._objects, callback);
             }
@@ -9416,7 +9260,7 @@ export class AdapterClass extends EventEmitter {
 
                 if (sourceObj && sourceObj.common) {
                     if (!this.aliases.has(sourceObj._id)) {
-                        // TODO what means this, we ensured alias existed, did some async stuff now its gone -> alias has been deleted?
+                        // TODO what means this, we ensured alias existed, did some async stuff now it's gone -> alias has been deleted?
                         this._logger.error(
                             `${
                                 this.namespaceLog
@@ -9485,7 +9329,7 @@ export class AdapterClass extends EventEmitter {
      *     adapter.subscribeForeignStates('adapterName.X.*');
      * ```
      *
-     * @param pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
+     * @param pattern string in form 'adapter.0.*' or like this. It can be an array of IDs too.
      * @param options optional argument to describe the user context
      * @param callback return result ```function (err) {}```
      */
@@ -9588,7 +9432,7 @@ export class AdapterClass extends EventEmitter {
                     (aliasPattern.startsWith(ALIAS_STARTS_WITH) || aliasPattern.includes('*')) &&
                     !this.aliasPatterns.has(aliasPattern)
                 ) {
-                    // its a new alias conform pattern to store
+                    // it's a new alias conform pattern to store
                     this.aliasPatterns.add(aliasPattern);
                 }
             }
@@ -9605,7 +9449,7 @@ export class AdapterClass extends EventEmitter {
 
                 for (const aliasObj of aliasObjs) {
                     if (aliasObj) {
-                        // @ts-expect-error check if alias subscribe also takes non state objects and then ignores
+                        // @ts-expect-error check if alias subscribe also takes non-state objects and then ignores
                         promises.push(new Promise(resolve => this._addAliasSubscribe(aliasObj, aliasObj._id, resolve)));
                     }
                 }
@@ -9636,7 +9480,7 @@ export class AdapterClass extends EventEmitter {
                     const objs = await this.getForeignObjectsAsync(pattern, null, null, options);
                     const promises = [];
                     if (!this.aliasPatterns.has(pattern)) {
-                        // its a new pattern to store
+                        // it's a new pattern to store
                         this.aliasPatterns.add(pattern);
                     }
 
@@ -9953,7 +9797,7 @@ export class AdapterClass extends EventEmitter {
     setForeignBinaryState(id: string, binary: Buffer, options: unknown, callback: ioBroker.SetStateCallback): void;
 
     /**
-     * Write binary block into redis, e.g image
+     * Write binary block into redis, e.g. image
      *
      *
      * @param id of state
@@ -10039,51 +9883,52 @@ export class AdapterClass extends EventEmitter {
 
         if (options.user !== SYSTEM_ADMIN_USER) {
             // always read according object to set the binary flag
-            this._checkStates(id, options, 'setState', (err, obj) => {
-                if (!err && !obj) {
-                    return tools.maybeCallbackWithError(callback, 'Object does not exist');
-                } else if (!err && obj && !('binary' in obj)) {
-                    // @ts-expect-error probably need to adjust types
-                    obj.binary = true;
+            let obj;
+            try {
+                obj = (await this._checkStates(id, options, 'setState')).objs[0];
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
 
-                    if (!adapterObjects) {
-                        this._logger.info(
-                            `${this.namespaceLog} setBinaryState not processed because Objects database not connected`
-                        );
-                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                    }
+            if (obj && !('binary' in obj)) {
+                // @ts-expect-error probably need to adjust types
+                obj.binary = true;
 
-                    adapterObjects.setObject(id, obj, err => {
-                        if (err) {
-                            return tools.maybeCallbackWithError(callback, err);
-                        } else {
-                            if (!adapterStates) {
-                                // if states is no longer existing, we do not need to unsubscribe
-                                this._logger.info(
-                                    `${this.namespaceLog} setBinaryState not processed because States database not connected`
-                                );
-                                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                            }
-
-                            this.outputCount++;
-                            adapterStates.setBinaryState(id, binary, callback);
-                        }
-                    });
-                } else if (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                } else {
-                    if (!adapterStates) {
-                        // if states is no longer existing, we do not need to unsubscribe
-                        this._logger.info(
-                            `${this.namespaceLog} setBinaryState not processed because States database not connected`
-                        );
-                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                    }
-
-                    this.outputCount++;
-                    adapterStates.setBinaryState(id, binary, callback);
+                if (!adapterObjects) {
+                    this._logger.info(
+                        `${this.namespaceLog} setBinaryState not processed because Objects database not connected`
+                    );
+                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                 }
-            });
+
+                adapterObjects.setObject(id, obj, err => {
+                    if (err) {
+                        return tools.maybeCallbackWithError(callback, err);
+                    } else {
+                        if (!adapterStates) {
+                            // if states is no longer existing, we do not need to unsubscribe
+                            this._logger.info(
+                                `${this.namespaceLog} setBinaryState not processed because States database not connected`
+                            );
+                            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                        }
+
+                        this.outputCount++;
+                        adapterStates.setBinaryState(id, binary, callback);
+                    }
+                });
+            } else {
+                if (!adapterStates) {
+                    // if states is no longer existing, we do not need to unsubscribe
+                    this._logger.info(
+                        `${this.namespaceLog} setBinaryState not processed because States database not connected`
+                    );
+                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                }
+
+                this.outputCount++;
+                adapterStates.setBinaryState(id, binary, callback);
+            }
         } else {
             this.outputCount++;
             adapterStates.setBinaryState(id, binary, callback);
@@ -10104,8 +9949,7 @@ export class AdapterClass extends EventEmitter {
      */
     setBinaryState(id: any, binary: any, options: any, callback?: any): void {
         // we just keep any types here, because setForeign method will validate
-        // TODO: call fixId as soon as adapters are migrated to setForeignBinaryState
-        // id = this._utils.fixId(id, false);
+        id = this._utils.fixId(id, false);
         return this.setForeignBinaryState(id, binary, options, callback);
     }
 
@@ -10134,7 +9978,7 @@ export class AdapterClass extends EventEmitter {
         return this._getForeignBinaryState({ id, options: options || {}, callback });
     }
 
-    private _getForeignBinaryState(_options: InternalGetBinaryStateOption) {
+    private async _getForeignBinaryState(_options: InternalGetBinaryStateOption) {
         const { id, options, callback } = _options;
 
         if (!adapterStates) {
@@ -10156,30 +10000,32 @@ export class AdapterClass extends EventEmitter {
             options.user = SYSTEM_ADMIN_USER;
         }
         // always read according object to set the binary flag
-        this._checkStates(id, options, 'getState', (err, obj) => {
-            if (err) {
-                return tools.maybeCallbackWithError(callback, err);
-            } else {
-                adapterStates!.getBinaryState(id, (err, data) => {
-                    if (!err && data && obj && !('binary' in obj)) {
-                        // @ts-expect-error type adjustment needed?
-                        obj.binary = true;
-                        adapterObjects!.setObject(id, obj, err => {
-                            if (err) {
-                                return tools.maybeCallbackWithError(callback, err);
-                            } else {
-                                return tools.maybeCallbackWithError(callback, null, data);
-                            }
-                        });
+        let obj: ioBroker.StateObject;
+
+        try {
+            obj = (await this._checkStates(id, options, 'getState')).objs[0];
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
+        }
+
+        adapterStates!.getBinaryState(id, (err, data) => {
+            if (!err && data && obj && !('binary' in obj)) {
+                // @ts-expect-error type adjustment needed?
+                obj.binary = true;
+                adapterObjects!.setObject(id, obj, err => {
+                    if (err) {
+                        return tools.maybeCallbackWithError(callback, err);
                     } else {
-                        // if no buffer, and state marked as not binary
-                        if (!err && !data && obj && !('binary' in obj)) {
-                            return tools.maybeCallbackWithError(callback, 'State is not binary');
-                        } else {
-                            return tools.maybeCallbackWithError(callback, err, data);
-                        }
+                        return tools.maybeCallbackWithError(callback, null, data);
                     }
                 });
+            } else {
+                // if no buffer, and state marked as not binary
+                if (!err && !data && obj && !('binary' in obj)) {
+                    return tools.maybeCallbackWithError(callback, 'State is not binary');
+                } else {
+                    return tools.maybeCallbackWithError(callback, err, data);
+                }
             }
         });
     }
@@ -10195,8 +10041,7 @@ export class AdapterClass extends EventEmitter {
      */
     getBinaryState(id: any, options: any, callback?: any): any {
         // we use any types here, because validation takes place in foreign method
-        // TODO: fixId as soon as all adapters are migrated to setForeignBinaryState
-        // id =this._utils.fixId(id);
+        id = this._utils.fixId(id);
         return this.getForeignBinaryState(id, options, callback);
     }
 
@@ -10227,7 +10072,7 @@ export class AdapterClass extends EventEmitter {
         return this._delForeignBinaryState({ id, options: options || {}, callback });
     }
 
-    private _delForeignBinaryState(_options: InternalDelBinaryStateOptions) {
+    private async _delForeignBinaryState(_options: InternalDelBinaryStateOptions) {
         const { id, options, callback } = _options;
 
         if (!adapterStates) {
@@ -10245,14 +10090,14 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (options.user && options.user !== SYSTEM_ADMIN_USER) {
-            this._checkStates(id, options, 'delState', err => {
-                if (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                } else {
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455 fix delBinaryState Callback
-                    adapterStates!.delBinaryState(id, callback);
-                }
-            });
+            try {
+                await this._checkStates(id, options, 'delState');
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
+
+            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455 fix delBinaryState Callback
+            adapterStates!.delBinaryState(id, callback);
         } else {
             // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455 fix delBinaryState Callback
             adapterStates.delBinaryState(id, callback);
@@ -10341,14 +10186,15 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    getSuitableLicenses(all: boolean): Promise<any[]>;
+    getSuitableLicenses(all?: boolean, adapterName?: string): Promise<any[]>;
 
     /**
      * This method returns the list of license that can be used by this adapter
      * @param all if return the licenses, that used by other instances (true) or only for this instance (false)
+     * @param adapterName Return licenses for specific adapter
      * @returns list of suitable licenses
      */
-    async getSuitableLicenses(all: unknown): Promise<any> {
+    async getSuitableLicenses(all?: boolean, adapterName?: string): Promise<any> {
         const licenses: Record<string, any>[] = [];
         try {
             const obj = await this.getForeignObjectAsync('system.licenses');
@@ -10376,7 +10222,7 @@ export class AdapterClass extends EventEmitter {
                                 new Date(decoded.valid_till).getTime() > now)
                         ) {
                             if (
-                                decoded.name.startsWith(`iobroker.${this.name}`) &&
+                                decoded.name.startsWith(`iobroker.${adapterName || this.name}`) &&
                                 (all || !license.usedBy || license.usedBy === this.namespace)
                             ) {
                                 // Licenses for version ranges 0.x and 1.x are handled identically and are valid for both version ranges.
@@ -11055,7 +10901,7 @@ export class AdapterClass extends EventEmitter {
                         } // If reconnected in the meantime, do not terminate
                         this._logger &&
                             this._logger.warn(
-                                this.namespaceLog + ' Cannot connect/reconnect to states DB. Terminating'
+                                `${this.namespaceLog} Cannot connect/reconnect to states DB. Terminating`
                             );
                         this.terminate(EXIT_CODES.NO_ERROR);
                     }, 5000);
@@ -11177,7 +11023,7 @@ export class AdapterClass extends EventEmitter {
                     //     ]
                     // };
 
-                    // if this.aliases is empty, or no target found its a new alias
+                    // if `this.aliases` is empty, or no target found, it's a new alias
                     let isNewAlias = true;
 
                     for (const [sourceId, alias] of this.aliases) {
@@ -11653,7 +11499,7 @@ export class AdapterClass extends EventEmitter {
                             : this.ioPack && this.ioPack.common
                             ? this.ioPack.common.version
                             : 'unknown';
-                    // display if it's a non official version - only if installedFrom is explicitly given and differs it's not npm
+                    // display if it's a non-official version - only if installedFrom is explicitly given and differs it's not npm
                     const isNpmVersion =
                         !this.ioPack ||
                         !this.ioPack.common ||
@@ -11773,7 +11619,7 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
-        // catch it on windows
+        // catch it on Windows
         if (this.getPortRunning && err && err.message === 'listen EADDRINUSE') {
             const { host, port, callback } = this.getPortRunning;
             this._logger.warn(
@@ -11871,7 +11717,7 @@ export class AdapterClass extends EventEmitter {
                         }
 
                         if (obj.type === 'state' && obj.common.def !== undefined) {
-                            // default value given - if obj non existing we have to set it
+                            // default value given - if obj non-existing we have to set it
                             try {
                                 const checkObj = await this.getForeignObjectAsync(obj._id);
                                 if (!checkObj) {

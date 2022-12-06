@@ -1,6 +1,5 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$comment": "We have to update https://github.com/SchemaStore/schemastore too, whenever a change here should be made public",
   "definitions": {
     "multilingual": {
       "type": "object",
@@ -8,7 +7,7 @@
         "en"
       ],
       "patternProperties": {
-        "en|de|ru|pt|nl|fr|it|es|pl|zh-cn": {
+        "en|de|ru|pt|nl|fr|it|es|pl|uk|zh-cn": {
           "type": "string"
         }
       },
@@ -145,7 +144,7 @@
             "en"
           ],
           "patternProperties": {
-            "en|de|ru|pt|nl|fr|it|es|pl|zh-cn": {
+            "en|de|ru|pt|nl|fr|it|es|pl|uk|zh-cn": {
               "type": [
                 "string",
                 "array"
@@ -648,6 +647,7 @@
             "protocols",
             "storage",
             "utility",
+            "vehicle",
             "visualization",
             "visualization-icons",
             "visualization-widgets",
@@ -819,7 +819,8 @@
         },
         "eraseOnUpload": {
           "description": "erase all previous data in the directory before upload",
-          "type": "boolean"
+          "type": "boolean",
+          "default": true
         },
         "extIcon": {
           "description": "Link to external icon for uninstalled adapters. Normally on GitHub",
