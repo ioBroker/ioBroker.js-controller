@@ -30,11 +30,17 @@ export function isLocalObjectsDbServer(
     if (!objectsDbHasServer(dbType)) {
         return false; // if no server it can not be a local server
     }
+
+    if (Array.isArray(host)) {
+        return false;
+    }
+
     let result = host === 'localhost' || host === '127.0.0.1'; // reachable locally only
-    if (!checkIfLocalOnly && !Array.isArray(host)) {
+    if (!checkIfLocalOnly) {
         const ownIps = tools.findIPs();
         result = result || host === '0.0.0.0' || ownIps.includes(host);
     }
+
     return result;
 }
 
@@ -49,11 +55,17 @@ export function isLocalStatesDbServer(dbType: string, host: string | string[], c
     if (!statesDbHasServer(dbType)) {
         return false; // if no server it can not be a local server
     }
+
+    if (Array.isArray(host)) {
+        return false;
+    }
+
     let result = host === 'localhost' || host === '127.0.0.1'; // reachable locally only
     if (!checkIfLocalOnly && !Array.isArray(host)) {
         const ownIps = tools.findIPs();
         result = result || host === '0.0.0.0' || ownIps.includes(host);
     }
+
     return result;
 }
 

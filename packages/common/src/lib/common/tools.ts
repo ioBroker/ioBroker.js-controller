@@ -3825,7 +3825,9 @@ export function validateDataDir(dataDir: string): DataDirValidation {
         dataDir = path.normalize(path.join(getControllerDir(), dataDir));
     }
 
-    const isValid = !dataDir.includes('node_modules');
+    const pathParts = dataDir.split(path.sep);
+
+    const isValid = !pathParts.includes('node_modules');
 
     return {
         valid: isValid,

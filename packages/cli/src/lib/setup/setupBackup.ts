@@ -16,7 +16,7 @@ import cpPromise from 'promisify-child-process';
 import tar from 'tar';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import type { CleanDatabase, ProcessExit, RestartController } from '../_Types';
+import type { CleanDatabaseHandler, ProcessExitCallback, RestartController } from '../_Types';
 
 const hostname = tools.getHostName();
 
@@ -28,8 +28,8 @@ export interface CLIBackupRestoreOptions {
     dbMigration?: boolean;
     states: StatesRedisClient;
     objects: ObjectsRedisClient;
-    processExit: ProcessExit;
-    cleanDatabase: CleanDatabase;
+    processExit: ProcessExitCallback;
+    cleanDatabase: CleanDatabaseHandler;
     restartController: RestartController;
 }
 

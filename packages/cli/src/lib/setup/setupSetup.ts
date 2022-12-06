@@ -7,14 +7,12 @@
  *
  */
 
-'use strict';
-
 import type {
-    CleanDatabase,
+    CleanDatabaseHandler,
     DbConnectAsync,
-    IobrokerJSON,
+    IoBrokerJSON,
     IoPackage,
-    ProcessExit,
+    ProcessExitCallback,
     ResetDbConnect,
     RestartController
 } from '../_Types';
@@ -40,8 +38,8 @@ const CONTROLLER_DIR = tools.getControllerDir();
 
 export interface CLISetupOptions {
     dbConnectAsync: DbConnectAsync;
-    cleanDatabase: CleanDatabase;
-    processExit: ProcessExit;
+    cleanDatabase: CleanDatabaseHandler;
+    processExit: ProcessExitCallback;
     params: Record<string, any>;
     restartController: RestartController;
     resetDbConnect: ResetDbConnect;
@@ -51,17 +49,17 @@ type ConfigObject = ioBroker.OtherObject & { type: 'config' };
 
 export class Setup {
     private readonly options: CLISetupOptions;
-    private readonly processExit: ProcessExit;
+    private readonly processExit: ProcessExitCallback;
     private states: StatesRedisClient | undefined;
     private objects: ObjectsRedisClient | undefined;
     private readonly dbConnectAsync: DbConnectAsync;
     private readonly params: Record<string, any>;
-    private readonly cleanDatabase: CleanDatabase;
+    private readonly cleanDatabase: CleanDatabaseHandler;
     private readonly restartController: RestartController;
     private readonly resetDbConnect: ResetDbConnect;
 
     constructor(options: CLISetupOptions) {
-        this.options = options || {};
+        this.options = options;
         this.processExit = options.processExit;
         this.dbConnectAsync = options.dbConnectAsync;
         this.params = options.params;
@@ -72,34 +70,13 @@ export class Setup {
         this.dbSetup = this.dbSetup.bind(this);
     }
 
-    mkpathSync(rootpath: string, _dirpath: string): void {
-        // Remove filename
-        const dirpath = _dirpath.split('/');
-        dirpath.pop();
-
-        if (!dirpath.length) {
-            return;
-        }
-
-        for (const dir of dirpath) {
-            rootpath = path.join(rootpath, dir);
-            if (!fs.existsSync(rootpath)) {
-                if (dir !== '..') {
-                    fs.mkdirSync(rootpath);
-                } else {
-                    throw new Error(`Cannot create ${rootpath}${dirpath.join('/')}`);
-                }
-            }
-        }
-    }
-
     async informAboutPlugins(systemConfig?: ConfigObject | null): Promise<void> {
         if (!this.states) {
             throw new Error('States not set up, call setupObjects first');
         }
 
         let ioPackage: IoPackage | undefined;
-        let ioConfig: IobrokerJSON | undefined;
+        let ioConfig: IoBrokerJSON | undefined;
 
         const configFile = tools.getConfigFileName();
         try {
@@ -266,7 +243,9 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 console.log(`object ${obj._id} ${!existingObj ? 'created' : 'updated'}`);
                 setTimeout(this.dbSetup, 25, iopkg, ignoreExisting, callback);
             } else {
-                !ignoreExisting && console.log(`object ${obj._id} yet exists`);
+                if (!ignoreExisting) {
+                    console.log(`object ${obj._id} already exists`);
+                }
                 setTimeout(this.dbSetup, 25, iopkg, ignoreExisting, callback);
             }
         } else {
@@ -288,13 +267,12 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             }
 
             if (configObj && (!configObj.native || !configObj.native.secret)) {
-                crypto.randomBytes(24, (ex, buf) => {
-                    configObj!.native = configObj!.native || {};
-                    configObj!.native.secret = buf.toString('hex');
-                    configObj!.from = `system.host.${tools.getHostName()}.cli`;
-                    configObj!.ts = Date.now();
-                    this.objects!.setObject('system.config', configObj!, () => this.setupReady(configObj!, callback));
-                });
+                const buf = crypto.randomBytes(24);
+                configObj.native = configObj!.native || {};
+                configObj.native.secret = buf.toString('hex');
+                configObj.from = `system.host.${tools.getHostName()}.cli`;
+                configObj.ts = Date.now();
+                this.objects!.setObject('system.config', configObj!, () => this.setupReady(configObj!, callback));
             } else {
                 if (configFixed) {
                     this.objects.setObject('system.config', configObj!, () => this.setupReady(configObj!, callback));
@@ -338,12 +316,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                     // ignore
                 }
 
-                if (
-                    obj &&
-                    obj.native &&
-                    obj.native.certificates &&
-                    obj.native.certificates.defaultPublic !== undefined
-                ) {
+                if (obj?.native?.certificates?.defaultPublic !== undefined) {
                     let cert = tools.getCertificateInfo(obj.native.certificates.defaultPublic);
                     if (cert) {
                         const dateCertStart = Date.parse(cert.validityNotBefore);
@@ -1182,12 +1155,12 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
             // this path is relative to js-controller
             config.dataDir = tools.getDefaultDataDir();
 
-            this.mkpathSync(`${CONTROLLER_DIR}/`, config.dataDir);
+            fs.mkdirSync(path.join(CONTROLLER_DIR, config.dataDir), { recursive: true });
 
             const dirName = path.dirname(configFileName);
 
             if (!fs.existsSync(dirName)) {
-                this.mkpathSync('', dirName.replace(/\\/g, '/'));
+                fs.mkdirSync(dirName.replace(/\\/g, '/'), { recursive: true });
             }
 
             // Create default data dir

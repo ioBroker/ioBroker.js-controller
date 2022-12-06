@@ -3812,7 +3812,7 @@ export class ObjectsInRedisClient {
     private async _applyViewFunc(
         func: ObjectViewFunction,
         params?: ioBroker.GetObjectViewParams,
-        options?: CallOptions,
+        options: CallOptions = {},
         callback?: ioBroker.GetObjectViewCallback<any>
     ): Promise<void | ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectViewCallback<any>>> {
         if (!this.client) {
@@ -4248,7 +4248,7 @@ export class ObjectsInRedisClient {
                     this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${objs[i]}`);
                     continue;
                 }
-                if (!utils.checkObject(obj, options || {}, CONSTS.ACCESS_READ)) {
+                if (!utils.checkObject(obj, options, CONSTS.ACCESS_READ)) {
                     continue;
                 }
 

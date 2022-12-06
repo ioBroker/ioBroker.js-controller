@@ -1,9 +1,12 @@
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
-export type ProcessExit = (exitCode: number) => void;
-export type GetRepository = (repoName: string | undefined, params: Record<string, any>) => Promise<Record<string, any>>;
-export type CleanDatabase = (isDeleteDb: boolean) => any;
+export type ProcessExitCallback = (exitCode: number) => void;
+export type GetRepositoryHandler = (
+    repoName: string | undefined,
+    params: Record<string, any>
+) => Promise<Record<string, any>>;
+export type CleanDatabaseHandler = (isDeleteDb: boolean) => any;
 type DbConnectCallback = (
     objects: ObjectsRedisClient,
     states: StatesRedisClient,
@@ -40,7 +43,7 @@ export interface IoPackage extends ioBroker.AdapterObject {
     common: IoPackageCommon;
 }
 
-export interface IobrokerJSON {
+export interface IoBrokerJSON {
     plugins: {
         [pluginName: string]: {
             enabled: boolean;
