@@ -7431,13 +7431,13 @@ export class AdapterClass extends EventEmitter {
                 return adapterStates.setState(
                     aliasId,
                     tools.formatAliasValue(
-                        obj && obj.common,
+                        obj?.common,
                         targetObj && (targetObj.common as any),
                         stateObj as ioBroker.State,
                         this._logger,
                         this.namespaceLog,
-                        obj && obj._id,
-                        targetObj && targetObj._id
+                        obj?._id,
+                        targetObj?._id
                     ),
                     callback
                 );
@@ -8184,13 +8184,13 @@ export class AdapterClass extends EventEmitter {
                     adapterStates.setState(
                         aliasId,
                         tools.formatAliasValue(
-                            obj && obj.common,
+                            obj?.common,
                             targetObj && (targetObj.common as any),
                             state,
                             this._logger,
                             this.namespaceLog,
-                            obj && obj._id,
-                            targetObj && targetObj._id
+                            obj?._id,
+                            targetObj?._id
                         ),
                         callback
                     );
@@ -8265,13 +8265,13 @@ export class AdapterClass extends EventEmitter {
                             adapterStates.setState(
                                 aliasId,
                                 tools.formatAliasValue(
-                                    obj && obj.common,
+                                    obj?.common,
                                     targetObj && (targetObj.common as any),
                                     state,
                                     this._logger,
                                     this.namespaceLog,
-                                    obj && obj._id,
-                                    targetObj && targetObj._id
+                                    obj?._id,
+                                    targetObj?._id
                                 ),
                                 callback
                             );
