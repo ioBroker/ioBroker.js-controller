@@ -189,7 +189,15 @@ export class CLIStates extends CLICommand {
                                     CLI.error.stateNotFound(id);
                                 } else {
                                     // @ts-expect-error fix after #1917
-                                    tools.formatAliasValue(sourceObj?.common, targetObj.common, state, console, '');
+                                    tools.formatAliasValue(
+                                        sourceObj?.common,
+                                        targetObj.common,
+                                        state,
+                                        console,
+                                        '',
+                                        sourceObj?._id,
+                                        targetObj._id
+                                    );
                                     console.log(resultTransform(state));
                                 }
                             } catch (e) {
@@ -286,7 +294,15 @@ export class CLIStates extends CLICommand {
                             states.setState(
                                 aliasId,
                                 // @ts-expect-error fix after #1917
-                                tools.formatAliasValue(obj.common, targetObj.common, newVal, console, ''),
+                                tools.formatAliasValue(
+                                    obj.common,
+                                    targetObj.common,
+                                    newVal,
+                                    console,
+                                    '',
+                                    obj._id,
+                                    targetObj._id
+                                ),
                                 err => {
                                     if (err) {
                                         CLI.error.unknown(err);

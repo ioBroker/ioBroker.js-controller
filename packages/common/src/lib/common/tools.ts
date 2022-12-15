@@ -2589,14 +2589,18 @@ export function measureEventLoopLag(ms: number, cb: (eventLoopLag?: number) => v
  * @param targetObj
  * @param state Object with val, ack and so on
  * @param logger Logging object
- * @param logNamespace optional Logging namespace
+ * @param logNamespace Logging namespace
+ * @param sourceId source id for error message
+ * @param targetId target id for error message
  */
 export function formatAliasValue(
     sourceObj: Record<string, any>,
     targetObj: Record<string, any>,
     state: ioBroker.State | null | undefined,
     logger: any,
-    logNamespace?: string
+    logNamespace: string,
+    sourceId: string,
+    targetId: string
 ): ioBroker.State | null {
     logNamespace = logNamespace ? `${logNamespace} ` : '';
 
@@ -2609,6 +2613,12 @@ export function formatAliasValue(
     }
 
     if (targetObj?.alias?.read) {
+        if (!sourceObj) {
+            logger.error(
+                `${logNamespace} source in "${targetId}" not exist for "read" function: "${targetObj.alias.read}"`
+            );
+            return null;
+        }
         try {
             // process the value here
             const func = new Function(
@@ -2632,13 +2642,19 @@ export function formatAliasValue(
             );
         } catch (e) {
             logger.error(
-                `${logNamespace} Invalid read function for ${targetObj._id}: ${targetObj.alias.read} => ${e.message}`
+                `${logNamespace} Invalid read function for "${targetId}": "${targetObj.alias.read}" => ${e.message}`
             );
             return null;
         }
     }
 
     if (sourceObj && sourceObj.alias && sourceObj.alias.write) {
+        if (!targetObj) {
+            logger.error(
+                `${logNamespace} target for "${sourceId}" not exist for "write" function: "${sourceObj.alias.write}"`
+            );
+            return null;
+        }
         try {
             // process the value here
             const func = new Function(
@@ -2662,7 +2678,7 @@ export function formatAliasValue(
             );
         } catch (e) {
             logger.error(
-                `${logNamespace} Invalid write function for ${sourceObj._id}: ${sourceObj.alias.write} => ${e.message}`
+                `${logNamespace} Invalid write function for "${sourceId}": "${sourceObj.alias.write}" => ${e.message}`
             );
             return null;
         }

@@ -7435,7 +7435,9 @@ export class AdapterClass extends EventEmitter {
                         targetObj && (targetObj.common as any),
                         stateObj as ioBroker.State,
                         this._logger,
-                        this.namespaceLog
+                        this.namespaceLog,
+                        obj && obj._id,
+                        targetObj && targetObj._id
                     ),
                     callback
                 );
@@ -8186,7 +8188,9 @@ export class AdapterClass extends EventEmitter {
                             targetObj && (targetObj.common as any),
                             state,
                             this._logger,
-                            this.namespaceLog
+                            this.namespaceLog,
+                            obj && obj._id,
+                            targetObj && targetObj._id
                         ),
                         callback
                     );
@@ -8265,7 +8269,9 @@ export class AdapterClass extends EventEmitter {
                                     targetObj && (targetObj.common as any),
                                     state,
                                     this._logger,
-                                    this.namespaceLog
+                                    this.namespaceLog,
+                                    obj && obj._id,
+                                    targetObj && targetObj._id
                                 ),
                                 callback
                             );
@@ -8621,7 +8627,9 @@ export class AdapterClass extends EventEmitter {
                             obj.common,
                             state,
                             this._logger,
-                            this.namespaceLog
+                            this.namespaceLog,
+                            sourceObj && sourceObj._id,
+                            obj._id
                         )
                     );
                 }
@@ -8990,7 +8998,9 @@ export class AdapterClass extends EventEmitter {
                                 obj.common,
                                 arr![i] || null,
                                 this._logger,
-                                this.namespaceLog
+                                this.namespaceLog,
+                                srcObjs[i]._id,
+                                obj._id
                             ) || null;
                     } else {
                         result[obj._id || keys[i]] = arr![i] || null;
@@ -10841,14 +10851,18 @@ export class AdapterClass extends EventEmitter {
                     }
                 } else if (this.adapterReady && this.aliases.has(id)) {
                     // If adapter is ready and for this ID exist some alias links
-                    this.aliases.get(id)!.targets.forEach(target => {
+                    const alias = this.aliases.get(id);
+                    alias!.targets.forEach(target => {
+                        const source = alias!.source!;
                         const aState = state
                             ? tools.formatAliasValue(
-                                  this.aliases.get(id)!.source!,
+                                  source,
                                   target,
                                   deepClone(state),
                                   this._logger,
-                                  this.namespaceLog
+                                  this.namespaceLog,
+                                  id,
+                                  target.id
                               )
                             : null;
                         // @ts-expect-error
