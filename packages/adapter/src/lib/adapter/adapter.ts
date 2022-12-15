@@ -8628,7 +8628,7 @@ export class AdapterClass extends EventEmitter {
                             state,
                             this._logger,
                             this.namespaceLog,
-                            sourceObj && sourceObj._id,
+                            sourceObj?._id,
                             obj._id
                         )
                     );
