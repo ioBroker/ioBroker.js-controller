@@ -25,8 +25,9 @@
       "packages"
     ],
     "types": [
+      "@iobroker/types",
       "node",
-      "@iobroker/types"
+      "mocha"
     ]
   },
   "include": [
