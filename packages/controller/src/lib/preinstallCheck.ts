@@ -49,7 +49,7 @@ function checkNpmVersion(): Promise<string> {
                         timer = null;
 
                         if (!npmVersion) {
-                            reject(new Error(`Command "${VERSION_COMMAND}" returned nothing`));
+                            reject(new Error(`Could not determine npm version via "${VERSION_COMMAND}"`));
                         }
 
                         console.log(`NPM version: ${npmVersion}`);
