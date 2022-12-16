@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "js-controller",
-    "version": "4.0.23",
+    "version": "4.0.24",
     "platform": "Javascript/Node.js",
     "controller": true,
     "mode": "daemon",
@@ -19,6 +19,19 @@
       "zh-cn": "JS控制器"
     },
     "news": {
+      "4.0.24": {
+        "en": "Exclude iot and cloud from masking special properties\nAdded time based JSONL compaction (once a day)\nOptimized message sequence id generation\nUse ipv4 as primary DNS lookup option also in Node.js 18+\nExtended Docker detection to prevent issues in new Debian",
+        "de": "iot und cloud aus maskieren besonderen Eigenschaften ausschliessen\nZeitbasierte JSONL-Verdichtung hinzugefügt (einmal pro Tag)\nOptimierung der ID Generierung\nIPv5 als primäre DNS-Lookup-Option auch in Node.js 18+ benutzen\nDocker-Erkennung erweitert, um Probleme in neuem Debian zu verhindern",
+        "ru": "Исключить iot и облако от маскировки специальных свойств\nДобавьте время на основе JSONL уплотнения (один раз в день)\nОптимизируйте последовательность сообщений id поколения\nИспользуйте ipv4 как опцию первичного DNS Lookup также в Node.js 18+\nРасширение обнаружения Docker для предотвращения проблем в новом Debian",
+        "pt": "Excluir iot e nuvem de mascarar propriedades especiais\nAdicionar compactação JSONL baseada no tempo (uma vez por dia)\nOtimizar a geração de identificação de sequência de mensagem\nUse ipv4 como opção de pesquisa DNS primário também em Node.js 18+\nAmplie a detecção do Docker para evitar problemas no novo Debian",
+        "nl": "Uitgesloten iot en wolk van het maskeren van speciale eigenschappen\nVoeg de tijd op basis van JSONL compact (once per dag)\nVertaling:\nGebruik ipv4 als primaire DNS-optie ook in Node\nExtend Docker detectie om problemen te voorkomen in nieuwe Debian",
+        "fr": "Exclure iot et nuage de masquer des propriétés spéciales\nAjouter le compactage JSONL basé sur le temps (une fois par jour)\nOptimiser la génération de messages id\nUtilisez ipv4 comme option de recherche DNS primaire également dans Node.js 18+\nÉtendre la détection de Docker pour prévenir les problèmes dans le nouveau Debian",
+        "it": "Escludere iot e cloud da mascherare proprietà speciali\nAggiungere la compattazione JSONL (una volta al giorno)\nOttimizzare la generazione id della sequenza dei messaggi\nUtilizzare ipv4 come opzione di ricerca DNS primaria anche in Node.js 18+\nEstendere il rilevamento Docker per prevenire problemi nel nuovo Debian",
+        "es": "Excluir el iot y la nube de propiedades especiales enmascarando\nAñadir la compactación JSONL basada en el tiempo (una vez al día)\nOptimize message sequence id generation\nUtilice ipv4 como opción de búsqueda DNS primaria también en Node.js 18+\nExtender la detección de Docker para prevenir problemas en Nueva Debian",
+        "pl": "Okazuje się, że iot i chmura z maskowania specjalnych właściwości\nJSONL zwartość (na dzień)\nOptimize message sequence id generation (ang.)\nUżycie ipv4 jako podstawowego pakietu DNS w Node.js 18+\nSzczegółowe wykrycie Dockera zapobiegało nowym problemom",
+        "uk": "Виключіть iot і хмару з маскування спеціальних властивостей\nДодати час на основі JSONL ущільнення (на добу)\nОптимізуйте послідовність повідомлень id покоління\nВикористовуйте ipv4 як основний параметр пошуку DNS також в Node.js 18+\nПродовжити виявлення Docker для запобігання проблемам в новому Debian",
+        "zh-cn": "采掘特殊财产的采掘\n增加以联索行动为基础的时间(一天)\n传播信息顺序\n第18+js\nD. 探查防止新 Debian出现问题"
+      },
       "4.0.23": {
         "en": "normalize JSONL options to prevent issues because of admin adding empty setting objects\nPrevent some crash cases reported by Sentry",
         "de": "Normalisieren Sie JSONL-Optionen, um Probleme zu vermeiden, weil der Administrator leere Einstellungsobjekte hinzufügt\nVerhindern Sie einige von Sentry gemeldete Absturzfälle",
@@ -82,18 +95,6 @@
       "3.2.16": {
         "en": "see CHANGELOG.md",
         "de": "siehe CHANGELOG.md",
-        "ru": "см. CHANGELOG.md",
-        "pt": "veja CHANGELOG.md",
-        "nl": "zie CHANGELOG.md",
-        "fr": "voir CHANGELOG.md",
-        "it": "vedi CHANGELOG.md",
-        "es": "ver CHANGELOG.md",
-        "pl": "zobacz CHANGELOG.md",
-        "zh-cn": "看到CHANGELOG.md"
-      },
-      "3.1.6": {
-        "en": "see CHANGELOG.md",
-        "de": "Siehe CHANGELOG.md",
         "ru": "см. CHANGELOG.md",
         "pt": "veja CHANGELOG.md",
         "nl": "zie CHANGELOG.md",

@@ -3,12 +3,12 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## __WORK IN PROGRESS__
-* (Bluefox) Exclude iot and cloud from masking special properties
-* (AlCalzone) Add time based JSONL compaction (once a day)
-* (Apollon77/foxriver76) Optimize message sequence id generation
+## 4.0.24 (2022-12-16)
+* (Bluefox) Excluded iot and cloud from masking special properties
+* (AlCalzone) Added time based JSONL compaction (once a day)
+* (Apollon77/foxriver76) Optimized message sequence id generation
 * (Apollon77) Use ipv4 as primary DNS lookup option also in Node.js 18+
-* (buanet) Extend Docker detection to prevent issues in new Debian
+* (buanet) Extended Docker detection to prevent issues in new Debian
 
 ## 4.0.23 (2022-04-19)
 * (AlCalzone) normalize JSONL options to prevent issues because of admin adding empty setting objects
