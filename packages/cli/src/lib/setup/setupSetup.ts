@@ -182,6 +182,7 @@ export class Setup {
 
         // check meta.user
         try {
+            // @ts-expect-error due to check above type gets never, we should add the methods to the interface in db
             const objExists = await this.objects.objectExists('meta.user');
             if (objExists) {
                 // check if dir is missing
