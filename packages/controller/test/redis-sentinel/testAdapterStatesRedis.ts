@@ -1,12 +1,8 @@
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node:true */
-/* jshint expr:true */
-'use strict';
-
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const testAdapter = require(__dirname + '/../lib/testAdapter');
 const dataDir = __dirname + '/../../tmp/data-redis';
-const fs = require('fs');
+import fs from 'fs';
+
 let isExecute = fs.existsSync(__dirname + '/../lib/objects/objectsInRedis.js');
 if (!isExecute) {
     try {

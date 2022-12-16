@@ -828,7 +828,7 @@ export class StateRedisClient {
     /**
      * Promise-version of setState
      */
-    setStateAsync(id: string, state: ioBroker.SettableState): Promise<string> {
+    setStateAsync(id: string, state: ioBroker.SettableState | ioBroker.StateValue): Promise<string> {
         return new Promise((resolve, reject) => {
             this.setState(id, state, (err, res) => {
                 if (err) {

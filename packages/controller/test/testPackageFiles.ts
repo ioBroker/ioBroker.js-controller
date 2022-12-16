@@ -1,12 +1,6 @@
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node: true */
-/* jshint expr: true */
-'use strict';
-
-const expect = require('chai').expect;
-const fs = require('fs');
-const semverDiff = require('semver/functions/diff');
+import { expect } from 'chai';
+import fs from 'fs';
+import semverDiff from 'semver/functions/diff';
 
 describe('Test package.json and io-package.json', () => {
     it('Test package files', done => {
