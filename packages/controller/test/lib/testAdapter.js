@@ -53,37 +53,37 @@ function testAdapter(options) {
         objectsConfig
     };
 
-    function startAdapter(callback) {
+    function startAdapter() {
         const { Adapter } = require('@iobroker/js-controller-adapter');
 
-        context.adapter = new Adapter({
-            config: {
-                states: statesConfig,
-                objects: objectsConfig,
-                consoleOutput: true
-            },
-            dirname: __dirname + '/',
-            name: context.adapterShortName,
-            objectChange: (id, obj) => context.onAdapterObjectChanged && context.onAdapterObjectChanged(id, obj),
-            stateChange: (id, state) => context.onAdapterStateChanged && context.onAdapterStateChanged(id, state),
-            fileChange: (id, fileName, size) =>
-                context.onAdapterFileChanged && context.onAdapterFileChanged(id, fileName, size),
-            unload: callback => {
-                if (context.onAdapterUnload) {
-                    context.onAdapterUnload(callback);
-                }
-            },
-            message: obj => {
-                if (context.onAdapterMessage) {
-                    context.onAdapterMessage(obj);
-                }
-            },
-            ready: () => {
-                if (callback) {
-                    callback();
-                }
-            },
-            compact: true
+        return new Promise(resolve => {
+            context.adapter = new Adapter({
+                config: {
+                    states: statesConfig,
+                    objects: objectsConfig,
+                    consoleOutput: true
+                },
+                dirname: __dirname + '/',
+                name: context.adapterShortName,
+                objectChange: (id, obj) => context.onAdapterObjectChanged && context.onAdapterObjectChanged(id, obj),
+                stateChange: (id, state) => context.onAdapterStateChanged && context.onAdapterStateChanged(id, state),
+                fileChange: (id, fileName, size) =>
+                    context.onAdapterFileChanged && context.onAdapterFileChanged(id, fileName, size),
+                unload: callback => {
+                    if (context.onAdapterUnload) {
+                        context.onAdapterUnload(callback);
+                    }
+                },
+                message: obj => {
+                    if (context.onAdapterMessage) {
+                        context.onAdapterMessage(obj);
+                    }
+                },
+                ready: () => {
+                    resolve();
+                },
+                compact: true
+            });
         });
     }
 
@@ -204,7 +204,7 @@ function testAdapter(options) {
     }
 
     describe(`${options.name} ${context.adapterShortName} adapter`, function () {
-        before('Test ' + context.adapterShortName + ' adapter: Start js-controller and adapter', function (_done) {
+        before('Test ' + context.adapterShortName + ' adapter: Start js-controller and adapter', async function () {
             this.timeout(10000); // no installation
 
             addInstance();
@@ -224,26 +224,23 @@ function testAdapter(options) {
                 }
             };
 
-            setup.startController(
-                {
-                    objects: _objectsConfig,
-                    states: _statesConfig
-                },
-                async (_objects, _states) => {
-                    context.objects = _objects;
-                    context.states = _states;
-                    expect(context.objects).to.be.ok;
-                    expect(context.states).to.be.ok;
+            const { objects: _objects, states: _states } = await setup.startController({
+                objects: _objectsConfig,
+                states: _statesConfig
+            });
 
-                    if (objectsConfig.type !== 'file') {
-                        const objs = require('./objects.json');
-                        await addObjects(_objects, objs);
-                        startAdapter(() => _done());
-                    } else {
-                        startAdapter(() => _done());
-                    }
-                }
-            );
+            context.objects = _objects;
+            context.states = _states;
+            expect(context.objects).to.be.ok;
+            expect(context.states).to.be.ok;
+
+            if (objectsConfig.type !== 'file') {
+                const objs = require('./objects.json');
+                await addObjects(_objects, objs);
+                await startAdapter();
+            } else {
+                await startAdapter();
+            }
         });
 
         it(`${options.name} ${context.adapterShortName} adapter: Check if adapter started`, function (done) {
@@ -283,7 +280,7 @@ function testAdapter(options) {
                 let count = 0;
 
                 context.states.getState(
-                    'system.adapter.' + context.adapterShortName + '.0.compactMode',
+                    `system.adapter.${context.adapterShortName}.0.compactMode`,
                     function (err, state) {
                         expect(state.val).to.be.equal(true);
                         setTimeout(() => !--count && done(), 0);
@@ -292,7 +289,7 @@ function testAdapter(options) {
 
                 count++;
                 context.states.getState(
-                    'system.adapter.' + context.adapterShortName + '.0.connected',
+                    `system.adapter.${context.adapterShortName}.0.connected`,
                     function (err, state) {
                         expect(state.val).to.be.equal(true);
                         setTimeout(() => !--count && done(), 0);
@@ -300,8 +297,14 @@ function testAdapter(options) {
                 );
 
                 count++;
+                context.states.getState(`system.adapter.${context.adapterShortName}.0.memRss`, function (err, state) {
+                    expect(state.val).to.be.equal(0);
+                    setTimeout(() => !--count && done(), 0);
+                });
+
+                count++;
                 context.states.getState(
-                    'system.adapter.' + context.adapterShortName + '.0.memRss',
+                    `system.adapter.${context.adapterShortName}.0.memHeapTotal`,
                     function (err, state) {
                         expect(state.val).to.be.equal(0);
                         setTimeout(() => !--count && done(), 0);
@@ -310,7 +313,7 @@ function testAdapter(options) {
 
                 count++;
                 context.states.getState(
-                    'system.adapter.' + context.adapterShortName + '.0.memHeapTotal',
+                    `system.adapter.${context.adapterShortName}.0.memHeapUsed`,
                     function (err, state) {
                         expect(state.val).to.be.equal(0);
                         setTimeout(() => !--count && done(), 0);
@@ -318,22 +321,10 @@ function testAdapter(options) {
                 );
 
                 count++;
-                context.states.getState(
-                    'system.adapter.' + context.adapterShortName + '.0.memHeapUsed',
-                    function (err, state) {
-                        expect(state.val).to.be.equal(0);
-                        setTimeout(() => !--count && done(), 0);
-                    }
-                );
-
-                count++;
-                context.states.getState(
-                    'system.adapter.' + context.adapterShortName + '.0.uptime',
-                    function (err, state) {
-                        expect(state.val).to.be.at.least(0);
-                        setTimeout(() => !--count && done(), 0);
-                    }
-                );
+                context.states.getState(`system.adapter.${context.adapterShortName}.0.uptime`, function (err, state) {
+                    expect(state.val).to.be.at.least(0);
+                    setTimeout(() => !--count && done(), 0);
+                });
             }
         );
 
@@ -389,32 +380,39 @@ function testAdapter(options) {
          });
          });*/
 
-        after(`${options.name} ${context.adapterShortName} adapter: Stop js-controller`, function (done) {
+        after(`${options.name} ${context.adapterShortName} adapter: Stop js-controller`, async function () {
             this.timeout(35000);
 
             expect(context.adapter.connected).to.be.true;
-            setup.stopController(normalTerminated => {
-                console.log('Adapter normal terminated: ' + normalTerminated);
-                let adapterStopped = false;
-                context.adapter.on('exit', () => {
-                    console.log('Adapter stopped');
-                    adapterStopped = true;
-                    expect(context.adapter.connected).to.be.false;
-                });
-                // redis server cannot be stopped
-                if (objectsConfig.type === 'file') {
-                    setTimeout(() => {
-                        expect(context.adapter.connected).to.be.false;
-                        context.adapter.stop();
-                        setTimeout(() => {
-                            expect(adapterStopped).to.be.true;
-                            setTimeout(done, 2000);
-                        }, 2000);
-                    }, 3000 + (process.platform === 'win32' ? 5000 : 0));
-                } else {
-                    setTimeout(done, 2000);
-                }
+            await setup.stopController();
+            console.log('Adapter terminated');
+            let adapterStopped = false;
+            context.adapter.on('exit', () => {
+                console.log('Adapter stopped');
+                adapterStopped = true;
+                expect(context.adapter.connected).to.be.false;
             });
+            // redis server cannot be stopped
+            if (objectsConfig.type === 'file') {
+                await new Promise(resolve => {
+                    setTimeout(() => resolve(), 3_000 + (process.platform === 'win32' ? 5_000 : 0));
+                });
+                expect(context.adapter.connected).to.be.false;
+                context.adapter.stop();
+
+                await new Promise(resolve => {
+                    setTimeout(() => resolve(), 2_000);
+                });
+                expect(adapterStopped).to.be.true;
+
+                await new Promise(resolve => {
+                    setTimeout(() => resolve(), 2_000);
+                });
+            } else {
+                await new Promise(resolve => {
+                    setTimeout(() => resolve(), 2_000);
+                });
+            }
         });
     });
 }

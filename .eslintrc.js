@@ -63,14 +63,14 @@ module.exports = {
         'no-unneeded-ternary': 'error'
     },
     parserOptions: {
-        ecmaVersion: 2019
+        ecmaVersion: 2021
     },
     overrides: [
         // we need ts parser for ts files
         {
             parser: '@typescript-eslint/parser',
             parserOptions: {
-                ecmaVersion: 2019,
+                ecmaVersion: 2021,
                 sourceType: 'module',
                 project: './tsconfig.json'
             },

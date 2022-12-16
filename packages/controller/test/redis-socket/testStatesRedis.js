@@ -1,13 +1,8 @@
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node:true */
-/* jshint expr:true */
-'use strict';
+import fs from 'fs';
+import path from 'path';
+import { expect } from 'chai';
+import { startController, stopController } from '../lib/setup4controller';
 
-const fs = require('fs');
-const path = require('path');
-const expect = require('chai').expect;
-const setup = require(path.join(__dirname, '..', 'lib', 'setup4controller'));
 const dataDir = path.join(__dirname, '..', '..', 'tmp', 'data');
 let objects = null;
 let states = null;
@@ -29,43 +24,42 @@ function cleanDbs() {
 }
 
 describe('States-Redis-Socket: Test states', function () {
-    before('States-Redis-Socket: Start js-controller', function (_done) {
-        this.timeout(10000);
+    before('States-Redis-Socket: Start js-controller', async function () {
+        this.timeout(10_000);
         cleanDbs();
 
-        setup.startController(
-            {
-                objects: {
-                    dataDir: dataDir,
-                    onChange: (id, _obj) => {
-                        console.log('object changed. ' + id);
-                    }
-                },
-                states: {
-                    type: 'redis',
-                    host: '/var/run/redis.sock',
-                    port: 0,
-                    onChange: (id, state) => {
-                        console.log('Redis-state-Socket changed. ' + id);
-                        if (onStatesChanged) {
-                            onStatesChanged(id, state);
-                        }
-                    }
+        const { objects: _objects, states: _states } = await startController({
+            objects: {
+                dataDir: dataDir,
+                onChange: (id, _obj) => {
+                    console.log('object changed. ' + id);
                 }
             },
-            (_objects, _states) => {
-                objects = _objects;
-                states = _states;
-                states.subscribe('*');
-                expect(objects).to.be.ok;
-                expect(states).to.be.ok;
-                setTimeout(_done, 5000);
+            states: {
+                type: 'redis',
+                host: '/var/run/redis.sock',
+                port: 0,
+                onChange: (id, state) => {
+                    console.log('Redis-state-Socket changed. ' + id);
+                    if (onStatesChanged) {
+                        onStatesChanged(id, state);
+                    }
+                }
             }
-        );
+        });
+
+        objects = _objects;
+        states = _states;
+        states.subscribe('*');
+        expect(objects).to.be.ok;
+        expect(states).to.be.ok;
+        await new Promise(resolve => {
+            setTimeout(() => resolve(), 5000);
+        });
     });
 
     it('States-Redis-Socket: should setState', function (done) {
-        this.timeout(10000);
+        this.timeout(10_000);
 
         const testID = 'testObject.0.test1';
         onStatesChanged = (id, state) => {
@@ -93,10 +87,8 @@ describe('States-Redis-Socket: Test states', function () {
         });
     });
 
-    after('States-Redis-Socket: Stop js-controller', function (done) {
-        this.timeout(5000);
-        setup.stopController(function () {
-            done();
-        });
+    after('States-Redis-Socket: Stop js-controller', async function () {
+        this.timeout(5_000);
+        await stopController();
     });
 });

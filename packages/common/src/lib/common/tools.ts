@@ -375,6 +375,7 @@ function getMac(callback: (e?: Error | null, mac?: string) => void) {
  */
 export function isDocker(): boolean {
     try {
+        // deprecated, works only with docker daemon
         fs.statSync('/.dockerenv');
         return true;
     } catch {
@@ -382,7 +383,15 @@ export function isDocker(): boolean {
     }
 
     try {
-        // check docker group
+        // ioBroker docker image specific, will be created during build process
+        fs.statSync('/opt/scripts/.docker_config/.thisisdocker');
+        return true;
+    } catch {
+        // ignore error
+    }
+
+    try {
+        // check docker group, works in most cases, but not on arm
         return fs.readFileSync('/proc/self/cgroup', 'utf8').includes('docker');
     } catch {
         return false;
@@ -905,6 +914,7 @@ interface Multilingual {
     it?: string;
     es?: string;
     pl?: string;
+    uk?: string;
     'zh-cn'?: string;
 }
 
@@ -3803,6 +3813,37 @@ export function compressFileGZip(
 
         input.pipe(compress).pipe(output);
     });
+}
+
+export interface DataDirValidation {
+    /** if data directory is valid */
+    valid: boolean;
+    /** absolute path it resolves too */
+    path: string;
+    /** reason of rejection */
+    reason: string;
+}
+
+/**
+ * Validate if the dir, is a valid dataDir
+ * Data dirs in node_modules are not allowed, note that dataDirs are relative to js-controller dir or absolute
+ *
+ * @param dataDir dataDir to check
+ */
+export function validateDataDir(dataDir: string): DataDirValidation {
+    if (!path.isAbsolute(dataDir)) {
+        dataDir = path.normalize(path.join(getControllerDir(), dataDir));
+    }
+
+    const pathParts = dataDir.split(path.sep);
+
+    const isValid = !pathParts.includes('node_modules');
+
+    return {
+        valid: isValid,
+        path: dataDir,
+        reason: isValid ? 'Valid data directory' : 'Data directory is not allowed to point into node_modules folder'
+    };
 }
 
 /**

@@ -1,11 +1,7 @@
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node:true */
-/* jshint expr:true */
-'use strict';
-
+import path from 'path';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const testAdapter = require('../lib/testAdapter');
-const dataDir = `${__dirname}/../tmp/data`;
+const dataDir = path.join(__dirname, '..', 'tmp', 'data');
 
 const statesConfig = {
     options: {

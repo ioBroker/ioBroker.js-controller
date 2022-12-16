@@ -3808,8 +3808,8 @@ export class ObjectsInRedisClient {
     // this function is very ineffective. Because reads all objects and then process them
     private async _applyViewFunc(
         func: ObjectViewFunction,
-        params: ioBroker.GetObjectViewParams,
-        options: CallOptions,
+        params?: ioBroker.GetObjectViewParams,
+        options: CallOptions = {},
         callback?: ioBroker.GetObjectViewCallback<any>
     ): Promise<void | ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectViewCallback<any>>> {
         if (!this.client) {
@@ -3853,7 +3853,7 @@ export class ObjectsInRedisClient {
             wildCardLastPos = false; // TODO do in LUA
         }
 
-        // if start and and end keys are equal modify end key
+        // if start and end keys are equal modify end key
         if (params.startkey === params.endkey) {
             params.endkey = `${params.endkey}\u0000`;
         }
@@ -4278,8 +4278,8 @@ export class ObjectsInRedisClient {
     private async _getObjectView(
         design: string,
         search: string,
-        params: ioBroker.GetObjectViewParams,
-        options: CallOptions,
+        params?: ioBroker.GetObjectViewParams,
+        options?: CallOptions,
         callback?: ioBroker.GetObjectViewCallback<any>
     ) {
         if (!this.client) {
@@ -4324,7 +4324,7 @@ export class ObjectsInRedisClient {
     getObjectView<Design extends string = string, Search extends string = string>(
         design: Design,
         search: Search,
-        params: ioBroker.GetObjectViewParams,
+        params?: ioBroker.GetObjectViewParams,
         options?: CallOptions | null
     ): ioBroker.GetObjectViewPromise<ioBroker.InferGetObjectViewItemType<Design, Search>>;
 
@@ -4332,7 +4332,7 @@ export class ObjectsInRedisClient {
     getObjectView<Design extends string = string, Search extends string = string>(
         design: Design,
         search: Search,
-        params: ioBroker.GetObjectViewParams,
+        params: ioBroker.GetObjectViewParams | undefined,
         options: CallOptions | undefined | null,
         callback: ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>
     ): void;
@@ -4348,7 +4348,7 @@ export class ObjectsInRedisClient {
     getObjectView<Design extends string = string, Search extends string = string>(
         design: Design,
         search: Search,
-        params: ioBroker.GetObjectViewParams,
+        params?: ioBroker.GetObjectViewParams,
         options?: any,
         callback?: ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>
     ): void | ioBroker.GetObjectViewPromise<ioBroker.InferGetObjectViewItemType<Design, Search>> {
@@ -4380,7 +4380,7 @@ export class ObjectsInRedisClient {
     getObjectViewAsync(
         design: string,
         search: string,
-        params: ioBroker.GetObjectViewParams,
+        params?: ioBroker.GetObjectViewParams,
         options?: CallOptions
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectViewCallback<any>>> {
         return new Promise((resolve, reject) =>
@@ -4541,6 +4541,7 @@ export class ObjectsInRedisClient {
         callback?: (err?: Error | null, obj?: ObjectIdValue, id?: string) => void
     ): Promise<[ObjectIdValue, string] | void> {
         if (!id || typeof id !== 'string' || utils.REG_CHECK_ID.test(id)) {
+            // @ts-expect-error we fix when removing cb
             return tools.maybeCallbackWithError(callback, `Invalid ID: ${id}`);
         }
         if (!this.client) {
@@ -4558,6 +4559,7 @@ export class ObjectsInRedisClient {
             oldObj = oldObj ? JSON.parse(oldObj) : null;
         } catch {
             this.log.error(`${this.namespace} Cannot parse JSON ${id}: ${oldObj}`);
+            // @ts-expect-error we fix when removing cb
             return tools.maybeCallbackWithError(callback, `Cannot parse JSON ${id}: ${oldObj}`);
         }
         if (!utils.checkObject(oldObj, options, CONSTS.ACCESS_WRITE)) {
