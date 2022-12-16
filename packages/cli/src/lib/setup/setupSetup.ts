@@ -1193,7 +1193,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                 config = fs.readJSONSync(configFileName);
                 if (!Object.prototype.hasOwnProperty.call(config, 'dataDir')) {
                     // Workaround: there was a bug with admin v5 which could remove the dataDir attribute -> fix this
-                    // TODO: remove it as soon as all adapters are fixed which use systemConfig.dataDir, with v4.2 we can for sure remove this
+                    // TODO: remove it as soon as all adapters are fixed which use systemConfig.dataDir, with v5.1 we can for sure remove this
                     config.dataDir = tools.getDefaultDataDir();
                     fs.writeJSONSync(configFileName, config, { spaces: 2 });
                 }
