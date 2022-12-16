@@ -914,6 +914,7 @@ interface Multilingual {
     it?: string;
     es?: string;
     pl?: string;
+    uk?: string;
     'zh-cn'?: string;
 }
 
