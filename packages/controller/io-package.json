@@ -950,7 +950,7 @@
           "severity": "alert",
           "description": {
             "en": "Installed version was blocklisted by ioBroker team.\nPlease update adapter to official version in repository before enabling it.\nInstance must be enabled manually.",
-            "de": "Die installierte Version wurde vom ioBroker Team zurückgezogen.\nBitte aktualisieren Sie den Adapter auf die offizielle Version im Repository, bevor Sie ihn aktivieren.\nDie Instanz muss manuell aktiviert werden.",
+            "de": "Die installierte Version wurde vom ioBroker Team zurückgezogen und die Instanz wurde deaktiviert.\nBevor der Adapter wieder aktiviert werden kann, muss er auf die offizielle Version im Repository aktualisiert werden.\nDie Instanz muss danach manuell aktiviert werden.",
             "ru": "Установленная версия была отозвана назад командой ioBroker.\nПеред включением обновите адаптер до официальной версии в репозитории.\nЭкземпляр должен быть активирован вручную.",
             "pt": "A versão instalada foi bloqueada pela equipe ioBroker.\nPor favor, atualize o adaptador para versão mais recente ou disponível antes de habilitar.\nA instância deve ser activada manualmente.",
             "nl": "Installe versie werd geblokkeerd door ioBroker team.\nEen update aan de nieuwe of beschikbare versie voor het instorten.\nInstance moet handmatig zijn.",
