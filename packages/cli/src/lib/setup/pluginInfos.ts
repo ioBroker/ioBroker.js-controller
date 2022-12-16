@@ -1,11 +1,9 @@
-'use strict';
-
 // Special Handling to inform users about reporting plugins correctly
-module.exports.isReportingPlugin = name => {
+export function isReportingPlugin(name: string): boolean {
     return name === 'sentry';
-};
+}
 
-module.exports.PLUGIN_INFOS = {
+export const PLUGIN_INFOS = {
     sentry: {
         headline: {
             en: 'ATTENTION: Error reporting via Sentry will be activated on next start of ioBroker',
@@ -33,4 +31,4 @@ module.exports.PLUGIN_INFOS = {
                 'ioBroker希望确保提供最稳定的智能家居系统。\n为此，我们决定在js-controller和适配器中实现自动错误和崩溃报告解决方案。\n\n您的炸弹人的下一个开始将启用此报告！\n\n对于导致js-controller或相关适配器之一崩溃的任何错误，错误详细信息将发送到服务器。对于js-controller和核心适配器，此服务器位于德国并在其中运行。对于社区适配器，请检查受影响的适配器的Github自述文件，以了解使用哪个Sentry服务器的详细信息。\n\n如果要禁用错误报告，可以使用以下命令\n“ iobroker plugin disable sentry”\n此命令还将确保在此主机上运行的任何适配器都不会将崩溃报告数据发送到哨兵。'
         }
     }
-};
+} as const;

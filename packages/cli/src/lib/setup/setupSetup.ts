@@ -7,15 +7,28 @@
  *
  */
 
-'use strict';
+import type {
+    CleanDatabaseHandler,
+    DbConnectAsync,
+    IoBrokerJSON,
+    IoPackage,
+    ProcessExitCallback,
+    ResetDbConnect,
+    RestartController
+} from '../_Types';
+import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
+import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
-const fs = require('fs-extra');
-const path = require('path');
-const { tools, EXIT_CODES } = require('@iobroker/js-controller-common');
-const dbTools = require('@iobroker/js-controller-common-db').tools;
-const Backup = require('@iobroker/js-controller-cli').setupBackup;
-const deepClone = require('deep-clone');
-const pluginInfos = require('./pluginInfos');
+import fs from 'fs-extra';
+import path from 'path';
+import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
+import { tools as dbTools } from '@iobroker/js-controller-common-db';
+import { BackupRestore } from './setupBackup';
+import crypto from 'crypto';
+import deepClone from 'deep-clone';
+import * as pluginInfos from './pluginInfos';
+import rl from 'readline-sync';
+import os from 'os';
 
 const COLOR_RED = '\x1b[31m';
 const COLOR_YELLOW = '\x1b[33m';
@@ -23,43 +36,47 @@ const COLOR_RESET = '\x1b[0m';
 const COLOR_GREEN = '\x1b[32m';
 const CONTROLLER_DIR = tools.getControllerDir();
 
-/** @class */
-function Setup(options) {
-    options = options || {};
+export interface CLISetupOptions {
+    dbConnectAsync: DbConnectAsync;
+    cleanDatabase: CleanDatabaseHandler;
+    processExit: ProcessExitCallback;
+    params: Record<string, any>;
+    restartController: RestartController;
+    resetDbConnect: ResetDbConnect;
+}
 
-    const processExit = options.processExit;
-    const dbConnect = options.dbConnect;
-    const params = options.params;
-    const cleanDatabase = options.cleanDatabase;
-    const resetDbConnect = options.resetDbConnect;
-    const restartController = options.restartController;
-    let objects;
-    let states;
+type ConfigObject = ioBroker.OtherObject & { type: 'config' };
 
-    function mkpathSync(rootpath, dirpath) {
-        // Remove filename
-        dirpath = dirpath.split('/');
-        dirpath.pop();
+export class Setup {
+    private readonly options: CLISetupOptions;
+    private readonly processExit: ProcessExitCallback;
+    private states: StatesRedisClient | undefined;
+    private objects: ObjectsRedisClient | undefined;
+    private readonly dbConnectAsync: DbConnectAsync;
+    private readonly params: Record<string, any>;
+    private readonly cleanDatabase: CleanDatabaseHandler;
+    private readonly restartController: RestartController;
+    private readonly resetDbConnect: ResetDbConnect;
 
-        if (!dirpath.length) {
-            return;
-        }
+    constructor(options: CLISetupOptions) {
+        this.options = options;
+        this.processExit = options.processExit;
+        this.dbConnectAsync = options.dbConnectAsync;
+        this.params = options.params;
+        this.cleanDatabase = options.cleanDatabase;
+        this.resetDbConnect = options.resetDbConnect;
+        this.restartController = options.restartController;
 
-        for (const dir of dirpath) {
-            rootpath = path.join(rootpath, dir);
-            if (!fs.existsSync(rootpath)) {
-                if (dir !== '..') {
-                    fs.mkdirSync(rootpath);
-                } else {
-                    throw new Error(`Cannot create ${rootpath}${dirpath.join('/')}`);
-                }
-            }
-        }
+        this.dbSetup = this.dbSetup.bind(this);
     }
 
-    async function informAboutPlugins(systemConfig, callback) {
-        let ioPackage;
-        let ioConfig;
+    async informAboutPlugins(systemConfig?: ConfigObject | null): Promise<void> {
+        if (!this.states) {
+            throw new Error('States not set up, call setupObjects first');
+        }
+
+        let ioPackage: IoPackage | undefined;
+        let ioConfig: IoBrokerJSON | undefined;
 
         const configFile = tools.getConfigFileName();
         try {
@@ -73,7 +90,7 @@ function Setup(options) {
             console.error('Can not read js-controller config file. Ignore plugins defined there.');
         }
 
-        const plugins = {};
+        const plugins: Record<string, any> = {};
         if (ioPackage && ioPackage.common && ioPackage.common.plugins) {
             for (const [plugin, pluginData] of Object.entries(ioPackage.common.plugins)) {
                 if (pluginData.enabled !== false) {
@@ -97,6 +114,7 @@ function Setup(options) {
         }
 
         for (const plugin of Object.keys(plugins)) {
+            // @ts-expect-error it is our testing style
             const pluginInfo = pluginInfos.PLUGIN_INFOS[plugin];
             if (!pluginInfo) {
                 // We do not have relevant information to display
@@ -109,7 +127,7 @@ function Setup(options) {
 
             let enabledState;
             try {
-                enabledState = await states.getStateAsync(
+                enabledState = await this.states.getStateAsync(
                     `system.host.${tools.getHostName()}.plugins.${plugin}.enabled`
                 );
             } catch {
@@ -130,41 +148,49 @@ function Setup(options) {
             console.error();
             console.error(COLOR_RESET);
         }
-        callback();
     }
 
     /**
      * Called after io-package objects are created
      *
-     * @param {Record<string, any>} systemConfig
-     * @param {() => void} callback
-     * @return {Promise<void>}
+     * @param systemConfig
+     * @param callback
      */
-    async function setupReady(systemConfig, callback) {
+    async setupReady(systemConfig: ConfigObject | undefined | null, callback: () => void): Promise<void> {
         if (!callback) {
-            console.log('database setup done. You can add adapters and start ' + tools.appName + ' now');
-            return processExit(EXIT_CODES.NO_ERROR);
+            console.log(`database setup done. You can add adapters and start ${tools.appName} now`);
+            return this.processExit(EXIT_CODES.NO_ERROR);
+        }
+
+        if (!this.objects) {
+            throw new Error('Objects not set up, call setupObjects first');
         }
 
         // clean up invalid user group assignments (non-existing user in a group)
         try {
-            await _cleanupInvalidGroupAssignments();
+            await this._cleanupInvalidGroupAssignments();
         } catch (e) {
             console.error(`Cannot clean up invalid user group assignments: ${e.message}`);
         }
 
-        if (!objects.syncFileDirectory || !objects.dirExists) {
-            return void informAboutPlugins(systemConfig, callback);
+        // special methods which are only there on objects server
+        // TODO this check will lead to objects being never in the following code
+        if (!('syncFileDirectory' in this.objects) || !('dirExists' in this.objects)) {
+            await this.informAboutPlugins(systemConfig);
+            return void callback();
         }
+
         // check meta.user
         try {
-            const objExists = await objects.objectExists('meta.user');
+            const objExists = await this.objects.objectExists('meta.user');
             if (objExists) {
                 // check if dir is missing
-                const dirExists = objects.dirExists('meta.user');
+                // @ts-expect-error due to check above type gets never, we should add the methods to the interface in db
+                const dirExists = this.objects.dirExists('meta.user');
                 if (!dirExists) {
                     // create meta.user, so users see them as upload target
-                    await objects.mkdirAsync('meta.user');
+                    // @ts-expect-error due to check above type gets never, we should add the methods to the interface in db
+                    await this.objects.mkdirAsync('meta.user');
                     console.log('Successfully created "meta.user" directory');
                 }
             }
@@ -173,7 +199,8 @@ function Setup(options) {
         }
 
         try {
-            const { numberSuccess, notifications } = objects.syncFileDirectory();
+            // @ts-expect-error due to check above type gets never, we should add the methods to the interface in db
+            const { numberSuccess, notifications } = this.objects.syncFileDirectory();
             numberSuccess &&
                 console.log(
                     `${numberSuccess} file(s) successfully synchronized with ioBroker storage.
@@ -182,164 +209,168 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             if (notifications.length) {
                 console.log();
                 console.log('The following notifications happened during sync: ');
-                notifications.forEach(el => console.log(`- ${el}`));
+                notifications.forEach((el: string) => console.log(`- ${el}`));
                 console.log();
             }
-            return void informAboutPlugins(systemConfig, callback);
+            await this.informAboutPlugins(systemConfig);
+            return void callback();
         } catch (err) {
             console.error(`Error on file directory sync: ${err.message}`);
-            return void informAboutPlugins(systemConfig, callback);
+            await this.informAboutPlugins(systemConfig);
+            return void callback();
         }
     }
 
-    async function dbSetup(iopkg, ignoreExisting, callback) {
-        if (typeof ignoreExisting === 'function') {
-            callback = ignoreExisting;
-            ignoreExisting = false;
+    async dbSetup(iopkg: IoPackage, ignoreExisting: boolean, callback: () => void): Promise<void> {
+        if (!this.objects) {
+            throw new Error('Objects not set up, call setupObjects first');
         }
 
         if (iopkg.objects && iopkg.objects.length > 0) {
-            const obj = iopkg.objects.pop();
-            objects.getObject(obj._id, (err, _obj) => {
-                if (err || !_obj || obj._id.startsWith('_design/')) {
-                    obj.from = `system.host.${tools.getHostName()}.cli`;
-                    obj.ts = Date.now();
-                    objects.setObject(obj._id, obj, () => {
-                        console.log(`object ${obj._id} ${err || !_obj ? 'created' : 'updated'}`);
-                        setTimeout(dbSetup, 25, iopkg, ignoreExisting, callback);
-                    });
-                } else {
-                    !ignoreExisting && console.log('object ' + obj._id + ' yet exists');
-                    setTimeout(dbSetup, 25, iopkg, ignoreExisting, callback);
+            const obj = iopkg.objects.pop()!;
+
+            let existingObj: ioBroker.Object | undefined | null;
+            try {
+                existingObj = await this.objects.getObjectAsync(obj._id);
+            } catch {
+                // ignore
+            }
+            if (!existingObj || existingObj._id.startsWith('_design/')) {
+                obj.from = `system.host.${tools.getHostName()}.cli`;
+                obj.ts = Date.now();
+                await this.objects.setObjectAsync(obj._id, obj);
+                console.log(`object ${obj._id} ${!existingObj ? 'created' : 'updated'}`);
+                setTimeout(this.dbSetup, 25, iopkg, ignoreExisting, callback);
+            } else {
+                if (!ignoreExisting) {
+                    console.log(`object ${obj._id} already exists`);
                 }
-            });
+                setTimeout(this.dbSetup, 25, iopkg, ignoreExisting, callback);
+            }
         } else {
-            await tools.createUuid(objects);
+            await tools.createUuid(this.objects);
+            let configObj: ConfigObject | null | undefined;
             // check if encrypt secret exists
-            objects.getObject('system.config', (err, obj) => {
-                let configFixed = false;
-                if (obj && obj.type !== 'config') {
-                    obj.type = 'config';
-                    obj.from = `system.host.${tools.getHostName()}.cli`;
-                    obj.ts = Date.now();
-                    configFixed = true;
-                }
-                if (obj && (!obj.native || !obj.native.secret)) {
-                    require('crypto').randomBytes(24, (ex, buf) => {
-                        obj.native = obj.native || {};
-                        obj.native.secret = buf.toString('hex');
-                        obj.from = `system.host.${tools.getHostName()}.cli`;
-                        obj.ts = Date.now();
-                        objects.setObject('system.config', obj, () => setupReady(obj, callback));
-                    });
+            try {
+                configObj = await this.objects.getObject('system.config');
+            } catch {
+                // assume non existing
+            }
+
+            let configFixed = false;
+            if (configObj && configObj.type !== 'config') {
+                configObj.type = 'config';
+                configObj.from = `system.host.${tools.getHostName()}.cli`;
+                configObj.ts = Date.now();
+                configFixed = true;
+            }
+
+            if (configObj && (!configObj.native || !configObj.native.secret)) {
+                const buf = crypto.randomBytes(24);
+                configObj.native = configObj!.native || {};
+                configObj.native.secret = buf.toString('hex');
+                configObj.from = `system.host.${tools.getHostName()}.cli`;
+                configObj.ts = Date.now();
+                this.objects!.setObject('system.config', configObj!, () => this.setupReady(configObj!, callback));
+            } else {
+                if (configFixed) {
+                    this.objects.setObject('system.config', configObj!, () => this.setupReady(configObj!, callback));
                 } else {
-                    if (configFixed) {
-                        objects.setObject('system.config', obj, () => setupReady(obj, callback));
-                    } else {
-                        setupReady(obj, callback);
-                    }
+                    this.setupReady(configObj, callback);
                 }
-            });
+            }
         }
     }
 
     /**
      * Creates objects and does object related cleanup
      *
-     * @param {() => void} callback
-     * @param {boolean} checkCertificateOnly
+     * @param callback
+     * @param checkCertificateOnly
      */
-    function setupObjects(callback, checkCertificateOnly) {
-        dbConnect(params, async (_objects, _states) => {
-            objects = _objects;
-            states = _states;
-            const iopkg = fs.readJsonSync(path.join(CONTROLLER_DIR, 'io-package.json'));
+    async setupObjects(callback: () => void, checkCertificateOnly?: boolean): Promise<void> {
+        const { states: _states, objects: _objects } = await this.dbConnectAsync(false, this.params);
+        this.objects = _objects;
+        this.states = _states;
+        const iopkg = fs.readJsonSync(path.join(CONTROLLER_DIR, 'io-package.json'));
 
-            await _maybeMigrateSets();
+        await this._maybeMigrateSets();
 
-            if (checkCertificateOnly) {
-                let certObj;
-                if (iopkg && iopkg.objects) {
-                    for (let i = 0; i < iopkg.objects.length; i++) {
-                        if (iopkg.objects[i] && iopkg.objects[i]._id === 'system.certificates') {
-                            certObj = iopkg.objects[i];
-                            break;
-                        }
+        if (checkCertificateOnly) {
+            let certObj;
+            if (iopkg && iopkg.objects) {
+                for (const obj of iopkg.objects) {
+                    if (obj && obj._id === 'system.certificates') {
+                        certObj = obj;
+                        break;
                     }
                 }
-
-                if (certObj) {
-                    let obj;
-                    try {
-                        obj = await objects.getObjectAsync('system.certificates');
-                    } catch {
-                        // ignore
-                    }
-
-                    if (
-                        obj &&
-                        obj.native &&
-                        obj.native.certificates &&
-                        obj.native.certificates.defaultPublic !== undefined
-                    ) {
-                        let cert = tools.getCertificateInfo(obj.native.certificates.defaultPublic);
-                        if (cert) {
-                            const dateCertStart = Date.parse(cert.validityNotBefore);
-                            const dateCertEnd = Date.parse(cert.validityNotAfter);
-                            // check, if certificate is invalid (too old, longer then 825 days or keylength too short)
-                            if (
-                                dateCertEnd <= Date.now() ||
-                                cert.keyLength < 2048 ||
-                                dateCertEnd - dateCertStart > 365 * 24 * 60 * 60 * 1000
-                            ) {
-                                // generate new certificates
-                                if (cert.certificateFilename) {
-                                    console.log(
-                                        `Existing file certificate (${cert.certificateFilename}) is invalid (too old, validity longer then 345 days or keylength too short). Please check it!`
-                                    );
-                                } else {
-                                    console.log(
-                                        'Existing earlier generated certificate is invalid (too old, validity longer then 345 days or keylength too short). Generating new Certificate!'
-                                    );
-                                    cert = null;
-                                }
-                            }
-                        }
-                        if (!cert) {
-                            const newCert = tools.generateDefaultCertificates();
-
-                            obj.native.certificates.defaultPrivate = newCert.defaultPrivate;
-                            obj.native.certificates.defaultPublic = newCert.defaultPublic;
-
-                            try {
-                                await objects.setObjectAsync(obj._id, obj);
-                                console.log(`object ${obj._id} updated`);
-                            } catch {
-                                //ignore
-                            }
-                            dbSetup(iopkg, true, callback);
-                            return;
-                        }
-                    }
-                    dbSetup(iopkg, true, callback);
-                } else {
-                    dbSetup(iopkg, true, callback);
-                }
-            } else {
-                dbSetup(iopkg, callback);
             }
-        });
+
+            if (certObj) {
+                let obj;
+                try {
+                    obj = await this.objects.getObjectAsync('system.certificates');
+                } catch {
+                    // ignore
+                }
+
+                if (obj?.native?.certificates?.defaultPublic !== undefined) {
+                    let cert = tools.getCertificateInfo(obj.native.certificates.defaultPublic);
+                    if (cert) {
+                        const dateCertStart = Date.parse(cert.validityNotBefore);
+                        const dateCertEnd = Date.parse(cert.validityNotAfter);
+                        // check, if certificate is invalid (too old, longer then 825 days or keylength too short)
+                        if (
+                            dateCertEnd <= Date.now() ||
+                            cert.keyLength < 2048 ||
+                            dateCertEnd - dateCertStart > 365 * 24 * 60 * 60 * 1000
+                        ) {
+                            // generate new certificates
+                            if (cert.certificateFilename) {
+                                console.log(
+                                    `Existing file certificate (${cert.certificateFilename}) is invalid (too old, validity longer then 345 days or keylength too short). Please check it!`
+                                );
+                            } else {
+                                console.log(
+                                    'Existing earlier generated certificate is invalid (too old, validity longer then 345 days or keylength too short). Generating new Certificate!'
+                                );
+                                cert = null;
+                            }
+                        }
+                    }
+                    if (!cert) {
+                        const newCert = tools.generateDefaultCertificates();
+
+                        obj.native.certificates.defaultPrivate = newCert.defaultPrivate;
+                        obj.native.certificates.defaultPublic = newCert.defaultPublic;
+
+                        try {
+                            await this.objects.setObjectAsync(obj._id, obj);
+                            console.log(`object ${obj._id} updated`);
+                        } catch {
+                            //ignore
+                        }
+                        this.dbSetup(iopkg, true, callback);
+                        return;
+                    }
+                }
+                this.dbSetup(iopkg, true, callback);
+            } else {
+                this.dbSetup(iopkg, true, callback);
+            }
+        } else {
+            this.dbSetup(iopkg, false, callback);
+        }
     }
 
     /**
      * Asks the user if he wants to migrate objects if it makes sense and performs migration according to input
      *
-     * @param {object} newConfig - updated config
-     * @param {object} oldConfig - previous config
-     * @param {import("readline").ReadLine} rl - readline object
-     * @param {function(number=):void} callback - callback function
+     * @param newConfig - updated config
+     * @param oldConfig - previous config
      */
-    function migrateObjects(newConfig, oldConfig, rl, callback) {
+    async migrateObjects(newConfig: Record<string, any>, oldConfig: Record<string, any>): Promise<EXIT_CODES> {
         // allow migration if one of the db types changed or host changed of redis
         const oldStatesHasServer = dbTools.statesDbHasServer(oldConfig.states.type);
         const oldObjectsHasServer = dbTools.statesDbHasServer(oldConfig.objects.type);
@@ -358,9 +389,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 (!oldStatesHasServer && oldConfig.states.host !== newConfig.states.host) ||
                 (!oldObjectsHasServer && oldConfig.objects.host !== newConfig.objects.host))
         ) {
-            let fromMaster = oldStatesLocalServer || oldObjectsLocalServer;
-
-            let toMaster = newStatesLocalServer || newObjectsLocalServer;
+            let fromMaster: boolean | null = oldStatesLocalServer || oldObjectsLocalServer;
+            let toMaster: boolean | null = newStatesLocalServer || newObjectsLocalServer;
 
             if (!oldStatesHasServer && !oldObjectsHasServer) {
                 fromMaster = null; // Master can not be detected, check new
@@ -475,28 +505,35 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             if (answer === 'Y' || answer === 'y' || answer === 'J' || answer === 'j') {
                 console.log(`Connecting to previous DB "${oldConfig.objects.type}"...`);
 
-                dbConnect(params, async (objects, states, isOffline) => {
-                    if (!isOffline) {
-                        console.error(COLOR_RED);
-                        console.error('Cannot migrate DB while js-controller is still running!');
-                        console.error(
-                            'Please stop ioBroker and try again. No settings have been changed.' + COLOR_RESET
-                        );
-                        return void callback(EXIT_CODES.CONTROLLER_RUNNING);
-                    }
+                const {
+                    objects: objectsOld,
+                    states: statesOld,
+                    isOffline
+                } = await this.dbConnectAsync(false, this.params);
 
-                    const backup = new Backup({
-                        states,
-                        objects,
-                        cleanDatabase,
-                        restartController,
-                        processExit: callback
+                if (!isOffline) {
+                    console.error(COLOR_RED);
+                    console.error('Cannot migrate DB while js-controller is still running!');
+                    console.error(`Please stop ioBroker and try again. No settings have been changed.${COLOR_RESET}`);
+                    return EXIT_CODES.CONTROLLER_RUNNING;
+                }
+
+                // TODO: rm this if procesExit is gone from BackupRestore
+                // eslint-disable-next-line no-async-promise-executor
+                return new Promise(async resolve => {
+                    const backupCreate = new BackupRestore({
+                        states: statesOld,
+                        objects: objectsOld,
+                        cleanDatabase: this.cleanDatabase,
+                        restartController: this.restartController,
+                        processExit: resolve
                     });
 
                     console.log('Creating backup ...');
                     console.log(`${COLOR_GREEN}This can take some time ... please be patient!${COLOR_RESET}`);
 
-                    let filePath = await backup.createBackup('', true);
+                    // TODO: this can call processExit internally we want to get rid of this in the future
+                    let filePath = (await backupCreate.createBackup('', true))!;
                     const origBackupPath = filePath;
                     filePath = filePath.replace('.tar.gz', '-migration.tar.gz');
                     try {
@@ -506,62 +543,67 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                         console.log('[Not Critical Error] Could not rename Backup file');
                     }
 
-                    console.log('Backup created: ' + filePath);
-                    await resetDbConnect();
+                    console.log(`Backup created: ${filePath}`);
+                    await this.resetDbConnect();
 
                     console.log(`updating conf/${tools.appName}.json`);
-                    fs.writeFileSync(tools.getConfigFileName() + '.bak', JSON.stringify(oldConfig, null, 2));
+                    fs.writeFileSync(`${tools.getConfigFileName()}.bak`, JSON.stringify(oldConfig, null, 2));
                     fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(newConfig, null, 2));
 
                     console.log('');
                     console.log(`Connecting to new DB "${newConfig.objects.type}" (can take up to 20s) ...`);
 
-                    dbConnect(true, Object.assign(params, { timeout: 20000 }), (objects, states) => {
-                        if (!states || !objects) {
-                            console.error(COLOR_RED);
-                            console.log(
-                                'New Database could not be connected. Please check your settings. No settings have been changed.' +
-                                    COLOR_RESET
-                            );
+                    const { objects: objectsNew, states: statesNew } = await this.dbConnectAsync(true, {
+                        ...this.params,
+                        timeout: 20000
+                    });
 
-                            console.log('restoring conf/' + tools.appName + '.json');
+                    this.objects = objectsNew;
+                    this.states = statesNew;
+
+                    if (!statesNew || !objectsNew) {
+                        console.error(COLOR_RED);
+                        console.log(
+                            `New Database could not be connected. Please check your settings. No settings have been changed.${COLOR_RESET}`
+                        );
+
+                        console.log(`restoring conf/${tools.appName}.json`);
+                        fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));
+                        fs.unlinkSync(`${tools.getConfigFileName()}.bak`);
+
+                        return EXIT_CODES.MIGRATION_ERROR;
+                    }
+
+                    const backupRestore = new BackupRestore({
+                        states: statesNew,
+                        objects: objectsNew,
+                        cleanDatabase: this.cleanDatabase,
+                        restartController: this.restartController,
+                        processExit: resolve,
+                        dbMigration: true
+                    });
+                    console.log('Restore backup ...');
+                    console.log(`${COLOR_GREEN}This can take some time ... please be patient!${COLOR_RESET}`);
+                    backupRestore.restoreBackup(filePath, false, true, async exitCode => {
+                        if (exitCode) {
+                            console.log(`Error happened during restore. Exit-Code: ${exitCode}`);
+                            console.log();
+                            console.log(`restoring conf/${tools.appName}.json`);
                             fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));
                             fs.unlinkSync(tools.getConfigFileName() + '.bak');
-
-                            return void callback(EXIT_CODES.MIGRATION_ERROR);
+                        } else {
+                            await this._maybeMigrateSets();
+                            console.log('Backup restored - Migration successful');
+                            console.log(COLOR_YELLOW);
+                            console.log('Important: If your system consists of multiple hosts please execute ');
+                            console.log('"iobroker upload all" on the master AFTER all other hosts/slaves have ');
+                            console.log('also been updated to this states/objects database configuration AND are');
+                            console.log(`running!${COLOR_RESET}`);
                         }
-                        const backup = new Backup({
-                            states,
-                            objects,
-                            cleanDatabase,
-                            restartController,
-                            processExit: callback,
-                            dbMigration: true
-                        });
-                        console.log('Restore backup ...');
-                        console.log(`${COLOR_GREEN}This can take some time ... please be patient!${COLOR_RESET}`);
-                        backup.restoreBackup(filePath, false, true, async err => {
-                            if (err) {
-                                console.log(`Error happened during restore: ${err.message}`);
-                                console.log();
-                                console.log('restoring conf/' + tools.appName + '.json');
-                                fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));
-                                fs.unlinkSync(tools.getConfigFileName() + '.bak');
-                            } else {
-                                await _maybeMigrateSets();
-                                console.log('Backup restored - Migration successful');
-                                console.log(COLOR_YELLOW);
-                                console.log('Important: If your system consists of multiple hosts please execute ');
-                                console.log('"iobroker upload all" on the master AFTER all other hosts/slaves have ');
-                                console.log('also been updated to this states/objects database configuration AND are');
-                                console.log('running!' + COLOR_RESET);
-                            }
 
-                            callback(err ? EXIT_CODES.MIGRATION_ERROR : 0);
-                        });
+                        resolve(exitCode ? EXIT_CODES.MIGRATION_ERROR : EXIT_CODES.NO_ERROR);
                     });
                 });
-                return;
             } else if (!newObjectsHasServer) {
                 console.log('');
                 console.log('No Database migration was done.');
@@ -573,12 +615,10 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         }
         console.log(`updating conf/${tools.appName}.json`);
         fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(newConfig, null, 2));
-        callback();
+        return EXIT_CODES.NO_ERROR;
     }
 
-    this.setupCustom = callback => {
-        const rl = require('readline-sync');
-
+    async setupCustom(): Promise<EXIT_CODES> {
         let config;
         let originalConfig;
         // read actual configuration
@@ -648,6 +688,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         let getDefaultObjectsPort;
         try {
             const path = require.resolve(`@iobroker/db-objects-${otype}`);
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
             getDefaultObjectsPort = require(path).getDefaultPort;
         } catch {
             console.log(`${COLOR_RED}Unknown objects type: ${otype}${COLOR_RESET}`);
@@ -658,7 +699,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 console.log(`You also need to make sure you stay up to date with this package in the future!`);
                 console.log(COLOR_RESET);
             }
-            return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+            return EXIT_CODES.INVALID_ARGUMENTS;
         }
 
         if (otype === 'redis' && originalConfig.objects.type !== 'redis') {
@@ -673,7 +714,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         }
 
         const defaultObjectsHost = otype === originalConfig.objects.type ? originalConfig.objects.host : '127.0.0.1';
-        let ohost = rl.question(
+        let oHost: string | string[] = rl.question(
             `Host / Unix Socket of objects DB(${otype}), default[${
                 Array.isArray(defaultObjectsHost) ? defaultObjectsHost.join(',') : defaultObjectsHost
             }]: `,
@@ -681,18 +722,17 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 defaultInput: Array.isArray(defaultObjectsHost) ? defaultObjectsHost.join(',') : defaultObjectsHost
             }
         );
-        ohost = ohost.toLowerCase();
+        oHost = oHost.toLowerCase();
 
-        const op = getDefaultObjectsPort(ohost);
-        const oSentinel = otype === 'redis' && ohost.includes(',');
+        const op = getDefaultObjectsPort(oHost);
+        const oSentinel = otype === 'redis' && oHost.includes(',');
 
         if (oSentinel) {
-            ohost = ohost.split(',');
-            ohost.forEach((host, idx) => (ohost[idx] = host.trim()));
+            oHost = oHost.split(',').map(host => host.trim());
         }
 
         const defaultObjectsPort =
-            otype === originalConfig.objects.type && ohost === originalConfig.objects.host
+            otype === originalConfig.objects.type && oHost === originalConfig.objects.host
                 ? originalConfig.objects.port
                 : op;
 
@@ -705,21 +745,26 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 limit: /^[0-9, ]+$/
             }
         );
-        let oport;
+        let oPort: number | number[];
         if (userObjPort.includes(',')) {
-            oport = userObjPort.split(',');
-            oport.forEach((port, idx) => {
-                oport[idx] = parseInt(port.trim(), 10);
-                if (isNaN(oport[idx])) {
-                    console.log(`${COLOR_RED}Invalid objects port: ${oport[idx]}${COLOR_RESET}`);
-                    return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-                }
-            });
+            try {
+                oPort = userObjPort.split(',').map(port => {
+                    const parsedPort = parseInt(port.trim(), 10);
+                    if (isNaN(parsedPort)) {
+                        console.log(`${COLOR_RED}Invalid objects port: ${parsedPort}${COLOR_RESET}`);
+                        throw new Error(`Invalid objects port: ${parsedPort}`);
+                    } else {
+                        return parsedPort;
+                    }
+                });
+            } catch {
+                return EXIT_CODES.INVALID_ARGUMENTS;
+            }
         } else {
-            oport = parseInt(userObjPort, 10);
-            if (isNaN(oport)) {
-                console.log(`${COLOR_RED}Invalid objects port: ${oport}${COLOR_RESET}`);
-                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+            oPort = parseInt(userObjPort, 10);
+            if (isNaN(oPort)) {
+                console.log(`${COLOR_RED}Invalid objects port: ${oPort}${COLOR_RESET}`);
+                return EXIT_CODES.INVALID_ARGUMENTS;
             }
         }
 
@@ -760,6 +805,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         let getDefaultStatesPort;
         try {
             const path = require.resolve(`@iobroker/db-states-${stype}`);
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
             getDefaultStatesPort = require(path).getDefaultPort;
         } catch {
             console.log(`${COLOR_RED}Unknown states type: ${stype}${COLOR_RESET}`);
@@ -770,7 +816,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 console.log(`You also need to make sure you stay up to date with this package in the future!`);
                 console.log(COLOR_RESET);
             }
-            return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+            return EXIT_CODES.INVALID_ARGUMENTS;
         }
 
         if (stype === 'redis' && originalConfig.states.type !== 'redis' && otype !== 'redis') {
@@ -781,11 +827,11 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         }
 
         let defaultStatesHost =
-            stype === originalConfig.states.type ? originalConfig.states.host : ohost || '127.0.0.1';
+            stype === originalConfig.states.type ? originalConfig.states.host : oHost || '127.0.0.1';
         if (stype === otype) {
-            defaultStatesHost = ohost;
+            defaultStatesHost = oHost;
         }
-        let shost = rl.question(
+        let sHost: string | string[] = rl.question(
             `Host / Unix Socket of states DB (${stype}), default[${
                 Array.isArray(defaultStatesHost) ? defaultStatesHost.join(',') : defaultStatesHost
             }]: `,
@@ -793,22 +839,21 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 defaultInput: Array.isArray(defaultStatesHost) ? defaultStatesHost.join(',') : defaultStatesHost
             }
         );
-        shost = shost.toLowerCase();
+        sHost = sHost.toLowerCase();
 
-        const sp = getDefaultStatesPort(shost);
-        const sSentinel = stype === 'redis' && shost.includes(',');
+        const sp = getDefaultStatesPort(sHost);
+        const sSentinel = stype === 'redis' && sHost.includes(',');
 
         if (sSentinel) {
-            shost = shost.split(',');
-            shost.forEach((host, idx) => (shost[idx] = host.trim()));
+            sHost = sHost.split(',').map(host => host.trim());
         }
 
         let defaultStatesPort =
-            stype === originalConfig.states.type && shost === originalConfig.states.host
+            stype === originalConfig.states.type && sHost === originalConfig.states.host
                 ? originalConfig.states.port
                 : sp;
-        if (stype === otype && !dbTools.statesDbHasServer(stype) && shost === ohost) {
-            defaultStatesPort = oport;
+        if (stype === otype && !dbTools.statesDbHasServer(stype) && sHost === oHost) {
+            defaultStatesPort = oPort;
         }
         const userStatePort = rl.question(
             `Port of states DB (${stype}), default[${
@@ -819,21 +864,27 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 limit: /^[0-9, ]+$/
             }
         );
-        let sport;
+        let sPort: number | number[];
         if (userStatePort.includes(',')) {
-            sport = userStatePort.split(',');
-            sport.forEach((port, idx) => {
-                sport[idx] = parseInt(port.trim(), 10);
-                if (isNaN(sport[idx])) {
-                    console.log(`${COLOR_RED}Invalid states port: ${sport[idx]}${COLOR_RESET}`);
-                    return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+            sPort = [];
+            sPort = userStatePort.split(',').map(port => {
+                try {
+                    const parsedPort = parseInt(port.trim(), 10);
+                    if (isNaN(parsedPort)) {
+                        console.log(`${COLOR_RED}Invalid states port: ${parsedPort}${COLOR_RESET}`);
+                        throw new Error(`Invalid states port: ${parsedPort}`);
+                    } else {
+                        return parsedPort;
+                    }
+                } catch {
+                    return EXIT_CODES.INVALID_ARGUMENTS;
                 }
             });
         } else {
-            sport = parseInt(userStatePort, 10);
-            if (isNaN(sport)) {
-                console.log(`${COLOR_RED}Invalid states port: ${sport}${COLOR_RESET}`);
-                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+            sPort = parseInt(userStatePort, 10);
+            if (isNaN(sPort)) {
+                console.log(`${COLOR_RED}Invalid states port: ${sPort}${COLOR_RESET}`);
+                return EXIT_CODES.INVALID_ARGUMENTS;
             }
         }
 
@@ -841,7 +892,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         if (sSentinel) {
             const defaultSentinelName = originalConfig.states.sentinelName
                 ? originalConfig.states.sentinelName
-                : oSentinelName && oport === sport
+                : oSentinelName && oPort === sPort
                 ? oSentinelName
                 : 'mymaster';
             sSentinelName = rl.question(`States Redis Sentinel Master Name [${defaultSentinelName}]: `, {
@@ -852,40 +903,55 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         let dir;
         let hname;
 
-        if (dbTools.isLocalStatesDbServer(stype, shost) || dbTools.isLocalObjectsDbServer(otype, ohost)) {
-            dir = rl.question(`Data directory (file), default[${tools.getDefaultDataDir()}]: `, {
-                defaultInput: tools.getDefaultDataDir()
-            });
+        if (dbTools.isLocalStatesDbServer(stype, sHost) || dbTools.isLocalObjectsDbServer(otype, oHost)) {
+            let validDataDir = false;
+
+            while (!validDataDir) {
+                dir = rl.question(`Data directory (file), default[${tools.getDefaultDataDir()}]: `, {
+                    defaultInput: tools.getDefaultDataDir()
+                });
+
+                const validationInfo = tools.validateDataDir(dir);
+
+                validDataDir = validationInfo.valid;
+
+                if (!validDataDir) {
+                    console.warn(
+                        `${COLOR_YELLOW}The data directory is invalid. ${validationInfo.reason}${COLOR_RESET}`
+                    );
+                    console.warn(`The current directory resolves to "${validationInfo.path}"`);
+                }
+            }
 
             hname = rl.question(
                 `Host name of this machine [${
                     originalConfig && originalConfig.system
-                        ? originalConfig.system.hostname || require('os').hostname()
-                        : require('os').hostname()
+                        ? originalConfig.system.hostname || os.hostname()
+                        : os.hostname()
                 }]: `,
                 {
                     defaultInput: (originalConfig && originalConfig.system && originalConfig.system.hostname) || ''
                 }
             );
         } else {
-            hname = rl.question(`Host name of this machine [${require('os').hostname()}]: `, {
+            hname = rl.question(`Host name of this machine [${os.hostname()}]: `, {
                 defaultInput: ''
             });
         }
 
         if (hname.match(/\s/)) {
             console.log(`${COLOR_RED}Invalid host name: ${hname}${COLOR_RESET}`);
-            return void callback(EXIT_CODES.INVALID_ARGUMENTS);
+            return EXIT_CODES.INVALID_ARGUMENTS;
         }
 
         config.system = config.system || {};
         config.system.hostname = hname;
-        config.objects.host = ohost;
+        config.objects.host = oHost;
         config.objects.type = otype;
-        config.objects.port = oport;
-        config.states.host = shost;
+        config.objects.port = oPort;
+        config.states.host = sHost;
         config.states.type = stype;
-        config.states.port = sport;
+        config.states.port = sPort;
         config.states.dataDir = undefined;
         config.objects.dataDir = undefined;
         if (dir) {
@@ -901,20 +967,23 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             config.states.sentinelName = sSentinelName;
         }
 
-        migrateObjects(config, originalConfig, rl, callback);
-    };
+        const exitCode = await this.migrateObjects(config, originalConfig);
+        return exitCode;
+    }
 
     /**
      * Checks if single host setup and if so migrates and activates Redis Sets Usage
-     * @return {Promise<void>}
-     * @private
      */
-    async function _maybeMigrateSets() {
+    private async _maybeMigrateSets(): Promise<void> {
+        if (!this.objects) {
+            throw new Error('Objects not set up, call setupObjects first');
+        }
+
         try {
             // if we have a single host system we need to ensure that existing objects are migrated to sets before doing anything else
-            if (await tools.isSingleHost(objects)) {
-                await objects.activateSets();
-                const noMigrated = await objects.migrateToSets();
+            if (await tools.isSingleHost(this.objects)) {
+                await this.objects.activateSets();
+                const noMigrated = await this.objects.migrateToSets();
 
                 if (noMigrated) {
                     console.log(`Successfully migrated ${noMigrated} objects to Redis Sets`);
@@ -927,17 +996,20 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
     /**
      * Removes non-existing users from groups
-     *
-     * @return {Promise<void>}
-     * @private
      */
-    async function _cleanupInvalidGroupAssignments() {
-        const usersView = await objects.getObjectViewAsync('system', 'user');
-        const groupView = await objects.getObjectViewAsync('system', 'group');
+    private async _cleanupInvalidGroupAssignments(): Promise<void> {
+        if (!this.objects) {
+            throw new Error('Objects not set up, call setupObjects first');
+        }
 
-        const existingUsers = usersView.rows.map(obj => obj.value._id);
+        const usersView = await this.objects.getObjectViewAsync('system', 'user');
+        const groupView = await this.objects.getObjectViewAsync('system', 'group');
 
-        for (const group of groupView.rows) {
+        const existingUsers = usersView!.rows.map(
+            (obj: ioBroker.GetObjectViewItem<ioBroker.UserObject>) => obj.value!._id
+        );
+
+        for (const group of groupView!.rows) {
             // reference for readability
             const groupMembers = group.value.common.members;
 
@@ -945,7 +1017,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 // fix legacy objects
                 const obj = group.value;
                 obj.common.members = [];
-                await objects.setObjectAsync(obj._id, obj);
+                await this.objects.setObjectAsync(obj._id, obj);
                 continue;
             }
 
@@ -961,15 +1033,15 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             }
 
             if (changed) {
-                await objects.setObjectAsync(group.value._id, group.value);
+                await this.objects.setObjectAsync(group.value._id, group.value);
             }
         }
     }
 
-    this.setup = function (callback, ignoreIfExist, useRedis) {
+    setup(callback: (isCreated?: boolean) => void, ignoreIfExist: boolean, useRedis: boolean): void {
         let config;
         let isCreated = false;
-        const platform = require('os').platform();
+        const platform = os.platform();
         const otherInstallDirs = [];
 
         // copy reinstall.js file into root
@@ -1041,7 +1113,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                 if (stat.isDirectory()) {
                     const files = fs.readdirSync(otherInstallDirs[t]);
                     for (let f = 0; f < files.length; f++) {
-                        fs.unlinkSync(otherInstallDirs[t] + '/' + files[f]);
+                        fs.unlinkSync(path.join(otherInstallDirs[t], files[f]));
                     }
                     fs.rmdirSync(otherInstallDirs[t]);
                 } else {
@@ -1070,24 +1142,24 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                 config = fs.readJsonSync(path.join(CONTROLLER_DIR, 'conf', `${tools.appName.toLowerCase()}-dist.json`));
             }
             console.log(`creating conf/${tools.appName}.json`);
-            config.objects.host = params.objects || '127.0.0.1';
-            config.states.host = params.states || '127.0.0.1';
+            config.objects.host = this.params.objects || '127.0.0.1';
+            config.states.host = this.params.states || '127.0.0.1';
             if (useRedis) {
                 config.states.type = 'redis';
-                config.states.port = params.port || 6379;
+                config.states.port = this.params.port || 6379;
                 config.objects.type = 'redis';
-                config.objects.port = params.port || 6379;
+                config.objects.port = this.params.port || 6379;
             }
 
             // this path is relative to js-controller
             config.dataDir = tools.getDefaultDataDir();
 
-            mkpathSync(`${CONTROLLER_DIR}/`, config.dataDir);
+            fs.mkdirSync(path.join(CONTROLLER_DIR, config.dataDir), { recursive: true });
 
             const dirName = path.dirname(configFileName);
 
             if (!fs.existsSync(dirName)) {
-                mkpathSync('', dirName.replace(/\\/g, '/'));
+                fs.mkdirSync(dirName.replace(/\\/g, '/'), { recursive: true });
             }
 
             // Create default data dir
@@ -1121,7 +1193,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                 config = fs.readJSONSync(configFileName);
                 if (!Object.prototype.hasOwnProperty.call(config, 'dataDir')) {
                     // Workaround: there was a bug with admin v5 which could remove the dataDir attribute -> fix this
-                    // TODO: remove it as soon as all adapters are fixed which use systemConfig.dataDir
+                    // TODO: remove it as soon as all adapters are fixed which use systemConfig.dataDir, with v5.1 we can for sure remove this
                     config.dataDir = tools.getDefaultDataDir();
                     fs.writeJSONSync(configFileName, config, { spaces: 2 });
                 }
@@ -1129,12 +1201,10 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                 console.warn(`Cannot check config file: ${err.message}`);
             }
 
-            setupObjects(() => callback && callback(), true);
+            this.setupObjects(() => callback && callback(), true);
             return;
         }
 
-        setupObjects(() => callback && callback(isCreated));
-    };
+        this.setupObjects(() => callback && callback(isCreated));
+    }
 }
-
-module.exports = Setup;
