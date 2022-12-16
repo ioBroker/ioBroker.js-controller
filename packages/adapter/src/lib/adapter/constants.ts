@@ -13,6 +13,7 @@ export const ACCESS_EVERY_WRITE = 0x2;
 export const ACCESS_EVERY_READ = 0x4;
 export const ACCESS_USER_READ = 0x400;
 export const ACCESS_USER_WRITE = 0x200;
+export const NO_PROTECT_ADAPTERS = ['admin', 'iot', 'cloud'];
 export const SUPPORTED_FEATURES = [
     'ALIAS', // Alias Feature supported, Since js-controller 2.0
     'ALIAS_SEPARATE_READ_WRITE_ID', // Alias support separated ids for read and write, Since js-controller 3.0
