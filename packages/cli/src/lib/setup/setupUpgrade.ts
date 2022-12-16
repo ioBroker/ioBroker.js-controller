@@ -16,16 +16,16 @@ import rl from 'readline-sync';
 import tty from 'tty';
 import path from 'path';
 import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
-import type { GetRepository, ProcessExit } from '../_Types';
+import type { GetRepositoryHandler, ProcessExitCallback } from '../_Types';
 
 const debug = Debug('iobroker:cli');
 
 type IoPackDependencies = string[] | Record<string, any>[] | Record<string, any>;
 
 interface CLIUpgradeOptions {
-    processExit: ProcessExit;
+    processExit: ProcessExitCallback;
     restartController: () => void;
-    getRepository: GetRepository;
+    getRepository: GetRepositoryHandler;
     objects: ObjectsInRedisClient;
     params: Record<string, any>;
 }
@@ -35,9 +35,9 @@ export class Upgrade {
     private readonly upload: Upload;
     private readonly install: Install;
     private objects: ObjectsInRedisClient;
-    private readonly processExit: ProcessExit;
+    private readonly processExit: ProcessExitCallback;
     private readonly params: Record<string, any>;
-    private readonly getRepository: GetRepository;
+    private readonly getRepository: GetRepositoryHandler;
 
     constructor(options: CLIUpgradeOptions) {
         options = options || {};

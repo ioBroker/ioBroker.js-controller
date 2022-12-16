@@ -3811,8 +3811,8 @@ export class ObjectsInRedisClient {
     // this function is very ineffective. Because reads all objects and then process them
     private async _applyViewFunc(
         func: ObjectViewFunction,
-        params: ioBroker.GetObjectViewParams,
-        options: CallOptions,
+        params?: ioBroker.GetObjectViewParams,
+        options: CallOptions = {},
         callback?: ioBroker.GetObjectViewCallback<any>
     ): Promise<void | ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectViewCallback<any>>> {
         if (!this.client) {
@@ -4281,8 +4281,8 @@ export class ObjectsInRedisClient {
     private async _getObjectView(
         design: string,
         search: string,
-        params: ioBroker.GetObjectViewParams,
-        options: CallOptions,
+        params?: ioBroker.GetObjectViewParams,
+        options?: CallOptions,
         callback?: ioBroker.GetObjectViewCallback<any>
     ) {
         if (!this.client) {
@@ -4327,7 +4327,7 @@ export class ObjectsInRedisClient {
     getObjectView<Design extends string = string, Search extends string = string>(
         design: Design,
         search: Search,
-        params: ioBroker.GetObjectViewParams,
+        params?: ioBroker.GetObjectViewParams,
         options?: CallOptions | null
     ): ioBroker.GetObjectViewPromise<ioBroker.InferGetObjectViewItemType<Design, Search>>;
 
@@ -4335,7 +4335,7 @@ export class ObjectsInRedisClient {
     getObjectView<Design extends string = string, Search extends string = string>(
         design: Design,
         search: Search,
-        params: ioBroker.GetObjectViewParams,
+        params: ioBroker.GetObjectViewParams | undefined,
         options: CallOptions | undefined | null,
         callback: ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>
     ): void;
@@ -4351,7 +4351,7 @@ export class ObjectsInRedisClient {
     getObjectView<Design extends string = string, Search extends string = string>(
         design: Design,
         search: Search,
-        params: ioBroker.GetObjectViewParams,
+        params?: ioBroker.GetObjectViewParams,
         options?: any,
         callback?: ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>
     ): void | ioBroker.GetObjectViewPromise<ioBroker.InferGetObjectViewItemType<Design, Search>> {
@@ -4383,7 +4383,7 @@ export class ObjectsInRedisClient {
     getObjectViewAsync(
         design: string,
         search: string,
-        params: ioBroker.GetObjectViewParams,
+        params?: ioBroker.GetObjectViewParams,
         options?: CallOptions
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectViewCallback<any>>> {
         return new Promise((resolve, reject) =>
