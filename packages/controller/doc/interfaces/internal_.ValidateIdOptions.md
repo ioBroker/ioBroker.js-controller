@@ -21,7 +21,7 @@ in maintenance mode we can access ivnalid ids to delete them, only works with th
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:22](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/adapter/utils.ts#L22)
+[adapter/src/lib/adapter/utils.ts:16](https://github.com/ioBroker/ioBroker.js-controller/blob/d87d529d/packages/adapter/src/lib/adapter/utils.ts#L16)
 
 ___
 
@@ -31,4 +31,4 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/adapter/utils.ts:23](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/adapter/utils.ts#L23)
+[adapter/src/lib/adapter/utils.ts:17](https://github.com/ioBroker/ioBroker.js-controller/blob/d87d529d/packages/adapter/src/lib/adapter/utils.ts#L17)

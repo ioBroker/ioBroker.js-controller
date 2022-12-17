@@ -19,14 +19,14 @@
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:86](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/_Types.ts#L86)
+[adapter/src/lib/_Types.ts:86](https://github.com/ioBroker/ioBroker.js-controller/blob/d87d529d/packages/adapter/src/lib/_Types.ts#L86)
 
 ___
 
 ### objs
 
-• **objs**: `StateObject`[]
+• **objs**: [`StateObject`](internal_.StateObject.md)[]
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:85](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/_Types.ts#L85)
+[adapter/src/lib/_Types.ts:85](https://github.com/ioBroker/ioBroker.js-controller/blob/d87d529d/packages/adapter/src/lib/_Types.ts#L85)
