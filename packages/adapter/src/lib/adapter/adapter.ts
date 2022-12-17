@@ -252,26 +252,43 @@ export interface AdapterClass {
     subscribeStatesAsync(pattern: string, options?: unknown): Promise<void>;
     /** Subscribe from changes of states in this instance */
     unsubscribeStatesAsync(pattern: string, options?: unknown): Promise<void>;
-    /** Writes a binary state into Redis. The ID will not be prefixed with the adapter namespace. */
+    /**
+     * Writes a binary state into Redis. The ID will not be prefixed with the adapter namespace.
+     *
+     * @deprecated Please use `writeFile` instead of binary states
+     */
     setForeignBinaryStateAsync(id: string, binary: Buffer, options?: unknown): ioBroker.SetStatePromise;
 
     /**
      * Despite the naming convention, this method doesn't prepend the adapter namespace. Use setForeignBinaryStateAsync instead.
      * Writes a binary state into Redis
+     *
+     * @deprecated Please use `writeFile` instead of binary states
      */
     setBinaryStateAsync(id: string, binary: Buffer, options?: unknown): ioBroker.SetStatePromise;
+
+    /**
+     * @deprecated Please use `readFile` instead of binary states
+     */
     getForeignBinaryStateAsync(id: string, options?: unknown): ioBroker.GetBinaryStatePromise;
     /**
      * Despite the naming convention, this method doesn't prepend the adapter namespace. Use getForeignBinaryStateAsync instead.
      * Reads a binary state from Redis
+     *
+     * @deprecated Please use `readFile` instead of binary states
      */
     getBinaryStateAsync(id: string, options?: unknown): ioBroker.GetBinaryStatePromise;
-    /** Deletes a binary state from the states DB. The ID will not be prefixed with the adapter namespace. */
+    /** Deletes a binary state from the states DB. The ID will not be prefixed with the adapter namespace.
+     *
+     * @deprecated Please use `delFile` instead of binary states
+     */
     delForeignBinaryStateAsync(id: string, options?: unknown): Promise<void>;
 
     /**
      * Despite the naming convention, this method doesn't prepend the adapter namespace. Use delForeignBinaryStateAsync instead.
      * Deletes a binary state from the states DB
+     *
+     * @deprecated Please use `delFile` instead of binary states
      */
     delBinaryStateAsync(id: string, options?: unknown): Promise<void>;
     /**
@@ -9816,8 +9833,13 @@ export class AdapterClass extends EventEmitter {
      * @param options optional
      * @param callback
      *
+     * @deprecated Please use `writeFile` instead of binary states
      */
     setForeignBinaryState(id: unknown, binary: unknown, options: unknown, callback?: unknown): any {
+        this._logger.warn(
+            `${this.namespaceLog} Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files`
+        );
+
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -9957,6 +9979,8 @@ export class AdapterClass extends EventEmitter {
      * @param binary data
      * @param options optional
      * @param callback
+     *
+     * @deprecated Please use `writeFile` instead of binary states
      */
     setBinaryState(id: any, binary: any, options: any, callback?: any): void {
         // we just keep any types here, because setForeign method will validate
@@ -9973,8 +9997,14 @@ export class AdapterClass extends EventEmitter {
      * @param id The state ID
      * @param options optional
      * @param callback
+     *
+     * @deprecated Please use `readFile` instead of binary states
      */
     getForeignBinaryState(id: unknown, options: unknown, callback?: unknown): any {
+        this._logger.warn(
+            `${this.namespaceLog} Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files`
+        );
+
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -10049,6 +10079,8 @@ export class AdapterClass extends EventEmitter {
      * @param id The state ID
      * @param options optional
      * @param callback
+     *
+     * @depreacted Please use `readFile` instead of binary states
      */
     getBinaryState(id: any, options: any, callback?: any): any {
         // we use any types here, because validation takes place in foreign method
@@ -10067,8 +10099,13 @@ export class AdapterClass extends EventEmitter {
      * @param options
      * @param callback
      *
+     * @deprecated Please use `delFile` instead of binary states
      */
     delForeignBinaryState(id: unknown, options: unknown, callback?: unknown): any {
+        this._logger.warn(
+            `${this.namespaceLog} Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files`
+        );
+
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -10125,6 +10162,7 @@ export class AdapterClass extends EventEmitter {
      * @param options
      * @param callback
      *
+     * @deprecated Please use `delFile` instead of binary states
      */
     delBinaryState(id: any, options: any, callback?: any): any {
         // we use any types here, because validation takes place in foreign method
