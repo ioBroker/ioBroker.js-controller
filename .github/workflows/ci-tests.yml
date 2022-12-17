@@ -86,6 +86,9 @@ jobs:
       - name: Run scripts
         run: npm run preinstall && npm run install
 
+      - name: Execute Type Tests
+        run: npm run test-types
+
       - name: Execute Standard Tests
         run: npm test
 

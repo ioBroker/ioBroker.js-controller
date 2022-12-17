@@ -1,12 +1,6 @@
 import { SYSTEM_ADMIN_USER } from './constants';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 
-type OpaqueString<T extends string> = string & {
-    __type: T;
-};
-
-export type ID = OpaqueString<'ID'>;
-
 type Callback = (...args: any[]) => void | Promise<void>;
 type OptionalCallback = undefined | Callback;
 type Pattern = string | string[];
@@ -166,7 +160,7 @@ export class Utils {
      * @param options optional
      * @throws Error when id is invalid
      */
-    validateId(id: string | any, isForeignId: boolean, options?: ValidateIdOptions | null): asserts id is ID {
+    validateId(id: string | any, isForeignId: boolean, options?: ValidateIdOptions | null): asserts id is string {
         // there is special maintenance mode to clear the DB from invalid IDs
         if (options && options.maintenance && options.user === SYSTEM_ADMIN_USER) {
             return;
@@ -357,7 +351,7 @@ export class Utils {
      * @param id id which will be fixed
      * @param isPattern if the id is a pattern
      */
-    fixId(id: string | IdObject, isPattern = false): ID {
+    fixId(id: string | IdObject, isPattern = false): string {
         if (!id) {
             id = '';
         }
@@ -381,7 +375,7 @@ export class Utils {
                 id.state ? id.state : ''
             }`;
         }
-        return result as ID;
+        return result;
     }
 
     /**
