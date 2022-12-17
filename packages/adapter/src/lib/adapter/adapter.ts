@@ -9836,7 +9836,7 @@ export class AdapterClass extends EventEmitter {
      * @deprecated Please use `writeFile` instead of binary states
      */
     setForeignBinaryState(id: unknown, binary: unknown, options: unknown, callback?: unknown): any {
-        this._logger.warn(
+        this._logger.info(
             `${this.namespaceLog} Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files`
         );
 
@@ -10001,7 +10001,7 @@ export class AdapterClass extends EventEmitter {
      * @deprecated Please use `readFile` instead of binary states
      */
     getForeignBinaryState(id: unknown, options: unknown, callback?: unknown): any {
-        this._logger.warn(
+        this._logger.info(
             `${this.namespaceLog} Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files`
         );
 
@@ -10102,7 +10102,7 @@ export class AdapterClass extends EventEmitter {
      * @deprecated Please use `delFile` instead of binary states
      */
     delForeignBinaryState(id: unknown, options: unknown, callback?: unknown): any {
-        this._logger.warn(
+        this._logger.info(
             `${this.namespaceLog} Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files`
         );
 
