@@ -1416,6 +1416,10 @@ export class StateRedisClient {
     }
 
     async setBinaryState(id: string, data: Buffer, callback?: ioBroker.ErrorCallback): Promise<void> {
+        this.log.warn(
+            'Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files'
+        );
+
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1445,6 +1449,10 @@ export class StateRedisClient {
         id: string,
         callback: (err: Error | undefined | null, state?: Buffer) => void
     ): Promise<Buffer | void> {
+        this.log.warn(
+            'Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files'
+        );
+
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
@@ -1466,6 +1474,10 @@ export class StateRedisClient {
         id: string,
         callback: (err: Error | undefined | null, id?: string) => void
     ): Promise<string | void> {
+        this.log.warn(
+            'Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files'
+        );
+
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
         }
