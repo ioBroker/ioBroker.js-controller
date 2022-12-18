@@ -100,7 +100,8 @@ import type {
     TimeoutCallback,
     MaybePromise,
     SetStateChangedResult,
-    CheckStatesResult
+    CheckStatesResult,
+    Pattern
 } from '../_Types';
 
 // keep them outside until we have migrated to TS, else devs can access them
@@ -4465,8 +4466,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    subscribeObjects(pattern: string, callback?: ioBroker.ErrorCallback): void;
-    subscribeObjects(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    subscribeObjects(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
+    subscribeObjects(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Subscribe for the changes of objects in this instance.
@@ -4502,14 +4503,13 @@ export class AdapterClass extends EventEmitter {
         if (pattern === '*') {
             adapterObjects.subscribeUser(`${this.namespace}.*`, options, callback);
         } else {
-            // @ts-expect-error should fixId be able to handle array?
-            pattern = this._utils.fixId(pattern, true);
-            adapterObjects.subscribeUser(pattern as any, options, callback);
+            const fixedPattern = Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true);
+            adapterObjects.subscribeUser(fixedPattern, options, callback);
         }
     }
 
-    unsubscribeObjects(pattern: string, callback?: ioBroker.ErrorCallback): void;
-    unsubscribeObjects(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeObjects(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeObjects(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Unsubscribe on the changes of objects in this instance.
@@ -4545,9 +4545,8 @@ export class AdapterClass extends EventEmitter {
         if (pattern === '*') {
             adapterObjects.unsubscribeUser(`${this.namespace}.*`, options, callback);
         } else {
-            // @ts-expect-error should fixid be able to handle array?
-            pattern = this._utils.fixId(pattern, true);
-            adapterObjects.unsubscribeUser(pattern as string, options, callback);
+            const fixedPattern = Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true);
+            adapterObjects.unsubscribeUser(fixedPattern, options, callback);
         }
     }
 
@@ -8955,8 +8954,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    getStates(pattern: string | string[], callback: ioBroker.GetStatesCallback): void;
-    getStates(pattern: string | string[], options: unknown, callback: ioBroker.GetStatesCallback): void;
+    getStates(pattern: Pattern, callback: ioBroker.GetStatesCallback): void;
+    getStates(pattern: Pattern, options: unknown, callback: ioBroker.GetStatesCallback): void;
 
     /**
      * Read all states of this adapter, that pass the pattern
@@ -8986,7 +8985,8 @@ export class AdapterClass extends EventEmitter {
 
         Utils.assertPattern(pattern, 'pattern');
 
-        const fixedPattern = this._utils.fixId(pattern, true);
+        const fixedPattern = Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true);
+
         this.getForeignStates(fixedPattern, options, callback);
     }
 

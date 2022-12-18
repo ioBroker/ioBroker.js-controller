@@ -47,6 +47,8 @@ export interface AdapterOptions {
     error?: ioBroker.ErrorHandler;
 }
 
+export type Pattern = string | string[];
+
 export interface AdapterOptionsConfig {
     log: {
         level: ioBroker.LogLevel;
@@ -294,7 +296,7 @@ export interface InternalCreateStateOptions {
 }
 
 export interface InternalSubscribeOptions {
-    pattern: string | string[];
+    pattern: Pattern;
     options?: Record<string, any> | null;
     callback?: ioBroker.ErrorCallback;
 }
@@ -336,7 +338,7 @@ export interface InternalGetStateOptions {
 }
 
 export interface InternalGetStatesOptions {
-    pattern: string | string[];
+    pattern: Pattern;
     options: Record<string, any>;
     callback: ioBroker.GetStatesCallback;
 }
