@@ -5863,7 +5863,7 @@ export class AdapterClass extends EventEmitter {
         }
         if (typeof parentDevice === 'function') {
             callback = parentDevice;
-            parentDevice = null;
+            parentDevice = undefined;
         }
 
         if (options !== null && options !== undefined) {
@@ -5871,7 +5871,9 @@ export class AdapterClass extends EventEmitter {
         }
 
         Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(parentDevice, 'parentDevice');
+        if (parentDevice !== undefined) {
+            Utils.assertString(parentDevice, 'parentDevice');
+        }
 
         return this._getChannelsOf({ parentDevice, options, callback });
     }
@@ -8953,8 +8955,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    getStates(pattern: string, callback: ioBroker.GetStatesCallback): void;
-    getStates(pattern: string, options: unknown, callback: ioBroker.GetStatesCallback): void;
+    getStates(pattern: string | string[], callback: ioBroker.GetStatesCallback): void;
+    getStates(pattern: string | string[], options: unknown, callback: ioBroker.GetStatesCallback): void;
 
     /**
      * Read all states of this adapter, that pass the pattern
@@ -8982,7 +8984,7 @@ export class AdapterClass extends EventEmitter {
             options = {};
         }
 
-        Utils.assertString(pattern, 'pattern');
+        Utils.assertPattern(pattern, 'pattern');
 
         const fixedPattern = this._utils.fixId(pattern, true);
         this.getForeignStates(fixedPattern, options, callback);

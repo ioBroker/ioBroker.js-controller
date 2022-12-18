@@ -228,7 +228,7 @@ export interface InternalGetObjectsOptions {
 }
 
 export interface InternalGetChannelsOfOptions {
-    parentDevice: string;
+    parentDevice?: string;
     callback?: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>;
     options?: Record<string, any> | null;
 }
