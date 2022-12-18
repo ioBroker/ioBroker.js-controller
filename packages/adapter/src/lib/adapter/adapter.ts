@@ -6714,8 +6714,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    formatValue(value: number | string, format: any): string;
-    formatValue(value: number | string, decimals: number, format: any): string;
+    formatValue(value: number | string, format?: string): string;
+    formatValue(value: number | string, decimals: number, format?: string): string;
     formatValue(value: unknown, decimals: unknown, _format?: unknown): any {
         if (typeof decimals !== 'number') {
             _format = decimals;
@@ -6749,8 +6749,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    formatDate(dateObj: string | Date | number, format: string): string;
-    formatDate(dateObj: string | Date | number, isDuration: boolean | string, format: string): string;
+    formatDate(dateObj: string | Date | number, format?: string): string;
+    formatDate(dateObj: string | Date | number, isDuration: boolean | string, format?: string): string;
 
     formatDate(dateObj: unknown, isDuration: unknown, _format?: unknown): any {
         if ((typeof isDuration === 'string' && isDuration.toLowerCase() === 'duration') || isDuration === true) {
