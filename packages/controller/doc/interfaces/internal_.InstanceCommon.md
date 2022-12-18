@@ -33,7 +33,7 @@
 
 #### Defined in
 
-[types/objects.d.ts:307](https://github.com/ioBroker/ioBroker.js-controller/blob/d87d529d/packages/types/objects.d.ts#L307)
+[types/objects.d.ts:307](https://github.com/ioBroker/ioBroker.js-controller/blob/6912de44/packages/types/objects.d.ts#L307)
 
 ___
 
@@ -49,7 +49,7 @@ When set to true, this object may not be deleted
 
 #### Defined in
 
-[types/objects.d.ts:157](https://github.com/ioBroker/ioBroker.js-controller/blob/d87d529d/packages/types/objects.d.ts#L157)
+[types/objects.d.ts:157](https://github.com/ioBroker/ioBroker.js-controller/blob/6912de44/packages/types/objects.d.ts#L157)
 
 ___
 
@@ -59,7 +59,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:295](https://github.com/ioBroker/ioBroker.js-controller/blob/d87d529d/packages/types/objects.d.ts#L295)
+[types/objects.d.ts:295](https://github.com/ioBroker/ioBroker.js-controller/blob/6912de44/packages/types/objects.d.ts#L295)
 
 ___
 
@@ -75,7 +75,7 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 #### Defined in
 
-[types/objects.d.ts:160](https://github.com/ioBroker/ioBroker.js-controller/blob/d87d529d/packages/types/objects.d.ts#L160)
+[types/objects.d.ts:160](https://github.com/ioBroker/ioBroker.js-controller/blob/6912de44/packages/types/objects.d.ts#L160)
 
 ___
 
@@ -87,7 +87,7 @@ The name of the host where this instance is running
 
 #### Defined in
 
-[types/objects.d.ts:294](https://github.com/ioBroker/ioBroker.js-controller/blob/d87d529d/packages/types/objects.d.ts#L294)
+[types/objects.d.ts:294](https://github.com/ioBroker/ioBroker.js-controller/blob/6912de44/packages/types/objects.d.ts#L294)
 
 ___
 
@@ -103,7 +103,7 @@ Icon for this object
 
 #### Defined in
 
-[types/objects.d.ts:165](https://github.com/ioBroker/ioBroker.js-controller/blob/d87d529d/packages/types/objects.d.ts#L165)
+[types/objects.d.ts:165](https://github.com/ioBroker/ioBroker.js-controller/blob/6912de44/packages/types/objects.d.ts#L165)
 
 ___
 
@@ -115,7 +115,7 @@ How and when this instance should be started
 
 #### Defined in
 
-[types/objects.d.ts:297](https://github.com/ioBroker/ioBroker.js-controller/blob/d87d529d/packages/types/objects.d.ts#L297)
+[types/objects.d.ts:297](https://github.com/ioBroker/ioBroker.js-controller/blob/6912de44/packages/types/objects.d.ts#L297)
 
 ___
 
@@ -131,7 +131,7 @@ The name of this object as a simple string or an object with translations
 
 #### Defined in
 
-[types/objects.d.ts:154](https://github.com/ioBroker/ioBroker.js-controller/blob/d87d529d/packages/types/objects.d.ts#L154)
+[types/objects.d.ts:154](https://github.com/ioBroker/ioBroker.js-controller/blob/6912de44/packages/types/objects.d.ts#L154)
 
 ___
 
@@ -147,7 +147,7 @@ role of the object
 
 #### Defined in
 
-[types/objects.d.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/d87d529d/packages/types/objects.d.ts#L167)
+[types/objects.d.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/6912de44/packages/types/objects.d.ts#L167)
 
 ___
 
@@ -162,4 +162,4 @@ The starting priority of this adapter:
 
 #### Defined in
 
-[types/objects.d.ts:304](https://github.com/ioBroker/ioBroker.js-controller/blob/d87d529d/packages/types/objects.d.ts#L304)
+[types/objects.d.ts:304](https://github.com/ioBroker/ioBroker.js-controller/blob/6912de44/packages/types/objects.d.ts#L304)
