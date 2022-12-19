@@ -586,10 +586,9 @@ async function processCommand(
         }
 
         case 'setup': {
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
-            const Setup = require('./setup/setupSetup.js');
+            const Setup = (await import('@iobroker/js-controller-cli')).setupSetup;
             const setup = new Setup({
-                dbConnect,
+                dbConnectAsync,
                 processExit: callback,
                 cleanDatabase,
                 restartController,
@@ -597,7 +596,8 @@ async function processCommand(
                 params
             });
             if (args[0] === 'custom' || params.custom) {
-                setup.setupCustom(callback);
+                const exitCode = await setup.setupCustom();
+                callback(exitCode);
             } else {
                 let isFirst = false;
                 let isRedis = false;

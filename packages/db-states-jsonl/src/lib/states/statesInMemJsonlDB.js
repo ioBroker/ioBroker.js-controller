@@ -56,7 +56,7 @@ function normalizeJsonlOptions(conf = {}) {
             sizeFactorMinimumSize: 50000,
             // Compress at least daily to avoid a huge file when DBs have few objects
             // but big binary states are updated regularly
-            intervalMs: 1000 * 60 * 60 * 24
+            intervalMs: 1000 * 60 * 60 * 23
         },
         ignoreReadErrors: true,
         throttleFS: {

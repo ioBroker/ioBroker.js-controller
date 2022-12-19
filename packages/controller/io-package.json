@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "js-controller",
-    "version": "4.1.0",
+    "version": "5.0.0",
     "platform": "Javascript/Node.js",
     "controller": true,
     "mode": "daemon",
@@ -19,7 +19,7 @@
       "zh-cn": "JS控制器"
     },
     "news": {
-      "4.0.23": {
+      "4.0.24": {
         "en": "see CHANGELOG.md",
         "de": "siehe CHANGELOG.md",
         "ru": "см. CHANGELOG.md",
@@ -177,6 +177,9 @@
         },
         "custom": {
           "map": "function(doc) { doc.type === 'state' && doc.common && doc.common.custom && emit(doc._id, doc.common.custom) }"
+        },
+        "custom-full": {
+          "map": "function(doc) { doc.type === 'state' && doc.common && doc.common.custom && emit(doc._id, doc) }"
         },
         "chart": {
           "map": "function(doc) { if (doc.type === 'chart') emit(doc._id, doc) }"
@@ -932,6 +935,37 @@
             "es": "El tipo de base de datos utilizado en su sistema se cambió automáticamente de \"file\" a \"jsonl\". ¡Esto significa que una degradación normal solo es posible a js-controller 3.3 o superior! Además, el archivo de la base de datos ahora tiene \".jsonl\" como final de archivo. Si tiene más preguntas, consulte nuestros foros.",
             "pl": "Używany typ bazy danych w twoim systemie został automatycznie zmieniony z \"file\" na \"jsonl\". Oznacza to, że normalny downgrade jest możliwy tylko do js-controller 3.3 lub nowszego! Dodatkowo plik bazy danych ma teraz końcówkę „.jsonl”. W przypadku dalszych pytań odwiedź nasze fora.",
             "zh-cn": "您系统中使用的数据库类型已自动从“文件”更改为“jsonl”。这意味着只能正常降级到 js-controller 3.3 或更高版本！此外，数据库文件现在以“.jsonl”作为文件结尾。如有更多问题，请查看我们的论坛。"
+          },
+          "regex": [],
+          "limit": 1
+        },
+        {
+          "category": "blockedVersions",
+          "name": {
+            "en": "Instance was deactivated",
+            "de": "Instanz wurde deaktiviert",
+            "ru": "Экземпляр был деактивирован",
+            "pt": "A instância foi desativada",
+            "nl": "Instruatie",
+            "fr": "Instance was deactivd",
+            "it": "Il ricorso è stato disattivato",
+            "es": "Se desactiva la instalación",
+            "pl": "Instytucja została deaktywowana",
+            "zh-cn": "案件"
+          },
+          "severity": "alert",
+          "description": {
+            "en": "Installed version was blocklisted by ioBroker team.\nPlease update adapter to official version in repository before enabling it.\nInstance must be enabled manually.",
+            "de": "Die installierte Version wurde vom ioBroker Team zurückgezogen und die Instanz wurde deaktiviert.\nBevor der Adapter wieder aktiviert werden kann, muss er auf die offizielle Version im Repository aktualisiert werden.\nDie Instanz muss danach manuell aktiviert werden.",
+            "ru": "Установленная версия была отозвана назад командой ioBroker.\nПеред включением обновите адаптер до официальной версии в репозитории.\nЭкземпляр должен быть активирован вручную.",
+            "pt": "A versão instalada foi bloqueada pela equipe ioBroker.\nPor favor, atualize o adaptador para versão mais recente ou disponível antes de habilitar.\nA instância deve ser activada manualmente.",
+            "nl": "Installe versie werd geblokkeerd door ioBroker team.\nEen update aan de nieuwe of beschikbare versie voor het instorten.\nInstance moet handmatig zijn.",
+            "fr": "La version installée a été bloquée par l'équipe ioBroker.\nS'il vous plaît mettre l'adaptateur à la version plus récente ou disponible avant de l'activer.\nL'instance doit être activée manuellement.",
+            "it": "La versione installata è stata bloccata dal team ioBroker.\nSi prega di aggiornare l'adattatore alla versione più recente o disponibile prima di abilitarlo.\nL'istanza deve essere abilitata manualmente.",
+            "es": "La versión instalada fue bloqueada por el equipo de ioBroker.\nPor favor, actualice el adaptador a la versión nueva o disponible antes de habilitarlo.\nLa instalación debe ser activada manualmente.",
+            "pl": "Wersja została zablokowana przez zespół ioBroker.\nZastosowanie adapter do nowszej lub dostępnej wersji, zanim można go uzyskać.\nInstytucja musi być poddana ręcznie.",
+            "zh-cn": "总的版本被零星球队阻挠。.\n请提供最新资料。.\n必须能够以手工方式进行。.",
+            "uk": "Установлену версію було заблоковано командою ioBroker.\nБудь ласка, оновіть адаптер до офіційної версії в репозиторії, перш ніж увімкнути його.\nЕкземпляр потрібно ввімкнути вручну."
           },
           "regex": [],
           "limit": 1

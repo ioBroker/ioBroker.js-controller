@@ -21,7 +21,7 @@ import type NodeSchedule from 'node-schedule';
 import { version as controllerVersion } from '@iobroker/js-controller-adapter/package.json';
 
 import { Log } from './log';
-import { ID, IdObject, Utils } from './utils';
+import { IdObject, Utils } from './utils';
 
 const { FORBIDDEN_CHARS } = tools;
 import {
@@ -37,7 +37,8 @@ import {
     ACCESS_GROUP_WRITE,
     ACCESS_GROUP_READ,
     ACCESS_USER_WRITE,
-    ACCESS_USER_READ
+    ACCESS_USER_READ,
+    NO_PROTECT_ADAPTERS
 } from './constants';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import type {
@@ -92,7 +93,7 @@ import type {
     InternalSetObjectOptions,
     InternalSetPasswordOptions,
     InternalSetSessionOptions,
-    InternalSetStateChanedOptions,
+    InternalSetStateChangedOptions,
     InternalSetStateOptions,
     InternalSubscribeOptions,
     InternalUpdateConfigOptions,
@@ -251,26 +252,43 @@ export interface AdapterClass {
     subscribeStatesAsync(pattern: string, options?: unknown): Promise<void>;
     /** Subscribe from changes of states in this instance */
     unsubscribeStatesAsync(pattern: string, options?: unknown): Promise<void>;
-    /** Writes a binary state into Redis. The ID will not be prefixed with the adapter namespace. */
+    /**
+     * Writes a binary state into Redis. The ID will not be prefixed with the adapter namespace.
+     *
+     * @deprecated Please use `writeFile` instead of binary states
+     */
     setForeignBinaryStateAsync(id: string, binary: Buffer, options?: unknown): ioBroker.SetStatePromise;
 
     /**
      * Despite the naming convention, this method doesn't prepend the adapter namespace. Use setForeignBinaryStateAsync instead.
      * Writes a binary state into Redis
+     *
+     * @deprecated Please use `writeFile` instead of binary states
      */
     setBinaryStateAsync(id: string, binary: Buffer, options?: unknown): ioBroker.SetStatePromise;
+
+    /**
+     * @deprecated Please use `readFile` instead of binary states
+     */
     getForeignBinaryStateAsync(id: string, options?: unknown): ioBroker.GetBinaryStatePromise;
     /**
      * Despite the naming convention, this method doesn't prepend the adapter namespace. Use getForeignBinaryStateAsync instead.
      * Reads a binary state from Redis
+     *
+     * @deprecated Please use `readFile` instead of binary states
      */
     getBinaryStateAsync(id: string, options?: unknown): ioBroker.GetBinaryStatePromise;
-    /** Deletes a binary state from the states DB. The ID will not be prefixed with the adapter namespace. */
+    /** Deletes a binary state from the states DB. The ID will not be prefixed with the adapter namespace.
+     *
+     * @deprecated Please use `delFile` instead of binary states
+     */
     delForeignBinaryStateAsync(id: string, options?: unknown): Promise<void>;
 
     /**
      * Despite the naming convention, this method doesn't prepend the adapter namespace. Use delForeignBinaryStateAsync instead.
      * Deletes a binary state from the states DB
+     *
+     * @deprecated Please use `delFile` instead of binary states
      */
     delBinaryStateAsync(id: string, options?: unknown): Promise<void>;
     /**
@@ -571,25 +589,25 @@ export class AdapterClass extends EventEmitter {
      * Contains a live cache of the adapter's states.
      * NOTE: This is only defined if the adapter was initialized with the option states: true.
      */
-    protected oStates?: Record<string, ioBroker.State | undefined>;
+    oStates?: Record<string, ioBroker.State | undefined>;
     /**
      * Contains a live cache of the adapter's objects.
      * NOTE: This is only defined if the adapter was initialized with the option objects: true.
      */
-    protected oObjects?: Record<string, ioBroker.Object | undefined>;
+    oObjects?: Record<string, ioBroker.Object | undefined>;
     private _stopInProgress: boolean = false;
     private _callbackId: number = 1;
     private _firstConnection: boolean = true;
     private readonly _timers = new Set<NodeJS.Timeout>();
     private readonly _intervals = new Set<NodeJS.Timeout>();
     private readonly _delays = new Set<NodeJS.Timeout>();
-    protected log?: Log;
-    private readonly performStrictObjectChecks: boolean;
+    log?: Log;
+    performStrictObjectChecks: boolean;
     private readonly _logger: Winston.Logger;
     private _restartScheduleJob: any;
     private _schedule: typeof NodeSchedule | undefined;
     private namespaceLog: string;
-    protected namespace: `${string}.${number}`;
+    namespace: `${string}.${number}`;
     protected name: string;
     private _systemSecret?: string;
     /** Whether the adapter has already terminated */
@@ -597,7 +615,7 @@ export class AdapterClass extends EventEmitter {
     /** The cache of usernames */
     private usernames: Record<string, { id: string }> = {};
     /** A RegExp to test for forbidden chars in object IDs */
-    protected readonly FORBIDDEN_CHARS: RegExp = FORBIDDEN_CHARS;
+    readonly FORBIDDEN_CHARS: RegExp = FORBIDDEN_CHARS;
     private inputCount: number = 0;
     private outputCount: number = 0;
     /** The cache of users */
@@ -737,11 +755,11 @@ export class AdapterClass extends EventEmitter {
 
         this.performStrictObjectChecks = this._options.strictObjectChecks !== false;
 
-        if (!this._options.name) {
+        this.name = this._options.name;
+
+        if (!this.name) {
             throw new Error('No name of adapter!');
         }
-
-        this.name = this._options.name;
 
         const instance = parseInt(
             this._options.compactInstance !== undefined
@@ -752,7 +770,7 @@ export class AdapterClass extends EventEmitter {
             10
         );
 
-        this.namespace = `${this._options.name}.${instance}`;
+        this.namespace = `${this.name}.${instance}`;
         this.namespaceLog = this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
         this._namespaceRegExp = new RegExp(`^${`${this.namespace}.`.replace(/\./g, '\\.')}`); // cache the regex object 'adapter.0.'
 
@@ -767,10 +785,10 @@ export class AdapterClass extends EventEmitter {
         if (this._options.dirname) {
             this.adapterDir = this._options.dirname.replace(/\\/g, '/');
         } else {
-            const adapterDir = tools.getAdapterDir(this._options.name);
+            const adapterDir = tools.getAdapterDir(this.name);
 
             if (!adapterDir) {
-                this._logger.error(`${this.namespaceLog} Cannot find directory of adapter ${this._options.name}`);
+                this._logger.error(`${this.namespaceLog} Cannot find directory of adapter ${this.name}`);
                 this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
             }
 
@@ -786,187 +804,187 @@ export class AdapterClass extends EventEmitter {
 
         // Create dynamic methods
         /**
-         * Promise-version of Adapter.getPort
+         * Promise-version of `Adapter.getPort`
          */
         this.getPortAsync = tools.promisifyNoError(this.getPort, this);
 
         /**
-         * Promise-version of Adapter.checkPassword
+         * Promise-version of `Adapter.checkPassword`
          */
         this.checkPasswordAsync = tools.promisifyNoError(this.checkPassword, this);
 
         /**
-         * Promise-version of Adapter.setPassword
+         * Promise-version of `Adapter.setPassword`
          */
         this.setPasswordAsync = tools.promisify(this.setPassword, this);
 
         /**
-         * Promise-version of Adapter.checkGroup
+         * Promise-version of `Adapter.checkGroup`
          */
         this.checkGroupAsync = tools.promisifyNoError(this.checkGroup, this);
 
         /**
-         * Promise-version of Adapter.calculatePermissions
+         * Promise-version of `Adapter.calculatePermissions`
          */
         this.calculatePermissionsAsync = tools.promisifyNoError(this.calculatePermissions, this);
 
         /**
-         * Promise-version of Adapter.getCertificates
+         * Promise-version of `Adapter.getCertificates`
          */
         this.getCertificatesAsync = tools.promisify(this.getCertificates, this);
 
         /**
-         * Promise-version of Adapter.setObject
+         * Promise-version of `Adapter.setObject`
          */
         this.setObjectAsync = tools.promisify(this.setObject, this);
 
         /**
-         * Promise-version of Adapter.getAdapterObjects
+         * Promise-version of `Adapter.getAdapterObjects`
          */
         this.getAdapterObjectsAsync = tools.promisifyNoError(this.getAdapterObjects, this);
 
         /**
-         * Promise-version of Adapter.extendObject
+         * Promise-version of `Adapter.extendObject`
          */
         this.extendObjectAsync = tools.promisify(this.extendObject, this);
 
         /**
-         * Promise-version of Adapter.setForeignObject
+         * Promise-version of `Adapter.setForeignObject`
          */
         this.setForeignObjectAsync = tools.promisify(this.setForeignObject, this);
 
         /**
-         * Promise-version of Adapter.extendForeignObject
+         * Promise-version of `Adapter.extendForeignObject`
          */
         this.extendForeignObjectAsync = tools.promisify(this.extendForeignObject, this);
 
         /**
-         * Promise-version of Adapter.getObject
+         * Promise-version of `Adapter.getObject`
          */
         this.getObjectAsync = tools.promisify(this.getObject, this);
 
         /**
-         * Promise-version of Adapter.getObjectView
+         * Promise-version of `Adapter.getObjectView`
          */
         this.getObjectViewAsync = tools.promisify(this.getObjectView, this);
 
         /**
-         * Promise-version of Adapter.getObjectList
+         * Promise-version of `Adapter.getObjectList`
          */
         this.getObjectListAsync = tools.promisify(this.getObjectList, this);
 
         /**
-         * Promise-version of Adapter.getEnum
+         * Promise-version of `Adapter.getEnum`
          */
         this.getEnumAsync = tools.promisify(this.getEnum, this, ['result', 'requestEnum']);
 
         /**
-         * Promise-version of Adapter.getEnums
+         * Promise-version of `Adapter.getEnums`
          */
         this.getEnumsAsync = tools.promisify(this.getEnums, this);
 
         /**
-         * Promise-version of Adapter.getForeignObjects
+         * Promise-version of `Adapter.getForeignObjects`
          */
         this.getForeignObjectsAsync = tools.promisify(this.getForeignObjects, this);
 
         /**
-         * Promise-version of Adapter.findForeignObject
+         * Promise-version of `Adapter.findForeignObject`
          */
         this.findForeignObjectAsync = tools.promisify(this.findForeignObject, this, ['id', 'name']);
 
         /**
-         * Promise-version of Adapter.getForeignObject
+         * Promise-version of `Adapter.getForeignObject`
          */
         this.getForeignObjectAsync = tools.promisify(this.getForeignObject, this);
 
         /**
-         * Promise-version of Adapter.delObject
+         * Promise-version of `Adapter.delObject`
          */
         this.delObjectAsync = tools.promisify(this.delObject, this);
 
         /**
-         * Promise-version of Adapter.delForeignObject
+         * Promise-version of `Adapter.delForeignObject`
          */
         this.delForeignObjectAsync = tools.promisify(this.delForeignObject, this);
 
         /**
-         * Promise-version of Adapter.subscribeObjects
+         * Promise-version of `Adapter.subscribeObjects`
          */
         this.subscribeObjectsAsync = tools.promisify(this.subscribeObjects, this);
 
         /**
-         * Promise-version of Adapter.unsubscribeObjects
+         * Promise-version of `Adapter.unsubscribeObjects`
          */
         this.unsubscribeObjectsAsync = tools.promisify(this.unsubscribeObjects, this);
 
         /**
-         * Promise-version of Adapter.subscribeForeignObjects
+         * Promise-version of `Adapter.subscribeForeignObjects`
          */
         this.subscribeForeignObjectsAsync = tools.promisify(this.subscribeForeignObjects, this);
 
         /**
-         * Promise-version of Adapter.unsubscribeForeignObjects
+         * Promise-version of `Adapter.unsubscribeForeignObjects`
          */
         this.unsubscribeForeignObjectsAsync = tools.promisify(this.unsubscribeForeignObjects, this);
 
         /**
-         * Promise-version of Adapter.setObjectNotExists
+         * Promise-version of `Adapter.setObjectNotExists`
          */
         this.setObjectNotExistsAsync = tools.promisify(this.setObjectNotExists, this);
 
         /**
-         * Promise-version of Adapter.setForeignObjectNotExists
+         * Promise-version of `Adapter.setForeignObjectNotExists`
          */
         this.setForeignObjectNotExistsAsync = tools.promisify(this.setForeignObjectNotExists, this);
 
         /**
-         * Promise-version of Adapter.createDevice
+         * Promise-version of `Adapter.createDevice`
          */
         this.createDeviceAsync = tools.promisify(this.createDevice, this);
 
         /**
-         * Promise-version of Adapter.createChannel
+         * Promise-version of `Adapter.createChannel`
          */
         this.createChannelAsync = tools.promisify(this.createChannel, this);
 
         /**
-         * Promise-version of Adapter.createState
+         * Promise-version of `Adapter.createState`
          */
         this.createStateAsync = tools.promisify(this.createState, this);
 
         /**
-         * Promise-version of Adapter.deleteDevice
+         * Promise-version of `Adapter.deleteDevice`
          */
         this.deleteDeviceAsync = tools.promisify(this.deleteDevice, this);
 
         /**
-         * Promise-version of Adapter.addChannelToEnum
+         * Promise-version of `Adapter.addChannelToEnum`
          */
         this.addChannelToEnumAsync = tools.promisify(this.addChannelToEnum, this);
 
         /**
-         * Promise-version of Adapter.deleteChannelFromEnum
+         * Promise-version of `Adapter.deleteChannelFromEnum`
          */
         this.deleteChannelFromEnumAsync = tools.promisify(this.deleteChannelFromEnum, this);
 
         /**
-         * Promise-version of Adapter.deleteChannel
+         * Promise-version of `Adapter.deleteChannel`
          */
         this.deleteChannelAsync = tools.promisify(this.deleteChannel, this);
 
         /**
-         * Promise-version of Adapter.deleteState
+         * Promise-version of `Adapter.deleteState`
          */
         this.deleteStateAsync = tools.promisify(this.deleteState, this);
 
         /**
-         * Promise-version of Adapter.getDevices
+         * Promise-version of `Adapter.getDevices`
          */
         this.getDevicesAsync = tools.promisify(this.getDevices, this);
 
         /**
-         * Promise-version of Adapter.getChannelsOf
+         * Promise-version of `Adapter.getChannelsOf`
          */
         this.getChannelsOfAsync = tools.promisify(this.getChannelsOf, this);
 
@@ -974,37 +992,37 @@ export class AdapterClass extends EventEmitter {
         this.getChannelsAsync = this.getChannelsOfAsync;
 
         /**
-         * Promise-version of Adapter.getStatesOf
+         * Promise-version of `Adapter.getStatesOf`
          */
         this.getStatesOfAsync = tools.promisify(this.getStatesOf, this);
 
         /**
-         * Promise-version of Adapter.addStateToEnum
+         * Promise-version of `Adapter.addStateToEnum`
          */
         this.addStateToEnumAsync = tools.promisify(this.addStateToEnum, this);
 
         /**
-         * Promise-version of Adapter.deleteStateFromEnum
+         * Promise-version of `Adapter.deleteStateFromEnum`
          */
         this.deleteStateFromEnumAsync = tools.promisify(this.deleteStateFromEnum, this);
 
         /**
-         * Promise-version of Adapter.chmodFile
+         * Promise-version of `Adapter.chmodFile`
          */
         this.chmodFileAsync = tools.promisify(this.chmodFile, this);
 
         /**
-         * Promise-version of Adapter.chownFile
+         * Promise-version of `Adapter.chownFile`
          */
         this.chownFileAsync = tools.promisify(this.chownFile, this);
 
         /**
-         * Promise-version of Adapter.readDir
+         * Promise-version of `Adapter.readDir`
          */
         this.readDirAsync = tools.promisify(this.readDir, this);
 
         /**
-         * Promise-version of Adapter.unlink
+         * Promise-version of `Adapter.unlink`
          */
         this.unlinkAsync = tools.promisify(this.unlink, this);
 
@@ -1012,117 +1030,117 @@ export class AdapterClass extends EventEmitter {
         this.delFileAsync = this.unlinkAsync;
 
         /**
-         * Promise-version of Adapter.rename
+         * Promise-version of `Adapter.rename`
          */
         this.renameAsync = tools.promisify(this.rename, this);
 
         /**
-         * Promise-version of Adapter.mkdir
+         * Promise-version of `Adapter.mkdir`
          */
         this.mkdirAsync = tools.promisify(this.mkdir, this);
 
         /**
-         * Promise-version of Adapter.readFile
+         * Promise-version of `Adapter.readFile`
          */
         this.readFileAsync = tools.promisify(this.readFile, this, ['file', 'mimeType']);
 
         /**
-         * Promise-version of Adapter.writeFile
+         * Promise-version of `Adapter.writeFile`
          */
         this.writeFileAsync = tools.promisify(this.writeFile, this);
 
         /**
-         * Promise-version of Adapter.fileExists
+         * Promise-version of `Adapter.fileExists`
          */
         this.fileExistsAsync = tools.promisify(this.fileExists, this);
 
         /**
-         * Promise-version of Adapter.sendTo
+         * Promise-version of `Adapter.sendTo`
          */
         this.sendToAsync = tools.promisifyNoError(this.sendTo, this);
 
         /**
-         * Promise-version of Adapter.sendToHost
+         * Promise-version of `Adapter.sendToHost`
          */
         this.sendToHostAsync = tools.promisifyNoError(this.sendToHost, this);
 
         /**
-         * Promise-version of Adapter.setState
+         * Promise-version of `Adapter.setState`
          */
         this.setStateAsync = tools.promisify(this.setState, this);
 
         /**
-         * Promise-version of Adapter.setStateChanged
+         * Promise-version of `Adapter.setStateChanged`
          */
         this.setStateChangedAsync = tools.promisify(this.setStateChanged, this, ['id', 'notChanged']);
 
         /**
-         * Promise-version of Adapter.setForeignState
+         * Promise-version of `Adapter.setForeignState`
          */
         this.setForeignStateAsync = tools.promisify(this.setForeignState, this);
 
         /**
-         * Promise-version of Adapter.setForeignStateChanged
+         * Promise-version of `Adapter.setForeignStateChanged`
          */
         this.setForeignStateChangedAsync = tools.promisify(this.setForeignStateChanged, this);
 
         /**
-         * Promise-version of Adapter.getState
+         * Promise-version of `Adapter.getState`
          */
         this.getStateAsync = tools.promisify(this.getState, this);
 
         /**
-         * Promise-version of Adapter.getForeignState
+         * Promise-version of `Adapter.getForeignState`
          */
         this.getForeignStateAsync = tools.promisify(this.getForeignState, this);
 
         /**
-         * Promise-version of Adapter.getHistory
+         * Promise-version of `Adapter.getHistory`
          */
         this.getHistoryAsync = tools.promisify(this.getHistory, this, ['result', 'step', 'sessionId']);
 
         /**
-         * Promise-version of Adapter.delState
+         * Promise-version of `Adapter.delState`
          */
         this.delStateAsync = tools.promisify(this.delState, this);
 
         /**
-         * Promise-version of Adapter.delForeignState
+         * Promise-version of `Adapter.delForeignState`
          */
         this.delForeignStateAsync = tools.promisify(this.delForeignState, this);
 
         /**
-         * Promise-version of Adapter.getStates
+         * Promise-version of `Adapter.getStates`
          */
         this.getStatesAsync = tools.promisify(this.getStates, this);
 
         /**
-         * Promise-version of Adapter.getForeignStates
+         * Promise-version of `Adapter.getForeignStates`
          */
         this.getForeignStatesAsync = tools.promisify(this.getForeignStates, this);
 
         /**
-         * Promise-version of Adapter.subscribeForeignStates
+         * Promise-version of `Adapter.subscribeForeignStates`
          */
         this.subscribeForeignStatesAsync = tools.promisify(this.subscribeForeignStates, this);
 
         /**
-         * Promise-version of Adapter.unsubscribeForeignStates
+         * Promise-version of `Adapter.unsubscribeForeignStates`
          */
         this.unsubscribeForeignStatesAsync = tools.promisify(this.unsubscribeForeignStates, this);
 
         /**
-         * Promise-version of Adapter.subscribeStates
+         * Promise-version of `Adapter.subscribeStates`
          */
         this.subscribeStatesAsync = tools.promisify(this.subscribeStates, this);
 
         /**
-         * Promise-version of Adapter.unsubscribeStates
+         * Promise-version of `Adapter.unsubscribeStates`
          */
         this.unsubscribeStatesAsync = tools.promisify(this.unsubscribeStates, this);
 
         /**
-         * Promise-version of Adapter.setBinaryState
+         * Promise-version of `Adapter.setBinaryState`
          *
          * @param id of state
          * @param binary data
@@ -1141,7 +1159,7 @@ export class AdapterClass extends EventEmitter {
         this.setBinaryStateAsync = tools.promisify(this.setBinaryState, this);
 
         /**
-         * Promise-version of Adapter.getBinaryState
+         * Promise-version of `Adapter.getBinaryState`
          *
          *
          */
@@ -1156,7 +1174,7 @@ export class AdapterClass extends EventEmitter {
         this.getBinaryStateAsync = tools.promisify(this.getBinaryState, this);
 
         /**
-         * Promise-version of Adapter.delForeignBinaryState
+         * Promise-version of `Adapter.delForeignBinaryState`
          *
          * @param id
          * @param options
@@ -1165,7 +1183,7 @@ export class AdapterClass extends EventEmitter {
         this.delForeignBinaryStateAsync = tools.promisify(this.delForeignBinaryState, this);
 
         /**
-         * Promise-version of Adapter.delBinaryState
+         * Promise-version of `Adapter.delBinaryState`
          *
          * @param id
          * @param options
@@ -1526,7 +1544,7 @@ export class AdapterClass extends EventEmitter {
 
     private async _checkPassword(options: InternalCheckPasswordOptions): Promise<void> {
         if (options.user && !options.user.startsWith('system.user.')) {
-            // its not yet a `system.user.xy` id, thus we assume it's a username
+            // it's not yet a `system.user.xy` id, thus we assume it's a username
             if (!this.usernames[options.user]) {
                 // we did not find the id of the username in our cache -> update cache
                 try {
@@ -1535,7 +1553,7 @@ export class AdapterClass extends EventEmitter {
                     this._logger.error(`${this.namespaceLog} ${e.message}`);
                 }
                 if (!this.usernames[options.user]) {
-                    // user still not there, its no valid user -> fallback to legacy check
+                    // user still not there, it's no valid user -> fallback to legacy check
                     options.user = `system.user.${options.user
                         .toString()
                         .replace(this.FORBIDDEN_CHARS, '_')
@@ -1562,7 +1580,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     /**
-     * This method update the cached values in this.usernames
+     * This method update the cached values in `this.usernames`
      */
     private async _updateUsernameCache(): Promise<void> {
         try {
@@ -1654,7 +1672,7 @@ export class AdapterClass extends EventEmitter {
 
     private async _setPassword(options: InternalSetPasswordOptions) {
         if (options.user && !options.user.startsWith('system.user.')) {
-            // its not yet a `system.user.xy` id, thus we assume it's a username
+            // it's not yet a `system.user.xy` id, thus we assume it's a username
             if (!this.usernames[options.user]) {
                 // we did not find the id of the username in our cache -> update cache
                 try {
@@ -1768,7 +1786,7 @@ export class AdapterClass extends EventEmitter {
                 }
 
                 if (!this.usernames[options.user]) {
-                    // user still not there, its no valid user -> fallback
+                    // user still not there, it's no valid user -> fallback
                     options.user = `system.user.${options.user
                         .toString()
                         .replace(this.FORBIDDEN_CHARS, '_')
@@ -1938,7 +1956,7 @@ export class AdapterClass extends EventEmitter {
         options: InternalCalculatePermissionsOptions
     ): Promise<void | ioBroker.PermissionSet> {
         if (options.user && !options.user.startsWith('system.user.')) {
-            // its not yet a `system.user.xy` id, thus we assume it's a username
+            // it's not yet a `system.user.xy` id, thus we assume it's a username
             if (!this.usernames[options.user]) {
                 // we did not find the id of the username in our cache -> update cache
                 try {
@@ -2122,7 +2140,7 @@ export class AdapterClass extends EventEmitter {
                         this._options.unload(finishUnload);
                     } else {
                         // The method takes no arguments, so it must return a Promise
-                        // @ts-expect-error already fixed in latest types
+                        // @ts-expect-error already fixed in the latest types
                         const unloadPromise = this._options.unload();
                         if (unloadPromise instanceof Promise) {
                             // Call finishUnload in the case of success and failure
@@ -2174,7 +2192,7 @@ export class AdapterClass extends EventEmitter {
     private _readFileCertificate(cert: string): string {
         if (typeof cert === 'string') {
             try {
-                // if length < 1024 its no valid cert, so we assume a path to a valid certificate
+                // if length < 1024 it's no valid cert, so we assume a path to a valid certificate
                 if (cert.length < 1024 && fs.existsSync(cert)) {
                     const certFile = cert;
                     cert = fs.readFileSync(certFile, 'utf8');
@@ -2461,7 +2479,7 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Same as clearTimeout
-     * but it check the running timers on unload
+     * but it checks the running timers on unload
      *
      * @param timer - the timer object
      */
@@ -2475,8 +2493,8 @@ export class AdapterClass extends EventEmitter {
     delay(timeout: number): Promise<void>;
 
     /**
-     * delays the fullfillment of the promise the amount of time.
-     * it will not fullfill during and after adapter shutdown
+     * delays the fulfillment of the promise the amount of time.
+     * it will not fulfill during and after adapter shutdown
      *
      * @param timeout - timeout in milliseconds
      * @returns promise when timeout is over
@@ -2538,7 +2556,7 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Same as clearInterval
-     * but it check the running intervals on unload
+     * but it checks the running intervals on unload
      *
      * @param interval - interval object
      */
@@ -2548,21 +2566,21 @@ export class AdapterClass extends EventEmitter {
         this._intervals.delete(interval as any);
     }
 
-    setObject(id: ID, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
+    setObject(id: string, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
     setObject(
-        id: ID,
+        id: string,
         obj: ioBroker.SettableObject,
         options: unknown,
         callback?: ioBroker.SetObjectCallback
     ): Promise<void>;
-    setObject(id: ID, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
+    setObject(id: string, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
     /**
      * Creates or overwrites object in objectDB.
      *
      * This function can create or overwrite objects in objectDB for this adapter.
      * Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
-     * <b>common</b>, <b>native</b> and <b>type</b> attributes are mandatory and it will be checked.
-     * Additionally type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.g.:
+     * <b>common</b>, <b>native</b> and <b>type</b> attributes are mandatory, and it will be checked.
+     * Additionally, type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.g.:
      * ```js{
      *     common: {
      *          name: 'object name',
@@ -2691,7 +2709,7 @@ export class AdapterClass extends EventEmitter {
 
             if (!Object.prototype.hasOwnProperty.call(options.obj.common, 'name')) {
                 options.obj.common.name = options.id;
-                // it is more an unimportant warning as debug
+                // it is a more unimportant warning as debug
                 this._logger.debug(
                     `${this.namespaceLog} setObject ${options.id} (type=${options.obj.type}) property common.name missing, using id as name`
                 );
@@ -2861,7 +2879,7 @@ export class AdapterClass extends EventEmitter {
     /**
      * Extend some object and create it if it does not exist
      *
-     * You can change or extend some object. E.g existing object is:
+     * You can change or extend some object. E.g. existing object is:
      * ```js
      *     {
      *          common: {
@@ -3994,7 +4012,7 @@ export class AdapterClass extends EventEmitter {
      *        ```
      *
 
-     * @param pattern object ID/wildchars
+     * @param pattern object ID/wildcards
      * @param type type of object: 'state', 'channel' or 'device'. Default - 'state'
      * @param enums object ID, that must be overwritten or created.
      * @param options optional user context
@@ -4132,6 +4150,21 @@ export class AdapterClass extends EventEmitter {
                             }
                         }
                     }
+                    // remove protectedNative if not admin, not cloud or not own adapter
+                    if (
+                        row.value &&
+                        'protectedNative' in row.value &&
+                        Array.isArray(row.value.protectedNative) &&
+                        row.value.native &&
+                        id &&
+                        id.startsWith('system.adapter.') &&
+                        !NO_PROTECT_ADAPTERS.includes(this.name) &&
+                        this.name !== id.split('.')[2]
+                    ) {
+                        for (const attr of row.value.protectedNative) {
+                            delete row.value.native[attr];
+                        } // endFor
+                    } // endIf
                 }
             }
             return tools.maybeCallbackWithError(callback, null, list);
@@ -4239,16 +4272,16 @@ export class AdapterClass extends EventEmitter {
         }
 
         adapterObjects.getObject(options.id, options, (err, obj) => {
-            const adapterName = this.namespace.split('.')[0];
-            // remove protectedNative if not admin or own adapter
+            // remove protectedNative if not admin, not cloud or not own adapter
             if (
                 obj &&
                 'protectedNative' in obj &&
                 Array.isArray(obj.protectedNative) &&
                 obj._id &&
                 obj._id.startsWith('system.adapter.') &&
-                adapterName !== 'admin' &&
-                adapterName !== obj._id.split('.')[2]
+                obj.native &&
+                !NO_PROTECT_ADAPTERS.includes(this.name) &&
+                this.name !== obj._id.split('.')[2]
             ) {
                 for (const attr of obj.protectedNative) {
                     delete obj.native[attr];
@@ -4265,7 +4298,7 @@ export class AdapterClass extends EventEmitter {
     /**
      * Delete an object of this instance.
      *
-     * It is not required to provice the adapter namespace, because it will automatically be added.
+     * It is not required to provide the adapter namespace, because it will automatically be added.
      * E.g. to delete "adapterName.X.myObject", only "myObject" is required as ID.
      *
      * The corresponding state will be deleted too if the object has type "state".
@@ -4851,7 +4884,7 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    private _DCS2ID(device: string, channel: string, stateOrPoint?: boolean | string): ID {
+    private _DCS2ID(device: string, channel: string, stateOrPoint?: boolean | string): string {
         let id = '';
         if (device) {
             id += device;
@@ -4867,7 +4900,7 @@ export class AdapterClass extends EventEmitter {
         } else if (stateOrPoint === true && id) {
             id += '.';
         }
-        return id as ID;
+        return id;
     }
 
     // external signatures
@@ -6384,7 +6417,7 @@ export class AdapterClass extends EventEmitter {
      *        if (err) adapter.log.error('Cannot read directory: ' + err);
      *        if (filesOrDirs) {
      *           for (var f = 0; f < filesOrDirs.length; f++) {
-     *              adapter.log.debug('Directory main has following files and dirs: ' + filesOrDirs[f].file + '[dir - ' + filesOrDirs[f].isDir + ']');
+     *              adapter.log.debug('Directory main has the following files and dirs: ' + filesOrDirs[f].file + '[dir - ' + filesOrDirs[f].isDir + ']');
      *           }
      *       }
      *      });
@@ -7050,7 +7083,7 @@ export class AdapterClass extends EventEmitter {
      * This function sends a message to specific host or all hosts.
      * If no host name given (e.g. null), the callback argument will be ignored. Because normally many responses will come.
      *
-     * @param hostName name of the host where the message must be send to. E.g. "myPC" or "system.host.myPC". If argument is empty, the message will be sent to all hosts.
+     * @param hostName name of the host where the message must be sent to. E.g. "myPC" or "system.host.myPC". If argument is empty, the message will be sent to all hosts.
      * @param command command name. One of: "cmdExec", "getRepository", "getInstalled", "getVersion", "getDiagData", "getLocationOnDisk", "getDevList", "getLogs", "delLogs", "readDirAsZip", "writeDirAsZip", "readObjectsAsZip", "writeObjectsAsZip", "checkLogging". Commands can be checked in controller.js (function processMessage)
      * @param message object that will be given as argument for request
      * @param callback optional return result
@@ -7457,7 +7490,7 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    // Cache will be cleared if user or group changes.. Important! only if subscribed.
+    // Cache will be cleared if user or group changes. Important! only if subscribed.
     private async _getUserGroups(options: GetUserGroupsOptions): Promise<GetUserGroupsOptions> {
         if (this.users[options.user]) {
             options.groups = this.users[options.user].groups;
@@ -7925,21 +7958,19 @@ export class AdapterClass extends EventEmitter {
         return this._setStateChanged({ id, state: state as ioBroker.SettableState, ack, options, callback });
     }
 
-    private async _setStateChanged(_options: InternalSetStateChanedOptions): Promise<void> {
+    private async _setStateChanged(_options: InternalSetStateChangedOptions): Promise<void> {
         const { id, ack, options, callback, state } = _options;
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(
                 `${this.namespaceLog} setStateChanged not processed because States database not connected`
             );
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         try {
             this._utils.validateId(id, false, null);
         } catch (err) {
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
             return tools.maybeCallbackWithError(callback, err);
         }
 
@@ -7952,7 +7983,6 @@ export class AdapterClass extends EventEmitter {
             try {
                 this._utils.validateSetStateObjectArgument(state);
             } catch (e) {
-                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                 return tools.maybeCallbackWithError(callback, e);
             }
             stateObj = state;
@@ -7964,7 +7994,6 @@ export class AdapterClass extends EventEmitter {
 
         if (stateObj.val === undefined && !Object.keys(stateObj).length) {
             // undefined is not allowed as state.val -> return
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
             return tools.maybeCallbackWithError(callback, 'undefined is not a valid state value');
         }
 
@@ -7981,16 +8010,15 @@ export class AdapterClass extends EventEmitter {
             try {
                 await this._checkStates(fixedId, options, 'setState');
             } catch (e) {
-                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                 return tools.maybeCallbackWithError(callback, e);
             }
 
             const res = await this._setStateChangedHelper(fixedId, stateObj);
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+            // @ts-expect-error todo fix it
             return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
         } else {
             const res = await this._setStateChangedHelper(fixedId, stateObj);
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+            // @ts-expect-error todo fix it
             return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
         }
     }
@@ -8261,7 +8289,7 @@ export class AdapterClass extends EventEmitter {
                             adapterStates.setState(
                                 aliasId,
                                 tools.formatAliasValue(
-                                    obj && obj.common,
+                                    obj.common!,
                                     targetObj && (targetObj.common as any),
                                     state,
                                     this._logger,
@@ -8698,7 +8726,7 @@ export class AdapterClass extends EventEmitter {
      *
      * Possible options:
      *
-     *  - instance - (optional) name of instance, where to read the historian data, e.g. 'history.0', 'sql.1'. By default will be taken from system settings.
+     *  - instance - (optional) name of instance, where to read the historian data, e.g. 'history.0', 'sql.1'. By default, will be taken from system settings.
      *  - start - (optional) time in ms - Date.now()', by default is (now - 1 week)
      *  - end - (optional) time in ms - Date.now()', by default is (now + 5000 seconds)
      *  - step - (optional) used in aggregate (m4, max, min, average, total) step in ms of intervals
@@ -8708,7 +8736,7 @@ export class AdapterClass extends EventEmitter {
      *  - q - if q field should be included in answer
      *  - addId - if id field should be included in answer
      *  - limit - do not return more entries than limit
-     *  - ignoreNull - if null values should be include (false), replaced by last not null value (true) or replaced with 0 (0)
+     *  - ignoreNull - if null values should be included (false), replaced by last not null value (true) or replaced with 0 (0)
      *  - sessionId - (optional) identifier of request, will be returned back in the answer
      *  - aggregate - aggregate method:
      *      - minmax - used special algorithm. Splice the whole time range in small intervals and find for every interval max, min, start and end values.
@@ -8940,7 +8968,7 @@ export class AdapterClass extends EventEmitter {
      *     });
      * ```
      *
-     * @param pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
+     * @param pattern string in form 'adapter.0.*' or like this. It can be an array of IDs too.
      * @param options optional argument to describe the user context
      * @param callback return result
      * ```js
@@ -9068,7 +9096,7 @@ export class AdapterClass extends EventEmitter {
      *     });
      * ```
      *
-     * @param pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
+     * @param pattern string in form 'adapter.0.*' or like this. It can be an array of IDs too.
      * @param options optional argument to describe the user context
      * @param callback return result
      * ```js
@@ -9260,7 +9288,7 @@ export class AdapterClass extends EventEmitter {
 
                 if (sourceObj && sourceObj.common) {
                     if (!this.aliases.has(sourceObj._id)) {
-                        // TODO what means this, we ensured alias existed, did some async stuff now its gone -> alias has been deleted?
+                        // TODO what means this, we ensured alias existed, did some async stuff now it's gone -> alias has been deleted?
                         this._logger.error(
                             `${
                                 this.namespaceLog
@@ -9329,7 +9357,7 @@ export class AdapterClass extends EventEmitter {
      *     adapter.subscribeForeignStates('adapterName.X.*');
      * ```
      *
-     * @param pattern string in form 'adapter.0.*' or like this. It can be array of IDs too.
+     * @param pattern string in form 'adapter.0.*' or like this. It can be an array of IDs too.
      * @param options optional argument to describe the user context
      * @param callback return result ```function (err) {}```
      */
@@ -9432,7 +9460,7 @@ export class AdapterClass extends EventEmitter {
                     (aliasPattern.startsWith(ALIAS_STARTS_WITH) || aliasPattern.includes('*')) &&
                     !this.aliasPatterns.has(aliasPattern)
                 ) {
-                    // its a new alias conform pattern to store
+                    // it's a new alias conform pattern to store
                     this.aliasPatterns.add(aliasPattern);
                 }
             }
@@ -9449,7 +9477,7 @@ export class AdapterClass extends EventEmitter {
 
                 for (const aliasObj of aliasObjs) {
                     if (aliasObj) {
-                        // @ts-expect-error check if alias subscribe also takes non state objects and then ignores
+                        // @ts-expect-error check if alias subscribe also takes non-state objects and then ignores
                         promises.push(new Promise(resolve => this._addAliasSubscribe(aliasObj, aliasObj._id, resolve)));
                     }
                 }
@@ -9480,7 +9508,7 @@ export class AdapterClass extends EventEmitter {
                     const objs = await this.getForeignObjectsAsync(pattern, null, null, options);
                     const promises = [];
                     if (!this.aliasPatterns.has(pattern)) {
-                        // its a new pattern to store
+                        // it's a new pattern to store
                         this.aliasPatterns.add(pattern);
                     }
 
@@ -9797,7 +9825,7 @@ export class AdapterClass extends EventEmitter {
     setForeignBinaryState(id: string, binary: Buffer, options: unknown, callback: ioBroker.SetStateCallback): void;
 
     /**
-     * Write binary block into redis, e.g image
+     * Write binary block into redis, e.g. image
      *
      *
      * @param id of state
@@ -9805,8 +9833,13 @@ export class AdapterClass extends EventEmitter {
      * @param options optional
      * @param callback
      *
+     * @deprecated Please use `writeFile` instead of binary states
      */
     setForeignBinaryState(id: unknown, binary: unknown, options: unknown, callback?: unknown): any {
+        this._logger.info(
+            `${this.namespaceLog} Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files`
+        );
+
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -9946,6 +9979,8 @@ export class AdapterClass extends EventEmitter {
      * @param binary data
      * @param options optional
      * @param callback
+     *
+     * @deprecated Please use `writeFile` instead of binary states
      */
     setBinaryState(id: any, binary: any, options: any, callback?: any): void {
         // we just keep any types here, because setForeign method will validate
@@ -9962,8 +9997,14 @@ export class AdapterClass extends EventEmitter {
      * @param id The state ID
      * @param options optional
      * @param callback
+     *
+     * @deprecated Please use `readFile` instead of binary states
      */
     getForeignBinaryState(id: unknown, options: unknown, callback?: unknown): any {
+        this._logger.info(
+            `${this.namespaceLog} Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files`
+        );
+
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -10038,6 +10079,8 @@ export class AdapterClass extends EventEmitter {
      * @param id The state ID
      * @param options optional
      * @param callback
+     *
+     * @depreacted Please use `readFile` instead of binary states
      */
     getBinaryState(id: any, options: any, callback?: any): any {
         // we use any types here, because validation takes place in foreign method
@@ -10056,8 +10099,13 @@ export class AdapterClass extends EventEmitter {
      * @param options
      * @param callback
      *
+     * @deprecated Please use `delFile` instead of binary states
      */
     delForeignBinaryState(id: unknown, options: unknown, callback?: unknown): any {
+        this._logger.info(
+            `${this.namespaceLog} Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files`
+        );
+
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -10114,6 +10162,7 @@ export class AdapterClass extends EventEmitter {
      * @param options
      * @param callback
      *
+     * @deprecated Please use `delFile` instead of binary states
      */
     delBinaryState(id: any, options: any, callback?: any): any {
         // we use any types here, because validation takes place in foreign method
@@ -10186,14 +10235,15 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    getSuitableLicenses(all: boolean): Promise<any[]>;
+    getSuitableLicenses(all?: boolean, adapterName?: string): Promise<any[]>;
 
     /**
      * This method returns the list of license that can be used by this adapter
      * @param all if return the licenses, that used by other instances (true) or only for this instance (false)
+     * @param adapterName Return licenses for specific adapter
      * @returns list of suitable licenses
      */
-    async getSuitableLicenses(all: unknown): Promise<any> {
+    async getSuitableLicenses(all?: boolean, adapterName?: string): Promise<any> {
         const licenses: Record<string, any>[] = [];
         try {
             const obj = await this.getForeignObjectAsync('system.licenses');
@@ -10221,7 +10271,7 @@ export class AdapterClass extends EventEmitter {
                                 new Date(decoded.valid_till).getTime() > now)
                         ) {
                             if (
-                                decoded.name.startsWith(`iobroker.${this.name}`) &&
+                                decoded.name.startsWith(`iobroker.${adapterName || this.name}`) &&
                                 (all || !license.usedBy || license.usedBy === this.namespace)
                             ) {
                                 // Licenses for version ranges 0.x and 1.x are handled identically and are valid for both version ranges.
@@ -11022,7 +11072,7 @@ export class AdapterClass extends EventEmitter {
                     //     ]
                     // };
 
-                    // if this.aliases is empty, or no target found its a new alias
+                    // if `this.aliases` is empty, or no target found, it's a new alias
                     let isNewAlias = true;
 
                     for (const [sourceId, alias] of this.aliases) {
@@ -11135,15 +11185,15 @@ export class AdapterClass extends EventEmitter {
                 }
 
                 // remove protectedNative if not admin or own adapter
-                const adapterName = this.namespace.split('.')[0];
                 if (
                     obj &&
                     'protectedNative' in obj &&
                     Array.isArray(obj.protectedNative) &&
                     obj._id &&
                     obj._id.startsWith('system.adapter.') &&
-                    adapterName !== 'admin' &&
-                    adapterName !== obj._id.split('.')[2]
+                    obj.native &&
+                    !NO_PROTECT_ADAPTERS.includes(this.name) &&
+                    this.name !== obj._id.split('.')[2]
                 ) {
                     for (const attr of obj.protectedNative) {
                         delete obj.native[attr];
@@ -11208,7 +11258,7 @@ export class AdapterClass extends EventEmitter {
                         killRes.val === -1
                     ) {
                         this._logger.error(
-                            `${this.namespaceLog} ${this._options.name}.${this.instance} needs to be stopped because not correctly started in compact mode`
+                            `${this.namespaceLog} ${this.namespace} needs to be stopped because not correctly started in compact mode`
                         );
                         this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
                     } else if (
@@ -11223,7 +11273,7 @@ export class AdapterClass extends EventEmitter {
                         killRes.val !== process.pid
                     ) {
                         this._logger.error(
-                            `${this.namespaceLog} ${this._options.name}.${this.instance} invalid process id scenario ${killRes.val} vs. own ID ${process.pid}. Stopping`
+                            `${this.namespaceLog} ${this.namespace} invalid process id scenario ${killRes.val} vs. own ID ${process.pid}. Stopping`
                         );
                         this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
                     } else if (
@@ -11233,17 +11283,13 @@ export class AdapterClass extends EventEmitter {
                         resAlive.ack &&
                         !this._config.forceIfDisabled
                     ) {
-                        this._logger.error(
-                            `${this.namespaceLog} ${this._options.name}.${this.instance} already running`
-                        );
+                        this._logger.error(`${this.namespaceLog} ${this.namespace} already running`);
                         this.terminate(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
                     } else {
                         adapterObjects!.getObject(`system.adapter.${this.namespace}`, (err, res) => {
                             // TODO: ts infers AdapterObject instead of InstanceObject
                             if ((err || !res) && !this._config.isInstall) {
-                                this._logger.error(
-                                    `${this.namespaceLog} ${this._options.name}.${this.instance} invalid config`
-                                );
+                                this._logger.error(`${this.namespaceLog} ${this.namespace} invalid config`);
                                 this.terminate(EXIT_CODES.INVALID_ADAPTER_CONFIG);
                             } else {
                                 this._initAdapter(res);
@@ -11327,7 +11373,7 @@ export class AdapterClass extends EventEmitter {
                         name = tmp[1];
                         instance = parseInt(tmp[2]) || 0;
                     } else {
-                        name = this._options.name;
+                        name = this.name;
                         instance = 0;
                         adapterConfig = adapterConfig || {
                             // @ts-expect-error protectedNative exists on instance objects
@@ -11399,7 +11445,7 @@ export class AdapterClass extends EventEmitter {
                     }
                 } else {
                     // @ts-expect-error
-                    this.name = adapterConfig.name || this._options.name;
+                    this.name = adapterConfig.name || this.name;
                     // @ts-expect-error
                     this.instance = adapterConfig.instance || 0;
                     this.namespace = `${this.name}.${this.instance!}`;
@@ -11498,7 +11544,7 @@ export class AdapterClass extends EventEmitter {
                             : this.ioPack && this.ioPack.common
                             ? this.ioPack.common.version
                             : 'unknown';
-                    // display if it's a non official version - only if installedFrom is explicitly given and differs it's not npm
+                    // display if it's a non-official version - only if installedFrom is explicitly given and differs it's not npm
                     const isNpmVersion =
                         !this.ioPack ||
                         !this.ioPack.common ||
@@ -11618,7 +11664,7 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
-        // catch it on windows
+        // catch it on Windows
         if (this.getPortRunning && err && err.message === 'listen EADDRINUSE') {
             const { host, port, callback } = this.getPortRunning;
             this._logger.warn(
@@ -11716,7 +11762,7 @@ export class AdapterClass extends EventEmitter {
                         }
 
                         if (obj.type === 'state' && obj.common.def !== undefined) {
-                            // default value given - if obj non existing we have to set it
+                            // default value given - if obj non-existing we have to set it
                             try {
                                 const checkObj = await this.getForeignObjectAsync(obj._id);
                                 if (!checkObj) {
@@ -11733,9 +11779,7 @@ export class AdapterClass extends EventEmitter {
                     objs.push(obj);
                 } else {
                     this._logger.error(
-                        `${this.namespaceLog} ${this._options.name}.${
-                            this.instance
-                        } invalid instance object: ${JSON.stringify(obj)}`
+                        `${this.namespaceLog} ${this.namespace} invalid instance object: ${JSON.stringify(obj)}`
                     );
                 }
             }

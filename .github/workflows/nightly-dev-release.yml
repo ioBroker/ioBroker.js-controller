@@ -7,11 +7,11 @@ on:
 
 jobs:
   publish-config:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-20.04
 
     strategy:
       matrix:
-        node-version: [14.x] # This should be LTS
+        node-version: [16.x] # This should be LTS
 
     steps:
     - name: Checkout code

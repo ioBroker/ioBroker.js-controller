@@ -5,7 +5,7 @@
  */
 export class Log {
     private readonly namespaceLog: string;
-    private readonly level: string;
+    readonly level: string;
     private readonly logger: any;
 
     /**

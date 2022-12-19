@@ -824,7 +824,7 @@ export class StateRedisClient {
     /**
      * Promise-version of setState
      */
-    setStateAsync(id: string, state: ioBroker.SettableState): Promise<string> {
+    setStateAsync(id: string, state: ioBroker.SettableState | ioBroker.StateValue): Promise<string> {
         return new Promise((resolve, reject) => {
             this.setState(id, state, (err, res) => {
                 if (err) {
@@ -905,7 +905,7 @@ export class StateRedisClient {
 
     async getStates(
         keys: string[],
-        callback: (err: Error | undefined | null, states?: (ioBroker.State | null)[]) => void,
+        callback?: (err: Error | undefined | null, states?: (ioBroker.State | null)[]) => void,
         dontModify?: boolean
     ): Promise<(ioBroker.State | null)[] | void> {
         if (!keys || !Array.isArray(keys)) {

@@ -16,6 +16,7 @@ import cpPromise from 'promisify-child-process';
 import tar from 'tar';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
+import type { CleanDatabaseHandler, ProcessExitCallback, RestartController } from '../_Types';
 
 const hostname = tools.getHostName();
 
@@ -27,9 +28,9 @@ export interface CLIBackupRestoreOptions {
     dbMigration?: boolean;
     states: StatesRedisClient;
     objects: ObjectsRedisClient;
-    processExit: (exitCode?: number) => void;
-    cleanDatabase: (isDeleteDb: boolean) => any;
-    restartController: () => void;
+    processExit: ProcessExitCallback;
+    cleanDatabase: CleanDatabaseHandler;
+    restartController: RestartController;
 }
 
 type BackupObject = Omit<ioBroker.GetObjectListItem, 'doc'>;
@@ -291,8 +292,7 @@ export class BackupRestore {
             const keys = await this.states.getKeys('*');
 
             // NOTE for all "replace" with $$$$ ... result will be just $$
-            // @ts-expect-error #1917
-            const objs = await this.states.getStates(keys);
+            const objs = await this.states.getStates(keys!);
 
             // read iobroker.json
             let isCustomHostname;

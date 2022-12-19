@@ -18,11 +18,11 @@
 
 ### callback
 
-• `Optional` **callback**: `GetObjectViewCallback`<`AnyObject`\>
+• `Optional` **callback**: [`GetObjectViewCallback`](../modules/internal_.md#getobjectviewcallback)<[`AnyObject`](../modules/internal_.md#anyobject)\>
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:245](https://github.com/ioBroker/ioBroker.js-controller/blob/c4a73b71/packages/adapter/src/lib/_Types.ts#L245)
+[adapter/src/lib/_Types.ts:245](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L245)
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:241](https://github.com/ioBroker/ioBroker.js-controller/blob/c4a73b71/packages/adapter/src/lib/_Types.ts#L241)
+[adapter/src/lib/_Types.ts:241](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L241)
 
 ___
 
@@ -42,17 +42,17 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:244](https://github.com/ioBroker/ioBroker.js-controller/blob/c4a73b71/packages/adapter/src/lib/_Types.ts#L244)
+[adapter/src/lib/_Types.ts:244](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L244)
 
 ___
 
 ### params
 
-• **params**: `GetObjectViewParams`
+• **params**: [`GetObjectViewParams`](internal_.GetObjectViewParams.md)
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:243](https://github.com/ioBroker/ioBroker.js-controller/blob/c4a73b71/packages/adapter/src/lib/_Types.ts#L243)
+[adapter/src/lib/_Types.ts:243](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L243)
 
 ___
 
@@ -62,4 +62,4 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:242](https://github.com/ioBroker/ioBroker.js-controller/blob/c4a73b71/packages/adapter/src/lib/_Types.ts#L242)
+[adapter/src/lib/_Types.ts:242](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L242)
