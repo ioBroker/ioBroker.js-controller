@@ -41,10 +41,10 @@ When creating a PR, the tests will automatically run on the CI server on all cur
 ### Best practices
 We have migrated most of the codebase to TypeScript, thus new files have to be written in TypeScript too.
 Please ensure that your code changes are in line with our style guide via `eslint` (see [Linting](#linting)).
-If you are adding a new feature or you have fixed a bug which is testable, please make sure to add a new test. Also ensure, that all existing tests are passing, before proposing a code change (see [Testing](#testing)).
+If you are adding a new feature, or you have fixed a bug which is testable, please make sure to add a new test. Also ensure, that all existing tests are passing, before proposing a code change (see [Testing](#testing)).
 Testing your code change in a running environment is currently a bit tricky. Ensure you have installed the latest nightly release of the js-controller by executing
 
-```
+```bash
 npm i iobroker.js-controller@dev
 ```
 
