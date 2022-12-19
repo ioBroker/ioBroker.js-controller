@@ -169,10 +169,18 @@ module.exports = class CLIHost extends CLICommand {
                 }
 
                 // Does another host with the target name exist?
-                if (hosts.find(obj => obj?.common.hostname === newHostname)) {
-                    // TODO: This prevents migration of instances if host already exists, but we need it to prevent multiple hosts with same name
-                    CLI.error.hostAlreadyExists(newHostname);
-                    return void callback(30);
+                const hostExists = !!hosts.find(obj => obj?.common.hostname === newHostname);
+                if (hostExists) {
+                    // This prevents migration of instances if host already exists, but we need it to prevent
+                    // multiple hosts with same name. Thus we only allow if no instances are on the host
+                    // Note: this is only a heuristic, if problems occur we need a `force` flag
+                    const instances = await enumInstances(objects);
+                    const hasExistingInstances = !!instances.find(instance => instance?.common.host === newHostname);
+
+                    if (hasExistingInstances) {
+                        CLI.error.hostAlreadyExists(newHostname);
+                        return void callback(EXIT_CODES.INSTANCE_ALREADY_EXISTS);
+                    }
                 }
 
                 // Remember the new hostname in the system settings
