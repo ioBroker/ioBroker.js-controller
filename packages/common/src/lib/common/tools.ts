@@ -2615,7 +2615,7 @@ export function formatAliasValue(
     if (targetObj?.alias?.read) {
         if (!sourceObj) {
             logger.error(
-                `${logNamespace} source in "${targetId}" not exist for "read" function: "${targetObj.alias.read}"`
+                `${logNamespace}source in "${targetId}" does not exist for "read" function: "${targetObj.alias.read}"`
             );
             return null;
         }
