@@ -8,7 +8,7 @@
 
 - **`InternalSetStateOptions`**
 
-  ↳ [`InternalSetStateChanedOptions`](internal_.InternalSetStateChanedOptions.md)
+  ↳ [`InternalSetStateChangedOptions`](internal_.InternalSetStateChangedOptions.md)
 
 ## Table of contents
 
@@ -28,17 +28,17 @@
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/_Types.ts#L277)
+[adapter/src/lib/_Types.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L277)
 
 ___
 
 ### callback
 
-• `Optional` **callback**: `SetStateCallback`
+• `Optional` **callback**: [`SetStateCallback`](../modules/internal_.md#setstatecallback)
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/_Types.ts#L279)
+[adapter/src/lib/_Types.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L279)
 
 ___
 
@@ -48,7 +48,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:275](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/_Types.ts#L275)
+[adapter/src/lib/_Types.ts:275](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L275)
 
 ___
 
@@ -58,14 +58,14 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:278](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/_Types.ts#L278)
+[adapter/src/lib/_Types.ts:278](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L278)
 
 ___
 
 ### state
 
-• **state**: `SettableState` \| `StateValue`
+• **state**: [`SettableState`](../modules/internal_.md#settablestate) \| [`StateValue`](../modules/internal_.md#statevalue)
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:276](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/_Types.ts#L276)
+[adapter/src/lib/_Types.ts:276](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L276)

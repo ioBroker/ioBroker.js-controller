@@ -16,11 +16,11 @@
 
 ### callback
 
-• **callback**: `GetHistoryCallback`
+• **callback**: [`GetHistoryCallback`](../modules/internal_.md#gethistorycallback)
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:219](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/_Types.ts#L219)
+[adapter/src/lib/_Types.ts:219](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L219)
 
 ___
 
@@ -30,14 +30,14 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:217](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/_Types.ts#L217)
+[adapter/src/lib/_Types.ts:217](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L217)
 
 ___
 
 ### options
 
-• `Optional` **options**: ``null`` \| `GetHistoryOptions`
+• `Optional` **options**: ``null`` \| [`GetHistoryOptions`](internal_.GetHistoryOptions.md)
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:218](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/_Types.ts#L218)
+[adapter/src/lib/_Types.ts:218](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L218)

@@ -279,8 +279,7 @@ export interface InternalSetStateOptions {
     callback?: ioBroker.SetStateCallback;
 }
 
-// @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-export interface InternalSetStateChanedOptions extends InternalSetStateOptions {
+export interface InternalSetStateChangedOptions extends InternalSetStateOptions {
     callback?: ioBroker.SetStateChangedCallback;
 }
 

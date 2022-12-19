@@ -20,5 +20,6 @@ module.exports = {
     setupUpload: require('./lib/setup/setupUpload').Upload,
     setupInstall: require('./lib/setup/setupInstall').Install,
     setupBackup: require('./lib/setup/setupBackup').BackupRestore,
-    setupUpgrade: require('./lib/setup/setupUpgrade').Upgrade
+    setupUpgrade: require('./lib/setup/setupUpgrade').Upgrade,
+    setupSetup: require('./lib/setup/setupSetup').Setup
 };

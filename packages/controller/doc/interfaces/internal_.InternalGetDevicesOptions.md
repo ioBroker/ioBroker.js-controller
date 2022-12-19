@@ -15,11 +15,11 @@
 
 ### callback
 
-• **callback**: `GetObjectsCallback3`<`DeviceObject`\>
+• **callback**: [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`DeviceObject`](internal_.DeviceObject.md)\>
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:386](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/_Types.ts#L386)
+[adapter/src/lib/_Types.ts:385](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L385)
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:385](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/_Types.ts#L385)
+[adapter/src/lib/_Types.ts:384](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L384)

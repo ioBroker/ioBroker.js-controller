@@ -14,7 +14,7 @@
 
 ### callback
 
-• `Optional` **callback**: (`objects`: `Record`<`string`, `AdapterScopedObject`\>) => `void`
+• `Optional` **callback**: (`objects`: `Record`<`string`, [`AdapterScopedObject`](../modules/internal_.md#adapterscopedobject)\>) => `void`
 
 #### Type declaration
 
@@ -24,7 +24,7 @@
 
 | Name | Type |
 | :------ | :------ |
-| `objects` | `Record`<`string`, `AdapterScopedObject`\> |
+| `objects` | `Record`<`string`, [`AdapterScopedObject`](../modules/internal_.md#adapterscopedobject)\> |
 
 ##### Returns
 
@@ -32,4 +32,4 @@
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:237](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/_Types.ts#L237)
+[adapter/src/lib/_Types.ts:237](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L237)

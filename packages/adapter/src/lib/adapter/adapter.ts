@@ -21,7 +21,7 @@ import type NodeSchedule from 'node-schedule';
 import { version as controllerVersion } from '@iobroker/js-controller-adapter/package.json';
 
 import { Log } from './log';
-import { ID, IdObject, Utils } from './utils';
+import { IdObject, Utils } from './utils';
 
 const { FORBIDDEN_CHARS } = tools;
 import {
@@ -37,7 +37,8 @@ import {
     ACCESS_GROUP_WRITE,
     ACCESS_GROUP_READ,
     ACCESS_USER_WRITE,
-    ACCESS_USER_READ
+    ACCESS_USER_READ,
+    NO_PROTECT_ADAPTERS
 } from './constants';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import type {
@@ -92,7 +93,7 @@ import type {
     InternalSetObjectOptions,
     InternalSetPasswordOptions,
     InternalSetSessionOptions,
-    InternalSetStateChanedOptions,
+    InternalSetStateChangedOptions,
     InternalSetStateOptions,
     InternalSubscribeOptions,
     InternalUpdateConfigOptions,
@@ -251,26 +252,43 @@ export interface AdapterClass {
     subscribeStatesAsync(pattern: string, options?: unknown): Promise<void>;
     /** Subscribe from changes of states in this instance */
     unsubscribeStatesAsync(pattern: string, options?: unknown): Promise<void>;
-    /** Writes a binary state into Redis. The ID will not be prefixed with the adapter namespace. */
+    /**
+     * Writes a binary state into Redis. The ID will not be prefixed with the adapter namespace.
+     *
+     * @deprecated Please use `writeFile` instead of binary states
+     */
     setForeignBinaryStateAsync(id: string, binary: Buffer, options?: unknown): ioBroker.SetStatePromise;
 
     /**
      * Despite the naming convention, this method doesn't prepend the adapter namespace. Use setForeignBinaryStateAsync instead.
      * Writes a binary state into Redis
+     *
+     * @deprecated Please use `writeFile` instead of binary states
      */
     setBinaryStateAsync(id: string, binary: Buffer, options?: unknown): ioBroker.SetStatePromise;
+
+    /**
+     * @deprecated Please use `readFile` instead of binary states
+     */
     getForeignBinaryStateAsync(id: string, options?: unknown): ioBroker.GetBinaryStatePromise;
     /**
      * Despite the naming convention, this method doesn't prepend the adapter namespace. Use getForeignBinaryStateAsync instead.
      * Reads a binary state from Redis
+     *
+     * @deprecated Please use `readFile` instead of binary states
      */
     getBinaryStateAsync(id: string, options?: unknown): ioBroker.GetBinaryStatePromise;
-    /** Deletes a binary state from the states DB. The ID will not be prefixed with the adapter namespace. */
+    /** Deletes a binary state from the states DB. The ID will not be prefixed with the adapter namespace.
+     *
+     * @deprecated Please use `delFile` instead of binary states
+     */
     delForeignBinaryStateAsync(id: string, options?: unknown): Promise<void>;
 
     /**
      * Despite the naming convention, this method doesn't prepend the adapter namespace. Use delForeignBinaryStateAsync instead.
      * Deletes a binary state from the states DB
+     *
+     * @deprecated Please use `delFile` instead of binary states
      */
     delBinaryStateAsync(id: string, options?: unknown): Promise<void>;
     /**
@@ -571,25 +589,25 @@ export class AdapterClass extends EventEmitter {
      * Contains a live cache of the adapter's states.
      * NOTE: This is only defined if the adapter was initialized with the option states: true.
      */
-    protected oStates?: Record<string, ioBroker.State | undefined>;
+    oStates?: Record<string, ioBroker.State | undefined>;
     /**
      * Contains a live cache of the adapter's objects.
      * NOTE: This is only defined if the adapter was initialized with the option objects: true.
      */
-    protected oObjects?: Record<string, ioBroker.Object | undefined>;
+    oObjects?: Record<string, ioBroker.Object | undefined>;
     private _stopInProgress: boolean = false;
     private _callbackId: number = 1;
     private _firstConnection: boolean = true;
     private readonly _timers = new Set<NodeJS.Timeout>();
     private readonly _intervals = new Set<NodeJS.Timeout>();
     private readonly _delays = new Set<NodeJS.Timeout>();
-    protected log?: Log;
-    private readonly performStrictObjectChecks: boolean;
+    log?: Log;
+    performStrictObjectChecks: boolean;
     private readonly _logger: Winston.Logger;
     private _restartScheduleJob: any;
     private _schedule: typeof NodeSchedule | undefined;
     private namespaceLog: string;
-    protected namespace: `${string}.${number}`;
+    namespace: `${string}.${number}`;
     protected name: string;
     private _systemSecret?: string;
     /** Whether the adapter has already terminated */
@@ -597,7 +615,7 @@ export class AdapterClass extends EventEmitter {
     /** The cache of usernames */
     private usernames: Record<string, { id: string }> = {};
     /** A RegExp to test for forbidden chars in object IDs */
-    protected readonly FORBIDDEN_CHARS: RegExp = FORBIDDEN_CHARS;
+    readonly FORBIDDEN_CHARS: RegExp = FORBIDDEN_CHARS;
     private inputCount: number = 0;
     private outputCount: number = 0;
     /** The cache of users */
@@ -737,11 +755,11 @@ export class AdapterClass extends EventEmitter {
 
         this.performStrictObjectChecks = this._options.strictObjectChecks !== false;
 
-        if (!this._options.name) {
+        this.name = this._options.name;
+
+        if (!this.name) {
             throw new Error('No name of adapter!');
         }
-
-        this.name = this._options.name;
 
         const instance = parseInt(
             this._options.compactInstance !== undefined
@@ -752,7 +770,7 @@ export class AdapterClass extends EventEmitter {
             10
         );
 
-        this.namespace = `${this._options.name}.${instance}`;
+        this.namespace = `${this.name}.${instance}`;
         this.namespaceLog = this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
         this._namespaceRegExp = new RegExp(`^${`${this.namespace}.`.replace(/\./g, '\\.')}`); // cache the regex object 'adapter.0.'
 
@@ -767,10 +785,10 @@ export class AdapterClass extends EventEmitter {
         if (this._options.dirname) {
             this.adapterDir = this._options.dirname.replace(/\\/g, '/');
         } else {
-            const adapterDir = tools.getAdapterDir(this._options.name);
+            const adapterDir = tools.getAdapterDir(this.name);
 
             if (!adapterDir) {
-                this._logger.error(`${this.namespaceLog} Cannot find directory of adapter ${this._options.name}`);
+                this._logger.error(`${this.namespaceLog} Cannot find directory of adapter ${this.name}`);
                 this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
             }
 
@@ -2548,14 +2566,14 @@ export class AdapterClass extends EventEmitter {
         this._intervals.delete(interval as any);
     }
 
-    setObject(id: ID, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
+    setObject(id: string, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
     setObject(
-        id: ID,
+        id: string,
         obj: ioBroker.SettableObject,
         options: unknown,
         callback?: ioBroker.SetObjectCallback
     ): Promise<void>;
-    setObject(id: ID, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
+    setObject(id: string, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
     /**
      * Creates or overwrites object in objectDB.
      *
@@ -4132,6 +4150,21 @@ export class AdapterClass extends EventEmitter {
                             }
                         }
                     }
+                    // remove protectedNative if not admin, not cloud or not own adapter
+                    if (
+                        row.value &&
+                        'protectedNative' in row.value &&
+                        Array.isArray(row.value.protectedNative) &&
+                        row.value.native &&
+                        id &&
+                        id.startsWith('system.adapter.') &&
+                        !NO_PROTECT_ADAPTERS.includes(this.name) &&
+                        this.name !== id.split('.')[2]
+                    ) {
+                        for (const attr of row.value.protectedNative) {
+                            delete row.value.native[attr];
+                        } // endFor
+                    } // endIf
                 }
             }
             return tools.maybeCallbackWithError(callback, null, list);
@@ -4239,16 +4272,16 @@ export class AdapterClass extends EventEmitter {
         }
 
         adapterObjects.getObject(options.id, options, (err, obj) => {
-            const adapterName = this.namespace.split('.')[0];
-            // remove protectedNative if not admin or own adapter
+            // remove protectedNative if not admin, not cloud or not own adapter
             if (
                 obj &&
                 'protectedNative' in obj &&
                 Array.isArray(obj.protectedNative) &&
                 obj._id &&
                 obj._id.startsWith('system.adapter.') &&
-                adapterName !== 'admin' &&
-                adapterName !== obj._id.split('.')[2]
+                obj.native &&
+                !NO_PROTECT_ADAPTERS.includes(this.name) &&
+                this.name !== obj._id.split('.')[2]
             ) {
                 for (const attr of obj.protectedNative) {
                     delete obj.native[attr];
@@ -4851,7 +4884,7 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    private _DCS2ID(device: string, channel: string, stateOrPoint?: boolean | string): ID {
+    private _DCS2ID(device: string, channel: string, stateOrPoint?: boolean | string): string {
         let id = '';
         if (device) {
             id += device;
@@ -4867,7 +4900,7 @@ export class AdapterClass extends EventEmitter {
         } else if (stateOrPoint === true && id) {
             id += '.';
         }
-        return id as ID;
+        return id;
     }
 
     // external signatures
@@ -7927,21 +7960,19 @@ export class AdapterClass extends EventEmitter {
         return this._setStateChanged({ id, state: state as ioBroker.SettableState, ack, options, callback });
     }
 
-    private async _setStateChanged(_options: InternalSetStateChanedOptions): Promise<void> {
+    private async _setStateChanged(_options: InternalSetStateChangedOptions): Promise<void> {
         const { id, ack, options, callback, state } = _options;
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(
                 `${this.namespaceLog} setStateChanged not processed because States database not connected`
             );
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         try {
             this._utils.validateId(id, false, null);
         } catch (err) {
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
             return tools.maybeCallbackWithError(callback, err);
         }
 
@@ -7954,7 +7985,6 @@ export class AdapterClass extends EventEmitter {
             try {
                 this._utils.validateSetStateObjectArgument(state);
             } catch (e) {
-                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                 return tools.maybeCallbackWithError(callback, e);
             }
             stateObj = state;
@@ -7966,7 +7996,6 @@ export class AdapterClass extends EventEmitter {
 
         if (stateObj.val === undefined && !Object.keys(stateObj).length) {
             // undefined is not allowed as state.val -> return
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
             return tools.maybeCallbackWithError(callback, 'undefined is not a valid state value');
         }
 
@@ -7983,16 +8012,15 @@ export class AdapterClass extends EventEmitter {
             try {
                 await this._checkStates(fixedId, options, 'setState');
             } catch (e) {
-                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                 return tools.maybeCallbackWithError(callback, e);
             }
 
             const res = await this._setStateChangedHelper(fixedId, stateObj);
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+            // @ts-expect-error todo fix it
             return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
         } else {
             const res = await this._setStateChangedHelper(fixedId, stateObj);
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+            // @ts-expect-error todo fix it
             return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
         }
     }
@@ -8265,7 +8293,7 @@ export class AdapterClass extends EventEmitter {
                             adapterStates.setState(
                                 aliasId,
                                 tools.formatAliasValue(
-                                    obj?.common,
+                                    obj?.common!,
                                     targetObj && (targetObj.common as any),
                                     state,
                                     this._logger,
@@ -9815,8 +9843,13 @@ export class AdapterClass extends EventEmitter {
      * @param options optional
      * @param callback
      *
+     * @deprecated Please use `writeFile` instead of binary states
      */
     setForeignBinaryState(id: unknown, binary: unknown, options: unknown, callback?: unknown): any {
+        this._logger.info(
+            `${this.namespaceLog} Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files`
+        );
+
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -9956,6 +9989,8 @@ export class AdapterClass extends EventEmitter {
      * @param binary data
      * @param options optional
      * @param callback
+     *
+     * @deprecated Please use `writeFile` instead of binary states
      */
     setBinaryState(id: any, binary: any, options: any, callback?: any): void {
         // we just keep any types here, because setForeign method will validate
@@ -9972,8 +10007,14 @@ export class AdapterClass extends EventEmitter {
      * @param id The state ID
      * @param options optional
      * @param callback
+     *
+     * @deprecated Please use `readFile` instead of binary states
      */
     getForeignBinaryState(id: unknown, options: unknown, callback?: unknown): any {
+        this._logger.info(
+            `${this.namespaceLog} Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files`
+        );
+
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -10048,6 +10089,8 @@ export class AdapterClass extends EventEmitter {
      * @param id The state ID
      * @param options optional
      * @param callback
+     *
+     * @depreacted Please use `readFile` instead of binary states
      */
     getBinaryState(id: any, options: any, callback?: any): any {
         // we use any types here, because validation takes place in foreign method
@@ -10066,8 +10109,13 @@ export class AdapterClass extends EventEmitter {
      * @param options
      * @param callback
      *
+     * @deprecated Please use `delFile` instead of binary states
      */
     delForeignBinaryState(id: unknown, options: unknown, callback?: unknown): any {
+        this._logger.info(
+            `${this.namespaceLog} Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files`
+        );
+
         if (typeof options === 'function') {
             callback = options;
             options = {};
@@ -10124,6 +10172,7 @@ export class AdapterClass extends EventEmitter {
      * @param options
      * @param callback
      *
+     * @deprecated Please use `delFile` instead of binary states
      */
     delBinaryState(id: any, options: any, callback?: any): any {
         // we use any types here, because validation takes place in foreign method
@@ -11150,15 +11199,15 @@ export class AdapterClass extends EventEmitter {
                 }
 
                 // remove protectedNative if not admin or own adapter
-                const adapterName = this.namespace.split('.')[0];
                 if (
                     obj &&
                     'protectedNative' in obj &&
                     Array.isArray(obj.protectedNative) &&
                     obj._id &&
                     obj._id.startsWith('system.adapter.') &&
-                    adapterName !== 'admin' &&
-                    adapterName !== obj._id.split('.')[2]
+                    obj.native &&
+                    !NO_PROTECT_ADAPTERS.includes(this.name) &&
+                    this.name !== obj._id.split('.')[2]
                 ) {
                     for (const attr of obj.protectedNative) {
                         delete obj.native[attr];
@@ -11223,7 +11272,7 @@ export class AdapterClass extends EventEmitter {
                         killRes.val === -1
                     ) {
                         this._logger.error(
-                            `${this.namespaceLog} ${this._options.name}.${this.instance} needs to be stopped because not correctly started in compact mode`
+                            `${this.namespaceLog} ${this.namespace} needs to be stopped because not correctly started in compact mode`
                         );
                         this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
                     } else if (
@@ -11238,7 +11287,7 @@ export class AdapterClass extends EventEmitter {
                         killRes.val !== process.pid
                     ) {
                         this._logger.error(
-                            `${this.namespaceLog} ${this._options.name}.${this.instance} invalid process id scenario ${killRes.val} vs. own ID ${process.pid}. Stopping`
+                            `${this.namespaceLog} ${this.namespace} invalid process id scenario ${killRes.val} vs. own ID ${process.pid}. Stopping`
                         );
                         this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
                     } else if (
@@ -11248,17 +11297,13 @@ export class AdapterClass extends EventEmitter {
                         resAlive.ack &&
                         !this._config.forceIfDisabled
                     ) {
-                        this._logger.error(
-                            `${this.namespaceLog} ${this._options.name}.${this.instance} already running`
-                        );
+                        this._logger.error(`${this.namespaceLog} ${this.namespace} already running`);
                         this.terminate(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
                     } else {
                         adapterObjects!.getObject(`system.adapter.${this.namespace}`, (err, res) => {
                             // TODO: ts infers AdapterObject instead of InstanceObject
                             if ((err || !res) && !this._config.isInstall) {
-                                this._logger.error(
-                                    `${this.namespaceLog} ${this._options.name}.${this.instance} invalid config`
-                                );
+                                this._logger.error(`${this.namespaceLog} ${this.namespace} invalid config`);
                                 this.terminate(EXIT_CODES.INVALID_ADAPTER_CONFIG);
                             } else {
                                 this._initAdapter(res);
@@ -11342,7 +11387,7 @@ export class AdapterClass extends EventEmitter {
                         name = tmp[1];
                         instance = parseInt(tmp[2]) || 0;
                     } else {
-                        name = this._options.name;
+                        name = this.name;
                         instance = 0;
                         adapterConfig = adapterConfig || {
                             // @ts-expect-error protectedNative exists on instance objects
@@ -11414,7 +11459,7 @@ export class AdapterClass extends EventEmitter {
                     }
                 } else {
                     // @ts-expect-error
-                    this.name = adapterConfig.name || this._options.name;
+                    this.name = adapterConfig.name || this.name;
                     // @ts-expect-error
                     this.instance = adapterConfig.instance || 0;
                     this.namespace = `${this.name}.${this.instance!}`;
@@ -11748,9 +11793,7 @@ export class AdapterClass extends EventEmitter {
                     objs.push(obj);
                 } else {
                     this._logger.error(
-                        `${this.namespaceLog} ${this._options.name}.${
-                            this.instance
-                        } invalid instance object: ${JSON.stringify(obj)}`
+                        `${this.namespaceLog} ${this.namespace} invalid instance object: ${JSON.stringify(obj)}`
                     );
                 }
             }

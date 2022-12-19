@@ -16,11 +16,11 @@
 
 ### callback
 
-• `Optional` **callback**: `GetObjectCallback`<`any`\>
+• `Optional` **callback**: [`GetObjectCallback`](../modules/internal_.md#getobjectcallback)<`any`\>
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:213](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/_Types.ts#L213)
+[adapter/src/lib/_Types.ts:213](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L213)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:211](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/_Types.ts#L211)
+[adapter/src/lib/_Types.ts:211](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L211)
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:212](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/_Types.ts#L212)
+[adapter/src/lib/_Types.ts:212](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L212)

@@ -126,6 +126,8 @@ export class CLIStates extends CLICommand {
      * @param args
      */
     private _getBinary(args: any[]): void {
+        console.warn('Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files');
+
         const { callback, dbConnect } = this.options;
         const id = args[1];
         dbConnect(async (objects, states) => {
@@ -179,6 +181,7 @@ export class CLIStates extends CLICommand {
                         objects.getObject(aliasId, async (err, sourceObj) => {
                             // read target
                             try {
+                                // @ts-expect-error TODO All objects should be assignable to AnyObject?
                                 if (await this._isBinary(aliasId, objects, targetObj)) {
                                     CLI.error.stateBinaryGetUnsupported(aliasId);
                                     return void callback(1);

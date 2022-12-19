@@ -22,27 +22,27 @@
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:269](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/_Types.ts#L269)
+[adapter/src/lib/_Types.ts:269](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L269)
 
 ___
 
 ### callback
 
-• `Optional` **callback**: `SetObjectCallback`
+• `Optional` **callback**: [`SetObjectCallback`](../modules/internal_.md#setobjectcallback)
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:271](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/_Types.ts#L271)
+[adapter/src/lib/_Types.ts:271](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L271)
 
 ___
 
 ### common
 
-• `Optional` **common**: `Partial`<`DeviceCommon`\>
+• `Optional` **common**: `Partial`<[`DeviceCommon`](internal_.DeviceCommon.md)\>
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:268](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/_Types.ts#L268)
+[adapter/src/lib/_Types.ts:268](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L268)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:267](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/_Types.ts#L267)
+[adapter/src/lib/_Types.ts:267](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L267)
 
 ___
 
@@ -62,4 +62,4 @@ ___
 
 #### Defined in
 
-[packages/adapter/src/lib/_Types.ts:270](https://github.com/ioBroker/ioBroker.js-controller/blob/deec19ee/packages/adapter/src/lib/_Types.ts#L270)
+[adapter/src/lib/_Types.ts:270](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/adapter/src/lib/_Types.ts#L270)

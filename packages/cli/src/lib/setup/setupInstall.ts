@@ -19,7 +19,7 @@ import { Upload } from './setupUpload';
 import { PacketManager } from './setupPacketManager';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import type { GetRepository, ProcessExit } from '../_Types';
+import type { GetRepositoryHandler, ProcessExitCallback } from '../_Types';
 
 const hostname = tools.getHostName();
 const osPlatform = process.platform;
@@ -29,10 +29,10 @@ const RECOMMENDED_NPM_VERSION = 8;
 
 export interface CLIInstallOptions {
     params: Record<string, any>;
-    getRepository: GetRepository;
+    getRepository: GetRepositoryHandler;
     states?: StatesRedisClient;
     objects: ObjectsRedisClient;
-    processExit: ProcessExit;
+    processExit: ProcessExitCallback;
 }
 
 type Dependencies = string[] | Record<string, string>[] | string | Record<string, string>;
@@ -64,8 +64,8 @@ export class Install {
     private readonly isRootOnUnix: boolean;
     private readonly objects: ObjectsRedisClient;
     private readonly states: StatesRedisClient;
-    private readonly processExit: ProcessExit;
-    private readonly getRepository: GetRepository;
+    private readonly processExit: ProcessExitCallback;
+    private readonly getRepository: GetRepositoryHandler;
     private readonly params: Record<string, any>;
     private readonly tarballRegex: RegExp;
     private upload: Upload;
@@ -577,7 +577,7 @@ export class Install {
     /**
      * Installs given adapter
      */
-    private async installAdapter(adapter: string, repoUrl?: string, _installCount?: number): Promise<string | void> {
+    async installAdapter(adapter: string, repoUrl?: string, _installCount?: number): Promise<string | void> {
         _installCount = _installCount || 0;
         const fullName = adapter;
         if (adapter.includes('@')) {
@@ -1298,7 +1298,6 @@ export class Install {
             `system.adapter.${adapter}.${instance ? instance + '.' : ''}*`
         ]) {
             try {
-                // @ts-expect-error #1917
                 const ids = await this.states.getKeys(pattern);
                 if (ids && ids.length) {
                     // add non-duplicates to the list

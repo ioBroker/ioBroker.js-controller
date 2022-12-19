@@ -3520,15 +3520,12 @@ export class ObjectsInRedisClient {
                     // preserve only relevant for StateCommon TODO: maybe better a type guard to be specific
                     let objCommon: ioBroker.StateCommon = obj.common as ioBroker.StateCommon;
                     // remove settings if desired
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                     if (objCommon && objCommon[commonSetting] === null) {
-                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                         delete objCommon[commonSetting];
                     } else if (
                         // if old setting present and new setting is absent
                         // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                         oldObj.common[commonSetting] !== undefined &&
-                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                         (!objCommon || objCommon[commonSetting] === undefined)
                     ) {
                         objCommon = objCommon || {};
@@ -3811,8 +3808,8 @@ export class ObjectsInRedisClient {
     // this function is very ineffective. Because reads all objects and then process them
     private async _applyViewFunc(
         func: ObjectViewFunction,
-        params: ioBroker.GetObjectViewParams,
-        options: CallOptions,
+        params?: ioBroker.GetObjectViewParams,
+        options: CallOptions = {},
         callback?: ioBroker.GetObjectViewCallback<any>
     ): Promise<void | ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectViewCallback<any>>> {
         if (!this.client) {
@@ -3955,7 +3952,7 @@ export class ObjectsInRedisClient {
             func &&
             func.map &&
             this.scripts.script &&
-            func.map.indexOf('doc.common.engineType') !== -1
+            func.map.includes('doc.common.engineType')
         ) {
             let cursor = '0';
             let filterRequired = true;
@@ -4009,12 +4006,11 @@ export class ObjectsInRedisClient {
             return tools.maybeCallbackWithError(callback, null, result);
         } else if (
             // filter by hm-rega programs
-
             wildCardLastPos &&
             func &&
             func.map &&
             this.scripts.programs &&
-            func.map.indexOf("doc.native.TypeName === 'PROGRAM'") !== -1
+            func.map.includes("doc.native.TypeName === 'PROGRAM'")
         ) {
             let cursor = '0';
             let filterRequired = true;
@@ -4070,7 +4066,7 @@ export class ObjectsInRedisClient {
             func &&
             func.map &&
             this.scripts.variables &&
-            func.map.indexOf("doc.native.TypeName === 'ALARMDP'") !== -1
+            func.map.includes("doc.native.TypeName === 'ALARMDP'")
         ) {
             let cursor = '0';
             let filterRequired = true;
@@ -4126,7 +4122,7 @@ export class ObjectsInRedisClient {
             func &&
             func.map &&
             this.scripts.custom &&
-            func.map.indexOf('doc.common.custom') !== -1
+            func.map.includes('doc.common.custom')
         ) {
             let cursor = '0';
             let filterRequired = true;
@@ -4158,6 +4154,8 @@ export class ObjectsInRedisClient {
                     filterRequired = false;
                 }
 
+                const useFullObject = func.map.includes('emit(doc._id, doc)');
+
                 for (const _obj of objs) {
                     let obj: ioBroker.AnyObject;
                     try {
@@ -4168,7 +4166,11 @@ export class ObjectsInRedisClient {
                     }
 
                     if (obj && obj.common && obj.common.custom) {
-                        result.rows.push({ id: obj._id, value: obj.common.custom });
+                        if (useFullObject) {
+                            result.rows.push({ id: obj._id, value: obj });
+                        } else {
+                            result.rows.push({ id: obj._id, value: obj.common.custom });
+                        }
                     }
                 }
             } while (cursor !== '0');
@@ -4281,8 +4283,8 @@ export class ObjectsInRedisClient {
     private async _getObjectView(
         design: string,
         search: string,
-        params: ioBroker.GetObjectViewParams,
-        options: CallOptions,
+        params?: ioBroker.GetObjectViewParams,
+        options?: CallOptions,
         callback?: ioBroker.GetObjectViewCallback<any>
     ) {
         if (!this.client) {
@@ -4327,7 +4329,7 @@ export class ObjectsInRedisClient {
     getObjectView<Design extends string = string, Search extends string = string>(
         design: Design,
         search: Search,
-        params: ioBroker.GetObjectViewParams,
+        params?: ioBroker.GetObjectViewParams,
         options?: CallOptions | null
     ): ioBroker.GetObjectViewPromise<ioBroker.InferGetObjectViewItemType<Design, Search>>;
 
@@ -4335,7 +4337,7 @@ export class ObjectsInRedisClient {
     getObjectView<Design extends string = string, Search extends string = string>(
         design: Design,
         search: Search,
-        params: ioBroker.GetObjectViewParams,
+        params: ioBroker.GetObjectViewParams | undefined,
         options: CallOptions | undefined | null,
         callback: ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>
     ): void;
@@ -4351,7 +4353,7 @@ export class ObjectsInRedisClient {
     getObjectView<Design extends string = string, Search extends string = string>(
         design: Design,
         search: Search,
-        params: ioBroker.GetObjectViewParams,
+        params?: ioBroker.GetObjectViewParams,
         options?: any,
         callback?: ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>
     ): void | ioBroker.GetObjectViewPromise<ioBroker.InferGetObjectViewItemType<Design, Search>> {
@@ -4383,7 +4385,7 @@ export class ObjectsInRedisClient {
     getObjectViewAsync(
         design: string,
         search: string,
-        params: ioBroker.GetObjectViewParams,
+        params?: ioBroker.GetObjectViewParams,
         options?: CallOptions
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectViewCallback<any>>> {
         return new Promise((resolve, reject) =>
