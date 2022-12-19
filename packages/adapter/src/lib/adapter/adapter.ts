@@ -11580,21 +11580,13 @@ export class AdapterClass extends EventEmitter {
                         if (this._firstConnection) {
                             this._firstConnection = false;
                             this._callReadyHandler();
-                        } else {
-                            // TODO: is this really needed? If yes, we should document it.
-                            if (typeof this._options.reconnect === 'function') {
-                                this._options.reconnect();
-                            }
-                            this.emit('reconnect');
                         }
+
                         this.adapterReady = true;
                     });
                 } else if (!this._stopInProgress) {
                     this._callReadyHandler();
                     this.adapterReady = true;
-
-                    // todo remove it later, when the error is fixed. Which error, if someone knows explain please!
-                    adapterStates.subscribe(`${this.namespace}.checkLogging`);
                 }
             });
         });
