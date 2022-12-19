@@ -219,7 +219,7 @@ module.exports = class CLIHost extends CLICommand {
                     });
                     // And save it
                     try {
-                        await objects.setObjectAsync(host!._id, host);
+                        await objects.setObjectAsync(host!._id, host!);
                     } catch (err) {
                         CLI.error.cannotChangeObject(host!._id, err.message);
                         continue;
@@ -246,7 +246,7 @@ module.exports = class CLIHost extends CLICommand {
 
                         // And save it
                         try {
-                            await objects.setObjectAsync(object!._id, object);
+                            await objects.setObjectAsync(object!._id, object!);
                         } catch (err) {
                             CLI.error.cannotChangeObject(object!._id, err.message);
                         }
