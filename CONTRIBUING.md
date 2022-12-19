@@ -36,6 +36,8 @@ npm run test
 ```
 
 will run the tests on your local system. As integration tests are starting a controller, please make sure that there is no ioBroker running on your local system using the same database ports.
+Tests are running against databases which are integrated and fully taken care of by the controller as well as Redis DB. 
+Thus, you need to install a (Redis DB)[https://redis.io/docs/getting-started/installation/], else the tests will fail.
 When creating a PR, the tests will automatically run on the CI server on all currently supported Node.js versions on Windows/Linux and MacOS. After creating your PR, check back if all tests have passed.
 
 ### Best practices
