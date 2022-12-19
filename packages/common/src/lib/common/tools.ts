@@ -2651,7 +2651,7 @@ export function formatAliasValue(
     if (sourceObj && sourceObj.alias && sourceObj.alias.write) {
         if (!targetObj) {
             logger.error(
-                `${logNamespace} target for "${sourceId}" not exist for "write" function: "${sourceObj.alias.write}"`
+                `${logNamespace}target for "${sourceId}" does not exist for "write" function: "${sourceObj.alias.write}"`
             );
             return null;
         }
