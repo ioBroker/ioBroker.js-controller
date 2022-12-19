@@ -47,8 +47,7 @@ module.exports = class CLIHost extends CLICommand {
     set(args: any[]) {
         const { callback } = this.options;
 
-        /** @type {string} */
-        const newHostname = args[1];
+        const newHostname: string = args[1];
         if (!newHostname) {
             CLI.error.requiredArgumentMissing('newHostname', 'host set newHostname');
             return void callback(34);
@@ -82,7 +81,7 @@ module.exports = class CLIHost extends CLICommand {
             try {
                 if (!isOffline) {
                     CLI.error.cannotChangeRunningSystem();
-                    return void callback(30);
+                    return void callback(EXIT_CODES.CONTROLLER_RUNNING);
                 }
 
                 // Find the requested host object
@@ -137,8 +136,7 @@ module.exports = class CLIHost extends CLICommand {
     rename(args: any[]) {
         const { callback } = this.options;
 
-        /** @type {string} */
-        const oldHostname = args[0];
+        const oldHostname: string = args[0];
 
         if (!oldHostname) {
             CLI.error.requiredArgumentMissing('oldHostname', 'host oldHostname');
@@ -159,7 +157,7 @@ module.exports = class CLIHost extends CLICommand {
             try {
                 if (!isOffline) {
                     CLI.error.cannotChangeRunningSystem();
-                    return void callback(30);
+                    return void callback(EXIT_CODES.CONTROLLER_RUNNING);
                 }
 
                 const hosts = await enumHosts(objects);
