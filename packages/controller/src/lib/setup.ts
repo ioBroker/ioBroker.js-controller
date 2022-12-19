@@ -23,8 +23,9 @@ import type {
     CLICommandOptions,
     DBConnectCallback
 } from '@iobroker/js-controller-cli/build/lib/cli/cliCommand';
-import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
-import type { StateRedisClient } from '@iobroker/db-states-redis/build/lib/states/statesInRedisClient';
+import type { DbConnectAsyncReturn } from '@iobroker/js-controller-cli/src/lib/_Types';
+import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
+import type { Client as StateRedisClient } from '@iobroker/db-states-redis';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 
 const debug = Debug('iobroker:cli');
@@ -3401,7 +3402,7 @@ function dbConnect(
 /**
  * Connects to the DB or tests the connection.
  */
-function dbConnectAsync(onlyCheck: boolean, params?: Record<string, any>): Promise<Record<string, any>> {
+function dbConnectAsync(onlyCheck: boolean, params?: Record<string, any>): Promise<DbConnectAsyncReturn> {
     return new Promise(resolve =>
         dbConnect(onlyCheck, params || {}, (objects, states, isOffline, objectsDBType, config) =>
             resolve({ objects, states, isOffline, objectsDBType, config })
