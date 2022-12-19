@@ -93,7 +93,7 @@ module.exports = class CLIProcess extends CLICommand {
 
     /**
      * Starts or stops a single or all instances of adapter.
-     * If there are multiple instances this fails if flag allInstances is not set.
+     * If there are multiple instances all will be started/stopped/restarted
      * @param {string} adapter The adapter to start
      * @param {boolean} enabled
      * @param {boolean} [restartIfRunning=false] Whether running instances should be restarted
