@@ -33,7 +33,7 @@ The default permissions of this group
 
 #### Defined in
 
-[types/objects.d.ts:368](https://github.com/ioBroker/ioBroker.js-controller/blob/6912de44/packages/types/objects.d.ts#L368)
+[types/objects.d.ts:368](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/types/objects.d.ts#L368)
 
 ___
 
@@ -43,7 +43,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:371](https://github.com/ioBroker/ioBroker.js-controller/blob/6912de44/packages/types/objects.d.ts#L371)
+[types/objects.d.ts:371](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/types/objects.d.ts#L371)
 
 ___
 
@@ -59,7 +59,7 @@ When set to true, this object may not be deleted
 
 #### Defined in
 
-[types/objects.d.ts:157](https://github.com/ioBroker/ioBroker.js-controller/blob/6912de44/packages/types/objects.d.ts#L157)
+[types/objects.d.ts:157](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/types/objects.d.ts#L157)
 
 ___
 
@@ -75,7 +75,7 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 #### Defined in
 
-[types/objects.d.ts:160](https://github.com/ioBroker/ioBroker.js-controller/blob/6912de44/packages/types/objects.d.ts#L160)
+[types/objects.d.ts:160](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/types/objects.d.ts#L160)
 
 ___
 
@@ -91,7 +91,7 @@ Icon for this object
 
 #### Defined in
 
-[types/objects.d.ts:165](https://github.com/ioBroker/ioBroker.js-controller/blob/6912de44/packages/types/objects.d.ts#L165)
+[types/objects.d.ts:165](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/types/objects.d.ts#L165)
 
 ___
 
@@ -103,7 +103,7 @@ The users of this group
 
 #### Defined in
 
-[types/objects.d.ts:366](https://github.com/ioBroker/ioBroker.js-controller/blob/6912de44/packages/types/objects.d.ts#L366)
+[types/objects.d.ts:366](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/types/objects.d.ts#L366)
 
 ___
 
@@ -119,7 +119,7 @@ The name of this group
 
 #### Defined in
 
-[types/objects.d.ts:364](https://github.com/ioBroker/ioBroker.js-controller/blob/6912de44/packages/types/objects.d.ts#L364)
+[types/objects.d.ts:364](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/types/objects.d.ts#L364)
 
 ___
 
@@ -135,4 +135,4 @@ role of the object
 
 #### Defined in
 
-[types/objects.d.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/6912de44/packages/types/objects.d.ts#L167)
+[types/objects.d.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/types/objects.d.ts#L167)
