@@ -28,7 +28,7 @@ Access rights
 
 #### Defined in
 
-[types/index.d.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/types/index.d.ts#L439)
+[types/index.d.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/index.d.ts#L439)
 
 ___
 
@@ -40,7 +40,7 @@ Date of creation
 
 #### Defined in
 
-[types/index.d.ts:443](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/types/index.d.ts#L443)
+[types/index.d.ts:443](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/index.d.ts#L443)
 
 ___
 
@@ -52,7 +52,7 @@ Name of the file or directory
 
 #### Defined in
 
-[types/index.d.ts:433](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/types/index.d.ts#L433)
+[types/index.d.ts:433](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/index.d.ts#L433)
 
 ___
 
@@ -64,7 +64,7 @@ Whether this is a directory or a file
 
 #### Defined in
 
-[types/index.d.ts:437](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/types/index.d.ts#L437)
+[types/index.d.ts:437](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/index.d.ts#L437)
 
 ___
 
@@ -76,7 +76,7 @@ Date of last modification
 
 #### Defined in
 
-[types/index.d.ts:441](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/types/index.d.ts#L441)
+[types/index.d.ts:441](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/index.d.ts#L441)
 
 ___
 
@@ -88,7 +88,7 @@ The parent directory of the processed file or directory
 
 #### Defined in
 
-[types/index.d.ts:431](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/types/index.d.ts#L431)
+[types/index.d.ts:431](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/index.d.ts#L431)
 
 ___
 
@@ -100,4 +100,4 @@ File system stats
 
 #### Defined in
 
-[types/index.d.ts:435](https://github.com/ioBroker/ioBroker.js-controller/blob/9bd0ce3f/packages/types/index.d.ts#L435)
+[types/index.d.ts:435](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/index.d.ts#L435)
