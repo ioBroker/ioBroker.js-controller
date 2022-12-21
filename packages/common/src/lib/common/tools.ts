@@ -24,9 +24,9 @@ const extend = require('node.extend');
 
 interface FormatAliasValueOptions {
     /** Common attribute of source object */
-    sourceCommon?: ioBroker.StateCommon;
+    sourceCommon?: Partial<ioBroker.StateCommon>;
     /** Common attribute of target object */
-    targetCommon?: ioBroker.StateCommon;
+    targetCommon?: Partial<ioBroker.StateCommon>;
     /** State to format */
     state: ioBroker.State | null | undefined;
     /** Logger used for logging */
