@@ -23,12 +23,19 @@ import { maybeCallbackWithError } from './maybeCallback';
 const extend = require('node.extend');
 
 interface FormatAliasValueOptions {
+    /** Common attribute of source object */
     sourceCommon?: ioBroker.StateCommon;
+    /** Common attribute of target object */
     targetCommon?: ioBroker.StateCommon;
+    /** State to format */
     state: ioBroker.State | null | undefined;
+    /** Logger used for logging */
     logger: any;
+    /** Prefix for log messages */
     logNamespace: string;
+    /** Id of the source object, used for logging */
     sourceId?: string;
+    /** Id of the target object, used for logging */
     targetId?: string;
 }
 
