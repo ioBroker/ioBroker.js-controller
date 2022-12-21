@@ -715,36 +715,35 @@ export class AdapterClass extends EventEmitter {
         // --install
         // --debug = --force + --logs
         if (process.argv) {
-            for (let a = 1; a < process.argv.length; a++) {
+            for (const argument of process.argv) {
                 if (
-                    process.argv[a] === 'info' ||
-                    process.argv[a] === 'debug' ||
-                    process.argv[a] === 'error' ||
-                    process.argv[a] === 'warn' ||
-                    process.argv[a] === 'silly'
+                    argument === 'info' ||
+                    argument === 'debug' ||
+                    argument === 'error' ||
+                    argument === 'warn' ||
+                    argument === 'silly'
                 ) {
-                    this._config.log.level = process.argv[a];
+                    this._config.log.level = argument;
                     this.overwriteLogLevel = true;
-                } else if (process.argv[a] === '--silent') {
+                } else if (argument === '--silent') {
                     this._config.isInstall = true;
-                    process.argv[a] = '--install';
-                } else if (process.argv[a] === '--install') {
+                } else if (argument === '--install') {
                     this._config.isInstall = true;
-                } else if (process.argv[a] === '--logs') {
+                } else if (argument === '--logs') {
                     this._config.consoleOutput = true;
-                } else if (process.argv[a] === '--force') {
+                } else if (argument === '--force') {
                     this._config.forceIfDisabled = true;
-                } else if (process.argv[a] === '--debug') {
+                } else if (argument === '--debug') {
                     this._config.forceIfDisabled = true;
                     this._config.consoleOutput = true;
                     if (this._config.log.level !== 'silly') {
                         this._config.log.level = 'debug';
                         this.overwriteLogLevel = true;
                     }
-                } else if (process.argv[a] === '--console') {
+                } else if (argument === '--console') {
                     this._config.consoleOutput = true;
-                } else if (parseInt(process.argv[a], 10).toString() === process.argv[a]) {
-                    this._config.instance = parseInt(process.argv[a], 10);
+                } else if (parseInt(argument, 10).toString() === argument) {
+                    this._config.instance = parseInt(argument, 10);
                 }
             }
         }
@@ -1364,10 +1363,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (typeof exitCode !== 'number') {
-            _exitCode =
-                process.argv.indexOf('--install') === -1
-                    ? EXIT_CODES.ADAPTER_REQUESTED_TERMINATION
-                    : EXIT_CODES.NO_ERROR;
+            _exitCode = !this._config.isInstall ? EXIT_CODES.ADAPTER_REQUESTED_TERMINATION : EXIT_CODES.NO_ERROR;
         } else {
             _exitCode = exitCode;
         }
@@ -11626,26 +11622,41 @@ export class AdapterClass extends EventEmitter {
 
                         this.oStates = _states;
                         this.subscribeStates('*');
+
                         if (this._firstConnection) {
                             this._firstConnection = false;
-                            typeof this._options.ready === 'function' && this._options.ready();
-                            this.emit('ready');
-                        } else {
-                            typeof this._options.reconnect === 'function' && this._options.reconnect();
-                            this.emit('reconnect');
+                            this._callReadyHandler();
                         }
+
                         this.adapterReady = true;
                     });
                 } else if (!this._stopInProgress) {
-                    typeof this._options.ready === 'function' && this._options.ready();
-                    this.emit('ready');
+                    this._callReadyHandler();
                     this.adapterReady = true;
-
-                    // todo remove it later, when the error is fixed
-                    adapterStates.subscribe(`${this.namespace}.checkLogging`);
                 }
             });
         });
+    }
+
+    /**
+     * Calls the ready handler, if it is an install run it calls the install handler instead
+     * @private
+     */
+    private _callReadyHandler(): void {
+        if (
+            this._config.isInstall &&
+            (typeof this._options.install === 'function' || this.listeners('install').length)
+        ) {
+            if (typeof this._options.install === 'function') {
+                this._options.install();
+            }
+            this.emit('install');
+        } else {
+            if (typeof this._options.ready === 'function') {
+                this._options.ready();
+            }
+            this.emit('ready');
+        }
     }
 
     private async _exceptionHandler(err: NodeJS.ErrnoException, isUnhandledRejection?: boolean) {
