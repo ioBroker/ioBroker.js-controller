@@ -222,7 +222,7 @@ export interface InternalGetHistoryOptions {
 }
 
 export interface InternalGetObjectsOptions {
-    pattern: string;
+    pattern: Pattern;
     type?: string;
     enums?: ioBroker.EnumList | null;
     options?: Record<string, any> | null;
