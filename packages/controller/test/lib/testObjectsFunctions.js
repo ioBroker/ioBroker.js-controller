@@ -118,8 +118,8 @@ function register(it, expect, context) {
     it(testName + 'Read all objects of adapter', function (done) {
         context.adapter.getAdapterObjects(objects => {
             expect(objects).to.be.ok;
-            expect(objects[context.adapterShortName + '.0.' + gid]).to.be.ok;
-            expect(objects[context.adapterShortName + '.0.' + gid].type).to.be.equal('state');
+            expect(objects[`${context.adapterShortName}.0.${gid}`]).to.be.ok;
+            expect(objects[`${context.adapterShortName}.0.${gid}`].type).to.be.equal('state');
             done();
         });
     });
@@ -139,7 +139,7 @@ function register(it, expect, context) {
                 expect(err).to.be.not.ok;
                 expect(obj).to.be.ok;
 
-                context.objects.getObject(context.adapterShortName + '.0.' + gid, function (err, obj) {
+                context.objects.getObject(`${context.adapterShortName}.0.${gid}`, function (err, obj) {
                     expect(obj).to.be.ok;
                     expect(obj.type).to.be.equal('state');
                     expect(obj.native.attr1).to.be.equal('11');
@@ -179,7 +179,7 @@ function register(it, expect, context) {
             function (err) {
                 expect(err).to.be.null;
 
-                context.objects.getObject(context.adapterShortName + 'f.0.' + gid, function (err, obj) {
+                context.objects.getObject(`${context.adapterShortName}f.0.${gid}`, function (err, obj) {
                     expect(err).to.be.not.ok;
                     expect(obj).to.be.ok;
                     expect(obj.native).to.be.ok;
@@ -196,7 +196,7 @@ function register(it, expect, context) {
     // extendForeignObject
     it(testName + 'Check if foreign objects will be extended', function (done) {
         context.adapter.extendForeignObject(
-            context.adapterShortName + 'f.0.' + gid,
+            `${context.adapterShortName}f.0.${gid}`,
             {
                 native: {
                     attr1: '11', // modify
@@ -212,7 +212,7 @@ function register(it, expect, context) {
                 expect(err).to.be.not.ok;
                 expect(obj).to.be.ok;
 
-                context.objects.getObject(context.adapterShortName + 'f.0.' + gid, function (err, obj) {
+                context.objects.getObject(`${context.adapterShortName}f.0.${gid}`, function (err, obj) {
                     expect(obj).to.be.ok;
                     expect(obj.type).to.be.equal('state');
                     expect(obj.native.attr1).to.be.equal('11');
@@ -239,7 +239,7 @@ function register(it, expect, context) {
 
     // getObject
     it(testName + 'Check get object', function (done) {
-        context.adapter.getObject(context.adapterShortName + '.0.' + gid, function (err, obj) {
+        context.adapter.getObject(`${context.adapterShortName}.0.${gid}`, function (err, obj) {
             expect(err).to.be.null;
 
             expect(obj).to.be.ok;
@@ -256,7 +256,7 @@ function register(it, expect, context) {
     });
 
     // getForeignObjects
-    it(testName + 'Check get foreign objects', done => {
+    it(testName + 'Check get foreign objects (pattern)', done => {
         context.adapter.getForeignObjects(context.adapterShortName + 'f.0.*', (err, objs) => {
             expect(err).to.be.null;
 
@@ -265,6 +265,18 @@ function register(it, expect, context) {
             expect(objs[context.adapterShortName + 'f.0.' + gid].native.attr1).to.be.equal('11');
             done();
         });
+    });
+
+    it(testName + 'Check get foreign objects (array)', async () => {
+        const id = `${context.adapterShortName}f.0.${gid}`;
+        const id2 = `${context.adapterShortName}.0.${gid}`;
+
+        const objs = await context.adapter.getForeignObjects([id, id2]);
+
+        expect(objs).to.be.ok;
+        expect(objs[id].type).to.be.equal('state');
+        expect(objs[id].native.attr1).to.be.equal('11');
+        expect(objs[id2].type).to.be.equal('state');
     });
 
     // findForeignObject

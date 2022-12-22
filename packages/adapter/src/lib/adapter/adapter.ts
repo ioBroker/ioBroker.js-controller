@@ -100,7 +100,8 @@ import type {
     TimeoutCallback,
     MaybePromise,
     SetStateChangedResult,
-    CheckStatesResult
+    CheckStatesResult,
+    Pattern
 } from '../_Types';
 
 // keep them outside until we have migrated to TS, else devs can access them
@@ -435,17 +436,17 @@ export interface AdapterClass {
      * Get foreign objects by pattern, by specific type and resolve their enums.
      */
     getForeignObjectsAsync<T extends ioBroker.ObjectType>(
-        pattern: string,
+        pattern: Pattern,
         type: T,
         enums?: ioBroker.EnumList | null,
         options?: unknown
     ): ioBroker.GetObjectsPromiseTyped<T>;
     getForeignObjectsAsync<T extends ioBroker.ObjectType>(
-        pattern: string,
+        pattern: Pattern,
         type: T,
         options?: unknown
     ): ioBroker.GetObjectsPromiseTyped<T>;
-    getForeignObjectsAsync(pattern: string, options?: unknown): ioBroker.GetObjectsPromise;
+    getForeignObjectsAsync(pattern: Pattern, options?: unknown): ioBroker.GetObjectsPromise;
 
     /**
      * creates an object with type device
@@ -3950,27 +3951,27 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    getForeignObjects(pattern: string, callback: ioBroker.GetObjectsCallback): void;
-    getForeignObjects(pattern: string, options: unknown, callback: ioBroker.GetObjectsCallback): void;
+    getForeignObjects(pattern: Pattern, callback: ioBroker.GetObjectsCallback): void;
+    getForeignObjects(pattern: Pattern, options: unknown, callback: ioBroker.GetObjectsCallback): void;
     getForeignObjects<T extends ioBroker.ObjectType>(
-        pattern: string,
+        pattern: Pattern,
         type: T,
         callback: ioBroker.GetObjectsCallbackTyped<T>
     ): void;
     getForeignObjects<T extends ioBroker.ObjectType>(
-        pattern: string,
+        pattern: Pattern,
         type: T,
         enums: ioBroker.EnumList,
         callback: ioBroker.GetObjectsCallbackTyped<T>
     ): void;
     getForeignObjects<T extends ioBroker.ObjectType>(
-        pattern: string,
+        pattern: Pattern,
         type: T,
         options: unknown,
         callback: ioBroker.GetObjectsCallbackTyped<T>
     ): void;
     getForeignObjects<T extends ioBroker.ObjectType>(
-        pattern: string,
+        pattern: Pattern,
         type: T,
         enums: ioBroker.EnumList | null,
         options: unknown,
@@ -4025,7 +4026,7 @@ export class AdapterClass extends EventEmitter {
         enums?: unknown,
         options?: unknown,
         callback?: unknown
-    ): MaybePromise {
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.GetObjectsCallback> | void> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -4050,12 +4051,7 @@ export class AdapterClass extends EventEmitter {
 
         Utils.assertOptionalCallback(callback, 'callback');
 
-        if (typeof pattern !== 'string') {
-            return tools.maybeCallbackWithError(
-                callback,
-                new Error(`Expected pattern to be of type "string", got "${typeof pattern}"`)
-            );
-        }
+        Utils.assertPattern(pattern, 'pattern');
 
         if (type !== undefined) {
             Utils.assertString(type, 'type');
@@ -4074,16 +4070,10 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private _getForeignObjects(_options: InternalGetObjectsOptions) {
+    private async _getForeignObjects(
+        _options: InternalGetObjectsOptions
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.GetObjectsCallback> | void> {
         const { options, callback, type, pattern, enums } = _options;
-
-        let params: ioBroker.GetObjectViewParams = {};
-        if (pattern && pattern !== '*') {
-            params = {
-                startkey: pattern.replace(/\*/g, ''),
-                endkey: pattern.replace(/\*/g, '\u9999')
-            };
-        }
 
         if (!adapterObjects) {
             this._logger.info(
@@ -4092,79 +4082,100 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        adapterObjects.getObjectView('system', type || 'state', params, options, async (err, res) => {
-            if (err) {
-                return tools.maybeCallbackWithError(callback, err);
+        let objs: (ioBroker.AnyObject | null)[];
+
+        if (Array.isArray(pattern)) {
+            try {
+                objs = await adapterObjects.getObjects(pattern, options);
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
+        } else {
+            let params: ioBroker.GetObjectViewParams = {};
+
+            if (pattern && pattern !== '*') {
+                params = {
+                    startkey: pattern.replace(/\*/g, ''),
+                    endkey: pattern.replace(/\*/g, '\u9999')
+                };
             }
 
-            // don't forget, that enums returns names in row[x].id and not IDs, you can find id in rows[x].value._id
-            let _enums;
-            if (enums) {
-                try {
-                    _enums = await this.getEnumsAsync(enums, null);
-                } catch (e) {
-                    this._logger.warn(`Cannot get enums on getForeignObjects: ${e.message}`);
-                }
+            try {
+                const res = await adapterObjects.getObjectView('system', type || 'state', params, options);
+                objs = res.rows.map(row => row.value);
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
             }
-            const list: Record<string, any> = {};
-            if (res && res.rows) {
-                for (let i = 0; i < res.rows.length; i++) {
-                    const row = res.rows[i];
-                    if (!row.value) {
-                        // It is not so important warning, so print it as debug
-                        this._logger.debug(
-                            `${this.namespaceLog} getEnums(${JSON.stringify(
-                                enums
-                            )}) returned an enum without a value at index ${i}, obj - ${JSON.stringify(row)}`
-                        );
-                        continue;
-                    }
+        }
 
-                    const id: string = row.value._id;
-                    list[id] = row.value;
-                    if (_enums && id) {
-                        // get device or channel of this state and check it too
-                        const parts = id.split('.');
-                        parts.splice(parts.length - 1, 1);
-                        const channel = parts.join('.');
-                        parts.splice(parts.length - 1, 1);
-                        const device = parts.join('.');
+        // don't forget, that enums returns names in row[x].id and not IDs, you can find id in rows[x].value._id
+        let _enums;
+        if (enums) {
+            try {
+                _enums = await this.getEnumsAsync(enums, null);
+            } catch (e) {
+                this._logger.warn(`Cannot get enums on getForeignObjects: ${e.message}`);
+            }
+        }
 
-                        list[id].enums = {};
-                        for (const es of Object.keys(_enums)) {
-                            for (const e of Object.keys(_enums[es])) {
-                                if (!_enums[es][e] || !_enums[es][e].common || !_enums[es][e].common.members) {
-                                    continue;
-                                }
-                                if (
-                                    _enums[es][e].common.members.includes(id) ||
-                                    _enums[es][e].common.members.includes(channel) ||
-                                    _enums[es][e].common.members.includes(device)
-                                ) {
-                                    list[id].enums[e] = _enums[es][e].common.name;
-                                }
-                            }
+        const list: Record<string, any> = {};
+
+        for (let i = 0; i < objs.length; i++) {
+            const obj = objs[i];
+            if (!obj) {
+                // It is not so important warning, so print it as debug
+                this._logger.debug(
+                    `${this.namespaceLog} getEnums(${JSON.stringify(
+                        enums
+                    )}) returned an enum without a value at index ${i}, obj - ${JSON.stringify(obj)}`
+                );
+                continue;
+            }
+
+            const id: string = obj._id;
+            list[id] = obj;
+            if (_enums && id) {
+                // get device or channel of this state and check it too
+                const parts = id.split('.');
+                parts.splice(parts.length - 1, 1);
+                const channel = parts.join('.');
+                parts.splice(parts.length - 1, 1);
+                const device = parts.join('.');
+
+                list[id].enums = {};
+                for (const _enum of Object.values(_enums)) {
+                    for (const e of Object.keys(_enum)) {
+                        if (!_enum[e]?.common?.members) {
+                            continue;
+                        }
+
+                        if (
+                            _enum[e].common.members.includes(id) ||
+                            _enum[e].common.members.includes(channel) ||
+                            _enum[e].common.members.includes(device)
+                        ) {
+                            list[id].enums[e] = _enum[e].common.name;
                         }
                     }
-                    // remove protectedNative if not admin, not cloud or not own adapter
-                    if (
-                        row.value &&
-                        'protectedNative' in row.value &&
-                        Array.isArray(row.value.protectedNative) &&
-                        row.value.native &&
-                        id &&
-                        id.startsWith('system.adapter.') &&
-                        !NO_PROTECT_ADAPTERS.includes(this.name) &&
-                        this.name !== id.split('.')[2]
-                    ) {
-                        for (const attr of row.value.protectedNative) {
-                            delete row.value.native[attr];
-                        } // endFor
-                    } // endIf
                 }
             }
-            return tools.maybeCallbackWithError(callback, null, list);
-        });
+            // remove protectedNative if not admin, not cloud or not own adapter
+            if (
+                obj &&
+                'protectedNative' in obj &&
+                Array.isArray(obj.protectedNative) &&
+                obj.native &&
+                id &&
+                id.startsWith('system.adapter.') &&
+                !NO_PROTECT_ADAPTERS.includes(this.name) &&
+                this.name !== id.split('.')[2]
+            ) {
+                for (const attr of obj.protectedNative) {
+                    delete obj.native[attr];
+                }
+            }
+        }
+        return tools.maybeCallbackWithError(callback, null, list);
     }
 
     // external signature
@@ -4461,8 +4472,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    subscribeObjects(pattern: string, callback?: ioBroker.ErrorCallback): void;
-    subscribeObjects(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    subscribeObjects(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
+    subscribeObjects(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Subscribe for the changes of objects in this instance.
@@ -4498,14 +4509,13 @@ export class AdapterClass extends EventEmitter {
         if (pattern === '*') {
             adapterObjects.subscribeUser(`${this.namespace}.*`, options, callback);
         } else {
-            // @ts-expect-error should fixId be able to handle array?
-            pattern = this._utils.fixId(pattern, true);
-            adapterObjects.subscribeUser(pattern as any, options, callback);
+            const fixedPattern = Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true);
+            adapterObjects.subscribeUser(fixedPattern, options, callback);
         }
     }
 
-    unsubscribeObjects(pattern: string, callback?: ioBroker.ErrorCallback): void;
-    unsubscribeObjects(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeObjects(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeObjects(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Unsubscribe on the changes of objects in this instance.
@@ -4541,9 +4551,8 @@ export class AdapterClass extends EventEmitter {
         if (pattern === '*') {
             adapterObjects.unsubscribeUser(`${this.namespace}.*`, options, callback);
         } else {
-            // @ts-expect-error should fixid be able to handle array?
-            pattern = this._utils.fixId(pattern, true);
-            adapterObjects.unsubscribeUser(pattern as string, options, callback);
+            const fixedPattern = Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true);
+            adapterObjects.unsubscribeUser(fixedPattern, options, callback);
         }
     }
 
@@ -5859,7 +5868,7 @@ export class AdapterClass extends EventEmitter {
         }
         if (typeof parentDevice === 'function') {
             callback = parentDevice;
-            parentDevice = null;
+            parentDevice = undefined;
         }
 
         if (options !== null && options !== undefined) {
@@ -5867,7 +5876,9 @@ export class AdapterClass extends EventEmitter {
         }
 
         Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(parentDevice, 'parentDevice');
+        if (parentDevice !== undefined) {
+            Utils.assertString(parentDevice, 'parentDevice');
+        }
 
         return this._getChannelsOf({ parentDevice, options, callback });
     }
@@ -6708,8 +6719,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    formatValue(value: number | string, format: any): string;
-    formatValue(value: number | string, decimals: number, format: any): string;
+    formatValue(value: number | string, format?: string): string;
+    formatValue(value: number | string, decimals: number, format?: string): string;
     formatValue(value: unknown, decimals: unknown, _format?: unknown): any {
         if (typeof decimals !== 'number') {
             _format = decimals;
@@ -6743,8 +6754,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    formatDate(dateObj: string | Date | number, format: string): string;
-    formatDate(dateObj: string | Date | number, isDuration: boolean | string, format: string): string;
+    formatDate(dateObj: string | Date | number, format?: string): string;
+    formatDate(dateObj: string | Date | number, isDuration: boolean | string, format?: string): string;
 
     formatDate(dateObj: unknown, isDuration: unknown, _format?: unknown): any {
         if ((typeof isDuration === 'string' && isDuration.toLowerCase() === 'duration') || isDuration === true) {
@@ -8949,8 +8960,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    getStates(pattern: string, callback: ioBroker.GetStatesCallback): void;
-    getStates(pattern: string, options: unknown, callback: ioBroker.GetStatesCallback): void;
+    getStates(pattern: Pattern, callback: ioBroker.GetStatesCallback): void;
+    getStates(pattern: Pattern, options: unknown, callback: ioBroker.GetStatesCallback): void;
 
     /**
      * Read all states of this adapter, that pass the pattern
@@ -8978,9 +8989,10 @@ export class AdapterClass extends EventEmitter {
             options = {};
         }
 
-        Utils.assertString(pattern, 'pattern');
+        Utils.assertPattern(pattern, 'pattern');
 
-        const fixedPattern = this._utils.fixId(pattern, true);
+        const fixedPattern = Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true);
+
         this.getForeignStates(fixedPattern, options, callback);
     }
 
@@ -9077,8 +9089,8 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    getForeignStates(pattern: string | string[], callback: ioBroker.GetStatesCallback): void;
-    getForeignStates(pattern: string | string[], options: unknown, callback: ioBroker.GetStatesCallback): void;
+    getForeignStates(pattern: Pattern, callback: ioBroker.GetStatesCallback): void;
+    getForeignStates(pattern: Pattern, options: unknown, callback: ioBroker.GetStatesCallback): void;
 
     /**
      * Read all states of all adapters (and system states), that pass the pattern
