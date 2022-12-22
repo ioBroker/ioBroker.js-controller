@@ -664,7 +664,7 @@ export class AdapterClass extends EventEmitter {
     protected version?: string;
     protected kill?: () => Promise<void>;
     protected processLog?: (msg: any) => void;
-    protected requireLog?: (_isActive: boolean) => void;
+    protected requireLog?: (_isActive: boolean, options?: any) => void;
     private logOffTimer?: NodeJS.Timeout | null;
     private logRedirect?: (isActive: boolean, id: string) => void;
     private logRequired?: boolean;
@@ -10584,7 +10584,7 @@ export class AdapterClass extends EventEmitter {
         this._options.logTransporter = this._options.logTransporter || this.ioPack.common.logTransporter;
 
         if (this._options.logTransporter) {
-            this.requireLog = isActive => {
+            this.requireLog = (isActive, options) => {
                 if (adapterStates) {
                     if (this.logRequired !== isActive) {
                         this.logRequired = isActive; // remember state
@@ -10598,11 +10598,15 @@ export class AdapterClass extends EventEmitter {
                                 this._logger.silly(`${this.namespaceLog} Change log subscriber state: FALSE`);
                                 this.outputCount++;
                                 if (adapterStates) {
-                                    adapterStates.setState(`system.adapter.${this.namespace}.logging`, {
-                                        val: false,
-                                        ack: true,
-                                        from: `system.adapter.${this.namespace}`
-                                    });
+                                    adapterStates.setState(
+                                        `system.adapter.${this.namespace}.logging`,
+                                        {
+                                            val: false,
+                                            ack: true,
+                                            from: `system.adapter.${this.namespace}`
+                                        },
+                                        options
+                                    );
                                 }
                             }, 10000);
                         } else {
@@ -10612,11 +10616,15 @@ export class AdapterClass extends EventEmitter {
                             } else {
                                 this._logger.silly(`${this.namespaceLog} Change log subscriber state: true`);
                                 this.outputCount++;
-                                adapterStates.setState(`system.adapter.${this.namespace}.logging`, {
-                                    val: true,
-                                    ack: true,
-                                    from: `system.adapter.${this.namespace}`
-                                });
+                                adapterStates.setState(
+                                    `system.adapter.${this.namespace}.logging`,
+                                    {
+                                        val: true,
+                                        ack: true,
+                                        from: `system.adapter.${this.namespace}`
+                                    },
+                                    options
+                                );
                             }
                         }
                     }
