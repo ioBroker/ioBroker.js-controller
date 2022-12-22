@@ -113,19 +113,6 @@ module.exports = class CLIProcess extends CLICommand {
                 for (const instance of adapterInstances) {
                     await setInstanceEnabled(objects, instance, enabled, restartIfRunning);
                 }
-                if (adapterInstances.length === 1) {
-                    CLI.success(
-                        `Instance ${adapter}.${adapterInstances[0]} was ${
-                            enabled ? (restartIfRunning ? 're-started' : 'started') : 'stopped'
-                        }`
-                    );
-                } else {
-                    CLI.success(
-                        `Following instances of ${adapter} were ${
-                            enabled ? (restartIfRunning ? 're-started' : 'started') : 'stopped'
-                        }: ${adapterInstances.join(', ')}`
-                    );
-                }
                 return void callback();
             } catch (err) {
                 CLI.error.unknown(err.message);
