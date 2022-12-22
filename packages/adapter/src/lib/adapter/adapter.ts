@@ -7463,15 +7463,15 @@ export class AdapterClass extends EventEmitter {
                 this.outputCount++;
                 return adapterStates.setState(
                     aliasId,
-                    tools.formatAliasValue(
-                        obj?.common,
-                        targetObj && (targetObj.common as any),
-                        stateObj as ioBroker.State,
-                        this._logger,
-                        this.namespaceLog,
-                        obj?._id,
-                        targetObj?._id
-                    ),
+                    tools.formatAliasValue({
+                        sourceCommon: obj?.common,
+                        targetCommon: targetObj?.common as any,
+                        state: stateObj as ioBroker.State,
+                        logger: this._logger,
+                        logNamespace: this.namespaceLog,
+                        sourceId: obj?._id,
+                        targetId: targetObj?._id
+                    }),
                     callback
                 );
             } else {
@@ -8211,15 +8211,15 @@ export class AdapterClass extends EventEmitter {
                     this.outputCount++;
                     adapterStates.setState(
                         aliasId,
-                        tools.formatAliasValue(
-                            obj?.common,
-                            targetObj && (targetObj.common as any),
+                        tools.formatAliasValue({
+                            sourceCommon: obj?.common,
+                            targetCommon: targetObj && (targetObj.common as any),
                             state,
-                            this._logger,
-                            this.namespaceLog,
-                            obj?._id,
-                            targetObj?._id
-                        ),
+                            logger: this._logger,
+                            logNamespace: this.namespaceLog,
+                            sourceId: obj?._id,
+                            targetId: targetObj?._id
+                        }),
                         callback
                     );
                 } else {
@@ -8292,15 +8292,15 @@ export class AdapterClass extends EventEmitter {
                             this.outputCount++;
                             adapterStates.setState(
                                 aliasId,
-                                tools.formatAliasValue(
-                                    obj?.common!,
-                                    targetObj && (targetObj.common as any),
+                                tools.formatAliasValue({
+                                    sourceCommon: obj.common as ioBroker.StateCommon,
+                                    targetCommon: targetObj?.common as ioBroker.StateCommon | undefined,
                                     state,
-                                    this._logger,
-                                    this.namespaceLog,
-                                    obj?._id,
-                                    targetObj?._id
-                                ),
+                                    logger: this._logger,
+                                    logNamespace: this.namespaceLog,
+                                    sourceId: obj._id,
+                                    targetId: targetObj?._id
+                                }),
                                 callback
                             );
                         });
@@ -8650,15 +8650,15 @@ export class AdapterClass extends EventEmitter {
                         // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                         callback,
                         null,
-                        tools.formatAliasValue(
-                            sourceObj && (sourceObj.common as any),
-                            obj.common,
+                        tools.formatAliasValue({
+                            sourceCommon: sourceObj?.common,
+                            targetCommon: obj.common,
                             state,
-                            this._logger,
-                            this.namespaceLog,
-                            sourceObj?._id,
-                            obj._id
-                        )
+                            logger: this._logger,
+                            logNamespace: this.namespaceLog,
+                            sourceId: sourceObj?._id,
+                            targetId: obj._id
+                        })
                     );
                 }
             } else {
@@ -9020,16 +9020,17 @@ export class AdapterClass extends EventEmitter {
                         result[obj._id] = { val: obj.common.alias.val, ts: Date.now(), q: 0 };
                     } else if (srcObjs![i]) {
                         result[obj._id] =
-                            tools.formatAliasValue(
+                            tools.formatAliasValue({
                                 // @ts-expect-error
-                                srcObjs[i].common,
-                                obj.common,
-                                arr![i] || null,
-                                this._logger,
-                                this.namespaceLog,
-                                srcObjs[i]._id,
-                                obj._id
-                            ) || null;
+                                sourceCommon: srcObjs[i].common,
+                                targetCommon: obj.common,
+                                state: arr![i] || null,
+                                logger: this._logger,
+                                logNamespace: this.namespaceLog,
+                                // @ts-expect-error
+                                sourceId: srcObjs[i]._id,
+                                targetId: obj._id
+                            }) || null;
                     } else {
                         result[obj._id || keys[i]] = arr![i] || null;
                     }
@@ -9279,7 +9280,7 @@ export class AdapterClass extends EventEmitter {
                 alias: deepClone(aliasObj.common.alias),
                 id: aliasObj._id,
                 pattern,
-                type: aliasObj.common.type as string,
+                type: aliasObj.common.type,
                 max: aliasObj.common.max,
                 min: aliasObj.common.min,
                 unit: aliasObj.common.unit
@@ -9296,7 +9297,7 @@ export class AdapterClass extends EventEmitter {
                     return tools.maybeCallbackWithError(callback, e);
                 }
 
-                if (sourceObj && sourceObj.common) {
+                if (sourceObj?.common) {
                     if (!this.aliases.has(sourceObj._id)) {
                         // TODO what means this, we ensured alias existed, did some async stuff now it's gone -> alias has been deleted?
                         this._logger.error(
@@ -10904,15 +10905,15 @@ export class AdapterClass extends EventEmitter {
                     alias!.targets.forEach(target => {
                         const source = alias!.source!;
                         const aState = state
-                            ? tools.formatAliasValue(
-                                  source,
-                                  target,
-                                  deepClone(state),
-                                  this._logger,
-                                  this.namespaceLog,
-                                  id,
-                                  target.id
-                              )
+                            ? tools.formatAliasValue({
+                                  sourceCommon: source,
+                                  targetCommon: target,
+                                  state: deepClone(state),
+                                  logger: this._logger,
+                                  logNamespace: this.namespaceLog,
+                                  sourceId: id,
+                                  targetId: target.id
+                              })
                             : null;
                         // @ts-expect-error
                         const targetId = target.id.read === 'string' ? target.id.read : target.id;
