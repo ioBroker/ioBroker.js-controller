@@ -35,7 +35,7 @@ Linux-type permissions defining access to this object
 
 #### Defined in
 
-[types/objects.d.ts:29](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L29)
+[types/objects.d.ts:29](https://github.com/ioBroker/ioBroker.js-controller/blob/da5874cc/packages/types/objects.d.ts#L29)
 
 ___
 
@@ -51,7 +51,7 @@ Full name of the user who owns this object, e.g. "system.user.admin"
 
 #### Defined in
 
-[types/objects.d.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L25)
+[types/objects.d.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/da5874cc/packages/types/objects.d.ts#L25)
 
 ___
 
@@ -67,7 +67,7 @@ Full name of the group who owns this object, e.g. "system.group.administrator"
 
 #### Defined in
 
-[types/objects.d.ts:27](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L27)
+[types/objects.d.ts:27](https://github.com/ioBroker/ioBroker.js-controller/blob/da5874cc/packages/types/objects.d.ts#L27)
 
 ___
 
@@ -79,4 +79,4 @@ Linux-type permissions defining access to this state
 
 #### Defined in
 
-[types/objects.d.ts:34](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L34)
+[types/objects.d.ts:34](https://github.com/ioBroker/ioBroker.js-controller/blob/da5874cc/packages/types/objects.d.ts#L34)
