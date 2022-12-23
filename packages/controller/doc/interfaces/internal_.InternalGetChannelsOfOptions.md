@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:234](https://github.com/ioBroker/ioBroker.js-controller/blob/da5874cc/packages/adapter/src/lib/_Types.ts#L234)
+[adapter/src/lib/_Types.ts:236](https://github.com/ioBroker/ioBroker.js-controller/blob/d1ea91b2/packages/adapter/src/lib/_Types.ts#L236)
 
 ___
 
@@ -30,14 +30,14 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:235](https://github.com/ioBroker/ioBroker.js-controller/blob/da5874cc/packages/adapter/src/lib/_Types.ts#L235)
+[adapter/src/lib/_Types.ts:237](https://github.com/ioBroker/ioBroker.js-controller/blob/d1ea91b2/packages/adapter/src/lib/_Types.ts#L237)
 
 ___
 
 ### parentDevice
 
-• **parentDevice**: `string`
+• `Optional` **parentDevice**: `string`
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:233](https://github.com/ioBroker/ioBroker.js-controller/blob/da5874cc/packages/adapter/src/lib/_Types.ts#L233)
+[adapter/src/lib/_Types.ts:235](https://github.com/ioBroker/ioBroker.js-controller/blob/d1ea91b2/packages/adapter/src/lib/_Types.ts#L235)

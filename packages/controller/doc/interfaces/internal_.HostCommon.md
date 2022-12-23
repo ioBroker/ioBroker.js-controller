@@ -38,7 +38,7 @@ An array of IP addresses this host exposes
 
 #### Defined in
 
-[types/objects.d.ts:319](https://github.com/ioBroker/ioBroker.js-controller/blob/da5874cc/packages/types/objects.d.ts#L319)
+[types/objects.d.ts:319](https://github.com/ioBroker/ioBroker.js-controller/blob/d1ea91b2/packages/types/objects.d.ts#L319)
 
 ___
 
@@ -50,7 +50,7 @@ The command line of the executable
 
 #### Defined in
 
-[types/objects.d.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/da5874cc/packages/types/objects.d.ts#L316)
+[types/objects.d.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/d1ea91b2/packages/types/objects.d.ts#L316)
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:325](https://github.com/ioBroker/ioBroker.js-controller/blob/da5874cc/packages/types/objects.d.ts#L325)
+[types/objects.d.ts:325](https://github.com/ioBroker/ioBroker.js-controller/blob/d1ea91b2/packages/types/objects.d.ts#L325)
 
 ___
 
@@ -76,7 +76,7 @@ When set to true, this object may not be deleted
 
 #### Defined in
 
-[types/objects.d.ts:157](https://github.com/ioBroker/ioBroker.js-controller/blob/da5874cc/packages/types/objects.d.ts#L157)
+[types/objects.d.ts:157](https://github.com/ioBroker/ioBroker.js-controller/blob/d1ea91b2/packages/types/objects.d.ts#L157)
 
 ___
 
@@ -92,7 +92,7 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 #### Defined in
 
-[types/objects.d.ts:160](https://github.com/ioBroker/ioBroker.js-controller/blob/da5874cc/packages/types/objects.d.ts#L160)
+[types/objects.d.ts:160](https://github.com/ioBroker/ioBroker.js-controller/blob/d1ea91b2/packages/types/objects.d.ts#L160)
 
 ___
 
@@ -102,7 +102,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:317](https://github.com/ioBroker/ioBroker.js-controller/blob/da5874cc/packages/types/objects.d.ts#L317)
+[types/objects.d.ts:317](https://github.com/ioBroker/ioBroker.js-controller/blob/d1ea91b2/packages/types/objects.d.ts#L317)
 
 ___
 
@@ -118,7 +118,7 @@ Icon for this object
 
 #### Defined in
 
-[types/objects.d.ts:165](https://github.com/ioBroker/ioBroker.js-controller/blob/da5874cc/packages/types/objects.d.ts#L165)
+[types/objects.d.ts:165](https://github.com/ioBroker/ioBroker.js-controller/blob/d1ea91b2/packages/types/objects.d.ts#L165)
 
 ___
 
@@ -128,7 +128,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:314](https://github.com/ioBroker/ioBroker.js-controller/blob/da5874cc/packages/types/objects.d.ts#L314)
+[types/objects.d.ts:314](https://github.com/ioBroker/ioBroker.js-controller/blob/d1ea91b2/packages/types/objects.d.ts#L314)
 
 ___
 
@@ -144,7 +144,7 @@ The display name of this host
 
 #### Defined in
 
-[types/objects.d.ts:312](https://github.com/ioBroker/ioBroker.js-controller/blob/da5874cc/packages/types/objects.d.ts#L312)
+[types/objects.d.ts:312](https://github.com/ioBroker/ioBroker.js-controller/blob/d1ea91b2/packages/types/objects.d.ts#L312)
 
 ___
 
@@ -154,7 +154,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:322](https://github.com/ioBroker/ioBroker.js-controller/blob/da5874cc/packages/types/objects.d.ts#L322)
+[types/objects.d.ts:322](https://github.com/ioBroker/ioBroker.js-controller/blob/d1ea91b2/packages/types/objects.d.ts#L322)
 
 ___
 
@@ -170,7 +170,7 @@ role of the object
 
 #### Defined in
 
-[types/objects.d.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/da5874cc/packages/types/objects.d.ts#L167)
+[types/objects.d.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/d1ea91b2/packages/types/objects.d.ts#L167)
 
 ___
 
@@ -180,7 +180,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:313](https://github.com/ioBroker/ioBroker.js-controller/blob/da5874cc/packages/types/objects.d.ts#L313)
+[types/objects.d.ts:313](https://github.com/ioBroker/ioBroker.js-controller/blob/d1ea91b2/packages/types/objects.d.ts#L313)
 
 ___
 
@@ -190,4 +190,4 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:321](https://github.com/ioBroker/ioBroker.js-controller/blob/da5874cc/packages/types/objects.d.ts#L321)
+[types/objects.d.ts:321](https://github.com/ioBroker/ioBroker.js-controller/blob/d1ea91b2/packages/types/objects.d.ts#L321)
