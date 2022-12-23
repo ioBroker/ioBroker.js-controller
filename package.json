@@ -28,6 +28,7 @@
     "@microsoft/api-extractor": "^7.33.2",
     "@tsconfig/node12": "^1.0.11",
     "@types/chai": "^4.3.3",
+    "@types/chai-as-promised": "^7.1.5",
     "@types/debug": "^4.1.7",
     "@types/event-stream": "^4.0.0",
     "@types/fs-extra": "^9.0.13",
