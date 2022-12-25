@@ -22,6 +22,23 @@ import { maybeCallbackWithError } from './maybeCallback';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
 
+interface FormatAliasValueOptions {
+    /** Common attribute of source object */
+    sourceCommon?: Partial<ioBroker.StateCommon>;
+    /** Common attribute of target object */
+    targetCommon?: Partial<ioBroker.StateCommon>;
+    /** State to format */
+    state: ioBroker.State | null | undefined;
+    /** Logger used for logging */
+    logger: any;
+    /** Prefix for log messages */
+    logNamespace: string;
+    /** Id of the source object, used for logging */
+    sourceId?: string;
+    /** Id of the target object, used for logging */
+    targetId?: string;
+}
+
 export enum ERRORS {
     ERROR_NOT_FOUND = 'Not exists',
     ERROR_EMPTY_OBJECT = 'null object',
@@ -2586,20 +2603,11 @@ export function measureEventLoopLag(ms: number, cb: (eventLoopLag?: number) => v
 /**
  * This function convert state values by read and write of aliases. Function is synchron.
  *
- * @param sourceObj
- * @param targetObj
- * @param state Object with val, ack and so on
- * @param logger Logging object
- * @param logNamespace optional Logging namespace
+ * @param options
  */
-export function formatAliasValue(
-    sourceObj: Record<string, any>,
-    targetObj: Record<string, any>,
-    state: ioBroker.State | null | undefined,
-    logger: any,
-    logNamespace?: string
-): ioBroker.State | null {
-    logNamespace = logNamespace ? `${logNamespace} ` : '';
+export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.State | null {
+    const { sourceCommon, sourceId, targetCommon, targetId, state, logger } = options;
+    const logNamespace = options.logNamespace ? `${options.logNamespace} ` : '';
 
     if (!state) {
         return null;
@@ -2609,7 +2617,13 @@ export function formatAliasValue(
         return state;
     }
 
-    if (targetObj?.alias?.read) {
+    if (targetCommon?.alias?.read) {
+        if (!sourceCommon) {
+            logger.error(
+                `${logNamespace}source in "${targetId}" does not exist for "read" function: "${targetCommon.alias.read}"`
+            );
+            return null;
+        }
         try {
             // process the value here
             const func = new Function(
@@ -2620,26 +2634,32 @@ export function formatAliasValue(
                 'sType',
                 'sMin',
                 'sMax',
-                `return ${targetObj.alias.read}`
+                `return ${targetCommon.alias.read}`
             );
             state.val = func(
                 state.val,
-                targetObj.type,
-                targetObj.min,
-                targetObj.max,
-                sourceObj.type,
-                sourceObj.min,
-                sourceObj.max
+                targetCommon.type,
+                targetCommon.min,
+                targetCommon.max,
+                sourceCommon.type,
+                sourceCommon.min,
+                sourceCommon.max
             );
         } catch (e) {
             logger.error(
-                `${logNamespace} Invalid read function for ${targetObj._id}: ${targetObj.alias.read} => ${e.message}`
+                `${logNamespace} Invalid read function for "${targetId}": "${targetCommon.alias.read}" => ${e.message}`
             );
             return null;
         }
     }
 
-    if (sourceObj && sourceObj.alias && sourceObj.alias.write) {
+    if (sourceCommon && sourceCommon.alias && sourceCommon.alias.write) {
+        if (!targetCommon) {
+            logger.error(
+                `${logNamespace}target for "${sourceId}" does not exist for "write" function: "${sourceCommon.alias.write}"`
+            );
+            return null;
+        }
         try {
             // process the value here
             const func = new Function(
@@ -2650,27 +2670,27 @@ export function formatAliasValue(
                 'tType',
                 'tMin',
                 'tMax',
-                `return ${sourceObj.alias.write}`
+                `return ${sourceCommon.alias.write}`
             );
             state.val = func(
                 state.val,
-                sourceObj.type,
-                sourceObj.min,
-                sourceObj.max,
-                targetObj.type,
-                targetObj.min,
-                targetObj.max
+                sourceCommon.type,
+                sourceCommon.min,
+                sourceCommon.max,
+                targetCommon.type,
+                targetCommon.min,
+                targetCommon.max
             );
         } catch (e) {
             logger.error(
-                `${logNamespace} Invalid write function for ${sourceObj._id}: ${sourceObj.alias.write} => ${e.message}`
+                `${logNamespace} Invalid write function for "${sourceId}": "${sourceCommon.alias.write}" => ${e.message}`
             );
             return null;
         }
     }
 
-    if (targetObj && typeof state.val !== targetObj.type && state.val !== null) {
-        if (targetObj.type === 'boolean') {
+    if (targetCommon && typeof state.val !== targetCommon.type && state.val !== null) {
+        if (targetCommon.type === 'boolean') {
             const lowerVal = typeof state.val === 'string' ? state.val.toLowerCase() : state.val;
             if (lowerVal === 'off' || lowerVal === 'aus' || state.val === '0') {
                 state.val = false;
@@ -2678,43 +2698,43 @@ export function formatAliasValue(
                 // this also handles strings like "EIN" or such that will be true
                 state.val = !!state.val;
             }
-        } else if (targetObj.type === 'number') {
+        } else if (targetCommon.type === 'number') {
             state.val = parseFloat(state.val as any);
-        } else if (targetObj.type === 'string') {
+        } else if (targetCommon.type === 'string') {
             state.val = state.val.toString();
         }
     }
 
     // auto-scaling, only if val not null and unit for target (x)or source is %
     if (
-        ((targetObj && targetObj.alias && !targetObj.alias.read) ||
-            (sourceObj && sourceObj.alias && !sourceObj.alias.write)) &&
+        ((targetCommon && targetCommon.alias && !targetCommon.alias.read) ||
+            (sourceCommon && sourceCommon.alias && !sourceCommon.alias.write)) &&
         state.val !== null
     ) {
         if (
-            targetObj &&
-            targetObj.type === 'number' &&
-            targetObj.unit === '%' &&
-            sourceObj &&
-            sourceObj.type === 'number' &&
-            sourceObj.unit !== '%' &&
-            sourceObj.min !== undefined &&
-            sourceObj.max !== undefined
+            targetCommon &&
+            targetCommon.type === 'number' &&
+            targetCommon.unit === '%' &&
+            sourceCommon &&
+            sourceCommon.type === 'number' &&
+            sourceCommon.unit !== '%' &&
+            sourceCommon.min !== undefined &&
+            sourceCommon.max !== undefined
         ) {
             // scale target between 0 and 100 % based on sources min/max
-            state.val = (((state.val as any) - sourceObj.min) / (sourceObj.max - sourceObj.min)) * 100;
+            state.val = (((state.val as any) - sourceCommon.min) / (sourceCommon.max - sourceCommon.min)) * 100;
         } else if (
-            sourceObj &&
-            sourceObj.type === 'number' &&
-            sourceObj.unit === '%' &&
-            targetObj &&
-            targetObj.unit !== '%' &&
-            targetObj.type === 'number' &&
-            targetObj.min !== undefined &&
-            targetObj.max !== undefined
+            sourceCommon &&
+            sourceCommon.type === 'number' &&
+            sourceCommon.unit === '%' &&
+            targetCommon &&
+            targetCommon.unit !== '%' &&
+            targetCommon.type === 'number' &&
+            targetCommon.min !== undefined &&
+            targetCommon.max !== undefined
         ) {
             // scale target based on its min/max by its source (assuming source is meant to be 0 - 100 %)
-            state.val = ((targetObj.max - targetObj.min) * (state.val as any)) / 100 + targetObj.min;
+            state.val = ((targetCommon.max - targetCommon.min) * (state.val as any)) / 100 + targetCommon.min;
         }
     }
 

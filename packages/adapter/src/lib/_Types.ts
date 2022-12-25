@@ -71,7 +71,7 @@ export interface AliasDetails {
 export interface AliasDetailsSource {
     min?: number;
     max?: number;
-    type: string;
+    type?: ioBroker.CommonType;
     unit?: string;
 }
 
@@ -79,7 +79,7 @@ export interface AliasTargetEntry {
     alias: ioBroker.StateCommon['alias'];
     id: string;
     pattern: string;
-    type: string;
+    type?: ioBroker.CommonType;
     max?: number;
     min?: number;
     unit?: string;

@@ -191,8 +191,15 @@ export class CLIStates extends CLICommand {
                                 if (!state) {
                                     CLI.error.stateNotFound(id);
                                 } else {
-                                    // @ts-expect-error fix after #1917
-                                    tools.formatAliasValue(sourceObj?.common, targetObj.common, state, console, '');
+                                    tools.formatAliasValue({
+                                        sourceCommon: sourceObj?.common as ioBroker.StateCommon | undefined,
+                                        targetCommon: targetObj.common as ioBroker.StateCommon,
+                                        state,
+                                        logger: console,
+                                        logNamespace: '',
+                                        sourceId: sourceObj?._id,
+                                        targetId: targetObj._id
+                                    });
                                     console.log(resultTransform(state));
                                 }
                             } catch (e) {
@@ -288,8 +295,15 @@ export class CLIStates extends CLICommand {
                             // write target
                             states.setState(
                                 aliasId,
-                                // @ts-expect-error fix after #1917
-                                tools.formatAliasValue(obj.common, targetObj.common, newVal, console, ''),
+                                tools.formatAliasValue({
+                                    sourceCommon: obj.common as ioBroker.StateCommon,
+                                    targetCommon: targetObj?.common as ioBroker.StateCommon | undefined,
+                                    state: newVal as ioBroker.State,
+                                    logger: console,
+                                    logNamespace: '',
+                                    sourceId: obj._id,
+                                    targetId: targetObj?._id
+                                }),
                                 err => {
                                     if (err) {
                                         CLI.error.unknown(err);
