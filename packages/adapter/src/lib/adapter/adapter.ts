@@ -1304,22 +1304,18 @@ export class AdapterClass extends EventEmitter {
         keys: string[],
         objects: ioBroker.AnyObject[] | null,
         options?: Record<string, any> | null
-    ): Promise<(ioBroker.AnyObject | null | undefined)[]> {
+    ): Promise<(ioBroker.AnyObject | null)[]> {
         if (objects) {
             return objects;
         }
 
-        const res: (ioBroker.AnyObject | null | undefined)[] = [];
-        for (const key of keys) {
-            try {
-                const obj = await this.getForeignObjectAsync(key, options);
-                res.push(obj);
-            } catch {
-                res.push(null);
-            }
+        try {
+            const res = await adapterObjects!.getObjects(keys, options);
+            return res;
+        } catch (e) {
+            this._logger.error(`Could not get objects by array: ${e.message}`);
+            return [];
         }
-
-        return res;
     }
 
     // external signature
@@ -9043,7 +9039,7 @@ export class AdapterClass extends EventEmitter {
                         result[obj._id || keys[i]] = arr![i] || null;
                     }
                 } else {
-                    result[(obj && obj._id) || keys[i]] = arr![i] || null;
+                    result[obj?._id || keys[i]] = arr![i] || null;
                 }
             }
             // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
@@ -9077,7 +9073,7 @@ export class AdapterClass extends EventEmitter {
             const srcIds: string[] = [];
             // replace aliases ID with targets
             targetObjs.forEach((obj, i) => {
-                if (obj && obj.common && obj.common.alias) {
+                if (obj?.common?.alias) {
                     // alias id can be string or can have attribute read (this is used by getStates -> so read is important)
                     const aliasId =
                         // @ts-expect-error
