@@ -18,7 +18,7 @@
         "@iobroker/plugin-sentry": "~1.2.0",
         "deep-clone": "^3.0.3",
         "fs-extra": "^10.1.0",
-        "jsonwebtoken": "^8.5.1",
+        "jsonwebtoken": "^9.0.0",
         "node-schedule": "^2.1.0",
         "node.extend": "^2.0.2",
         "pidusage": "^3.0.2",
