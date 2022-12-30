@@ -1,8 +1,8 @@
 # Contributing
-If you are interested in conributing to the js-controller, this document contains an overview to getting started.
+If you are interested in contributing to the js-controller, this document contains an overview to getting started.
 
 ### Structure
-The js-controller repository is monorepo which is managed via `lerna`. Every folder inside the `packages` folder is a separate package. Developer dependencies should only be added to the top-level `package.json`. Package-specific dependencies need to be added to the `package.json` of the corresponding package. The `controller` folder is the package which is installed on client systems. All other packages are required by the `controller` package directly or indirectly.
+The js-controller repository is a monorepo which is managed via `lerna`. Every folder inside the `packages` folder is a separate package. Developer dependencies should only be added to the top-level `package.json`. Package-specific dependencies need to be added to the `package.json` of the corresponding package. The `controller` folder is the package which is installed on client systems. All other packages are required by the `controller` package directly or indirectly.
 
 ### Installing
 To install the dependencies, execute
@@ -37,7 +37,7 @@ npm run test
 
 will run the tests on your local system. As integration tests are starting a controller, please make sure that there is no ioBroker running on your local system using the same database ports.
 Tests are running against databases which are integrated and fully taken care of by the controller as well as Redis DB. 
-Thus, you need to install a (Redis DB)[https://redis.io/docs/getting-started/installation/], else the tests will fail.
+Thus, you need to install a [Redis DB](https://redis.io/docs/getting-started/installation/), else the tests will fail.
 When creating a PR, the tests will automatically run on the CI server on all currently supported Node.js versions on Windows/Linux and MacOS. After creating your PR, check back if all tests have passed.
 
 ### Best practices
