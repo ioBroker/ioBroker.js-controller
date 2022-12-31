@@ -39,6 +39,26 @@ interface CLIListOptions {
     processExit: (exitCode?: number) => void;
 }
 
+type ListType =
+    | 'objects'
+    | 'o'
+    | 'states'
+    | 's'
+    | 'adapters'
+    | 'a'
+    | 'instances'
+    | 'i'
+    | 'users'
+    | 'u'
+    | 'groups'
+    | 'g'
+    | 'hosts'
+    | 'h'
+    | 'enums'
+    | 'e'
+    | 'files'
+    | 'f';
+
 export class List {
     private config: Record<string, any>;
     private objects: ObjectsRedisClient;
@@ -286,7 +306,7 @@ export class List {
         }
     }
 
-    list(type: string, filter: string, flags: FlagObject): void {
+    list(type: ListType, filter: string, flags: FlagObject): void {
         this.objects.getObject('system.config', (err, systemConf) => {
             const lang: ioBroker.Languages = (systemConf && systemConf.common && systemConf.common.language) || 'en';
             switch (type) {
