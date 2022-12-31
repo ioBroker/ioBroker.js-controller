@@ -1,6 +1,6 @@
 {
     "name": "iobroker.js-controller",
-    "version": "5.0.0-alpha.0-20221219-9bd0ce3f",
+    "version": "5.0.0-alpha.0-20221231-0a61af83",
     "engines": {
         "node": ">=12.0.0"
     },
@@ -34,7 +34,7 @@
         "decache": "^4.6.1",
         "deep-clone": "^3.0.3",
         "fs-extra": "^10.1.0",
-        "jsonwebtoken": "^8.5.1",
+        "jsonwebtoken": "^9.0.0",
         "jszip": "^3.10.1",
         "loadavg-windows": "^1.1.1",
         "mime": "^3.0.0",

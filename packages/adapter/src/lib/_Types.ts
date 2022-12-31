@@ -41,11 +41,15 @@ export interface AdapterOptions {
     unload?: ioBroker.UnloadHandler;
     /** called when adapter is ready */
     ready?: ioBroker.ReadyHandler;
+    /** called when adapter is installed */
+    install?: ioBroker.ReadyHandler;
     /** called on reconnection to DB */
     reconnect?: () => MaybePromise;
     /** Handler to handle uncaught exceptions, return true if no further handling required */
     error?: ioBroker.ErrorHandler;
 }
+
+export type Pattern = string | string[];
 
 export interface AdapterOptionsConfig {
     log: {
@@ -67,7 +71,7 @@ export interface AliasDetails {
 export interface AliasDetailsSource {
     min?: number;
     max?: number;
-    type: string;
+    type?: ioBroker.CommonType;
     unit?: string;
 }
 
@@ -75,7 +79,7 @@ export interface AliasTargetEntry {
     alias: ioBroker.StateCommon['alias'];
     id: string;
     pattern: string;
-    type: string;
+    type?: ioBroker.CommonType;
     max?: number;
     min?: number;
     unit?: string;
@@ -220,7 +224,7 @@ export interface InternalGetHistoryOptions {
 }
 
 export interface InternalGetObjectsOptions {
-    pattern: string;
+    pattern: Pattern;
     type?: string;
     enums?: ioBroker.EnumList | null;
     options?: Record<string, any> | null;
@@ -228,7 +232,7 @@ export interface InternalGetObjectsOptions {
 }
 
 export interface InternalGetChannelsOfOptions {
-    parentDevice: string;
+    parentDevice?: string;
     callback?: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>;
     options?: Record<string, any> | null;
 }
@@ -294,7 +298,7 @@ export interface InternalCreateStateOptions {
 }
 
 export interface InternalSubscribeOptions {
-    pattern: string | string[];
+    pattern: Pattern;
     options?: Record<string, any> | null;
     callback?: ioBroker.ErrorCallback;
 }
@@ -336,7 +340,7 @@ export interface InternalGetStateOptions {
 }
 
 export interface InternalGetStatesOptions {
-    pattern: string | string[];
+    pattern: Pattern;
     options: Record<string, any>;
     callback: ioBroker.GetStatesCallback;
 }

@@ -100,7 +100,8 @@ import type {
     TimeoutCallback,
     MaybePromise,
     SetStateChangedResult,
-    CheckStatesResult
+    CheckStatesResult,
+    Pattern
 } from '../_Types';
 
 // keep them outside until we have migrated to TS, else devs can access them
@@ -435,17 +436,17 @@ export interface AdapterClass {
      * Get foreign objects by pattern, by specific type and resolve their enums.
      */
     getForeignObjectsAsync<T extends ioBroker.ObjectType>(
-        pattern: string,
+        pattern: Pattern,
         type: T,
         enums?: ioBroker.EnumList | null,
         options?: unknown
     ): ioBroker.GetObjectsPromiseTyped<T>;
     getForeignObjectsAsync<T extends ioBroker.ObjectType>(
-        pattern: string,
+        pattern: Pattern,
         type: T,
         options?: unknown
     ): ioBroker.GetObjectsPromiseTyped<T>;
-    getForeignObjectsAsync(pattern: string, options?: unknown): ioBroker.GetObjectsPromise;
+    getForeignObjectsAsync(pattern: Pattern, options?: unknown): ioBroker.GetObjectsPromise;
 
     /**
      * creates an object with type device
@@ -715,36 +716,35 @@ export class AdapterClass extends EventEmitter {
         // --install
         // --debug = --force + --logs
         if (process.argv) {
-            for (let a = 1; a < process.argv.length; a++) {
+            for (const argument of process.argv) {
                 if (
-                    process.argv[a] === 'info' ||
-                    process.argv[a] === 'debug' ||
-                    process.argv[a] === 'error' ||
-                    process.argv[a] === 'warn' ||
-                    process.argv[a] === 'silly'
+                    argument === 'info' ||
+                    argument === 'debug' ||
+                    argument === 'error' ||
+                    argument === 'warn' ||
+                    argument === 'silly'
                 ) {
-                    this._config.log.level = process.argv[a];
+                    this._config.log.level = argument;
                     this.overwriteLogLevel = true;
-                } else if (process.argv[a] === '--silent') {
+                } else if (argument === '--silent') {
                     this._config.isInstall = true;
-                    process.argv[a] = '--install';
-                } else if (process.argv[a] === '--install') {
+                } else if (argument === '--install') {
                     this._config.isInstall = true;
-                } else if (process.argv[a] === '--logs') {
+                } else if (argument === '--logs') {
                     this._config.consoleOutput = true;
-                } else if (process.argv[a] === '--force') {
+                } else if (argument === '--force') {
                     this._config.forceIfDisabled = true;
-                } else if (process.argv[a] === '--debug') {
+                } else if (argument === '--debug') {
                     this._config.forceIfDisabled = true;
                     this._config.consoleOutput = true;
                     if (this._config.log.level !== 'silly') {
                         this._config.log.level = 'debug';
                         this.overwriteLogLevel = true;
                     }
-                } else if (process.argv[a] === '--console') {
+                } else if (argument === '--console') {
                     this._config.consoleOutput = true;
-                } else if (parseInt(process.argv[a], 10).toString() === process.argv[a]) {
-                    this._config.instance = parseInt(process.argv[a], 10);
+                } else if (parseInt(argument, 10).toString() === argument) {
+                    this._config.instance = parseInt(argument, 10);
                 }
             }
         }
@@ -1304,22 +1304,18 @@ export class AdapterClass extends EventEmitter {
         keys: string[],
         objects: ioBroker.AnyObject[] | null,
         options?: Record<string, any> | null
-    ): Promise<(ioBroker.AnyObject | null | undefined)[]> {
+    ): Promise<(ioBroker.AnyObject | null)[]> {
         if (objects) {
             return objects;
         }
 
-        const res: (ioBroker.AnyObject | null | undefined)[] = [];
-        for (const key of keys) {
-            try {
-                const obj = await this.getForeignObjectAsync(key, options);
-                res.push(obj);
-            } catch {
-                res.push(null);
-            }
+        try {
+            const res = await adapterObjects!.getObjects(keys, options);
+            return res;
+        } catch (e) {
+            this._logger.error(`Could not get objects by array: ${e.message}`);
+            return [];
         }
-
-        return res;
     }
 
     // external signature
@@ -1364,10 +1360,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (typeof exitCode !== 'number') {
-            _exitCode =
-                process.argv.indexOf('--install') === -1
-                    ? EXIT_CODES.ADAPTER_REQUESTED_TERMINATION
-                    : EXIT_CODES.NO_ERROR;
+            _exitCode = !this._config.isInstall ? EXIT_CODES.ADAPTER_REQUESTED_TERMINATION : EXIT_CODES.NO_ERROR;
         } else {
             _exitCode = exitCode;
         }
@@ -3954,27 +3947,27 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    getForeignObjects(pattern: string, callback: ioBroker.GetObjectsCallback): void;
-    getForeignObjects(pattern: string, options: unknown, callback: ioBroker.GetObjectsCallback): void;
+    getForeignObjects(pattern: Pattern, callback: ioBroker.GetObjectsCallback): void;
+    getForeignObjects(pattern: Pattern, options: unknown, callback: ioBroker.GetObjectsCallback): void;
     getForeignObjects<T extends ioBroker.ObjectType>(
-        pattern: string,
+        pattern: Pattern,
         type: T,
         callback: ioBroker.GetObjectsCallbackTyped<T>
     ): void;
     getForeignObjects<T extends ioBroker.ObjectType>(
-        pattern: string,
+        pattern: Pattern,
         type: T,
         enums: ioBroker.EnumList,
         callback: ioBroker.GetObjectsCallbackTyped<T>
     ): void;
     getForeignObjects<T extends ioBroker.ObjectType>(
-        pattern: string,
+        pattern: Pattern,
         type: T,
         options: unknown,
         callback: ioBroker.GetObjectsCallbackTyped<T>
     ): void;
     getForeignObjects<T extends ioBroker.ObjectType>(
-        pattern: string,
+        pattern: Pattern,
         type: T,
         enums: ioBroker.EnumList | null,
         options: unknown,
@@ -4029,7 +4022,7 @@ export class AdapterClass extends EventEmitter {
         enums?: unknown,
         options?: unknown,
         callback?: unknown
-    ): MaybePromise {
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.GetObjectsCallback> | void> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -4054,12 +4047,7 @@ export class AdapterClass extends EventEmitter {
 
         Utils.assertOptionalCallback(callback, 'callback');
 
-        if (typeof pattern !== 'string') {
-            return tools.maybeCallbackWithError(
-                callback,
-                new Error(`Expected pattern to be of type "string", got "${typeof pattern}"`)
-            );
-        }
+        Utils.assertPattern(pattern, 'pattern');
 
         if (type !== undefined) {
             Utils.assertString(type, 'type');
@@ -4078,16 +4066,10 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private _getForeignObjects(_options: InternalGetObjectsOptions) {
+    private async _getForeignObjects(
+        _options: InternalGetObjectsOptions
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.GetObjectsCallback> | void> {
         const { options, callback, type, pattern, enums } = _options;
-
-        let params: ioBroker.GetObjectViewParams = {};
-        if (pattern && pattern !== '*') {
-            params = {
-                startkey: pattern.replace(/\*/g, ''),
-                endkey: pattern.replace(/\*/g, '\u9999')
-            };
-        }
 
         if (!adapterObjects) {
             this._logger.info(
@@ -4096,79 +4078,100 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        adapterObjects.getObjectView('system', type || 'state', params, options, async (err, res) => {
-            if (err) {
-                return tools.maybeCallbackWithError(callback, err);
+        let objs: (ioBroker.AnyObject | null)[];
+
+        if (Array.isArray(pattern)) {
+            try {
+                objs = await adapterObjects.getObjects(pattern, options);
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
+        } else {
+            let params: ioBroker.GetObjectViewParams = {};
+
+            if (pattern && pattern !== '*') {
+                params = {
+                    startkey: pattern.replace(/\*/g, ''),
+                    endkey: pattern.replace(/\*/g, '\u9999')
+                };
             }
 
-            // don't forget, that enums returns names in row[x].id and not IDs, you can find id in rows[x].value._id
-            let _enums;
-            if (enums) {
-                try {
-                    _enums = await this.getEnumsAsync(enums, null);
-                } catch (e) {
-                    this._logger.warn(`Cannot get enums on getForeignObjects: ${e.message}`);
-                }
+            try {
+                const res = await adapterObjects.getObjectView('system', type || 'state', params, options);
+                objs = res.rows.map(row => row.value);
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
             }
-            const list: Record<string, any> = {};
-            if (res && res.rows) {
-                for (let i = 0; i < res.rows.length; i++) {
-                    const row = res.rows[i];
-                    if (!row.value) {
-                        // It is not so important warning, so print it as debug
-                        this._logger.debug(
-                            `${this.namespaceLog} getEnums(${JSON.stringify(
-                                enums
-                            )}) returned an enum without a value at index ${i}, obj - ${JSON.stringify(row)}`
-                        );
-                        continue;
-                    }
+        }
 
-                    const id: string = row.value._id;
-                    list[id] = row.value;
-                    if (_enums && id) {
-                        // get device or channel of this state and check it too
-                        const parts = id.split('.');
-                        parts.splice(parts.length - 1, 1);
-                        const channel = parts.join('.');
-                        parts.splice(parts.length - 1, 1);
-                        const device = parts.join('.');
+        // don't forget, that enums returns names in row[x].id and not IDs, you can find id in rows[x].value._id
+        let _enums;
+        if (enums) {
+            try {
+                _enums = await this.getEnumsAsync(enums, null);
+            } catch (e) {
+                this._logger.warn(`Cannot get enums on getForeignObjects: ${e.message}`);
+            }
+        }
 
-                        list[id].enums = {};
-                        for (const es of Object.keys(_enums)) {
-                            for (const e of Object.keys(_enums[es])) {
-                                if (!_enums[es][e] || !_enums[es][e].common || !_enums[es][e].common.members) {
-                                    continue;
-                                }
-                                if (
-                                    _enums[es][e].common.members.includes(id) ||
-                                    _enums[es][e].common.members.includes(channel) ||
-                                    _enums[es][e].common.members.includes(device)
-                                ) {
-                                    list[id].enums[e] = _enums[es][e].common.name;
-                                }
-                            }
+        const list: Record<string, any> = {};
+
+        for (let i = 0; i < objs.length; i++) {
+            const obj = objs[i];
+            if (!obj) {
+                // It is not so important warning, so print it as debug
+                this._logger.debug(
+                    `${this.namespaceLog} getEnums(${JSON.stringify(
+                        enums
+                    )}) returned an enum without a value at index ${i}, obj - ${JSON.stringify(obj)}`
+                );
+                continue;
+            }
+
+            const id: string = obj._id;
+            list[id] = obj;
+            if (_enums && id) {
+                // get device or channel of this state and check it too
+                const parts = id.split('.');
+                parts.splice(parts.length - 1, 1);
+                const channel = parts.join('.');
+                parts.splice(parts.length - 1, 1);
+                const device = parts.join('.');
+
+                list[id].enums = {};
+                for (const _enum of Object.values(_enums)) {
+                    for (const e of Object.keys(_enum)) {
+                        if (!_enum[e]?.common?.members) {
+                            continue;
+                        }
+
+                        if (
+                            _enum[e].common.members.includes(id) ||
+                            _enum[e].common.members.includes(channel) ||
+                            _enum[e].common.members.includes(device)
+                        ) {
+                            list[id].enums[e] = _enum[e].common.name;
                         }
                     }
-                    // remove protectedNative if not admin, not cloud or not own adapter
-                    if (
-                        row.value &&
-                        'protectedNative' in row.value &&
-                        Array.isArray(row.value.protectedNative) &&
-                        row.value.native &&
-                        id &&
-                        id.startsWith('system.adapter.') &&
-                        !NO_PROTECT_ADAPTERS.includes(this.name) &&
-                        this.name !== id.split('.')[2]
-                    ) {
-                        for (const attr of row.value.protectedNative) {
-                            delete row.value.native[attr];
-                        } // endFor
-                    } // endIf
                 }
             }
-            return tools.maybeCallbackWithError(callback, null, list);
-        });
+            // remove protectedNative if not admin, not cloud or not own adapter
+            if (
+                obj &&
+                'protectedNative' in obj &&
+                Array.isArray(obj.protectedNative) &&
+                obj.native &&
+                id &&
+                id.startsWith('system.adapter.') &&
+                !NO_PROTECT_ADAPTERS.includes(this.name) &&
+                this.name !== id.split('.')[2]
+            ) {
+                for (const attr of obj.protectedNative) {
+                    delete obj.native[attr];
+                }
+            }
+        }
+        return tools.maybeCallbackWithError(callback, null, list);
     }
 
     // external signature
@@ -4465,8 +4468,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    subscribeObjects(pattern: string, callback?: ioBroker.ErrorCallback): void;
-    subscribeObjects(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    subscribeObjects(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
+    subscribeObjects(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Subscribe for the changes of objects in this instance.
@@ -4502,14 +4505,13 @@ export class AdapterClass extends EventEmitter {
         if (pattern === '*') {
             adapterObjects.subscribeUser(`${this.namespace}.*`, options, callback);
         } else {
-            // @ts-expect-error should fixId be able to handle array?
-            pattern = this._utils.fixId(pattern, true);
-            adapterObjects.subscribeUser(pattern as any, options, callback);
+            const fixedPattern = Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true);
+            adapterObjects.subscribeUser(fixedPattern, options, callback);
         }
     }
 
-    unsubscribeObjects(pattern: string, callback?: ioBroker.ErrorCallback): void;
-    unsubscribeObjects(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeObjects(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeObjects(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Unsubscribe on the changes of objects in this instance.
@@ -4545,9 +4547,8 @@ export class AdapterClass extends EventEmitter {
         if (pattern === '*') {
             adapterObjects.unsubscribeUser(`${this.namespace}.*`, options, callback);
         } else {
-            // @ts-expect-error should fixid be able to handle array?
-            pattern = this._utils.fixId(pattern, true);
-            adapterObjects.unsubscribeUser(pattern as string, options, callback);
+            const fixedPattern = Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true);
+            adapterObjects.unsubscribeUser(fixedPattern, options, callback);
         }
     }
 
@@ -5863,7 +5864,7 @@ export class AdapterClass extends EventEmitter {
         }
         if (typeof parentDevice === 'function') {
             callback = parentDevice;
-            parentDevice = null;
+            parentDevice = undefined;
         }
 
         if (options !== null && options !== undefined) {
@@ -5871,7 +5872,9 @@ export class AdapterClass extends EventEmitter {
         }
 
         Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(parentDevice, 'parentDevice');
+        if (parentDevice !== undefined) {
+            Utils.assertString(parentDevice, 'parentDevice');
+        }
 
         return this._getChannelsOf({ parentDevice, options, callback });
     }
@@ -6712,8 +6715,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    formatValue(value: number | string, format: any): string;
-    formatValue(value: number | string, decimals: number, format: any): string;
+    formatValue(value: number | string, format?: string): string;
+    formatValue(value: number | string, decimals: number, format?: string): string;
     formatValue(value: unknown, decimals: unknown, _format?: unknown): any {
         if (typeof decimals !== 'number') {
             _format = decimals;
@@ -6747,8 +6750,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    formatDate(dateObj: string | Date | number, format: string): string;
-    formatDate(dateObj: string | Date | number, isDuration: boolean | string, format: string): string;
+    formatDate(dateObj: string | Date | number, format?: string): string;
+    formatDate(dateObj: string | Date | number, isDuration: boolean | string, format?: string): string;
 
     formatDate(dateObj: unknown, isDuration: unknown, _format?: unknown): any {
         if ((typeof isDuration === 'string' && isDuration.toLowerCase() === 'duration') || isDuration === true) {
@@ -7463,13 +7466,15 @@ export class AdapterClass extends EventEmitter {
                 this.outputCount++;
                 return adapterStates.setState(
                     aliasId,
-                    tools.formatAliasValue(
-                        obj && obj.common,
-                        targetObj && (targetObj.common as any),
-                        stateObj as ioBroker.State,
-                        this._logger,
-                        this.namespaceLog
-                    ),
+                    tools.formatAliasValue({
+                        sourceCommon: obj?.common,
+                        targetCommon: targetObj?.common as any,
+                        state: stateObj as ioBroker.State,
+                        logger: this._logger,
+                        logNamespace: this.namespaceLog,
+                        sourceId: obj?._id,
+                        targetId: targetObj?._id
+                    }),
                     callback
                 );
             } else {
@@ -8209,13 +8214,15 @@ export class AdapterClass extends EventEmitter {
                     this.outputCount++;
                     adapterStates.setState(
                         aliasId,
-                        tools.formatAliasValue(
-                            obj && obj.common,
-                            targetObj && (targetObj.common as any),
+                        tools.formatAliasValue({
+                            sourceCommon: obj?.common,
+                            targetCommon: targetObj && (targetObj.common as any),
                             state,
-                            this._logger,
-                            this.namespaceLog
-                        ),
+                            logger: this._logger,
+                            logNamespace: this.namespaceLog,
+                            sourceId: obj?._id,
+                            targetId: targetObj?._id
+                        }),
                         callback
                     );
                 } else {
@@ -8288,13 +8295,15 @@ export class AdapterClass extends EventEmitter {
                             this.outputCount++;
                             adapterStates.setState(
                                 aliasId,
-                                tools.formatAliasValue(
-                                    obj.common!,
-                                    targetObj && (targetObj.common as any),
+                                tools.formatAliasValue({
+                                    sourceCommon: obj.common as ioBroker.StateCommon,
+                                    targetCommon: targetObj?.common as ioBroker.StateCommon | undefined,
                                     state,
-                                    this._logger,
-                                    this.namespaceLog
-                                ),
+                                    logger: this._logger,
+                                    logNamespace: this.namespaceLog,
+                                    sourceId: obj._id,
+                                    targetId: targetObj?._id
+                                }),
                                 callback
                             );
                         });
@@ -8644,13 +8653,15 @@ export class AdapterClass extends EventEmitter {
                         // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                         callback,
                         null,
-                        tools.formatAliasValue(
-                            sourceObj && (sourceObj.common as any),
-                            obj.common,
+                        tools.formatAliasValue({
+                            sourceCommon: sourceObj?.common,
+                            targetCommon: obj.common,
                             state,
-                            this._logger,
-                            this.namespaceLog
-                        )
+                            logger: this._logger,
+                            logNamespace: this.namespaceLog,
+                            sourceId: sourceObj?._id,
+                            targetId: obj._id
+                        })
                     );
                 }
             } else {
@@ -8953,8 +8964,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    getStates(pattern: string, callback: ioBroker.GetStatesCallback): void;
-    getStates(pattern: string, options: unknown, callback: ioBroker.GetStatesCallback): void;
+    getStates(pattern: Pattern, callback: ioBroker.GetStatesCallback): void;
+    getStates(pattern: Pattern, options: unknown, callback: ioBroker.GetStatesCallback): void;
 
     /**
      * Read all states of this adapter, that pass the pattern
@@ -8982,9 +8993,10 @@ export class AdapterClass extends EventEmitter {
             options = {};
         }
 
-        Utils.assertString(pattern, 'pattern');
+        Utils.assertPattern(pattern, 'pattern');
 
-        const fixedPattern = this._utils.fixId(pattern, true);
+        const fixedPattern = Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true);
+
         this.getForeignStates(fixedPattern, options, callback);
     }
 
@@ -9012,19 +9024,22 @@ export class AdapterClass extends EventEmitter {
                         result[obj._id] = { val: obj.common.alias.val, ts: Date.now(), q: 0 };
                     } else if (srcObjs![i]) {
                         result[obj._id] =
-                            tools.formatAliasValue(
+                            tools.formatAliasValue({
                                 // @ts-expect-error
-                                srcObjs[i].common,
-                                obj.common,
-                                arr![i] || null,
-                                this._logger,
-                                this.namespaceLog
-                            ) || null;
+                                sourceCommon: srcObjs[i].common,
+                                targetCommon: obj.common,
+                                state: arr![i] || null,
+                                logger: this._logger,
+                                logNamespace: this.namespaceLog,
+                                // @ts-expect-error
+                                sourceId: srcObjs[i]._id,
+                                targetId: obj._id
+                            }) || null;
                     } else {
                         result[obj._id || keys[i]] = arr![i] || null;
                     }
                 } else {
-                    result[(obj && obj._id) || keys[i]] = arr![i] || null;
+                    result[obj?._id || keys[i]] = arr![i] || null;
                 }
             }
             // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
@@ -9058,7 +9073,7 @@ export class AdapterClass extends EventEmitter {
             const srcIds: string[] = [];
             // replace aliases ID with targets
             targetObjs.forEach((obj, i) => {
-                if (obj && obj.common && obj.common.alias) {
+                if (obj?.common?.alias) {
                     // alias id can be string or can have attribute read (this is used by getStates -> so read is important)
                     const aliasId =
                         // @ts-expect-error
@@ -9081,8 +9096,8 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    getForeignStates(pattern: string | string[], callback: ioBroker.GetStatesCallback): void;
-    getForeignStates(pattern: string | string[], options: unknown, callback: ioBroker.GetStatesCallback): void;
+    getForeignStates(pattern: Pattern, callback: ioBroker.GetStatesCallback): void;
+    getForeignStates(pattern: Pattern, options: unknown, callback: ioBroker.GetStatesCallback): void;
 
     /**
      * Read all states of all adapters (and system states), that pass the pattern
@@ -9269,7 +9284,7 @@ export class AdapterClass extends EventEmitter {
                 alias: deepClone(aliasObj.common.alias),
                 id: aliasObj._id,
                 pattern,
-                type: aliasObj.common.type as string,
+                type: aliasObj.common.type,
                 max: aliasObj.common.max,
                 min: aliasObj.common.min,
                 unit: aliasObj.common.unit
@@ -9286,7 +9301,7 @@ export class AdapterClass extends EventEmitter {
                     return tools.maybeCallbackWithError(callback, e);
                 }
 
-                if (sourceObj && sourceObj.common) {
+                if (sourceObj?.common) {
                     if (!this.aliases.has(sourceObj._id)) {
                         // TODO what means this, we ensured alias existed, did some async stuff now it's gone -> alias has been deleted?
                         this._logger.error(
@@ -10890,15 +10905,19 @@ export class AdapterClass extends EventEmitter {
                     }
                 } else if (this.adapterReady && this.aliases.has(id)) {
                     // If adapter is ready and for this ID exist some alias links
-                    this.aliases.get(id)!.targets.forEach(target => {
+                    const alias = this.aliases.get(id);
+                    alias!.targets.forEach(target => {
+                        const source = alias!.source!;
                         const aState = state
-                            ? tools.formatAliasValue(
-                                  this.aliases.get(id)!.source!,
-                                  target,
-                                  deepClone(state),
-                                  this._logger,
-                                  this.namespaceLog
-                              )
+                            ? tools.formatAliasValue({
+                                  sourceCommon: source,
+                                  targetCommon: target,
+                                  state: deepClone(state),
+                                  logger: this._logger,
+                                  logNamespace: this.namespaceLog,
+                                  sourceId: id,
+                                  targetId: target.id
+                              })
                             : null;
                         // @ts-expect-error
                         const targetId = target.id.read === 'string' ? target.id.read : target.id;
@@ -11626,26 +11645,41 @@ export class AdapterClass extends EventEmitter {
 
                         this.oStates = _states;
                         this.subscribeStates('*');
+
                         if (this._firstConnection) {
                             this._firstConnection = false;
-                            typeof this._options.ready === 'function' && this._options.ready();
-                            this.emit('ready');
-                        } else {
-                            typeof this._options.reconnect === 'function' && this._options.reconnect();
-                            this.emit('reconnect');
+                            this._callReadyHandler();
                         }
+
                         this.adapterReady = true;
                     });
                 } else if (!this._stopInProgress) {
-                    typeof this._options.ready === 'function' && this._options.ready();
-                    this.emit('ready');
+                    this._callReadyHandler();
                     this.adapterReady = true;
-
-                    // todo remove it later, when the error is fixed
-                    adapterStates.subscribe(`${this.namespace}.checkLogging`);
                 }
             });
         });
+    }
+
+    /**
+     * Calls the ready handler, if it is an install run it calls the install handler instead
+     * @private
+     */
+    private _callReadyHandler(): void {
+        if (
+            this._config.isInstall &&
+            (typeof this._options.install === 'function' || this.listeners('install').length)
+        ) {
+            if (typeof this._options.install === 'function') {
+                this._options.install();
+            }
+            this.emit('install');
+        } else {
+            if (typeof this._options.ready === 'function') {
+                this._options.ready();
+            }
+            this.emit('ready');
+        }
     }
 
     private async _exceptionHandler(err: NodeJS.ErrnoException, isUnhandledRejection?: boolean) {

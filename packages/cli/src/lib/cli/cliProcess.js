@@ -41,7 +41,7 @@ module.exports = class CLIProcess extends CLICommand {
     }
 
     /**
-     * Restarts one or more adapters or the js-controller
+     * Restarts one or more instances or the js-controller
      * @param {any[]} args
      */
     restart(args) {
@@ -92,7 +92,8 @@ module.exports = class CLIProcess extends CLICommand {
     }
 
     /**
-     * Starts or stops a single adapter. If there are multiple instances this fails
+     * Starts or stops a single or all instances of adapter.
+     * If there are multiple instances all will be started/stopped/restarted
      * @param {string} adapter The adapter to start
      * @param {boolean} enabled
      * @param {boolean} [restartIfRunning=false] Whether running instances should be restarted
@@ -105,19 +106,13 @@ module.exports = class CLIProcess extends CLICommand {
             try {
                 // Enumerate all adapter instances
                 const adapterInstances = await enumInstances(objects, adapter);
-                // If there are multiple instances for this adapter, ask the user to specify which one
-                if (adapterInstances.length > 1) {
-                    CLI.error.specifyInstance(
-                        adapter,
-                        adapterInstances.map(obj => obj._id.substring('system.adapter.'.length))
-                    );
-                    return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
-                } else if (adapterInstances.length === 0) {
+                if (adapterInstances.length === 0) {
                     CLI.error.noInstancesFound(adapter);
                     return void callback(EXIT_CODES.UNKNOWN_ERROR);
                 }
-                const instance = adapterInstances[0];
-                await setInstanceEnabled(objects, instance, enabled, restartIfRunning);
+                for (const instance of adapterInstances) {
+                    await setInstanceEnabled(objects, instance, enabled, restartIfRunning);
+                }
                 return void callback();
             } catch (err) {
                 CLI.error.unknown(err.message);

@@ -1,6 +1,6 @@
 {
     "name": "@iobroker/db-states-jsonl",
-    "version": "5.0.0-alpha.0-20221219-9bd0ce3f",
+    "version": "5.0.0-alpha.0-20221231-0a61af83",
     "engines": {
         "node": ">=12.0.0"
     },
