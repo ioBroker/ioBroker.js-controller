@@ -7,7 +7,7 @@ import os from 'os';
 import fs from 'fs-extra';
 
 /** Command iobroker host ... */
-module.exports = class CLIHost extends CLICommand {
+export class CLIHost extends CLICommand {
     constructor(options: CLICommandOptions) {
         super(options);
     }
@@ -280,7 +280,7 @@ module.exports = class CLIHost extends CLICommand {
             }
         });
     }
-};
+}
 
 /**
  * Changes the host an instance is running on
