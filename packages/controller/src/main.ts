@@ -3,39 +3,58 @@
  *
  *      Controls Adapter-Processes
  *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>,
+ *      Copyright 2013-2023 bluefox <dogafox@gmail.com>,
  *                2013-2014 hobbyquaker <hq@ccu.io>
  *      MIT License
  *
  */
-'use strict';
 
-const schedule = require('node-schedule');
-const os = require('os');
-const fs = require('fs-extra');
-const path = require('path');
-const cp = require('child_process');
-const semver = require('semver');
-const restart = require('./lib/restart');
-const { tools: dbTools } = require('@iobroker/js-controller-common-db');
-const pidUsage = require('pidusage');
-const deepClone = require('deep-clone');
-const { isDeepStrictEqual, inspect } = require('util');
-const { tools, EXIT_CODES, logger: toolsLogger } = require('@iobroker/js-controller-common');
-const { PluginHandler } = require('@iobroker/plugin-base');
-const { NotificationHandler } = require('./lib/notificationHandler');
-const ioPackage = require(path.join(tools.getControllerDir(), 'io-package.json'));
+import schedule from 'node-schedule';
+import os from 'os';
+import fs from 'fs-extra';
+import path from 'path';
+import cp from 'child_process';
+import semver from 'semver';
+import restart from './lib/restart';
+import { tools as dbTools } from '@iobroker/js-controller-common-db';
+import pidUsage from 'pidusage';
+import deepClone from 'deep-clone';
+import { isDeepStrictEqual, inspect } from 'util';
+import { tools, EXIT_CODES, logger as toolsLogger } from '@iobroker/js-controller-common';
+import { PluginHandler } from '@iobroker/plugin-base';
+import { NotificationHandler } from './lib/notificationHandler';
+import type { Client as ObjectsClient } from '@iobroker/db-obects-redis';
+import type { Client as StatesClient } from '@iobroker/db-states-redis';
+import { setupUpload as Upload } from '@iobroker/js-controller-cli';
+import decache from 'decache';
+
+interface UploadTask {
+    adapter: string;
+    msg: ioBroker.Message;
+}
+
+interface InstallQueueEntry {
+    id: string;
+    rebuild?: boolean;
+}
+
+interface StopTimeoutObject {
+    timeout: NodeJS.Timeout | null;
+    callback: () => void | null;
+}
+
+const ioPackage = fs.readJSONSync(path.join(tools.getControllerDir(), 'io-package.json'));
 const version = ioPackage.common.version;
 const controllerVersions = {};
 
-let pluginHandler;
-let notificationHandler;
+let pluginHandler: InstanceType<typeof PluginHandler>;
+let notificationHandler: NotificationHandler;
 
 const exec = cp.exec;
 const spawn = cp.spawn;
 
-let zipFiles;
-let upload; // will be used only once by upload of adapter
+let zipFiles: any;
+let upload: InstanceType<typeof Upload>; // will be used only once by upload of adapter
 
 /* Use require('loadavg-windows') to enjoy os.loadavg() on Windows OS.
    Currently, Node.js on Windows platform does not implement os.loadavg() functionality - it returns [0,0,0]
@@ -47,11 +66,10 @@ if (os.platform() === 'win32') {
 
 let title = `${tools.appName}.js-controller`;
 
-let Objects;
-let States;
-let decache;
+let Objects: typeof ObjectsClient;
+let States: typeof StatesClient;
 
-let logger;
+let logger: ReturnType<typeof toolsLogger>;
 let isDaemon = false;
 let callbackId = 1;
 let callbacks = {};
@@ -60,59 +78,54 @@ const controllerDir = tools.getControllerDir();
 let hostObjectPrefix = `system.host.${hostname}`;
 let hostLogPrefix = `host.${hostname}`;
 const compactGroupObjectPrefix = '.compactgroup';
-const logList = [];
+const logList: string[] = [];
 let detectIpsCount = 0;
-let objectsDisconnectTimeout = null;
-let statesDisconnectTimeout = null;
-let connected = null; // not false, because want to detect first connection
+let objectsDisconnectTimeout: null | NodeJS.Timeout = null;
+let statesDisconnectTimeout: null | NodeJS.Timeout = null;
+let connected: null | boolean = null; // not false, because want to detect first connection
 let lastDiskSizeCheck = 0;
-let restartTimeout = null;
-let connectTimeout = null;
-let reportInterval = null;
-let primaryHostInterval = null;
+let restartTimeout: null | NodeJS.Timeout = null;
+let connectTimeout: null | NodeJS.Timeout = null;
+let reportInterval: null | NodeJS.Timeout = null;
+let primaryHostInterval: null | NodeJS.Timeout = null;
 let isPrimary = false;
-const PRIMARY_HOST_LOCK_TIME = 60000;
+const PRIMARY_HOST_LOCK_TIME = 60_000;
+const VENDOR_BOOTSTRAP_FILE = '/opt/iobroker/iob-vendor-secret.json';
+const VENDOR_FILE = '/etc/iob-vendor.json';
 
 const procs = {};
 const hostAdapter = {};
 const subscribe = {};
-const stopTimeouts = {};
-let states = null;
-let objects = null;
-let storeTimer = null;
-let mhTimer = null;
-let isStopping = null;
+const stopTimeouts: Record<string, StopTimeoutObject> = {};
+let states: StatesClient | null = null;
+let objects: ObjectsClient | null = null;
+let storeTimer: NodeJS.Timeout | null = null;
+let mhTimer: NodeJS.Timeout | null = null;
+let isStopping: null | number = null;
 let allInstancesStopped = true;
 let stopTimeout = 10000;
 let uncaughtExceptionCount = 0;
-let installQueue = [];
+let installQueue: InstallQueueEntry[] = [];
 let started = false;
 let inputCount = 0;
 let outputCount = 0;
-let eventLoopLags = [];
-let mhService = null; // multihost service
+let eventLoopLags: number[] = [];
+let mhService: any = null; // multihost service
 const uptimeStart = Date.now();
 let compactGroupController = false;
-let compactGroup = null;
+let compactGroup: null | number = null;
 const compactProcs = {};
 const scheduledInstances = {};
-const VENDOR_BOOTSTRAP_FILE = '/opt/iobroker/iob-vendor-secret.json';
-const VENDOR_FILE = '/etc/iob-vendor.json';
-let updateIPsTimer = null;
-let lastDiagSend = null;
 
-const uploadTasks = [];
+let updateIPsTimer: NodeJS.Timeout | null = null;
+let lastDiagSend: null | number = null;
+
+const uploadTasks: UploadTask[] = [];
 
 const config = getConfig();
 
-function getErrorText(code) {
-    const texts = Object.keys(EXIT_CODES);
-    for (let i = 0; i < texts.length; i++) {
-        if (EXIT_CODES[texts[i]] === code) {
-            return texts[i];
-        }
-    }
-    return code;
+function getErrorText(code: number): string {
+    return EXIT_CODES[code];
 }
 
 /**
@@ -147,7 +160,7 @@ function getConfig() {
     }
 }
 
-function _startMultihost(_config, secret) {
+function _startMultihost(_config: Record<string, any>, secret: string) {
     const MHService = require('./lib/multihostServer.js');
     const cpus = os.cpus();
     mhService = new MHService(
@@ -170,10 +183,9 @@ function _startMultihost(_config, secret) {
 /**
  * Starts or stops the multihost discovery server, depending on the config and temp information
  *
- * @param {object} __config - the iobroker config object
- * @returns {boolean|void}
+ * @param __config - the iobroker config object
  */
-async function startMultihost(__config) {
+async function startMultihost(__config: Record<string, any>): Promise<boolean | void> {
     if (compactGroupController) {
         return;
     }
@@ -216,7 +228,7 @@ async function startMultihost(__config) {
             if (typeof _config.multihostService.password === 'string' && _config.multihostService.password.length) {
                 let obj, errText;
                 try {
-                    obj = await objects.getObjectAsync('system.config');
+                    obj = await objects!.getObjectAsync('system.config');
                 } catch (e) {
                     // will log error below
                     errText = e.message;
@@ -226,7 +238,7 @@ async function startMultihost(__config) {
                     if (!_config.multihostService.password.startsWith(`$/aes-192-cbc:`)) {
                         // if old encryption was used, we need to decrypt in old fashion
                         tools.decryptPhrase(obj.native.secret, _config.multihostService.password, secret =>
-                            _startMultihost(_config, secret)
+                            _startMultihost(_config, secret!)
                         );
                     } else {
                         try {
@@ -689,7 +701,7 @@ function createObjects(onConnect) {
                         procs[id].config.common.mode === 'subscribe'
                     ) {
                         procs[id].restartExpected = true;
-                        stopInstance(id, async () => {
+                        stopInstance(id, false, async () => {
                             if (!procs[id]) {
                                 return;
                             }
@@ -889,7 +901,7 @@ function startAliveInterval() {
     reportInterval = setInterval(reportStatus, config.system.statisticsInterval);
 
     reportStatus();
-    tools.measureEventLoopLag(1000, lag => eventLoopLags.push(lag));
+    tools.measureEventLoopLag(1000, lag => eventLoopLags.push(lag!));
 }
 
 /**
@@ -951,7 +963,7 @@ function reportStatus() {
                 states.setState(`${id}.cpu`, {
                     ack: true,
                     from: id,
-                    val: Math.round(100 * parseFloat(stats.cpu)) / 100
+                    val: Math.round(100 * stats.cpu) / 100
                 });
                 states.setState(`${id}.cputime`, { ack: true, from: id, val: stats.ctime / 1000 });
                 outputCount += 2;
@@ -1010,16 +1022,16 @@ function reportStatus() {
         lastDiskSizeCheck = Date.now();
         tools.getDiskInfo(os.platform(), (err, info) => {
             if (err) {
-                logger.error(`${hostLogPrefix} Cannot read disk size: ${err}`);
+                logger.error(`${hostLogPrefix} Cannot read disk size: ${err.message}`);
             }
             try {
                 if (info) {
-                    states.setState(`${id}.diskSize`, {
+                    states!.setState(`${id}.diskSize`, {
                         val: Math.round((info['Disk size'] || 0) / (1024 * 1024)),
                         ack: true,
                         from: id
                     });
-                    states.setState(`${id}.diskFree`, {
+                    states!.setState(`${id}.diskFree`, {
                         val: Math.round((info['Disk free'] || 0) / (1024 * 1024)),
                         ack: true,
                         from: id
@@ -2241,10 +2253,9 @@ async function startAdapterUpload() {
     }
 
     if (!upload) {
-        const Upload = require('@iobroker/js-controller-cli').setupUpload;
         upload = new Upload({
-            states: states,
-            objects: objects
+            states: states!,
+            objects: objects!
         });
     }
 
@@ -2252,9 +2263,9 @@ async function startAdapterUpload() {
 
     const logger = msg.from
         ? {
-              log: text => states.pushMessage(msg.from, { command: 'log', text, from: 'system.host.' + hostname }),
-              warn: text => states.pushMessage(msg.from, { command: 'warn', text, from: 'system.host.' + hostname }),
-              error: text => states.pushMessage(msg.from, { command: 'error', text, from: 'system.host.' + hostname })
+              log: text => states!.pushMessage(msg.from, { command: 'log', text, from: `system.host.${hostname}` }),
+              warn: text => states!.pushMessage(msg.from, { command: 'warn', text, from: `system.host.${hostname}` }),
+              error: text => states!.pushMessage(msg.from, { command: 'error', text, from: `system.host.${hostname}` })
           }
         : null;
 
@@ -3229,7 +3240,7 @@ function restartInstances(instances, cb) {
         logger.info(
             `${hostLogPrefix} instance "${id}" restarted because the "let's encrypt" certificates were updated`
         );
-        stopInstance(id, () => {
+        stopInstance(id, false, () => {
             startInstance(id);
             setTimeout(() => restartInstances(instances, cb), 3000);
         });
@@ -3409,7 +3420,7 @@ function initInstances() {
             }
         } else if (procs[id].process) {
             // stop instance if disabled
-            stopInstance(id);
+            stopInstance(id, false);
         }
     }
 
@@ -4141,13 +4152,13 @@ async function startInstance(id, wakeUp) {
                 // Exit Handler for normal Adapters started as own processes
                 const exitHandler = (code, signal) => {
                     outputCount += 2;
-                    states.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
-                    states.setState(`${id}.connected`, { val: false, ack: true, from: hostObjectPrefix });
+                    states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
+                    states!.setState(`${id}.connected`, { val: false, ack: true, from: hostObjectPrefix });
 
                     // if we have waiting kill timeouts from stopInstance clear them
                     // and call callback because process ended now
-                    if (stopTimeouts[id] && stopTimeouts[id].timeout) {
-                        clearTimeout(stopTimeouts[id].timeout);
+                    if (stopTimeouts[id]?.timeout) {
+                        clearTimeout(stopTimeouts[id].timeout!);
                         stopTimeouts[id].timeout = null;
                         if (stopTimeouts[id].callback && typeof stopTimeouts[id].callback === 'function') {
                             stopTimeouts[id].callback();
@@ -4530,7 +4541,6 @@ async function startInstance(id, wakeUp) {
                                     : 'info';
                             if (adapterMainFile) {
                                 try {
-                                    decache = decache || require('decache');
                                     decache(adapterMainFile);
 
                                     // Prior to requiring the main file make sure that the esbuild require hook was loaded
@@ -4891,11 +4901,7 @@ async function startInstance(id, wakeUp) {
     }
 }
 
-function stopInstance(id, force, callback) {
-    if (typeof force === 'function') {
-        callback = force;
-        force = false;
-    }
+function stopInstance(id: string, force: boolean, callback?: () => void): void {
     logger.info(
         `${hostLogPrefix} stopInstance ${id} (force=${force}, process=${procs[id].process ? 'true' : 'false'})`
     );
@@ -5041,7 +5047,7 @@ function stopInstance(id, force, callback) {
                         }
                     }, timeoutDuration);
                 } else if (!procs[id].startedAsCompactGroup) {
-                    states.setState(`${id}.sigKill`, { val: -1, ack: false, from: hostObjectPrefix }, err => {
+                    states!.setState(`${id}.sigKill`, { val: -1, ack: false, from: hostObjectPrefix }, err => {
                         // send kill signal
                         logger.info(`${hostLogPrefix} stopInstance ${instance._id} send kill signal`);
                         if (!err) {
@@ -5148,7 +5154,7 @@ function stopInstance(id, force, callback) {
     }
 }
 
-function stopInstances(forceStop, callback) {
+function stopInstances(forceStop: boolean, callback: (wasForced: boolean) => void) {
     let maxTimeout;
     let waitTimeout;
     function waitForInstances() {
@@ -5221,10 +5227,10 @@ function stopInstances(forceStop, callback) {
 /**
  * Stops the js-controller and all running adapter instances, if no cb provided pids.txt will be deleted and process exit will be called
  *
- * @param {boolean} force kills instances under all circumstances
- * @param {function} [callback] callback function
+ * @param force kills instances under all circumstances
+ * @param callback callback function
  */
-function stop(force, callback) {
+function stop(force?: boolean, callback?: () => void) {
     if (force === undefined) {
         force = false;
     }
@@ -5402,11 +5408,11 @@ function init(compactGroupId) {
             // persist the config to be fixed permanently
             const configFile = tools.getConfigFileName();
             const fixedLogPath = 'log/iobroker';
-            _config.log.transport['file1'].filename = fixedLogPath;
+            _config.log.transport.file1.filename = fixedLogPath;
             fs.writeFileSync(configFile, JSON.stringify(_config, null, 2));
 
             // fix this run
-            config.log.transport['file1'].filename = fixedLogPath;
+            config.log.transport.file1.filename = fixedLogPath;
             logger = toolsLogger.logger(config.log);
 
             logger.warn(

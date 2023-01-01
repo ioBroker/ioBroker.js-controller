@@ -3,15 +3,11 @@
  * @author bluefox
  * @version 0.1
  */
-'use strict';
 
-/** @module restart */
-// const fs    = require('fs-extra');
-// const tools = require('./tools.js');
-const { spawn } = require('child_process');
-const os = require('os');
+import { spawn } from 'child_process';
+import os from 'os';
 
-function restart(callback) {
+export default function restart(callback?: () => void): void {
     let cmd;
     let args;
     if (os.platform() === 'win32') {
@@ -37,8 +33,6 @@ function restart(callback) {
     }
 }
 
-if (require.main !== module) {
-    module.exports = restart;
-} else {
+if (require.main === module) {
     restart();
 }
