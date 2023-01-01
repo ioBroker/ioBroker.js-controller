@@ -2276,6 +2276,11 @@ export class AdapterClass extends EventEmitter {
                 this._logger.error(
                     `${this.namespaceLog} Cannot configure secure web server, because no certificates found: ${options.publicName}, ${options.privateName}, ${options.chainedName}`
                 );
+                if (options.publicName === 'defaultPublic' || options.privateName === 'defaultPrivate') {
+                    this._logger.info(
+                        `${this.namespaceLog} Default certificates seem to be configured but missing. You can execute "iobroker cert create" in your shell to create these.`
+                    );
+                }
                 // @ts-expect-error
                 return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_NOT_FOUND);
             } else {
