@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:79](https://github.com/ioBroker/ioBroker.js-controller/blob/0a61af83/packages/adapter/src/lib/_Types.ts#L79)
+[adapter/src/lib/_Types.ts:79](https://github.com/ioBroker/ioBroker.js-controller/blob/f8686615/packages/adapter/src/lib/_Types.ts#L79)
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:80](https://github.com/ioBroker/ioBroker.js-controller/blob/0a61af83/packages/adapter/src/lib/_Types.ts#L80)
+[adapter/src/lib/_Types.ts:80](https://github.com/ioBroker/ioBroker.js-controller/blob/f8686615/packages/adapter/src/lib/_Types.ts#L80)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:83](https://github.com/ioBroker/ioBroker.js-controller/blob/0a61af83/packages/adapter/src/lib/_Types.ts#L83)
+[adapter/src/lib/_Types.ts:83](https://github.com/ioBroker/ioBroker.js-controller/blob/f8686615/packages/adapter/src/lib/_Types.ts#L83)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:84](https://github.com/ioBroker/ioBroker.js-controller/blob/0a61af83/packages/adapter/src/lib/_Types.ts#L84)
+[adapter/src/lib/_Types.ts:84](https://github.com/ioBroker/ioBroker.js-controller/blob/f8686615/packages/adapter/src/lib/_Types.ts#L84)
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:81](https://github.com/ioBroker/ioBroker.js-controller/blob/0a61af83/packages/adapter/src/lib/_Types.ts#L81)
+[adapter/src/lib/_Types.ts:81](https://github.com/ioBroker/ioBroker.js-controller/blob/f8686615/packages/adapter/src/lib/_Types.ts#L81)
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:82](https://github.com/ioBroker/ioBroker.js-controller/blob/0a61af83/packages/adapter/src/lib/_Types.ts#L82)
+[adapter/src/lib/_Types.ts:82](https://github.com/ioBroker/ioBroker.js-controller/blob/f8686615/packages/adapter/src/lib/_Types.ts#L82)
 
 ___
 
@@ -84,4 +84,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:85](https://github.com/ioBroker/ioBroker.js-controller/blob/0a61af83/packages/adapter/src/lib/_Types.ts#L85)
+[adapter/src/lib/_Types.ts:85](https://github.com/ioBroker/ioBroker.js-controller/blob/f8686615/packages/adapter/src/lib/_Types.ts#L85)
