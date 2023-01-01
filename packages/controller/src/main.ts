@@ -23,7 +23,7 @@ import { isDeepStrictEqual, inspect } from 'util';
 import { tools, EXIT_CODES, logger as toolsLogger } from '@iobroker/js-controller-common';
 import { PluginHandler } from '@iobroker/plugin-base';
 import { NotificationHandler } from './lib/notificationHandler';
-import type { Client as ObjectsClient } from '@iobroker/db-obects-redis';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { setupUpload as Upload } from '@iobroker/js-controller-cli';
 import decache from 'decache';
@@ -93,9 +93,10 @@ const PRIMARY_HOST_LOCK_TIME = 60_000;
 const VENDOR_BOOTSTRAP_FILE = '/opt/iobroker/iob-vendor-secret.json';
 const VENDOR_FILE = '/etc/iob-vendor.json';
 
-const procs = {};
+// TODO type is probably InstanceCommon
+const procs: Record<string, any> = {};
 const hostAdapter = {};
-const subscribe = {};
+const subscribe: Record<string, string[]> = {};
 const stopTimeouts: Record<string, StopTimeoutObject> = {};
 let states: StatesClient | null = null;
 let objects: ObjectsClient | null = null;
@@ -103,7 +104,7 @@ let storeTimer: NodeJS.Timeout | null = null;
 let mhTimer: NodeJS.Timeout | null = null;
 let isStopping: null | number = null;
 let allInstancesStopped = true;
-let stopTimeout = 10000;
+let stopTimeout = 10_000;
 let uncaughtExceptionCount = 0;
 let installQueue: InstallQueueEntry[] = [];
 let started = false;
@@ -160,7 +161,7 @@ function getConfig() {
     }
 }
 
-function _startMultihost(_config: Record<string, any>, secret: string) {
+function _startMultihost(_config: Record<string, any>, secret: string | false) {
     const MHService = require('./lib/multihostServer.js');
     const cpus = os.cpus();
     mhService = new MHService(
@@ -306,19 +307,19 @@ async function startMultihost(__config: Record<string, any>): Promise<boolean | 
 function startUpdateIPs() {
     if (!updateIPsTimer) {
         updateIPsTimer = setInterval(() => {
-            if (Date.now() - uptimeStart > 5 * 60000) {
+            if (Date.now() - uptimeStart > 5 * 60_000) {
                 // 5 minutes at start check every 30 seconds because of DHCP
-                clearInterval(updateIPsTimer);
+                clearInterval(updateIPsTimer!);
 
-                updateIPsTimer = setInterval(() => setIPs(), 3600000); // update IPs every hour
+                updateIPsTimer = setInterval(() => setIPs(), 3_600_000); // update IPs every hour
             }
             setIPs();
-        }, 30000);
+        }, 30_000);
     }
 }
 
 // subscribe or unsubscribe loggers
-function logRedirect(isActive, id, reason) {
+function logRedirect(isActive: boolean, id: string, reason: string): void {
     console.log(`================================== > LOG REDIRECT ${id} => ${isActive} [${reason}]`);
     if (isActive) {
         if (!logList.includes(id)) {
@@ -354,12 +355,12 @@ function handleDisconnect() {
             restartTimeout = setTimeout(() => {
                 processMessage({ command: 'cmdExec', message: { data: '_restart' } });
                 setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
-            }, 10000);
+            }, 10_000);
         });
     }
 }
 
-function createStates(onConnect) {
+function createStates(onConnect: () => void) {
     states = new States({
         namespace: hostLogPrefix,
         connection: config.states,
@@ -372,7 +373,7 @@ function createStates(onConnect) {
             }
             // If some log transporter activated or deactivated
             if (id.endsWith('.logging')) {
-                logRedirect(state ? state.val : false, id.substring(0, id.length - '.logging'.length), id);
+                logRedirect(state ? (state.val as boolean) : false, id.substring(0, id.length - '.logging'.length), id);
             } else if (!compactGroupController && id === `messagebox.${hostObjectPrefix}`) {
                 // If this is messagebox, only the main controller is handling the host messages
                 const obj = state;
@@ -406,9 +407,9 @@ function createStates(onConnect) {
                 // If this system.adapter.NAME.0.alive, only main controller is handling this
                 if (state && !state.ack) {
                     const enabled = state.val;
-                    objects.getObject(id.substring(0, id.length - 6 /*'.alive'.length*/), (err, obj) => {
+                    objects!.getObject(id.substring(0, id.length - 6 /*'.alive'.length*/), (err, obj) => {
                         if (err) {
-                            logger.error(`${hostLogPrefix} Cannot read object: ${err}`);
+                            logger.error(`${hostLogPrefix} Cannot read object: ${err.message}`);
                         }
                         if (obj && obj.common) {
                             // IF adapter enabled => disable it
@@ -421,10 +422,10 @@ function createStates(onConnect) {
                                 );
                                 obj.from = hostObjectPrefix;
                                 obj.ts = Date.now();
-                                objects.setObject(
+                                objects!.setObject(
                                     obj._id,
                                     obj,
-                                    err => err && logger.error(`${hostLogPrefix} Cannot set object: ${err}`)
+                                    err => err && logger.error(`${hostLogPrefix} Cannot set object: ${err.message}`)
                                 );
                             }
                         }
@@ -448,15 +449,16 @@ function createStates(onConnect) {
                 if (
                     state.val &&
                     state.val !== currentLevel &&
-                    ['silly', 'debug', 'info', 'warn', 'error'].includes(state.val)
+                    ['silly', 'debug', 'info', 'warn', 'error'].includes(state.val as string)
                 ) {
                     config.log.level = state.val;
-                    for (const transport of Object.keys(logger.transports)) {
+                    for (const transport in logger.transports) {
                         if (
                             logger.transports[transport].level === currentLevel &&
+                            // @ts-expect-error its our custom property
                             !logger.transports[transport]._defaultConfigLoglevel
                         ) {
-                            logger.transports[transport].level = state.val;
+                            logger.transports[transport].level = state.val as string;
                         }
                     }
                     logger.info(`${hostLogPrefix} Loglevel changed from "${currentLevel}" to "${state.val}"`);
@@ -464,7 +466,7 @@ function createStates(onConnect) {
                 } else if (state.val && state.val !== currentLevel) {
                     logger.info(`${hostLogPrefix} Got invalid loglevel "${state.val}", ignoring`);
                 }
-                states.setState(`${hostObjectPrefix}.logLevel`, {
+                states!.setState(`${hostObjectPrefix}.logLevel`, {
                     val: currentLevel,
                     ack: true,
                     from: hostObjectPrefix
@@ -474,7 +476,7 @@ function createStates(onConnect) {
                     return;
                 }
                 const pluginStatesIndex = `${hostObjectPrefix}.plugins.`.length;
-                let nameEndIndex = id.indexOf('.', pluginStatesIndex + 1);
+                let nameEndIndex: number | undefined = id.indexOf('.', pluginStatesIndex + 1);
                 if (nameEndIndex === -1) {
                     nameEndIndex = undefined;
                 }
@@ -487,7 +489,7 @@ function createStates(onConnect) {
                         if (!pluginHandler.isPluginInstanciated(pluginName)) {
                             pluginHandler.instanciatePlugin(
                                 pluginName,
-                                pluginHandler.getPluginConfig(pluginName),
+                                pluginHandler.getPluginConfig(pluginName)!,
                                 controllerDir
                             );
                             pluginHandler.setDatabaseForPlugin(pluginName, objects, states);
@@ -510,7 +512,6 @@ function createStates(onConnect) {
             }
             // logs and cleanups are only handled by the main controller process
             if (!compactGroupController) {
-                states.clearAllLogs && states.clearAllLogs();
                 deleteAllZipPackages();
             }
             initMessageQueue();
@@ -569,7 +570,7 @@ async function initializeController() {
         if (!isStopping) {
             pluginHandler.setDatabaseForPlugins(objects, states);
             pluginHandler.initPlugins(ioPackage, () => {
-                states.subscribe(`${hostObjectPrefix}.plugins.*`);
+                states!.subscribe(`${hostObjectPrefix}.plugins.*`);
 
                 // Do not start if we still stopping the instances
                 checkHost(() => {
@@ -592,7 +593,7 @@ async function initializeController() {
 }
 
 // create "objects" object
-function createObjects(onConnect) {
+function createObjects(onConnect: () => void) {
     objects = new Objects({
         namespace: hostLogPrefix,
         connection: config.objects,
@@ -608,7 +609,7 @@ function createObjects(onConnect) {
 
             // subscribe to primary host expiration
             try {
-                await objects.subscribePrimaryHost();
+                await objects!.subscribePrimaryHost();
             } catch (e) {
                 logger.error(`${hostLogPrefix} Cannot subscribe to primary host expiration: ${e.message}`);
             }
@@ -1451,7 +1452,7 @@ async function collectDiagInfo(type) {
 }
 
 // check if some IPv4 address found. If not try in 30 seconds one more time (max 10 times)
-function setIPs(ipList) {
+function setIPs(ipList?: string[]) {
     if (isStopping) {
         return;
     }
@@ -1469,10 +1470,10 @@ function setIPs(ipList) {
     // IPv4 address still not found, try again in 30 seconds
     if (!found && detectIpsCount < 10) {
         detectIpsCount++;
-        setTimeout(() => setIPs(), 30000);
+        setTimeout(() => setIPs(), 30_000);
     } else if (found) {
         // IPv4 found => write to object
-        objects.getObject('system.host.' + hostname, (err, oldObj) => {
+        objects!.getObject(`system.host.${hostname}`, (err, oldObj) => {
             const networkInterfaces = os.networkInterfaces();
 
             if (
@@ -1505,10 +1506,9 @@ function setIPs(ipList) {
 
 /**
  * Extends objects, optionally you can provide a state at each task (does not throw)
- * @param {Record<string, any>[]} tasks
- * @returns {Promise<void>}
+ * @param tasks
  */
-async function extendObjects(tasks) {
+async function extendObjects(tasks: Record<string, any>[]): Promise<void> {
     for (const task of tasks) {
         const state = task.state;
         if (state !== undefined) {
@@ -1519,7 +1519,7 @@ async function extendObjects(tasks) {
             await objects.extendObjectAsync(task._id, task);
             // if extend throws we don't want to set corresponding state
             if (state) {
-                await states.setStateAsync(task._id, state);
+                await states!.setStateAsync(task._id, state);
             }
         } catch {
             // ignore
@@ -1530,7 +1530,7 @@ async function extendObjects(tasks) {
 function setMeta() {
     const id = hostObjectPrefix;
 
-    objects.getObject(id, (err, oldObj) => {
+    objects!.getObject(id, (err, oldObj) => {
         let newObj;
         if (compactGroupController) {
             newObj = {
@@ -2241,10 +2241,10 @@ function _deleteAllZipPackages(list, cb) {
  This function deletes all ZIP packages that were not downloaded.
  ZIP Package is temporary file, that should be deleted straight after it downloaded and if it still exists, so clear it
 
- @param {function} cb optional callback
+ @param cb optional callback
  */
-function deleteAllZipPackages(cb) {
-    states.getKeys(hostObjectPrefix + '.zip.*', (err, list) => _deleteAllZipPackages(list, cb));
+function deleteAllZipPackages(cb?: () => void): void {
+    states!.getKeys(hostObjectPrefix + '.zip.*', (err, list) => _deleteAllZipPackages(list, cb));
 }
 
 async function startAdapterUpload() {
