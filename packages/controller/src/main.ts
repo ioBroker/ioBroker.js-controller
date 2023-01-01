@@ -36,6 +36,14 @@ interface UploadTask {
 interface InstallQueueEntry {
     id: string;
     rebuild?: boolean;
+    disabled?: boolean;
+    version?: string;
+    installedFrom?: string;
+}
+
+interface CompactProcess {
+    /** instances in this compact group */
+    instances: string[];
 }
 
 interface StopTimeoutObject {
@@ -95,7 +103,8 @@ const VENDOR_FILE = '/etc/iob-vendor.json';
 
 // TODO type is probably InstanceCommon
 const procs: Record<string, any> = {};
-const hostAdapter = {};
+// TODO type is probably InstanceCommon
+const hostAdapter: Record<string, any> = {};
 const subscribe: Record<string, string[]> = {};
 const stopTimeouts: Record<string, StopTimeoutObject> = {};
 let states: StatesClient | null = null;
@@ -115,7 +124,7 @@ let mhService: any = null; // multihost service
 const uptimeStart = Date.now();
 let compactGroupController = false;
 let compactGroup: null | number = null;
-const compactProcs = {};
+const compactProcs: Record<string, CompactProcess> = {};
 const scheduledInstances = {};
 
 let updateIPsTimer: NodeJS.Timeout | null = null;
@@ -162,6 +171,7 @@ function getConfig() {
 }
 
 function _startMultihost(_config: Record<string, any>, secret: string | false) {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const MHService = require('./lib/multihostServer.js');
     const cpus = os.cpus();
     mhService = new MHService(
@@ -3344,14 +3354,15 @@ function instanceRelevantForThisController(instance, _ipArr) {
 
 /**
  * Check if an instance is handled by this host process and initialize internal data structures
- * @param instance name of the instance
+ * @param instance instance object
  * @param ipArr IP-Array from this host
- * @returns {boolean} instance needs to be handled by this host (true) or not
+ * @returns true if instance needs to be handled by this host (true) or not
  */
-function checkAndAddInstance(instance, ipArr) {
+function checkAndAddInstance(instance: ioBroker.InstanceObject, ipArr: string[]): boolean {
     if (!ipArr.includes(instance.common.host) && instance.common.host && instance.common.host !== hostname) {
         return false;
     }
+    // @ts-expect-error todo who does this? legacy or still needed?
     if (instance.deleted) {
         return false;
     }
@@ -3359,7 +3370,7 @@ function checkAndAddInstance(instance, ipArr) {
     // update host name to current host if host name is empty
     if (!instance.common.host) {
         instance.common.host = hostname;
-        objects.setObject(instance._id, instance, err =>
+        objects!.setObject(instance._id, instance, err =>
             err
                 ? logger.error(`${hostLogPrefix} Cannot update hostname for ${instance._id}: ${err.message}`)
                 : logger.info(`${hostLogPrefix} Set hostname ${hostname} for ${instance._id}`)
@@ -3374,8 +3385,12 @@ function checkAndAddInstance(instance, ipArr) {
     if (!instanceRelevantForThisController(instance, ipArr)) {
         return false;
     }
+
+    // @ts-expect-error we need types if this can exist
     if (config.system.compact && instance.common.compact) {
+        // @ts-expect-error we need types if this can exist
         if (instance.common.runAsCompactMode) {
+            // @ts-expect-error we need types if this can exist
             compactProcs[instance.common.compactGroup] = compactProcs[instance.common.compactGroup] || {
                 instances: []
             };
@@ -3918,11 +3933,10 @@ function startScheduledInstance(callback) {
 
 /**
  * Start given instance
- * @param {string} id - id of instance, like 'system.adapter.hm-rpc.0'
- * @param {boolean} wakeUp
- * @returns {Promise<void>}
+ * @param id - id of instance, like 'system.adapter.hm-rpc.0'
+ * @param wakeUp
  */
-async function startInstance(id, wakeUp) {
+async function startInstance(id: string, wakeUp = false): Promise<void> {
     if (isStopping || !connected) {
         return;
     }
