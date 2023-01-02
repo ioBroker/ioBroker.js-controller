@@ -206,7 +206,7 @@ declare global {
             ca: Array<string | Buffer>;
         }
 
-        type MessagePayload = string | Record<string, any>;
+        type MessagePayload = any;
 
         /** Callback information for a passed message */
         interface MessageCallbackInfo {

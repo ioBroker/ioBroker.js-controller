@@ -1464,7 +1464,7 @@ export class StateRedisClient {
 
     async delBinaryState(
         id: string,
-        callback: (err: Error | undefined | null, id?: string) => void
+        callback?: (err: Error | undefined | null, id?: string) => void
     ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);

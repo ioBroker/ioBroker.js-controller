@@ -4732,10 +4732,10 @@ export class ObjectsInRedisClient {
     extendObjectAsync(
         id: string,
         obj: Partial<ioBroker.AnyObject>,
-        options: ioBroker.ExtendObjectOptions
+        options?: ioBroker.ExtendObjectOptions
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.ExtendObjectCallback>> {
         return new Promise((resolve, reject) =>
-            this.extendObject(id, obj, options, (err, res) => (err ? reject(err) : resolve(res)))
+            this.extendObject(id, obj, options || null, (err, res) => (err ? reject(err) : resolve(res)))
         );
     }
 

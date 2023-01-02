@@ -28,6 +28,10 @@ import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { setupUpload as Upload } from '@iobroker/js-controller-cli';
 import decache from 'decache';
 
+type TaskObject = ioBroker.SettableObject & { state?: ioBroker.SettableState };
+
+type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
+
 interface UploadTask {
     adapter: string;
     msg: ioBroker.Message;
@@ -39,6 +43,7 @@ interface InstallQueueEntry {
     disabled?: boolean;
     version?: string;
     installedFrom?: string;
+    wakeUp?: boolean;
 }
 
 interface CompactProcess {
@@ -53,7 +58,8 @@ interface StopTimeoutObject {
 
 const ioPackage = fs.readJSONSync(path.join(tools.getControllerDir(), 'io-package.json'));
 const version = ioPackage.common.version;
-const controllerVersions = {};
+/** controller versions of multihost environments */
+const controllerVersions: Record<string, string> = {};
 
 let pluginHandler: InstanceType<typeof PluginHandler>;
 let notificationHandler: NotificationHandler;
@@ -80,7 +86,7 @@ let States: typeof StatesClient;
 let logger: ReturnType<typeof toolsLogger>;
 let isDaemon = false;
 let callbackId = 1;
-let callbacks = {};
+const callbacks: Record<string, { cb: () => void }> = {};
 const hostname = tools.getHostName();
 const controllerDir = tools.getControllerDir();
 let hostObjectPrefix = `system.host.${hostname}`;
@@ -819,7 +825,7 @@ function createObjects(onConnect: () => void) {
                         // if we are a already a multihost make the version check else restart in all cases
                         if (Object.keys(controllerVersions).length > 1) {
                             if (semver.lt(obj.common.installedVersion, '4.0.0')) {
-                                for (const controllerVersion of controllerVersions) {
+                                for (const controllerVersion of Object.values(controllerVersions)) {
                                     if (semver.lt(controllerVersion, '4.0.0')) {
                                         // there was another host < 4 so no restart required
                                         restartRequired = false;
@@ -828,7 +834,7 @@ function createObjects(onConnect: () => void) {
                                 }
                             } else {
                                 // version is greater equal 4
-                                for (const controllerVersion of controllerVersions) {
+                                for (const controllerVersion of Object.values(controllerVersions)) {
                                     if (semver.gte(controllerVersion, '4.0.0')) {
                                         // there was already another host greater equal 4 -> no restart needed
                                         restartRequired = false;
@@ -838,7 +844,7 @@ function createObjects(onConnect: () => void) {
                             }
                         } else {
                             // change from single to multihost - deactivate sets asap but also restart
-                            await objects.deactivateSets();
+                            await objects!.deactivateSets();
                         }
 
                         if (restartRequired) {
@@ -854,7 +860,7 @@ function createObjects(onConnect: () => void) {
                     // host object deleted
                     if (delVersion && semver.lt(delVersion, '4.0.0')) {
                         // check if the only below 4 host has been deleted, then we need restart
-                        for (const version of Object.entries(controllerVersions)) {
+                        for (const version of Object.values(controllerVersions)) {
                             if (semver.lt(version, '4.0.0')) {
                                 // another version below 4, so still need old protocol
                                 return;
@@ -903,7 +909,7 @@ function startAliveInterval() {
         config.system.checkDiskInterval !== 0 ? parseInt(config.system.checkDiskInterval, 10) || 300000 : 0;
     if (!compactGroupController) {
         // Provide info to see for each host if compact is enabled or not and be able to use in Admin or such
-        states.setState(`${hostObjectPrefix}.compactModeEnabled`, {
+        states!.setState(`${hostObjectPrefix}.compactModeEnabled`, {
             ack: true,
             from: hostObjectPrefix,
             val: config.system.compact || false
@@ -929,12 +935,12 @@ async function checkPrimaryHost() {
     // let our host value live PRIMARY_HOST_LOCK_TIME seconds, while it should be renewed lock time / 2
     try {
         if (!isPrimary) {
-            isPrimary = !!(await objects.setPrimaryHost(PRIMARY_HOST_LOCK_TIME));
+            isPrimary = !!(await objects!.setPrimaryHost(PRIMARY_HOST_LOCK_TIME));
         } else {
-            const lockExtended = !!(await objects.extendPrimaryHostLock(PRIMARY_HOST_LOCK_TIME));
+            const lockExtended = !!(await objects!.extendPrimaryHostLock(PRIMARY_HOST_LOCK_TIME));
             if (!lockExtended) {
                 // if we are host, lock extension should always work, fallback to acquire lock
-                isPrimary = !!(await objects.setPrimaryHost(PRIMARY_HOST_LOCK_TIME));
+                isPrimary = !!(await objects!.setPrimaryHost(PRIMARY_HOST_LOCK_TIME));
             }
         }
     } catch (e) {
@@ -1088,12 +1094,13 @@ function reportStatus() {
     }
 }
 
-function changeHost(objs, oldHostname, newHostname, callback) {
-    if (!objs || !objs.length) {
-        typeof callback === 'function' && callback();
-    } else {
-        const row = objs.shift();
-        if (row && row.value && row.value.common && row.value.common.host === oldHostname) {
+async function changeHost(
+    objs: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[],
+    oldHostname: string,
+    newHostname: string
+): Promise<void> {
+    for (const row of objs) {
+        if (row?.value?.common.host === oldHostname) {
             const obj = row.value;
             obj.common.host = newHostname;
             logger.info(
@@ -1104,23 +1111,31 @@ function changeHost(objs, oldHostname, newHostname, callback) {
             obj.from = `system.host.${tools.getHostName()}`;
             obj.ts = Date.now();
 
-            objects.setObject(obj._id, obj, (/* err */) =>
-                setImmediate(() => changeHost(objs, oldHostname, newHostname, callback)));
-        } else {
-            setImmediate(() => changeHost(objs, oldHostname, newHostname, callback));
+            try {
+                await objects!.setObject(obj._id, obj);
+            } catch (e) {
+                logger.error(`Error changing host of ${obj._id}: ${e.message}`);
+            }
         }
     }
 }
 
-function cleanAutoSubscribe(instance, autoInstance, callback) {
+/**
+ * Clean a single auto subscribe
+ *
+ * @param instance instance id without `system.adapter.` prefix
+ * @param autoInstance instance id
+ * @param callback
+ */
+function cleanAutoSubscribe(instance: string, autoInstance: ioBroker.ObjectIDs.Instance, callback: () => void): void {
     inputCount++;
-    states.getState(autoInstance + '.subscribes', (err, state) => {
+    states!.getState(`${autoInstance}.subscribes`, (err, state) => {
         if (!state || !state.val) {
             return typeof callback === 'function' && setImmediate(() => callback());
         }
         let subs;
         try {
-            subs = JSON.parse(state.val);
+            subs = JSON.parse(state.val as string);
         } catch {
             logger.error(`${hostLogPrefix} Cannot parse subscribes: ${state.val}`);
             return typeof callback === 'function' && setImmediate(() => callback());
@@ -1144,30 +1159,30 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
 
         if (modified) {
             outputCount++;
-            states.setState(`${autoInstance}.subscribes`, subs, () => typeof callback === 'function' && callback());
+            states!.setState(`${autoInstance}.subscribes`, subs, () => typeof callback === 'function' && callback());
         } else if (typeof callback === 'function') {
             setImmediate(() => callback());
         }
     });
 }
 
-function cleanAutoSubscribes(instance, callback) {
-    // instance = 'system.adapter.name.0'
-    instance = instance.substring(15); // get name.0
+function cleanAutoSubscribes(instanceID: ioBroker.ObjectIDs.Instance, callback: () => void): void {
+    const instance = instanceID.substring(15); // get name.0
 
     // read all instances
-    objects.getObjectView(
+    objects!.getObjectView(
         'system',
         'instance',
         { startkey: 'system.adapter.', endkey: 'system.adapter.\u9999' },
         (err, res) => {
             let count = 0;
             if (res && res.rows) {
-                for (let c = res.rows.length - 1; c >= 0; c--) {
+                for (const row of res.rows) {
                     // remove this instance from autoSubscribe
-                    if (res.rows[c].value && res.rows[c].value.common && res.rows[c].value.common.subscribable) {
+                    if (row.value?.common.subscribable) {
                         count++;
-                        cleanAutoSubscribe(instance, res.rows[c].id, () => !--count && callback && callback());
+                        // @ts-expect-error https://github.com/ioBroker/ioBroker.js-controller/issues/2089
+                        cleanAutoSubscribe(instance, row.id, () => !--count && callback && callback());
                     }
                 }
             }
@@ -1176,24 +1191,24 @@ function cleanAutoSubscribes(instance, callback) {
     );
 }
 
-function delObjects(objs, callback) {
-    if (!objs || !objs.length) {
-        typeof callback === 'function' && callback();
-    } else {
-        const row = objs.shift();
+async function delObjects(objs: ioBroker.GetObjectViewItem<ioBroker.AnyObject>[]) {
+    for (const row of objs) {
         if (row && row.id) {
             logger.info(`${hostLogPrefix} Delete state "${row.id}"`);
-            if (row.value && row.value.type === 'state') {
-                states.delState(row.id, (/* err */) =>
-                    objects.delObject(row.id, (/* err */) => setImmediate(() => delObjects(objs, callback))));
-            } else {
-                objects.delObject(row.id, (/* err */) => setImmediate(() => delObjects(objs, callback)));
+            try {
+                if (row.value && row.value.type === 'state') {
+                    await states!.delState(row.id);
+                    await objects!.delObject(row.id);
+                } else {
+                    await objects!.delObject(row.id);
+                }
+            } catch {
+                // ignore
             }
-        } else {
-            setImmediate(() => delObjects(objs, callback));
         }
     }
 }
+
 /**
  * try to check host in objects
  * <p>
@@ -1211,7 +1226,7 @@ function checkHost(callback) {
     if (compactGroupController || !objectData.server) {
         return callback && callback();
     }
-    objects.getObjectView(
+    objects!.getObjectView(
         'system',
         'host',
         {
@@ -1224,44 +1239,44 @@ function checkHost(callback) {
                 const oldId = doc.rows[0].value._id;
 
                 // find out all instances and rewrite it to actual hostname
-                objects.getObjectView(
+                objects!.getObjectView(
                     'system',
                     'instance',
                     {
                         startkey: 'system.adapter.',
                         endkey: 'system.adapter.\u9999'
                     },
-                    (err, doc) => {
+                    async (err, doc) => {
                         if (err && err.message.startsWith('Cannot find ')) {
                             typeof callback === 'function' && callback();
-                        } else if (!doc.rows || doc.rows.length === 0) {
+                        } else if (!doc?.rows || doc.rows.length === 0) {
                             logger.info(`${hostLogPrefix} no instances found`);
                             // no instances found
                             typeof callback === 'function' && callback();
                         } else {
                             // reassign all instances
-                            changeHost(doc.rows, oldHostname, hostname, () => {
-                                logger.info(`${hostLogPrefix} Delete host ${oldId}`);
+                            await changeHost(doc.rows, oldHostname, hostname);
+                            logger.info(`${hostLogPrefix} Delete host ${oldId}`);
 
-                                // delete host object
-                                objects.delObject(oldId, () =>
-                                    // delete all hosts states
-                                    objects.getObjectView(
-                                        'system',
-                                        'state',
-                                        {
-                                            startkey: `system.host.${oldHostname}.`,
-                                            endkey: `system.host.${oldHostname}.\u9999`,
-                                            include_docs: true
-                                        },
-                                        (_err, doc) =>
-                                            delObjects(
-                                                doc && Array.isArray(doc.rows) ? doc.rows : null,
-                                                () => callback && callback()
-                                            )
-                                    )
-                                );
-                            });
+                            // delete host object
+                            objects!.delObject(oldId, () =>
+                                // delete all hosts states
+                                objects!.getObjectView(
+                                    'system',
+                                    'state',
+                                    {
+                                        startkey: `system.host.${oldHostname}.`,
+                                        endkey: `system.host.${oldHostname}.\u9999`,
+                                        include_docs: true
+                                    },
+                                    async (_err, doc) => {
+                                        if (doc?.rows) {
+                                            await delObjects(doc.rows);
+                                        }
+                                        callback && callback();
+                                    }
+                                )
+                            );
                         }
                     }
                 );
@@ -1275,10 +1290,9 @@ function checkHost(callback) {
 /**
  * Collects the dialog information, e.g. used by Admin "System Settings"
  *
- * @param {'extended'|'normal'|'no-city'|'none'} type - type of required information
- * @returns {Promise<object>|void}
+ * @param type - type of required information
  */
-async function collectDiagInfo(type) {
+async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string, any> | null> {
     if (type !== 'extended' && type !== 'normal' && type !== 'no-city') {
         return null;
     } else {
@@ -1286,20 +1300,20 @@ async function collectDiagInfo(type) {
         let err;
 
         try {
-            systemConfig = await objects.getObjectAsync('system.config');
+            systemConfig = await objects!.getObjectAsync('system.config');
         } catch (e) {
             err = e;
         }
 
         if (err || !systemConfig || !systemConfig.common) {
             logger.warn(`System config object is corrupt, please run "iobroker setup first". Error: ${err.message}`);
-            systemConfig = systemConfig || {};
+            systemConfig = systemConfig || { common: {} };
             systemConfig.common = systemConfig.common || {};
         }
 
         let obj;
         try {
-            obj = await objects.getObjectAsync('system.meta.uuid');
+            obj = await objects!.getObjectAsync('system.meta.uuid');
         } catch {
             // ignore obj is undefined
         }
@@ -1313,7 +1327,7 @@ async function collectDiagInfo(type) {
         err = null;
 
         try {
-            doc = await objects.getObjectViewAsync('system', 'host', {
+            doc = await objects!.getObjectViewAsync('system', 'host', {
                 startkey: 'system.host.',
                 endkey: 'system.host.\u9999'
             });
@@ -1324,7 +1338,7 @@ async function collectDiagInfo(type) {
         const { noCompactInstances, noInstances } = await _getNumberOfInstances();
 
         // we need to show city and country at the beginning, so include it now and delete it later if not allowed.
-        const diag = {
+        const diag: Record<string, any> = {
             uuid: obj.native.uuid,
             language: systemConfig.common.language,
             country: '',
@@ -1343,8 +1357,7 @@ async function collectDiagInfo(type) {
 
         if (type === 'extended' || type === 'no-city') {
             const cpus = os.cpus();
-
-            diag.country = systemConfig.common.country;
+            diag.country = 'country' in systemConfig.common ? systemConfig.common.country : 'unknown';
             diag.model = cpus && cpus[0] && cpus[0].model ? cpus[0].model : 'unknown';
             diag.cpus = cpus ? cpus.length : 1;
             diag.mem = os.totalmem();
@@ -1352,7 +1365,7 @@ async function collectDiagInfo(type) {
             delete diag.city;
         }
         if (type === 'extended') {
-            diag.city = systemConfig.common.city;
+            diag.city = 'city' in systemConfig.common ? systemConfig.common.city : 'unknown';
         } else if (type === 'normal') {
             delete diag.city;
             delete diag.country;
@@ -1364,7 +1377,9 @@ async function collectDiagInfo(type) {
                     return semver.lt(
                         a && a.value && a.value.common ? a.value.common.installedVersion : '0.0.0',
                         b && b.value && b.value.common ? b.value.common.installedVersion : '0.0.0'
-                    );
+                    )
+                        ? 1
+                        : 0;
                 } catch {
                     logger.error(
                         `${hostLogPrefix} Invalid versions: ${
@@ -1391,7 +1406,7 @@ async function collectDiagInfo(type) {
         err = null;
 
         try {
-            doc = await objects.getObjectViewAsync('system', 'adapter', {
+            doc = await objects!.getObjectViewAsync('system', 'adapter', {
                 startkey: 'system.adapter.',
                 endkey: 'system.adapter.\u9999'
             });
@@ -1414,6 +1429,7 @@ async function collectDiagInfo(type) {
         }
         // read number of vis datapoints
         if (visFound) {
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
             const visUtils = require('./lib/vis/states');
             try {
                 return new Promise(resolve => {
@@ -1499,10 +1515,10 @@ function setIPs(ipList?: string[]) {
                 oldObj.native.hardware.networkInterfaces = networkInterfaces;
                 oldObj.from = hostObjectPrefix;
                 oldObj.ts = Date.now();
-                objects.setObject(
+                objects!.setObject(
                     oldObj._id,
                     oldObj,
-                    err => err && logger.error(`${hostLogPrefix} Cannot write host object:${err}`)
+                    err => err && logger.error(`${hostLogPrefix} Cannot write host object: ${err.message}`)
                 );
             }
 
@@ -1526,7 +1542,7 @@ async function extendObjects(tasks: Record<string, any>[]): Promise<void> {
         }
 
         try {
-            await objects.extendObjectAsync(task._id, task);
+            await objects!.extendObjectAsync(task._id, task);
             // if extend throws we don't want to set corresponding state
             if (state) {
                 await states!.setStateAsync(task._id, state);
@@ -1541,7 +1557,7 @@ function setMeta() {
     const id = hostObjectPrefix;
 
     objects!.getObject(id, (err, oldObj) => {
-        let newObj;
+        let newObj: ioBroker.HostObject | ioBroker.FolderObject;
         if (compactGroupController) {
             newObj = {
                 _id: id,
@@ -1620,6 +1636,7 @@ function setMeta() {
         }
 
         if (oldObj) {
+            // @ts-expect-error todo: can be removed?
             delete oldObj.cmd;
             delete oldObj.from;
             delete oldObj.ts;
@@ -1629,7 +1646,7 @@ function setMeta() {
         if (!oldObj || !isDeepStrictEqual(newObj, oldObj)) {
             newObj.from = hostObjectPrefix;
             newObj.ts = Date.now();
-            objects.setObject(id, newObj, err => {
+            objects!.setObject(id, newObj, err => {
                 if (err) {
                     logger.error(`${hostLogPrefix} Cannot write host object:${err}`);
                 } else {
@@ -1641,8 +1658,8 @@ function setMeta() {
         }
     });
 
-    const tasks = [];
-    let obj;
+    const tasks: TaskObject[] = [];
+    let obj: TaskObject;
 
     if (!compactGroupController) {
         obj = {
@@ -2046,7 +2063,7 @@ function setMeta() {
     }
 
     // delete obsolete states and create new ones
-    objects.getObjectView(
+    objects!.getObjectView(
         'system',
         'state',
         { startkey: `${hostObjectPrefix}.`, endkey: `${hostObjectPrefix}.\u9999`, include_docs: true },
@@ -2054,9 +2071,9 @@ function setMeta() {
             if (err) {
                 logger &&
                     logger.error(
-                        `${hostLogPrefix} Could not collect ${hostObjectPrefix} states to check for obsolete states: ${err}`
+                        `${hostLogPrefix} Could not collect ${hostObjectPrefix} states to check for obsolete states: ${err.message}`
                     );
-            } else if (doc.rows) {
+            } else if (doc?.rows) {
                 // identify existing states for deletion, because they are not in the new tasks-list
                 let thishostStates = doc.rows;
                 if (!compactGroupController) {
@@ -2070,7 +2087,7 @@ function setMeta() {
                     const found = tasks.find(out2 => out1.id === out2._id);
                     if (found === undefined) {
                         if (out1.id.startsWith(`${hostObjectPrefix}.plugins.`)) {
-                            let nameEndIndex = out1.id.indexOf('.', pluginStatesIndex + 1);
+                            let nameEndIndex: number | undefined = out1.id.indexOf('.', pluginStatesIndex + 1);
                             if (nameEndIndex === -1) {
                                 nameEndIndex = undefined;
                             }
@@ -2085,10 +2102,8 @@ function setMeta() {
                 });
 
                 if (toDelete && toDelete.length > 0) {
-                    delObjects(
-                        toDelete,
-                        () => logger && logger.info(hostLogPrefix + ' Some obsolete host states deleted.')
-                    );
+                    await delObjects(toDelete);
+                    logger && logger.info(`${hostLogPrefix} Some obsolete host states deleted.`);
                 }
             }
             await extendObjects(tasks);
@@ -2101,10 +2116,10 @@ function setMeta() {
                     logger &&
                         logger.info(`${hostLogPrefix} Detected vendor file: ${fs.existsSync(VENDOR_BOOTSTRAP_FILE)}`);
                     try {
-                        let startScript = fs.readFileSync(VENDOR_BOOTSTRAP_FILE).toString('utf-8');
-                        startScript = JSON.parse(startScript);
+                        const startScript = fs.readJSONSync(VENDOR_BOOTSTRAP_FILE);
 
                         if (startScript.password) {
+                            // eslint-disable-next-line @typescript-eslint/no-var-requires
                             const Vendor = require('./lib/setup/setupVendor');
                             const vendor = new Vendor({ objects });
 
@@ -2153,20 +2168,24 @@ function setMeta() {
 }
 
 // Subscribe on message queue
-function initMessageQueue() {
-    states.subscribeMessage(hostObjectPrefix);
+function initMessageQueue(): void {
+    states!.subscribeMessage(hostObjectPrefix);
 }
 
 /**
  * Send message to other adapter instance
  *
- * @param {string} objName - adapter name (hm-rpc) or id like system.host.rpi/system.adapter,hm-rpc
- * @param {string} command
- * @param {Record<string, any>?} message
- * @param {() => void?} callback
- * @return {Promise<void>}
+ * @param objName - adapter name (hm-rpc) or id like system.host.rpi/system.adapter,hm-rpc
+ * @param command
+ * @param message
+ * @param callback
  */
-async function sendTo(objName, command, message, callback) {
+async function sendTo(
+    objName: string,
+    command: string,
+    message: ioBroker.MessagePayload,
+    callback?: () => void
+): Promise<void> {
     if (message === undefined) {
         message = command;
         command = 'send';
@@ -2189,7 +2208,7 @@ async function sendTo(objName, command, message, callback) {
             if (callbackId > 0xffffffff) {
                 callbackId = 1;
             }
-            callbacks = callbacks || {};
+
             callbacks[`_${obj.callback.id}`] = { cb: callback };
         } else {
             obj.callback = callback;
@@ -2197,7 +2216,7 @@ async function sendTo(objName, command, message, callback) {
         }
     }
     try {
-        await states.pushMessage(objName, obj);
+        await states!.pushMessage(objName, obj);
     } catch (e) {
         // do not stringify the object, we had the issue with the invalid string length on serialization
         logger.error(
@@ -2212,11 +2231,11 @@ async function sendTo(objName, command, message, callback) {
     }
 }
 
-async function getVersionFromHost(hostId) {
-    const state = await states.getState(`${hostId}.alive`);
+async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host) {
+    const state = await states!.getState(`${hostId}.alive`);
     if (state && state.val) {
         return new Promise(resolve => {
-            let timeout = setTimeout(() => {
+            let timeout: NodeJS.Timeout | null = setTimeout(() => {
                 timeout = null;
                 logger.warn(`${hostLogPrefix} too delayed answer for ${hostId}`);
                 resolve(null);
@@ -2237,24 +2256,25 @@ async function getVersionFromHost(hostId) {
 }
 /**
  Helper function that serialize deletion of states
- @param {object} list array with states
- @param {function} cb optional callback
+ @param list array with states
+ @param cb optional callback
  */
-function _deleteAllZipPackages(list, cb) {
-    if (!list || !list.length) {
-        cb && cb();
-    } else {
-        states.delBinaryState(list.shift(), _err => setImmediate(() => _deleteAllZipPackages(list, cb)));
+async function _deleteAllZipPackages(list: string[]): Promise<void> {
+    for (const id of list) {
+        try {
+            await states!.delBinaryState(id);
+        } catch {
+            //ignore
+        }
     }
 }
 /**
- This function deletes all ZIP packages that were not downloaded.
- ZIP Package is temporary file, that should be deleted straight after it downloaded and if it still exists, so clear it
-
- @param cb optional callback
+ * This function deletes all ZIP packages that were not downloaded.
+ * ZIP Package is temporary file, that should be deleted straight after it downloaded and if it still exists, so clear it
  */
-function deleteAllZipPackages(cb?: () => void): void {
-    states!.getKeys(hostObjectPrefix + '.zip.*', (err, list) => _deleteAllZipPackages(list, cb));
+async function deleteAllZipPackages(): Promise<void> {
+    const list = await states!.getKeys(hostObjectPrefix + '.zip.*');
+    await _deleteAllZipPackages(list!);
 }
 
 async function startAdapterUpload() {
@@ -2273,9 +2293,12 @@ async function startAdapterUpload() {
 
     const logger = msg.from
         ? {
-              log: text => states!.pushMessage(msg.from, { command: 'log', text, from: `system.host.${hostname}` }),
-              warn: text => states!.pushMessage(msg.from, { command: 'warn', text, from: `system.host.${hostname}` }),
-              error: text => states!.pushMessage(msg.from, { command: 'error', text, from: `system.host.${hostname}` })
+              log: (text: string) =>
+                  states!.pushMessage(msg.from, { command: 'log', text, from: `system.host.${hostname}` }),
+              warn: (text: string) =>
+                  states!.pushMessage(msg.from, { command: 'warn', text, from: `system.host.${hostname}` }),
+              error: (text: string) =>
+                  states!.pushMessage(msg.from, { command: 'error', text, from: `system.host.${hostname}` })
           }
         : null;
 
@@ -2293,10 +2316,9 @@ async function startAdapterUpload() {
 /**
  * Process message to controller, like execute some script
  *
- * @param {ioBroker.Message} msg
- * @return {Promise<null>}
+ * @param msg
  */
-async function processMessage(msg) {
+async function processMessage(msg: ioBroker.Message): Promise<null> {
     // important: Do not forget to update the list of protected commands in iobroker.admin/lib/socket.js for "socket.on('sendToHost'"
     // and iobroker.socketio/lib/socket.js
 
@@ -2312,7 +2334,7 @@ async function processMessage(msg) {
                 logger.info(`${hostLogPrefix} ${tools.appName} execute shell command: ${msg.message}`);
                 exec(msg.message, { windowsHide: true }, (err, stdout, stderr) => {
                     if (err) {
-                        return logger.error(`${hostLogPrefix} error: ${err}`);
+                        return logger.error(`${hostLogPrefix} error: ${err.message}`);
                     }
 
                     logger.info(`${hostLogPrefix} stdout: ${stdout}`);
@@ -2380,14 +2402,14 @@ async function processMessage(msg) {
 
         case 'getRepository':
             if (msg.callback && msg.from) {
-                objects.getObject('system.config', async (err, systemConfig) => {
+                objects!.getObject('system.config', async (err, systemConfig) => {
                     // Collect statistics (only if license has been confirmed - user agreed)
                     if (
                         systemConfig &&
                         systemConfig.common &&
                         systemConfig.common.diag &&
                         systemConfig.common.licenseConfirmed &&
-                        (!lastDiagSend || Date.now() - lastDiagSend > 30000) // prevent sending of diagnostics by multiple admin instances
+                        (!lastDiagSend || Date.now() - lastDiagSend > 30_000) // prevent sending of diagnostics by multiple admin instances
                     ) {
                         lastDiagSend = Date.now();
                         try {
@@ -2401,7 +2423,7 @@ async function processMessage(msg) {
 
                     const globalRepo = {};
 
-                    const systemRepos = await objects.getObjectAsync('system.repositories');
+                    const systemRepos = await objects!.getObjectAsync('system.repositories');
 
                     // Check if repositories exists
                     if (systemRepos && systemRepos.native && systemRepos.native.repositories) {
@@ -2507,7 +2529,7 @@ async function processMessage(msg) {
         case 'getInstalled':
             if (msg.callback && msg.from) {
                 // Get list of all hosts
-                objects.getObjectView(
+                objects!.getObjectView(
                     'system',
                     'host',
                     {
@@ -3978,7 +4000,7 @@ async function startInstance(id: string, wakeUp = false): Promise<void> {
     }
 
     const adapterDir = tools.getAdapterDir(name);
-    if (!fs.existsSync(adapterDir)) {
+    if (!fs.existsSync(adapterDir!)) {
         procs[id].downloadRetry = procs[id].downloadRetry || 0;
         logger.debug(`${hostLogPrefix} startInstance Queue ${id} for installation`);
         installQueue.push({

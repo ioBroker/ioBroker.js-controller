@@ -302,6 +302,8 @@ declare global {
              * - **3:** All other adapters
              */
             tier?: 1 | 2 | 3;
+            /** Variables of this adapter must be subscribed with sendTo to enable updates */
+            subscribable?: boolean;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
