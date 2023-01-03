@@ -10159,10 +10159,8 @@ export class AdapterClass extends EventEmitter {
                 return tools.maybeCallbackWithError(callback, e);
             }
 
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455 fix delBinaryState Callback
             adapterStates!.delBinaryState(id, callback);
         } else {
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455 fix delBinaryState Callback
             adapterStates.delBinaryState(id, callback);
         }
     }
@@ -10849,7 +10847,6 @@ export class AdapterClass extends EventEmitter {
                         ) {
                             // Call callback function
                             if (typeof this.callbacks[`_${obj.callback.id}`].cb === 'function') {
-                                // @ts-expect-error TODO something wrong with MessageCallback type?
                                 this.callbacks[`_${obj.callback.id}`].cb(obj.message);
                                 delete this.callbacks[`_${obj.callback.id}`];
                             }

@@ -2042,7 +2042,7 @@ function makeid(length: number) {
  */
 export async function getHostInfo(
     objects: any,
-    callback: (result?: Record<string, any>) => void
+    callback?: (result?: Record<string, any>) => void
 ): Promise<Record<string, any>> {
     if (diskusage) {
         try {

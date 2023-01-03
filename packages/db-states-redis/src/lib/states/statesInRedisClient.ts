@@ -62,10 +62,6 @@ interface StatesSettings {
     redisNamespace?: string;
 }
 
-export interface PushableState extends Omit<ioBroker.SettableStateObject, '_id'> {
-    _id?: number;
-}
-
 export class StateRedisClient {
     private settings: StatesSettings;
     private readonly namespaceRedis: string;
@@ -1197,7 +1193,7 @@ export class StateRedisClient {
 
     async pushMessage(
         id: string,
-        state: PushableState,
+        state: ioBroker.Message,
         callback?: (err: Error | undefined | null, id?: string) => void
     ): Promise<string | void> {
         if (!id || typeof id !== 'string') {

@@ -2184,14 +2184,14 @@ async function sendTo(
     objName: string,
     command: string,
     message: ioBroker.MessagePayload,
-    callback?: () => void
+    callback?: ioBroker.ErrorCallback | ioBroker.MessageCallbackInfo
 ): Promise<void> {
     if (message === undefined) {
         message = command;
         command = 'send';
     }
 
-    const obj = { command, message, from: hostObjectPrefix };
+    const obj: Partial<ioBroker.Message> = { command, message, from: hostObjectPrefix };
 
     if (!objName.startsWith('system.adapter.') && !objName.startsWith('system.host.')) {
         objName = `system.adapter.${objName}`;
@@ -2231,7 +2231,7 @@ async function sendTo(
     }
 }
 
-async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host) {
+async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host): Promise<Record<string, any> | null | undefined> {
     const state = await states!.getState(`${hostId}.alive`);
     if (state && state.val) {
         return new Promise(resolve => {
@@ -2239,7 +2239,7 @@ async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host) {
                 timeout = null;
                 logger.warn(`${hostLogPrefix} too delayed answer for ${hostId}`);
                 resolve(null);
-            }, 5000);
+            }, 5_000);
 
             sendTo(hostId, 'getVersion', null, ioPack => {
                 if (timeout) {
@@ -2300,7 +2300,7 @@ async function startAdapterUpload() {
               error: (text: string) =>
                   states!.pushMessage(msg.from, { command: 'error', text, from: `system.host.${hostname}` })
           }
-        : null;
+        : undefined;
 
     await upload.uploadAdapter(uploadTasks[0].adapter, true, true, '', logger);
     await upload.upgradeAdapterObjects(uploadTasks[0].adapter, logger);
@@ -2318,7 +2318,7 @@ async function startAdapterUpload() {
  *
  * @param msg
  */
-async function processMessage(msg: ioBroker.Message): Promise<null> {
+async function processMessage(msg: ioBroker.Message): Promise<null | void> {
     // important: Do not forget to update the list of protected commands in iobroker.admin/lib/socket.js for "socket.on('sendToHost'"
     // and iobroker.socketio/lib/socket.js
 
@@ -2405,8 +2405,7 @@ async function processMessage(msg: ioBroker.Message): Promise<null> {
                 objects!.getObject('system.config', async (err, systemConfig) => {
                     // Collect statistics (only if license has been confirmed - user agreed)
                     if (
-                        systemConfig &&
-                        systemConfig.common &&
+                        systemConfig?.common &&
                         systemConfig.common.diag &&
                         systemConfig.common.licenseConfirmed &&
                         (!lastDiagSend || Date.now() - lastDiagSend > 30_000) // prevent sending of diagnostics by multiple admin instances
@@ -2426,13 +2425,14 @@ async function processMessage(msg: ioBroker.Message): Promise<null> {
                     const systemRepos = await objects!.getObjectAsync('system.repositories');
 
                     // Check if repositories exists
-                    if (systemRepos && systemRepos.native && systemRepos.native.repositories) {
+                    if (systemRepos?.native?.repositories) {
                         let updateRepo = false;
                         if (tools.isObject(msg.message)) {
                             updateRepo = msg.message.update;
                             msg.message = msg.message.repo;
                         }
 
+                        // @ts-expect-error todo it can be undefined handle the case
                         let active = msg.message || systemConfig.common.activeRepo;
 
                         if (!Array.isArray(active)) {
@@ -2441,8 +2441,7 @@ async function processMessage(msg: ioBroker.Message): Promise<null> {
 
                         let changed = false;
 
-                        for (let r = 0; r < active.length; r++) {
-                            const repo = active[r];
+                        for (const repo of active) {
                             if (systemRepos.native.repositories[repo]) {
                                 if (typeof systemRepos.native.repositories[repo] === 'string') {
                                     systemRepos.native.repositories[repo] = {
@@ -2508,7 +2507,7 @@ async function processMessage(msg: ioBroker.Message): Promise<null> {
                         }
                         if (changed) {
                             try {
-                                await objects.setObjectAsync('system.repositories', systemRepos);
+                                await objects!.setObjectAsync('system.repositories', systemRepos);
                             } catch (e) {
                                 logger.warn(`${hostLogPrefix} Repository object could not be updated: ${e.message}`);
                             }
@@ -2682,7 +2681,7 @@ async function processMessage(msg: ioBroker.Message): Promise<null> {
                             if (start) {
                                 lines.shift(); // remove first line of the file as it could be not full if starts not from 0
                             }
-                            lines.push(stats.size); // place as last line the current size of log
+                            lines.push(stats.size.toString()); // place as last line the current size of log
                             sendTo(msg.from, msg.command, lines, msg.callback);
                         })
                         .on('error', () =>
@@ -2823,7 +2822,7 @@ async function processMessage(msg: ioBroker.Message): Promise<null> {
                     return null;
                 }
 
-                data.Uptime = Math.round((Date.now() - uptimeStart) / 1000);
+                data.Uptime = Math.round((Date.now() - uptimeStart) / 1_000);
                 // add information about running instances
                 let count = 0;
                 for (const id of Object.keys(procs)) {
@@ -2859,7 +2858,7 @@ async function processMessage(msg: ioBroker.Message): Promise<null> {
                 const cpus = os.cpus();
                 const dateObj = new Date();
 
-                const data = {
+                const data: Record<string, any> = {
                     Platform: os.platform(),
                     os: process.platform,
                     Architecture: os.arch(),
@@ -2900,13 +2899,19 @@ async function processMessage(msg: ioBroker.Message): Promise<null> {
         case 'readDirAsZip':
             if (msg.callback && msg.from) {
                 zipFiles = zipFiles || require('./lib/zipFiles');
-                zipFiles.readDirAsZip(objects, msg.message.id, msg.message.name, msg.message.options, (err, base64) => {
-                    if (base64) {
-                        sendTo(msg.from, msg.command, { error: err, data: base64 }, msg.callback);
-                    } else {
-                        sendTo(msg.from, msg.command, { error: err }, msg.callback);
+                zipFiles.readDirAsZip(
+                    objects,
+                    msg.message.id,
+                    msg.message.name,
+                    msg.message.options,
+                    (err: any, base64: string) => {
+                        if (base64) {
+                            sendTo(msg.from, msg.command, { error: err, data: base64 }, msg.callback);
+                        } else {
+                            sendTo(msg.from, msg.command, { error: err }, msg.callback);
+                        }
                     }
-                });
+                );
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
@@ -2938,12 +2943,12 @@ async function processMessage(msg: ioBroker.Message): Promise<null> {
                     msg.message.id,
                     msg.message.adapter,
                     msg.message.options,
-                    (error, base64) => {
+                    (error: any, base64: string) => {
                         // If client supports file via link
                         if (msg.message.link) {
                             if (!error) {
                                 const buff = Buffer.from(base64, 'base64');
-                                states.setBinaryState(`${hostObjectPrefix}.zip.${msg.message.link}`, buff, err => {
+                                states!.setBinaryState(`${hostObjectPrefix}.zip.${msg.message.link}`, buff, err => {
                                     if (err) {
                                         sendTo(msg.from, msg.command, { error: err }, msg.callback);
                                     } else {
@@ -2980,7 +2985,7 @@ async function processMessage(msg: ioBroker.Message): Promise<null> {
                 msg.message.adapter,
                 Buffer.from(msg.message.data || '', 'base64'),
                 msg.message.options,
-                error => msg.callback && msg.from && sendTo(msg.from, msg.command, { error }, msg.callback)
+                (error: any) => msg.callback && msg.from && sendTo(msg.from, msg.command, { error }, msg.callback)
             );
             break;
 
