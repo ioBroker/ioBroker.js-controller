@@ -470,7 +470,7 @@ declare global {
             err?: Error | null,
             result?: { rows: Array<GetObjectViewItem<T>> }
         ) => void;
-        type GetObjectViewPromise<T> = Promise<NonNullCallbackReturnTypeOf<GetObjectViewCallback<T>>>;
+        type GetObjectViewPromise<T extends AnyObject> = Promise<NonNullCallbackReturnTypeOf<GetObjectViewCallback<T>>>;
 
         interface GetObjectListItem extends GetObjectViewItem<ioBroker.Object> {
             /** A copy of the object */

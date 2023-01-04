@@ -95,6 +95,12 @@ interface StopTimeoutObject {
     callback?: (() => void) | null;
 }
 
+interface RepoRequester {
+    /** requesting instance */
+    from: string;
+    callback: ioBroker.MessageCallbackInfo;
+}
+
 const ioPackage = fs.readJSONSync(path.join(tools.getControllerDir(), 'io-package.json'));
 const version = ioPackage.common.version;
 /** controller versions of multihost environments */
@@ -102,6 +108,8 @@ const controllerVersions: Record<string, string> = {};
 
 let pluginHandler: InstanceType<typeof PluginHandler>;
 let notificationHandler: NotificationHandler;
+/** array of instances which have requested repo update */
+let requestedRepoUpdates: RepoRequester[] = [];
 
 const exec = cp.exec;
 const spawn = cp.spawn;
@@ -2445,6 +2453,15 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'getRepository':
             if (msg.callback && msg.from) {
+                requestedRepoUpdates.push({ from: msg.from, callback: msg.callback });
+                if (requestedRepoUpdates.length > 1) {
+                    // someone has requested repo previous to us
+                    logger.debug(
+                        `${hostLogPrefix} Repository update already running, registered instance "${msg.from}"`
+                    );
+                    return;
+                }
+
                 let systemConfig;
                 try {
                     systemConfig = await objects!.getObject('system.config');
@@ -2560,7 +2577,11 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     }
                 }
 
-                sendTo(msg.from, msg.command, globalRepo, msg.callback);
+                for (const requester of requestedRepoUpdates) {
+                    sendTo(requester.from, msg.command, globalRepo, requester.callback);
+                }
+
+                requestedRepoUpdates = [];
             } else {
                 logger.error(
                     `${hostLogPrefix} Invalid request ${
