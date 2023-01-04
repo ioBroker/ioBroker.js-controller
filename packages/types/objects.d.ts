@@ -290,6 +290,7 @@ declare global {
 
         type InstanceMode = 'none' | 'daemon' | 'subscribe' | 'schedule' | 'once' | 'extension';
         interface InstanceCommon extends ObjectCommon {
+            version: string;
             /** The name of the host where this instance is running */
             host: string;
             enabled: boolean;
