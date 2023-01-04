@@ -632,6 +632,7 @@ declare global {
         }
 
         interface InstanceObject extends BaseObject {
+            _id: ObjectIDs.Instance;
             type: 'instance';
             common: InstanceCommon;
         }
@@ -640,6 +641,7 @@ declare global {
         }
 
         interface AdapterObject extends BaseObject {
+            _id: ObjectIDs.Adapter;
             type: 'adapter';
             common: AdapterCommon;
             /** An array of `native` properties which cannot be accessed from outside the defining adapter */
@@ -652,6 +654,7 @@ declare global {
         }
 
         interface HostObject extends BaseObject {
+            _id: ObjectIDs.Host;
             type: 'host';
             common: HostCommon;
             native: HostNative;
@@ -662,6 +665,7 @@ declare global {
         }
 
         interface UserObject extends BaseObject {
+            _id: ObjectIDs.User;
             type: 'user';
             common: UserCommon;
         }
@@ -670,6 +674,7 @@ declare global {
         }
 
         interface GroupObject extends BaseObject {
+            _id: ObjectIDs.Group;
             type: 'group';
             common: GroupCommon;
         }
@@ -695,6 +700,7 @@ declare global {
         }
 
         interface DesignObject extends Omit<BaseObject, 'common'> {
+            _id: ObjectIDs.Design;
             language: 'javascript';
             common?: OtherCommon;
             views: Record<string, { map: string }>;

@@ -35,7 +35,7 @@ export type ChangeFileFunction = (id: string, fileName: string, size: number | n
 
 type GetUserGroupCallbackNoError = (user: string, groups: string[], acl: ioBroker.ObjectPermissions) => void;
 
-interface ViewFuncResult<T> {
+interface ViewFuncResult<T extends ioBroker.AnyObject> {
     rows: ioBroker.GetObjectViewItem<T>[];
 }
 

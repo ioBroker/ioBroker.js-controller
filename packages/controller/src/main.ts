@@ -2508,7 +2508,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                             systemRepos.native.repositories[repo].hash &&
                                             Date.now() -
                                                 new Date(systemRepos.native.repositories[repo].time).getTime() <
-                                                30000
+                                                30_000
                                         ) {
                                             result = systemRepos.native.repositories[repo];
                                         } else {
@@ -3356,7 +3356,6 @@ async function getInstances() {
                     if (!fs.existsSync(adapterDir!)) {
                         procs[instance._id] = { downloadRetry: 0, config: { common: { enabled: false } } };
                         installQueue.push({
-                            // @ts-expect-error https://github.com/ioBroker/ioBroker.js-controller/issues/2089
                             id: instance._id,
                             disabled: true,
                             version: instance.common.installedVersion || instance.common.version,
