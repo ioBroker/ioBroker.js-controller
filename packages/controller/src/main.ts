@@ -44,6 +44,11 @@ interface InstallQueueEntry {
     version?: string;
     installedFrom?: string;
     wakeUp?: boolean;
+    rebuildArgs?: {
+        module: string;
+        path: string;
+        version: string;
+    };
 }
 
 interface CompactProcess {
@@ -2991,17 +2996,18 @@ async function processMessage(msg: ioBroker.Message): Promise<null | void> {
 
         case 'checkLogging':
             (function () {
+                // TODO: temporary enough to remove now?
                 // this is temporary function to check the logging functionality
                 // Print all information into log
-                let logs = [];
+                let logs: string[] = [];
 
                 // LogList
                 logs.push(`Actual Loglist - ${JSON.stringify(logList)}`);
 
                 // Read current state of all log subscribers
-                states.getKeys('*.logging', (err, keys) => {
+                states!.getKeys('*.logging', (err, keys) => {
                     if (keys && keys.length) {
-                        states.getStates(keys, (err, obj) => {
+                        states!.getStates(keys, (err, obj) => {
                             if (obj) {
                                 for (let i = 0; i < keys.length; i++) {
                                     // We can JSON.parse, but index is 16x faster
@@ -3037,7 +3043,7 @@ async function processMessage(msg: ioBroker.Message): Promise<null | void> {
                 for (const _id of Object.keys(procs)) {
                     if (procs[_id].process) {
                         outputCount++;
-                        states.setState(_id + '.checkLogging', { val: true, ack: false, from: hostObjectPrefix });
+                        states!.setState(_id + '.checkLogging', { val: true, ack: false, from: hostObjectPrefix });
                     }
                 }
             })();
