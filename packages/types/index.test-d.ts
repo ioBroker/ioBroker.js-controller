@@ -744,7 +744,7 @@ adapter.FORBIDDEN_CHARS = /_/;
 
 // Test some of the more uncommon object types
 const _adapterObject: ioBroker.AdapterObject = {
-    _id: '',
+    _id: 'system.adapter.test',
     type: 'adapter',
     native: {},
     common: {
@@ -793,14 +793,14 @@ const _metaObject: ioBroker.MetaObject = {
 };
 
 const _instanceObject: ioBroker.InstanceObject = {
-    _id: '',
+    _id: 'system.adapter.test.0',
     type: 'instance',
     common: { enabled: true, host: 'my host', mode: 'daemon', name: 'instance 1', version: '1.0.0' },
     native: {}
 };
 
 const _userObject: ioBroker.UserObject = {
-    _id: '',
+    _id: 'system.user.me',
     type: 'user',
     common: { name: 'me', password: '*****', enabled: true },
     native: {}

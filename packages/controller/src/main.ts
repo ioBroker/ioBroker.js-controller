@@ -2445,120 +2445,122 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'getRepository':
             if (msg.callback && msg.from) {
-                objects!.getObject('system.config', async (err, systemConfig) => {
-                    // Collect statistics (only if license has been confirmed - user agreed)
-                    if (
-                        systemConfig?.common &&
-                        systemConfig.common.diag &&
-                        systemConfig.common.licenseConfirmed &&
-                        (!lastDiagSend || Date.now() - lastDiagSend > 30_000) // prevent sending of diagnostics by multiple admin instances
-                    ) {
-                        lastDiagSend = Date.now();
-                        try {
-                            const obj = await collectDiagInfo(systemConfig.common.diag);
-                            // if user selected 'none' we will have null here and do not want to send it
-                            obj && tools.sendDiagInfo(obj); // Ignore the response here and do not wait for result to decrease the repo fetching as it used in admin GUI
-                        } catch (e) {
-                            logger.error(`${hostLogPrefix} cannot collect diagnostics: ${e.message}`);
-                        }
+                let systemConfig;
+                try {
+                    systemConfig = await objects!.getObject('system.config');
+                } catch {
+                    // ignore
+                }
+
+                // Collect statistics (only if license has been confirmed - user agreed)
+                if (
+                    systemConfig?.common &&
+                    systemConfig.common.diag &&
+                    systemConfig.common.licenseConfirmed &&
+                    (!lastDiagSend || Date.now() - lastDiagSend > 30_000) // prevent sending of diagnostics by multiple admin instances
+                ) {
+                    lastDiagSend = Date.now();
+                    try {
+                        const obj = await collectDiagInfo(systemConfig.common.diag);
+                        // if user selected 'none' we will have null here and do not want to send it
+                        obj && tools.sendDiagInfo(obj); // Ignore the response here and do not wait for result to decrease the repo fetching as it used in admin GUI
+                    } catch (e) {
+                        logger.error(`${hostLogPrefix} cannot collect diagnostics: ${e.message}`);
+                    }
+                }
+
+                const globalRepo = {};
+
+                const systemRepos = await objects!.getObjectAsync('system.repositories');
+
+                // Check if repositories exists
+                if (systemRepos?.native?.repositories) {
+                    let updateRepo = false;
+                    if (tools.isObject(msg.message)) {
+                        updateRepo = msg.message.update;
+                        msg.message = msg.message.repo;
                     }
 
-                    const globalRepo = {};
+                    // @ts-expect-error todo it can be undefined handle the case
+                    let active = msg.message || systemConfig.common.activeRepo;
 
-                    const systemRepos = await objects!.getObjectAsync('system.repositories');
+                    if (!Array.isArray(active)) {
+                        active = [active];
+                    }
 
-                    // Check if repositories exists
-                    if (systemRepos?.native?.repositories) {
-                        let updateRepo = false;
-                        if (tools.isObject(msg.message)) {
-                            updateRepo = msg.message.update;
-                            msg.message = msg.message.repo;
-                        }
+                    let changed = false;
 
-                        // @ts-expect-error todo it can be undefined handle the case
-                        let active = msg.message || systemConfig.common.activeRepo;
+                    for (const repo of active) {
+                        if (systemRepos.native.repositories[repo]) {
+                            if (typeof systemRepos.native.repositories[repo] === 'string') {
+                                systemRepos.native.repositories[repo] = {
+                                    link: systemRepos.native.repositories[repo],
+                                    json: null
+                                };
+                                changed = true;
+                            }
 
-                        if (!Array.isArray(active)) {
-                            active = [active];
-                        }
-
-                        let changed = false;
-
-                        for (const repo of active) {
-                            if (systemRepos.native.repositories[repo]) {
-                                if (typeof systemRepos.native.repositories[repo] === 'string') {
-                                    systemRepos.native.repositories[repo] = {
-                                        link: systemRepos.native.repositories[repo],
-                                        json: null
-                                    };
-                                    changed = true;
-                                }
-
-                                // If repo is not yet loaded
-                                if (!systemRepos.native.repositories[repo].json || updateRepo) {
-                                    logger.info(
-                                        `${hostLogPrefix} Updating repository "${repo}" under "${systemRepos.native.repositories[repo].link}"`
-                                    );
-                                    try {
-                                        let result;
-                                        // prevent the request of repos by multiple admin adapters at start
-                                        if (
-                                            systemRepos.native.repositories[repo].json &&
-                                            systemRepos.native.repositories[repo].time &&
-                                            systemRepos.native.repositories[repo].hash &&
-                                            Date.now() -
-                                                new Date(systemRepos.native.repositories[repo].time).getTime() <
-                                                30_000
-                                        ) {
-                                            result = systemRepos.native.repositories[repo];
-                                        } else {
-                                            result = await tools.getRepositoryFileAsync(
-                                                systemRepos.native.repositories[repo].link,
-                                                systemRepos.native.repositories[repo].hash,
-                                                updateRepo,
-                                                systemRepos.native.repositories[repo].json
-                                            );
-                                        }
-
-                                        // If repo was really changed
-                                        if (result && result.json && result.changed) {
-                                            systemRepos.native.repositories[repo].json = result.json;
-                                            systemRepos.native.repositories[repo].hash = result.hash || '';
-                                            systemRepos.native.repositories[repo].time = new Date().toISOString();
-                                            changed = true;
-                                        }
-                                        // Make sure, that time is stored too to prevent the frequent access to repo server
-                                        if (!systemRepos.native.repositories[repo].time) {
-                                            systemRepos.native.repositories[repo].time = new Date().toISOString();
-                                            changed = true;
-                                        }
-                                    } catch (e) {
-                                        logger.error(
-                                            `${hostLogPrefix} Error by updating repository "${repo}" under "${systemRepos.native.repositories[repo].link}": ${e.message}`
+                            // If repo is not yet loaded
+                            if (!systemRepos.native.repositories[repo].json || updateRepo) {
+                                logger.info(
+                                    `${hostLogPrefix} Updating repository "${repo}" under "${systemRepos.native.repositories[repo].link}"`
+                                );
+                                try {
+                                    let result;
+                                    // prevent the request of repos by multiple admin adapters at start
+                                    if (
+                                        systemRepos.native.repositories[repo].json &&
+                                        systemRepos.native.repositories[repo].time &&
+                                        systemRepos.native.repositories[repo].hash &&
+                                        Date.now() - new Date(systemRepos.native.repositories[repo].time).getTime() <
+                                            30_000
+                                    ) {
+                                        result = systemRepos.native.repositories[repo];
+                                    } else {
+                                        result = await tools.getRepositoryFileAsync(
+                                            systemRepos.native.repositories[repo].link,
+                                            systemRepos.native.repositories[repo].hash,
+                                            updateRepo,
+                                            systemRepos.native.repositories[repo].json
                                         );
                                     }
-                                }
 
-                                if (systemRepos.native.repositories[repo].json) {
-                                    Object.assign(globalRepo, systemRepos.native.repositories[repo].json);
+                                    // If repo was really changed
+                                    if (result && result.json && result.changed) {
+                                        systemRepos.native.repositories[repo].json = result.json;
+                                        systemRepos.native.repositories[repo].hash = result.hash || '';
+                                        systemRepos.native.repositories[repo].time = new Date().toISOString();
+                                        changed = true;
+                                    }
+                                    // Make sure, that time is stored too to prevent the frequent access to repo server
+                                    if (!systemRepos.native.repositories[repo].time) {
+                                        systemRepos.native.repositories[repo].time = new Date().toISOString();
+                                        changed = true;
+                                    }
+                                } catch (e) {
+                                    logger.error(
+                                        `${hostLogPrefix} Error by updating repository "${repo}" under "${systemRepos.native.repositories[repo].link}": ${e.message}`
+                                    );
                                 }
-                            } else {
-                                logger.warn(
-                                    `${hostLogPrefix} Requested repository "${repo}" does not exist in config.`
-                                );
                             }
-                        }
-                        if (changed) {
-                            try {
-                                await objects!.setObjectAsync('system.repositories', systemRepos);
-                            } catch (e) {
-                                logger.warn(`${hostLogPrefix} Repository object could not be updated: ${e.message}`);
+
+                            if (systemRepos.native.repositories[repo].json) {
+                                Object.assign(globalRepo, systemRepos.native.repositories[repo].json);
                             }
+                        } else {
+                            logger.warn(`${hostLogPrefix} Requested repository "${repo}" does not exist in config.`);
                         }
                     }
+                    if (changed) {
+                        try {
+                            await objects!.setObjectAsync('system.repositories', systemRepos);
+                        } catch (e) {
+                            logger.warn(`${hostLogPrefix} Repository object could not be updated: ${e.message}`);
+                        }
+                    }
+                }
 
-                    sendTo(msg.from, msg.command, globalRepo, msg.callback);
-                });
+                sendTo(msg.from, msg.command, globalRepo, msg.callback);
             } else {
                 logger.error(
                     `${hostLogPrefix} Invalid request ${

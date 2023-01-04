@@ -466,7 +466,10 @@ declare global {
             /** A copy of the object from the DB */
             value: T | null;
         }
-        type GetObjectViewCallback<T> = (err?: Error | null, result?: { rows: Array<GetObjectViewItem<T>> }) => void;
+        type GetObjectViewCallback<T extends AnyObject> = (
+            err?: Error | null,
+            result?: { rows: Array<GetObjectViewItem<T>> }
+        ) => void;
         type GetObjectViewPromise<T> = Promise<NonNullCallbackReturnTypeOf<GetObjectViewCallback<T>>>;
 
         interface GetObjectListItem extends GetObjectViewItem<ioBroker.Object> {
