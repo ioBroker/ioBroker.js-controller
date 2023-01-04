@@ -10726,8 +10726,10 @@ export class AdapterClass extends EventEmitter {
                 }
             },
             logger: this._logger,
-            change: (id, state) => {
+            change: (id, stateOrMessage) => {
                 this.inputCount++;
+                // for simplicity reasons we exclude Message for now TODO
+                const state = stateOrMessage as ioBroker.State | null;
 
                 if (!id || typeof id !== 'string') {
                     console.log(`Something is wrong! ${JSON.stringify(id)}`);

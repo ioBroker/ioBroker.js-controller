@@ -466,7 +466,6 @@ export class Install {
 
                     // we check, that all existing instances match - respect different versions for local and global deps
                     for (const instance of locInstances) {
-                        // @ts-expect-error InstaceCommon has version: TODO fix types
                         const instanceVersion = instance.value!.common.version;
                         if (
                             !semver.satisfies(instanceVersion, deps[dName], {
@@ -483,7 +482,6 @@ export class Install {
                     }
 
                     for (const instance of gInstances) {
-                        // @ts-expect-error InstaceCommon has version: TODO fix types
                         const instanceVersion = instance.value!.common.version;
                         if (
                             !semver.satisfies(instanceVersion, globalDeps[dName], {
@@ -562,7 +560,6 @@ export class Install {
                 obj.ts = Date.now();
 
                 try {
-                    // @ts-expect-error #1917
                     await this.objects.extendObjectAsync(obj._id, obj);
                 } catch (err) {
                     console.error(`host.${hostname} error setObject ${obj._id} ${err.message}`);

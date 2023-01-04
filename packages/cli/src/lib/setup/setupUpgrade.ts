@@ -238,7 +238,6 @@ export class Upgrade {
                     let isFound = false;
                     // we check, that all instances match - respect different local and global dep versions
                     for (const instance of locInstances) {
-                        // @ts-expect-error InstaceCommon has version: TODO fix types
                         const instanceVersion = instance.value!.common.version;
                         try {
                             if (
@@ -264,7 +263,6 @@ export class Upgrade {
                     }
 
                     for (const instance of gInstances) {
-                        // @ts-expect-error InstaceCommon has version: TODO fix types
                         const instanceVersion = instance.value!.common.version;
                         try {
                             if (
