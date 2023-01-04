@@ -304,6 +304,12 @@ declare global {
             tier?: 1 | 2 | 3;
             /** Variables of this adapter must be subscribed with sendTo to enable updates */
             subscribable?: boolean;
+            /** If compact mode is supported */
+            compact?: boolean;
+            /** If compact mode is active */
+            runAsCompactMode?: boolean;
+            /** Active compact group, instances in this group will be started in one process */
+            compactGroup?: number;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;

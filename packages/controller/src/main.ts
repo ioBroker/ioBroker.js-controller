@@ -3359,16 +3359,16 @@ async function getInstances() {
 
 /**
  * Checks if an instance is relevant for this host to be considered or not
- * @param instance name of the instance
+ * @param instance Object of the instance
  * @param _ipArr IP-Array from this host
- * @returns {boolean} instance needs to be handled by this host (true) or not
+ * @returns true if instance needs to be handled by this host else false
  */
-function instanceRelevantForThisController(instance, _ipArr) {
+function instanceRelevantForThisController(instance: ioBroker.InstanceObject, _ipArr: string[]): boolean {
     // Normalize Compact group configuration
     if (config.system.compact && instance.common.compact) {
         if (instance.common.runAsCompactMode === undefined) {
-            instance.common.runAsCompactMode = null;
-        } // TODO repo logic!!
+            instance.common.runAsCompactMode = false;
+        } // TODO repo logic!! -> someone can further specify this comment?
         if (instance.common.compactGroup === undefined) {
             instance.common.compactGroup = 1;
         } // run in controller by default
@@ -3419,9 +3419,7 @@ function checkAndAddInstance(instance: ioBroker.InstanceObject, ipArr: string[])
         return false;
     }
 
-    // @ts-expect-error we need types if this can exist
     if (config.system.compact && instance.common.compact) {
-        // @ts-expect-error we need types if this can exist
         if (instance.common.runAsCompactMode) {
             // @ts-expect-error we need types if this can exist
             compactProcs[instance.common.compactGroup] = compactProcs[instance.common.compactGroup] || {
@@ -3498,7 +3496,7 @@ function initInstances() {
         } else {
             const name = id.split('.')[2];
             const adapterDir = tools.getAdapterDir(name);
-            if (!fs.existsSync(adapterDir)) {
+            if (!fs.existsSync(adapterDir!)) {
                 procs[id].downloadRetry = procs[id].downloadRetry || 0;
                 installQueue.push({
                     id: id,
@@ -3516,12 +3514,12 @@ function initInstances() {
 /**
  * Chceks if at least one of the instances of given name satisfies the version
  *
- * @param {string} name - name of the dependency
- * @param {string} version - version requirement, e.g. ">=3.3.0"
- * @param {object} instances - object of instances and their corresponding instance objects
+ * @param name - name of the dependency
+ * @param version - version requirement, e.g. ">=3.3.0"
+ * @param instances - object of instances and their corresponding instance objects
  * @throws
  */
-function checkVersion(name, version, instances) {
+function checkVersion(name: string, version: string, instances: Record<string, ioBroker.InstanceObject>) {
     let isFound = false;
 
     if (name === 'js-controller') {
