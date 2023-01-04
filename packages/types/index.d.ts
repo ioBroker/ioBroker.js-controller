@@ -220,18 +220,21 @@ declare global {
             time: number;
         }
 
-        /** A message being passed between adapter instances */
-        interface Message {
+        interface SendableMessage {
             /** The command to be executed */
             command: string;
             /** The message payload */
             message: MessagePayload;
             /** The source of this message */
             from: string;
+            /** Callback information. This is set when the source expects a response */
+            callback?: MessageCallbackInfo;
+        }
+
+        /** A message being passed between adapter instances */
+        interface Message extends SendableMessage {
             /** ID of this message */
             _id: number;
-            /** Callback information. This is set when the source expects a response */
-            callback: MessageCallbackInfo;
         }
 
         type Log = any; // TODO: define this https://github.com/ioBroker/ioBroker.js-controller/blob/master/lib/states/statesInMemServer.js#L873

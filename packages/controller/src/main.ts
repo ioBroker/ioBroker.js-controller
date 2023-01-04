@@ -33,6 +33,9 @@ type TaskObject = ioBroker.SettableObject & { state?: ioBroker.SettableState };
 type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
 type Dependencies = string[] | Record<string, string>[] | string | Record<string, string>;
 
+interface GetLogFilesResult {
+    list: { fileName: string; size: number }[];
+}
 interface UploadTask {
     adapter: string;
     msg: ioBroker.Message;
@@ -45,7 +48,7 @@ interface RebuildArgs {
 }
 
 interface InstallQueueEntry {
-    id: string;
+    id: ioBroker.ObjectIDs.Instance;
     rebuild?: boolean;
     disabled?: boolean;
     version?: string;
@@ -122,7 +125,7 @@ let States: typeof StatesClient;
 let logger: ReturnType<typeof toolsLogger>;
 let isDaemon = false;
 let callbackId = 1;
-const callbacks: Record<string, { cb: () => void }> = {};
+const callbacks: Record<string, { time: number; cb: (message: ioBroker.MessagePayload) => void }> = {};
 const hostname = tools.getHostName();
 const controllerDir = tools.getControllerDir();
 let hostObjectPrefix = `system.host.${hostname}`;
@@ -146,7 +149,7 @@ const VENDOR_FILE = '/etc/iob-vendor.json';
 const procs: Record<string, Process> = {};
 // TODO type is probably InstanceCommon
 const hostAdapter: Record<string, any> = {};
-const subscribe: Record<string, string[]> = {};
+const subscribe: Record<string, ioBroker.ObjectIDs.Instance[]> = {};
 const stopTimeouts: Record<string, StopTimeoutObject> = {};
 let states: StatesClient | null = null;
 let objects: ObjectsClient | null = null;
@@ -237,7 +240,7 @@ function _startMultihost(_config: Record<string, any>, secret: string | false) {
  *
  * @param __config - the iobroker config object
  */
-async function startMultihost(__config: Record<string, any>): Promise<boolean | void> {
+async function startMultihost(__config?: Record<string, any>): Promise<boolean | void> {
     if (compactGroupController) {
         return;
     }
@@ -417,36 +420,28 @@ function createStates(onConnect: () => void) {
         connection: config.states,
         logger: logger,
         hostname: hostname,
-        change: (id, state) => {
+        change: (id, stateOrMessage) => {
             inputCount++;
             if (!id) {
-                return logger.error(`${hostLogPrefix} change event with no ID: ${JSON.stringify(state)}`);
+                return logger.error(`${hostLogPrefix} change event with no ID: ${JSON.stringify(stateOrMessage)}`);
             }
             // If some log transporter activated or deactivated
             if (id.endsWith('.logging')) {
+                const state = stateOrMessage as ioBroker.State;
                 logRedirect(state ? (state.val as boolean) : false, id.substring(0, id.length - '.logging'.length), id);
             } else if (!compactGroupController && id === `messagebox.${hostObjectPrefix}`) {
                 // If this is messagebox, only the main controller is handling the host messages
-                const obj = state;
+                const obj = stateOrMessage as ioBroker.Message;
                 if (obj) {
                     // If callback stored for this request
-                    if (
-                        obj.callback &&
-                        obj.callback.ack &&
-                        obj.callback.id &&
-                        callbacks &&
-                        callbacks[`_${obj.callback.id}`]
-                    ) {
-                        // Call callback function
-                        if (callbacks[`_${obj.callback.id}`].cb) {
-                            callbacks[`_${obj.callback.id}`].cb(obj.message);
-                            delete callbacks[`_${obj.callback.id}`];
-                        }
+                    if (obj.callback && obj.callback.ack && obj.callback.id && callbacks[`_${obj.callback.id}`]) {
+                        callbacks[`_${obj.callback.id}`].cb(obj.message);
+                        delete callbacks[`_${obj.callback.id}`];
 
                         // delete too old callbacks IDs
                         const now = Date.now();
                         for (const _id of Object.keys(callbacks)) {
-                            if (now - callbacks[_id].time > 3600000) {
+                            if (now - callbacks[_id].time > 3_600_000) {
                                 delete callbacks[_id];
                             }
                         }
@@ -455,6 +450,7 @@ function createStates(onConnect: () => void) {
                     }
                 }
             } else if (!compactGroupController && id.match(/^system.adapter.[^.]+\.\d+\.alive$/)) {
+                const state = stateOrMessage as ioBroker.State;
                 // If this system.adapter.NAME.0.alive, only main controller is handling this
                 if (state && !state.ack) {
                     const enabled = state.val;
@@ -483,16 +479,20 @@ function createStates(onConnect: () => void) {
                     });
                 }
             } else if (subscribe[id]) {
-                for (let i = 0; i < subscribe[id].length; i++) {
+                const state = stateOrMessage as ioBroker.State;
+
+                for (const sub of subscribe[id]) {
                     // wake up adapter
-                    if (procs[subscribe[id][i]]) {
+                    if (procs[sub]) {
                         console.log(`Wake up ${id} ${JSON.stringify(state)}`);
-                        startInstance(subscribe[id][i], true);
+                        startInstance(sub, true);
                     } else {
                         logger.warn(`${hostLogPrefix} controller Adapter subscribed on ${id} does not exist!`);
                     }
                 }
             } else if (id === `${hostObjectPrefix}.logLevel`) {
+                const state = stateOrMessage as ioBroker.State;
+
                 if (!config || !config.log || !state || state.ack) {
                     return;
                 }
@@ -523,6 +523,8 @@ function createStates(onConnect: () => void) {
                     from: hostObjectPrefix
                 });
             } else if (id.startsWith(`${hostObjectPrefix}.plugins.`) && id.endsWith('.enabled')) {
+                const state = stateOrMessage as ioBroker.State;
+
                 if (!config || !config.log || !state || state.ack) {
                     return;
                 }
@@ -759,7 +761,7 @@ function createObjects(onConnect: () => void) {
                             }
                             const _ipArr = tools.findIPs();
 
-                            if (checkAndAddInstance(procs[id].config as InstanceObject, _ipArr)) {
+                            if (checkAndAddInstance(procs[id].config as any, _ipArr)) {
                                 if (
                                     procs[id].config.common.enabled &&
                                     (procs[id].config.common.mode !== 'extension' ||
@@ -769,6 +771,7 @@ function createObjects(onConnect: () => void) {
                                         clearTimeout(procs[id].restartTimer);
                                     }
                                     const restartTimeout = (procs[id].config.common.stopTimeout || 500) + 2_500;
+                                    // @ts-expect-error tell ts it is an instance id
                                     procs[id].restartTimer = setTimeout(_id => startInstance(_id), restartTimeout, id);
                                 }
                             } else {
@@ -804,11 +807,12 @@ function createObjects(onConnect: () => void) {
                         );
                     } else {
                         const _ipArr = tools.findIPs();
-                        if (procs[id].config && checkAndAddInstance(procs[id].config as InstanceObject, _ipArr)) {
+                        if (procs[id].config && checkAndAddInstance(procs[id].config as any, _ipArr)) {
                             if (
                                 procs[id].config.common.enabled &&
                                 (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance)
                             ) {
+                                // @ts-expect-error ts not able to infer instance id here
                                 startInstance(id);
                             }
                         } else {
@@ -913,7 +917,8 @@ function createObjects(onConnect: () => void) {
                         (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance)
                     ) {
                         // We should give is a slight delay to allow an pot. former existing process on other host to exit
-                        const restartTimeout = (procs[id].config.common.stopTimeout || 500) + 2500;
+                        const restartTimeout = (procs[id].config.common.stopTimeout || 500) + 2_500;
+                        // @ts-expect-error tell ts it is an instance id
                         procs[id].restartTimer = setTimeout(_id => startInstance(_id), restartTimeout, id);
                     }
                 }
@@ -1374,6 +1379,7 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
         // we need to show city and country at the beginning, so include it now and delete it later if not allowed.
         const diag: Record<string, any> = {
             uuid: obj.native.uuid,
+            // @ts-expect-error fallback has no lang todo
             language: systemConfig.common.language,
             country: '',
             city: '',
@@ -1467,7 +1473,7 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
             const visUtils = require('./lib/vis/states');
             try {
                 return new Promise(resolve => {
-                    visUtils(objects, null, 0, null, async (err, points) => {
+                    visUtils(objects, null, 0, null, async (err: any, points: any) => {
                         let total = null;
                         const tasks = [];
                         if (points && points.length) {
@@ -1609,6 +1615,7 @@ function setMeta() {
                 native: {}
             };
         } else {
+            // @ts-expect-error todo fix later
             newObj = {
                 _id: id,
                 type: 'host',
@@ -1650,21 +1657,21 @@ function setMeta() {
                 }
             };
 
-            if (oldObj && oldObj.common && oldObj.common.icon) {
+            if (oldObj?.common?.icon) {
                 newObj.common.icon = oldObj.common.icon;
             }
-            if (oldObj && oldObj.common && oldObj.common.color) {
+            if (oldObj?.common?.color) {
                 newObj.common.color = oldObj.common.color;
             }
             // remove dynamic information
-            if (newObj.native && newObj.native.hardware && newObj.native.hardware.cpus) {
-                for (let c = 0; c < newObj.native.hardware.cpus.length; c++) {
-                    if (newObj.native.hardware.cpus[c].times) {
-                        delete newObj.native.hardware.cpus[c].times;
+            if (newObj.native?.hardware?.cpus) {
+                for (const cpu of newObj.native.hardware.cpus) {
+                    if (cpu.times) {
+                        delete cpu.times;
                     }
                 }
             }
-            if (oldObj && oldObj.native.hardware && oldObj.native.hardware.networkInterfaces) {
+            if (oldObj?.native.hardware?.networkInterfaces) {
                 newObj.native.hardware.networkInterfaces = oldObj.native.hardware.networkInterfaces;
             }
         }
@@ -1682,7 +1689,7 @@ function setMeta() {
             newObj.ts = Date.now();
             objects!.setObject(id, newObj, err => {
                 if (err) {
-                    logger.error(`${hostLogPrefix} Cannot write host object:${err}`);
+                    logger.error(`${hostLogPrefix} Cannot write host object: ${err.message}`);
                 } else {
                     setIPs(newObj.common.address);
                 }
@@ -2225,7 +2232,7 @@ async function sendTo(
         command = 'send';
     }
 
-    const obj: Partial<ioBroker.Message> = { command, message, from: hostObjectPrefix };
+    const obj: ioBroker.SendableMessage = { command, message, from: hostObjectPrefix };
 
     if (!objName.startsWith('system.adapter.') && !objName.startsWith('system.host.')) {
         objName = `system.adapter.${objName}`;
@@ -2243,7 +2250,7 @@ async function sendTo(
                 callbackId = 1;
             }
 
-            callbacks[`_${obj.callback.id}`] = { cb: callback };
+            callbacks[`_${obj.callback.id}`] = { cb: callback, time: Date.now() };
         } else {
             obj.callback = callback;
             obj.callback.ack = true;
@@ -2328,16 +2335,21 @@ async function startAdapterUpload() {
     const logger = msg.from
         ? {
               log: (text: string) =>
+                  // @ts-expect-error formally text is not allowed in Message, why not warpped in message payload property?
                   states!.pushMessage(msg.from, { command: 'log', text, from: `system.host.${hostname}` }),
               warn: (text: string) =>
+                  // @ts-expect-error formally text is not allowed in Message, why not warpped in message payload property?
                   states!.pushMessage(msg.from, { command: 'warn', text, from: `system.host.${hostname}` }),
               error: (text: string) =>
+                  // @ts-expect-error formally text is not allowed in Message, why not warpped in message payload property?
                   states!.pushMessage(msg.from, { command: 'error', text, from: `system.host.${hostname}` })
           }
         : undefined;
 
+    // @ts-expect-error yes the logger is missing some levels
     await upload.uploadAdapter(uploadTasks[0].adapter, true, true, '', logger);
     await upload.upgradeAdapterObjects(uploadTasks[0].adapter, logger);
+    // @ts-expect-error yes the logger is missing some levels
     await upload.uploadAdapter(uploadTasks[0].adapter, false, true, '', logger);
     // send response to requester
     msg.callback && msg.from && sendTo(msg.from, msg.command, { result: 'done' }, msg.callback);
@@ -2357,7 +2369,7 @@ async function processMessage(msg: ioBroker.Message): Promise<null | void> {
     // and iobroker.socketio/lib/socket.js
 
     if (isStopping) {
-        logger.debug(`${hostLogPrefix} Ignoring incoming Host message becasue controller is stopping ${msg.command}`);
+        logger.debug(`${hostLogPrefix} Ignoring incoming Host message because controller is stopping ${msg.command}`);
         return;
     }
 
@@ -2570,7 +2582,7 @@ async function processMessage(msg: ioBroker.Message): Promise<null | void> {
                         endkey: 'system.host.\u9999'
                     },
                     async (err, doc) => {
-                        const result = tools.getInstalledInfo(version);
+                        const result: Record<string, any> = tools.getInstalledInfo(version);
                         result.hosts = {};
                         if (doc && doc.rows.length) {
                             // Read installed versions of all hosts
@@ -2583,6 +2595,7 @@ async function processMessage(msg: ioBroker.Message): Promise<null | void> {
                                     ioPackCommon.runningVersion = version;
                                     result.hosts[hostname] = ioPackCommon;
                                 } else {
+                                    // @ts-expect-error https://github.com/ioBroker/ioBroker.js-controller/issues/2089
                                     const ioPack = await getVersionFromHost(row.id);
                                     if (ioPack) {
                                         result.hosts[ioPack.host] = ioPack;
@@ -2694,6 +2707,7 @@ async function processMessage(msg: ioBroker.Message): Promise<null | void> {
             if (msg.callback && msg.from) {
                 const lines = msg.message || 200;
                 let text = '';
+                // @ts-expect-error types not know this one
                 let logFile_ = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
 
                 if (!fs.existsSync(logFile_)) {
@@ -2780,7 +2794,7 @@ async function processMessage(msg: ioBroker.Message): Promise<null | void> {
         case 'getLogFiles':
             if (msg.callback && msg.from) {
                 const config = getConfig();
-                const result = { list: [] };
+                const result: GetLogFilesResult = { list: [] };
                 // detect file log
                 if (config && config.log && config.log.transport) {
                     for (const transport in config.log.transport) {
@@ -2818,8 +2832,6 @@ async function processMessage(msg: ioBroker.Message): Promise<null | void> {
                                                 }
                                             }
                                         } catch (e) {
-                                            // push unchecked
-                                            // result.list.push('log/' + transport + '/' + files[f]);
                                             logger.error(
                                                 `${hostLogPrefix} cannot check file: ${path.join(filename, file)} - ${
                                                     e.message
@@ -2919,6 +2931,7 @@ async function processMessage(msg: ioBroker.Message): Promise<null | void> {
             }
             break;
         case 'delLogs': {
+            // @ts-expect-error types not know this one
             const logFile = logger.getFileName(); //controllerDir + '/log/' + tools.appName + '.log';
             fs.existsSync(`${controllerDir}/log/${tools.appName}.log`) &&
                 fs.writeFileSync(`${controllerDir}/log/${tools.appName}.log`, '');
@@ -3036,21 +3049,16 @@ async function processMessage(msg: ioBroker.Message): Promise<null | void> {
                 // Read current state of all log subscribers
                 states!.getKeys('*.logging', (err, keys) => {
                     if (keys && keys.length) {
-                        states!.getStates(keys, (err, obj) => {
-                            if (obj) {
+                        states!.getStates(keys, (err, objs) => {
+                            if (objs) {
                                 for (let i = 0; i < keys.length; i++) {
-                                    // We can JSON.parse, but index is 16x faster
-                                    if (obj[i]) {
+                                    const obj = objs[i];
+                                    if (obj) {
                                         const id = keys[i]
                                             .substring(0, keys[i].length - '.logging'.length)
                                             .replace(/^io\./, '');
 
-                                        if (
-                                            (typeof obj[i] === 'string' &&
-                                                (obj[i].includes('"val":true') || obj[i].includes('"val":"true"'))) ||
-                                            (typeof obj[i] === 'object' &&
-                                                (obj[i].val === true || obj[i].val === 'true'))
-                                        ) {
+                                        if (obj.val === true) {
                                             logs.push(`Subscriber - ${id} ENABLED`);
                                         } else {
                                             logs && logs.push(`Subscriber - ${id} (disabled)`);
@@ -3063,7 +3071,7 @@ async function processMessage(msg: ioBroker.Message): Promise<null | void> {
                                     logger.error(`${hostLogPrefix} LOGINFO: ${logs[m]}`);
                                 }
                                 logs = [];
-                            }, 3000);
+                            }, 3_000);
                         });
                     }
                 });
@@ -3079,7 +3087,7 @@ async function processMessage(msg: ioBroker.Message): Promise<null | void> {
             break;
 
         case 'updateMultihost': {
-            const result = startMultihost(null);
+            const result = startMultihost();
             if (msg.callback) {
                 sendTo(msg.from, msg.command, { result: result }, msg.callback);
             }
@@ -3116,7 +3124,7 @@ async function processMessage(msg: ioBroker.Message): Promise<null | void> {
                         msg.message.rebuildArgs ? ` (Args: ${JSON.stringify(msg.message.rebuildArgs)})` : ''
                     }`
                 );
-                const installObj = { id: msg.message.id, rebuild: true };
+                const installObj: InstallQueueEntry = { id: msg.message.id, rebuild: true };
                 if (msg.message.rebuildArgs) {
                     installObj.rebuildArgs = msg.message.rebuildArgs;
                 }
@@ -3249,16 +3257,13 @@ async function processMessage(msg: ioBroker.Message): Promise<null | void> {
 
         case 'certsUpdated': {
             // restart all instances that depends on lets encrypt, except the issuer
-            const instances = [];
+            const instances: string[] = [];
             Object.keys(procs).forEach(id => {
                 if (
-                    procs[id].config &&
-                    procs[id].config.common &&
-                    procs[id].config.common.enabled && // if enabled
-                    procs[id].config.native &&
-                    procs[id].config.native.leEnabled && // if using letsencrypt
-                    !procs[id].config.native.leUpdate && // if not updating certs itself
-                    procs[id].config.common.mode === 'daemon' && // if constantly running
+                    procs[id].config?.common?.enabled && // if enabled
+                    procs[id].config?.native?.leEnabled && // if using letsencrypt
+                    !procs[id].config?.native?.leUpdate && // if not updating certs itself
+                    procs[id].config?.common.mode === 'daemon' && // if constantly running
                     (!msg.message || msg.message.instance !== id)
                 ) {
                     // and it not the issuer
@@ -3266,6 +3271,8 @@ async function processMessage(msg: ioBroker.Message): Promise<null | void> {
                     instances.push(id);
                 }
             });
+
+            // @ts-expect-error ts not knows that these are instance ids
             restartInstances(instances);
 
             break;
@@ -3304,17 +3311,17 @@ async function processMessage(msg: ioBroker.Message): Promise<null | void> {
 }
 
 // restart given instances sequentially
-function restartInstances(instances, cb) {
+function restartInstances(instances: ioBroker.ObjectIDs.Instance[], cb?: () => void): void {
     if (!instances || !instances.length) {
         cb && cb();
     } else {
-        const id = instances.shift();
+        const id = instances.shift()!;
         logger.info(
             `${hostLogPrefix} instance "${id}" restarted because the "let's encrypt" certificates were updated`
         );
         stopInstance(id, false, () => {
             startInstance(id);
-            setTimeout(() => restartInstances(instances, cb), 3000);
+            setTimeout(() => restartInstances(instances, cb), 3_000);
         });
     }
 }
@@ -3340,18 +3347,19 @@ async function getInstances() {
 
         for (const instance of instances) {
             // register all common fields, that may not be deleted, like "mobile" or "history"
-            if (objects.addPreserveSettings && instance.common.preserveSettings) {
-                //noinspection JSUnresolvedVariable
-                objects.addPreserveSettings(instance.common.preserveSettings);
+            if (instance.common.preserveSettings) {
+                objects!.addPreserveSettings(instance.common.preserveSettings);
             }
 
+            // @ts-expect-error is mode web valid, it is not in schema
             if (instance.common.mode === 'web' || instance.common.mode === 'none') {
                 if (instance.common.host === hostname) {
                     const name = instance._id.split('.')[2];
                     const adapterDir = tools.getAdapterDir(name);
-                    if (!fs.existsSync(adapterDir)) {
+                    if (!fs.existsSync(adapterDir!)) {
                         procs[instance._id] = { downloadRetry: 0, config: { common: { enabled: false } } };
                         installQueue.push({
+                            // @ts-expect-error https://github.com/ioBroker/ioBroker.js-controller/issues/2089
                             id: instance._id,
                             disabled: true,
                             version: instance.common.installedVersion || instance.common.version,
@@ -3469,8 +3477,8 @@ function checkAndAddInstance(instance: ioBroker.InstanceObject, ipArr: string[])
 
 function initInstances() {
     let seconds = 0;
-    const interval = (config.system && config.system.instanceStartInterval) || 2000;
-    let id;
+    const interval = (config.system && config.system.instanceStartInterval) || 2_000;
+    let id: string;
 
     // Start first admin
     for (id of Object.keys(procs)) {
@@ -3484,10 +3492,11 @@ function initInstances() {
                     logger.info(`${hostLogPrefix} instance "${id}" was not started, because running.`);
                     continue;
                 }
-                if (!installQueue.includes(id)) {
+                if (!installQueue.find(obj => obj.id === id)) {
                     if (procs[id].restartTimer) {
                         clearTimeout(procs[id].restartTimer);
                     }
+                    // @ts-expect-error tell ts it is an instance id
                     procs[id].restartTimer = setTimeout(_id => startInstance(_id), interval * seconds, id);
 
                     seconds += 2; // 4 seconds pause between starts
@@ -3511,10 +3520,11 @@ function initInstances() {
                     continue;
                 }
 
-                if (!installQueue.includes(id)) {
+                if (!installQueue.find(obj => obj.id === id)) {
                     if (procs[id].restartTimer) {
                         clearTimeout(procs[id].restartTimer);
                     }
+                    // @ts-expect-error tell ts it is an instance id
                     procs[id].restartTimer = setTimeout(_id => startInstance(_id), interval * seconds, id);
 
                     if (!procs[id].config.common.onlyWWW) {
@@ -3528,6 +3538,7 @@ function initInstances() {
             if (!fs.existsSync(adapterDir!)) {
                 procs[id].downloadRetry = procs[id].downloadRetry || 0;
                 installQueue.push({
+                    // @ts-expect-error ts not knows that these are instance ids
                     id: id,
                     disabled: true,
                     version: procs[id].config.common.installedVersion || procs[id].config.common.version,
@@ -3646,13 +3657,17 @@ function storePids(): void {
             storeTimer = null;
             const pids = [];
             for (const id of Object.keys(procs)) {
-                if (procs[id].process && procs[id].process.pid && !procs[id].startedAsCompactGroup) {
-                    pids.push(procs[id].process.pid);
+                const proc = procs[id];
+
+                if (proc.process?.pid && !proc.startedAsCompactGroup) {
+                    pids.push(proc.process.pid);
                 }
             }
             for (const id of Object.keys(compactProcs)) {
-                if (compactProcs[id].process && compactProcs[id].process.pid) {
-                    pids.push(compactProcs[id].process.pid);
+                const compactProc = compactProcs[id];
+
+                if (compactProc.process?.pid) {
+                    pids.push(compactProc.process.pid);
                 }
             }
             pids.push(process.pid);
@@ -3679,7 +3694,7 @@ function installAdapters() {
     }
     let name = task.id.split('.')[2];
     if (task.version && !task.rebuild) {
-        name += '@' + task.version;
+        name += `@${task.version}`;
     }
 
     const commandScope = task.rebuild ? 'rebuild' : 'install';
@@ -3694,8 +3709,11 @@ function installAdapters() {
         return;
     }
 
-    if (procs[task.id] && procs[task.id].downloadRetry < 4) {
-        procs[task.id].downloadRetry++;
+    const proc = procs[task.id];
+    proc.downloadRetry = proc.downloadRetry ?? 0;
+
+    if (proc?.downloadRetry < 4) {
+        proc.downloadRetry++;
 
         if (task.rebuild) {
             logger.warn(
@@ -3705,15 +3723,13 @@ function installAdapters() {
             );
         } else {
             logger.warn(
-                `${hostLogPrefix} startInstance cannot find adapter "${name}". Try to install it... ${
-                    procs[task.id].downloadRetry
-                } attempt`
+                `${hostLogPrefix} startInstance cannot find adapter "${name}". Try to install it... ${proc.downloadRetry} attempt`
             );
         }
 
         const installArgs = [];
         const installOptions = { windowsHide: true };
-        if (!task.rebuild && task.installedFrom && procs[task.id].downloadRetry < 3) {
+        if (!task.rebuild && task.installedFrom && proc.downloadRetry < 3) {
             // two tries with installed location, afterwards we try normal npm version install
             if (tools.isShortGithubUrl(task.installedFrom) || task.installedFrom.includes('://')) {
                 // Installing from URL supports raw http(s) and file URLs as well as the short GitHub URL format
@@ -3724,7 +3740,7 @@ function installAdapters() {
                 installArgs.push('install');
                 let installedFrom = task.installedFrom;
                 if (installedFrom.startsWith(`${tools.appName}.`)) {
-                    installedFrom = installedFrom.substr(tools.appName.length + 1);
+                    installedFrom = installedFrom.substring(tools.appName.length + 1);
                 }
                 installArgs.push(installedFrom);
             }
@@ -3744,9 +3760,7 @@ function installAdapters() {
             `${hostLogPrefix} ${tools.appName} ${installArgs.join(' ')}${
                 task.rebuild
                     ? ''
-                    : ` using ${
-                          procs[task.id].downloadRetry < 3 && task.installedFrom ? 'installedFrom' : 'installedVersion'
-                      }`
+                    : ` using ${proc.downloadRetry < 3 && task.installedFrom ? 'installedFrom' : 'installedVersion'}`
             }`
         );
         installArgs.unshift(`${__dirname}/${tools.appName}.js`);
@@ -3818,7 +3832,7 @@ function installAdapters() {
             });
             child.on('error', err => {
                 logger.error(
-                    `${hostLogPrefix} Cannot execute "${__dirname}/${tools.appName}.js ${commandScope} ${name}: ${err}`
+                    `${hostLogPrefix} Cannot execute "${__dirname}/${tools.appName}.js ${commandScope} ${name}: ${err.message}`
                 );
                 setTimeout(() => {
                     installQueue.shift();
@@ -3926,6 +3940,7 @@ function startScheduledInstance(callback?: () => void): void {
                     try {
                         proc.process = cp.fork(fileNameFull, args, {
                             execArgv: tools.getDefaultNodeArgs(fileNameFull),
+                            // @ts-expect-error missing from types but we already tested it is needed
                             windowsHide: true,
                             cwd: adapterDir
                         });
@@ -4493,11 +4508,11 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
                 // Some parts of the Adapter start logic are async, so "the finalization" is put into this method
                 const handleAdapterProcessStart = () => {
-                    if (!procs[id]) {
+                    const proc = procs[id];
+
+                    if (!proc) {
                         return;
                     }
-
-                    const proc = procs[id];
 
                     if (!proc.process) {
                         // We were not able or should not start as compact mode
@@ -4505,8 +4520,9 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                             proc.process = cp.fork(adapterMainFile, args, {
                                 execArgv: tools.getDefaultNodeArgs(adapterMainFile),
                                 stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
+                                // @ts-expect-error missing from types but we already tested it is needed
                                 windowsHide: true,
-                                cwd: adapterDir
+                                cwd: adapterDir!
                             });
                         } catch (err) {
                             logger.error(`${hostLogPrefix} instance ${instance._id} could not be started: ${err}`);
@@ -4557,29 +4573,26 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
                     storePids(); // Store all pids to make possible kill them all
 
-                    !procs[id].startedInCompactMode &&
-                        !procs[id].startedAsCompactGroup &&
-                        procs[id].process &&
-                        procs[id].process.on('exit', exitHandler);
+                    if (!proc.startedInCompactMode && !proc.startedAsCompactGroup && proc.process) {
+                        proc.process.on('exit', exitHandler);
+                    }
 
                     if (
                         !wakeUp &&
-                        procs[id] &&
-                        procs[id].process &&
-                        procs[id].config.common &&
-                        procs[id].config.common.enabled &&
-                        (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance) &&
+                        proc?.process &&
+                        proc.config.common?.enabled &&
+                        (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance) &&
                         mode !== 'once'
                     ) {
                         if (procs[id].startedInCompactMode) {
                             logger.info(`${hostLogPrefix} instance ${instance._id} started in COMPACT mode`);
                         } else if (procs[id].startedAsCompactGroup) {
                             logger.info(
-                                `${hostLogPrefix} instance ${instance._id} is handled by compact group controller pid ${procs[id].process.pid}`
+                                `${hostLogPrefix} instance ${instance._id} is handled by compact group controller pid ${proc.process.pid}`
                             );
                         } else {
                             logger.info(
-                                `${hostLogPrefix} instance ${instance._id} started with pid ${procs[id].process.pid}`
+                                `${hostLogPrefix} instance ${instance._id} started with pid ${proc.process.pid}`
                             );
                         }
                     }
@@ -4593,7 +4606,8 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                         (compactGroupController && instance.common.compactGroup !== 0)
                     ) {
                         // set to 0 to stop any pot. already running instances, especially broken compactModes
-                        states.setState(`${id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix }, () => {
+                        states!.setState(`${id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix }, () => {
+                            const proc = procs[id];
                             const _instance =
                                 instance && instance._id && instance.common ? instance._id.split('.').pop() || 0 : 0;
                             const logLevel =
@@ -4610,23 +4624,26 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                         require('@alcalzone/esbuild-register');
                                     }
 
-                                    procs[id].process = {
+                                    proc.process = {
+                                        // @ts-expect-error todo add types for ts adapter procs
                                         logic: require(adapterMainFile)({
                                             logLevel,
                                             compactInstance: _instance,
                                             compact: true
                                         })
                                     };
-                                    procs[id].process.logic.on('exit', exitHandler);
 
-                                    procs[id].startedInCompactMode = true;
+                                    // @ts-expect-error todo add types for ts adapter procs
+                                    proc.process.logic.on('exit', exitHandler);
+
+                                    proc.startedInCompactMode = true;
                                 } catch (e) {
                                     logger.error(
                                         `${hostLogPrefix} Cannot start ${name}.${_instance} in compact mode. Fallback to normal start! : ${e.message}`
                                     );
                                     logger.error(e.stackTrace);
                                     procs[id].process && delete procs[id].process;
-                                    states.setState(`${id}.sigKill`, { val: -1, ack: false, from: hostObjectPrefix }); // if started let it end itself
+                                    states!.setState(`${id}.sigKill`, { val: -1, ack: false, from: hostObjectPrefix }); // if started let it end itself
                                 }
                             } else {
                                 logger.warn(
@@ -4634,13 +4651,15 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                 );
                             }
 
-                            if (procs[id].process && !procs[id].process.kill) {
-                                procs[id].process.kill = () =>
-                                    states.setState(`${id}.sigKill`, {
+                            if (proc.process && !proc.process.kill) {
+                                // @ts-expect-error todo type it somehow
+                                proc.process.kill = () => {
+                                    states!.setState(`${id}.sigKill`, {
                                         val: -1,
                                         ack: false,
                                         from: hostObjectPrefix
                                     });
+                                };
                             }
 
                             handleAdapterProcessStart();
@@ -4671,6 +4690,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                     compactControllerArgs,
                                     {
                                         stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
+                                        // @ts-expect-error missing from types but we already tested it is needed
                                         windowsHide: true
                                     }
                                 );
@@ -4911,7 +4931,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                     procs[id].process = cp.fork(adapterMainFile, args, {
                         execArgv: tools.getDefaultNodeArgs(adapterMainFile),
                         windowsHide: true,
-                        cwd: adapterDir
+                        cwd: adapterDir!
                     });
                 } catch (err) {
                     logger.info(`${hostLogPrefix} instance ${instance._id} could not be started: ${err}`);
@@ -5411,7 +5431,7 @@ function stop(force?: boolean, callback?: () => void) {
 }
 
 // bootstrap
-function init(compactGroupId: number): void {
+function init(compactGroupId?: number): void {
     if (compactGroupId) {
         compactGroupController = true;
         compactGroup = compactGroupId;
@@ -5444,15 +5464,19 @@ function init(compactGroupId: number): void {
     // Get "objects" object
     // If "file" and on the local machine
     if (dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host) && !compactGroupController) {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         Objects = require(`@iobroker/db-objects-${config.objects.type}`).Server;
     } else {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         Objects = require('@iobroker/js-controller-common-db').getObjectsConstructor();
     }
 
     // Get "states" object
     if (dbTools.isLocalStatesDbServer(config.states.type, config.states.host) && !compactGroupController) {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         States = require(`@iobroker/db-states-${config.states.type}`).Server;
     } else {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
         States = require('@iobroker/js-controller-common-db').getStatesConstructor();
     }
 
@@ -5752,7 +5776,7 @@ function init(compactGroupId: number): void {
         connectTimeout = null;
         logger.error(`${hostLogPrefix} No connection to databases possible, restart`);
         !compactGroupController && processMessage({ command: 'cmdExec', message: { data: '_restart' } });
-        setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), compactGroupController ? 0 : 1000);
+        setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), compactGroupController ? 0 : 1_000);
     }, 30_000);
 
     const exceptionHandler = (err: Error) => {

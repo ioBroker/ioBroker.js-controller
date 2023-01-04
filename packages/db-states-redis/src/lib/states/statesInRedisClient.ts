@@ -43,12 +43,13 @@ interface InternalLogObject extends LogObject {
     _id: number;
 }
 
-type ChangeFunction = (id: string, state: ioBroker.State | null) => void;
+type UserChangeFunction = (id: string, state: ioBroker.State | null) => void;
+type ChangeFunction = (id: string, state: ioBroker.State | ioBroker.Message | null) => void;
 
 interface StatesSettings {
     connected?: () => void;
     disconnected?: () => void;
-    changeUser?: ChangeFunction;
+    changeUser?: UserChangeFunction;
     change?: ChangeFunction;
     connection: ConnectionOptions;
     autoConnect?: boolean;
@@ -1193,7 +1194,7 @@ export class StateRedisClient {
 
     async pushMessage(
         id: string,
-        state: ioBroker.Message,
+        message: ioBroker.SendableMessage,
         callback?: (err: Error | undefined | null, id?: string) => void
     ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
@@ -1204,7 +1205,7 @@ export class StateRedisClient {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        state._id = this.globalMessageId++;
+        const state: ioBroker.Message = { _id: this.globalMessageId++, ...message };
         if (this.globalMessageId >= 0xffffffff) {
             this.globalMessageId = 0;
         }

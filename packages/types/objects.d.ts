@@ -311,6 +311,10 @@ declare global {
             runAsCompactMode?: boolean;
             /** Active compact group, instances in this group will be started in one process */
             compactGroup?: number;
+            /** String (or array) with names of attributes in common of instance, which will not be deleted. */
+            preserveSettings?: string | string[];
+            installedVersion?: string;
+            installedFrom?: string;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
@@ -329,6 +333,8 @@ declare global {
 
             type: 'js-controller';
             platform: 'Javascript/Node.js';
+
+            color?: string;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;

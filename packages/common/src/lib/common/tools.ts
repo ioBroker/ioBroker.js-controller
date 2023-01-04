@@ -3554,7 +3554,7 @@ export async function getInstancesOrderedByStartPrio(
     objects: any,
     logger: any,
     logPrefix = ''
-): Promise<Record<string, any>[]> {
+): Promise<ioBroker.InstanceObject[]> {
     const instances: OrderedInstancesObject = { 1: [], 2: [], 3: [], admin: [] };
     const allowedTiers = [1, 2, 3];
 
