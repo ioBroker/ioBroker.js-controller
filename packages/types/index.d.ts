@@ -14,7 +14,6 @@
 
 import { AdapterClass, AdapterOptions as _AdapterOptions } from './build/types';
 import * as fs from 'fs';
-import { ObjectTypeToObjectId } from './objects';
 export {}; // avoids exporting AtLeastOne into the global scope
 
 // Requires at least one of the properties of T to be given, whether it's optional or not
