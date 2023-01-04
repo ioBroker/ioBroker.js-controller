@@ -6962,7 +6962,7 @@ export class AdapterClass extends EventEmitter {
         const { command, message, callback } = _options;
         let { instanceName } = _options;
 
-        const obj: Partial<ioBroker.Message> = {
+        const obj: ioBroker.SendableMessage = {
             command: command,
             message: message,
             from: `system.adapter.${this.namespace}`
@@ -7014,7 +7014,7 @@ export class AdapterClass extends EventEmitter {
                     if (_obj && _obj.rows) {
                         for (const row of _obj.rows) {
                             try {
-                                await adapterStates!.pushMessage(row.id, obj as any);
+                                await adapterStates!.pushMessage(row.id, obj);
                             } catch (e) {
                                 // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
                                 return tools.maybeCallbackWithError(callback, e);
@@ -7049,7 +7049,7 @@ export class AdapterClass extends EventEmitter {
                     // delete too old callbacks IDs
                     const now = Date.now();
                     for (const [_id, cb] of Object.entries(this.callbacks)) {
-                        if (now - cb.time! > 3600000) {
+                        if (now - cb.time! > 3_600_000) {
                             delete this.callbacks[_id];
                         }
                     }
@@ -7060,7 +7060,7 @@ export class AdapterClass extends EventEmitter {
             }
 
             try {
-                await adapterStates.pushMessage(instanceName, obj as any);
+                await adapterStates.pushMessage(instanceName, obj);
             } catch (e) {
                 // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
                 return tools.maybeCallbackWithError(callback, e);
