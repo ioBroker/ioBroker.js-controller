@@ -3906,6 +3906,11 @@ export class ObjectsInRedisClient {
                         return { id: 'parseError', value: null };
                     }
 
+                    if (!obj) {
+                        this.log.error(`${this.namespace} empty object!`);
+                        return { id: 'parseError', value: null };
+                    }
+
                     if (matches[2] && matches[2].trim() === 'doc._id') {
                         return { id: obj._id, value: obj };
                     } else if (matches[2] && matches[2].trim() === 'doc.common.name' && obj.common) {
