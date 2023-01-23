@@ -65,7 +65,9 @@ module.exports = class CLICert extends CLICommand {
             certName = 'defaultPublic';
         }
         const { callback, dbConnect } = this.options;
-        dbConnect((objects, _states, _isOffline, _objectDbType, _config) => {
+        dbConnect(params => {
+            const { objects } = params;
+
             objects.getObject('system.certificates', (err, certs) => {
                 if (!err && certs && certs.native && certs.native.certificates && certs.native.certificates[certName]) {
                     const certInfo = tools.getCertificateInfo(certs.native.certificates[certName]);

@@ -77,7 +77,9 @@ export class CLIHost extends CLICommand {
             return void callback(35);
         }
 
-        dbConnect(async (objects, states, isOffline) => {
+        dbConnect(async params => {
+            const { objects, isOffline } = params;
+
             try {
                 if (!isOffline) {
                     CLI.error.cannotChangeRunningSystem();
@@ -153,7 +155,9 @@ export class CLIHost extends CLICommand {
      */
     renameHost(oldHostname: string | undefined, newHostname: string): void {
         const { callback, dbConnect, showHelp } = this.options;
-        dbConnect(async (objects, states, isOffline) => {
+        dbConnect(async params => {
+            const { isOffline, objects } = params;
+
             try {
                 if (!isOffline) {
                     CLI.error.cannotChangeRunningSystem();

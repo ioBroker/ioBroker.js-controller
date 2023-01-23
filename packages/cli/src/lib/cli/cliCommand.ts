@@ -1,14 +1,14 @@
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 
-export type DBConnectCallback = (
-    objects: ObjectsClient,
-    states: StatesClient,
-    isOffline: boolean,
-    objectsDBType: string,
+export type DBConnectCallback = (params: {
+    objects: ObjectsClient;
+    states: StatesClient;
+    isOffline: boolean;
+    objectsDBType: string;
     /** the iobroker.json config file */
-    config?: Record<string, any>
-) => void;
+    config?: Record<string, any>;
+}) => void;
 
 export interface CLICommandContext {
     /** Invoke this before doing anything in the database */

@@ -2072,8 +2072,8 @@ export async function getHostInfo(objects: any): Promise<Record<string, any>> {
         data.Platform = 'OSX';
     }
 
-    const systemConfig: ioBroker.Object = await objects.getObjectAsync('system.config');
-    const systemRepos: ioBroker.Object = await objects.getObjectAsync('system.repositories');
+    const systemConfig: ioBroker.OtherObject = await objects.getObjectAsync('system.config');
+    const systemRepos: ioBroker.OtherObject = await objects.getObjectAsync('system.repositories');
 
     // Check if repositories exists
     const allRepos: Record<string, any> = {};

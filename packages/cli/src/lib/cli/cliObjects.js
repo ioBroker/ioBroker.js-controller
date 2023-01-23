@@ -56,7 +56,9 @@ module.exports = class CLIObjects extends CLICommand {
      */
     activateSets() {
         const { callback, dbConnect } = this.options;
-        dbConnect(async (objects, states) => {
+        dbConnect(async params => {
+            const { states, objects } = params;
+
             if (!parseInt(await objects.getMeta('objects.features.useSets'))) {
                 // all hosts need to be stopped for this
                 if (await tools.isHostRunning(objects, states)) {
