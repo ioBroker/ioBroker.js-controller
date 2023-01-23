@@ -16,7 +16,7 @@ export class CLIHost extends CLICommand {
      * Executes a command
      * @param args
      */
-    execute(args: any[]) {
+    execute(args: any[]): void {
         const command = args[0];
 
         switch (command) {
@@ -36,7 +36,7 @@ export class CLIHost extends CLICommand {
      * When in single-host mode, changes the hostname of the host and all instances to the current one
      * @param _args
      */
-    self(_args: any[]) {
+    self(_args: any[]): void {
         this.renameHost(undefined, os.hostname());
     }
 
@@ -44,7 +44,7 @@ export class CLIHost extends CLICommand {
      * Changes the current host's hostname to the given one
      * @param args
      */
-    set(args: any[]) {
+    set(args: any[]): void {
         const { callback } = this.options;
 
         const newHostname: string = args[1];
@@ -60,7 +60,7 @@ export class CLIHost extends CLICommand {
      * Removes the host with the given name
      * @param args
      */
-    remove(args: any[]) {
+    remove(args: any[]): void {
         const { callback, dbConnect } = this.options;
 
         const hostname: string = args[1];
@@ -135,7 +135,7 @@ export class CLIHost extends CLICommand {
      * Renames the host with the given name to the current one (opposite of `set()`)
      * @param args
      */
-    rename(args: any[]) {
+    rename(args: any[]): void {
         const { callback } = this.options;
 
         const oldHostname: string = args[0];
