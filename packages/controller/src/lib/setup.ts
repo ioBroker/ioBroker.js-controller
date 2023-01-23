@@ -2,7 +2,7 @@
  *
  *  ioBroker Command Line Interface (CLI)
  *
- *  7'2014-2022 bluefox <dogafox@gmail.com>
+ *  7'2014-2023 bluefox <dogafox@gmail.com>
  *         2014 hobbyquaker <hq@ccu.io>
  *
  */
@@ -18,12 +18,9 @@ import { tools as dbTools, getObjectsConstructor, getStatesConstructor } from '@
 import path from 'path';
 import { PluginHandler } from '@iobroker/plugin-base';
 import yargs from 'yargs';
-import type {
-    CLICommandContext,
-    CLICommandOptions,
-    DBConnectCallback
-} from '@iobroker/js-controller-cli/build/lib/cli/cliCommand';
-import type { DbConnectAsyncReturn } from '@iobroker/js-controller-cli/src/lib/_Types';
+// TODO: these imports are okay as setup.ts will be moved into cli package soon
+import type { CLICommandContext, CLICommandOptions } from '@iobroker/js-controller-cli/src/lib/cli/cliCommand';
+import type { DbConnectCallback, DbConnectAsyncReturn } from '@iobroker/js-controller-cli/src/lib/_Types';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type { Client as StateRedisClient } from '@iobroker/db-states-redis';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
@@ -518,7 +515,7 @@ async function processCommand(
     callback: ExitCodeCb
 ): Promise<void> {
     const commandContext: CLICommandContext = { dbConnect, callback, showHelp };
-    const commandOptions: CLICommandOptions = Object.assign({}, params, commandContext);
+    const commandOptions: CLICommandOptions = { ...params, ...commandContext };
     debug(`commandOptions: ${JSON.stringify(commandOptions)}`);
     debug(`args: ${JSON.stringify(args)}`);
 
@@ -558,16 +555,18 @@ async function processCommand(
         case 'update': {
             Objects = getObjectsConstructor();
             const repoUrl = args[0]; // Repo url or name
-            dbConnect(params, async (_objects, _states) => {
+            dbConnect(params, async dbParams => {
+                const { objects, states } = dbParams;
+
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
                 const Repo = require('./setup/setupRepo.js');
                 const repo = new Repo({
-                    objects: _objects,
-                    states: _states
+                    objects,
+                    states
                 });
 
                 await repo.showRepo(repoUrl, params);
-                setTimeout(callback, 1000);
+                setTimeout(callback, 1_000);
             });
             break;
         }
@@ -652,7 +651,7 @@ async function processCommand(
                                 const Cert = cli.command.cert;
                                 // Create a new instance of the cert command,
                                 // but use the resolve method as a callback
-                                const cert = new Cert(Object.assign({}, commandOptions, { callback: resolve }));
+                                const cert = new Cert({ ...commandOptions, callback: resolve });
                                 cert.create();
                             });
                         }
@@ -819,7 +818,8 @@ async function processCommand(
 
         case 'info': {
             Objects = getObjectsConstructor();
-            dbConnect(params, async objects => {
+            dbConnect(params, async dbParams => {
+                const { objects } = dbParams;
                 try {
                     const data = await tools.getHostInfo(objects!);
                     // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -1255,8 +1255,9 @@ async function processCommand(
                     `Command "clean" clears all Objects and States. To execute it write "${tools.appName} clean yes"`
                 );
             } else {
-                dbConnect(params, async (_obj, _stat, isNotRun) => {
-                    if (!isNotRun) {
+                dbConnect(params, async dbParams => {
+                    const { isOffline } = dbParams;
+                    if (!isOffline) {
                         console.error(`Stop ${tools.appName} first!`);
                         return void callback(EXIT_CODES.CONTROLLER_RUNNING);
                     }
@@ -1278,8 +1279,10 @@ async function processCommand(
         case 'restore': {
             const Backup = (await import('@iobroker/js-controller-cli')).setupBackup;
 
-            dbConnect(params, (_obj, _stat, isNotRun) => {
-                if (!isNotRun) {
+            dbConnect(params, dbParams => {
+                const { isOffline } = dbParams;
+
+                if (!isOffline) {
                     console.error(`Stop ${tools.appName} first!`);
                     return void callback(EXIT_CODES.CONTROLLER_RUNNING);
                 }
@@ -1354,7 +1357,7 @@ async function processCommand(
 
         case 'l':
         case 'list': {
-            dbConnect(params, async (_objects, _states, _isOffline, _objectsType) => {
+            dbConnect(params, async () => {
                 const { setupList: List } = await import('@iobroker/js-controller-cli');
                 const list = new List({
                     states: states!,
@@ -2279,7 +2282,8 @@ async function processCommand(
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
 
-            dbConnect(params, async (objects, _states, isOffline, objectType) => {
+            dbConnect(params, async dbParams => {
+                const { objects, objectsDBType } = dbParams;
                 if (cmd === 'read' || cmd === 'r') {
                     const toRead = args[1];
                     const parts = toRead.replace(/\\/g, '/').split('/');
@@ -2402,7 +2406,7 @@ async function processCommand(
                     });
                 } else if (cmd === 'sync') {
                     // Sync
-                    if (objectType === 'redis') {
+                    if (objectsDBType === 'redis') {
                         console.log('File Sync is not available when database type "redis" is used.');
                         return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                     }
@@ -2464,10 +2468,11 @@ async function processCommand(
 
         case 'id':
         case 'uuid': {
-            dbConnect(params, objects => {
+            dbConnect(params, dbParams => {
+                const { objects } = dbParams;
                 objects.getObject('system.meta.uuid', (err, obj) => {
                     if (err) {
-                        console.error('Error: ' + err);
+                        console.error(`Error: ${err}`);
                         return void callback(EXIT_CODES.CANNOT_GET_UUID);
                     }
                     if (obj && obj.native) {
@@ -2501,8 +2506,10 @@ async function processCommand(
         }
 
         case 'checklog': {
-            dbConnect(params, (objects, states, isOffline, objectType) => {
-                if (isOffline && dbTools.objectsDbHasServer(objectType)) {
+            dbConnect(params, dbParams => {
+                const { objects, isOffline, objectsDBType } = dbParams;
+
+                if (isOffline && dbTools.objectsDbHasServer(objectsDBType)) {
                     console.log(`${tools.appName} is not running`);
                     return void callback(EXIT_CODES.CONTROLLER_NOT_RUNNING);
                 } else {
@@ -2510,7 +2517,7 @@ async function processCommand(
                     objects.getObjectList(
                         {
                             startkey: 'system.host.',
-                            endkey: 'system.host.' + '\u9999'
+                            endkey: `system.host.\u9999`
                         },
                         null,
                         (err, res) => {
@@ -2553,12 +2560,14 @@ async function processCommand(
                 repoUrlOrCommand = 'show';
             }
 
-            dbConnect(params, async (_objects, _states) => {
+            dbConnect(params, async dbParams => {
+                const { objects, states } = dbParams;
+
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
                 const Repo = require('./setup/setupRepo.js');
                 const repo = new Repo({
-                    objects: _objects,
-                    states: _states
+                    objects,
+                    states
                 });
 
                 if (repoUrlOrCommand === 'show') {
@@ -3125,19 +3134,19 @@ function initializePlugins(config: Record<string, any>): Promise<void> {
     });
 }
 
-function dbConnect(callback: DBConnectCallback): void;
-function dbConnect(params: Record<string, any>, callback: DBConnectCallback): void;
-function dbConnect(onlyCheck: boolean, params: Record<string, any>, callback: DBConnectCallback): void;
+function dbConnect(callback: DbConnectCallback): void;
+function dbConnect(params: Record<string, any>, callback: DbConnectCallback): void;
+function dbConnect(onlyCheck: boolean, params: Record<string, any>, callback: DbConnectCallback): void;
 /**
  * Connects to the DB or tests the connection.
  */
 function dbConnect(
-    onlyCheck: boolean | Record<string, any> | DBConnectCallback,
-    params?: Record<string, any> | DBConnectCallback,
-    callback?: DBConnectCallback
+    onlyCheck: boolean | Record<string, any> | DbConnectCallback,
+    params?: Record<string, any> | DbConnectCallback,
+    callback?: DbConnectCallback
 ): void {
     if (typeof onlyCheck === 'object') {
-        callback = params as DBConnectCallback;
+        callback = params as DbConnectCallback;
         params = onlyCheck;
         onlyCheck = false;
     }
@@ -3146,7 +3155,7 @@ function dbConnect(
         onlyCheck = false;
     }
     if (typeof params === 'function') {
-        callback = params as DBConnectCallback;
+        callback = params as DbConnectCallback;
         params = {};
     }
 
@@ -3159,7 +3168,7 @@ function dbConnect(
     const config = fs.readJSONSync(tools.getConfigFileName());
 
     if (objects && states) {
-        return void callback(objects, states, false, config.objects.type, config);
+        return void callback({ objects, states, isOffline: false, objectsDBType: config.objects.type, config });
     }
 
     config.states = config.states || { type: 'jsonl' };
@@ -3214,7 +3223,13 @@ function dbConnect(
                             } catch {
                                 // ignore in silence
                             }
-                            return void callback(objects!, states!, true, config.objects.type, config);
+                            return void callback({
+                                objects: objects!,
+                                states: states!,
+                                isOffline: true,
+                                objectsDBType: config.objects.type,
+                                config
+                            });
                         }
                     }
                 });
@@ -3223,7 +3238,14 @@ function dbConnect(
                     `No connection to objects ${config.objects.host}:${config.objects.port}[${config.objects.type}]`
                 );
                 if (onlyCheck) {
-                    callback && callback(objects!, states!, true, config.objects.type, config);
+                    callback &&
+                        callback({
+                            objects: objects!,
+                            states: states!,
+                            isOffline: true,
+                            objectsDBType: config.objects.type,
+                            config
+                        });
                     callback = undefined;
                 } else {
                     return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
@@ -3265,7 +3287,13 @@ function dbConnect(
                             } catch {
                                 // ignore in silence
                             }
-                            return void callback(objects!, states!, true, config.objects.type, config);
+                            return void callback({
+                                objects: objects!,
+                                states: states!,
+                                isOffline: true,
+                                objectsDBType: config.objects.type,
+                                config
+                            });
                         }
                     },
                     // react on change
@@ -3289,7 +3317,14 @@ function dbConnect(
                     `No connection to states ${config.states.host}:${config.states.port}[${config.states.type}]`
                 );
                 if (onlyCheck) {
-                    callback && callback(objects!, states!, true, config.objects.type, config);
+                    callback &&
+                        callback({
+                            objects: objects!,
+                            states: states!,
+                            isOffline: true,
+                            objectsDBType: config.objects.type,
+                            config
+                        });
                     callback = undefined;
                 } else {
                     return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
@@ -3344,7 +3379,7 @@ function dbConnect(
                 } catch {
                     // ignore in silence
                 }
-                callback(objects!, states!, isOffline, config.objects.type, config);
+                callback({ objects: objects!, states: states!, isOffline, objectsDBType: config.objects.type, config });
             }
         }
     });
@@ -3377,7 +3412,7 @@ function dbConnect(
                 } catch {
                     // ignore in silence
                 }
-                callback(objects!, states!, isOffline, config.objects.type, config);
+                callback({ objects: objects!, states: states!, isOffline, objectsDBType: config.objects.type, config });
             }
         },
         // @ts-expect-error todo according to types and first look states.onchange does not exist
@@ -3389,11 +3424,7 @@ function dbConnect(
  * Connects to the DB or tests the connection.
  */
 function dbConnectAsync(onlyCheck: boolean, params?: Record<string, any>): Promise<DbConnectAsyncReturn> {
-    return new Promise(resolve =>
-        dbConnect(onlyCheck, params || {}, (objects, states, isOffline, objectsDBType, config) =>
-            resolve({ objects, states, isOffline, objectsDBType, config })
-        )
-    );
+    return new Promise(resolve => dbConnect(onlyCheck, params || {}, params => resolve(params)));
 }
 
 module.exports.execute = function () {

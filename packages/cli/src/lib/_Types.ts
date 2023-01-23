@@ -7,12 +7,8 @@ export type GetRepositoryHandler = (
     params: Record<string, any>
 ) => Promise<Record<string, any>>;
 export type CleanDatabaseHandler = (isDeleteDb: boolean) => any;
-type DbConnectCallback = (
-    objects: ObjectsRedisClient,
-    states: StatesRedisClient,
-    isOffline?: boolean,
-    objectsDBType?: string
-) => void;
+export type DbConnectCallback = (params: DbConnectAsyncReturn) => void;
+
 export type DbConnect = (
     onlyCheckOrParams?: boolean | Record<string, any>,
     paramsOrCb?: Record<string, any> | DbConnectCallback,
@@ -23,7 +19,7 @@ export interface DbConnectAsyncReturn {
     objects: ObjectsRedisClient;
     states: StatesRedisClient;
     isOffline?: boolean;
-    objectsDBType?: string;
+    objectsDBType: string;
     /** the iobroker.json config file */
     config?: Record<string, any>;
 }
