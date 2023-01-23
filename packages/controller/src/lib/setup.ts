@@ -517,24 +517,6 @@ async function processCommand(
     params: Record<string, any>,
     callback: ExitCodeCb
 ): Promise<void> {
-    if (typeof args === 'function') {
-        callback = args;
-        args = [];
-    }
-    if (typeof params === 'function') {
-        callback = params as ExitCodeCb;
-        params = {};
-    }
-    if (!params) {
-        params = {};
-    }
-    if (!args) {
-        args = [];
-    }
-    if (!callback) {
-        callback = processExit;
-    }
-
     const commandContext: CLICommandContext = { dbConnect, callback, showHelp };
     const commandOptions: CLICommandOptions = Object.assign({}, params, commandContext);
     debug(`commandOptions: ${JSON.stringify(commandOptions)}`);
