@@ -197,6 +197,20 @@ declare global {
             level: LogLevel;
         }
 
+        interface CertificateCollection {
+            /** Creating adapter */
+            from: string;
+            /** expiry date/time - mandatory */
+            /** So not everyone needs to decode cert to discover this */
+            tsExpires: number;
+            /** private key - mandatory */
+            key: string | Buffer;
+            /** public certificate - mandatory */
+            cert: string | Buffer;
+            /** chain - optional */
+            chain?: string | Buffer;
+        }
+
         interface Certificates {
             /** private key file */
             key: string | Buffer;

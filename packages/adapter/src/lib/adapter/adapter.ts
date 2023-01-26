@@ -29,6 +29,7 @@ import {
     ALIAS_STARTS_WITH,
     SYSTEM_ADMIN_USER,
     SYSTEM_ADMIN_GROUP,
+    SYSTEM_CERTIFICATES_ID,
     QUALITY_SUBS_INITIAL,
     SUPPORTED_FEATURES,
     ERROR_PERMISSION,
@@ -49,6 +50,8 @@ import type {
     CheckPasswordCallback,
     CheckStateCommand,
     CommandsPermissions,
+    GetCertificateCollectionCallback,
+    ListCertificateCollectionIdsCallback,
     GetCertificatesCallback,
     GetEncryptedConfigCallback,
     GetUserGroupsOptions,
@@ -318,6 +321,19 @@ export interface AdapterClass {
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         options?: unknown
     ): ioBroker.SetObjectPromise;
+
+    /** Creates or overwrites a certificate collection object */
+    setCertificateCollectionAsync(id: string, certs: ioBroker.CertificateCollection): ioBroker.SetObjectPromise;
+    /** Removes a certificate collection object */
+    delCertificateCollectionAsync(id: string): ioBroker.SetObjectPromise;
+    /** Reads a certificate collection object */
+    getCertificateCollectionAsync(
+        id: string,
+        updatedCallback: GetCertificateCollectionCallback | undefined
+    ): ioBroker.GetObjectPromise;
+    /** Returns list of available collection IDs */
+    listCertificateCollectionIdsAsync(): ioBroker.GetObjectPromise;
+
     // TODO: correct types
     getCertificatesAsync(...args: any[]): Promise<any>;
     /** Get all states, channels, devices and folders of this adapter */
@@ -827,6 +843,26 @@ export class AdapterClass extends EventEmitter {
          * Promise-version of `Adapter.calculatePermissions`
          */
         this.calculatePermissionsAsync = tools.promisifyNoError(this.calculatePermissions, this);
+
+        /**
+         * Promise-version of `Adapter.setCertificateCollection`
+         */
+        this.setCertificateCollectionAsync = tools.promisify(this.setCertificateCollection, this);
+
+        /**
+         * Promise-version of `Adapter.delCertificateCollection`
+         */
+        this.delCertificateCollectionAsync = tools.promisify(this.delCertificateCollection, this);
+
+        /**
+         * Promise-version of `Adapter.getCertificateCollection`
+         */
+        this.getCertificateCollectionAsync = tools.promisify(this.getCertificateCollection, this);
+
+        /**
+         * Promise-version of `Adapter.listCertificateCollectionIds`
+         */
+        this.listCertificateCollectionIdsAsync = tools.promisify(this.listCertificateCollectionIds, this);
 
         /**
          * Promise-version of `Adapter.getCertificates`
@@ -2178,6 +2214,200 @@ export class AdapterClass extends EventEmitter {
     }
 
     /**
+     * Saves collection of SSL keys, certificates, etc. by ID.
+     *
+     * @param [collectionId] collection ID
+     * @param [collection] object holding all related keys, certificates, etc.
+     * @param callback return result
+     *        ```js
+     *            function (err) {
+     *              ...
+     *            }
+     *        ```
+     */
+
+    setCertificateCollection(
+        collectionId: string,
+        collection: ioBroker.CertificateCollection,
+        callback: ioBroker.SetObjectCallback
+    ): void {
+        // Check for mandatory properties
+        // TODO: surely there is a better way to do this?
+        // TODO: and if there is a better way, surely it belongs in utils as an Assert?
+        const mandatory = ['from', 'tsExpires', 'key', 'cert'];
+        if (!mandatory.every(key => Object.keys(collection).includes(key))) {
+            throw new Error(`At least one mandatory key (${mandatory.join(',')}) missing from collection`);
+        }
+
+        this.extendForeignObject(
+            SYSTEM_CERTIFICATES_ID,
+            {
+                native: {
+                    collections: {
+                        [collectionId]: collection
+                    }
+                }
+            },
+            callback
+        );
+    }
+
+    /**
+     * Removed collection of SSL keys, certificates, etc. by ID.
+     *
+     * @param [collectionId] collection ID
+     * @param callback return result
+     *        ```js
+     *            function (err) {
+     *              ...
+     *            }
+     *        ```
+     */
+
+    // delCertificateCollection(collectionId: string, callback: ioBroker.SetObjectCallback): void {
+    //     this.getForeignObject(SYSTEM_CERTIFICATES_ID, (err, obj) => {
+    //         if (err) {
+    //             this._logger.error(`${this.namespaceLog} No certificates found`);
+    //             callback(err);
+    //         } else {
+    //             if (obj?.native.collections) {
+    //                 delete obj.native.collections[collectionId];
+    //                 this.setForeignObject(SYSTEM_CERTIFICATES_ID, obj, callback);
+    //             }
+    //         }
+    //     });
+    // }
+
+    delCertificateCollection(collectionId: string, callback: ioBroker.SetObjectCallback): void {
+        this.getForeignObject(SYSTEM_CERTIFICATES_ID, (err, obj) => {
+            if (err) {
+                this._logger.error(`${this.namespaceLog} No certificates found`);
+                callback(err);
+            } else {
+                if (obj?.native.collections) {
+                    delete obj.native.collections[collectionId];
+                    this._setForeignObject({ id: SYSTEM_CERTIFICATES_ID, obj, callback });
+                }
+            }
+        });
+    }
+
+    /**
+     * Returns collection of SSL keys, certificates, etc. by ID.
+     *
+     * @param [collectionId] collection ID
+     * @param initCallback callback for return result on first call
+     * @param updateCallback callback for return result when collection is updated
+     *        ```js
+     *            function (err, collection) {
+     *              ...
+     *            }
+     *        ```
+     */
+
+    getCertificateCollection(
+        collectionId: string,
+        callback1: GetCertificateCollectionCallback,
+        callback2: GetCertificateCollectionCallback | undefined
+    ): void {
+        if (!this.config) {
+            throw new Error(tools.ERRORS.ERROR_NOT_READY);
+        }
+
+        const initCallback: GetCertificateCollectionCallback | null =
+            typeof callback1 === 'function' && typeof callback2 === 'function'
+                ? callback2
+                : typeof callback1 === 'function' && typeof callback2 === 'undefined'
+                ? callback1
+                : null;
+
+        const updateCallback: GetCertificateCollectionCallback | null =
+            typeof callback1 === 'function' && typeof callback2 === 'function' ? callback1 : null;
+
+        if (initCallback !== null) {
+            this._getCertificateCollectionEitherCallback(collectionId, initCallback);
+        }
+
+        if (updateCallback !== null) {
+            //this._getCertificateCollectionSetUpdate(collectionId, updateCallback);
+        }
+    }
+
+    // Handle renewals - trigger the update callback 24 hours before certificate expires.
+    private _getCertificateCollectionSetUpdate(
+        collectionId: string,
+        updateCallback: GetCertificateCollectionCallback
+    ): void {
+        this._getCertificateCollectionEitherCallback(collectionId, (err, collection) => {
+            if (err) {
+                // This is not good, how can we be doing an update for something that has disappeared!
+                throw new Error(`Cannot set update for certificate collection ${collectionId} - not found`);
+            } else if (!collection?.tsExpires) {
+                // No expiry date? That can't be good!
+                throw new Error(`Cannot set update for certificate collection ${collectionId} - no tsExpires`);
+            } else {
+                // Set a timer to call ourselves 24 hours before expiry date.
+                // Make timeout minimum of a hour in case renewal is pending (which actually should never happen).
+                const timeOut = Math.max(3600000, collection.tsExpires - Date.now());
+                this._logger.debug(`Setting update timeout for ${collectionId}: ${timeOut}`);
+                setTimeout(this._getCertificateCollectionSetUpdate, timeOut, collectionId, updateCallback);
+                // Trigger original callback
+                // Todo: only if expiry has actually changed
+                updateCallback(null, collection);
+            }
+        });
+    }
+
+    private _getCertificateCollectionEitherCallback(
+        collectionId: string,
+        callback: GetCertificateCollectionCallback
+    ): void {
+        this._getForeignObject({
+            id: SYSTEM_CERTIFICATES_ID,
+            options: null,
+            callback: (err, _obj) => {
+                if (err) {
+                    this._logger.error(`${this.namespaceLog} No certificates found`);
+                    callback(err.message);
+                } else {
+                    const obj = _obj as ioBroker.OtherObject & { type: 'config' };
+                    // If collectionId does not exist not an error situation: return null to indicate this.
+                    const collections = obj?.native.collections;
+                    callback(null, collections ? collections[collectionId] : null);
+                }
+            }
+        });
+    }
+
+    /**
+     * Returns list of available certificate collection IDs.
+     *
+     * @param callback callback for return result
+     *        ```js
+     *            function (err, collectionIds) {
+     *              ...
+     *            }
+     *        ```
+     */
+
+    listCertificateCollectionIds(callback: ListCertificateCollectionIdsCallback): void {
+        if (!this.config) {
+            throw new Error(tools.ERRORS.ERROR_NOT_READY);
+        }
+
+        this.getForeignObject(SYSTEM_CERTIFICATES_ID, (err, obj) => {
+            if (err) {
+                this._logger.error(`${this.namespaceLog} No certificates found`);
+                callback(err.message);
+            } else {
+                // If collections does not exist not an error situation: return empty list
+                const collections = obj?.native.collections;
+                callback(null, collections ? Object.keys(collections) : []);
+            }
+        });
+    }
+
+    /**
      * Reads the file certificate from given path and adds a file watcher to restart adapter on cert changes
      * if a cert is passed it is returned as it is
      * @param cert
@@ -2262,7 +2492,7 @@ export class AdapterClass extends EventEmitter {
 
     private _getCertificates(options: InternalGetCertificatesOptions) {
         // Load certificates
-        this.getForeignObject('system.certificates', null, (err, obj) => {
+        this.getForeignObject(SYSTEM_CERTIFICATES_ID, null, (err, obj) => {
             if (
                 err ||
                 !obj ||

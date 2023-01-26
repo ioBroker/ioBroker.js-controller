@@ -172,6 +172,13 @@ export interface InternalCalculatePermissionsOptions {
     callback?: CalculatePermissionsCallback;
 }
 
+export type GetCertificateCollectionCallback = (
+    err: string | null,
+    collection?: ioBroker.CertificateCollection
+) => void;
+
+export type ListCertificateCollectionIdsCallback = (err: string | null, collections?: string[]) => void;
+
 export type GetCertificatesCallback = (
     err: string | null,
     certs?: ioBroker.Certificates,
