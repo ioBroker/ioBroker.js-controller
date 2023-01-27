@@ -1167,7 +1167,11 @@ export class BackupRestore {
                     }
 
                     console.log(`Reinstalling adapter "${adapterName}" from "${installSource}"`);
-                    await tools.installNodeModule(installSource);
+                    const res = await tools.installNodeModule(installSource);
+
+                    if (!res.success) {
+                        console.error(`Could not install adapter "${adapterName}" (${res.exitCode}): ${res.stderr}`);
+                    }
                 }
             } catch (e) {
                 console.error(`Could not ensure existence of adapter "${adapterName}": ${e.message}`);
