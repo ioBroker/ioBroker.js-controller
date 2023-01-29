@@ -207,6 +207,8 @@ declare global {
             key: string | Buffer;
             /** public certificate - mandatory */
             cert: string | Buffer;
+            /** domains - mandatory */
+            domains: string[];
             /** chain - optional */
             chain?: string | Buffer;
         }
