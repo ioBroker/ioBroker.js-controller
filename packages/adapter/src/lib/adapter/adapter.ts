@@ -52,6 +52,7 @@ import type {
     CommandsPermissions,
     GetCertificateCollectionCallback,
     ListCertificateCollectionIdsCallback,
+    SubscribeCertificateCollectionsCallback,
     GetCertificatesCallback,
     GetEncryptedConfigCallback,
     GetUserGroupsOptions,
@@ -2234,7 +2235,7 @@ export class AdapterClass extends EventEmitter {
         // Check for mandatory properties
         // TODO: surely there is a better way to do this?
         // TODO: and if there is a better way, surely it belongs in utils as an Assert?
-        const mandatory = ['from', 'tsExpires', 'key', 'cert'];
+        const mandatory = ['from', 'tsExpires', 'key', 'cert', 'domains'];
         if (!mandatory.every(key => Object.keys(collection).includes(key))) {
             throw new Error(`At least one mandatory key (${mandatory.join(',')}) missing from collection`);
         }
@@ -2264,20 +2265,6 @@ export class AdapterClass extends EventEmitter {
      *        ```
      */
 
-    // delCertificateCollection(collectionId: string, callback: ioBroker.SetObjectCallback): void {
-    //     this.getForeignObject(SYSTEM_CERTIFICATES_ID, (err, obj) => {
-    //         if (err) {
-    //             this._logger.error(`${this.namespaceLog} No certificates found`);
-    //             callback(err);
-    //         } else {
-    //             if (obj?.native.collections) {
-    //                 delete obj.native.collections[collectionId];
-    //                 this.setForeignObject(SYSTEM_CERTIFICATES_ID, obj, callback);
-    //             }
-    //         }
-    //     });
-    // }
-
     delCertificateCollection(collectionId: string, callback: ioBroker.SetObjectCallback): void {
         this.getForeignObject(SYSTEM_CERTIFICATES_ID, (err, obj) => {
             if (err) {
@@ -2295,9 +2282,8 @@ export class AdapterClass extends EventEmitter {
     /**
      * Returns collection of SSL keys, certificates, etc. by ID.
      *
-     * @param [collectionId] collection ID
-     * @param initCallback callback for return result on first call
-     * @param updateCallback callback for return result when collection is updated
+     * @param [collectionId] collection ID or omit to return all
+     * @param callback callback for return result
      *        ```js
      *            function (err, collection) {
      *              ...
@@ -2305,63 +2291,17 @@ export class AdapterClass extends EventEmitter {
      *        ```
      */
 
-    getCertificateCollection(
-        collectionId: string,
-        callback1: GetCertificateCollectionCallback,
-        callback2: GetCertificateCollectionCallback | undefined
-    ): void {
-        if (!this.config) {
-            throw new Error(tools.ERRORS.ERROR_NOT_READY);
-        }
-
-        const initCallback: GetCertificateCollectionCallback | null =
-            typeof callback1 === 'function' && typeof callback2 === 'function'
-                ? callback2
-                : typeof callback1 === 'function' && typeof callback2 === 'undefined'
-                ? callback1
-                : null;
-
-        const updateCallback: GetCertificateCollectionCallback | null =
-            typeof callback1 === 'function' && typeof callback2 === 'function' ? callback1 : null;
-
-        if (initCallback !== null) {
-            this._getCertificateCollectionEitherCallback(collectionId, initCallback);
-        }
-
-        if (updateCallback !== null) {
-            //this._getCertificateCollectionSetUpdate(collectionId, updateCallback);
+    getCertificateCollection(collectionId: unknown, callback: unknown): void {
+        if (typeof collectionId === 'string' && typeof callback === 'function') {
+            this._getCertificateCollection(collectionId, callback as GetCertificateCollectionCallback);
+        } else if (typeof collectionId === 'function' && typeof callback === 'undefined') {
+            this._getCertificateCollection(null, collectionId as GetCertificateCollectionCallback);
+        } else {
+            throw new Error('Invalid getCertificateCollection parameters');
         }
     }
 
-    // Handle renewals - trigger the update callback 24 hours before certificate expires.
-    private _getCertificateCollectionSetUpdate(
-        collectionId: string,
-        updateCallback: GetCertificateCollectionCallback
-    ): void {
-        this._getCertificateCollectionEitherCallback(collectionId, (err, collection) => {
-            if (err) {
-                // This is not good, how can we be doing an update for something that has disappeared!
-                throw new Error(`Cannot set update for certificate collection ${collectionId} - not found`);
-            } else if (!collection?.tsExpires) {
-                // No expiry date? That can't be good!
-                throw new Error(`Cannot set update for certificate collection ${collectionId} - no tsExpires`);
-            } else {
-                // Set a timer to call ourselves 24 hours before expiry date.
-                // Make timeout minimum of a hour in case renewal is pending (which actually should never happen).
-                const timeOut = Math.max(3600000, collection.tsExpires - Date.now());
-                this._logger.debug(`Setting update timeout for ${collectionId}: ${timeOut}`);
-                setTimeout(this._getCertificateCollectionSetUpdate, timeOut, collectionId, updateCallback);
-                // Trigger original callback
-                // Todo: only if expiry has actually changed
-                updateCallback(null, collection);
-            }
-        });
-    }
-
-    private _getCertificateCollectionEitherCallback(
-        collectionId: string,
-        callback: GetCertificateCollectionCallback
-    ): void {
+    private _getCertificateCollection(collectionId: string | null, callback: GetCertificateCollectionCallback): void {
         this._getForeignObject({
             id: SYSTEM_CERTIFICATES_ID,
             options: null,
@@ -2373,7 +2313,10 @@ export class AdapterClass extends EventEmitter {
                     const obj = _obj as ioBroker.OtherObject & { type: 'config' };
                     // If collectionId does not exist not an error situation: return null to indicate this.
                     const collections = obj?.native.collections;
-                    callback(null, collections ? collections[collectionId] : null);
+                    callback(
+                        null,
+                        collections && collectionId ? collections[collectionId] : collections ? collections : null
+                    );
                 }
             }
         });
@@ -2403,6 +2346,65 @@ export class AdapterClass extends EventEmitter {
                 // If collections does not exist not an error situation: return empty list
                 const collections = obj?.native.collections;
                 callback(null, collections ? Object.keys(collections) : []);
+            }
+        });
+    }
+
+    /**
+     * Subscribes to changes in certificate collections
+     *
+     * @param [collectionId] single collection ID to return or omit to return everything
+     * @param callback return result
+     *        ```js
+     *            function (err, certificateCollections[]) {
+     *                ...
+     *            }
+     *        ```
+     */
+
+    subscribeCertificateCollections(collectionId: unknown, callback: unknown): void {
+        if (typeof collectionId === 'string' && typeof callback === 'function') {
+            this._subscribeCertificateCollections(collectionId, callback as SubscribeCertificateCollectionsCallback);
+        } else if (typeof collectionId === 'function' && typeof callback === 'undefined') {
+            this._subscribeCertificateCollections(null, collectionId as SubscribeCertificateCollectionsCallback);
+        } else {
+            throw new Error('Invalid subscribeCertificateCollections parameters');
+        }
+    }
+
+    /**
+     * Subscribe to changes in certificate collections.
+     *
+     * @param collectionId collection ID or null to return all changes
+     * @param callback callback for return result
+     *        ```js
+     *            function (err, collections) {
+     *              ...
+     *            }
+     *        ```
+     */
+
+    private _subscribeCertificateCollections(
+        collectionId: string | null,
+        callback: SubscribeCertificateCollectionsCallback
+    ): void {
+        this.subscribeForeignObjects(SYSTEM_CERTIFICATES_ID);
+
+        this.on('objectChange', (id, obj) => {
+            if (id === SYSTEM_CERTIFICATES_ID) {
+                this._logger.error(`${this.namespaceLog} ${SYSTEM_CERTIFICATES_ID} update`);
+                const collections = obj.native.collections as Record<string, ioBroker.CertificateCollection>;
+                if (!collectionId) {
+                    // No specific ID requested, return them all
+                    callback(null, collections);
+                } else {
+                    if (Array.isArray(collections) && collectionId in collections) {
+                        callback(null, { collectionId: collections[collectionId] });
+                    } else {
+                        // Can't find requested collection ID, return empty object & error
+                        callback(`Subscribed collection ID ${collectionId} not found`, {});
+                    }
+                }
             }
         });
     }
