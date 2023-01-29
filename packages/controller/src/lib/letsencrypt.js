@@ -11,6 +11,7 @@ const fs = require('fs-extra');
  * @param log
  * @param adapter
  * @returns {Promise<unknown>}
+ * @deprecated
  */
 async function createServerAsync(app, settings, certificates, leSettings, log, adapter) {
     if (!settings.secure) {
