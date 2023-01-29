@@ -2254,7 +2254,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     /**
-     * Removed collection of SSL keys, certificates, etc. by ID.
+     * Remove collection of SSL keys, certificates, etc. by ID.
      *
      * @param [collectionId] collection ID
      * @param callback return result
@@ -2266,14 +2266,26 @@ export class AdapterClass extends EventEmitter {
      */
 
     delCertificateCollection(collectionId: string, callback: ioBroker.SetObjectCallback): void {
+        Utils.assertString(collectionId, 'collectionId');
+        Utils.assertCallback(callback, 'callback');
+
         this.getForeignObject(SYSTEM_CERTIFICATES_ID, (err, obj) => {
             if (err) {
                 this._logger.error(`${this.namespaceLog} No certificates found`);
                 callback(err);
             } else {
-                if (obj?.native.collections) {
+                if (
+                    obj?.native.collections &&
+                    typeof obj.native.collections === 'object' &&
+                    collectionId in obj.native.collections
+                ) {
                     delete obj.native.collections[collectionId];
                     this._setForeignObject({ id: SYSTEM_CERTIFICATES_ID, obj, callback });
+                } else {
+                    // Collections didn't exist or didn't contain ID.
+                    // Maybe an error condition? But caller asked to bin something that
+                    // doesn't exist so they get their wish. Not error.
+                    callback(null);
                 }
             }
         });
