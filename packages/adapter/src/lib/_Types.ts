@@ -174,10 +174,15 @@ export interface InternalCalculatePermissionsOptions {
 
 export type GetCertificateCollectionCallback = (
     err: string | null,
-    collection?: ioBroker.CertificateCollection
+    collections?: ioBroker.CertificateCollection | Record<string, ioBroker.CertificateCollection>
 ) => void;
 
 export type ListCertificateCollectionIdsCallback = (err: string | null, collections?: string[]) => void;
+
+export type SubscribeCertificateCollectionsCallback = (
+    err: string | null,
+    collections?: Record<string, ioBroker.CertificateCollection>
+) => void;
 
 export type GetCertificatesCallback = (
     err: string | null,
