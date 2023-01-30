@@ -555,9 +555,7 @@ async function processCommand(
         case 'update': {
             Objects = getObjectsConstructor();
             const repoUrl = args[0]; // Repo url or name
-            dbConnect(params, async dbParams => {
-                const { objects, states } = dbParams;
-
+            dbConnect(params, async ({ objects, states }) => {
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
                 const Repo = require('./setup/setupRepo.js');
                 const repo = new Repo({
@@ -818,8 +816,7 @@ async function processCommand(
 
         case 'info': {
             Objects = getObjectsConstructor();
-            dbConnect(params, async dbParams => {
-                const { objects } = dbParams;
+            dbConnect(params, async ({ objects }) => {
                 try {
                     const data = await tools.getHostInfo(objects!);
                     // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -1255,8 +1252,7 @@ async function processCommand(
                     `Command "clean" clears all Objects and States. To execute it write "${tools.appName} clean yes"`
                 );
             } else {
-                dbConnect(params, async dbParams => {
-                    const { isOffline } = dbParams;
+                dbConnect(params, async ({ isOffline }) => {
                     if (!isOffline) {
                         console.error(`Stop ${tools.appName} first!`);
                         return void callback(EXIT_CODES.CONTROLLER_RUNNING);
@@ -1279,9 +1275,7 @@ async function processCommand(
         case 'restore': {
             const Backup = (await import('@iobroker/js-controller-cli')).setupBackup;
 
-            dbConnect(params, dbParams => {
-                const { isOffline } = dbParams;
-
+            dbConnect(params, ({ isOffline }) => {
                 if (!isOffline) {
                     console.error(`Stop ${tools.appName} first!`);
                     return void callback(EXIT_CODES.CONTROLLER_RUNNING);
@@ -2242,9 +2236,9 @@ async function processCommand(
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             const VisDebug = require('./setup/setupVisDebug.js');
 
-            dbConnect(params, _objects => {
+            dbConnect(params, ({ objects }) => {
                 const visDebug = new VisDebug({
-                    objects: _objects,
+                    objects,
                     processExit: callback
                 });
 
@@ -2282,8 +2276,7 @@ async function processCommand(
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
 
-            dbConnect(params, async dbParams => {
-                const { objects, objectsDBType } = dbParams;
+            dbConnect(params, async ({ objects, objectsDBType }) => {
                 if (cmd === 'read' || cmd === 'r') {
                     const toRead = args[1];
                     const parts = toRead.replace(/\\/g, '/').split('/');
@@ -2468,8 +2461,7 @@ async function processCommand(
 
         case 'id':
         case 'uuid': {
-            dbConnect(params, dbParams => {
-                const { objects } = dbParams;
+            dbConnect(params, ({ objects }) => {
                 objects.getObject('system.meta.uuid', (err, obj) => {
                     if (err) {
                         console.error(`Error: ${err}`);
@@ -2506,9 +2498,7 @@ async function processCommand(
         }
 
         case 'checklog': {
-            dbConnect(params, dbParams => {
-                const { objects, isOffline, objectsDBType } = dbParams;
-
+            dbConnect(params, ({ objects, isOffline, objectsDBType }) => {
                 if (isOffline && dbTools.objectsDbHasServer(objectsDBType)) {
                     console.log(`${tools.appName} is not running`);
                     return void callback(EXIT_CODES.CONTROLLER_NOT_RUNNING);
@@ -2528,7 +2518,6 @@ async function processCommand(
                                     if (parts.length === 3) {
                                         states!.pushMessage(res.rows[i]!.id, {
                                             command: 'checkLogging',
-                                            // @ts-expect-error todo type adjustment needed if allowed
                                             message: null,
                                             from: 'console'
                                         });
@@ -2560,9 +2549,7 @@ async function processCommand(
                 repoUrlOrCommand = 'show';
             }
 
-            dbConnect(params, async dbParams => {
-                const { objects, states } = dbParams;
-
+            dbConnect(params, async ({ objects, states }) => {
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
                 const Repo = require('./setup/setupRepo.js');
                 const repo = new Repo({
@@ -2703,10 +2690,10 @@ async function processCommand(
                                     `system.host.${tools.getHostName()}`,
                                     {
                                         command: 'updateMultihost',
-                                        // @ts-expect-error todo type adjustment needed if allowed
                                         message: null,
                                         from: 'setup'
                                     },
+                                    // @ts-expect-error todo formally we should only call processExit with an exit code
                                     callback
                                 );
                             }
@@ -2721,10 +2708,10 @@ async function processCommand(
                                     `system.host.${tools.getHostName()}`,
                                     {
                                         command: 'updateMultihost',
-                                        // @ts-expect-error todo type adjustment needed if allowed
                                         message: null,
                                         from: 'setup'
                                     },
+                                    // @ts-expect-error todo formally we should only call processExit with an exit code
                                     callback
                                 );
                             }
@@ -2850,10 +2837,10 @@ async function processExit(exitCode?: number): Promise<never> {
         pluginHandler.destroyAll();
     }
 
-    if (objects && objects.destroy) {
+    if (objects?.destroy) {
         await objects.destroy();
     }
-    if (states && states.destroy) {
+    if (states?.destroy) {
         await states.destroy();
     }
     return new Promise(() => {
