@@ -206,7 +206,7 @@ declare global {
             ca: Array<string | Buffer>;
         }
 
-        type MessagePayload = string | Record<string, any>;
+        type MessagePayload = any;
 
         /** Callback information for a passed message */
         interface MessageCallbackInfo {
@@ -220,18 +220,21 @@ declare global {
             time: number;
         }
 
-        /** A message being passed between adapter instances */
-        interface Message {
+        interface SendableMessage {
             /** The command to be executed */
             command: string;
             /** The message payload */
             message: MessagePayload;
             /** The source of this message */
             from: string;
+            /** Callback information. This is set when the source expects a response */
+            callback?: MessageCallbackInfo;
+        }
+
+        /** A message being passed between adapter instances */
+        interface Message extends SendableMessage {
             /** ID of this message */
             _id: number;
-            /** Callback information. This is set when the source expects a response */
-            callback: MessageCallbackInfo;
         }
 
         type Log = any; // TODO: define this https://github.com/ioBroker/ioBroker.js-controller/blob/master/lib/states/statesInMemServer.js#L873
@@ -457,14 +460,17 @@ declare global {
 
         type GetConfigKeysCallback = (err?: Error | null, list?: string[]) => void;
 
-        interface GetObjectViewItem<T> {
+        interface GetObjectViewItem<T extends AnyObject> {
             /** The ID of this object */
             id: string;
             /** A copy of the object from the DB */
             value: T | null;
         }
-        type GetObjectViewCallback<T> = (err?: Error | null, result?: { rows: Array<GetObjectViewItem<T>> }) => void;
-        type GetObjectViewPromise<T> = Promise<NonNullCallbackReturnTypeOf<GetObjectViewCallback<T>>>;
+        type GetObjectViewCallback<T extends AnyObject> = (
+            err?: Error | null,
+            result?: { rows: Array<GetObjectViewItem<T>> }
+        ) => void;
+        type GetObjectViewPromise<T extends AnyObject> = Promise<NonNullCallbackReturnTypeOf<GetObjectViewCallback<T>>>;
 
         interface GetObjectListItem extends GetObjectViewItem<ioBroker.Object> {
             /** A copy of the object */

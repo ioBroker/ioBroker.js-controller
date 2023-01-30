@@ -460,7 +460,7 @@ export class List {
                                         continue;
                                     }
 
-                                    let id = row.value._id;
+                                    let id: string = row.value._id;
                                     let host = row.value.common.host;
 
                                     if (id.length < 40) {

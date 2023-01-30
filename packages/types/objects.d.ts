@@ -290,6 +290,7 @@ declare global {
 
         type InstanceMode = 'none' | 'daemon' | 'subscribe' | 'schedule' | 'once' | 'extension';
         interface InstanceCommon extends ObjectCommon {
+            version: string;
             /** The name of the host where this instance is running */
             host: string;
             enabled: boolean;
@@ -302,6 +303,18 @@ declare global {
              * - **3:** All other adapters
              */
             tier?: 1 | 2 | 3;
+            /** Variables of this adapter must be subscribed with sendTo to enable updates */
+            subscribable?: boolean;
+            /** If compact mode is supported */
+            compact?: boolean;
+            /** If compact mode is active */
+            runAsCompactMode?: boolean;
+            /** Active compact group, instances in this group will be started in one process */
+            compactGroup?: number;
+            /** String (or array) with names of attributes in common of instance, which will not be deleted. */
+            preserveSettings?: string | string[];
+            installedVersion?: string;
+            installedFrom?: string;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
@@ -320,6 +333,8 @@ declare global {
 
             type: 'js-controller';
             platform: 'Javascript/Node.js';
+
+            color?: string;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
@@ -617,6 +632,7 @@ declare global {
         }
 
         interface InstanceObject extends BaseObject {
+            _id: ObjectIDs.Instance;
             type: 'instance';
             common: InstanceCommon;
         }
@@ -625,6 +641,7 @@ declare global {
         }
 
         interface AdapterObject extends BaseObject {
+            _id: ObjectIDs.Adapter;
             type: 'adapter';
             common: AdapterCommon;
             /** An array of `native` properties which cannot be accessed from outside the defining adapter */
@@ -637,6 +654,7 @@ declare global {
         }
 
         interface HostObject extends BaseObject {
+            _id: ObjectIDs.Host;
             type: 'host';
             common: HostCommon;
             native: HostNative;
@@ -647,6 +665,7 @@ declare global {
         }
 
         interface UserObject extends BaseObject {
+            _id: ObjectIDs.User;
             type: 'user';
             common: UserCommon;
         }
@@ -655,6 +674,7 @@ declare global {
         }
 
         interface GroupObject extends BaseObject {
+            _id: ObjectIDs.Group;
             type: 'group';
             common: GroupCommon;
         }
@@ -680,6 +700,7 @@ declare global {
         }
 
         interface DesignObject extends Omit<BaseObject, 'common'> {
+            _id: ObjectIDs.Design;
             language: 'javascript';
             common?: OtherCommon;
             views: Record<string, { map: string }>;

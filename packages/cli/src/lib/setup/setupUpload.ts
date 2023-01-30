@@ -190,7 +190,7 @@ export class Upload {
         };
 
         this.states.subscribeMessage(from, () => {
-            const obj: Omit<ioBroker.Message, '_id'> = {
+            const obj = {
                 command,
                 message: message,
                 from: `system.host.${hostname}_cli_${time}`,
@@ -200,7 +200,7 @@ export class Upload {
                     ack: false,
                     time
                 }
-            };
+            } as const;
 
             if (this.callbackId > 0xffffffff) {
                 this.callbackId = 1;
@@ -209,7 +209,6 @@ export class Upload {
             this.callbacks[`_${obj.callback.id}`] = { cb: callback };
 
             // we cannot receive answers from hosts in CLI, so this command is "fire and forget"
-            // @ts-expect-error fixed with #1917
             this.states.pushMessage(host, obj);
         });
     }
@@ -740,16 +739,11 @@ export class Upload {
                     // @ts-expect-error TODO needs to be added to types
                     newObject.objects = ioPack.objects || [];
 
-                    // @ts-expect-error TODO needs to be added to types
                     newObject.common.version = ioPack.common.version;
-                    // @ts-expect-error TODO needs to be added to types
                     newObject.common.installedVersion = ioPack.common.version;
-                    // @ts-expect-error TODO needs to be added to types
                     newObject.common.installedFrom = ioPack.common.installedFrom;
 
-                    // @ts-expect-error TODO needs to be added to types
                     if (!ioPack.common.compact && newObject.common.compact) {
-                        // @ts-expect-error TODO needs to be added to types
                         newObject.common.compact = ioPack.common.compact;
                     }
 

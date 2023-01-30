@@ -110,10 +110,13 @@ function objectChangeHandler(id: string, object: ioBroker.Object | null | undefi
 
 function messageHandler(msg: ioBroker.Message) {
     msg._id.toFixed();
-    msg.callback.ack.valueOf();
-    msg.callback.id.toFixed();
-    msg.callback.message.toString();
-    msg.callback.time.toFixed();
+    if (msg.callback) {
+        // callback is optional and if there types have to match
+        msg.callback.ack.valueOf();
+        msg.callback.id.toFixed();
+        msg.callback.message.toString();
+        msg.callback.time.toFixed();
+    }
     msg.command.toLowerCase();
     msg.from.toLowerCase();
     typeof msg.message === 'object' && msg.message.anything;
@@ -428,10 +431,12 @@ function handleMessageResponse(response?: ioBroker.Message) {
         return;
     }
     response._id.toFixed();
-    response.callback.ack.valueOf();
-    response.callback.id.toFixed();
-    response.callback.message.toString();
-    response.callback.time.toFixed();
+    if (response.callback) {
+        response.callback.ack.valueOf();
+        response.callback.id.toFixed();
+        response.callback.message.toString();
+        response.callback.time.toFixed();
+    }
     response.command.toLowerCase();
     response.from.toLowerCase();
     typeof response.message === 'object' && response.message.anything;
@@ -739,7 +744,7 @@ adapter.FORBIDDEN_CHARS = /_/;
 
 // Test some of the more uncommon object types
 const _adapterObject: ioBroker.AdapterObject = {
-    _id: '',
+    _id: 'system.adapter.test',
     type: 'adapter',
     native: {},
     common: {
@@ -788,14 +793,14 @@ const _metaObject: ioBroker.MetaObject = {
 };
 
 const _instanceObject: ioBroker.InstanceObject = {
-    _id: '',
+    _id: 'system.adapter.test.0',
     type: 'instance',
-    common: { enabled: true, host: 'my host', mode: 'daemon', name: 'instance 1' },
+    common: { enabled: true, host: 'my host', mode: 'daemon', name: 'instance 1', version: '1.0.0' },
     native: {}
 };
 
 const _userObject: ioBroker.UserObject = {
-    _id: '',
+    _id: 'system.user.me',
     type: 'user',
     common: { name: 'me', password: '*****', enabled: true },
     native: {}
