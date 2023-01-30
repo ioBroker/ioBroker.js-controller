@@ -74,15 +74,13 @@ export const FORBIDDEN_CHARS = /[^._\-/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+/gu;
 /**
  * recursively copy values from old object to new one
  *
- * @alias copyAttributes
- * @memberof tools
  * @param oldObj source object
  * @param newObj destination object
  * @param originalObj optional object for read __no_change__ values
  * @param isNonEdit optional indicator if copy is in nonEdit part
  *
  */
-function copyAttributes(
+export function copyAttributes(
     oldObj: Record<string, any>,
     newObj: Record<string, any>,
     originalObj?: Record<string, any>,
@@ -123,8 +121,6 @@ function copyAttributes(
 /**
  * Checks the flag nonEdit and restores non-changeable values if required
  *
- * @alias checkNonEditable
- * @memberof tools
  * @param oldObject source object
  * @param newObject destination object
  *
@@ -1264,8 +1260,6 @@ async function _checkRepositoryFileHash(
 /**
  * Get list of all adapters and controller in some repository file or in /conf/source-dist.json
  *
- * @alias getRepositoryFile
- * @memberof tools
  * @param urlOrPath URL starting with http:// or https:// or local file link
  * @param additionalInfo destination object
  * @param callback function (err, sources, actualHash) { }
@@ -1387,8 +1381,6 @@ export interface RepositoryFile {
 /**
  * Read on repository
  *
- * @alias getRepositoryFileAsync
- * @memberof tools
  * @param url URL starting with http:// or https:// or local file link
  * @param hash actual hash
  * @param force Force repository update despite on hash
@@ -1473,8 +1465,6 @@ export async function sendDiagInfo(obj: Record<string, any>): Promise<void> {
 /**
  * Finds the adapter directory of a given adapter
  *
- * @alias getAdapterDir
- * @memberof tools
  * @param adapter name of the adapter, e.g. hm-rpc
  * @returns path to adapter directory or null if no directory found
  */
@@ -1519,7 +1509,6 @@ export function getAdapterDir(adapter: string): string | null {
 
 /**
  * Returns the hostname of this host
- * @alias getHostName
  */
 export function getHostName(): string {
     // for tests purposes
@@ -1538,8 +1527,6 @@ export function getHostName(): string {
 /**
  * Read version of system npm
  *
- * @alias getSystemNpmVersion
- * @memberof Tools
  * @param callback return result
  *        <pre><code>
  *            function (err, version) {
@@ -1755,8 +1742,6 @@ export interface GetDiskInfoResponse {
 /**
  * Read disk free space
  *
- * @alias getDiskInfo
- * @memberof Tools
  * @param platform result of os.platform() (win32 => Windows, darwin => OSX)
  * @param callback return result
  *        <pre><code>
@@ -1864,8 +1849,6 @@ const getDiskInfoAsync = promisify(getDiskInfo);
  *     - validityNotBefore: certificate validity start datetime
  *     - validityNotAfter: certificate validity end datetime
  *
- * @alias getCertificateInfo
- * @memberof Tools
  * @param cert
  * @return certificate information object
  */
@@ -1925,8 +1908,6 @@ export interface DefaultCertificates {
  *     - defaultPrivate: private RSA key
  *     - defaultPublic: public certificate
  *
- * @alias generateDefaultCertificates
- * @memberof Tools
  *        <pre><code>
  *            const certificates = tools.generateDefaultCertificates();
  *        </code></pre>
@@ -2030,8 +2011,6 @@ function makeid(length: number) {
  *    - node.js --version
  *    - npm --version
  *
- * @alias getHostInfo
- * @memberof Tools
  * @param objects db
  */
 export async function getHostInfo(objects: any): Promise<Record<string, any>> {
@@ -2734,8 +2713,6 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
 /**
  * remove given id from all enums
  *
- * @alias removeIdFromAllEnums
- * @memberof tools
  * @param objects object to access objects db
  * @param id the object id which will be deleted from enums
  * @param allEnums objects with all enums to use - if not provided all enums will be queried
@@ -2772,8 +2749,6 @@ export async function removeIdFromAllEnums(objects: any, id: string, allEnums?: 
 /**
  * Parses dependencies to standardized object of form
  *
- * @alias parseDependencies
- * @memberof tools
  * @param dependencies dependencies array or single dependency
  * @returns parsedDeps parsed dependencies
  */
@@ -3002,8 +2977,6 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
 /**
  * get all instances of all adapters in the list
  *
- * @alias getAllInstances
- * @memberof tools
  * @param adapters list of adapter names to get instances for
  * @param objects class redis objects
  * @returns array of IDs
@@ -3069,7 +3042,6 @@ export async function getAllEnums(objects: any): Promise<Record<string, any>> {
 /**
  * get async all instances of one adapter
  *
- * @alias getInstances
  * @param adapter name of the adapter
  * @param objects objects DB
  * @param withObjects return objects instead of only ids
@@ -3139,7 +3111,6 @@ export function pipeLinewise(input: NodeJS.ReadableStream, output: NodeJS.Writab
 /**
  * Find the adapter main file as full path
  *
- * @memberof tools
  * @param adapter - adapter name of the adapter, e.g. hm-rpc
  * @returns full file name
  */

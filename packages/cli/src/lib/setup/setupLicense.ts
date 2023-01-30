@@ -8,7 +8,7 @@ export interface CLILicenseOptions {
 }
 
 export class License {
-    private objects: ObjectsRedisClient;
+    private readonly objects: ObjectsRedisClient;
 
     constructor(options: CLILicenseOptions) {
         this.objects = options.objects;
