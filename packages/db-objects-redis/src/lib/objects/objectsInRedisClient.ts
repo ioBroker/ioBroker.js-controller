@@ -35,7 +35,7 @@ export type ChangeFileFunction = (id: string, fileName: string, size: number | n
 
 type GetUserGroupCallbackNoError = (user: string, groups: string[], acl: ioBroker.ObjectPermissions) => void;
 
-interface ViewFuncResult<T> {
+interface ViewFuncResult<T extends ioBroker.AnyObject> {
     rows: ioBroker.GetObjectViewItem<T>[];
 }
 
@@ -3318,6 +3318,7 @@ export class ObjectsInRedisClient {
         return tools.maybeCallbackWithError(callback, null, result);
     }
 
+    getObjects(keys: string[], callback: (err?: Error | null, objs?: ioBroker.AnyObject[]) => void): void;
     // No callback provided, we return a Promise
     getObjects(keys: string[], options?: CallOptions | null): Promise<ioBroker.AnyObject[]>;
     // Callback provided, thus we call it
@@ -3903,6 +3904,11 @@ export class ObjectsInRedisClient {
                         obj = JSON.parse(_obj);
                     } catch {
                         this.log.error(`${this.namespace} Cannot parse JSON: ${_obj}`);
+                        return { id: 'parseError', value: null };
+                    }
+
+                    if (!obj) {
+                        this.log.error(`${this.namespace} empty object!`);
                         return { id: 'parseError', value: null };
                     }
 
@@ -4732,10 +4738,10 @@ export class ObjectsInRedisClient {
     extendObjectAsync(
         id: string,
         obj: Partial<ioBroker.AnyObject>,
-        options: ioBroker.ExtendObjectOptions
+        options?: ioBroker.ExtendObjectOptions
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.ExtendObjectCallback>> {
         return new Promise((resolve, reject) =>
-            this.extendObject(id, obj, options, (err, res) => (err ? reject(err) : resolve(res)))
+            this.extendObject(id, obj, options || null, (err, res) => (err ? reject(err) : resolve(res)))
         );
     }
 

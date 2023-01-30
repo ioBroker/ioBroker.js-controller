@@ -2033,12 +2033,6 @@ function makeid(length: number) {
  * @alias getHostInfo
  * @memberof Tools
  * @param objects db
- * @param callback
- *        <pre><code>
- *            function (result) {
- *              adapter.log.debug('Info about host: ' + JSON.stringify(result, null, 2);
- *            }
- *        </code></pre>
  */
 export async function getHostInfo(objects: any): Promise<Record<string, any>> {
     if (diskusage) {
@@ -3550,7 +3544,7 @@ export async function getInstancesOrderedByStartPrio(
     objects: any,
     logger: any,
     logPrefix = ''
-): Promise<Record<string, any>[]> {
+): Promise<ioBroker.InstanceObject[]> {
     const instances: OrderedInstancesObject = { 1: [], 2: [], 3: [], admin: [] };
     const allowedTiers = [1, 2, 3];
 

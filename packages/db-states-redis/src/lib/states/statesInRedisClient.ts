@@ -43,12 +43,13 @@ interface InternalLogObject extends LogObject {
     _id: number;
 }
 
-type ChangeFunction = (id: string, state: ioBroker.State | null) => void;
+type UserChangeFunction = (id: string, state: ioBroker.State | null) => void;
+type ChangeFunction = (id: string, state: ioBroker.State | ioBroker.Message | null) => void;
 
 export interface StatesSettings {
     connected?: () => void;
     disconnected?: () => void;
-    changeUser?: ChangeFunction;
+    changeUser?: UserChangeFunction;
     change?: ChangeFunction;
     connection: ConnectionOptions;
     autoConnect?: boolean;
@@ -1193,7 +1194,7 @@ export class StateRedisClient {
 
     async pushMessage(
         id: string,
-        message: Omit<ioBroker.Message, '_id'>,
+        message: ioBroker.SendableMessage,
         callback?: (err: Error | undefined | null, id?: string) => void
     ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
@@ -1205,6 +1206,7 @@ export class StateRedisClient {
         }
 
         const fullMessage: ioBroker.Message = { ...message, _id: this.globalMessageId++ };
+
         if (this.globalMessageId >= 0xffffffff) {
             this.globalMessageId = 0;
         }
@@ -1460,7 +1462,7 @@ export class StateRedisClient {
 
     async delBinaryState(
         id: string,
-        callback: (err: Error | undefined | null, id?: string) => void
+        callback?: (err: Error | undefined | null, id?: string) => void
     ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);

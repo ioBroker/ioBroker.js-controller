@@ -494,7 +494,7 @@ export function logger(
                         }
                     }
                 });
-            }, 3600000); // every hour
+            }, 3_600_000); // every hour
         }
     };
 
