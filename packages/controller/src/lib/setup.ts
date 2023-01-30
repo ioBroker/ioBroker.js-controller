@@ -2742,9 +2742,8 @@ async function processCommand(
                 );
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
-                dbConnect(params, async () => {
-                    // eslint-disable-next-line @typescript-eslint/no-var-requires
-                    const Vendor = require('./setup/setupVendor');
+                dbConnect(params, async ({ objects }) => {
+                    const Vendor = (await import('@iobroker/js-controller-cli')).setupVendor;
                     const vendor = new Vendor({ objects });
 
                     try {

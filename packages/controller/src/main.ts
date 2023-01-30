@@ -2163,9 +2163,8 @@ function setMeta() {
                         const startScript = fs.readJSONSync(VENDOR_BOOTSTRAP_FILE);
 
                         if (startScript.password) {
-                            // eslint-disable-next-line @typescript-eslint/no-var-requires
-                            const Vendor = require('./lib/setup/setupVendor');
-                            const vendor = new Vendor({ objects });
+                            const Vendor = (await import('@iobroker/js-controller-cli')).setupVendor;
+                            const vendor = new Vendor({ objects: objects! });
 
                             logger && logger.info(`${hostLogPrefix} Apply vendor file: ${VENDOR_FILE}`);
                             try {
