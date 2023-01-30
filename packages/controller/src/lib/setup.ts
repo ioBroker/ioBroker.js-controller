@@ -2786,9 +2786,8 @@ async function processCommand(
                 );
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
-                dbConnect(params, async () => {
-                    // eslint-disable-next-line @typescript-eslint/no-var-requires
-                    const License = require('./setup/setupLicense');
+                dbConnect(params, async ({ objects }) => {
+                    const License = (await import('@iobroker/js-controller-cli')).setupLicense;
                     const license = new License({ objects });
                     try {
                         const type = await license.setLicense(file);

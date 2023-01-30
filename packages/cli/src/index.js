@@ -22,5 +22,6 @@ module.exports = {
     setupBackup: require('./lib/setup/setupBackup').BackupRestore,
     setupUpgrade: require('./lib/setup/setupUpgrade').Upgrade,
     setupSetup: require('./lib/setup/setupSetup').Setup,
-    setupVisDebug: require('./lib/setup/setupVisDebug').VisDebug
+    setupVisDebug: require('./lib/setup/setupVisDebug').VisDebug,
+    setupLicense: require('./lib/setup/setupLicense').License
 };

@@ -1,23 +1,25 @@
-/**
- *      Check license
- *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
- *
- *      MIT License
- *
- */
+import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
+import { tools } from '@iobroker/js-controller-common';
+import fs from 'fs-extra';
+import jwt from 'jsonwebtoken';
 
-'use strict';
+export interface CLILicenseOptions {
+    objects: ObjectsRedisClient;
+}
 
-/** @class */
-function License(options) {
-    const fs = require('fs');
-    const jwt = require('jsonwebtoken');
-    options = options || {};
+export class License {
+    private objects: ObjectsRedisClient;
 
-    const objects = options.objects;
-    // read info from  '/etc/iob_vendor.json' and executes instructions stored there
-    this.setLicense = async file => {
+    constructor(options: CLILicenseOptions) {
+        this.objects = options.objects;
+    }
+
+    /**
+     * Read info from  '/etc/iob_vendor.json' and executes instructions stored there
+     *
+     * @param file path of license file
+     */
+    async setLicense(file: string): Promise<void> {
         if (fs.existsSync(file)) {
             file = fs.readFileSync(file, 'utf8');
         }
@@ -26,7 +28,7 @@ function License(options) {
         if (!license) {
             throw new Error('License cannot be decoded');
         }
-        if (!license.name) {
+        if (!tools.isObject(license) || !license.name) {
             throw new Error('Name not found in the license');
         }
         const adapter = license.name.split('.')[1];
@@ -35,7 +37,7 @@ function License(options) {
         }
 
         // read all instances of this adapter
-        const arr = await objects.getObjectListAsync(
+        const arr = await this.objects.getObjectListAsync(
             {
                 startkey: 'system.adapter.' + adapter + '.',
                 endkey: 'system.adapter.' + adapter + '.\u9999'
@@ -53,7 +55,7 @@ function License(options) {
                     obj.native.license = file;
                     updated++;
                     try {
-                        await objects.setObjectAsync(obj._id, obj);
+                        await this.objects.setObjectAsync(obj._id, obj);
                         console.log(`Instance "${obj._id}" updated`);
                     } catch (err) {
                         console.error(`Cannot update "${obj._id}": ${err}`);
@@ -72,7 +74,7 @@ function License(options) {
                         obj.native.license = file;
                         updated++;
                         try {
-                            await objects.setObjectAsync(obj._id, obj);
+                            await this.objects.setObjectAsync(obj._id, obj);
                             console.log(`Adapter "${obj._id}" updated`);
                         } catch (err) {
                             console.error(`Cannot update "${obj._id}": ${err}`);
@@ -85,9 +87,5 @@ function License(options) {
         if (!updated) {
             console.error(`no installations of ${adapter} found`);
         }
-    };
-
-    return this;
+    }
 }
-
-module.exports = License;
