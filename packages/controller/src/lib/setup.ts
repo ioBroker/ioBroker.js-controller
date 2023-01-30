@@ -2232,9 +2232,7 @@ async function processCommand(
             if (widgetset && widgetset.startsWith('vis-')) {
                 widgetset = widgetset.substring(4);
             }
-
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
-            const VisDebug = require('./setup/setupVisDebug.js');
+            const VisDebug = (await import('@iobroker/js-controller-cli')).setupVisDebug;
 
             dbConnect(params, ({ objects }) => {
                 const visDebug = new VisDebug({
