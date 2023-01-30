@@ -72,7 +72,9 @@ module.exports = class CLIPlugin extends CLICommand {
             }
         }
 
-        dbConnect(async (objects, states, _isOffline, _dbType, iobrokerJson) => {
+        dbConnect(async params => {
+            const { states, objects, config: iobrokerJson } = params;
+
             try {
                 // Check if the host or instance exists
                 /** @type {string} */ let objectNamespace;
@@ -182,7 +184,9 @@ module.exports = class CLIPlugin extends CLICommand {
             }
         }
 
-        dbConnect(async (objects, states, _isOffline, _dbType, iobrokerJson) => {
+        dbConnect(async params => {
+            const { states, objects, config: iobrokerJson } = params;
+
             try {
                 // Check if the host or instance exists
                 /** @type {string} */ let objectNamespace;

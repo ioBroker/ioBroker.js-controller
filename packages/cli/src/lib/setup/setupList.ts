@@ -102,8 +102,11 @@ export class List {
         return result;
     }
 
-    showFileHeader(adapter: string): void {
-        adapter && console.log(`\n-- ${adapter} --`);
+    showFileHeader(adapter?: string): void {
+        if (adapter) {
+            console.log(`\n-- ${adapter} --`);
+        }
+
         console.log('   Modified at  |Permission|     User     |     Group    | Size | Name');
         console.log('----------------+----------+--------------+--------------+------+---------');
     }

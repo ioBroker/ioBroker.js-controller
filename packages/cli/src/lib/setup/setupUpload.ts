@@ -77,7 +77,6 @@ export class Upload {
     async getHosts(onlyAlive: boolean): Promise<string[]> {
         const hosts = [];
         try {
-            // @ts-expect-error should be fixed with #1917
             const arr = await this.objects.getObjectListAsync({
                 startkey: 'system.host.',
                 endkey: 'system.host.\u9999'

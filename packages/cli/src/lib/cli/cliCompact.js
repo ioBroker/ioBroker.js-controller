@@ -70,7 +70,9 @@ module.exports = class CLICompact extends CLICommand {
     setCompactModeHost(targetState) {
         const { callback, dbConnect } = this.options;
 
-        dbConnect((_objects, _states, isOffline) => {
+        dbConnect(params => {
+            const { isOffline } = params;
+
             const currentState = !!(this.config && this.config.system && this.config.system.compact);
 
             if (targetState === currentState) {
@@ -101,7 +103,9 @@ module.exports = class CLICompact extends CLICommand {
     statusCompactModeInstance(instance) {
         const { callback, dbConnect } = this.options;
 
-        dbConnect((objects, _states, _isOffline, _objectDbType, _config) => {
+        dbConnect(params => {
+            const { objects } = params;
+
             if (!this.config.system || !this.config.system.compact) {
                 console.log('Compact mode is disabled for this host. All compact mode settings will have no effect!');
                 console.log();
@@ -133,7 +137,9 @@ module.exports = class CLICompact extends CLICommand {
     setCompactModeInstance(instance, targetState, groupId) {
         const { callback, dbConnect } = this.options;
 
-        dbConnect((objects, _states, _isOffline, _objectDbType, _config) => {
+        dbConnect(params => {
+            const { objects } = params;
+
             if (!this.config.system || !this.config.system.compact) {
                 console.log('Compact mode is disabled on this host. This setting will have no effect!');
                 console.log();

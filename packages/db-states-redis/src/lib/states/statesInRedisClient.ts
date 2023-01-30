@@ -46,7 +46,7 @@ interface InternalLogObject extends LogObject {
 type UserChangeFunction = (id: string, state: ioBroker.State | null) => void;
 type ChangeFunction = (id: string, state: ioBroker.State | ioBroker.Message | null) => void;
 
-interface StatesSettings {
+export interface StatesSettings {
     connected?: () => void;
     disconnected?: () => void;
     changeUser?: UserChangeFunction;
@@ -1205,12 +1205,13 @@ export class StateRedisClient {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        const state: ioBroker.Message = { _id: this.globalMessageId++, ...message };
+        const fullMessage: ioBroker.Message = { ...message, _id: this.globalMessageId++ };
+
         if (this.globalMessageId >= 0xffffffff) {
             this.globalMessageId = 0;
         }
         try {
-            await this.client.publish(this.namespaceMsg + id, JSON.stringify(state));
+            await this.client.publish(this.namespaceMsg + id, JSON.stringify(fullMessage));
             return tools.maybeCallbackWithError(callback, null, id);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);

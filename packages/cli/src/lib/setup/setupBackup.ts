@@ -264,7 +264,6 @@ export class BackupRestore {
         const hostname = tools.getHostName();
 
         try {
-            // @ts-expect-error #1917
             const res = await this.objects.getObjectListAsync({ include_docs: true });
             if (res) {
                 // getObjectList returns value and doc as the same so filter out doc to reduce backup size

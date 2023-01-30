@@ -5,11 +5,11 @@ module.exports = {
     tools: require('./lib/cli/cliTools'),
     command: {
         object: require('./lib/cli/cliObjects.js'),
-        state: require('./lib/cli/cliStates.js').CLIStates,
+        state: require('./lib/cli/cliStates').CLIStates,
         process: require('./lib/cli/cliProcess.js'),
         message: require('./lib/cli/cliMessage.js'),
         logs: require('./lib/cli/cliLogs.js'),
-        host: require('./lib/cli/cliHost.js'),
+        host: require('./lib/cli/cliHost').CLIHost,
         cert: require('./lib/cli/cliCert.js'),
         compact: require('./lib/cli/cliCompact.js'),
         debug: require('./lib/cli/cliDebug.js'),

@@ -47,7 +47,7 @@ interface RedisConnectionOptions extends ConnectionOptions {
     redisNamespace?: string;
 }
 
-interface ObjectsSettings {
+export interface ObjectsSettings {
     connected: () => void;
     controller?: boolean;
     primaryHostLost?: () => void;
@@ -1984,8 +1984,8 @@ export class ObjectsInRedisClient {
     // simulate. redis has no dirs
     mkdir(
         id: string,
-        dirName: string,
-        options: CallOptions | null | undefined,
+        dirName?: string,
+        options?: CallOptions | null | undefined,
         callback?: ioBroker.ErrorCallback
     ): void {
         if (typeof options === 'function') {
@@ -2010,14 +2010,14 @@ export class ObjectsInRedisClient {
                     // we create a dummy file (for file this file exists to store meta data)
                     options = options || {};
                     options.virtualFile = true; // this is a virtual File
-                    const realName = dirName + (dirName.endsWith('/') ? '' : '/');
+                    const realName = dirName + (dirName!.endsWith('/') ? '' : '/');
                     this.writeFile(id, `${realName}_data.json`, '', options, callback);
                 }
             }
         });
     }
 
-    mkdirAsync(id: string, dirName: string, options: CallOptions): Promise<void> {
+    mkdirAsync(id: string, dirName?: string, options?: CallOptions): Promise<void> {
         return new Promise((resolve, reject) =>
             this.mkdir(id, dirName, options, err => (err ? reject(err) : resolve()))
         );
@@ -4537,7 +4537,7 @@ export class ObjectsInRedisClient {
 
     getObjectListAsync(
         params: ioBroker.GetObjectListParams,
-        options: CallOptions
+        options?: CallOptions
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback>> {
         return new Promise((resolve, reject) =>
             this.getObjectList(params, options, (err, arr) => (err ? reject(err) : resolve(arr)))
@@ -4949,7 +4949,7 @@ export class ObjectsInRedisClient {
         }
     }
 
-    destroyDB(options: CallOptions | null, callback: ioBroker.ErrorCallback): void {
+    destroyDB(options: CallOptions | null | undefined, callback: ioBroker.ErrorCallback): void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -4969,7 +4969,7 @@ export class ObjectsInRedisClient {
         });
     }
 
-    destroyDBAsync(options: CallOptions): Promise<void> {
+    destroyDBAsync(options?: CallOptions): Promise<void> {
         return new Promise<void>((resolve, reject) => this.destroyDB(options, err => (err ? reject(err) : resolve())));
     }
 
