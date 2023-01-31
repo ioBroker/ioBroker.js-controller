@@ -1,6 +1,5 @@
 'use strict';
 
-const { type } = require('os');
 const tls = require('tls');
 
 /**
