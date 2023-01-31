@@ -2404,7 +2404,7 @@ export class AdapterClass extends EventEmitter {
 
         this.on('objectChange', (id, obj) => {
             if (id === SYSTEM_CERTIFICATES_ID) {
-                this._logger.error(`${this.namespaceLog} ${SYSTEM_CERTIFICATES_ID} update`);
+                this._logger.debug(`${this.namespaceLog} ${SYSTEM_CERTIFICATES_ID} update`);
                 const collections = obj.native.collections as Record<string, ioBroker.CertificateCollection>;
                 if (!collectionId) {
                     // No specific ID requested, return them all
