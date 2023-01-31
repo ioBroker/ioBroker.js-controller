@@ -6,6 +6,12 @@
 
 A message being passed between adapter instances
 
+## Hierarchy
+
+- [`SendableMessage`](internal_.SendableMessage.md)
+
+  ↳ **`Message`**
+
 ## Table of contents
 
 ### Properties
@@ -26,19 +32,23 @@ ID of this message
 
 #### Defined in
 
-[types/index.d.ts:232](https://github.com/ioBroker/ioBroker.js-controller/blob/9c08dda8/packages/types/index.d.ts#L232)
+[types/index.d.ts:237](https://github.com/ioBroker/ioBroker.js-controller/blob/7dd079e8/packages/types/index.d.ts#L237)
 
 ___
 
 ### callback
 
-• **callback**: [`MessageCallbackInfo`](internal_.MessageCallbackInfo.md)
+• `Optional` **callback**: [`MessageCallbackInfo`](internal_.MessageCallbackInfo.md)
 
 Callback information. This is set when the source expects a response
 
+#### Inherited from
+
+[SendableMessage](internal_.SendableMessage.md).[callback](internal_.SendableMessage.md#callback)
+
 #### Defined in
 
-[types/index.d.ts:234](https://github.com/ioBroker/ioBroker.js-controller/blob/9c08dda8/packages/types/index.d.ts#L234)
+[types/index.d.ts:231](https://github.com/ioBroker/ioBroker.js-controller/blob/7dd079e8/packages/types/index.d.ts#L231)
 
 ___
 
@@ -48,9 +58,13 @@ ___
 
 The command to be executed
 
+#### Inherited from
+
+[SendableMessage](internal_.SendableMessage.md).[command](internal_.SendableMessage.md#command)
+
 #### Defined in
 
-[types/index.d.ts:226](https://github.com/ioBroker/ioBroker.js-controller/blob/9c08dda8/packages/types/index.d.ts#L226)
+[types/index.d.ts:225](https://github.com/ioBroker/ioBroker.js-controller/blob/7dd079e8/packages/types/index.d.ts#L225)
 
 ___
 
@@ -60,18 +74,26 @@ ___
 
 The source of this message
 
+#### Inherited from
+
+[SendableMessage](internal_.SendableMessage.md).[from](internal_.SendableMessage.md#from)
+
 #### Defined in
 
-[types/index.d.ts:230](https://github.com/ioBroker/ioBroker.js-controller/blob/9c08dda8/packages/types/index.d.ts#L230)
+[types/index.d.ts:229](https://github.com/ioBroker/ioBroker.js-controller/blob/7dd079e8/packages/types/index.d.ts#L229)
 
 ___
 
 ### message
 
-• **message**: [`MessagePayload`](../modules/internal_.md#messagepayload)
+• **message**: `any`
 
 The message payload
 
+#### Inherited from
+
+[SendableMessage](internal_.SendableMessage.md).[message](internal_.SendableMessage.md#message)
+
 #### Defined in
 
-[types/index.d.ts:228](https://github.com/ioBroker/ioBroker.js-controller/blob/9c08dda8/packages/types/index.d.ts#L228)
+[types/index.d.ts:227](https://github.com/ioBroker/ioBroker.js-controller/blob/7dd079e8/packages/types/index.d.ts#L227)
