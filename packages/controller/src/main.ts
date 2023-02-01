@@ -22,7 +22,7 @@ import deepClone from 'deep-clone';
 import { isDeepStrictEqual, inspect } from 'util';
 import { tools, EXIT_CODES, logger as toolsLogger } from '@iobroker/js-controller-common';
 import { PluginHandler } from '@iobroker/plugin-base';
-import { NotificationHandler } from './lib/notificationHandler';
+import { NotificationHandler } from '@iobroker/js-controller-common-db';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { setupUpload as Upload } from '@iobroker/js-controller-cli';

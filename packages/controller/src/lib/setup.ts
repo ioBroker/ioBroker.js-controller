@@ -727,7 +727,7 @@ async function processCommand(
                             }
 
                             if (migrated) {
-                                const { NotificationHandler } = await import('./../lib/notificationHandler');
+                                const { NotificationHandler } = await import('@iobroker/js-controller-common-db');
 
                                 const hostname = tools.getHostName();
 
