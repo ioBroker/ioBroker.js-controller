@@ -24,5 +24,6 @@ module.exports = {
     setupSetup: require('./lib/setup/setupSetup').Setup,
     setupVisDebug: require('./lib/setup/setupVisDebug').VisDebug,
     setupLicense: require('./lib/setup/setupLicense').License,
-    setupVendor: require('./lib/setup/setupVendor').Vendor
+    setupVendor: require('./lib/setup/setupVendor').Vendor,
+    setupMultihost: require('./lib/setup/setupMultihost').Multihost
 };

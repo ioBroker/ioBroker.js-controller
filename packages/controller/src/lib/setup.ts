@@ -2657,9 +2657,8 @@ async function processCommand(
                 console.log('Invalid parameters. Following is possible: enable, browse, connect, status');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
-                dbConnect(params, () => {
-                    // eslint-disable-next-line @typescript-eslint/no-var-requires
-                    const Multihost = require('./setup/setupMultihost.js');
+                dbConnect(params, async ({ objects }) => {
+                    const Multihost = (await import('@iobroker/js-controller-common')).setupMultihost;
                     const mh = new Multihost({
                         params,
                         processExit: callback,
