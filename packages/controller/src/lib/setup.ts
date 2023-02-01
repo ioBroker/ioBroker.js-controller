@@ -2658,10 +2658,9 @@ async function processCommand(
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
                 dbConnect(params, async ({ objects }) => {
-                    const Multihost = (await import('@iobroker/js-controller-common')).setupMultihost;
+                    const Multihost = (await import('@iobroker/js-controller-cli')).setupMultihost;
                     const mh = new Multihost({
                         params,
-                        processExit: callback,
                         objects
                     });
 

@@ -1,5 +1,5 @@
 import dgram from 'dgram';
-import * as tools from '@iobroker/js-controller-common';
+import { tools } from '@iobroker/js-controller-common';
 import crypto from 'crypto';
 
 const PORT = 50005;

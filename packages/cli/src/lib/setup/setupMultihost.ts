@@ -231,6 +231,7 @@ export class Multihost {
                             callback(new Error('Secret phrases are not equal!'));
                         } else {
                             this.objects.getObject('system.config', (err, obj) => {
+                                // @ts-expect-error external types not perfect?
                                 config.multihostService.password = tools.encrypt(obj!.native.secret, password.password);
                                 this.showMHState(config, changed, callback);
                             });
