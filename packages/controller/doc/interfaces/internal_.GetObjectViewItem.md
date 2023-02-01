@@ -6,9 +6,9 @@
 
 ## Type parameters
 
-| Name |
-| :------ |
-| `T` |
+| Name | Type |
+| :------ | :------ |
+| `T` | extends [`AnyObject`](../modules/internal_.md#anyobject) |
 
 ## Hierarchy
 
@@ -33,7 +33,7 @@ The ID of this object
 
 #### Defined in
 
-[types/index.d.ts:462](https://github.com/ioBroker/ioBroker.js-controller/blob/9c08dda8/packages/types/index.d.ts#L462)
+[types/index.d.ts:465](https://github.com/ioBroker/ioBroker.js-controller/blob/7dd079e8/packages/types/index.d.ts#L465)
 
 ___
 
@@ -45,4 +45,4 @@ A copy of the object from the DB
 
 #### Defined in
 
-[types/index.d.ts:464](https://github.com/ioBroker/ioBroker.js-controller/blob/9c08dda8/packages/types/index.d.ts#L464)
+[types/index.d.ts:467](https://github.com/ioBroker/ioBroker.js-controller/blob/7dd079e8/packages/types/index.d.ts#L467)
