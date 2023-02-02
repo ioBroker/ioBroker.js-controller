@@ -827,8 +827,7 @@ async function processCommand(
             dbConnect(params, async ({ objects }) => {
                 try {
                     const data = await tools.getHostInfo(objects!);
-                    // eslint-disable-next-line @typescript-eslint/no-var-requires
-                    const formatters = require('./formatters');
+                    const formatters = await import('./setup/formatters');
                     const formatInfo = {
                         Uptime: formatters.formatSeconds,
                         'System uptime': formatters.formatSeconds,
