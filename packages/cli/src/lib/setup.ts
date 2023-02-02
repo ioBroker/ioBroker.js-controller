@@ -2488,7 +2488,7 @@ async function processCommand(
                     pckg = { version: `"${adapter}" not found` };
                 }
             } else {
-                pckg = require(`@${tools.appName.toLowerCase()}/js-controller-common/package.json`);
+                pckg = require(`@iobroker/js-controller-common/package.json`);
             }
             console.log(pckg.version);
 
@@ -2808,7 +2808,7 @@ async function processCommand(
                         pckg = { version: `"${command}" not found` };
                     }
                 } else {
-                    pckg = require(`@${tools.appName.toLowerCase()}/js-controller-common/package.json`);
+                    pckg = require(`@iobroker/js-controller-common/package.json`);
                 }
                 console.log(pckg.version);
             } else {
