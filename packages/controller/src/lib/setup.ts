@@ -656,7 +656,7 @@ async function processCommand(
                         // we update existing things, in first as well as normnal setup
                         // Rename repositories
                         const Repo = (await import('@iobroker/js-controller-cli')).setupRepo;
-                        const repo = new Repo({ objects, states });
+                        const repo = new Repo({ objects: objects!, states: states! });
 
                         try {
                             await repo.rename('default', 'stable', 'http://download.iobroker.net/sources-dist.json');
@@ -1972,7 +1972,7 @@ async function processCommand(
                         }
                     });
                 } else if (command === 'list' || command === 'l') {
-                    users.getGroup(group, (err: any, isEnabled: boolean, list: any[]) => {
+                    users.getGroup(group, (err, isEnabled, members) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
@@ -1980,9 +1980,9 @@ async function processCommand(
                             console.log(
                                 `Group "${group}" is ${isEnabled ? 'enabled' : 'disabled'} and has following members:`
                             );
-                            if (list) {
-                                for (let i = 0; i < list.length; i++) {
-                                    console.log(list[i].substring('system.user.'.length));
+                            if (members) {
+                                for (const member of members) {
+                                    console.log(member.substring('system.user.'.length));
                                 }
                             }
                             return void callback();
@@ -2009,7 +2009,7 @@ async function processCommand(
                         }
                     });
                 } else if (command === 'get') {
-                    users.getGroup(group, (err: any, isEnabled: boolean) => {
+                    users.getGroup(group, (err, isEnabled) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
