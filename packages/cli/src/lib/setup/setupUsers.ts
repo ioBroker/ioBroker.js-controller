@@ -67,13 +67,17 @@ export class Users {
      * Checks if user exists
      *
      * @param user username
-     * @param callback
      */
-    isUser(user: string, callback: (err: null, exists: boolean) => void): void {
+    async isUser(user: string): Promise<boolean> {
         const _user = user.replace(/\s/g, '_').toLowerCase();
-        this.objects.getObject(`system.user.${_user}`, (err, obj) => {
-            return tools.maybeCallbackWithError(callback, !!obj);
-        });
+        let isExisting = false;
+        try {
+            isExisting = await this.objects.objectExists(`system.user.${_user}`);
+        } catch {
+            // ignore
+        }
+
+        return isExisting;
     }
 
     /**
@@ -331,65 +335,64 @@ export class Users {
      * @param password password of user
      * @param callback
      */
-    setUserPassword(user: string, password: string, callback: ioBroker.ErrorCallback): void {
+    async setUserPassword(user: string, password: string, callback: ioBroker.ErrorCallback): Promise<void> {
         if (!user) {
             return tools.maybeCallbackWithError(callback, 'Please define user name, like: "passwd username"');
         }
 
-        this.isUser(user, result => {
-            if (!result) {
-                return tools.maybeCallbackWithError(callback, `User "${user}" does not exist.`);
-            } else {
-                // Check group
-                if (!password) {
-                    prompt.message = '';
-                    prompt.delimiter = '';
-                    const schema = {
-                        properties: {
-                            password: {
-                                description: 'Enter your password:',
-                                pattern: /^[^'"]*$/,
-                                message: 'No " are allowed',
-                                hidden: true
-                            },
-                            repeatPassword: {
-                                description: 'Repeat your password:',
-                                pattern: /^[^'"]*$/,
-                                message: 'No " are allowed',
-                                hidden: true
-                            }
+        const isExisting = await this.isUser(user);
+        if (!isExisting) {
+            return tools.maybeCallbackWithError(callback, `User "${user}" does not exist.`);
+        } else {
+            // Check group
+            if (!password) {
+                prompt.message = '';
+                prompt.delimiter = '';
+                const schema = {
+                    properties: {
+                        password: {
+                            description: 'Enter your password:',
+                            pattern: /^[^'"]*$/,
+                            message: 'No " are allowed',
+                            hidden: true
+                        },
+                        repeatPassword: {
+                            description: 'Repeat your password:',
+                            pattern: /^[^'"]*$/,
+                            message: 'No " are allowed',
+                            hidden: true
                         }
-                    };
-                    prompt.start();
+                    }
+                };
+                prompt.start();
 
-                    prompt.get(schema, (err, result) => {
-                        if (result) {
-                            if (result.password !== result.repeatPassword) {
-                                return tools.maybeCallbackWithError(callback, 'Passwords are not identical!');
+                prompt.get(schema, (err, result) => {
+                    if (result) {
+                        if (result.password !== result.repeatPassword) {
+                            return tools.maybeCallbackWithError(callback, 'Passwords are not identical!');
+                        }
+                        // @ts-expect-error external types problem?
+                        this.setPassword(user, result.password, err => {
+                            if (err) {
+                                return tools.maybeCallbackWithError(callback, err);
+                            } else {
+                                return tools.maybeCallback(callback);
                             }
-                            // @ts-expect-error external types problem?
-                            this.setPassword(user, result.password, err => {
-                                if (err) {
-                                    return tools.maybeCallbackWithError(callback, err);
-                                } else {
-                                    return tools.maybeCallback(callback);
-                                }
-                            });
-                        } else {
-                            return tools.maybeCallbackWithError(callback, 'No password entered!');
-                        }
-                    });
-                } else {
-                    this.setPassword(user, password, err => {
-                        if (err) {
-                            return tools.maybeCallbackWithError(callback, err);
-                        } else {
-                            return tools.maybeCallback(callback);
-                        }
-                    });
-                }
+                        });
+                    } else {
+                        return tools.maybeCallbackWithError(callback, 'No password entered!');
+                    }
+                });
+            } else {
+                this.setPassword(user, password, err => {
+                    if (err) {
+                        return tools.maybeCallbackWithError(callback, err);
+                    } else {
+                        return tools.maybeCallback(callback);
+                    }
+                });
             }
-        });
+        }
     }
 
     /**
