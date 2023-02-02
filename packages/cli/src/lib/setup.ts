@@ -1,29 +1,39 @@
-/**
- *
- *  ioBroker Command Line Interface (CLI)
- *
- *  7'2014-2023 bluefox <dogafox@gmail.com>
- *         2014 hobbyquaker <hq@ccu.io>
- *
- */
-
 import fs from 'fs-extra';
 import { tools } from '@iobroker/js-controller-common';
-import cli from '@iobroker/js-controller-cli';
 import { EXIT_CODES } from '@iobroker/js-controller-common';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual } from 'util';
 import Debug from 'debug';
 import { tools as dbTools, getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
 import path from 'path';
-import { PluginHandler } from '@iobroker/plugin-base';
 import yargs from 'yargs';
+import { PluginHandler } from '@iobroker/plugin-base';
+import * as CLITools from './cli/cliTools';
+import { CLIHost } from './cli/cliHost';
+import { CLIStates } from './cli/cliStates';
+import { error as CLIError } from './cli/messages';
 // TODO: these imports are okay as setup.ts will be moved into cli package soon
-import type { CLICommandContext, CLICommandOptions } from '@iobroker/js-controller-cli/src/lib/cli/cliCommand';
-import type { DbConnectCallback, DbConnectAsyncReturn } from '@iobroker/js-controller-cli/src/lib/_Types';
+import type { CLICommandContext, CLICommandOptions } from './cli/cliCommand';
+import type { DbConnectCallback, DbConnectAsyncReturn } from './_Types';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type { Client as StateRedisClient } from '@iobroker/db-states-redis';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
+
+/**
+ * Polyfill until everything ported to TS
+ */
+const cli = {
+    command: {
+        object: require('./cli/cliObjects.js'),
+        process: require('./cli/cliProcess.js'),
+        message: require('./cli/cliMessage.js'),
+        logs: require('./cli/cliLogs.js'),
+        cert: require('./cli/cliCert.js'),
+        compact: require('./cli/cliCompact.js'),
+        debug: require('./cli/cliDebug.js'),
+        plugin: require('./cli/cliPlugin.js')
+    }
+} as const;
 
 const debug = Debug('iobroker:cli');
 
@@ -556,7 +566,7 @@ async function processCommand(
             Objects = getObjectsConstructor();
             const repoUrl = args[0]; // Repo url or name
             dbConnect(params, async ({ objects, states }) => {
-                const Repo = (await import('@iobroker/js-controller-cli')).setupRepo;
+                const { Repo } = await import('./setup/setupRepo');
                 const repo = new Repo({
                     objects,
                     states
@@ -569,7 +579,7 @@ async function processCommand(
         }
 
         case 'setup': {
-            const Setup = (await import('@iobroker/js-controller-cli')).setupSetup;
+            const { Setup } = await import('./setup/setupSetup');
             const setup = new Setup({
                 dbConnectAsync,
                 processExit: callback,
@@ -602,7 +612,7 @@ async function processCommand(
                     async () => {
                         if (isFirst) {
                             // Creates all instances that are needed on a fresh installation
-                            const Install = (await import('@iobroker/js-controller-cli')).setupInstall;
+                            const { Install } = await import('./setup/setupInstall');
                             const install = new Install({
                                 objects: objects!,
                                 states: states!,
@@ -655,7 +665,7 @@ async function processCommand(
 
                         // we update existing things, in first as well as normnal setup
                         // Rename repositories
-                        const Repo = (await import('@iobroker/js-controller-cli')).setupRepo;
+                        const { Repo } = await import('./setup/setupRepo');
                         const repo = new Repo({ objects: objects!, states: states! });
 
                         try {
@@ -791,11 +801,11 @@ async function processCommand(
             }
             url = url.trim();
 
-            dbConnect(params, async () => {
-                const Install = (await import('@iobroker/js-controller-cli')).setupInstall;
+            dbConnect(params, async ({ objects, states }) => {
+                const { Install } = await import('./setup/setupInstall');
                 const install = new Install({
-                    objects: objects!,
-                    states: states!,
+                    objects,
+                    states,
                     getRepository,
                     processExit: callback,
                     params
@@ -878,9 +888,9 @@ async function processCommand(
             }
 
             // If user accidentally wrote tools.appName.adapter => remove adapter
-            name = cli.tools.normalizeAdapterName(name);
+            name = CLITools.normalizeAdapterName(name);
 
-            const parsedName = cli.tools.splitAdapterOrInstanceIdentifierWithVersion(name);
+            const parsedName = CLITools.splitAdapterOrInstanceIdentifierWithVersion(name);
             if (!parsedName) {
                 console.log('Invalid adapter name for install');
                 showHelp();
@@ -896,11 +906,11 @@ async function processCommand(
 
             const adapterDir = tools.getAdapterDir(name);
 
-            dbConnect(params, async () => {
-                const Install = (await import('@iobroker/js-controller-cli')).setupInstall;
+            dbConnect(params, async ({ objects, states }) => {
+                const { Install } = await import('./setup/setupInstall');
                 const install = new Install({
-                    objects: objects!,
-                    states: states!,
+                    objects,
+                    states,
                     getRepository,
                     processExit: callback,
                     params
@@ -990,13 +1000,13 @@ async function processCommand(
             const name = args[0];
             const subTree = args[1];
             if (name) {
-                dbConnect(params, async () => {
-                    const Upload = (await import('@iobroker/js-controller-cli')).setupUpload;
-                    const upload = new Upload({ states: states!, objects: objects! });
+                dbConnect(params, async ({ objects, states }) => {
+                    const { Upload } = await import('./setup/setupUpload');
+                    const upload = new Upload({ states, objects });
 
                     if (name === 'all') {
                         try {
-                            const objs = await objects!.getObjectListAsync({
+                            const objs = await objects.getObjectListAsync({
                                 startkey: 'system.adapter.',
                                 endkey: 'system.adapter.\u9999'
                             });
@@ -1076,14 +1086,14 @@ async function processCommand(
             }
             // If the user accidentally wrote <tools.appName>.adapter,
             // remove <tools.appName> from the adapter name
-            adapter = cli.tools.normalizeAdapterName(adapter);
+            adapter = CLITools.normalizeAdapterName(adapter);
 
             // Avoid deleting stuff we don't want to delete
             // e.g. `system.adapter.*`
             if (!instance) {
                 // Ensure that adapter contains a valid adapter (without instance nr)
                 // or instance (with instance nr) identifier
-                if (!cli.tools.validateAdapterOrInstanceIdentifier(adapter)) {
+                if (!CLITools.validateAdapterOrInstanceIdentifier(adapter)) {
                     showHelp();
                     return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
                 }
@@ -1094,18 +1104,18 @@ async function processCommand(
             } else {
                 // ensure that adapter contains a valid adapter identifier
                 // and the instance is a number
-                if (!cli.tools.validateAdapterIdentifier(adapter) || !/^\d+$/.test(instance)) {
+                if (!CLITools.validateAdapterIdentifier(adapter) || !/^\d+$/.test(instance)) {
                     showHelp();
                     return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
                 }
             }
 
             if (instance || instance === 0) {
-                dbConnect(params, async () => {
-                    const Install = (await import('@iobroker/js-controller-cli')).setupInstall;
+                dbConnect(params, async ({ objects, states }) => {
+                    const { Install } = await import('./setup/setupInstall');
                     const install = new Install({
-                        objects: objects!,
-                        states: states!,
+                        objects,
+                        states,
                         getRepository,
                         processExit: callback,
                         params
@@ -1116,11 +1126,11 @@ async function processCommand(
                     callback();
                 });
             } else {
-                dbConnect(params, async () => {
-                    const Install = (await import('@iobroker/js-controller-cli')).setupInstall;
+                dbConnect(params, async ({ objects, states }) => {
+                    const { Install } = await import('./setup/setupInstall');
                     const install = new Install({
-                        objects: objects!,
-                        states: states!,
+                        objects,
+                        states,
                         getRepository,
                         processExit: callback,
                         params
@@ -1164,7 +1174,7 @@ async function processCommand(
 
         case 's':
         case 'state': {
-            const statesCommand = new cli.command.state(commandOptions);
+            const statesCommand = new CLIStates(commandOptions);
             statesCommand.execute(args);
             break;
         }
@@ -1185,16 +1195,16 @@ async function processCommand(
         case 'upgrade': {
             Objects = getObjectsConstructor();
 
-            let adapter: string | null = cli.tools.normalizeAdapterName(args[0]);
+            let adapter: string | null = CLITools.normalizeAdapterName(args[0]);
 
             if (adapter === 'all') {
                 adapter = null;
             }
 
-            dbConnect(params, async () => {
-                const Upgrade = (await import('@iobroker/js-controller-cli')).setupUpgrade;
+            dbConnect(params, async ({ objects, states }) => {
+                const { Upgrade } = await import('./setup/setupUpgrade');
                 const upgrade = new Upgrade({
-                    objects: objects!,
+                    objects,
                     getRepository,
                     params,
                     processExit: callback,
@@ -1204,7 +1214,7 @@ async function processCommand(
                 if (adapter) {
                     try {
                         if (adapter === 'self') {
-                            const hostAlive = await states!.getStateAsync(`system.host.${tools.getHostName()}.alive`);
+                            const hostAlive = await states.getStateAsync(`system.host.${tools.getHostName()}.alive`);
                             await upgrade.upgradeController('', params.force || params.f, !!hostAlive?.val);
                         } else {
                             await upgrade.upgradeAdapter(
@@ -1271,17 +1281,17 @@ async function processCommand(
         }
 
         case 'restore': {
-            const Backup = (await import('@iobroker/js-controller-cli')).setupBackup;
+            const { BackupRestore } = await import('./setup/setupBackup');
 
-            dbConnect(params, ({ isOffline }) => {
+            dbConnect(params, ({ isOffline, objects, states }) => {
                 if (!isOffline) {
                     console.error(`Stop ${tools.appName} first!`);
                     return void callback(EXIT_CODES.CONTROLLER_RUNNING);
                 }
 
-                const backup = new Backup({
-                    states: states!,
-                    objects: objects!,
+                const backup = new BackupRestore({
+                    states,
+                    objects,
                     cleanDatabase,
                     restartController,
                     processExit: callback
@@ -1299,12 +1309,12 @@ async function processCommand(
 
         case 'backup': {
             const name = args[0];
-            const Backup = (await import('@iobroker/js-controller-cli')).setupBackup;
+            const { BackupRestore } = await import('./setup/setupBackup');
 
-            dbConnect(params, async () => {
-                const backup = new Backup({
-                    states: states!,
-                    objects: objects!,
+            dbConnect(params, async ({ states, objects }) => {
+                const backup = new BackupRestore({
+                    states,
+                    objects,
                     cleanDatabase,
                     restartController,
                     processExit: callback
@@ -1325,11 +1335,11 @@ async function processCommand(
 
         case 'validate': {
             const name = args[0];
-            const Backup = (await import('@iobroker/js-controller-cli')).setupBackup;
-            dbConnect(params, async () => {
-                const backup = new Backup({
-                    states: states!,
-                    objects: objects!,
+            const { BackupRestore } = await import('./setup/setupBackup');
+            dbConnect(params, async ({ objects, states }) => {
+                const backup = new BackupRestore({
+                    states,
+                    objects,
                     cleanDatabase,
                     restartController,
                     processExit: callback
@@ -1349,11 +1359,11 @@ async function processCommand(
 
         case 'l':
         case 'list': {
-            dbConnect(params, async () => {
-                const { setupList: List } = await import('@iobroker/js-controller-cli');
+            dbConnect(params, async ({ objects, states }) => {
+                const { List } = await import('./setup/setupList');
                 const list = new List({
-                    states: states!,
-                    objects: objects!,
+                    states,
+                    objects,
                     processExit: callback
                 });
                 list.list(args[0], args[1], params);
@@ -1368,7 +1378,7 @@ async function processCommand(
                 console.log('No file path found. Example: "touch /vis.0/main/*"');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
-            dbConnect(params, () => {
+            dbConnect(params, ({ states, objects }) => {
                 // extract id
                 pattern = pattern.replace(/\\/g, '/');
                 if (pattern[0] === '/') {
@@ -1400,10 +1410,10 @@ async function processCommand(
                                                 files.push({ id: _id, processed: processed });
                                             }
                                             if (!--count) {
-                                                const { setupList: List } = await import('@iobroker/js-controller-cli');
+                                                const { List } = await import('./setup/setupList');
                                                 const list = new List({
-                                                    states: states!,
-                                                    objects: objects!,
+                                                    states,
+                                                    objects,
                                                     processExit: callback
                                                 });
                                                 files.sort((a, b) => a.id.localeCompare(b.id));
@@ -1440,7 +1450,7 @@ async function processCommand(
                             console.error(err);
                         } else {
                             if (processed) {
-                                const { setupList: List } = await import('@iobroker/js-controller-cli');
+                                const { List } = await import('./setup/setupList');
                                 const list = new List({
                                     states: states!,
                                     objects: objects!,
@@ -1497,7 +1507,7 @@ async function processCommand(
                                                 files.push({ id: _id, processed: processed });
                                             }
                                             if (!--count) {
-                                                const { setupList: List } = await import('@iobroker/js-controller-cli');
+                                                const { List } = await import('./setup/setupList');
                                                 const list = new List({
                                                     states: states!,
                                                     objects: objects!,
@@ -1537,7 +1547,7 @@ async function processCommand(
                             console.error(err);
                         } else {
                             if (processed) {
-                                const { setupList: List } = await import('@iobroker/js-controller-cli');
+                                const { List } = await import('./setup/setupList');
                                 const list = new List({
                                     states: states!,
                                     objects: objects!,
@@ -1562,7 +1572,7 @@ async function processCommand(
             let pattern = args[1];
 
             if (!mode) {
-                cli.error.requiredArgumentMissing('mode', 'chmod 777 /vis.0/main/*');
+                CLIError.requiredArgumentMissing('mode', 'chmod 777 /vis.0/main/*');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
                 //yargs has converted it to number
@@ -1570,7 +1580,7 @@ async function processCommand(
             }
 
             if (!pattern) {
-                cli.error.requiredArgumentMissing('file path', 'chmod 777 /vis.0/main/*');
+                CLIError.requiredArgumentMissing('file path', 'chmod 777 /vis.0/main/*');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
             dbConnect(params, () => {
@@ -1608,7 +1618,7 @@ async function processCommand(
                                                 files.push({ id: _id, processed: processed });
                                             }
                                             if (!--count) {
-                                                const { setupList: List } = await import('@iobroker/js-controller-cli');
+                                                const { List } = await import('./setup/setupList');
                                                 const list = new List({
                                                     states: states!,
                                                     objects: objects!,
@@ -1648,7 +1658,7 @@ async function processCommand(
                             console.error(err);
                         } else {
                             if (processed) {
-                                const { setupList: List } = await import('@iobroker/js-controller-cli');
+                                const { List } = await import('./setup/setupList');
                                 const list = new List({
                                     states: states!,
                                     objects: objects!,
@@ -1679,7 +1689,7 @@ async function processCommand(
             }
 
             if (!user) {
-                cli.error.requiredArgumentMissing('user', 'chown user /vis.0/main/*');
+                CLIError.requiredArgumentMissing('user', 'chown user /vis.0/main/*');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else if (user.substring(12) !== 'system.user.') {
                 user = 'system.user.' + user;
@@ -1689,7 +1699,7 @@ async function processCommand(
             }
 
             if (!pattern) {
-                cli.error.requiredArgumentMissing('file path', 'chown user /vis.0/main/*');
+                CLIError.requiredArgumentMissing('file path', 'chown user /vis.0/main/*');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
             dbConnect(params, () => {
@@ -1728,7 +1738,7 @@ async function processCommand(
                                                 files.push({ id: _id, processed: processed });
                                             }
                                             if (!--count) {
-                                                const { setupList: List } = await import('@iobroker/js-controller-cli');
+                                                const { List } = await import('./setup/setupList');
                                                 const list = new List({
                                                     states: states!,
                                                     objects: objects!,
@@ -1777,7 +1787,7 @@ async function processCommand(
                             } else {
                                 // call here list
                                 if (processed) {
-                                    const { setupList: List } = await import('@iobroker/js-controller-cli');
+                                    const { List } = await import('./setup/setupList');
                                     const list = new List({
                                         states: states!,
                                         objects: objects!,
@@ -1807,7 +1817,7 @@ async function processCommand(
             }
 
             dbConnect(params, async ({ objects }) => {
-                const Users = (await import('@iobroker/js-controller-cli')).setupUsers;
+                const { Users } = await import('./setup/setupUsers');
                 const users = new Users({
                     objects,
                     processExit: callback
@@ -1919,7 +1929,7 @@ async function processCommand(
             }
 
             dbConnect(params, async ({ objects }) => {
-                const Users = (await import('@iobroker/js-controller-cli')).setupUsers;
+                const { Users } = await import('./setup/setupUsers');
                 const users = new Users({
                     objects,
                     processExit: callback
@@ -2034,7 +2044,7 @@ async function processCommand(
             const password = params.password;
 
             dbConnect(params, async ({ objects }) => {
-                const Users = (await import('@iobroker/js-controller-cli')).setupUsers;
+                const { Users } = await import('./setup/setupUsers');
                 const users = new Users({
                     objects,
                     processExit: callback
@@ -2056,7 +2066,7 @@ async function processCommand(
             const user = args[0];
             const password = params.password;
             dbConnect(params, async ({ objects }) => {
-                const Users = (await import('@iobroker/js-controller-cli')).setupUsers;
+                const { Users } = await import('./setup/setupUsers');
                 const users = new Users({
                     objects,
                     processExit: callback
@@ -2081,7 +2091,7 @@ async function processCommand(
             const user = args[0];
 
             dbConnect(params, async ({ objects }) => {
-                const Users = (await import('@iobroker/js-controller-cli')).setupUsers;
+                const { Users } = await import('./setup/setupUsers');
                 const users = new Users({
                     objects,
                     processExit: callback
@@ -2204,7 +2214,7 @@ async function processCommand(
                             return void callback();
                         }
                     } else {
-                        cli.error.invalidInstance(instance);
+                        CLIError.invalidInstance(instance);
                         return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
                     }
                 });
@@ -2213,7 +2223,7 @@ async function processCommand(
         }
 
         case 'host': {
-            const hostCommand = new cli.command.host(commandOptions);
+            const hostCommand = new CLIHost(commandOptions);
             hostCommand.execute(args);
             break;
         }
@@ -2223,7 +2233,7 @@ async function processCommand(
             if (widgetset && widgetset.startsWith('vis-')) {
                 widgetset = widgetset.substring(4);
             }
-            const VisDebug = (await import('@iobroker/js-controller-cli')).setupVisDebug;
+            const { VisDebug } = await import('./setup/setupVisDebug');
 
             dbConnect(params, ({ objects }) => {
                 const visDebug = new VisDebug({
@@ -2539,7 +2549,7 @@ async function processCommand(
             }
 
             dbConnect(params, async ({ objects, states }) => {
-                const Repo = (await import('@iobroker/js-controller-cli')).setupRepo;
+                const { Repo } = await import('./setup/setupRepo');
                 const repo = new Repo({
                     objects,
                     states
@@ -2648,7 +2658,7 @@ async function processCommand(
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
                 dbConnect(params, async ({ objects }) => {
-                    const Multihost = (await import('@iobroker/js-controller-cli')).setupMultihost;
+                    const { Multihost } = await import('./setup/setupMultihost');
                     const mh = new Multihost({
                         params,
                         objects
@@ -2731,7 +2741,7 @@ async function processCommand(
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
                 dbConnect(params, async ({ objects }) => {
-                    const Vendor = (await import('@iobroker/js-controller-cli')).setupVendor;
+                    const { Vendor } = await import('./setup/setupVendor');
                     const vendor = new Vendor({ objects });
 
                     try {
@@ -2774,11 +2784,11 @@ async function processCommand(
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
                 dbConnect(params, async ({ objects }) => {
-                    const License = (await import('@iobroker/js-controller-cli')).setupLicense;
+                    const { License } = await import('./setup/setupLicense');
                     const license = new License({ objects });
                     try {
-                        const type = await license.setLicense(file);
-                        console.log(`License ${type} updated.`);
+                        await license.setLicense(file);
+                        console.log(`License updated.`);
                         return void callback();
                     } catch (err) {
                         console.error(`Cannot update license: ${err.message}`);
@@ -3398,7 +3408,10 @@ function dbConnectAsync(onlyCheck: boolean, params?: Record<string, any>): Promi
     return new Promise(resolve => dbConnect(onlyCheck, params || {}, params => resolve(params)));
 }
 
-module.exports.execute = function () {
+/**
+ * Method which should be called from CLI to initialize the handling of all args
+ */
+export function execute() {
     // direct call
     const _yargs = initYargs();
     // @ts-expect-error todo fix it
@@ -3416,7 +3429,7 @@ module.exports.execute = function () {
     }
 
     processCommand(command, args, _yargs.argv, processExit);
-};
+}
 
 process.on('unhandledRejection', (e: any) => {
     console.error(`Uncaught Rejection: ${e.stack || e}`);
