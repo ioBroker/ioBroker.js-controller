@@ -202,7 +202,7 @@ export class Users {
      * Adds user to given group
      *
      * @param user username
-     * @param group groupname
+     * @param group groupn6ame
      * @param callback
      */
     addUserToGroup(user: string, group: string, callback: ioBroker.ErrorCallback): void {
@@ -435,10 +435,8 @@ export class Users {
      * @param callback
      */
     checkUserPassword(user: string, password: string, callback: ioBroker.ErrorCallback): void {
-        let prompt;
         let schema;
         if (!user && !password) {
-            prompt = require('prompt');
             prompt.message = '';
             prompt.delimiter = '';
             schema = {
@@ -472,7 +470,6 @@ export class Users {
                 });
             });
         } else if (!password) {
-            prompt = require('prompt');
             prompt.message = '';
             prompt.delimiter = '';
             schema = {
@@ -599,7 +596,6 @@ export class Users {
             if (obj) {
                 return tools.maybeCallbackWithError(callback, 'Group yet exists');
             } else {
-                // @ts-expect-error shouldn't we add some kind of default acl?
                 this.objects.setObject(
                     `system.group.${_group}`,
                     {
