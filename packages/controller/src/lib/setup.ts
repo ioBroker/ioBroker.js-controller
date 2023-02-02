@@ -1954,15 +1954,13 @@ async function processCommand(
                         }
                     });
                 } else if (command === 'add') {
-                    users.addGroup(group, (err: any) => {
-                        if (err) {
-                            console.error(err);
-                            return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        } else {
-                            console.log(`Group "${group}" was created`);
-                            return void callback();
-                        }
-                    });
+                    try {
+                        await users.addGroup(group);
+                        console.log(`Group "${group}" was created`);
+                        return void callback();
+                    } catch (e) {
+                        return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                    }
                 } else if (command === 'del' || command === 'delete') {
                     users.delGroup(group, (err: any) => {
                         if (err) {

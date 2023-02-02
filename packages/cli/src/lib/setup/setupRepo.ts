@@ -69,8 +69,8 @@ export class Repo {
      *
      * @param repoName name of the repository
      * @param force force update even if same hash
-     * @param _systemConfig content of system.config object
-     * @param _systemRepos content of system.repositories object
+     * @param systemConfig content of system.config object
+     * @param systemRepos content of system.repositories object
      */
     private async updateRepo(
         repoName: string,
@@ -172,7 +172,7 @@ export class Repo {
      * @param repoUrl url of the repository
      * @param flags CLI flags
      */
-    async showRepo(repoUrl: string | string[], flags: RepoFlags) {
+    async showRepo(repoUrl: string | string[], flags: RepoFlags): Promise<void> {
         // Get the repositories
         const systemConfig = await this.objects.getObjectAsync('system.config');
         const systemRepos = await this.objects.getObjectAsync('system.repositories');
@@ -323,7 +323,7 @@ export class Repo {
     /**
      * Show current status of Repo on CLI
      */
-    async showRepoStatus(): Promise<keyof EXIT_CODES> {
+    async showRepoStatus(): Promise<number> {
         try {
             const obj = await this.objects.getObjectAsync('system.repositories');
             if (!obj) {
@@ -358,7 +358,7 @@ export class Repo {
      * @param repoName name of new repo
      * @param repoUrl url of new repo
      */
-    async add(repoName: string, repoUrl: string) {
+    async add(repoName: string, repoUrl: string): Promise<void> {
         const sysRepoObj = await this.objects.getObjectAsync('system.repositories');
         const obj = sysRepoObj || this.defaultSystemRepo;
 

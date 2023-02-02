@@ -95,7 +95,7 @@ export class Users {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
                 }
-                obj.common.password = res;
+                obj.common.password = res ?? '';
                 obj.from = `system.host.${tools.getHostName()}.cli`;
                 obj.ts = Date.now();
                 this.objects.setObject(`system.user.${_user}`, obj, err => {
@@ -288,7 +288,7 @@ export class Users {
                             console.log('Passwords are not identical!');
                             return void this.processExit(EXIT_CODES.INVALID_PASSWORD);
                         }
-                        //create user
+                        // @ts-expect-error external types problem?
                         this.addUser(user, result.password, err => {
                             if (err) {
                                 return tools.maybeCallbackWithError(callback, err);
@@ -367,7 +367,7 @@ export class Users {
                             if (result.password !== result.repeatPassword) {
                                 return tools.maybeCallbackWithError(callback, 'Passwords are not identical!');
                             }
-                            // set user password
+                            // @ts-expect-error external types problem?
                             this.setPassword(user, result.password, err => {
                                 if (err) {
                                     return tools.maybeCallbackWithError(callback, err);
@@ -458,10 +458,12 @@ export class Users {
             prompt.start();
 
             prompt.get(schema, (err, result) => {
+                // @ts-expect-error external types problem?
                 this.checkPassword(result.username, result.password, (err, res) => {
                     if (err || !res) {
                         return tools.maybeCallbackWithError(
                             callback,
+                            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
                             `Password for user "${result.username}" does not match${err ? ': ' + err : ''}`
                         );
                     } else {
@@ -485,11 +487,12 @@ export class Users {
             prompt.start();
 
             prompt.get(schema, (err, result) => {
+                // @ts-expect-error external types problem?
                 this.checkPassword(user, result.password, (err, res) => {
                     if (err || !res) {
                         return tools.maybeCallbackWithError(
                             callback,
-                            'Password for user "' + user + '" does not matched' + (err ? ': ' + err : '')
+                            `Password for user "${user}" does not matched${err ? ': ' + err : ''}`
                         );
                     } else {
                         return tools.maybeCallbackWithError(callback, null);
@@ -588,33 +591,26 @@ export class Users {
      * Add new group
      *
      * @param group groupname
-     * @param callback
      */
-    addGroup(group: string, callback: ioBroker.ErrorCallback): void {
+    async addGroup(group: string): Promise<void> {
         const _group = group.replace(/\s/g, '_');
-        this.objects.getObject(`system.group.${_group}`, (err, obj) => {
-            if (obj) {
-                return tools.maybeCallbackWithError(callback, 'Group yet exists');
-            } else {
-                this.objects.setObject(
-                    `system.group.${_group}`,
-                    {
-                        type: 'group',
-                        common: {
-                            name: group,
-                            enabled: true,
-                            members: []
-                        },
-                        from: `system.host.${tools.getHostName()}.cli`,
-                        ts: Date.now(),
-                        native: {}
-                    },
-                    err => {
-                        return tools.maybeCallbackWithError(callback, err);
-                    }
-                );
-            }
-        });
+        const obj = await this.objects.getObject(`system.group.${_group}`);
+        if (obj) {
+            throw new Error('Group yet exists');
+        } else {
+            // TODO: shoudln't it have some default acl? TS is worrying
+            await this.objects.setObject(`system.group.${_group}`, {
+                type: 'group',
+                common: {
+                    name: group,
+                    enabled: true,
+                    members: []
+                },
+                from: `system.host.${tools.getHostName()}.cli`,
+                ts: Date.now(),
+                native: {}
+            } as any);
+        }
     }
 
     /**
@@ -629,7 +625,7 @@ export class Users {
         if (group === 'administrator') {
             return tools.maybeCallbackWithError(callback, 'Group "administrator" cannot be deleted');
         } else {
-            this.objects.getObject('system.group.' + _group, (err, obj) => {
+            this.objects.getObject(`system.group.${_group}`, (err, obj) => {
                 if (!obj) {
                     return tools.maybeCallbackWithError(callback, 'Group does not exists');
                 } else {
