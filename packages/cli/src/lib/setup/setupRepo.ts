@@ -323,7 +323,7 @@ export class Repo {
     /**
      * Show current status of Repo on CLI
      */
-    async showRepoStatus(): Promise<void> {
+    async showRepoStatus(): Promise<keyof EXIT_CODES> {
         try {
             const obj = await this.objects.getObjectAsync('system.repositories');
             if (!obj) {
@@ -348,8 +348,8 @@ export class Repo {
             }
         } catch (err) {
             console.error(`Cannot get list: ${err}`);
-            return EXIT_CODES.CANNOT_GET_REPO_LIST;
         }
+        return EXIT_CODES.CANNOT_GET_REPO_LIST;
     }
 
     /**

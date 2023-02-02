@@ -838,36 +838,14 @@ export async function getJsonAsync(urlOrPath: string, agent?: string): Promise<R
     }
 }
 
-export interface AdapterInformation {
-    /** this flag is only true for the js-controller */
-    controller: boolean;
-    /** adapter version **/
-    version: string;
-    /** path to icon of the adapter */
-    icon: string;
-    /** path to local icon of the adater */
-    localIcon: string;
-    /** title of the adapter */
-    title: string;
-    /** title of the adapter in multiple languages */
-    titleLang: Multilingual;
-    /** description of the adapter in multiple languages */
-    desc: Multilingual;
-    /** platform of the adapter */
-    platform: 'Javascript/Node.js';
-    /** keywords of the adapter */
-    keywords: string[];
-    /** path to readme file */
-    readme: string;
-    /** type of the adapter */
-    type: string;
-    /** license of the adapter */
-    license: string;
-    /** url to license information */
-    licenseUrl?: string;
-}
-
-function scanDirectory(dirName: string, list: Record<string, AdapterInformation>, regExp: RegExp) {
+/**
+ * Scans directory for adapters and adds information to list
+ *
+ * @param dirName name of the directory to scan
+ * @param list prefilled list to extend adapters too
+ * @param regExp regexp to check matching files
+ */
+function scanDirectory(dirName: string, list: Record<string, AdapterInformation>, regExp: RegExp): void {
     if (fs.existsSync(dirName)) {
         let dirs;
         try {
@@ -931,18 +909,34 @@ interface Multilingual {
     'zh-cn'?: string;
 }
 
-export interface GetInstalledInfoReponse {
-    controller?: boolean;
-    version?: string;
-    icon?: string;
-    title?: string;
-    titleLang?: Multilingual;
-    desc?: Multilingual;
-    platform?: string;
-    keywords?: string[];
-    readme?: string;
+export interface AdapterInformation {
+    /** this flag is only true for the js-controller */
+    controller: boolean;
+    /** adapter version **/
+    version: string;
+    /** path to icon of the adapter */
+    icon: string;
+    /** path to local icon of the adater */
+    localIcon?: string;
+    /** title of the adapter */
+    title: string;
+    /** title of the adapter in multiple languages */
+    titleLang: Multilingual;
+    /** description of the adapter in multiple languages */
+    desc: Multilingual;
+    /** platform of the adapter */
+    platform: 'Javascript/Node.js';
+    /** keywords of the adapter */
+    keywords: string[];
+    /** path to readme file */
+    readme: string;
+    /** Installed Adapter version, not existing on controller */
     runningVersion?: string;
-    license?: string;
+    /** type of the adapter */
+    type: string;
+    /** license of the adapter */
+    license: string;
+    /** url to license information */
     licenseUrl?: string;
 }
 
@@ -951,8 +945,8 @@ export interface GetInstalledInfoReponse {
  * @param hostRunningVersion Version of the running js-controller, will be included in the returned information if provided
  * @returns object containing information about installed host
  */
-export function getInstalledInfo(hostRunningVersion?: string): GetInstalledInfoReponse {
-    const result: Record<string, any> = {};
+export function getInstalledInfo(hostRunningVersion?: string): Record<string, AdapterInformation> {
+    const result: Record<string, AdapterInformation> = {};
     const fullPath = getControllerDir();
 
     if (!fullPath) {
@@ -973,8 +967,10 @@ export function getInstalledInfo(hostRunningVersion?: string): GetInstalledInfoR
     const regExp = new RegExp(`^${appName}\\.`, 'i');
 
     if (ioPackage) {
+        // Add controller information
         result[ioPackage.common.name] = {
             controller: true,
+            type: ioPackage.common.type,
             version: ioPackage.common.version,
             icon: ioPackage.common.extIcon || ioPackage.common.icon,
             title: ioPackage.common.title, // deprecated 2021.04.18 BF
@@ -993,7 +989,7 @@ export function getInstalledInfo(hostRunningVersion?: string): GetInstalledInfoR
         };
     }
 
-    // we scan the sub node modules of controller and same hierarchy as controller
+    // collect adapter information
     scanDirectory(path.join(fullPath, 'node_modules'), result, regExp);
     scanDirectory(path.join(fullPath, '..'), result, regExp);
 

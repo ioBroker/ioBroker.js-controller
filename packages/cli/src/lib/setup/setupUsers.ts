@@ -1,42 +1,45 @@
-/**
- *      Show users and groups
- *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
- *
- *      MIT License
- *
- */
+import { password, tools, EXIT_CODES } from '@iobroker/js-controller-common';
+import type { ProcessExitCallback } from "../_Types";
+import type { Client as ObjectsRedisClient } from "@iobroker/db-objects-redis";
+import prompt from 'prompt';
 
-'use strict';
+export interface CLIUsersOptions {
+    processExit: ProcessExitCallback;
+    objects: ObjectsRedisClient;
+}
 
-/** @class */
-function Users(options) {
-    const { tools } = require('@iobroker/js-controller-common');
+class Users {
+    private objects: ObjectsRedisClient;
+    private processExit: ProcessExitCallback;
 
-    const that = this;
+    constructor(options: CLIUsersOptions) {
+        if (!options.objects) {
+            throw new Error('Invalid arguments: objects is missing');
+        }
+        if (!options.processExit) {
+            throw new Error('Invalid arguments: processExit is missing');
+        }
 
-    options = options || {};
-
-    if (!options.objects) {
-        throw new Error('Invalid arguments: objects is missing');
+        this.objects = options.objects;
+        this.processExit = options.processExit;
     }
-    if (!options.processExit) {
-        throw new Error('Invalid arguments: processExit is missing');
-    }
 
-    const objects = options.objects;
-    const processExit = options.processExit;
-    const { EXIT_CODES } = require('@iobroker/js-controller-common');
-
-    this.addUser = function (user, pw, callback) {
+    /**
+     * Adds new user to system
+     *
+     * @param user username
+     * @param pw password
+     * @param callback
+     */
+    addUser(user: string, pw: string, callback) {
         // user id's should be case insensitive
         const _user = user.replace(/\s/g, '_').toLowerCase();
-        objects.getObject('system.user.' + _user, (err, obj) => {
+        this.objects.getObject('system.user.' + _user, (err, obj) => {
             if (obj) {
                 return tools.maybeCallbackWithError(callback, 'User yet exists');
             } else {
-                objects.setObject(
-                    'system.user.' + _user,
+                this.objects.setObject(
+                    `system.user.${_user}`,
                     {
                         type: 'user',
                         common: {
@@ -49,7 +52,7 @@ function Users(options) {
                     },
                     err => {
                         if (!err) {
-                            that.setPassword(user, pw, callback);
+                            this.setPassword(user, pw, callback);
                         } else {
                             return tools.maybeCallbackWithError(callback, err);
                         }
@@ -59,21 +62,33 @@ function Users(options) {
         });
     };
 
-    this.isUser = function (user, callback) {
+    /**
+     * Checks if user exists
+     *
+     * @param user username
+     * @param callback
+     */
+    isUser(user: string, callback: (err: null, exists: boolean) => void) {
         const _user = user.replace(/\s/g, '_').toLowerCase();
-        objects.getObject(`system.user.${_user}`, (err, obj) => {
+        this.objects.getObject(`system.user.${_user}`, (err, obj) => {
             return tools.maybeCallbackWithError(callback, null, !!obj);
         });
     };
 
-    this.setPassword = function (user, pw, callback) {
+    /**
+     * Set password for specific user
+     *
+     * @param user username
+     * @param pw password
+     * @param callback
+     */
+    setPassword(user: string, pw: string, callback) {
         const _user = user.replace(/\s/g, '_').toLowerCase();
 
-        objects.getObject('system.user.' + _user, (err, obj) => {
+        this.objects.getObject(`system.user.${_user}`, (err, obj) => {
             if (err || !obj) {
                 return tools.maybeCallbackWithError(callback, 'User does not exist');
             }
-            const { password } = require('@iobroker/js-controller-common');
 
             password(pw).hash(null, null, (err, res) => {
                 if (err) {
@@ -82,21 +97,27 @@ function Users(options) {
                 obj.common.password = res;
                 obj.from = `system.host.${tools.getHostName()}.cli`;
                 obj.ts = Date.now();
-                objects.setObject(`system.user.${_user}`, obj, err => {
+                this.objects.setObject(`system.user.${_user}`, obj, err => {
                     return tools.maybeCallbackWithError(callback, err);
                 });
             });
         });
     };
 
-    this.checkPassword = function (user, pw, callback) {
+    /**
+     * Checks if password is correct for given user
+     *
+     * @param user username
+     * @param pw password
+     * @param callback
+     */
+    checkPassword(user: string, pw: string, callback: (err?: Error | null, res: any) => void) {
         const _user = user.replace(/\s/g, '_').toLowerCase();
 
-        objects.getObject(`system.user.${_user}`, (err, obj) => {
+        this.objects.getObject(`system.user.${_user}`, (err, obj) => {
             if (err || !obj) {
                 return tools.maybeCallbackWithError(callback, 'User does not exist');
             }
-            const { password } = require('@iobroker/js-controller-common');
 
             password(pw).check(obj.common.password, (err, res) => {
                 return tools.maybeCallbackWithError(callback, err, res);
@@ -104,26 +125,36 @@ function Users(options) {
         });
     };
 
-    this.delUser = function (user, callback) {
+    /**
+     * Deletes user from system
+     *
+     * @param user username
+     * @param callback
+     */
+    delUser(user: string, callback): void {
         if (!user) {
             return tools.maybeCallbackWithError(callback, 'Please define user name, like: "userdel user"');
         }
 
         const _user = user.replace(/\s/g, '_').toLowerCase();
 
-        objects.getObject('system.user.' + _user, (err, obj) => {
+        this.objects.getObject(`system.user.${_user}`, (err, obj) => {
             if (err || !obj) {
                 return tools.maybeCallbackWithError(callback, 'User does not exist');
             } else {
                 if (obj.common.dontDelete) {
                     return tools.maybeCallbackWithError(callback, 'Cannot delete user, while is system user');
                 } else {
-                    objects.delObject('system.user.' + _user, err => {
+                    this.objects.delObject('system.user.' + _user, err => {
                         // Remove this user from all groups
                         if (!err) {
-                            objects.getObjectList(
+                            this.objects.getObjectList(
                                 { startkey: 'system.group.', endkey: 'system.group.\u9999' },
                                 (err, groups) => {
+                                    if (! groups) {
+                                        return tools.maybeCallback(callback);
+                                    }
+
                                     let count = 0;
                                     for (let i = 0; i < groups.rows.length; i++) {
                                         if (groups.rows[i].value.type !== 'group') {
@@ -141,7 +172,7 @@ function Users(options) {
                                             count++;
                                             groups.rows[i].value.from = 'system.host.' + tools.getHostName() + '.cli';
                                             groups.rows[i].value.ts = Date.now();
-                                            objects.setObject(groups.rows[i].value._id, groups.rows[i].value, err => {
+                                            this.objects.setObject(groups.rows[i].value._id, groups.rows[i].value, err => {
                                                 if (!--count) {
                                                     return tools.maybeCallbackWithError(callback, err);
                                                 }
@@ -162,7 +193,14 @@ function Users(options) {
         });
     };
 
-    this.addUserToGroup = function (user, group, callback) {
+    /**
+     * Adds user to given group
+     *
+     * @param user username
+     * @param group groupname
+     * @param callback
+     */
+    addUserToGroup(user: string, group: string, callback) {
         let _user = user.replace(/\s/g, '_').toLowerCase();
         if (!group.startsWith('system.group.')) {
             group = `system.group.${group}`;
@@ -171,11 +209,11 @@ function Users(options) {
             _user = `system.user.${_user}`;
         }
 
-        objects.getObject(_user, (err, obj) => {
+        this.objects.getObject(_user, (err, obj) => {
             if (err || !obj) {
                 return tools.maybeCallbackWithError(callback, 'User does not exist');
             }
-            objects.getObject(group, (err, obj) => {
+            this.objects.getObject(group, (err, obj) => {
                 if (err || !obj) {
                     return tools.maybeCallbackWithError(callback, 'Group does not exist');
                 }
@@ -186,7 +224,7 @@ function Users(options) {
                     obj.common.members.push(_user);
                     obj.from = 'system.host.' + tools.getHostName() + '.cli';
                     obj.ts = Date.now();
-                    objects.setObject(group, obj, err => {
+                    this.objects.setObject(group, obj, err => {
                         return tools.maybeCallbackWithError(callback, err);
                     });
                 } else {
@@ -196,22 +234,29 @@ function Users(options) {
         });
     };
 
-    this.addUserPrompt = function (user, group, password, callback) {
+    /**
+     * Add user via CLI prompt
+     *
+     * @param user username
+     * @param group groupname
+     * @param password user password
+     * @param callback
+     */
+    addUserPrompt(user: string, group: string, password: string, callback) {
         if (!user) {
             return tools.maybeCallbackWithError(callback, 'Please define user name, like: "adduser newUser"');
         }
 
         // Check group
         if (group.substring(0, 13) !== 'system.group.') {
-            group = 'system.group.' + group;
+            group = `system.group.${group}`;
         }
 
-        objects.getObject(group, function (err, obj) {
+        this.objects.getObject(group,  (err, obj) => {
             if (!obj) {
                 return tools.maybeCallbackWithError(callback, `Unknown group: ${group}`);
             }
             if (!password) {
-                const prompt = require('prompt');
                 prompt.message = '';
                 prompt.delimiter = '';
                 const schema = {
@@ -236,14 +281,14 @@ function Users(options) {
                     if (result) {
                         if (result.password !== result.repeatPassword) {
                             console.log('Passwords are not identical!');
-                            return void processExit(EXIT_CODES.INVALID_PASSWORD);
+                            return void this.processExit(EXIT_CODES.INVALID_PASSWORD);
                         }
                         //create user
-                        that.addUser(user, result.password, err => {
+                        this.addUser(user, result.password, err => {
                             if (err) {
                                 return tools.maybeCallbackWithError(callback, err);
                             } else {
-                                that.addUserToGroup(user, group, err => {
+                                this.addUserToGroup(user, group, err => {
                                     if (err) {
                                         return tools.maybeCallbackWithError(callback, err);
                                     } else {
@@ -257,11 +302,11 @@ function Users(options) {
                     }
                 });
             } else {
-                that.addUser(user, password, err => {
+                this.addUser(user, password, err => {
                     if (err) {
                         return tools.maybeCallbackWithError(callback, err);
                     } else {
-                        that.addUserToGroup(user, group, err => {
+                        this.addUserToGroup(user, group, err => {
                             if (err) {
                                 return tools.maybeCallbackWithError(callback, err);
                             } else {
@@ -274,7 +319,14 @@ function Users(options) {
         });
     };
 
-    this.setUserPassword = function (user, password, callback) {
+    /**
+     * Set password of user
+     *
+     * @param user username
+     * @param password password of user
+     * @param callback
+     */
+    setUserPassword(user: string, password: string, callback) {
         if (!user) {
             return tools.maybeCallbackWithError(callback, 'Please define user name, like: "passwd username"');
         }
