@@ -2548,8 +2548,7 @@ async function processCommand(
             }
 
             dbConnect(params, async ({ objects, states }) => {
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                const Repo = require('./setup/setupRepo.js');
+                const Repo = (await import('@iobroker/js-controller-cli')).setupRepo;
                 const repo = new Repo({
                     objects,
                     states
