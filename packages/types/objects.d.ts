@@ -381,7 +381,8 @@ declare global {
             members: string[]; // system.user.name, ...
             /** The default permissions of this group */
             acl: Omit<PermissionSet, 'user' | 'groups'>;
-
+            /** A group can be disabled, if missing, group is active */
+            enabled?: boolean;
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
         }

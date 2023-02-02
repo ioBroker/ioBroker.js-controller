@@ -556,8 +556,7 @@ async function processCommand(
             Objects = getObjectsConstructor();
             const repoUrl = args[0]; // Repo url or name
             dbConnect(params, async ({ objects, states }) => {
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                const Repo = require('./setup/setupRepo.js');
+                const Repo = (await import('@iobroker/js-controller-cli')).setupRepo;
                 const repo = new Repo({
                     objects,
                     states
@@ -656,8 +655,7 @@ async function processCommand(
 
                         // we update existing things, in first as well as normnal setup
                         // Rename repositories
-                        // eslint-disable-next-line @typescript-eslint/no-var-requires
-                        const Repo = require('./setup/setupRepo.js');
+                        const Repo = (await import('@iobroker/js-controller-cli')).setupRepo;
                         const repo = new Repo({ objects, states });
 
                         try {
@@ -1808,9 +1806,8 @@ async function processCommand(
                 user = user.substring('system.user.'.length);
             }
 
-            dbConnect(params, () => {
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                const Users = require('./setup/setupUsers.js');
+            dbConnect(params, async ({ objects }) => {
+                const Users = (await import('@iobroker/js-controller-cli')).setupUsers;
                 const users = new Users({
                     objects,
                     processExit: callback
@@ -1921,9 +1918,8 @@ async function processCommand(
                 return callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
             }
 
-            dbConnect(params, () => {
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                const Users = require('./setup/setupUsers.js');
+            dbConnect(params, async ({ objects }) => {
+                const Users = (await import('@iobroker/js-controller-cli')).setupUsers;
                 const users = new Users({
                     objects,
                     processExit: callback
@@ -2039,9 +2035,8 @@ async function processCommand(
             const group = params.ingroup || 'system.group.administrator';
             const password = params.password;
 
-            dbConnect(params, () => {
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                const Users = require('./setup/setupUsers.js');
+            dbConnect(params, async ({ objects }) => {
+                const Users = (await import('@iobroker/js-controller-cli')).setupUsers;
                 const users = new Users({
                     objects,
                     processExit: callback
@@ -2062,9 +2057,8 @@ async function processCommand(
         case 'passwd': {
             const user = args[0];
             const password = params.password;
-            dbConnect(params, () => {
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                const Users = require('./setup/setupUsers.js');
+            dbConnect(params, async ({ objects }) => {
+                const Users = (await import('@iobroker/js-controller-cli')).setupUsers;
                 const users = new Users({
                     objects,
                     processExit: callback
@@ -2088,9 +2082,8 @@ async function processCommand(
         case 'deluser': {
             const user = args[0];
 
-            dbConnect(params, () => {
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                const Users = require('./setup/setupUsers.js');
+            dbConnect(params, async ({ objects }) => {
+                const Users = (await import('@iobroker/js-controller-cli')).setupUsers;
                 const users = new Users({
                     objects,
                     processExit: callback

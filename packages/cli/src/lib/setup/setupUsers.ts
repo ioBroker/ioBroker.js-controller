@@ -1,6 +1,6 @@
 import { password, tools, EXIT_CODES } from '@iobroker/js-controller-common';
-import type { ProcessExitCallback } from "../_Types";
-import type { Client as ObjectsRedisClient } from "@iobroker/db-objects-redis";
+import type { ProcessExitCallback } from '../_Types';
+import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import prompt from 'prompt';
 
 export interface CLIUsersOptions {
@@ -8,9 +8,9 @@ export interface CLIUsersOptions {
     objects: ObjectsRedisClient;
 }
 
-class Users {
-    private objects: ObjectsRedisClient;
-    private processExit: ProcessExitCallback;
+export class Users {
+    private readonly objects: ObjectsRedisClient;
+    private readonly processExit: ProcessExitCallback;
 
     constructor(options: CLIUsersOptions) {
         if (!options.objects) {
@@ -31,10 +31,10 @@ class Users {
      * @param pw password
      * @param callback
      */
-    addUser(user: string, pw: string, callback) {
+    addUser(user: string, pw: string, callback: ioBroker.ErrorCallback): void {
         // user id's should be case insensitive
         const _user = user.replace(/\s/g, '_').toLowerCase();
-        this.objects.getObject('system.user.' + _user, (err, obj) => {
+        this.objects.getObject(`system.user.${_user}`, (err, obj) => {
             if (obj) {
                 return tools.maybeCallbackWithError(callback, 'User yet exists');
             } else {
@@ -44,9 +44,10 @@ class Users {
                         type: 'user',
                         common: {
                             name: user,
-                            enabled: true
+                            enabled: true,
+                            password: ''
                         },
-                        from: 'system.host.' + tools.getHostName() + '.cli',
+                        from: `system.host.${tools.getHostName()}.cli`,
                         ts: Date.now(),
                         native: {}
                     },
@@ -60,7 +61,7 @@ class Users {
                 );
             }
         });
-    };
+    }
 
     /**
      * Checks if user exists
@@ -68,12 +69,12 @@ class Users {
      * @param user username
      * @param callback
      */
-    isUser(user: string, callback: (err: null, exists: boolean) => void) {
+    isUser(user: string, callback: (err: null, exists: boolean) => void): void {
         const _user = user.replace(/\s/g, '_').toLowerCase();
         this.objects.getObject(`system.user.${_user}`, (err, obj) => {
-            return tools.maybeCallbackWithError(callback, null, !!obj);
+            return tools.maybeCallbackWithError(callback, !!obj);
         });
-    };
+    }
 
     /**
      * Set password for specific user
@@ -82,7 +83,7 @@ class Users {
      * @param pw password
      * @param callback
      */
-    setPassword(user: string, pw: string, callback) {
+    setPassword(user: string, pw: string, callback: ioBroker.ErrorCallback): void {
         const _user = user.replace(/\s/g, '_').toLowerCase();
 
         this.objects.getObject(`system.user.${_user}`, (err, obj) => {
@@ -102,7 +103,7 @@ class Users {
                 });
             });
         });
-    };
+    }
 
     /**
      * Checks if password is correct for given user
@@ -111,7 +112,7 @@ class Users {
      * @param pw password
      * @param callback
      */
-    checkPassword(user: string, pw: string, callback: (err?: Error | null, res: any) => void) {
+    checkPassword(user: string, pw: string, callback: (err?: Error | null, isOk?: boolean) => void): void {
         const _user = user.replace(/\s/g, '_').toLowerCase();
 
         this.objects.getObject(`system.user.${_user}`, (err, obj) => {
@@ -123,7 +124,7 @@ class Users {
                 return tools.maybeCallbackWithError(callback, err, res);
             });
         });
-    };
+    }
 
     /**
      * Deletes user from system
@@ -131,7 +132,7 @@ class Users {
      * @param user username
      * @param callback
      */
-    delUser(user: string, callback): void {
+    delUser(user: string, callback: ioBroker.ErrorCallback): void {
         if (!user) {
             return tools.maybeCallbackWithError(callback, 'Please define user name, like: "userdel user"');
         }
@@ -151,7 +152,7 @@ class Users {
                             this.objects.getObjectList(
                                 { startkey: 'system.group.', endkey: 'system.group.\u9999' },
                                 (err, groups) => {
-                                    if (! groups) {
+                                    if (!groups) {
                                         return tools.maybeCallback(callback);
                                     }
 
@@ -172,11 +173,15 @@ class Users {
                                             count++;
                                             groups.rows[i].value.from = 'system.host.' + tools.getHostName() + '.cli';
                                             groups.rows[i].value.ts = Date.now();
-                                            this.objects.setObject(groups.rows[i].value._id, groups.rows[i].value, err => {
-                                                if (!--count) {
-                                                    return tools.maybeCallbackWithError(callback, err);
+                                            this.objects.setObject(
+                                                groups.rows[i].value._id,
+                                                groups.rows[i].value,
+                                                err => {
+                                                    if (!--count) {
+                                                        return tools.maybeCallbackWithError(callback, err);
+                                                    }
                                                 }
-                                            });
+                                            );
                                         }
                                     }
                                     if (!count) {
@@ -191,7 +196,7 @@ class Users {
                 }
             }
         });
-    };
+    }
 
     /**
      * Adds user to given group
@@ -200,7 +205,7 @@ class Users {
      * @param group groupname
      * @param callback
      */
-    addUserToGroup(user: string, group: string, callback) {
+    addUserToGroup(user: string, group: string, callback: ioBroker.ErrorCallback): void {
         let _user = user.replace(/\s/g, '_').toLowerCase();
         if (!group.startsWith('system.group.')) {
             group = `system.group.${group}`;
@@ -232,7 +237,7 @@ class Users {
                 }
             });
         });
-    };
+    }
 
     /**
      * Add user via CLI prompt
@@ -242,7 +247,7 @@ class Users {
      * @param password user password
      * @param callback
      */
-    addUserPrompt(user: string, group: string, password: string, callback) {
+    addUserPrompt(user: string, group: string, password: string, callback: ioBroker.ErrorCallback): void {
         if (!user) {
             return tools.maybeCallbackWithError(callback, 'Please define user name, like: "adduser newUser"');
         }
@@ -252,7 +257,7 @@ class Users {
             group = `system.group.${group}`;
         }
 
-        this.objects.getObject(group,  (err, obj) => {
+        this.objects.getObject(group, (err, obj) => {
             if (!obj) {
                 return tools.maybeCallbackWithError(callback, `Unknown group: ${group}`);
             }
@@ -317,7 +322,7 @@ class Users {
                 });
             }
         });
-    };
+    }
 
     /**
      * Set password of user
@@ -326,21 +331,17 @@ class Users {
      * @param password password of user
      * @param callback
      */
-    setUserPassword(user: string, password: string, callback) {
+    setUserPassword(user: string, password: string, callback: ioBroker.ErrorCallback): void {
         if (!user) {
             return tools.maybeCallbackWithError(callback, 'Please define user name, like: "passwd username"');
         }
 
-        this.isUser(user, (err, result) => {
-            if (err) {
-                console.error(`Cannot read user: ${err}`);
-            }
+        this.isUser(user, result => {
             if (!result) {
                 return tools.maybeCallbackWithError(callback, `User "${user}" does not exist.`);
             } else {
                 // Check group
                 if (!password) {
-                    const prompt = require('prompt');
                     prompt.message = '';
                     prompt.delimiter = '';
                     const schema = {
@@ -367,7 +368,7 @@ class Users {
                                 return tools.maybeCallbackWithError(callback, 'Passwords are not identical!');
                             }
                             // set user password
-                            that.setPassword(user, result.password, err => {
+                            this.setPassword(user, result.password, err => {
                                 if (err) {
                                     return tools.maybeCallbackWithError(callback, err);
                                 } else {
@@ -379,7 +380,7 @@ class Users {
                         }
                     });
                 } else {
-                    that.setPassword(user, password, err => {
+                    this.setPassword(user, password, err => {
                         if (err) {
                             return tools.maybeCallbackWithError(callback, err);
                         } else {
@@ -389,9 +390,15 @@ class Users {
                 }
             }
         });
-    };
+    }
 
-    this.enableUser = function (user, enable, callback) {
+    /**
+     * Enable user
+     * @param user username
+     * @param enable true if it should be enabled else false
+     * @param callback
+     */
+    enableUser(user: string, enable: boolean, callback: ioBroker.ErrorCallback): void {
         if (!user) {
             return tools.maybeCallbackWithError(callback, 'Please define user name, like: "enable username"');
         }
@@ -403,7 +410,7 @@ class Users {
             return tools.maybeCallbackWithError(callback, 'User admin cannot be disabled');
         }
 
-        objects.getObject(`system.user.${user}`, (err, obj) => {
+        this.objects.getObject(`system.user.${user}`, (err, obj) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, `Cannot read user: ${err.message}`);
             }
@@ -413,14 +420,21 @@ class Users {
                 obj.common.enabled = enable;
                 obj.from = `system.host.${tools.getHostName()}.cli`;
                 obj.ts = Date.now();
-                objects.setObject(obj._id, obj, err => {
+                this.objects.setObject(obj._id, obj, err => {
                     return tools.maybeCallbackWithError(callback, err);
                 });
             }
         });
-    };
+    }
 
-    this.checkUserPassword = function (user, password, callback) {
+    /**
+     * Check if user password is valid
+     *
+     * @param user username
+     * @param password password to check
+     * @param callback
+     */
+    checkUserPassword(user: string, password: string, callback: ioBroker.ErrorCallback): void {
         let prompt;
         let schema;
         if (!user && !password) {
@@ -446,7 +460,7 @@ class Users {
             prompt.start();
 
             prompt.get(schema, (err, result) => {
-                that.checkPassword(result.username, result.password, (err, res) => {
+                this.checkPassword(result.username, result.password, (err, res) => {
                     if (err || !res) {
                         return tools.maybeCallbackWithError(
                             callback,
@@ -474,7 +488,7 @@ class Users {
             prompt.start();
 
             prompt.get(schema, (err, result) => {
-                that.checkPassword(user, result.password, (err, res) => {
+                this.checkPassword(user, result.password, (err, res) => {
                     if (err || !res) {
                         return tools.maybeCallbackWithError(
                             callback,
@@ -497,10 +511,16 @@ class Users {
                 }
             });
         }
-    };
+    }
 
-    this.getUser = function (user, callback) {
-        objects.getObject(`system.user.${user}`, (err, obj) => {
+    /**
+     * Get user object
+     *
+     * @param user username
+     * @param callback
+     */
+    getUser(user: string, callback: (err?: Error | null, enabled?: boolean) => void): void {
+        this.objects.getObject(`system.user.${user}`, (err, obj) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, `Cannot read user: ${err.message}`);
             }
@@ -510,10 +530,16 @@ class Users {
                 return tools.maybeCallbackWithError(callback, null, obj.common.enabled);
             }
         });
-    };
+    }
 
-    this.getGroup = function (group, callback) {
-        objects.getObject(`system.group.${group}`, (err, obj) => {
+    /**
+     * Get group object
+     *
+     * @param group groupname
+     * @param callback
+     */
+    getGroup(group: string, callback: (err?: Error | null, enabled?: boolean, members?: string[]) => void): void {
+        this.objects.getObject(`system.group.${group}`, (err, obj) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, `Cannot read group: ${err.message}`);
             }
@@ -523,9 +549,16 @@ class Users {
                 return tools.maybeCallbackWithError(callback, null, obj.common.enabled, obj.common.members);
             }
         });
-    };
+    }
 
-    this.enableGroup = function (group, enable, callback) {
+    /**
+     * Enable or disable group by name
+     *
+     * @param group groupname
+     * @param enable if enable or disable
+     * @param callback
+     */
+    enableGroup(group: string, enable: boolean, callback: ioBroker.ErrorCallback): void {
         if (!group) {
             return tools.maybeCallbackWithError(callback, 'Please define group name, like: "enable groupname"');
         }
@@ -537,7 +570,7 @@ class Users {
             return tools.maybeCallbackWithError(callback, 'Group "administrator" cannot be disabled');
         }
 
-        objects.getObject('system.group.' + group, (err, obj) => {
+        this.objects.getObject(`system.group.${group}`, (err, obj) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, `Cannot read group: ${err.message}`);
             }
@@ -545,23 +578,30 @@ class Users {
                 return tools.maybeCallbackWithError(callback, `Group "${group}" not found`);
             } else {
                 obj.common.enabled = enable;
-                obj.from = 'system.host.' + tools.getHostName() + '.cli';
+                obj.from = `system.host.${tools.getHostName()}.cli`;
                 obj.ts = Date.now();
-                objects.setObject(obj._id, obj, err => {
+                this.objects.setObject(obj._id, obj, err => {
                     return tools.maybeCallbackWithError(callback, err);
                 });
             }
         });
-    };
+    }
 
-    this.addGroup = function (group, callback) {
+    /**
+     * Add new group
+     *
+     * @param group groupname
+     * @param callback
+     */
+    addGroup(group: string, callback: ioBroker.ErrorCallback): void {
         const _group = group.replace(/\s/g, '_');
-        objects.getObject('system.group.' + _group, (err, obj) => {
+        this.objects.getObject(`system.group.${_group}`, (err, obj) => {
             if (obj) {
                 return tools.maybeCallbackWithError(callback, 'Group yet exists');
             } else {
-                objects.setObject(
-                    'system.group.' + _group,
+                // @ts-expect-error shouldn't we add some kind of default acl?
+                this.objects.setObject(
+                    `system.group.${_group}`,
                     {
                         type: 'group',
                         common: {
@@ -569,7 +609,7 @@ class Users {
                             enabled: true,
                             members: []
                         },
-                        from: 'system.host.' + tools.getHostName() + '.cli',
+                        from: `system.host.${tools.getHostName()}.cli`,
                         ts: Date.now(),
                         native: {}
                     },
@@ -579,29 +619,42 @@ class Users {
                 );
             }
         });
-    };
+    }
 
-    this.delGroup = function (group, callback) {
+    /**
+     * Remove group
+     *
+     * @param group groupname
+     * @param callback
+     */
+    delGroup(group: string, callback: ioBroker.ErrorCallback): void {
         const _group = group.replace(/\s/g, '_');
 
         if (group === 'administrator') {
             return tools.maybeCallbackWithError(callback, 'Group "administrator" cannot be deleted');
         } else {
-            objects.getObject('system.group.' + _group, (err, obj) => {
+            this.objects.getObject('system.group.' + _group, (err, obj) => {
                 if (!obj) {
                     return tools.maybeCallbackWithError(callback, 'Group does not exists');
                 } else {
-                    objects.delObject(`system.group.${_group}`, err => {
+                    this.objects.delObject(`system.group.${_group}`, err => {
                         return tools.maybeCallbackWithError(callback, err);
                     });
                 }
             });
         }
-    };
+    }
 
-    this.removeUserFromGroup = function (user, group, callback) {
+    /**
+     * Remove user from given group
+     *
+     * @param user username
+     * @param group groupname
+     * @param callback
+     */
+    removeUserFromGroup(user: string, group: string, callback: ioBroker.ErrorCallback): void {
         const _group = group.replace(/\s/g, '_');
-        objects.getObject('system.group.' + _group, (err, obj) => {
+        this.objects.getObject(`system.group.${_group}`, (err, obj) => {
             if (!obj) {
                 return tools.maybeCallbackWithError(callback, 'Group does not exists');
             } else {
@@ -610,15 +663,13 @@ class Users {
                     return tools.maybeCallbackWithError(callback, 'User not in group');
                 } else {
                     obj.common.members.splice(pos, 1);
-                    obj.from = 'system.host.' + tools.getHostName() + '.cli';
+                    obj.from = `system.host.${tools.getHostName()}.cli`;
                     obj.ts = Date.now();
-                    objects.setObject(obj._id, obj, err => {
+                    this.objects.setObject(obj._id, obj, err => {
                         return tools.maybeCallbackWithError(callback, err);
                     });
                 }
             }
         });
-    };
+    }
 }
-
-module.exports = Users;
