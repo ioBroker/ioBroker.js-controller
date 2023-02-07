@@ -1,34 +1,43 @@
-/**
- *      Multihost
- *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
- *
- *      MIT License
- *
- */
+import fs from 'fs-extra';
+import path from 'path';
+import { tools } from '@iobroker/js-controller-common';
+import { tools as dbTools } from '@iobroker/js-controller-common-db';
+import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
+import { MHClient, BrowseResultEntry } from './multihostClient';
+import readline from 'readline';
+import prompt from 'prompt';
 
-'use strict';
+interface MHParams {
+    secure?: boolean;
+    persist?: boolean;
+    debug?: boolean;
+}
 
-/** @class */
-function Multihost(options) {
-    const fs = require('fs-extra');
-    const path = require('path');
-    const { tools } = require('@iobroker/js-controller-common');
-    const { tools: dbTools } = require('@iobroker/js-controller-common-db');
-    const configName = tools.getConfigFileName();
-    const that = this;
+export interface CLIMultihostOptions {
+    objects: ObjectsRedisClient;
+    params?: MHParams;
+}
 
-    options = options || {};
+export class Multihost {
+    private readonly configName: string;
+    private params: MHParams;
+    private objects: ObjectsRedisClient;
 
-    const params = options.params || {};
-    const objects = options.objects;
+    constructor(options: CLIMultihostOptions) {
+        this.configName = tools.getConfigFileName();
+        this.params = options.params || {};
+        this.objects = options.objects;
+    }
 
-    function getConfig() {
+    /**
+     * Retrive config (iobroker.json content)
+     */
+    getConfig(): Record<string, any> {
         let config;
         // read actual configuration
         try {
-            if (fs.existsSync(configName)) {
-                config = fs.readJsonSync(configName);
+            if (fs.existsSync(this.configName)) {
+                config = fs.readJsonSync(this.configName);
             } else {
                 config = fs.readJsonSync(path.join(tools.getControllerDir(), 'conf', `${tools.appName}-dist.json`));
             }
@@ -38,15 +47,12 @@ function Multihost(options) {
         return config;
     }
 
-    function leftPad(text, len) {
-        text = text || '';
-        if (text.length >= len) {
-            return len;
-        }
-        return new Array(len - text.length).join(' ') + text;
-    }
-
-    this.showHosts = function (list) {
+    /**
+     * Show hosts on CLI
+     *
+     * @param list list of hosts
+     */
+    showHosts(list: BrowseResultEntry[]): void {
         if (!list || !list.length) {
             console.info(
                 'No Multihost server found. Make sure iobroker is running on the host where you enabled multihost discovery (and it is not this host)!'
@@ -54,28 +60,37 @@ function Multihost(options) {
         } else {
             for (let i = 0; i < list.length; i++) {
                 console.log(
-                    `${i + 1} | ${leftPad(list[i].hostname, 20)} | ${list[i].slave ? 'slave' : ' host'} | ${leftPad(
-                        list[i].ip,
-                        20
-                    )} | ${JSON.stringify(list[i].info)}`
+                    `${i + 1} | ${list[i].hostname!.padStart(20)} | ${list[i].slave ? 'slave' : ' host'} | ${list[
+                        i
+                    ].ip!.padStart(20)} | ${JSON.stringify(list[i].info)}`
                 );
             }
         }
-    };
+    }
 
-    this.browse = function (callback) {
-        const MHClient = require('../multihostClient');
+    /**
+     * Start MH browsing
+     * @param callback
+     */
+    browse(callback: (err?: Error | undefined, list?: BrowseResultEntry[]) => void): void {
         const mhClient = new MHClient();
-        mhClient.browse(2000, params.debug, (err, list) => {
+        mhClient.browse(2_000, !!this.params.debug, (err, list) => {
             if (err) {
-                callback(`Multihost discovery client: Cannot browse: ${err}`);
+                callback(new Error(`Multihost discovery client: Cannot browse: ${err.message}`));
             } else {
-                callback(null, list);
+                callback(undefined, list);
             }
         });
-    };
+    }
 
-    function showMHState(config, changed, callback) {
+    /**
+     * Show MH state on CLI
+     *
+     * @param config iob config
+     * @param changed if config has changed
+     * @param callback
+     */
+    private showMHState(config: Record<string, any>, changed: boolean, callback: () => void) {
         if (config.multihostService.enabled) {
             let warningShown = false;
             if (dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host, true)) {
@@ -90,9 +105,7 @@ function Multihost(options) {
             } else {
                 warningShown = true;
                 console.log(
-                    'Please check the binding of the configured ' +
-                        config.objects.type +
-                        ' server to allow remote connections.'
+                    `Please check the binding of the configured ${config.objects.type} server to allow remote connections.`
                 );
             }
             if (dbTools.isLocalStatesDbServer(config.states.type, config.states.host, true)) {
@@ -114,7 +127,7 @@ function Multihost(options) {
         if (!changed) {
             console.log('No configuration change needed.');
         } else {
-            fs.writeFileSync(configName, JSON.stringify(config, null, 2));
+            fs.writeFileSync(this.configName, JSON.stringify(config, null, 2));
             console.log('Please restart ioBroker for the changes to take effect: "iobroker restart"');
         }
         console.log('\n');
@@ -133,12 +146,12 @@ function Multihost(options) {
     /**
      * Enables or disables the multihost discovery server in the config json
      *
-     * @param {boolean} isEnable - if the server should be activated or deactivated
-     * @param {function} callback - callback function to be executed
+     * @param isEnable - if the server should be activated or deactivated
+     * @param callback - callback function to be executed
      */
-    this.enable = function (isEnable, callback) {
+    enable(isEnable: boolean, callback: (err?: Error) => void): void {
         let changed = false;
-        const config = getConfig();
+        const config = this.getConfig();
         config.multihostService = config.multihostService || { enabled: false, secure: true };
 
         if (isEnable && !config.multihostService.enabled) {
@@ -151,7 +164,7 @@ function Multihost(options) {
             console.log(
                 'Important: Multihost discovery works with UDP packets. Make sure they are routed correctly in your network. If you use Docker you also need to configure this correctly.'
             );
-            if (!params.persist) {
+            if (!this.params.persist) {
                 console.log(
                     'Multihost discovery will be automatically deactivated after 15 minutes. If you want to activate it permanently use the --persist flag'
                 );
@@ -162,24 +175,23 @@ function Multihost(options) {
             config.multihostService.password = '';
             console.log('Multihost discovery server deactivated on this host.');
         }
-        if (params.secure === undefined) {
-            params.secure = true;
+        if (this.params.secure === undefined) {
+            this.params.secure = true;
         }
 
-        params.persist = !!params.persist;
+        this.params.persist = !!this.params.persist;
 
         if (
             isEnable &&
-            (config.multihostService.secure !== params.secure ||
+            (config.multihostService.secure !== this.params.secure ||
                 (config.multihostService.secure && !config.multihostService.password) ||
-                config.multihostService.persist !== params.persist)
+                config.multihostService.persist !== this.params.persist)
         ) {
             changed = true;
-            config.multihostService.secure = params.secure;
-            config.multihostService.persist = params.persist;
-            console.log(`Discovery authentication ${params.secure ? 'activated' : 'deactivated'}.`);
+            config.multihostService.secure = this.params.secure;
+            config.multihostService.persist = this.params.persist;
+            console.log(`Discovery authentication ${this.params.secure ? 'activated' : 'deactivated'}.`);
             if (config.multihostService.secure) {
-                const prompt = require('prompt');
                 prompt.message = '';
                 prompt.delimiter = '';
                 const schema = {
@@ -203,43 +215,52 @@ function Multihost(options) {
                 prompt.get(schema, (err, password) => {
                     if (password && password.password) {
                         if (password.password !== password.passwordRepeat) {
-                            callback('Secret phrases are not equal!');
+                            callback(new Error('Secret phrases are not equal!'));
                         } else {
-                            objects.getObject('system.config', (err, obj) => {
-                                config.multihostService.password = tools.encrypt(obj.native.secret, password.password);
-                                showMHState(config, changed, callback);
+                            this.objects.getObject('system.config', (err, obj) => {
+                                config.multihostService.password = tools.encrypt(
+                                    obj!.native.secret,
+                                    password.password as string
+                                );
+                                this.showMHState(config, changed, callback);
                             });
                         }
                     } else {
-                        callback('No secret phrase entered!');
+                        callback(new Error('No secret phrase entered!'));
                     }
                 });
             } else {
-                showMHState(config, changed, callback);
+                this.showMHState(config, changed, callback);
             }
         } else {
-            showMHState(config, changed, callback);
+            this.showMHState(config, changed, callback);
         }
-    };
+    }
 
-    this.status = function (callback) {
-        const config = getConfig();
+    /**
+     * Show the MH status
+     * @param callback
+     */
+    status(callback: () => void): void {
+        const config = this.getConfig();
         config.multihostService = config.multihostService || { enabled: false, secure: true };
-        showMHState(config, false, callback);
-    };
+        this.showMHState(config, false, callback);
+    }
 
-    function readPassword(callback) {
-        const readline = require('readline');
-
+    /**
+     * Read password from cli
+     * @param callback
+     */
+    readPassword(callback: (password: string) => void): void {
         const rl = readline.createInterface({
             input: process.stdin,
             output: process.stdout
         });
 
-        function hidden(query, callback) {
+        function hidden(query: string, callback: (pw: string) => void) {
             const stdin = process.openStdin();
-            process.stdin.on('data', char => {
-                char = char.toString();
+            process.stdin.on('data', _char => {
+                const char = _char.toString();
                 switch (char) {
                     case '\n':
                     case '\r':
@@ -254,7 +275,6 @@ function Multihost(options) {
             });
 
             rl.question(query, value => {
-                rl.history = rl.history.slice(1);
                 callback(value);
             });
         }
@@ -262,12 +282,20 @@ function Multihost(options) {
         hidden('Enter secret phrase for connection: ', password => callback(password));
     }
 
-    function connect(mhClient, ip, pass, callback) {
+    /**
+     * Connect to given MH server
+     *
+     * @param mhClient mhclient used for connection
+     * @param ip ip address of server
+     * @param pass password
+     * @param callback
+     */
+    connectHelper(mhClient: MHClient, ip: string, pass: string, callback: (err?: Error) => void): void {
         mhClient.connect(ip, pass, (err, oObjects, oStates, ipHost) => {
             if (err) {
-                callback(`Cannot connect to "${ip}": ${err}`);
+                callback(new Error(`Cannot connect to "${ip}": ${err.message}`));
             } else if (oObjects && oStates) {
-                const config = getConfig();
+                const config = this.getConfig();
                 config.objects = oObjects;
                 config.states = oStates;
                 if (
@@ -275,7 +303,9 @@ function Multihost(options) {
                     dbTools.isLocalStatesDbServer(config.states.type, config.states.host, true)
                 ) {
                     callback(
-                        'IP Address of the remote host is 127.0.0.1. Connections from this host will not be accepted. Please change the configuration of this host to accept remote connections.'
+                        new Error(
+                            'IP Address of the remote host is 127.0.0.1. Connections from this host will not be accepted. Please change the configuration of this host to accept remote connections.'
+                        )
                     );
                 } else {
                     if (config.states.host === '0.0.0.0') {
@@ -287,80 +317,89 @@ function Multihost(options) {
                         config.objects.host = ipHost;
                     }
 
-                    fs.writeFileSync(configName, JSON.stringify(config, null, 2));
+                    fs.writeFileSync(this.configName, JSON.stringify(config, null, 2));
                     console.log('Config ok. Please restart ioBroker: "iobroker restart"');
                     callback();
                 }
             } else {
-                callback('No configuration received!');
+                callback(new Error('No configuration received!'));
             }
         });
     }
 
-    this.connect = function (number, pass, callback) {
+    /**
+     * Connect to MH Server
+     *
+     * @param index index of host to connect to
+     * @param pass password
+     * @param callback
+     */
+    connect(
+        index: number | null,
+        pass: string | null,
+        callback: (err?: Error, list?: BrowseResultEntry[]) => void
+    ): void {
         if (typeof pass === 'function') {
             callback = pass;
             pass = null;
         }
-        if (typeof number === 'function') {
-            callback = number;
-            number = null;
+        if (typeof index === 'function') {
+            callback = index;
+            index = null;
         }
-        const MHClient = require('../multihostClient');
+
         const mhClient = new MHClient();
 
-        mhClient.browse(2000, params.debug, (err, list) => {
+        mhClient.browse(2_000, !!this.params.debug, (err, list) => {
             if (err) {
-                callback('Cannot browse: ' + err);
+                callback(new Error(`Cannot browse: ${err.message}`));
             } else {
-                that.showHosts(list);
+                this.showHosts(list);
 
-                if (number !== null && number !== undefined && parseInt(number, 10) > 0) {
-                    number = parseInt(number, 10);
-                    if (list && number < list.length + 1) {
+                if (index !== null && index !== undefined && index > 0) {
+                    if (list && index < list.length + 1) {
                         if (!pass) {
-                            callback('No password defined: please use "multihost connect <NUMBER> <PASSWORD>"');
+                            callback(
+                                new Error('No password defined: please use "multihost connect <NUMBER> <PASSWORD>"')
+                            );
                         } else {
-                            connect(mhClient, list[number - 1].ip, pass, callback);
+                            this.connectHelper(mhClient, list[index - 1].ip!, pass, callback);
                         }
                     } else {
-                        callback('Invalid index: ' + number);
+                        callback(new Error(`Invalid index: ${index}`));
                     }
                 } else if (list && list.length) {
-                    const readline = require('readline');
-
                     const rl = readline.createInterface({
                         input: process.stdin,
                         output: process.stdout
                     });
                     rl.question('Please select host [1]: ', answer => {
                         if (answer === '' || answer === null || answer === undefined) {
-                            answer = 1;
+                            index = 1;
                         }
-                        answer = parseInt(answer, 10) - 1;
-                        if (!list[answer]) {
+                        index = parseInt(answer, 10) - 1;
+                        const listEntry = list[index];
+                        if (!listEntry) {
                             rl.close();
-                            callback('Invalid index: ' + answer);
+                            callback(new Error(`Invalid index: ${answer}`));
                         } else {
-                            if (list[answer].auth) {
-                                readPassword(password => {
+                            if (listEntry.auth) {
+                                this.readPassword(password => {
                                     if (password) {
-                                        connect(mhClient, list[answer].ip, password, callback);
+                                        this.connectHelper(mhClient, listEntry.ip!, password, callback);
                                     } else {
-                                        callback('No password entered!');
+                                        callback(new Error('No password entered!'));
                                     }
                                 });
                             } else {
-                                connect(mhClient, list[answer].ip, null, callback);
+                                this.connectHelper(mhClient, listEntry.ip!, '', callback);
                             }
                         }
                     });
                 } else {
-                    callback(null, list);
+                    callback(undefined, list);
                 }
             }
         });
-    };
+    }
 }
-
-module.exports = Multihost;

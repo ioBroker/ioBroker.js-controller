@@ -16,7 +16,8 @@
         "fs-extra": "^10.1.0",
         "mime": "^3.0.0",
         "readline-sync": "^1.4.10",
-        "semver": "^7.3.7"
+        "semver": "^7.3.7",
+        "yargs": "^17.6.2"
     },
     "keywords": [
         "ioBroker"

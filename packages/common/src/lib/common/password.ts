@@ -45,7 +45,7 @@ export function password(pw: string): PasswordReturnValue {
     return {
         hash: (salt, iterations, callback) => {
             salt = salt || crypto.randomBytes(16).toString('hex');
-            iterations = iterations || 10000;
+            iterations = iterations || 10_000;
 
             crypto.pbkdf2(pw, salt, iterations, 256, 'sha256', (err, key) => {
                 if (err) {

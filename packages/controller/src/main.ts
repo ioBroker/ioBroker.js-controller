@@ -22,10 +22,10 @@ import deepClone from 'deep-clone';
 import { isDeepStrictEqual, inspect } from 'util';
 import { tools, EXIT_CODES, logger as toolsLogger } from '@iobroker/js-controller-common';
 import { PluginHandler } from '@iobroker/plugin-base';
-import { NotificationHandler } from './lib/notificationHandler';
+import { NotificationHandler } from '@iobroker/js-controller-common-db';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
-import { setupUpload as Upload } from '@iobroker/js-controller-cli';
+import { Upload } from '@iobroker/js-controller-cli';
 import decache from 'decache';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 
@@ -2163,9 +2163,8 @@ function setMeta() {
                         const startScript = fs.readJSONSync(VENDOR_BOOTSTRAP_FILE);
 
                         if (startScript.password) {
-                            // eslint-disable-next-line @typescript-eslint/no-var-requires
-                            const Vendor = require('./lib/setup/setupVendor');
-                            const vendor = new Vendor({ objects });
+                            const { Vendor } = await import('@iobroker/js-controller-cli');
+                            const vendor = new Vendor({ objects: objects! });
 
                             logger && logger.info(`${hostLogPrefix} Apply vendor file: ${VENDOR_FILE}`);
                             try {
