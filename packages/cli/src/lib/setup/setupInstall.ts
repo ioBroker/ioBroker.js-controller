@@ -346,7 +346,7 @@ export class Install {
                 // If the user installed a git commit-ish, the url contains stuff that doesn't belong in a folder name
                 // e.g. iobroker/iobroker.javascript#branch-name
                 if (packetDirName.includes('#')) {
-                    packetDirName = packetDirName.substr(0, packetDirName.indexOf('#'));
+                    packetDirName = packetDirName.substring(0, packetDirName.indexOf('#'));
                 }
                 if (packetDirName.includes('/') && !packetDirName.startsWith('@')) {
                     // only scoped packages (e.g. @types/node ) may have a slash in their path
@@ -374,7 +374,8 @@ export class Install {
                     }
                 }
             } else {
-                // TODO: revisit this - this should not happen
+                // npm exists with code 1 but adapter not installed
+                console.error(result.stderr);
                 console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
                 return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
             }
@@ -383,6 +384,7 @@ export class Install {
             // command succeeded
             return { _url: npmUrl, installDir: path.dirname(installDir) };
         } else {
+            console.error(result.stderr);
             console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
             return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
         }
