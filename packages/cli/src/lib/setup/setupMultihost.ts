@@ -48,19 +48,6 @@ export class Multihost {
     }
 
     /**
-     * Left pad a string
-     * @param text text to pad
-     * @param len line length
-     */
-    private leftPad(text: string, len: number): string {
-        text = text || '';
-        if (text.length >= len) {
-            return text;
-        }
-        return new Array(len - text.length).join(' ') + text;
-    }
-
-    /**
      * Show hosts on CLI
      *
      * @param list list of hosts
@@ -73,9 +60,9 @@ export class Multihost {
         } else {
             for (let i = 0; i < list.length; i++) {
                 console.log(
-                    `${i + 1} | ${this.leftPad(list[i].hostname!, 20)} | ${
-                        list[i].slave ? 'slave' : ' host'
-                    } | ${this.leftPad(list[i].ip!, 20)} | ${JSON.stringify(list[i].info)}`
+                    `${i + 1} | ${list[i].hostname!.padStart(20)} | ${list[i].slave ? 'slave' : ' host'} | ${list[
+                        i
+                    ].ip!.padStart(20)} | ${JSON.stringify(list[i].info)}`
                 );
             }
         }
@@ -231,8 +218,10 @@ export class Multihost {
                             callback(new Error('Secret phrases are not equal!'));
                         } else {
                             this.objects.getObject('system.config', (err, obj) => {
-                                // @ts-expect-error external types not perfect?
-                                config.multihostService.password = tools.encrypt(obj!.native.secret, password.password);
+                                config.multihostService.password = tools.encrypt(
+                                    obj!.native.secret,
+                                    password.password as string
+                                );
                                 this.showMHState(config, changed, callback);
                             });
                         }
@@ -286,8 +275,6 @@ export class Multihost {
             });
 
             rl.question(query, value => {
-                // @ts-expect-error what is this for?
-                rl.history = rl.history.slice(1);
                 callback(value);
             });
         }
@@ -391,20 +378,21 @@ export class Multihost {
                             index = 1;
                         }
                         index = parseInt(answer, 10) - 1;
-                        if (!list[index]) {
+                        const listEntry = list[index];
+                        if (!listEntry) {
                             rl.close();
                             callback(new Error(`Invalid index: ${answer}`));
                         } else {
-                            if (list[index].auth) {
+                            if (listEntry.auth) {
                                 this.readPassword(password => {
                                     if (password) {
-                                        this.connectHelper(mhClient, list[index!].ip!, password, callback);
+                                        this.connectHelper(mhClient, listEntry.ip!, password, callback);
                                     } else {
                                         callback(new Error('No password entered!'));
                                     }
                                 });
                             } else {
-                                this.connectHelper(mhClient, list[index].ip!, '', callback);
+                                this.connectHelper(mhClient, listEntry.ip!, '', callback);
                             }
                         }
                     });

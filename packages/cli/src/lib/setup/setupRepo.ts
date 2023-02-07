@@ -23,7 +23,7 @@ export interface RepoFlags {
 }
 
 export class Repo {
-    private readonly defaultSystemRepo: Record<string, any>;
+    private readonly defaultSystemRepo: ioBroker.OtherObject;
     private readonly objects: ObjectsRedisClient;
     private readonly states: StatesRedisClient;
     private readonly controllerVersion: string;
@@ -371,7 +371,6 @@ export class Repo {
             };
             obj.from = `system.host.${tools.getHostName()}.cli`;
             obj.ts = Date.now();
-            // @ts-expect-error this.defaultSystemRepo needs types
             await this.objects.setObjectAsync('system.repositories', obj);
         }
     }

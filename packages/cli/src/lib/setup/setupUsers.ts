@@ -27,13 +27,13 @@ export class Users {
     /**
      * Adds new user to system
      *
-     * @param user username
+     * @param username name of the user which will be added
      * @param pw password
      * @param callback
      */
-    addUser(user: string, pw: string, callback: ioBroker.ErrorCallback): void {
+    addUser(username: string, pw: string, callback: ioBroker.ErrorCallback): void {
         // user id's should be case insensitive
-        const _user = user.replace(/\s/g, '_').toLowerCase();
+        const _user = username.replace(/\s/g, '_').toLowerCase();
         this.objects.getObject(`system.user.${_user}`, (err, obj) => {
             if (obj) {
                 return tools.maybeCallbackWithError(callback, 'User yet exists');
@@ -43,7 +43,7 @@ export class Users {
                     {
                         type: 'user',
                         common: {
-                            name: user,
+                            name: username,
                             enabled: true,
                             password: ''
                         },
@@ -53,7 +53,7 @@ export class Users {
                     },
                     err => {
                         if (!err) {
-                            this.setPassword(user, pw, callback);
+                            this.setPassword(username, pw, callback);
                         } else {
                             return tools.maybeCallbackWithError(callback, err);
                         }
@@ -66,10 +66,10 @@ export class Users {
     /**
      * Checks if user exists
      *
-     * @param user username
+     * @param username name of the user to check existence of
      */
-    async isUser(user: string): Promise<boolean> {
-        const _user = user.replace(/\s/g, '_').toLowerCase();
+    async isUser(username: string): Promise<boolean> {
+        const _user = username.replace(/\s/g, '_').toLowerCase();
         let isExisting = false;
         try {
             isExisting = await this.objects.objectExists(`system.user.${_user}`);
@@ -83,12 +83,12 @@ export class Users {
     /**
      * Set password for specific user
      *
-     * @param user username
+     * @param username name of the user to set password for
      * @param pw password
      * @param callback
      */
-    setPassword(user: string, pw: string, callback: ioBroker.ErrorCallback): void {
-        const _user = user.replace(/\s/g, '_').toLowerCase();
+    setPassword(username: string, pw: string, callback: ioBroker.ErrorCallback): void {
+        const _user = username.replace(/\s/g, '_').toLowerCase();
 
         this.objects.getObject(`system.user.${_user}`, (err, obj) => {
             if (err || !obj) {
@@ -112,12 +112,12 @@ export class Users {
     /**
      * Checks if password is correct for given user
      *
-     * @param user username
+     * @param username name of the user to check password
      * @param pw password
      * @param callback
      */
-    checkPassword(user: string, pw: string, callback: (err?: Error | null, isOk?: boolean) => void): void {
-        const _user = user.replace(/\s/g, '_').toLowerCase();
+    checkPassword(username: string, pw: string, callback: (err?: Error | null, isOk?: boolean) => void): void {
+        const _user = username.replace(/\s/g, '_').toLowerCase();
 
         this.objects.getObject(`system.user.${_user}`, (err, obj) => {
             if (err || !obj) {
@@ -133,15 +133,15 @@ export class Users {
     /**
      * Deletes user from system
      *
-     * @param user username
+     * @param username name of the user to delete
      * @param callback
      */
-    delUser(user: string, callback: ioBroker.ErrorCallback): void {
-        if (!user) {
+    delUser(username: string, callback: ioBroker.ErrorCallback): void {
+        if (!username) {
             return tools.maybeCallbackWithError(callback, 'Please define user name, like: "userdel user"');
         }
 
-        const _user = user.replace(/\s/g, '_').toLowerCase();
+        const _user = username.replace(/\s/g, '_').toLowerCase();
 
         this.objects.getObject(`system.user.${_user}`, (err, obj) => {
             if (err || !obj) {
@@ -205,14 +205,14 @@ export class Users {
     /**
      * Adds user to given group
      *
-     * @param user username
-     * @param group groupn6ame
+     * @param username user which will be added to the group
+     * @param groupName name of the group where the user will be added to
      * @param callback
      */
-    addUserToGroup(user: string, group: string, callback: ioBroker.ErrorCallback): void {
-        let _user = user.replace(/\s/g, '_').toLowerCase();
-        if (!group.startsWith('system.group.')) {
-            group = `system.group.${group}`;
+    addUserToGroup(username: string, groupName: string, callback: ioBroker.ErrorCallback): void {
+        let _user = username.replace(/\s/g, '_').toLowerCase();
+        if (!groupName.startsWith('system.group.')) {
+            groupName = `system.group.${groupName}`;
         }
         if (!_user.startsWith('system.user.')) {
             _user = `system.user.${_user}`;
@@ -222,7 +222,7 @@ export class Users {
             if (err || !obj) {
                 return tools.maybeCallbackWithError(callback, 'User does not exist');
             }
-            this.objects.getObject(group, (err, obj) => {
+            this.objects.getObject(groupName, (err, obj) => {
                 if (err || !obj) {
                     return tools.maybeCallbackWithError(callback, 'Group does not exist');
                 }
@@ -233,7 +233,7 @@ export class Users {
                     obj.common.members.push(_user);
                     obj.from = 'system.host.' + tools.getHostName() + '.cli';
                     obj.ts = Date.now();
-                    this.objects.setObject(group, obj, err => {
+                    this.objects.setObject(groupName, obj, err => {
                         return tools.maybeCallbackWithError(callback, err);
                     });
                 } else {
@@ -246,24 +246,24 @@ export class Users {
     /**
      * Add user via CLI prompt
      *
-     * @param user username
-     * @param group groupname
+     * @param username user which sohuld be created
+     * @param groupName default group for the new user
      * @param password user password
      * @param callback
      */
-    addUserPrompt(user: string, group: string, password: string, callback: ioBroker.ErrorCallback): void {
-        if (!user) {
+    addUserPrompt(username: string, groupName: string, password: string, callback: ioBroker.ErrorCallback): void {
+        if (!username) {
             return tools.maybeCallbackWithError(callback, 'Please define user name, like: "adduser newUser"');
         }
 
         // Check group
-        if (group.substring(0, 13) !== 'system.group.') {
-            group = `system.group.${group}`;
+        if (groupName.substring(0, 13) !== 'system.group.') {
+            groupName = `system.group.${groupName}`;
         }
 
-        this.objects.getObject(group, (err, obj) => {
+        this.objects.getObject(groupName, (err, obj) => {
             if (!obj) {
-                return tools.maybeCallbackWithError(callback, `Unknown group: ${group}`);
+                return tools.maybeCallbackWithError(callback, `Unknown group: ${groupName}`);
             }
             if (!password) {
                 prompt.message = '';
@@ -293,11 +293,11 @@ export class Users {
                             return void this.processExit(EXIT_CODES.INVALID_PASSWORD);
                         }
                         // @ts-expect-error external types problem?
-                        this.addUser(user, result.password, err => {
+                        this.addUser(username, result.password, err => {
                             if (err) {
                                 return tools.maybeCallbackWithError(callback, err);
                             } else {
-                                this.addUserToGroup(user, group, err => {
+                                this.addUserToGroup(username, groupName, err => {
                                     if (err) {
                                         return tools.maybeCallbackWithError(callback, err);
                                     } else {
@@ -311,11 +311,11 @@ export class Users {
                     }
                 });
             } else {
-                this.addUser(user, password, err => {
+                this.addUser(username, password, err => {
                     if (err) {
                         return tools.maybeCallbackWithError(callback, err);
                     } else {
-                        this.addUserToGroup(user, group, err => {
+                        this.addUserToGroup(username, groupName, err => {
                             if (err) {
                                 return tools.maybeCallbackWithError(callback, err);
                             } else {
@@ -331,18 +331,18 @@ export class Users {
     /**
      * Set password of user
      *
-     * @param user username
+     * @param username name of the user to set password for
      * @param password password of user
      * @param callback
      */
-    async setUserPassword(user: string, password: string, callback: ioBroker.ErrorCallback): Promise<void> {
-        if (!user) {
+    async setUserPassword(username: string, password: string, callback: ioBroker.ErrorCallback): Promise<void> {
+        if (!username) {
             return tools.maybeCallbackWithError(callback, 'Please define user name, like: "passwd username"');
         }
 
-        const isExisting = await this.isUser(user);
+        const isExisting = await this.isUser(username);
         if (!isExisting) {
-            return tools.maybeCallbackWithError(callback, `User "${user}" does not exist.`);
+            return tools.maybeCallbackWithError(callback, `User "${username}" does not exist.`);
         } else {
             // Check group
             if (!password) {
@@ -372,7 +372,7 @@ export class Users {
                             return tools.maybeCallbackWithError(callback, 'Passwords are not identical!');
                         }
                         // @ts-expect-error external types problem?
-                        this.setPassword(user, result.password, err => {
+                        this.setPassword(username, result.password, err => {
                             if (err) {
                                 return tools.maybeCallbackWithError(callback, err);
                             } else {
@@ -384,7 +384,7 @@ export class Users {
                     }
                 });
             } else {
-                this.setPassword(user, password, err => {
+                this.setPassword(username, password, err => {
                     if (err) {
                         return tools.maybeCallbackWithError(callback, err);
                     } else {
@@ -397,28 +397,28 @@ export class Users {
 
     /**
      * Enable user
-     * @param user username
+     * @param username name of the user which will be activated
      * @param enable true if it should be enabled else false
      * @param callback
      */
-    enableUser(user: string, enable: boolean, callback: ioBroker.ErrorCallback): void {
-        if (!user) {
+    enableUser(username: string, enable: boolean, callback: ioBroker.ErrorCallback): void {
+        if (!username) {
             return tools.maybeCallbackWithError(callback, 'Please define user name, like: "enable username"');
         }
-        if (user.startsWith('system.user.')) {
-            user = user.substring('system.user.'.length);
+        if (username.startsWith('system.user.')) {
+            username = username.substring('system.user.'.length);
         }
 
-        if (user === 'admin' && !enable) {
+        if (username === 'admin' && !enable) {
             return tools.maybeCallbackWithError(callback, 'User admin cannot be disabled');
         }
 
-        this.objects.getObject(`system.user.${user}`, (err, obj) => {
+        this.objects.getObject(`system.user.${username}`, (err, obj) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, `Cannot read user: ${err.message}`);
             }
             if (!obj) {
-                return tools.maybeCallbackWithError(callback, `User "${user}" not found`);
+                return tools.maybeCallbackWithError(callback, `User "${username}" not found`);
             } else {
                 obj.common.enabled = enable;
                 obj.from = `system.host.${tools.getHostName()}.cli`;
@@ -433,13 +433,13 @@ export class Users {
     /**
      * Check if user password is valid
      *
-     * @param user username
+     * @param username name of the user to check password for
      * @param password password to check
      * @param callback
      */
-    checkUserPassword(user: string, password: string, callback: ioBroker.ErrorCallback): void {
+    checkUserPassword(username: string, password: string, callback: ioBroker.ErrorCallback): void {
         let schema;
-        if (!user && !password) {
+        if (!username && !password) {
             prompt.message = '';
             prompt.delimiter = '';
             schema = {
@@ -461,13 +461,11 @@ export class Users {
             prompt.start();
 
             prompt.get(schema, (err, result) => {
-                // @ts-expect-error external types problem?
-                this.checkPassword(result.username, result.password, (err, res) => {
+                this.checkPassword(result.username as string, result.password as string, (err, res) => {
                     if (err || !res) {
                         return tools.maybeCallbackWithError(
                             callback,
-                            // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                            `Password for user "${result.username}" does not match${err ? ': ' + err : ''}`
+                            `Password for user "${result.username as string}" does not match${err ? ': ' + err : ''}`
                         );
                     } else {
                         return tools.maybeCallbackWithError(callback, null);
@@ -491,11 +489,11 @@ export class Users {
 
             prompt.get(schema, (err, result) => {
                 // @ts-expect-error external types problem?
-                this.checkPassword(user, result.password, (err, res) => {
+                this.checkPassword(username, result.password, (err, res) => {
                     if (err || !res) {
                         return tools.maybeCallbackWithError(
                             callback,
-                            `Password for user "${user}" does not matched${err ? ': ' + err : ''}`
+                            `Password for user "${username}" does not matched${err ? ': ' + err : ''}`
                         );
                     } else {
                         return tools.maybeCallbackWithError(callback, null);
@@ -503,11 +501,11 @@ export class Users {
                 });
             });
         } else {
-            this.checkPassword(user, password, (err, res) => {
+            this.checkPassword(username, password, (err, res) => {
                 if (err || !res) {
                     return tools.maybeCallbackWithError(
                         callback,
-                        'Password for user "' + user + '" does not matched' + (err ? ': ' + err : '')
+                        'Password for user "' + username + '" does not matched' + (err ? ': ' + err : '')
                     );
                 } else {
                     return tools.maybeCallbackWithError(callback, null);
@@ -519,16 +517,16 @@ export class Users {
     /**
      * Get user object
      *
-     * @param user username
+     * @param username name of the user to get object of
      * @param callback
      */
-    getUser(user: string, callback: (err?: Error | null, enabled?: boolean) => void): void {
-        this.objects.getObject(`system.user.${user}`, (err, obj) => {
+    getUser(username: string, callback: (err?: Error | null, enabled?: boolean) => void): void {
+        this.objects.getObject(`system.user.${username}`, (err, obj) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, `Cannot read user: ${err.message}`);
             }
             if (!obj) {
-                return tools.maybeCallbackWithError(callback, `User "${user}" not found`);
+                return tools.maybeCallbackWithError(callback, `User "${username}" not found`);
             } else {
                 return tools.maybeCallbackWithError(callback, null, obj.common.enabled);
             }
@@ -643,17 +641,17 @@ export class Users {
     /**
      * Remove user from given group
      *
-     * @param user username
-     * @param group groupname
+     * @param username name of the user which will be removed from group
+     * @param groupName name of the group user will be removed from
      * @param callback
      */
-    removeUserFromGroup(user: string, group: string, callback: ioBroker.ErrorCallback): void {
-        const _group = group.replace(/\s/g, '_');
+    removeUserFromGroup(username: string, groupName: string, callback: ioBroker.ErrorCallback): void {
+        const _group = groupName.replace(/\s/g, '_');
         this.objects.getObject(`system.group.${_group}`, (err, obj) => {
             if (!obj) {
                 return tools.maybeCallbackWithError(callback, 'Group does not exists');
             } else {
-                const pos = obj.common.members.indexOf(`system.user.${user}`);
+                const pos = obj.common.members.indexOf(`system.user.${username}`);
                 if (pos === -1) {
                     return tools.maybeCallbackWithError(callback, 'User not in group');
                 } else {
