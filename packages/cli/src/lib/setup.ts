@@ -3410,7 +3410,7 @@ function dbConnectAsync(onlyCheck: boolean, params?: Record<string, any>): Promi
 /**
  * Method which should be called from CLI to initialize the handling of all args
  */
-export function execute() {
+export function execute(): void {
     // direct call
     const _yargs = initYargs();
     // @ts-expect-error todo fix it

@@ -348,17 +348,17 @@ declare global {
             };
             os: {
                 hostname: string;
-                type: ReturnType<typeof os['type']>;
-                platform: ReturnType<typeof os['platform']>;
-                arch: ReturnType<typeof os['arch']>;
-                release: ReturnType<typeof os['release']>;
-                endianness: ReturnType<typeof os['endianness']>;
-                tmpdir: ReturnType<typeof os['tmpdir']>;
+                type: ReturnType<(typeof os)['type']>;
+                platform: ReturnType<(typeof os)['platform']>;
+                arch: ReturnType<(typeof os)['arch']>;
+                release: ReturnType<(typeof os)['release']>;
+                endianness: ReturnType<(typeof os)['endianness']>;
+                tmpdir: ReturnType<(typeof os)['tmpdir']>;
             };
             hardware: {
-                cpus: ReturnType<typeof os['cpus']>;
-                totalmem: ReturnType<typeof os['totalmem']>;
-                networkInterfaces: ReturnType<typeof os['networkInterfaces']>;
+                cpus: ReturnType<(typeof os)['cpus']>;
+                totalmem: ReturnType<(typeof os)['totalmem']>;
+                networkInterfaces: ReturnType<(typeof os)['networkInterfaces']>;
             };
         }
 
