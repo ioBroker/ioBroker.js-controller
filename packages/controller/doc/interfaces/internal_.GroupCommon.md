@@ -17,6 +17,7 @@
 - [acl](internal_.GroupCommon.md#acl)
 - [custom](internal_.GroupCommon.md#custom)
 - [dontDelete](internal_.GroupCommon.md#dontdelete)
+- [enabled](internal_.GroupCommon.md#enabled)
 - [expert](internal_.GroupCommon.md#expert)
 - [icon](internal_.GroupCommon.md#icon)
 - [members](internal_.GroupCommon.md#members)
@@ -33,7 +34,7 @@ The default permissions of this group
 
 #### Defined in
 
-[types/objects.d.ts:383](https://github.com/ioBroker/ioBroker.js-controller/blob/7dd079e8/packages/types/objects.d.ts#L383)
+[types/objects.d.ts:383](https://github.com/ioBroker/ioBroker.js-controller/blob/33bf0c0e/packages/types/objects.d.ts#L383)
 
 ___
 
@@ -43,7 +44,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:386](https://github.com/ioBroker/ioBroker.js-controller/blob/7dd079e8/packages/types/objects.d.ts#L386)
+[types/objects.d.ts:387](https://github.com/ioBroker/ioBroker.js-controller/blob/33bf0c0e/packages/types/objects.d.ts#L387)
 
 ___
 
@@ -59,7 +60,19 @@ When set to true, this object may not be deleted
 
 #### Defined in
 
-[types/objects.d.ts:157](https://github.com/ioBroker/ioBroker.js-controller/blob/7dd079e8/packages/types/objects.d.ts#L157)
+[types/objects.d.ts:157](https://github.com/ioBroker/ioBroker.js-controller/blob/33bf0c0e/packages/types/objects.d.ts#L157)
+
+___
+
+### enabled
+
+• `Optional` **enabled**: `boolean`
+
+A group can be disabled, if missing, group is active
+
+#### Defined in
+
+[types/objects.d.ts:385](https://github.com/ioBroker/ioBroker.js-controller/blob/33bf0c0e/packages/types/objects.d.ts#L385)
 
 ___
 
@@ -75,7 +88,7 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 #### Defined in
 
-[types/objects.d.ts:160](https://github.com/ioBroker/ioBroker.js-controller/blob/7dd079e8/packages/types/objects.d.ts#L160)
+[types/objects.d.ts:160](https://github.com/ioBroker/ioBroker.js-controller/blob/33bf0c0e/packages/types/objects.d.ts#L160)
 
 ___
 
@@ -91,7 +104,7 @@ Icon for this object
 
 #### Defined in
 
-[types/objects.d.ts:165](https://github.com/ioBroker/ioBroker.js-controller/blob/7dd079e8/packages/types/objects.d.ts#L165)
+[types/objects.d.ts:165](https://github.com/ioBroker/ioBroker.js-controller/blob/33bf0c0e/packages/types/objects.d.ts#L165)
 
 ___
 
@@ -103,7 +116,7 @@ The users of this group
 
 #### Defined in
 
-[types/objects.d.ts:381](https://github.com/ioBroker/ioBroker.js-controller/blob/7dd079e8/packages/types/objects.d.ts#L381)
+[types/objects.d.ts:381](https://github.com/ioBroker/ioBroker.js-controller/blob/33bf0c0e/packages/types/objects.d.ts#L381)
 
 ___
 
@@ -119,7 +132,7 @@ The name of this group
 
 #### Defined in
 
-[types/objects.d.ts:379](https://github.com/ioBroker/ioBroker.js-controller/blob/7dd079e8/packages/types/objects.d.ts#L379)
+[types/objects.d.ts:379](https://github.com/ioBroker/ioBroker.js-controller/blob/33bf0c0e/packages/types/objects.d.ts#L379)
 
 ___
 
@@ -135,4 +148,4 @@ role of the object
 
 #### Defined in
 
-[types/objects.d.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/7dd079e8/packages/types/objects.d.ts#L167)
+[types/objects.d.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/33bf0c0e/packages/types/objects.d.ts#L167)
