@@ -3155,10 +3155,16 @@ export async function resolveAdapterMainFile(adapter: string): Promise<string> {
  * @returns default node args for cli
  */
 export function getDefaultNodeArgs(mainFile: string): string[] {
+    const ret: string[] = [];
+    // Support executing TypeScript files directly
     if (mainFile.endsWith('.ts')) {
-        return ['-r', '@alcalzone/esbuild-register'];
+        ret.push('-r', '@alcalzone/esbuild-register');
     }
-    return [];
+    // If JS-controller was started with --preserve-symlinks, do the same for adapters
+    if (process.execArgv.includes('--preserve-symlinks')) {
+        ret.push('--preserve-symlinks-main', '--preserve-symlinks');
+    }
+    return ret;
 }
 
 /** This is used for the short github URL format that NPM accepts (<githubname>/<githubrepo>[#<commit-ish>]) */
