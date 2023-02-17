@@ -6,6 +6,11 @@
     "checkJs": false,
     "noEmit": false
   },
+  "references": [
+    {
+      "path": "../db-base/tsconfig.build.json"
+    },
+  ],
   "include": [
     "src/**/*.ts",
     "src/**/*.js" // currently, we have js too

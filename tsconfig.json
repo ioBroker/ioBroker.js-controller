@@ -28,7 +28,8 @@
       "@iobroker/types",
       "node",
       "mocha"
-    ]
+    ],
+    "pretty": true
   },
   "include": [
     "packages/**/*.js",

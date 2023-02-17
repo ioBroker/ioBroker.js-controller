@@ -76,7 +76,8 @@
   "scripts": {
     "clean": "rimraf packages/*/build packages/*/*.tsbuildinfo",
     "build:doc": "lerna run build:doc",
-    "build:ts": "lerna run build",
+    "build:ts": "npm run build --workspace=iobroker.js-controller -- --verbose",
+    "watch:ts": "npm run build:ts -- --watch",
     "build": "npm run build:ts",
     "preinstall": "lerna run preinstall",
     "install": "lerna run install",
