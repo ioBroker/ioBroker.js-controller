@@ -74,7 +74,7 @@
     "typescript": "~4.8.4"
   },
   "scripts": {
-    "prebuild": "rimraf packages/*/build packages/*/*.tsbuildinfo",
+    "clean": "rimraf packages/*/build packages/*/*.tsbuildinfo",
     "build:doc": "lerna run build:doc",
     "build:ts": "lerna run build",
     "build": "npm run build:ts",

@@ -11,6 +11,8 @@
     "src/**/*.js" // currently, we have js too
   ],
   "exclude": [
-    "src/**/*.test.ts"
+    "src/**/*.test.ts",
+    "build/**",
+    "node_modules/**"
   ]
 }
