@@ -38,7 +38,7 @@ Partial.\_id
 
 #### Defined in
 
-[types/objects.d.ts:645](https://github.com/ioBroker/ioBroker.js-controller/blob/33bf0c0e/packages/types/objects.d.ts#L645)
+[types/objects.d.ts:645](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L645)
 
 ___
 
@@ -52,7 +52,7 @@ Partial.acl
 
 #### Defined in
 
-[types/objects.d.ts:577](https://github.com/ioBroker/ioBroker.js-controller/blob/33bf0c0e/packages/types/objects.d.ts#L577)
+[types/objects.d.ts:577](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L577)
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:654](https://github.com/ioBroker/ioBroker.js-controller/blob/33bf0c0e/packages/types/objects.d.ts#L654)
+[types/objects.d.ts:654](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L654)
 
 ___
 
@@ -78,7 +78,7 @@ Partial.encryptedNative
 
 #### Defined in
 
-[types/objects.d.ts:651](https://github.com/ioBroker/ioBroker.js-controller/blob/33bf0c0e/packages/types/objects.d.ts#L651)
+[types/objects.d.ts:651](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L651)
 
 ___
 
@@ -92,7 +92,7 @@ Partial.enums
 
 #### Defined in
 
-[types/objects.d.ts:576](https://github.com/ioBroker/ioBroker.js-controller/blob/33bf0c0e/packages/types/objects.d.ts#L576)
+[types/objects.d.ts:576](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L576)
 
 ___
 
@@ -106,7 +106,7 @@ Partial.from
 
 #### Defined in
 
-[types/objects.d.ts:578](https://github.com/ioBroker/ioBroker.js-controller/blob/33bf0c0e/packages/types/objects.d.ts#L578)
+[types/objects.d.ts:578](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L578)
 
 ___
 
@@ -120,7 +120,7 @@ Partial.native
 
 #### Defined in
 
-[types/objects.d.ts:574](https://github.com/ioBroker/ioBroker.js-controller/blob/33bf0c0e/packages/types/objects.d.ts#L574)
+[types/objects.d.ts:574](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L574)
 
 ___
 
@@ -136,7 +136,7 @@ Partial.protectedNative
 
 #### Defined in
 
-[types/objects.d.ts:649](https://github.com/ioBroker/ioBroker.js-controller/blob/33bf0c0e/packages/types/objects.d.ts#L649)
+[types/objects.d.ts:649](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L649)
 
 ___
 
@@ -150,7 +150,7 @@ Partial.ts
 
 #### Defined in
 
-[types/objects.d.ts:581](https://github.com/ioBroker/ioBroker.js-controller/blob/33bf0c0e/packages/types/objects.d.ts#L581)
+[types/objects.d.ts:581](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L581)
 
 ___
 
@@ -164,7 +164,7 @@ Partial.type
 
 #### Defined in
 
-[types/objects.d.ts:646](https://github.com/ioBroker/ioBroker.js-controller/blob/33bf0c0e/packages/types/objects.d.ts#L646)
+[types/objects.d.ts:646](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L646)
 
 ___
 
@@ -180,4 +180,4 @@ Partial.user
 
 #### Defined in
 
-[types/objects.d.ts:580](https://github.com/ioBroker/ioBroker.js-controller/blob/33bf0c0e/packages/types/objects.d.ts#L580)
+[types/objects.d.ts:580](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L580)
