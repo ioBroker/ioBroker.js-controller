@@ -5564,12 +5564,11 @@ function init(compactGroupId?: number): void {
         logger.info(`${hostLogPrefix} ip addresses: ${tools.findIPs().join(' ')}`);
 
         // create package.json for npm >= 3.x if not exists
-        if (
-            controllerDir
-                .replace(/\\/g, '/')
-                .toLowerCase()
-                .includes('/node_modules/' + title.toLowerCase())
-        ) {
+        const isInNodeModules = controllerDir
+            .toLowerCase()
+            .includes(`${path.sep}node_modules${path.sep}${title.toLowerCase()}`);
+        const isDevServer = require.main?.path.includes(`${path.sep}.dev-server${path.sep}`);
+        if (isInNodeModules && !isDevServer) {
             try {
                 if (!fs.existsSync(`${controllerDir}/../../package.json`)) {
                     fs.writeFileSync(
