@@ -79,6 +79,7 @@
     "build:ts": "npm run build --workspace=iobroker.js-controller -- --verbose",
     "watch:ts": "npm run build:ts -- --watch",
     "build": "npm run build:ts",
+    "postbuild": "lerna run postbuild",
     "preinstall": "lerna run preinstall",
     "install": "lerna run install",
     "release": "release-script",
