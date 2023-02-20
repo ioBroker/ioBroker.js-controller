@@ -18,8 +18,12 @@
     "dependencies": {
         "@iobroker/js-controller-adapter": "file:../adapter"
     },
+    "devDependencies": {
+        "tsd": "^0.24.1"
+    },
     "scripts": {
-        "build": "ts-node build.ts"
+        "build": "ts-node build.ts",
+        "test": "tsd"
     },
     "main": "",
     "types": "index.d.ts",
@@ -30,7 +34,12 @@
     "files": [
         "build/",
         "index.d.ts",
-        "objects.d.ts",
+        "public.d.ts",
         "LICENSE"
-    ]
+    ],
+    "tsd": {
+        "compilerOptions": {
+            "types": ["@iobroker/types"]
+        }
+    }
 }

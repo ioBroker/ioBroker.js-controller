@@ -21,7 +21,7 @@ import type NodeSchedule from 'node-schedule';
 import { version as controllerVersion } from '@iobroker/js-controller-adapter/package.json';
 
 import { Log } from './log';
-import { IdObject, Utils } from './utils';
+import { Utils } from './utils';
 
 const { FORBIDDEN_CHARS } = tools;
 import {
@@ -7245,24 +7245,24 @@ export class AdapterClass extends EventEmitter {
 
     // external signatures
     setState<T extends ioBroker.SetStateCallback | undefined>(
-        id: string | IdObject,
+        id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         callback?: T
     ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
     setState<T extends ioBroker.SetStateCallback>(
-        id: string | IdObject,
+        id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
         callback?: T
     ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
     setState<T extends ioBroker.SetStateCallback>(
-        id: string | IdObject,
+        id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         options: unknown,
         callback?: T
     ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
     setState<T extends ioBroker.SetStateCallback>(
-        id: string | IdObject,
+        id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
         options: unknown,

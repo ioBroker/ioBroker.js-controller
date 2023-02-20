@@ -5,12 +5,6 @@ type Callback = (...args: any[]) => void | Promise<void>;
 type OptionalCallback = undefined | Callback;
 type Pattern = string | string[];
 
-export interface IdObject {
-    device?: string;
-    channel?: string;
-    state?: string;
-}
-
 export interface ValidateIdOptions {
     /** in maintenance mode we can access ivnalid ids to delete them, only works with the admin user */
     maintenance?: boolean;
@@ -351,7 +345,7 @@ export class Utils {
      * @param id id which will be fixed
      * @param isPattern if the id is a pattern
      */
-    fixId(id: string | IdObject, isPattern = false): string {
+    fixId(id: string | ioBroker.IdObject, isPattern = false): string {
         if (!id) {
             id = '';
         }

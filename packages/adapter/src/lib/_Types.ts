@@ -1,6 +1,3 @@
-import type { ChangeFileFunction } from '@iobroker/db-objects-redis';
-import type { IdObject } from './adapter/utils';
-
 export interface AdapterOptions {
     subscribesChange?: (subs: Record<string, { regex: RegExp }>) => void;
     /** If the adapter collects logs from all adapters (experts only). Default: false */
@@ -34,7 +31,7 @@ export interface AdapterOptions {
     /** callback function (id, obj) that will be called if state changed */
     stateChange?: ioBroker.StateChangeHandler;
     /** callback function (id, file) that will be called if file changed */
-    fileChange?: ChangeFileFunction;
+    fileChange?: ioBroker.FileChangeHandler;
     /** callback to inform about new message the adapter */
     message?: ioBroker.MessageHandler;
     /** callback to stop the adapter */
@@ -276,7 +273,7 @@ export interface InternalCreateDeviceOptions {
 }
 
 export interface InternalSetStateOptions {
-    id: string | IdObject;
+    id: string | ioBroker.IdObject;
     state: ioBroker.StateValue | ioBroker.SettableState;
     ack?: boolean;
     options?: Record<string, any> | null;
