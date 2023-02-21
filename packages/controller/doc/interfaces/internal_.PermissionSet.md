@@ -38,7 +38,7 @@ The access rights for files
 
 #### Defined in
 
-[types/index.d.ts:90](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/index.d.ts#L90)
+[types/index.d.ts:90](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/index.d.ts#L90)
 
 ___
 
@@ -50,7 +50,7 @@ The name of the groups this ACL was merged from
 
 #### Defined in
 
-[types/index.d.ts:103](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/index.d.ts#L103)
+[types/index.d.ts:103](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/index.d.ts#L103)
 
 ___
 
@@ -66,7 +66,7 @@ The access rights for objects
 
 #### Defined in
 
-[types/index.d.ts:92](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/index.d.ts#L92)
+[types/index.d.ts:92](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/index.d.ts#L92)
 
 ___
 
@@ -86,7 +86,7 @@ The access rights for certain commands
 
 #### Defined in
 
-[types/index.d.ts:105](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/index.d.ts#L105)
+[types/index.d.ts:105](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/index.d.ts#L105)
 
 ___
 
@@ -102,7 +102,7 @@ The access rights for states
 
 #### Defined in
 
-[types/index.d.ts:96](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/index.d.ts#L96)
+[types/index.d.ts:96](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/index.d.ts#L96)
 
 ___
 
@@ -114,7 +114,7 @@ The name of the user this ACL is for
 
 #### Defined in
 
-[types/index.d.ts:101](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/index.d.ts#L101)
+[types/index.d.ts:101](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/index.d.ts#L101)
 
 ___
 
@@ -130,4 +130,4 @@ The access rights for users/groups
 
 #### Defined in
 
-[types/index.d.ts:94](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/index.d.ts#L94)
+[types/index.d.ts:94](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/index.d.ts#L94)

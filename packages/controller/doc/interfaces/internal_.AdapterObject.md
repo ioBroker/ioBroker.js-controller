@@ -40,7 +40,7 @@ The ID of this object
 
 #### Defined in
 
-[types/objects.d.ts:645](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L645)
+[types/objects.d.ts:645](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/objects.d.ts#L645)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:577](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L577)
+[types/objects.d.ts:577](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/objects.d.ts#L577)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:647](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L647)
+[types/objects.d.ts:647](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/objects.d.ts#L647)
 
 ___
 
@@ -80,7 +80,7 @@ Like protectedNative, but the properties are also encrypted and decrypted automa
 
 #### Defined in
 
-[types/objects.d.ts:651](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L651)
+[types/objects.d.ts:651](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/objects.d.ts#L651)
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:576](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L576)
+[types/objects.d.ts:576](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/objects.d.ts#L576)
 
 ___
 
@@ -108,7 +108,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:578](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L578)
+[types/objects.d.ts:578](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/objects.d.ts#L578)
 
 ___
 
@@ -122,7 +122,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:574](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L574)
+[types/objects.d.ts:574](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/objects.d.ts#L574)
 
 ___
 
@@ -134,7 +134,7 @@ An array of `native` properties which cannot be accessed from outside the defini
 
 #### Defined in
 
-[types/objects.d.ts:649](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L649)
+[types/objects.d.ts:649](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/objects.d.ts#L649)
 
 ___
 
@@ -148,7 +148,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:581](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L581)
+[types/objects.d.ts:581](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/objects.d.ts#L581)
 
 ___
 
@@ -162,7 +162,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:646](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L646)
+[types/objects.d.ts:646](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/objects.d.ts#L646)
 
 ___
 
@@ -178,4 +178,4 @@ The user who created or updated this object
 
 #### Defined in
 
-[types/objects.d.ts:580](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/types/objects.d.ts#L580)
+[types/objects.d.ts:580](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/objects.d.ts#L580)
