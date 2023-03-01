@@ -249,9 +249,9 @@ function register(it, expect, context) {
 
     // Validator.fixId
     it(context.name + ' ' + context.adapterShortName + ' adapter utils: check fixId', done => {
-        const { Utils } = require('@iobroker/js-controller-adapter');
+        const { Validator } = require('@iobroker/js-controller-adapter');
 
-        const utils = new Utils(
+        const utils = new Validator(
             context.objects,
             context.states,
             context.adapter.namespaceLog,
@@ -334,6 +334,64 @@ function register(it, expect, context) {
 
         done();
     }).timeout(2000);
+
+    // Check setTimeout throw
+    it(context.name + ' ' + context.adapterShortName + ' adapter: check setTimeout', done => {
+        // is valid
+        const timeout = context.adapter.setTimeout(() => {
+            /** pass */
+        }, 2 ** 32 / 2 - 1);
+        context.adapter.clearTimeout(timeout);
+
+        // is valid
+        context.adapter.setTimeout(() => {
+            /** pass */
+        }, 0);
+
+        expect(() => {
+            context.adapter.setTimeout(() => {
+                /** pass */
+            }, 2 ** 32 / 2);
+        }).to.throw(/is larger than/, 'Invalid timeout not thrown');
+
+        expect(() => {
+            context.adapter.setTimeout(() => {
+                /** pass */
+            }, -500);
+        }).to.throw(/is smaller than/, 'Invalid timeout not thrown');
+
+        done();
+    });
+
+    // Check setInterval throw
+    it(context.name + ' ' + context.adapterShortName + ' adapter: check setInterval', done => {
+        // is valid
+        let interval = context.adapter.setInterval(() => {
+            /** pass */
+        }, 2 ** 32 / 2 - 1);
+        context.adapter.clearInterval(interval);
+
+        // is valid
+        interval = context.adapter.setInterval(() => {
+            /** pass */
+        }, 0);
+
+        context.adapter.clearInterval(interval);
+
+        expect(() => {
+            context.adapter.setInterval(() => {
+                /** pass */
+            }, 2 ** 32 / 2);
+        }).to.throw(/is larger than/, 'Invalid timeout not thrown');
+
+        expect(() => {
+            context.adapter.setInterval(() => {
+                /** pass */
+            }, -500);
+        }).to.throw(/is smaller than/, 'Invalid timeout not thrown');
+
+        done();
+    });
 
     // idToDCS
     it(context.name + ' ' + context.adapterShortName + ' adapter: Check idToDCS', function (done) {
