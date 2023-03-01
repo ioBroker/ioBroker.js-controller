@@ -1,4 +1,4 @@
-import { SYSTEM_ADMIN_USER } from './constants';
+import { MAX_TIMEOUT, SYSTEM_ADMIN_USER } from './constants';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 
 type Callback = (...args: any[]) => void | Promise<void>;
@@ -17,7 +17,7 @@ export interface ValidateIdOptions {
     user?: string;
 }
 
-export class Utils {
+export class Validator {
     private readonly objects: any;
     private readonly states: any;
     private readonly namespaceLog: string;
@@ -26,7 +26,7 @@ export class Utils {
     private readonly namespaceRegExp: RegExp;
 
     /**
-     * Utils for internal adapter.js usage
+     * Validator for internal adapter.js usage
      * @param objects - Objects DB
      * @param states - States DB
      * @param namespaceLog - Log prefix
@@ -434,6 +434,21 @@ export class Utils {
                     `The state property "${key}" has the wrong type "${typeof obj[key]}" (should be "${type}")!`
                 );
             }
+        }
+    }
+
+    /**
+     * Validates, that the timeout is not exceeding a 32-bit signed integer
+     *
+     * @param ms milliseconds to validate
+     */
+    static assertTimeout(ms: number): void {
+        if (ms > MAX_TIMEOUT) {
+            throw new Error(`Timeout (${ms}) is larger than a 32-bit signed integer (${MAX_TIMEOUT})`);
+        }
+
+        if (ms < 0) {
+            throw new Error(`Timeout (${ms}) is smaller than 0`);
         }
     }
 }

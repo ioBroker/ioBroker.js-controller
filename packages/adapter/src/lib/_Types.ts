@@ -1,5 +1,5 @@
 import type { ChangeFileFunction } from '@iobroker/db-objects-redis';
-import type { IdObject } from './adapter/utils';
+import type { IdObject } from './adapter/validator';
 
 export interface AdapterOptions {
     subscribesChange?: (subs: Record<string, { regex: RegExp }>) => void;

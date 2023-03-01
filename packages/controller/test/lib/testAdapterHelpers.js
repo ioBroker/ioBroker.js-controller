@@ -247,7 +247,7 @@ function register(it, expect, context) {
         done();
     });
 
-    // Utils.fixId
+    // Validator.fixId
     it(context.name + ' ' + context.adapterShortName + ' adapter utils: check fixId', done => {
         const { Utils } = require('@iobroker/js-controller-adapter');
 
