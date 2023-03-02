@@ -31,3 +31,6 @@ export const SUPPORTED_FEATURES = [
     'CUSTOM_FULL_VIEW', // `getObjectView('system', 'custom-full', ...)` will return full objects and not only `common.custom` part. Since `js-controller` 5.0
     'ADAPTER_GET_OBJECTS_BY_ARRAY' // getForeignObjects supports array of ids too. Since js-controller 5.0
 ];
+
+/** Maximum possible value for 32-bit signed integer */
+export const MAX_TIMEOUT = 2 ** 32 / 2 - 1;

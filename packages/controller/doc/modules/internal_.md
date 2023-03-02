@@ -11,7 +11,7 @@
 ### Classes
 
 - [Log](../classes/internal_.Log.md)
-- [Utils](../classes/internal_.Utils.md)
+- [Validator](../classes/internal_.Utils.md)
 
 ### Interfaces
 
@@ -355,7 +355,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/utils.ts:4](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/adapter/src/lib/adapter/utils.ts#L4)
+[adapter/src/lib/adapter/validator.ts:4](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/adapter/src/lib/adapter/utils.ts#L4)
 
 ___
 
@@ -1512,7 +1512,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/utils.ts:5](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/adapter/src/lib/adapter/utils.ts#L5)
+[adapter/src/lib/adapter/validator.ts:5](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/adapter/src/lib/adapter/utils.ts#L5)
 
 ___
 
@@ -1548,7 +1548,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/utils.ts:6](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/adapter/src/lib/adapter/utils.ts#L6)
+[adapter/src/lib/adapter/validator.ts:6](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/adapter/src/lib/adapter/utils.ts#L6)
 
 ___
 

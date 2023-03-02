@@ -21,7 +21,7 @@ import type NodeSchedule from 'node-schedule';
 import { version as controllerVersion } from '@iobroker/js-controller-adapter/package.json';
 
 import { Log } from './log';
-import { IdObject, Utils } from './utils';
+import { IdObject, Validator } from './validator';
 
 const { FORBIDDEN_CHARS } = tools;
 import {
@@ -632,7 +632,7 @@ export class AdapterClass extends EventEmitter {
     private readonly _namespaceRegExp: RegExp;
     protected instance?: number;
     // @ts-expect-error decide how to handle it
-    private _utils: Utils;
+    private _utils: Validator;
     /** contents of io-package.json */
     protected adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null;
     protected connected?: boolean;
@@ -1208,8 +1208,8 @@ export class AdapterClass extends EventEmitter {
             secretVal = this._systemSecret;
         }
 
-        Utils.assertString(secretVal, 'secretVal');
-        Utils.assertString(value, 'value');
+        Validator.assertString(secretVal, 'secretVal');
+        Validator.assertString(value, 'value');
 
         return tools.decrypt(secretVal, value);
     }
@@ -1229,8 +1229,8 @@ export class AdapterClass extends EventEmitter {
             secretVal = this._systemSecret;
         }
 
-        Utils.assertString(secretVal, 'secretVal');
-        Utils.assertString(value, 'value');
+        Validator.assertString(secretVal, 'secretVal');
+        Validator.assertString(value, 'value');
 
         return tools.encrypt(secretVal, value);
     }
@@ -1239,8 +1239,8 @@ export class AdapterClass extends EventEmitter {
     getSession(id: string, callback: ioBroker.GetSessionCallback): MaybePromise;
     // unknown guard implementation
     getSession(id: unknown, callback: unknown): MaybePromise {
-        Utils.assertString(id, 'id');
-        Utils.assertCallback(callback, 'callback');
+        Validator.assertString(id, 'id');
+        Validator.assertCallback(callback, 'callback');
 
         return this._getSession({ id, callback });
     }
@@ -1261,10 +1261,10 @@ export class AdapterClass extends EventEmitter {
 
     // unknown implementation guards
     setSession(id: unknown, ttl: unknown, data: unknown, callback: unknown): MaybePromise {
-        Utils.assertString(id, 'id');
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertNumber(ttl, 'ttl');
-        Utils.assertObject(data, 'data');
+        Validator.assertString(id, 'id');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertNumber(ttl, 'ttl');
+        Validator.assertObject(data, 'data');
 
         return this._setSession({ id, ttl, data, callback });
     }
@@ -1282,8 +1282,8 @@ export class AdapterClass extends EventEmitter {
     // real types overload
     destroySession(id: string, callback?: ioBroker.ErrorCallback): MaybePromise;
     destroySession(id: unknown, callback: unknown): MaybePromise {
-        Utils.assertString(id, 'id');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(id, 'id');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._destroySession({ id, callback });
     }
@@ -1369,7 +1369,7 @@ export class AdapterClass extends EventEmitter {
             exitCode === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
             exitCode === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ||
             exitCode === EXIT_CODES.NO_ERROR;
-        const text = `${this.namespaceLog} Terminated (${Utils.getErrorText(_exitCode)}): ${_reason}`;
+        const text = `${this.namespaceLog} Terminated (${Validator.getErrorText(_exitCode)}): ${_reason}`;
         if (isNotCritical) {
             this._logger.info(text);
         } else {
@@ -1440,12 +1440,12 @@ export class AdapterClass extends EventEmitter {
         if (!host) {
             _host = undefined;
         } else {
-            Utils.assertString(host, 'host');
+            Validator.assertString(host, 'host');
             _host = host;
         }
 
-        Utils.assertNumber(port, 'port');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertNumber(port, 'port');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._getPort({ port, host: _host, callback });
     }
@@ -1524,12 +1524,12 @@ export class AdapterClass extends EventEmitter {
             throw new Error('checkPassword: no callback');
         }
 
-        Utils.assertCallback(callback, 'callback');
-        Utils.assertString(user, 'user');
-        Utils.assertString(pw, 'pw');
+        Validator.assertCallback(callback, 'callback');
+        Validator.assertString(user, 'user');
+        Validator.assertString(pw, 'pw');
 
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._checkPassword({ user, pw, options, callback });
@@ -1601,7 +1601,7 @@ export class AdapterClass extends EventEmitter {
      * @param username - name of the user
      */
     getUserID(username: unknown): Promise<string | void> {
-        Utils.assertString(username, 'username');
+        Validator.assertString(username, 'username');
 
         return this._getUserID({ username });
     }
@@ -1653,11 +1653,11 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(user, 'user');
-        Utils.assertString(pw, 'pw');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(user, 'user');
+        Validator.assertString(pw, 'pw');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._setPassword({ user, pw, options, callback });
@@ -1757,12 +1757,12 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(user, 'user');
-        Utils.assertString(group, 'group');
+        Validator.assertString(user, 'user');
+        Validator.assertString(group, 'group');
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._checkGroup({ user, group, options, callback });
     }
@@ -1933,14 +1933,14 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(user, 'user');
+        Validator.assertString(user, 'user');
         if (!Array.isArray(commandsPermissions)) {
-            Utils.assertObject(commandsPermissions, 'commandsPermissions');
+            Validator.assertObject(commandsPermissions, 'commandsPermissions');
         }
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._calculatePermissions({ user, commandsPermissions, options, callback });
     }
@@ -2252,10 +2252,10 @@ export class AdapterClass extends EventEmitter {
         privateName = privateName || this.config.certPrivate;
         chainedName = chainedName || this.config.certChained;
 
-        Utils.assertString(publicName, 'publicName');
-        Utils.assertString(privateName, 'privateName');
-        Utils.assertString(chainedName, 'chainedName');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(publicName, 'publicName');
+        Validator.assertString(privateName, 'privateName');
+        Validator.assertString(chainedName, 'chainedName');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._getCertificates({ publicName, privateName, chainedName, callback });
     }
@@ -2332,7 +2332,7 @@ export class AdapterClass extends EventEmitter {
      * @param newConfig The new config values to be stored
      */
     updateConfig(newConfig: unknown): ioBroker.SetObjectPromise {
-        Utils.assertObject(newConfig, 'newConfig');
+        Validator.assertObject(newConfig, 'newConfig');
 
         return this._updateConfig({ newConfig });
     }
@@ -2389,8 +2389,8 @@ export class AdapterClass extends EventEmitter {
      *
      */
     getEncryptedConfig(attribute: unknown, callback: unknown): Promise<string | void> {
-        Utils.assertString(attribute, 'attribute');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(attribute, 'attribute');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._getEncryptedConfig({ attribute, callback });
     }
@@ -2453,7 +2453,8 @@ export class AdapterClass extends EventEmitter {
             return;
         }
 
-        Utils.assertNumber(timeout, 'timeout');
+        Validator.assertNumber(timeout, 'timeout');
+        Validator.assertTimeout(timeout);
 
         const timer = setTimeout.call(
             null,
@@ -2497,7 +2498,7 @@ export class AdapterClass extends EventEmitter {
             this._logger.warn(`${this.namespaceLog} delay called, but adapter is shutting down`);
         }
 
-        Utils.assertNumber(timeout, 'timeout');
+        Validator.assertNumber(timeout, 'timeout');
 
         return new Promise(resolve => {
             const timer = setTimeout(() => {
@@ -2536,7 +2537,8 @@ export class AdapterClass extends EventEmitter {
             return;
         }
 
-        Utils.assertNumber(timeout, 'timeout');
+        Validator.assertNumber(timeout, 'timeout');
+        Validator.assertTimeout(timeout);
 
         const id = setInterval(() => cb(...args), timeout);
         this._intervals.add(id);
@@ -2601,12 +2603,12 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(id, 'id');
-        Utils.assertObject(obj, 'obj');
+        Validator.assertString(id, 'id');
+        Validator.assertObject(obj, 'obj');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._setObject({ id, obj: obj as ioBroker.SettableObject, options, callback });
     }
@@ -2796,7 +2798,7 @@ export class AdapterClass extends EventEmitter {
      *        ```
      */
     getAdapterObjects(callback: unknown): Promise<Record<string, ioBroker.AdapterScopedObject> | void> {
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._getAdapterObjects({ callback });
     }
@@ -2933,8 +2935,8 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(id, 'id');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(id, 'id');
 
         if (!obj) {
             this._logger.error(`${this.namespaceLog} extendObject: try to extend null object for ${id}`);
@@ -2951,7 +2953,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._extendObject({ id, obj: obj as ioBroker.SettableObject, options, callback });
@@ -3165,10 +3167,10 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(id, 'id');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(id, 'id');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!obj) {
@@ -3277,7 +3279,7 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         try {
             this._utils.validateId(id, true, null);
@@ -3291,18 +3293,18 @@ export class AdapterClass extends EventEmitter {
             id = mId;
         }
 
-        Utils.assertString(id, 'id');
+        Validator.assertString(id, 'id');
 
         if (!obj) {
             this._logger.error(`${this.namespaceLog} extendForeignObject: try to set null object for ${id}`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_EMPTY_OBJECT);
         }
 
-        Utils.assertObject(obj, 'obj');
+        Validator.assertObject(obj, 'obj');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._extendForeignObjectAsync({ id, obj: obj as ioBroker.SettableObject, callback, options });
     }
@@ -3456,9 +3458,9 @@ export class AdapterClass extends EventEmitter {
             return Promise.resolve();
         }
 
-        Utils.assertString(id, 'id');
+        Validator.assertString(id, 'id');
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         id = this._utils.fixId(id);
@@ -3485,9 +3487,9 @@ export class AdapterClass extends EventEmitter {
             return Promise.resolve();
         }
 
-        Utils.assertString(id, 'id');
+        Validator.assertString(id, 'id');
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         this._utils.validateId(id, true, null);
@@ -3519,10 +3521,10 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertCallback(callback, 'callback');
-        Utils.assertString(id, 'id');
+        Validator.assertCallback(callback, 'callback');
+        Validator.assertString(id, 'id');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -3591,13 +3593,13 @@ export class AdapterClass extends EventEmitter {
             options = undefined;
         }
 
-        Utils.assertString(design, 'design');
-        Utils.assertString(search, 'search');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(design, 'design');
+        Validator.assertString(search, 'search');
+        Validator.assertOptionalCallback(callback, 'callback');
         params = params || {};
-        Utils.assertObject(params, 'params');
+        Validator.assertObject(params, 'params');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._getObjectView({ design, search, params, options, callback });
@@ -3694,11 +3696,11 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
-        Utils.assertObject(params, 'params');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertObject(params, 'params');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         if (!adapterObjects) {
             this._logger.info(
@@ -3754,10 +3756,10 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(_enum, '_enum');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(_enum, '_enum');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._getEnum({ _enum, options, callback });
@@ -3860,9 +3862,9 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._getEnums({ _enumList: _enumList as ioBroker.EnumList, options, callback });
@@ -4045,16 +4047,16 @@ export class AdapterClass extends EventEmitter {
             enums = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
-        Utils.assertPattern(pattern, 'pattern');
+        Validator.assertPattern(pattern, 'pattern');
 
         if (type !== undefined) {
-            Utils.assertString(type, 'type');
+            Validator.assertString(type, 'type');
         }
 
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._getForeignObjects({
@@ -4204,12 +4206,12 @@ export class AdapterClass extends EventEmitter {
             type = null;
         }
 
-        Utils.assertCallback(callback, 'callback');
+        Validator.assertCallback(callback, 'callback');
         if (type !== null) {
-            Utils.assertString(type, 'type');
+            Validator.assertString(type, 'type');
         }
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -4252,9 +4254,9 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         try {
@@ -4316,7 +4318,7 @@ export class AdapterClass extends EventEmitter {
      *        ```
      */
     delObject(id: unknown, options: unknown, callback?: unknown): any {
-        Utils.assertString(id, 'id');
+        Validator.assertString(id, 'id');
 
         // delObject does the same as delForeignObject, but fixes the ID first
         id = this._utils.fixId(id);
@@ -4378,10 +4380,10 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(id, 'id');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(id, 'id');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -4398,10 +4400,10 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._delForeignObject({ id, options, callback });
     }
@@ -4489,10 +4491,10 @@ export class AdapterClass extends EventEmitter {
             options = undefined;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertPattern(pattern, 'pattern');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertPattern(pattern, 'pattern');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -4531,10 +4533,10 @@ export class AdapterClass extends EventEmitter {
             options = undefined;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertPattern(pattern, 'pattern');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertPattern(pattern, 'pattern');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -4574,10 +4576,10 @@ export class AdapterClass extends EventEmitter {
             options = undefined;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(pattern, 'pattern');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(pattern, 'pattern');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -4615,10 +4617,10 @@ export class AdapterClass extends EventEmitter {
             pattern = '*';
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(pattern, 'pattern');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(pattern, 'pattern');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -4650,10 +4652,10 @@ export class AdapterClass extends EventEmitter {
             return Promise.reject(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        Utils.assertString(id, 'id');
-        Utils.assertString(pattern, 'pattern');
+        Validator.assertString(id, 'id');
+        Validator.assertString(pattern, 'pattern');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return adapterObjects.subscribeUserFile(id, pattern, options);
@@ -4681,10 +4683,10 @@ export class AdapterClass extends EventEmitter {
             return Promise.reject(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        Utils.assertString(id, 'id');
-        Utils.assertString(pattern, 'pattern');
+        Validator.assertString(id, 'id');
+        Validator.assertString(pattern, 'pattern');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return adapterObjects.unsubscribeUserFile(id, pattern, options);
@@ -4730,12 +4732,12 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
-        Utils.assertObject(obj, 'obj');
+        Validator.assertObject(obj, 'obj');
 
         try {
             this._utils.validateId(id, false, null);
@@ -4831,13 +4833,13 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(id, 'id');
-        Utils.assertObject(obj, 'obj');
+        Validator.assertString(id, 'id');
+        Validator.assertObject(obj, 'obj');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._setForeignObjectNotExists({ id, obj: obj as ioBroker.SettableObject, options, callback });
     }
@@ -4943,10 +4945,10 @@ export class AdapterClass extends EventEmitter {
             common = {};
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(deviceName, 'deviceName');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(deviceName, 'deviceName');
         if (_native !== undefined && _native !== null) {
-            Utils.assertObject(_native, '_native');
+            Validator.assertObject(_native, '_native');
         }
 
         return this._createDevice({
@@ -5039,10 +5041,10 @@ export class AdapterClass extends EventEmitter {
             common = roleOrCommon;
         }
 
-        Utils.assertObject(common, 'common');
-        Utils.assertString(channelName, 'channelName');
-        Utils.assertString(parentDevice, 'parentDevice');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertObject(common, 'common');
+        Validator.assertString(channelName, 'channelName');
+        Validator.assertString(parentDevice, 'parentDevice');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         common.name = common.name || channelName;
 
@@ -5135,14 +5137,14 @@ export class AdapterClass extends EventEmitter {
 
         _native = _native || {};
 
-        Utils.assertObject(common, 'common');
-        Utils.assertString(stateName, 'stateName');
-        Utils.assertString(parentDevice, 'parentDevice');
-        Utils.assertString(parentChannel, 'parentChannel');
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertObject(_native, '_native');
+        Validator.assertObject(common, 'common');
+        Validator.assertString(stateName, 'stateName');
+        Validator.assertString(parentDevice, 'parentDevice');
+        Validator.assertString(parentChannel, 'parentChannel');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertObject(_native, '_native');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._createState({ parentDevice, parentChannel, callback, stateName, common, _native, options });
@@ -5293,8 +5295,8 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(deviceName, 'deviceName');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(deviceName, 'deviceName');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._deleteDevice({ deviceName, callback });
     }
@@ -5367,14 +5369,14 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(enumName, 'enumName');
-        Utils.assertString(addTo, 'addTo');
-        Utils.assertString(parentDevice, 'parentDevice');
-        Utils.assertString(channelName, 'channelName');
+        Validator.assertString(enumName, 'enumName');
+        Validator.assertString(addTo, 'addTo');
+        Validator.assertString(parentDevice, 'parentDevice');
+        Validator.assertString(channelName, 'channelName');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._addChannelToEnum({ enumName, addTo, parentDevice, channelName, options, callback });
     }
@@ -5497,13 +5499,13 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(enumName, 'enumName');
-        Utils.assertString(parentDevice, 'parentDevice');
-        Utils.assertString(channelName, 'channelName');
+        Validator.assertString(enumName, 'enumName');
+        Validator.assertString(parentDevice, 'parentDevice');
+        Validator.assertString(channelName, 'channelName');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._deleteChannelFromEnum({ enumName, parentDevice, channelName, options, callback });
     }
@@ -5628,9 +5630,9 @@ export class AdapterClass extends EventEmitter {
             parentDevice = '';
         }
 
-        Utils.assertString(parentDevice, 'parentDevice');
-        Utils.assertString(channelName, 'channelName');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(parentDevice, 'parentDevice');
+        Validator.assertString(channelName, 'channelName');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._deleteChannel({ parentDevice, channelName, callback });
     }
@@ -5745,12 +5747,12 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
-        Utils.assertString(parentDevice, 'parentDevice');
-        Utils.assertString(parentChannel, 'parentChannel');
-        Utils.assertString(stateName, 'stateName');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(parentDevice, 'parentDevice');
+        Validator.assertString(parentChannel, 'parentChannel');
+        Validator.assertString(stateName, 'stateName');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._deleteState({ parentDevice, parentChannel, stateName, options, callback });
@@ -5810,9 +5812,9 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertCallback(callback, 'callback');
+        Validator.assertCallback(callback, 'callback');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._getDevices({ options, callback });
@@ -5868,12 +5870,12 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (parentDevice !== undefined) {
-            Utils.assertString(parentDevice, 'parentDevice');
+            Validator.assertString(parentDevice, 'parentDevice');
         }
 
         return this._getChannelsOf({ parentDevice, options, callback });
@@ -5952,18 +5954,18 @@ export class AdapterClass extends EventEmitter {
             return;
         }
 
-        Utils.assertCallback(callback, 'callback');
+        Validator.assertCallback(callback, 'callback');
 
         if (parentDevice !== null && parentDevice !== undefined) {
-            Utils.assertString(parentDevice, 'parentDevice');
+            Validator.assertString(parentDevice, 'parentDevice');
         }
 
         if (parentChannel !== null && parentChannel !== undefined) {
-            Utils.assertString(parentChannel, 'parentChannel');
+            Validator.assertString(parentChannel, 'parentChannel');
         }
 
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._getStatesOf({ parentDevice, parentChannel, options, callback });
@@ -6064,15 +6066,15 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(enumName, 'enumName');
-        Utils.assertString(addTo, 'addTo');
-        Utils.assertString(parentDevice, 'parentDevice');
-        Utils.assertString(parentChannel, 'parentChannel');
-        Utils.assertString(stateName, 'stateName');
+        Validator.assertString(enumName, 'enumName');
+        Validator.assertString(addTo, 'addTo');
+        Validator.assertString(parentDevice, 'parentDevice');
+        Validator.assertString(parentChannel, 'parentChannel');
+        Validator.assertString(stateName, 'stateName');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._addStateToEnum({ enumName, addTo, parentDevice, parentChannel, stateName, options, callback });
     }
@@ -6208,14 +6210,14 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(enumName, 'enumName');
-        Utils.assertString(parentDevice, 'parentDevice');
-        Utils.assertString(parentChannel, 'parentChannel');
-        Utils.assertString(stateName, 'stateName');
+        Validator.assertString(enumName, 'enumName');
+        Validator.assertString(parentDevice, 'parentDevice');
+        Validator.assertString(parentChannel, 'parentChannel');
+        Validator.assertString(stateName, 'stateName');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._deleteStateFromEnum({ enumName, parentDevice, parentChannel, stateName, options, callback });
     }
@@ -6454,11 +6456,11 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertCallback(callback, 'callback');
-        Utils.assertString(_adapter, '_adapter');
-        Utils.assertString(path, 'path');
+        Validator.assertCallback(callback, 'callback');
+        Validator.assertString(_adapter, '_adapter');
+        Validator.assertString(path, 'path');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -6482,11 +6484,11 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(_adapter, '_adapter');
-        Utils.assertString(name, 'name');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(_adapter, '_adapter');
+        Validator.assertString(name, 'name');
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -6516,12 +6518,12 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(oldName, 'oldName');
-        Utils.assertString(newName, 'newName');
-        Utils.assertString(_adapter, '_adapter');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(oldName, 'oldName');
+        Validator.assertString(newName, 'newName');
+        Validator.assertString(_adapter, '_adapter');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -6543,11 +6545,11 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(_adapter, '_adapter');
-        Utils.assertString(dirname, 'dirname');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(_adapter, '_adapter');
+        Validator.assertString(dirname, 'dirname');
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -6593,12 +6595,12 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(_adapter, '_adapter');
-        Utils.assertString(filename, 'filename');
+        Validator.assertString(_adapter, '_adapter');
+        Validator.assertString(filename, 'filename');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertCallback(callback, 'callback');
+        Validator.assertCallback(callback, 'callback');
 
         if (!adapterObjects) {
             this._logger.info(`${this.namespaceLog} readFile not processed because Objects database not connected`);
@@ -6649,14 +6651,14 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(_adapter, '_adapter');
-        Utils.assertString(filename, 'filename');
+        Validator.assertString(_adapter, '_adapter');
+        Validator.assertString(filename, 'filename');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (typeof data !== 'string') {
-            Utils.assertBuffer(data, 'data');
+            Validator.assertBuffer(data, 'data');
         }
 
         if (!adapterObjects) {
@@ -6694,11 +6696,11 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(_adapter, '_adapter');
-        Utils.assertString(filename, 'filename');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(_adapter, '_adapter');
+        Validator.assertString(filename, 'filename');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -6766,9 +6768,9 @@ export class AdapterClass extends EventEmitter {
             return '';
         }
 
-        Utils.assertBoolean(isDuration, 'isDuration');
+        Validator.assertBoolean(isDuration, 'isDuration');
         if (_format !== undefined) {
-            Utils.assertString(_format, 'format');
+            Validator.assertString(_format, 'format');
         }
 
         return this._formatDate({ dateObj: dateObj as any, isDuration, _format });
@@ -6943,11 +6945,11 @@ export class AdapterClass extends EventEmitter {
             command = 'send';
         }
 
-        Utils.assertString(instanceName, 'instanceName');
-        Utils.assertString(command, 'command');
+        Validator.assertString(instanceName, 'instanceName');
+        Validator.assertString(command, 'command');
 
         if (!tools.isObject(callback)) {
-            Utils.assertOptionalCallback(callback, 'callback');
+            Validator.assertOptionalCallback(callback, 'callback');
         }
 
         return this._sendTo({
@@ -7103,11 +7105,11 @@ export class AdapterClass extends EventEmitter {
             command = 'send';
         }
 
-        Utils.assertString(hostName, 'hostName');
-        Utils.assertString(command, 'command');
+        Validator.assertString(hostName, 'hostName');
+        Validator.assertString(command, 'command');
 
         if (!tools.isObject(callback)) {
-            Utils.assertOptionalCallback(callback, 'callback');
+            Validator.assertOptionalCallback(callback, 'callback');
         }
 
         return this._sendToHost({
@@ -7228,11 +7230,11 @@ export class AdapterClass extends EventEmitter {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        Utils.assertString(scope, 'scope');
+        Validator.assertString(scope, 'scope');
         if (category !== null) {
-            Utils.assertString(category, 'category');
+            Validator.assertString(category, 'category');
         }
-        Utils.assertString(message, 'message');
+        Validator.assertString(message, 'message');
 
         const obj = {
             command: 'addNotification',
@@ -7318,17 +7320,17 @@ export class AdapterClass extends EventEmitter {
 
         if (!tools.isObject(id)) {
             // it can be id object or string
-            Utils.assertString(id, 'id');
+            Validator.assertString(id, 'id');
         }
 
         if (ack !== undefined) {
-            Utils.assertBoolean(ack, 'ack');
+            Validator.assertBoolean(ack, 'ack');
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._setState({ id, state: state as ioBroker.SettableState, ack, options, callback });
@@ -7947,17 +7949,17 @@ export class AdapterClass extends EventEmitter {
 
         if (!tools.isObject(id)) {
             // it can be id object or string
-            Utils.assertString(id, 'id');
+            Validator.assertString(id, 'id');
         }
 
         if (ack !== undefined) {
-            Utils.assertBoolean(ack, 'ack');
+            Validator.assertBoolean(ack, 'ack');
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._setStateChanged({ id, state: state as ioBroker.SettableState, ack, options, callback });
@@ -8505,7 +8507,7 @@ export class AdapterClass extends EventEmitter {
         // get state does the same as getForeignState but fixes the id first
 
         if (!tools.isObject(id)) {
-            Utils.assertString(id, 'id');
+            Validator.assertString(id, 'id');
         }
         const fixedId = this._utils.fixId(id, false);
         return this.getForeignState(fixedId, options, callback);
@@ -8540,11 +8542,11 @@ export class AdapterClass extends EventEmitter {
             options = {};
         }
 
-        Utils.assertString(id, 'id');
+        Validator.assertString(id, 'id');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._getForeignState({ id, options, callback });
     }
@@ -8775,11 +8777,11 @@ export class AdapterClass extends EventEmitter {
             options = {};
         }
 
-        Utils.assertString(id, 'id');
+        Validator.assertString(id, 'id');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertCallback(callback, 'callback');
+        Validator.assertCallback(callback, 'callback');
 
         return this._getHistory({ id, options, callback });
     }
@@ -8842,7 +8844,7 @@ export class AdapterClass extends EventEmitter {
             return null;
         }
 
-        Utils.assertString(id, 'id');
+        Validator.assertString(id, 'id');
 
         const parts = id.split('.');
         if (`${parts[0]}.${parts[1]}` !== this.namespace) {
@@ -8880,11 +8882,11 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(id, 'id');
+        Validator.assertString(id, 'id');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._delState({ id, options, callback });
     }
@@ -8927,10 +8929,10 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(id, 'id');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(id, 'id');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._delForeignState({ id, options, callback });
@@ -8993,7 +8995,7 @@ export class AdapterClass extends EventEmitter {
             options = {};
         }
 
-        Utils.assertPattern(pattern, 'pattern');
+        Validator.assertPattern(pattern, 'pattern');
 
         const fixedPattern = Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true);
 
@@ -9128,11 +9130,11 @@ export class AdapterClass extends EventEmitter {
             pattern = '*';
         }
 
-        Utils.assertPattern(pattern, 'pattern');
+        Validator.assertPattern(pattern, 'pattern');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertCallback(callback, 'callback');
+        Validator.assertCallback(callback, 'callback');
 
         return this._getForeignStates({ pattern, options: options || {}, callback });
     }
@@ -9384,7 +9386,7 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         if (pattern instanceof RegExp) {
             return tools.maybeCallbackWithError(
@@ -9394,9 +9396,9 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertPattern(pattern, 'pattern');
+        Validator.assertPattern(pattern, 'pattern');
 
         return this._subscribeForeignStates({ pattern, options, callback });
     }
@@ -9629,7 +9631,7 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         if (pattern instanceof RegExp) {
             return tools.maybeCallbackWithError(
@@ -9638,9 +9640,9 @@ export class AdapterClass extends EventEmitter {
             );
         }
 
-        Utils.assertPattern(pattern, 'pattern');
+        Validator.assertPattern(pattern, 'pattern');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._unsubscribeForeignStates({ pattern, options, callback });
@@ -9772,8 +9774,8 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(pattern, 'pattern');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(pattern, 'pattern');
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
@@ -9817,8 +9819,8 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(pattern, 'pattern');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(pattern, 'pattern');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
@@ -9860,11 +9862,11 @@ export class AdapterClass extends EventEmitter {
             options = {};
         }
 
-        Utils.assertString(id, 'id');
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertBuffer(binary, 'binary');
+        Validator.assertString(id, 'id');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertBuffer(binary, 'binary');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._setForeignBinaryState({ id, binary, options, callback });
@@ -10025,10 +10027,10 @@ export class AdapterClass extends EventEmitter {
             options = {};
         }
 
-        Utils.assertString(id, 'id');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(id, 'id');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._getForeignBinaryState({ id, options: options || {}, callback });
@@ -10126,10 +10128,10 @@ export class AdapterClass extends EventEmitter {
             options = {};
         }
 
-        Utils.assertString(id, 'id');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(id, 'id');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._delForeignBinaryState({ id, options: options || {}, callback });
@@ -10197,7 +10199,7 @@ export class AdapterClass extends EventEmitter {
             return null;
         }
 
-        Utils.assertString(name, 'name');
+        Validator.assertString(name, 'name');
 
         return this.pluginHandler.getPluginInstance(name);
     }
@@ -10215,7 +10217,7 @@ export class AdapterClass extends EventEmitter {
             return null;
         }
 
-        Utils.assertString(name, 'name');
+        Validator.assertString(name, 'name');
         return this.pluginHandler.getPluginConfig(name);
     }
 
@@ -11478,7 +11480,7 @@ export class AdapterClass extends EventEmitter {
 
                 this.adapterConfig = adapterConfig;
 
-                this._utils = new Utils(
+                this._utils = new Validator(
                     adapterObjects,
                     adapterStates,
                     this.namespaceLog,
