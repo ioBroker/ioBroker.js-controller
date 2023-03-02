@@ -6971,7 +6971,7 @@ export class AdapterClass extends EventEmitter {
         };
 
         if (!instanceName) {
-            // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
+            // @ts-expect-error TODO it could also be the cb object
             return tools.maybeCallbackWithError(callback, 'No instanceName provided or not a string');
         }
 
@@ -6982,7 +6982,7 @@ export class AdapterClass extends EventEmitter {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(`${this.namespaceLog} sendTo not processed because States database not connected`);
-            // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
+            // @ts-expect-error TODO it could also be the cb object
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -7000,7 +7000,7 @@ export class AdapterClass extends EventEmitter {
         if (!instanceName.match(/\.[0-9]+$/)) {
             if (!adapterObjects) {
                 this._logger.info(`${this.namespaceLog} sendTo not processed because Objects database not connected`);
-                // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
+                // @ts-expect-error TODO it could also be the cb object
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
             }
 
@@ -7018,7 +7018,7 @@ export class AdapterClass extends EventEmitter {
                             try {
                                 await adapterStates!.pushMessage(row.id, obj);
                             } catch (e) {
-                                // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
+                                // @ts-expect-error TODO it could also be the cb object
                                 return tools.maybeCallbackWithError(callback, e);
                             }
                         }
@@ -7064,7 +7064,7 @@ export class AdapterClass extends EventEmitter {
             try {
                 await adapterStates.pushMessage(instanceName, obj);
             } catch (e) {
-                // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
+                // @ts-expect-error TODO it could also be the cb object
                 return tools.maybeCallbackWithError(callback, e);
             }
         }
@@ -7128,7 +7128,7 @@ export class AdapterClass extends EventEmitter {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(`${this.namespaceLog} sendToHost not processed because States database not connected`);
-            // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
+            // @ts-expect-error TODO it could also be the cb object
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -7141,7 +7141,7 @@ export class AdapterClass extends EventEmitter {
                 this._logger.info(
                     `${this.namespaceLog} sendToHost not processed because Objects database not connected`
                 );
-                // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
+                // @ts-expect-error TODO it could also be the cb object
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
             }
 
@@ -7165,7 +7165,7 @@ export class AdapterClass extends EventEmitter {
                                 try {
                                     await adapterStates!.pushMessage(row.id, obj as any);
                                 } catch (e) {
-                                    // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
+                                    // @ts-expect-error TODO it could also be the cb object
                                     return tools.maybeCallbackWithError(callback, e);
                                 }
                             }
@@ -7202,7 +7202,7 @@ export class AdapterClass extends EventEmitter {
             try {
                 await adapterStates.pushMessage(hostName, obj as any);
             } catch (e) {
-                // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
+                // @ts-expect-error TODO it could also be the cb object
                 return tools.maybeCallbackWithError(callback, e);
             }
         }

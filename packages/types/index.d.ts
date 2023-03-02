@@ -324,7 +324,8 @@ declare global {
         // TODO: Redefine callbacks as subclass of GenericCallback
         type GenericCallback<T> = (err?: Error | null, result?: T) => void;
 
-        type MessageCallback = (response?: Message) => void;
+        /** Due to backward compatibility first param can be result or error */
+        type MessageCallback = (response?: Message | Error) => void;
 
         type SetObjectCallback = (err?: Error | null, obj?: { id: string }) => void;
         type SetObjectPromise = Promise<NonNullCallbackReturnTypeOf<SetObjectCallback>>;
