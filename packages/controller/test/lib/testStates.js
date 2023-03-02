@@ -994,7 +994,6 @@ function register(it, expect, context) {
             /is not a valid ID pattern/g,
             'Should throw on invalid pattern'
         );
-
         await context.adapter.subscribeStatesAsync('*hm-rpc.0._.**test/*');
     });
 }
