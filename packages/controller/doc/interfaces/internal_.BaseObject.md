@@ -58,7 +58,7 @@ The ID of this object
 
 #### Defined in
 
-[types/objects.d.ts:570](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/objects.d.ts#L570)
+[types/objects.d.ts:570](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/objects.d.ts#L570)
 
 ___
 
@@ -68,7 +68,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:577](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/objects.d.ts#L577)
+[types/objects.d.ts:577](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/objects.d.ts#L577)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:575](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/objects.d.ts#L575)
+[types/objects.d.ts:575](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/objects.d.ts#L575)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:576](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/objects.d.ts#L576)
+[types/objects.d.ts:576](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/objects.d.ts#L576)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:578](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/objects.d.ts#L578)
+[types/objects.d.ts:578](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/objects.d.ts#L578)
 
 ___
 
@@ -108,7 +108,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:574](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/objects.d.ts#L574)
+[types/objects.d.ts:574](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/objects.d.ts#L574)
 
 ___
 
@@ -118,7 +118,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:581](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/objects.d.ts#L581)
+[types/objects.d.ts:581](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/objects.d.ts#L581)
 
 ___
 
@@ -128,7 +128,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:571](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/objects.d.ts#L571)
+[types/objects.d.ts:571](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/objects.d.ts#L571)
 
 ___
 
@@ -140,4 +140,4 @@ The user who created or updated this object
 
 #### Defined in
 
-[types/objects.d.ts:580](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/objects.d.ts#L580)
+[types/objects.d.ts:580](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/objects.d.ts#L580)
