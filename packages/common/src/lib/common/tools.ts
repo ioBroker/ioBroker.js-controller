@@ -81,7 +81,7 @@ interface DatabaseOptions {
     writeFileInterval: number;
     dataDir: string;
     options: {
-        auth_pass: null | string;
+        auth_pass: string;
         retry_max_delay: number;
         retry_max_count: number;
         db: number;
@@ -145,7 +145,7 @@ export interface IoBrokerJson {
     '// dataDir': string;
     plugins: Record<string, any> | null;
     '// dnsResolution': string;
-    /** se 'verbatim' for ipv6 first, else use 'ipv4first' */
+    /** Use 'verbatim' for ipv6 first, else use 'ipv4first' */
     dnsResolution: 'verbatim' | 'ipv4first';
 }
 

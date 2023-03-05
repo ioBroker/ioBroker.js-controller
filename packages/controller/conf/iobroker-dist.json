@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../schemas/iobroker.json",
     "system": {
         "memoryLimitMB": 0,
         "hostname": "",
@@ -32,7 +33,7 @@
         "writeFileInterval": 5000,
         "dataDir": "",
         "options": {
-            "auth_pass": null,
+            "auth_pass": "",
             "retry_max_delay": 5000,
             "retry_max_count": 19,
             "db": 0,
@@ -78,7 +79,7 @@
         "writeFileInterval": 30000,
         "dataDir": "",
         "options": {
-            "auth_pass": null,
+            "auth_pass": "",
             "retry_max_delay": 5000,
             "retry_max_count": 19,
             "db": 0,

@@ -1,0 +1,349 @@
+{
+  "description": "The ioBroker global config",
+  "type": "object",
+  "properties": {
+    "system": {
+      "type": "object",
+      "properties": {
+        "memoryLimitMB": {
+          "description": "do not use more than memory limit mb by ioB process (0 to deactivate)",
+          "type": "number"
+        },
+        "hostname": {
+          "description": "if empty, determine use real hostname",
+          "type": "string"
+        },
+        "statisticsInterval": {
+          "description": "Interval how often the counters for input/output in adapters and controller will be updated in ms",
+          "type": "number"
+        },
+        "// statisticsInterval": {
+          "type": "string"
+        },
+        "checkDiskInterval": {
+          "description": "Interval how often the disk size will be checked in ms",
+          "type": "number"
+        },
+        "// checkDiskInterval": {
+          "type": "string"
+        },
+        "instanceStartInterval": {
+          "description": "interval to wait between multiple instances starts",
+          "type": "number"
+        },
+        "compact": {
+          "description": "Controller will try to start the instances as a part of the same process. No spawn will be done. Only by adapters that support it and have flag compact flag in io-package.json",
+          "type": "boolean"
+        },
+        "// compact": {
+          "type": "string"
+        },
+        "allowShellCommands": {
+          "description": "Allow execution of \"shell\" sendToHost commands",
+          "type": "boolean"
+        },
+        "// allowShellCommands": {
+          "type": "string"
+        },
+        "memLimitWarn": {
+          "description": "If the available RAM is below this threshold on adapter start, a warning will be logged.",
+          "type": "number"
+        },
+        "// memLimitWarn": {
+          "type": "string"
+        },
+        "memLimitError": {
+          "description": "If the available RAM is below this threshold on adapter start, an error will be logged.",
+          "type": "number"
+        },
+        "// memLimitError": {
+          "type": "string"
+        }
+      }
+    },
+    "multihostService": {
+      "type": "object",
+      "properties": {
+        "enabled": {
+          "type": "boolean"
+        },
+        "secure": {
+          "type": "boolean"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "objects": {
+      "$ref": "#/definitions/ObjectsDatabaseOptions"
+    },
+    "states": {
+      "$ref": "#/definitions/DatabaseOptions"
+    },
+    "log": {
+      "type": "object",
+      "properties": {
+        "level": {
+          "type": "string"
+        },
+        "maxDays": {
+          "type": "number"
+        },
+        "noStdout": {
+          "type": "boolean"
+        },
+        "transport": {
+          "$ref": "#/definitions/Record<string,any>"
+        }
+      }
+    },
+    "dataDir": {
+      "description": "Always relative to iobroker.js-controller/",
+      "type": "string"
+    },
+    "// dataDir": {
+      "type": "string"
+    },
+    "plugins": {
+      "$ref": "#/definitions/Record<string,any>"
+    },
+    "// dnsResolution": {
+      "type": "string"
+    },
+    "dnsResolution": {
+      "description": "Use 'verbatim' for ipv6 first, else use 'ipv4first'",
+      "enum": [
+        "ipv4first",
+        "verbatim"
+      ],
+      "type": "string"
+    }
+  },
+  "definitions": {
+    "ObjectsDatabaseOptions": {
+      "type": "object",
+      "properties": {
+        "noFileCache": {
+          "type": "boolean"
+        },
+        "maxQueue": {
+          "type": "number"
+        },
+        "type": {
+          "description": "Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 6379 or 26379 for sentinel].",
+          "enum": [
+            "file",
+            "jsonl",
+            "redis"
+          ],
+          "type": "string"
+        },
+        "// type": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string"
+        },
+        "port": {
+          "type": "number"
+        },
+        "connectTimeout": {
+          "type": "number"
+        },
+        "writeFileInterval": {
+          "type": "number"
+        },
+        "dataDir": {
+          "type": "string"
+        },
+        "options": {
+          "type": "object",
+          "properties": {
+            "auth_pass": {
+              "type": "string"
+            },
+            "retry_max_delay": {
+              "type": "number"
+            },
+            "retry_max_count": {
+              "type": "number"
+            },
+            "db": {
+              "type": "number"
+            },
+            "family": {
+              "type": "number"
+            }
+          }
+        },
+        "backup": {
+          "$ref": "#/definitions/DatabaseBackupOptions"
+        },
+        "jsonlOptions": {
+          "$ref": "#/definitions/JsonlOptions"
+        }
+      }
+    },
+    "DatabaseBackupOptions": {
+      "type": "object",
+      "properties": {
+        "disabled": {
+          "type": "boolean"
+        },
+        "files": {
+          "description": "Minimal number of backup files, after the deletion will be executed according to backupTime settings",
+          "type": "number"
+        },
+        "// files": {
+          "type": "string"
+        },
+        "hours": {
+          "description": "All backups older than configured hours will be deleted. But only if the number of files is greater than of backupNumber",
+          "type": "number"
+        },
+        "// hours": {
+          "type": "string"
+        },
+        "period": {
+          "description": "by default backup every 2 hours. Time is in minutes. To disable backup set the value to 0",
+          "type": "number"
+        },
+        "// period": {
+          "type": "string"
+        },
+        "path": {
+          "description": "Absolute path to backup directory or empty to backup in data directory",
+          "type": "string"
+        },
+        "// path": {
+          "type": "string"
+        }
+      }
+    },
+    "JsonlOptions": {
+      "type": "object",
+      "properties": {
+        "// autoCompress (1)": {
+          "type": "string"
+        },
+        "// autoCompress (2)": {
+          "type": "string"
+        },
+        "// autoCompress (3)": {
+          "type": "string"
+        },
+        "autoCompress": {
+          "description": "The JSONL DB is append-only and will contain unnecessary entries after a while.\nIt will be compressed when the uncompressed size is >= size * sizeFactor AND >= sizeFactorMinimumSize\nNote that too low values here will cause the DB to be rewritten often.",
+          "type": "object",
+          "properties": {
+            "sizeFactor": {
+              "type": "number"
+            },
+            "sizeFactorMinimumSize": {
+              "type": "number"
+            }
+          }
+        },
+        "// ignoreReadErrors": {
+          "type": "string"
+        },
+        "ignoreReadErrors": {
+          "description": "If single lines in the DB are corrupted, they can be ignored without losing the whole DB.",
+          "type": "boolean",
+          "enum": [
+            true
+          ]
+        },
+        "// throttleFS (1)": {
+          "type": "string"
+        },
+        "// throttleFS (2)": {
+          "type": "string"
+        },
+        "throttleFS": {
+          "description": "By default, the database immediately writes to the database file. Write accesses can be reduced using the throttleFS option.\nBe aware that buffered changes will be lost in case the process crashes",
+          "type": "object",
+          "properties": {
+            "// intervalMs": {
+              "type": "string"
+            },
+            "intervalMs": {
+              "description": "Write to the database file no more than every intervalMs milliseconds.",
+              "type": "number"
+            },
+            "// maxBufferedCommands": {
+              "type": "string"
+            },
+            "maxBufferedCommands": {
+              "description": "Force writing after this many changes have been buffered. This reduces memory consumption and data loss in case of a crash.",
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "DatabaseOptions": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "description": "Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 6379 or 26379 for sentinel].",
+          "enum": [
+            "file",
+            "jsonl",
+            "redis"
+          ],
+          "type": "string"
+        },
+        "// type": {
+          "type": "string"
+        },
+        "host": {
+          "type": "string"
+        },
+        "port": {
+          "type": "number"
+        },
+        "connectTimeout": {
+          "type": "number"
+        },
+        "writeFileInterval": {
+          "type": "number"
+        },
+        "dataDir": {
+          "type": "string"
+        },
+        "options": {
+          "type": "object",
+          "properties": {
+            "auth_pass": {
+              "type": "string"
+            },
+            "retry_max_delay": {
+              "type": "number"
+            },
+            "retry_max_count": {
+              "type": "number"
+            },
+            "db": {
+              "type": "number"
+            },
+            "family": {
+              "type": "number"
+            }
+          }
+        },
+        "backup": {
+          "$ref": "#/definitions/DatabaseBackupOptions"
+        },
+        "jsonlOptions": {
+          "$ref": "#/definitions/JsonlOptions"
+        }
+      }
+    },
+    "Record<string,any>": {
+      "type": "object"
+    }
+  },
+  "$schema": "http://json-schema.org/draft-07/schema#"
+}
