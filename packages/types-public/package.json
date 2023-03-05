@@ -1,6 +1,6 @@
 {
     "name": "@iobroker/types",
-    "version": "5.0.0-alpha.0-20230217-a0c54039",
+    "version": "5.0.0-alpha.0-20230303-57263052",
     "engines": {
         "node": ">=12.0.0"
     },

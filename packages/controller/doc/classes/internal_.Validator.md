@@ -1,38 +1,39 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / Utils
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / Validator
 
-# Class: Utils
+# Class: Validator
 
-[<internal>](../modules/internal_.md).Utils
+[<internal>](../modules/internal_.md).Validator
 
 ## Table of contents
 
 ### Constructors
 
-- [constructor](internal_.Utils.md#constructor)
+- [constructor](internal_.Validator.md#constructor)
 
 ### Methods
 
-- [fixId](internal_.Utils.md#fixid)
-- [performStrictObjectCheck](internal_.Utils.md#performstrictobjectcheck)
-- [validateId](internal_.Utils.md#validateid)
-- [validateSetStateObjectArgument](internal_.Utils.md#validatesetstateobjectargument)
-- [assertBoolean](internal_.Utils.md#assertboolean)
-- [assertBuffer](internal_.Utils.md#assertbuffer)
-- [assertCallback](internal_.Utils.md#assertcallback)
-- [assertNumber](internal_.Utils.md#assertnumber)
-- [assertObject](internal_.Utils.md#assertobject)
-- [assertOptionalCallback](internal_.Utils.md#assertoptionalcallback)
-- [assertPattern](internal_.Utils.md#assertpattern)
-- [assertString](internal_.Utils.md#assertstring)
-- [getErrorText](internal_.Utils.md#geterrortext)
+- [fixId](internal_.Validator.md#fixid)
+- [performStrictObjectCheck](internal_.Validator.md#performstrictobjectcheck)
+- [validateId](internal_.Validator.md#validateid)
+- [validateSetStateObjectArgument](internal_.Validator.md#validatesetstateobjectargument)
+- [assertBoolean](internal_.Validator.md#assertboolean)
+- [assertBuffer](internal_.Validator.md#assertbuffer)
+- [assertCallback](internal_.Validator.md#assertcallback)
+- [assertNumber](internal_.Validator.md#assertnumber)
+- [assertObject](internal_.Validator.md#assertobject)
+- [assertOptionalCallback](internal_.Validator.md#assertoptionalcallback)
+- [assertPattern](internal_.Validator.md#assertpattern)
+- [assertString](internal_.Validator.md#assertstring)
+- [assertTimeout](internal_.Validator.md#asserttimeout)
+- [getErrorText](internal_.Validator.md#geterrortext)
 
 ## Constructors
 
 ### constructor
 
-• **new Utils**(`objects`, `states`, `namespaceLog`, `logger`, `namespace`, `namespaceRegExp`)
+• **new Validator**(`objects`, `states`, `namespaceLog`, `logger`, `namespace`, `namespaceRegExp`)
 
-Utils for internal adapter.js usage
+Validator for internal adapter.js usage
 
 #### Parameters
 
@@ -47,7 +48,7 @@ Utils for internal adapter.js usage
 
 #### Defined in
 
-[adapter/src/lib/adapter/utils.ts:37](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/adapter/src/lib/adapter/utils.ts#L37)
+[adapter/src/lib/adapter/validator.ts:37](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/adapter/src/lib/adapter/validator.ts#L37)
 
 ## Methods
 
@@ -70,7 +71,7 @@ Adds the namespace to the id if it is missing, if an object is passed it will be
 
 #### Defined in
 
-[adapter/src/lib/adapter/utils.ts:354](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/adapter/src/lib/adapter/utils.ts#L354)
+[adapter/src/lib/adapter/validator.ts:354](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/adapter/src/lib/adapter/validator.ts#L354)
 
 ___
 
@@ -94,7 +95,7 @@ additionally it rounds state values whose objects have a common.step attribute d
 
 #### Defined in
 
-[adapter/src/lib/adapter/utils.ts:60](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/adapter/src/lib/adapter/utils.ts#L60)
+[adapter/src/lib/adapter/validator.ts:60](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/adapter/src/lib/adapter/validator.ts#L60)
 
 ___
 
@@ -122,7 +123,7 @@ asserts id is string
 
 #### Defined in
 
-[adapter/src/lib/adapter/utils.ts:163](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/adapter/src/lib/adapter/utils.ts#L163)
+[adapter/src/lib/adapter/validator.ts:163](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/adapter/src/lib/adapter/validator.ts#L163)
 
 ___
 
@@ -144,7 +145,7 @@ Validates the object-type argument that is passed to setState
 
 #### Defined in
 
-[adapter/src/lib/adapter/utils.ts:385](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/adapter/src/lib/adapter/utils.ts#L385)
+[adapter/src/lib/adapter/validator.ts:385](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/adapter/src/lib/adapter/validator.ts#L385)
 
 ___
 
@@ -167,7 +168,7 @@ asserts value is boolean
 
 #### Defined in
 
-[adapter/src/lib/adapter/utils.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/adapter/src/lib/adapter/utils.ts#L279)
+[adapter/src/lib/adapter/validator.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/adapter/src/lib/adapter/validator.ts#L279)
 
 ___
 
@@ -190,7 +191,7 @@ asserts value is Buffer
 
 #### Defined in
 
-[adapter/src/lib/adapter/utils.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/adapter/src/lib/adapter/utils.ts#L316)
+[adapter/src/lib/adapter/validator.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/adapter/src/lib/adapter/validator.ts#L316)
 
 ___
 
@@ -213,7 +214,7 @@ asserts value is Callback
 
 #### Defined in
 
-[adapter/src/lib/adapter/utils.ts:340](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/adapter/src/lib/adapter/utils.ts#L340)
+[adapter/src/lib/adapter/validator.ts:340](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/adapter/src/lib/adapter/validator.ts#L340)
 
 ___
 
@@ -236,7 +237,7 @@ asserts value is number
 
 #### Defined in
 
-[adapter/src/lib/adapter/utils.ts:292](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/adapter/src/lib/adapter/utils.ts#L292)
+[adapter/src/lib/adapter/validator.ts:292](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/adapter/src/lib/adapter/validator.ts#L292)
 
 ___
 
@@ -259,7 +260,7 @@ asserts value is Record<string, any\>
 
 #### Defined in
 
-[adapter/src/lib/adapter/utils.ts:305](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/adapter/src/lib/adapter/utils.ts#L305)
+[adapter/src/lib/adapter/validator.ts:305](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/adapter/src/lib/adapter/validator.ts#L305)
 
 ___
 
@@ -282,7 +283,7 @@ asserts value is OptionalCallback
 
 #### Defined in
 
-[adapter/src/lib/adapter/utils.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/adapter/src/lib/adapter/utils.ts#L327)
+[adapter/src/lib/adapter/validator.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/adapter/src/lib/adapter/validator.ts#L327)
 
 ___
 
@@ -305,7 +306,7 @@ asserts value is Pattern
 
 #### Defined in
 
-[adapter/src/lib/adapter/utils.ts:258](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/adapter/src/lib/adapter/utils.ts#L258)
+[adapter/src/lib/adapter/validator.ts:258](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/adapter/src/lib/adapter/validator.ts#L258)
 
 ___
 
@@ -328,7 +329,29 @@ asserts value is string
 
 #### Defined in
 
-[adapter/src/lib/adapter/utils.ts:245](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/adapter/src/lib/adapter/utils.ts#L245)
+[adapter/src/lib/adapter/validator.ts:245](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/adapter/src/lib/adapter/validator.ts#L245)
+
+___
+
+### assertTimeout
+
+▸ `Static` **assertTimeout**(`ms`): `void`
+
+Validates, that the timeout is not exceeding a 32-bit signed integer
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `ms` | `number` | milliseconds to validate |
+
+#### Returns
+
+`void`
+
+#### Defined in
+
+[adapter/src/lib/adapter/validator.ts:445](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/adapter/src/lib/adapter/validator.ts#L445)
 
 ___
 
@@ -352,4 +375,4 @@ error description
 
 #### Defined in
 
-[adapter/src/lib/adapter/utils.ts:235](https://github.com/ioBroker/ioBroker.js-controller/blob/a0c54039/packages/adapter/src/lib/adapter/utils.ts#L235)
+[adapter/src/lib/adapter/validator.ts:235](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/adapter/src/lib/adapter/validator.ts#L235)
