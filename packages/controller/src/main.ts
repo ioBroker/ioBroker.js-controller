@@ -125,6 +125,8 @@ if (os.platform() === 'win32') {
     require('loadavg-windows');
 }
 
+tools.ensureDNSOrder();
+
 let title = `${tools.appName}.js-controller`;
 
 let Objects: typeof ObjectsClient;

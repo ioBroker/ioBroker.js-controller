@@ -21,6 +21,133 @@ import events from 'events';
 import { maybeCallbackWithError } from './maybeCallback';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
+import { setDefaultResultOrder } from 'dns';
+
+interface DatabaseBackupOptions {
+    disabled: boolean;
+    /** Minimal number of backup files, after the deletion will be executed according to backupTime settings */
+    files: number;
+    '// files': string;
+    /** All backups older than configured hours will be deleted. But only if the number of files is greater than of backupNumber */
+    hours: number;
+    '// hours': string;
+    /** by default backup every 2 hours. Time is in minutes. To disable backup set the value to 0 */
+    period: number;
+    '// period': string;
+    /** Absolute path to backup directory or empty to backup in data directory */
+    path: string;
+    '// path': string;
+}
+
+interface JsonlOptions {
+    '// autoCompress (1)': string;
+    '// autoCompress (2)': string;
+    '// autoCompress (3)': string;
+    /**
+     * The JSONL DB is append-only and will contain unnecessary entries after a while.
+     * It will be compressed when the uncompressed size is >= size * sizeFactor AND >= sizeFactorMinimumSize
+     * Note that too low values here will cause the DB to be rewritten often.
+     */
+    autoCompress: {
+        sizeFactor: number;
+        sizeFactorMinimumSize: number;
+    };
+    '// ignoreReadErrors': string;
+    /** If single lines in the DB are corrupted, they can be ignored without losing the whole DB. */
+    ignoreReadErrors: true;
+    '// throttleFS (1)': string;
+    '// throttleFS (2)': string;
+    /**
+     * By default, the database immediately writes to the database file. Write accesses can be reduced using the throttleFS option.
+     * Be aware that buffered changes will be lost in case the process crashes
+     */
+    throttleFS: {
+        '// intervalMs': string;
+        /** Write to the database file no more than every intervalMs milliseconds. */
+        intervalMs: number;
+        '// maxBufferedCommands': string;
+        /** Force writing after this many changes have been buffered. This reduces memory consumption and data loss in case of a crash. */
+        maxBufferedCommands: number;
+    };
+}
+
+interface DatabaseOptions {
+    /** Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 6379 or 26379 for sentinel]. */
+    type: 'jsonl' | 'file' | 'redis';
+    '// type': string;
+    host: string;
+    port: number;
+    connectTimeout: number;
+    writeFileInterval: number;
+    dataDir: string;
+    options: {
+        auth_pass: null | string;
+        retry_max_delay: number;
+        retry_max_count: number;
+        db: number;
+        family: number;
+    };
+    backup: DatabaseBackupOptions;
+    jsonlOptions: JsonlOptions;
+}
+
+interface ObjectsDatabaseOptions extends DatabaseOptions {
+    noFileCache: boolean;
+    maxQueue: number;
+}
+
+// TODO move to types internal as #2110 is merged
+/**
+ * The ioBroker global config
+ */
+export interface IoBrokerJson {
+    system: {
+        /** do not use more than memory limit mb by ioB process (0 to deactivate) */
+        memoryLimitMB: number;
+        /** if empty, determine use real hostname */
+        hostname: string;
+        /** Interval how often the counters for input/output in adapters and controller will be updated in ms */
+        statisticsInterval: number;
+        '// statisticsInterval': string;
+        /** Interval how often the disk size will be checked in ms */
+        checkDiskInterval: number;
+        '// checkDiskInterval': string;
+        /** interval to wait between multiple instances starts */
+        instanceStartInterval: number;
+        /** Controller will try to start the instances as a part of the same process. No spawn will be done. Only by adapters that support it and have flag compact flag in io-package.json */
+        compact: boolean;
+        '// compact': string;
+        /** Allow execution of "shell" sendToHost commands */
+        allowShellCommands: boolean;
+        '// allowShellCommands': string;
+        /** If the available RAM is below this threshold on adapter start, a warning will be logged. */
+        memLimitWarn: number;
+        '// memLimitWarn': string;
+        /** If the available RAM is below this threshold on adapter start, an error will be logged. */
+        memLimitError: number;
+        '// memLimitError': string;
+    };
+    multihostService: {
+        enabled: boolean;
+        secure: boolean;
+        password: string;
+    };
+    objects: ObjectsDatabaseOptions;
+    states: DatabaseOptions;
+    log: {
+        level: string;
+        maxDays: number;
+        noStdout: boolean;
+        transport: Record<string, any>;
+    };
+    /** Always relative to iobroker.js-controller/ */
+    dataDir: string;
+    '// dataDir': string;
+    plugins: Record<string, any> | null;
+    '// dnsResolution': string;
+    /** se 'verbatim' for ipv6 first, else use 'ipv4first' */
+    dnsResolution: 'verbatim' | 'ipv4first';
+}
 
 interface FormatAliasValueOptions {
     /** Common attribute of source object */
@@ -2128,8 +2255,10 @@ export function getControllerDir(): string {
     throw new Error('Could not determine controller directory');
 }
 
-// All paths are returned always relative to /node_modules/' + appName + '.js-controller
-// the result has always "/" as last symbol
+/**
+ * All paths are returned always relative to /node_modules/' + appName + '.js-controller
+ * the result has always "/" as last symbol
+ */
 export function getDefaultDataDir(): string {
     if (_isDevInstallation()) {
         // dev install
@@ -3841,6 +3970,22 @@ export function maybeArrayToString<T>(maybeArr: T): T extends any[] ? string : T
 
     // @ts-expect-error https://github.com/microsoft/TypeScript/issues/33912
     return maybeArr;
+}
+
+/**
+ * Ensure that DNS is resolved according to ioBroker config
+ */
+export function ensureDNSOrder(): void {
+    let dnsOrder: 'ipv4first' | 'verbatim' = 'ipv4first';
+    try {
+        const configName = getConfigFileName();
+        const config: IoBrokerJson = fs.readJSONSync(configName);
+        dnsOrder = config.dnsResolution;
+    } catch (e) {
+        console.warn(`Could not determine dns resolution order, fallback to "ipv4first": ${e.message}`);
+    }
+
+    setDefaultResultOrder(dnsOrder);
 }
 
 export * from './maybeCallback';

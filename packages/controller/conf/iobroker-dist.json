@@ -7,7 +7,6 @@
         "checkDiskInterval": 300000,
         "// checkDiskInterval": "Interval how often the disk size will be checked",
         "instanceStartInterval": 2000,
-        "// noChmod": "Flag to test new feature with no chmod call. Must be deleted later and noChmod must be mainline (2018.06.04)",
         "compact": false,
         "// compact": "Controller will try to start the instances as a part of the same process. No spawn will be done. Only by adapters that support it and have flag compact flag in io-package.json",
         "allowShellCommands": false,
@@ -161,5 +160,7 @@
     "// dataDir": "Always relative to iobroker.js-controller/",
     "plugins": {
 
-    }
+    },
+    "// dnsResolution": "Use 'verbatim' for ipv6 first, else use 'ipv4first'",
+    "dnsResolution": "ipv4first"
 }
