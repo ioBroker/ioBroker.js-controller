@@ -39,6 +39,7 @@ The simulator supports four different namespaces:
 | sadd | dummy | independent |
 | srem | dummy | independent |
 | sscan |full | objects, files, sets |
+| eval | dummy | independent |
 
 ### Overview: File db specific
 | Command      | State of integration |
@@ -113,6 +114,9 @@ Just a dummy, always responds with `1`, which means we have removed the item fro
 
 ### sscan
 Does the same as `scan`.
+
+### eval
+Just a dummy, always responds with `null`.
 
 ## License
 Apache 2.0

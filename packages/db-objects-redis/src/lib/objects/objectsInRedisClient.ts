@@ -3805,6 +3805,23 @@ export class ObjectsInRedisClient {
         return this.delObject(id, options);
     }
 
+    /**
+     * Function to checks if comparisons will work according to the configured Locale
+     */
+    async isLocaleSupported(): Promise<boolean> {
+        if (!this.client) {
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
+        }
+
+        try {
+            const res = await this.client.eval(`return 'c-i.t' >= 'c.' and 'c-i.t' < 'c.香'`, 0);
+            return res === null;
+        } catch (e) {
+            this.log.warn(`${this.namespace} Cannot check if locale is supported: ${e.message}`);
+            return true;
+        }
+    }
+
     // this function is very ineffective. Because reads all objects and then process them
     private async _applyViewFunc(
         func: ObjectViewFunction,
