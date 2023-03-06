@@ -1,4 +1,4 @@
-import * as tjs from 'typescript-json-schema';
+import * as tjs from 'ts-json-schema-generator';
 import path from 'path';
 import fs from 'fs-extra';
 
@@ -9,9 +9,15 @@ const getSpdxLicenseIds = require('get-spdx-license-ids');
  * Update contents io iobroker.json schema
  */
 function updateIobJSON() {
-    const program = tjs.getProgramFromFiles([path.join(__dirname, '..', 'packages', 'common', 'src', 'index.ts')]);
+    const config: tjs.Config = {
+        path: path.join(__dirname, '..', 'types-dev', 'config.d.ts'),
+        tsconfig: path.join(__dirname, '..', 'tsconfig.json'),
+        type: 'IoBJson',
+        skipTypeCheck: true,
+        additionalProperties: false
+    };
 
-    const schema = tjs.generateSchema(program, 'IoBrokerJson', { ignoreErrors: true });
+    const schema = tjs.createGenerator(config).createSchema(config.type);
 
     fs.writeJSONSync(path.join(__dirname, 'iobroker.json'), schema, { spaces: 2 });
 }
