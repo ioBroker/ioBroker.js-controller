@@ -6,11 +6,24 @@
     "checkJs": false,
     "noEmit": false
   },
+  "references": [
+    {
+      "path": "../db-base/tsconfig.build.json"
+    },
+    {
+      "path": "../db-states-file/tsconfig.build.json"
+    },
+    {
+      "path": "../db-states-redis/tsconfig.build.json"
+    },
+  ],
   "include": [
     "src/**/*.ts",
     "src/**/*.js" // currently, we have js too
   ],
   "exclude": [
-    "src/**/*.test.ts"
+    "src/**/*.test.ts",
+    "build/**",
+    "node_modules/**"
   ]
 }

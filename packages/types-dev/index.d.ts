@@ -1,19 +1,7 @@
-// Type definitions for ioBroker 4.0
-// Project: https://github.com/ioBroker/ioBroker, http://iobroker.net
-// Definitions by: AlCalzone <https://github.com/AlCalzone>
-// Definitions: https://github.com/iobroker/iobroker.js-controller
-// TypeScript Version: 4.5
+// Types which are safe to share within this repository AND publicly
 
-// Note: This is not the definition for the package `iobroker`,
-// which is just an installer, not a library.
-// The definitions may change with updates to ioBroker.js-controller
-
-/// <reference types="node" />
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
-/// <reference path="./objects.d.ts" />
-
-import { AdapterClass, AdapterOptions as _AdapterOptions } from './build/types';
 import * as fs from 'fs';
+import './objects';
 export {}; // avoids exporting AtLeastOne into the global scope
 
 // Requires at least one of the properties of T to be given, whether it's optional or not
@@ -67,6 +55,12 @@ declare global {
         }
 
         type SettableState = AtLeastOne<State>;
+
+        interface IdObject {
+            device?: string;
+            channel?: string;
+            state?: string;
+        }
 
         type Session = any; // TODO: implement
 
@@ -301,18 +295,15 @@ declare global {
                 | 'fileToJsonl';
         }
 
-        type AdapterOptions = _AdapterOptions;
-
         // eslint-disable-next-line @typescript-eslint/no-empty-interface
         interface AdapterConfig {
             // This is a stub to be augmented in every adapter
         }
 
-        type Adapter = AdapterClass;
-
         type ReadyHandler = () => void | Promise<void>;
         type ObjectChangeHandler = (id: string, obj: ioBroker.Object | null | undefined) => void | Promise<void>;
         type StateChangeHandler = (id: string, obj: State | null | undefined) => void | Promise<void>;
+        type FileChangeHandler = (id: string, fileName: string, size: number | null) => void;
         type MessageHandler = (obj: Message) => void | Promise<void>;
         type UnloadHandler = (callback: EmptyCallback) => void | Promise<void>;
         type ErrorHandler = (err: Error) => boolean;
