@@ -25,10 +25,11 @@
       "packages"
     ],
     "types": [
-      "@iobroker/types",
+      "@iobroker/types-dev",
       "node",
       "mocha"
-    ]
+    ],
+    "pretty": true
   },
   "include": [
     "packages/**/*.js",

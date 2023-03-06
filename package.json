@@ -16,7 +16,6 @@
     "@iobroker/js-controller-cli": "file:packages/cli",
     "@iobroker/js-controller-common": "file:packages/common",
     "@iobroker/js-controller-common-db": "file:packages/common-db",
-    "@iobroker/types": "file:packages/types",
     "iobroker.js-controller": "file:packages/controller"
   },
   "devDependencies": {
@@ -25,6 +24,8 @@
     "@alcalzone/release-script-plugin-lerna": "~3.5.0",
     "@alcalzone/release-script-plugin-license": "~3.5.0",
     "@alcalzone/release-script-plugin-manual-review": "~3.5.8",
+    "@iobroker/types-dev": "file:packages/types-dev",
+    "@iobroker/types": "file:packages/types-public",
     "@microsoft/api-extractor": "^7.33.2",
     "@tsconfig/node12": "^1.0.11",
     "@types/chai": "^4.3.3",
@@ -67,7 +68,6 @@
     "sinon": "^15.0.0",
     "sinon-chai": "^3.7.0",
     "ts-node": "^10.9.1",
-    "tsd": "^0.24.1",
     "typedoc": "^0.23.11",
     "typedoc-plugin-markdown": "^3.13.5",
     "typedoc-plugin-missing-exports": "^1.0.0",
@@ -75,10 +75,13 @@
     "typescript-json-schema": "^0.55.0"
   },
   "scripts": {
-    "prebuild": "rimraf packages/*/build packages/*/*.tsbuildinfo",
+    "clean": "rimraf packages/*/build packages/*/*.tsbuildinfo",
     "build:doc": "lerna run build:doc",
-    "build:ts": "lerna run build",
-    "build": "npm run build:ts",
+    "build:ts": "npm run build --workspace=iobroker.js-controller -- --verbose",
+    "build:types": "npm run build --workspace=@iobroker/types",
+    "watch:ts": "npm run build:ts -- --watch",
+    "build": "npm run build:ts && npm run build:types",
+    "postbuild": "lerna run postbuild",
     "preinstall": "lerna run preinstall",
     "postbuild": "npm run update-schema",
     "install": "lerna run install",
@@ -90,6 +93,6 @@
     "test-jsonl": "mocha -r ts-node/register packages/controller/test/jsonl/*.ts --exit",
     "test-redis-socket": "mocha -r ts-node/register packages/controller/test/redis-socket/*.ts --exit",
     "test-redis-sentinel": "mocha -r ts-node/register packages/controller/test/redis-sentinel/*.ts --exit",
-    "test-types": "tsd packages/types/"
+    "test-types": "npm run test --workspace=@iobroker/types"
   }
 }

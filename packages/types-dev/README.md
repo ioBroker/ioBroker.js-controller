@@ -1,0 +1,1 @@
+This package contains types that can be shared withing this repository without introducing circular dependencies.

@@ -4,6 +4,17 @@
     "outDir": "build",
     "rootDir": "src"
   },
+  "references": [
+    {
+      "path": "../db-base/tsconfig.json"
+    },
+    {
+      "path": "../db-objects-file/tsconfig.json"
+    },
+    {
+      "path": "../db-objects-redis/tsconfig.json"
+    },
+  ],
   "include": [
     "src/**/*.ts"
   ],
