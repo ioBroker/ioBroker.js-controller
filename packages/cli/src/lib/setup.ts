@@ -497,7 +497,7 @@ function initYargs(): yargs.Argv {
  * Show yargs help, if processCommand is used as import, yargs won't be initialized
  * @param _yargs - yargs instance
  */
-function showHelp(_yargs?: yargs.Argv) {
+function showHelp(_yargs?: yargs.Argv): void {
     if (_yargs) {
         _yargs.showHelp();
     } else {
@@ -2462,7 +2462,7 @@ async function processCommand(
             dbConnect(params, ({ objects }) => {
                 objects.getObject('system.meta.uuid', (err, obj) => {
                     if (err) {
-                        console.error(`Error: ${err}`);
+                        console.error(`Error: ${err.message}`);
                         return void callback(EXIT_CODES.CANNOT_GET_UUID);
                     }
                     if (obj && obj.native) {
@@ -2915,7 +2915,7 @@ async function cleanDatabase(isDeleteDb: boolean): Promise<number> {
     }
 }
 
-function unsetup(params: Record<string, any>, callback: ExitCodeCb) {
+function unsetup(params: Record<string, any>, callback: ExitCodeCb): void {
     dbConnect(params, () => {
         objects!.delObject('system.meta.uuid', err => {
             if (err) {
@@ -2970,7 +2970,7 @@ async function restartController(): Promise<void> {
     child.unref();
 }
 
-async function getRepository(repoName?: string, params?: Record<string, any>) {
+async function getRepository(repoName?: string, params?: Record<string, any>): Promise<Record<string, any>> {
     params = params || {};
 
     if (!objects) {
@@ -3034,7 +3034,7 @@ async function getRepository(repoName?: string, params?: Record<string, any>) {
     }
 }
 
-async function resetDbConnect() {
+async function resetDbConnect(): Promise<void> {
     if (objects) {
         await objects.destroy();
         objects = null;

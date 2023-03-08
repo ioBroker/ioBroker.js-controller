@@ -65,7 +65,7 @@ export class Repo {
     }
 
     /**
-     * Update the given repository
+     * Update the given repository and returns new repo content
      *
      * @param repoName name of the repository
      * @param force force update even if same hash
@@ -77,7 +77,7 @@ export class Repo {
         force: boolean | undefined,
         systemConfig?: ioBroker.OtherObject,
         systemRepos?: ioBroker.OtherObject
-    ) {
+    ): Promise<null | Record<string, any>> {
         if (!repoName) {
             const sysConfig = systemConfig || (await this.objects.getObjectAsync('system.config'));
             repoName = sysConfig!.common.activeRepo;
@@ -280,9 +280,8 @@ export class Repo {
      * Update Admin info states with number of updates
      *
      * @param sources
-     * @private
      */
-    private async updateInfo(sources: Record<string, any>) {
+    private async updateInfo(sources: Record<string, any>): Promise<void> {
         const installed = tools.getInstalledInfo();
         const list: string[] = [];
 

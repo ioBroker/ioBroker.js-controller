@@ -1288,7 +1288,7 @@ export class AdapterClass extends EventEmitter {
         return this._destroySession({ id, callback });
     }
 
-    private _destroySession(options: InternalDestroySessionOptions) {
+    private _destroySession(options: InternalDestroySessionOptions): void | Promise<void> {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(
@@ -1663,7 +1663,7 @@ export class AdapterClass extends EventEmitter {
         return this._setPassword({ user, pw, options, callback });
     }
 
-    private async _setPassword(options: InternalSetPasswordOptions) {
+    private async _setPassword(options: InternalSetPasswordOptions): Promise<void> {
         if (options.user && !options.user.startsWith('system.user.')) {
             // it's not yet a `system.user.xy` id, thus we assume it's a username
             if (!this.usernames[options.user]) {
@@ -2078,7 +2078,12 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private async _stop(isPause?: boolean, isScheduled?: boolean, exitCode?: number, updateAliveState?: boolean) {
+    private async _stop(
+        isPause?: boolean,
+        isScheduled?: boolean,
+        exitCode?: number,
+        updateAliveState?: boolean
+    ): Promise<void> {
         exitCode = exitCode || (isScheduled ? EXIT_CODES.START_IMMEDIATELY_AFTER_STOP : 0);
         if (updateAliveState === undefined) {
             updateAliveState = true;
@@ -2091,7 +2096,7 @@ export class AdapterClass extends EventEmitter {
             this._reportInterval = null;
             const id = `system.adapter.${this.namespace}`;
 
-            const finishUnload = () => {
+            const finishUnload = (): void => {
                 if (this._timers.size) {
                     this._timers.forEach(timer => clearTimeout(timer));
                     this._timers.clear();
@@ -2260,7 +2265,7 @@ export class AdapterClass extends EventEmitter {
         return this._getCertificates({ publicName, privateName, chainedName, callback });
     }
 
-    private _getCertificates(options: InternalGetCertificatesOptions) {
+    private _getCertificates(options: InternalGetCertificatesOptions): void {
         // Load certificates
         this.getForeignObject('system.certificates', null, (err, obj) => {
             if (
@@ -2395,7 +2400,7 @@ export class AdapterClass extends EventEmitter {
         return this._getEncryptedConfig({ attribute, callback });
     }
 
-    private async _getEncryptedConfig(options: InternalGetEncryptedConfigOptions) {
+    private async _getEncryptedConfig(options: InternalGetEncryptedConfigOptions): Promise<string | void> {
         if (!this.config) {
             throw new Error(tools.ERRORS.ERROR_NOT_READY);
         }
@@ -2613,7 +2618,7 @@ export class AdapterClass extends EventEmitter {
         return this._setObject({ id, obj: obj as ioBroker.SettableObject, options, callback });
     }
 
-    private async _setObject(options: InternalSetObjectOptions) {
+    private async _setObject(options: InternalSetObjectOptions): Promise<void> {
         if (!this._defaultObjs) {
             this._defaultObjs = (await import('./defaultObjs.js')).createDefaults();
         }
@@ -2808,7 +2813,7 @@ export class AdapterClass extends EventEmitter {
     ): Promise<Record<string, ioBroker.AdapterScopedObject> | void> {
         const ret: Record<string, ioBroker.AdapterScopedObject> = {};
         // Adds result rows to the return object
-        const addRows = (rows: any[] | undefined) => {
+        const addRows = (rows: any[] | undefined): void => {
             if (rows) {
                 for (const { id, value } of rows) {
                     ret[id] = value;
@@ -2959,7 +2964,8 @@ export class AdapterClass extends EventEmitter {
         return this._extendObject({ id, obj: obj as ioBroker.SettableObject, options, callback });
     }
 
-    private async _extendObject(options: InternalSetObjectOptions) {
+    // TODO: the public return type needs to be defined correctly, probably needs to be discussed
+    private async _extendObject(options: InternalSetObjectOptions): Promise<any> {
         if (!adapterObjects) {
             this._logger.info(`${this.namespaceLog} extendObject not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
@@ -3605,7 +3611,7 @@ export class AdapterClass extends EventEmitter {
         return this._getObjectView({ design, search, params, options, callback });
     }
 
-    private _getObjectView(_options: InternalGetObjectViewOptions) {
+    private _getObjectView(_options: InternalGetObjectViewOptions): void | ioBroker.GetObjectViewPromise<any> {
         const { design, search, params, options, callback } = _options;
 
         if (!adapterObjects) {
@@ -3765,7 +3771,7 @@ export class AdapterClass extends EventEmitter {
         return this._getEnum({ _enum, options, callback });
     }
 
-    private _getEnum(_options: InternalGetEnumOptions) {
+    private _getEnum(_options: InternalGetEnumOptions): Promise<void> | void {
         const { options, callback } = _options;
         let { _enum } = _options;
 
@@ -4331,7 +4337,7 @@ export class AdapterClass extends EventEmitter {
         tasks: { id: string; [other: string]: any }[],
         options: Record<string, any>,
         cb?: () => void
-    ) {
+    ): void | Promise<void> {
         if (!tasks || !tasks.length) {
             return tools.maybeCallback(cb);
         } else {
@@ -4408,7 +4414,7 @@ export class AdapterClass extends EventEmitter {
         return this._delForeignObject({ id, options, callback });
     }
 
-    private _delForeignObject(_options: InternalDelObjectOptions) {
+    private _delForeignObject(_options: InternalDelObjectOptions): void {
         const { id, options, callback } = _options;
 
         // If recursive deletion of all underlying objects, including id
@@ -4960,7 +4966,7 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private _createDevice(_options: InternalCreateDeviceOptions) {
+    private _createDevice(_options: InternalCreateDeviceOptions): void {
         let { common, deviceName, _native } = _options;
         const { callback, options } = _options;
         common = common || {};
@@ -5150,7 +5156,7 @@ export class AdapterClass extends EventEmitter {
         return this._createState({ parentDevice, parentChannel, callback, stateName, common, _native, options });
     }
 
-    private _createState(_options: InternalCreateStateOptions) {
+    private _createState(_options: InternalCreateStateOptions): Promise<void> | void {
         const { _native, common, callback, options } = _options;
         let { parentChannel, parentDevice, stateName } = _options;
 
@@ -5301,7 +5307,7 @@ export class AdapterClass extends EventEmitter {
         return this._deleteDevice({ deviceName, callback });
     }
 
-    private async _deleteDevice(_options: InternalDeleteDeviceOptions) {
+    private async _deleteDevice(_options: InternalDeleteDeviceOptions): Promise<void> {
         const { callback } = _options;
         let { deviceName } = _options;
 
@@ -5381,7 +5387,7 @@ export class AdapterClass extends EventEmitter {
         return this._addChannelToEnum({ enumName, addTo, parentDevice, channelName, options, callback });
     }
 
-    private _addChannelToEnum(_options: InternalAddChannelToEnumOptions) {
+    private _addChannelToEnum(_options: InternalAddChannelToEnumOptions): Promise<void> | void {
         const { addTo, options, callback } = _options;
         let { enumName, parentDevice, channelName } = _options;
 
@@ -5510,7 +5516,7 @@ export class AdapterClass extends EventEmitter {
         return this._deleteChannelFromEnum({ enumName, parentDevice, channelName, options, callback });
     }
 
-    private _deleteChannelFromEnum(_options: InternalDeleteChannelFromEnumOptions) {
+    private _deleteChannelFromEnum(_options: InternalDeleteChannelFromEnumOptions): Promise<void> | void {
         const { options, callback } = _options;
         let { enumName, channelName, parentDevice } = _options;
 
@@ -5637,7 +5643,7 @@ export class AdapterClass extends EventEmitter {
         return this._deleteChannel({ parentDevice, channelName, callback });
     }
 
-    private async _deleteChannel(_options: InternalDeleteChannelOptions) {
+    private async _deleteChannel(_options: InternalDeleteChannelOptions): Promise<void> {
         const { callback } = _options;
         let { channelName, parentDevice } = _options;
 
@@ -5758,7 +5764,7 @@ export class AdapterClass extends EventEmitter {
         return this._deleteState({ parentDevice, parentChannel, stateName, options, callback });
     }
 
-    private _deleteState(_options: InternalDeleteStateOptions) {
+    private _deleteState(_options: InternalDeleteStateOptions): void {
         const { callback, options } = _options;
         let { stateName, parentDevice, parentChannel } = _options;
 
@@ -5820,7 +5826,7 @@ export class AdapterClass extends EventEmitter {
         return this._getDevices({ options, callback });
     }
 
-    private _getDevices(_options: InternalGetDevicesOptions) {
+    private _getDevices(_options: InternalGetDevicesOptions): Promise<void> | void {
         const { options, callback } = _options;
 
         if (!adapterObjects) {
@@ -5881,7 +5887,7 @@ export class AdapterClass extends EventEmitter {
         return this._getChannelsOf({ parentDevice, options, callback });
     }
 
-    private _getChannelsOf(options: InternalGetChannelsOfOptions) {
+    private _getChannelsOf(options: InternalGetChannelsOfOptions): Promise<void> | void {
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} getChannelsOf not processed because Objects database not connected`
@@ -5971,7 +5977,7 @@ export class AdapterClass extends EventEmitter {
         return this._getStatesOf({ parentDevice, parentChannel, options, callback });
     }
 
-    private _getStatesOf(_options: InternalGetStatesOfOptions) {
+    private _getStatesOf(_options: InternalGetStatesOfOptions): Promise<void> | void {
         const { options, callback } = _options;
         let { parentDevice, parentChannel } = _options;
 
@@ -6079,7 +6085,7 @@ export class AdapterClass extends EventEmitter {
         return this._addStateToEnum({ enumName, addTo, parentDevice, parentChannel, stateName, options, callback });
     }
 
-    private _addStateToEnum(_options: InternalAddStateToEnumOptions) {
+    private _addStateToEnum(_options: InternalAddStateToEnumOptions): Promise<void> | void {
         const { addTo, options, callback } = _options;
         let { enumName, parentDevice, parentChannel, stateName } = _options;
 
@@ -6222,7 +6228,7 @@ export class AdapterClass extends EventEmitter {
         return this._deleteStateFromEnum({ enumName, parentDevice, parentChannel, stateName, options, callback });
     }
 
-    private _deleteStateFromEnum(_options: InternalDeleteStateFromEnumOptions) {
+    private _deleteStateFromEnum(_options: InternalDeleteStateFromEnumOptions): Promise<void> | void {
         const { options, callback } = _options;
         let { enumName, parentDevice, parentChannel, stateName } = _options;
 
@@ -6776,7 +6782,7 @@ export class AdapterClass extends EventEmitter {
         return this._formatDate({ dateObj: dateObj as any, isDuration, _format });
     }
 
-    private _formatDate(_options: InternalFormatDateOptions) {
+    private _formatDate(_options: InternalFormatDateOptions): string {
         const { _format, dateObj: _dateObj } = _options;
         let { isDuration } = _options;
 
@@ -6813,7 +6819,7 @@ export class AdapterClass extends EventEmitter {
         let s = '';
         let result = '';
 
-        const put = (s: string) => {
+        const put = (s: string): string => {
             let v: number | string = '';
             switch (s) {
                 case 'YYYY':
@@ -6960,7 +6966,7 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private async _sendTo(_options: InternalSendToOptions) {
+    private async _sendTo(_options: InternalSendToOptions): Promise<void> {
         const { command, message, callback } = _options;
         let { instanceName } = _options;
 
@@ -7120,7 +7126,7 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private async _sendToHost(_options: InternalSendToHostOptions) {
+    private async _sendToHost(_options: InternalSendToHostOptions): Promise<void> {
         const { command, message, callback } = _options;
         let { hostName } = _options;
         const obj: Partial<ioBroker.Message> = { command, message, from: `system.adapter.${this.namespace}` };
@@ -7628,7 +7634,7 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    private _checkState(obj: ioBroker.StateObject, options: Record<string, any>, command: CheckStateCommand) {
+    private _checkState(obj: ioBroker.StateObject, options: Record<string, any>, command: CheckStateCommand): boolean {
         const limitToOwnerRights = options.limitToOwnerRights === true;
         if (obj && obj.acl) {
             obj.acl.state = obj.acl.state || obj.acl.object;
@@ -8683,7 +8689,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // find out default history instance
-    private async _getDefaultHistory() {
+    private async _getDefaultHistory(): Promise<void> {
         if (!this.defaultHistory) {
             // read default history instance from system.config
             let data;
@@ -8787,7 +8793,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // Checked implementation
-    private async _getHistory(_options: InternalGetHistoryOptions) {
+    private async _getHistory(_options: InternalGetHistoryOptions): Promise<void> {
         const { id, callback } = _options;
         let { options } = _options;
 
@@ -8891,7 +8897,7 @@ export class AdapterClass extends EventEmitter {
         return this._delState({ id, options, callback });
     }
 
-    private _delState(_options: InternalDelStateOptions) {
+    private _delState(_options: InternalDelStateOptions): Promise<void> | void {
         const { options, callback } = _options;
         let { id } = _options;
 
@@ -8938,7 +8944,7 @@ export class AdapterClass extends EventEmitter {
         return this._delForeignState({ id, options, callback });
     }
 
-    private async _delForeignState(_options: InternalDelStateOptions) {
+    private async _delForeignState(_options: InternalDelStateOptions): Promise<void> {
         const { id, options, callback } = _options;
 
         if (!adapterStates) {
@@ -9007,7 +9013,7 @@ export class AdapterClass extends EventEmitter {
         targetObjs: (ioBroker.StateObject | null)[] | null,
         srcObjs: (ioBroker.StateObject | null)[] | null,
         callback: ioBroker.GetStatesCallback
-    ) {
+    ): void {
         adapterStates!.getStates(keys, (err, arr) => {
             if (err) {
                 // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
@@ -9053,7 +9059,7 @@ export class AdapterClass extends EventEmitter {
         keys: string[],
         targetObjs: (ioBroker.StateObject | null)[],
         callback: ioBroker.GetStatesCallback
-    ) {
+    ): Promise<void> {
         let aliasFound;
         const aIds = keys.map(id => {
             if (id.startsWith(ALIAS_STARTS_WITH)) {
@@ -9139,7 +9145,7 @@ export class AdapterClass extends EventEmitter {
         return this._getForeignStates({ pattern, options: options || {}, callback });
     }
 
-    private async _getForeignStates(_options: InternalGetStatesOptions) {
+    private async _getForeignStates(_options: InternalGetStatesOptions): Promise<void> {
         const { options, pattern, callback } = _options;
 
         if (!adapterStates) {
@@ -9403,7 +9409,7 @@ export class AdapterClass extends EventEmitter {
         return this._subscribeForeignStates({ pattern, options, callback });
     }
 
-    private async _subscribeForeignStates(_options: InternalSubscribeOptions) {
+    private async _subscribeForeignStates(_options: InternalSubscribeOptions): Promise<void> {
         const { pattern, options, callback } = _options;
 
         // Todo check rights for options
@@ -9648,7 +9654,7 @@ export class AdapterClass extends EventEmitter {
         return this._unsubscribeForeignStates({ pattern, options, callback });
     }
 
-    private async _unsubscribeForeignStates(_options: InternalSubscribeOptions) {
+    private async _unsubscribeForeignStates(_options: InternalSubscribeOptions): Promise<void> {
         const { pattern, callback } = _options;
 
         if (!adapterStates) {
@@ -9872,7 +9878,7 @@ export class AdapterClass extends EventEmitter {
         return this._setForeignBinaryState({ id, binary, options, callback });
     }
 
-    private async _setForeignBinaryState(_options: InternalSetBinaryStateOptions) {
+    private async _setForeignBinaryState(_options: InternalSetBinaryStateOptions): Promise<void> {
         const { id, binary, callback } = _options;
         let { options } = _options;
 
@@ -10036,7 +10042,7 @@ export class AdapterClass extends EventEmitter {
         return this._getForeignBinaryState({ id, options: options || {}, callback });
     }
 
-    private async _getForeignBinaryState(_options: InternalGetBinaryStateOption) {
+    private async _getForeignBinaryState(_options: InternalGetBinaryStateOption): Promise<void> {
         const { id, options, callback } = _options;
 
         if (!adapterStates) {
@@ -10137,7 +10143,7 @@ export class AdapterClass extends EventEmitter {
         return this._delForeignBinaryState({ id, options: options || {}, callback });
     }
 
-    private async _delForeignBinaryState(_options: InternalDelBinaryStateOptions) {
+    private async _delForeignBinaryState(_options: InternalDelBinaryStateOptions): Promise<void> {
         const { id, options, callback } = _options;
 
         if (!adapterStates) {
@@ -10555,7 +10561,7 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallback(callback);
         });
 
-        this.logRedirect = (isActive, id) => {
+        this.logRedirect = (isActive, id): void => {
             // ignore itself
             if (id === `system.adapter.${this.namespace}`) {
                 return;
@@ -10623,7 +10629,7 @@ export class AdapterClass extends EventEmitter {
                                         from: `system.adapter.${this.namespace}`
                                     });
                                 }
-                            }, 10000);
+                            }, 10_000);
                         } else {
                             if (this.logOffTimer) {
                                 clearTimeout(this.logOffTimer);
@@ -10659,7 +10665,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // initStates is called from initAdapter
-    private _initStates(cb: () => void) {
+    private _initStates(cb: () => void): void {
         this._logger.silly(`${this.namespaceLog} objectDB connected`);
 
         this._config.states.maxQueue = this._config.states.maxQueue || 1000;
@@ -10673,7 +10679,7 @@ export class AdapterClass extends EventEmitter {
                 this._logger &&
                     this._logger.warn(`${this.namespaceLog} slow connection to states DB. Still waiting ...`);
             }
-        }, this._config.states.connectTimeout || 2000);
+        }, this._config.states.connectTimeout || 2_000);
 
         // Internal object, but some special adapters want to access it anyway.
         adapterStates = new States({
@@ -10978,7 +10984,7 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private _initObjects(cb: () => void) {
+    private _initObjects(cb: () => void): void {
         this._initializeTimeout = setTimeout(() => {
             this._initializeTimeout = null;
             if (this._config.isInstall) {
@@ -11257,7 +11263,7 @@ export class AdapterClass extends EventEmitter {
     /**
      * Called if states and objects successfully initialized
      */
-    private _prepareInitAdapter() {
+    private _prepareInitAdapter(): void {
         if (this.terminated || !adapterObjects || !adapterStates) {
             return;
         }
@@ -11321,7 +11327,7 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    private _initAdapter(adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null) {
+    private _initAdapter(adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null): void {
         this._initLogging(() => {
             if (!this.pluginHandler) {
                 return;
@@ -11683,7 +11689,7 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    private async _exceptionHandler(err: NodeJS.ErrnoException, isUnhandledRejection?: boolean) {
+    private async _exceptionHandler(err: NodeJS.ErrnoException, isUnhandledRejection?: boolean): Promise<void> {
         // If the adapter has a callback to listen for unhandled errors
         // give it a chance to handle the error itself instead of restarting it
         if (typeof this._options.error === 'function') {
@@ -11825,7 +11831,7 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private async _extendObjects(tasks: Record<string, any>, callback: () => void) {
+    private async _extendObjects(tasks: Record<string, any>, callback: () => void): Promise<void> {
         if (!tasks || !tasks.length) {
             return tools.maybeCallback(callback);
         }
@@ -11887,7 +11893,7 @@ export class AdapterClass extends EventEmitter {
         /**
          * Initiates the databases
          */
-        const _initDBs = () => {
+        const _initDBs = (): void => {
             this._initObjects(() => {
                 if (this.inited) {
                     this.log && this._logger.warn(`${this.namespaceLog} Reconnection to DB.`);

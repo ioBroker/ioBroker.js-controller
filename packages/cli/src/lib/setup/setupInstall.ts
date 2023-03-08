@@ -27,6 +27,11 @@ const osPlatform = process.platform;
 /** Note: this is duplicated in preinstallCheck */
 const RECOMMENDED_NPM_VERSION = 8;
 
+interface NpmInstallReturn {
+    installDir: string;
+    _url: string;
+}
+
 export interface CLIInstallOptions {
     params: Record<string, any>;
     getRepository: GetRepositoryHandler;
@@ -263,7 +268,7 @@ export class Install {
         npmUrl: string,
         options: CLIDownloadPacketOptions,
         debug: boolean
-    ): Promise<void | { installDir: string; _url: string }> {
+    ): Promise<void | NpmInstallReturn> {
         // Get npm version
         try {
             let npmVersion;
@@ -314,7 +319,11 @@ export class Install {
         }
     }
 
-    private async _npmInstall(npmUrl: string, options: CLIDownloadPacketOptions, debug: boolean) {
+    private async _npmInstall(
+        npmUrl: string,
+        options: CLIDownloadPacketOptions,
+        debug: boolean
+    ): Promise<void | NpmInstallReturn> {
         if (typeof options !== 'object') {
             options = {};
         }
@@ -403,9 +412,9 @@ export class Install {
         deps: Dependencies,
         globalDeps: Dependencies,
         _options: Record<string, any>
-    ) {
+    ): Promise<void> {
         if (!deps && !globalDeps) {
-            return adapter;
+            return;
         }
 
         deps = tools.parseDependencies(deps);
@@ -508,7 +517,7 @@ export class Install {
         }
     }
 
-    private async _uploadStaticObjects(adapter: string, _adapterConf?: Record<string, any>) {
+    private async _uploadStaticObjects(adapter: string, _adapterConf?: Record<string, any>): Promise<void> {
         let adapterConf: Record<string, any>;
         if (!_adapterConf) {
             const adapterDir = tools.getAdapterDir(adapter);
@@ -565,7 +574,7 @@ export class Install {
                     await this.objects.extendObjectAsync(obj._id, obj);
                 } catch (err) {
                     console.error(`host.${hostname} error setObject ${obj._id} ${err.message}`);
-                    return EXIT_CODES.CANNOT_SET_OBJECT;
+                    return;
                 }
 
                 console.log(`host.${hostname} object ${obj._id} created/updated`);
@@ -1112,7 +1121,7 @@ export class Install {
      * @param adapter The adapter to enumerate the devices for
      * @param instance The instance to enumerate the devices for (optional)
      */
-    private async _enumerateAdapterDevices(knownObjIDs: string[], adapter: string, instance?: number) {
+    private async _enumerateAdapterDevices(knownObjIDs: string[], adapter: string, instance?: number): Promise<void> {
         const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
 
         try {
@@ -1151,7 +1160,7 @@ export class Install {
      * @param adapter The adapter to enumerate the channels for
      * @param instance The instance to enumerate the channels for (optional)
      */
-    private async _enumerateAdapterChannels(knownObjIDs: string[], adapter: string, instance?: number) {
+    private async _enumerateAdapterChannels(knownObjIDs: string[], adapter: string, instance?: number): Promise<void> {
         const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
         try {
             const doc = await this.objects.getObjectViewAsync('system', 'channel', {
@@ -1254,7 +1263,7 @@ export class Install {
      * @param adapter The adapter to enumerate the states for
      * @param instance The instance to enumerate the states for (optional)
      */
-    private async _enumerateAdapterDocs(knownObjIDs: string[], adapter: string, instance?: number) {
+    private async _enumerateAdapterDocs(knownObjIDs: string[], adapter: string, instance?: number): Promise<void> {
         const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
         const sysAdapterRegex = new RegExp(`^system\\.adapter\\.${adapter}${instance ? `\\.${instance}` : ''}\\.`);
 
@@ -1421,7 +1430,7 @@ export class Install {
         const knownStateIDs: string[] = [];
         let resultCode = EXIT_CODES.NO_ERROR;
 
-        const _uninstallNpm = async () => {
+        const _uninstallNpm = async (): Promise<void> => {
             try {
                 // find the adapter's io-package.json
                 const adapterNpm = `${tools.appName}.${adapter}`;

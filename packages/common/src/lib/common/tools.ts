@@ -263,14 +263,12 @@ export async function isHostRunning(objects: any, states: any): Promise<boolean>
 
 /**
  * Checks if ioBroker is installed in a dev environment
- * @private
- * @return {boolean}
  */
-function _isDevInstallation() {
+function _isDevInstallation(): boolean {
     return fs.pathExistsSync(`${__dirname}/../../../../../packages/controller`);
 }
 
-function getAppName() {
+function getAppName(): string {
     if (_isDevInstallation()) {
         // dev install - GitHub folder is uppercase
         return 'ioBroker';
@@ -331,7 +329,7 @@ export function findIPs(): string[] {
     return ownIpArr;
 }
 
-function findPath(path: string, url: string) {
+function findPath(path: string, url: string): string {
     if (!url) {
         return '';
     }
@@ -350,7 +348,7 @@ function findPath(path: string, url: string) {
     }
 }
 
-function getMac(callback: (e?: Error | null, mac?: string) => void) {
+function getMac(callback: (e?: Error | null, mac?: string) => void): void {
     const macRegex = /(?:[a-z0-9]{2}[:-]){5}[a-z0-9]{2}/gi;
     const zeroRegex = /(?:[0]{2}[:-]){5}[0]{2}/;
     const command = process.platform.indexOf('win') === 0 ? 'getmac' : 'ifconfig || ip link';
@@ -481,7 +479,7 @@ function uuid(givenMac: string | null, callback: (uuid: string) => void): void {
     callback(u);
 }
 
-function updateUuid(newUuid: string, _objects: any, callback: (uuid?: string) => void) {
+function updateUuid(newUuid: string, _objects: any, callback: (uuid?: string) => void): void {
     uuid('', _uuid => {
         _uuid = newUuid || _uuid;
         // Add vendor prefix to UUID
@@ -1001,7 +999,7 @@ export function getInstalledInfo(hostRunningVersion?: string): Record<string, Ad
  * @param adapter The adapter to read the npm version from. Null for the root ioBroker packet
  * @param callback
  */
-function getNpmVersion(adapter: string, callback?: (err: Error | null, version?: string | null) => void) {
+function getNpmVersion(adapter: string, callback?: (err: Error | null, version?: string | null) => void): void {
     adapter = adapter ? `${appName}.${adapter}` : appName;
     adapter = adapter.toLowerCase();
 
@@ -1122,7 +1120,7 @@ function _getRepositoryFile(
     sources: Record<string, any>,
     path: string,
     callback?: (err?: Error, sources?: Record<string, any>) => void
-) {
+): void {
     if (!sources._helper) {
         let count = 0;
         for (const _name in sources) {
@@ -1214,7 +1212,7 @@ async function _checkRepositoryFileHash(
     urlOrPath: string,
     additionalInfo: Record<string, any>,
     callback: (err?: null | Error, sources?: Record<string, any> | null, hash?: string | number) => void
-) {
+): Promise<void> {
     // read hash of file
     if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
         urlOrPath = urlOrPath.replace(/\.json$/, '-hash.json');
@@ -1989,7 +1987,7 @@ export function generateDefaultCertificates(): DefaultCertificates {
     };
 }
 
-function makeid(length: number) {
+function makeid(length: number): string {
     let result = '';
     const characters = 'abcdef0123456789';
     const charactersLength = characters.length;
@@ -2198,7 +2196,7 @@ export function getConfigFileName(): string {
  * @param argsObj An `arguments` object as passed to a function
  * @param startIndex The optional index to start taking the arguments from
  */
-function sliceArgs(argsObj: IArguments, startIndex = 0) {
+function sliceArgs(argsObj: IArguments, startIndex = 0): any[] {
     if (startIndex === null || startIndex === undefined) {
         startIndex = 0;
     }
@@ -2539,7 +2537,7 @@ export function measureEventLoopLag(ms: number, cb: (eventLoopLag?: number) => v
     let timeout = setTimeout(check, ms);
     timeout.unref();
 
-    function check() {
+    function check(): void {
         // workaround for https://github.com/joyent/node/issues/8364
         clearTimeout(timeout);
 
@@ -2559,7 +2557,7 @@ export function measureEventLoopLag(ms: number, cb: (eventLoopLag?: number) => v
         timeout.unref();
     }
 
-    function hrtime() {
+    function hrtime(): number {
         const t = process.hrtime();
         return t[0] * 1e3 + t[1] / 1e6;
     }

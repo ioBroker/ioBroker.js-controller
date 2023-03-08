@@ -221,11 +221,11 @@ export class ObjectsInRedisClient {
         const onChangeFileUser = this.settings.changeFileUser; // on change handler for User file events
 
         // limit max number of log entries in the list
-        this.settings.connection.maxQueue = this.settings.connection.maxQueue || 1000;
+        this.settings.connection.maxQueue = this.settings.connection.maxQueue || 1_000;
 
         this.settings.connection.options = this.settings.connection.options || {};
-        const retry_max_delay = this.settings.connection.options.retry_max_delay || 5000;
-        const retry_max_count = this.settings.connection.options.retry_max_count || 19;
+        const retry_max_delay: number = this.settings.connection.options.retry_max_delay || 5_000;
+        const retry_max_count: number = this.settings.connection.options.retry_max_count || 19;
 
         let ready = false;
         let initError = false;
@@ -233,7 +233,7 @@ export class ObjectsInRedisClient {
         let reconnectCounter = 0;
         let errorLogged = false;
 
-        this.settings.connection.options.retryStrategy = (reconnectCount: number) => {
+        this.settings.connection.options.retryStrategy = (reconnectCount: number): Error | number => {
             if (!ready && initError) {
                 return new Error('No more tries');
             }
@@ -1050,7 +1050,7 @@ export class ObjectsInRedisClient {
             virtualFile?: boolean;
             createdAt?: number;
         }
-    ) {
+    ): Promise<void> {
         const ext = name.match(/\.[^.]+$/);
         if (!ext) {
             return tools.maybeCallbackWithError(callback, new Error(`Invalid name "${name}" on _writeFile`));
@@ -1412,7 +1412,7 @@ export class ObjectsInRedisClient {
         name: string,
         options: CallOptions,
         callback: (err?: Error | null, res?: ioBroker.ReadDirResult[]) => void
-    ) {
+    ): Promise<void> {
         name = this.normalizeFilename(name);
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
@@ -1610,7 +1610,12 @@ export class ObjectsInRedisClient {
         );
     }
 
-    private async _renameHelper(keys: string[], oldBase: string, newBase: string, callback?: ioBroker.ErrorCallback) {
+    private async _renameHelper(
+        keys: string[],
+        oldBase: string,
+        newBase: string,
+        callback?: ioBroker.ErrorCallback
+    ): Promise<void> {
         if (!keys || !keys.length) {
             return tools.maybeCallback(callback);
         } else {
@@ -2243,7 +2248,7 @@ export class ObjectsInRedisClient {
         metas: any[],
         options: CallOptions,
         callback: ioBroker.ErrorCallback
-    ) {
+    ): Promise<void> {
         if (!keys || !keys.length) {
             return tools.maybeCallback(callback);
         }
@@ -2270,7 +2275,7 @@ export class ObjectsInRedisClient {
         options: CallOptions,
         callback: ioBroker.ChownFileCallback,
         meta: ChmodMetaObject
-    ) {
+    ): Promise<void> {
         if (!meta) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_NOT_FOUND);
         }
@@ -2469,7 +2474,7 @@ export class ObjectsInRedisClient {
         );
     }
 
-    private async _subscribeFile(id: string, pattern: string | string[]) {
+    private async _subscribeFile(id: string, pattern: string | string[]): Promise<void> {
         if (!this.sub) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
@@ -2490,7 +2495,7 @@ export class ObjectsInRedisClient {
         }
     }
 
-    private async _unsubscribeFile(id: string, pattern: string | string[]) {
+    private async _unsubscribeFile(id: string, pattern: string | string[]): Promise<void> {
         if (!this.sub) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
@@ -2726,7 +2731,7 @@ export class ObjectsInRedisClient {
         );
     }
 
-    private async _objectHelper(keys: string[], objs: any[]) {
+    private async _objectHelper(keys: string[], objs: any[]): Promise<void> {
         if (!keys.length) {
             return;
         } else {
@@ -3013,7 +3018,7 @@ export class ObjectsInRedisClient {
         );
     }
 
-    private async _getObject(id: string, options: CallOptions, callback: ioBroker.GetObjectCallback) {
+    private async _getObject(id: string, options: CallOptions, callback: ioBroker.GetObjectCallback): Promise<void> {
         if (!this.client) {
             return tools.maybeCallbackWithRedisError(callback, ERRORS.ERROR_DB_CLOSED);
         }
@@ -3107,7 +3112,7 @@ export class ObjectsInRedisClient {
         options: CallOptions,
         callback?: ioBroker.GetConfigKeysCallback,
         dontModify?: boolean
-    ) {
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetConfigKeysCallback> | void> {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
@@ -4170,7 +4175,7 @@ export class ObjectsInRedisClient {
                         continue;
                     }
 
-                    if (obj && obj.common && obj.common.custom) {
+                    if (obj?.common?.custom) {
                         if (useFullObject) {
                             result.rows.push({ id: obj._id, value: obj });
                         } else {
@@ -4240,7 +4245,7 @@ export class ObjectsInRedisClient {
                 objs = [];
             }
 
-            const _emit_ = (id: string, obj: ioBroker.AnyObject) => {
+            const _emit_ = (id: string, obj: ioBroker.AnyObject): void => {
                 result.rows.push({ id: id, value: obj });
             };
 
@@ -4291,7 +4296,7 @@ export class ObjectsInRedisClient {
         params?: ioBroker.GetObjectViewParams,
         options?: CallOptions,
         callback?: ioBroker.GetObjectViewCallback<any>
-    ) {
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectViewCallback<any>> | void> {
         if (!this.client) {
             return tools.maybeCallbackWithRedisError(callback, ERRORS.ERROR_DB_CLOSED);
         }
@@ -4822,8 +4827,7 @@ export class ObjectsInRedisClient {
                                 continue;
                             }
                             if (
-                                obj &&
-                                obj.common &&
+                                obj?.common &&
                                 obj.common.name === idOrName &&
                                 (!type || ('type' in obj.common && obj.common.type === type))
                             ) {
@@ -4915,7 +4919,7 @@ export class ObjectsInRedisClient {
         }
     }
 
-    private async _destroyDBHelper(keys: string[], callback: ioBroker.ErrorCallback) {
+    private async _destroyDBHelper(keys: string[], callback: ioBroker.ErrorCallback): Promise<void> {
         if (!keys || !keys.length) {
             return tools.maybeCallback(callback);
         } else {
@@ -4935,7 +4939,7 @@ export class ObjectsInRedisClient {
         }
     }
 
-    private async _destroyDB(callback: ioBroker.ErrorCallback) {
+    private async _destroyDB(callback: ioBroker.ErrorCallback): Promise<void> {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         } else {
