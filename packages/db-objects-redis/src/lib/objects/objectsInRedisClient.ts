@@ -31,7 +31,6 @@ import type { ConnectionOptions, DbStatus } from '@iobroker/db-base/inMemFileDB'
 const ERRORS = CONSTS.ERRORS;
 
 type ChangeFunction = (id: string, object: ioBroker.Object | null) => void;
-export type ChangeFileFunction = (id: string, fileName: string, size: number | null) => void;
 
 type GetUserGroupCallbackNoError = (user: string, groups: string[], acl: ioBroker.ObjectPermissions) => void;
 
@@ -54,7 +53,7 @@ export interface ObjectsSettings {
     disconnected?: () => void;
     change?: ChangeFunction;
     changeUser?: ChangeFunction;
-    changeFileUser?: ChangeFileFunction;
+    changeFileUser?: ioBroker.FileChangeHandler;
     autoConnect?: boolean;
     logger: InternalLogger;
     hostname?: string;

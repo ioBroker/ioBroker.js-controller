@@ -6,11 +6,45 @@
     "checkJs": false,
     "noEmit": false
   },
+  "references": [
+    {
+      "path": "../db-objects-file/tsconfig.build.json"
+    },
+    {
+      "path": "../db-objects-jsonl/tsconfig.build.json"
+    },
+    {
+      "path": "../db-objects-redis/tsconfig.build.json"
+    },
+    {
+      "path": "../db-states-file/tsconfig.build.json"
+    },
+    {
+      "path": "../db-states-jsonl/tsconfig.build.json"
+    },
+    {
+      "path": "../db-states-redis/tsconfig.build.json"
+    },
+    {
+      "path": "../adapter/tsconfig.build.json"
+    },
+    {
+      "path": "../cli/tsconfig.build.json"
+    },
+    {
+      "path": "../common/tsconfig.build.json"
+    },
+    {
+      "path": "../common-db/tsconfig.build.json"
+    },
+  ],
   "include": [
     "src/**/*.ts",
     "src/**/*.js" // currently, we have js too
   ],
   "exclude": [
-    "src/**/*.test.ts"
+    "src/**/*.test.ts",
+    "build/**",
+    "node_modules/**"
   ]
 }

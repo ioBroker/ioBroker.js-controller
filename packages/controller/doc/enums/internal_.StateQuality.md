@@ -26,7 +26,7 @@
 
 #### Defined in
 
-[types/index.d.ts:28](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/index.d.ts#L28)
+[types/index.d.ts:28](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L28)
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 #### Defined in
 
-[types/index.d.ts:32](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/index.d.ts#L32)
+[types/index.d.ts:32](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L32)
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 #### Defined in
 
-[types/index.d.ts:34](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/index.d.ts#L34)
+[types/index.d.ts:34](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L34)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-[types/index.d.ts:30](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/index.d.ts#L30)
+[types/index.d.ts:30](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L30)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[types/index.d.ts:29](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/index.d.ts#L29)
+[types/index.d.ts:29](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L29)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[types/index.d.ts:31](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/index.d.ts#L31)
+[types/index.d.ts:31](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L31)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[types/index.d.ts:27](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/index.d.ts#L27)
+[types/index.d.ts:27](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L27)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[types/index.d.ts:33](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/index.d.ts#L33)
+[types/index.d.ts:33](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L33)
 
 ___
 
@@ -106,4 +106,4 @@ ___
 
 #### Defined in
 
-[types/index.d.ts:35](https://github.com/ioBroker/ioBroker.js-controller/blob/16cebeed/packages/types/index.d.ts#L35)
+[types/index.d.ts:35](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L35)
