@@ -3808,7 +3808,7 @@ export class ObjectsInRedisClient {
     /**
      * Function to checks if comparisons will work according to the configured Locale
      */
-    async isLocaleSupported(): Promise<boolean> {
+    async isSystemLocaleSupported(): Promise<boolean> {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }

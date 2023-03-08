@@ -970,7 +970,11 @@ function startAliveInterval() {
  * Check if the current redis Locale is supported, else register notification
  */
 async function checkLocaleSupported() {
-    const isSupported = await objects!.isLocaleSupported();
+    if (!objects) {
+        throw new Error('Objects database not connected');
+    }
+
+    const isSupported = await objects.isSystemLocaleSupported();
 
     if (!isSupported) {
         await notificationHandler.addMessage(
