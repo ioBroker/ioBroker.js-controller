@@ -3854,7 +3854,7 @@ export function ensureDNSOrder(): void {
     try {
         const configName = getConfigFileName();
         const config: ioBroker.IoBrokerJson = fs.readJSONSync(configName);
-        dnsOrder = config.dnsResolution;
+        dnsOrder = config.dnsResolution || dnsOrder;
     } catch (e) {
         console.warn(`Could not determine dns resolution order, fallback to "ipv4first": ${e.message}`);
     }
