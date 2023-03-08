@@ -426,10 +426,11 @@ adapter.sendTo('foo.0', 'message');
 adapter.sendTo('foo.0', 'command', { msg: 'message' });
 adapter.sendTo('foo.0', { msg: 'message' });
 
-function handleMessageResponse(response?: ioBroker.Message) {
-    if (!response) {
+function handleMessageResponse(response?: ioBroker.Message | Error) {
+    if (!response || response instanceof Error) {
         return;
     }
+
     response._id.toFixed();
     if (response.callback) {
         response.callback.ack.valueOf();
