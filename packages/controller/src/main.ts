@@ -626,6 +626,8 @@ async function initializeController() {
         }
     }
 
+    checkLocaleSupported();
+
     if (connected === null) {
         connected = true;
         if (!isStopping) {
@@ -633,7 +635,7 @@ async function initializeController() {
             pluginHandler.initPlugins(ioPackage, () => {
                 states!.subscribe(`${hostObjectPrefix}.plugins.*`);
 
-                // Do not start if we still stopping the instances
+                // Do not start if we're still stopping the instances
                 checkHost(() => {
                     startMultihost(config);
                     setMeta();
@@ -646,7 +648,7 @@ async function initializeController() {
         connected = true;
         started = true;
 
-        // Do not start if we still stopping the instances
+        // Do not start if we're still stopping the instances
         if (!isStopping) {
             getInstances();
         }
@@ -962,6 +964,27 @@ function startAliveInterval() {
 
     reportStatus();
     tools.measureEventLoopLag(1000, lag => eventLoopLags.push(lag!));
+}
+
+/**
+ * Check if the current redis Locale is supported, else register notification
+ */
+async function checkLocaleSupported() {
+    if (!objects) {
+        throw new Error('Objects database not connected');
+    }
+
+    const isSupported = await objects.isSystemLocaleSupported();
+
+    if (!isSupported) {
+        await notificationHandler.addMessage(
+            'system',
+            'databaseErrors',
+            'Your redis server is using an unsupported locale. This can lead to unexpected behavior of your ioBroker installation as well as data loss. ' +
+                'Please configure your Redis Server according to https://forum.iobroker.net/topic/52976/wichtiger-hinweis-f%C3%BCr-redis-installationen?_=1678099836122',
+            `system.host.${hostname}`
+        );
+    }
 }
 
 /**

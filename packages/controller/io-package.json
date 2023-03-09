@@ -969,6 +969,37 @@
           },
           "regex": [],
           "limit": 1
+        },
+        {
+          "category": "databaseErrors",
+          "name": {
+            "en": "Issues with the database",
+            "de": "Probleme mit der Datenbank",
+            "ru": "Проблемы с базой данных",
+            "pt": "Questões com a base de dados",
+            "nl": "Problemen met de database",
+            "fr": "Problèmes avec la base de données",
+            "it": "Problemi con il database",
+            "es": "Problemy z bazą danych",
+            "pl": "Instytucja została deaktywowana",
+            "zh-cn": "数据库的问题"
+          },
+          "severity": "alert",
+          "description": {
+            "en": "There is an error with the database.\nMaybe the database has internal problems or is misconfigured.",
+            "de": "Es liegt ein Fehler mit der Datenbank vor.\nVielleicht hat die Datenbank interne Probleme oder ist falsch konfiguriert.",
+            "ru": "Возникла ошибка с базой данных.\nВозможно, у базы данных есть внутренние проблемы или она неправильно настроена.",
+            "pt": "Há um erro na base de dados.\nTalvez a base de dados tenha problemas internos ou esteja mal configurada.",
+            "nl": "Misschien heeft de database interne problemen of is verkeerd geconfigureerd.",
+            "fr": "Il y a une erreur dans la base de données.\nPeut-être que la base de données a des problèmes internes ou est mal configurée.",
+            "it": "Forse il database ha problemi interni o è mal configurato.",
+            "es": "Hay un error con la base de datos.\nQuizás la base de datos tiene problemas internos o está mal configurada.",
+            "pl": "Wystąpił błąd z bazą danych.\nMoże baza danych ma wewnętrzne problemy lub jest źle skonfigurowana.",
+            "zh-cn": "数据库有错误。也许数据库有内部问题或配置错误。",
+            "uk": "Виникла помилка з базою даних.\nМожливо, база даних має внутрішні проблеми або неправильно налаштована."
+          },
+          "regex": [],
+          "limit": 10
         }
       ]
     }
