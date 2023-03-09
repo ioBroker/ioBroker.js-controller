@@ -24,7 +24,7 @@ Last id to include in the return list
 
 #### Defined in
 
-[types-dev/index.d.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L169)
+[types-dev/index.d.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/0655bceb/packages/types-dev/index.d.ts#L169)
 
 ___
 
@@ -36,7 +36,7 @@ Whether docs should be included in the return list
 
 #### Defined in
 
-[types-dev/index.d.ts:171](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L171)
+[types-dev/index.d.ts:171](https://github.com/ioBroker/ioBroker.js-controller/blob/0655bceb/packages/types-dev/index.d.ts#L171)
 
 ___
 
@@ -48,4 +48,4 @@ First id to include in the return list
 
 #### Defined in
 
-[types-dev/index.d.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L167)
+[types-dev/index.d.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/0655bceb/packages/types-dev/index.d.ts#L167)
