@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/adapter/src/lib/adapter/validator.ts#L10)
+[types-dev/index.d.ts:61](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L61)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:9](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/adapter/src/lib/adapter/validator.ts#L9)
+[types-dev/index.d.ts:60](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L60)
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/adapter/src/lib/adapter/validator.ts#L11)
+[types-dev/index.d.ts:62](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L62)

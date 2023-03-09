@@ -2386,12 +2386,27 @@ export function setQualityForInstance(objects: any, states: any, namespace: stri
 export function pattern2RegEx(pattern: string): string {
     pattern = (pattern || '').toString();
 
+    if (!isValidPattern(pattern)) {
+        throw new Error(`The pattern "${pattern}" is not a valid ID pattern`);
+    }
+
     const startsWithWildcard = pattern[0] === '*';
     const endsWithWildcard = pattern[pattern.length - 1] === '*';
 
     pattern = pattern.replace(/[-/\\^$+?.()|[\]{}]/g, '\\$&').replace(/\*/g, '.*');
 
     return (startsWithWildcard ? '' : '^') + pattern + (endsWithWildcard ? '' : '$');
+}
+
+/**
+ * Checks if pattern is valid
+ *
+ * @pattern pattern to check for validity
+ */
+export function isValidPattern(pattern: string): boolean {
+    pattern = pattern.replace(/\*/g, '');
+
+    return !FORBIDDEN_CHARS.test(pattern);
 }
 
 /**

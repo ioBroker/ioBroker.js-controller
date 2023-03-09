@@ -27,7 +27,7 @@ Access rights
 
 #### Defined in
 
-[types/index.d.ts:419](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L419)
+[types-dev/index.d.ts:411](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L411)
 
 ___
 
@@ -39,7 +39,7 @@ Date of creation
 
 #### Defined in
 
-[types/index.d.ts:423](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L423)
+[types-dev/index.d.ts:415](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L415)
 
 ___
 
@@ -51,7 +51,7 @@ Name of the file or directory
 
 #### Defined in
 
-[types/index.d.ts:413](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L413)
+[types-dev/index.d.ts:405](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L405)
 
 ___
 
@@ -63,7 +63,7 @@ Whether this is a directory or a file
 
 #### Defined in
 
-[types/index.d.ts:417](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L417)
+[types-dev/index.d.ts:409](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L409)
 
 ___
 
@@ -75,7 +75,7 @@ Date of last modification
 
 #### Defined in
 
-[types/index.d.ts:421](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L421)
+[types-dev/index.d.ts:413](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L413)
 
 ___
 
@@ -87,4 +87,4 @@ File system stats
 
 #### Defined in
 
-[types/index.d.ts:415](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L415)
+[types-dev/index.d.ts:407](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L407)

@@ -988,7 +988,14 @@ function register(it, expect, context) {
         state = await context.adapter.getStateAsync(`${gid}step`);
         expect(state.val).to.equal(-20);
     });
-    // getHistory - cannot be tested
+
+    it(testName + 'Should throw on invalid subscribe', async () => {
+        expect(context.adapter.subscribeStatesAsync('hm-rpc.0.§.test')).to.be.rejectedWith(
+            /is not a valid ID pattern/g,
+            'Should throw on invalid pattern'
+        );
+        await context.adapter.subscribeStatesAsync('*hm-rpc.0._.**test/*');
+    });
 }
 
 module.exports.register = register;
