@@ -90,7 +90,7 @@ export class Multihost {
      * @param changed if config has changed
      * @param callback
      */
-    private showMHState(config: Record<string, any>, changed: boolean, callback: () => void) {
+    private showMHState(config: Record<string, any>, changed: boolean, callback: () => void): void {
         if (config.multihostService.enabled) {
             let warningShown = false;
             if (dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host, true)) {
@@ -257,7 +257,7 @@ export class Multihost {
             output: process.stdout
         });
 
-        function hidden(query: string, callback: (pw: string) => void) {
+        function hidden(query: string, callback: (pw: string) => void): void {
             const stdin = process.openStdin();
             process.stdin.on('data', _char => {
                 const char = _char.toString();

@@ -11,7 +11,7 @@ let objects: ObjectsInRedisClient | null = null;
 let states: StateRedisClient | null = null;
 let onStatesChanged: ioBroker.StateChangeHandler | null = null;
 
-function cleanDbs() {
+function cleanDbs(): void {
     if (fs.existsSync(path.join(dataDir, 'objects.json'))) {
         fs.unlinkSync(path.join(dataDir, 'objects.json'));
     }

@@ -32,9 +32,9 @@ const adapterOptions: ioBroker.AdapterOptions = {
     }
 };
 
-function readyHandler() {}
+function readyHandler(): void {}
 
-function stateChangeHandler(id: string, state: ioBroker.State | null | undefined) {
+function stateChangeHandler(id: string, state: ioBroker.State | null | undefined): void {
     // Test State properties
     if (state) {
         state.ack;
@@ -49,7 +49,7 @@ function stateChangeHandler(id: string, state: ioBroker.State | null | undefined
     }
 }
 
-function objectChangeHandler(id: string, object: ioBroker.Object | null | undefined) {
+function objectChangeHandler(id: string, object: ioBroker.Object | null | undefined): void {
     // Test properties of all objects
     if (object) {
         object._id.toLowerCase();
@@ -108,7 +108,7 @@ function objectChangeHandler(id: string, object: ioBroker.Object | null | undefi
     }
 }
 
-function messageHandler(msg: ioBroker.Message) {
+function messageHandler(msg: ioBroker.Message): void {
     msg._id.toFixed();
     if (msg.callback) {
         // callback is optional and if there types have to match
@@ -123,7 +123,7 @@ function messageHandler(msg: ioBroker.Message) {
     typeof msg.message === 'string' && msg.message.toLowerCase();
 }
 
-function unloadHandler(callback: ioBroker.EmptyCallback) {
+function unloadHandler(callback: ioBroker.EmptyCallback): void {
     adapter.log!.info('shutting down');
     callback();
 }
@@ -426,7 +426,7 @@ adapter.sendTo('foo.0', 'message');
 adapter.sendTo('foo.0', 'command', { msg: 'message' });
 adapter.sendTo('foo.0', { msg: 'message' });
 
-function handleMessageResponse(response?: ioBroker.Message | Error) {
+function handleMessageResponse(response?: ioBroker.Message | Error): void {
     if (!response || response instanceof Error) {
         return;
     }
@@ -468,7 +468,7 @@ adapter.sendToHostAsync('host-foo', 'message').then(handleMessageResponse);
 adapter.sendToHostAsync('host-foo', 'command', { msg: 'message' }).then(handleMessageResponse);
 adapter.sendToHostAsync('host-foo', { msg: 'message' }).then(handleMessageResponse);
 
-function handleError(_err?: string) {}
+function handleError(_err?: string): void {}
 adapter.subscribeStates('*', handleError);
 adapter.subscribeForeignStates('*', handleError);
 adapter.unsubscribeStates('*', handleError);
@@ -518,7 +518,7 @@ const _repro1: ioBroker.ObjectChangeHandler = (id, obj) => {
 };
 
 // Repro from https://github.com/ioBroker/adapter-core/issues/4
-function _repro2() {
+function _repro2(): void {
     // Prepare custom object
     const obj = {
         common: {
@@ -532,7 +532,7 @@ function _repro2() {
 }
 
 // repro from https://github.com/ioBroker/adapter-core/issues/6
-function _repro3() {
+function _repro3(): void {
     adapter.getDevices((error, deviceList) => {
         if (deviceList) {
             deviceList; // $ExpectType DeviceObject[]

@@ -597,7 +597,7 @@ export class BackupRestore {
         }
     }
 
-    private async _uploadUserFiles(root: string, uploadPath?: string) {
+    private async _uploadUserFiles(root: string, uploadPath?: string): Promise<void> {
         uploadPath = uploadPath || '';
         if (!fs.existsSync(root)) {
             return;
@@ -629,7 +629,7 @@ export class BackupRestore {
         }
     }
 
-    private _copyBackupedFiles(backupDir: string) {
+    private _copyBackupedFiles(backupDir: string): void {
         try {
             if (!fs.existsSync(backupDir)) {
                 console.log('No additional files to restore');
@@ -851,7 +851,7 @@ export class BackupRestore {
     /**
      * Validates the backup.json and all json files inside the backup after (in temporary directory), here we only abort if backup.json is corrupted
      */
-    private _validateBackupAfterCreation() {
+    private _validateBackupAfterCreation(): void {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const backupJSON = require(`${tmpDir}/backup/backup.json`);
         if (!backupJSON.objects || !backupJSON.objects.length) {
