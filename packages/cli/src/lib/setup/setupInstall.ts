@@ -27,7 +27,7 @@ const osPlatform = process.platform;
 /** Note: this is duplicated in preinstallCheck */
 const RECOMMENDED_NPM_VERSION = 8;
 
-interface NpmInstallReturn {
+interface NpmInstallResult {
     installDir: string;
     _url: string;
 }
@@ -268,7 +268,7 @@ export class Install {
         npmUrl: string,
         options: CLIDownloadPacketOptions,
         debug: boolean
-    ): Promise<void | NpmInstallReturn> {
+    ): Promise<void | NpmInstallResult> {
         // Get npm version
         try {
             let npmVersion;
@@ -323,7 +323,7 @@ export class Install {
         npmUrl: string,
         options: CLIDownloadPacketOptions,
         debug: boolean
-    ): Promise<void | NpmInstallReturn> {
+    ): Promise<void | NpmInstallResult> {
         if (typeof options !== 'object') {
             options = {};
         }
