@@ -622,7 +622,7 @@ async function initializeController(): Promise<void> {
         }
     }
 
-    checkLocaleSupported();
+    checkSystemLocaleSupported();
 
     if (connected === null) {
         connected = true;
@@ -964,7 +964,7 @@ function startAliveInterval(): void {
 /**
  * Check if the current redis Locale is supported, else register notification
  */
-async function checkLocaleSupported() {
+async function checkSystemLocaleSupported(): Promise<void> {
     if (!objects) {
         throw new Error('Objects database not connected');
     }
