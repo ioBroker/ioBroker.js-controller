@@ -29,6 +29,23 @@
           "type": "object"
         }
       }
+    },
+    "isCompactTrue": {
+      "properties": {
+        "compact": {
+          "const": true
+        }
+      },
+      "required": [
+        "compact"
+      ]
+    },
+    "disallowNodeProcessParams": {
+      "not": {
+        "required": [
+          "nodeProcessParams"
+        ]
+      }
     }
   },
   "type": "object",
@@ -1125,7 +1142,11 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["title", "text", "buttons"],
+            "required": [
+              "title",
+              "text",
+              "buttons"
+            ],
             "properties": {
               "condition": {
                 "description": "Message will only be shown if condition matches",
@@ -1134,7 +1155,10 @@
                 "properties": {
                   "operand": {
                     "description": "Operand to connect multiple rules",
-                    "enum": ["or", "and"],
+                    "enum": [
+                      "or",
+                      "and"
+                    ],
                     "default": "and"
                   },
                   "rules": {
@@ -1160,7 +1184,11 @@
               },
               "level": {
                 "description": "The importance of the message",
-                "enum": ["info", "warn", "error"],
+                "enum": [
+                  "info",
+                  "warn",
+                  "error"
+                ],
                 "default": "warn"
               },
               "linkText": {
@@ -1171,13 +1199,33 @@
                 "description": "Predefined buttons of the message window",
                 "type": "array",
                 "items": {
-                  "enum": ["ok", "agree", "cancel"]
+                  "enum": [
+                    "ok",
+                    "agree",
+                    "cancel"
+                  ]
                 }
               }
             }
           }
+        },
+        "nodeProcessParams": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "$ref": "#/definitions/isCompactTrue"
+          },
+          "then": {
+            "$ref": "#/definitions/disallowNodeProcessParams"
+          }
+        }
+      ]
     },
     "objects": {
       "description": "Objects which will be created for the adapter",
@@ -1222,7 +1270,14 @@
             "items": {
               "type": "object",
               "additionalProperties": false,
-              "required": ["category", "name", "severity", "description", "regex", "limit"],
+              "required": [
+                "category",
+                "name",
+                "severity",
+                "description",
+                "regex",
+                "limit"
+              ],
               "properties": {
                 "category": {
                   "type": "string"
@@ -1232,7 +1287,11 @@
                 },
                 "severity": {
                   "type": "string",
-                  "enum": ["info", "notify", "alert"],
+                  "enum": [
+                    "info",
+                    "notify",
+                    "alert"
+                  ],
                   "description": "`info` will only be shown by admin, while `notify` might also be used by messaging adapters, `alert` ensures both"
                 },
                 "description": {
@@ -1274,3 +1333,4 @@
     }
   }
 }
+
