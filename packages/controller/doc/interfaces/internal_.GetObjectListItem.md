@@ -28,7 +28,7 @@ The same as @link{value}
 
 #### Defined in
 
-[types/index.d.ts:479](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L479)
+[types-dev/index.d.ts:471](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L471)
 
 ___
 
@@ -44,7 +44,7 @@ The ID of this object
 
 #### Defined in
 
-[types/index.d.ts:465](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L465)
+[types-dev/index.d.ts:457](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L457)
 
 ___
 
@@ -60,4 +60,4 @@ A copy of the object
 
 #### Defined in
 
-[types/index.d.ts:477](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L477)
+[types-dev/index.d.ts:469](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L469)

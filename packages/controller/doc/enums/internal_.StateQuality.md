@@ -26,7 +26,7 @@
 
 #### Defined in
 
-[types/index.d.ts:28](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L28)
+[types-dev/index.d.ts:16](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L16)
 
 ___
 
@@ -36,7 +36,7 @@ ___
 
 #### Defined in
 
-[types/index.d.ts:32](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L32)
+[types-dev/index.d.ts:20](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L20)
 
 ___
 
@@ -46,7 +46,7 @@ ___
 
 #### Defined in
 
-[types/index.d.ts:34](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L34)
+[types-dev/index.d.ts:22](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L22)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-[types/index.d.ts:30](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L30)
+[types-dev/index.d.ts:18](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L18)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[types/index.d.ts:29](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L29)
+[types-dev/index.d.ts:17](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L17)
 
 ___
 
@@ -76,7 +76,7 @@ ___
 
 #### Defined in
 
-[types/index.d.ts:31](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L31)
+[types-dev/index.d.ts:19](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L19)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-[types/index.d.ts:27](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L27)
+[types-dev/index.d.ts:15](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L15)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-[types/index.d.ts:33](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L33)
+[types-dev/index.d.ts:21](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L21)
 
 ___
 
@@ -106,4 +106,4 @@ ___
 
 #### Defined in
 
-[types/index.d.ts:35](https://github.com/ioBroker/ioBroker.js-controller/blob/57263052/packages/types/index.d.ts#L35)
+[types-dev/index.d.ts:23](https://github.com/ioBroker/ioBroker.js-controller/blob/9c01619f/packages/types-dev/index.d.ts#L23)

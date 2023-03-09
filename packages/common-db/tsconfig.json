@@ -2,7 +2,8 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "build",
-    "rootDir": "src"
+    "rootDir": "src",
+    "noEmit": false
   },
   "references": [
     {
@@ -25,7 +26,7 @@
     },
     {
       "path": "../common/tsconfig.json"
-    },
+    }
   ],
   "include": [
     "src/**/*.ts"
