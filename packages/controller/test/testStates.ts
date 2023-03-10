@@ -9,7 +9,7 @@ let states: StateRedisClient | null = null;
 let onStatesChanged: ioBroker.StateChangeHandler | null = null;
 const dataDir = __dirname + '/../tmp/data';
 
-function cleanDbs() {
+function cleanDbs(): void {
     if (fs.existsSync(dataDir + '/objects.json')) {
         fs.unlinkSync(dataDir + '/objects.json');
     }

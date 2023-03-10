@@ -336,7 +336,7 @@ export class InMemoryFileDB {
     ): void | Promise<void> {
         const s = client?._subscribe?.[type];
         if (s) {
-            const removeEntry = (p: string) => {
+            const removeEntry = (p: string): void => {
                 const index = s.findIndex(sub => sub.pattern === p);
                 if (index > -1) {
                     s.splice(index, 1);

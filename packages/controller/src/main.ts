@@ -192,10 +192,8 @@ function getErrorText(code: number): string {
 
 /**
  * Get the config directly from fs - never cached
- *
- * @returns {null|object}
  */
-function getConfig() {
+function getConfig(): Record<string, any> | never {
     const configFile = tools.getConfigFileName();
     if (!fs.existsSync(configFile)) {
         if (process.argv.indexOf('start') !== -1) {
@@ -206,7 +204,6 @@ function getConfig() {
         }
         logger.error(`${hostLogPrefix} conf/${tools.appName}.json missing - call node ${tools.appName}.js setup`);
         process.exit(EXIT_CODES.MISSING_CONFIG_JSON);
-        return null;
     } else {
         const _config = fs.readJSONSync(configFile);
         if (!_config.states) {
@@ -222,7 +219,7 @@ function getConfig() {
     }
 }
 
-function _startMultihost(_config: Record<string, any>, secret: string | false) {
+function _startMultihost(_config: Record<string, any>, secret: string | false): void {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const MHService = require('./lib/multihostServer.js');
     const cpus = os.cpus();
@@ -366,7 +363,7 @@ async function startMultihost(__config?: Record<string, any>): Promise<boolean |
  * At start every 30 seconds and after 5 minutes, every hour.
  * Because DHCP could change the IPs.
  */
-function startUpdateIPs() {
+function startUpdateIPs(): void {
     if (!updateIPsTimer) {
         updateIPsTimer = setInterval(() => {
             if (Date.now() - uptimeStart > 5 * 60_000) {
@@ -395,7 +392,7 @@ function logRedirect(isActive: boolean, id: string, reason: string): void {
     }
 }
 
-function handleDisconnect() {
+function handleDisconnect(): void {
     if (!connected || restartTimeout || isStopping) {
         return;
     }
@@ -422,7 +419,7 @@ function handleDisconnect() {
     }
 }
 
-function createStates(onConnect: () => void) {
+function createStates(onConnect: () => void): void {
     states = new States({
         namespace: hostLogPrefix,
         connection: config.states,
@@ -581,7 +578,7 @@ function createStates(onConnect: () => void) {
             initializeController();
             onConnect && onConnect();
         },
-        disconnected: (/*error*/) => {
+        disconnected: () => {
             if (restartTimeout) {
                 return;
             }
@@ -594,10 +591,9 @@ function createStates(onConnect: () => void) {
             }, (config.states.connectTimeout || 2000) + (!compactGroupController ? 500 : 0));
         }
     });
-    return true;
 }
 
-async function initializeController() {
+async function initializeController(): Promise<void> {
     if (!states || !objects || connected) {
         return;
     }
@@ -626,7 +622,7 @@ async function initializeController() {
         }
     }
 
-    checkLocaleSupported();
+    checkSystemLocaleSupported();
 
     if (connected === null) {
         connected = true;
@@ -656,7 +652,7 @@ async function initializeController() {
 }
 
 // create "objects" object
-function createObjects(onConnect: () => void) {
+function createObjects(onConnect: () => void): void {
     objects = new Objects({
         namespace: hostLogPrefix,
         connection: config.objects,
@@ -944,10 +940,9 @@ function createObjects(onConnect: () => void) {
             }
         }
     });
-    return true;
 }
 
-function startAliveInterval() {
+function startAliveInterval(): void {
     config.system = config.system || {};
     config.system.statisticsInterval = parseInt(config.system.statisticsInterval, 10) || 15000;
     config.system.checkDiskInterval =
@@ -969,7 +964,7 @@ function startAliveInterval() {
 /**
  * Check if the current redis Locale is supported, else register notification
  */
-async function checkLocaleSupported() {
+async function checkSystemLocaleSupported(): Promise<void> {
     if (!objects) {
         throw new Error('Objects database not connected');
     }
@@ -989,10 +984,8 @@ async function checkLocaleSupported() {
 
 /**
  * Ensures that we take over primary host if no other is doing the job
- *
- * @return {Promise<void>}
  */
-async function checkPrimaryHost() {
+async function checkPrimaryHost(): Promise<void> {
     // we cannot interact with db now because currently reconnecting
     if (objectsDisconnectTimeout || compactGroupController) {
         return;
@@ -1014,7 +1007,7 @@ async function checkPrimaryHost() {
     }
 }
 
-function reportStatus() {
+function reportStatus(): void {
     if (!states) {
         return;
     }
@@ -1257,7 +1250,7 @@ function cleanAutoSubscribes(instanceID: ioBroker.ObjectIDs.Instance, callback: 
     );
 }
 
-async function delObjects(objs: ioBroker.GetObjectViewItem<ioBroker.AnyObject>[]) {
+async function delObjects(objs: ioBroker.GetObjectViewItem<ioBroker.AnyObject>[]): Promise<void> {
     for (const row of objs) {
         if (row && row.id) {
             logger.info(`${hostLogPrefix} Delete state "${row.id}"`);
@@ -1544,7 +1537,7 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
 }
 
 // check if some IPv4 address found. If not try in 30 seconds one more time (max 10 times)
-function setIPs(ipList?: string[]) {
+function setIPs(ipList?: string[]): void {
     if (isStopping) {
         return;
     }
@@ -1619,7 +1612,7 @@ async function extendObjects(tasks: Record<string, any>[]): Promise<void> {
     }
 }
 
-function setMeta() {
+function setMeta(): void {
     const id = hostObjectPrefix;
 
     objects!.getObject(id, (err, oldObj) => {
@@ -2342,7 +2335,7 @@ async function deleteAllZipPackages(): Promise<void> {
     await _deleteAllZipPackages(list!);
 }
 
-async function startAdapterUpload() {
+async function startAdapterUpload(): Promise<void> {
     if (!uploadTasks.length) {
         return;
     }
@@ -3366,7 +3359,7 @@ function restartInstances(instances: ioBroker.ObjectIDs.Instance[], cb?: () => v
     }
 }
 
-async function getInstances() {
+async function getInstances(): Promise<void> {
     const instances = await tools.getInstancesOrderedByStartPrio(objects, logger, hostLogPrefix);
 
     if (instances.length === 0) {
@@ -3514,7 +3507,7 @@ function checkAndAddInstance(instance: ioBroker.InstanceObject, ipArr: string[])
     return true;
 }
 
-function initInstances() {
+function initInstances(): void {
     let seconds = 0;
     const interval = (config.system && config.system.instanceStartInterval) || 2_000;
 
@@ -3590,14 +3583,14 @@ function initInstances() {
 }
 
 /**
- * Chceks if at least one of the instances of given name satisfies the version
+ * Checks if at least one of the instances of given name satisfies the version
  *
  * @param name - name of the dependency
  * @param version - version requirement, e.g. ">=3.3.0"
  * @param instances - object of instances and their corresponding instance objects
  * @throws
  */
-function checkVersion(name: string, version: string, instances: Record<string, ioBroker.InstanceObject>) {
+function checkVersion(name: string, version: string, instances: Record<string, ioBroker.InstanceObject>): void {
     let isFound = false;
 
     if (name === 'js-controller') {
@@ -3642,7 +3635,7 @@ function checkVersion(name: string, version: string, instances: Record<string, i
  * @param deps - same host dependencies as defined in io-pack
  * @param globalDeps - global dependencies, as defined in io-pack
  */
-async function checkVersions(id: string, deps: Dependencies, globalDeps: Dependencies) {
+async function checkVersions(id: string, deps: Dependencies, globalDeps: Dependencies): Promise<void> {
     const res = await objects!.getObjectViewAsync('system', 'instance', {
         startkey: 'system.adapter.',
         endkey: 'system.adapter.\u9999'
@@ -3721,7 +3714,7 @@ function storePids(): void {
     }
 }
 
-function installAdapters() {
+function installAdapters(): void {
     if (!installQueue.length) {
         return;
     }
@@ -3827,7 +3820,7 @@ function installAdapters() {
                     installQueue.shift();
                     installQueue.push(task);
                 } else {
-                    const finishTask = (task: InstallQueueEntry) => {
+                    const finishTask = (task: InstallQueueEntry): void => {
                         if (procs[task.id]) {
                             procs[task.id].needsRebuild = false;
                             if (!task.disabled) {
@@ -3953,8 +3946,8 @@ function startScheduledInstance(callback?: () => void): void {
     const id = idsToStart[0];
     const { adapterDir, fileNameFull, wakeUp } = scheduledInstances[idsToStart[0]];
 
-    const processNextScheduledInstance = () => {
-        let delay = (config.system && config.system.instanceStartInterval) || 2000;
+    const processNextScheduledInstance = (): void => {
+        let delay = (config.system && config.system.instanceStartInterval) || 2_000;
         delay = skipped ? 0 : delay + 2_000;
         setTimeout(() => {
             delete scheduledInstances[id];
@@ -4273,7 +4266,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                     }`
                 );
                 // Exit Handler for normal Adapters started as own processes
-                const exitHandler = (code: number, signal: string) => {
+                const exitHandler = (code: number, signal: string): void => {
                     outputCount += 2;
                     states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
                     states!.setState(`${id}.connected`, { val: false, ack: true, from: hostObjectPrefix });
@@ -4538,7 +4531,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                 };
 
                 // Some parts of the Adapter start logic are async, so "the finalization" is put into this method
-                const handleAdapterProcessStart = () => {
+                const handleAdapterProcessStart = (): void => {
                     const proc = procs[id];
 
                     if (!proc) {
@@ -4761,7 +4754,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
                                 const currentCompactGroup = instance.common.compactGroup;
                                 // Exit handler for compact groups
-                                const groupExitHandler = (code: number, signal: string) => {
+                                const groupExitHandler = (code: number, signal: string): void => {
                                     if (signal) {
                                         logger.warn(
                                             `${hostLogPrefix} compactgroup controller ${currentCompactGroup} terminated due to ${signal}`
@@ -5283,11 +5276,11 @@ function stopInstance(id: string, force: boolean, callback?: (() => void) | null
     }
 }
 
-function stopInstances(forceStop: boolean, callback?: ((wasForced?: boolean) => void) | null) {
+function stopInstances(forceStop: boolean, callback?: ((wasForced?: boolean) => void) | null): void {
     let maxTimeout: NodeJS.Timeout | null | undefined;
     let waitTimeout: NodeJS.Timeout | null | undefined;
 
-    function waitForInstances() {
+    function waitForInstances(): void {
         waitTimeout = null;
         if (!allInstancesStopped) {
             waitTimeout = setTimeout(waitForInstances, 200);
@@ -5362,7 +5355,7 @@ function stopInstances(forceStop: boolean, callback?: ((wasForced?: boolean) => 
  * @param force kills instances under all circumstances
  * @param callback callback function
  */
-function stop(force?: boolean, callback?: () => void) {
+function stop(force?: boolean, callback?: () => void): void {
     if (force === undefined) {
         force = false;
     }
@@ -5820,7 +5813,7 @@ function init(compactGroupId?: number): void {
         setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), compactGroupController ? 0 : 1_000);
     }, 30_000);
 
-    const exceptionHandler = (err: Error) => {
+    const exceptionHandler = (err: Error): void => {
         if (compactGroupController) {
             console.error(err.message);
             if (err.stack) {

@@ -83,7 +83,7 @@ export class MHClient {
         onReady: () => void,
         onMessage: (msg: ReceivedMessage, rinfo: dgram.RemoteInfo) => boolean,
         onFinished: (err?: Error) => void
-    ) {
+    ): void {
         if (this.server) {
             onFinished(new Error('Some operation still active'));
             return;

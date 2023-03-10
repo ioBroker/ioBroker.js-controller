@@ -35,7 +35,7 @@ const IoSysLog =
         constructor(options: any) {
             super(options);
         }
-        log(info: LogInfo, callback: () => void) {
+        log(info: LogInfo, callback: () => void): void {
             // we need to map the ioBroker loglevels to the Syslog ones
             const ioInfo = info;
             if (ioInfo[LEVEL] === 'warn') {
@@ -60,7 +60,7 @@ const IoSysLog =
 const IoSeq =
     Seq &&
     class extends Seq {
-        log(info: LogInfo, callback: () => void) {
+        log(info: LogInfo, callback: () => void): void {
             const ioInfo = deepClone(info);
             ioInfo.props = ioInfo.props || {};
 
@@ -104,7 +104,7 @@ class NotifierTransport extends Transport {
         this.name = 'NT'; // NotifierTransport
     }
 
-    log(info: LogInfo, callback: () => void) {
+    log(info: LogInfo, callback: () => void): void {
         const msg = {
             severity: info[LEVEL],
             ts: new Date(info.timestamp).getTime(),
@@ -147,7 +147,7 @@ export function logger(
         files = [files];
     }
 
-    const formatter = (info: LogInfo) => `${timestamp(info.timestamp)} - ${info.level}: ${info.message}`;
+    const formatter = (info: LogInfo): string => `${timestamp(info.timestamp)} - ${info.level}: ${info.message}`;
 
     files = files || [];
 
@@ -504,7 +504,7 @@ export function logger(
     return log;
 }
 
-function getDate() {
+function getDate(): string {
     const ts = new Date();
     let result = ts.getFullYear() + '-';
     let value: number | string = ts.getMonth() + 1;
@@ -521,7 +521,7 @@ function getDate() {
     return result;
 }
 
-function timestamp(date: string) {
+function timestamp(date: string): string {
     const ts = date ? new Date(date) : new Date();
     let result = ts.getFullYear() + '-';
 
