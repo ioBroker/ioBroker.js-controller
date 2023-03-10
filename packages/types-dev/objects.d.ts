@@ -315,6 +315,8 @@ declare global {
             preserveSettings?: string | string[];
             installedVersion?: string;
             installedFrom?: string;
+            /** Arguments passed to the adapter process, this disables compact mode */
+            nodeProcessParams?: string[];
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
