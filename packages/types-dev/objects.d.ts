@@ -272,6 +272,18 @@ declare global {
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
         }
+        interface ScheduleCommon extends ObjectCommon {
+            enabled?: boolean;
+            // Make it possible to narrow the object type using the custom property
+            custom?: undefined;
+        }
+
+        interface ChartCommon extends ObjectCommon {
+            enabled?: boolean;
+            color?: string;
+            // Make it possible to narrow the object type using the custom property
+            custom?: undefined;
+        }
         interface EnumCommon extends ObjectCommon {
             /** The IDs of the enum members */
             members?: string[];
@@ -632,6 +644,22 @@ declare global {
             common?: Partial<MetaCommon>;
         }
 
+        interface ChartObject extends BaseObject {
+            type: 'chart';
+            common: ChartCommon;
+        }
+
+        type PartialChartObject = ChartObject;
+
+        interface ScheduleObject extends BaseObject {
+            type: 'schedule';
+            common: ScheduleCommon;
+        }
+
+        interface PartialScheduleObject extends Partial<Omit<ScheduleObject, 'common'>> {
+            common?: Partial<ScheduleCommon>;
+        }
+
         interface InstanceObject extends BaseObject {
             _id: ObjectIDs.Instance;
             type: 'instance';
@@ -724,6 +752,8 @@ declare global {
             | UserObject
             | GroupObject
             | ScriptObject
+            | ChartObject
+            | ScheduleObject
             | OtherObject;
 
         type AnyPartialObject =
@@ -739,6 +769,8 @@ declare global {
             | PartialUserObject
             | PartialGroupObject
             | PartialScriptObject
+            | PartialChartObject
+            | PartialScheduleObject
             | PartialOtherObject;
 
         /** All objects that usually appear in an adapter scope */
@@ -777,6 +809,8 @@ declare global {
         type SettableUserObject = SettableObject<UserObject>;
         type SettableGroupObject = SettableObject<GroupObject>;
         type SettableScriptObject = SettableObject<ScriptObject>;
+        type SettableScheduleObject = SettableObject<ScheduleObject>;
+        type SettableChartObject = SettableObject<ChartObject>;
         type SettableOtherObject = SettableObject<OtherObject>;
 
         // Used to infer the return type of GetObjectView
@@ -805,6 +839,10 @@ declare global {
                 ? GroupObject
                 : View extends 'user'
                 ? UserObject
+                : View extends 'chart'
+                ? ChartObject
+                : View extends 'schedule'
+                ? ScheduleObject
                 : View extends 'config'
                 ? OtherObject & { type: 'config' }
                 : View extends 'custom'
