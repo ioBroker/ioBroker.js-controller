@@ -49,7 +49,8 @@ declare global {
             | 'meta'
             | 'script'
             | 'user'
-            | 'chart';
+            | 'chart'
+            | 'schedule';
 
         // Define the naming schemes for objects so we can provide more specific types for get/setObject
 
