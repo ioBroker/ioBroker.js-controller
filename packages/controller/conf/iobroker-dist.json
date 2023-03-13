@@ -1,4 +1,5 @@
 {
+    "$schema": "../../../schemas/iobroker.json",
     "system": {
         "memoryLimitMB": 0,
         "hostname": "",
@@ -7,7 +8,6 @@
         "checkDiskInterval": 300000,
         "// checkDiskInterval": "Interval how often the disk size will be checked",
         "instanceStartInterval": 2000,
-        "// noChmod": "Flag to test new feature with no chmod call. Must be deleted later and noChmod must be mainline (2018.06.04)",
         "compact": false,
         "// compact": "Controller will try to start the instances as a part of the same process. No spawn will be done. Only by adapters that support it and have flag compact flag in io-package.json",
         "allowShellCommands": false,
@@ -33,7 +33,7 @@
         "writeFileInterval": 5000,
         "dataDir": "",
         "options": {
-            "auth_pass": null,
+            "auth_pass": "",
             "retry_max_delay": 5000,
             "retry_max_count": 19,
             "db": 0,
@@ -79,7 +79,7 @@
         "writeFileInterval": 30000,
         "dataDir": "",
         "options": {
-            "auth_pass": null,
+            "auth_pass": "",
             "retry_max_delay": 5000,
             "retry_max_count": 19,
             "db": 0,
@@ -90,7 +90,7 @@
             "files": 24,
             "// files": "Minimal number of backup files, after the deletion will be executed according to backupTime settings",
             "hours": 48,
-            "// hoursC": "All backups older than 48 hours will be deleted. But only if the number of files is greater than of backupNumber",
+            "// hours": "All backups older than 48 hours will be deleted. But only if the number of files is greater than of backupNumber",
             "period": 120,
             "// period": "by default backup every 2 hours. Time is in minutes. To disable backup set the value to 0",
             "path": "",
@@ -161,5 +161,8 @@
     "// dataDir": "Always relative to iobroker.js-controller/",
     "plugins": {
 
-    }
+    },
+    "// dnsResolution": "Use 'verbatim' for ipv6 first, else use 'ipv4first'",
+    "dnsResolution": "ipv4first",
+    "dataDir": ""
 }

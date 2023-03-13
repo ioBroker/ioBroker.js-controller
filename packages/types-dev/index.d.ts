@@ -2,6 +2,8 @@
 
 import * as fs from 'fs';
 import './objects';
+import type { IoBJson } from './config';
+
 export {}; // avoids exporting AtLeastOne into the global scope
 
 // Requires at least one of the properties of T to be given, whether it's optional or not
@@ -483,5 +485,10 @@ declare global {
 
         type Timeout = number & { __ioBrokerBrand: 'Timeout' };
         type Interval = number & { __ioBrokerBrand: 'Interval' };
+
+        /**
+         * The ioBroker global config
+         */
+        type IoBrokerJson = IoBJson;
     } // end namespace ioBroker
 } // end declare global

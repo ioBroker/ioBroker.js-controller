@@ -104,6 +104,8 @@ import type {
     Pattern
 } from '../_Types';
 
+tools.ensureDNSOrder();
+
 // keep them outside until we have migrated to TS, else devs can access them
 let adapterStates: StatesInRedisClient | null;
 let adapterObjects: ObjectsInRedisClient | null;

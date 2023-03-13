@@ -21,6 +21,7 @@ import events from 'events';
 import { maybeCallbackWithError } from './maybeCallback';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
+import { setDefaultResultOrder } from 'dns';
 
 interface FormatAliasValueOptions {
     /** Common attribute of source object */
@@ -2126,8 +2127,10 @@ export function getControllerDir(): string {
     throw new Error('Could not determine controller directory');
 }
 
-// All paths are returned always relative to /node_modules/' + appName + '.js-controller
-// the result has always "/" as last symbol
+/**
+ * All paths are returned always relative to /node_modules/' + appName + '.js-controller
+ * the result has always "/" as last symbol
+ */
 export function getDefaultDataDir(): string {
     if (_isDevInstallation()) {
         // dev install
@@ -3856,6 +3859,22 @@ export function maybeArrayToString<T>(maybeArr: T): T extends any[] ? string : T
 
     // @ts-expect-error https://github.com/microsoft/TypeScript/issues/33912
     return maybeArr;
+}
+
+/**
+ * Ensure that DNS is resolved according to ioBroker config
+ */
+export function ensureDNSOrder(): void {
+    let dnsOrder: 'ipv4first' | 'verbatim' = 'ipv4first';
+    try {
+        const configName = getConfigFileName();
+        const config: ioBroker.IoBrokerJson = fs.readJSONSync(configName);
+        dnsOrder = config.dnsResolution || dnsOrder;
+    } catch (e) {
+        console.warn(`Could not determine dns resolution order, fallback to "ipv4first": ${e.message}`);
+    }
+
+    setDefaultResultOrder(dnsOrder);
 }
 
 export * from './maybeCallback';

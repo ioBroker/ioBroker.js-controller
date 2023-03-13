@@ -10,7 +10,6 @@
 import type {
     CleanDatabaseHandler,
     DbConnectAsync,
-    IoBrokerJSON,
     IoPackage,
     ProcessExitCallback,
     ResetDbConnect,
@@ -76,7 +75,7 @@ export class Setup {
         }
 
         let ioPackage: IoPackage | undefined;
-        let ioConfig: IoBrokerJSON | undefined;
+        let ioConfig: ioBroker.IoBrokerJson | undefined;
 
         const configFile = tools.getConfigFileName();
         try {
@@ -91,14 +90,15 @@ export class Setup {
         }
 
         const plugins: Record<string, any> = {};
-        if (ioPackage && ioPackage.common && ioPackage.common.plugins) {
+        if (ioPackage?.common?.plugins) {
             for (const [plugin, pluginData] of Object.entries(ioPackage.common.plugins)) {
                 if (pluginData.enabled !== false) {
                     plugins[plugin] = pluginData;
                 }
             }
         }
-        if (ioConfig && ioConfig.plugins) {
+
+        if (ioConfig?.plugins) {
             for (const [plugin, pluginData] of Object.entries(ioConfig.plugins)) {
                 if (!plugins[plugin] && pluginData.enabled !== false) {
                     plugins[plugin] = pluginData;

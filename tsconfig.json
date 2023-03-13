@@ -34,7 +34,8 @@
   "include": [
     "packages/**/*.js",
     "packages/**/*.ts",
-    "packages/controller/io-package.json"
+    "packages/controller/io-package.json",
+    "schemas/**/*.ts"
   ],
   "exclude": [
     "packages/**/build"
