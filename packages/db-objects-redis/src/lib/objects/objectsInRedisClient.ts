@@ -3606,6 +3606,7 @@ export class ObjectsInRedisClient {
                 );
             } else if (oldObj?.type && !obj.type) {
                 // the oldObj had a type, the new one has no -> rem
+                // @ts-expect-error TODO remove in v5.1, for now support objs without type for legacy design objects
                 commands.push(['srem', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
             }
 

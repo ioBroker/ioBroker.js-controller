@@ -50,7 +50,8 @@ declare global {
             | 'script'
             | 'user'
             | 'chart'
-            | 'schedule';
+            | 'schedule'
+            | 'design';
 
         // Define the naming schemes for objects so we can provide more specific types for get/setObject
 
@@ -729,10 +730,9 @@ declare global {
             common?: Partial<OtherCommon>;
         }
 
-        // @ts-expect-error maybe we should just add the type design to these objects?
         interface DesignObject extends Omit<BaseObject, 'common'> {
             // allow narrowing the type without making it a pain
-            type: undefined;
+            type: 'design';
             _id: ObjectIDs.Design;
             language: 'javascript';
             common?: OtherCommon;
@@ -817,6 +817,7 @@ declare global {
         type SettableScriptObject = SettableObject<ScriptObject>;
         type SettableScheduleObject = SettableObject<ScheduleObject>;
         type SettableChartObject = SettableObject<ChartObject>;
+        type SettableDesignObject = SettableObject<DesignObject>;
         type SettableOtherObject = SettableObject<OtherObject>;
 
         // Used to infer the return type of GetObjectView

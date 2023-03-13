@@ -16,7 +16,8 @@
     "iobrokerObject": {
       "type": "object",
       "required": [
-        "_id"
+        "_id",
+        "type"
       ],
       "properties": {
         "_id": {

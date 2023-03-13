@@ -2824,7 +2824,8 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
         'group',
         'chart',
         'folder',
-        'schedule'
+        'schedule',
+        'design'
     ];
 
     if (obj.type !== undefined && !allowedObjectTypes.includes(obj.type)) {
