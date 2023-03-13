@@ -729,7 +729,10 @@ declare global {
             common?: Partial<OtherCommon>;
         }
 
+        // @ts-expect-error maybe we should just add the type design to these objects?
         interface DesignObject extends Omit<BaseObject, 'common'> {
+            // allow narrowing the type without making it a pain
+            type: undefined;
             _id: ObjectIDs.Design;
             language: 'javascript';
             common?: OtherCommon;
@@ -755,7 +758,8 @@ declare global {
             | ScriptObject
             | ChartObject
             | ScheduleObject
-            | OtherObject;
+            | OtherObject
+            | DesignObject;
 
         type AnyPartialObject =
             | PartialStateObject
@@ -772,7 +776,8 @@ declare global {
             | PartialScriptObject
             | PartialChartObject
             | PartialScheduleObject
-            | PartialOtherObject;
+            | PartialOtherObject
+            | PartialDesignObject;
 
         /** All objects that usually appear in an adapter scope */
         type AdapterScopedObject = FolderObject | DeviceObject | ChannelObject | StateObject;

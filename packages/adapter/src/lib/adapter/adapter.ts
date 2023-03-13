@@ -2696,7 +2696,7 @@ export class AdapterClass extends EventEmitter {
                     );
                     return tools.maybeCallbackWithError(options.callback, 'common.custom needs to be an object');
                 }
-            } else {
+            } else if (options.obj.common) {
                 if (
                     Object.prototype.hasOwnProperty.call(options.obj.common, 'custom') &&
                     options.obj.common.custom !== null
@@ -2708,7 +2708,7 @@ export class AdapterClass extends EventEmitter {
                 }
             }
 
-            if (!Object.prototype.hasOwnProperty.call(options.obj.common, 'name')) {
+            if (options.obj.common && !Object.prototype.hasOwnProperty.call(options.obj.common, 'name')) {
                 options.obj.common.name = options.id;
                 // it is a more unimportant warning as debug
                 this._logger.debug(
@@ -3059,6 +3059,7 @@ export class AdapterClass extends EventEmitter {
 
             options.obj = extend(true, oldObj, options.obj);
 
+            // @ts-expect-error TODO we are returning type Object for ease of use to devs, but formally these are AnyObjects, e.g. not guaranteed to have common
             return adapterObjects.setObject(options.id, options.obj, options.options, options.callback);
         } else {
             options.obj.from = options.obj.from || `system.adapter.${this.namespace}`;
@@ -3373,6 +3374,7 @@ export class AdapterClass extends EventEmitter {
 
             obj = extend(true, oldObj, obj);
 
+            // @ts-expect-error TODO we are returning type Object for ease of use to devs, but formally these are AnyObjects, e.g. not guaranteed to have common
             return adapterObjects.setObject(id, obj, options, callback);
         } else {
             obj.from = obj.from || `system.adapter.${this.namespace}`;

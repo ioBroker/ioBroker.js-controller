@@ -2815,6 +2815,7 @@ export class ObjectsInRedisClient {
                                 CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ // '0644'
                         };
                         if (obj.type === 'state') {
+                            // TODO why he infers state or design here?
                             obj.acl!.state =
                                 (this.defaultNewAcl && this.defaultNewAcl.state) ||
                                 CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ; // '0644'
@@ -2830,6 +2831,7 @@ export class ObjectsInRedisClient {
                 } catch (e) {
                     this.log.error(`${this.namespace} _chownObject error: ${e.message}`);
                 }
+                // @ts-expect-error TODO we are returning type Object for ease of use to devs, but formally these are AnyObjects, e.g. not guaranteed to have common
                 return tools.maybeCallbackWithError(callback, null, filteredObjs);
             },
             true
@@ -2943,6 +2945,7 @@ export class ObjectsInRedisClient {
                                 CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ // '0644'
                         };
                         if (obj.type === 'state') {
+                            // TODO why he infers state or design here?
                             obj.acl!.state =
                                 (this.defaultNewAcl && this.defaultNewAcl.state) ||
                                 CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ; // '0644'
@@ -3603,7 +3606,6 @@ export class ObjectsInRedisClient {
                 );
             } else if (oldObj?.type && !obj.type) {
                 // the oldObj had a type, the new one has no -> rem
-                // @ts-expect-error TODO: TS assumes that there cannot be an obj without type - but e.g. design has no type https://github.com/ioBroker/adapter-core/issues/455
                 commands.push(['srem', `${this.setNamespace}object.type.${obj.type}`, this.objNamespace + id]);
             }
 
@@ -3700,6 +3702,7 @@ export class ObjectsInRedisClient {
         options?: CallOptions | null
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>> {
         return new Promise((resolve, reject) =>
+            // @ts-expect-error TODO we are returning type Object for ease of use to devs, but formally these are AnyObjects, e.g. not guaranteed to have common
             this.setObject(id, obj, options, (err, res) => (err ? reject(err) : resolve(res)))
         );
     }
@@ -4485,6 +4488,7 @@ export class ObjectsInRedisClient {
                 if (!obj || !utils.checkObject(obj, options, CONSTS.ACCESS_READ)) {
                     continue;
                 }
+                // @ts-expect-error TODO we are returning type Object for ease of use to devs, but formally these are AnyObjects, e.g. not guaranteed to have common
                 result.rows.push({ id: obj._id, value: obj, doc: obj });
             }
         }
@@ -4751,6 +4755,7 @@ export class ObjectsInRedisClient {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
             } else {
+                // @ts-expect-error TODO we are returning type Object for ease of use to devs, but formally these are AnyObjects, e.g. not guaranteed to have common
                 return this._extendObject(id, obj, options, callback);
             }
         });
