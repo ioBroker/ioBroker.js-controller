@@ -2796,11 +2796,6 @@ export function parseDependencies(
  * @throws Error if a property has the wrong type or obj.type is non-existing
  */
 export function validateGeneralObjectProperties(obj: any, extend?: boolean): void {
-    // designs have no type but have attribute views
-    if (obj && obj.type === undefined && obj.views !== undefined) {
-        return;
-    }
-
     if (!obj || (obj.type === undefined && !extend)) {
         throw new Error(`obj.type has to exist`);
     }
