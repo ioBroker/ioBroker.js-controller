@@ -8,7 +8,7 @@ const getSpdxLicenseIds = require('get-spdx-license-ids');
 /**
  * Update contents io iobroker.json schema
  */
-function updateIobJSON() {
+function updateIobJSON(): void {
     const config: tjs.Config = {
         path: path.join(__dirname, '..', 'types-dev', 'config.d.ts'),
         tsconfig: path.join(__dirname, '..', 'tsconfig.json'),
@@ -25,7 +25,7 @@ function updateIobJSON() {
 /**
  * Updates the license array in io-package json
  */
-async function updateLicenseArray() {
+async function updateLicenseArray(): Promise<void> {
     // get all allowed licenses as array
     const licenses = await getSpdxLicenseIds();
     const ioPackSchema = fs.readJSONSync(path.join(__dirname, 'io-package.json'));
