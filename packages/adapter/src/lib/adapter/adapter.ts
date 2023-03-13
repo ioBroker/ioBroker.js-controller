@@ -2628,6 +2628,7 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_EMPTY_OBJECT);
         }
 
+        // TODO: refactor the following checks in a separate validation method
         if (!tools.isObject(options.obj)) {
             this._logger.error(
                 `${
@@ -4237,8 +4238,15 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    getForeignObject<T extends string>(id: T, callback: ioBroker.GetObjectCallback<T>): MaybePromise;
-    getForeignObject<T extends string>(id: T, options: unknown, callback: ioBroker.GetObjectCallback<T>): MaybePromise;
+    getForeignObject<T extends string>(
+        id: T,
+        callback: ioBroker.GetObjectCallback<T>
+    ): void | Promise<void | ioBroker.ObjectIdToObjectType<T> | null>;
+    getForeignObject<T extends string>(
+        id: T,
+        options: unknown,
+        callback: ioBroker.GetObjectCallback<T>
+    ): void | Promise<void | ioBroker.ObjectIdToObjectType<T> | null>;
 
     /**
      * Get any object.
@@ -4254,7 +4262,11 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    getForeignObject(id: unknown, options: unknown, callback?: unknown): MaybePromise {
+    getForeignObject(
+        id: unknown,
+        options: unknown,
+        callback?: unknown
+    ): void | Promise<void | ioBroker.AnyObject | null> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -4274,7 +4286,7 @@ export class AdapterClass extends EventEmitter {
         return this._getForeignObject({ id, options, callback });
     }
 
-    private _getForeignObject(options: InternalGetObjectOptions): MaybePromise {
+    private async _getForeignObject(options: InternalGetObjectOptions): Promise<void | ioBroker.AnyObject | null> {
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} getForeignObject not processed because Objects database not connected`
@@ -4282,7 +4294,8 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        adapterObjects.getObject(options.id, options, (err, obj) => {
+        try {
+            const obj = await adapterObjects.getObjectAsync(options.id, options);
             // remove protectedNative if not admin, not cloud or not own adapter
             if (
                 obj &&
@@ -4296,11 +4309,13 @@ export class AdapterClass extends EventEmitter {
             ) {
                 for (const attr of obj.protectedNative) {
                     delete obj.native[attr];
-                } // endFor
-            } // endIf
+                }
+            }
 
-            return tools.maybeCallbackWithError(options.callback, err, obj);
-        });
+            return tools.maybeCallbackWithError(options.callback, null, obj);
+        } catch (e) {
+            return tools.maybeCallbackWithError(options.callback, e);
+        }
     }
 
     delObject(id: string, callback?: ioBroker.ErrorCallback): void;

@@ -2809,7 +2809,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
         throw new Error(`obj.type has an invalid type! Expected "string", received "${typeof obj.type}"`);
     }
 
-    const allowedObjectTypes = [
+    const allowedObjectTypes: ioBroker.ObjectType[] = [
         'state',
         'channel',
         'device',
@@ -2823,8 +2823,10 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
         'user',
         'group',
         'chart',
-        'folder'
+        'folder',
+        'schedule'
     ];
+
     if (obj.type !== undefined && !allowedObjectTypes.includes(obj.type)) {
         throw new Error(
             `obj.type has an invalid value (${obj.type}) but has to be one of ${allowedObjectTypes.join(', ')}`
