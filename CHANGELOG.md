@@ -3,8 +3,68 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## 5.0.0 - WORK IN PROGRESS Release Jana
-* Work in Progress
+## 5.0.0 - WORK IN PROGRESS Release Jana (changelog till 13.03.2023)
+**BREAKING CHANGES**
+* Support for Node.js 12 is dropped! Supported are Node.js 14.18.0+, 16.4.0+ and 18.x
+* Backups created with the new js-controller version cannot be restored on hosts with lower js-controller version!
+* Update recommended npm version to 8
+* Deprecate binary states, Adapters will change to use Files instead!
+
+**Features**
+* (foxriver76) Show npm error message on failing adapter installations and update also without debug parameter
+* (foxriver76) Add support for windows for `iob fix`
+* (foxriver76) ?? Allow to block the execution of adapter versions that are know to have bigger issues and add Admin notification
+* (bluefox) Added CLI option to restart/start/stop all instances of an adapter (e.g. `iob stop admin` now also works)
+* (foxriver76) Allow to use `iob host oldname` command when new host already exists but has no instances
+* (foxriver76) Added an admin notification if redis is misconfigured and info how to fix it
+
+**Optimizations and Fixes**
+* (foxriver76) Speedup "getStates" calls with many IDs often used by visualizations: JSONL 17 times faster, Redis 23 times faster
+* (foxriver76) significantly reduce backup size
+* (foxriver76) Enhance CLI help for list command to show all possible types to list
+* (foxriver76) Also stop instances before updating from GitHub
+* (foxriver76) Conversion of big parts of the js-controller codebase to typeScript and address all found issues
+* (Apollon77) Only log error on "enable/disable via .alive" if there is an error
+* (foxriver76) Optimize adapter unload and stop handling for edge cases
+* (AlCalzone) Carefully normalize jsonlOptions
+* (bluefox) Do not show warning on a requested adapter stop/termination
+* (bluefox) Make sure that the first log line is not missing in Admin
+* (foxriver76) Fix wrong formatting of cli get binary state if no encoding is passed
+* (foxriver76) Fix restoring backups from pre js-controller 4.x which were created without config.system
+* (foxriver76) Preserve tier setting on adapter upload
+* (foxriver76) update apt sources before installing os dependencies
+* (foxriver76) Only skip erase on upload if opted out explicitly to always cleanup unneeded files
+* (foxriver76) Try to fix strange alias errors, inform us if it happens again!
+* (AlCalzone/Apollon77) Update jsonl db to prevent locking issues
+* (foxriver76) Fixes `iob file sync` not working for jsonl
+* (foxriver76) Do not crash if we cannot initialize db backup directory on start
+* 
+* (Apollon77/foxriver76) Make sure that all relevant files are removed when eraseOnUpload is used
+* (Apollon77, foxriver76, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
+
+**Developer relevant DEPRECATIONS/WARNINGS**
+* Deprecate binary states, Migrate your adapters to use Files instead!
+* If you need to access special js-controller common tools please use adapter-core instead of js-controller directly - see https://github.com/ioBroker/adapter-core#commontools
+
+**Developer relevant new Features**
+* (bluefox) Added options to subscribe to file changes: subscribeForeignFiles, unsubscribeForeignFiles, onAdapterFileChanged (event contains id, fileName, size and not the whole content of the file!)
+* (foxriver76) Introduce on("install") handler for adapter which is automatically called when adapter process is started with --install
+* (bluefox) Allowed export of password.js (to be used with adapter-core)
+* (bluefox) Added _design/chart to the system designs
+* (foxriver76) Automatically generated Code-Docs for Adapter class https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/controller/doc 
+* (foxriver76) Added (foreign)objectExists to adapter methods
+* (bluefox) Extend getSuitableLicenses to look for other licenses
+* (buefox/foxriver76) Added new category for notifications: blocked and respect js-controller common.blockedVersions to block versions from starting
+* (bluefox) Added new system view "custom-full" to return the full objects for objects with a custom part and not only the custom details
+* (foxriver76) Added support for getForeignObjects with an array of strings as pattern
+* (AlCalzone) Preparations to allow js-controller Dev version to be used with dev-server
+* (foxriver76) Validate max timeout value (max 32bit max number) on setTimeout/setInterval and throw on error to prevent issues
+
+* **Developer relevant Optimizations and Fixes**
+* (foxriver76) Ensure setObjectNotExists returns id on success
+* (foxriver76) Fix Typings for sendTo/sendToHost
+* general dependency updates
+* code style optimizations and streamline code
 
 ## 4.0.24 (2022-12-16)
 * (Bluefox) Excluded iot and cloud from masking special properties
