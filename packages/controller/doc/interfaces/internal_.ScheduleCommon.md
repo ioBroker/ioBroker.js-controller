@@ -1,26 +1,26 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / EnumCommon
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / ScheduleCommon
 
-# Interface: EnumCommon
+# Interface: ScheduleCommon
 
-[<internal>](../modules/internal_.md).EnumCommon
+[<internal>](../modules/internal_.md).ScheduleCommon
 
 ## Hierarchy
 
 - [`ObjectCommon`](internal_.ObjectCommon.md)
 
-  ↳ **`EnumCommon`**
+  ↳ **`ScheduleCommon`**
 
 ## Table of contents
 
 ### Properties
 
-- [custom](internal_.EnumCommon.md#custom)
-- [dontDelete](internal_.EnumCommon.md#dontdelete)
-- [expert](internal_.EnumCommon.md#expert)
-- [icon](internal_.EnumCommon.md#icon)
-- [members](internal_.EnumCommon.md#members)
-- [name](internal_.EnumCommon.md#name)
-- [role](internal_.EnumCommon.md#role)
+- [custom](internal_.ScheduleCommon.md#custom)
+- [dontDelete](internal_.ScheduleCommon.md#dontdelete)
+- [enabled](internal_.ScheduleCommon.md#enabled)
+- [expert](internal_.ScheduleCommon.md#expert)
+- [icon](internal_.ScheduleCommon.md#icon)
+- [name](internal_.ScheduleCommon.md#name)
+- [role](internal_.ScheduleCommon.md#role)
 
 ## Properties
 
@@ -30,7 +30,7 @@
 
 #### Defined in
 
-[types-dev/objects.d.ts:293](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L293)
+[types-dev/objects.d.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L279)
 
 ___
 
@@ -47,6 +47,16 @@ When set to true, this object may not be deleted
 #### Defined in
 
 [types-dev/objects.d.ts:158](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L158)
+
+___
+
+### enabled
+
+• `Optional` **enabled**: `boolean`
+
+#### Defined in
+
+[types-dev/objects.d.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L277)
 
 ___
 
@@ -79,18 +89,6 @@ Icon for this object
 #### Defined in
 
 [types-dev/objects.d.ts:166](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L166)
-
-___
-
-### members
-
-• `Optional` **members**: `string`[]
-
-The IDs of the enum members
-
-#### Defined in
-
-[types-dev/objects.d.ts:290](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L290)
 
 ___
 

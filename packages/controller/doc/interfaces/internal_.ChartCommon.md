@@ -1,28 +1,39 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / EnumCommon
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / ChartCommon
 
-# Interface: EnumCommon
+# Interface: ChartCommon
 
-[<internal>](../modules/internal_.md).EnumCommon
+[<internal>](../modules/internal_.md).ChartCommon
 
 ## Hierarchy
 
 - [`ObjectCommon`](internal_.ObjectCommon.md)
 
-  ↳ **`EnumCommon`**
+  ↳ **`ChartCommon`**
 
 ## Table of contents
 
 ### Properties
 
-- [custom](internal_.EnumCommon.md#custom)
-- [dontDelete](internal_.EnumCommon.md#dontdelete)
-- [expert](internal_.EnumCommon.md#expert)
-- [icon](internal_.EnumCommon.md#icon)
-- [members](internal_.EnumCommon.md#members)
-- [name](internal_.EnumCommon.md#name)
-- [role](internal_.EnumCommon.md#role)
+- [color](internal_.ChartCommon.md#color)
+- [custom](internal_.ChartCommon.md#custom)
+- [dontDelete](internal_.ChartCommon.md#dontdelete)
+- [enabled](internal_.ChartCommon.md#enabled)
+- [expert](internal_.ChartCommon.md#expert)
+- [icon](internal_.ChartCommon.md#icon)
+- [name](internal_.ChartCommon.md#name)
+- [role](internal_.ChartCommon.md#role)
 
 ## Properties
+
+### color
+
+• `Optional` **color**: `string`
+
+#### Defined in
+
+[types-dev/objects.d.ts:284](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L284)
+
+___
 
 ### custom
 
@@ -30,7 +41,7 @@
 
 #### Defined in
 
-[types-dev/objects.d.ts:293](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L293)
+[types-dev/objects.d.ts:286](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L286)
 
 ___
 
@@ -47,6 +58,16 @@ When set to true, this object may not be deleted
 #### Defined in
 
 [types-dev/objects.d.ts:158](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L158)
+
+___
+
+### enabled
+
+• `Optional` **enabled**: `boolean`
+
+#### Defined in
+
+[types-dev/objects.d.ts:283](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L283)
 
 ___
 
@@ -79,18 +100,6 @@ Icon for this object
 #### Defined in
 
 [types-dev/objects.d.ts:166](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L166)
-
-___
-
-### members
-
-• `Optional` **members**: `string`[]
-
-The IDs of the enum members
-
-#### Defined in
-
-[types-dev/objects.d.ts:290](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L290)
 
 ___
 

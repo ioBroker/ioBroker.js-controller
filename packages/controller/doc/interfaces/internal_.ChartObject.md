@@ -1,28 +1,28 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / ChannelObject
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / ChartObject
 
-# Interface: ChannelObject
+# Interface: ChartObject
 
-[<internal>](../modules/internal_.md).ChannelObject
+[<internal>](../modules/internal_.md).ChartObject
 
 ## Hierarchy
 
 - [`BaseObject`](internal_.BaseObject.md)
 
-  ↳ **`ChannelObject`**
+  ↳ **`ChartObject`**
 
 ## Table of contents
 
 ### Properties
 
-- [\_id](internal_.ChannelObject.md#_id)
-- [acl](internal_.ChannelObject.md#acl)
-- [common](internal_.ChannelObject.md#common)
-- [enums](internal_.ChannelObject.md#enums)
-- [from](internal_.ChannelObject.md#from)
-- [native](internal_.ChannelObject.md#native)
-- [ts](internal_.ChannelObject.md#ts)
-- [type](internal_.ChannelObject.md#type)
-- [user](internal_.ChannelObject.md#user)
+- [\_id](internal_.ChartObject.md#_id)
+- [acl](internal_.ChartObject.md#acl)
+- [common](internal_.ChartObject.md#common)
+- [enums](internal_.ChartObject.md#enums)
+- [from](internal_.ChartObject.md#from)
+- [native](internal_.ChartObject.md#native)
+- [ts](internal_.ChartObject.md#ts)
+- [type](internal_.ChartObject.md#type)
+- [user](internal_.ChartObject.md#user)
 
 ## Properties
 
@@ -58,7 +58,7 @@ ___
 
 ### common
 
-• **common**: [`ChannelCommon`](internal_.ChannelCommon.md)
+• **common**: [`ChartCommon`](internal_.ChartCommon.md)
 
 #### Overrides
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:611](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L611)
+[types-dev/objects.d.ts:652](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L652)
 
 ___
 
@@ -128,7 +128,7 @@ ___
 
 ### type
 
-• **type**: ``"channel"``
+• **type**: ``"chart"``
 
 #### Overrides
 
@@ -136,7 +136,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:610](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L610)
+[types-dev/objects.d.ts:651](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L651)
 
 ___
 

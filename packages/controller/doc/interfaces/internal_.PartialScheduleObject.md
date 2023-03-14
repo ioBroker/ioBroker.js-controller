@@ -1,28 +1,28 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / PartialScriptObject
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / PartialScheduleObject
 
-# Interface: PartialScriptObject
+# Interface: PartialScheduleObject
 
-[<internal>](../modules/internal_.md).PartialScriptObject
+[<internal>](../modules/internal_.md).PartialScheduleObject
 
 ## Hierarchy
 
-- `Partial`<`Omit`<[`ScriptObject`](internal_.ScriptObject.md), ``"common"``\>\>
+- `Partial`<`Omit`<[`ScheduleObject`](internal_.ScheduleObject.md), ``"common"``\>\>
 
-  ↳ **`PartialScriptObject`**
+  ↳ **`PartialScheduleObject`**
 
 ## Table of contents
 
 ### Properties
 
-- [\_id](internal_.PartialScriptObject.md#_id)
-- [acl](internal_.PartialScriptObject.md#acl)
-- [common](internal_.PartialScriptObject.md#common)
-- [enums](internal_.PartialScriptObject.md#enums)
-- [from](internal_.PartialScriptObject.md#from)
-- [native](internal_.PartialScriptObject.md#native)
-- [ts](internal_.PartialScriptObject.md#ts)
-- [type](internal_.PartialScriptObject.md#type)
-- [user](internal_.PartialScriptObject.md#user)
+- [\_id](internal_.PartialScheduleObject.md#_id)
+- [acl](internal_.PartialScheduleObject.md#acl)
+- [common](internal_.PartialScheduleObject.md#common)
+- [enums](internal_.PartialScheduleObject.md#enums)
+- [from](internal_.PartialScheduleObject.md#from)
+- [native](internal_.PartialScheduleObject.md#native)
+- [ts](internal_.PartialScheduleObject.md#ts)
+- [type](internal_.PartialScheduleObject.md#type)
+- [user](internal_.PartialScheduleObject.md#user)
 
 ## Properties
 
@@ -58,11 +58,11 @@ ___
 
 ### common
 
-• `Optional` **common**: `Partial`<[`ScriptCommon`](internal_.ScriptCommon.md)\>
+• `Optional` **common**: `Partial`<[`ScheduleCommon`](internal_.ScheduleCommon.md)\>
 
 #### Defined in
 
-[types-dev/objects.d.ts:722](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L722)
+[types-dev/objects.d.ts:663](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L663)
 
 ___
 
@@ -124,7 +124,7 @@ ___
 
 ### type
 
-• `Optional` **type**: ``"script"``
+• `Optional` **type**: ``"schedule"``
 
 #### Inherited from
 
@@ -132,7 +132,7 @@ Partial.type
 
 #### Defined in
 
-[types-dev/objects.d.ts:718](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L718)
+[types-dev/objects.d.ts:658](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L658)
 
 ___
 

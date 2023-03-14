@@ -28,7 +28,7 @@ Direction flag: false for desired value and true for actual value. Default: fals
 
 #### Defined in
 
-[types-dev/index.d.ts:33](https://github.com/ioBroker/ioBroker.js-controller/blob/a9d11a29/packages/types-dev/index.d.ts#L33)
+[types-dev/index.d.ts:35](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/index.d.ts#L35)
 
 ___
 
@@ -40,7 +40,7 @@ Optional comment
 
 #### Defined in
 
-[types-dev/index.d.ts:54](https://github.com/ioBroker/ioBroker.js-controller/blob/a9d11a29/packages/types-dev/index.d.ts#L54)
+[types-dev/index.d.ts:56](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/index.d.ts#L56)
 
 ___
 
@@ -52,7 +52,7 @@ Optional time in seconds after which the state is reset to null
 
 #### Defined in
 
-[types-dev/index.d.ts:48](https://github.com/ioBroker/ioBroker.js-controller/blob/a9d11a29/packages/types-dev/index.d.ts#L48)
+[types-dev/index.d.ts:50](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/index.d.ts#L50)
 
 ___
 
@@ -64,7 +64,7 @@ Name of the adapter instance which set the value, e.g. "system.adapter.web.0"
 
 #### Defined in
 
-[types-dev/index.d.ts:42](https://github.com/ioBroker/ioBroker.js-controller/blob/a9d11a29/packages/types-dev/index.d.ts#L42)
+[types-dev/index.d.ts:44](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/index.d.ts#L44)
 
 ___
 
@@ -76,7 +76,7 @@ Unix timestamp of the last time the value changed
 
 #### Defined in
 
-[types-dev/index.d.ts:39](https://github.com/ioBroker/ioBroker.js-controller/blob/a9d11a29/packages/types-dev/index.d.ts#L39)
+[types-dev/index.d.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/index.d.ts#L41)
 
 ___
 
@@ -88,7 +88,7 @@ Optional quality of the state value
 
 #### Defined in
 
-[types-dev/index.d.ts:51](https://github.com/ioBroker/ioBroker.js-controller/blob/a9d11a29/packages/types-dev/index.d.ts#L51)
+[types-dev/index.d.ts:53](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/index.d.ts#L53)
 
 ___
 
@@ -100,7 +100,7 @@ Unix timestamp. Default: current time
 
 #### Defined in
 
-[types-dev/index.d.ts:36](https://github.com/ioBroker/ioBroker.js-controller/blob/a9d11a29/packages/types-dev/index.d.ts#L36)
+[types-dev/index.d.ts:38](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/index.d.ts#L38)
 
 ___
 
@@ -112,7 +112,7 @@ The user who set this value
 
 #### Defined in
 
-[types-dev/index.d.ts:45](https://github.com/ioBroker/ioBroker.js-controller/blob/a9d11a29/packages/types-dev/index.d.ts#L45)
+[types-dev/index.d.ts:47](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/index.d.ts#L47)
 
 ___
 
@@ -124,4 +124,4 @@ The value of the state.
 
 #### Defined in
 
-[types-dev/index.d.ts:30](https://github.com/ioBroker/ioBroker.js-controller/blob/a9d11a29/packages/types-dev/index.d.ts#L30)
+[types-dev/index.d.ts:32](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/index.d.ts#L32)

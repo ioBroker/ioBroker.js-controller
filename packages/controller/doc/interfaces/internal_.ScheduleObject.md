@@ -1,28 +1,28 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / ChannelObject
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / ScheduleObject
 
-# Interface: ChannelObject
+# Interface: ScheduleObject
 
-[<internal>](../modules/internal_.md).ChannelObject
+[<internal>](../modules/internal_.md).ScheduleObject
 
 ## Hierarchy
 
 - [`BaseObject`](internal_.BaseObject.md)
 
-  ↳ **`ChannelObject`**
+  ↳ **`ScheduleObject`**
 
 ## Table of contents
 
 ### Properties
 
-- [\_id](internal_.ChannelObject.md#_id)
-- [acl](internal_.ChannelObject.md#acl)
-- [common](internal_.ChannelObject.md#common)
-- [enums](internal_.ChannelObject.md#enums)
-- [from](internal_.ChannelObject.md#from)
-- [native](internal_.ChannelObject.md#native)
-- [ts](internal_.ChannelObject.md#ts)
-- [type](internal_.ChannelObject.md#type)
-- [user](internal_.ChannelObject.md#user)
+- [\_id](internal_.ScheduleObject.md#_id)
+- [acl](internal_.ScheduleObject.md#acl)
+- [common](internal_.ScheduleObject.md#common)
+- [enums](internal_.ScheduleObject.md#enums)
+- [from](internal_.ScheduleObject.md#from)
+- [native](internal_.ScheduleObject.md#native)
+- [ts](internal_.ScheduleObject.md#ts)
+- [type](internal_.ScheduleObject.md#type)
+- [user](internal_.ScheduleObject.md#user)
 
 ## Properties
 
@@ -58,7 +58,7 @@ ___
 
 ### common
 
-• **common**: [`ChannelCommon`](internal_.ChannelCommon.md)
+• **common**: [`ScheduleCommon`](internal_.ScheduleCommon.md)
 
 #### Overrides
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:611](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L611)
+[types-dev/objects.d.ts:659](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L659)
 
 ___
 
@@ -128,7 +128,7 @@ ___
 
 ### type
 
-• **type**: ``"channel"``
+• **type**: ``"schedule"``
 
 #### Overrides
 
@@ -136,7 +136,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:610](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L610)
+[types-dev/objects.d.ts:658](https://github.com/ioBroker/ioBroker.js-controller/blob/5a12d69c/packages/types-dev/objects.d.ts#L658)
 
 ___
 
