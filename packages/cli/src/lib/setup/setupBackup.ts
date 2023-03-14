@@ -195,7 +195,11 @@ export class BackupRestore {
         // 2021_10_25 BF (TODO): store letsencrypt files too
         const letsEncrypt = `${this.configDir}/letsencrypt`;
         if (fs.existsSync(letsEncrypt)) {
-            this.copyFolderRecursiveSync(letsEncrypt, `${tmpDir}/backup`);
+            try {
+                this.copyFolderRecursiveSync(letsEncrypt, `${tmpDir}/backup`);
+            } catch (e) {
+                console.error(`host.${hostname} Could not backup "${letsEncrypt}" directory: ${e.message}`);
+            }
         }
 
         return new Promise(resolve => {
@@ -392,7 +396,13 @@ export class BackupRestore {
                     }
 
                     if (fs.existsSync(dataFolderPath)) {
-                        this.copyFolderRecursiveSync(dataFolderPath, `${tmpDir}/backup`);
+                        try {
+                            this.copyFolderRecursiveSync(dataFolderPath, `${tmpDir}/backup`);
+                        } catch (e) {
+                            console.error(
+                                `host.${hostname} Could not backup "${dataFolderPath}" directory: ${e.message}`
+                            );
+                        }
                     }
                 }
             }
