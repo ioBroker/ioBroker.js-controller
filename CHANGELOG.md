@@ -13,7 +13,6 @@
 **Features**
 * (foxriver76) Show npm error message on failing adapter installations and update also without debug parameter
 * (foxriver76) Add support for windows for `iob fix`
-* (foxriver76) ?? Allow to block the execution of adapter versions that are know to have bigger issues and add Admin notification
 * (bluefox) Added CLI option to restart/start/stop all instances of an adapter (e.g. `iob stop admin` now also works)
 * (foxriver76) Allow to use `iob host oldname` command when new host already exists but has no instances
 * (foxriver76) Added an admin notification if redis is misconfigured and info how to fix it
@@ -49,6 +48,9 @@
 **Developer relevant new Features**
 * (bluefox) Added options to subscribe to file changes: subscribeForeignFiles, unsubscribeForeignFiles, onAdapterFileChanged (event contains id, fileName, size and not the whole content of the file!)
 * (foxriver76) Introduce on("install") handler for adapter which is automatically called when adapter process is started with --install
+* (foxriver76) Introduce io-package flag common.nodeProcessParams to allow to pass adapter specific nodejs process parameters (disables compact mode for the adapter!)
+* (foxriver76) Introduce iobroker setting to choose between verbatim and ipv4 first dns resolution order
+* (foxriver76) Add JSON-Schema for iobroker.json
 * (bluefox) Allowed export of password.js (to be used with adapter-core)
 * (bluefox) Added _design/chart to the system designs
 * (foxriver76) Automatically generated Code-Docs for Adapter class https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/controller/doc 
