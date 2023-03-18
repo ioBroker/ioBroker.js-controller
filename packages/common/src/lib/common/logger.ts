@@ -506,7 +506,10 @@ export function logger(
 
 function getDate(): string {
     const ts = new Date();
-    return `${ts.getFullYear()}-${(ts.getMonth() + 1).toString().padStart(2, '0')}-${ts.getDate().toString().padStart(2, '0')}`;
+    return `${ts.getFullYear()}-${(ts.getMonth() + 1).toString().padStart(2, '0')}-${ts
+        .getDate()
+        .toString()
+        .padStart(2, '0')}`;
 }
 
 function timestamp(date: string): string {
