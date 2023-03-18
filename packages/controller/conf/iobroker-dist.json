@@ -1,5 +1,4 @@
 {
-    "$schema": "../../../schemas/iobroker.json",
     "system": {
         "memoryLimitMB": 0,
         "hostname": "",
