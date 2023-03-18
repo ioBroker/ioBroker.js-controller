@@ -2066,9 +2066,9 @@ export function getControllerDir(): string {
     }
 
     // Apparently, checking vs null/undefined may miss the odd case of controllerPath being ""
-    // Thus we check for falsyness, which includes failing on an empty path
+    // Thus we check for falseness, which includes failing on an empty path
     let checkPath = path.join(__dirname, '../..');
-    // Also check in the current check dir (along with iobroker.js-controller subdirs)
+    // Also check in the current check dir (along with iobroker.js-controller sub-dirs)
     possibilities.unshift('');
     while (true) {
         for (const pkg of possibilities) {
@@ -2078,7 +2078,7 @@ export function getControllerDir(): string {
                     return possiblePath;
                 }
             } catch {
-                // not found, continue with next possiblity
+                // not found, continue with next possibility
             }
         }
 
@@ -2741,14 +2741,14 @@ export function parseDependencies(
                 // No version given, all are okay
                 adapters[rule] = '*';
             } else if (isObject(rule)) {
-                // can be object containing single adapter or multiple
+                // can be if object containing single adapter or multiple
                 Object.keys(rule)
                     .filter(adapter => !adapters[adapter])
                     .forEach(adapter => (adapters[adapter] = rule[adapter]));
             }
         });
     } else if (typeof dependencies === 'string') {
-        // its a single string without version requirement
+        // it's a single string without version requirement
         adapters[dependencies] = '*';
     } else if (isObject(dependencies)) {
         // if dependencies is already an object, just use it
@@ -2758,12 +2758,12 @@ export function parseDependencies(
 }
 
 /**
- * Validates types of obj.common properties and object.type, if invalid types are used, an error is thrown.
- * If attributes of obj.common are not provided, no error is thrown. obj.type has to be there and has to be valid.
+ * Validates types of `obj.common` properties and object.type, if invalid types are used, an error is thrown.
+ * If attributes of `obj.common` are not provided, no error is thrown. obj.type has to be there and has to be valid.
  *
  * @param obj an object which will be validated
  * @param extend (optional) if true checks will allow more optional cases for extendObject calls
- * @throws Error if a property has the wrong type or obj.type is non-existing
+ * @throws Error if a property has the wrong type or `obj.type` is non-existing
  */
 export function validateGeneralObjectProperties(obj: any, extend?: boolean): void {
     // designs have no type but have attribute views
@@ -3185,21 +3185,21 @@ export function parseShortGithubUrl(url: string): ParsedGithubUrl | null {
     };
 }
 
-/** This is used to parse the pathname of a github URL */
+/** This is used to parse the pathname of a GitHub URL */
 const githubPathnameRegex =
     /^\/(?<user>[^/]+)\/(?<repo>[^/]*?)(?:\.git)?(?:\/(?:tree|tarball|archive)\/(?<commit>.*?)(?:\.(?:zip|gz|tar\.gz))?)?$/;
 
 /**
  * Tests if the given pathname matches the format /<githubname>/<githubrepo>[.git][/<tarball|tree|archive>/<commit-ish>[.zip|.gz]]
- * @param pathname The pathname part of a Github URL
+ * @param pathname The pathname part of a GitHub URL
  */
 export function isGithubPathname(pathname: string): boolean {
     return githubPathnameRegex.test(pathname);
 }
 
 /**
- * Tries to a github pathname format /<githubname>/<githubrepo>[.git][/<tarball|tree|archive>/<commit-ish>[.zip|.gz|.tar.gz]] into its separate parts
- * @param pathname The pathname part of a Github URL
+ * Tries to a GitHub pathname format /<githubname>/<githubrepo>[.git][/<tarball|tree|archive>/<commit-ish>[.zip|.gz|.tar.gz]] into its separate parts
+ * @param pathname The pathname part of a GitHub URL
  */
 export function parseGithubPathname(pathname: string): ParsedGithubUrl | null {
     const match = githubPathnameRegex.exec(pathname);
@@ -3229,7 +3229,7 @@ export function removePreservedProperties(
             // we have to go one step deeper
             removePreservedProperties(preserve[prop], oldObj[prop], newObj[prop]);
         } else if (newObj && newObj[prop] !== undefined && oldObj && oldObj[prop] !== undefined) {
-            // we only need to remove something if its in the old object and in the new one
+            // we only need to remove something if it's in the old object and in the new one
             if (typeof preserve[prop] === 'boolean') {
                 delete newObj[prop];
             } else if (Array.isArray(preserve[prop])) {
