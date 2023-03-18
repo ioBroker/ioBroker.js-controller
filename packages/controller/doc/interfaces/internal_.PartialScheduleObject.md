@@ -1,28 +1,28 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / PartialMetaObject
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / PartialScheduleObject
 
-# Interface: PartialMetaObject
+# Interface: PartialScheduleObject
 
-[<internal>](../modules/internal_.md).PartialMetaObject
+[<internal>](../modules/internal_.md).PartialScheduleObject
 
 ## Hierarchy
 
-- `Partial`<`Omit`<[`MetaObject`](internal_.MetaObject.md), ``"common"``\>\>
+- `Partial`<`Omit`<[`ScheduleObject`](internal_.ScheduleObject.md), ``"common"``\>\>
 
-  ↳ **`PartialMetaObject`**
+  ↳ **`PartialScheduleObject`**
 
 ## Table of contents
 
 ### Properties
 
-- [\_id](internal_.PartialMetaObject.md#_id)
-- [acl](internal_.PartialMetaObject.md#acl)
-- [common](internal_.PartialMetaObject.md#common)
-- [enums](internal_.PartialMetaObject.md#enums)
-- [from](internal_.PartialMetaObject.md#from)
-- [native](internal_.PartialMetaObject.md#native)
-- [ts](internal_.PartialMetaObject.md#ts)
-- [type](internal_.PartialMetaObject.md#type)
-- [user](internal_.PartialMetaObject.md#user)
+- [\_id](internal_.PartialScheduleObject.md#_id)
+- [acl](internal_.PartialScheduleObject.md#acl)
+- [common](internal_.PartialScheduleObject.md#common)
+- [enums](internal_.PartialScheduleObject.md#enums)
+- [from](internal_.PartialScheduleObject.md#from)
+- [native](internal_.PartialScheduleObject.md#native)
+- [ts](internal_.PartialScheduleObject.md#ts)
+- [type](internal_.PartialScheduleObject.md#type)
+- [user](internal_.PartialScheduleObject.md#user)
 
 ## Properties
 
@@ -58,11 +58,11 @@ ___
 
 ### common
 
-• `Optional` **common**: `Partial`<[`MetaCommon`](internal_.MetaCommon.md)\>
+• `Optional` **common**: `Partial`<[`ScheduleCommon`](internal_.ScheduleCommon.md)\>
 
 #### Defined in
 
-[types-dev/objects.d.ts:647](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L647)
+[types-dev/objects.d.ts:663](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L663)
 
 ___
 
@@ -124,7 +124,7 @@ ___
 
 ### type
 
-• `Optional` **type**: ``"meta"``
+• `Optional` **type**: ``"schedule"``
 
 #### Inherited from
 
@@ -132,7 +132,7 @@ Partial.type
 
 #### Defined in
 
-[types-dev/objects.d.ts:643](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L643)
+[types-dev/objects.d.ts:658](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L658)
 
 ___
 

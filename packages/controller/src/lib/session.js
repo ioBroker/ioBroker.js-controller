@@ -22,11 +22,10 @@ module.exports = function (session, defaultTtl) {
     /**
      * Attempt to fetch session by the given `sid`.
      *
-     * @param {String} sid
-     * @param {Function} fn
+     * @param {String} sid Session ID
+     * @param {Function} fn callback
      * @api public
      */
-
     AdapterStore.prototype.get = function (sid, fn) {
         this.adapter.getSession(sid, obj => {
             if (obj) {
@@ -44,9 +43,10 @@ module.exports = function (session, defaultTtl) {
     /**
      * Commit the given `sess` object associated with the given `sid`.
      *
-     * @param {String} sid
+     * @param {String} sid Session ID
+     * @param {Number} ttl Time to live
      * @param {Session} sess
-     * @param {Function} fn
+     * @param {Function} fn callback
      * @api public
      */
     AdapterStore.prototype.set = function (sid, ttl, sess, fn) {
@@ -68,10 +68,10 @@ module.exports = function (session, defaultTtl) {
     /**
      * Destroy the session associated with the given `sid`.
      *
-     * @param {String} sid
+     * @param {String} sid Session ID
+     * @param {Function} fn callback
      * @api public
      */
-
     AdapterStore.prototype.destroy = function (sid, fn) {
         this.adapter.destroySession(sid, fn);
     };

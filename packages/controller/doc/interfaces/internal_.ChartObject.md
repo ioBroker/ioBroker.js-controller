@@ -1,28 +1,28 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / FolderObject
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / ChartObject
 
-# Interface: FolderObject
+# Interface: ChartObject
 
-[<internal>](../modules/internal_.md).FolderObject
+[<internal>](../modules/internal_.md).ChartObject
 
 ## Hierarchy
 
 - [`BaseObject`](internal_.BaseObject.md)
 
-  ↳ **`FolderObject`**
+  ↳ **`ChartObject`**
 
 ## Table of contents
 
 ### Properties
 
-- [\_id](internal_.FolderObject.md#_id)
-- [acl](internal_.FolderObject.md#acl)
-- [common](internal_.FolderObject.md#common)
-- [enums](internal_.FolderObject.md#enums)
-- [from](internal_.FolderObject.md#from)
-- [native](internal_.FolderObject.md#native)
-- [ts](internal_.FolderObject.md#ts)
-- [type](internal_.FolderObject.md#type)
-- [user](internal_.FolderObject.md#user)
+- [\_id](internal_.ChartObject.md#_id)
+- [acl](internal_.ChartObject.md#acl)
+- [common](internal_.ChartObject.md#common)
+- [enums](internal_.ChartObject.md#enums)
+- [from](internal_.ChartObject.md#from)
+- [native](internal_.ChartObject.md#native)
+- [ts](internal_.ChartObject.md#ts)
+- [type](internal_.ChartObject.md#type)
+- [user](internal_.ChartObject.md#user)
 
 ## Properties
 
@@ -58,7 +58,7 @@ ___
 
 ### common
 
-• **common**: [`OtherCommon`](internal_.OtherCommon.md)
+• **common**: [`ChartCommon`](internal_.ChartCommon.md)
 
 #### Overrides
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:628](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L628)
+[types-dev/objects.d.ts:652](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L652)
 
 ___
 
@@ -128,7 +128,7 @@ ___
 
 ### type
 
-• **type**: ``"folder"``
+• **type**: ``"chart"``
 
 #### Overrides
 
@@ -136,7 +136,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:626](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L626)
+[types-dev/objects.d.ts:651](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L651)
 
 ___
 

@@ -1,28 +1,28 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / FolderObject
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / ScheduleObject
 
-# Interface: FolderObject
+# Interface: ScheduleObject
 
-[<internal>](../modules/internal_.md).FolderObject
+[<internal>](../modules/internal_.md).ScheduleObject
 
 ## Hierarchy
 
 - [`BaseObject`](internal_.BaseObject.md)
 
-  ↳ **`FolderObject`**
+  ↳ **`ScheduleObject`**
 
 ## Table of contents
 
 ### Properties
 
-- [\_id](internal_.FolderObject.md#_id)
-- [acl](internal_.FolderObject.md#acl)
-- [common](internal_.FolderObject.md#common)
-- [enums](internal_.FolderObject.md#enums)
-- [from](internal_.FolderObject.md#from)
-- [native](internal_.FolderObject.md#native)
-- [ts](internal_.FolderObject.md#ts)
-- [type](internal_.FolderObject.md#type)
-- [user](internal_.FolderObject.md#user)
+- [\_id](internal_.ScheduleObject.md#_id)
+- [acl](internal_.ScheduleObject.md#acl)
+- [common](internal_.ScheduleObject.md#common)
+- [enums](internal_.ScheduleObject.md#enums)
+- [from](internal_.ScheduleObject.md#from)
+- [native](internal_.ScheduleObject.md#native)
+- [ts](internal_.ScheduleObject.md#ts)
+- [type](internal_.ScheduleObject.md#type)
+- [user](internal_.ScheduleObject.md#user)
 
 ## Properties
 
@@ -58,7 +58,7 @@ ___
 
 ### common
 
-• **common**: [`OtherCommon`](internal_.OtherCommon.md)
+• **common**: [`ScheduleCommon`](internal_.ScheduleCommon.md)
 
 #### Overrides
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:628](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L628)
+[types-dev/objects.d.ts:659](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L659)
 
 ___
 
@@ -128,7 +128,7 @@ ___
 
 ### type
 
-• **type**: ``"folder"``
+• **type**: ``"schedule"``
 
 #### Overrides
 
@@ -136,7 +136,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:626](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L626)
+[types-dev/objects.d.ts:658](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L658)
 
 ___
 

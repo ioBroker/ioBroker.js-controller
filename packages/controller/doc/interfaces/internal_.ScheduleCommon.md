@@ -1,42 +1,28 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / GroupCommon
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / ScheduleCommon
 
-# Interface: GroupCommon
+# Interface: ScheduleCommon
 
-[<internal>](../modules/internal_.md).GroupCommon
+[<internal>](../modules/internal_.md).ScheduleCommon
 
 ## Hierarchy
 
 - [`ObjectCommon`](internal_.ObjectCommon.md)
 
-  ↳ **`GroupCommon`**
+  ↳ **`ScheduleCommon`**
 
 ## Table of contents
 
 ### Properties
 
-- [acl](internal_.GroupCommon.md#acl)
-- [custom](internal_.GroupCommon.md#custom)
-- [dontDelete](internal_.GroupCommon.md#dontdelete)
-- [enabled](internal_.GroupCommon.md#enabled)
-- [expert](internal_.GroupCommon.md#expert)
-- [icon](internal_.GroupCommon.md#icon)
-- [members](internal_.GroupCommon.md#members)
-- [name](internal_.GroupCommon.md#name)
-- [role](internal_.GroupCommon.md#role)
+- [custom](internal_.ScheduleCommon.md#custom)
+- [dontDelete](internal_.ScheduleCommon.md#dontdelete)
+- [enabled](internal_.ScheduleCommon.md#enabled)
+- [expert](internal_.ScheduleCommon.md#expert)
+- [icon](internal_.ScheduleCommon.md#icon)
+- [name](internal_.ScheduleCommon.md#name)
+- [role](internal_.ScheduleCommon.md#role)
 
 ## Properties
-
-### acl
-
-• **acl**: `Omit`<[`PermissionSet`](internal_.PermissionSet.md), ``"user"`` \| ``"groups"``\>
-
-The default permissions of this group
-
-#### Defined in
-
-[types-dev/objects.d.ts:398](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L398)
-
-___
 
 ### custom
 
@@ -44,7 +30,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:402](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L402)
+[types-dev/objects.d.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L279)
 
 ___
 
@@ -68,11 +54,9 @@ ___
 
 • `Optional` **enabled**: `boolean`
 
-A group can be disabled, if missing, group is active
-
 #### Defined in
 
-[types-dev/objects.d.ts:400](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L400)
+[types-dev/objects.d.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L277)
 
 ___
 
@@ -108,31 +92,19 @@ Icon for this object
 
 ___
 
-### members
-
-• **members**: `string`[]
-
-The users of this group
-
-#### Defined in
-
-[types-dev/objects.d.ts:396](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L396)
-
-___
-
 ### name
 
-• **name**: `string`
+• **name**: [`StringOrTranslated`](../modules/internal_.md#stringortranslated)
 
-The name of this group
+The name of this object as a simple string or an object with translations
 
-#### Overrides
+#### Inherited from
 
 [ObjectCommon](internal_.ObjectCommon.md).[name](internal_.ObjectCommon.md#name)
 
 #### Defined in
 
-[types-dev/objects.d.ts:394](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L394)
+[types-dev/objects.d.ts:155](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L155)
 
 ___
 
