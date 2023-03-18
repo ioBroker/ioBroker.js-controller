@@ -1,8 +1,8 @@
 {
     "name": "iobroker.js-controller",
-    "version": "5.0.0-alpha.0-20230310-a9d11a29",
+    "version": "5.0.0-alpha.0-20230317-0732666c",
     "engines": {
-        "node": ">=12.0.0"
+        "node": ">=14.18.0 < 15 || >= 16.4.0"
     },
     "optionalDependencies": {
         "greenlock": "^4.0.4",
@@ -33,7 +33,7 @@
         "debug": "^4.3.4",
         "decache": "^4.6.1",
         "deep-clone": "^3.0.3",
-        "fs-extra": "^10.1.0",
+        "fs-extra": "^11.1.0",
         "jsonwebtoken": "^9.0.0",
         "jszip": "^3.10.1",
         "loadavg-windows": "^1.1.1",

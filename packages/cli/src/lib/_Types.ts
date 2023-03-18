@@ -40,13 +40,3 @@ export interface IoPackage extends ioBroker.AdapterObject {
     instanceObjects: ioBroker.Object[];
     common: IoPackageCommon;
 }
-
-export interface IoBrokerJSON {
-    plugins: {
-        [pluginName: string]: {
-            enabled: boolean;
-            [other: string]: unknown;
-        };
-    };
-    [other: string]: unknown;
-}

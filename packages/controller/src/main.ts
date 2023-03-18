@@ -125,6 +125,8 @@ if (os.platform() === 'win32') {
     require('loadavg-windows');
 }
 
+tools.ensureDNSOrder();
+
 let title = `${tools.appName}.js-controller`;
 
 let Objects: typeof ObjectsClient;
@@ -205,6 +207,7 @@ function getConfig(): Record<string, any> | never {
         logger.error(`${hostLogPrefix} conf/${tools.appName}.json missing - call node ${tools.appName}.js setup`);
         process.exit(EXIT_CODES.MISSING_CONFIG_JSON);
     } else {
+        // TODO: adjust return type as soon as #2120 merged and we have the type
         const _config = fs.readJSONSync(configFile);
         if (!_config.states) {
             _config.states = { type: 'jsonl' };
@@ -1133,9 +1136,9 @@ function reportStatus(): void {
     states.setState(`${id}.compactgroupProcesses`, { val: Object.keys(compactProcs).length, ack: true, from: id });
     let realProcesses = 0;
     let compactProcesses = 0;
-    Object.keys(procs).forEach(proc => {
-        if (procs[proc].process) {
-            if (procs[proc].startedInCompactMode) {
+    Object.values(procs).forEach(proc => {
+        if (proc.process) {
+            if (proc.startedInCompactMode) {
                 compactProcesses++;
             } else {
                 realProcesses++;
@@ -4106,6 +4109,17 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         args.push(`--max-old-space-size=${parseInt(instance.common.memoryLimitMB, 10)}`);
     }
 
+    if (Array.isArray(instance.common.nodeProcessParams) && instance.common.nodeProcessParams.length) {
+        args.push(...instance.common.nodeProcessParams);
+
+        if (instance.common.compact) {
+            instance.common.compact = false;
+            logger.warn(
+                `${hostLogPrefix} Adapter ${instance.common.name} has "compact=true" as well as "nodeProcessParams" specified, this is not supported, please report to developer`
+            );
+        }
+    }
+
     // workaround for old vis
     if (instance.common.onlyWWW && name === 'vis') {
         instance.common.onlyWWW = false;
@@ -4562,7 +4576,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                         proc.process.stderr.on('data', data => {
                             const proc = procs[id];
 
-                            if (!data || !proc || typeof proc !== 'object') {
+                            if (!data || !proc || !tools.isObject(proc)) {
                                 return;
                             }
                             const text = data.toString();

@@ -28,7 +28,7 @@ jobs:
       - name: Use Node.js 14
         uses: actions/setup-node@v3
         with:
-          node-version: 14
+          node-version: 16
 
       - name: NPM install
         run: npm i --ignore-scripts # install typescript and @types do not `setup first`
@@ -43,7 +43,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-20.04, macos-latest]
-        node: [12, 14, 16, 18]
+        node: [14, 16, 18]
 
     steps:
       - uses: actions/checkout@v3
