@@ -667,7 +667,7 @@ export class AdapterClass extends EventEmitter {
     protected version?: string;
     protected kill?: () => Promise<void>;
     protected processLog?: (msg: any) => void;
-    protected requireLog?: (_isActive: boolean, options?: any) => void;
+    protected requireLog?: (_isActive: boolean, options?: Partial<GetUserGroupsOptions>) => void;
     private logOffTimer?: NodeJS.Timeout | null;
     private logRedirect?: (isActive: boolean, id: string) => void;
     private logRequired?: boolean;
@@ -7288,14 +7288,14 @@ export class AdapterClass extends EventEmitter {
     setState<T extends ioBroker.SetStateCallback>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
-        options: unknown,
+        options?: Partial<GetUserGroupsOptions> | null,
         callback?: T
     ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
     setState<T extends ioBroker.SetStateCallback>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
-        options: unknown,
+        options?: Partial<GetUserGroupsOptions> | null,
         callback?: T
     ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
 
@@ -7425,7 +7425,7 @@ export class AdapterClass extends EventEmitter {
         let obj: ioBroker.StateObject | null | undefined;
         try {
             if (permCheckRequired) {
-                obj = (await this._checkStates(fixedId, options as GetUserGroupsOptions, 'setState')).objs[0];
+                obj = (await this._checkStates(fixedId, options || {}, 'setState')).objs[0];
             } else {
                 obj = (await adapterObjects.getObject(fixedId, options)) as ioBroker.StateObject | null | undefined;
             }
@@ -7472,8 +7472,7 @@ export class AdapterClass extends EventEmitter {
                 let targetObj;
                 try {
                     if (permCheckRequired) {
-                        targetObj = (await this._checkStates(aliasId, options as GetUserGroupsOptions, 'setState'))
-                            .objs[0];
+                        targetObj = (await this._checkStates(aliasId, options || {}, 'setState')).objs[0];
                     } else {
                         targetObj = (await adapterObjects.getObject(aliasId, options)) as
                             | ioBroker.StateObject
@@ -8616,7 +8615,7 @@ export class AdapterClass extends EventEmitter {
         let obj: ioBroker.StateObject | null | undefined;
         try {
             if (permCheckRequired) {
-                obj = (await this._checkStates(id, options as GetUserGroupsOptions, 'getState')).objs[0];
+                obj = (await this._checkStates(id, options || {}, 'getState')).objs[0];
             } else {
                 obj = (await adapterObjects.getObject(id, options)) as ioBroker.StateObject | null | undefined;
             }
@@ -8652,8 +8651,7 @@ export class AdapterClass extends EventEmitter {
                     let sourceObj;
                     try {
                         if (permCheckRequired) {
-                            sourceObj = (await this._checkStates(aliasId, options as GetUserGroupsOptions, 'getState'))
-                                .objs[0];
+                            sourceObj = (await this._checkStates(aliasId, options || {}, 'getState')).objs[0];
                         } else {
                             sourceObj = (await adapterObjects.getObject(aliasId, options)) as
                                 | ioBroker.StateObject
@@ -10645,7 +10643,7 @@ export class AdapterClass extends EventEmitter {
                                 this._logger.silly(`${this.namespaceLog} Change log subscriber state: FALSE`);
                                 this.outputCount++;
                                 if (adapterStates) {
-                                    adapterStates.setState(
+                                    this.setState(
                                         `system.adapter.${this.namespace}.logging`,
                                         {
                                             val: false,
@@ -10663,7 +10661,7 @@ export class AdapterClass extends EventEmitter {
                             } else {
                                 this._logger.silly(`${this.namespaceLog} Change log subscriber state: true`);
                                 this.outputCount++;
-                                adapterStates.setState(
+                                this.setState(
                                     `system.adapter.${this.namespace}.logging`,
                                     {
                                         val: true,

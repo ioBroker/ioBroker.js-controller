@@ -276,7 +276,7 @@ export interface InternalSetStateOptions {
     id: string | ioBroker.IdObject;
     state: ioBroker.StateValue | ioBroker.SettableState;
     ack?: boolean;
-    options?: Record<string, any> | null;
+    options?: Partial<GetUserGroupsOptions> | null;
     callback?: ioBroker.SetStateCallback;
 }
 
