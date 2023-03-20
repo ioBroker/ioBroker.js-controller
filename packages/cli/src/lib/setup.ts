@@ -1206,6 +1206,7 @@ async function processCommand(
                 const { Upgrade } = await import('./setup/setupUpgrade');
                 const upgrade = new Upgrade({
                     objects,
+                    states,
                     getRepository,
                     params,
                     processExit: callback,
