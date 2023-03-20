@@ -23,6 +23,7 @@ import { isDeepStrictEqual, inspect } from 'util';
 import { tools, EXIT_CODES, logger as toolsLogger } from '@iobroker/js-controller-common';
 import { PluginHandler } from '@iobroker/plugin-base';
 import { NotificationHandler } from '@iobroker/js-controller-common-db';
+import * as zipFiles from './lib/zipFiles';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { Upload } from '@iobroker/js-controller-cli';
@@ -114,7 +115,6 @@ let requestedRepoUpdates: RepoRequester[] = [];
 const exec = cp.exec;
 const spawn = cp.spawn;
 
-let zipFiles: any;
 let upload: InstanceType<typeof Upload>; // will be used only once by upload of adapter
 
 /* Use require('loadavg-windows') to enjoy os.loadavg() on Windows OS.
@@ -2981,13 +2981,12 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'readDirAsZip':
             if (msg.callback && msg.from) {
-                zipFiles = zipFiles || require('./lib/zipFiles');
                 zipFiles.readDirAsZip(
-                    objects,
+                    objects!,
                     msg.message.id,
                     msg.message.name,
                     msg.message.options,
-                    (err: any, base64: string) => {
+                    (err, base64) => {
                         if (base64) {
                             sendTo(msg.from, msg.command, { error: err, data: base64 }, msg.callback);
                         } else {
@@ -3001,10 +3000,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
 
         case 'writeDirAsZip':
-            zipFiles = zipFiles || require('./lib/zipFiles');
             try {
                 await zipFiles.writeDirAsZip(
-                    objects,
+                    objects!,
                     msg.message.id,
                     msg.message.name,
                     Buffer.from(msg.message.data, 'base64'),
@@ -3020,16 +3018,15 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'readObjectsAsZip':
             if (msg.callback && msg.from) {
-                zipFiles = zipFiles || require('./lib/zipFiles');
                 zipFiles.readObjectsAsZip(
-                    objects,
+                    objects!,
                     msg.message.id,
                     msg.message.adapter,
                     msg.message.options,
-                    (error: any, base64: string) => {
+                    (error, base64) => {
                         // If client supports file via link
                         if (msg.message.link) {
-                            if (!error) {
+                            if (!error && base64) {
                                 const buff = Buffer.from(base64, 'base64');
                                 states!.setBinaryState(`${hostObjectPrefix}.zip.${msg.message.link}`, buff, err => {
                                     if (err) {
@@ -3061,9 +3058,8 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
 
         case 'writeObjectsAsZip':
-            zipFiles = zipFiles || require('./lib/zipFiles');
             zipFiles.writeObjectsAsZip(
-                objects,
+                objects!,
                 msg.message.id,
                 msg.message.adapter,
                 Buffer.from(msg.message.data || '', 'base64'),

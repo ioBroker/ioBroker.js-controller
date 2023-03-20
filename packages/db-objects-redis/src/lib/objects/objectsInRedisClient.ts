@@ -3241,7 +3241,7 @@ export class ObjectsInRedisClient {
         pattern: string,
         options: CallOptions,
         callback: ioBroker.GetConfigKeysCallback,
-        dontModify: boolean
+        dontModify?: boolean
     ): void {
         return this.getKeys(pattern, options, callback, dontModify);
     }
