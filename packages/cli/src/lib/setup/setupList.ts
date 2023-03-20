@@ -334,7 +334,7 @@ export class List {
 
                                     console.log(`${id.padStart(39)}: ${type.padStart(39)} - ${name || ''}`);
                                 } else {
-                                    // @ts-expect-error if we would have a design object it would have no type
+                                    // @ts-expect-error if we would have a design object it would have no type TODO up from 5.1 we can remove this
                                     console.log(obj.value._id);
                                 }
                             }

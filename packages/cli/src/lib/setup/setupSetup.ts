@@ -182,7 +182,6 @@ export class Setup {
 
         // check meta.user
         try {
-            // @ts-expect-error due to check above type gets never, we should add the methods to the interface in db
             const objExists = await this.objects.objectExists('meta.user');
             if (objExists) {
                 // check if dir is missing
@@ -190,7 +189,6 @@ export class Setup {
                 const dirExists = this.objects.dirExists('meta.user');
                 if (!dirExists) {
                     // create meta.user, so users see them as upload target
-                    // @ts-expect-error due to check above type gets never, we should add the methods to the interface in db
                     await this.objects.mkdirAsync('meta.user');
                     console.log('Successfully created "meta.user" directory');
                 }

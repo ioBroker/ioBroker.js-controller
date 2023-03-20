@@ -115,6 +115,7 @@
   "objects": [
     {
       "_id": "_design/system",
+      "type": "design",
       "language": "javascript",
       "common": {
         "name": {
