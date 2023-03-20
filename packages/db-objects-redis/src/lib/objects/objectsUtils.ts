@@ -549,7 +549,7 @@ export function sanitizePath(id: string, name: string): { id: string; name: stri
 }
 
 export function checkObject(
-    obj: ioBroker.Object | FileObject | null,
+    obj: ioBroker.AnyObject | FileObject | null,
     options: Record<string, any>,
     flag: CONSTS.GenericAccessFlags
 ): boolean {

@@ -50,7 +50,8 @@ declare global {
             | 'script'
             | 'user'
             | 'chart'
-            | 'schedule';
+            | 'schedule'
+            | 'design';
 
         // Define the naming schemes for objects so we can provide more specific types for get/setObject
 
@@ -732,6 +733,8 @@ declare global {
         }
 
         interface DesignObject extends Omit<BaseObject, 'common'> {
+            // allow narrowing the type without making it a pain
+            type: 'design';
             _id: ObjectIDs.Design;
             language: 'javascript';
             common?: OtherCommon;
@@ -757,7 +760,8 @@ declare global {
             | ScriptObject
             | ChartObject
             | ScheduleObject
-            | OtherObject;
+            | OtherObject
+            | DesignObject;
 
         type AnyPartialObject =
             | PartialStateObject
@@ -774,7 +778,8 @@ declare global {
             | PartialScriptObject
             | PartialChartObject
             | PartialScheduleObject
-            | PartialOtherObject;
+            | PartialOtherObject
+            | PartialDesignObject;
 
         /** All objects that usually appear in an adapter scope */
         type AdapterScopedObject = FolderObject | DeviceObject | ChannelObject | StateObject;
@@ -814,6 +819,7 @@ declare global {
         type SettableScriptObject = SettableObject<ScriptObject>;
         type SettableScheduleObject = SettableObject<ScheduleObject>;
         type SettableChartObject = SettableObject<ChartObject>;
+        type SettableDesignObject = SettableObject<DesignObject>;
         type SettableOtherObject = SettableObject<OtherObject>;
 
         // Used to infer the return type of GetObjectView

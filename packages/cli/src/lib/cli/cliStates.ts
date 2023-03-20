@@ -188,7 +188,6 @@ export class CLIStates extends CLICommand {
                         objects.getObject(aliasId, async (err, sourceObj) => {
                             // read target
                             try {
-                                // @ts-expect-error TODO All objects should be assignable to AnyObject?
                                 if (await this._isBinary(aliasId, objects, targetObj)) {
                                     CLI.error.stateBinaryGetUnsupported(aliasId);
                                     return void callback(1);

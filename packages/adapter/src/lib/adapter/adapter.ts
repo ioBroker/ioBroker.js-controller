@@ -2654,15 +2654,15 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
-        if (Object.prototype.hasOwnProperty.call(options.obj, 'type')) {
-            if (!Object.prototype.hasOwnProperty.call(options.obj, 'native')) {
+        if (options.obj.type) {
+            if (!options.obj.native) {
                 this._logger.warn(
                     `${this.namespaceLog} setObject ${options.id} (type=${options.obj.type}) property native missing!`
                 );
                 options.obj.native = {};
             }
             // Check property 'common'
-            if (!Object.prototype.hasOwnProperty.call(options.obj, 'common')) {
+            if (!options.obj.common) {
                 this._logger.warn(
                     `${this.namespaceLog} setObject ${options.id} (type=${options.obj.type}) property common missing!`
                 );
@@ -2671,28 +2671,25 @@ export class AdapterClass extends EventEmitter {
             } else if (options.obj.type === 'state') {
                 // Try to extend the model for type='state'
                 // Check property 'role' by 'state'
-                if (
-                    Object.prototype.hasOwnProperty.call(options.obj.common, 'role') &&
-                    this._defaultObjs[options.obj.common.role]
-                ) {
+                if (options.obj.common.role && this._defaultObjs[options.obj.common.role]) {
                     options.obj.common = extend(
                         true,
                         {},
                         this._defaultObjs[options.obj.common.role],
                         options.obj.common
                     );
-                } else if (!Object.prototype.hasOwnProperty.call(options.obj.common, 'role')) {
+                } else if (!options.obj.common.role) {
                     this._logger.warn(
                         `${this.namespaceLog} setObject ${options.id} (type=${options.obj.type}) property common.role missing!`
                     );
                 }
-                if (!Object.prototype.hasOwnProperty.call(options.obj.common, 'type')) {
+                if (!options.obj.common.type) {
                     this._logger.warn(
                         `${this.namespaceLog} setObject ${options.id} (type=${options.obj.type}) property common.type missing!`
                     );
                 }
                 if (
-                    Object.prototype.hasOwnProperty.call(options.obj.common, 'custom') &&
+                    'custom' in options.obj.common &&
                     options.obj.common.custom !== null &&
                     !tools.isObject(options.obj.common.custom)
                 ) {
@@ -2703,11 +2700,8 @@ export class AdapterClass extends EventEmitter {
                     );
                     return tools.maybeCallbackWithError(options.callback, 'common.custom needs to be an object');
                 }
-            } else {
-                if (
-                    Object.prototype.hasOwnProperty.call(options.obj.common, 'custom') &&
-                    options.obj.common.custom !== null
-                ) {
+            } else if (options.obj.common) {
+                if ('custom' in options.obj.common && options.obj.common.custom !== null) {
                     this._logger.warn(
                         `${this.namespaceLog} setObject ${options.id} (type=${options.obj.type}) property common.custom must not exist.`
                     );
@@ -2715,7 +2709,7 @@ export class AdapterClass extends EventEmitter {
                 }
             }
 
-            if (!Object.prototype.hasOwnProperty.call(options.obj.common, 'name')) {
+            if (options.obj.common && !Object.prototype.hasOwnProperty.call(options.obj.common, 'name')) {
                 options.obj.common.name = options.id;
                 // it is a more unimportant warning as debug
                 this._logger.debug(
@@ -3066,6 +3060,7 @@ export class AdapterClass extends EventEmitter {
 
             options.obj = extend(true, oldObj, options.obj);
 
+            // @ts-expect-error TODO we are returning type Object for ease of use to devs, but formally these are AnyObjects, e.g. not guaranteed to have common
             return adapterObjects.setObject(options.id, options.obj, options.options, options.callback);
         } else {
             options.obj.from = options.obj.from || `system.adapter.${this.namespace}`;
@@ -3078,7 +3073,7 @@ export class AdapterClass extends EventEmitter {
             ) {
                 if (
                     options.obj.common &&
-                    Object.prototype.hasOwnProperty.call(options.obj.common, 'custom') &&
+                    'custom' in options.obj.common &&
                     options.obj.common.custom !== null &&
                     !tools.isObject(options.obj.common.custom)
                 ) {
@@ -3090,11 +3085,7 @@ export class AdapterClass extends EventEmitter {
                     return tools.maybeCallbackWithError(options.callback, 'common.custom needs to be an object');
                 }
             } else {
-                if (
-                    options.obj.common &&
-                    Object.prototype.hasOwnProperty.call(options.obj.common, 'custom') &&
-                    options.obj.common.custom !== null
-                ) {
+                if (options.obj.common && 'custom' in options.obj.common && options.obj.common.custom !== null) {
                     this._logger.warn(
                         `${this.namespaceLog} setObject ${options.id} (type=${options.obj.type}) property common.custom must not exist.`
                     );
@@ -3380,6 +3371,7 @@ export class AdapterClass extends EventEmitter {
 
             obj = extend(true, oldObj, obj);
 
+            // @ts-expect-error TODO we are returning type Object for ease of use to devs, but formally these are AnyObjects, e.g. not guaranteed to have common
             return adapterObjects.setObject(id, obj, options, callback);
         } else {
             obj.from = obj.from || `system.adapter.${this.namespace}`;
@@ -3389,7 +3381,7 @@ export class AdapterClass extends EventEmitter {
             if ((obj.type && obj.type === 'state') || (!obj.type && oldObj && oldObj.type === 'state')) {
                 if (
                     obj.common &&
-                    Object.prototype.hasOwnProperty.call(obj.common, 'custom') &&
+                    'custom' in obj.common &&
                     obj.common.custom !== null &&
                     !tools.isObject(obj.common.custom)
                 ) {
@@ -3401,11 +3393,7 @@ export class AdapterClass extends EventEmitter {
                     return tools.maybeCallbackWithError(callback, 'common.custom needs to be an object');
                 }
             } else {
-                if (
-                    obj.common &&
-                    Object.prototype.hasOwnProperty.call(obj.common, 'custom') &&
-                    obj.common.custom !== null
-                ) {
+                if (obj.common && 'custom' in obj.common && obj.common.custom !== null) {
                     this._logger.warn(
                         `${this.namespaceLog} setObject ${id} (type=${obj.type}) property common.custom must not exist.`
                     );
