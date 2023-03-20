@@ -559,6 +559,12 @@ to be an array of strings.
 
 Example: `"nodeProcessParams": ["--tls-min-v1.0"]`
 
+### IPv6 DNS resolution support
+**Feature status:** New in 5.0.0
+
+You can decide to use IPv6 first as DNS resolution method instead of IPv4 first (default). 
+To use this, configure `dnsResolution` to `verbatim` in `iobroker.json`.
+
 ### Object and State Aliases
 **Feature status:** stable (since 2.0.0)
 
