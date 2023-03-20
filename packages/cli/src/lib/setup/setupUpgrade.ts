@@ -15,7 +15,8 @@ import { Install } from './setupInstall';
 import rl from 'readline-sync';
 import tty from 'tty';
 import path from 'path';
-import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
+import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
+import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { GetRepositoryHandler, ProcessExitCallback } from '../_Types';
 
 const debug = Debug('iobroker:cli');
@@ -27,6 +28,7 @@ interface CLIUpgradeOptions {
     restartController: () => void;
     getRepository: GetRepositoryHandler;
     objects: ObjectsInRedisClient;
+    states: StatesInRedisClient;
     params: Record<string, any>;
 }
 
