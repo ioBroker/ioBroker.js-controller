@@ -280,39 +280,6 @@ function getAppName(): string {
 
 export const appName = getAppName();
 
-export function rmdirRecursiveSync(path: string): void {
-    if (fs.existsSync(path)) {
-        fs.readdirSync(path).forEach(file => {
-            const curPath = `${path}/${file}`;
-            try {
-                if (fs.statSync(curPath).isDirectory()) {
-                    // recurse
-                    rmdirRecursiveSync(curPath);
-                } else {
-                    // delete file
-                    fs.unlinkSync(curPath);
-                }
-            } catch (e) {
-                if (e.code !== 'ENOENT') {
-                    console.log(`Cannot delete file ${path}: ${e.message}`);
-                } else {
-                    throw e;
-                }
-            }
-        });
-        // delete (hopefully) empty folder
-        try {
-            fs.rmdirSync(path);
-        } catch (e) {
-            if (e.code !== 'ENOENT') {
-                console.log(`Cannot delete directory ${path}: ${e.message}`);
-            } else {
-                throw e;
-            }
-        }
-    }
-}
-
 export function findIPs(): string[] {
     if (!lastCalculationOfIps || Date.now() - lastCalculationOfIps > 10000) {
         lastCalculationOfIps = Date.now();
