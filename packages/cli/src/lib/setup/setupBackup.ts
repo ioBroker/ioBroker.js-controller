@@ -187,11 +187,22 @@ export class BackupRestore {
     }
 
     /**
+     * Removes the temporary backup directory, never throws
+     */
+    private removeTempBackupDir(): void {
+        try {
+            fs.rmSync(`${tmpDir}/backup`, { recursive: true, force: true });
+        } catch (e) {
+            console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
+        }
+    }
+
+    /**
      * Pack and compress the backup
      *
      * @param name - backup name
      */
-    private _packBackup(name: string): Promise<string> {
+    private _packBackup(name: string): Promise<string> | void {
         // 2021_10_25 BF (TODO): store letsencrypt files too
         const letsEncrypt = `${this.configDir}/letsencrypt`;
         if (fs.existsSync(letsEncrypt)) {
@@ -199,13 +210,15 @@ export class BackupRestore {
                 this.copyFolderRecursiveSync(letsEncrypt, `${tmpDir}/backup`);
             } catch (e) {
                 console.error(`host.${hostname} Could not backup "${letsEncrypt}" directory: ${e.message}`);
+                this.removeTempBackupDir();
+                return void this.processExit(EXIT_CODES.CANNOT_COPY_DIR);
             }
         }
 
         return new Promise(resolve => {
             const f = fs.createWriteStream(name);
             f.on('finish', () => {
-                fs.rmSync(`${tmpDir}/backup`, { recursive: true, force: true });
+                this.removeTempBackupDir();
                 resolve(path.normalize(name));
             });
 
@@ -336,11 +349,7 @@ export class BackupRestore {
         fs.ensureDirSync(bkpDir);
         fs.ensureDirSync(tmpDir);
 
-        try {
-            fs.rmSync(`${tmpDir}/backup/`, { recursive: true, force: true });
-        } catch (e) {
-            console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
-        }
+        this.removeTempBackupDir();
 
         fs.ensureDirSync(`${tmpDir}/backup`);
         fs.ensureDirSync(`${tmpDir}/backup/files`);
@@ -402,6 +411,8 @@ export class BackupRestore {
                             console.error(
                                 `host.${hostname} Could not backup "${dataFolderPath}" directory: ${e.message}`
                             );
+                            this.removeTempBackupDir();
+                            return void this.processExit(EXIT_CODES.CANNOT_COPY_DIR);
                         }
                     }
                 }
@@ -434,11 +445,8 @@ export class BackupRestore {
             return await this._packBackup(name);
         } catch (err) {
             console.error(`host.${hostname} Backup not created: ${err.message}`);
-            try {
-                fs.rmSync(`${tmpDir}/backup/`, { recursive: true, force: true });
-            } catch (e) {
-                console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
-            }
+            this.removeTempBackupDir();
+
             return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
         }
     }
@@ -949,18 +957,15 @@ export class BackupRestore {
                         console.error(
                             `host.${hostname} Backup corrupted. Backup ${name} does not contain a valid backup.json file: ${err.message}`
                         );
-                        try {
-                            fs.rmSync(`${tmpDir}/backup/`, { recursive: true, force: true });
-                        } catch (e) {
-                            console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
-                        }
+                        this.removeTempBackupDir();
+
                         return void this.processExit(26);
                     }
 
                     if (!backupJSON || !backupJSON.objects || !backupJSON.objects.length) {
                         console.error(`host.${hostname} Backup corrupted. Backup does not contain valid objects`);
                         try {
-                            fs.rmSync(`${tmpDir}/backup/`, { recursive: true, force: true });
+                            this.removeTempBackupDir();
                         } catch (e) {
                             console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
                         }
@@ -971,11 +976,8 @@ export class BackupRestore {
 
                     try {
                         this._checkDirectory(`${tmpDir}/backup/files`, true);
-                        try {
-                            fs.rmSync(`${tmpDir}/backup/`, { recursive: true, force: true });
-                        } catch (e) {
-                            console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
-                        }
+                        this.removeTempBackupDir();
+
                         resolve();
                     } catch (err) {
                         console.error(`host.${hostname} Backup corrupted: ${err.message}`);
