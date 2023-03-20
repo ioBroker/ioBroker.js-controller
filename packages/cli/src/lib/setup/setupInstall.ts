@@ -35,7 +35,7 @@ interface NpmInstallResult {
 export interface CLIInstallOptions {
     params: Record<string, any>;
     getRepository: GetRepositoryHandler;
-    states?: StatesRedisClient;
+    states: StatesRedisClient;
     objects: ObjectsRedisClient;
     processExit: ProcessExitCallback;
 }
