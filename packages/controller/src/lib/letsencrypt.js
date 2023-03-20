@@ -14,7 +14,7 @@ const fs = require('fs-extra');
  */
 async function createServerAsync(app, settings, certificates, leSettings, log, adapter) {
     log.warn(
-        `Information for Developer: Using "Let's encrypt" is deprecated and will be removed in the next js-controller version, use @iobroker/webserver instead`
+        `Information for Developer: Using the direct "Let's encrypt" module import is deprecated and will be removed in the next js-controller version, use @iobroker/webserver instead`
     );
 
     if (!settings.secure) {
@@ -206,7 +206,7 @@ async function createServerAsync(app, settings, certificates, leSettings, log, a
  */
 function createServer(app, settings, certificates, leSettings, log) {
     log.warn(
-        `Information for Developer: Using "Let's encrypt" is deprecated and will be removed in the next js-controller version, use @iobroker/webserver instead`
+        `Information for Developer: Using the direct "Let's encrypt" module import is deprecated and will be removed in the next js-controller version, use @iobroker/webserver instead`
     );
 
     let server;
