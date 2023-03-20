@@ -8,7 +8,7 @@ import { maybeCallback, maybeCallbackWithError, maybeCallbackWithRedisError } fr
 
 async () => {
     // maybeCallbackWithError, empty callback
-    const cb = () => {};
+    const cb = (): void => {};
 
     // No error, but also no arguments
     maybeCallbackWithError(cb, null);
@@ -31,7 +31,7 @@ async () => {
 
 async () => {
     // maybeCallbackWithError, callback only takes an error argument
-    const cb = (err?: Error | null) => {};
+    const cb = (err?: Error | null): void => {};
 
     // No error, but also no arguments
     maybeCallbackWithError(cb, null);
@@ -54,14 +54,14 @@ async () => {
 
 async () => {
     // maybeCallbackWithError, callback only takes an argument that's not compatible with Error
-    const cb = (err?: number) => {};
+    const cb = (err?: number): void => {};
     // @ts-expect-error
     maybeCallbackWithError(cb, null);
 };
 
 async () => {
     // maybeCallbackWithError, callback takes an error and some additional args
-    const cb = (err: Error | null | undefined, arg1: number, arg2: string) => {};
+    const cb = (err: Error | null | undefined, arg1: number, arg2: string): void => {};
 
     // No error, but forgot the arguments
     // @ts-expect-error
@@ -155,7 +155,7 @@ async () => {
 
 async () => {
     // maybeCallbackWithRedisError, empty callback
-    const cb = () => {};
+    const cb = (): void => {};
 
     // No error, but also no arguments
     maybeCallbackWithRedisError(cb, null);
@@ -178,7 +178,7 @@ async () => {
 
 async () => {
     // maybeCallbackWithRedisError, callback only takes an error argument
-    const cb = (err?: Error | null) => {};
+    const cb = (err?: Error | null): void => {};
 
     // No error, but also no arguments
     maybeCallbackWithRedisError(cb, null);
@@ -201,14 +201,14 @@ async () => {
 
 async () => {
     // maybeCallbackWithRedisError, callback only takes an argument that's not compatible with Error
-    const cb = (err?: number) => {};
+    const cb = (err?: number): void => {};
     // @ts-expect-error
     maybeCallbackWithRedisError(cb, null);
 };
 
 async () => {
     // maybeCallbackWithRedisError, callback takes an error and some additional args
-    const cb = (err: Error | null | undefined, arg1: number, arg2: string) => {};
+    const cb = (err: Error | null | undefined, arg1: number, arg2: string): void => {};
 
     // No error, but forgot the arguments
     // @ts-expect-error
@@ -245,7 +245,7 @@ async () => {
 
 async () => {
     // maybeCallback, empty callback
-    const cb = () => {};
+    const cb = (): void => {};
 
     // OK
     maybeCallback(cb);
@@ -257,7 +257,7 @@ async () => {
 
 async () => {
     // maybeCallback, callback takes some args
-    const cb = (arg1: number, arg2?: string) => {};
+    const cb = (arg1: number, arg2?: string): void => {};
 
     // Forgot one arg
     // @ts-expect-error

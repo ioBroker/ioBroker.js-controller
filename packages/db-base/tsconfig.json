@@ -4,6 +4,11 @@
     "outDir": "build",
     "rootDir": "src"
   },
+  "references": [
+    {
+      "path": "../common/tsconfig.json"
+    },
+  ],
   "include": [
     "src/**/*.ts"
   ],

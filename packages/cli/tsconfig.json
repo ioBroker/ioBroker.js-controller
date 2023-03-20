@@ -4,8 +4,17 @@
     "outDir": "build",
     "rootDir": "src"
   },
+  "references": [
+    {
+      "path": "../common/tsconfig.json"
+    },
+    {
+      "path": "../common-db/tsconfig.json"
+    },
+  ],
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "src/**/*.js"
   ],
   "exclude": [
     "build/**",

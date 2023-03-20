@@ -1,18 +1,10 @@
-import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
-import type { Client as StatesClient } from '@iobroker/db-states-redis';
-
-export type DBConnectCallback = (
-    objects: ObjectsClient,
-    states: StatesClient,
-    isOffline?: boolean,
-    objectsDBType?: string
-) => void;
+import type { DbConnectCallback } from '../_Types';
 
 export interface CLICommandContext {
     /** Invoke this before doing anything in the database */
-    dbConnect: (callback: DBConnectCallback) => void;
+    dbConnect: (callback: DbConnectCallback) => void;
     callback: (code: number) => void;
-    showHelp: () => void;
+    showHelp: (yargs?: any) => void;
 }
 
 export interface CLICommandParams {
@@ -32,6 +24,9 @@ export interface CLICommandParams {
     updatable?: any;
     host?: any;
     cert?: any;
+    cwd?: string;
+    path?: string;
+    module?: string;
 }
 
 export type CLICommandOptions = CLICommandContext & CLICommandParams;

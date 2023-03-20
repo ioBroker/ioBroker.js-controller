@@ -72,7 +72,8 @@ export class CLIStates extends CLICommand {
      */
     getDBVersion(): void {
         const { callback, dbConnect } = this.options;
-        dbConnect(async (objects, states) => {
+        dbConnect(async params => {
+            const { states } = params;
             const version = await states.getProtocolVersion();
             console.log(`Current States DB protocol version: ${version}`);
             return void callback(0);
@@ -84,7 +85,9 @@ export class CLIStates extends CLICommand {
      */
     setDBVersion(): void {
         const { callback, dbConnect } = this.options;
-        dbConnect(async (objects, states) => {
+        dbConnect(async params => {
+            const { states } = params;
+
             let answer = rl.question('Changing the protocol version will restart all hosts! Continue? [N/y]', {
                 limit: /^(yes|y|n|no)$/i,
                 defaultInput: 'no'
@@ -130,7 +133,9 @@ export class CLIStates extends CLICommand {
 
         const { callback, dbConnect } = this.options;
         const id = args[1];
-        dbConnect(async (objects, states) => {
+        dbConnect(async params => {
+            const { states } = params;
+
             try {
                 // @ts-expect-error #1917
                 const state = await states.getBinaryState(id);
@@ -169,7 +174,9 @@ export class CLIStates extends CLICommand {
             return;
         }
 
-        dbConnect(async (objects, states) => {
+        dbConnect(async params => {
+            const { states, objects } = params;
+
             if (id.startsWith(ALIAS_STARTS_WITH)) {
                 objects.getObject(id, (err, targetObj) => {
                     // alias
@@ -191,8 +198,15 @@ export class CLIStates extends CLICommand {
                                 if (!state) {
                                     CLI.error.stateNotFound(id);
                                 } else {
-                                    // @ts-expect-error fix after #1917
-                                    tools.formatAliasValue(sourceObj?.common, targetObj.common, state, console, '');
+                                    tools.formatAliasValue({
+                                        sourceCommon: sourceObj?.common as ioBroker.StateCommon | undefined,
+                                        targetCommon: targetObj.common as ioBroker.StateCommon,
+                                        state,
+                                        logger: console,
+                                        logNamespace: '',
+                                        sourceId: sourceObj?._id,
+                                        targetId: targetObj._id
+                                    });
                                     console.log(resultTransform(state));
                                 }
                             } catch (e) {
@@ -244,7 +258,8 @@ export class CLIStates extends CLICommand {
             ack = ack === 'true' || ack === '1' || ack === 1 || ack === true;
         }
 
-        dbConnect((objects, states) => {
+        dbConnect(params => {
+            const { states, objects } = params;
             const newVal = ack === undefined ? { val, ack: false } : { val, ack: !!ack };
 
             if (id.startsWith(ALIAS_STARTS_WITH)) {
@@ -288,8 +303,15 @@ export class CLIStates extends CLICommand {
                             // write target
                             states.setState(
                                 aliasId,
-                                // @ts-expect-error fix after #1917
-                                tools.formatAliasValue(obj.common, targetObj.common, newVal, console, ''),
+                                tools.formatAliasValue({
+                                    sourceCommon: obj.common as ioBroker.StateCommon,
+                                    targetCommon: targetObj?.common as ioBroker.StateCommon | undefined,
+                                    state: newVal as ioBroker.State,
+                                    logger: console,
+                                    logNamespace: '',
+                                    sourceId: obj._id,
+                                    targetId: targetObj?._id
+                                }),
                                 err => {
                                     if (err) {
                                         CLI.error.unknown(err);
@@ -364,7 +386,9 @@ export class CLIStates extends CLICommand {
             return void callback(1);
         }
 
-        dbConnect((objects, states) =>
+        dbConnect(params => {
+            const { states } = params;
+
             states.delState(id, err => {
                 if (err) {
                     CLI.error.stateNotFound(id, err);
@@ -373,7 +397,7 @@ export class CLIStates extends CLICommand {
                     CLI.success.stateDeleted(id);
                     return void callback(0);
                 }
-            })
-        );
+            });
+        });
     }
 }

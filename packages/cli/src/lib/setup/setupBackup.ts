@@ -107,7 +107,7 @@ export class BackupRestore {
     }
 
     async copyDir(id: string, srcPath: string, destPath: string): Promise<void> {
-        !fs.existsSync(destPath) && fs.mkdirSync(destPath);
+        fs.ensureDirSync(destPath);
 
         try {
             // @ts-expect-error #1917
@@ -187,21 +187,38 @@ export class BackupRestore {
     }
 
     /**
+     * Removes the temporary backup directory, never throws
+     */
+    private removeTempBackupDir(): void {
+        try {
+            fs.rmSync(`${tmpDir}/backup`, { recursive: true, force: true });
+        } catch (e) {
+            console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
+        }
+    }
+
+    /**
      * Pack and compress the backup
      *
      * @param name - backup name
      */
-    private _packBackup(name: string): Promise<string> {
+    private _packBackup(name: string): Promise<string> | void {
         // 2021_10_25 BF (TODO): store letsencrypt files too
         const letsEncrypt = `${this.configDir}/letsencrypt`;
         if (fs.existsSync(letsEncrypt)) {
-            this.copyFolderRecursiveSync(letsEncrypt, `${tmpDir}/backup`);
+            try {
+                this.copyFolderRecursiveSync(letsEncrypt, `${tmpDir}/backup`);
+            } catch (e) {
+                console.error(`host.${hostname} Could not backup "${letsEncrypt}" directory: ${e.message}`);
+                this.removeTempBackupDir();
+                return void this.processExit(EXIT_CODES.CANNOT_COPY_DIR);
+            }
         }
 
         return new Promise(resolve => {
             const f = fs.createWriteStream(name);
             f.on('finish', () => {
-                tools.rmdirRecursiveSync(`${tmpDir}/backup`);
+                this.removeTempBackupDir();
                 resolve(path.normalize(name));
             });
 
@@ -248,9 +265,7 @@ export class BackupRestore {
             const backupPath = BackupRestore.getBackupDir();
 
             // create directory if not exists
-            if (!fs.existsSync(backupPath)) {
-                fs.mkdirSync(backupPath);
-            }
+            fs.ensureDirSync(backupPath);
 
             if (!name.includes('.tar.gz')) {
                 name = `${backupPath + name}.tar.gz`;
@@ -264,7 +279,6 @@ export class BackupRestore {
         const hostname = tools.getHostName();
 
         try {
-            // @ts-expect-error #1917
             const res = await this.objects.getObjectListAsync({ include_docs: true });
             if (res) {
                 // getObjectList returns value and doc as the same so filter out doc to reduce backup size
@@ -332,25 +346,13 @@ export class BackupRestore {
             console.error(`host.${hostname} Cannot get states: ${e.message}`);
         }
 
-        if (!fs.existsSync(bkpDir)) {
-            fs.mkdirSync(bkpDir);
-        }
-        if (!fs.existsSync(tmpDir)) {
-            fs.mkdirSync(tmpDir);
-        }
+        fs.ensureDirSync(bkpDir);
+        fs.ensureDirSync(tmpDir);
 
-        try {
-            tools.rmdirRecursiveSync(`${tmpDir}/backup/`);
-        } catch (e) {
-            console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
-        }
+        this.removeTempBackupDir();
 
-        if (!fs.existsSync(`${tmpDir}/backup`)) {
-            fs.mkdirSync(`${tmpDir}/backup`);
-        }
-        if (!fs.existsSync(`${tmpDir}/backup/files`)) {
-            fs.mkdirSync(`${tmpDir}/backup/files`);
-        }
+        fs.ensureDirSync(`${tmpDir}/backup`);
+        fs.ensureDirSync(`${tmpDir}/backup/files`);
 
         // try to find user files
         if (result.objects) {
@@ -403,7 +405,15 @@ export class BackupRestore {
                     }
 
                     if (fs.existsSync(dataFolderPath)) {
-                        this.copyFolderRecursiveSync(dataFolderPath, `${tmpDir}/backup`);
+                        try {
+                            this.copyFolderRecursiveSync(dataFolderPath, `${tmpDir}/backup`);
+                        } catch (e) {
+                            console.error(
+                                `host.${hostname} Could not backup "${dataFolderPath}" directory: ${e.message}`
+                            );
+                            this.removeTempBackupDir();
+                            return void this.processExit(EXIT_CODES.CANNOT_COPY_DIR);
+                        }
                     }
                 }
             }
@@ -415,8 +425,8 @@ export class BackupRestore {
             const data = await this.objects.readFileAsync('vis', 'css/vis-common-user.css');
             if (data) {
                 const dir = `${tmpDir}/backup/files/`;
-                !fs.existsSync(`${dir}vis`) && fs.mkdirSync(`${dir}vis`);
-                !fs.existsSync(`${dir}vis/css`) && fs.mkdirSync(`${dir}vis/css`);
+                fs.ensureDirSync(`${dir}vis`);
+                fs.ensureDirSync(`${dir}vis/css`);
 
                 // @ts-expect-error #1917
                 fs.writeFileSync(`${dir}vis/css/vis-common-user.css`, data.data !== undefined ? data.data : data);
@@ -435,11 +445,8 @@ export class BackupRestore {
             return await this._packBackup(name);
         } catch (err) {
             console.error(`host.${hostname} Backup not created: ${err.message}`);
-            try {
-                tools.rmdirRecursiveSync(`${tmpDir}/backup/`);
-            } catch (e) {
-                console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
-            }
+            this.removeTempBackupDir();
+
             return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
         }
     }
@@ -532,28 +539,17 @@ export class BackupRestore {
         let _modules;
         let p = path.join(controllerDir, 'node_modules');
 
+        if (p.includes('js-controller')) {
+            p = path.join(controllerDir, '..', 'node_modules');
+        }
+
         if (fs.existsSync(p)) {
-            if (!p.includes('js-controller')) {
-                _modules = fs.readdirSync(p).filter(dir => fs.existsSync(`${p}/${dir}/io-package.json`));
-                if (_modules) {
-                    const regEx = new RegExp(`^${tools.appName}\\.`, 'i');
-                    for (const module of _modules) {
-                        if (regEx.test(module) && !dirs.includes(module.substring(tools.appName.length + 1))) {
-                            dirs.push(module);
-                        }
-                    }
-                }
-            } else {
-                p = path.join(controllerDir, '..', 'node_modules');
-                if (fs.existsSync(p)) {
-                    _modules = fs.readdirSync(p).filter(dir => fs.existsSync(`${p}/${dir}/io-package.json`));
-                    if (_modules) {
-                        const regEx = new RegExp(`^${tools.appName}\\.`, 'i');
-                        for (const module of _modules) {
-                            if (regEx.test(module) && !dirs.includes(module.substring(tools.appName.length + 1))) {
-                                dirs.push(module);
-                            }
-                        }
+            _modules = fs.readdirSync(p).filter(dir => fs.existsSync(`${p}/${dir}/io-package.json`));
+            if (_modules) {
+                const regEx = new RegExp(`^${tools.appName}\\.`, 'i');
+                for (const module of _modules) {
+                    if (regEx.test(module) && !dirs.includes(module.substring(tools.appName.length + 1))) {
+                        dirs.push(module);
                     }
                 }
             }
@@ -598,7 +594,7 @@ export class BackupRestore {
         }
     }
 
-    private async _uploadUserFiles(root: string, uploadPath?: string) {
+    private async _uploadUserFiles(root: string, uploadPath?: string): Promise<void> {
         uploadPath = uploadPath || '';
         if (!fs.existsSync(root)) {
             return;
@@ -630,7 +626,7 @@ export class BackupRestore {
         }
     }
 
-    private _copyBackupedFiles(backupDir: string) {
+    private _copyBackupedFiles(backupDir: string): void {
         try {
             if (!fs.existsSync(backupDir)) {
                 console.log('No additional files to restore');
@@ -852,7 +848,7 @@ export class BackupRestore {
     /**
      * Validates the backup.json and all json files inside the backup after (in temporary directory), here we only abort if backup.json is corrupted
      */
-    private _validateBackupAfterCreation() {
+    private _validateBackupAfterCreation(): void {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         const backupJSON = require(`${tmpDir}/backup/backup.json`);
         if (!backupJSON.objects || !backupJSON.objects.length) {
@@ -961,18 +957,15 @@ export class BackupRestore {
                         console.error(
                             `host.${hostname} Backup corrupted. Backup ${name} does not contain a valid backup.json file: ${err.message}`
                         );
-                        try {
-                            tools.rmdirRecursiveSync(`${tmpDir}/backup/`);
-                        } catch (e) {
-                            console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
-                        }
+                        this.removeTempBackupDir();
+
                         return void this.processExit(26);
                     }
 
                     if (!backupJSON || !backupJSON.objects || !backupJSON.objects.length) {
                         console.error(`host.${hostname} Backup corrupted. Backup does not contain valid objects`);
                         try {
-                            tools.rmdirRecursiveSync(`${tmpDir}/backup/`);
+                            this.removeTempBackupDir();
                         } catch (e) {
                             console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
                         }
@@ -983,11 +976,8 @@ export class BackupRestore {
 
                     try {
                         this._checkDirectory(`${tmpDir}/backup/files`, true);
-                        try {
-                            tools.rmdirRecursiveSync(`${tmpDir}/backup/`);
-                        } catch (e) {
-                            console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
-                        }
+                        this.removeTempBackupDir();
+
                         resolve();
                     } catch (err) {
                         console.error(`host.${hostname} Backup corrupted: ${err.message}`);
@@ -1167,7 +1157,11 @@ export class BackupRestore {
                     }
 
                     console.log(`Reinstalling adapter "${adapterName}" from "${installSource}"`);
-                    await tools.installNodeModule(installSource);
+                    const res = await tools.installNodeModule(installSource);
+
+                    if (!res.success) {
+                        console.error(`Could not install adapter "${adapterName}" (${res.exitCode}): ${res.stderr}`);
+                    }
                 }
             } catch (e) {
                 console.error(`Could not ensure existence of adapter "${adapterName}": ${e.message}`);

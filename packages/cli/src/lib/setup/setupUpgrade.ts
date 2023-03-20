@@ -15,7 +15,8 @@ import { Install } from './setupInstall';
 import rl from 'readline-sync';
 import tty from 'tty';
 import path from 'path';
-import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
+import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
+import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { GetRepositoryHandler, ProcessExitCallback } from '../_Types';
 
 const debug = Debug('iobroker:cli');
@@ -27,6 +28,7 @@ interface CLIUpgradeOptions {
     restartController: () => void;
     getRepository: GetRepositoryHandler;
     objects: ObjectsInRedisClient;
+    states: StatesInRedisClient;
     params: Record<string, any>;
 }
 
@@ -238,7 +240,6 @@ export class Upgrade {
                     let isFound = false;
                     // we check, that all instances match - respect different local and global dep versions
                     for (const instance of locInstances) {
-                        // @ts-expect-error InstaceCommon has version: TODO fix types
                         const instanceVersion = instance.value!.common.version;
                         try {
                             if (
@@ -264,7 +265,6 @@ export class Upgrade {
                     }
 
                     for (const instance of gInstances) {
-                        // @ts-expect-error InstaceCommon has version: TODO fix types
                         const instanceVersion = instance.value!.common.version;
                         try {
                             if (
@@ -328,7 +328,7 @@ export class Upgrade {
         const repoAdapter: Record<string, any> = sources[adapter];
 
         // TODO: not really adapter object but close enough
-        const finishUpgrade = async (name: string, ioPack?: ioBroker.AdapterObject) => {
+        const finishUpgrade = async (name: string, ioPack?: ioBroker.AdapterObject): Promise<void> => {
             if (!ioPack) {
                 const adapterDir = tools.getAdapterDir(name);
 
@@ -407,9 +407,8 @@ export class Upgrade {
          * @param installedVersion - installed version of adapter
          * @param targetVersion - target version of adapter
          * @param adapterName - name of the adapter
-         * @return {boolean}
          */
-        const showUpgradeDialog = (installedVersion: string, targetVersion: string, adapterName: string) => {
+        const showUpgradeDialog = (installedVersion: string, targetVersion: string, adapterName: string): boolean => {
             // major upgrade or downgrade
             const isMajor = semver.major(installedVersion) !== semver.major(targetVersion);
 
@@ -639,7 +638,7 @@ export class Upgrade {
     /**
      * Upgrade the js-controller
      *
-     * @param repoUrl
+     * @param repoUrlOrObject
      * @param forceDowngrade
      * @param controllerRunning
      */

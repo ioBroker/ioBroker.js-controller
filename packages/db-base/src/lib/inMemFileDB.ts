@@ -155,7 +155,17 @@ export class InMemoryFileDB {
         this.log = tools.getLogger(this.settings.logger);
 
         if (!this.settings.backup.disabled) {
-            this.initBackupDir();
+            try {
+                this.initBackupDir();
+            } catch (e) {
+                this.log.error(
+                    `Database backups are disabled, because backup directory could not be initialized: ${e.message}`
+                );
+                this.log.error(
+                    'This leads to an increased risk of data loss, please check that the configured backup directory is available and restart the controller'
+                );
+                this.settings.backup.disabled = true;
+            }
         }
 
         this.log.debug(`${this.namespace} Data File: ${this.datasetName}`);
@@ -259,7 +269,7 @@ export class InMemoryFileDB {
             );
             this.settings.backup.period = 120;
         }
-        this.settings.backup.period *= 60000;
+        this.settings.backup.period *= 60_000;
 
         this.settings.backup.files =
             this.settings.backup.files === undefined ? 24 : parseInt(String(this.settings.backup.files));
@@ -326,7 +336,7 @@ export class InMemoryFileDB {
     ): void | Promise<void> {
         const s = client?._subscribe?.[type];
         if (s) {
-            const removeEntry = (p: string) => {
+            const removeEntry = (p: string): void => {
                 const index = s.findIndex(sub => sub.pattern === p);
                 if (index > -1) {
                     s.splice(index, 1);

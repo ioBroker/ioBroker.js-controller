@@ -750,6 +750,10 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             return void handler.sendInteger(responseId, 1);
         });
 
+        handler.on('eval', (data, responseId) => {
+            return void handler.sendNull(responseId);
+        });
+
         handler.on('sscan', (data, responseId) => {
             // for file DB it does the same as scan but data looks different
             if (!data || data.length < 4) {

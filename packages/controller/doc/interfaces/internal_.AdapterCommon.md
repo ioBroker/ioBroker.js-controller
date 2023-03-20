@@ -92,7 +92,7 @@ Custom attributes to be shown in admin in the object browser
 
 #### Defined in
 
-[types/objects.d.ts:408](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L408)
+[types-dev/objects.d.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L439)
 
 ___
 
@@ -114,7 +114,7 @@ Settings for custom Admin Tabs
 
 #### Defined in
 
-[types/objects.d.ts:410](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L410)
+[types-dev/objects.d.ts:441](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L441)
 
 ___
 
@@ -124,7 +124,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:421](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L421)
+[types-dev/objects.d.ts:452](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L452)
 
 ___
 
@@ -136,7 +136,7 @@ Possible values for the instance mode (if more than one is possible)
 
 #### Defined in
 
-[types/objects.d.ts:423](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L423)
+[types-dev/objects.d.ts:454](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L454)
 
 ___
 
@@ -148,7 +148,7 @@ Whether this adapter includes custom blocks for Blockly. If true, `admin/blockly
 
 #### Defined in
 
-[types/objects.d.ts:425](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L425)
+[types-dev/objects.d.ts:456](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L456)
 
 ___
 
@@ -160,7 +160,7 @@ If true, this adapter can be started in compact mode (in the same process as oth
 
 #### Defined in
 
-[types/objects.d.ts:429](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L429)
+[types-dev/objects.d.ts:460](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L460)
 
 ___
 
@@ -176,7 +176,7 @@ dataSource
 
 #### Defined in
 
-[types/objects.d.ts:427](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L427)
+[types-dev/objects.d.ts:458](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L458)
 
 ___
 
@@ -186,7 +186,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:541](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L541)
+[types-dev/objects.d.ts:572](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L572)
 
 ___
 
@@ -198,7 +198,7 @@ The directory relative to iobroker-data where the adapter stores the data. Suppo
 
 #### Defined in
 
-[types/objects.d.ts:431](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L431)
+[types-dev/objects.d.ts:462](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L462)
 
 ___
 
@@ -214,7 +214,7 @@ connectionType
 
 #### Defined in
 
-[types/objects.d.ts:433](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L433)
+[types-dev/objects.d.ts:464](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L464)
 
 ___
 
@@ -226,7 +226,7 @@ A record of ioBroker adapters (including "js-controller") and version ranges whi
 
 #### Defined in
 
-[types/objects.d.ts:435](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L435)
+[types-dev/objects.d.ts:466](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L466)
 
 ___
 
@@ -238,7 +238,7 @@ Which files outside of the README.md have documentation for the adapter
 
 #### Defined in
 
-[types/objects.d.ts:437](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L437)
+[types-dev/objects.d.ts:468](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L468)
 
 ___
 
@@ -254,7 +254,7 @@ When set to true, this object may not be deleted
 
 #### Defined in
 
-[types/objects.d.ts:157](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L157)
+[types-dev/objects.d.ts:158](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L158)
 
 ___
 
@@ -266,7 +266,7 @@ Whether new instances should be enabled by default. *Should* be `false`!
 
 #### Defined in
 
-[types/objects.d.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L439)
+[types-dev/objects.d.ts:470](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L470)
 
 ___
 
@@ -278,7 +278,7 @@ If true, all previous data in the target directory (web) should be deleted befor
 
 #### Defined in
 
-[types/objects.d.ts:441](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L441)
+[types-dev/objects.d.ts:472](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L472)
 
 ___
 
@@ -294,7 +294,7 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 #### Defined in
 
-[types/objects.d.ts:160](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L160)
+[types-dev/objects.d.ts:161](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L161)
 
 ___
 
@@ -306,7 +306,7 @@ URL of an external icon that is shown for adapters that are not installed
 
 #### Defined in
 
-[types/objects.d.ts:443](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L443)
+[types-dev/objects.d.ts:474](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L474)
 
 ___
 
@@ -318,7 +318,7 @@ Whether this adapter responds to `getHistory` messages
 
 #### Defined in
 
-[types/objects.d.ts:445](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L445)
+[types-dev/objects.d.ts:476](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L476)
 
 ___
 
@@ -334,7 +334,7 @@ Filename of the local icon which is shown for installed adapters. Should be loca
 
 #### Defined in
 
-[types/objects.d.ts:447](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L447)
+[types-dev/objects.d.ts:478](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L478)
 
 ___
 
@@ -346,7 +346,7 @@ Which version of this adapter is installed
 
 #### Defined in
 
-[types/objects.d.ts:449](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L449)
+[types-dev/objects.d.ts:480](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L480)
 
 ___
 
@@ -356,7 +356,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:450](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L450)
+[types-dev/objects.d.ts:481](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L481)
 
 ___
 
@@ -374,7 +374,7 @@ localLinks
 
 #### Defined in
 
-[types/objects.d.ts:454](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L454)
+[types-dev/objects.d.ts:485](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L485)
 
 ___
 
@@ -386,7 +386,7 @@ A dictionary of links to web services this adapter provides
 
 #### Defined in
 
-[types/objects.d.ts:452](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L452)
+[types-dev/objects.d.ts:483](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L483)
 
 ___
 
@@ -396,7 +396,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:455](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L455)
+[types-dev/objects.d.ts:486](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L486)
 
 ___
 
@@ -408,7 +408,7 @@ Whether this adapter receives logs from other hosts and adapters (e.g. to strore
 
 #### Defined in
 
-[types/objects.d.ts:457](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L457)
+[types-dev/objects.d.ts:488](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L488)
 
 ___
 
@@ -420,7 +420,7 @@ Path to the start file of the adapter. Should be the same as in `package.json`
 
 #### Defined in
 
-[types/objects.d.ts:459](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L459)
+[types-dev/objects.d.ts:490](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L490)
 
 ___
 
@@ -432,7 +432,7 @@ Whether the admin configuration dialog is written in materialize style. Required
 
 #### Defined in
 
-[types/objects.d.ts:463](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L463)
+[types-dev/objects.d.ts:494](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L494)
 
 ___
 
@@ -444,7 +444,7 @@ Whether the admin tab is written in materialize style. Required for Admin 3+
 
 #### Defined in
 
-[types/objects.d.ts:461](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L461)
+[types-dev/objects.d.ts:492](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L492)
 
 ___
 
@@ -456,7 +456,7 @@ If `true`, the object `system.adapter.<adaptername>.<adapterinstance>.messagebox
 
 #### Defined in
 
-[types/objects.d.ts:465](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L465)
+[types-dev/objects.d.ts:496](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L496)
 
 ___
 
@@ -466,7 +466,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:466](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L466)
+[types-dev/objects.d.ts:497](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L497)
 
 ___
 
@@ -482,7 +482,7 @@ Name of the adapter (without leading `ioBroker.`)
 
 #### Defined in
 
-[types/objects.d.ts:468](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L468)
+[types-dev/objects.d.ts:499](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L499)
 
 ___
 
@@ -494,7 +494,7 @@ If `true`, no configuration dialog will be shown
 
 #### Defined in
 
-[types/objects.d.ts:470](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L470)
+[types-dev/objects.d.ts:501](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L501)
 
 ___
 
@@ -506,7 +506,7 @@ If `true`, this adapter's instances will not be shown in the admin overview scre
 
 #### Defined in
 
-[types/objects.d.ts:472](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L472)
+[types-dev/objects.d.ts:503](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L503)
 
 ___
 
@@ -518,7 +518,7 @@ Set to `true` if the adapter is not available in the official ioBroker repositor
 
 #### Defined in
 
-[types/objects.d.ts:474](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L474)
+[types-dev/objects.d.ts:505](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L505)
 
 ___
 
@@ -530,7 +530,7 @@ If `true`, manual installation from GitHub is not possible
 
 #### Defined in
 
-[types/objects.d.ts:476](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L476)
+[types-dev/objects.d.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L507)
 
 ___
 
@@ -542,7 +542,7 @@ If `true`, this adapter cannot be deleted or updated manually.
 
 #### Defined in
 
-[types/objects.d.ts:478](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L478)
+[types-dev/objects.d.ts:509](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L509)
 
 ___
 
@@ -554,7 +554,7 @@ If `true`, this "adapter" only contains HTML files and no main executable
 
 #### Defined in
 
-[types/objects.d.ts:480](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L480)
+[types-dev/objects.d.ts:511](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L511)
 
 ___
 
@@ -566,7 +566,7 @@ Which OSes this adapter supports
 
 #### Defined in
 
-[types/objects.d.ts:491](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L491)
+[types-dev/objects.d.ts:522](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L522)
 
 ___
 
@@ -586,7 +586,7 @@ Used to configure native (OS) dependencies of this adapter that need to be insta
 
 #### Defined in
 
-[types/objects.d.ts:482](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L482)
+[types-dev/objects.d.ts:513](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L513)
 
 ___
 
@@ -596,7 +596,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:492](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L492)
+[types-dev/objects.d.ts:523](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L523)
 
 ___
 
@@ -608,7 +608,7 @@ The keys of common attributes (e.g. `history`) which are not deleted in a `setOb
 
 #### Defined in
 
-[types/objects.d.ts:494](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L494)
+[types-dev/objects.d.ts:525](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L525)
 
 ___
 
@@ -620,7 +620,7 @@ Which adapters must be restarted after installing or updating this adapter.
 
 #### Defined in
 
-[types/objects.d.ts:496](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L496)
+[types-dev/objects.d.ts:527](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L527)
 
 ___
 
@@ -636,7 +636,7 @@ role of the object
 
 #### Defined in
 
-[types/objects.d.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L167)
+[types-dev/objects.d.ts:168](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L168)
 
 ___
 
@@ -648,7 +648,7 @@ If the adapter runs in `schedule` mode, this contains the CRON
 
 #### Defined in
 
-[types/objects.d.ts:498](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L498)
+[types-dev/objects.d.ts:529](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L529)
 
 ___
 
@@ -658,7 +658,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:499](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L499)
+[types-dev/objects.d.ts:530](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L530)
 
 ___
 
@@ -670,7 +670,7 @@ Whether this adapter may only be installed once in the whole system
 
 #### Defined in
 
-[types/objects.d.ts:503](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L503)
+[types-dev/objects.d.ts:534](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L534)
 
 ___
 
@@ -682,7 +682,7 @@ Whether this adapter may only be installed once per host
 
 #### Defined in
 
-[types/objects.d.ts:501](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L501)
+[types-dev/objects.d.ts:532](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L532)
 
 ___
 
@@ -694,7 +694,7 @@ Whether the adapter must be stopped before an update
 
 #### Defined in
 
-[types/objects.d.ts:505](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L505)
+[types-dev/objects.d.ts:536](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L536)
 
 ___
 
@@ -706,7 +706,7 @@ Overrides the default timeout that ioBroker will wait before force-stopping the 
 
 #### Defined in
 
-[types/objects.d.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L507)
+[types-dev/objects.d.ts:538](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L538)
 
 ___
 
@@ -716,7 +716,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:508](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L508)
+[types-dev/objects.d.ts:539](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L539)
 
 ___
 
@@ -726,7 +726,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:509](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L509)
+[types-dev/objects.d.ts:540](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L540)
 
 ___
 
@@ -738,7 +738,7 @@ If `true`, this adapter provides custom per-state settings. Requires a `custom_m
 
 #### Defined in
 
-[types/objects.d.ts:511](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L511)
+[types-dev/objects.d.ts:542](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L542)
 
 ___
 
@@ -750,7 +750,7 @@ Whether the adapter supports the signal stopInstance via messagebox
 
 #### Defined in
 
-[types/objects.d.ts:513](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L513)
+[types-dev/objects.d.ts:544](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L544)
 
 ___
 
@@ -768,7 +768,7 @@ titleLang instead.
 
 #### Defined in
 
-[types/objects.d.ts:517](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L517)
+[types-dev/objects.d.ts:548](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L548)
 
 ___
 
@@ -780,7 +780,7 @@ The translated names of this adapter to be shown in the admin UI
 
 #### Defined in
 
-[types/objects.d.ts:515](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L515)
+[types-dev/objects.d.ts:546](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L546)
 
 ___
 
@@ -792,7 +792,7 @@ The type of this adapter
 
 #### Defined in
 
-[types/objects.d.ts:519](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L519)
+[types-dev/objects.d.ts:550](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L550)
 
 ___
 
@@ -804,7 +804,7 @@ If `true`, the `npm` package must be installed with the `--unsafe-perm` flag
 
 #### Defined in
 
-[types/objects.d.ts:521](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L521)
+[types-dev/objects.d.ts:552](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L552)
 
 ___
 
@@ -816,7 +816,7 @@ The available version in the ioBroker repo.
 
 #### Defined in
 
-[types/objects.d.ts:523](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L523)
+[types-dev/objects.d.ts:554](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L554)
 
 ___
 
@@ -828,7 +828,7 @@ If `true`, the adapter will be started if any value is written into `system.adap
 
 #### Defined in
 
-[types/objects.d.ts:525](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L525)
+[types-dev/objects.d.ts:556](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L556)
 
 ___
 
@@ -840,7 +840,7 @@ Include the adapter version in the URL of the web adapter, e.g. `http://ip:port/
 
 #### Defined in
 
-[types/objects.d.ts:527](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L527)
+[types-dev/objects.d.ts:558](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L558)
 
 ___
 
@@ -852,7 +852,7 @@ Whether the web server in this adapter can be extended with plugin/extensions
 
 #### Defined in
 
-[types/objects.d.ts:529](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L529)
+[types-dev/objects.d.ts:560](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L560)
 
 ___
 
@@ -868,7 +868,7 @@ native.webInstance to configure which instances this affects
 
 #### Defined in
 
-[types/objects.d.ts:531](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L531)
+[types-dev/objects.d.ts:562](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L562)
 
 ___
 
@@ -878,7 +878,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:532](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L532)
+[types-dev/objects.d.ts:563](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L563)
 
 ___
 
@@ -888,7 +888,7 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:533](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L533)
+[types-dev/objects.d.ts:564](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L564)
 
 ___
 
@@ -900,7 +900,7 @@ A list of pages that should be shown on the "web" index page
 
 #### Defined in
 
-[types/objects.d.ts:535](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L535)
+[types-dev/objects.d.ts:566](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L566)
 
 ___
 
@@ -912,7 +912,7 @@ A list of pages that should be shown on the ioBroker cloud index page
 
 #### Defined in
 
-[types/objects.d.ts:537](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L537)
+[types-dev/objects.d.ts:568](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L568)
 
 ___
 
@@ -922,4 +922,4 @@ ___
 
 #### Defined in
 
-[types/objects.d.ts:538](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L538)
+[types-dev/objects.d.ts:569](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L569)

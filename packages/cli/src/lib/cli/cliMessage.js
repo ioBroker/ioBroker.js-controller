@@ -38,7 +38,9 @@ module.exports = class CLIMessage extends CLICommand {
             message = JSON.parse(message);
         }
 
-        dbConnect(async (objects, states) => {
+        dbConnect(async params => {
+            const { states, objects } = params;
+
             try {
                 const pos = adapter.indexOf('.');
                 let instance = null;

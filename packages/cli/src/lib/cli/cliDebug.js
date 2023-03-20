@@ -23,7 +23,9 @@ module.exports = class CLICompact extends CLICommand {
     _isInstanceRunning(adapter, instance) {
         const { dbConnect } = this.options;
         return new Promise(resolve => {
-            dbConnect(async (objects, states) => {
+            dbConnect(async params => {
+                const { states } = params;
+
                 try {
                     const state = await states.getStateAsync(`system.adapter.${adapter}.${instance}.alive`);
                     if (state && state.val) {

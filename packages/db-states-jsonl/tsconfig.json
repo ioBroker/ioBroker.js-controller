@@ -2,8 +2,20 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "build",
-    "rootDir": "src"
+    "rootDir": "src",
+    "noEmit": false
   },
+  "references": [
+    {
+      "path": "../db-base/tsconfig.json"
+    },
+    {
+      "path": "../db-states-file/tsconfig.json"
+    },
+    {
+      "path": "../db-states-redis/tsconfig.json"
+    }
+  ],
   "include": [
     "src/**/*.ts"
   ],

@@ -24,4 +24,4 @@ Whether all child objects should be deleted aswell
 
 #### Defined in
 
-[types/index.d.ts:272](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/index.d.ts#L272)
+[types-dev/index.d.ts:271](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/index.d.ts#L271)

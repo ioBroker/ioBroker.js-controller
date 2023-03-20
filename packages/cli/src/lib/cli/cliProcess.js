@@ -78,7 +78,8 @@ module.exports = class CLIProcess extends CLICommand {
      */
     setAllAdaptersEnabled(enabled) {
         const { callback, dbConnect } = this.options;
-        dbConnect(async objects => {
+        dbConnect(async params => {
+            const { objects } = params;
             // Enumerate all adapter instances
             const instances = await tools.getInstancesOrderedByStartPrio(objects, console);
             // Create a promise for each. setInstanceEnabled only starts/stops when necessary
@@ -100,9 +101,9 @@ module.exports = class CLIProcess extends CLICommand {
      */
     setAdapterEnabled(adapter, enabled, restartIfRunning) {
         const { callback, dbConnect } = this.options;
-        dbConnect(async objects => {
-            // Due to the many return locations we cannot simply chain the promises here
-            // Use the pre-Node8 async/await pattern
+        dbConnect(async params => {
+            const { objects } = params;
+
             try {
                 // Enumerate all adapter instances
                 const adapterInstances = await enumInstances(objects, adapter);
@@ -112,19 +113,6 @@ module.exports = class CLIProcess extends CLICommand {
                 }
                 for (const instance of adapterInstances) {
                     await setInstanceEnabled(objects, instance, enabled, restartIfRunning);
-                }
-                if (adapterInstances.length === 1) {
-                    CLI.success(
-                        `Instance ${adapter}.${adapterInstances[0]} was ${
-                            enabled ? (restartIfRunning ? 're-started' : 'started') : 'stopped'
-                        }`
-                    );
-                } else {
-                    CLI.success(
-                        `Following instances of ${adapter} were ${
-                            enabled ? (restartIfRunning ? 're-started' : 'started') : 'stopped'
-                        }: ${adapterInstances.join(', ')}`
-                    );
                 }
                 return void callback();
             } catch (err) {
@@ -142,7 +130,9 @@ module.exports = class CLIProcess extends CLICommand {
      */
     setAdapterInstanceEnabled(instance, enabled, restartIfRunning) {
         const { callback, dbConnect } = this.options;
-        dbConnect(objects => {
+        dbConnect(params => {
+            const { objects } = params;
+
             objects.getObject(`system.adapter.${instance}`, async (err, obj) => {
                 if (err || !obj || obj.type !== 'instance') {
                     CLI.error.invalidInstance(instance);
@@ -208,7 +198,9 @@ module.exports = class CLIProcess extends CLICommand {
         const adapterName = normalizeAdapterName(args[0]);
         const showEntireConfig = adapterName === 'all';
 
-        dbConnect(async (_objects, states, isOffline, _objectDbType, config) => {
+        dbConnect(async params => {
+            const { objects, states, config, isOffline } = params;
+
             if (!adapterName || showEntireConfig) {
                 // we want host info or/and whole config
                 states.getState(`system.host.${tools.getHostName()}.alive`, async (err, hostAlive) => {
@@ -224,7 +216,7 @@ module.exports = class CLIProcess extends CLICommand {
 
                     console.log();
                     if (showEntireConfig) {
-                        await showAllInstancesStatus(states, _objects);
+                        await showAllInstancesStatus(states, objects);
                         console.log();
                         showConfig(config);
                     } else {
@@ -240,7 +232,7 @@ module.exports = class CLIProcess extends CLICommand {
                     await showInstanceStatus(states, adapterName);
                     return void callback();
                 } else {
-                    const adapterInstances = await enumInstances(_objects, adapterName);
+                    const adapterInstances = await enumInstances(objects, adapterName);
                     // If there are multiple instances of this adapter, ask the user to specify which one
                     if (adapterInstances.length > 1) {
                         CLI.error.specifyInstance(

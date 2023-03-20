@@ -43,12 +43,13 @@ interface InternalLogObject extends LogObject {
     _id: number;
 }
 
-type ChangeFunction = (id: string, state: ioBroker.State | null) => void;
+type UserChangeFunction = (id: string, state: ioBroker.State | null) => void;
+type ChangeFunction = (id: string, state: ioBroker.State | ioBroker.Message | null) => void;
 
-interface StatesSettings {
+export interface StatesSettings {
     connected?: () => void;
     disconnected?: () => void;
-    changeUser?: ChangeFunction;
+    changeUser?: UserChangeFunction;
     change?: ChangeFunction;
     connection: ConnectionOptions;
     autoConnect?: boolean;
@@ -60,10 +61,6 @@ interface StatesSettings {
     namespaceLog?: string;
     namespaceMsg?: string;
     redisNamespace?: string;
-}
-
-export interface PushableState extends Omit<ioBroker.SettableStateObject, '_id'> {
-    _id?: number;
 }
 
 export class StateRedisClient {
@@ -1197,7 +1194,7 @@ export class StateRedisClient {
 
     async pushMessage(
         id: string,
-        state: PushableState,
+        message: ioBroker.SendableMessage,
         callback?: (err: Error | undefined | null, id?: string) => void
     ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
@@ -1208,12 +1205,13 @@ export class StateRedisClient {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        state._id = this.globalMessageId++;
+        const fullMessage: ioBroker.Message = { ...message, _id: this.globalMessageId++ };
+
         if (this.globalMessageId >= 0xffffffff) {
             this.globalMessageId = 0;
         }
         try {
-            await this.client.publish(this.namespaceMsg + id, JSON.stringify(state));
+            await this.client.publish(this.namespaceMsg + id, JSON.stringify(fullMessage));
             return tools.maybeCallbackWithError(callback, null, id);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
@@ -1464,7 +1462,7 @@ export class StateRedisClient {
 
     async delBinaryState(
         id: string,
-        callback: (err: Error | undefined | null, id?: string) => void
+        callback?: (err: Error | undefined | null, id?: string) => void
     ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);

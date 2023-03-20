@@ -21,7 +21,7 @@ import type NodeSchedule from 'node-schedule';
 import { version as controllerVersion } from '@iobroker/js-controller-adapter/package.json';
 
 import { Log } from './log';
-import { IdObject, Utils } from './utils';
+import { Validator } from './validator';
 
 const { FORBIDDEN_CHARS } = tools;
 import {
@@ -100,8 +100,11 @@ import type {
     TimeoutCallback,
     MaybePromise,
     SetStateChangedResult,
-    CheckStatesResult
+    CheckStatesResult,
+    Pattern
 } from '../_Types';
+
+tools.ensureDNSOrder();
 
 // keep them outside until we have migrated to TS, else devs can access them
 let adapterStates: StatesInRedisClient | null;
@@ -435,17 +438,17 @@ export interface AdapterClass {
      * Get foreign objects by pattern, by specific type and resolve their enums.
      */
     getForeignObjectsAsync<T extends ioBroker.ObjectType>(
-        pattern: string,
+        pattern: Pattern,
         type: T,
         enums?: ioBroker.EnumList | null,
         options?: unknown
     ): ioBroker.GetObjectsPromiseTyped<T>;
     getForeignObjectsAsync<T extends ioBroker.ObjectType>(
-        pattern: string,
+        pattern: Pattern,
         type: T,
         options?: unknown
     ): ioBroker.GetObjectsPromiseTyped<T>;
-    getForeignObjectsAsync(pattern: string, options?: unknown): ioBroker.GetObjectsPromise;
+    getForeignObjectsAsync(pattern: Pattern, options?: unknown): ioBroker.GetObjectsPromise;
 
     /**
      * creates an object with type device
@@ -631,7 +634,7 @@ export class AdapterClass extends EventEmitter {
     private readonly _namespaceRegExp: RegExp;
     protected instance?: number;
     // @ts-expect-error decide how to handle it
-    private _utils: Utils;
+    private _utils: Validator;
     /** contents of io-package.json */
     protected adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null;
     protected connected?: boolean;
@@ -1207,8 +1210,8 @@ export class AdapterClass extends EventEmitter {
             secretVal = this._systemSecret;
         }
 
-        Utils.assertString(secretVal, 'secretVal');
-        Utils.assertString(value, 'value');
+        Validator.assertString(secretVal, 'secretVal');
+        Validator.assertString(value, 'value');
 
         return tools.decrypt(secretVal, value);
     }
@@ -1228,8 +1231,8 @@ export class AdapterClass extends EventEmitter {
             secretVal = this._systemSecret;
         }
 
-        Utils.assertString(secretVal, 'secretVal');
-        Utils.assertString(value, 'value');
+        Validator.assertString(secretVal, 'secretVal');
+        Validator.assertString(value, 'value');
 
         return tools.encrypt(secretVal, value);
     }
@@ -1238,8 +1241,8 @@ export class AdapterClass extends EventEmitter {
     getSession(id: string, callback: ioBroker.GetSessionCallback): MaybePromise;
     // unknown guard implementation
     getSession(id: unknown, callback: unknown): MaybePromise {
-        Utils.assertString(id, 'id');
-        Utils.assertCallback(callback, 'callback');
+        Validator.assertString(id, 'id');
+        Validator.assertCallback(callback, 'callback');
 
         return this._getSession({ id, callback });
     }
@@ -1260,10 +1263,10 @@ export class AdapterClass extends EventEmitter {
 
     // unknown implementation guards
     setSession(id: unknown, ttl: unknown, data: unknown, callback: unknown): MaybePromise {
-        Utils.assertString(id, 'id');
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertNumber(ttl, 'ttl');
-        Utils.assertObject(data, 'data');
+        Validator.assertString(id, 'id');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertNumber(ttl, 'ttl');
+        Validator.assertObject(data, 'data');
 
         return this._setSession({ id, ttl, data, callback });
     }
@@ -1281,13 +1284,13 @@ export class AdapterClass extends EventEmitter {
     // real types overload
     destroySession(id: string, callback?: ioBroker.ErrorCallback): MaybePromise;
     destroySession(id: unknown, callback: unknown): MaybePromise {
-        Utils.assertString(id, 'id');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(id, 'id');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._destroySession({ id, callback });
     }
 
-    private _destroySession(options: InternalDestroySessionOptions) {
+    private _destroySession(options: InternalDestroySessionOptions): void | Promise<void> {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(
@@ -1303,22 +1306,18 @@ export class AdapterClass extends EventEmitter {
         keys: string[],
         objects: ioBroker.AnyObject[] | null,
         options?: Record<string, any> | null
-    ): Promise<(ioBroker.AnyObject | null | undefined)[]> {
+    ): Promise<(ioBroker.AnyObject | null)[]> {
         if (objects) {
             return objects;
         }
 
-        const res: (ioBroker.AnyObject | null | undefined)[] = [];
-        for (const key of keys) {
-            try {
-                const obj = await this.getForeignObjectAsync(key, options);
-                res.push(obj);
-            } catch {
-                res.push(null);
-            }
+        try {
+            const res = await adapterObjects!.getObjects(keys, options);
+            return res;
+        } catch (e) {
+            this._logger.error(`Could not get objects by array: ${e.message}`);
+            return [];
         }
-
-        return res;
     }
 
     // external signature
@@ -1372,7 +1371,7 @@ export class AdapterClass extends EventEmitter {
             exitCode === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
             exitCode === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ||
             exitCode === EXIT_CODES.NO_ERROR;
-        const text = `${this.namespaceLog} Terminated (${Utils.getErrorText(_exitCode)}): ${_reason}`;
+        const text = `${this.namespaceLog} Terminated (${Validator.getErrorText(_exitCode)}): ${_reason}`;
         if (isNotCritical) {
             this._logger.info(text);
         } else {
@@ -1443,12 +1442,12 @@ export class AdapterClass extends EventEmitter {
         if (!host) {
             _host = undefined;
         } else {
-            Utils.assertString(host, 'host');
+            Validator.assertString(host, 'host');
             _host = host;
         }
 
-        Utils.assertNumber(port, 'port');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertNumber(port, 'port');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._getPort({ port, host: _host, callback });
     }
@@ -1527,12 +1526,12 @@ export class AdapterClass extends EventEmitter {
             throw new Error('checkPassword: no callback');
         }
 
-        Utils.assertCallback(callback, 'callback');
-        Utils.assertString(user, 'user');
-        Utils.assertString(pw, 'pw');
+        Validator.assertCallback(callback, 'callback');
+        Validator.assertString(user, 'user');
+        Validator.assertString(pw, 'pw');
 
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._checkPassword({ user, pw, options, callback });
@@ -1604,7 +1603,7 @@ export class AdapterClass extends EventEmitter {
      * @param username - name of the user
      */
     getUserID(username: unknown): Promise<string | void> {
-        Utils.assertString(username, 'username');
+        Validator.assertString(username, 'username');
 
         return this._getUserID({ username });
     }
@@ -1656,17 +1655,17 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(user, 'user');
-        Utils.assertString(pw, 'pw');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(user, 'user');
+        Validator.assertString(pw, 'pw');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._setPassword({ user, pw, options, callback });
     }
 
-    private async _setPassword(options: InternalSetPasswordOptions) {
+    private async _setPassword(options: InternalSetPasswordOptions): Promise<void> {
         if (options.user && !options.user.startsWith('system.user.')) {
             // it's not yet a `system.user.xy` id, thus we assume it's a username
             if (!this.usernames[options.user]) {
@@ -1760,12 +1759,12 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(user, 'user');
-        Utils.assertString(group, 'group');
+        Validator.assertString(user, 'user');
+        Validator.assertString(group, 'group');
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._checkGroup({ user, group, options, callback });
     }
@@ -1936,14 +1935,14 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(user, 'user');
+        Validator.assertString(user, 'user');
         if (!Array.isArray(commandsPermissions)) {
-            Utils.assertObject(commandsPermissions, 'commandsPermissions');
+            Validator.assertObject(commandsPermissions, 'commandsPermissions');
         }
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._calculatePermissions({ user, commandsPermissions, options, callback });
     }
@@ -2081,7 +2080,12 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private async _stop(isPause?: boolean, isScheduled?: boolean, exitCode?: number, updateAliveState?: boolean) {
+    private async _stop(
+        isPause?: boolean,
+        isScheduled?: boolean,
+        exitCode?: number,
+        updateAliveState?: boolean
+    ): Promise<void> {
         exitCode = exitCode || (isScheduled ? EXIT_CODES.START_IMMEDIATELY_AFTER_STOP : 0);
         if (updateAliveState === undefined) {
             updateAliveState = true;
@@ -2094,7 +2098,7 @@ export class AdapterClass extends EventEmitter {
             this._reportInterval = null;
             const id = `system.adapter.${this.namespace}`;
 
-            const finishUnload = () => {
+            const finishUnload = (): void => {
                 if (this._timers.size) {
                     this._timers.forEach(timer => clearTimeout(timer));
                     this._timers.clear();
@@ -2255,15 +2259,15 @@ export class AdapterClass extends EventEmitter {
         privateName = privateName || this.config.certPrivate;
         chainedName = chainedName || this.config.certChained;
 
-        Utils.assertString(publicName, 'publicName');
-        Utils.assertString(privateName, 'privateName');
-        Utils.assertString(chainedName, 'chainedName');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(publicName, 'publicName');
+        Validator.assertString(privateName, 'privateName');
+        Validator.assertString(chainedName, 'chainedName');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._getCertificates({ publicName, privateName, chainedName, callback });
     }
 
-    private _getCertificates(options: InternalGetCertificatesOptions) {
+    private _getCertificates(options: InternalGetCertificatesOptions): void {
         // Load certificates
         this.getForeignObject('system.certificates', null, (err, obj) => {
             if (
@@ -2279,6 +2283,11 @@ export class AdapterClass extends EventEmitter {
                 this._logger.error(
                     `${this.namespaceLog} Cannot configure secure web server, because no certificates found: ${options.publicName}, ${options.privateName}, ${options.chainedName}`
                 );
+                if (options.publicName === 'defaultPublic' || options.privateName === 'defaultPrivate') {
+                    this._logger.info(
+                        `${this.namespaceLog} Default certificates seem to be configured but missing. You can execute "iobroker cert create" in your shell to create these.`
+                    );
+                }
                 // @ts-expect-error
                 return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_NOT_FOUND);
             } else {
@@ -2335,7 +2344,7 @@ export class AdapterClass extends EventEmitter {
      * @param newConfig The new config values to be stored
      */
     updateConfig(newConfig: unknown): ioBroker.SetObjectPromise {
-        Utils.assertObject(newConfig, 'newConfig');
+        Validator.assertObject(newConfig, 'newConfig');
 
         return this._updateConfig({ newConfig });
     }
@@ -2392,13 +2401,13 @@ export class AdapterClass extends EventEmitter {
      *
      */
     getEncryptedConfig(attribute: unknown, callback: unknown): Promise<string | void> {
-        Utils.assertString(attribute, 'attribute');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(attribute, 'attribute');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._getEncryptedConfig({ attribute, callback });
     }
 
-    private async _getEncryptedConfig(options: InternalGetEncryptedConfigOptions) {
+    private async _getEncryptedConfig(options: InternalGetEncryptedConfigOptions): Promise<string | void> {
         if (!this.config) {
             throw new Error(tools.ERRORS.ERROR_NOT_READY);
         }
@@ -2456,7 +2465,8 @@ export class AdapterClass extends EventEmitter {
             return;
         }
 
-        Utils.assertNumber(timeout, 'timeout');
+        Validator.assertNumber(timeout, 'timeout');
+        Validator.assertTimeout(timeout);
 
         const timer = setTimeout.call(
             null,
@@ -2500,7 +2510,7 @@ export class AdapterClass extends EventEmitter {
             this._logger.warn(`${this.namespaceLog} delay called, but adapter is shutting down`);
         }
 
-        Utils.assertNumber(timeout, 'timeout');
+        Validator.assertNumber(timeout, 'timeout');
 
         return new Promise(resolve => {
             const timer = setTimeout(() => {
@@ -2539,7 +2549,8 @@ export class AdapterClass extends EventEmitter {
             return;
         }
 
-        Utils.assertNumber(timeout, 'timeout');
+        Validator.assertNumber(timeout, 'timeout');
+        Validator.assertTimeout(timeout);
 
         const id = setInterval(() => cb(...args), timeout);
         this._intervals.add(id);
@@ -2604,17 +2615,17 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(id, 'id');
-        Utils.assertObject(obj, 'obj');
+        Validator.assertString(id, 'id');
+        Validator.assertObject(obj, 'obj');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._setObject({ id, obj: obj as ioBroker.SettableObject, options, callback });
     }
 
-    private async _setObject(options: InternalSetObjectOptions) {
+    private async _setObject(options: InternalSetObjectOptions): Promise<void> {
         if (!this._defaultObjs) {
             this._defaultObjs = (await import('./defaultObjs.js')).createDefaults();
         }
@@ -2624,6 +2635,7 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_EMPTY_OBJECT);
         }
 
+        // TODO: refactor the following checks in a separate validation method
         if (!tools.isObject(options.obj)) {
             this._logger.error(
                 `${
@@ -2799,7 +2811,7 @@ export class AdapterClass extends EventEmitter {
      *        ```
      */
     getAdapterObjects(callback: unknown): Promise<Record<string, ioBroker.AdapterScopedObject> | void> {
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._getAdapterObjects({ callback });
     }
@@ -2809,7 +2821,7 @@ export class AdapterClass extends EventEmitter {
     ): Promise<Record<string, ioBroker.AdapterScopedObject> | void> {
         const ret: Record<string, ioBroker.AdapterScopedObject> = {};
         // Adds result rows to the return object
-        const addRows = (rows: any[] | undefined) => {
+        const addRows = (rows: any[] | undefined): void => {
             if (rows) {
                 for (const { id, value } of rows) {
                     ret[id] = value;
@@ -2936,8 +2948,8 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(id, 'id');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(id, 'id');
 
         if (!obj) {
             this._logger.error(`${this.namespaceLog} extendObject: try to extend null object for ${id}`);
@@ -2954,13 +2966,14 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._extendObject({ id, obj: obj as ioBroker.SettableObject, options, callback });
     }
 
-    private async _extendObject(options: InternalSetObjectOptions) {
+    // TODO: the public return type needs to be defined correctly, probably needs to be discussed
+    private async _extendObject(options: InternalSetObjectOptions): Promise<any> {
         if (!adapterObjects) {
             this._logger.info(`${this.namespaceLog} extendObject not processed because Objects database not connected`);
             return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
@@ -3168,10 +3181,10 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(id, 'id');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(id, 'id');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!obj) {
@@ -3280,7 +3293,7 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         try {
             this._utils.validateId(id, true, null);
@@ -3294,18 +3307,18 @@ export class AdapterClass extends EventEmitter {
             id = mId;
         }
 
-        Utils.assertString(id, 'id');
+        Validator.assertString(id, 'id');
 
         if (!obj) {
             this._logger.error(`${this.namespaceLog} extendForeignObject: try to set null object for ${id}`);
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_EMPTY_OBJECT);
         }
 
-        Utils.assertObject(obj, 'obj');
+        Validator.assertObject(obj, 'obj');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._extendForeignObjectAsync({ id, obj: obj as ioBroker.SettableObject, callback, options });
     }
@@ -3459,9 +3472,9 @@ export class AdapterClass extends EventEmitter {
             return Promise.resolve();
         }
 
-        Utils.assertString(id, 'id');
+        Validator.assertString(id, 'id');
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         id = this._utils.fixId(id);
@@ -3488,9 +3501,9 @@ export class AdapterClass extends EventEmitter {
             return Promise.resolve();
         }
 
-        Utils.assertString(id, 'id');
+        Validator.assertString(id, 'id');
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         this._utils.validateId(id, true, null);
@@ -3522,10 +3535,10 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertCallback(callback, 'callback');
-        Utils.assertString(id, 'id');
+        Validator.assertCallback(callback, 'callback');
+        Validator.assertString(id, 'id');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -3594,19 +3607,19 @@ export class AdapterClass extends EventEmitter {
             options = undefined;
         }
 
-        Utils.assertString(design, 'design');
-        Utils.assertString(search, 'search');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(design, 'design');
+        Validator.assertString(search, 'search');
+        Validator.assertOptionalCallback(callback, 'callback');
         params = params || {};
-        Utils.assertObject(params, 'params');
+        Validator.assertObject(params, 'params');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._getObjectView({ design, search, params, options, callback });
     }
 
-    private _getObjectView(_options: InternalGetObjectViewOptions) {
+    private _getObjectView(_options: InternalGetObjectViewOptions): void | ioBroker.GetObjectViewPromise<any> {
         const { design, search, params, options, callback } = _options;
 
         if (!adapterObjects) {
@@ -3697,11 +3710,11 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
-        Utils.assertObject(params, 'params');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertObject(params, 'params');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         if (!adapterObjects) {
             this._logger.info(
@@ -3757,16 +3770,16 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(_enum, '_enum');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(_enum, '_enum');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._getEnum({ _enum, options, callback });
     }
 
-    private _getEnum(_options: InternalGetEnumOptions) {
+    private _getEnum(_options: InternalGetEnumOptions): Promise<void> | void {
         const { options, callback } = _options;
         let { _enum } = _options;
 
@@ -3863,9 +3876,9 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._getEnums({ _enumList: _enumList as ioBroker.EnumList, options, callback });
@@ -3950,27 +3963,27 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    getForeignObjects(pattern: string, callback: ioBroker.GetObjectsCallback): void;
-    getForeignObjects(pattern: string, options: unknown, callback: ioBroker.GetObjectsCallback): void;
+    getForeignObjects(pattern: Pattern, callback: ioBroker.GetObjectsCallback): void;
+    getForeignObjects(pattern: Pattern, options: unknown, callback: ioBroker.GetObjectsCallback): void;
     getForeignObjects<T extends ioBroker.ObjectType>(
-        pattern: string,
+        pattern: Pattern,
         type: T,
         callback: ioBroker.GetObjectsCallbackTyped<T>
     ): void;
     getForeignObjects<T extends ioBroker.ObjectType>(
-        pattern: string,
+        pattern: Pattern,
         type: T,
         enums: ioBroker.EnumList,
         callback: ioBroker.GetObjectsCallbackTyped<T>
     ): void;
     getForeignObjects<T extends ioBroker.ObjectType>(
-        pattern: string,
+        pattern: Pattern,
         type: T,
         options: unknown,
         callback: ioBroker.GetObjectsCallbackTyped<T>
     ): void;
     getForeignObjects<T extends ioBroker.ObjectType>(
-        pattern: string,
+        pattern: Pattern,
         type: T,
         enums: ioBroker.EnumList | null,
         options: unknown,
@@ -4025,7 +4038,7 @@ export class AdapterClass extends EventEmitter {
         enums?: unknown,
         options?: unknown,
         callback?: unknown
-    ): MaybePromise {
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.GetObjectsCallback> | void> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -4048,21 +4061,16 @@ export class AdapterClass extends EventEmitter {
             enums = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
-        if (typeof pattern !== 'string') {
-            return tools.maybeCallbackWithError(
-                callback,
-                new Error(`Expected pattern to be of type "string", got "${typeof pattern}"`)
-            );
-        }
+        Validator.assertPattern(pattern, 'pattern');
 
         if (type !== undefined) {
-            Utils.assertString(type, 'type');
+            Validator.assertString(type, 'type');
         }
 
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._getForeignObjects({
@@ -4074,16 +4082,10 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private _getForeignObjects(_options: InternalGetObjectsOptions) {
+    private async _getForeignObjects(
+        _options: InternalGetObjectsOptions
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.GetObjectsCallback> | void> {
         const { options, callback, type, pattern, enums } = _options;
-
-        let params: ioBroker.GetObjectViewParams = {};
-        if (pattern && pattern !== '*') {
-            params = {
-                startkey: pattern.replace(/\*/g, ''),
-                endkey: pattern.replace(/\*/g, '\u9999')
-            };
-        }
 
         if (!adapterObjects) {
             this._logger.info(
@@ -4092,79 +4094,100 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        adapterObjects.getObjectView('system', type || 'state', params, options, async (err, res) => {
-            if (err) {
-                return tools.maybeCallbackWithError(callback, err);
+        let objs: (ioBroker.AnyObject | null)[];
+
+        if (Array.isArray(pattern)) {
+            try {
+                objs = await adapterObjects.getObjects(pattern, options);
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
+        } else {
+            let params: ioBroker.GetObjectViewParams = {};
+
+            if (pattern && pattern !== '*') {
+                params = {
+                    startkey: pattern.replace(/\*/g, ''),
+                    endkey: pattern.replace(/\*/g, '\u9999')
+                };
             }
 
-            // don't forget, that enums returns names in row[x].id and not IDs, you can find id in rows[x].value._id
-            let _enums;
-            if (enums) {
-                try {
-                    _enums = await this.getEnumsAsync(enums, null);
-                } catch (e) {
-                    this._logger.warn(`Cannot get enums on getForeignObjects: ${e.message}`);
-                }
+            try {
+                const res = await adapterObjects.getObjectView('system', type || 'state', params, options);
+                objs = res.rows.map(row => row.value);
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
             }
-            const list: Record<string, any> = {};
-            if (res && res.rows) {
-                for (let i = 0; i < res.rows.length; i++) {
-                    const row = res.rows[i];
-                    if (!row.value) {
-                        // It is not so important warning, so print it as debug
-                        this._logger.debug(
-                            `${this.namespaceLog} getEnums(${JSON.stringify(
-                                enums
-                            )}) returned an enum without a value at index ${i}, obj - ${JSON.stringify(row)}`
-                        );
-                        continue;
-                    }
+        }
 
-                    const id: string = row.value._id;
-                    list[id] = row.value;
-                    if (_enums && id) {
-                        // get device or channel of this state and check it too
-                        const parts = id.split('.');
-                        parts.splice(parts.length - 1, 1);
-                        const channel = parts.join('.');
-                        parts.splice(parts.length - 1, 1);
-                        const device = parts.join('.');
+        // don't forget, that enums returns names in row[x].id and not IDs, you can find id in rows[x].value._id
+        let _enums;
+        if (enums) {
+            try {
+                _enums = await this.getEnumsAsync(enums, null);
+            } catch (e) {
+                this._logger.warn(`Cannot get enums on getForeignObjects: ${e.message}`);
+            }
+        }
 
-                        list[id].enums = {};
-                        for (const es of Object.keys(_enums)) {
-                            for (const e of Object.keys(_enums[es])) {
-                                if (!_enums[es][e] || !_enums[es][e].common || !_enums[es][e].common.members) {
-                                    continue;
-                                }
-                                if (
-                                    _enums[es][e].common.members.includes(id) ||
-                                    _enums[es][e].common.members.includes(channel) ||
-                                    _enums[es][e].common.members.includes(device)
-                                ) {
-                                    list[id].enums[e] = _enums[es][e].common.name;
-                                }
-                            }
+        const list: Record<string, any> = {};
+
+        for (let i = 0; i < objs.length; i++) {
+            const obj = objs[i];
+            if (!obj) {
+                // It is not so important warning, so print it as debug
+                this._logger.debug(
+                    `${this.namespaceLog} getEnums(${JSON.stringify(
+                        enums
+                    )}) returned an enum without a value at index ${i}, obj - ${JSON.stringify(obj)}`
+                );
+                continue;
+            }
+
+            const id: string = obj._id;
+            list[id] = obj;
+            if (_enums && id) {
+                // get device or channel of this state and check it too
+                const parts = id.split('.');
+                parts.splice(parts.length - 1, 1);
+                const channel = parts.join('.');
+                parts.splice(parts.length - 1, 1);
+                const device = parts.join('.');
+
+                list[id].enums = {};
+                for (const _enum of Object.values(_enums)) {
+                    for (const e of Object.keys(_enum)) {
+                        if (!_enum[e]?.common?.members) {
+                            continue;
+                        }
+
+                        if (
+                            _enum[e].common.members.includes(id) ||
+                            _enum[e].common.members.includes(channel) ||
+                            _enum[e].common.members.includes(device)
+                        ) {
+                            list[id].enums[e] = _enum[e].common.name;
                         }
                     }
-                    // remove protectedNative if not admin, not cloud or not own adapter
-                    if (
-                        row.value &&
-                        'protectedNative' in row.value &&
-                        Array.isArray(row.value.protectedNative) &&
-                        row.value.native &&
-                        id &&
-                        id.startsWith('system.adapter.') &&
-                        !NO_PROTECT_ADAPTERS.includes(this.name) &&
-                        this.name !== id.split('.')[2]
-                    ) {
-                        for (const attr of row.value.protectedNative) {
-                            delete row.value.native[attr];
-                        } // endFor
-                    } // endIf
                 }
             }
-            return tools.maybeCallbackWithError(callback, null, list);
-        });
+            // remove protectedNative if not admin, not cloud or not own adapter
+            if (
+                obj &&
+                'protectedNative' in obj &&
+                Array.isArray(obj.protectedNative) &&
+                obj.native &&
+                id &&
+                id.startsWith('system.adapter.') &&
+                !NO_PROTECT_ADAPTERS.includes(this.name) &&
+                this.name !== id.split('.')[2]
+            ) {
+                for (const attr of obj.protectedNative) {
+                    delete obj.native[attr];
+                }
+            }
+        }
+        return tools.maybeCallbackWithError(callback, null, list);
     }
 
     // external signature
@@ -4197,12 +4220,12 @@ export class AdapterClass extends EventEmitter {
             type = null;
         }
 
-        Utils.assertCallback(callback, 'callback');
+        Validator.assertCallback(callback, 'callback');
         if (type !== null) {
-            Utils.assertString(type, 'type');
+            Validator.assertString(type, 'type');
         }
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -4222,8 +4245,15 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    getForeignObject<T extends string>(id: T, callback: ioBroker.GetObjectCallback<T>): MaybePromise;
-    getForeignObject<T extends string>(id: T, options: unknown, callback: ioBroker.GetObjectCallback<T>): MaybePromise;
+    getForeignObject<T extends string>(
+        id: T,
+        callback: ioBroker.GetObjectCallback<T>
+    ): void | Promise<void | ioBroker.ObjectIdToObjectType<T> | null>;
+    getForeignObject<T extends string>(
+        id: T,
+        options: unknown,
+        callback: ioBroker.GetObjectCallback<T>
+    ): void | Promise<void | ioBroker.ObjectIdToObjectType<T> | null>;
 
     /**
      * Get any object.
@@ -4239,15 +4269,19 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    getForeignObject(id: unknown, options: unknown, callback?: unknown): MaybePromise {
+    getForeignObject(
+        id: unknown,
+        options: unknown,
+        callback?: unknown
+    ): void | Promise<void | ioBroker.AnyObject | null> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         try {
@@ -4259,7 +4293,7 @@ export class AdapterClass extends EventEmitter {
         return this._getForeignObject({ id, options, callback });
     }
 
-    private _getForeignObject(options: InternalGetObjectOptions): MaybePromise {
+    private async _getForeignObject(options: InternalGetObjectOptions): Promise<void | ioBroker.AnyObject | null> {
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} getForeignObject not processed because Objects database not connected`
@@ -4267,7 +4301,8 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        adapterObjects.getObject(options.id, options, (err, obj) => {
+        try {
+            const obj = await adapterObjects.getObjectAsync(options.id, options);
             // remove protectedNative if not admin, not cloud or not own adapter
             if (
                 obj &&
@@ -4281,11 +4316,13 @@ export class AdapterClass extends EventEmitter {
             ) {
                 for (const attr of obj.protectedNative) {
                     delete obj.native[attr];
-                } // endFor
-            } // endIf
+                }
+            }
 
-            return tools.maybeCallbackWithError(options.callback, err, obj);
-        });
+            return tools.maybeCallbackWithError(options.callback, null, obj);
+        } catch (e) {
+            return tools.maybeCallbackWithError(options.callback, e);
+        }
     }
 
     delObject(id: string, callback?: ioBroker.ErrorCallback): void;
@@ -4309,7 +4346,7 @@ export class AdapterClass extends EventEmitter {
      *        ```
      */
     delObject(id: unknown, options: unknown, callback?: unknown): any {
-        Utils.assertString(id, 'id');
+        Validator.assertString(id, 'id');
 
         // delObject does the same as delForeignObject, but fixes the ID first
         id = this._utils.fixId(id);
@@ -4322,7 +4359,7 @@ export class AdapterClass extends EventEmitter {
         tasks: { id: string; [other: string]: any }[],
         options: Record<string, any>,
         cb?: () => void
-    ) {
+    ): void | Promise<void> {
         if (!tasks || !tasks.length) {
             return tools.maybeCallback(cb);
         } else {
@@ -4371,10 +4408,10 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(id, 'id');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(id, 'id');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -4391,15 +4428,15 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._delForeignObject({ id, options, callback });
     }
 
-    private _delForeignObject(_options: InternalDelObjectOptions) {
+    private _delForeignObject(_options: InternalDelObjectOptions): void {
         const { id, options, callback } = _options;
 
         // If recursive deletion of all underlying objects, including id
@@ -4461,8 +4498,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    subscribeObjects(pattern: string, callback?: ioBroker.ErrorCallback): void;
-    subscribeObjects(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    subscribeObjects(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
+    subscribeObjects(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Subscribe for the changes of objects in this instance.
@@ -4482,10 +4519,10 @@ export class AdapterClass extends EventEmitter {
             options = undefined;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertPattern(pattern, 'pattern');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertPattern(pattern, 'pattern');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -4498,14 +4535,13 @@ export class AdapterClass extends EventEmitter {
         if (pattern === '*') {
             adapterObjects.subscribeUser(`${this.namespace}.*`, options, callback);
         } else {
-            // @ts-expect-error should fixId be able to handle array?
-            pattern = this._utils.fixId(pattern, true);
-            adapterObjects.subscribeUser(pattern as any, options, callback);
+            const fixedPattern = Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true);
+            adapterObjects.subscribeUser(fixedPattern, options, callback);
         }
     }
 
-    unsubscribeObjects(pattern: string, callback?: ioBroker.ErrorCallback): void;
-    unsubscribeObjects(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeObjects(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeObjects(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Unsubscribe on the changes of objects in this instance.
@@ -4525,10 +4561,10 @@ export class AdapterClass extends EventEmitter {
             options = undefined;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertPattern(pattern, 'pattern');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertPattern(pattern, 'pattern');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -4541,9 +4577,8 @@ export class AdapterClass extends EventEmitter {
         if (pattern === '*') {
             adapterObjects.unsubscribeUser(`${this.namespace}.*`, options, callback);
         } else {
-            // @ts-expect-error should fixid be able to handle array?
-            pattern = this._utils.fixId(pattern, true);
-            adapterObjects.unsubscribeUser(pattern as string, options, callback);
+            const fixedPattern = Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true);
+            adapterObjects.unsubscribeUser(fixedPattern, options, callback);
         }
     }
 
@@ -4569,10 +4604,10 @@ export class AdapterClass extends EventEmitter {
             options = undefined;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(pattern, 'pattern');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(pattern, 'pattern');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -4610,10 +4645,10 @@ export class AdapterClass extends EventEmitter {
             pattern = '*';
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(pattern, 'pattern');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(pattern, 'pattern');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -4645,10 +4680,10 @@ export class AdapterClass extends EventEmitter {
             return Promise.reject(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        Utils.assertString(id, 'id');
-        Utils.assertString(pattern, 'pattern');
+        Validator.assertString(id, 'id');
+        Validator.assertString(pattern, 'pattern');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return adapterObjects.subscribeUserFile(id, pattern, options);
@@ -4676,10 +4711,10 @@ export class AdapterClass extends EventEmitter {
             return Promise.reject(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        Utils.assertString(id, 'id');
-        Utils.assertString(pattern, 'pattern');
+        Validator.assertString(id, 'id');
+        Validator.assertString(pattern, 'pattern');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return adapterObjects.unsubscribeUserFile(id, pattern, options);
@@ -4725,12 +4760,12 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
-        Utils.assertObject(obj, 'obj');
+        Validator.assertObject(obj, 'obj');
 
         try {
             this._utils.validateId(id, false, null);
@@ -4826,13 +4861,13 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(id, 'id');
-        Utils.assertObject(obj, 'obj');
+        Validator.assertString(id, 'id');
+        Validator.assertObject(obj, 'obj');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._setForeignObjectNotExists({ id, obj: obj as ioBroker.SettableObject, options, callback });
     }
@@ -4938,10 +4973,10 @@ export class AdapterClass extends EventEmitter {
             common = {};
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(deviceName, 'deviceName');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(deviceName, 'deviceName');
         if (_native !== undefined && _native !== null) {
-            Utils.assertObject(_native, '_native');
+            Validator.assertObject(_native, '_native');
         }
 
         return this._createDevice({
@@ -4953,7 +4988,7 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private _createDevice(_options: InternalCreateDeviceOptions) {
+    private _createDevice(_options: InternalCreateDeviceOptions): void {
         let { common, deviceName, _native } = _options;
         const { callback, options } = _options;
         common = common || {};
@@ -5034,10 +5069,10 @@ export class AdapterClass extends EventEmitter {
             common = roleOrCommon;
         }
 
-        Utils.assertObject(common, 'common');
-        Utils.assertString(channelName, 'channelName');
-        Utils.assertString(parentDevice, 'parentDevice');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertObject(common, 'common');
+        Validator.assertString(channelName, 'channelName');
+        Validator.assertString(parentDevice, 'parentDevice');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         common.name = common.name || channelName;
 
@@ -5130,20 +5165,20 @@ export class AdapterClass extends EventEmitter {
 
         _native = _native || {};
 
-        Utils.assertObject(common, 'common');
-        Utils.assertString(stateName, 'stateName');
-        Utils.assertString(parentDevice, 'parentDevice');
-        Utils.assertString(parentChannel, 'parentChannel');
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertObject(_native, '_native');
+        Validator.assertObject(common, 'common');
+        Validator.assertString(stateName, 'stateName');
+        Validator.assertString(parentDevice, 'parentDevice');
+        Validator.assertString(parentChannel, 'parentChannel');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertObject(_native, '_native');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._createState({ parentDevice, parentChannel, callback, stateName, common, _native, options });
     }
 
-    private _createState(_options: InternalCreateStateOptions) {
+    private _createState(_options: InternalCreateStateOptions): Promise<void> | void {
         const { _native, common, callback, options } = _options;
         let { parentChannel, parentDevice, stateName } = _options;
 
@@ -5288,13 +5323,13 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(deviceName, 'deviceName');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(deviceName, 'deviceName');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._deleteDevice({ deviceName, callback });
     }
 
-    private async _deleteDevice(_options: InternalDeleteDeviceOptions) {
+    private async _deleteDevice(_options: InternalDeleteDeviceOptions): Promise<void> {
         const { callback } = _options;
         let { deviceName } = _options;
 
@@ -5362,19 +5397,19 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(enumName, 'enumName');
-        Utils.assertString(addTo, 'addTo');
-        Utils.assertString(parentDevice, 'parentDevice');
-        Utils.assertString(channelName, 'channelName');
+        Validator.assertString(enumName, 'enumName');
+        Validator.assertString(addTo, 'addTo');
+        Validator.assertString(parentDevice, 'parentDevice');
+        Validator.assertString(channelName, 'channelName');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._addChannelToEnum({ enumName, addTo, parentDevice, channelName, options, callback });
     }
 
-    private _addChannelToEnum(_options: InternalAddChannelToEnumOptions) {
+    private _addChannelToEnum(_options: InternalAddChannelToEnumOptions): Promise<void> | void {
         const { addTo, options, callback } = _options;
         let { enumName, parentDevice, channelName } = _options;
 
@@ -5492,18 +5527,18 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(enumName, 'enumName');
-        Utils.assertString(parentDevice, 'parentDevice');
-        Utils.assertString(channelName, 'channelName');
+        Validator.assertString(enumName, 'enumName');
+        Validator.assertString(parentDevice, 'parentDevice');
+        Validator.assertString(channelName, 'channelName');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._deleteChannelFromEnum({ enumName, parentDevice, channelName, options, callback });
     }
 
-    private _deleteChannelFromEnum(_options: InternalDeleteChannelFromEnumOptions) {
+    private _deleteChannelFromEnum(_options: InternalDeleteChannelFromEnumOptions): Promise<void> | void {
         const { options, callback } = _options;
         let { enumName, channelName, parentDevice } = _options;
 
@@ -5623,14 +5658,14 @@ export class AdapterClass extends EventEmitter {
             parentDevice = '';
         }
 
-        Utils.assertString(parentDevice, 'parentDevice');
-        Utils.assertString(channelName, 'channelName');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(parentDevice, 'parentDevice');
+        Validator.assertString(channelName, 'channelName');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._deleteChannel({ parentDevice, channelName, callback });
     }
 
-    private async _deleteChannel(_options: InternalDeleteChannelOptions) {
+    private async _deleteChannel(_options: InternalDeleteChannelOptions): Promise<void> {
         const { callback } = _options;
         let { channelName, parentDevice } = _options;
 
@@ -5740,18 +5775,18 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
-        Utils.assertString(parentDevice, 'parentDevice');
-        Utils.assertString(parentChannel, 'parentChannel');
-        Utils.assertString(stateName, 'stateName');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(parentDevice, 'parentDevice');
+        Validator.assertString(parentChannel, 'parentChannel');
+        Validator.assertString(stateName, 'stateName');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._deleteState({ parentDevice, parentChannel, stateName, options, callback });
     }
 
-    private _deleteState(_options: InternalDeleteStateOptions) {
+    private _deleteState(_options: InternalDeleteStateOptions): void {
         const { callback, options } = _options;
         let { stateName, parentDevice, parentChannel } = _options;
 
@@ -5805,15 +5840,15 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertCallback(callback, 'callback');
+        Validator.assertCallback(callback, 'callback');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._getDevices({ options, callback });
     }
 
-    private _getDevices(_options: InternalGetDevicesOptions) {
+    private _getDevices(_options: InternalGetDevicesOptions): Promise<void> | void {
         const { options, callback } = _options;
 
         if (!adapterObjects) {
@@ -5859,20 +5894,22 @@ export class AdapterClass extends EventEmitter {
         }
         if (typeof parentDevice === 'function') {
             callback = parentDevice;
-            parentDevice = null;
+            parentDevice = undefined;
         }
 
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(parentDevice, 'parentDevice');
+        Validator.assertOptionalCallback(callback, 'callback');
+        if (parentDevice !== undefined) {
+            Validator.assertString(parentDevice, 'parentDevice');
+        }
 
         return this._getChannelsOf({ parentDevice, options, callback });
     }
 
-    private _getChannelsOf(options: InternalGetChannelsOfOptions) {
+    private _getChannelsOf(options: InternalGetChannelsOfOptions): Promise<void> | void {
         if (!adapterObjects) {
             this._logger.info(
                 `${this.namespaceLog} getChannelsOf not processed because Objects database not connected`
@@ -5945,24 +5982,24 @@ export class AdapterClass extends EventEmitter {
             return;
         }
 
-        Utils.assertCallback(callback, 'callback');
+        Validator.assertCallback(callback, 'callback');
 
         if (parentDevice !== null && parentDevice !== undefined) {
-            Utils.assertString(parentDevice, 'parentDevice');
+            Validator.assertString(parentDevice, 'parentDevice');
         }
 
         if (parentChannel !== null && parentChannel !== undefined) {
-            Utils.assertString(parentChannel, 'parentChannel');
+            Validator.assertString(parentChannel, 'parentChannel');
         }
 
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._getStatesOf({ parentDevice, parentChannel, options, callback });
     }
 
-    private _getStatesOf(_options: InternalGetStatesOfOptions) {
+    private _getStatesOf(_options: InternalGetStatesOfOptions): Promise<void> | void {
         const { options, callback } = _options;
         let { parentDevice, parentChannel } = _options;
 
@@ -6057,20 +6094,20 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(enumName, 'enumName');
-        Utils.assertString(addTo, 'addTo');
-        Utils.assertString(parentDevice, 'parentDevice');
-        Utils.assertString(parentChannel, 'parentChannel');
-        Utils.assertString(stateName, 'stateName');
+        Validator.assertString(enumName, 'enumName');
+        Validator.assertString(addTo, 'addTo');
+        Validator.assertString(parentDevice, 'parentDevice');
+        Validator.assertString(parentChannel, 'parentChannel');
+        Validator.assertString(stateName, 'stateName');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._addStateToEnum({ enumName, addTo, parentDevice, parentChannel, stateName, options, callback });
     }
 
-    private _addStateToEnum(_options: InternalAddStateToEnumOptions) {
+    private _addStateToEnum(_options: InternalAddStateToEnumOptions): Promise<void> | void {
         const { addTo, options, callback } = _options;
         let { enumName, parentDevice, parentChannel, stateName } = _options;
 
@@ -6201,19 +6238,19 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(enumName, 'enumName');
-        Utils.assertString(parentDevice, 'parentDevice');
-        Utils.assertString(parentChannel, 'parentChannel');
-        Utils.assertString(stateName, 'stateName');
+        Validator.assertString(enumName, 'enumName');
+        Validator.assertString(parentDevice, 'parentDevice');
+        Validator.assertString(parentChannel, 'parentChannel');
+        Validator.assertString(stateName, 'stateName');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._deleteStateFromEnum({ enumName, parentDevice, parentChannel, stateName, options, callback });
     }
 
-    private _deleteStateFromEnum(_options: InternalDeleteStateFromEnumOptions) {
+    private _deleteStateFromEnum(_options: InternalDeleteStateFromEnumOptions): Promise<void> | void {
         const { options, callback } = _options;
         let { enumName, parentDevice, parentChannel, stateName } = _options;
 
@@ -6447,11 +6484,11 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertCallback(callback, 'callback');
-        Utils.assertString(_adapter, '_adapter');
-        Utils.assertString(path, 'path');
+        Validator.assertCallback(callback, 'callback');
+        Validator.assertString(_adapter, '_adapter');
+        Validator.assertString(path, 'path');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -6475,11 +6512,11 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(_adapter, '_adapter');
-        Utils.assertString(name, 'name');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(_adapter, '_adapter');
+        Validator.assertString(name, 'name');
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -6509,12 +6546,12 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(oldName, 'oldName');
-        Utils.assertString(newName, 'newName');
-        Utils.assertString(_adapter, '_adapter');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(oldName, 'oldName');
+        Validator.assertString(newName, 'newName');
+        Validator.assertString(_adapter, '_adapter');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -6536,11 +6573,11 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(_adapter, '_adapter');
-        Utils.assertString(dirname, 'dirname');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(_adapter, '_adapter');
+        Validator.assertString(dirname, 'dirname');
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -6586,12 +6623,12 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(_adapter, '_adapter');
-        Utils.assertString(filename, 'filename');
+        Validator.assertString(_adapter, '_adapter');
+        Validator.assertString(filename, 'filename');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertCallback(callback, 'callback');
+        Validator.assertCallback(callback, 'callback');
 
         if (!adapterObjects) {
             this._logger.info(`${this.namespaceLog} readFile not processed because Objects database not connected`);
@@ -6642,14 +6679,14 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(_adapter, '_adapter');
-        Utils.assertString(filename, 'filename');
+        Validator.assertString(_adapter, '_adapter');
+        Validator.assertString(filename, 'filename');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (typeof data !== 'string') {
-            Utils.assertBuffer(data, 'data');
+            Validator.assertBuffer(data, 'data');
         }
 
         if (!adapterObjects) {
@@ -6687,11 +6724,11 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(_adapter, '_adapter');
-        Utils.assertString(filename, 'filename');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(_adapter, '_adapter');
+        Validator.assertString(filename, 'filename');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         if (!adapterObjects) {
@@ -6708,8 +6745,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    formatValue(value: number | string, format: any): string;
-    formatValue(value: number | string, decimals: number, format: any): string;
+    formatValue(value: number | string, format?: string): string;
+    formatValue(value: number | string, decimals: number, format?: string): string;
     formatValue(value: unknown, decimals: unknown, _format?: unknown): any {
         if (typeof decimals !== 'number') {
             _format = decimals;
@@ -6743,8 +6780,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    formatDate(dateObj: string | Date | number, format: string): string;
-    formatDate(dateObj: string | Date | number, isDuration: boolean | string, format: string): string;
+    formatDate(dateObj: string | Date | number, format?: string): string;
+    formatDate(dateObj: string | Date | number, isDuration: boolean | string, format?: string): string;
 
     formatDate(dateObj: unknown, isDuration: unknown, _format?: unknown): any {
         if ((typeof isDuration === 'string' && isDuration.toLowerCase() === 'duration') || isDuration === true) {
@@ -6759,15 +6796,15 @@ export class AdapterClass extends EventEmitter {
             return '';
         }
 
-        Utils.assertBoolean(isDuration, 'isDuration');
+        Validator.assertBoolean(isDuration, 'isDuration');
         if (_format !== undefined) {
-            Utils.assertString(_format, 'format');
+            Validator.assertString(_format, 'format');
         }
 
         return this._formatDate({ dateObj: dateObj as any, isDuration, _format });
     }
 
-    private _formatDate(_options: InternalFormatDateOptions) {
+    private _formatDate(_options: InternalFormatDateOptions): string {
         const { _format, dateObj: _dateObj } = _options;
         let { isDuration } = _options;
 
@@ -6804,7 +6841,7 @@ export class AdapterClass extends EventEmitter {
         let s = '';
         let result = '';
 
-        const put = (s: string) => {
+        const put = (s: string): string => {
             let v: number | string = '';
             switch (s) {
                 case 'YYYY':
@@ -6936,11 +6973,11 @@ export class AdapterClass extends EventEmitter {
             command = 'send';
         }
 
-        Utils.assertString(instanceName, 'instanceName');
-        Utils.assertString(command, 'command');
+        Validator.assertString(instanceName, 'instanceName');
+        Validator.assertString(command, 'command');
 
         if (!tools.isObject(callback)) {
-            Utils.assertOptionalCallback(callback, 'callback');
+            Validator.assertOptionalCallback(callback, 'callback');
         }
 
         return this._sendTo({
@@ -6951,18 +6988,18 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private async _sendTo(_options: InternalSendToOptions) {
+    private async _sendTo(_options: InternalSendToOptions): Promise<void> {
         const { command, message, callback } = _options;
         let { instanceName } = _options;
 
-        const obj: Partial<ioBroker.Message> = {
+        const obj: ioBroker.SendableMessage = {
             command: command,
             message: message,
             from: `system.adapter.${this.namespace}`
         };
 
         if (!instanceName) {
-            // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
+            // @ts-expect-error TODO it could also be the cb object
             return tools.maybeCallbackWithError(callback, 'No instanceName provided or not a string');
         }
 
@@ -6973,7 +7010,7 @@ export class AdapterClass extends EventEmitter {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(`${this.namespaceLog} sendTo not processed because States database not connected`);
-            // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
+            // @ts-expect-error TODO it could also be the cb object
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -6991,7 +7028,7 @@ export class AdapterClass extends EventEmitter {
         if (!instanceName.match(/\.[0-9]+$/)) {
             if (!adapterObjects) {
                 this._logger.info(`${this.namespaceLog} sendTo not processed because Objects database not connected`);
-                // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
+                // @ts-expect-error TODO it could also be the cb object
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
             }
 
@@ -7007,9 +7044,9 @@ export class AdapterClass extends EventEmitter {
                     if (_obj && _obj.rows) {
                         for (const row of _obj.rows) {
                             try {
-                                await adapterStates!.pushMessage(row.id, obj as any);
+                                await adapterStates!.pushMessage(row.id, obj);
                             } catch (e) {
-                                // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
+                                // @ts-expect-error TODO it could also be the cb object
                                 return tools.maybeCallbackWithError(callback, e);
                             }
                         }
@@ -7042,7 +7079,7 @@ export class AdapterClass extends EventEmitter {
                     // delete too old callbacks IDs
                     const now = Date.now();
                     for (const [_id, cb] of Object.entries(this.callbacks)) {
-                        if (now - cb.time! > 3600000) {
+                        if (now - cb.time! > 3_600_000) {
                             delete this.callbacks[_id];
                         }
                     }
@@ -7053,9 +7090,9 @@ export class AdapterClass extends EventEmitter {
             }
 
             try {
-                await adapterStates.pushMessage(instanceName, obj as any);
+                await adapterStates.pushMessage(instanceName, obj);
             } catch (e) {
-                // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
+                // @ts-expect-error TODO it could also be the cb object
                 return tools.maybeCallbackWithError(callback, e);
             }
         }
@@ -7096,11 +7133,11 @@ export class AdapterClass extends EventEmitter {
             command = 'send';
         }
 
-        Utils.assertString(hostName, 'hostName');
-        Utils.assertString(command, 'command');
+        Validator.assertString(hostName, 'hostName');
+        Validator.assertString(command, 'command');
 
         if (!tools.isObject(callback)) {
-            Utils.assertOptionalCallback(callback, 'callback');
+            Validator.assertOptionalCallback(callback, 'callback');
         }
 
         return this._sendToHost({
@@ -7111,7 +7148,7 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private async _sendToHost(_options: InternalSendToHostOptions) {
+    private async _sendToHost(_options: InternalSendToHostOptions): Promise<void> {
         const { command, message, callback } = _options;
         let { hostName } = _options;
         const obj: Partial<ioBroker.Message> = { command, message, from: `system.adapter.${this.namespace}` };
@@ -7119,7 +7156,7 @@ export class AdapterClass extends EventEmitter {
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
             this._logger.info(`${this.namespaceLog} sendToHost not processed because States database not connected`);
-            // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
+            // @ts-expect-error TODO it could also be the cb object
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -7132,7 +7169,7 @@ export class AdapterClass extends EventEmitter {
                 this._logger.info(
                     `${this.namespaceLog} sendToHost not processed because Objects database not connected`
                 );
-                // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
+                // @ts-expect-error TODO it could also be the cb object
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
             }
 
@@ -7156,7 +7193,7 @@ export class AdapterClass extends EventEmitter {
                                 try {
                                     await adapterStates!.pushMessage(row.id, obj as any);
                                 } catch (e) {
-                                    // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
+                                    // @ts-expect-error TODO it could also be the cb object
                                     return tools.maybeCallbackWithError(callback, e);
                                 }
                             }
@@ -7193,7 +7230,7 @@ export class AdapterClass extends EventEmitter {
             try {
                 await adapterStates.pushMessage(hostName, obj as any);
             } catch (e) {
-                // @ts-expect-error TODO type-wise we are not allowed to call the cb with an error
+                // @ts-expect-error TODO it could also be the cb object
                 return tools.maybeCallbackWithError(callback, e);
             }
         }
@@ -7221,11 +7258,11 @@ export class AdapterClass extends EventEmitter {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        Utils.assertString(scope, 'scope');
+        Validator.assertString(scope, 'scope');
         if (category !== null) {
-            Utils.assertString(category, 'category');
+            Validator.assertString(category, 'category');
         }
-        Utils.assertString(message, 'message');
+        Validator.assertString(message, 'message');
 
         const obj = {
             command: 'addNotification',
@@ -7238,24 +7275,24 @@ export class AdapterClass extends EventEmitter {
 
     // external signatures
     setState<T extends ioBroker.SetStateCallback | undefined>(
-        id: string | IdObject,
+        id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         callback?: T
     ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
     setState<T extends ioBroker.SetStateCallback>(
-        id: string | IdObject,
+        id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
         callback?: T
     ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
     setState<T extends ioBroker.SetStateCallback>(
-        id: string | IdObject,
+        id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         options: unknown,
         callback?: T
     ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
     setState<T extends ioBroker.SetStateCallback>(
-        id: string | IdObject,
+        id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
         options: unknown,
@@ -7311,17 +7348,17 @@ export class AdapterClass extends EventEmitter {
 
         if (!tools.isObject(id)) {
             // it can be id object or string
-            Utils.assertString(id, 'id');
+            Validator.assertString(id, 'id');
         }
 
         if (ack !== undefined) {
-            Utils.assertBoolean(ack, 'ack');
+            Validator.assertBoolean(ack, 'ack');
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._setState({ id, state: state as ioBroker.SettableState, ack, options, callback });
@@ -7459,13 +7496,15 @@ export class AdapterClass extends EventEmitter {
                 this.outputCount++;
                 return adapterStates.setState(
                     aliasId,
-                    tools.formatAliasValue(
-                        obj && obj.common,
-                        targetObj && (targetObj.common as any),
-                        stateObj as ioBroker.State,
-                        this._logger,
-                        this.namespaceLog
-                    ),
+                    tools.formatAliasValue({
+                        sourceCommon: obj?.common,
+                        targetCommon: targetObj?.common as any,
+                        state: stateObj as ioBroker.State,
+                        logger: this._logger,
+                        logNamespace: this.namespaceLog,
+                        sourceId: obj?._id,
+                        targetId: targetObj?._id
+                    }),
                     callback
                 );
             } else {
@@ -7617,7 +7656,7 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    private _checkState(obj: ioBroker.StateObject, options: Record<string, any>, command: CheckStateCommand) {
+    private _checkState(obj: ioBroker.StateObject, options: Record<string, any>, command: CheckStateCommand): boolean {
         const limitToOwnerRights = options.limitToOwnerRights === true;
         if (obj && obj.acl) {
             obj.acl.state = obj.acl.state || obj.acl.object;
@@ -7938,17 +7977,17 @@ export class AdapterClass extends EventEmitter {
 
         if (!tools.isObject(id)) {
             // it can be id object or string
-            Utils.assertString(id, 'id');
+            Validator.assertString(id, 'id');
         }
 
         if (ack !== undefined) {
-            Utils.assertBoolean(ack, 'ack');
+            Validator.assertBoolean(ack, 'ack');
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         if (options !== undefined && options !== null) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._setStateChanged({ id, state: state as ioBroker.SettableState, ack, options, callback });
@@ -8205,13 +8244,15 @@ export class AdapterClass extends EventEmitter {
                     this.outputCount++;
                     adapterStates.setState(
                         aliasId,
-                        tools.formatAliasValue(
-                            obj && obj.common,
-                            targetObj && (targetObj.common as any),
+                        tools.formatAliasValue({
+                            sourceCommon: obj?.common,
+                            targetCommon: targetObj && (targetObj.common as any),
                             state,
-                            this._logger,
-                            this.namespaceLog
-                        ),
+                            logger: this._logger,
+                            logNamespace: this.namespaceLog,
+                            sourceId: obj?._id,
+                            targetId: targetObj?._id
+                        }),
                         callback
                     );
                 } else {
@@ -8284,13 +8325,15 @@ export class AdapterClass extends EventEmitter {
                             this.outputCount++;
                             adapterStates.setState(
                                 aliasId,
-                                tools.formatAliasValue(
-                                    obj.common!,
-                                    targetObj && (targetObj.common as any),
+                                tools.formatAliasValue({
+                                    sourceCommon: obj.common as ioBroker.StateCommon,
+                                    targetCommon: targetObj?.common as ioBroker.StateCommon | undefined,
                                     state,
-                                    this._logger,
-                                    this.namespaceLog
-                                ),
+                                    logger: this._logger,
+                                    logNamespace: this.namespaceLog,
+                                    sourceId: obj._id,
+                                    targetId: targetObj?._id
+                                }),
                                 callback
                             );
                         });
@@ -8492,7 +8535,7 @@ export class AdapterClass extends EventEmitter {
         // get state does the same as getForeignState but fixes the id first
 
         if (!tools.isObject(id)) {
-            Utils.assertString(id, 'id');
+            Validator.assertString(id, 'id');
         }
         const fixedId = this._utils.fixId(id, false);
         return this.getForeignState(fixedId, options, callback);
@@ -8527,11 +8570,11 @@ export class AdapterClass extends EventEmitter {
             options = {};
         }
 
-        Utils.assertString(id, 'id');
+        Validator.assertString(id, 'id');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._getForeignState({ id, options, callback });
     }
@@ -8640,13 +8683,15 @@ export class AdapterClass extends EventEmitter {
                         // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                         callback,
                         null,
-                        tools.formatAliasValue(
-                            sourceObj && (sourceObj.common as any),
-                            obj.common,
+                        tools.formatAliasValue({
+                            sourceCommon: sourceObj?.common,
+                            targetCommon: obj.common,
                             state,
-                            this._logger,
-                            this.namespaceLog
-                        )
+                            logger: this._logger,
+                            logNamespace: this.namespaceLog,
+                            sourceId: sourceObj?._id,
+                            targetId: obj._id
+                        })
                     );
                 }
             } else {
@@ -8666,7 +8711,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // find out default history instance
-    private async _getDefaultHistory() {
+    private async _getDefaultHistory(): Promise<void> {
         if (!this.defaultHistory) {
             // read default history instance from system.config
             let data;
@@ -8760,17 +8805,17 @@ export class AdapterClass extends EventEmitter {
             options = {};
         }
 
-        Utils.assertString(id, 'id');
+        Validator.assertString(id, 'id');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertCallback(callback, 'callback');
+        Validator.assertCallback(callback, 'callback');
 
         return this._getHistory({ id, options, callback });
     }
 
     // Checked implementation
-    private async _getHistory(_options: InternalGetHistoryOptions) {
+    private async _getHistory(_options: InternalGetHistoryOptions): Promise<void> {
         const { id, callback } = _options;
         let { options } = _options;
 
@@ -8827,7 +8872,7 @@ export class AdapterClass extends EventEmitter {
             return null;
         }
 
-        Utils.assertString(id, 'id');
+        Validator.assertString(id, 'id');
 
         const parts = id.split('.');
         if (`${parts[0]}.${parts[1]}` !== this.namespace) {
@@ -8865,16 +8910,16 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(id, 'id');
+        Validator.assertString(id, 'id');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         return this._delState({ id, options, callback });
     }
 
-    private _delState(_options: InternalDelStateOptions) {
+    private _delState(_options: InternalDelStateOptions): Promise<void> | void {
         const { options, callback } = _options;
         let { id } = _options;
 
@@ -8912,16 +8957,16 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(id, 'id');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(id, 'id');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._delForeignState({ id, options, callback });
     }
 
-    private async _delForeignState(_options: InternalDelStateOptions) {
+    private async _delForeignState(_options: InternalDelStateOptions): Promise<void> {
         const { id, options, callback } = _options;
 
         if (!adapterStates) {
@@ -8949,8 +8994,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    getStates(pattern: string, callback: ioBroker.GetStatesCallback): void;
-    getStates(pattern: string, options: unknown, callback: ioBroker.GetStatesCallback): void;
+    getStates(pattern: Pattern, callback: ioBroker.GetStatesCallback): void;
+    getStates(pattern: Pattern, options: unknown, callback: ioBroker.GetStatesCallback): void;
 
     /**
      * Read all states of this adapter, that pass the pattern
@@ -8978,9 +9023,10 @@ export class AdapterClass extends EventEmitter {
             options = {};
         }
 
-        Utils.assertString(pattern, 'pattern');
+        Validator.assertPattern(pattern, 'pattern');
 
-        const fixedPattern = this._utils.fixId(pattern, true);
+        const fixedPattern = Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true);
+
         this.getForeignStates(fixedPattern, options, callback);
     }
 
@@ -8989,7 +9035,7 @@ export class AdapterClass extends EventEmitter {
         targetObjs: (ioBroker.StateObject | null)[] | null,
         srcObjs: (ioBroker.StateObject | null)[] | null,
         callback: ioBroker.GetStatesCallback
-    ) {
+    ): void {
         adapterStates!.getStates(keys, (err, arr) => {
             if (err) {
                 // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
@@ -9008,19 +9054,22 @@ export class AdapterClass extends EventEmitter {
                         result[obj._id] = { val: obj.common.alias.val, ts: Date.now(), q: 0 };
                     } else if (srcObjs![i]) {
                         result[obj._id] =
-                            tools.formatAliasValue(
+                            tools.formatAliasValue({
                                 // @ts-expect-error
-                                srcObjs[i].common,
-                                obj.common,
-                                arr![i] || null,
-                                this._logger,
-                                this.namespaceLog
-                            ) || null;
+                                sourceCommon: srcObjs[i].common,
+                                targetCommon: obj.common,
+                                state: arr![i] || null,
+                                logger: this._logger,
+                                logNamespace: this.namespaceLog,
+                                // @ts-expect-error
+                                sourceId: srcObjs[i]._id,
+                                targetId: obj._id
+                            }) || null;
                     } else {
                         result[obj._id || keys[i]] = arr![i] || null;
                     }
                 } else {
-                    result[(obj && obj._id) || keys[i]] = arr![i] || null;
+                    result[obj?._id || keys[i]] = arr![i] || null;
                 }
             }
             // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
@@ -9032,7 +9081,7 @@ export class AdapterClass extends EventEmitter {
         keys: string[],
         targetObjs: (ioBroker.StateObject | null)[],
         callback: ioBroker.GetStatesCallback
-    ) {
+    ): Promise<void> {
         let aliasFound;
         const aIds = keys.map(id => {
             if (id.startsWith(ALIAS_STARTS_WITH)) {
@@ -9054,7 +9103,7 @@ export class AdapterClass extends EventEmitter {
             const srcIds: string[] = [];
             // replace aliases ID with targets
             targetObjs.forEach((obj, i) => {
-                if (obj && obj.common && obj.common.alias) {
+                if (obj?.common?.alias) {
                     // alias id can be string or can have attribute read (this is used by getStates -> so read is important)
                     const aliasId =
                         // @ts-expect-error
@@ -9077,8 +9126,8 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    getForeignStates(pattern: string | string[], callback: ioBroker.GetStatesCallback): void;
-    getForeignStates(pattern: string | string[], options: unknown, callback: ioBroker.GetStatesCallback): void;
+    getForeignStates(pattern: Pattern, callback: ioBroker.GetStatesCallback): void;
+    getForeignStates(pattern: Pattern, options: unknown, callback: ioBroker.GetStatesCallback): void;
 
     /**
      * Read all states of all adapters (and system states), that pass the pattern
@@ -9109,16 +9158,16 @@ export class AdapterClass extends EventEmitter {
             pattern = '*';
         }
 
-        Utils.assertPattern(pattern, 'pattern');
+        Validator.assertPattern(pattern, 'pattern');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertCallback(callback, 'callback');
+        Validator.assertCallback(callback, 'callback');
 
         return this._getForeignStates({ pattern, options: options || {}, callback });
     }
 
-    private async _getForeignStates(_options: InternalGetStatesOptions) {
+    private async _getForeignStates(_options: InternalGetStatesOptions): Promise<void> {
         const { options, pattern, callback } = _options;
 
         if (!adapterStates) {
@@ -9265,7 +9314,7 @@ export class AdapterClass extends EventEmitter {
                 alias: deepClone(aliasObj.common.alias),
                 id: aliasObj._id,
                 pattern,
-                type: aliasObj.common.type as string,
+                type: aliasObj.common.type,
                 max: aliasObj.common.max,
                 min: aliasObj.common.min,
                 unit: aliasObj.common.unit
@@ -9282,7 +9331,7 @@ export class AdapterClass extends EventEmitter {
                     return tools.maybeCallbackWithError(callback, e);
                 }
 
-                if (sourceObj && sourceObj.common) {
+                if (sourceObj?.common) {
                     if (!this.aliases.has(sourceObj._id)) {
                         // TODO what means this, we ensured alias existed, did some async stuff now it's gone -> alias has been deleted?
                         this._logger.error(
@@ -9365,7 +9414,7 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         if (pattern instanceof RegExp) {
             return tools.maybeCallbackWithError(
@@ -9375,14 +9424,14 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
-        Utils.assertPattern(pattern, 'pattern');
+        Validator.assertPattern(pattern, 'pattern');
 
         return this._subscribeForeignStates({ pattern, options, callback });
     }
 
-    private async _subscribeForeignStates(_options: InternalSubscribeOptions) {
+    private async _subscribeForeignStates(_options: InternalSubscribeOptions): Promise<void> {
         const { pattern, options, callback } = _options;
 
         // Todo check rights for options
@@ -9610,7 +9659,7 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         if (pattern instanceof RegExp) {
             return tools.maybeCallbackWithError(
@@ -9619,15 +9668,15 @@ export class AdapterClass extends EventEmitter {
             );
         }
 
-        Utils.assertPattern(pattern, 'pattern');
+        Validator.assertPattern(pattern, 'pattern');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._unsubscribeForeignStates({ pattern, options, callback });
     }
 
-    private async _unsubscribeForeignStates(_options: InternalSubscribeOptions) {
+    private async _unsubscribeForeignStates(_options: InternalSubscribeOptions): Promise<void> {
         const { pattern, callback } = _options;
 
         if (!adapterStates) {
@@ -9753,8 +9802,8 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertString(pattern, 'pattern');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(pattern, 'pattern');
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
@@ -9798,8 +9847,8 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Utils.assertString(pattern, 'pattern');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(pattern, 'pattern');
+        Validator.assertOptionalCallback(callback, 'callback');
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
@@ -9841,17 +9890,17 @@ export class AdapterClass extends EventEmitter {
             options = {};
         }
 
-        Utils.assertString(id, 'id');
-        Utils.assertOptionalCallback(callback, 'callback');
-        Utils.assertBuffer(binary, 'binary');
+        Validator.assertString(id, 'id');
+        Validator.assertOptionalCallback(callback, 'callback');
+        Validator.assertBuffer(binary, 'binary');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._setForeignBinaryState({ id, binary, options, callback });
     }
 
-    private async _setForeignBinaryState(_options: InternalSetBinaryStateOptions) {
+    private async _setForeignBinaryState(_options: InternalSetBinaryStateOptions): Promise<void> {
         const { id, binary, callback } = _options;
         let { options } = _options;
 
@@ -10006,16 +10055,16 @@ export class AdapterClass extends EventEmitter {
             options = {};
         }
 
-        Utils.assertString(id, 'id');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(id, 'id');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._getForeignBinaryState({ id, options: options || {}, callback });
     }
 
-    private async _getForeignBinaryState(_options: InternalGetBinaryStateOption) {
+    private async _getForeignBinaryState(_options: InternalGetBinaryStateOption): Promise<void> {
         const { id, options, callback } = _options;
 
         if (!adapterStates) {
@@ -10107,16 +10156,16 @@ export class AdapterClass extends EventEmitter {
             options = {};
         }
 
-        Utils.assertString(id, 'id');
-        Utils.assertOptionalCallback(callback, 'callback');
+        Validator.assertString(id, 'id');
+        Validator.assertOptionalCallback(callback, 'callback');
         if (options !== null && options !== undefined) {
-            Utils.assertObject(options, 'options');
+            Validator.assertObject(options, 'options');
         }
 
         return this._delForeignBinaryState({ id, options: options || {}, callback });
     }
 
-    private async _delForeignBinaryState(_options: InternalDelBinaryStateOptions) {
+    private async _delForeignBinaryState(_options: InternalDelBinaryStateOptions): Promise<void> {
         const { id, options, callback } = _options;
 
         if (!adapterStates) {
@@ -10140,10 +10189,8 @@ export class AdapterClass extends EventEmitter {
                 return tools.maybeCallbackWithError(callback, e);
             }
 
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455 fix delBinaryState Callback
             adapterStates!.delBinaryState(id, callback);
         } else {
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455 fix delBinaryState Callback
             adapterStates.delBinaryState(id, callback);
         }
     }
@@ -10180,7 +10227,7 @@ export class AdapterClass extends EventEmitter {
             return null;
         }
 
-        Utils.assertString(name, 'name');
+        Validator.assertString(name, 'name');
 
         return this.pluginHandler.getPluginInstance(name);
     }
@@ -10198,7 +10245,7 @@ export class AdapterClass extends EventEmitter {
             return null;
         }
 
-        Utils.assertString(name, 'name');
+        Validator.assertString(name, 'name');
         return this.pluginHandler.getPluginConfig(name);
     }
 
@@ -10536,7 +10583,7 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallback(callback);
         });
 
-        this.logRedirect = (isActive, id) => {
+        this.logRedirect = (isActive, id): void => {
             // ignore itself
             if (id === `system.adapter.${this.namespace}`) {
                 return;
@@ -10608,7 +10655,7 @@ export class AdapterClass extends EventEmitter {
                                         options
                                     );
                                 }
-                            }, 10000);
+                            }, 10_000);
                         } else {
                             if (this.logOffTimer) {
                                 clearTimeout(this.logOffTimer);
@@ -10648,7 +10695,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // initStates is called from initAdapter
-    private _initStates(cb: () => void) {
+    private _initStates(cb: () => void): void {
         this._logger.silly(`${this.namespaceLog} objectDB connected`);
 
         this._config.states.maxQueue = this._config.states.maxQueue || 1000;
@@ -10662,7 +10709,7 @@ export class AdapterClass extends EventEmitter {
                 this._logger &&
                     this._logger.warn(`${this.namespaceLog} slow connection to states DB. Still waiting ...`);
             }
-        }, this._config.states.connectTimeout || 2000);
+        }, this._config.states.connectTimeout || 2_000);
 
         // Internal object, but some special adapters want to access it anyway.
         adapterStates = new States({
@@ -10717,8 +10764,10 @@ export class AdapterClass extends EventEmitter {
                 }
             },
             logger: this._logger,
-            change: (id, state) => {
+            change: (id, stateOrMessage) => {
                 this.inputCount++;
+                // for simplicity reasons we exclude Message for now TODO
+                const state = stateOrMessage as ioBroker.State | null;
 
                 if (!id || typeof id !== 'string') {
                     console.log(`Something is wrong! ${JSON.stringify(id)}`);
@@ -10838,7 +10887,6 @@ export class AdapterClass extends EventEmitter {
                         ) {
                             // Call callback function
                             if (typeof this.callbacks[`_${obj.callback.id}`].cb === 'function') {
-                                // @ts-expect-error TODO something wrong with MessageCallback type?
                                 this.callbacks[`_${obj.callback.id}`].cb(obj.message);
                                 delete this.callbacks[`_${obj.callback.id}`];
                             }
@@ -10894,15 +10942,19 @@ export class AdapterClass extends EventEmitter {
                     }
                 } else if (this.adapterReady && this.aliases.has(id)) {
                     // If adapter is ready and for this ID exist some alias links
-                    this.aliases.get(id)!.targets.forEach(target => {
+                    const alias = this.aliases.get(id);
+                    alias!.targets.forEach(target => {
+                        const source = alias!.source!;
                         const aState = state
-                            ? tools.formatAliasValue(
-                                  this.aliases.get(id)!.source!,
-                                  target,
-                                  deepClone(state),
-                                  this._logger,
-                                  this.namespaceLog
-                              )
+                            ? tools.formatAliasValue({
+                                  sourceCommon: source,
+                                  targetCommon: target,
+                                  state: deepClone(state),
+                                  logger: this._logger,
+                                  logNamespace: this.namespaceLog,
+                                  sourceId: id,
+                                  targetId: target.id
+                              })
                             : null;
                         // @ts-expect-error
                         const targetId = target.id.read === 'string' ? target.id.read : target.id;
@@ -10962,7 +11014,7 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private _initObjects(cb: () => void) {
+    private _initObjects(cb: () => void): void {
         this._initializeTimeout = setTimeout(() => {
             this._initializeTimeout = null;
             if (this._config.isInstall) {
@@ -11241,7 +11293,7 @@ export class AdapterClass extends EventEmitter {
     /**
      * Called if states and objects successfully initialized
      */
-    private _prepareInitAdapter() {
+    private _prepareInitAdapter(): void {
         if (this.terminated || !adapterObjects || !adapterStates) {
             return;
         }
@@ -11305,7 +11357,7 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    private _initAdapter(adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null) {
+    private _initAdapter(adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null): void {
         this._initLogging(() => {
             if (!this.pluginHandler) {
                 return;
@@ -11464,7 +11516,7 @@ export class AdapterClass extends EventEmitter {
 
                 this.adapterConfig = adapterConfig;
 
-                this._utils = new Utils(
+                this._utils = new Validator(
                     adapterObjects,
                     adapterStates,
                     this.namespaceLog,
@@ -11667,7 +11719,7 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    private async _exceptionHandler(err: NodeJS.ErrnoException, isUnhandledRejection?: boolean) {
+    private async _exceptionHandler(err: NodeJS.ErrnoException, isUnhandledRejection?: boolean): Promise<void> {
         // If the adapter has a callback to listen for unhandled errors
         // give it a chance to handle the error itself instead of restarting it
         if (typeof this._options.error === 'function') {
@@ -11809,7 +11861,7 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private async _extendObjects(tasks: Record<string, any>, callback: () => void) {
+    private async _extendObjects(tasks: Record<string, any>, callback: () => void): Promise<void> {
         if (!tasks || !tasks.length) {
             return tools.maybeCallback(callback);
         }
@@ -11871,7 +11923,7 @@ export class AdapterClass extends EventEmitter {
         /**
          * Initiates the databases
          */
-        const _initDBs = () => {
+        const _initDBs = (): void => {
             this._initObjects(() => {
                 if (this.inited) {
                     this.log && this._logger.warn(`${this.namespaceLog} Reconnection to DB.`);

@@ -6,7 +6,7 @@
 const path = require('path');
 const cpPromise = require('promisify-child-process');
 const iobExecutable = path.join(__dirname, '..', '..', 'iobroker.js');
-const { setupBackup } = require('@iobroker/js-controller-cli');
+const { BackupRestore } = require('@iobroker/js-controller-cli');
 
 function register(it, expect, context) {
     const testName = `${context.name} ${context.adapterShortName} console: `;
@@ -556,7 +556,7 @@ function register(it, expect, context) {
     // backup
     it(testName + 'backup', async () => {
         // create backup
-        const dir = setupBackup.getBackupDir();
+        const dir = BackupRestore.getBackupDir();
         const fs = require('fs');
         let files;
         // delete existing files
@@ -591,7 +591,7 @@ function register(it, expect, context) {
         const name = Math.round(Math.random() * 10000).toString();
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" backup ${name}`);
         expect(res.stderr).to.be.not.ok;
-        expect(require('fs').existsSync(`${setupBackup.getBackupDir() + name}.tar.gz`)).to.be.true;
+        expect(require('fs').existsSync(`${BackupRestore.getBackupDir() + name}.tar.gz`)).to.be.true;
     }).timeout(20000);
 
     // list l

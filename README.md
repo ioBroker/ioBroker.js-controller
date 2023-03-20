@@ -547,6 +547,24 @@ Adapters which deliver data from external APIs, which are important and can chan
 Adapters which are not time critical like Visualization, Backup adapters and adapters whose information do 
 not necessarily need to be up-to-date. These are often `schedule` adapters, whose information is always a bit delayed.
 
+### Custom Node.js process arguments
+**Feature status:** New in 5.0.0
+
+**Passing custom arguments to the Node.js adapter process**
+
+To use this feature, use the `nodeProcessParams` in the `common` section of `io-package.json`.
+Using this feature will disable the possibility to start the adapter in `compact mode`, as then
+other adapters would also be affected by the passed parameters. The property `nodeProcessParams` needs 
+to be an array of strings.
+
+Example: `"nodeProcessParams": ["--tls-min-v1.0"]`
+
+### IPv6 DNS resolution support
+**Feature status:** New in 5.0.0
+
+You can decide to use IPv6 first as DNS resolution method instead of IPv4 first (default). 
+To use this, configure `dnsResolution` to `verbatim` in `iobroker.json`.
+
 ### Object and State Aliases
 **Feature status:** stable (since 2.0.0)
 

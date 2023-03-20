@@ -56,7 +56,9 @@ module.exports = class CLIObjects extends CLICommand {
      */
     activateSets() {
         const { callback, dbConnect } = this.options;
-        dbConnect(async (objects, states) => {
+        dbConnect(async params => {
+            const { states, objects } = params;
+
             if (!parseInt(await objects.getMeta('objects.features.useSets'))) {
                 // all hosts need to be stopped for this
                 if (await tools.isHostRunning(objects, states)) {
@@ -85,7 +87,8 @@ module.exports = class CLIObjects extends CLICommand {
      */
     deactivateSets() {
         const { callback, dbConnect } = this.options;
-        dbConnect(async objects => {
+        dbConnect(async params => {
+            const { objects } = params;
             if (parseInt(await objects.getMeta('objects.features.useSets'))) {
                 await objects.deactivateSets();
                 console.log(`Successfully deactivated the usage of Redis Sets.`);
@@ -101,7 +104,9 @@ module.exports = class CLIObjects extends CLICommand {
      */
     getDBVersion() {
         const { callback, dbConnect } = this.options;
-        dbConnect(async objects => {
+        dbConnect(async params => {
+            const { objects } = params;
+
             const version = await objects.getProtocolVersion();
             console.log(`Current Objects DB protocol version: ${version}`);
             return void callback();
@@ -113,7 +118,8 @@ module.exports = class CLIObjects extends CLICommand {
      */
     setDBVersion() {
         const { callback, dbConnect } = this.options;
-        dbConnect(async objects => {
+        dbConnect(async params => {
+            const { objects } = params;
             const rl = require('readline-sync');
 
             let answer = rl.question('Changing the protocol version will restart all hosts! Continue? [N/y]', {
@@ -168,7 +174,9 @@ module.exports = class CLIObjects extends CLICommand {
             return void callback(1);
         }
 
-        dbConnect((objects, states) => {
+        dbConnect(params => {
+            const { objects, states } = params;
+
             objects.chmodObject(
                 pattern,
                 { user: 'system.user.admin', object: modeObject, state: modeState },
@@ -208,7 +216,9 @@ module.exports = class CLIObjects extends CLICommand {
             CLI.error.requiredArgumentMissing('pattern', 'object chown user system.*');
             return void callback(1);
         }
-        dbConnect((objects, states) => {
+        dbConnect(params => {
+            const { objects, states } = params;
+
             objects.chownObject(
                 pattern,
                 { user: 'system.user.admin', owner: user, ownerGroup: group },
@@ -231,7 +241,9 @@ module.exports = class CLIObjects extends CLICommand {
             pattern = { startkey: pattern.replace('*', ''), endkey: pattern.replace('*', '\u9999') };
         }
 
-        dbConnect((objects, states) => {
+        dbConnect(params => {
+            const { objects, states } = params;
+
             objects.getObjectList(pattern, { user: 'system.user.admin', sorted: true }, (err, processed) => {
                 this.printObjectList(
                     objects,
@@ -260,7 +272,9 @@ module.exports = class CLIObjects extends CLICommand {
         // If propPath is passed, the given property will be retrieved instead.
         // For example: `"native.something[2].onething"` selects `onething` of the 3rd array element of `object.native.something`.
 
-        dbConnect(objects => {
+        dbConnect(params => {
+            const { objects } = params;
+
             objects.getObject(id, (err, res) => {
                 if (err || !res) {
                     CLI.error.objectNotFound(id, err);
@@ -303,7 +317,9 @@ module.exports = class CLIObjects extends CLICommand {
         }
         const { propPath, value } = parsedArg;
 
-        dbConnect(objects => {
+        dbConnect(params => {
+            const { objects } = params;
+
             const doSetObject = obj => {
                 objects.setObject(id, obj, err => {
                     if (err) {
@@ -406,7 +422,9 @@ module.exports = class CLIObjects extends CLICommand {
         }
         const { value } = parsedArg;
 
-        dbConnect(objects => {
+        dbConnect(params => {
+            const { objects } = params;
+
             objects.extendObject(id, value, err => {
                 if (err) {
                     CLI.error.cannotUpdateObject(id, err);
@@ -499,7 +517,9 @@ module.exports = class CLIObjects extends CLICommand {
             return void callback(1);
         }
 
-        dbConnect(objects => {
+        dbConnect(params => {
+            const { objects } = params;
+
             if (id.endsWith('*')) {
                 const params = {
                     startkey: id.replace(/\*/g, ''),

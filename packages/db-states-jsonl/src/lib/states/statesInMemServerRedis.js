@@ -390,8 +390,12 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
                 this._subscribeLogForClient(handler, id.substr(this.namespaceLogLen));
                 handler.sendArray(responseId, ['psubscribe', data[0], 1]);
             } else if (namespace === this.namespaceStates) {
-                this._subscribeForClient(handler, id);
-                handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+                try {
+                    this._subscribeForClient(handler, id);
+                    handler.sendArray(responseId, ['psubscribe', data[0], 1]);
+                } catch (e) {
+                    handler.sendError(responseId, e);
+                }
             } else if (namespace === this.metaNamespace) {
                 this._subscribeMeta(handler, id);
                 handler.sendArray(responseId, ['psubscribe', data[0], 1]);

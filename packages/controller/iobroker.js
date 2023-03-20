@@ -1,1 +1,1 @@
-require('./build/lib/setup').execute();
+require('@iobroker/js-controller-cli').execute();

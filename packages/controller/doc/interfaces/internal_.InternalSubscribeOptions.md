@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:299](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/adapter/src/lib/_Types.ts#L299)
+[adapter/src/lib/_Types.ts:300](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/adapter/src/lib/_Types.ts#L300)
 
 ___
 
@@ -30,14 +30,14 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:298](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/adapter/src/lib/_Types.ts#L298)
+[adapter/src/lib/_Types.ts:299](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/adapter/src/lib/_Types.ts#L299)
 
 ___
 
 ### pattern
 
-• **pattern**: `string` \| `string`[]
+• **pattern**: [`Pattern`](../modules/internal_.md#pattern)
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:297](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/adapter/src/lib/_Types.ts#L297)
+[adapter/src/lib/_Types.ts:298](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/adapter/src/lib/_Types.ts#L298)

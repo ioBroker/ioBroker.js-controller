@@ -27,10 +27,15 @@ const osPlatform = process.platform;
 /** Note: this is duplicated in preinstallCheck */
 const RECOMMENDED_NPM_VERSION = 8;
 
+interface NpmInstallResult {
+    installDir: string;
+    _url: string;
+}
+
 export interface CLIInstallOptions {
     params: Record<string, any>;
     getRepository: GetRepositoryHandler;
-    states?: StatesRedisClient;
+    states: StatesRedisClient;
     objects: ObjectsRedisClient;
     processExit: ProcessExitCallback;
 }
@@ -263,7 +268,7 @@ export class Install {
         npmUrl: string,
         options: CLIDownloadPacketOptions,
         debug: boolean
-    ): Promise<void | { installDir: string; _url: string }> {
+    ): Promise<void | NpmInstallResult> {
         // Get npm version
         try {
             let npmVersion;
@@ -314,7 +319,11 @@ export class Install {
         }
     }
 
-    private async _npmInstall(npmUrl: string, options: CLIDownloadPacketOptions, debug: boolean) {
+    private async _npmInstall(
+        npmUrl: string,
+        options: CLIDownloadPacketOptions,
+        debug: boolean
+    ): Promise<void | NpmInstallResult> {
         if (typeof options !== 'object') {
             options = {};
         }
@@ -346,7 +355,7 @@ export class Install {
                 // If the user installed a git commit-ish, the url contains stuff that doesn't belong in a folder name
                 // e.g. iobroker/iobroker.javascript#branch-name
                 if (packetDirName.includes('#')) {
-                    packetDirName = packetDirName.substr(0, packetDirName.indexOf('#'));
+                    packetDirName = packetDirName.substring(0, packetDirName.indexOf('#'));
                 }
                 if (packetDirName.includes('/') && !packetDirName.startsWith('@')) {
                     // only scoped packages (e.g. @types/node ) may have a slash in their path
@@ -374,7 +383,8 @@ export class Install {
                     }
                 }
             } else {
-                // TODO: revisit this - this should not happen
+                // npm exists with code 1 but adapter not installed
+                console.error(result.stderr);
                 console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
                 return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
             }
@@ -383,6 +393,7 @@ export class Install {
             // command succeeded
             return { _url: npmUrl, installDir: path.dirname(installDir) };
         } else {
+            console.error(result.stderr);
             console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
             return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
         }
@@ -401,9 +412,9 @@ export class Install {
         deps: Dependencies,
         globalDeps: Dependencies,
         _options: Record<string, any>
-    ) {
+    ): Promise<void> {
         if (!deps && !globalDeps) {
-            return adapter;
+            return;
         }
 
         deps = tools.parseDependencies(deps);
@@ -466,7 +477,6 @@ export class Install {
 
                     // we check, that all existing instances match - respect different versions for local and global deps
                     for (const instance of locInstances) {
-                        // @ts-expect-error InstaceCommon has version: TODO fix types
                         const instanceVersion = instance.value!.common.version;
                         if (
                             !semver.satisfies(instanceVersion, deps[dName], {
@@ -483,7 +493,6 @@ export class Install {
                     }
 
                     for (const instance of gInstances) {
-                        // @ts-expect-error InstaceCommon has version: TODO fix types
                         const instanceVersion = instance.value!.common.version;
                         if (
                             !semver.satisfies(instanceVersion, globalDeps[dName], {
@@ -508,7 +517,7 @@ export class Install {
         }
     }
 
-    private async _uploadStaticObjects(adapter: string, _adapterConf?: Record<string, any>) {
+    private async _uploadStaticObjects(adapter: string, _adapterConf?: Record<string, any>): Promise<void> {
         let adapterConf: Record<string, any>;
         if (!_adapterConf) {
             const adapterDir = tools.getAdapterDir(adapter);
@@ -562,11 +571,10 @@ export class Install {
                 obj.ts = Date.now();
 
                 try {
-                    // @ts-expect-error #1917
                     await this.objects.extendObjectAsync(obj._id, obj);
                 } catch (err) {
                     console.error(`host.${hostname} error setObject ${obj._id} ${err.message}`);
-                    return EXIT_CODES.CANNOT_SET_OBJECT;
+                    return;
                 }
 
                 console.log(`host.${hostname} object ${obj._id} created/updated`);
@@ -1113,7 +1121,7 @@ export class Install {
      * @param adapter The adapter to enumerate the devices for
      * @param instance The instance to enumerate the devices for (optional)
      */
-    private async _enumerateAdapterDevices(knownObjIDs: string[], adapter: string, instance?: number) {
+    private async _enumerateAdapterDevices(knownObjIDs: string[], adapter: string, instance?: number): Promise<void> {
         const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
 
         try {
@@ -1152,7 +1160,7 @@ export class Install {
      * @param adapter The adapter to enumerate the channels for
      * @param instance The instance to enumerate the channels for (optional)
      */
-    private async _enumerateAdapterChannels(knownObjIDs: string[], adapter: string, instance?: number) {
+    private async _enumerateAdapterChannels(knownObjIDs: string[], adapter: string, instance?: number): Promise<void> {
         const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
         try {
             const doc = await this.objects.getObjectViewAsync('system', 'channel', {
@@ -1255,12 +1263,11 @@ export class Install {
      * @param adapter The adapter to enumerate the states for
      * @param instance The instance to enumerate the states for (optional)
      */
-    private async _enumerateAdapterDocs(knownObjIDs: string[], adapter: string, instance?: number) {
+    private async _enumerateAdapterDocs(knownObjIDs: string[], adapter: string, instance?: number): Promise<void> {
         const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
         const sysAdapterRegex = new RegExp(`^system\\.adapter\\.${adapter}${instance ? `\\.${instance}` : ''}\\.`);
 
         try {
-            // @ts-expect-error #1917
             const doc = await this.objects.getObjectListAsync({ include_docs: true });
             if (doc && doc.rows && doc.rows.length) {
                 // add non-duplicates to the list
@@ -1423,7 +1430,7 @@ export class Install {
         const knownStateIDs: string[] = [];
         let resultCode = EXIT_CODES.NO_ERROR;
 
-        const _uninstallNpm = async () => {
+        const _uninstallNpm = async (): Promise<void> => {
             try {
                 // find the adapter's io-package.json
                 const adapterNpm = `${tools.appName}.${adapter}`;
@@ -1884,7 +1891,6 @@ export class Install {
      */
     private async _getInstancesOfAdapter(adapter: string): Promise<ioBroker.InstanceObject[]> {
         const instances = [];
-        // @ts-expect-error fixed with #1917
         const doc = await this.objects.getObjectListAsync({
             startkey: `system.adapter.${adapter}.`,
             endkey: `system.adapter.${adapter}.\u9999`

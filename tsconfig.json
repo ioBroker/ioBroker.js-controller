@@ -25,15 +25,17 @@
       "packages"
     ],
     "types": [
-      "@iobroker/types",
+      "@iobroker/types-dev",
       "node",
       "mocha"
-    ]
+    ],
+    "pretty": true
   },
   "include": [
     "packages/**/*.js",
     "packages/**/*.ts",
-    "packages/controller/io-package.json"
+    "packages/controller/io-package.json",
+    "schemas/**/*.ts"
   ],
   "exclude": [
     "packages/**/build"

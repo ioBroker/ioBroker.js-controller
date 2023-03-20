@@ -57,7 +57,7 @@ Configures this state as an alias for another state
 
 #### Defined in
 
-[types/objects.d.ts:197](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L197)
+[types-dev/objects.d.ts:198](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L198)
 
 ___
 
@@ -69,7 +69,7 @@ Custom settings for this state
 
 #### Defined in
 
-[types/objects.d.ts:238](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L238)
+[types-dev/objects.d.ts:239](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L239)
 
 ___
 
@@ -81,7 +81,7 @@ the default value
 
 #### Defined in
 
-[types/objects.d.ts:192](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L192)
+[types-dev/objects.d.ts:193](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L193)
 
 ___
 
@@ -93,7 +93,7 @@ the default status of the ack flag
 
 #### Defined in
 
-[types/objects.d.ts:194](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L194)
+[types-dev/objects.d.ts:195](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L195)
 
 ___
 
@@ -105,7 +105,7 @@ description of this state
 
 #### Defined in
 
-[types/objects.d.ts:182](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L182)
+[types-dev/objects.d.ts:183](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L183)
 
 ___
 
@@ -121,7 +121,7 @@ When set to true, this object may not be deleted
 
 #### Defined in
 
-[types/objects.d.ts:157](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L157)
+[types-dev/objects.d.ts:158](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L158)
 
 ___
 
@@ -137,7 +137,7 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 #### Defined in
 
-[types/objects.d.ts:160](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L160)
+[types-dev/objects.d.ts:161](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L161)
 
 ___
 
@@ -149,7 +149,7 @@ Custom defined properties for backward compatibility of habpanel adapter
 
 #### Defined in
 
-[types/objects.d.ts:244](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L244)
+[types-dev/objects.d.ts:245](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L245)
 
 ___
 
@@ -161,7 +161,7 @@ attached history information
 
 #### Defined in
 
-[types/objects.d.ts:235](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L235)
+[types-dev/objects.d.ts:236](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L236)
 
 ___
 
@@ -177,7 +177,7 @@ Icon for this object
 
 #### Defined in
 
-[types/objects.d.ts:165](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L165)
+[types-dev/objects.d.ts:166](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L166)
 
 ___
 
@@ -189,7 +189,7 @@ Custom defined properties for backward compatibility of material adapter
 
 #### Defined in
 
-[types/objects.d.ts:241](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L241)
+[types-dev/objects.d.ts:242](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L242)
 
 ___
 
@@ -201,7 +201,7 @@ maximum value
 
 #### Defined in
 
-[types/objects.d.ts:176](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L176)
+[types-dev/objects.d.ts:177](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L177)
 
 ___
 
@@ -213,7 +213,7 @@ minimum value
 
 #### Defined in
 
-[types/objects.d.ts:174](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L174)
+[types-dev/objects.d.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L175)
 
 ___
 
@@ -225,7 +225,7 @@ Custom defined properties for backward compatibility of habpanel adapter
 
 #### Defined in
 
-[types/objects.d.ts:247](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L247)
+[types-dev/objects.d.ts:248](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L248)
 
 ___
 
@@ -241,7 +241,7 @@ The name of this object as a simple string or an object with translations
 
 #### Defined in
 
-[types/objects.d.ts:154](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L154)
+[types-dev/objects.d.ts:155](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L155)
 
 ___
 
@@ -253,7 +253,7 @@ if this state is readable
 
 #### Defined in
 
-[types/objects.d.ts:185](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L185)
+[types-dev/objects.d.ts:186](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L186)
 
 ___
 
@@ -269,7 +269,7 @@ role of the state (used in user interfaces to indicate which widget to choose)
 
 #### Defined in
 
-[types/objects.d.ts:189](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L189)
+[types-dev/objects.d.ts:190](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L190)
 
 ___
 
@@ -282,7 +282,7 @@ The string "ignore" is a special case, causing the state to be ignored.
 
 #### Defined in
 
-[types/objects.d.ts:253](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L253)
+[types-dev/objects.d.ts:254](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L254)
 
 ___
 
@@ -309,7 +309,7 @@ In old ioBroker versions, this could also be a string of the form
 
 #### Defined in
 
-[types/objects.d.ts:229](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L229)
+[types-dev/objects.d.ts:230](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L230)
 
 ___
 
@@ -321,7 +321,7 @@ allowed interval for numeric values
 
 #### Defined in
 
-[types/objects.d.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L178)
+[types-dev/objects.d.ts:179](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L179)
 
 ___
 
@@ -333,7 +333,7 @@ Type of this state. See https://github.com/ioBroker/ioBroker/blob/master/doc/SCH
 
 #### Defined in
 
-[types/objects.d.ts:172](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L172)
+[types-dev/objects.d.ts:173](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L173)
 
 ___
 
@@ -345,7 +345,7 @@ unit of the value
 
 #### Defined in
 
-[types/objects.d.ts:180](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L180)
+[types-dev/objects.d.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L181)
 
 ___
 
@@ -357,7 +357,7 @@ ID of a helper state indicating if the handler of this state is working
 
 #### Defined in
 
-[types/objects.d.ts:232](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L232)
+[types-dev/objects.d.ts:233](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L233)
 
 ___
 
@@ -369,4 +369,4 @@ if this state is writable
 
 #### Defined in
 
-[types/objects.d.ts:187](https://github.com/ioBroker/ioBroker.js-controller/blob/931c925a/packages/types/objects.d.ts#L187)
+[types-dev/objects.d.ts:188](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L188)
