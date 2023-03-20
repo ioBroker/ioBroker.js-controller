@@ -221,7 +221,7 @@ export function logger(
                             ? transport.symlinkName
                             : path.basename(`${transport.filename}.current.log`);
 
-                    transport.filename += '.%DATE%' + (transport.fileext || '');
+                    transport.filename += `.%DATE%${transport.fileext || ''}`;
                     //transport.label       = prefix || ''; //TODO format.label()
                     //                    transport.json        = (transport.json      !== undefined) ? transport.json      : false; // TODO format.json(), new Default!!
                     transport.silent = transport.silent !== undefined ? transport.silent : false;
@@ -244,7 +244,7 @@ export function logger(
                         : true;
 
                     if (transport.maxFiles === null && userOptions.maxDays) {
-                        transport.maxFiles = userOptions.maxDays + 'd';
+                        transport.maxFiles = `${userOptions.maxDays}d`;
                     }
 
                     try {
@@ -355,7 +355,7 @@ export function logger(
     } else {
         for (let i = 0; i < files.length; i++) {
             const opt = {
-                name: i ? 'dailyRotateFile' + i : tools.appName,
+                name: i ? `dailyRotateFile${i}` : tools.appName,
                 filename: path.normalize(
                     isNpm ? `${__dirname}/../../../log/${files[i]}` : `${__dirname}/../log/${files[i]}`
                 ),
@@ -407,7 +407,7 @@ export function logger(
             /** @ts-expect-error we use undocumented stuff here TODO */
             transport = transport.transport ? transport.transport : transport;
             /** @ts-expect-error we use undocumented stuff here TODO */
-            return transport.dirname + '/' + transport.filename.replace('%DATE%', getDate());
+            return `${transport.dirname}/${transport.filename.replace('%DATE%', getDate())}`;
         } else {
             return '';
         }
@@ -472,20 +472,20 @@ export function logger(
                                         });
                                         console.log(`host.${hostname} Delete log file ${files[i]}`);
                                         /** @ts-expect-error we use undocumented stuff here TODO */
-                                        fs.unlinkSync(transport.dirname + '/' + files[i]);
+                                        fs.unlinkSync(`${transport.dirname}/${files[i]}`);
                                     } catch (e) {
                                         // there is a bug under windows, that file stays opened and cannot be deleted
                                         this.log({
                                             level: os.platform().startsWith('win') ? 'info' : 'error',
                                             message: `host.${hostname} Cannot delete file "${path.normalize(
                                                 /** @ts-expect-error we use undocumented stuff here TODO */
-                                                transport.dirname + '/' + files[i]
+                                                `${transport.dirname}/${files[i]}`
                                             )}": ${e}`
                                         });
                                         console.log(
                                             `host.${hostname} Cannot delete file "${path.normalize(
                                                 /** @ts-expect-error we use undocumented stuff here TODO */
-                                                transport.dirname + '/' + files[i]
+                                                `${transport.dirname}/${files[i]}`
                                             )}": ${e.message}`
                                         );
                                     }
@@ -506,63 +506,22 @@ export function logger(
 
 function getDate(): string {
     const ts = new Date();
-    let result = ts.getFullYear() + '-';
-    let value: number | string = ts.getMonth() + 1;
-    if (value < 10) {
-        value = '0' + value;
-    }
-    result += value + '-';
-
-    value = ts.getDate();
-    if (value < 10) {
-        value = '0' + value;
-    }
-    result += value;
-    return result;
+    return `${ts.getFullYear()}-${(ts.getMonth() + 1).toString().padStart(2, '0')}-${ts
+        .getDate()
+        .toString()
+        .padStart(2, '0')}`;
 }
 
 function timestamp(date: string): string {
     const ts = date ? new Date(date) : new Date();
-    let result = ts.getFullYear() + '-';
-
-    let value: string | number = ts.getMonth() + 1;
-    if (value < 10) {
-        value = '0' + value;
-    }
-    result += value + '-';
-
-    value = ts.getDate();
-    if (value < 10) {
-        value = '0' + value;
-    }
-    result += value + ' ';
-
-    value = ts.getHours();
-    if (value < 10) {
-        value = '0' + value;
-    }
-    result += value + ':';
-
-    value = ts.getMinutes();
-    if (value < 10) {
-        value = '0' + value;
-    }
-    result += value + ':';
-
-    value = ts.getSeconds();
-    if (value < 10) {
-        value = '0' + value;
-    }
-    result += value + '.';
-
-    value = ts.getMilliseconds();
-    if (value < 10) {
-        value = '00' + value;
-    } else if (value < 100) {
-        value = '0' + value;
-    }
-
-    result += value + ' ';
-
-    return result;
+    return `${ts.getFullYear()}-${(ts.getMonth() + 1).toString().padStart(2, '0')}-${ts
+        .getDate()
+        .toString()
+        .padStart(2, '0')} ${ts.getHours().toString().padStart(2, '0')}:${ts
+        .getMinutes()
+        .toString()
+        .padStart(2, '0')}:${ts.getSeconds().toString().padStart(2, '0')}.${ts
+        .getMilliseconds()
+        .toString()
+        .padStart(3, '0')} `;
 }

@@ -19,6 +19,8 @@ import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis'
 import type { Client as StateRedisClient } from '@iobroker/db-states-redis';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 
+tools.ensureDNSOrder();
+
 /**
  * Polyfill until everything ported to TS
  */
@@ -1204,6 +1206,7 @@ async function processCommand(
                 const { Upgrade } = await import('./setup/setupUpgrade');
                 const upgrade = new Upgrade({
                     objects,
+                    states,
                     getRepository,
                     params,
                     processExit: callback,

@@ -23,6 +23,7 @@ import { isDeepStrictEqual, inspect } from 'util';
 import { tools, EXIT_CODES, logger as toolsLogger } from '@iobroker/js-controller-common';
 import { PluginHandler } from '@iobroker/plugin-base';
 import { NotificationHandler } from '@iobroker/js-controller-common-db';
+import * as zipFiles from './lib/zipFiles';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { Upload } from '@iobroker/js-controller-cli';
@@ -114,7 +115,6 @@ let requestedRepoUpdates: RepoRequester[] = [];
 const exec = cp.exec;
 const spawn = cp.spawn;
 
-let zipFiles: any;
 let upload: InstanceType<typeof Upload>; // will be used only once by upload of adapter
 
 /* Use require('loadavg-windows') to enjoy os.loadavg() on Windows OS.
@@ -124,6 +124,8 @@ let upload: InstanceType<typeof Upload>; // will be used only once by upload of 
 if (os.platform() === 'win32') {
     require('loadavg-windows');
 }
+
+tools.ensureDNSOrder();
 
 let title = `${tools.appName}.js-controller`;
 
@@ -205,6 +207,7 @@ function getConfig(): Record<string, any> | never {
         logger.error(`${hostLogPrefix} conf/${tools.appName}.json missing - call node ${tools.appName}.js setup`);
         process.exit(EXIT_CODES.MISSING_CONFIG_JSON);
     } else {
+        // TODO: adjust return type as soon as #2120 merged and we have the type
         const _config = fs.readJSONSync(configFile);
         if (!_config.states) {
             _config.states = { type: 'jsonl' };
@@ -1133,9 +1136,9 @@ function reportStatus(): void {
     states.setState(`${id}.compactgroupProcesses`, { val: Object.keys(compactProcs).length, ack: true, from: id });
     let realProcesses = 0;
     let compactProcesses = 0;
-    Object.keys(procs).forEach(proc => {
-        if (procs[proc].process) {
-            if (procs[proc].startedInCompactMode) {
+    Object.values(procs).forEach(proc => {
+        if (proc.process) {
+            if (proc.startedInCompactMode) {
                 compactProcesses++;
             } else {
                 realProcesses++;
@@ -2978,13 +2981,12 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'readDirAsZip':
             if (msg.callback && msg.from) {
-                zipFiles = zipFiles || require('./lib/zipFiles');
                 zipFiles.readDirAsZip(
-                    objects,
+                    objects!,
                     msg.message.id,
                     msg.message.name,
                     msg.message.options,
-                    (err: any, base64: string) => {
+                    (err, base64) => {
                         if (base64) {
                             sendTo(msg.from, msg.command, { error: err, data: base64 }, msg.callback);
                         } else {
@@ -2998,10 +3000,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
 
         case 'writeDirAsZip':
-            zipFiles = zipFiles || require('./lib/zipFiles');
             try {
                 await zipFiles.writeDirAsZip(
-                    objects,
+                    objects!,
                     msg.message.id,
                     msg.message.name,
                     Buffer.from(msg.message.data, 'base64'),
@@ -3017,16 +3018,15 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'readObjectsAsZip':
             if (msg.callback && msg.from) {
-                zipFiles = zipFiles || require('./lib/zipFiles');
                 zipFiles.readObjectsAsZip(
-                    objects,
+                    objects!,
                     msg.message.id,
                     msg.message.adapter,
                     msg.message.options,
-                    (error: any, base64: string) => {
+                    (error, base64) => {
                         // If client supports file via link
                         if (msg.message.link) {
-                            if (!error) {
+                            if (!error && base64) {
                                 const buff = Buffer.from(base64, 'base64');
                                 states!.setBinaryState(`${hostObjectPrefix}.zip.${msg.message.link}`, buff, err => {
                                     if (err) {
@@ -3058,9 +3058,8 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
 
         case 'writeObjectsAsZip':
-            zipFiles = zipFiles || require('./lib/zipFiles');
             zipFiles.writeObjectsAsZip(
-                objects,
+                objects!,
                 msg.message.id,
                 msg.message.adapter,
                 Buffer.from(msg.message.data || '', 'base64'),
@@ -4110,6 +4109,17 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         args.push(`--max-old-space-size=${parseInt(instance.common.memoryLimitMB, 10)}`);
     }
 
+    if (Array.isArray(instance.common.nodeProcessParams) && instance.common.nodeProcessParams.length) {
+        args.push(...instance.common.nodeProcessParams);
+
+        if (instance.common.compact) {
+            instance.common.compact = false;
+            logger.warn(
+                `${hostLogPrefix} Adapter ${instance.common.name} has "compact=true" as well as "nodeProcessParams" specified, this is not supported, please report to developer`
+            );
+        }
+    }
+
     // workaround for old vis
     if (instance.common.onlyWWW && name === 'vis') {
         instance.common.onlyWWW = false;
@@ -4566,7 +4576,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                         proc.process.stderr.on('data', data => {
                             const proc = procs[id];
 
-                            if (!data || !proc || typeof proc !== 'object') {
+                            if (!data || !proc || !tools.isObject(proc)) {
                                 return;
                             }
                             const text = data.toString();
