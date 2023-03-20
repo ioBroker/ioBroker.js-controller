@@ -2815,7 +2815,6 @@ export class ObjectsInRedisClient {
                                 CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ // '0644'
                         };
                         if (obj.type === 'state') {
-                            // TODO why he infers state or design here?
                             obj.acl!.state =
                                 (this.defaultNewAcl && this.defaultNewAcl.state) ||
                                 CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ; // '0644'
@@ -2945,7 +2944,6 @@ export class ObjectsInRedisClient {
                                 CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ // '0644'
                         };
                         if (obj.type === 'state') {
-                            // TODO why he infers state or design here?
                             obj.acl!.state =
                                 (this.defaultNewAcl && this.defaultNewAcl.state) ||
                                 CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ; // '0644'
