@@ -169,9 +169,9 @@ export interface AdapterClass {
     /** Read a value from the states DB. */
     getStateAsync(id: string, options?: unknown): ioBroker.GetStatePromise;
     /** Subscribe to changes of objects (which might not belong to this adapter) */
-    subscribeForeignObjectsAsync(pattern: string, options?: unknown): Promise<void>;
+    subscribeForeignObjectsAsync(pattern: string | string[], options?: unknown): Promise<void>;
     /** Unsubscribe from changes of objects (which might not belong to this adapter) */
-    unsubscribeForeignObjectsAsync(pattern: string, options?: unknown): Promise<void>;
+    unsubscribeForeignObjectsAsync(pattern: string | string[], options?: unknown): Promise<void>;
     /** Creates an object in the object db. Existing objects are not overwritten. */
     setObjectNotExistsAsync(id: string, obj: ioBroker.SettableObject, options?: unknown): ioBroker.SetObjectPromise;
     /** Creates an object (which might not belong to this adapter) in the object db. Existing objects are not overwritten. */
@@ -248,9 +248,9 @@ export interface AdapterClass {
     /** Read all states (which might not belong to this adapter) which match the given pattern */
     getForeignStatesAsync(pattern: string, options?: unknown): ioBroker.GetStatesPromise;
     /** Subscribe to changes of states (which might not belong to this adapter) */
-    subscribeForeignStatesAsync(pattern: string, options?: unknown): Promise<void>;
+    subscribeForeignStatesAsync(pattern: string | string[], options?: unknown): Promise<void>;
     /** Subscribe from changes of states (which might not belong to this adapter) */
-    unsubscribeForeignStatesAsync(pattern: string, options?: unknown): Promise<void>;
+    unsubscribeForeignStatesAsync(pattern: string | string[], options?: unknown): Promise<void>;
     /** Subscribe to changes of states in this instance */
     subscribeStatesAsync(pattern: string, options?: unknown): Promise<void>;
     /** Subscribe from changes of states in this instance */
@@ -4650,8 +4650,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    subscribeForeignFiles(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
-    subscribeForeignFiles(pattern: string | string[], options: unknown, callback?: ioBroker.ErrorCallback): void;
+    subscribeForeignFiles(id: string, pattern: string | string[], options: unknown): void;
 
     /**
      * Subscribe for the changes of files in specific instance.
@@ -4678,8 +4677,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    unsubscribeForeignFiles(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
-    unsubscribeForeignFiles(pattern: string | string[], options: unknown, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeForeignFiles(id: string, pattern: string | string[], options?: unknown): void;
 
     /**
      * Unsubscribe for the changes of files on specific instance.
@@ -9616,8 +9614,8 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    unsubscribeForeignStates(pattern: string, callback?: ioBroker.ErrorCallback): void;
-    unsubscribeForeignStates(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeForeignStates(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
+    unsubscribeForeignStates(pattern: string | string[], options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Unsubscribe for changes for given pattern
@@ -9766,8 +9764,8 @@ export class AdapterClass extends EventEmitter {
         return tools.maybeCallback(callback);
     }
 
-    subscribeStates(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
-    subscribeStates(pattern: string | string[], options: unknown, callback?: ioBroker.ErrorCallback): void;
+    subscribeStates(pattern: string, callback?: ioBroker.ErrorCallback): void;
+    subscribeStates(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Subscribe for changes on all states of this instance, that pass the pattern
@@ -9789,7 +9787,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         Validator.assertOptionalCallback(callback, 'callback');
-        Validator.assertPattern(pattern, 'pattern');
+        Validator.assertString(pattern, 'pattern');
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
@@ -9808,8 +9806,8 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    unsubscribeStates(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
-    unsubscribeStates(pattern: string | string[], options: unknown, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeStates(pattern: string, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeStates(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Unsubscribe for changes for given pattern for own states.
@@ -9817,9 +9815,8 @@ export class AdapterClass extends EventEmitter {
      * This function allows to unsubscribe from changes. The pattern must be equal to requested one.
      *
      * ```js
-     *     adapter.subscribeForeignStates('*');
-     *     adapter.unsubscribeForeignStates('abc*'); // This will not work
-     *     adapter.unsubscribeForeignStates('*');    // Valid unsubscribe
+     *     adapter.unsubscribeStates('abc*'); // This will not work
+     *     adapter.unsubscribeStates('*');    // Valid unsubscribe
      * ```
      *
      * @param pattern string in form 'adapter.0.*'. Must be the same as subscribe.
@@ -9833,7 +9830,7 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Validator.assertPattern(pattern, 'pattern');
+        Validator.assertString(pattern, 'pattern');
         Validator.assertOptionalCallback(callback, 'callback');
 
         if (!adapterStates) {
