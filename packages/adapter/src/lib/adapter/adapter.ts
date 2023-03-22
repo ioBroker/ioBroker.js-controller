@@ -4571,8 +4571,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    subscribeForeignObjects(pattern: string, callback?: ioBroker.ErrorCallback): void;
-    subscribeForeignObjects(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    subscribeForeignObjects(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
+    subscribeForeignObjects(pattern: string | string[], options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Subscribe for the changes of objects in any instance.
@@ -4593,7 +4593,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         Validator.assertOptionalCallback(callback, 'callback');
-        Validator.assertString(pattern, 'pattern');
+        Validator.assertPattern(pattern, 'pattern');
         if (options !== null && options !== undefined) {
             Validator.assertObject(options, 'options');
         }
@@ -4609,8 +4609,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    unsubscribeForeignObjects(pattern: string, callback?: ioBroker.ErrorCallback): void;
-    unsubscribeForeignObjects(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeForeignObjects(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
+    unsubscribeForeignObjects(pattern: string | string[], options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Unsubscribe for the patterns on all objects.
@@ -4634,7 +4634,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         Validator.assertOptionalCallback(callback, 'callback');
-        Validator.assertString(pattern, 'pattern');
+        Validator.assertPattern(pattern, 'pattern');
         if (options !== null && options !== undefined) {
             Validator.assertObject(options, 'options');
         }
@@ -4650,8 +4650,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    subscribeForeignFiles(pattern: string, callback?: ioBroker.ErrorCallback): void;
-    subscribeForeignFiles(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    subscribeForeignFiles(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
+    subscribeForeignFiles(pattern: string | string[], options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Subscribe for the changes of files in specific instance.
@@ -4669,7 +4669,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         Validator.assertString(id, 'id');
-        Validator.assertString(pattern, 'pattern');
+        Validator.assertPattern(pattern, 'pattern');
         if (options !== null && options !== undefined) {
             Validator.assertObject(options, 'options');
         }
@@ -4678,8 +4678,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    unsubscribeForeignFiles(pattern: string, callback?: ioBroker.ErrorCallback): void;
-    unsubscribeForeignFiles(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeForeignFiles(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
+    unsubscribeForeignFiles(pattern: string | string[], options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Unsubscribe for the changes of files on specific instance.
@@ -4700,7 +4700,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         Validator.assertString(id, 'id');
-        Validator.assertString(pattern, 'pattern');
+        Validator.assertPattern(pattern, 'pattern');
         if (options !== null && options !== undefined) {
             Validator.assertObject(options, 'options');
         }
@@ -9766,8 +9766,8 @@ export class AdapterClass extends EventEmitter {
         return tools.maybeCallback(callback);
     }
 
-    subscribeStates(pattern: string, callback?: ioBroker.ErrorCallback): void;
-    subscribeStates(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    subscribeStates(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
+    subscribeStates(pattern: string | string[], options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Subscribe for changes on all states of this instance, that pass the pattern
@@ -9789,7 +9789,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         Validator.assertOptionalCallback(callback, 'callback');
-        Validator.assertString(pattern, 'pattern');
+        Validator.assertPattern(pattern, 'pattern');
 
         if (!adapterStates) {
             // if states is no longer existing, we do not need to unsubscribe
@@ -9808,8 +9808,8 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    unsubscribeStates(pattern: string, callback?: ioBroker.ErrorCallback): void;
-    unsubscribeStates(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeStates(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
+    unsubscribeStates(pattern: string | string[], options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Unsubscribe for changes for given pattern for own states.
@@ -9833,7 +9833,7 @@ export class AdapterClass extends EventEmitter {
             options = null;
         }
 
-        Validator.assertString(pattern, 'pattern');
+        Validator.assertPattern(pattern, 'pattern');
         Validator.assertOptionalCallback(callback, 'callback');
 
         if (!adapterStates) {
