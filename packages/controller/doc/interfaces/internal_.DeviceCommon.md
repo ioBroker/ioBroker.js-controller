@@ -29,7 +29,7 @@
 
 #### Defined in
 
-[types-dev/objects.d.ts:274](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L274)
+[types-dev/objects.d.ts:275](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/types-dev/objects.d.ts#L275)
 
 ___
 
@@ -45,7 +45,7 @@ When set to true, this object may not be deleted
 
 #### Defined in
 
-[types-dev/objects.d.ts:158](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L158)
+[types-dev/objects.d.ts:159](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/types-dev/objects.d.ts#L159)
 
 ___
 
@@ -61,7 +61,7 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 #### Defined in
 
-[types-dev/objects.d.ts:161](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L161)
+[types-dev/objects.d.ts:162](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/types-dev/objects.d.ts#L162)
 
 ___
 
@@ -77,7 +77,7 @@ Icon for this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:166](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L166)
+[types-dev/objects.d.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/types-dev/objects.d.ts#L167)
 
 ___
 
@@ -93,7 +93,7 @@ The name of this object as a simple string or an object with translations
 
 #### Defined in
 
-[types-dev/objects.d.ts:155](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L155)
+[types-dev/objects.d.ts:156](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/types-dev/objects.d.ts#L156)
 
 ___
 
@@ -109,4 +109,4 @@ role of the object
 
 #### Defined in
 
-[types-dev/objects.d.ts:168](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L168)
+[types-dev/objects.d.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/types-dev/objects.d.ts#L169)

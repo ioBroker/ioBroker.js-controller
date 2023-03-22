@@ -1,40 +1,40 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / DesignObject
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / PartialDesignObject
 
-# Interface: DesignObject
+# Interface: PartialDesignObject
 
-[<internal>](../modules/internal_.md).DesignObject
+[<internal>](../modules/internal_.md).PartialDesignObject
 
 ## Hierarchy
 
-- `Omit`<[`BaseObject`](internal_.BaseObject.md), ``"common"``\>
+- `Partial`<`Omit`<[`DesignObject`](internal_.DesignObject.md), ``"common"``\>\>
 
-  ↳ **`DesignObject`**
+  ↳ **`PartialDesignObject`**
 
 ## Table of contents
 
 ### Properties
 
-- [\_id](internal_.DesignObject.md#_id)
-- [acl](internal_.DesignObject.md#acl)
-- [common](internal_.DesignObject.md#common)
-- [enums](internal_.DesignObject.md#enums)
-- [from](internal_.DesignObject.md#from)
-- [language](internal_.DesignObject.md#language)
-- [native](internal_.DesignObject.md#native)
-- [ts](internal_.DesignObject.md#ts)
-- [type](internal_.DesignObject.md#type)
-- [user](internal_.DesignObject.md#user)
-- [views](internal_.DesignObject.md#views)
+- [\_id](internal_.PartialDesignObject.md#_id)
+- [acl](internal_.PartialDesignObject.md#acl)
+- [common](internal_.PartialDesignObject.md#common)
+- [enums](internal_.PartialDesignObject.md#enums)
+- [from](internal_.PartialDesignObject.md#from)
+- [language](internal_.PartialDesignObject.md#language)
+- [native](internal_.PartialDesignObject.md#native)
+- [ts](internal_.PartialDesignObject.md#ts)
+- [type](internal_.PartialDesignObject.md#type)
+- [user](internal_.PartialDesignObject.md#user)
+- [views](internal_.PartialDesignObject.md#views)
 
 ## Properties
 
 ### \_id
 
-• **\_id**: \`\_design/${string}\`
+• `Optional` **\_id**: \`\_design/${string}\`
 
-#### Overrides
+#### Inherited from
 
-Omit.\_id
+Partial.\_id
 
 #### Defined in
 
@@ -48,7 +48,7 @@ ___
 
 #### Inherited from
 
-Omit.acl
+Partial.acl
 
 #### Defined in
 
@@ -58,11 +58,11 @@ ___
 
 ### common
 
-• `Optional` **common**: [`OtherCommon`](internal_.OtherCommon.md)
+• `Optional` **common**: `Partial`<[`OtherCommon`](internal_.OtherCommon.md)\>
 
 #### Defined in
 
-[types-dev/objects.d.ts:740](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/types-dev/objects.d.ts#L740)
+[types-dev/objects.d.ts:745](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/types-dev/objects.d.ts#L745)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Inherited from
 
-Omit.enums
+Partial.enums
 
 #### Defined in
 
@@ -86,7 +86,7 @@ ___
 
 #### Inherited from
 
-Omit.from
+Partial.from
 
 #### Defined in
 
@@ -96,7 +96,11 @@ ___
 
 ### language
 
-• **language**: ``"javascript"``
+• `Optional` **language**: ``"javascript"``
+
+#### Inherited from
+
+Partial.language
 
 #### Defined in
 
@@ -106,11 +110,11 @@ ___
 
 ### native
 
-• **native**: `Record`<`string`, `any`\>
+• `Optional` **native**: `Record`<`string`, `any`\>
 
 #### Inherited from
 
-Omit.native
+Partial.native
 
 #### Defined in
 
@@ -124,7 +128,7 @@ ___
 
 #### Inherited from
 
-Omit.ts
+Partial.ts
 
 #### Defined in
 
@@ -134,11 +138,11 @@ ___
 
 ### type
 
-• **type**: ``"design"``
+• `Optional` **type**: ``"design"``
 
-#### Overrides
+#### Inherited from
 
-Omit.type
+Partial.type
 
 #### Defined in
 
@@ -154,7 +158,7 @@ The user who created or updated this object
 
 #### Inherited from
 
-Omit.user
+Partial.user
 
 #### Defined in
 
@@ -164,7 +168,11 @@ ___
 
 ### views
 
-• **views**: `Record`<`string`, { `map`: `string`  }\>
+• `Optional` **views**: `Record`<`string`, { `map`: `string`  }\>
+
+#### Inherited from
+
+Partial.views
 
 #### Defined in
 

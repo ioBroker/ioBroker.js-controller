@@ -38,7 +38,7 @@ The ID of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:585](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L585)
+[types-dev/objects.d.ts:586](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/types-dev/objects.d.ts#L586)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:592](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L592)
+[types-dev/objects.d.ts:593](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/types-dev/objects.d.ts#L593)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:727](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L727)
+[types-dev/objects.d.ts:728](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/types-dev/objects.d.ts#L728)
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:591](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L591)
+[types-dev/objects.d.ts:592](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/types-dev/objects.d.ts#L592)
 
 ___
 
@@ -94,7 +94,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:593](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L593)
+[types-dev/objects.d.ts:594](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/types-dev/objects.d.ts#L594)
 
 ___
 
@@ -108,7 +108,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:589](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L589)
+[types-dev/objects.d.ts:590](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/types-dev/objects.d.ts#L590)
 
 ___
 
@@ -122,13 +122,13 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:596](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L596)
+[types-dev/objects.d.ts:597](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/types-dev/objects.d.ts#L597)
 
 ___
 
 ### type
 
-• **type**: ``"chart"`` \| ``"config"``
+• **type**: ``"config"`` \| ``"chart"``
 
 #### Overrides
 
@@ -136,7 +136,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:726](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L726)
+[types-dev/objects.d.ts:727](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/types-dev/objects.d.ts#L727)
 
 ___
 
@@ -152,4 +152,4 @@ The user who created or updated this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:595](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/types-dev/objects.d.ts#L595)
+[types-dev/objects.d.ts:596](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/types-dev/objects.d.ts#L596)

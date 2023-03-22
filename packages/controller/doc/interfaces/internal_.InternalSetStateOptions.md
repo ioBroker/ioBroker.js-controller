@@ -28,7 +28,7 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:278](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/adapter/src/lib/_Types.ts#L278)
+[adapter/src/lib/_Types.ts:278](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/adapter/src/lib/_Types.ts#L278)
 
 ___
 
@@ -38,7 +38,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:280](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/adapter/src/lib/_Types.ts#L280)
+[adapter/src/lib/_Types.ts:280](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/adapter/src/lib/_Types.ts#L280)
 
 ___
 
@@ -48,17 +48,17 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:276](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/adapter/src/lib/_Types.ts#L276)
+[adapter/src/lib/_Types.ts:276](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/adapter/src/lib/_Types.ts#L276)
 
 ___
 
 ### options
 
-• `Optional` **options**: ``null`` \| `Record`<`string`, `any`\>
+• `Optional` **options**: ``null`` \| `Partial`<[`GetUserGroupsOptions`](internal_.GetUserGroupsOptions.md)\>
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/adapter/src/lib/_Types.ts#L279)
+[adapter/src/lib/_Types.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/adapter/src/lib/_Types.ts#L279)
 
 ___
 
@@ -68,4 +68,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/0732666c/packages/adapter/src/lib/_Types.ts#L277)
+[adapter/src/lib/_Types.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/e5825648/packages/adapter/src/lib/_Types.ts#L277)
