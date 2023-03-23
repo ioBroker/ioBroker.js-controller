@@ -2520,7 +2520,7 @@ export class ObjectsInRedisClient {
         }
     }
 
-    subscribeUserFile(id: string, pattern: string, options?: CallOptions | null): Promise<void> {
+    subscribeUserFile(id: string, pattern: string | string[], options?: CallOptions | null): Promise<void> {
         return new Promise((resolve, reject) => {
             utils.checkObjectRights(this, null, null, options, 'list', err => {
                 if (err) {
@@ -2534,7 +2534,7 @@ export class ObjectsInRedisClient {
         });
     }
 
-    unsubscribeUserFile(id: string, pattern: string, options?: CallOptions | null): Promise<void> {
+    unsubscribeUserFile(id: string, pattern: string | string[], options?: CallOptions | null): Promise<void> {
         return new Promise((resolve, reject) => {
             utils.checkObjectRights(this, null, null, options, 'list', err => {
                 if (err) {
