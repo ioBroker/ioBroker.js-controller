@@ -177,9 +177,9 @@ async function createServerAsync(app, settings, certificates, leSettings, log, a
                             httpServer.listen(settings.lePort, bind, () => {
                                 log.info(`Challenge server listening on port ${settings.lePort}`);
                                 log.info(
-                                    `If something is not working and your adapter is not reachable anymore you can turn off HTTPS with executing "iobroker ${
+                                    `If something is not working and your adapter webpage is not reachable anymore you can turn off HTTPS with executing "iobroker set ${
                                         adapter ? adapter.namespace : 'admin'
-                                    } set --secure false" in your shell.`
+                                    } --secure false" in your shell.`
                                 );
                                 resolve(glx.httpsServer(null, app));
                             });
