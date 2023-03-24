@@ -2296,11 +2296,15 @@ export class AdapterClass extends EventEmitter {
                     const chained = this._readFileCertificate(obj.native.certificates[options.chainedName]).split(
                         '-----END CERTIFICATE-----\r\n'
                     );
-                    ca = [];
-                    for (const cert of chained) {
-                        if (cert.replace(/(\r\n|\r|\n)/g, '').trim()) {
-                            ca.push(cert + '-----END CERTIFICATE-----\r\n');
+                    // it is still file name and the file maybe does not exist, but we can omit this error
+                    if (chained.join('').length >= 512) {
+                        ca = [];
+                        for (const cert of chained) {
+                            if (cert.replace(/(\r\n|\r|\n)/g, '').trim()) {
+                                ca.push(`${cert}-----END CERTIFICATE-----\r\n`);
+                            }
                         }
+                        ca = ca.join('');
                     }
                 }
 
