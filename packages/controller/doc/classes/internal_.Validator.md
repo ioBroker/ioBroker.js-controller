@@ -48,7 +48,7 @@ Validator for internal adapter.js usage
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:31](https://github.com/ioBroker/ioBroker.js-controller/blob/6ba47816/packages/adapter/src/lib/adapter/validator.ts#L31)
+[adapter/src/lib/adapter/validator.ts:31](https://github.com/ioBroker/ioBroker.js-controller/blob/ca2ecbe8/packages/adapter/src/lib/adapter/validator.ts#L31)
 
 ## Methods
 
@@ -71,7 +71,7 @@ Adds the namespace to the id if it is missing, if an object is passed it will be
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:348](https://github.com/ioBroker/ioBroker.js-controller/blob/6ba47816/packages/adapter/src/lib/adapter/validator.ts#L348)
+[adapter/src/lib/adapter/validator.ts:348](https://github.com/ioBroker/ioBroker.js-controller/blob/ca2ecbe8/packages/adapter/src/lib/adapter/validator.ts#L348)
 
 ___
 
@@ -95,7 +95,7 @@ additionally it rounds state values whose objects have a common.step attribute d
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:54](https://github.com/ioBroker/ioBroker.js-controller/blob/6ba47816/packages/adapter/src/lib/adapter/validator.ts#L54)
+[adapter/src/lib/adapter/validator.ts:54](https://github.com/ioBroker/ioBroker.js-controller/blob/ca2ecbe8/packages/adapter/src/lib/adapter/validator.ts#L54)
 
 ___
 
@@ -123,7 +123,7 @@ asserts id is string
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:157](https://github.com/ioBroker/ioBroker.js-controller/blob/6ba47816/packages/adapter/src/lib/adapter/validator.ts#L157)
+[adapter/src/lib/adapter/validator.ts:157](https://github.com/ioBroker/ioBroker.js-controller/blob/ca2ecbe8/packages/adapter/src/lib/adapter/validator.ts#L157)
 
 ___
 
@@ -145,7 +145,7 @@ Validates the object-type argument that is passed to setState
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:379](https://github.com/ioBroker/ioBroker.js-controller/blob/6ba47816/packages/adapter/src/lib/adapter/validator.ts#L379)
+[adapter/src/lib/adapter/validator.ts:379](https://github.com/ioBroker/ioBroker.js-controller/blob/ca2ecbe8/packages/adapter/src/lib/adapter/validator.ts#L379)
 
 ___
 
@@ -168,7 +168,7 @@ asserts value is boolean
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:273](https://github.com/ioBroker/ioBroker.js-controller/blob/6ba47816/packages/adapter/src/lib/adapter/validator.ts#L273)
+[adapter/src/lib/adapter/validator.ts:273](https://github.com/ioBroker/ioBroker.js-controller/blob/ca2ecbe8/packages/adapter/src/lib/adapter/validator.ts#L273)
 
 ___
 
@@ -191,7 +191,7 @@ asserts value is Buffer
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:310](https://github.com/ioBroker/ioBroker.js-controller/blob/6ba47816/packages/adapter/src/lib/adapter/validator.ts#L310)
+[adapter/src/lib/adapter/validator.ts:310](https://github.com/ioBroker/ioBroker.js-controller/blob/ca2ecbe8/packages/adapter/src/lib/adapter/validator.ts#L310)
 
 ___
 
@@ -214,7 +214,7 @@ asserts value is Callback
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:334](https://github.com/ioBroker/ioBroker.js-controller/blob/6ba47816/packages/adapter/src/lib/adapter/validator.ts#L334)
+[adapter/src/lib/adapter/validator.ts:334](https://github.com/ioBroker/ioBroker.js-controller/blob/ca2ecbe8/packages/adapter/src/lib/adapter/validator.ts#L334)
 
 ___
 
@@ -237,7 +237,7 @@ asserts value is number
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:286](https://github.com/ioBroker/ioBroker.js-controller/blob/6ba47816/packages/adapter/src/lib/adapter/validator.ts#L286)
+[adapter/src/lib/adapter/validator.ts:286](https://github.com/ioBroker/ioBroker.js-controller/blob/ca2ecbe8/packages/adapter/src/lib/adapter/validator.ts#L286)
 
 ___
 
@@ -260,7 +260,7 @@ asserts value is Record<string, any\>
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:299](https://github.com/ioBroker/ioBroker.js-controller/blob/6ba47816/packages/adapter/src/lib/adapter/validator.ts#L299)
+[adapter/src/lib/adapter/validator.ts:299](https://github.com/ioBroker/ioBroker.js-controller/blob/ca2ecbe8/packages/adapter/src/lib/adapter/validator.ts#L299)
 
 ___
 
@@ -283,7 +283,7 @@ asserts value is OptionalCallback
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:321](https://github.com/ioBroker/ioBroker.js-controller/blob/6ba47816/packages/adapter/src/lib/adapter/validator.ts#L321)
+[adapter/src/lib/adapter/validator.ts:321](https://github.com/ioBroker/ioBroker.js-controller/blob/ca2ecbe8/packages/adapter/src/lib/adapter/validator.ts#L321)
 
 ___
 
@@ -306,7 +306,7 @@ asserts value is Pattern
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:252](https://github.com/ioBroker/ioBroker.js-controller/blob/6ba47816/packages/adapter/src/lib/adapter/validator.ts#L252)
+[adapter/src/lib/adapter/validator.ts:252](https://github.com/ioBroker/ioBroker.js-controller/blob/ca2ecbe8/packages/adapter/src/lib/adapter/validator.ts#L252)
 
 ___
 
@@ -329,7 +329,7 @@ asserts value is string
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:239](https://github.com/ioBroker/ioBroker.js-controller/blob/6ba47816/packages/adapter/src/lib/adapter/validator.ts#L239)
+[adapter/src/lib/adapter/validator.ts:239](https://github.com/ioBroker/ioBroker.js-controller/blob/ca2ecbe8/packages/adapter/src/lib/adapter/validator.ts#L239)
 
 ___
 
@@ -351,7 +351,7 @@ Validates, that the timeout is not exceeding a 32-bit signed integer
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/6ba47816/packages/adapter/src/lib/adapter/validator.ts#L439)
+[adapter/src/lib/adapter/validator.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/ca2ecbe8/packages/adapter/src/lib/adapter/validator.ts#L439)
 
 ___
 
@@ -375,4 +375,4 @@ error description
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:229](https://github.com/ioBroker/ioBroker.js-controller/blob/6ba47816/packages/adapter/src/lib/adapter/validator.ts#L229)
+[adapter/src/lib/adapter/validator.ts:229](https://github.com/ioBroker/ioBroker.js-controller/blob/ca2ecbe8/packages/adapter/src/lib/adapter/validator.ts#L229)
