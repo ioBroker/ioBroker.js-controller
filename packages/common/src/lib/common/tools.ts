@@ -2107,8 +2107,11 @@ export function isDevServerInstallation(): boolean {
  */
 export function getDefaultDataDir(): string {
     // Allow overriding the data directory with an environment variable
-    const envDataDir = process.env[`${appName.toUpperCase()}_DATA_DIR`];
+    let envDataDir = process.env[`${appName.toUpperCase()}_DATA_DIR`];
     if (envDataDir) {
+        if (path.isAbsolute(envDataDir)) {
+            envDataDir = path.relative(getControllerDir(), envDataDir);
+        }
         return envDataDir;
     }
 
@@ -2135,8 +2138,11 @@ export function getConfigFileName(): string {
     const _appName = appName.toLowerCase();
 
     // Allow overriding the config file location with an environment variable
-    const envDataDir = process.env[`${appName.toUpperCase()}_DATA_DIR`];
+    let envDataDir = process.env[`${appName.toUpperCase()}_DATA_DIR`];
     if (envDataDir) {
+        if (!path.isAbsolute(envDataDir)) {
+            envDataDir = path.join(getControllerDir(), envDataDir);
+        }
         return path.join(envDataDir, `${_appName}.json`);
     }
 
