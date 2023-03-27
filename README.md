@@ -1063,6 +1063,6 @@ This new process and rules are introduced with js-controller 2.0 and updated to 
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2022 bluefox <dogafox@gmail.com>,
+Copyright (c) 2014-2023 bluefox <dogafox@gmail.com>,
 
 Copyright (c) 2014      hobbyquaker

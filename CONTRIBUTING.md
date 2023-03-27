@@ -52,3 +52,6 @@ npm i iobroker.js-controller@dev
 
 in your local iobroker folder, e.g. `/opt/iobroker`. Then build the project in the workspace and replace the files, 
 where you have applied changes too in the build folder with the ones from the corresponding build directory of your workspace.
+
+### Release
+Prepare the changelog, add news to `io-package.json` manually and run `npm run release`

@@ -19,6 +19,18 @@
       "zh-cn": "JS控制器"
     },
     "news": {
+      "5.0.0": {
+        "en": "see CHANGELOG.md",
+        "de": "siehe CHANGELOG.md",
+        "ru": "см. CHANGELOG.md",
+        "pt": "veja CHANGELOG.md",
+        "nl": "zie CHANGELOG.md",
+        "fr": "voir CHANGELOG.md",
+        "it": "vedi CHANGELOG.md",
+        "es": "ver CHANGELOG.md",
+        "pl": "zobacz CHANGELOG.md",
+        "zh-cn": "看到CHANGELOG.md"
+      },
       "4.0.24": {
         "en": "see CHANGELOG.md",
         "de": "siehe CHANGELOG.md",
