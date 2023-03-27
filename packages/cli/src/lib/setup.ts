@@ -627,7 +627,7 @@ async function processCommand(
                             // And try to install each of them
                             for (const instance of initialInstances) {
                                 try {
-                                    const adapterInstalled = !!require.resolve(`${tools.appName}.${instance}`);
+                                    const adapterInstalled = !!require.resolve(`${tools.appName.toLowerCase()}.${instance}`);
 
                                     if (adapterInstalled) {
                                         let otherInstanceExists = false;
@@ -2122,8 +2122,8 @@ async function processCommand(
                 dependencies: {} as Record<string, string>,
                 author: 'bluefox <dogafox@gmail.com>'
             };
-            json.dependencies[`${tools.appName}.js-controller`] = '*';
-            json.dependencies[`${tools.appName}.admin`] = '*';
+            json.dependencies[`${tools.appName.toLowerCase()}.js-controller`] = '*';
+            json.dependencies[`${tools.appName.toLowerCase()}.admin`] = '*';
 
             // @ts-expect-error todo fix it
             tools.getRepositoryFile(null, null, (_err, sources, _sourcesHash) => {
@@ -2486,7 +2486,7 @@ async function processCommand(
             let pckg;
             if (adapter) {
                 try {
-                    pckg = require(`${tools.appName}.${adapter}/package.json`);
+                    pckg = require(`${tools.appName.toLowerCase()}.${adapter}/package.json`);
                 } catch {
                     pckg = { version: `"${adapter}" not found` };
                 }
@@ -2806,7 +2806,7 @@ async function processCommand(
                 let pckg;
                 if (command) {
                     try {
-                        pckg = require(`${tools.appName}.${command}/package.json`);
+                        pckg = require(`${tools.appName.toLowerCase()}.${command}/package.json`);
                     } catch {
                         pckg = { version: `"${command}" not found` };
                     }

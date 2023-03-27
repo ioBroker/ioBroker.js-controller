@@ -2411,7 +2411,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 });
             } else {
                 logger.warn(
-                    `${hostLogPrefix} ${tools.appName} cannot execute shell command "${msg.message}" because not enabled in ${tools.appName}.json file`
+                    `${hostLogPrefix} ${tools.appName} cannot execute shell command "${msg.message}" because not enabled in ${tools.appName.toLowerCase()}.json file`
                 );
             }
 

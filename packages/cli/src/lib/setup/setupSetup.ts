@@ -545,7 +545,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                     console.log(`Backup created: ${filePath}`);
                     await this.resetDbConnect();
 
-                    console.log(`updating conf/${tools.appName}.json`);
+                    console.log(`updating conf/${tools.appName.toLowerCase()}.json`);
                     fs.writeFileSync(`${tools.getConfigFileName()}.bak`, JSON.stringify(oldConfig, null, 2));
                     fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(newConfig, null, 2));
 
@@ -566,7 +566,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                             `New Database could not be connected. Please check your settings. No settings have been changed.${COLOR_RESET}`
                         );
 
-                        console.log(`restoring conf/${tools.appName}.json`);
+                        console.log(`restoring conf/${tools.appName.toLowerCase()}.json`);
                         fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));
                         fs.unlinkSync(`${tools.getConfigFileName()}.bak`);
 
@@ -587,7 +587,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                         if (exitCode) {
                             console.log(`Error happened during restore. Exit-Code: ${exitCode}`);
                             console.log();
-                            console.log(`restoring conf/${tools.appName}.json`);
+                            console.log(`restoring conf/${tools.appName.toLowerCase()}.json`);
                             fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));
                             fs.unlinkSync(tools.getConfigFileName() + '.bak');
                         } else {
@@ -612,7 +612,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 console.log('');
             }
         }
-        console.log(`updating conf/${tools.appName}.json`);
+        console.log(`updating conf/${tools.appName.toLowerCase()}.json`);
         fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(newConfig, null, 2));
         return EXIT_CODES.NO_ERROR;
     }
@@ -1140,7 +1140,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
             } else {
                 config = fs.readJsonSync(path.join(CONTROLLER_DIR, 'conf', `${tools.appName.toLowerCase()}-dist.json`));
             }
-            console.log(`creating conf/${tools.appName}.json`);
+            console.log(`creating conf/${tools.appName.toLowerCase()}.json`);
             config.objects.host = this.params.objects || '127.0.0.1';
             config.states.host = this.params.states || '127.0.0.1';
             if (useRedis) {
@@ -1167,7 +1167,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
             try {
                 // Create
                 if (
-                    __dirname.toLowerCase().replace(/\\/g, '/').includes(`node_modules/${tools.appName}.js-controller`)
+                    __dirname.toLowerCase().replace(/\\/g, '/').includes(`node_modules/${tools.appName.toLowerCase()}.js-controller`)
                 ) {
                     const parts = config.dataDir.split('/');
                     // Remove appName-data/

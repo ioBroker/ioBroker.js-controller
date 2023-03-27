@@ -86,15 +86,15 @@ export class VisDebug {
         // correct appName.json
         // correct config.js
         const controllerDir = tools.getControllerDir();
-        let visDir = `${controllerDir}/node_modules/${tools.appName}.vis`;
+        let visDir = `${controllerDir}/node_modules/${tools.appName.toLowerCase()}.vis`;
         if (!fs.existsSync(visDir)) {
             visDir = `${controllerDir}/node_modules/${tools.appName.toLowerCase()}.vis`;
             if (!fs.existsSync(visDir)) {
-                visDir = `${controllerDir}/../${tools.appName}.vis`;
+                visDir = `${controllerDir}/../${tools.appName.toLowerCase()}.vis`;
                 if (!fs.existsSync(visDir)) {
                     visDir = `${controllerDir}/../${tools.appName.toLowerCase()}.vis`;
                     if (!fs.existsSync(visDir)) {
-                        console.error(`Cannot find ${tools.appName}.vis`);
+                        console.error(`Cannot find ${tools.appName.toLowerCase()}.vis`);
                         return void this.processExit(EXIT_CODES.MISSING_ADAPTER_FILES);
                     }
                 }

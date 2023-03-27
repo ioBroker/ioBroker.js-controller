@@ -206,7 +206,7 @@ export class Install {
             if (
                 url &&
                 packetName === 'js-controller' &&
-                fs.pathExistsSync(`${tools.getControllerDir()}/../../node_modules/${tools.appName}.js-controller`)
+                fs.pathExistsSync(`${tools.getControllerDir()}/../../node_modules/${tools.appName.toLowerCase()}.js-controller`)
             ) {
                 url = null;
             }
@@ -249,7 +249,7 @@ export class Install {
             } else if (!url) {
                 // Adapter
                 console.warn(
-                    `host.${hostname} Adapter "${packetName}" can be updated only together with ${tools.appName}.js-controller`
+                    `host.${hostname} Adapter "${packetName}" can be updated only together with ${tools.appName.toLowerCase()}.js-controller`
                 );
                 return { packetName, stoppedList };
             }
@@ -1433,7 +1433,7 @@ export class Install {
         const _uninstallNpm = async (): Promise<void> => {
             try {
                 // find the adapter's io-package.json
-                const adapterNpm = `${tools.appName}.${adapter}`;
+                const adapterNpm = `${tools.appName.toLowerCase()}.${adapter}`;
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
                 const ioPack = require(`${adapterNpm}/io-package.json`); // yep, it's that easy
 
