@@ -2429,11 +2429,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     )}`
                 );
             } else {
-                const cmd = msg.message.data.split(' ');
-                for (let i = 0; i < cmd.length; i++) {
-                    args.push(cmd[i]);
-                }
-                logger.info(`${hostLogPrefix} ${tools.appName.toLowerCase()} ${args.slice(1).join(' ')}`);
+                const extraArgs = msg.message.data.split(' ');
+                args.push(...extraArgs);
+                logger.info(`${hostLogPrefix} ${tools.appName.toLowerCase()} ${extraArgs.join(' ')}`);
 
                 try {
                     const child = spawn('node', args, { windowsHide: true });
