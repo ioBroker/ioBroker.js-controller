@@ -49,7 +49,7 @@ async function createServerAsync(app, settings, certificates, leSettings, log, a
     if (leSettings.path && (leSettings.path[0] === '/' || leSettings.path.match(/^[A-Za-z]:/))) {
         leDir = leSettings.path;
     } else {
-        leDir = configPath + '/' + (leSettings.path || 'letsencrypt');
+        leDir = `${configPath}/${leSettings.path || 'letsencrypt'}`;
     }
 
     try {
@@ -76,16 +76,16 @@ async function createServerAsync(app, settings, certificates, leSettings, log, a
         notify: (ev, params) => {
             switch (ev) {
                 case 'warning':
-                    log.warn('[LE] ' + (typeof params === 'string' ? params : JSON.stringify(params)));
+                    log.warn(`[LE] ${typeof params === 'string' ? params : JSON.stringify(params)}`);
                     break;
 
                 case 'error':
-                    log.error('[LE] ' + (typeof params === 'string' ? params : JSON.stringify(params)));
+                    log.error(`[LE] ${typeof params === 'string' ? params : JSON.stringify(params)}`);
                     break;
 
                 default:
                     // For all other event types, always debug
-                    log.debug(`[LE] ${ev}: ` + (typeof params === 'string' ? params : JSON.stringify(params)));
+                    log.debug(`[LE] ${ev}: ${typeof params === 'string' ? params : JSON.stringify(params)}`);
 
                     // Special cases for certificate issue/renewal notices
                     // TODO: possibly check for ev === 'cert_renewal' / 'cert_issue'
@@ -221,7 +221,7 @@ function createServer(app, settings, certificates, leSettings, log) {
         try {
             server = require('https').createServer(certificates, app);
         } catch (err) {
-            log.error('HTTPS server could not be started: ' + err.message);
+            log.error(`HTTPS server could not be started: ${err.message}`);
         }
     } else {
         server = require('http').createServer(app);
