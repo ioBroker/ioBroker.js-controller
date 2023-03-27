@@ -2579,7 +2579,7 @@ async function processCommand(
                         if (repoUrlOrCommand === 'add' || repoUrlOrCommand === 'addset') {
                             if (!repoUrl) {
                                 console.warn(
-                                    `Please define repository URL or path: ${tools.appName} add <repoName> <repoUrlOrPath>`
+                                    `Please define repository URL or path: ${tools.appName.toLowerCase()} add <repoName> <repoUrlOrPath>`
                                 );
                                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                             } else {
