@@ -206,7 +206,9 @@ export class Install {
             if (
                 url &&
                 packetName === 'js-controller' &&
-                fs.pathExistsSync(`${tools.getControllerDir()}/../../node_modules/${tools.appName.toLowerCase()}.js-controller`)
+                fs.pathExistsSync(
+                    `${tools.getControllerDir()}/../../node_modules/${tools.appName.toLowerCase()}.js-controller`
+                )
             ) {
                 url = null;
             }

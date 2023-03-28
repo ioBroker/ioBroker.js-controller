@@ -916,10 +916,12 @@ function createObjects(onConnect: () => void): void {
                 } else if (obj && obj.common) {
                     const _ipArr = tools.findIPs();
                     // new adapter
+                    if (!checkAndAddInstance(obj as ioBroker.InstanceObject, _ipArr)) {
+                        return;
+                    }
 
                     const proc = procs[id];
                     if (
-                        checkAndAddInstance(obj as ioBroker.InstanceObject, _ipArr) &&
                         proc.config.common.enabled &&
                         (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance)
                     ) {
@@ -2411,7 +2413,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 });
             } else {
                 logger.warn(
-                    `${hostLogPrefix} ${tools.appName} cannot execute shell command "${msg.message}" because not enabled in ${tools.appName.toLowerCase()}.json file`
+                    `${hostLogPrefix} ${tools.appName} cannot execute shell command "${
+                        msg.message
+                    }" because not enabled in ${tools.appName.toLowerCase()}.json file`
                 );
             }
 
@@ -5599,8 +5603,7 @@ function init(compactGroupId?: number): void {
         const isInNodeModules = controllerDir
             .toLowerCase()
             .includes(`${path.sep}node_modules${path.sep}${title.toLowerCase()}`);
-        const isDevServer = require.main?.path.includes(`${path.sep}.dev-server${path.sep}`);
-        if (isInNodeModules && !isDevServer) {
+        if (isInNodeModules && !tools.isDevServerInstallation()) {
             try {
                 if (!fs.existsSync(`${controllerDir}/../../package.json`)) {
                     fs.writeFileSync(

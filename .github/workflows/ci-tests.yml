@@ -104,6 +104,25 @@ jobs:
           cd packages/controller/test/redis-sentinel
           ./test-sentinel.sh
 
+  auto-merge:
+    if: |
+      always() &&
+      github.event_name == 'pull_request'
+    needs: [ ci ]
+    runs-on: ubuntu-latest
+    steps:
+      - id: automerge
+        name: automerge
+        uses: "pascalgn/automerge-action@v0.15.6"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_LABELS: "automated pr"
+          MERGE_FILTER_AUTHOR: "foxriver76"
+          MERGE_FORKS: "false"
+          MERGE_DELETE_BRANCH: "true"
+          UPDATE_LABELS: "automated pr"
+          MERGE_METHOD: "squash"
+
   # Deploys the final package to NPM when a versioned tag was pushed
   deploy:
     needs: [ci]
