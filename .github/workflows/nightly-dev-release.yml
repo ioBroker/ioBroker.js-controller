@@ -132,9 +132,9 @@ jobs:
       id: cpr
       uses: peter-evans/create-pull-request@v4
       with:
-        token: ${{ secrets.GITHUB_TOKEN }}
+        token: ${{ secrets.PR_TOKEN }}
         commit-message: "[NIGHTLY DEV RELEASE] ${{ steps.version.outputs.result }}"
-        committer: GitHub <noreply@github.com>
+        committer: foxriver76 <moritz.heusinger@gmail.com>
         author: foxriver76 <moritz.heusinger@gmail.com>
         signoff: false
         branch: nightly-release
