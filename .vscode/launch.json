@@ -9,6 +9,8 @@
 			],
 			"type": "node",
 			"sourceMaps": true,
+			"enableTurboSourcemaps": true,
+			"autoAttachChildProcesses": true,
 			"resolveSourceMapLocations": [
 				"${workspaceFolder}/packages/**",
 				// We need to look for source maps in .dev-server
