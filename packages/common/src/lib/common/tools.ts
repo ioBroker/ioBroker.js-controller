@@ -1450,7 +1450,9 @@ export function getAdapterDir(adapter: string): string | null {
             adapterPath = `${__dirname}/../../${possibility}`;
         } else {
             try {
-                adapterPath = require.resolve(possibility);
+                adapterPath = require.resolve(possibility, {
+                    paths: getDefaultRequireResolvePaths(module)
+                });
             } catch {
                 // not found
             }
@@ -1571,7 +1573,7 @@ async function detectPackageManagerWithFallback(cwd?: string): Promise<PackageMa
                   { cwd }
                 : // Otherwise try to find the ioBroker root dir
                   {
-                      cwd: __dirname,
+                      cwd: (isDevServerInstallation() && require.main?.path) || __dirname,
                       setCwdToPackageRoot: true
                   }
         );
@@ -2094,11 +2096,25 @@ export function getControllerDir(): string {
     throw new Error('Could not determine controller directory');
 }
 
+/** Returns whether the current process is executed via dev-server */
+export function isDevServerInstallation(): boolean {
+    return !!require.main?.path.includes(`${path.sep}.dev-server${path.sep}`);
+}
+
 /**
  * All paths are returned always relative to /node_modules/' + appName + '.js-controller
  * the result has always "/" as last symbol
  */
 export function getDefaultDataDir(): string {
+    // Allow overriding the data directory with an environment variable
+    let envDataDir = process.env[`${appName.toUpperCase()}_DATA_DIR`];
+    if (envDataDir) {
+        if (path.isAbsolute(envDataDir)) {
+            envDataDir = path.relative(getControllerDir(), envDataDir);
+        }
+        return envDataDir;
+    }
+
     if (_isDevInstallation()) {
         // dev install
         return './data/';
@@ -2120,6 +2136,16 @@ export function getDefaultDataDir(): string {
  */
 export function getConfigFileName(): string {
     const _appName = appName.toLowerCase();
+
+    // Allow overriding the config file location with an environment variable
+    let envDataDir = process.env[`${appName.toUpperCase()}_DATA_DIR`];
+    if (envDataDir) {
+        if (!path.isAbsolute(envDataDir)) {
+            envDataDir = path.join(getControllerDir(), envDataDir);
+        }
+        return path.join(envDataDir, `${_appName}.json`);
+    }
+
     let devConfigDir;
 
     if (_isDevInstallation()) {
@@ -3144,6 +3170,22 @@ export function getDefaultNodeArgs(mainFile: string): string[] {
     // If JS-controller was started with --preserve-symlinks, do the same for adapters
     if (process.execArgv.includes('--preserve-symlinks')) {
         ret.push('--preserve-symlinks-main', '--preserve-symlinks');
+    }
+    return ret;
+}
+
+/**
+ * Returns the default paths used to resolve modules using `require.resolve()`
+ * @param callerModule The module that wants to resolve another module
+ */
+export function getDefaultRequireResolvePaths(callerModule: NodeModule): string[] {
+    const ret: string[] = [
+        // This is the default for require.resolve
+        ...callerModule.paths
+    ];
+    // If JS-controller was started with --preserve-symlinks, start looking where the process entry point was
+    if (process.execArgv.includes('--preserve-symlinks') && require.main) {
+        ret.unshift(...require.main.paths);
     }
     return ret;
 }

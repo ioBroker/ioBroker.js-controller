@@ -627,7 +627,9 @@ async function processCommand(
                             // And try to install each of them
                             for (const instance of initialInstances) {
                                 try {
-                                    const adapterInstalled = !!require.resolve(`${tools.appName}.${instance}`);
+                                    const adapterInstalled = !!require.resolve(`${tools.appName}.${instance}`, {
+                                        paths: tools.getDefaultRequireResolvePaths(module)
+                                    });
 
                                     if (adapterInstalled) {
                                         let otherInstanceExists = false;

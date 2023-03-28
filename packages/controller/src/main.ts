@@ -5595,8 +5595,7 @@ function init(compactGroupId?: number): void {
         const isInNodeModules = controllerDir
             .toLowerCase()
             .includes(`${path.sep}node_modules${path.sep}${title.toLowerCase()}`);
-        const isDevServer = require.main?.path.includes(`${path.sep}.dev-server${path.sep}`);
-        if (isInNodeModules && !isDevServer) {
+        if (isInNodeModules && !tools.isDevServerInstallation()) {
             try {
                 if (!fs.existsSync(`${controllerDir}/../../package.json`)) {
                     fs.writeFileSync(
