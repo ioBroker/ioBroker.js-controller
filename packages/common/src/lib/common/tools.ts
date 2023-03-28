@@ -1432,12 +1432,12 @@ export async function sendDiagInfo(obj: Record<string, any>): Promise<void> {
  */
 export function getAdapterDir(adapter: string): string | null {
     // snip off 'iobroker.'
-    if (adapter.startsWith(appName + '.')) {
+    if (adapter.toLowerCase().startsWith(appName.toLowerCase() + '.')) {
         adapter = adapter.substring(appName.length + 1);
     }
     // snip off instance id
     if (/\.\d+$/.test(adapter)) {
-        adapter = adapter.substr(0, adapter.lastIndexOf('.'));
+        adapter = adapter.slice(0, adapter.lastIndexOf('.'));
     }
 
     const possibilities = [`${appName.toLowerCase()}.${adapter}/package.json`, `${appName}.${adapter}/package.json`];
@@ -2058,7 +2058,9 @@ export function getControllerDir(): string {
         try {
             // package.json is guaranteed to be in the module root folder
             // so once that is resolved, take the dirname and we're done
-            const possiblePath = require.resolve(`${pkg}/package.json`);
+            const possiblePath = require.resolve(`${pkg}/package.json`, {
+                paths: getDefaultRequireResolvePaths(module)
+            });
             if (fs.existsSync(possiblePath)) {
                 return path.dirname(possiblePath);
             }

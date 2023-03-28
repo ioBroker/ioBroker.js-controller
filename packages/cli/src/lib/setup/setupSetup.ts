@@ -686,7 +686,9 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
         let getDefaultObjectsPort;
         try {
-            const path = require.resolve(`@iobroker/db-objects-${otype}`);
+            const path = require.resolve(`@iobroker/db-objects-${otype}`, {
+                paths: tools.getDefaultRequireResolvePaths(module)
+            });
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             getDefaultObjectsPort = require(path).getDefaultPort;
         } catch {
@@ -779,7 +781,9 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
         let defaultStatesType = currentStatesType;
         try {
-            require.resolve(`@iobroker/db-states-${otype}`);
+            require.resolve(`@iobroker/db-states-${otype}`, {
+                paths: tools.getDefaultRequireResolvePaths(module)
+            });
             defaultStatesType = otype; // if states db is also available with same type we use as default
         } catch {
             // ignore, unchanged
@@ -803,7 +807,9 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
         let getDefaultStatesPort;
         try {
-            const path = require.resolve(`@iobroker/db-states-${stype}`);
+            const path = require.resolve(`@iobroker/db-states-${stype}`, {
+                paths: tools.getDefaultRequireResolvePaths(module)
+            });
             // eslint-disable-next-line @typescript-eslint/no-var-requires
             getDefaultStatesPort = require(path).getDefaultPort;
         } catch {
