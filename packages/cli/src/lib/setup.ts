@@ -627,9 +627,12 @@ async function processCommand(
                             // And try to install each of them
                             for (const instance of initialInstances) {
                                 try {
-                                    const adapterInstalled = !!require.resolve(`${tools.appName}.${instance}`, {
-                                        paths: tools.getDefaultRequireResolvePaths(module)
-                                    });
+                                    const adapterInstalled = !!require.resolve(
+                                        `${tools.appName.toLowerCase()}.${instance}`,
+                                        {
+                                            paths: tools.getDefaultRequireResolvePaths(module)
+                                        }
+                                    );
 
                                     if (adapterInstalled) {
                                         let otherInstanceExists = false;
@@ -2124,8 +2127,8 @@ async function processCommand(
                 dependencies: {} as Record<string, string>,
                 author: 'bluefox <dogafox@gmail.com>'
             };
-            json.dependencies[`${tools.appName}.js-controller`] = '*';
-            json.dependencies[`${tools.appName}.admin`] = '*';
+            json.dependencies[`${tools.appName.toLowerCase()}.js-controller`] = '*';
+            json.dependencies[`${tools.appName.toLowerCase()}.admin`] = '*';
 
             // @ts-expect-error todo fix it
             tools.getRepositoryFile(null, null, (_err, sources, _sourcesHash) => {
@@ -2488,7 +2491,7 @@ async function processCommand(
             let pckg;
             if (adapter) {
                 try {
-                    pckg = require(`${tools.appName}.${adapter}/package.json`);
+                    pckg = require(`${tools.appName.toLowerCase()}.${adapter}/package.json`);
                 } catch {
                     pckg = { version: `"${adapter}" not found` };
                 }
@@ -2581,7 +2584,7 @@ async function processCommand(
                         if (repoUrlOrCommand === 'add' || repoUrlOrCommand === 'addset') {
                             if (!repoUrl) {
                                 console.warn(
-                                    `Please define repository URL or path: ${tools.appName} add <repoName> <repoUrlOrPath>`
+                                    `Please define repository URL or path: ${tools.appName.toLowerCase()} add <repoName> <repoUrlOrPath>`
                                 );
                                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                             } else {
@@ -2808,7 +2811,7 @@ async function processCommand(
                 let pckg;
                 if (command) {
                     try {
-                        pckg = require(`${tools.appName}.${command}/package.json`);
+                        pckg = require(`${tools.appName.toLowerCase()}.${command}/package.json`);
                     } catch {
                         pckg = { version: `"${command}" not found` };
                     }

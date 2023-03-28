@@ -556,7 +556,11 @@ export class BackupRestore {
         }
 
         // if installed as npm
-        if (fs.existsSync(path.join(controllerDir, '..', '..', 'node_modules', `${tools.appName}.js-controller`))) {
+        if (
+            fs.existsSync(
+                path.join(controllerDir, '..', '..', 'node_modules', `${tools.appName.toLowerCase()}.js-controller`)
+            )
+        ) {
             const p = path.join(controllerDir, '..');
             _modules = fs.readdirSync(p).filter(dir => fs.existsSync(`${p}/${dir}/io-package.json`));
             const regEx_ = new RegExp(`^${tools.appName}\\.`, 'i');

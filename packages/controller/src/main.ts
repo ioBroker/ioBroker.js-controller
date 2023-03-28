@@ -29,6 +29,7 @@ import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { Upload } from '@iobroker/js-controller-cli';
 import decache from 'decache';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
+import { getDefaultNodeArgs } from './lib/tools';
 
 type TaskObject = ioBroker.SettableObject & { state?: ioBroker.SettableState };
 type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
@@ -204,7 +205,9 @@ function getConfig(): Record<string, any> | never {
         } else {
             logger = toolsLogger('info', [tools.appName]);
         }
-        logger.error(`${hostLogPrefix} conf/${tools.appName}.json missing - call node ${tools.appName}.js setup`);
+        logger.error(
+            `${hostLogPrefix} conf/${tools.appName.toLowerCase()}.json missing - call node ${tools.appName.toLowerCase()}.js setup`
+        );
         process.exit(EXIT_CODES.MISSING_CONFIG_JSON);
     } else {
         // TODO: adjust return type as soon as #2120 merged and we have the type
@@ -2410,14 +2413,17 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 });
             } else {
                 logger.warn(
-                    `${hostLogPrefix} ${tools.appName} cannot execute shell command "${msg.message}" because not enabled in ${tools.appName}.json file`
+                    `${hostLogPrefix} ${tools.appName} cannot execute shell command "${
+                        msg.message
+                    }" because not enabled in ${tools.appName.toLowerCase()}.json file`
                 );
             }
 
             break;
 
         case 'cmdExec': {
-            const args = [`${__dirname}/${tools.appName}.js`];
+            const mainFile = path.join(__dirname, '..', `${tools.appName.toLowerCase()}.js`);
+            const args = [...getDefaultNodeArgs(mainFile), mainFile];
             if (!msg.message.data || typeof msg.message.data !== 'string') {
                 logger.warn(
                     `${hostLogPrefix} ${
@@ -2427,11 +2433,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     )}`
                 );
             } else {
-                const cmd = msg.message.data.split(' ');
-                for (let i = 0; i < cmd.length; i++) {
-                    args.push(cmd[i]);
-                }
-                logger.info(`${hostLogPrefix} ${tools.appName} ${args.slice(1).join(' ')}`);
+                const extraArgs = msg.message.data.split(' ');
+                args.push(...extraArgs);
+                logger.info(`${hostLogPrefix} ${tools.appName.toLowerCase()} ${extraArgs.join(' ')}`);
 
                 try {
                     const child = spawn('node', args, { windowsHide: true });
@@ -3759,6 +3763,7 @@ function installAdapters(): void {
             );
         }
 
+        const mainFile = path.join(__dirname, '..', `${tools.appName.toLowerCase()}.js`);
         const installArgs = [];
         const installOptions = { windowsHide: true };
         if (!task.rebuild && task.installedFrom && proc.downloadRetry < 3) {
@@ -3789,13 +3794,14 @@ function installAdapters(): void {
             }
         }
         logger.info(
-            `${hostLogPrefix} ${tools.appName} ${installArgs.join(' ')}${
+            `${hostLogPrefix} ${tools.appName.toLowerCase()} ${installArgs.join(' ')}${
                 task.rebuild
                     ? ''
                     : ` using ${proc.downloadRetry < 3 && task.installedFrom ? 'installedFrom' : 'installedVersion'}`
             }`
         );
-        installArgs.unshift(`${__dirname}/${tools.appName}.js`);
+
+        installArgs.unshift(...getDefaultNodeArgs(mainFile), mainFile);
 
         try {
             task.inProgress = true;
@@ -3864,7 +3870,9 @@ function installAdapters(): void {
             });
             child.on('error', err => {
                 logger.error(
-                    `${hostLogPrefix} Cannot execute "${__dirname}/${tools.appName}.js ${commandScope} ${name}: ${err.message}`
+                    `${hostLogPrefix} Cannot execute "${__dirname}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${
+                        err.message
+                    }`
                 );
                 setTimeout(() => {
                     installQueue.shift();
@@ -3873,7 +3881,7 @@ function installAdapters(): void {
             });
         } catch (err) {
             logger.error(
-                `${hostLogPrefix} Cannot execute "${__dirname}/${tools.appName}.js ${commandScope} ${name}: ${err}`
+                `${hostLogPrefix} Cannot execute "${__dirname}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${err}`
             );
             setTimeout(() => {
                 installQueue.shift();

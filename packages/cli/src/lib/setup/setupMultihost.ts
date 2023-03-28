@@ -39,10 +39,14 @@ export class Multihost {
             if (fs.existsSync(this.configName)) {
                 config = fs.readJsonSync(this.configName);
             } else {
-                config = fs.readJsonSync(path.join(tools.getControllerDir(), 'conf', `${tools.appName}-dist.json`));
+                config = fs.readJsonSync(
+                    path.join(tools.getControllerDir(), 'conf', `${tools.appName.toLowerCase()}-dist.json`)
+                );
             }
         } catch {
-            config = fs.readJsonSync(path.join(tools.getControllerDir(), 'conf', `${tools.appName}-dist.json`));
+            config = fs.readJsonSync(
+                path.join(tools.getControllerDir(), 'conf', `${tools.appName.toLowerCase()}-dist.json`)
+            );
         }
         return config;
     }

@@ -103,7 +103,7 @@ export async function readDirAsZip(
 
     // try to load processor of adapter
     try {
-        options.stringify = (await import(`${tools.appName}.${adapter}/lib/convert.js`)).stringify;
+        options.stringify = (await import(`${tools.appName.toLowerCase()}.${adapter}/lib/convert.js`)).stringify;
     } catch {
         // OK
     }
@@ -202,7 +202,7 @@ export async function writeDirAsZip(
 
     // try to load processor of adapter
     try {
-        options.parse = (await import(`${tools.appName}.${adapter}/lib/convert.js`)).parse;
+        options.parse = (await import(`${tools.appName.toLowerCase()}.${adapter}/lib/convert.js`)).parse;
     } catch {
         // OK
     }
@@ -244,7 +244,7 @@ export async function readObjectsAsZip(
     if (adapter) {
         // try to load processor of adapter
         try {
-            options.stringify = (await import(`${tools.appName}.${adapter}/lib/convert.js`)).stringify;
+            options.stringify = (await import(`${tools.appName.toLowerCase()}.${adapter}/lib/convert.js`)).stringify;
         } catch {
             // OK
         }
@@ -351,7 +351,7 @@ export async function writeObjectsAsZip(
     if (adapter) {
         // try to load processor of adapter
         try {
-            options.parse = (await import(`${tools.appName}.${adapter}/lib/convert.js`)).parse;
+            options.parse = (await import(`${tools.appName.toLowerCase()}.${adapter}/lib/convert.js`)).parse;
         } catch {
             // OK
         }
