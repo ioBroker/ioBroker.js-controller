@@ -626,10 +626,10 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 config = fs.readJsonSync(tools.getConfigFileName());
                 originalConfig = deepClone(config);
             } else {
-                config = fs.readJsonSync(path.join(CONTROLLER_DIR, 'conf', `${tools.appName}-dist.json`));
+                config = fs.readJsonSync(path.join(CONTROLLER_DIR, 'conf', `${tools.appName.toLowerCase()}-dist.json`));
             }
         } catch {
-            config = fs.readJsonSync(path.join(CONTROLLER_DIR, 'conf', `${tools.appName}-dist.json`));
+            config = fs.readJsonSync(path.join(CONTROLLER_DIR, 'conf', `${tools.appName.toLowerCase()}-dist.json`));
         }
 
         const currentObjectsType = originalConfig.objects.type || 'jsonl';
@@ -1135,11 +1135,8 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
         // only change config if non existing - else setup custom has to be used
         if (!fs.existsSync(configFileName)) {
             isCreated = true;
-            if (fs.existsSync(path.join(CONTROLLER_DIR, 'conf', `${tools.appName}-dist.json`))) {
-                config = fs.readJsonSync(path.join(CONTROLLER_DIR, 'conf', `${tools.appName}-dist.json`));
-            } else {
-                config = fs.readJsonSync(path.join(CONTROLLER_DIR, 'conf', `${tools.appName.toLowerCase()}-dist.json`));
-            }
+            config = fs.readJsonSync(path.join(CONTROLLER_DIR, 'conf', `${tools.appName.toLowerCase()}-dist.json`));
+
             console.log(`creating conf/${tools.appName.toLowerCase()}.json`);
             config.objects.host = this.params.objects || '127.0.0.1';
             config.states.host = this.params.states || '127.0.0.1';
