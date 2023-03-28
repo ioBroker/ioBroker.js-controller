@@ -44,7 +44,31 @@ When creating a PR, the tests will automatically run on the CI server on all cur
 We have migrated most of the codebase to TypeScript, thus new files have to be written in TypeScript too.
 Please ensure that your code changes are in line with our style guide via `eslint` (see [Linting](#linting)).
 If you are adding a new feature, or you have fixed a bug which is testable, please make sure to add a new test. Also ensure, that all existing tests are passing, before proposing a code change (see [Testing](#testing)).
-Testing your code change in a running environment is currently a bit tricky. Ensure you have installed the latest nightly release of the js-controller by executing
+
+#### Testing in development
+To test code changes, using [`dev-server`](https://github.com/ioBroker/dev-server/) is highly recommended:
+1. Install or update `dev-server` to the latest version via `npm i -g @iobroker/dev-server@latest` (if not done already)
+2. Setup `dev-server` in the `js-controller` repository using:
+   ```bash
+   dev-server setup --entrypoint packages/controller --symlinks
+   ```
+3. Open a separate terminal where you rebuild JS-Controller on code changes:
+   ```bash
+   npm run watch:ts
+   ```
+4. Start JS-Controller using the dev-server by executing the following in the first terminal:
+   ```bash
+   dev-server debug -x
+   ```
+5. Attach your debugger:
+	- If using VSCode:
+		1. Make sure that auto-attaching is disabled (<kbd>F1</kbd>, enter "toggle auto attach", select "disabled").
+		2. Go to the "debug" tab and make sure "Debug with dev-server" is selected.
+		3. Start a new debug session using <kbd>F5</kbd>. You should be able to set breakpoints in the `.ts` files and step through them.
+	- If using WebStorm, figure out how to translate the launch config in `.vscode/launch.json` to WebStorm (TODO!).
+
+#### Testing in production
+Testing your code change in a productive environment is currently a bit tricky. Ensure you have installed the latest nightly release of the js-controller by executing
 
 ```bash
 npm i iobroker.js-controller@dev
