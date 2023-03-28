@@ -1,7 +1,7 @@
 {
     "name": "@iobroker/types-dev",
     "private": true,
-    "version": "5.0.1-alpha.0-20230328-08bb2650",
+    "version": "5.0.1-alpha.0-20230328-d56f8d83",
     "engines": {
         "node": ">=12.0.0"
     },
