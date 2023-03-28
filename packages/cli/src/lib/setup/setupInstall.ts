@@ -1439,8 +1439,7 @@ export class Install {
                 const ioPackPath = require.resolve(`${adapterNpm}/io-package.json`, {
                     paths: tools.getDefaultRequireResolvePaths(module)
                 });
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                const ioPack = require(ioPackPath);
+                const ioPack = await fs.readJSON(ioPackPath);
 
                 if (!ioPack.common || !ioPack.common.nondeletable) {
                     await this._npmUninstall(adapterNpm, false);
