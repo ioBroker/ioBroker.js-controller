@@ -105,7 +105,9 @@ jobs:
           ./test-sentinel.sh
 
   auto-merge:
-    if: github.event_name == 'pull_request' && ${{ always() }}
+    if: |
+      always() &&
+      github.event_name == 'pull_request'
     needs: [ ci ]
     runs-on: ubuntu-latest
     steps:
