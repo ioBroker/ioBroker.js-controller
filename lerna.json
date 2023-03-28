@@ -1,6 +1,6 @@
 {
     "useWorkspaces": true,
-    "version": "5.0.0",
+    "version": "5.0.1-alpha.0-20230328-08bb2650",
     "//": "Set up some command options",
     "command": {
         "//": "Running a script should show the output while it is generated",
@@ -9,13 +9,8 @@
         },
         "version": {
             "//": "This is required for the release-script",
-            "allowBranch": [
-                "master",
-                "*.x"
-            ],
-            "ignoreChanges": [
-                "*.md"
-            ],
+            "allowBranch": ["master", "*.x"],
+            "ignoreChanges": ["*.md"],
             "exact": true
         }
     }
