@@ -301,7 +301,7 @@ export class Upgrade {
      * Try to async upgrade adapter from given source with some checks
      *
      * @param repoUrlOrObject url of the selected repository or parsed repo
-     * @param adapter name of the adapter
+     * @param adapter name of the adapter (can also include version like web@3.0.0)
      * @param forceDowngrade flag to force downgrade
      * @param autoConfirm automatically confirm the tty questions (bypass)
      * @param upgradeAll if true, this is an upgrade all call, we don't do major upgrades if no tty
@@ -322,6 +322,18 @@ export class Upgrade {
             }
         } else {
             sources = repoUrlOrObject;
+        }
+
+        let version: string;
+        if (adapter.includes('@')) {
+            const parts = adapter.split('@');
+            adapter = parts[0];
+            version = parts[1];
+        } else {
+            version = '';
+        }
+        if (version) {
+            forceDowngrade = true;
         }
 
         /** Repository entry of this adapter */
@@ -359,18 +371,6 @@ export class Upgrade {
             await this.upload.uploadAdapter(name, true, true);
         };
 
-        let version: string;
-        if (adapter.includes('@')) {
-            const parts = adapter.split('@');
-            adapter = parts[0];
-            version = parts[1];
-        } else {
-            version = '';
-        }
-        if (version) {
-            forceDowngrade = true;
-        }
-
         const adapterDir = tools.getAdapterDir(adapter);
 
         // Read actual description of installed adapter with version
@@ -384,6 +384,7 @@ export class Upgrade {
         // Get the url of io-package.json or direct the version
         if (!repoAdapter) {
             console.log(`Adapter "${adapter}" is not in the repository and cannot be updated.`);
+            return this.processExit(EXIT_CODES.ADAPTER_NOT_FOUND);
         }
         if (repoAdapter.controller) {
             return console.log(
