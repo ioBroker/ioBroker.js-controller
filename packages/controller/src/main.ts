@@ -913,10 +913,12 @@ function createObjects(onConnect: () => void): void {
                 } else if (obj && obj.common) {
                     const _ipArr = tools.findIPs();
                     // new adapter
+                    if (!checkAndAddInstance(obj as ioBroker.InstanceObject, _ipArr)) {
+                        return;
+                    }
 
                     const proc = procs[id];
                     if (
-                        checkAndAddInstance(obj as ioBroker.InstanceObject, _ipArr) &&
                         proc.config.common.enabled &&
                         (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance)
                     ) {
