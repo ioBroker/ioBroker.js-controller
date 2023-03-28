@@ -67,10 +67,6 @@ jobs:
       if: steps.changes.outputs.result == 'ok'
       run: npm run preinstall && npm run install
 
-    - name: Test
-      if: steps.changes.outputs.result == 'ok'
-      run: npm test
-
     - name: Determine the version bump
       if: steps.changes.outputs.result == 'ok'
       id: version
@@ -112,7 +108,7 @@ jobs:
 
           return nightlyVersion;
 
-    - name: Bump version and publish
+    - name: Bump version
       if: steps.changes.outputs.result == 'ok'
       env:
         VERSION: ${{ steps.version.outputs.result }}
@@ -126,31 +122,24 @@ jobs:
         git add .
         git commit -m "v${VERSION}" && npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --amend --force-publish || npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --force-publish
         npx lerna publish from-package --yes --dist-tag dev
-        git push
 
-    - name: Create Github Release
+    - name: Create Pull Request
       if: steps.changes.outputs.result == 'ok'
-      uses: ncipollo/release-action@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      id: cpr
+      uses: peter-evans/create-pull-request@v4
       with:
-        tag: v${{ steps.version.outputs.result }}
-        name: Release v${{ steps.version.outputs.result }}
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: ${{ steps.version.outputs.result }}
+        committer: GitHub <noreply@github.com>
+        author: foxriver76 <moritz.heusinger@gmail.com>
+        signoff: false
+        branch: nightly-release
+        delete-branch: true
+        title: ${{ steps.version.outputs.result }}
+        body: |
+          Update version by nightly dev release
+        labels: |
+          automated pr
+        assignees: foxriver76
         draft: false
-        prerelease: true
-        body: 'nightly release'
 
-    - name: Notify Sentry.io about the release
-      if: steps.changes.outputs.result == 'ok'
-      env:
-        VERSION: ${{ steps.version.outputs.result }}
-      run: |
-        npm i -g @sentry/cli
-        export SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
-        export SENTRY_URL=https://sentry.iobroker.net
-        export SENTRY_ORG=iobroker
-        export SENTRY_PROJECT=iobroker-js-controller
-        export SENTRY_VERSION=iobroker.js-controller@${VERSION}
-        sentry-cli releases new $SENTRY_VERSION
-        sentry-cli releases set-commits $SENTRY_VERSION --auto
-        sentry-cli releases finalize $SENTRY_VERSION
