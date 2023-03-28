@@ -112,7 +112,7 @@ jobs:
 
           return nightlyVersion;
 
-    - name: Bump version and publish
+    - name: Bump version
       if: steps.changes.outputs.result == 'ok'
       env:
         VERSION: ${{ steps.version.outputs.result }}
@@ -126,7 +126,26 @@ jobs:
         git add .
         git commit -m "v${VERSION}" && npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --amend --force-publish || npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --force-publish
         npx lerna publish from-package --yes --dist-tag dev
-        git push
+
+    - name: Create Pull Request
+      if: steps.changes.outputs.result == 'ok'
+      id: cpr
+      uses: peter-evans/create-pull-request@v4
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: "[NIGHTLY DEV RELEASE] ${{ steps.version.outputs.result }}"
+        committer: GitHub <noreply@github.com>
+        author: foxriver76 <moritz.heusinger@gmail.com>
+        signoff: false
+        branch: nightly-release
+        delete-branch: true
+        title: ${{ steps.version.outputs.result }}
+        body: |
+          Update version by nightly dev release
+        labels: |
+          automated pr
+        assignees: foxriver76
+        draft: false
 
     - name: Create Github Release
       if: steps.changes.outputs.result == 'ok'
@@ -154,3 +173,5 @@ jobs:
         sentry-cli releases new $SENTRY_VERSION
         sentry-cli releases set-commits $SENTRY_VERSION --auto
         sentry-cli releases finalize $SENTRY_VERSION
+
+
