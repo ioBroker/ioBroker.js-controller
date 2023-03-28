@@ -121,6 +121,7 @@ jobs:
           MERGE_FORKS: "false"
           MERGE_DELETE_BRANCH: "true"
           UPDATE_LABELS: "automated pr"
+          MERGE_METHOD: "squash"
 
   # Deploys the final package to NPM when a versioned tag was pushed
   deploy:
