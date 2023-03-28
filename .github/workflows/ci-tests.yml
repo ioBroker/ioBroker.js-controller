@@ -117,7 +117,7 @@ jobs:
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           MERGE_LABELS: "automated pr"
-          MERGE_FILTER_AUTHOR: "github-actions"
+          MERGE_FILTER_AUTHOR: "foxriver76"
           MERGE_FORKS: "false"
           MERGE_DELETE_BRANCH: "true"
           UPDATE_LABELS: "automated pr"
