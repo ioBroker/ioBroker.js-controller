@@ -47,10 +47,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ matrix.node }}
 
       - name: Prepare installation (Linux)
         if: ${{ matrix.os == 'ubuntu-20.04' }}
@@ -73,6 +73,10 @@ jobs:
         run: |
           choco install redis-64 --version 3.0.503
           powershell "Start-Process redis-server.exe -PassThru"
+
+      - name: Ensure NPM version
+        if: matrix.node == 14
+        run: npm i -g npm@7
 
       - name: NPM version
         run: npm -v
@@ -123,6 +127,48 @@ jobs:
           UPDATE_LABELS: "automated pr"
           MERGE_METHOD: "squash"
 
+      - name: Bump version
+        if: steps.automerge.outputs.mergeResult == 'merged'
+        env:
+          VERSION: ${{ github.event.pull_request.title }}
+        run: |
+          npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
+          npm whoami
+          
+          git config --global user.email "moritz.heusinger@gmail.com"
+          git config --global user.name "Github Action"
+          
+          git add .
+          git commit -m "v${VERSION}" && npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --amend --force-publish || npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --force-publish
+          npx lerna publish from-package --yes --dist-tag dev
+
+      - name: Create Github Release for Nightly
+        uses: ncipollo/release-action@v1
+        if: steps.automerge.outputs.mergeResult == 'merged'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag: v${{ github.event.pull_request.title }}
+          name: Release v${{ github.event.pull_request.title }}
+          draft: false
+          prerelease: true
+          body: 'nightly release'
+
+      - name: Notify Sentry.io about the Nightly release#
+        if: steps.automerge.outputs.mergeResult == 'merged'
+        env:
+          VERSION: ${{ github.event.pull_request.title }}
+        run: |
+          npm i -g @sentry/cli
+          export SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
+          export SENTRY_URL=https://sentry.iobroker.net
+          export SENTRY_ORG=iobroker
+          export SENTRY_PROJECT=iobroker-js-controller
+          export SENTRY_VERSION=iobroker.js-controller@${VERSION}
+          sentry-cli releases new $SENTRY_VERSION
+          sentry-cli releases set-commits $SENTRY_VERSION --auto
+          sentry-cli releases finalize $SENTRY_VERSION
+
   # Deploys the final package to NPM when a versioned tag was pushed
   deploy:
     needs: [ci]
@@ -142,10 +188,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Use Node.js ${{ matrix.node }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: ${{ matrix.node }}
 
       - name: Extract the version and commit body from the tag
         id: extract_release
