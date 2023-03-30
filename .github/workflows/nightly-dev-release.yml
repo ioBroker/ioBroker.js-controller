@@ -156,7 +156,7 @@ jobs:
         draft: false
         prerelease: true
         body: 'nightly release'
-        with: nightly-release
+        commit: nightly-release
 
     - name: Notify Sentry.io about the release
       if: steps.changes.outputs.result == 'ok'
