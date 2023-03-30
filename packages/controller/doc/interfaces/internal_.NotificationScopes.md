@@ -20,4 +20,4 @@ Predefined notification scopes and their categories
 
 #### Defined in
 
-[types-dev/index.d.ts:289](https://github.com/ioBroker/ioBroker.js-controller/blob/a18b1b33/packages/types-dev/index.d.ts#L289)
+[types-dev/index.d.ts:289](https://github.com/ioBroker/ioBroker.js-controller/blob/e0b409fe/packages/types-dev/index.d.ts#L289)
