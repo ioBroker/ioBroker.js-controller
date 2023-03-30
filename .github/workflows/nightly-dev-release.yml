@@ -127,6 +127,18 @@ jobs:
         git commit -m "v${VERSION}" && npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --amend --force-publish || npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --force-publish
         npx lerna publish from-package --yes --dist-tag dev
 
+    - name: Create Github Release
+      if: steps.changes.outputs.result == 'ok'
+      uses: ncipollo/release-action@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag: v${{ steps.version.outputs.result }}
+        name: Release v${{ steps.version.outputs.result }}
+        draft: false
+        prerelease: true
+        body: 'nightly release'
+
     - name: Create Pull Request
       if: steps.changes.outputs.result == 'ok'
       id: cpr
@@ -146,18 +158,6 @@ jobs:
           automated pr
         assignees: foxriver76
         draft: false
-
-    - name: Create Github Release
-      if: steps.changes.outputs.result == 'ok'
-      uses: ncipollo/release-action@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag: v${{ steps.version.outputs.result }}
-        name: Release v${{ steps.version.outputs.result }}
-        draft: false
-        prerelease: true
-        body: 'nightly release'
 
     - name: Notify Sentry.io about the release
       if: steps.changes.outputs.result == 'ok'
