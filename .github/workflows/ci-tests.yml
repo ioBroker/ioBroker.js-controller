@@ -111,22 +111,12 @@ jobs:
   auto-merge:
     if: |
       always() &&
-      github.event_name == 'pull_request'
+      github.event_name == 'pull_request' &&
+      github.event.sender.login == 'foxriver76' &&
+      contains( github.event.pull_request.labels.*.name, 'automated pr')
     needs: [ ci ]
     runs-on: ubuntu-latest
     steps:
-      - id: automerge
-        name: automerge
-        uses: "pascalgn/automerge-action@v0.15.6"
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          MERGE_LABELS: "automated pr"
-          MERGE_FILTER_AUTHOR: "foxriver76"
-          MERGE_FORKS: "false"
-          MERGE_DELETE_BRANCH: "true"
-          UPDATE_LABELS: "automated pr"
-          MERGE_METHOD: "squash"
-
       - name: Bump version
         if: steps.automerge.outputs.mergeResult == 'merged'
         env:
@@ -134,10 +124,10 @@ jobs:
         run: |
           npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
           npm whoami
-          
+
           git config --global user.email "moritz.heusinger@gmail.com"
           git config --global user.name "Github Action"
-          
+
           git add .
           git commit -m "v${VERSION}" && npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --amend --force-publish || npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --force-publish
           npx lerna publish from-package --yes --dist-tag dev
@@ -153,6 +143,15 @@ jobs:
           draft: false
           prerelease: true
           body: 'nightly release'
+
+      - id: automerge
+        name: automerge
+        uses: "pascalgn/automerge-action@v0.15.6"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_LABELS: "automated pr"
+          MERGE_FORKS: "false"
+          MERGE_METHOD: "squash"
 
       - name: Notify Sentry.io about the Nightly release#
         if: steps.automerge.outputs.mergeResult == 'merged'
