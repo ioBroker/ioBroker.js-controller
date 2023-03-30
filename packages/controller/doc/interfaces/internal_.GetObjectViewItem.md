@@ -33,7 +33,7 @@ The ID of this object
 
 #### Defined in
 
-[types-dev/index.d.ts:459](https://github.com/ioBroker/ioBroker.js-controller/blob/a18b1b33/packages/types-dev/index.d.ts#L459)
+[types-dev/index.d.ts:459](https://github.com/ioBroker/ioBroker.js-controller/blob/e0b409fe/packages/types-dev/index.d.ts#L459)
 
 ___
 
@@ -45,4 +45,4 @@ A copy of the object from the DB
 
 #### Defined in
 
-[types-dev/index.d.ts:461](https://github.com/ioBroker/ioBroker.js-controller/blob/a18b1b33/packages/types-dev/index.d.ts#L461)
+[types-dev/index.d.ts:461](https://github.com/ioBroker/ioBroker.js-controller/blob/e0b409fe/packages/types-dev/index.d.ts#L461)
