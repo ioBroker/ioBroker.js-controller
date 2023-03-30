@@ -74,6 +74,10 @@ jobs:
           choco install redis-64 --version 3.0.503
           powershell "Start-Process redis-server.exe -PassThru"
 
+      - name: Ensure NPM version
+        if: matrix.node == 14
+        run: npm i -g npm@7
+
       - name: NPM version
         run: npm -v
 
@@ -81,7 +85,7 @@ jobs:
         run: npm ci --ignore-scripts # install typescript and @types do not `setup first`
 
       - name: Build TS files
-        run: lerna run build # do not use npm here it will trigger infinity loop with node 14
+        run: npm run build
 
       - name: Run scripts
         run: npm run preinstall && npm run install
