@@ -81,7 +81,7 @@ jobs:
         run: npm ci --ignore-scripts # install typescript and @types do not `setup first`
 
       - name: Build TS files
-        run: npm run build
+        run: lerna run build # do not use npm here it will trigger infinity loop with node 14
 
       - name: Run scripts
         run: npm run preinstall && npm run install
