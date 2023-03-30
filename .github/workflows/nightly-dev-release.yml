@@ -11,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [16.x] # This should be LTS
+        node: [16.x] # This should be LTS
 
     steps:
     - name: Checkout code
@@ -19,10 +19,10 @@ jobs:
       with:
         fetch-depth: 0 # Fetch the history, or this action won't work
 
-    - name: Use Node.js ${{ matrix.node-version }}
+    - name: Use Node.js ${{ matrix.node }}
       uses: actions/setup-node@v3
       with:
-        node-version: ${{ matrix.node-version }}
+        node-version: ${{ matrix.node }}
 
     - name: Detect changes (git)
       id: changes
