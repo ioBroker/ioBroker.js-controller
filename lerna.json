@@ -9,7 +9,7 @@
         },
         "version": {
             "//": "This is required for the release-script",
-            "allowBranch": ["master", "*.x"],
+            "allowBranch": ["master", "*.x", "nightly-release"],
             "ignoreChanges": ["*.md"],
             "exact": true
         }
