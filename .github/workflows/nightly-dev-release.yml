@@ -120,6 +120,7 @@ jobs:
         npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
         npm whoami
         git checkout -b nightly-release
+        git push origin nightly-release
         git config --global user.email "moritz.heusinger@gmail.com"
         git config --global user.name "Github Action"
         git add .
