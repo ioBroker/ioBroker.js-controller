@@ -139,6 +139,7 @@ jobs:
         author: foxriver76 <moritz.heusinger@gmail.com>
         signoff: false
         branch: nightly-release
+        base: master
         delete-branch: true
         title: ${{ steps.version.outputs.result }}
         body: |
