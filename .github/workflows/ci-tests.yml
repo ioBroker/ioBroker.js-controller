@@ -108,18 +108,28 @@ jobs:
           cd packages/controller/test/redis-sentinel
           ./test-sentinel.sh
 
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: debug
+        run: |
+          echo ${{ github.event_name }}
+          echo ${{ github.event.pull_request.user.login }}
+          echo ${{ contains( github.event.pull_request.labels.*.name, 'automated pr') }}
+          echo ${{ github.event.pull_request.base.ref }}
+
   auto-merge:
     if: |
       always() &&
       github.event_name == 'pull_request' &&
       github.event.pull_request.user.login == 'foxriver76' &&
       contains( github.event.pull_request.labels.*.name, 'automated pr') &&
-      github.ref == 'refs/heads/master'
+      github.event.pull_request.base.ref == 'refs/heads/master'
 
     needs: [ ci ]
     runs-on: ubuntu-latest
     steps:
-      - name: Bump version
+      - name: Publish npm
         if: steps.automerge.outputs.mergeResult == 'merged'
         env:
           VERSION: ${{ github.event.pull_request.title }}
@@ -127,11 +137,6 @@ jobs:
           npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
           npm whoami
 
-          git config --global user.email "moritz.heusinger@gmail.com"
-          git config --global user.name "Github Action"
-
-          git add .
-          git commit -m "v${VERSION}" && npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --amend --force-publish || npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --force-publish
           npx lerna publish from-package --yes --dist-tag dev
 
       - name: Create Github Release for Nightly
