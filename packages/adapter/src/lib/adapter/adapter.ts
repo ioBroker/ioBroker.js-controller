@@ -11851,6 +11851,7 @@ export class AdapterClass extends EventEmitter {
                 common: {
                     type: 'boolean',
                     name: 'Logging for instance activated',
+                    role: 'indicator.state',
                     write: false,
                     read: true,
                     def: false

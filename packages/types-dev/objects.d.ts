@@ -331,6 +331,8 @@ declare global {
             installedFrom?: string;
             /** Arguments passed to the adapter process, this disables compact mode */
             nodeProcessParams?: string[];
+            /** If adapter can consume log messages, like admin, javascript or logparser */
+            logTransporter?: boolean;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
