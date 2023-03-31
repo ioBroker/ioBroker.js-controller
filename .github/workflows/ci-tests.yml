@@ -108,13 +108,21 @@ jobs:
           cd packages/controller/test/redis-sentinel
           ./test-sentinel.sh
 
+  debug:
+    runs-on: ubuntu-latest
+    run: |
+      echo ${{ github.event_name }}
+      echo ${{ github.event.pull_request.user.login }}
+      echo ${{ contains( github.event.pull_request.labels.*.name, 'automated pr') }}
+      echo ${{ pull_request.base.ref }}
+
   auto-merge:
     if: |
       always() &&
       github.event_name == 'pull_request' &&
       github.event.pull_request.user.login == 'foxriver76' &&
       contains( github.event.pull_request.labels.*.name, 'automated pr') &&
-      github.ref == 'refs/heads/master'
+      pull_request.base.ref == 'refs/heads/master'
 
     needs: [ ci ]
     runs-on: ubuntu-latest
