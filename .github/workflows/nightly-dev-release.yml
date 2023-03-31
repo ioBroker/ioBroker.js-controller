@@ -135,7 +135,7 @@ jobs:
         signoff: false
         branch: nightly-release
         delete-branch: true
-        title: ${{ steps.version.outputs.result }}
+        title: "[NIGHTLY DEV RELEASE] ${{ steps.version.outputs.result }}"
         body: |
           Update version by nightly dev release
         labels: |
