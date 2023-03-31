@@ -767,8 +767,8 @@ export class AdapterClass extends EventEmitter {
             this._options.compactInstance !== undefined
                 ? this._options.compactInstance
                 : this._options.instance !== undefined
-                    ? this._options.instance
-                    : this._config.instance || 0,
+                ? this._options.instance
+                : this._config.instance || 0,
             10
         );
 
@@ -4442,13 +4442,13 @@ export class AdapterClass extends EventEmitter {
                 // read all underlying states
                 adapterObjects!.getObjectList(selector, options, (err, res) => {
                     res &&
-                    res.rows &&
-                    res.rows.forEach(
-                        (item: ioBroker.GetObjectListItem) =>
-                            !tasks.find(task => task.id === item.id) &&
-                            (!item.value || !item.value.common || !item.value.common.dontDelete) && // exclude objects with dontDelete flag
-                            tasks.push({ id: item.id, state: item.value && item.value.type === 'state' })
-                    );
+                        res.rows &&
+                        res.rows.forEach(
+                            (item: ioBroker.GetObjectListItem) =>
+                                !tasks.find(task => task.id === item.id) &&
+                                (!item.value || !item.value.common || !item.value.common.dontDelete) && // exclude objects with dontDelete flag
+                                tasks.push({ id: item.id, state: item.value && item.value.type === 'state' })
+                        );
                     this._deleteObjects(tasks, options, callback);
                 });
             });
@@ -6749,8 +6749,8 @@ export class AdapterClass extends EventEmitter {
                 ? this.isFloatComma === undefined
                     ? '.,'
                     : this.isFloatComma
-                        ? '.,'
-                        : ',.'
+                    ? '.,'
+                    : ',.'
                 : _format;
 
         if (typeof value !== 'number') {
@@ -6761,12 +6761,12 @@ export class AdapterClass extends EventEmitter {
         return isNaN(value)
             ? ''
             : // @ts-expect-error fix later
-            value
-                .toFixed(decimals)
-                // @ts-expect-error fix later
-                .replace(format[0], format[1])
-                // @ts-expect-error fix later
-                .replace(/\B(?=(\d{3})+(?!\d))/g, format[0]);
+              value
+                  .toFixed(decimals)
+                  // @ts-expect-error fix later
+                  .replace(format[0], format[1])
+                  // @ts-expect-error fix later
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, format[0]);
     }
 
     // external signature
@@ -7444,7 +7444,7 @@ export class AdapterClass extends EventEmitter {
                     // @ts-expect-error fix later on
                     typeof obj.common.alias.id.write === 'string'
                         ? // @ts-expect-error fix later on
-                        obj.common.alias.id.write
+                          obj.common.alias.id.write
                         : obj.common.alias.id;
 
                 // validate here because we use objects/states db directly
@@ -8201,7 +8201,7 @@ export class AdapterClass extends EventEmitter {
                         // @ts-expect-error
                         typeof obj.common.alias.id.write === 'string'
                             ? // @ts-expect-error
-                            obj.common.alias.id.write
+                              obj.common.alias.id.write
                             : obj.common.alias.id;
 
                     // validate here because we use objects/states db directly
@@ -8278,9 +8278,9 @@ export class AdapterClass extends EventEmitter {
                         // @ts-expect-error
                         const aliasId = tools.isObject(obj.common.alias.id)
                             ? // @ts-expect-error
-                            obj.common.alias.id.write
+                              obj.common.alias.id.write
                             : // @ts-expect-error
-                            obj.common.alias.id;
+                              obj.common.alias.id;
 
                         // validate here because we use objects/states db directly
                         try {
@@ -8622,7 +8622,7 @@ export class AdapterClass extends EventEmitter {
                     // @ts-expect-error
                     typeof obj.common.alias.id.read === 'string'
                         ? // @ts-expect-error
-                        obj.common.alias.id.read
+                          obj.common.alias.id.read
                         : obj.common.alias.id;
 
                 // validate here because we use objects/states db directly
@@ -9097,7 +9097,7 @@ export class AdapterClass extends EventEmitter {
                         // @ts-expect-error
                         obj.common.alias.id && typeof obj.common.alias.id.read === 'string'
                             ? // @ts-expect-error
-                            obj.common.alias.id.read
+                              obj.common.alias.id.read
                             : obj.common.alias.id;
 
                     keys[i] = aliasId || null;
@@ -9276,7 +9276,7 @@ export class AdapterClass extends EventEmitter {
                 // @ts-expect-error
                 typeof aliasObj.common.alias.id.read === 'string'
                     ? // @ts-expect-error
-                    aliasObj.common.alias.id.read
+                      aliasObj.common.alias.id.read
                     : aliasObj.common.alias.id;
 
             // validate here because we use objects/states db directly
@@ -10694,7 +10694,7 @@ export class AdapterClass extends EventEmitter {
                 this.terminate(EXIT_CODES.NO_ERROR);
             } else {
                 this._logger &&
-                this._logger.warn(`${this.namespaceLog} slow connection to states DB. Still waiting ...`);
+                    this._logger.warn(`${this.namespaceLog} slow connection to states DB. Still waiting ...`);
             }
         }, this._config.states.connectTimeout || 2_000);
 
@@ -10818,11 +10818,11 @@ export class AdapterClass extends EventEmitter {
                         }
                         this.outputCount++;
                         adapterStates &&
-                        adapterStates.setState(`system.adapter.${this.namespace}.logLevel`, {
-                            val: currentLevel,
-                            ack: true,
-                            from: `system.adapter.${this.namespace}`
-                        });
+                            adapterStates.setState(`system.adapter.${this.namespace}.logLevel`, {
+                                val: currentLevel,
+                                ack: true,
+                                from: `system.adapter.${this.namespace}`
+                            });
                     }
                 }
 
@@ -10855,7 +10855,7 @@ export class AdapterClass extends EventEmitter {
                 if (id.endsWith('.logging')) {
                     const instance = id.substring(0, id.length - '.logging'.length);
                     this._logger &&
-                    this._logger.silly(`${this.namespaceLog} ${instance}: logging ${state ? state.val : false}`);
+                        this._logger.silly(`${this.namespaceLog} ${instance}: logging ${state ? state.val : false}`);
                     this.logRedirect!(state ? !!state.val : false, instance);
                 } else if (id === `log.system.adapter.${this.namespace}`) {
                     this._options.logTransporter && this.processLog && this.processLog(state);
@@ -10934,14 +10934,14 @@ export class AdapterClass extends EventEmitter {
                         const source = alias!.source!;
                         const aState = state
                             ? tools.formatAliasValue({
-                                sourceCommon: source,
-                                targetCommon: target,
-                                state: deepClone(state),
-                                logger: this._logger,
-                                logNamespace: this.namespaceLog,
-                                sourceId: id,
-                                targetId: target.id
-                            })
+                                  sourceCommon: source,
+                                  targetCommon: target,
+                                  state: deepClone(state),
+                                  logger: this._logger,
+                                  logNamespace: this.namespaceLog,
+                                  sourceId: id,
+                                  targetId: target.id
+                              })
                             : null;
                         // @ts-expect-error
                         const targetId = target.id.read === 'string' ? target.id.read : target.id;
@@ -10987,16 +10987,16 @@ export class AdapterClass extends EventEmitter {
             disconnected: () => {
                 this.connected = false;
                 !this.terminated &&
-                setTimeout(() => {
-                    if (this.connected) {
-                        return;
-                    } // If reconnected in the meantime, do not terminate
-                    this._logger &&
-                    this._logger.warn(
-                        `${this.namespaceLog} Cannot connect/reconnect to states DB. Terminating`
-                    );
-                    this.terminate(EXIT_CODES.NO_ERROR);
-                }, 5000);
+                    setTimeout(() => {
+                        if (this.connected) {
+                            return;
+                        } // If reconnected in the meantime, do not terminate
+                        this._logger &&
+                            this._logger.warn(
+                                `${this.namespaceLog} Cannot connect/reconnect to states DB. Terminating`
+                            );
+                        this.terminate(EXIT_CODES.NO_ERROR);
+                    }, 5000);
             }
         });
     }
@@ -11009,7 +11009,7 @@ export class AdapterClass extends EventEmitter {
                 this.terminate(EXIT_CODES.NO_ERROR);
             } else {
                 this._logger &&
-                this._logger.warn(`${this.namespaceLog} slow connection to objects DB. Still waiting ...`);
+                    this._logger.warn(`${this.namespaceLog} slow connection to objects DB. Still waiting ...`);
             }
         }, this._config.objects.connectTimeout * 2); // Because we do not connect only anymore, give it a bit more time
 
@@ -11058,16 +11058,16 @@ export class AdapterClass extends EventEmitter {
             disconnected: () => {
                 this.connected = false;
                 !this.terminated &&
-                setTimeout(() => {
-                    if (this.connected) {
-                        return;
-                    } // If reconnected in the meantime, do not terminate
-                    this._logger &&
-                    this._logger.warn(
-                        `${this.namespaceLog} Cannot connect/reconnect to objects DB. Terminating`
-                    );
-                    this.terminate(EXIT_CODES.NO_ERROR);
-                }, 4000);
+                    setTimeout(() => {
+                        if (this.connected) {
+                            return;
+                        } // If reconnected in the meantime, do not terminate
+                        this._logger &&
+                            this._logger.warn(
+                                `${this.namespaceLog} Cannot connect/reconnect to objects DB. Terminating`
+                            );
+                        this.terminate(EXIT_CODES.NO_ERROR);
+                    }, 4000);
             },
             change: async (id, obj) => {
                 // System level object changes (and alias objects)
@@ -11255,8 +11255,8 @@ export class AdapterClass extends EventEmitter {
 
                     if (!this._stopInProgress) {
                         typeof this._options.objectChange === 'function' &&
-                        // @ts-expect-error
-                        setImmediate(() => this._options.objectChange(id, obj));
+                            // @ts-expect-error
+                            setImmediate(() => this._options.objectChange(id, obj));
                         // emit 'objectChange' event instantly
                         setImmediate(() => this.emit('objectChange', id, obj));
                     }
@@ -11269,7 +11269,7 @@ export class AdapterClass extends EventEmitter {
                 }
                 if (this.adapterReady && !this._stopInProgress) {
                     typeof this._options.fileChange === 'function' &&
-                    setImmediate(() => this._options.fileChange!(id, fileName, size));
+                        setImmediate(() => this._options.fileChange!(id, fileName, size));
                     // emit 'fileChange' event instantly
                     setImmediate(() => this.emit('fileChange', id, fileName, size));
                 }
@@ -11363,7 +11363,7 @@ export class AdapterClass extends EventEmitter {
                             !this._config.isInstall && this._logger.error(`${this.namespaceLog} adapter disabled`);
                         } else {
                             !this._config.isInstall &&
-                            this._logger.error(`${this.namespaceLog} no config found for adapter`);
+                                this._logger.error(`${this.namespaceLog} no config found for adapter`);
                         }
 
                         if (!this._config.isInstall && (!process.argv || !this._config.forceIfDisabled)) {
@@ -11585,8 +11585,8 @@ export class AdapterClass extends EventEmitter {
                         this.pack && this.pack.version
                             ? this.pack.version
                             : this.ioPack && this.ioPack.common
-                                ? this.ioPack.common.version
-                                : 'unknown';
+                            ? this.ioPack.common.version
+                            : 'unknown';
                     // display if it's a non-official version - only if installedFrom is explicitly given and differs it's not npm
                     const isNpmVersion =
                         !this.ioPack ||
