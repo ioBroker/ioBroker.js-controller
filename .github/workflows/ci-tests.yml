@@ -25,7 +25,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
-      - name: Use Node.js 14
+      - name: Use Node.js 16
         uses: actions/setup-node@v3
         with:
           node-version: 16
@@ -111,15 +111,34 @@ jobs:
   auto-merge:
     if: |
       always() &&
-      github.event_name == 'pull_request' &&
-      github.event.pull_request.user.login == 'foxriver76' &&
-      github.event.pull_request.base.ref == 'master' &&
-      startsWith(github.event.pull_request.title, '[NIGHTLY DEV RELEASE]')
-
+      github.event_name == 'pull_request'
     needs: [ ci ]
     runs-on: ubuntu-latest
     steps:
+      - id: automerge
+        name: automerge
+        uses: "pascalgn/automerge-action@v0.15.6"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_LABELS: "automated pr"
+          MERGE_FILTER_AUTHOR: "foxriver76"
+          MERGE_FORKS: "false"
+          MERGE_DELETE_BRANCH: "false"
+          UPDATE_LABELS: "automated pr"
+          MERGE_METHOD: "squash"
+
+      - name: Checkout repository
+        if: steps.automerge.outputs.mergeResult == 'merged'
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 16
+        if: steps.automerge.outputs.mergeResult == 'merged'
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
       - name: Determine version
+        if: steps.automerge.outputs.mergeResult == 'merged'
         id: version
         uses: actions/github-script@v6
         with:
@@ -127,7 +146,16 @@ jobs:
           script: |
             return require(`${process.env.GITHUB_WORKSPACE}/lerna.json`).version;
 
+      - name: Install dependencies
+        if: steps.automerge.outputs.mergeResult == 'merged'
+        run: npm ci --ignore-scripts # install typescript and @types do not `setup first`
+
+      - name: Build TS files
+        if: steps.automerge.outputs.mergeResult == 'merged'
+        run: npm run build
+
       - name: Publish npm
+        if: steps.automerge.outputs.mergeResult == 'merged'
         env:
           VERSION: ${{ steps.version.outputs.result }}
         run: |
@@ -137,6 +165,7 @@ jobs:
           npx lerna publish from-package --yes --dist-tag dev
 
       - name: Create Github Release for Nightly
+        if: steps.automerge.outputs.mergeResult == 'merged'
         uses: ncipollo/release-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -147,7 +176,8 @@ jobs:
           prerelease: true
           body: 'nightly release'
 
-      - name: Notify Sentry.io about the Nightly release#
+      - name: Notify Sentry.io about the Nightly release
+        if: steps.automerge.outputs.mergeResult == 'merged'
         env:
           VERSION: ${{ steps.version.outputs.result }}
         run: |
@@ -160,12 +190,6 @@ jobs:
           sentry-cli releases new $SENTRY_VERSION
           sentry-cli releases set-commits $SENTRY_VERSION --auto
           sentry-cli releases finalize $SENTRY_VERSION
-
-      - name: automerge
-        uses: "pascalgn/automerge-action@v0.15.6"
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          MERGE_METHOD: "squash"
 
   # Deploys the final package to NPM when a versioned tag was pushed
   deploy:
@@ -180,7 +204,7 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        node-version: [14]
+        node-version: [16]
 
     steps:
       - name: Checkout code
