@@ -5480,8 +5480,12 @@ function stop(force?: boolean, callback?: () => void): void {
     });
 }
 
-// bootstrap
-function init(compactGroupId?: number): void {
+/**
+ * Initialize the controller
+ *
+ * @param compactGroupId the id of the compact group
+ */
+export function init(compactGroupId?: number): void {
     if (compactGroupId) {
         compactGroupController = true;
         compactGroup = compactGroupId;

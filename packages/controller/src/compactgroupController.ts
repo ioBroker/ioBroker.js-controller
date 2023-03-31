@@ -5,7 +5,7 @@
  *      MIT License
  *
  */
-const controller = require('./main');
+import { init } from './main';
 
 const compactGroup = parseInt(process.argv[2], 10);
 if (isNaN(compactGroup) || compactGroup < 1) {
@@ -13,4 +13,4 @@ if (isNaN(compactGroup) || compactGroup < 1) {
     process.exit();
 }
 
-controller.init(compactGroup);
+init(compactGroup);
