@@ -101,7 +101,6 @@
         "conf/",
         "build/",
         "_service_iobroker.bat",
-        "src/compactgroupController.ts",
         "controller.js",
         "io-package.json",
         "iob.bat",
