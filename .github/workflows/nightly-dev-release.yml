@@ -115,13 +115,13 @@ jobs:
     - name: Bump version locally
       if: steps.changes.outputs.result == 'ok'
       env:
-        VERSION: ${{ github.event.pull_request.title }}
+        VERSION: ${{ steps.version.outputs.result }}
       run: |        
         git config --global user.email "moritz.heusinger@gmail.com"
         git config --global user.name "Github Action"
-        
+                
         git add .
-        git commit -m "v${VERSION}" && npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --amend --force-publish || npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --force-publish
+        git commit -m "v${VERSION}" && npx lerna version ${VERSION} --no-push --exact --ignore-scripts --no-commit-hooks --yes --amend --force-publish || npx lerna version ${VERSION} --exact --no-push --ignore-scripts --no-commit-hooks --yes --force-publish
 
     - name: Create Pull Request
       if: steps.changes.outputs.result == 'ok'
