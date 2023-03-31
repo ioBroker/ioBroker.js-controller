@@ -3204,7 +3204,7 @@ export class AdapterClass extends EventEmitter {
         let { id } = _options;
 
         obj.from = obj.from || `system.adapter.${this.namespace}`;
-        obj.user = obj.user || (options && options.user) || SYSTEM_ADMIN_USER;
+        obj.user = obj.user || options?.user || SYSTEM_ADMIN_USER;
         obj.ts = obj.ts || Date.now();
 
         if (id) {
@@ -3370,7 +3370,7 @@ export class AdapterClass extends EventEmitter {
             }
 
             obj.from = obj.from || `system.adapter.${this.namespace}`;
-            obj.user = obj.user || (options && options.user) || SYSTEM_ADMIN_USER;
+            obj.user = obj.user || options?.user || SYSTEM_ADMIN_USER;
             obj.ts = obj.ts || Date.now();
 
             obj = extend(true, oldObj, obj);
@@ -3379,7 +3379,7 @@ export class AdapterClass extends EventEmitter {
             return adapterObjects.setObject(id, obj, options, callback);
         } else {
             obj.from = obj.from || `system.adapter.${this.namespace}`;
-            obj.user = obj.user || (options && options.user) || SYSTEM_ADMIN_USER;
+            obj.user = obj.user || options?.user || SYSTEM_ADMIN_USER;
             obj.ts = obj.ts || Date.now();
 
             if ((obj.type && obj.type === 'state') || (!obj.type && oldObj && oldObj.type === 'state')) {
@@ -4893,7 +4893,7 @@ export class AdapterClass extends EventEmitter {
                 obj.from = `system.adapter.${this.namespace}`;
             }
             if (!obj.user) {
-                obj.user = (options && options.user) || SYSTEM_ADMIN_USER;
+                obj.user = options?.user || SYSTEM_ADMIN_USER;
             }
             if (!obj.ts) {
                 obj.ts = Date.now();
@@ -5435,7 +5435,7 @@ export class AdapterClass extends EventEmitter {
                     if (!obj.common.members.includes(objId)) {
                         obj.common.members.push(objId);
                         obj.from = `system.adapter.${this.namespace}`;
-                        obj.user = (options && options.user) || SYSTEM_ADMIN_USER;
+                        obj.user = options?.user || SYSTEM_ADMIN_USER;
                         obj.ts = Date.now();
 
                         adapterObjects!.setObject(obj._id, obj, options, callback);
@@ -5461,7 +5461,7 @@ export class AdapterClass extends EventEmitter {
                         obj.common.members.push(objId);
 
                         obj.from = `system.adapter.${this.namespace}`;
-                        obj.user = (options && options.user) || SYSTEM_ADMIN_USER;
+                        obj.user = options?.user || SYSTEM_ADMIN_USER;
                         obj.ts = Date.now();
 
                         adapterObjects!.setObject(obj._id, obj, options, callback);
@@ -5589,7 +5589,7 @@ export class AdapterClass extends EventEmitter {
                                 if (pos !== -1) {
                                     obj.common.members.splice(pos, 1);
                                     obj.from = `system.adapter.${this.namespace}`;
-                                    obj.user = (options && options.user) || SYSTEM_ADMIN_USER;
+                                    obj.user = options?.user || SYSTEM_ADMIN_USER;
                                     obj.ts = Date.now();
 
                                     await adapterObjects!.setObjectAsync(obj._id, obj, options);
@@ -6149,7 +6149,7 @@ export class AdapterClass extends EventEmitter {
                 if (!obj.common.members.includes(objId)) {
                     obj.common.members.push(objId);
                     obj.from = `system.adapter.${this.namespace}`;
-                    obj.user = (options && options.user) || SYSTEM_ADMIN_USER;
+                    obj.user = options?.user || SYSTEM_ADMIN_USER;
                     obj.ts = Date.now();
                     adapterObjects!.setObject(obj._id, obj, options, callback);
                 } else {
@@ -6167,7 +6167,7 @@ export class AdapterClass extends EventEmitter {
                     if (!obj.common.members.includes(objId)) {
                         obj.common.members!.push(objId);
                         obj.from = `system.adapter.${this.namespace}`;
-                        obj.user = (options && options.user) || SYSTEM_ADMIN_USER;
+                        obj.user = options?.user || SYSTEM_ADMIN_USER;
                         obj.ts = Date.now();
                         adapterObjects!.setObject(obj._id, obj, callback);
                     } else {
@@ -6317,7 +6317,7 @@ export class AdapterClass extends EventEmitter {
                             if (pos !== -1) {
                                 obj.common.members.splice(pos, 1);
                                 obj.from = `system.adapter.${this.namespace}`;
-                                obj.user = (options && options.user) || SYSTEM_ADMIN_USER;
+                                obj.user = options?.user || SYSTEM_ADMIN_USER;
                                 obj.ts = Date.now();
                                 await adapterObjects!.setObjectAsync(obj._id, obj);
                             }
@@ -7405,7 +7405,7 @@ export class AdapterClass extends EventEmitter {
             typeof stateObj.from === 'string' && stateObj.from !== ''
                 ? stateObj.from
                 : `system.adapter.${this.namespace}`;
-        stateObj.user = (options && options.user) || SYSTEM_ADMIN_USER;
+        stateObj.user = options?.user || SYSTEM_ADMIN_USER;
 
         let permCheckRequired = false;
         if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
@@ -8159,7 +8159,7 @@ export class AdapterClass extends EventEmitter {
         // if state.from provided, we use it else, we set default property
         state.from =
             typeof state.from === 'string' && state.from !== '' ? state.from : `system.adapter.${this.namespace}`;
-        state.user = (options && options.user) || SYSTEM_ADMIN_USER;
+        state.user = options?.user || SYSTEM_ADMIN_USER;
 
         if (!id || typeof id !== 'string') {
             const warn = id ? `ID can be only string and not "${typeof id}"` : `Empty ID: ${JSON.stringify(state)}`;
@@ -8476,7 +8476,7 @@ export class AdapterClass extends EventEmitter {
         // if state.from provided, we use it else, we set default property
         state.from =
             typeof state.from === 'string' && state.from !== '' ? state.from : `system.adapter.${this.namespace}`;
-        state.user = (options && options.user) || SYSTEM_ADMIN_USER;
+        state.user = options?.user || SYSTEM_ADMIN_USER;
 
         const mId = id.replace(FORBIDDEN_CHARS, '_');
         if (mId !== id) {
