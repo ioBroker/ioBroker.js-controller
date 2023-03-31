@@ -570,7 +570,7 @@ export interface AdapterClass {
  * Adapter class
  *
  * How the initialization happens:
- *  initObjects => initStates => prepareInitAdapter => initAdapter => initLogging => createInstancesObjects => ready
+ *  _initObjects => _initStates => _prepareInitAdapter => _initAdapter => _initLogging => _createInstancesObjects => ready
  *
  */
 export class AdapterClass extends EventEmitter {
@@ -3203,8 +3203,8 @@ export class AdapterClass extends EventEmitter {
         const { options, callback, obj } = _options;
         let { id } = _options;
 
-        obj.from = obj.from || 'system.adapter.' + this.namespace;
-        obj.user = obj.user || (options ? options.user : '') || SYSTEM_ADMIN_USER;
+        obj.from = obj.from || `system.adapter.${this.namespace}`;
+        obj.user = obj.user || (options && options.user) || SYSTEM_ADMIN_USER;
         obj.ts = obj.ts || Date.now();
 
         if (id) {
@@ -3370,7 +3370,7 @@ export class AdapterClass extends EventEmitter {
             }
 
             obj.from = obj.from || `system.adapter.${this.namespace}`;
-            obj.user = obj.user || (options ? options.user : '') || SYSTEM_ADMIN_USER;
+            obj.user = obj.user || (options && options.user) || SYSTEM_ADMIN_USER;
             obj.ts = obj.ts || Date.now();
 
             obj = extend(true, oldObj, obj);
@@ -3379,7 +3379,7 @@ export class AdapterClass extends EventEmitter {
             return adapterObjects.setObject(id, obj, options, callback);
         } else {
             obj.from = obj.from || `system.adapter.${this.namespace}`;
-            obj.user = obj.user || (options ? options.user : '') || SYSTEM_ADMIN_USER;
+            obj.user = obj.user || (options && options.user) || SYSTEM_ADMIN_USER;
             obj.ts = obj.ts || Date.now();
 
             if ((obj.type && obj.type === 'state') || (!obj.type && oldObj && oldObj.type === 'state')) {
@@ -4893,7 +4893,7 @@ export class AdapterClass extends EventEmitter {
                 obj.from = `system.adapter.${this.namespace}`;
             }
             if (!obj.user) {
-                obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
+                obj.user = (options && options.user) || SYSTEM_ADMIN_USER;
             }
             if (!obj.ts) {
                 obj.ts = Date.now();
@@ -5434,8 +5434,8 @@ export class AdapterClass extends EventEmitter {
                 } else if (obj) {
                     if (!obj.common.members.includes(objId)) {
                         obj.common.members.push(objId);
-                        obj.from = 'system.adapter.' + this.namespace;
-                        obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
+                        obj.from = `system.adapter.${this.namespace}`;
+                        obj.user = (options && options.user) || SYSTEM_ADMIN_USER;
                         obj.ts = Date.now();
 
                         adapterObjects!.setObject(obj._id, obj, options, callback);
@@ -5460,8 +5460,8 @@ export class AdapterClass extends EventEmitter {
                         // @ts-expect-error
                         obj.common.members.push(objId);
 
-                        obj.from = 'system.adapter.' + this.namespace;
-                        obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
+                        obj.from = `system.adapter.${this.namespace}`;
+                        obj.user = (options && options.user) || SYSTEM_ADMIN_USER;
                         obj.ts = Date.now();
 
                         adapterObjects!.setObject(obj._id, obj, options, callback);
@@ -5477,7 +5477,7 @@ export class AdapterClass extends EventEmitter {
                                 name: addTo,
                                 members: [objId]
                             },
-                            from: 'system.adapter.' + this.namespace,
+                            from: `system.adapter.${this.namespace}`,
                             ts: Date.now(),
                             type: 'enum',
                             native: {}
@@ -5555,7 +5555,7 @@ export class AdapterClass extends EventEmitter {
         channelName = channelName || '';
         channelName = channelName.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
 
-        const objId = this.namespace + '.' + this._DCS2ID(parentDevice, channelName);
+        const objId = `${this.namespace}.${this._DCS2ID(parentDevice, channelName)}`;
 
         if (enumName) {
             enumName = `enum.${enumName}.`;
@@ -5568,7 +5568,7 @@ export class AdapterClass extends EventEmitter {
             'enum',
             {
                 startkey: enumName,
-                endkey: enumName + '\u9999'
+                endkey: `${enumName}\u9999`
             },
             options,
             async (err, res) => {
@@ -5589,7 +5589,7 @@ export class AdapterClass extends EventEmitter {
                                 if (pos !== -1) {
                                     obj.common.members.splice(pos, 1);
                                     obj.from = `system.adapter.${this.namespace}`;
-                                    obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
+                                    obj.user = (options && options.user) || SYSTEM_ADMIN_USER;
                                     obj.ts = Date.now();
 
                                     await adapterObjects!.setObjectAsync(obj._id, obj, options);
@@ -5851,7 +5851,7 @@ export class AdapterClass extends EventEmitter {
             'device',
             {
                 startkey: `${this.namespace}.`,
-                endkey: this.namespace + '.\u9999'
+                endkey: `${this.namespace}.\u9999`
             },
             options,
             (err, obj) => {
@@ -5916,13 +5916,13 @@ export class AdapterClass extends EventEmitter {
         }
 
         options.parentDevice = options.parentDevice.replace(FORBIDDEN_CHARS, '_').replace(/\./g, '_');
-        options.parentDevice = this.namespace + (options.parentDevice ? '.' + options.parentDevice : '');
+        options.parentDevice = this.namespace + (options.parentDevice ? `.${options.parentDevice}` : '');
         adapterObjects.getObjectView(
             'system',
             'channel',
             {
-                startkey: options.parentDevice + '.',
-                endkey: options.parentDevice + '.\u9999'
+                startkey: `${options.parentDevice}.`,
+                endkey: `${options.parentDevice}.\u9999`
             },
             options.options || {},
             (err, obj) => {
@@ -6027,7 +6027,7 @@ export class AdapterClass extends EventEmitter {
             'state',
             {
                 startkey: id,
-                endkey: id + '\u9999'
+                endkey: `${id}\u9999`
             },
             options,
             (err, obj) => {
@@ -6148,8 +6148,8 @@ export class AdapterClass extends EventEmitter {
 
                 if (!obj.common.members.includes(objId)) {
                     obj.common.members.push(objId);
-                    obj.from = 'system.adapter.' + this.namespace;
-                    obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
+                    obj.from = `system.adapter.${this.namespace}`;
+                    obj.user = (options && options.user) || SYSTEM_ADMIN_USER;
                     obj.ts = Date.now();
                     adapterObjects!.setObject(obj._id, obj, options, callback);
                 } else {
@@ -6166,8 +6166,8 @@ export class AdapterClass extends EventEmitter {
                     // @ts-expect-error cast to enum object
                     if (!obj.common.members.includes(objId)) {
                         obj.common.members!.push(objId);
-                        obj.from = 'system.adapter.' + this.namespace;
-                        obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
+                        obj.from = `system.adapter.${this.namespace}`;
+                        obj.user = (options && options.user) || SYSTEM_ADMIN_USER;
                         obj.ts = Date.now();
                         adapterObjects!.setObject(obj._id, obj, callback);
                     } else {
@@ -6301,7 +6301,7 @@ export class AdapterClass extends EventEmitter {
             'enum',
             {
                 startkey: enumName,
-                endkey: enumName + '\u9999'
+                endkey: `${enumName}\u9999`
             },
             options,
             async (err, res) => {
@@ -6316,8 +6316,8 @@ export class AdapterClass extends EventEmitter {
                             const pos = obj.common.members.indexOf(objId);
                             if (pos !== -1) {
                                 obj.common.members.splice(pos, 1);
-                                obj.from = 'system.adapter.' + this.namespace;
-                                obj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
+                                obj.from = `system.adapter.${this.namespace}`;
+                                obj.user = (options && options.user) || SYSTEM_ADMIN_USER;
                                 obj.ts = Date.now();
                                 await adapterObjects!.setObjectAsync(obj._id, obj);
                             }
@@ -6845,7 +6845,7 @@ export class AdapterClass extends EventEmitter {
                         v %= 100;
                     }
                     if (v <= 9) {
-                        v = '0' + v;
+                        v = `0${v}`;
                     }
                     break;
                 case 'MM':
@@ -6854,7 +6854,7 @@ export class AdapterClass extends EventEmitter {
                 case 'М':
                     v = dateObj.getMonth() + 1;
                     if (v < 10 && s.length === 2) {
-                        v = '0' + v;
+                        v = `0${v}`;
                     }
                     break;
                 case 'DD':
@@ -6865,7 +6865,7 @@ export class AdapterClass extends EventEmitter {
                 case 'Д':
                     v = dateObj.getDate();
                     if (v < 10 && s.length === 2) {
-                        v = '0' + v;
+                        v = `0${v}`;
                     }
                     break;
                 case 'hh':
@@ -6876,7 +6876,7 @@ export class AdapterClass extends EventEmitter {
                 case 'ч':
                     v = dateObj.getHours();
                     if (v < 10 && s.length === 2) {
-                        v = '0' + v;
+                        v = `0${v}`;
                     }
                     break;
                 case 'mm':
@@ -6885,7 +6885,7 @@ export class AdapterClass extends EventEmitter {
                 case 'м':
                     v = dateObj.getMinutes();
                     if (v < 10 && s.length === 2) {
-                        v = '0' + v;
+                        v = `0${v}`;
                     }
                     break;
                 case 'ss':
@@ -6894,7 +6894,7 @@ export class AdapterClass extends EventEmitter {
                 case 'c':
                     v = dateObj.getSeconds();
                     if (v < 10 && s.length === 2) {
-                        v = '0' + v;
+                        v = `0${v}`;
                     }
                     v = v.toString();
                     break;
@@ -6902,9 +6902,9 @@ export class AdapterClass extends EventEmitter {
                 case 'ссс':
                     v = dateObj.getMilliseconds();
                     if (v < 10) {
-                        v = '00' + v;
+                        v = `00${v}`;
                     } else if (v < 100) {
-                        v = '0' + v;
+                        v = `0${v}`;
                     }
                     v = v.toString();
             }
@@ -7405,7 +7405,7 @@ export class AdapterClass extends EventEmitter {
             typeof stateObj.from === 'string' && stateObj.from !== ''
                 ? stateObj.from
                 : `system.adapter.${this.namespace}`;
-        stateObj.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
+        stateObj.user = (options && options.user) || SYSTEM_ADMIN_USER;
 
         let permCheckRequired = false;
         if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
@@ -8159,7 +8159,7 @@ export class AdapterClass extends EventEmitter {
         // if state.from provided, we use it else, we set default property
         state.from =
             typeof state.from === 'string' && state.from !== '' ? state.from : `system.adapter.${this.namespace}`;
-        state.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
+        state.user = (options && options.user) || SYSTEM_ADMIN_USER;
 
         if (!id || typeof id !== 'string') {
             const warn = id ? `ID can be only string and not "${typeof id}"` : `Empty ID: ${JSON.stringify(state)}`;
@@ -8476,7 +8476,7 @@ export class AdapterClass extends EventEmitter {
         // if state.from provided, we use it else, we set default property
         state.from =
             typeof state.from === 'string' && state.from !== '' ? state.from : `system.adapter.${this.namespace}`;
-        state.user = (options ? options.user : '') || SYSTEM_ADMIN_USER;
+        state.user = (options && options.user) || SYSTEM_ADMIN_USER;
 
         const mId = id.replace(FORBIDDEN_CHARS, '_');
         if (mId !== id) {
@@ -10372,8 +10372,8 @@ export class AdapterClass extends EventEmitter {
         if (!adapterStates) {
             return;
         }
-        const id = 'system.adapter.' + this.namespace;
-        adapterStates.setState(id + '.alive', {
+        const id = `system.adapter.${this.namespace}`;
+        adapterStates.setState(`${id}.alive`, {
             val: true,
             ack: true,
             expire: Math.floor(this._config.system.statisticsInterval / 1000) + 10,
@@ -10381,7 +10381,7 @@ export class AdapterClass extends EventEmitter {
         });
         this.outputCount++;
         if (this.connected) {
-            adapterStates.setState(id + '.connected', { val: true, ack: true, expire: 30, from: id });
+            adapterStates.setState(`${id}.connected`, { val: true, ack: true, expire: 30, from: id });
             this.outputCount++;
         }
         if (!this.startedInCompactMode) {
@@ -10410,7 +10410,7 @@ export class AdapterClass extends EventEmitter {
             try {
                 //RSS is the resident set size, the portion of the process's memory held in RAM (as opposed to the swap space or the part held in the filesystem).
                 const mem = process.memoryUsage();
-                adapterStates.setState(id + '.memRss', {
+                adapterStates.setState(`${id}.memRss`, {
                     val: parseFloat(
                         (mem.rss / 1048576) /* 1MB */
                             .toFixed(2)
@@ -10418,7 +10418,7 @@ export class AdapterClass extends EventEmitter {
                     ack: true,
                     from: id
                 });
-                adapterStates.setState(id + '.memHeapTotal', {
+                adapterStates.setState(`${id}.memHeapTotal`, {
                     val: parseFloat(
                         (mem.heapTotal / 1048576) /* 1MB */
                             .toFixed(2)
@@ -10426,7 +10426,7 @@ export class AdapterClass extends EventEmitter {
                     ack: true,
                     from: id
                 });
-                adapterStates.setState(id + '.memHeapUsed', {
+                adapterStates.setState(`${id}.memHeapUsed`, {
                     val: parseFloat(
                         (mem.heapUsed / 1048576) /* 1MB */
                             .toFixed(2)
@@ -10440,13 +10440,13 @@ export class AdapterClass extends EventEmitter {
             this.outputCount += 3;
             if (this.eventLoopLags.length) {
                 const eventLoopLag = Math.ceil(this.eventLoopLags.reduce((a, b) => a + b) / this.eventLoopLags.length);
-                adapterStates.setState(id + '.eventLoopLag', { val: eventLoopLag, ack: true, from: id }); // average of measured values
+                adapterStates.setState(`${id}.eventLoopLag`, { val: eventLoopLag, ack: true, from: id }); // average of measured values
                 this.eventLoopLags = [];
                 this.outputCount++;
             }
         }
         this.outputCount += 3;
-        adapterStates.setState(id + '.uptime', {
+        adapterStates.setState(`${id}.uptime`, {
             val: parseInt(process.uptime().toFixed(), 10),
             ack: true,
             from: id
@@ -10897,7 +10897,7 @@ export class AdapterClass extends EventEmitter {
                     if (!state || state.ack) {
                         return;
                     }
-                    const pluginStatesIndex = ('system.adapter.' + this.namespace + '.plugins.').length;
+                    const pluginStatesIndex = `system.adapter.${this.namespace}.plugins.`.length;
                     let nameEndIndex: number | undefined = id.indexOf('.', pluginStatesIndex + 1);
                     if (nameEndIndex === -1) {
                         nameEndIndex = undefined;
@@ -11447,7 +11447,7 @@ export class AdapterClass extends EventEmitter {
                     this.namespaceLog =
                         this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
                     if (!this.startedInCompactMode) {
-                        process.title = 'io.' + this.namespace;
+                        process.title = `io.${this.namespace}`;
                     }
 
                     // @ts-expect-error
