@@ -24,6 +24,7 @@
 - [icon](internal_.InstanceCommon.md#icon)
 - [installedFrom](internal_.InstanceCommon.md#installedfrom)
 - [installedVersion](internal_.InstanceCommon.md#installedversion)
+- [logTransporter](internal_.InstanceCommon.md#logtransporter)
 - [mode](internal_.InstanceCommon.md#mode)
 - [name](internal_.InstanceCommon.md#name)
 - [nodeProcessParams](internal_.InstanceCommon.md#nodeprocessparams)
@@ -44,7 +45,7 @@ If compact mode is supported
 
 #### Defined in
 
-[types-dev/objects.d.ts:323](https://github.com/ioBroker/ioBroker.js-controller/blob/5332b3c4/packages/types-dev/objects.d.ts#L323)
+[types-dev/objects.d.ts:323](https://github.com/ioBroker/ioBroker.js-controller/blob/78d4a34e/packages/types-dev/objects.d.ts#L323)
 
 ___
 
@@ -56,7 +57,7 @@ Active compact group, instances in this group will be started in one process
 
 #### Defined in
 
-[types-dev/objects.d.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/5332b3c4/packages/types-dev/objects.d.ts#L327)
+[types-dev/objects.d.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/78d4a34e/packages/types-dev/objects.d.ts#L327)
 
 ___
 
@@ -66,7 +67,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:336](https://github.com/ioBroker/ioBroker.js-controller/blob/5332b3c4/packages/types-dev/objects.d.ts#L336)
+[types-dev/objects.d.ts:338](https://github.com/ioBroker/ioBroker.js-controller/blob/78d4a34e/packages/types-dev/objects.d.ts#L338)
 
 ___
 
@@ -82,7 +83,7 @@ When set to true, this object may not be deleted
 
 #### Defined in
 
-[types-dev/objects.d.ts:159](https://github.com/ioBroker/ioBroker.js-controller/blob/5332b3c4/packages/types-dev/objects.d.ts#L159)
+[types-dev/objects.d.ts:159](https://github.com/ioBroker/ioBroker.js-controller/blob/78d4a34e/packages/types-dev/objects.d.ts#L159)
 
 ___
 
@@ -92,7 +93,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:310](https://github.com/ioBroker/ioBroker.js-controller/blob/5332b3c4/packages/types-dev/objects.d.ts#L310)
+[types-dev/objects.d.ts:310](https://github.com/ioBroker/ioBroker.js-controller/blob/78d4a34e/packages/types-dev/objects.d.ts#L310)
 
 ___
 
@@ -108,7 +109,7 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 #### Defined in
 
-[types-dev/objects.d.ts:162](https://github.com/ioBroker/ioBroker.js-controller/blob/5332b3c4/packages/types-dev/objects.d.ts#L162)
+[types-dev/objects.d.ts:162](https://github.com/ioBroker/ioBroker.js-controller/blob/78d4a34e/packages/types-dev/objects.d.ts#L162)
 
 ___
 
@@ -120,7 +121,7 @@ The name of the host where this instance is running
 
 #### Defined in
 
-[types-dev/objects.d.ts:309](https://github.com/ioBroker/ioBroker.js-controller/blob/5332b3c4/packages/types-dev/objects.d.ts#L309)
+[types-dev/objects.d.ts:309](https://github.com/ioBroker/ioBroker.js-controller/blob/78d4a34e/packages/types-dev/objects.d.ts#L309)
 
 ___
 
@@ -136,7 +137,7 @@ Icon for this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/5332b3c4/packages/types-dev/objects.d.ts#L167)
+[types-dev/objects.d.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/78d4a34e/packages/types-dev/objects.d.ts#L167)
 
 ___
 
@@ -146,7 +147,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:331](https://github.com/ioBroker/ioBroker.js-controller/blob/5332b3c4/packages/types-dev/objects.d.ts#L331)
+[types-dev/objects.d.ts:331](https://github.com/ioBroker/ioBroker.js-controller/blob/78d4a34e/packages/types-dev/objects.d.ts#L331)
 
 ___
 
@@ -156,7 +157,19 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:330](https://github.com/ioBroker/ioBroker.js-controller/blob/5332b3c4/packages/types-dev/objects.d.ts#L330)
+[types-dev/objects.d.ts:330](https://github.com/ioBroker/ioBroker.js-controller/blob/78d4a34e/packages/types-dev/objects.d.ts#L330)
+
+___
+
+### logTransporter
+
+• `Optional` **logTransporter**: `boolean`
+
+If adapter can consume log messages, like admin, javascript or logparser
+
+#### Defined in
+
+[types-dev/objects.d.ts:335](https://github.com/ioBroker/ioBroker.js-controller/blob/78d4a34e/packages/types-dev/objects.d.ts#L335)
 
 ___
 
@@ -168,7 +181,7 @@ How and when this instance should be started
 
 #### Defined in
 
-[types-dev/objects.d.ts:312](https://github.com/ioBroker/ioBroker.js-controller/blob/5332b3c4/packages/types-dev/objects.d.ts#L312)
+[types-dev/objects.d.ts:312](https://github.com/ioBroker/ioBroker.js-controller/blob/78d4a34e/packages/types-dev/objects.d.ts#L312)
 
 ___
 
@@ -184,7 +197,7 @@ The name of this object as a simple string or an object with translations
 
 #### Defined in
 
-[types-dev/objects.d.ts:156](https://github.com/ioBroker/ioBroker.js-controller/blob/5332b3c4/packages/types-dev/objects.d.ts#L156)
+[types-dev/objects.d.ts:156](https://github.com/ioBroker/ioBroker.js-controller/blob/78d4a34e/packages/types-dev/objects.d.ts#L156)
 
 ___
 
@@ -196,7 +209,7 @@ Arguments passed to the adapter process, this disables compact mode
 
 #### Defined in
 
-[types-dev/objects.d.ts:333](https://github.com/ioBroker/ioBroker.js-controller/blob/5332b3c4/packages/types-dev/objects.d.ts#L333)
+[types-dev/objects.d.ts:333](https://github.com/ioBroker/ioBroker.js-controller/blob/78d4a34e/packages/types-dev/objects.d.ts#L333)
 
 ___
 
@@ -208,7 +221,7 @@ String (or array) with names of attributes in common of instance, which will not
 
 #### Defined in
 
-[types-dev/objects.d.ts:329](https://github.com/ioBroker/ioBroker.js-controller/blob/5332b3c4/packages/types-dev/objects.d.ts#L329)
+[types-dev/objects.d.ts:329](https://github.com/ioBroker/ioBroker.js-controller/blob/78d4a34e/packages/types-dev/objects.d.ts#L329)
 
 ___
 
@@ -224,7 +237,7 @@ role of the object
 
 #### Defined in
 
-[types-dev/objects.d.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/5332b3c4/packages/types-dev/objects.d.ts#L169)
+[types-dev/objects.d.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/78d4a34e/packages/types-dev/objects.d.ts#L169)
 
 ___
 
@@ -236,7 +249,7 @@ If compact mode is active
 
 #### Defined in
 
-[types-dev/objects.d.ts:325](https://github.com/ioBroker/ioBroker.js-controller/blob/5332b3c4/packages/types-dev/objects.d.ts#L325)
+[types-dev/objects.d.ts:325](https://github.com/ioBroker/ioBroker.js-controller/blob/78d4a34e/packages/types-dev/objects.d.ts#L325)
 
 ___
 
@@ -248,7 +261,7 @@ Variables of this adapter must be subscribed with sendTo to enable updates
 
 #### Defined in
 
-[types-dev/objects.d.ts:321](https://github.com/ioBroker/ioBroker.js-controller/blob/5332b3c4/packages/types-dev/objects.d.ts#L321)
+[types-dev/objects.d.ts:321](https://github.com/ioBroker/ioBroker.js-controller/blob/78d4a34e/packages/types-dev/objects.d.ts#L321)
 
 ___
 
@@ -263,7 +276,7 @@ The starting priority of this adapter:
 
 #### Defined in
 
-[types-dev/objects.d.ts:319](https://github.com/ioBroker/ioBroker.js-controller/blob/5332b3c4/packages/types-dev/objects.d.ts#L319)
+[types-dev/objects.d.ts:319](https://github.com/ioBroker/ioBroker.js-controller/blob/78d4a34e/packages/types-dev/objects.d.ts#L319)
 
 ___
 
@@ -273,4 +286,4 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:307](https://github.com/ioBroker/ioBroker.js-controller/blob/5332b3c4/packages/types-dev/objects.d.ts#L307)
+[types-dev/objects.d.ts:307](https://github.com/ioBroker/ioBroker.js-controller/blob/78d4a34e/packages/types-dev/objects.d.ts#L307)
