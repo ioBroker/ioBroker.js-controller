@@ -115,22 +115,23 @@ jobs:
         run: |
           echo ${{ github.event_name }}
           echo ${{ github.event.pull_request.user.login }}
-          echo ${{ contains( github.event.pull_request.labels.*.name, 'automated pr') }}
+          echo ${{ contains(github.event.pull_request.labels.*.name, 'automated pr') }}
           echo ${{ github.event.pull_request.base.ref }}
+          echo ${{ fromJSON(github.event.pull_request.labels) }}
+          echo ${{ fromJSON(github.event.pull_request.labels.*.name) }}
 
   auto-merge:
     if: |
       always() &&
       github.event_name == 'pull_request' &&
       github.event.pull_request.user.login == 'foxriver76' &&
-      contains( github.event.pull_request.labels.*.name, 'automated pr') &&
-      github.event.pull_request.base.ref == 'refs/heads/master'
+      contains(github.event.pull_request.labels.*.name, 'automated pr') &&
+      github.event.pull_request.base.ref == 'master'
 
     needs: [ ci ]
     runs-on: ubuntu-latest
     steps:
       - name: Publish npm
-        if: steps.automerge.outputs.mergeResult == 'merged'
         env:
           VERSION: ${{ github.event.pull_request.title }}
         run: |
@@ -141,19 +142,6 @@ jobs:
 
       - name: Create Github Release for Nightly
         uses: ncipollo/release-action@v1
-        if: steps.automerge.outputs.mergeResult == 'merged'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag: v${{ github.event.pull_request.title }}
-          name: Release v${{ github.event.pull_request.title }}
-          draft: false
-          prerelease: true
-          body: 'nightly release'
-
-      - name: Create Github Release for Nightly
-        uses: ncipollo/release-action@v1
-        if: steps.automerge.outputs.mergeResult == 'merged'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -164,7 +152,6 @@ jobs:
           body: 'nightly release'
 
       - name: Notify Sentry.io about the Nightly release#
-        if: steps.automerge.outputs.mergeResult == 'merged'
         env:
           VERSION: ${{ github.event.pull_request.title }}
         run: |
