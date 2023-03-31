@@ -11843,6 +11843,23 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
+        // create logging object for log-transporter instances
+        if (instanceObj && instanceObj.common && instanceObj.common.logTransporter) {
+            // create system.adapter.ADAPTERNAME.instance.logger
+            objs.push({
+                _id: `system.adapter.${this.namespace}.logging`,
+                common: {
+                    type: 'boolean',
+                    name: 'Logging for instance activated',
+                    write: false,
+                    read: true,
+                    def: false
+                },
+                type: 'state',
+                native: {}
+            });
+        }
+
         return new Promise(resolve => {
             this._extendObjects(objs, resolve);
         });
