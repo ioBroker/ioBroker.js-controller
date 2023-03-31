@@ -14,131 +14,131 @@ jobs:
         node: [16.x] # This should be LTS
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-      with:
-        fetch-depth: 0 # Fetch the history, or this action won't work
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetch the history, or this action won't work
 
-    - name: Use Node.js ${{ matrix.node }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node }}
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
 
-    - name: Detect changes (git)
-      id: changes
-      run: |
-        # ===============================
-        # Detect changes using git
-        # ===============================
+      - name: Detect changes (git)
+        id: changes
+        run: |
+          # ===============================
+          # Detect changes using git
+          # ===============================
+          
+          LAST_TAG=$(git describe --abbrev=0 --tags)
+          echo "Checking for changes since last tag $LAST_TAG"
+          
+          # Figure out if anything changed in the package directories
+          CHANGES=$(git diff "$LAST_TAG" --name-only | grep -E "^packages\/" | grep -vE "^packages\/controller\/doc\/" || true)
+          if [ -z "$CHANGES" ] ; then
+            echo "🔸 No package changes since latest version, aborting..."
+            echo "::set-output name=result::unchanged"
+          else
+            echo "::set-output name=result::ok"
+          fi
 
-        LAST_TAG=$(git describe --abbrev=0 --tags)
-        echo "Checking for changes since last tag $LAST_TAG"
+      - name: Prepare installation
+        if: steps.changes.outputs.result == 'ok'
+        run: |
+          sudo add-apt-repository ppa:chris-lea/redis-server -y
+          sudo apt-get update -q
+          sudo apt-get install redis-server redis-sentinel -y
+          sudo systemctl start redis-server
 
-        # Figure out if anything changed in the package directories
-        CHANGES=$(git diff "$LAST_TAG" --name-only | grep -E "^packages\/" | grep -vE "^packages\/controller\/doc\/" || true)
-        if [ -z "$CHANGES" ] ; then
-          echo "🔸 No package changes since latest version, aborting..."
-          echo "::set-output name=result::unchanged"
-        else
-          echo "::set-output name=result::ok"
-        fi
+      - name: Install dependencies
+        if: steps.changes.outputs.result == 'ok'
+        run: npm ci --ignore-scripts # install typescript and @types do not `setup first`
 
-    - name: Prepare installation
-      if: steps.changes.outputs.result == 'ok'
-      run: |
-        sudo add-apt-repository ppa:chris-lea/redis-server -y
-        sudo apt-get update -q
-        sudo apt-get install redis-server redis-sentinel -y
-        sudo systemctl start redis-server
+      - name: Build TS files
+        if: steps.changes.outputs.result == 'ok'
+        run: npm run build
 
-    - name: Install dependencies
-      if: steps.changes.outputs.result == 'ok'
-      run: npm ci --ignore-scripts # install typescript and @types do not `setup first`
+      - name: Build Docs
+        if: steps.changes.outputs.result == 'ok'
+        run: npm run build:doc
 
-    - name: Build TS files
-      if: steps.changes.outputs.result == 'ok'
-      run: npm run build
+      - name: Run scripts
+        if: steps.changes.outputs.result == 'ok'
+        run: npm run preinstall && npm run install
 
-    - name: Build Docs
-      if: steps.changes.outputs.result == 'ok'
-      run: npm run build:doc
+      - name: Test
+        if: steps.changes.outputs.result == 'ok'
+        run: npm test
 
-    - name: Run scripts
-      if: steps.changes.outputs.result == 'ok'
-      run: npm run preinstall && npm run install
-
-    - name: Test
-      if: steps.changes.outputs.result == 'ok'
-      run: npm test
-
-    - name: Determine the version bump
-      if: steps.changes.outputs.result == 'ok'
-      id: version
-      uses: actions/github-script@v6
-      with:
-        result-encoding: string
-        script: |
-          const semver = require("semver");
-          const now = new Date();
-          const today = new Date(now.getTime() - now.getTimezoneOffset()*60000);
-          const dateStr = today.toISOString().split("T")[0].replace(/-/g, "");
-          const sha = require("child_process").execSync("git rev-parse --short HEAD").toString("utf8").trim();
-
-          const prevVersion = require(`${process.env.GITHUB_WORKSPACE}/lerna.json`).version;
-
-          const parsed = semver.parse(prevVersion);
-          const prereleaseIdentifier = parsed.prerelease[0] || "alpha";
-
-          for (let i = 1; i < parsed.prerelease.length; i++) {
-            const part = parsed.prerelease[i];
-            if (typeof part === "number") {
-              continue;
+      - name: Determine the version bump
+        if: steps.changes.outputs.result == 'ok'
+        id: version
+        uses: actions/github-script@v6
+        with:
+          result-encoding: string
+          script: |
+            const semver = require("semver");
+            const now = new Date();
+            const today = new Date(now.getTime() - now.getTimezoneOffset()*60000);
+            const dateStr = today.toISOString().split("T")[0].replace(/-/g, "");
+            const sha = require("child_process").execSync("git rev-parse --short HEAD").toString("utf8").trim();
+            
+            const prevVersion = require(`${process.env.GITHUB_WORKSPACE}/lerna.json`).version;
+            
+            const parsed = semver.parse(prevVersion);
+            const prereleaseIdentifier = parsed.prerelease[0] || "alpha";
+            
+            for (let i = 1; i < parsed.prerelease.length; i++) {
+              const part = parsed.prerelease[i];
+              if (typeof part === "number") {
+                continue;
+              }
+              // Parse stuff like `8-20210909-001a711c` back to `8`
+              const numeric = parseInt(part);
+              if (!Number.isNaN(numeric)) {
+                parsed.prerelease[i] = numeric;
+              }
             }
-            // Parse stuff like `8-20210909-001a711c` back to `8`
-            const numeric = parseInt(part);
-            if (!Number.isNaN(numeric)) {
-              parsed.prerelease[i] = numeric;
-            }
-          }
+            
+            // Figure out the next version
+            const nightlyVersion =  `${semver.inc(parsed, "prerelease", prereleaseIdentifier)}-${dateStr}-${sha}`;
+            
+            // ensure that io-pack is in sync
+            const fs = require('fs');
+            const ioPack = JSON.parse(fs.readFileSync(`${process.env.GITHUB_WORKSPACE}/packages/controller/io-package.json`));
+            ioPack.common.version = semver.inc(nightlyVersion, 'patch');;
+            fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/packages/controller/io-package.json`, JSON.stringify(ioPack, null, 2));
+            
+            return nightlyVersion;
 
-          // Figure out the next version
-          const nightlyVersion =  `${semver.inc(parsed, "prerelease", prereleaseIdentifier)}-${dateStr}-${sha}`;
+      - name: Bump version locally
+        if: steps.changes.outputs.result == 'ok'
+        env:
+          VERSION: ${{ github.event.pull_request.title }}
+        run: |
+          git config --global user.email "moritz.heusinger@gmail.com"
+          git config --global user.name "Github Action"
+          
+          git add .
+          git commit -m "v${VERSION}" && npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --amend --force-publish || npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --force-publish
 
-          // ensure that io-pack is in sync
-          const fs = require('fs');
-          const ioPack = JSON.parse(fs.readFileSync(`${process.env.GITHUB_WORKSPACE}/packages/controller/io-package.json`));
-          ioPack.common.version = semver.inc(nightlyVersion, 'patch');;
-          fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/packages/controller/io-package.json`, JSON.stringify(ioPack, null, 2));
-
-          return nightlyVersion;
-
-    - name: Bump version locally
-      if: steps.automerge.outputs.mergeResult == 'merged'
-      env:
-        VERSION: ${{ github.event.pull_request.title }}
-      run: |        
-        git config --global user.email "moritz.heusinger@gmail.com"
-        git config --global user.name "Github Action"
-        
-        git add .
-        git commit -m "v${VERSION}" && npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --amend --force-publish || npx lerna version ${VERSION} --exact --ignore-scripts --no-commit-hooks --yes --force-publish
-
-    - name: Create Pull Request
-      if: steps.changes.outputs.result == 'ok'
-      id: cpr
-      uses: peter-evans/create-pull-request@v4
-      with:
-        token: ${{ secrets.PR_TOKEN }}
-        commit-message: "[NIGHTLY DEV RELEASE] ${{ steps.version.outputs.result }}"
-        committer: foxriver76 <moritz.heusinger@gmail.com>
-        author: foxriver76 <moritz.heusinger@gmail.com>
-        signoff: false
-        branch: nightly-release
-        delete-branch: true
-        title: ${{ steps.version.outputs.result }}
-        body: |
-          Update version by nightly dev release
-        labels: |
-          automated pr
-        assignees: foxriver76
-        draft: false
+      - name: Create Pull Request
+        if: steps.changes.outputs.result == 'ok'
+        id: cpr
+        uses: peter-evans/create-pull-request@v4
+        with:
+          token: ${{ secrets.PR_TOKEN }}
+          commit-message: "[NIGHTLY DEV RELEASE] ${{ steps.version.outputs.result }}"
+          committer: foxriver76 <moritz.heusinger@gmail.com>
+          author: foxriver76 <moritz.heusinger@gmail.com>
+          signoff: false
+          branch: nightly-release
+          delete-branch: true
+          title: ${{ steps.version.outputs.result }}
+          body: |
+            Update version by nightly dev release
+          labels: |
+            automated pr
+          assignees: foxriver76
+          draft: false
