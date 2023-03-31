@@ -108,27 +108,27 @@ jobs:
           cd packages/controller/test/redis-sentinel
           ./test-sentinel.sh
 
-  debug:
-    runs-on: ubuntu-latest
-    steps:
-      - name: debug
-        run: |
-          echo ${{ github.event_name }}
-          echo ${{ github.event.pull_request.user.login }}
-          echo ${{ contains( github.event.pull_request.labels.*.name, 'automated pr') }}
-          echo ${{ github.event.pull_request.base.ref }}
-
   auto-merge:
     if: |
       always() &&
       github.event_name == 'pull_request' &&
-      github.event.pull_request.user.login == 'foxriver76' &&
-      contains( github.event.pull_request.labels.*.name, 'automated pr') &&
-      github.event.pull_request.base.ref == 'refs/heads/master'
+      github.event.pull_request.base.ref == 'master'
 
     needs: [ ci ]
     runs-on: ubuntu-latest
     steps:
+      - id: automerge
+        name: automerge
+        uses: "pascalgn/automerge-action@v0.15.6"
+        env:
+          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
+          MERGE_LABELS: "automated pr"
+          MERGE_FILTER_AUTHOR: "foxriver76"
+          MERGE_FORKS: "false"
+          MERGE_DELETE_BRANCH: "false"
+          UPDATE_LABELS: "automated pr"
+          MERGE_METHOD: "squash"
+
       - name: Publish npm
         if: steps.automerge.outputs.mergeResult == 'merged'
         env:
@@ -140,8 +140,8 @@ jobs:
           npx lerna publish from-package --yes --dist-tag dev
 
       - name: Create Github Release for Nightly
-        uses: ncipollo/release-action@v1
         if: steps.automerge.outputs.mergeResult == 'merged'
+        uses: ncipollo/release-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
@@ -151,19 +151,7 @@ jobs:
           prerelease: true
           body: 'nightly release'
 
-      - name: Create Github Release for Nightly
-        uses: ncipollo/release-action@v1
-        if: steps.automerge.outputs.mergeResult == 'merged'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag: v${{ github.event.pull_request.title }}
-          name: Release v${{ github.event.pull_request.title }}
-          draft: false
-          prerelease: true
-          body: 'nightly release'
-
-      - name: Notify Sentry.io about the Nightly release#
+      - name: Notify Sentry.io about the Nightly release
         if: steps.automerge.outputs.mergeResult == 'merged'
         env:
           VERSION: ${{ github.event.pull_request.title }}
@@ -177,12 +165,6 @@ jobs:
           sentry-cli releases new $SENTRY_VERSION
           sentry-cli releases set-commits $SENTRY_VERSION --auto
           sentry-cli releases finalize $SENTRY_VERSION
-
-      - name: automerge
-        uses: "pascalgn/automerge-action@v0.15.6"
-        env:
-          GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
-          MERGE_METHOD: "squash"
 
   # Deploys the final package to NPM when a versioned tag was pushed
   deploy:
