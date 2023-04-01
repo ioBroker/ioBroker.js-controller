@@ -82,7 +82,9 @@ function testAdapter(options) {
                 ready: () => {
                     resolve();
                 },
-                compact: true
+                compact: true,
+                /** activate the log transporter to be tested */
+                logTransporter: true
             });
         });
     }
@@ -97,7 +99,7 @@ function testAdapter(options) {
             return;
         }
 
-        context.states.getState('system.adapter.' + context.adapterShortName + '.0.alive', (err, state) => {
+        context.states.getState(`system.adapter.${context.adapterShortName}.0.alive`, (err, state) => {
             if (err) {
                 console.error(err);
             }
@@ -107,60 +109,6 @@ function testAdapter(options) {
                 }
             } else {
                 setTimeout(() => checkConnectionOfAdapter(isConnected, cb, counter + 1), 1000);
-            }
-        });
-    }
-
-    // TODO: This is unused:
-    // eslint-disable-next-line no-unused-vars
-    function checkValueOfState(id, value, cb, counter) {
-        counter = counter || 0;
-        if (counter > 20) {
-            if (cb) {
-                cb('Cannot check value Of State ' + id);
-            }
-            return;
-        }
-
-        context.states.getState(id, (err, state) => {
-            if (err) {
-                console.error(err);
-            }
-            if (value === null && !state) {
-                if (cb) {
-                    cb();
-                }
-            } else if (state && (value === undefined || state.val === value)) {
-                if (cb) {
-                    cb();
-                }
-            } else {
-                setTimeout(function () {
-                    checkValueOfState(id, value, cb, counter + 1);
-                }, 500);
-            }
-        });
-    }
-
-    // TODO: This is unused:
-    // eslint-disable-next-line no-unused-vars
-    function sendTo(target, command, message, callback) {
-        context.onControllerStateChanged = function (id, state) {
-            if (id === 'messagebox.system.adapter.test.0') {
-                callback(state.message);
-            }
-        };
-
-        context.states.pushMessage('system.adapter.' + target, {
-            command: command,
-            message: message,
-            from: 'system.adapter.test.0',
-            callback: {
-                message: message,
-                // eslint-disable-next-line no-undef
-                id: sendToID++, // TODO: sendToID is undefined!
-                ack: false,
-                time: Date.now()
             }
         });
     }
@@ -336,49 +284,60 @@ function testAdapter(options) {
         // sendToHost - cannot be tested
 
         // this test is 15 seconds long. Enable it only if ready to push
-        /*it(options.name + ' ' + context.adapterShortName + ' adapter: Check if uptime changes', function (done) {
-         this.timeout(20000);
+        /*
+        it(`${options.name} ${context.adapterShortName} adapter: Check if uptime changes`, function (done) {
+            this.timeout(20_000);
 
-         context.states.getState('system.adapter.' + context.adapterShortName + '.0.uptime', function (err, state1) {
-         expect(err).to.be.not.ok;
-         expect(state1).to.be.ok;
-         expect(state1.val).to.be.ok;
+            context.states.getState(`system.adapter.${context.adapterShortName}.0.uptime`, function (err, state1) {
+                expect(err).to.be.not.ok;
+                expect(state1).to.be.ok;
+                expect(state1.val).to.be.ok;
 
-         setTimeout(function () {
-         context.states.getState('system.adapter.' + context.adapterShortName + '.0.uptime', function (err, state2) {
-         expect(err).to.be.not.ok;
-         expect(state2).to.be.ok;
-         expect(state2.val).to.be.ok;
-         if (state2.val !== state1.val) {
-         expect(state2.val).to.be.above(state1.val);
-         done();
-         } else {
-         setTimeout(function () {
-         context.states.getState('system.adapter.' + context.adapterShortName + '.0.uptime', function (err, state2) {
-         expect(err).to.be.not.ok;
-         expect(state2).to.be.ok;
-         expect(state2.val).to.be.ok;
-         if (state2.val !== state1.val) {
-         expect(state2.val).to.be.above(state1.val);
-         done();
-         } else {
-         setTimeout(function () {
-         context.states.getState('system.adapter.' + context.adapterShortName + '.0.uptime', function (err, state2) {
-         expect(err).to.be.not.ok;
-         expect(state2).to.be.ok;
-         expect(state2.val).to.be.ok;
-         expect(state2.val).to.be.above(state1.val);
-         done();
-         });
-         }, 6000);
-         }
-         });
-         }, 5000);
-         }
-         });
-         }, 5000);
-         });
-         });*/
+                setTimeout(function () {
+                    context.states.getState(
+                        `system.adapter.${context.adapterShortName}.0.uptime`,
+                        function (err, state2) {
+                            expect(err).to.be.not.ok;
+                            expect(state2).to.be.ok;
+                            expect(state2.val).to.be.ok;
+                            if (state2.val !== state1.val) {
+                                expect(state2.val).to.be.above(state1.val);
+                                done();
+                            } else {
+                                setTimeout(function () {
+                                    context.states.getState(
+                                        `system.adapter.${context.adapterShortName}.0.uptime`,
+                                        function (err, state2) {
+                                            expect(err).to.be.not.ok;
+                                            expect(state2).to.be.ok;
+                                            expect(state2.val).to.be.ok;
+                                            if (state2.val !== state1.val) {
+                                                expect(state2.val).to.be.above(state1.val);
+                                                done();
+                                            } else {
+                                                setTimeout(function () {
+                                                    context.states.getState(
+                                                        `system.adapter.${context.adapterShortName}.0.uptime`,
+                                                        function (err, state2) {
+                                                            expect(err).to.be.not.ok;
+                                                            expect(state2).to.be.ok;
+                                                            expect(state2.val).to.be.ok;
+                                                            expect(state2.val).to.be.above(state1.val);
+                                                            done();
+                                                        }
+                                                    );
+                                                }, 6_000);
+                                            }
+                                        }
+                                    );
+                                }, 5_000);
+                            }
+                        }
+                    );
+                }, 5_000);
+            });
+        });
+         */
 
         after(`${options.name} ${context.adapterShortName} adapter: Stop js-controller`, async function () {
             this.timeout(35000);
