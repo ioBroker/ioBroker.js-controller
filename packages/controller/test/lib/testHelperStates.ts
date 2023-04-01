@@ -1,6 +1,6 @@
 import type { TestContext } from '../_Types';
 
-export function register(it: Mocha.TestFunction, expect: Chai.Assertion, context: TestContext): void {
+export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
     // deleteChannel
     // deleteState
     // getDevices
@@ -16,12 +16,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.Assertion, context
     it(testName + 'requireLog should activate corresponding state', async () => {
         // default should be false or non-existent
         let state = await context.states.getState(`system.adapter.${context.adapter.namespace}.logging`);
-        expect(state?.val as any).to.be.not.ok;
+        expect(state?.val).to.be.not.ok;
 
         // now activate
         await context.adapter.requireLog!(true);
         state = await context.states.getState(`system.adapter.${context.adapter.namespace}.logging`);
-        expect(state!.val as any).to.be.true;
+        expect(state!.val).to.be.true;
 
         // clean up
         await context.adapter.requireLog!(false);
