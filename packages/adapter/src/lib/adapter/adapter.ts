@@ -663,11 +663,21 @@ export class AdapterClass extends EventEmitter {
     protected host?: string;
     protected common?: Record<string, any>;
     private mboxSubscribed?: boolean;
-    protected stop?: () => Promise<void>;
+    /** Stop the adapter */
+    stop?: () => Promise<void>;
     protected version?: string;
+    /** Stop the adapter only defined in compact, not for external usage */
     protected kill?: () => Promise<void>;
-    protected processLog?: (msg: any) => void;
-    protected requireLog?: (_isActive: boolean, options?: Partial<GetUserGroupsOptions>) => void;
+    processLog?: (msg: any) => void;
+    /**
+     * Start or stop subscribing to log messages
+     * The method is only available if logTransporter is active via io-pack or adapter options
+     * Note, that stopping will stop after 10 seconds, not immediately
+     *
+     * @param isActive - if log subscription should be activated or deactivated
+     * @param options - options passed to setState e.g. user permissions
+     */
+    requireLog?: (isActive: boolean, options?: Partial<GetUserGroupsOptions>) => Promise<void> | void;
     private logOffTimer?: NodeJS.Timeout | null;
     private logRedirect?: (isActive: boolean, id: string) => void;
     private logRequired?: boolean;
@@ -8173,7 +8183,7 @@ export class AdapterClass extends EventEmitter {
             id = mId;
         }
 
-        if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
+        if (options?.user && options.user !== SYSTEM_ADMIN_USER) {
             let obj: ioBroker.StateObject;
             try {
                 obj = (await this._checkStates(id, options, 'setState')).objs[0];
@@ -10618,55 +10628,59 @@ export class AdapterClass extends EventEmitter {
         this._options.logTransporter = this._options.logTransporter || this.ioPack.common.logTransporter;
 
         if (this._options.logTransporter) {
-            this.requireLog = (isActive, options) => {
-                if (adapterStates) {
-                    if (this.logRequired !== isActive) {
-                        this.logRequired = isActive; // remember state
-                        if (!isActive) {
-                            if (this.logOffTimer) {
-                                clearTimeout(this.logOffTimer);
-                            }
-                            // disable log receiving after 10 seconds
-                            this.logOffTimer = setTimeout(() => {
-                                this.logOffTimer = null;
-                                this._logger.silly(`${this.namespaceLog} Change log subscriber state: FALSE`);
-                                this.outputCount++;
-                                if (adapterStates) {
-                                    this.setState(
-                                        `system.adapter.${this.namespace}.logging`,
-                                        {
-                                            val: false,
-                                            ack: true,
-                                            from: `system.adapter.${this.namespace}`
-                                        },
-                                        options
-                                    );
-                                }
-                            }, 10_000);
-                        } else {
-                            if (this.logOffTimer) {
-                                clearTimeout(this.logOffTimer);
-                                this.logOffTimer = null;
-                            } else {
-                                this._logger.silly(`${this.namespaceLog} Change log subscriber state: true`);
-                                this.outputCount++;
-                                this.setState(
+            this.requireLog = async (isActive, options) => {
+                if (!adapterStates) {
+                    return;
+                }
+
+                if (this.logRequired !== isActive) {
+                    this.logRequired = isActive; // remember state
+                    if (!isActive) {
+                        if (this.logOffTimer) {
+                            clearTimeout(this.logOffTimer);
+                        }
+                        // disable log receiving after 10 seconds
+                        this.logOffTimer = setTimeout(() => {
+                            this.logOffTimer = null;
+                            this._logger.silly(`${this.namespaceLog} Change log subscriber state: FALSE`);
+                            this.outputCount++;
+                            if (adapterStates) {
+                                this.setForeignState(
                                     `system.adapter.${this.namespace}.logging`,
                                     {
-                                        val: true,
+                                        val: false,
                                         ack: true,
                                         from: `system.adapter.${this.namespace}`
                                     },
                                     options
                                 );
                             }
+                        }, 10_000);
+                    } else {
+                        if (this.logOffTimer) {
+                            clearTimeout(this.logOffTimer);
+                            this.logOffTimer = null;
+                        } else {
+                            this._logger.silly(`${this.namespaceLog} Change log subscriber state: true`);
+                            this.outputCount++;
+                            await this.setForeignStateAsync(
+                                `system.adapter.${this.namespace}.logging`,
+                                {
+                                    val: true,
+                                    ack: true,
+                                    from: `system.adapter.${this.namespace}`
+                                },
+                                options
+                            );
                         }
                     }
                 }
             };
 
             this.processLog = msg => {
-                msg && !this._stopInProgress && this.emit('log', msg);
+                if (msg && !this._stopInProgress) {
+                    this.emit('log', msg);
+                }
             };
 
             adapterStates.subscribeLog(`system.adapter.${this.namespace}`);
