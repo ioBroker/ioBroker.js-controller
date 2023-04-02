@@ -134,7 +134,7 @@ function register(it, expect, context) {
         expect(state.toString('utf-8')).to.be.equal('1234');
     });
 
-    it(testName + 'writeFile', async () => {
+    it(testName + 'writeFile with binary content and subscription', async () => {
         const objId = `vis.0`;
         const fileName = 'testFile.bin';
         const dataBinary = Buffer.from('1234');
@@ -168,6 +168,31 @@ function register(it, expect, context) {
 
         expect(mimeType).to.be.equal('application/octet-stream');
         expect(file.toString('utf8')).to.be.equal(dataBinary.toString('utf8'));
+    });
+
+    it(testName + 'writeFile with textual content', async () => {
+        const objId = `vis.0`;
+        /** unknown extension but string content should lead to plain text */
+        const fileName = 'testFile.fn';
+        const dataText = "these are not the droids you're looking for";
+        // create an object of type file first
+        await context.adapter.setForeignObjectAsync(objId, {
+            type: 'meta',
+            common: {
+                type: 'meta.user'
+            },
+            native: {}
+        });
+
+        // now we write a file state
+        await context.adapter.writeFileAsync(objId, fileName, dataText);
+
+        await context.adapter.unsubscribeForeignFiles(objId, '*');
+
+        const { file, mimeType } = await context.adapter.readFileAsync(objId, fileName);
+
+        expect(mimeType).to.be.equal('text/plain');
+        expect(file).to.be.equal(dataText);
     });
 
     it(testName + 'deleteFile', async () => {
