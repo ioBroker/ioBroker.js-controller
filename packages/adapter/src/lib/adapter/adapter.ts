@@ -7099,12 +7099,12 @@ export class AdapterClass extends EventEmitter {
     }
 
     sendToHost(
-        hostName: string,
+        hostName: string | null,
         message: any,
         callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo
     ): void;
     sendToHost(
-        hostName: string,
+        hostName: string | null,
         command: string,
         message: any,
         callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo
@@ -7116,7 +7116,7 @@ export class AdapterClass extends EventEmitter {
      * This function sends a message to specific host or all hosts.
      * If no host name given (e.g. null), the callback argument will be ignored. Because normally many responses will come.
      *
-     * @param hostName name of the host where the message must be sent to. E.g. "myPC" or "system.host.myPC". If argument is empty, the message will be sent to all hosts.
+     * @param hostName name of the host where the message must be sent to. E.g. "myPC" or "system.host.myPC". If argument is null, the message will be sent to all hosts.
      * @param command command name. One of: "cmdExec", "getRepository", "getInstalled", "getVersion", "getDiagData", "getLocationOnDisk", "getDevList", "getLogs", "delLogs", "readDirAsZip", "writeDirAsZip", "readObjectsAsZip", "writeObjectsAsZip", "checkLogging". Commands can be checked in controller.js (function processMessage)
      * @param message object that will be given as argument for request
      * @param callback optional return result
@@ -7133,7 +7133,10 @@ export class AdapterClass extends EventEmitter {
             command = 'send';
         }
 
-        Validator.assertString(hostName, 'hostName');
+        if (hostName !== null) {
+            Validator.assertString(hostName, 'hostName');
+        }
+
         Validator.assertString(command, 'command');
 
         if (!tools.isObject(callback)) {
