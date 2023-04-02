@@ -4664,7 +4664,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    subscribeForeignFiles(id: string, pattern: string | string[], options: unknown): void;
+    subscribeForeignFiles(id: string, pattern: string | string[], options?: unknown): void;
 
     /**
      * Subscribe for the changes of files in specific instance.

@@ -1,10 +1,6 @@
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node:true */
-/* jshint expr:true */
-'use strict';
+import type { TestContext } from '../_Types';
 
-function register(it, expect, context) {
+export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
     const testName = `${context.name} ${context.adapterShortName} files: `;
     // chmodFile
     // readDir
@@ -19,6 +15,7 @@ function register(it, expect, context) {
         await context.adapter.setForeignObjectAsync(objId, {
             type: 'state',
             common: {
+                role: 'state',
                 name: objId,
                 read: true,
                 write: true,
@@ -34,13 +31,14 @@ function register(it, expect, context) {
     it(testName + 'setBinaryState', async () => {
         const objId = `${context.adapter.namespace}.testSetBinaryState`;
 
-        const receivedPromise = new Promise(resolve => {
+        const receivedPromise = new Promise<void>(resolve => {
             context.onAdapterStateChanged = (id, state) => {
                 if (id === objId) {
                     if (typeof state !== 'object') {
                         throw new Error(`Expected object, but got ${typeof state}`);
                     }
-                    if (!state.binary) {
+                    // @ts-expect-error binary states will be removed soon
+                    if (!state?.binary) {
                         throw new Error(`Binary flag does not set`);
                     }
                     if (state.val !== null) {
@@ -56,6 +54,7 @@ function register(it, expect, context) {
         await context.adapter.setForeignObjectAsync(objId, {
             type: 'state',
             common: {
+                role: 'state',
                 name: objId,
                 read: true,
                 write: true,
@@ -75,7 +74,7 @@ function register(it, expect, context) {
     it(testName + 'delBinaryState', async () => {
         const objId = `${context.adapter.namespace}.testSetBinaryState`;
 
-        const receivedPromise = new Promise(resolve => {
+        const receivedPromise = new Promise<void>(resolve => {
             context.onAdapterStateChanged = (id, state) => {
                 if (id === objId) {
                     expect(state).to.be.equal(null);
@@ -98,6 +97,7 @@ function register(it, expect, context) {
         await context.adapter.setForeignObjectAsync(objId, {
             type: 'state',
             common: {
+                role: 'state',
                 name: objId,
                 read: true,
                 write: true,
@@ -108,9 +108,8 @@ function register(it, expect, context) {
 
         // now we write a binary state
         await context.adapter.setForeignBinaryStateAsync(objId, Buffer.from('1234'));
-        /** @type Buffer */
         const state = await context.adapter.getForeignBinaryStateAsync(objId);
-        expect(state.toString('utf-8')).to.be.equal('1234');
+        expect(state!.toString('utf-8')).to.be.equal('1234');
     });
 
     it(testName + 'getBinaryState', async () => {
@@ -119,6 +118,7 @@ function register(it, expect, context) {
         await context.adapter.setForeignObjectAsync(objId, {
             type: 'state',
             common: {
+                role: 'state',
                 name: objId,
                 read: true,
                 write: true,
@@ -131,7 +131,7 @@ function register(it, expect, context) {
         await context.adapter.setBinaryStateAsync(objId, Buffer.from('1234'));
         /** @type Buffer */
         const state = await context.adapter.getBinaryStateAsync(objId);
-        expect(state.toString('utf-8')).to.be.equal('1234');
+        expect(state!.toString('utf-8')).to.be.equal('1234');
     });
 
     it(testName + 'writeFile with binary content and subscription', async () => {
@@ -142,6 +142,7 @@ function register(it, expect, context) {
         await context.adapter.setForeignObjectAsync(objId, {
             type: 'meta',
             common: {
+                name: 'Files and more',
                 type: 'meta.user'
             },
             native: {}
@@ -149,7 +150,7 @@ function register(it, expect, context) {
 
         await context.adapter.subscribeForeignFiles(objId, '*');
 
-        const receivedPromise = new Promise(resolve => {
+        const receivedPromise = new Promise<void>(resolve => {
             context.onAdapterFileChanged = (id, _fileName, size) => {
                 if (id === objId && fileName === _fileName) {
                     expect(size).to.be.equal(dataBinary.byteLength);
@@ -163,7 +164,6 @@ function register(it, expect, context) {
 
         await context.adapter.unsubscribeForeignFiles(objId, '*');
 
-        /** @type Buffer */
         const { file, mimeType } = await context.adapter.readFileAsync(objId, fileName);
 
         expect(mimeType).to.be.equal('application/octet-stream');
@@ -179,6 +179,7 @@ function register(it, expect, context) {
         await context.adapter.setForeignObjectAsync(objId, {
             type: 'meta',
             common: {
+                name: 'Files and more',
                 type: 'meta.user'
             },
             native: {}
@@ -201,7 +202,7 @@ function register(it, expect, context) {
 
         await context.adapter.subscribeForeignFiles(objId, '*');
 
-        const receivedPromise = new Promise(resolve => {
+        const receivedPromise = new Promise<void>(resolve => {
             context.onAdapterFileChanged = (id, _fileName, size) => {
                 if (id === objId && fileName === _fileName) {
                     expect(size).to.be.equal(null);
@@ -213,7 +214,6 @@ function register(it, expect, context) {
         // now we write a file state
         await Promise.all([receivedPromise, context.adapter.unlinkAsync(objId, fileName)]);
 
-        /** @type Buffer */
         try {
             await context.adapter.readFileAsync(objId, fileName);
         } catch (error) {
