@@ -857,20 +857,22 @@ export class ObjectsInRedisClient {
     }
 
     // -------------- FILE FUNCTIONS -------------------------------------------
-    private async _setBinaryState(id: string, data: Buffer, callback?: ioBroker.ErrorCallback): Promise<void> {
+    /**
+     * Sets a buffer to the Redis DB
+     *
+     * @param id id of the file
+     * @param data content, if string is passed it will be converted to a Buffer
+     */
+    private async _setBinaryState(id: string, data: Buffer | string): Promise<void> {
         if (!this.client) {
-            return tools.maybeCallbackWithRedisError(callback, ERRORS.ERROR_DB_CLOSED);
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
         if (!Buffer.isBuffer(data)) {
             data = Buffer.from(data);
         }
-        try {
-            await this.client.set(id, data);
-            await this.client.publish(id, data.byteLength.toString(10));
-            return tools.maybeCallback(callback);
-        } catch (e) {
-            return tools.maybeCallbackWithRedisError(callback, e);
-        }
+
+        await this.client.set(id, data);
+        await this.client.publish(id, data.byteLength.toString(10));
     }
 
     /**
@@ -1037,7 +1039,7 @@ export class ObjectsInRedisClient {
     private async _writeFile(
         id: string,
         name: string,
-        data: Buffer,
+        data: Buffer | string,
         options: { virtualFile?: any; user?: any; group?: any; mode?: any; mimeType?: string },
         callback: ioBroker.ErrorCallback | undefined,
         meta: {
@@ -1055,9 +1057,10 @@ export class ObjectsInRedisClient {
         if (!ext) {
             return tools.maybeCallbackWithError(callback, new Error(`Invalid name "${name}" on _writeFile`));
         }
-        const mime = utils.getMimeType(ext);
-        const _mimeType = mime.mimeType;
-        const isBinary = mime.isBinary;
+
+        const isTextData = typeof data === 'string';
+
+        const { mimeType, isBinary } = utils.getMimeType(ext[0], isTextData);
 
         const metaID = this.getFileId(id, name, true);
         if (!this.client) {
@@ -1096,7 +1099,7 @@ export class ObjectsInRedisClient {
                 delete meta.notExists;
             }
 
-            meta.mimeType = options.mimeType || _mimeType;
+            meta.mimeType = options.mimeType || mimeType;
             meta.binary = isBinary;
             meta.acl.ownerGroup =
                 meta.acl.ownerGroup ||

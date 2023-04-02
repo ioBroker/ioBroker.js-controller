@@ -23,6 +23,13 @@ const USER_STARTS_WITH = CONSTS.USER_STARTS_WITH;
 const GROUP_STARTS_WITH = CONSTS.GROUP_STARTS_WITH;
 const memStore: Record<string, Buffer> = {};
 
+export interface FileMimeInformation {
+    /** the mime type, of the file */
+    mimeType: string;
+    /** if content is binary or textual */
+    isBinary: boolean;
+}
+
 export interface ACLObject {
     owner: string;
     ownerGroup: string;
@@ -43,13 +50,18 @@ export type CheckFileRightsCallback = (err: Error | null | undefined, options: R
 
 const textTypes = ['.js', '.json', '.svg'];
 
-function isKnownMimeType(ext: string): { mimeType: string; isBinary: boolean } | null {
+/**
+ * Checks if the mime type, of an extension is a known one and if it corresponds to binary content
+ *
+ * @param ext the file extension e.g. `.txt`
+ */
+function getKnownMimeType(ext: string): FileMimeInformation | null {
     try {
         const mimeType = mime.getType(ext);
         if (mimeType) {
             return { mimeType, isBinary: !mimeType.startsWith('text/') && !textTypes.includes(ext) };
         }
-    } catch (error) {
+    } catch {
         // ignore
     }
 
@@ -95,20 +107,23 @@ const defaultAcl = {
 let users: Record<string, any> = {};
 let groups: ioBroker.GroupObject[] = [];
 
-export function getMimeType(ext: string[] | string): { mimeType: string; isBinary: boolean } {
+/**
+ * Determines the mime type, of an extension and if it is binary content
+ *
+ * @param ext file extension e.g. `.txt`
+ * @param isTextData if content is of type string
+ */
+export function getMimeType(ext: string, isTextData: boolean): FileMimeInformation {
     if (!ext) {
-        return { mimeType: 'application/octet-stream', isBinary: true };
+        return { mimeType: isTextData ? 'text/plain' : 'application/octet-stream', isBinary: !isTextData };
     }
-    // if it is result of match, get '.ext'
-    if (ext instanceof Array) {
-        ext = ext[0];
-    }
+
     ext = ext.toLowerCase();
-    const _type = isKnownMimeType(ext);
-    if (_type) {
-        return _type;
+    const mimeInfo = getKnownMimeType(ext);
+    if (mimeInfo) {
+        return mimeInfo;
     } else {
-        return { mimeType: 'application/octet-stream', isBinary: true };
+        return { mimeType: isTextData ? 'text/plain' : 'application/octet-stream', isBinary: !isTextData };
     }
 }
 
