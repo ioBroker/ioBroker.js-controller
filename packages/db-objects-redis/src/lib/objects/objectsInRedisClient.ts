@@ -1202,7 +1202,7 @@ export class ObjectsInRedisClient {
             buffer = buffer.toString();
         }
 
-        return { data: buffer, mimeType: mimeType };
+        return { file: buffer, mimeType: mimeType };
     }
 
     // User has provided no callback, we will return the Promise
@@ -1252,8 +1252,8 @@ export class ObjectsInRedisClient {
                 return tools.maybeCallbackWithError(callback, err);
             } else {
                 try {
-                    const { data, mimeType } = await this._readFile(id, name, meta);
-                    return tools.maybeCallbackWithError(callback, null, data, mimeType);
+                    const { file, mimeType } = await this._readFile(id, name, meta);
+                    return tools.maybeCallbackWithError(callback, null, file, mimeType);
                 } catch (e) {
                     return tools.maybeCallbackWithError(callback, e);
                 }
