@@ -188,8 +188,6 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         // now we write a file state
         await context.adapter.writeFileAsync(objId, fileName, dataText);
 
-        await context.adapter.unsubscribeForeignFiles(objId, '*');
-
         const { file, mimeType } = await context.adapter.readFileAsync(objId, fileName);
 
         expect(mimeType).to.be.equal('text/plain');
