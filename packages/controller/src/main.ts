@@ -3686,7 +3686,9 @@ async function checkVersions(id: string, deps: Dependencies, globalDeps: Depende
     }
 }
 
-// Store process IDS to make possible kill them all by restart
+/**
+ * Store process IDS to make possible kill them all by restart
+ */
 function storePids(): void {
     if (!storeTimer) {
         storeTimer = setTimeout(() => {
@@ -3989,7 +3991,7 @@ function startScheduledInstance(callback?: () => void): void {
                         delete proc.process;
                     }
                     if (proc.process) {
-                        storePids(); // Store all pids to make possible kill them all
+                        storePids();
                         logger.info(`${hostLogPrefix} instance ${instance._id} started with pid ${proc.process.pid}`);
 
                         proc.process.on('exit', (code, signal) => {
@@ -4016,7 +4018,7 @@ function startScheduledInstance(callback?: () => void): void {
                             if (proc?.process) {
                                 delete proc.process;
                             }
-                            storePids(); // Store all pids to make possible kill them all
+                            storePids();
                         });
                     }
 
@@ -4362,7 +4364,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                     logger.info(`${hostLogPrefix} All instances are stopped.`);
                                     allInstancesStopped = true;
                                 }
-                                storePids(); // Store all pids to make possible kill them all
+                                storePids();
                                 return;
                             } else {
                                 //noinspection JSUnresolvedVariable
@@ -4546,7 +4548,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                             }
                         }
 
-                        storePids(); // Store all pids to make possible kill them all
+                        storePids();
                     });
                 };
 
@@ -4617,7 +4619,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                         });
                     }
 
-                    storePids(); // Store all pids to make possible kill them all
+                    storePids();
 
                     if (!proc.startedInCompactMode && !proc.startedAsCompactGroup && proc.process) {
                         proc.process.on('exit', exitHandler);
@@ -4673,15 +4675,16 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                 }
 
                                 proc.process = {
-                                    // @ts-expect-error todo add types for ts adapter procs
-                                    logic: (await import(adapterMainFile))({
+                                    // @ts-expect-error TODO type compact processes too
+                                    // eslint-disable-next-line @typescript-eslint/no-var-requires
+                                    logic: require(adapterMainFile)({
                                         logLevel,
                                         compactInstance: _instance,
                                         compact: true
                                     })
                                 };
 
-                                // @ts-expect-error todo add types for ts adapter procs
+                                // @ts-expect-error todo add types for compact adapter procs
                                 proc.process.logic.on('exit', exitHandler);
 
                                 proc.startedInCompactMode = true;
@@ -4693,7 +4696,13 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                 if (proc.process) {
                                     delete proc.process;
                                 }
-                                states!.setState(`${id}.sigKill`, { val: -1, ack: false, from: hostObjectPrefix }); // if started let it end itself
+
+                                // if started let it end itself
+                                await states!.setState(`${id}.sigKill`, {
+                                    val: -1,
+                                    ack: false,
+                                    from: hostObjectPrefix
+                                });
                             }
                         } else {
                             logger.warn(
@@ -4868,7 +4877,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                             logger.info(`${hostLogPrefix} All instances are stopped.`);
                                             allInstancesStopped = true;
 
-                                            storePids(); // Store all pids to make possible kill them all
+                                            storePids();
                                             return;
                                         }
 
@@ -4884,10 +4893,11 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                             );
 
                                             compactProcs[currentCompactGroup].instances.forEach(id => {
-                                                //noinspection JSUnresolvedVariable
                                                 if (proc.restartTimer) {
-                                                    clearTimeout(procs[id].restartTimer);
+                                                    clearTimeout(proc.restartTimer);
                                                 }
+
+                                                // START_IMMEDIATELY_AFTER_STOP is special code that adapter wants itself to be restarted immediately
                                                 proc.restartTimer = setTimeout(
                                                     _id => startInstance(_id),
                                                     code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP
@@ -4897,14 +4907,13 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                                         : 30_000,
                                                     id
                                                 );
-                                                // 156 is special code that adapter wants itself to be restarted immediately
                                             });
                                         } else {
                                             logger.info(
                                                 `${hostLogPrefix} Do not restart compact group controller ${currentCompactGroup} because no instances assigned to him`
                                             );
                                         }
-                                        storePids(); // Store all pids to make possible kill them all
+                                        storePids();
                                     });
                                 };
 
@@ -4922,25 +4931,26 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                         handleAdapterProcessStart();
                     }
                 } else {
-                    // set to 0 to stop any pot. already running instances, especially broken compactModes
-                    states!.setState(
-                        `${id}.sigKill`,
-                        {
+                    try {
+                        // set to 0 to stop any pot. already running instances, especially broken compactModes
+                        await states!.setState(`${id}.sigKill`, {
                             val: 0,
                             ack: false,
                             from: hostObjectPrefix
-                        },
-                        () => handleAdapterProcessStart()
-                    );
+                        });
+                    } catch {
+                        // ignore
+                    }
+                    handleAdapterProcessStart();
                 }
             } else {
-                !wakeUp &&
-                    proc &&
+                if (!wakeUp && proc) {
                     logger.warn(
                         `${hostLogPrefix} instance ${instance._id} ${
                             proc.stopping ? 'still' : 'already'
                         } running with pid ${proc.process!.pid}`
                     );
+                }
                 if (proc.stopping) {
                     delete proc.stopping;
                 }
@@ -4989,7 +4999,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                     logger.info(`${hostLogPrefix} instance ${instance._id} could not be started: ${err}`);
                 }
                 if (proc.process) {
-                    storePids(); // Store all pids to make possible kill them all
+                    storePids();
                     logger.info(`${hostLogPrefix} instance ${instance._id} started with pid ${proc.process.pid}`);
 
                     proc.process.on('exit', (code, signal) => {
@@ -5019,7 +5029,8 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                             if (proc) {
                                 delete proc.process;
                             }
-                            storePids(); // Store all pids to make possible kill them all
+
+                            storePids();
                         });
                     });
                 }
@@ -5036,7 +5047,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
     }
 }
 
-function stopInstance(id: string, force: boolean, callback?: (() => void) | null): void {
+async function stopInstance(id: string, force: boolean, callback?: (() => void) | null): Promise<void> {
     const proc = procs[id];
 
     if (!proc) {
@@ -5181,50 +5192,55 @@ function stopInstance(id: string, force: boolean, callback?: (() => void) | null
                         }
                     }, timeoutDuration);
                 } else if (!proc.startedAsCompactGroup) {
-                    states!.setState(`${id}.sigKill`, { val: -1, ack: false, from: hostObjectPrefix }, err => {
-                        // send kill signal
-                        logger.info(`${hostLogPrefix} stopInstance ${instance._id} send kill signal`);
+                    let err;
+                    try {
+                        // if started let it end itself as first try
+                        await states!.setState(`${id}.sigKill`, { val: -1, ack: false, from: hostObjectPrefix });
+                    } catch (e) {
+                        err = e;
+                    }
+                    // send kill signal
+                    logger.info(`${hostLogPrefix} stopInstance ${instance._id} send kill signal`);
+                    const proc = procs[id];
+                    const stopTimeout = stopTimeouts[id];
+
+                    if (!err) {
+                        if (proc) {
+                            proc.stopping = true;
+                        }
+                        if (typeof callback === 'function') {
+                            callback();
+                            callback = null;
+                        }
+                    }
+                    const timeoutDuration = instance.common.stopTimeout || 1000;
+                    // If no response from adapter, kill it in 1 second
+                    stopTimeout.callback = callback;
+                    stopTimeout.timeout = setTimeout(() => {
                         const proc = procs[id];
                         const stopTimeout = stopTimeouts[id];
 
-                        if (!err) {
-                            if (proc) {
-                                proc.stopping = true;
-                            }
-                            if (typeof callback === 'function') {
-                                callback();
-                                callback = null;
-                            }
+                        if (stopTimeout) {
+                            stopTimeout.timeout = null;
                         }
-                        const timeoutDuration = instance.common.stopTimeout || 1000;
-                        // If no response from adapter, kill it in 1 second
-                        stopTimeout.callback = callback;
-                        stopTimeout.timeout = setTimeout(() => {
-                            const proc = procs[id];
-                            const stopTimeout = stopTimeouts[id];
 
-                            if (stopTimeout) {
-                                stopTimeout.timeout = null;
+                        if (proc?.process && !proc.startedAsCompactGroup) {
+                            logger.info(
+                                `${hostLogPrefix} stopInstance ${instance._id} killing pid ${proc.process.pid}`
+                            );
+                            proc.stopping = true;
+                            try {
+                                proc.process.kill(); // call stop directly in adapter.js or call kill of process
+                            } catch (e) {
+                                logger.error(`${hostLogPrefix} Cannot stop ${id}: ${JSON.stringify(e)}`);
                             }
-
-                            if (proc?.process && !proc.startedAsCompactGroup) {
-                                logger.info(
-                                    `${hostLogPrefix} stopInstance ${instance._id} killing pid ${proc.process.pid}`
-                                );
-                                proc.stopping = true;
-                                try {
-                                    proc.process.kill(); // call stop directly in adapter.js or call kill of process
-                                } catch (e) {
-                                    logger.error(`${hostLogPrefix} Cannot stop ${id}: ${JSON.stringify(e)}`);
-                                }
-                                delete proc.process;
-                            }
-                            if (stopTimeout && typeof stopTimeout.callback === 'function') {
-                                stopTimeout.callback();
-                                stopTimeout.callback = null;
-                            }
-                        }, timeoutDuration);
-                    }); // if started let it end itself as first try
+                            delete proc.process;
+                        }
+                        if (stopTimeout && typeof stopTimeout.callback === 'function') {
+                            stopTimeout.callback();
+                            stopTimeout.callback = null;
+                        }
+                    }, timeoutDuration);
                 } else {
                     if (proc) {
                         delete proc.process;
@@ -5479,7 +5495,7 @@ function stop(force?: boolean, callback?: () => void): void {
                     }
                 }
                 process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED);
-            }, 1000);
+            }, 1_000);
         }
     });
 }
@@ -5538,7 +5554,7 @@ export function init(compactGroupId?: number): void {
         States = require('@iobroker/js-controller-common-db').getStatesConstructor();
     }
 
-    // Detect if outputs to console are forced. By default they are disabled and redirected to log file
+    // Detect if outputs to console are forced. By default, they are disabled and redirected to log file
     if (
         config.log.noStdout &&
         process.argv &&
@@ -5603,7 +5619,7 @@ export function init(compactGroupId?: number): void {
         logger.info(
             `${hostLogPrefix} ${tools.appName}.js-controller version ${version} ${ioPackage.common.name} starting`
         );
-        logger.info(`${hostLogPrefix} Copyright (c) 2014-2022 bluefox, 2014 hobbyquaker`);
+        logger.info(`${hostLogPrefix} Copyright (c) 2014-2023 bluefox, 2014 hobbyquaker`);
         logger.info(`${hostLogPrefix} hostname: ${hostname}, node: ${process.version}`);
         logger.info(`${hostLogPrefix} ip addresses: ${tools.findIPs().join(' ')}`);
 
@@ -5611,6 +5627,7 @@ export function init(compactGroupId?: number): void {
         const isInNodeModules = controllerDir
             .toLowerCase()
             .includes(`${path.sep}node_modules${path.sep}${title.toLowerCase()}`);
+
         if (isInNodeModules && !tools.isDevServerInstallation()) {
             try {
                 if (!fs.existsSync(`${controllerDir}/../../package.json`)) {
@@ -5661,7 +5678,7 @@ export function init(compactGroupId?: number): void {
         logger.error(`${hostLogPrefix} Can not read js-controller package.json`);
     }
 
-    if (packageJson && packageJson.engines && packageJson.engines.node) {
+    if (packageJson?.engines?.node) {
         let invalidVersion;
         try {
             invalidVersion = !semver.satisfies(process.version, packageJson.engines.node);
@@ -5791,44 +5808,55 @@ export function init(compactGroupId?: number): void {
             }
 
             // Read current state of all log subscribers
-            states!.getKeys('*.logging', (err, keys) => {
-                if (keys && keys.length) {
-                    const oKeys = keys.map(id => id.replace(/\.logging$/, ''));
-                    objects!.getObjects(oKeys, (err, objs) => {
-                        if (!objs) {
-                            return;
-                        }
+            let keys: string[] | undefined;
 
-                        const toDelete = keys!.filter((id, i) => !objs[i]);
-                        keys = keys!.filter((id, i) => objs[i]);
+            try {
+                keys = (await states!.getKeys('*.logging'))!;
+            } catch {
+                // ignore
+            }
 
-                        states!.getStates(keys, (err, objs) => {
-                            if (objs) {
-                                for (let i = 0; i < keys!.length; i++) {
-                                    const obj = objs[i];
-                                    if (obj) {
-                                        if (obj.val === true) {
-                                            logRedirect(
-                                                true,
-                                                keys![i]
-                                                    .substring(0, keys![i].length - '.logging'.length)
-                                                    .replace(/^io\./, ''),
-                                                'starting'
-                                            );
-                                        }
-                                    }
-                                }
-                            }
-                        });
-                        if (toDelete.length) {
-                            toDelete.forEach(id => {
-                                logger.warn(`${hostLogPrefix} logger ${id} was deleted`);
-                                states!.delState(id);
-                            });
+            if (keys?.length) {
+                const oKeys = keys.map(id => id.replace(/\.logging$/, ''));
+                let objs: ioBroker.AnyObject[];
+
+                try {
+                    objs = await objects!.getObjects(oKeys);
+                } catch {
+                    return;
+                }
+
+                const toDelete = keys!.filter((id, i) => !objs[i]);
+                keys = keys!.filter((id, i) => objs[i]);
+
+                let statesArr: (ioBroker.State | null)[] | undefined;
+
+                try {
+                    statesArr = (await states!.getStates(keys))!;
+                } catch {
+                    // ignore
+                }
+
+                if (statesArr) {
+                    for (let i = 0; i < keys!.length; i++) {
+                        const state = statesArr[i];
+                        if (state?.val === true) {
+                            logRedirect(
+                                true,
+                                keys![i].substring(0, keys![i].length - '.logging'.length).replace(/^io\./, ''),
+                                'starting'
+                            );
                         }
+                    }
+                }
+
+                if (toDelete.length) {
+                    toDelete.forEach(id => {
+                        logger.warn(`${hostLogPrefix} logger ${id} was deleted`);
+                        states!.delState(id);
                     });
                 }
-            });
+            }
         });
     });
 
