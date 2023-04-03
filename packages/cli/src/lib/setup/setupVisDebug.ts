@@ -167,9 +167,8 @@ FALLBACK:
         }
 
         if (widgetset) {
-            const { data } = await this.objects.readFile('vis', 'js/config.js', null);
-            // Or types are wrong and data is always string?
-            let content = typeof data === 'string' ? data : data.toString();
+            const { file } = await this.objects.readFile('vis', 'js/config.js', null);
+            let content = typeof file === 'string' ? file : file.toString();
 
             content = content.replace(/[\r\n]/g, '');
             const json: Record<string, any> = JSON.parse(content.match(/"widgetSets":\s(.*)};/)![1]);
