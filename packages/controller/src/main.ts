@@ -5807,10 +5807,10 @@ export function init(compactGroupId?: number): void {
                 }
             }
 
-            // Read current state of all log subscribers
             let keys: string[] | undefined;
 
             try {
+                // Read current state of all log subscribers
                 keys = (await states!.getKeys('*.logging'))!;
             } catch {
                 // ignore
