@@ -32,4 +32,4 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:238](https://github.com/ioBroker/ioBroker.js-controller/blob/d3b924cd/packages/adapter/src/lib/_Types.ts#L238)
+[adapter/src/lib/_Types.ts:238](https://github.com/ioBroker/ioBroker.js-controller/blob/fd495c2e/packages/adapter/src/lib/_Types.ts#L238)
