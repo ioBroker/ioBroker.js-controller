@@ -324,7 +324,8 @@ export interface InternalSendToOptions {
 }
 
 export interface InternalSendToHostOptions {
-    hostName: string;
+    /** if null, send to all hosts */
+    hostName: string | null;
     command: string;
     message: any;
     callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo;
