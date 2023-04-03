@@ -8676,7 +8676,7 @@ export class AdapterClass extends EventEmitter {
                             state = await adapterStates!.getState(aliasId);
                         } catch (e) {
                             // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                            return tools.maybeCallbackWithError(callback, err);
+                            return tools.maybeCallbackWithError(callback, e);
                         }
                     }
 
@@ -8738,7 +8738,7 @@ export class AdapterClass extends EventEmitter {
                         startkey: 'system.adapter.',
                         endkey: 'system.adapter.\u9999'
                     });
-                } catch (e) {
+                } catch {
                     // ignore
                 }
 

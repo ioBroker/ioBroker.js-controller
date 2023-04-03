@@ -4646,72 +4646,73 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
                 // If system has compact mode enabled and adapter supports it and instance has it enabled
                 if (config.system.compact && instance.common.compact && instance.common.runAsCompactMode) {
-                    // compactgroup = 0 is executed by main js.controller, all others as own processes
+                    // compact group = 0 is executed by main js.controller, all others as own processes
                     if (
                         (!compactGroupController && instance.common.compactGroup === 0) ||
                         (compactGroupController && instance.common.compactGroup !== 0)
                     ) {
-                        // set to 0 to stop any pot. already running instances, especially broken compactModes
-                        states!.setState(`${id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix }, async () => {
-                            const proc = procs[id];
-                            const _instance =
-                                instance && instance._id && instance.common ? instance._id.split('.').pop() || 0 : 0;
-                            const logLevel =
-                                instance && instance._id && instance.common
-                                    ? instance.common.loglevel || 'info'
-                                    : 'info';
-                            if (adapterMainFile) {
-                                try {
-                                    decache(adapterMainFile);
+                        try {
+                            // set to 0 to stop any pot. already running instances, especially broken compactModes
+                            await states!.setState(`${id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix });
+                        } catch {
+                            // ignore
+                        }
 
-                                    // Prior to requiring the main file make sure that the esbuild require hook was loaded
-                                    // if this is a TypeScript adapter
-                                    if (adapterMainFile.endsWith('.ts')) {
-                                        require('@alcalzone/esbuild-register');
-                                    }
+                        const proc = procs[id];
+                        const _instance = instance?._id && instance.common ? instance._id.split('.').pop() || 0 : 0;
+                        const logLevel = instance?._id && instance.common ? instance.common.loglevel || 'info' : 'info';
 
-                                    proc.process = {
-                                        // @ts-expect-error todo add types for ts adapter procs
-                                        logic: (await import(adapterMainFile))({
-                                            logLevel,
-                                            compactInstance: _instance,
-                                            compact: true
-                                        })
-                                    };
+                        if (adapterMainFile!) {
+                            try {
+                                decache(adapterMainFile);
 
-                                    // @ts-expect-error todo add types for ts adapter procs
-                                    proc.process.logic.on('exit', exitHandler);
-
-                                    proc.startedInCompactMode = true;
-                                } catch (e) {
-                                    logger.error(
-                                        `${hostLogPrefix} Cannot start ${name}.${_instance} in compact mode. Fallback to normal start! : ${e.message}`
-                                    );
-                                    logger.error(e.stackTrace);
-                                    if (proc.process) {
-                                        delete proc.process;
-                                    }
-                                    states!.setState(`${id}.sigKill`, { val: -1, ack: false, from: hostObjectPrefix }); // if started let it end itself
+                                // Prior to requiring the main file make sure that the esbuild require hook was loaded
+                                // if this is a TypeScript adapter
+                                if (adapterMainFile.endsWith('.ts')) {
+                                    require('@alcalzone/esbuild-register');
                                 }
-                            } else {
-                                logger.warn(
-                                    `${hostLogPrefix} Cannot start ${name}.${_instance} in compact mode: Filename invalid`
-                                );
-                            }
 
-                            if (proc.process && !proc.process.kill) {
-                                // @ts-expect-error todo type it somehow
-                                proc.process.kill = () => {
-                                    states!.setState(`${id}.sigKill`, {
-                                        val: -1,
-                                        ack: false,
-                                        from: hostObjectPrefix
-                                    });
+                                proc.process = {
+                                    // @ts-expect-error todo add types for ts adapter procs
+                                    logic: (await import(adapterMainFile))({
+                                        logLevel,
+                                        compactInstance: _instance,
+                                        compact: true
+                                    })
                                 };
-                            }
 
-                            handleAdapterProcessStart();
-                        });
+                                // @ts-expect-error todo add types for ts adapter procs
+                                proc.process.logic.on('exit', exitHandler);
+
+                                proc.startedInCompactMode = true;
+                            } catch (e) {
+                                logger.error(
+                                    `${hostLogPrefix} Cannot start ${name}.${_instance} in compact mode. Fallback to normal start: ${e.message}`
+                                );
+                                logger.error(e.stackTrace);
+                                if (proc.process) {
+                                    delete proc.process;
+                                }
+                                states!.setState(`${id}.sigKill`, { val: -1, ack: false, from: hostObjectPrefix }); // if started let it end itself
+                            }
+                        } else {
+                            logger.warn(
+                                `${hostLogPrefix} Cannot start ${name}.${_instance} in compact mode: Filename invalid`
+                            );
+                        }
+
+                        if (proc.process && !proc.process.kill) {
+                            // @ts-expect-error todo type it somehow
+                            proc.process.kill = () => {
+                                states!.setState(`${id}.sigKill`, {
+                                    val: -1,
+                                    ack: false,
+                                    from: hostObjectPrefix
+                                });
+                            };
+                        }
+
+                        handleAdapterProcessStart();
                     } else {
                         // a group controller for this group is not yet started, execute one
                         compactProcs[instance.common.compactGroup] = compactProcs[instance.common.compactGroup] || {
@@ -5171,8 +5172,8 @@ function stopInstance(id: string, force: boolean, callback?: (() => void) | null
                             }
                             delete proc.process;
                         } else if (!compactGroupController && proc && proc.process) {
-                            // was compact mode in an other group
-                            delete proc.process; // we consider that the other group controler managed to stop it
+                            // was compact mode in another group
+                            delete proc.process; // we consider that the other group controller managed to stop it
                         }
                         if (stopTimeout && typeof stopTimeout.callback === 'function') {
                             stopTimeout.callback();
@@ -5456,7 +5457,10 @@ function stop(force?: boolean, callback?: () => void): void {
                 }
             }
         }
-        states && states.destroy && (await states.destroy());
+
+        if (states?.destroy) {
+            await states.destroy();
+        }
 
         if (typeof callback === 'function') {
             return void callback();
