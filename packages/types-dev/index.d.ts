@@ -420,7 +420,7 @@ declare global {
         type ReadDirPromise = Promise<NonNullCallbackReturnTypeOf<ReadDirCallback>>;
 
         type ReadFileCallback = (err?: NodeJS.ErrnoException | null, data?: Buffer | string, mimeType?: string) => void;
-        type ReadFilePromise = Promise<{ data: string | Buffer; mimeType?: string }>;
+        type ReadFilePromise = Promise<{ file: string | Buffer; mimeType?: string }>;
 
         /** Contains the return values of chownFile */
         interface ChownFileResult {

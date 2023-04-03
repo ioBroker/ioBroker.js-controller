@@ -6,4 +6,6 @@ export interface TestContext extends Mocha.Context {
     adapter: AdapterClass;
     states: StatesInRedisClient;
     objects: ObjectsInRedisClient;
+    onAdapterStateChanged: ioBroker.StateChangeHandler;
+    onAdapterFileChanged: ioBroker.FileChangeHandler;
 }
