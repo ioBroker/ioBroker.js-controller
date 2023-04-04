@@ -618,7 +618,7 @@ export class AdapterClass extends EventEmitter {
     /** The cache of usernames */
     private usernames: Record<string, { id: string }> = {};
     /** A RegExp to test for forbidden chars in object IDs */
-    static readonly FORBIDDEN_CHARS: RegExp = FORBIDDEN_CHARS;
+    readonly FORBIDDEN_CHARS: RegExp = FORBIDDEN_CHARS;
     private inputCount: number = 0;
     private outputCount: number = 0;
     /** The cache of users */
