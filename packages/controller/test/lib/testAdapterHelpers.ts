@@ -213,7 +213,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // Validator.fixId
-    it(context.name + ' ' + context.adapterShortName + ' adapter utils: check fixId', async done => {
+    it(context.name + ' ' + context.adapterShortName + ' adapter utils: check fixId', async () => {
         const { Validator } = await import('@iobroker/js-controller-adapter');
 
         const utils = new Validator(
@@ -298,8 +298,6 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         testString = utils.fixId(utils.fixId('foo.bar.baz'));
         expect(testString).to.be.a('string');
         expect(testString).to.equal(adapterNamespace + '.foo.bar.baz');
-
-        done();
     }).timeout(2_000);
 
     // Check setTimeout throw
