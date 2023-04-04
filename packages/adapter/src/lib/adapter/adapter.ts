@@ -585,7 +585,7 @@ export class AdapterClass extends EventEmitter {
     private enums: Record<string, any> = {};
     private eventLoopLags: number[] = [];
     private overwriteLogLevel: boolean = false;
-    protected adapterReady: boolean = false;
+    adapterReady: boolean = false;
     private callbacks?: Record<string, { cb: ioBroker.MessageCallback; time?: number }>;
 
     /**
@@ -611,7 +611,7 @@ export class AdapterClass extends EventEmitter {
     private _schedule: typeof NodeSchedule | undefined;
     private namespaceLog: string;
     namespace: `${string}.${number}`;
-    protected name: string;
+    name: string;
     private _systemSecret?: string;
     /** Whether the adapter has already terminated */
     private terminated: boolean = false;
@@ -632,40 +632,40 @@ export class AdapterClass extends EventEmitter {
     private _reportInterval?: null | NodeJS.Timer;
     private getPortRunning: null | InternalGetPortOptions = null;
     private readonly _namespaceRegExp: RegExp;
-    protected instance?: number;
+    instance?: number;
     // @ts-expect-error decide how to handle it
     private _utils: Validator;
     /** contents of io-package.json */
-    protected adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null;
-    protected connected?: boolean;
-    protected adapterDir: string;
+    adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null;
+    connected?: boolean;
+    adapterDir: string;
     /** contents of package.json */
-    protected pack?: Record<string, any>;
+    pack?: Record<string, any>;
     /** contents of io-package.json */
-    protected ioPack: Record<string, any>; // contents of io-package.json TODO difference to adapterConfig?
+    ioPack: Record<string, any>; // contents of io-package.json TODO difference to adapterConfig?
     private _initializeTimeout?: NodeJS.Timeout | null;
     private inited?: boolean;
     /** contents of iobroker.json if required via AdapterOptions */
-    protected systemConfig?: Record<string, any>;
+    systemConfig?: Record<string, any>;
     /** the configured date format of system.config, only available if requested via AdapterOptions `useFormatDate` */
-    protected dateFormat?: any;
+    dateFormat?: any;
     /** if float comma instead of dot is used, only available if requested via AdapterOptions `useFormatDate` */
-    protected isFloatComma?: boolean;
+    isFloatComma?: boolean;
     /** configured language of system.config, only available if requested via AdapterOptions `useFormatDate` */
-    protected language?: ioBroker.Languages;
+    language?: ioBroker.Languages;
     /** longitude configured in system.config, only available if requested via AdapterOptions `useFormatDate`*/
-    protected longitude?: number;
+    longitude?: number;
     /** latitude configured in system.config, only available if requested via AdapterOptions `useFormatDate`*/
-    protected latitude?: number;
+    latitude?: number;
     private _defaultObjs?: Record<string, Partial<ioBroker.StateCommon>>;
     private _aliasObjectsSubscribed?: boolean;
-    protected config?: Record<string, any>;
-    protected host?: string;
-    protected common?: Record<string, any>;
+    config?: Record<string, any>;
+    host?: string;
+    common?: Record<string, any>;
     private mboxSubscribed?: boolean;
     /** Stop the adapter */
     stop?: () => Promise<void>;
-    protected version?: string;
+    version?: string;
     /** Stop the adapter only defined in compact, not for external usage */
     protected kill?: () => Promise<void>;
     processLog?: (msg: any) => void;
@@ -11740,7 +11740,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         // catch it on Windows
-        if (this.getPortRunning && err && err.message === 'listen EADDRINUSE') {
+        if (this.getPortRunning && err?.message === 'listen EADDRINUSE') {
             const { host, port, callback } = this.getPortRunning;
             this._logger.warn(
                 `${this.namespaceLog} Port ${port}${host ? ` for host ${host}` : ''} is in use. Get next`
