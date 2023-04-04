@@ -1154,6 +1154,53 @@
             }
           ]
         },
+        "visWidgets": {
+          "description": "Overview of vis 2 widgets provided by the adapter",
+          "required": ["i18n"],
+          "minProperties": 2,
+          "type": "object",
+          "properties": {
+            "i18n": {
+              "description": "Translation for the widget",
+              "anyOf": [
+                {
+                  "const": true
+                },
+                {
+                  "const": "component"
+                },
+                {
+                  "type": "object",
+                  "patternProperties": {
+                    ".+": {
+                      "$ref": "#/definitions/multilingual"
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          "patternProperties": {
+            ".+": {
+              "required": ["name", "url", "components"],
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "components": {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
         "wakeup": {
           "description": "Adapter will be started if some value is written into system.adapter.NAME.x.wakeup. Normally the adapter should stop after processing of event.",
           "type": "boolean"
