@@ -107,7 +107,8 @@
           "error",
           {
             "ignoreRestSiblings": true,
-            "argsIgnorePattern": "^_"
+            "argsIgnorePattern": "^_",
+            "caughtErrors": "all"
           }
         ],
         "@typescript-eslint/no-object-literal-type-assertion": "off",

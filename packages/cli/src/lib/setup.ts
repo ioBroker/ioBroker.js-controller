@@ -1975,7 +1975,7 @@ async function processCommand(
                         await users.addGroup(group);
                         console.log(`Group "${group}" was created`);
                         return void callback();
-                    } catch (e) {
+                    } catch {
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                     }
                 } else if (command === 'del' || command === 'delete') {
