@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:292](https://github.com/ioBroker/ioBroker.js-controller/blob/fd495c2e/packages/adapter/src/lib/_Types.ts#L292)
+[adapter/src/lib/_Types.ts:292](https://github.com/ioBroker/ioBroker.js-controller/blob/e6dd10a9/packages/adapter/src/lib/_Types.ts#L292)
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:294](https://github.com/ioBroker/ioBroker.js-controller/blob/fd495c2e/packages/adapter/src/lib/_Types.ts#L294)
+[adapter/src/lib/_Types.ts:294](https://github.com/ioBroker/ioBroker.js-controller/blob/e6dd10a9/packages/adapter/src/lib/_Types.ts#L294)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:291](https://github.com/ioBroker/ioBroker.js-controller/blob/fd495c2e/packages/adapter/src/lib/_Types.ts#L291)
+[adapter/src/lib/_Types.ts:291](https://github.com/ioBroker/ioBroker.js-controller/blob/e6dd10a9/packages/adapter/src/lib/_Types.ts#L291)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:293](https://github.com/ioBroker/ioBroker.js-controller/blob/fd495c2e/packages/adapter/src/lib/_Types.ts#L293)
+[adapter/src/lib/_Types.ts:293](https://github.com/ioBroker/ioBroker.js-controller/blob/e6dd10a9/packages/adapter/src/lib/_Types.ts#L293)
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:289](https://github.com/ioBroker/ioBroker.js-controller/blob/fd495c2e/packages/adapter/src/lib/_Types.ts#L289)
+[adapter/src/lib/_Types.ts:289](https://github.com/ioBroker/ioBroker.js-controller/blob/e6dd10a9/packages/adapter/src/lib/_Types.ts#L289)
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:288](https://github.com/ioBroker/ioBroker.js-controller/blob/fd495c2e/packages/adapter/src/lib/_Types.ts#L288)
+[adapter/src/lib/_Types.ts:288](https://github.com/ioBroker/ioBroker.js-controller/blob/e6dd10a9/packages/adapter/src/lib/_Types.ts#L288)
 
 ___
 
@@ -84,4 +84,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:290](https://github.com/ioBroker/ioBroker.js-controller/blob/fd495c2e/packages/adapter/src/lib/_Types.ts#L290)
+[adapter/src/lib/_Types.ts:290](https://github.com/ioBroker/ioBroker.js-controller/blob/e6dd10a9/packages/adapter/src/lib/_Types.ts#L290)
