@@ -530,7 +530,7 @@ export class Upload {
 
         if (!fs.existsSync(dir)) {
             // www folder have not all adapters. So show warning only for admin folder
-            // widgets does not have www folder, but they onlyWWW flag
+            // widgets do not have www folder, but they have onlyWWW flag
             (isAdmin || (cfg?.common?.onlyWWW && !cfg.common.visWidgets)) &&
                 console.log(
                     `INFO: Directory "${
