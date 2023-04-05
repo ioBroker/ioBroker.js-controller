@@ -192,7 +192,7 @@ function testAdapter(options) {
         });
 
         it(`${options.name} ${context.adapterShortName} adapter: Check if adapter started`, function (done) {
-            this.timeout(60000);
+            this.timeout(60_000);
             checkConnectionOfAdapter(true, function (err) {
                 if (err) {
                     console.log(err);
@@ -340,7 +340,7 @@ function testAdapter(options) {
          */
 
         after(`${options.name} ${context.adapterShortName} adapter: Stop js-controller`, async function () {
-            this.timeout(35000);
+            this.timeout(35_000);
 
             expect(context.adapter.connected).to.be.true;
             await setup.stopController();
