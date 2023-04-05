@@ -1,14 +1,12 @@
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node:true */
-/* jshint expr:true */
-'use strict';
-const path = require('path');
-const cpPromise = require('promisify-child-process');
-const iobExecutable = path.join(__dirname, '..', '..', 'iobroker.js');
-const { BackupRestore } = require('@iobroker/js-controller-cli');
+import path from 'path';
+import cpPromise from 'promisify-child-process';
+import { BackupRestore } from '@iobroker/js-controller-cli';
+import type { TestContext } from '../_Types';
+import fs from 'fs-extra';
 
-function register(it, expect, context) {
+const iobExecutable = path.join(__dirname, '..', '..', 'iobroker.js');
+
+export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
     const testName = `${context.name} ${context.adapterShortName} console: `;
 
     // passwd, user passwd, user check
@@ -87,7 +85,7 @@ function register(it, expect, context) {
         } catch {
             //ok
         }
-    }).timeout(40000);
+    }).timeout(40_000);
 
     // user get
     it(testName + 'user get', async () => {
@@ -116,7 +114,7 @@ function register(it, expect, context) {
         } catch {
             // ok
         }
-    }).timeout(20000);
+    }).timeout(20_000);
 
     // adduser user add
     it(testName + 'user add', async () => {
@@ -166,7 +164,7 @@ function register(it, expect, context) {
             `"${process.execPath}" "${iobExecutable}" adduser user2 --password user --ingroup user`
         );
         expect(res.stderr).to.be.not.ok;
-    }).timeout(20000);
+    }).timeout(20_000);
 
     // user disable / enable
     it(testName + 'user disable/enable', async () => {
@@ -217,7 +215,7 @@ function register(it, expect, context) {
         // user can be disabled
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" user get user1`);
         expect(res.stderr).to.be.not.ok;
-    }).timeout(25000);
+    }).timeout(25_000);
 
     // ud udel userdel deluser user del
     it(testName + 'user del', async () => {
@@ -250,7 +248,7 @@ function register(it, expect, context) {
         // check userdel
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" userdel user2`);
         expect(res.stderr).to.be.not.ok;
-    }).timeout(20000);
+    }).timeout(20_000);
 
     // group add
     it(testName + 'group add', async () => {
@@ -281,7 +279,7 @@ function register(it, expect, context) {
         } catch {
             // ok
         }
-    }).timeout(20000);
+    }).timeout(20_000);
 
     // group del
     it(testName + 'group del', async () => {
@@ -312,7 +310,7 @@ function register(it, expect, context) {
         } catch {
             // ok
         }
-    }).timeout(20000);
+    }).timeout(20_000);
 
     // group list
     it(testName + 'group list', async () => {
@@ -336,7 +334,7 @@ function register(it, expect, context) {
         } catch {
             // ok
         }
-    }).timeout(20000);
+    }).timeout(20_000);
 
     // group get
     it(testName + 'group get', async () => {
@@ -367,7 +365,7 @@ function register(it, expect, context) {
         } catch {
             // ok
         }
-    }).timeout(20000);
+    }).timeout(20_000);
 
     // group disable / enable
     it(testName + 'group disable/enable', async () => {
@@ -415,7 +413,7 @@ function register(it, expect, context) {
         // group can be disabled
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" group get group1`);
         expect(res.stderr).to.be.not.ok;
-    }).timeout(25000);
+    }).timeout(25_000);
 
     // group useradd
     it(testName + 'group useradd', async () => {
@@ -450,7 +448,7 @@ function register(it, expect, context) {
         } catch {
             // ok
         }
-    }).timeout(20000);
+    }).timeout(20_000);
 
     // group userdel
     it(testName + 'group userdel', async () => {
@@ -481,7 +479,7 @@ function register(it, expect, context) {
         } catch {
             // ok
         }
-    }).timeout(20000);
+    }).timeout(20_000);
 
     // start adapter
     // stop adapter
@@ -509,7 +507,7 @@ function register(it, expect, context) {
             expect(e.code).to.be.equal(100);
             expect(e.stdout.includes('ioBroker is not running on this host')).to.be.true;
         }
-    }).timeout(20000);
+    }).timeout(20_000);
     // restart adapter
     // restart ??
 
@@ -526,7 +524,7 @@ function register(it, expect, context) {
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" setup first`);
         // Sentry info is on stderr so check exit code here
         expect(res.code).to.be.equal(0);
-    }).timeout(20000);
+    }).timeout(20_000);
 
     // setup custom
     // url
@@ -547,7 +545,7 @@ function register(it, expect, context) {
         // check update
         const res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" update`);
         expect(res.stderr).to.be.not.ok;
-    }).timeout(40000);
+    }).timeout(40_000);
 
     // upgrade
 
@@ -557,7 +555,7 @@ function register(it, expect, context) {
     it(testName + 'backup', async () => {
         // create backup
         const dir = BackupRestore.getBackupDir();
-        const fs = require('fs');
+
         let files;
         // delete existing files
         if (fs.existsSync(dir)) {
@@ -591,8 +589,8 @@ function register(it, expect, context) {
         const name = Math.round(Math.random() * 10000).toString();
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" backup ${name}`);
         expect(res.stderr).to.be.not.ok;
-        expect(require('fs').existsSync(`${BackupRestore.getBackupDir() + name}.tar.gz`)).to.be.true;
-    }).timeout(20000);
+        expect(fs.existsSync(`${BackupRestore.getBackupDir() + name}.tar.gz`)).to.be.true;
+    }).timeout(20_000);
 
     // list l
     // touch
@@ -615,7 +613,7 @@ function register(it, expect, context) {
         // id
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" id`);
         expect(res.stderr).to.be.not.ok;
-    }).timeout(20000);
+    }).timeout(20_000);
 
     // v version
     it(testName + 'version', async () => {
@@ -627,7 +625,7 @@ function register(it, expect, context) {
         // short
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" v`);
         expect(res.stderr).to.be.not.ok;
-    }).timeout(20000);
+    }).timeout(20_000);
 
     // repo
     it(testName + 'repo', async () => {
@@ -690,7 +688,7 @@ function register(it, expect, context) {
         // try to delete non-active repo
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" repo del local1`);
         expect(res.stderr).to.be.not.ok;
-    }).timeout(50000);
+    }).timeout(50_000);
 
     // license
     it(testName + 'license', async () => {
@@ -699,7 +697,6 @@ function register(it, expect, context) {
             'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiaW9icm9rZXIudmlzIiwidHlwZSI6InRlc3QiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiZXhwaXJlcyI6MjQ0NDM5ODA5NSwidmVyc2lvbiI6IjwyIiwiaWQiOiI5NTBkYWEwMC01MzcxLTExZTctYjQwNS14eHh4eHh4eHh4eHh4IiwiaWF0IjoxNDk3NzEzMjk1fQ.K9t9ZtvAsdeNFTJed4Sidq2jrr9UFOYpMt6VLmBdVzWueI9DnCXFS5PwBFTBTmF9WMhVk6LBw5ujIVl130B_5NrHl21PHkCLvJeW7jGsMgWDINuBK5F9k8LZABdsv7uDbqNDSOsVrFwEKOu2V3N5sMWYOVE4N_COIg9saaLvyN69oIP27PTgk1GHuyU4giFKGLPTp10L5p2hxLX0lEPjSdDggbl7dEqEe1-u5WwkyBizp03pMtHGYtjnACtP_KBuOly7QpmAnoPlfFoW79xgRjICbd41wT43IvhKAAo1zfnRAeWfQ7QoUViKsc6N1es87QC4KKw-eToLPXOO5UzWOg';
         let licenseFile = __dirname + '/visLicense.data';
         licenseFile = licenseFile.replace(/\\/g, '/');
-        const fs = require('fs');
         fs.writeFileSync(licenseFile, licenseText);
 
         let res;
@@ -722,7 +719,11 @@ function register(it, expect, context) {
 
         await context.objects.setObjectAsync('system.adapter.vis.0', {
             common: {
-                name: 'iobroker.vis'
+                name: 'iobroker.vis',
+                version: '1.0.0',
+                host: 'system.host.test',
+                enabled: true,
+                mode: 'daemon'
             },
             native: {},
             type: 'instance'
@@ -732,20 +733,18 @@ function register(it, expect, context) {
         fs.unlinkSync(licenseFile);
         expect(res.stderr).to.be.not.ok;
         let obj = await context.objects.getObjectAsync('system.adapter.vis.0');
-        expect(obj.native.license).to.be.equal(licenseText);
+        expect(obj?.native.license).to.be.equal(licenseText);
 
         // license must be taken
         res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" license ${licenseText}`);
         expect(res.stderr).to.be.not.ok;
         obj = await context.objects.getObjectAsync('system.adapter.vis.0');
-        expect(obj.native.license).to.be.equal(licenseText);
-    }).timeout(20000);
+        expect(obj?.native.license).to.be.equal(licenseText);
+    }).timeout(20_000);
 
     // info
     it(testName + 'info', async () => {
         const res = await cpPromise.exec(`"${process.execPath}" "${iobExecutable}" info`);
         expect(res.stderr).to.be.not.ok;
-    }).timeout(10000);
+    }).timeout(10_000);
 }
-
-module.exports.register = register;

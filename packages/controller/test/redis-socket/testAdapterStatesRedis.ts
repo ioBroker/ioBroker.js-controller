@@ -1,3 +1,4 @@
+// eslint-disable-next-line @typescript-eslint/no-var-requires
 const testAdapter = require(__dirname + '/../lib/testAdapter');
 const dataDir = __dirname + '/../../tmp/data-redis';
 import fs from 'fs';
