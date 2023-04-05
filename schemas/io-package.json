@@ -1155,7 +1155,7 @@
           ]
         },
         "visWidgets": {
-          "description": "Overview of vis 2 widgets provided by the adapter",
+          "description": "Overview of vis 2 widgets provided by the adapter, define the name of the provided sets as keys",
           "required": ["i18n"],
           "minProperties": 2,
           "type": "object",
@@ -1164,12 +1164,15 @@
               "description": "Translation for the widget",
               "anyOf": [
                 {
+                  "description": "Translations will be loaded from visWidgets.<SET_NAME>.url and i18n/<LANG>.json",
                   "const": true
                 },
                 {
+                  "description": "Translations will be loaded from customComponent.js with name ./translations",
                   "const": "component"
                 },
                 {
+                  "description": "Define translations here",
                   "type": "object",
                   "patternProperties": {
                     ".+": {
@@ -1182,16 +1185,16 @@
           },
           "patternProperties": {
             ".+": {
-              "required": ["name", "url", "components"],
+              "description": "The key represents the name of a provided set",
+              "required": ["url", "components"],
               "type": "object",
               "properties": {
-                "name": {
-                  "type": "string"
-                },
                 "url": {
+                  "description": "Relative path ('http://ip:port/vis/widgets/' + url) or full url to load component from",
                   "type": "string"
                 },
                 "components": {
+                  "description": "Names of widgets which have to be shown, normally equal to 'modulefederation.config.js'",
                   "type": "array",
                   "items": {
                     "type": "string"
