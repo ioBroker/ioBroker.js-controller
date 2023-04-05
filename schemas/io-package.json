@@ -1194,7 +1194,7 @@
                   "type": "string"
                 },
                 "components": {
-                  "description": "Names of widgets which have to be shown, normally equal to 'modulefederation.config.js'",
+                  "description": "Names of widgets which have to be shown, normally equal to the content of 'modulefederation.config.js'",
                   "type": "array",
                   "items": {
                     "type": "string"
