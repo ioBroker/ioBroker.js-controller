@@ -1,72 +1,41 @@
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node:true */
-/* jshint expr:true */
-'use strict';
+import type { TestContext } from '../_Types';
 
-const { promiseSequence } = require('@iobroker/js-controller-common').tools;
-const { spy } = require('sinon');
-const chai = require('chai');
-const sinonChai = require('sinon-chai');
-chai.use(sinonChai);
+import { spy } from 'sinon';
+import * as chai from 'chai';
+import * as sinonChai from 'sinon-chai';
+import chaiAsPromised from 'chai-as-promised';
 
-/**
- * @typedef {{
- *     adapter: Record<string, (...args: any[]) => any>;
- *     name: string;
- *     adapterShortName: string;
- * }} Context
- */
-/**
- * @param {Context} context
- */
-function register(it, expect, context) {
+chai.use(sinonChai.default);
+chai.use(chaiAsPromised);
+
+export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
     //adapterGetPort
     it(context.name + ' ' + context.adapterShortName + ' adapter: find next free port', function (done) {
-        this.timeout(3000);
+        this.timeout(3_000);
 
-        //Throw Error
+        // @ts-expect-error expects more args
         expect(() => context.adapter.getPort()).to.throw('adapterGetPort: no port');
 
+        // @ts-expect-error not for external use?
         expect(context.adapter.getPortRunning).to.not.exist;
 
         //Works like it should be
         context.adapter.getPort(8080, function (port) {
             expect(port).to.be.at.least(8080);
+            // @ts-expect-error not for external use?
             expect(context.adapter.getPortRunning).to.have.all.keys(['port', 'host', 'callback']);
+            // @ts-expect-error not for external use?
             expect(context.adapter.getPortRunning).to.have.property('port', port);
 
             done();
         });
     });
 
-    // NOT READY: Running this after the adapterGetPort (sync) test causes getPortRunning to already exist
-
-    // //adapterGetPort (async)
-    // it(context.name + ' ' + context.adapterShortName + ' adapter: find next free port (ASYNC)', function () {
-    //     this.timeout(3000);
-
-    //     const tests = [
-    //         //Throw Error
-    //         () => context.adapter.getPortAsync('').should.be.rejectedWith('adapterGetPort: no port'),
-    //         () => expect(context.adapter.getPortRunning).to.not.exist,
-
-    //         //Works like it should be
-    //         () => context.adapter.getPortAsync(8080).to.be.fulfilled.then(port => {
-    //             expect(port).to.be.at.least(8080);
-    //             expect(context.adapter.getPortRunning).to.have.all.keys(['port', 'callback']);
-    //             expect(context.adapter.getPortRunning).to.have.property('port', port);
-    //         })
-    //     ];
-
-    //     return promiseSequence(tests);
-    // });
-
     //checkPassword
     it(context.name + ' ' + context.adapterShortName + ' adapter: validates user and password', function (done) {
-        this.timeout(3000);
+        this.timeout(3_000);
 
-        //Expecting a callback
+        //@ts-expect-error Expecting a callback
         expect(() => context.adapter.checkPassword('claus', '1234')).to.throw('checkPassword: no callback');
 
         //User doesnt exists
@@ -83,31 +52,25 @@ function register(it, expect, context) {
     });
 
     //checkPassword (async)
-    it(context.name + ' ' + context.adapterShortName + ' adapter: validates user and password (ASYNC)', function () {
-        this.timeout(3000);
-
-        const tests = [
+    it(context.name + ' ' + context.adapterShortName + ' adapter: validates user and password (ASYNC)', () => {
+        const promises = [
             // promisify always provides a callback, so that doesn't need to be tested
-
             // User doesn't exist
-            () =>
-                context.adapter
-                    .checkPasswordAsync('claus', '1234')
-                    .should.eventually.deep.equal([false, 'system.user.claus']),
-
+            context.adapter
+                .checkPasswordAsync('claus', '1234')
+                .should.eventually.deep.equal([false, 'system.user.claus']),
             // Wrong password
-            () =>
-                context.adapter
-                    .checkPasswordAsync('admin', '1234')
-                    .should.eventually.deep.equal([false, 'system.user.admin'])
+            context.adapter
+                .checkPasswordAsync('admin', '1234')
+                .should.eventually.deep.equal([false, 'system.user.admin'])
         ];
 
-        return promiseSequence(tests);
-    });
+        return Promise.all(promises);
+    }).timeout(3_000);
 
     //setPassword
     it(context.name + ' ' + context.adapterShortName + ' adapter: sets the users password', function (done) {
-        this.timeout(3000);
+        this.timeout(3_000);
         // TODO: sync
         // TODO: async
         done();
@@ -115,7 +78,7 @@ function register(it, expect, context) {
 
     //checkGroup
     it(context.name + ' ' + context.adapterShortName + ' adapter: user exists and is in the group', function (done) {
-        this.timeout(3000);
+        this.timeout(3_000);
         // TODO: sync
         // TODO: async
         done();
@@ -123,7 +86,7 @@ function register(it, expect, context) {
 
     //calculatePermissions
     it(context.name + ' ' + context.adapterShortName + ' adapter: get the user permissions', function (done) {
-        this.timeout(3000);
+        this.timeout(3_000);
         // TODO: sync
         // TODO: async
         done();
@@ -131,7 +94,7 @@ function register(it, expect, context) {
 
     //getCertificates
     it(context.name + ' ' + context.adapterShortName + ' adapter: returns SSL certificates by name', function (done) {
-        this.timeout(3000);
+        this.timeout(3_000);
         // TODO: sync
         // TODO: async
         done();
@@ -150,7 +113,7 @@ function register(it, expect, context) {
 
     // formatValue
     it(context.name + ' ' + context.adapterShortName + ' adapter: Check formatValue', function (done) {
-        this.timeout(3000);
+        this.timeout(3_000);
         let testValue;
 
         // Test with number
@@ -177,6 +140,7 @@ function register(it, expect, context) {
         ); //1.000,00
         expect(testValue).to.equal(testValue2);
 
+        // @ts-expect-error should not be called like this by devs
         testValue = context.adapter.formatValue(undefined, '.,');
         expect(testValue).to.be.empty;
 
@@ -197,7 +161,7 @@ function register(it, expect, context) {
 
     // formatDate
     it(context.name + ' ' + context.adapterShortName + ' adapter: Check formatDate', function (done) {
-        this.timeout(3000);
+        this.timeout(3_000);
         const testDate = new Date(0);
         let testStringDate;
 
@@ -208,7 +172,7 @@ function register(it, expect, context) {
         expect(testStringDate).to.equal('1970-01-01');
 
         // expect 1 hour as output
-        testStringDate = context.adapter.formatDate(1 * 3600000 + 1 * 60000 + 42000 + 1, 'duration', 'hh.mm.ss.sss');
+        testStringDate = context.adapter.formatDate(3_600_000 + 60_000 + 42_000 + 1, 'duration', 'hh.mm.ss.sss');
         expect(testStringDate).to.be.a('string');
         expect(testStringDate).to.equal('01.01.42.001'); // 1 hour, 1 minute, 42 seconds, 1 milliseconds
 
@@ -241,6 +205,7 @@ function register(it, expect, context) {
         testStringDate = context.adapter.formatDate(68033, true, 'm.ss,sss');
         expect(testStringDate).to.contain('1.08,033');
 
+        // @ts-expect-error should not be called like this by devs
         testStringDate = context.adapter.formatDate(undefined, 'YYYY.MM.DD');
         expect(testStringDate).to.be.empty;
 
@@ -248,15 +213,17 @@ function register(it, expect, context) {
     });
 
     // Validator.fixId
-    it(context.name + ' ' + context.adapterShortName + ' adapter utils: check fixId', done => {
-        const { Validator } = require('@iobroker/js-controller-adapter');
+    it(context.name + ' ' + context.adapterShortName + ' adapter utils: check fixId', async () => {
+        const { Validator } = await import('@iobroker/js-controller-adapter');
 
         const utils = new Validator(
             context.objects,
             context.states,
+            // @ts-expect-error internal access
             context.adapter.namespaceLog,
             console,
             context.adapter.namespace,
+            // @ts-expect-error internal access
             context.adapter._namespaceRegExp
         );
 
@@ -331,9 +298,7 @@ function register(it, expect, context) {
         testString = utils.fixId(utils.fixId('foo.bar.baz'));
         expect(testString).to.be.a('string');
         expect(testString).to.equal(adapterNamespace + '.foo.bar.baz');
-
-        done();
-    }).timeout(2000);
+    }).timeout(2_000);
 
     // Check setTimeout throw
     it(context.name + ' ' + context.adapterShortName + ' adapter: check setTimeout', done => {
@@ -341,7 +306,7 @@ function register(it, expect, context) {
         const timeout = context.adapter.setTimeout(() => {
             /** pass */
         }, 2 ** 32 / 2 - 1);
-        context.adapter.clearTimeout(timeout);
+        context.adapter.clearTimeout(timeout!);
 
         // is valid
         context.adapter.setTimeout(() => {
@@ -369,14 +334,14 @@ function register(it, expect, context) {
         let interval = context.adapter.setInterval(() => {
             /** pass */
         }, 2 ** 32 / 2 - 1);
-        context.adapter.clearInterval(interval);
+        context.adapter.clearInterval(interval!);
 
         // is valid
         interval = context.adapter.setInterval(() => {
             /** pass */
         }, 0);
 
-        context.adapter.clearInterval(interval);
+        context.adapter.clearInterval(interval!);
 
         expect(() => {
             context.adapter.setInterval(() => {
@@ -398,16 +363,16 @@ function register(it, expect, context) {
         this.timeout(3000);
         let testString;
 
-        //test no id
+        // @ts-expect-error test no id
         testString = context.adapter.idToDCS();
         expect(testString).to.equal(null);
 
-        //test invalid id
+        // test invalid id
         testString = context.adapter.idToDCS('device.channel.state');
         expect(testString).to.equal(null);
 
-        //test valid id
-        testString = context.adapter.idToDCS(context.adapter.namespace + '.device.channel.state');
+        // test valid id
+        testString = context.adapter.idToDCS(`${context.adapter.namespace}.device.channel.state`);
         expect(testString).to.deep.equal({ device: 'device', channel: 'channel', state: 'state' });
 
         done();
@@ -415,50 +380,50 @@ function register(it, expect, context) {
 
     // _DCS2ID
     it(context.name + ' ' + context.adapterShortName + ' adapter: Check _DCS2ID', function (done) {
-        this.timeout(3000);
+        this.timeout(3_000);
         let testString;
 
-        //test no parameters
+        // @ts-expect-error test no parameters
         testString = context.adapter._DCS2ID();
         expect(testString).to.equal('');
 
-        //test device
+        // @ts-expect-error test device
         testString = context.adapter._DCS2ID('device');
         expect(testString).to.equal('device');
 
-        //test device + channel
+        // @ts-expect-error test device + channel
         testString = context.adapter._DCS2ID('device', 'channel');
         expect(testString).to.equal('device.channel');
 
-        //test device + channel + stateOrPoint (true)
+        // @ts-expect-error test device + channel + stateOrPoint (true)
         testString = context.adapter._DCS2ID('device', 'channel', true);
         expect(testString).to.equal('device.channel.');
 
-        //test device + channel + stateOrPoint (false)
+        // @ts-expect-error test device + channel + stateOrPoint (false)
         testString = context.adapter._DCS2ID('device', 'channel', false);
         expect(testString).to.equal('device.channel');
 
-        //test device + channel + stateOrPoint (string)
+        // @ts-expect-error test device + channel + stateOrPoint (string)
         testString = context.adapter._DCS2ID('device', 'channel', 'state');
         expect(testString).to.equal('device.channel.state');
 
-        //test device + stateOrPoint (string)
+        //@ts-expect-error test device + stateOrPoint (string)
         testString = context.adapter._DCS2ID('device', null, 'state');
         expect(testString).to.equal('device.state');
 
-        //test channel + stateOrPoint (string)
+        //@ts-expect-error test channel + stateOrPoint (string)
         testString = context.adapter._DCS2ID(null, 'channel', 'state');
         expect(testString).to.equal('channel.state');
 
-        //test stateOrPoint (true)
+        // @ts-expect-error test stateOrPoint (true)
         testString = context.adapter._DCS2ID(null, null, true);
         expect(testString).to.equal('');
 
-        //test stateOrPoint (false)
+        // @ts-expect-error test stateOrPoint (false)
         testString = context.adapter._DCS2ID(null, null, false);
         expect(testString).to.equal('');
 
-        //test stateOrPoint (string)
+        // @ts-expect-error test stateOrPoint (string)
         testString = context.adapter._DCS2ID(null, null, 'state');
         expect(testString).to.equal('state');
 
@@ -479,8 +444,9 @@ function register(it, expect, context) {
     for (const method of ['setState', 'setStateChanged', 'setForeignState', 'setForeignStateChanged']) {
         describe(`${context.name} ${context.adapterShortName} adapter: ${method} validates the state object`, () => {
             it('at least one property has to exist', function (done) {
-                this.timeout(3000);
+                this.timeout(3_000);
                 const callback = spy();
+                // @ts-expect-error methods have different signatures, but it is fine here
                 context.adapter[method]('testid', { val: undefined }, callback);
 
                 setImmediate(() => {
@@ -492,8 +458,9 @@ function register(it, expect, context) {
             });
 
             it('forbids extra properties', function (done) {
-                this.timeout(3000);
+                this.timeout(3_000);
                 const callback = spy();
+                // @ts-expect-error methods have different signatures, but it is fine here
                 context.adapter[method]('testid', { val: 1, foo: 'bar' }, callback);
                 setImmediate(() => {
                     expect(callback).to.have.been.calledOnce;
@@ -503,8 +470,9 @@ function register(it, expect, context) {
             });
 
             it('enforces ack to be a boolean', function (done) {
-                this.timeout(3000);
+                this.timeout(3_000);
                 const callback = spy();
+                // @ts-expect-error methods have different signatures, but it is fine here
                 context.adapter[method]('testid', { val: 1, ack: 'true' }, callback);
                 setImmediate(() => {
                     expect(callback).to.have.been.calledOnce;
@@ -515,8 +483,9 @@ function register(it, expect, context) {
             });
 
             it('enforces ts to be a number', function (done) {
-                this.timeout(3000);
+                this.timeout(3_000);
                 const callback = spy();
+                // @ts-expect-error methods have different signatures, but it is fine here
                 context.adapter[method]('testid', { val: 1, ts: true }, callback);
                 setImmediate(() => {
                     expect(callback).to.have.been.calledOnce;
@@ -527,8 +496,9 @@ function register(it, expect, context) {
             });
 
             it('enforces q to be a number', function (done) {
-                this.timeout(3000);
+                this.timeout(3_000);
                 const callback = spy();
+                // @ts-expect-error methods have different signatures, but it is fine here
                 context.adapter[method]('testid', { val: 1, q: true }, callback);
                 setImmediate(() => {
                     expect(callback).to.have.been.calledOnce;
@@ -539,8 +509,9 @@ function register(it, expect, context) {
             });
 
             it('enforces expire to be a number', function (done) {
-                this.timeout(3000);
+                this.timeout(3_000);
                 const callback = spy();
+                // @ts-expect-error methods have different signatures, but it is fine here
                 context.adapter[method]('testid', { val: 1, expire: true }, callback);
                 setImmediate(() => {
                     expect(callback).to.have.been.calledOnce;
@@ -551,8 +522,9 @@ function register(it, expect, context) {
             });
 
             it('enforces from to be a string', function (done) {
-                this.timeout(3000);
+                this.timeout(3_000);
                 const callback = spy();
+                // @ts-expect-error methods have different signatures, but it is fine here
                 context.adapter[method]('testid', { val: 1, from: 2 }, callback);
                 setImmediate(() => {
                     expect(callback).to.have.been.calledOnce;
@@ -563,8 +535,9 @@ function register(it, expect, context) {
             });
 
             it('enforces c to be a string', function (done) {
-                this.timeout(3000);
+                this.timeout(3_000);
                 const callback = spy();
+                // @ts-expect-error methods have different signatures, but it is fine here
                 context.adapter[method]('testid', { val: 1, c: [] }, callback);
                 setImmediate(() => {
                     expect(callback).to.have.been.calledOnce;
@@ -575,8 +548,9 @@ function register(it, expect, context) {
             });
 
             it('is okay to have undefined val if another property exists', function (done) {
-                this.timeout(3000);
+                this.timeout(3_000);
                 // cannot use the sync spies here, so only evaluate the err
+                // @ts-expect-error methods have different signatures, but it is fine here
                 context.adapter[method]('testid', { ack: true }, err => {
                     expect(err).to.be.not.ok;
                     done();
@@ -585,5 +559,3 @@ function register(it, expect, context) {
         });
     }
 }
-
-module.exports.register = register;
