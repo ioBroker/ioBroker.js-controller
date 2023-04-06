@@ -320,15 +320,12 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                     if (cert) {
                         const dateCertStart = cert.validityNotBefore.getTime();
                         const dateCertEnd = cert.validityNotAfter.getTime();
+
                         // check, if certificate is invalid (too old, longer then 825 days or keylength too short)
-
-                        /** 365 days in ms */
-                        const maxValidity = 365 * 24 * 60 * 60 * 1_000;
-
                         if (
                             dateCertEnd <= Date.now() ||
                             cert.keyLength < 2048 ||
-                            dateCertEnd - dateCertStart > maxValidity
+                            dateCertEnd - dateCertStart > tools.MAX_CERT_VALIDITY
                         ) {
                             // generate new certificates
                             if (cert.certificateFilename) {
