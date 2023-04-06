@@ -392,7 +392,7 @@
         "_id": "system.user.admin"
     },
     "system.meta.uuid": {
-        "type": "meta",
+        "type": "config",
         "common": {
             "name": "uuid",
             "type": "uuid"

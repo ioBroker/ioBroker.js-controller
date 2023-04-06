@@ -2741,26 +2741,20 @@ async function processCommand(
                 );
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
-            if (!file) {
-                console.warn(
-                    `Please specify the path to the vendor file to update the vendor information!\n${tools.appName.toLowerCase()} vendor <PASS_PHRASE> <vendor.json>`
-                );
-                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-            } else {
-                dbConnect(params, async ({ objects }) => {
-                    const { Vendor } = await import('./setup/setupVendor');
-                    const vendor = new Vendor({ objects });
 
-                    try {
-                        await vendor.checkVendor(file, password);
-                        console.log(`Synchronised vendor information.`);
-                        return void callback();
-                    } catch (err) {
-                        console.error(`Cannot update vendor information: ${err.message}`);
-                        return void callback(EXIT_CODES.CANNOT_UPDATE_VENDOR);
-                    }
-                });
-            }
+            dbConnect(params, async ({ objects }) => {
+                const { Vendor } = await import('./setup/setupVendor');
+                const vendor = new Vendor({ objects });
+
+                try {
+                    await vendor.checkVendor(file, password);
+                    console.log(`Synchronised vendor information.`);
+                    return void callback();
+                } catch (err) {
+                    console.error(`Cannot update vendor information: ${err.message}`);
+                    return void callback(EXIT_CODES.CANNOT_UPDATE_VENDOR);
+                }
+            });
             break;
         }
 

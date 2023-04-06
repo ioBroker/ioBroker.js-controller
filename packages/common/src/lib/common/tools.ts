@@ -455,7 +455,11 @@ function updateUuid(newUuid: string, _objects: any, callback: (uuid?: string) =>
             try {
                 // eslint-disable-next-line @typescript-eslint/no-var-requires
                 const vendor = require(VENDOR_FILE);
-                if (vendor.vendor && vendor.vendor.uuidPrefix && vendor.vendor.uuidPrefix.length === 2) {
+                if (vendor.vendor &&
+                    vendor.vendor.uuidPrefix &&
+                    vendor.vendor.uuidPrefix.length === 2 &&
+                    !_uuid.startsWith(vendor.vendor.uuidPrefix)
+                ) {
                     _uuid = vendor.vendor.uuidPrefix + _uuid;
                 }
             } catch {
@@ -466,7 +470,7 @@ function updateUuid(newUuid: string, _objects: any, callback: (uuid?: string) =>
         _objects.setObject(
             'system.meta.uuid',
             {
-                type: 'meta',
+                type: 'config',
                 common: {
                     name: 'uuid',
                     type: 'uuid'
@@ -497,7 +501,7 @@ function updateUuid(newUuid: string, _objects: any, callback: (uuid?: string) =>
 }
 
 /**
- * Generates a new uuid if non existing
+ * Generates a new uuid if non-existing
  *
  * @param objects - objects DB
  * @return uuid if successfully created/updated
@@ -604,7 +608,7 @@ export async function getFile(urlOrPath: string, fileName: string, callback: (fi
         urlOrPath.substring(0, 'http://'.length) === 'http://' ||
         urlOrPath.substring(0, 'https://'.length) === 'https://'
     ) {
-        const tmpFile = `${__dirname}/../tmp/${fileName || Math.floor(Math.random() * 0xffffffe) + '.zip'}`;
+        const tmpFile = `${__dirname}/../tmp/${fileName || Math.floor(Math.random() * 0xffffffe)}.zip`;
 
         try {
             // Add some information to user-agent, like chrome, IE and Firefox do

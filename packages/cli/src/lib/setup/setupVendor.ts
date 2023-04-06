@@ -4,6 +4,26 @@ import fs from 'fs-extra';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual } from 'util';
 
+/*
+    ioBroker has built-in protection for specific attributes of objects. If this protection is installed in the object, then the protected attributes of object cannot be changed by the user without valid password.
+    To protect the object from change, the special attribute "nonEdit" must be added to the object. This attribute contains the password, which is required to change the object.
+    If object does not have "nonEdit" attribute, so the hash will be saved into "nonEdit.passHash". After that if someone will change the object, he must provide in the password in "nonEdit.password".
+    If the password is correct, the object attributes will be updated. If the password is wrong, the object will not be changed.
+    Example of nonEdit:
+    {
+        "nonEdit": {
+            "password": "XXXXYYYY",
+            "common":{
+                "title": "__no_change__", // this attribute will always stay on the initial value
+            },
+            "native": {
+                "auth": true,          // this attribute will always stay "true"
+                "secure": "__delete__" // this attribute will always be deleted
+            }
+        }
+    }
+    See this function for details: https://github.com/ioBroker/ioBroker.js-controller/blob/master/packages/common/src/lib/common/tools.ts#L129
+ */
 export interface CLIVendorOptions {
     objects: ObjectsRedisClient;
 }
@@ -101,7 +121,7 @@ export class Vendor {
                         ts: new Date().getTime(),
                         from: `system.host.${tools.getHostName()}.tools`,
                         native: {
-                            uuid: uuid
+                            uuid
                         }
                     });
                     logger.info(`object system.meta.uuid created: ${uuid}`);
@@ -186,7 +206,7 @@ export class Vendor {
                     const arr = await this.objects.getObjectListAsync(
                         {
                             startkey: id,
-                            endkey: id + '\u9999'
+                            endkey: `${id}\u9999`
                         },
                         { checked: true }
                     );
