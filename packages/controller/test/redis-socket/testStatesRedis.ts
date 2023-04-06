@@ -2,13 +2,15 @@ import fs from 'fs';
 import path from 'path';
 import { expect } from 'chai';
 import { startController, stopController } from '../lib/setup4controller';
+import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
+import type { StateRedisClient } from '@iobroker/db-states-redis/build/lib/states/statesInRedisClient';
 
 const dataDir = path.join(__dirname, '..', '..', 'tmp', 'data');
-let objects = null;
-let states = null;
-let onStatesChanged = null;
+let objects: ObjectsInRedisClient | null = null;
+let states: StateRedisClient | null = null;
+let onStatesChanged: ioBroker.StateChangeHandler | null = null;
 
-function cleanDbs() {
+function cleanDbs(): void {
     if (fs.existsSync(path.join(dataDir, 'objects.json'))) {
         fs.unlinkSync(path.join(dataDir, 'objects.json'));
     }
@@ -23,7 +25,7 @@ function cleanDbs() {
     }
 }
 
-describe('States-Redis-Socket: Test states', function () {
+describe('States-Redis-Socket: Test states', () => {
     before('States-Redis-Socket: Start js-controller', async function () {
         this.timeout(10_000);
         cleanDbs();
@@ -31,16 +33,16 @@ describe('States-Redis-Socket: Test states', function () {
         const { objects: _objects, states: _states } = await startController({
             objects: {
                 dataDir: dataDir,
-                onChange: (id, _obj) => {
-                    console.log('object changed. ' + id);
+                onChange: (id: string, _obj: ioBroker.AnyObject) => {
+                    console.log(`object changed. ${id}`);
                 }
             },
             states: {
                 type: 'redis',
                 host: '/var/run/redis.sock',
                 port: 0,
-                onChange: (id, state) => {
-                    console.log('Redis-state-Socket changed. ' + id);
+                onChange: (id: string, state: ioBroker.State) => {
+                    console.log(`Redis-state-Socket changed. ${id}`);
                     if (onStatesChanged) {
                         onStatesChanged(id, state);
                     }
@@ -49,12 +51,12 @@ describe('States-Redis-Socket: Test states', function () {
         });
 
         objects = _objects;
-        states = _states;
+        states = _states!;
         states.subscribe('*');
         expect(objects).to.be.ok;
         expect(states).to.be.ok;
-        await new Promise(resolve => {
-            setTimeout(() => resolve(), 5000);
+        await new Promise<void>(resolve => {
+            setTimeout(() => resolve(), 5_000);
         });
     });
 
@@ -62,15 +64,17 @@ describe('States-Redis-Socket: Test states', function () {
         this.timeout(10_000);
 
         const testID = 'testObject.0.test1';
-        onStatesChanged = (id, state) => {
+        onStatesChanged = (id, _state) => {
             if (id === testID) {
+                const state = _state!;
                 expect(state).to.be.ok;
                 expect(state.val).to.be.equal(1);
                 expect(state.ack).to.be.false;
                 expect(state.ts).to.be.ok;
                 expect(state.q).to.be.equal(0);
 
-                states.getState(testID, (err, state) => {
+                states!.getState(testID, (err, _state) => {
+                    const state = _state!;
                     expect(err).to.be.not.ok;
                     expect(state).to.be.ok;
                     expect(state.val).to.be.equal(1);
@@ -82,7 +86,7 @@ describe('States-Redis-Socket: Test states', function () {
             }
         };
 
-        states.setState(testID, 1, function (err) {
+        states!.setState(testID, 1, function (err) {
             expect(err).to.be.not.ok;
         });
     });
