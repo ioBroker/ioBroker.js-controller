@@ -316,14 +316,19 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
                 if (obj?.native?.certificates?.defaultPublic !== undefined) {
                     let cert = tools.getCertificateInfo(obj.native.certificates.defaultPublic);
+
                     if (cert) {
-                        const dateCertStart = Date.parse(cert.validityNotBefore);
-                        const dateCertEnd = Date.parse(cert.validityNotAfter);
+                        const dateCertStart = cert.validityNotBefore.getTime();
+                        const dateCertEnd = cert.validityNotAfter.getTime();
                         // check, if certificate is invalid (too old, longer then 825 days or keylength too short)
+
+                        /** 365 days in ms */
+                        const maxValidity = 365 * 24 * 60 * 60 * 1_000;
+
                         if (
                             dateCertEnd <= Date.now() ||
                             cert.keyLength < 2048 ||
-                            dateCertEnd - dateCertStart > 365 * 24 * 60 * 60 * 1000
+                            dateCertEnd - dateCertStart > maxValidity
                         ) {
                             // generate new certificates
                             if (cert.certificateFilename) {
@@ -332,7 +337,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                                 );
                             } else {
                                 console.log(
-                                    'Existing earlier generated certificate is invalid (too old, validity longer then 345 days or keylength too short). Generating new Certificate!'
+                                    'Existing earlier generated certificate is invalid (too old, validity longer then 365 days or keylength too short). Generating new Certificate!'
                                 );
                                 cert = null;
                             }

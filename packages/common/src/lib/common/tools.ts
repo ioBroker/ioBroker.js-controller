@@ -1796,28 +1796,40 @@ export function getDiskInfo(
 
 const getDiskInfoAsync = promisify(getDiskInfo);
 
+export interface CertificateInfo {
+    certificateFilename: string | null;
+    /** the certificate itself */
+    certificate: string;
+    /** serial number */
+    serialNumber: string;
+    /** type of signature as text like "RSA" */
+    signature: string;
+    /** bits used for encryption key like 2048 */
+    keyLength: number;
+    /** issuer of the certificate */
+    issuer: Record<string, any>;
+    /** subject that is signed */
+    subject: Record<string, any>;
+    /** server name this certificate belong to */
+    dnsNames: { type: number; value: string }[];
+    /** this certificate can be used for the following purposes */
+    keyUsage: Record<string, any>;
+    /** usable or client, server or ... */
+    extKeyUsage: Record<string, any>;
+    /** certificate validity start datetime */
+    validityNotBefore: Date;
+    /** certificate validity end datetime */
+    validityNotAfter: Date;
+}
+
 /**
  * Returns information about a certificate
- *
- *
- *  Following info will be returned:
- *     - certificate: the certificate itself
- *     - serialNumber: serial number
- *     - signature: type of signature as text like "RSA",
- *     - keyLength: bits used for encryption key like 2048
- *     - issuer: issuer of the certificate
- *     - subject: subject that is signed
- *     - dnsNames: server name this certificate belong to
- *     - keyUsage: this certificate can be used for the followinf puposes
- *     - extKeyUsage: usable or client, server or ...
- *     - validityNotBefore: certificate validity start datetime
- *     - validityNotAfter: certificate validity end datetime
  *
  * @param cert
  * @return certificate information object
  */
-export function getCertificateInfo(cert: string): null | Record<string, any> {
-    let info: Record<string, any> | null = null;
+export function getCertificateInfo(cert: string): null | CertificateInfo {
+    let info: CertificateInfo | null = null;
 
     if (!cert) {
         return null;
@@ -1884,8 +1896,10 @@ export function generateDefaultCertificates(): DefaultCertificates {
     cert.publicKey = keys.publicKey;
     cert.serialNumber = `0${makeid(17)}`;
     cert.validity.notBefore = new Date();
-    cert.validity.notAfter = new Date();
-    cert.validity.notAfter.setFullYear(cert.validity.notBefore.getFullYear() + 1);
+
+    /** one year in ms */
+    const maxValidity = 365 * 24 * 60 * 60 * 1_000;
+    cert.validity.notAfter = new Date(Date.now() + maxValidity);
 
     const subAttrs = [
         { name: 'commonName', value: getHostName() },
