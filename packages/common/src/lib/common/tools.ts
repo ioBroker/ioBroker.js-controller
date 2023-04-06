@@ -1876,7 +1876,7 @@ export interface DefaultCertificates {
     defaultPublic: string;
 }
 
-/** 365 days in ms */
+/** Maximum time after which cert has to expire - 365 days in ms */
 export const MAX_CERT_VALIDITY = 365 * 24 * 60 * 60 * 1_000;
 
 /**
