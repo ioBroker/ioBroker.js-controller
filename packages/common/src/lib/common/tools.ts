@@ -1897,7 +1897,7 @@ export function generateDefaultCertificates(): DefaultCertificates {
     cert.serialNumber = `0${makeid(17)}`;
     cert.validity.notBefore = new Date();
 
-    /** one year in ms */
+    /** 365 days in ms */
     const maxValidity = 365 * 24 * 60 * 60 * 1_000;
     cert.validity.notAfter = new Date(Date.now() + maxValidity);
 
