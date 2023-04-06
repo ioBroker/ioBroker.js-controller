@@ -1,7 +1,7 @@
 /**
  *      Upload adapter files into DB
  *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2023 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -515,7 +515,7 @@ export class Upload {
             console.log(
                 `INFO: Directory "${
                     adapterDir || `for ${adapter}${isAdmin ? '.admin' : ''}`
-                }" was not found! Nothing was uploaded or deleted.`
+                }" does not exist. Nothing was uploaded or deleted.`
             );
             return adapter;
         }
@@ -530,7 +530,8 @@ export class Upload {
 
         if (!fs.existsSync(dir)) {
             // www folder have not all adapters. So show warning only for admin folder
-            (isAdmin || (cfg && cfg.common && cfg.common.onlyWWW)) &&
+            // widgets do not have www folder, but they have onlyWWW flag
+            (isAdmin || (cfg?.common?.onlyWWW && !cfg.common.visWidgets)) &&
                 console.log(
                     `INFO: Directory "${
                         dir || `for ${adapter}${isAdmin ? '.admin' : ''}`
