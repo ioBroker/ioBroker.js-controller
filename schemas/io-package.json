@@ -1161,7 +1161,11 @@
           "patternProperties": {
             ".+": {
               "description": "The key represents the name of a provided widget set",
-              "required": ["url", "components", "i18n"],
+              "required": [
+                "url",
+                "components",
+                "i18n"
+              ],
               "type": "object",
               "properties": {
                 "i18n": {
