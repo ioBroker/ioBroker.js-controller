@@ -439,6 +439,31 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 
+    it(testName + 'should create and read file async', async () => {
+        const fileDir = 'myFile';
+        const fileName = 'abc2.txt';
+        const fullFileName = `${fileDir}/${fileName}`;
+
+        const objects = context.objects;
+        await objects.setObject(testId, { type: 'meta', native: {} } as ioBroker.SettableMetaObject);
+
+        await objects.writeFile(testId, fullFileName, 'dataInFile');
+
+        const { file, mimeType } = await objects.readFile(testId, fullFileName, null);
+        expect(file).to.be.equal('dataInFile');
+        expect(mimeType).to.be.equal('text/plain');
+        const files = await objects.rmAsync(testId, `${fileDir}/*`, {});
+        const deletedFile = files!.find(f => f.file === fileName);
+        expect(deletedFile!.file).to.be.equal(fileName);
+        expect(deletedFile!.path).to.be.equal(fileDir);
+        try {
+            await objects.readFile(testId, fullFileName, null);
+            expect(1).to.be.equal(2, 'Should have thrown, because file has been deleted');
+        } catch (e) {
+            expect(e!.message).to.be.equal('Not exists');
+        }
+    });
+
     it(testName + 'should read directory', done => {
         const objects = context.objects;
         objects.writeFile(testId, 'myFileA/abc1.txt', 'dataInFile', err => {
