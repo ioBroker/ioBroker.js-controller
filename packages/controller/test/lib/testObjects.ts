@@ -643,5 +643,3 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         return objects.destroy();
     });
 }
-
-module.exports.register = register;
