@@ -91,15 +91,9 @@ export class BackupRestore {
     // --------------------------------------- BACKUP ---------------------------------------------------
     private async _copyFile(id: string, srcPath: string, destPath: string): Promise<void> {
         try {
-            // @ts-expect-error #1917
-            const data = await this.objects.readFileAsync(id, srcPath);
+            const data = await this.objects.readFile(id, srcPath);
             if (data) {
-                if (data.file !== undefined) {
-                    fs.writeFileSync(destPath, data.file);
-                } else {
-                    // @ts-expect-error #1917 revisit
-                    fs.writeFileSync(destPath, data);
-                }
+                fs.writeFileSync(destPath, data.file);
             }
         } catch (err) {
             console.log(`Can not copy File ${id}${srcPath} to ${destPath}: ${err.message}`);
@@ -421,15 +415,13 @@ export class BackupRestore {
 
         // special case: copy vis vis-common-user.css file
         try {
-            // @ts-expect-error #1917
-            const data = await this.objects.readFileAsync('vis', 'css/vis-common-user.css');
+            const data = await this.objects.readFile('vis', 'css/vis-common-user.css');
             if (data) {
                 const dir = `${tmpDir}/backup/files/`;
                 fs.ensureDirSync(`${dir}vis`);
                 fs.ensureDirSync(`${dir}vis/css`);
 
-                // @ts-expect-error #1917
-                fs.writeFileSync(`${dir}vis/css/vis-common-user.css`, data.data !== undefined ? data.data : data);
+                fs.writeFileSync(`${dir}vis/css/vis-common-user.css`, data.file);
             }
         } catch {
             // do not process 'css/vis-common-user.css'
