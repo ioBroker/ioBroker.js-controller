@@ -1,14 +1,10 @@
-/* jshint -W097 */
-/* jshint strict: false */
-/* jslint node: true */
-/* jshint expr: true */
-'use strict';
+import type { TestContext } from '../_Types';
 
 /**
  * Contains tests directly interacting with DB
  */
 
-function register(it, expect, context) {
+export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
     const testName = context.name + ' objects: ';
 
     const namespace = 'testObject.0';
@@ -19,21 +15,25 @@ function register(it, expect, context) {
         objects.setObject(
             testId,
             {
+                type: 'state',
                 common: {
-                    name: 'test2'
+                    name: 'test2',
+                    read: true,
+                    write: true,
+                    role: 'state'
                 },
                 native: {}
             },
             (err, res) => {
                 expect(err).to.be.not.ok;
                 expect(res).to.be.ok;
-                expect(res.id).to.be.equal(testId);
+                expect(res!.id).to.be.equal(testId);
 
                 objects.getObject(testId, (err, obj) => {
                     expect(err).to.be.not.ok;
                     expect(obj).to.be.ok;
-                    expect(obj.common.name).to.be.equal('test2');
-                    expect(obj._id).to.be.equal(testId);
+                    expect(obj!.common.name).to.be.equal('test2');
+                    expect(obj!._id).to.be.equal(testId);
                     console.log(JSON.stringify(obj));
                     done();
                 });
@@ -45,14 +45,18 @@ function register(it, expect, context) {
         const objects = context.objects;
         objects
             .setObjectAsync(testId + 'async', {
+                type: 'state',
                 common: {
-                    name: 'test1a'
+                    name: 'test1a',
+                    read: true,
+                    write: true,
+                    role: 'state'
                 },
                 native: {}
             })
             .then(res => {
                 expect(res).to.be.ok;
-                expect(res.id).to.be.equal(testId + 'async');
+                expect(res!.id).to.be.equal(testId + 'async');
                 done();
             })
             .catch(err => {
@@ -66,29 +70,29 @@ function register(it, expect, context) {
             .getObjectAsync(testId + 'async')
             .then(obj => {
                 expect(obj).to.be.ok;
-                expect(obj.common.name).to.be.equal('test1a');
-                expect(obj._id).to.be.equal(testId + 'async');
+                expect(obj!.common.name).to.be.equal('test1a');
+                expect(obj!._id).to.be.equal(testId + 'async');
                 console.log(JSON.stringify(obj));
                 done();
             })
             .catch(err => {
                 expect(err).to.be.not.ok;
             });
-    }).timeout(3000);
+    }).timeout(3_000);
 
     it(testName + 'should find object', done => {
         const objects = context.objects;
-        objects.findObject(testId, (err, id, idOrName) => {
+        objects.findObject(testId, null, (err, id, idOrName) => {
             expect(err).to.be.not.ok;
             expect(idOrName).to.be.equal('test2');
             expect(id).to.be.equal(testId);
 
-            objects.findObject('test2', (err, id, idOrName) => {
+            objects.findObject('test2', null, (err, id, idOrName) => {
                 expect(err).to.be.not.ok;
                 expect(id).to.be.equal(testId);
                 expect(idOrName).to.be.equal('test2');
 
-                objects.findObject('test3', (err, id, idOrName) => {
+                objects.findObject('test3', null, (err, id, idOrName) => {
                     expect(err).to.be.not.ok;
                     expect(idOrName).to.be.equal('test3');
                     expect(id).to.be.equal(undefined);
@@ -133,19 +137,19 @@ function register(it, expect, context) {
 
     it(testName + 'should read objects by pattern', done => {
         const objects = context.objects;
-        objects.getObjectsByPattern(testId + '*', (err, objs) => {
+        objects.getObjectsByPattern(`${testId}*`, null, (err, objs) => {
             expect(err).to.be.not.ok;
-            expect(objs.length).to.be.equal(2);
+            expect(objs?.length).to.be.equal(2);
 
-            objects.getObjectsByPattern(testId, (err, objs) => {
+            objects.getObjectsByPattern(testId, null, (err, objs) => {
                 expect(err).to.be.not.ok;
-                expect(objs.length).to.be.equal(1);
-                expect(typeof objs[0]).to.be.equal('object');
-                expect(objs[0]._id).to.be.equal(testId);
+                expect(objs?.length).to.be.equal(1);
+                expect(typeof objs![0]).to.be.equal('object');
+                expect(objs![0]._id).to.be.equal(testId);
 
-                objects.getObjectsByPattern(testId + 'non', (err, objs) => {
+                objects.getObjectsByPattern(testId + 'non', null, (err, objs) => {
                     expect(err).to.be.not.ok;
-                    expect(objs.length).to.be.equal(0);
+                    expect(objs?.length).to.be.equal(0);
 
                     done();
                 });
@@ -156,21 +160,21 @@ function register(it, expect, context) {
     it(testName + 'should read objects by pattern async', done => {
         const objects = context.objects;
         objects
-            .getObjectsByPattern(testId + '*')
+            .getObjectsByPattern(`${testId}*`, null)
             .then(objs => {
-                expect(objs.length).to.be.equal(2);
+                expect(objs?.length).to.be.equal(2);
 
-                return objects.getObjectsByPattern(testId);
+                return objects.getObjectsByPattern(testId, null);
             })
             .then(objs => {
-                expect(objs.length).to.be.equal(1);
-                expect(typeof objs[0]).to.be.equal('object');
-                expect(objs[0]._id).to.be.equal(testId);
+                expect(objs?.length).to.be.equal(1);
+                expect(typeof objs![0]).to.be.equal('object');
+                expect(objs![0]._id).to.be.equal(testId);
 
-                return objects.getObjectsByPattern(testId + 'non');
+                return objects.getObjectsByPattern(`${testId}non`, null);
             })
             .then(objs => {
-                expect(objs.length).to.be.equal(0);
+                expect(objs?.length).to.be.equal(0);
 
                 done();
             })
@@ -183,16 +187,16 @@ function register(it, expect, context) {
         const objects = context.objects;
         objects.getKeys(testId + '*', (err, keys) => {
             expect(err).to.be.not.ok;
-            expect(keys.length).to.be.equal(2);
+            expect(keys?.length).to.be.equal(2);
 
             objects.getKeys(testId, (err, keys) => {
                 expect(err).to.be.not.ok;
-                expect(keys.length).to.be.equal(1);
-                expect(keys[0]).to.be.equal(testId);
+                expect(keys?.length).to.be.equal(1);
+                expect(keys![0]).to.be.equal(testId);
 
                 objects.getKeys(testId + 'non', (err, keys) => {
                     expect(err).to.be.not.ok;
-                    expect(keys.length).to.be.equal(0);
+                    expect(keys?.length).to.be.equal(0);
 
                     done();
                 });
@@ -205,18 +209,18 @@ function register(it, expect, context) {
         objects
             .getKeys(testId + '*')
             .then(keys => {
-                expect(keys.length).to.be.equal(2);
+                expect(keys?.length).to.be.equal(2);
 
                 return objects.getKeys(testId);
             })
             .then(keys => {
-                expect(keys.length).to.be.equal(1);
-                expect(keys[0]).to.be.equal(testId);
+                expect(keys?.length).to.be.equal(1);
+                expect(keys![0]).to.be.equal(testId);
 
                 return objects.getKeys(testId + 'non');
             })
             .then(keys => {
-                expect(keys.length).to.be.equal(0);
+                expect(keys?.length).to.be.equal(0);
 
                 done();
             })
@@ -229,11 +233,11 @@ function register(it, expect, context) {
         const objects = context.objects;
         objects.getKeys(testId + '*', (err, keys) => {
             expect(err).to.be.not.ok;
-            objects.getObjects(keys, (err, objs) => {
+            objects.getObjects(keys!, (err, objs) => {
                 expect(err).to.be.not.ok;
-                expect(objs.length).to.be.equal(2);
-                expect(objs[0]._id).to.be.equal(keys[0]);
-                expect(objs[1]._id).to.be.equal(keys[1]);
+                expect(objs?.length).to.be.equal(2);
+                expect(objs![0]._id).to.be.equal(keys![0]);
+                expect(objs![1]._id).to.be.equal(keys![1]);
                 done();
             });
         });
@@ -241,17 +245,17 @@ function register(it, expect, context) {
 
     it(testName + 'should read objects async', done => {
         const objects = context.objects;
-        let gKeys;
+        let gKeys: string[] | undefined;
         objects
             .getKeys(testId + '*')
             .then(keys => {
                 gKeys = keys;
-                return objects.getObjects(keys);
+                return objects.getObjects(keys!);
             })
             .then(objs => {
                 expect(objs.length).to.be.equal(2);
-                expect(objs[0]._id).to.be.equal(gKeys[0]);
-                expect(objs[1]._id).to.be.equal(gKeys[1]);
+                expect(objs[0]._id).to.be.equal(gKeys![0]);
+                expect(objs[1]._id).to.be.equal(gKeys![1]);
                 done();
             })
             .catch(_err => {
@@ -261,23 +265,23 @@ function register(it, expect, context) {
 
     it(testName + 'should extend object', done => {
         const objects = context.objects;
-        objects.extendObject(testId, { common: { def: 'default' } }, (err, res, id) => {
+        objects.extendObject(testId, { common: { def: 'default' } }, null, (err, res, id) => {
             expect(err).to.be.not.ok;
             expect(id).to.be.equal(testId);
-            expect(res.id).to.be.equal(testId);
-            expect(res.value.common.def).to.be.equal('default');
+            expect(res?.id).to.be.equal(testId);
+            expect(res?.value.common.def).to.be.equal('default');
 
             objects.getObject(testId, (err, obj) => {
                 expect(err).to.be.not.ok;
-                expect(obj._id).to.be.equal(testId);
-                expect(obj.common.def).to.be.equal('default');
-                expect(obj.common.name).to.be.equal('test2');
+                expect(obj!._id).to.be.equal(testId);
+                expect(obj!.common.def).to.be.equal('default');
+                expect(obj!.common.name).to.be.equal('test2');
 
-                objects.extendObject(namespace + '.other', { common: { def: 'default' } }, (err, res, id) => {
+                objects.extendObject(namespace + '.other', { common: { def: 'default' } }, null, (err, res, id) => {
                     expect(err).to.be.not.ok;
                     expect(id).to.be.equal(namespace + '.other');
-                    expect(res.id).to.be.equal(namespace + '.other');
-                    expect(res.value.common.def).to.be.equal('default');
+                    expect(res!.id).to.be.equal(namespace + '.other');
+                    expect(res!.value.common.def).to.be.equal('default');
 
                     done();
                 });
@@ -290,13 +294,13 @@ function register(it, expect, context) {
         objects
             .extendObject(testId, { common: { def: 'default' } })
             .then(res => {
-                expect(res.id).to.be.equal(testId);
-                expect(res.value.common.def).to.be.equal('default');
+                expect(res!.id).to.be.equal(testId);
+                expect(res!.value.common.def).to.be.equal('default');
                 return objects.extendObject(namespace + '.otherAsync', { common: { def: 'default' } });
             })
             .then(res => {
-                expect(res.id).to.be.equal(namespace + '.otherAsync');
-                expect(res.value.common.def).to.be.equal('default');
+                expect(res!.id).to.be.equal(namespace + '.otherAsync');
+                expect(res!.value.common.def).to.be.equal('default');
                 done();
             })
             .catch(_err => {
@@ -307,16 +311,16 @@ function register(it, expect, context) {
     it(testName + 'should getObjectList', done => {
         const objects = context.objects;
         objects.getObjectList({ startkey: namespace, endkey: testId }, (err, res) => {
-            console.log(res.rows.map(e => e.id));
+            console.log(res!.rows.map(e => e.id));
             expect(err).to.be.not.ok;
-            expect(res.rows.length).to.be.equal(3);
-            const obj = res.rows.find(val => val.value._id === testId);
-            expect(obj.id).to.be.equal(testId);
-            expect(obj.value._id).to.be.equal(testId);
+            expect(res!.rows.length).to.be.equal(3);
+            const obj = res!.rows.find(val => val.value._id === testId);
+            expect(obj!.id).to.be.equal(testId);
+            expect(obj!.value._id).to.be.equal(testId);
 
             objects.getObjectList({ startkey: '', endkey: ' ' }, (err, res) => {
                 expect(err).to.be.not.ok;
-                expect(res.rows.length).to.be.equal(0);
+                expect(res!.rows.length).to.be.equal(0);
                 done();
             });
         });
@@ -327,15 +331,15 @@ function register(it, expect, context) {
         objects
             .getObjectList({ startkey: namespace, endkey: testId })
             .then(res => {
-                expect(res.rows.length).to.be.equal(3);
-                const obj = res.rows.find(val => val.value._id === testId);
-                expect(obj.id).to.be.equal(testId);
-                expect(obj.value._id).to.be.equal(testId);
+                expect(res!.rows.length).to.be.equal(3);
+                const obj = res!.rows.find(val => val.value._id === testId);
+                expect(obj!.id).to.be.equal(testId);
+                expect(obj!.value._id).to.be.equal(testId);
                 return objects.getObjectList({ startkey: '', endkey: ' ' });
             })
             .then(res => {
                 console.log(JSON.stringify(res));
-                expect(res.rows.length).to.be.equal(0);
+                expect(res!.rows.length).to.be.equal(0);
                 done();
             })
             .catch(err => {
@@ -345,30 +349,37 @@ function register(it, expect, context) {
     });
 
     it(testName + 'should getObjectView without sets', async () => {
-        // turn off useSets and reinitialize scripts, thus we will have old scripts and do not use SADD on setting objects
+        // @ts-expect-error turn off useSets and reinitialize scripts, thus we will have old scripts and do not use SADD on setting objects
         context.objects.useSets = false;
         await context.objects.loadLuaScripts();
 
         await context.objects.setObjectAsync('_design/testAdapter', {
+            type: 'design',
             language: 'javascript',
             views: {
                 test: {
                     map: 'function(doc) {\n  if (doc._id.match(/^testAdapter/) && doc.meta.type === "test") {\n   emit(doc._id, doc);\n  }\n}'
                 }
             },
-            common: {}
+            common: {
+                name: 'Test Design'
+            },
+            native: {}
         });
 
-        // now lets create an object matching the view
+        // now let's create an object matching the view
         await context.objects.setObjectAsync('testAdapter.test', {
             type: 'meta',
+            common: {
+                type: 'meta.user',
+                name: 'Test Meta Object'
+            },
             meta: {
                 adapter: 'testAdapter',
                 type: 'test'
             },
-            common: {},
             native: {}
-        });
+        } as ioBroker.SettableMetaObject);
 
         const doc = await context.objects.getObjectViewAsync('testAdapter', 'test', {
             startkey: 'testAdapter',
@@ -376,11 +387,11 @@ function register(it, expect, context) {
         });
 
         // now check that our object view contains our object
-        expect(doc.rows).to.be.an('array');
-        expect(doc.rows.length).to.be.equal(1);
-        expect(doc.rows[0].value._id).to.be.equal('testAdapter.test');
+        expect(doc!.rows).to.be.an('array');
+        expect(doc!.rows.length).to.be.equal(1);
+        expect(doc!.rows[0].value._id).to.be.equal('testAdapter.test');
 
-        // put it back on
+        // @ts-expect-error put it back on
         context.objects.useSets = true;
         await context.objects.loadLuaScripts();
     });
@@ -391,7 +402,10 @@ function register(it, expect, context) {
         expect(exists).to.be.false;
 
         // create object
-        await context.objects.setObjectAsync('test.0.objectExistenceCheck', { type: 'meta' });
+        await context.objects.setObjectAsync('test.0.objectExistenceCheck', {
+            type: 'meta',
+            native: {}
+        } as ioBroker.SettableMetaObject);
 
         // object should now exist
         exists = await context.objects.objectExists('test.0.objectExistenceCheck');
@@ -400,23 +414,23 @@ function register(it, expect, context) {
 
     it(testName + 'should create and read file', done => {
         const objects = context.objects;
-        objects.setObject(testId, { type: 'meta' }, err => {
+        objects.setObject(testId, { type: 'meta', native: {} } as ioBroker.SettableMetaObject, err => {
             expect(err).to.be.not.ok;
             objects.writeFile(testId, 'myFile/abc.txt', 'dataInFile', err => {
                 err && console.error(`Got ${JSON.stringify(objects.getStatus())}: ${err.stack}`);
                 expect(err).to.be.not.ok;
 
-                objects.readFile(testId, 'myFile/abc.txt', (err, data, mimeType) => {
+                objects.readFile(testId, 'myFile/abc.txt', null, (err, data, mimeType) => {
                     expect(err).to.be.not.ok;
                     expect(data).to.be.equal('dataInFile');
                     expect(mimeType).to.be.equal('text/plain');
-                    objects.rm(testId, 'myFile/*', (err, files) => {
+                    objects.rm(testId, 'myFile/*', null, (err, files) => {
                         expect(err).to.be.not.ok;
-                        const file = files.find(f => f.file === 'abc.txt');
-                        expect(file.file).to.be.equal('abc.txt');
-                        expect(file.path).to.be.equal('myFile');
-                        objects.readFile(testId, 'myFile/abc.txt', (err, _data, _mimeType) => {
-                            expect(err.message).to.be.equal('Not exists');
+                        const file = files!.find(f => f.file === 'abc.txt');
+                        expect(file!.file).to.be.equal('abc.txt');
+                        expect(file!.path).to.be.equal('myFile');
+                        objects.readFile(testId, 'myFile/abc.txt', null, (err, _data, _mimeType) => {
+                            expect(err!.message).to.be.equal('Not exists');
                             done();
                         });
                     });
@@ -425,18 +439,43 @@ function register(it, expect, context) {
         });
     });
 
+    it(testName + 'should create and read file async', async () => {
+        const fileDir = 'myFile';
+        const fileName = 'abc2.txt';
+        const fullFileName = `${fileDir}/${fileName}`;
+
+        const objects = context.objects;
+        await objects.setObject(testId, { type: 'meta', native: {} } as ioBroker.SettableMetaObject);
+
+        await objects.writeFile(testId, fullFileName, 'dataInFile');
+
+        const { file, mimeType } = await objects.readFile(testId, fullFileName, null);
+        expect(file).to.be.equal('dataInFile');
+        expect(mimeType).to.be.equal('text/plain');
+        const files = await objects.rmAsync(testId, `${fileDir}/*`, {});
+        const deletedFile = files!.find(f => f.file === fileName);
+        expect(deletedFile!.file).to.be.equal(fileName);
+        expect(deletedFile!.path).to.be.equal(fileDir);
+        try {
+            await objects.readFile(testId, fullFileName, null);
+            expect(1).to.be.equal(2, 'Should have thrown, because file has been deleted');
+        } catch (e) {
+            expect(e!.message).to.be.equal('Not exists');
+        }
+    });
+
     it(testName + 'should read directory', done => {
         const objects = context.objects;
         objects.writeFile(testId, 'myFileA/abc1.txt', 'dataInFile', err => {
             expect(err).to.be.not.ok;
             objects.writeFile(testId, 'myFileA/abc2.txt', Buffer.from('ABC'), err => {
                 expect(err).to.be.not.ok;
-                objects.readDir(testId, 'myFileA/', (err, data) => {
+                objects.readDir(testId, 'myFileA/', null, (err, data) => {
                     expect(err).to.be.not.ok;
-                    expect(data.length).to.be.equal(2);
-                    expect(data[0].file).to.be.equal('abc1.txt');
-                    expect(data[1].file).to.be.equal('abc2.txt');
-                    expect(data[1].stats.size).to.be.equal(3);
+                    expect(data!.length).to.be.equal(2);
+                    expect(data![0].file).to.be.equal('abc1.txt');
+                    expect(data![1].file).to.be.equal('abc2.txt');
+                    expect(data![1].stats.size).to.be.equal(3);
                     done();
                 });
             });
@@ -445,31 +484,46 @@ function register(it, expect, context) {
 
     it(testName + 'should read file and prevent path traversing', done => {
         const objects = context.objects;
-        objects.readFile(testId, '../../myFileA/abc1.txt', (err, data, _mimeType) => {
+        objects.readFile(testId, '../../myFileA/abc1.txt', null, (err, data, _mimeType) => {
             expect(err).to.be.not.ok;
             expect(data).to.be.equal('dataInFile');
-            objects.readFile(testId, '/myFileA/abc1.txt', (err, data, _mimeType) => {
+            objects.readFile(testId, '/myFileA/abc1.txt', null, (err, data, _mimeType) => {
                 expect(err).to.be.not.ok;
                 expect(data).to.be.equal('dataInFile');
-                objects.readFile(testId, '/../../myFileA/abc1.txt', (err, data, _mimeType) => {
+                objects.readFile(testId, '/../../myFileA/abc1.txt', null, (err, data, _mimeType) => {
                     expect(err).to.be.not.ok;
                     expect(data).to.be.equal('dataInFile');
-                    objects.readFile(testId, 'myFileA/../blubb/../myFileA/abc1.txt', (err, data, _mimeType) => {
+                    objects.readFile(testId, 'myFileA/../blubb/../myFileA/abc1.txt', null, (err, data, _mimeType) => {
                         expect(err).to.be.not.ok;
                         expect(data).to.be.equal('dataInFile');
-                        objects.readFile(testId, '/myFileA/../blubb/../myFileA/abc1.txt', (err, data, _mimeType) => {
-                            expect(err).to.be.not.ok;
-                            expect(data).to.be.equal('dataInFile');
-                            objects.readFile(testId, '../blubb/../myFileA/abc1.txt', (err, data, _mimeType) => {
+                        objects.readFile(
+                            testId,
+                            '/myFileA/../blubb/../myFileA/abc1.txt',
+                            null,
+                            (err, data, _mimeType) => {
                                 expect(err).to.be.not.ok;
                                 expect(data).to.be.equal('dataInFile');
-                                objects.readFile(testId, '/../blubb/../myFileA/abc1.txt', (err, data, _mimeType) => {
-                                    expect(err).to.be.not.ok;
-                                    expect(data).to.be.equal('dataInFile');
-                                    done();
-                                });
-                            });
-                        });
+                                objects.readFile(
+                                    testId,
+                                    '../blubb/../myFileA/abc1.txt',
+                                    null,
+                                    (err, data, _mimeType) => {
+                                        expect(err).to.be.not.ok;
+                                        expect(data).to.be.equal('dataInFile');
+                                        objects.readFile(
+                                            testId,
+                                            '/../blubb/../myFileA/abc1.txt',
+                                            null,
+                                            (err, data, _mimeType) => {
+                                                expect(err).to.be.not.ok;
+                                                expect(data).to.be.equal('dataInFile');
+                                                done();
+                                            }
+                                        );
+                                    }
+                                );
+                            }
+                        );
                     });
                 });
             });
@@ -478,10 +532,10 @@ function register(it, expect, context) {
 
     it(testName + 'should unlink file', done => {
         const objects = context.objects;
-        objects.unlink(testId, 'myFileA/abc1.txt', err => {
+        objects.unlink(testId, 'myFileA/abc1.txt', null, err => {
             expect(err).to.be.not.ok;
-            objects.unlink(testId, 'myFileA/abc1.txt', err => {
-                expect(err.message).to.be.equal('Not exists');
+            objects.unlink(testId, 'myFileA/abc1.txt', null, err => {
+                expect(err!.message).to.be.equal('Not exists');
                 done();
             });
         });
@@ -491,13 +545,13 @@ function register(it, expect, context) {
         const objects = context.objects;
         objects.writeFile(testId, 'myFile1/abcRename.txt', Buffer.from('abcd'), err => {
             expect(err).to.be.not.ok;
-            objects.rename(testId, 'myFile1/abcRename.txt', 'myFileA/abc3.txt', err => {
+            objects.rename(testId, 'myFile1/abcRename.txt', 'myFileA/abc3.txt', null, err => {
                 expect(err).to.be.not.ok;
-                objects.readFile(testId, 'myFileA/abc3.txt', (err, data, _meta) => {
+                objects.readFile(testId, 'myFileA/abc3.txt', null, (err, data, _meta) => {
                     expect(err).to.be.not.ok;
-                    expect(data.toString('utf8')).to.be.equal('abcd');
-                    objects.readFile(testId, 'myFile1/abcRename.txt', err => {
-                        expect(err.message).to.be.equal('Not exists');
+                    expect(data!.toString('utf8')).to.be.equal('abcd');
+                    objects.readFile(testId, 'myFile1/abcRename.txt', null, err => {
+                        expect(err!.message).to.be.equal('Not exists');
                         done();
                     });
                 });
@@ -507,16 +561,16 @@ function register(it, expect, context) {
 
     it(testName + 'should touch file', done => {
         const objects = context.objects;
-        objects.readDir(testId, 'myFileA', (err, files) => {
+        objects.readDir(testId, 'myFileA', null, (err, files) => {
             expect(err).to.be.not.ok;
-            const file = files.find(f => f.file === 'abc3.txt');
+            const file = files!.find(f => f.file === 'abc3.txt');
 
             setTimeout(() => {
-                objects.touch(testId, 'myFileA/abc3.txt', err => {
+                objects.touch(testId, 'myFileA/abc3.txt', null, err => {
                     expect(err).to.be.not.ok;
-                    objects.readDir(testId, 'myFileA', (_err, files) => {
-                        const file1 = files.find(f => f.file === 'abc3.txt');
-                        expect(file1.modifiedAt).to.be.not.equal(file.modifiedAt);
+                    objects.readDir(testId, 'myFileA', null, (_err, files) => {
+                        const file1 = files!.find(f => f.file === 'abc3.txt');
+                        expect(file1!.modifiedAt).to.be.not.equal(file!.modifiedAt);
                         done();
                     });
                 });
@@ -526,7 +580,7 @@ function register(it, expect, context) {
 
     it(testName + 'should create directory', done => {
         const objects = context.objects;
-        objects.mkdir(testId, 'myFile' + Math.round(Math.random() * 100000), err => {
+        objects.mkdir(testId, 'myFile' + Math.round(Math.random() * 100_000), null, err => {
             expect(err).to.be.not.ok;
             done();
         });
@@ -589,5 +643,3 @@ function register(it, expect, context) {
         return objects.destroy();
     });
 }
-
-module.exports.register = register;

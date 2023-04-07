@@ -1143,7 +1143,7 @@ export class ObjectsInRedisClient {
             options = { mimeType: options };
         }
 
-        if (options && options.acl) {
+        if (options?.acl) {
             options.acl = null;
         }
 
@@ -1232,8 +1232,7 @@ export class ObjectsInRedisClient {
         if (!callback) {
             return new Promise((resolve, reject) =>
                 this.readFile(id, name, options, (err, res, mimeType) =>
-                    // @ts-expect-error res cannot be undefined according to types?
-                    err ? reject(err) : resolve({ data: res, mimeType: mimeType })
+                    err ? reject(err) : resolve({ file: res!, mimeType: mimeType })
                 )
             );
         }
@@ -1259,15 +1258,6 @@ export class ObjectsInRedisClient {
                 }
             }
         });
-    }
-
-    readFileAsync(id: string, name: string, options: CallOptions): ioBroker.ReadFilePromise {
-        return new Promise((resolve, reject) =>
-            this.readFile(id, name, options, (err, res, mimeType) =>
-                // @ts-expect-error res cannot be undefined according to types
-                err ? reject(err) : resolve({ data: res, mimeType: mimeType })
-            )
-        );
     }
 
     /**
@@ -3399,10 +3389,16 @@ export class ObjectsInRedisClient {
         this._getObjects(keys, options, callback, true);
     }
 
+    getObjectsByPattern(pattern: string, options: CallOptions | null): Promise<ioBroker.AnyObject[] | void>;
     getObjectsByPattern(
         pattern: string,
         options: CallOptions | null,
         callback: (err?: Error | null, objs?: ioBroker.AnyObject[]) => void
+    ): void;
+    getObjectsByPattern(
+        pattern: string,
+        options: CallOptions | null,
+        callback?: (err?: Error | null, objs?: ioBroker.AnyObject[]) => void
     ): void | Promise<ioBroker.AnyObject[] | void> {
         if (typeof options === 'function') {
             callback = options;
@@ -3421,7 +3417,7 @@ export class ObjectsInRedisClient {
                 if (err) {
                     return tools.maybeCallbackWithRedisError(callback, err);
                 } else {
-                    return this._getObjectsByPattern(pattern, options, callback);
+                    return this._getObjectsByPattern(pattern, options, callback!);
                 }
             });
         }
@@ -4736,6 +4732,17 @@ export class ObjectsInRedisClient {
     extendObject<T extends string>(
         id: T,
         obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        options?: ioBroker.ExtendObjectOptions | null
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.ExtendObjectCallback>>;
+    extendObject<T extends string>(
+        id: T,
+        obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        options?: ioBroker.ExtendObjectOptions | null,
+        callback?: ioBroker.ExtendObjectCallback
+    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.ExtendObjectCallback>>;
+    extendObject<T extends string>(
+        id: T,
+        obj: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         options?: ioBroker.ExtendObjectOptions | null,
         callback?: ioBroker.ExtendObjectCallback
     ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.ExtendObjectCallback>> {
@@ -4880,7 +4887,7 @@ export class ObjectsInRedisClient {
     // No callback provided by user, we return a promise
     findObject(
         idOrName: string,
-        type: string | null,
+        type?: string | null,
         options?: CallOptions | null
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.FindObjectCallback>>;
 
@@ -4905,7 +4912,7 @@ export class ObjectsInRedisClient {
             );
         }
 
-        if (options && options.acl) {
+        if (options?.acl) {
             options.acl = null;
         }
 
@@ -4918,14 +4925,6 @@ export class ObjectsInRedisClient {
                 }
             });
         }
-    }
-
-    findObjectAsync(
-        idOrName: string,
-        type: string,
-        options: CallOptions
-    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.FindObjectCallback>> {
-        return this.findObject(idOrName, type, options);
     }
 
     // can be called only from js-controller
