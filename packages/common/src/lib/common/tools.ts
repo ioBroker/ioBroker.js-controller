@@ -135,9 +135,9 @@ export function checkNonEditable(oldObject: Record<string, any> | null, newObjec
     }
 
     // if nonEdit is protected with password
-    if (oldObject.nonEdit && oldObject.nonEdit.passHash) {
+    if (oldObject.nonEdit?.passHash) {
         // If new Object wants to update the nonEdit information
-        if (newObject.nonEdit && newObject.nonEdit.password) {
+        if (newObject.nonEdit?.password) {
             const hash = crypto.createHash('sha256').update(newObject.nonEdit.password.toString()).digest('base64');
             if (oldObject.nonEdit.passHash !== hash) {
                 delete newObject.nonEdit;
@@ -149,12 +149,14 @@ export function checkNonEditable(oldObject: Record<string, any> | null, newObjec
                 oldObject.nonEdit.passHash = hash;
                 newObject.nonEdit.passHash = hash;
             }
+
             copyAttributes(newObject.nonEdit, newObject, newObject);
 
+            // TODO really meant to delete it on object or on nonEdit?
             if (newObject.passHash) {
                 delete newObject.passHash;
             }
-            if (newObject.nonEdit && newObject.nonEdit.password) {
+            if (newObject.nonEdit?.password) {
                 delete newObject.nonEdit.password;
             }
 
@@ -186,9 +188,10 @@ export function checkNonEditable(oldObject: Record<string, any> | null, newObjec
 }
 
 /**
+ * Checks if version is up-to-date, throws error on invalid version strings
+ *
  * @param repoVersion
  * @param installedVersion
- * @throws {Error} if version is invalid
  */
 export function upToDate(repoVersion: string, installedVersion: string): boolean {
     // Check if the installed version is at least the repo version
