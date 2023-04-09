@@ -126,7 +126,10 @@ export function copyAttributes(
  * @param newObject destination object
  *
  */
-export function checkNonEditable(oldObject: Record<string, any> | null, newObject: Record<string, any>): boolean {
+export function checkNonEditable(
+    oldObject: ioBroker.SettableObject | null,
+    newObject: ioBroker.SettableObject
+): boolean {
     if (!oldObject) {
         return true;
     }
@@ -152,9 +155,8 @@ export function checkNonEditable(oldObject: Record<string, any> | null, newObjec
 
             copyAttributes(newObject.nonEdit, newObject, newObject);
 
-            // TODO really meant to delete it on object or on nonEdit?
-            if (newObject.passHash) {
-                delete newObject.passHash;
+            if (newObject.nonEdit.passHash) {
+                delete newObject.nonEdit.passHash;
             }
             if (newObject.nonEdit?.password) {
                 delete newObject.nonEdit.password;
@@ -176,12 +178,12 @@ export function checkNonEditable(oldObject: Record<string, any> | null, newObjec
     }
 
     // restore settings
-    copyAttributes(oldObject.nonEdit, newObject, oldObject);
+    copyAttributes(oldObject.nonEdit!, newObject, oldObject);
 
-    if (newObject.passHash) {
-        delete newObject.passHash;
+    if (newObject.nonEdit?.passHash) {
+        delete newObject.nonEdit.passHash;
     }
-    if (newObject.nonEdit && newObject.nonEdit.password) {
+    if (newObject.nonEdit?.password) {
         delete newObject.nonEdit.password;
     }
     return true;
