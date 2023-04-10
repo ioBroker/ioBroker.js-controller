@@ -387,6 +387,8 @@ declare global {
             password: string;
             /** Whether this user is enabled */
             enabled: boolean;
+            /** User color for Admin adapter */
+            color?: string;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
