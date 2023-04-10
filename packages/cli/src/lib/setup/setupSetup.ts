@@ -1071,9 +1071,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             otherInstallDirs.push(path.join(CONTROLLER_DIR, 'killall.sh'));
             otherInstallDirs.push(path.join(CONTROLLER_DIR, 'reinstall.sh'));
         } else {
-            otherInstallDirs.push(path.join(CONTROLLER_DIR, `_service_${tools.appName}.bat`));
-            otherInstallDirs.push(path.join(CONTROLLER_DIR, `${tools.appName}.bat`));
-            otherInstallDirs.push(path.join(CONTROLLER_DIR, `${tools.appName.substring(0, 3)}.bat`));
+            otherInstallDirs.push(path.join(CONTROLLER_DIR, `_service_${tools.appNameLowerCase}.bat`));
+            otherInstallDirs.push(path.join(CONTROLLER_DIR, `${tools.appNameLowerCase.substring(0, 3)}.bat`));
             // copy scripts to root directory
             if (fs.existsSync(path.join(CONTROLLER_DIR, '..', '..', 'node_modules'))) {
                 const startFile = `#!/usr/bin/env node

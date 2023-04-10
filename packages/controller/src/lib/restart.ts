@@ -12,7 +12,7 @@ export default function restart(callback?: () => void): void {
     let args;
     if (os.platform() === 'win32') {
         // On Windows, we execute the controller entry point directly
-        cmd = 'iobroker.bat';
+        cmd = 'iob.bat';
         args = ['restart'];
     } else {
         // Unix has a global iobroker binary that delegates to the init system

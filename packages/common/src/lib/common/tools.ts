@@ -279,6 +279,7 @@ function getAppName(): string {
 }
 
 export const appName = getAppName();
+export const appNameLowerCase = appName.toLowerCase();
 
 export function findIPs(): string[] {
     if (!lastCalculationOfIps || Date.now() - lastCalculationOfIps > 10000) {
@@ -2093,7 +2094,7 @@ export function getControllerDir(): string {
         for (const pkg of possibilities) {
             try {
                 const possiblePath = path.join(checkPath, pkg);
-                if (fs.existsSync(path.join(possiblePath, 'iob.bat'))) {
+                if (fs.existsSync(path.join(possiblePath, `${appNameLowerCase.substring(0, 3)}.bat`))) {
                     return possiblePath;
                 }
             } catch {

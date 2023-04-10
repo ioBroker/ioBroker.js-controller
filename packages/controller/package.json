@@ -104,7 +104,6 @@
         "controller.js",
         "io-package.json",
         "iob.bat",
-        "iobroker.bat",
         "iobroker.js",
         "main.js"
     ]
