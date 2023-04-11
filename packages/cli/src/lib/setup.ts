@@ -2148,10 +2148,7 @@ async function processCommand(
                     }
                 }
 
-                fs.writeFileSync(
-                    path.join(tools.getControllerDir(), '..', '..', 'package.json'),
-                    JSON.stringify(json, null, 2)
-                );
+                fs.writeFileSync(path.join(tools.getRootDir(), 'package.json'), JSON.stringify(json, null, 2));
                 return void callback();
             });
             break;

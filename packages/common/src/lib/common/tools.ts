@@ -1584,7 +1584,7 @@ async function detectPackageManagerWithFallback(cwd?: string): Promise<PackageMa
     }
 
     // Since we have no lockfile to rely on, assume the root dir is 2 levels above js-controller
-    const ioBrokerRootDir = path.join(getControllerDir(), '..', '..');
+    const ioBrokerRootDir = getRootDir();
     // And fallback to npm
     const pak = new packageManagers.npm();
     pak.cwd = cwd || ioBrokerRootDir;
@@ -2087,14 +2087,14 @@ export function getControllerDir(): string {
 
     // Apparently, checking vs null/undefined may miss the odd case of controllerPath being ""
     // Thus we check for falseness, which includes failing on an empty path
-    let checkPath = path.join(__dirname, '../..');
+    let checkPath = path.join(__dirname, '..', '..');
     // Also check in the current check dir (along with iobroker.js-controller sub-dirs)
     possibilities.unshift('');
     while (true) {
         for (const pkg of possibilities) {
             try {
                 const possiblePath = path.join(checkPath, pkg);
-                if (fs.existsSync(path.join(possiblePath, `${appNameLowerCase.substring(0, 3)}.bat`))) {
+                if (fs.existsSync(path.join(possiblePath, `${appNameLowerCase}.js`))) {
                     return possiblePath;
                 }
             } catch {
@@ -2112,6 +2112,13 @@ export function getControllerDir(): string {
     }
 
     throw new Error('Could not determine controller directory');
+}
+
+/**
+ * Get the root dir of the ioBroker installation
+ */
+export function getRootDir(): string {
+    return path.join(getControllerDir(), '..', '..');
 }
 
 /** Returns whether the current process is executed via dev-server */
