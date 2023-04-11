@@ -2085,11 +2085,12 @@ export function getControllerDir(): string {
         }
     }
 
-    // Apparently, checking vs null/undefined may miss the odd case of controllerPath being ""
-    // Thus we check for falseness, which includes failing on an empty path
-    let checkPath = path.join(__dirname, '..', '..');
     // Also check in the current check dir (along with iobroker.js-controller sub-dirs)
+    let checkPath = path.join(__dirname, '..', '..');
+
+    // Apparently, checking vs null/undefined may miss the odd case of controllerPath being ""
     possibilities.unshift('');
+
     while (true) {
         for (const pkg of possibilities) {
             try {
