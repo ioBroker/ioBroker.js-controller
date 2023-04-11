@@ -2088,7 +2088,6 @@ export function getControllerDir(): string {
     // Also check in the current check dir (along with iobroker.js-controller sub-dirs)
     let checkPath = path.join(__dirname, '..', '..');
 
-    // Apparently, checking vs null/undefined may miss the odd case of controllerPath being ""
     possibilities.unshift('');
 
     while (true) {
