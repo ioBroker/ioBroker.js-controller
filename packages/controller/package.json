@@ -100,10 +100,8 @@
     "files": [
         "conf/",
         "build/",
-        "_service_iobroker.bat",
         "controller.js",
         "io-package.json",
-        "iob.bat",
         "iobroker.js",
         "main.js"
     ]
