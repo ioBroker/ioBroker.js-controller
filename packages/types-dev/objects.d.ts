@@ -672,6 +672,10 @@ declare global {
             _id: ObjectIDs.Instance;
             type: 'instance';
             common: InstanceCommon;
+            /** These properties will be removed when foreign adapters access it */
+            protectedNative?: string[];
+            /** These properties will be automatically encrypted and decrypted when used with adapter.config */
+            encryptedNative?: string[];
         }
         interface PartialInstanceObject extends Partial<Omit<InstanceObject, 'common'>> {
             common?: Partial<InstanceCommon>;

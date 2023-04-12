@@ -12,4 +12,6 @@ export interface TestContext extends Mocha.Context {
     onAdapterFileChanged: ioBroker.FileChangeHandler | null;
     /** Allow to unregister handler by setting null */
     onAdapterMessage: ioBroker.MessageHandler | null;
+    /** Allow to unregister handler by setting null */
+    onAdapterObjectChanged: ioBroker.ObjectChangeHandler | null;
 }
