@@ -567,7 +567,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         }
                     },
                     () => {
-                        context.onAdapterStateChanged = context.onAdapterStateChanged = function (id, state) {
+                        context.onAdapterStateChanged = function (id, state) {
                             if (id === gAliasID) {
                                 // A:
                                 expect(state).to.be.ok;
