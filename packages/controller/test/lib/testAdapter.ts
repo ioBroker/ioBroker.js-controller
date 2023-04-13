@@ -1,11 +1,11 @@
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node:true */
-/* jshint expr:true */
-'use strict';
+import chai from 'chai';
+import chaiAsPromised from 'chai-as-promised';
+import fs from 'fs-extra';
+import { startController, stopController, appName, rootDir } from './setup4controller';
+import deepClone from 'deep-clone';
+import type { TestContext } from '../_Types';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 
-const chai = require('chai');
-const chaiAsPromised = require('chai-as-promised');
 const expect = chai.expect;
 
 before(() => {
@@ -13,10 +13,7 @@ before(() => {
     chai.use(chaiAsPromised);
 });
 
-const setup = require('./setup4controller');
-const deepClone = require('deep-clone');
-
-function testAdapter(options) {
+function testAdapter(options: Record<string, any>): void {
     const statesConfig = options.statesConfig;
     const objectsConfig = options.objectsConfig;
     options.name = options.name || 'Test';
@@ -34,9 +31,12 @@ function testAdapter(options) {
         require('./testConsole')
     ];
 
-    const context = {
+    const context: TestContext = {
+        /** @ts-expect-error will be filled in time */
         objects: null,
+        /** @ts-expect-error will be filled in time */
         states: null,
+        /** @ts-expect-error will be filled in time */
         adapter: null,
         onControllerStateChanged: null,
         onControllerObjectChanged: null,
@@ -48,25 +48,30 @@ function testAdapter(options) {
         sendToID: 1,
         adapterShortName: 'test',
         name: options.name,
-        appName: setup.appName,
+        appName,
         statesConfig,
         objectsConfig
     };
 
-    function startAdapter() {
-        const { Adapter } = require('@iobroker/js-controller-adapter');
+    async function startAdapter(): Promise<void> {
+        const { Adapter } = await import('@iobroker/js-controller-adapter');
 
         return new Promise(resolve => {
             context.adapter = new Adapter({
                 config: {
+                    // @ts-expect-error todo types do not include this yet
                     states: statesConfig,
                     objects: objectsConfig,
                     consoleOutput: true
                 },
                 dirname: __dirname + '/',
                 name: context.adapterShortName,
-                objectChange: (id, obj) => context.onAdapterObjectChanged && context.onAdapterObjectChanged(id, obj),
-                stateChange: (id, state) => context.onAdapterStateChanged && context.onAdapterStateChanged(id, state),
+                objectChange: (id, obj) => {
+                    context.onAdapterObjectChanged && context.onAdapterObjectChanged(id, obj);
+                },
+                stateChange: (id, state) => {
+                    context.onAdapterStateChanged && context.onAdapterStateChanged(id, state);
+                },
                 fileChange: (id, fileName, size) =>
                     context.onAdapterFileChanged && context.onAdapterFileChanged(id, fileName, size),
                 unload: callback => {
@@ -89,7 +94,7 @@ function testAdapter(options) {
         });
     }
 
-    function checkConnectionOfAdapter(isConnected, cb, counter) {
+    function checkConnectionOfAdapter(isConnected: boolean, cb: (err?: string) => void, counter?: number): void {
         counter = counter || 0;
         console.log('Try check #' + counter);
         if (counter > 30) {
@@ -108,7 +113,7 @@ function testAdapter(options) {
                     cb();
                 }
             } else {
-                setTimeout(() => checkConnectionOfAdapter(isConnected, cb, counter + 1), 1000);
+                setTimeout(() => checkConnectionOfAdapter(isConnected, cb, counter! + 1), 1_000);
             }
         });
     }
@@ -116,15 +121,14 @@ function testAdapter(options) {
     /**
      * Sets the provided Objets to the db
      *
-     * @param {object} objects - objects instance
-     * @param {object} objs - objects to set
-     * @return {Promise<void>}
+     * @param objects - objects instance
+     * @param objs - objects to set
      */
-    async function addObjects(objects, objs) {
-        for (const id of Object.keys(objs)) {
-            if (objs[id]) {
+    async function addObjects(objects: ObjectsClient, objs: Record<string, ioBroker.SettableObject>): Promise<void> {
+        for (const [id, obj] of Object.entries(objs)) {
+            if (obj) {
                 try {
-                    await objects.setObjectAsync(id, objs[id]);
+                    await objects.setObjectAsync(id, obj);
                 } catch (e) {
                     console.error(e.message);
                 }
@@ -132,10 +136,9 @@ function testAdapter(options) {
         }
     }
 
-    function addInstance() {
-        const fs = require('fs');
-        if (!fs.existsSync(setup.rootDir + 'tmp/')) {
-            fs.mkdirSync(setup.rootDir + 'tmp/');
+    function addInstance(): void {
+        if (!fs.existsSync(rootDir + 'tmp/')) {
+            fs.mkdirSync(rootDir + 'tmp/');
         }
         if (statesConfig.dataDir && !fs.existsSync(statesConfig.dataDir)) {
             fs.mkdirSync(statesConfig.dataDir);
@@ -153,38 +156,38 @@ function testAdapter(options) {
 
     describe(`${options.name} ${context.adapterShortName} adapter`, function () {
         before('Test ' + context.adapterShortName + ' adapter: Start js-controller and adapter', async function () {
-            this.timeout(10000); // no installation
+            this.timeout(10_000); // no installation
 
             addInstance();
             const _statesConfig = deepClone(statesConfig);
             const _objectsConfig = deepClone(objectsConfig);
 
-            _statesConfig.onChange = (id, state) => {
+            _statesConfig.onChange = (id: string, state: ioBroker.State) => {
                 console.log('state changed. ' + id);
                 if (context.onControllerStateChanged) {
                     context.onControllerStateChanged(id, state);
                 }
             };
-            _objectsConfig.onChange = (id, obj) => {
+            _objectsConfig.onChange = (id: string, obj: ioBroker.AnyObject) => {
                 console.log('object changed. ' + id);
                 if (context.onControllerObjectChanged) {
                     context.onControllerObjectChanged(id, obj);
                 }
             };
 
-            const { objects: _objects, states: _states } = await setup.startController({
+            const { objects: _objects, states: _states } = await startController({
                 objects: _objectsConfig,
                 states: _statesConfig
             });
 
-            context.objects = _objects;
-            context.states = _states;
+            context.objects = _objects!;
+            context.states = _states!;
             expect(context.objects).to.be.ok;
             expect(context.states).to.be.ok;
 
             if (objectsConfig.type !== 'file') {
-                const objs = require('./objects.json');
-                await addObjects(_objects, objs);
+                const objs = fs.readJSONSync('./objects.json');
+                await addObjects(_objects!, objs);
                 await startAdapter();
             } else {
                 await startAdapter();
@@ -209,28 +212,30 @@ function testAdapter(options) {
                 expect(context.adapter.namespace).to.be.equal(context.adapterShortName + '.0');
                 expect(context.adapter.name).to.be.equal(context.adapterShortName);
                 expect(context.adapter.instance).to.be.equal(0);
+                // @ts-expect-error should not exist
                 expect(context.adapter.states).to.be.undefined;
+                // @ts-expect-error should not exist
                 expect(context.adapter.objects).to.be.undefined;
                 expect(context.adapter.log).to.be.ok;
-                expect(context.adapter.log.info).to.be.a('function');
-                expect(context.adapter.log.debug).to.be.a('function');
-                expect(context.adapter.log.warn).to.be.a('function');
-                expect(context.adapter.log.error).to.be.a('function');
-                expect(context.adapter.config.paramString).to.be.equal('value1');
-                expect(context.adapter.config.paramNumber).to.be.equal(42);
-                expect(context.adapter.config.paramBoolean).to.be.equal(false);
-                expect(context.adapter.config.username).to.be.equal('tesla');
+                expect(context.adapter.log!.info).to.be.a('function');
+                expect(context.adapter.log!.debug).to.be.a('function');
+                expect(context.adapter.log!.warn).to.be.a('function');
+                expect(context.adapter.log!.error).to.be.a('function');
+                expect(context.adapter.config!.paramString).to.be.equal('value1');
+                expect(context.adapter.config!.paramNumber).to.be.equal(42);
+                expect(context.adapter.config!.paramBoolean).to.be.equal(false);
+                expect(context.adapter.config!.username).to.be.equal('tesla');
                 // password has to be winning (decrypted via legacy - backward compatibility)
-                expect(context.adapter.config.password).to.be.equal('winning');
+                expect(context.adapter.config!.password).to.be.equal('winning');
                 // secondPassword should be decrypted with AES-256 correctly
-                expect(context.adapter.config.secondPassword).to.be.equal('ii-€+winning*-³§"');
+                expect(context.adapter.config!.secondPassword).to.be.equal('ii-€+winning*-³§"');
 
                 let count = 0;
 
                 context.states.getState(
                     `system.adapter.${context.adapterShortName}.0.compactMode`,
                     function (err, state) {
-                        expect(state.val).to.be.equal(true);
+                        expect(state!.val).to.be.equal(true);
                         setTimeout(() => !--count && done(), 0);
                     }
                 );
@@ -239,14 +244,14 @@ function testAdapter(options) {
                 context.states.getState(
                     `system.adapter.${context.adapterShortName}.0.connected`,
                     function (err, state) {
-                        expect(state.val).to.be.equal(true);
+                        expect(state!.val).to.be.equal(true);
                         setTimeout(() => !--count && done(), 0);
                     }
                 );
 
                 count++;
                 context.states.getState(`system.adapter.${context.adapterShortName}.0.memRss`, function (err, state) {
-                    expect(state.val).to.be.equal(0);
+                    expect(state!.val).to.be.equal(0);
                     setTimeout(() => !--count && done(), 0);
                 });
 
@@ -254,7 +259,7 @@ function testAdapter(options) {
                 context.states.getState(
                     `system.adapter.${context.adapterShortName}.0.memHeapTotal`,
                     function (err, state) {
-                        expect(state.val).to.be.equal(0);
+                        expect(state!.val).to.be.equal(0);
                         setTimeout(() => !--count && done(), 0);
                     }
                 );
@@ -263,21 +268,21 @@ function testAdapter(options) {
                 context.states.getState(
                     `system.adapter.${context.adapterShortName}.0.memHeapUsed`,
                     function (err, state) {
-                        expect(state.val).to.be.equal(0);
+                        expect(state!.val).to.be.equal(0);
                         setTimeout(() => !--count && done(), 0);
                     }
                 );
 
                 count++;
                 context.states.getState(`system.adapter.${context.adapterShortName}.0.uptime`, function (err, state) {
-                    expect(state.val).to.be.at.least(0);
+                    expect(state!.val).to.be.at.least(0);
                     setTimeout(() => !--count && done(), 0);
                 });
             }
         );
 
-        for (let t = 0; t < tests.length; t++) {
-            tests[t].register(it, expect, context);
+        for (const test of tests) {
+            test.register(it, expect, context);
         }
 
         // sendTo => controller => adapter
@@ -343,7 +348,7 @@ function testAdapter(options) {
             this.timeout(35_000);
 
             expect(context.adapter.connected).to.be.true;
-            await setup.stopController();
+            await stopController();
             console.log('Adapter terminated');
             let adapterStopped = false;
             context.adapter.on('exit', () => {
@@ -353,22 +358,22 @@ function testAdapter(options) {
             });
             // redis server cannot be stopped
             if (objectsConfig.type === 'file') {
-                await new Promise(resolve => {
+                await new Promise<void>(resolve => {
                     setTimeout(() => resolve(), 3_000 + (process.platform === 'win32' ? 5_000 : 0));
                 });
                 expect(context.adapter.connected).to.be.false;
-                context.adapter.stop();
+                context.adapter.stop!();
 
-                await new Promise(resolve => {
+                await new Promise<void>(resolve => {
                     setTimeout(() => resolve(), 2_000);
                 });
                 expect(adapterStopped).to.be.true;
 
-                await new Promise(resolve => {
+                await new Promise<void>(resolve => {
                     setTimeout(() => resolve(), 2_000);
                 });
             } else {
-                await new Promise(resolve => {
+                await new Promise<void>(resolve => {
                     setTimeout(() => resolve(), 2_000);
                 });
             }
