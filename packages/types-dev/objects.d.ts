@@ -171,7 +171,7 @@ declare global {
 
         interface StateCommon extends ObjectCommon {
             /** Type of this state. See https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#state-commonrole for a detailed description */
-            type?: CommonType;
+            type: CommonType;
             /** minimum value */
             min?: number;
             /** maximum value */
