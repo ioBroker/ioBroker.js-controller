@@ -515,6 +515,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             {
                 type: 'state',
                 common: {
+                    type: 'string',
                     name: 'Some name',
                     read: true,
                     write: true,
@@ -533,6 +534,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     context.adapterShortName + '.0.' + gid,
                     {
                         common: {
+                            type: 'string',
                             name: 'Some name',
                             read: true,
                             write: true,
@@ -568,6 +570,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             id,
             {
                 common: {
+                    type: 'string',
                     name: 'Some name',
                     read: true,
                     write: true,
@@ -587,6 +590,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     id,
                     {
                         common: {
+                            type: 'string',
                             name: 'Some name',
                             desc: 'Hello',
                             custom: {
@@ -624,6 +628,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             id,
             {
                 common: {
+                    type: 'string',
                     name: 'Some name',
                     read: true,
                     write: true,
@@ -643,6 +648,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     id,
                     {
                         common: {
+                            type: 'string',
                             name: 'Some name',
                             desc: 'Hello',
                             custom: {
@@ -940,6 +946,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'state',
                 native: {},
                 common: {
+                    type: 'string',
                     name: 'Model',
                     read: true,
                     write: true,
@@ -979,6 +986,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 gid,
                 {
                     common: {
+                        type: 'string',
                         name: 'must be set',
                         read: true,
                         write: true,
@@ -1010,6 +1018,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 gid,
                 {
                     common: {
+                        type: 'string',
                         name: 'must be set',
                         read: true,
                         write: true,
@@ -1045,6 +1054,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 context.adapterShortName + 'f.0.' + gid,
                 {
                     common: {
+                        type: 'string',
                         name: 'must be set',
                         read: true,
                         write: true,
@@ -1160,6 +1170,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 context.adapterShortName + 'f.0.' + gid,
                 {
                     common: {
+                        type: 'string',
                         name: 'must be set',
                         read: true,
                         write: true,
