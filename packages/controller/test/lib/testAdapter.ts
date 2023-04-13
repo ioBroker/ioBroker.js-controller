@@ -1,6 +1,7 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import fs from 'fs-extra';
+import path from 'path';
 import { startController, stopController, appName, rootDir } from './setup4controller';
 import deepClone from 'deep-clone';
 import type { TestContext } from '../_Types';
@@ -186,7 +187,7 @@ function testAdapter(options: Record<string, any>): void {
             expect(context.states).to.be.ok;
 
             if (objectsConfig.type !== 'file') {
-                const objs = fs.readJSONSync('./objects.json');
+                const objs = fs.readJSONSync(path.join(__dirname, 'objects.json'));
                 await addObjects(_objects!, objs);
                 await startAdapter();
             } else {
