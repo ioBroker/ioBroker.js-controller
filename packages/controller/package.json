@@ -1,6 +1,6 @@
 {
     "name": "iobroker.js-controller",
-    "version": "5.0.1-alpha.0-20230408-d762c690",
+    "version": "5.0.1-alpha.0-20230415-c507341d",
     "engines": {
         "node": ">=14.18.0 < 15 || >= 16.4.0"
     },
@@ -100,11 +100,8 @@
     "files": [
         "conf/",
         "build/",
-        "_service_iobroker.bat",
         "controller.js",
         "io-package.json",
-        "iob.bat",
-        "iobroker.bat",
         "iobroker.js",
         "main.js"
     ]
