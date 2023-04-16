@@ -99,12 +99,12 @@ export class Multihost {
             let warningShown = false;
             if (dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host, true)) {
                 console.log('Changing objects server to accept connections on all IP addresses.');
-                config.objects.host = '0.0.0.0';
+                config.objects.host = tools.getListenAllAddress();
                 changed = true;
             } else if (config.objects.type === 'redis') {
                 warningShown = true;
                 console.log(
-                    'Please check the binding of redis service. By default it is only local: http://download.redis.io/redis-stable/redis.conf\nChange "bind 127.0.0.1" to "bind 0.0.0.0" or to others.'
+                    `Please check the binding of redis service. By default it is only local: http://download.redis.io/redis-stable/redis.conf\nChange "bind 127.0.0.1" to "bind ${tools.getListenAllAddress()}" or to others.`
                 );
             } else {
                 warningShown = true;
@@ -114,12 +114,12 @@ export class Multihost {
             }
             if (dbTools.isLocalStatesDbServer(config.states.type, config.states.host, true)) {
                 console.log('Changing states server to accept connections on all IP addresses.');
-                config.states.host = '0.0.0.0';
+                config.states.host = tools.getListenAllAddress();
                 changed = true;
             } else if (config.states.type === 'redis') {
                 !warningShown &&
                     console.log(
-                        'Please check the binding of redis service. By default it is only local: http://download.redis.io/redis-stable/redis.conf\nChange "bind 127.0.0.1" to "bind 0.0.0.0" or to others.'
+                        `Please check the binding of redis service. By default it is only local: http://download.redis.io/redis-stable/redis.conf\nChange "bind 127.0.0.1" to "bind ${tools.getListenAllAddress()}" or to others.`
                     );
             } else {
                 !warningShown &&
@@ -312,11 +312,12 @@ export class Multihost {
                         )
                     );
                 } else {
-                    if (config.states.host === '0.0.0.0') {
+                    const listenAllAddress = tools.getListenAllAddress();
+                    if (config.states.host === listenAllAddress) {
                         // TODO: why we set the remote IP only when the local config allows full connectivity?
                         config.states.host = ipHost;
                     }
-                    if (config.objects.host === '0.0.0.0') {
+                    if (config.objects.host === listenAllAddress) {
                         // TODO: why we set the remote IP only when the local config allows full connectivity?
                         config.objects.host = ipHost;
                     }

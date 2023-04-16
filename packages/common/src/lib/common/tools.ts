@@ -3897,10 +3897,11 @@ export function maybeArrayToString<T>(maybeArr: T): T extends any[] ? string : T
 }
 
 /**
- * Ensure that DNS is resolved according to ioBroker config
+ * Get the configured DNS resolution order
  */
-export function ensureDNSOrder(): void {
+function getDNSResolutionOrder(): 'ipv4first' | 'verbatim' {
     let dnsOrder: 'ipv4first' | 'verbatim' = 'ipv4first';
+
     try {
         const configName = getConfigFileName();
         const config: ioBroker.IoBrokerJson = fs.readJSONSync(configName);
@@ -3909,6 +3910,23 @@ export function ensureDNSOrder(): void {
         console.warn(`Could not determine dns resolution order, fallback to "ipv4first": ${e.message}`);
     }
 
+    return dnsOrder;
+}
+
+/**
+ * Get the ip to listen to all addresses according to configured DNS resolution strategy
+ */
+export function getListenAllAddress(): '0.0.0.0' | '::' {
+    const dnsOrder = getDNSResolutionOrder();
+
+    return dnsOrder === 'ipv4first' ? '0.0.0.0' : '::';
+}
+
+/**
+ * Ensure that DNS is resolved according to ioBroker config
+ */
+export function ensureDNSOrder(): void {
+    const dnsOrder = getDNSResolutionOrder();
     setDefaultResultOrder(dnsOrder);
 }
 
