@@ -899,6 +899,7 @@ async () => {
     const stateObj: ioBroker.SettableStateObject = {
         type: 'state',
         common: {
+            type: 'string',
             name: 'Dummy name',
             role: 'value',
             read: true,

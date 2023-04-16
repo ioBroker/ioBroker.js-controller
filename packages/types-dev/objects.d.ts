@@ -171,7 +171,7 @@ declare global {
 
         interface StateCommon extends ObjectCommon {
             /** Type of this state. See https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#state-commonrole for a detailed description */
-            type?: CommonType;
+            type: CommonType;
             /** minimum value */
             min?: number;
             /** maximum value */
@@ -387,6 +387,8 @@ declare global {
             password: string;
             /** Whether this user is enabled */
             enabled: boolean;
+            /** User color for Admin adapter */
+            color?: string;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
@@ -670,6 +672,10 @@ declare global {
             _id: ObjectIDs.Instance;
             type: 'instance';
             common: InstanceCommon;
+            /** These properties will be removed when foreign adapters access it */
+            protectedNative?: string[];
+            /** These properties will be automatically encrypted and decrypted when used with adapter.config */
+            encryptedNative?: string[];
         }
         interface PartialInstanceObject extends Partial<Omit<InstanceObject, 'common'>> {
             common?: Partial<InstanceCommon>;
