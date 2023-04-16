@@ -34,7 +34,7 @@ export function isLocalObjectsDbServer(
         return false;
     }
 
-    let result = host === 'localhost' || host === '127.0.0.1'; // reachable locally only
+    let result = host === 'localhost' || host === tools.getLocalAddress(); // reachable locally only
     if (!checkIfLocalOnly) {
         const ownIps = tools.findIPs();
         result = result || host === tools.getListenAllAddress() || ownIps.includes(host);
@@ -59,7 +59,7 @@ export function isLocalStatesDbServer(dbType: string, host: string | string[], c
         return false;
     }
 
-    let result = host === 'localhost' || host === '127.0.0.1'; // reachable locally only
+    let result = host === 'localhost' || host === tools.getLocalAddress(); // reachable locally only
     if (!checkIfLocalOnly && !Array.isArray(host)) {
         const ownIps = tools.findIPs();
         result = result || host === tools.getListenAllAddress() || ownIps.includes(host);

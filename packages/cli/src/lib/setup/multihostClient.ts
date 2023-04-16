@@ -158,7 +158,7 @@ export class MHClient {
             },
             (msg, rinfo) => {
                 // ignore own answers
-                if (isDebug || (rinfo.address !== '127.0.0.1' && ownIps.indexOf(rinfo.address) === -1)) {
+                if (isDebug || (rinfo.address !== tools.getLocalAddress() && !ownIps.includes(rinfo.address))) {
                     if (msg.result === 'not authenticated') {
                         result.push({
                             ip: rinfo.address,

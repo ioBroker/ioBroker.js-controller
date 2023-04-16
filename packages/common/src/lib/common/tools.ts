@@ -3914,6 +3914,15 @@ function getDNSResolutionOrder(): 'ipv4first' | 'verbatim' {
 }
 
 /**
+ * Retrieve the localhost address according to the configured DNS resolution strategy
+ */
+export function getLocalAddress(): '127.0.0.1' | '::1' {
+    const dnsOrder = getDNSResolutionOrder();
+
+    return dnsOrder === 'ipv4first' ? '127.0.0.1' : '::1';
+}
+
+/**
  * Get the ip to listen to all addresses according to configured DNS resolution strategy
  */
 export function getListenAllAddress(): '0.0.0.0' | '::' {

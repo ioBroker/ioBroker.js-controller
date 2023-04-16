@@ -68,12 +68,12 @@ function initYargs(): yargs.Argv {
             },
             objects: {
                 describe: 'Objects <host>',
-                default: '127.0.0.1',
+                default: tools.getLocalAddress(),
                 type: 'number'
             },
             states: {
                 describe: 'States <host>',
-                default: '127.0.0.1',
+                default: tools.getLocalAddress(),
                 type: 'number'
             },
             'port <port>': {
