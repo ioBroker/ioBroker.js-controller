@@ -6,8 +6,12 @@ export interface TestContext extends Mocha.Context {
     adapter: AdapterClass;
     states: StatesInRedisClient;
     objects: ObjectsInRedisClient;
-    onAdapterStateChanged: ioBroker.StateChangeHandler;
-    onAdapterFileChanged: ioBroker.FileChangeHandler;
+    /** Allow to unregister handler by setting null */
+    onAdapterStateChanged: ioBroker.StateChangeHandler | null;
+    /** Allow to unregister handler by setting null */
+    onAdapterFileChanged: ioBroker.FileChangeHandler | null;
     /** Allow to unregister handler by setting null */
     onAdapterMessage: ioBroker.MessageHandler | null;
+    /** Allow to unregister handler by setting null */
+    onAdapterObjectChanged: ioBroker.ObjectChangeHandler | null;
 }

@@ -727,9 +727,7 @@ export class Upload {
                     newObject.native = this.extendNative(newObject.native, ioPack.native);
 
                     // protected/encryptedNative and notifications also need to be updated
-                    // @ts-expect-error TODO needs to be added to types
                     newObject.protectedNative = ioPack.protectedNative || [];
-                    // @ts-expect-error TODO needs to be added to types
                     newObject.encryptedNative = ioPack.encryptedNative || [];
                     // @ts-expect-error TODO needs to be added to types
                     newObject.notifications = ioPack.notifications || [];

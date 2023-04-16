@@ -3965,6 +3965,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
+    getForeignObjects(patter: Pattern): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.GetObjectsCallback>>;
     getForeignObjects(pattern: Pattern, callback: ioBroker.GetObjectsCallback): void;
     getForeignObjects(pattern: Pattern, options: unknown, callback: ioBroker.GetObjectsCallback): void;
     getForeignObjects<T extends ioBroker.ObjectType>(
@@ -4036,7 +4037,7 @@ export class AdapterClass extends EventEmitter {
      */
     getForeignObjects(
         pattern: unknown,
-        type: unknown,
+        type?: unknown,
         enums?: unknown,
         options?: unknown,
         callback?: unknown
@@ -4193,8 +4194,13 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    findForeignObject(idOrName: string, type: string, callback: ioBroker.FindObjectCallback): void;
-    findForeignObject(idOrName: string, type: string, options: unknown, callback: ioBroker.FindObjectCallback): void;
+    findForeignObject(idOrName: string, type: string | null, callback: ioBroker.FindObjectCallback): void;
+    findForeignObject(
+        idOrName: string,
+        type: string | null,
+        options: unknown,
+        callback: ioBroker.FindObjectCallback
+    ): void;
 
     /**
      * Find any object by name or ID.
@@ -6697,7 +6703,8 @@ export class AdapterClass extends EventEmitter {
         return adapterObjects.writeFile(_adapter, filename, data, options, callback);
     }
 
-    fileExists(adapterName: string | null, path: string, callback: ioBroker.GenericCallback<boolean>): void;
+    fileExists(adapterName: string | null, path: string): Promise<boolean>;
+    fileExists(adapterName: string | null, path: string, callback?: ioBroker.GenericCallback<boolean>): void;
     fileExists(
         adapterName: string | null,
         path: string,
@@ -6716,7 +6723,7 @@ export class AdapterClass extends EventEmitter {
     async fileExists(
         _adapter: unknown,
         filename: unknown,
-        options: unknown,
+        options?: unknown,
         callback?: unknown
     ): Promise<boolean | void> {
         if (typeof options === 'function') {

@@ -3633,6 +3633,11 @@ export class ObjectsInRedisClient {
         return { id };
     }
 
+    setObject<T extends string>(
+        id: T,
+        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T>>
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
+
     // method called without options
     setObject<T extends string>(
         id: T,

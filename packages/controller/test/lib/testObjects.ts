@@ -17,6 +17,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             {
                 type: 'state',
                 common: {
+                    type: 'string',
                     name: 'test2',
                     read: true,
                     write: true,
@@ -47,6 +48,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             .setObjectAsync(testId + 'async', {
                 type: 'state',
                 common: {
+                    type: 'string',
                     name: 'test1a',
                     read: true,
                     write: true,
