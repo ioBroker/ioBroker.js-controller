@@ -126,7 +126,10 @@ export function copyAttributes(
  * @param newObject destination object
  *
  */
-export function checkNonEditable(oldObject: Record<string, any> | null, newObject: Record<string, any>): boolean {
+export function checkNonEditable(
+    oldObject: ioBroker.SettableObject | null,
+    newObject: ioBroker.SettableObject
+): boolean {
     if (!oldObject) {
         return true;
     }
@@ -135,9 +138,9 @@ export function checkNonEditable(oldObject: Record<string, any> | null, newObjec
     }
 
     // if nonEdit is protected with password
-    if (oldObject.nonEdit && oldObject.nonEdit.passHash) {
+    if (oldObject.nonEdit?.passHash) {
         // If new Object wants to update the nonEdit information
-        if (newObject.nonEdit && newObject.nonEdit.password) {
+        if (newObject.nonEdit?.password) {
             const hash = crypto.createHash('sha256').update(newObject.nonEdit.password.toString()).digest('base64');
             if (oldObject.nonEdit.passHash !== hash) {
                 delete newObject.nonEdit;
@@ -149,12 +152,13 @@ export function checkNonEditable(oldObject: Record<string, any> | null, newObjec
                 oldObject.nonEdit.passHash = hash;
                 newObject.nonEdit.passHash = hash;
             }
+
             copyAttributes(newObject.nonEdit, newObject, newObject);
 
-            if (newObject.passHash) {
-                delete newObject.passHash;
+            if (newObject.nonEdit.passHash) {
+                delete newObject.nonEdit.passHash;
             }
-            if (newObject.nonEdit && newObject.nonEdit.password) {
+            if (newObject.nonEdit?.password) {
                 delete newObject.nonEdit.password;
             }
 
@@ -174,21 +178,22 @@ export function checkNonEditable(oldObject: Record<string, any> | null, newObjec
     }
 
     // restore settings
-    copyAttributes(oldObject.nonEdit, newObject, oldObject);
+    copyAttributes(oldObject.nonEdit!, newObject, oldObject);
 
-    if (newObject.passHash) {
-        delete newObject.passHash;
+    if (newObject.nonEdit?.passHash) {
+        delete newObject.nonEdit.passHash;
     }
-    if (newObject.nonEdit && newObject.nonEdit.password) {
+    if (newObject.nonEdit?.password) {
         delete newObject.nonEdit.password;
     }
     return true;
 }
 
 /**
+ * Checks if version is up-to-date, throws error on invalid version strings
+ *
  * @param repoVersion
  * @param installedVersion
- * @throws {Error} if version is invalid
  */
 export function upToDate(repoVersion: string, installedVersion: string): boolean {
     // Check if the installed version is at least the repo version

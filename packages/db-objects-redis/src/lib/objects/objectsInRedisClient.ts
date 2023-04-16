@@ -3078,7 +3078,7 @@ export class ObjectsInRedisClient {
         }
 
         if (typeof callback === 'function') {
-            if (options && options.acl) {
+            if (options?.acl) {
                 options.acl = null;
             }
             utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_READ, (err, options) => {
@@ -3469,10 +3469,10 @@ export class ObjectsInRedisClient {
         }
 
         // we need to know if custom has been added/deleted
-        const oldObjHasCustom = oldObj && oldObj.common && oldObj.common && oldObj.common.custom;
+        const oldObjHasCustom = oldObj?.common?.custom;
 
         // do not delete common settings, like "history" or "mobile". It can be erased only with "null"
-        if (oldObj && oldObj.common) {
+        if (oldObj?.common) {
             for (const commonSetting of this.preserveSettings) {
                 // special case if "custom"
                 if (commonSetting === 'custom') {
@@ -3499,7 +3499,7 @@ export class ObjectsInRedisClient {
                     } else if ((!obj.common || !obj.common.custom) && oldObj.common.custom) {
                         obj.common = obj.common || {};
                         obj.common.custom = oldObj.common.custom;
-                    } else if (obj.common && obj.common.custom && oldObj.common.custom) {
+                    } else if (obj.common?.custom && oldObj.common.custom) {
                         // merge together
                         for (const attr of Object.keys(oldObj.common.custom)) {
                             if (obj.common.custom[attr] === null) {
@@ -3510,7 +3510,7 @@ export class ObjectsInRedisClient {
                         }
                     }
                     // remove custom if no one attribute inside
-                    if (obj.common && obj.common.custom) {
+                    if (obj.common?.custom) {
                         for (const attr of Object.keys(obj.common.custom)) {
                             if (obj.common.custom[attr] === null) {
                                 delete obj.common.custom[attr];
@@ -3561,7 +3561,7 @@ export class ObjectsInRedisClient {
             }
         }
 
-        if (oldObj && oldObj.acl && !obj.acl) {
+        if (oldObj?.acl && !obj.acl) {
             obj.acl = oldObj.acl;
         }
 
@@ -3658,8 +3658,6 @@ export class ObjectsInRedisClient {
      *
      * This function writes the object into DB
      *
-     * @alias setObject
-     * @memberof objectsInMemServer
      * @param id ID of the object
      * @param obj
      * @param options options for access control are optional
@@ -3753,7 +3751,7 @@ export class ObjectsInRedisClient {
                     commands.push(['srem', `${this.setNamespace}object.type.${oldObj.type}`, this.objNamespace + id]);
                 }
 
-                if (oldObj.common && oldObj.common.custom) {
+                if (oldObj.common?.custom) {
                     // del the object from "custom" set
                     commands.push(['srem', `${this.setNamespace}object.common.custom`, this.objNamespace + id]);
                 }
@@ -3795,7 +3793,7 @@ export class ObjectsInRedisClient {
             );
         }
 
-        if (options && options.acl) {
+        if (options?.acl) {
             options.acl = null;
         }
         utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_DELETE, async (err, options) => {
@@ -4606,13 +4604,13 @@ export class ObjectsInRedisClient {
         }
 
         let _oldObj;
-        if (oldObj && oldObj.nonEdit) {
+        if (oldObj?.nonEdit) {
             // copy object
             _oldObj = deepClone(oldObj);
         }
 
         // we need to know if custom has been added/deleted
-        const oldObjHasCustom = oldObj && oldObj.common && oldObj.common && oldObj.common.custom;
+        const oldObjHasCustom = !!oldObj?.common?.custom;
 
         oldObj = oldObj || {};
         obj = deepClone(obj); // copy here to prevent "sandboxed" objects from JavaScript adapter

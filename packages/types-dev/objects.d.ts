@@ -87,7 +87,7 @@ declare global {
             type Host = `system.host.${string}`;
             // Guaranteed config objects
             type Config = `system.${'certificates' | 'config' | 'repositories'}`;
-            // Guranteed design objects
+            // Guaranteed design objects
             type Design = `_design/${string}`;
 
             // Unsure, can be folder, device, channel or state (or whatever an adapter does)
@@ -584,6 +584,24 @@ declare global {
             custom?: undefined;
         }
 
+        /**
+         * ioBroker has built-in protection for specific attributes of objects. If this protection is installed in the object, then the protected attributes of object cannot be changed by the user without valid password.
+         * To protect the properties from change, the special attribute "nonEdit" must be added to the object. This attribute contains the password, which is required to change the object.
+         * If object does not have "nonEdit" attribute, so the hash will be saved into "nonEdit.passHash". After that if someone will change the object, he must provide the password in "nonEdit.password".
+         * If the password is correct, the object attributes will be updated. If the password is wrong, the object will not be changed.
+         * Note, that all properties outside "nonEdit" can be updated without providing the password. Furthermore, do not confuse e.g. "nonEdit.common" with "obj.common" they are not linked in any way.
+         */
+        interface NonEditable {
+            /** Password needed to edit non-editable information */
+            password?: string;
+            /** Hashed version of current password */
+            passHash?: string;
+            /** These properties can only be changed by providing the password, else they stay on the initial value */
+            common?: Record<string, any>;
+            /** These properties can only be changed by providing the password, else they stay on the initial value */
+            native?: Record<string, any>;
+        }
+
         /* Base type for Objects. Should not be used directly */
         interface BaseObject {
             /** The ID of this object */
@@ -599,6 +617,8 @@ declare global {
             /** The user who created or updated this object */
             user?: string;
             ts?: number;
+            /** These properties can only be edited if correct password is provided */
+            nonEdit?: NonEditable;
         }
 
         interface StateObject extends BaseObject {

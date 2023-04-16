@@ -72,15 +72,13 @@ export class Vendor {
 
             // check UUID
             const obj = await this.objects.getObject('system.meta.uuid');
-            if (obj && obj.native) {
+            if (obj?.native) {
                 if (obj.native.uuid !== uuid) {
                     obj.native.uuid = uuid;
 
                     logger.info(`Update "system.meta.uuid:native.uuid" = "${obj.native.uuid}"`);
 
-                    // @ts-expect-error TODO: update types or remove is it allowed on all objects?
                     obj.nonEdit = obj.nonEdit || {};
-                    // @ts-expect-error TODO: update types or remove is it allowed on all objects?
                     obj.nonEdit.password = password;
                     try {
                         await this.objects.setObjectAsync('system.meta.uuid', obj);
@@ -130,9 +128,7 @@ export class Vendor {
                 if (obj && obj.native) {
                     if (!isDeepStrictEqual(obj.native.vendor, vendor)) {
                         obj.native.vendor = vendor;
-                        // @ts-expect-error TODO: update types or remove is it allowed on all objects?
                         obj.nonEdit = obj.nonEdit || {};
-                        // @ts-expect-error TODO: update types or remove is it allowed on all objects?
                         obj.nonEdit.password = password;
                         await this.objects.setObjectAsync(obj._id, obj);
                         logger.info('object system.config updated');
@@ -150,19 +146,15 @@ export class Vendor {
                     const _newObj = data.objects[id];
                     const obj = await this.objects.getObject(id);
                     if (obj) {
-                        // @ts-expect-error TODO: update types or remove is it allowed on all objects?
                         obj.nonEdit = obj.nonEdit || {};
                         const originalObj = deepClone(obj);
                         _newObj.nonEdit = _newObj.nonEdit || {};
-                        // @ts-expect-error TODO: update types or remove is it allowed on all objects?
                         _newObj.nonEdit.passHash = obj.nonEdit.passHash;
                         // merge objects
                         tools.copyAttributes(_newObj, obj);
 
                         if (!isDeepStrictEqual(originalObj, obj)) {
-                            // @ts-expect-error TODO: update types or remove is it allowed on all objects?
                             delete obj.nonEdit.passHash;
-                            // @ts-expect-error TODO: update types or remove is it allowed on all objects?
                             obj.nonEdit.password = password;
                             logger.info(`Update "${obj._id}"`);
                             try {
@@ -195,19 +187,15 @@ export class Vendor {
                         for (const row of arr.rows) {
                             const obj = row.value;
                             if (obj) {
-                                // @ts-expect-error TODO: update types or remove is it allowed on all objects?
                                 obj.nonEdit = obj.nonEdit || {};
                                 const originalObj = deepClone(obj);
                                 _obj.nonEdit = _obj.nonEdit || {};
-                                // @ts-expect-error TODO: update types or remove is it allowed on all objects?
                                 _obj.nonEdit.passHash = obj.nonEdit.passHash;
                                 // merge objects
                                 tools.copyAttributes(_obj, obj);
 
                                 if (!isDeepStrictEqual(originalObj, obj)) {
-                                    // @ts-expect-error TODO: update types or remove is it allowed on all objects?
                                     delete obj.nonEdit.passHash;
-                                    // @ts-expect-error TODO: update types or remove is it allowed on all objects?
                                     obj.nonEdit.password = password;
                                     logger.info(`Update "${obj._id}"`);
                                     try {
@@ -246,9 +234,7 @@ export class Vendor {
                         obj.common.color = model.color;
                     }
 
-                    // @ts-expect-error TODO: update types or remove is it allowed on all objects?
                     obj.nonEdit = obj.nonEdit || {};
-                    // @ts-expect-error TODO: update types or remove is it allowed on all objects?
                     obj.nonEdit.password = password;
 
                     obj.common.title &&
