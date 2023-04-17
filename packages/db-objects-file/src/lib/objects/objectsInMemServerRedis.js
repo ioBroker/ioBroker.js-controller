@@ -19,6 +19,7 @@ const path = require('path');
 const crypto = require('crypto');
 const utils = require('@iobroker/db-objects-redis').objectsUtils;
 const tools = require('@iobroker/db-base').tools;
+const { getLocalAddress } = require('@iobroker/js-controller-common/tools');
 
 const { RedisHandler } = require('@iobroker/db-base');
 const ObjectsInMemoryFileDB = require('./objectsInMemFileDB');
@@ -1013,7 +1014,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
                 this.server.listen(
                     settings.port || 9001,
-                    settings.host === 'localhost' ? '127.0.0.1' : settings.host ? settings.host : undefined,
+                    settings.host === 'localhost' ? getLocalAddress() : settings.host ? settings.host : undefined,
                     () => resolve()
                 );
             } catch (err) {

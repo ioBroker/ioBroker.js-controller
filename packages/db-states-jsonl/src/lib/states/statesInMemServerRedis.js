@@ -18,6 +18,7 @@ const { inspect } = require('util');
 
 const { RedisHandler } = require('@iobroker/db-base');
 const StatesInMemoryJsonlDB = require('./statesInMemJsonlDB');
+const { getLocalAddress } = require('@iobroker/js-controller-common/tools');
 
 // settings = {
 //    change:    function (id, state) {},
@@ -556,7 +557,7 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
 
                 this.server.listen(
                     settings.port || 9000,
-                    settings.host === 'localhost' ? '127.0.0.1' : settings.host ? settings.host : undefined,
+                    settings.host === 'localhost' ? getLocalAddress() : settings.host ? settings.host : undefined,
                     () => resolve()
                 );
             } catch (err) {

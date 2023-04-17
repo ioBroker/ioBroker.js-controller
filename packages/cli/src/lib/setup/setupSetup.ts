@@ -716,7 +716,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             console.log(COLOR_RESET);
         }
 
-        const defaultObjectsHost = otype === originalConfig.objects.type ? originalConfig.objects.host : '127.0.0.1';
+        const defaultObjectsHost =
+            otype === originalConfig.objects.type ? originalConfig.objects.host : tools.getLocalAddress();
         let oHost: string | string[] = rl.question(
             `Host / Unix Socket of objects DB(${otype}), default[${
                 Array.isArray(defaultObjectsHost) ? defaultObjectsHost.join(',') : defaultObjectsHost
@@ -834,7 +835,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         }
 
         let defaultStatesHost =
-            stype === originalConfig.states.type ? originalConfig.states.host : oHost || '127.0.0.1';
+            stype === originalConfig.states.type ? originalConfig.states.host : oHost || tools.getLocalAddress();
         if (stype === otype) {
             defaultStatesHost = oHost;
         }
@@ -1143,8 +1144,8 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
             config = fs.readJsonSync(path.join(CONTROLLER_DIR, 'conf', `${tools.appName.toLowerCase()}-dist.json`));
 
             console.log(`creating conf/${tools.appName.toLowerCase()}.json`);
-            config.objects.host = this.params.objects || '127.0.0.1';
-            config.states.host = this.params.states || '127.0.0.1';
+            config.objects.host = this.params.objects || tools.getLocalAddress();
+            config.states.host = this.params.states || tools.getLocalAddress();
             if (useRedis) {
                 config.states.type = 'redis';
                 config.states.port = this.params.port || 6379;

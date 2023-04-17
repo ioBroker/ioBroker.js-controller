@@ -34,10 +34,10 @@ export function isLocalObjectsDbServer(
         return false;
     }
 
-    let result = host === 'localhost' || host === '127.0.0.1'; // reachable locally only
+    let result = host === 'localhost' || tools.isLocalAddress(host); // reachable locally only
     if (!checkIfLocalOnly) {
         const ownIps = tools.findIPs();
-        result = result || host === '0.0.0.0' || ownIps.includes(host);
+        result = result || tools.isListenAllAddress(host) || ownIps.includes(host);
     }
 
     return result;
@@ -59,10 +59,10 @@ export function isLocalStatesDbServer(dbType: string, host: string | string[], c
         return false;
     }
 
-    let result = host === 'localhost' || host === '127.0.0.1'; // reachable locally only
+    let result = host === 'localhost' || tools.isLocalAddress(host); // reachable locally only
     if (!checkIfLocalOnly && !Array.isArray(host)) {
         const ownIps = tools.findIPs();
-        result = result || host === '0.0.0.0' || ownIps.includes(host);
+        result = result || tools.isListenAllAddress(host) || ownIps.includes(host);
     }
 
     return result;

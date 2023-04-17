@@ -167,7 +167,10 @@ async function createServerAsync(app, settings, certificates, leSettings, log, a
                 if (settings.leUpdate) {
                     // Start the challenge server. Wait for it before resolving (pass back https).
                     settings.lePort = parseInt(settings.lePort, 10) || 80;
-                    const bind = !settings.bind || settings.bind === '0.0.0.0' ? undefined : settings.bind || undefined;
+                    const bind =
+                        !settings.bind || tools.isListenAllAddress(settings.bind)
+                            ? undefined
+                            : settings.bind || undefined;
                     // Check port not in use, because catching EADDRINUSE from httpServer.listen not possible.
                     adapter.getPort(settings.lePort, bind, port => {
                         if (port !== settings.lePort) {
