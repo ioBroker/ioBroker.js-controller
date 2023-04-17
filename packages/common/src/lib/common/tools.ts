@@ -3918,7 +3918,9 @@ function getDNSResolutionOrder(): 'ipv4first' | 'verbatim' {
  * @param ip ipv4 or ipv6 address
  */
 export function isLocalAddress(ip: string): boolean {
-    return ip === '::1' || ip === '127.0.0.1';
+    const localAddresses = ['::1', '127.0.0.1', 'localhost'];
+
+    return localAddresses.includes(ip);
 }
 
 /**
