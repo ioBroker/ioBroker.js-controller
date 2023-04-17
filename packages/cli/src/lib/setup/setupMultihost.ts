@@ -312,12 +312,11 @@ export class Multihost {
                         )
                     );
                 } else {
-                    const listenAllAddress = tools.getListenAllAddress();
-                    if (config.states.host === listenAllAddress) {
+                    if (tools.isListenAllAddress(config.states.host)) {
                         // TODO: why we set the remote IP only when the local config allows full connectivity?
                         config.states.host = ipHost;
                     }
-                    if (config.objects.host === listenAllAddress) {
+                    if (tools.isListenAllAddress(config.objects.host)) {
                         // TODO: why we set the remote IP only when the local config allows full connectivity?
                         config.objects.host = ipHost;
                     }

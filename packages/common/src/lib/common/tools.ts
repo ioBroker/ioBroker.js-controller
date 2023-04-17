@@ -3914,6 +3914,22 @@ function getDNSResolutionOrder(): 'ipv4first' | 'verbatim' {
 }
 
 /**
+ * Checks if given ip address is matching ipv4 or ipv6 localhost
+ * @param ip ipv4 or ipv6 address
+ */
+export function isLocalAddress(ip: string): boolean {
+    return ip === '::1' || ip === '127.0.0.1';
+}
+
+/**
+ * Checks if given ip address is matching ipv4 or ipv6 "listen all" address
+ * @param ip ipv4 or ipv6 address
+ */
+export function isListenAllAddress(ip: string): boolean {
+    return ip === '0.0.0.0' || ip === '::';
+}
+
+/**
  * Retrieve the localhost address according to the configured DNS resolution strategy
  */
 export function getLocalAddress(): '127.0.0.1' | '::1' {

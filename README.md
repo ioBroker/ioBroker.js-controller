@@ -565,6 +565,9 @@ Example: `"nodeProcessParams": ["--tls-min-v1.0"]`
 You can decide to use IPv6 first as DNS resolution method instead of IPv4 first (default). 
 To use this, configure `dnsResolution` to `verbatim` in `iobroker.json`.
 
+For handling IPv6 and IPv4 in adapters, we provide some convenience methods.
+These are available via [ioBroker Adapter Core](https://github.com/ioBroker/adapter-core#commontools).
+
 ### Object and State Aliases
 **Feature status:** stable (since 2.0.0)
 
