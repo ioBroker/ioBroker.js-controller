@@ -104,7 +104,7 @@ export class Multihost {
             } else if (config.objects.type === 'redis') {
                 warningShown = true;
                 console.log(
-                    `Please check the binding of redis service. By default it is only local: http://download.redis.io/redis-stable/redis.conf\nChange "bind ${tools.getLocalAddress()}" to "bind ${tools.getListenAllAddress()}" or to others.`
+                    `Please check the binding of redis service. By default it is only local: http://download.redis.io/redis-stable/redis.conf\nChange "bind 127.0.0.1" to "bind ${tools.getListenAllAddress()}" or to others.`
                 );
             } else {
                 warningShown = true;
@@ -119,7 +119,7 @@ export class Multihost {
             } else if (config.states.type === 'redis') {
                 !warningShown &&
                     console.log(
-                        `Please check the binding of redis service. By default it is only local: http://download.redis.io/redis-stable/redis.conf\nChange "bind ${tools.getLocalAddress()}" to "bind ${tools.getListenAllAddress()}" or to others.`
+                        `Please check the binding of redis service. By default it is only local: http://download.redis.io/redis-stable/redis.conf\nChange "bind 127.0.0.1" to "bind ${tools.getListenAllAddress()}" or to others.`
                     );
             } else {
                 !warningShown &&
