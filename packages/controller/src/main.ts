@@ -1554,7 +1554,7 @@ function setIPs(ipList?: string[]): void {
     // check if IPs detected (because of DHCP delay)
     let found = false;
     for (const entry of _ipList) {
-        if (entry === '127.0.0.1' || entry === '::1/128' || !entry.match(/^\d+\.\d+\.\d+\.\d+$/)) {
+        if (entry === '127.0.0.1' || entry === '::1/128') {
             continue;
         }
         found = true;
