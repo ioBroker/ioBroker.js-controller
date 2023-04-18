@@ -41,7 +41,7 @@ The ID of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:705](https://github.com/ioBroker/ioBroker.js-controller/blob/97da7a9c/packages/types-dev/objects.d.ts#L705)
+[types-dev/objects.d.ts:705](https://github.com/ioBroker/ioBroker.js-controller/blob/efa3e809/packages/types-dev/objects.d.ts#L705)
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:615](https://github.com/ioBroker/ioBroker.js-controller/blob/97da7a9c/packages/types-dev/objects.d.ts#L615)
+[types-dev/objects.d.ts:615](https://github.com/ioBroker/ioBroker.js-controller/blob/efa3e809/packages/types-dev/objects.d.ts#L615)
 
 ___
 
@@ -69,7 +69,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:707](https://github.com/ioBroker/ioBroker.js-controller/blob/97da7a9c/packages/types-dev/objects.d.ts#L707)
+[types-dev/objects.d.ts:707](https://github.com/ioBroker/ioBroker.js-controller/blob/efa3e809/packages/types-dev/objects.d.ts#L707)
 
 ___
 
@@ -81,7 +81,7 @@ Like protectedNative, but the properties are also encrypted and decrypted automa
 
 #### Defined in
 
-[types-dev/objects.d.ts:711](https://github.com/ioBroker/ioBroker.js-controller/blob/97da7a9c/packages/types-dev/objects.d.ts#L711)
+[types-dev/objects.d.ts:711](https://github.com/ioBroker/ioBroker.js-controller/blob/efa3e809/packages/types-dev/objects.d.ts#L711)
 
 ___
 
@@ -95,7 +95,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:614](https://github.com/ioBroker/ioBroker.js-controller/blob/97da7a9c/packages/types-dev/objects.d.ts#L614)
+[types-dev/objects.d.ts:614](https://github.com/ioBroker/ioBroker.js-controller/blob/efa3e809/packages/types-dev/objects.d.ts#L614)
 
 ___
 
@@ -109,7 +109,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:616](https://github.com/ioBroker/ioBroker.js-controller/blob/97da7a9c/packages/types-dev/objects.d.ts#L616)
+[types-dev/objects.d.ts:616](https://github.com/ioBroker/ioBroker.js-controller/blob/efa3e809/packages/types-dev/objects.d.ts#L616)
 
 ___
 
@@ -123,7 +123,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:612](https://github.com/ioBroker/ioBroker.js-controller/blob/97da7a9c/packages/types-dev/objects.d.ts#L612)
+[types-dev/objects.d.ts:612](https://github.com/ioBroker/ioBroker.js-controller/blob/efa3e809/packages/types-dev/objects.d.ts#L612)
 
 ___
 
@@ -139,7 +139,7 @@ These properties can only be edited if correct password is provided
 
 #### Defined in
 
-[types-dev/objects.d.ts:621](https://github.com/ioBroker/ioBroker.js-controller/blob/97da7a9c/packages/types-dev/objects.d.ts#L621)
+[types-dev/objects.d.ts:621](https://github.com/ioBroker/ioBroker.js-controller/blob/efa3e809/packages/types-dev/objects.d.ts#L621)
 
 ___
 
@@ -151,7 +151,7 @@ An array of `native` properties which cannot be accessed from outside the defini
 
 #### Defined in
 
-[types-dev/objects.d.ts:709](https://github.com/ioBroker/ioBroker.js-controller/blob/97da7a9c/packages/types-dev/objects.d.ts#L709)
+[types-dev/objects.d.ts:709](https://github.com/ioBroker/ioBroker.js-controller/blob/efa3e809/packages/types-dev/objects.d.ts#L709)
 
 ___
 
@@ -165,7 +165,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:619](https://github.com/ioBroker/ioBroker.js-controller/blob/97da7a9c/packages/types-dev/objects.d.ts#L619)
+[types-dev/objects.d.ts:619](https://github.com/ioBroker/ioBroker.js-controller/blob/efa3e809/packages/types-dev/objects.d.ts#L619)
 
 ___
 
@@ -179,7 +179,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:706](https://github.com/ioBroker/ioBroker.js-controller/blob/97da7a9c/packages/types-dev/objects.d.ts#L706)
+[types-dev/objects.d.ts:706](https://github.com/ioBroker/ioBroker.js-controller/blob/efa3e809/packages/types-dev/objects.d.ts#L706)
 
 ___
 
@@ -195,4 +195,4 @@ The user who created or updated this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:618](https://github.com/ioBroker/ioBroker.js-controller/blob/97da7a9c/packages/types-dev/objects.d.ts#L618)
+[types-dev/objects.d.ts:618](https://github.com/ioBroker/ioBroker.js-controller/blob/efa3e809/packages/types-dev/objects.d.ts#L618)
