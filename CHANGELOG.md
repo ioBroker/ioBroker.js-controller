@@ -35,21 +35,24 @@
 * (foxriver76) update apt sources before installing os dependencies
 * (foxriver76) Only skip erase on upload if opted out explicitly to always cleanup unneeded files
 * (foxriver76) Try to fix strange alias errors, inform us if it happens again!
+* (foxriver76) Remove windows bat files completely, installer will create them when needed
 * (AlCalzone/Apollon77) Update jsonl db to prevent locking issues
 * (foxriver76) Fixes `iob file sync` not working for jsonl
 * (foxriver76) Do not crash if we cannot initialize db backup directory on start
-* 
+* (foxriver76) Fixed issue with certificate validity on leap years
 * (Apollon77/foxriver76) Make sure that all relevant files are removed when eraseOnUpload is used
 * (Apollon77, foxriver76, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 
 **Developer relevant DEPRECATIONS/WARNINGS**
 * Deprecate binary states, Migrate your adapters to use Files instead!
 * If you need to access special js-controller common tools please use adapter-core instead of js-controller directly - see https://github.com/ioBroker/adapter-core#commontools
+* Parameter that contain patterns ("mqtt.*" as example) are now checked forallowed characters ad general correctness!
 
 **Developer relevant new Features**
 * (bluefox) Added options to subscribe to file changes: subscribeForeignFiles, unsubscribeForeignFiles, onAdapterFileChanged (event contains id, fileName, size and not the whole content of the file!)
 * (foxriver76) Introduce on("install") handler for adapter which is automatically called when adapter process is started with --install
 * (foxriver76) Introduce io-package flag common.nodeProcessParams to allow to pass adapter specific nodejs process parameters (disables compact mode for the adapter!)
+* (foxriver76) Respect dns resolution (ipv4/ipv6 first) from config internally and provide relevant methods via adapter-core
 * (foxriver76) Add JSON-Schema for iobroker.json
 * (bluefox) Allowed export of password.js (to be used with adapter-core)
 * (bluefox) Added _design/chart to the system designs
@@ -66,6 +69,7 @@
 * (foxriver76) Ensure setObjectNotExists returns id on success
 * (foxriver76) Fix Typings for sendTo/sendToHost
 * (Bluefox) Add User permission check to requireLog
+* (foxriver76) added nonEdit to types and document functionality
 * general dependency updates
 * code style optimizations and streamline code
 
