@@ -46,7 +46,7 @@
 **Developer relevant DEPRECATIONS/WARNINGS**
 * Deprecate binary states, Migrate your adapters to use Files instead!
 * If you need to access special js-controller common tools please use adapter-core instead of js-controller directly - see https://github.com/ioBroker/adapter-core#commontools
-* Parameter that contain patterns ("mqtt.*" as example) are now checked forallowed characters ad general correctness!
+* Parameter that contain patterns (e.g. `mqtt.*`) are now checked for allowed characters and general correctness!
 
 **Developer relevant new Features**
 * (bluefox) Added options to subscribe to file changes: subscribeForeignFiles, unsubscribeForeignFiles, onAdapterFileChanged (event contains id, fileName, size and not the whole content of the file!)
