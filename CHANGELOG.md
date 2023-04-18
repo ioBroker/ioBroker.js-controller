@@ -69,7 +69,7 @@
 * (foxriver76) Ensure setObjectNotExists returns id on success
 * (foxriver76) Fix Typings for sendTo/sendToHost
 * (Bluefox) Add User permission check to requireLog
-* (foxriver76) added nonEdit to types and document functionality
+* (foxriver76) added `nonEdit` property of objects to types and document functionality
 * general dependency updates
 * code style optimizations and streamline code
 
