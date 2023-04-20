@@ -1,12 +1,27 @@
-import { spawn } from 'child_process';
 import { ChildProcessPromise, exec as execAsync } from 'promisify-child-process';
 import { tools } from '@iobroker/js-controller-common';
 import { valid } from 'semver';
+import http from 'http';
 
 interface UpgradeArguments {
     /** Version of controller to upgrade too */
     version: string;
 }
+
+interface ServerResponse {
+    /** If the update is still running */
+    running: boolean;
+    stderr: string[];
+    stdout: string[];
+    /** if installation process succeeded */
+    success?: boolean;
+}
+
+const response: ServerResponse = {
+    running: true,
+    stderr: [],
+    stdout: []
+};
 
 /**
  * Stops the js-controller via cli call
@@ -51,32 +66,40 @@ function parseCliCommands(): UpgradeArguments {
  *
  * @param version version to install
  */
-function npmInstall(version: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-        const installArgs = [
-            'i',
-            `iobroker.js-controller@${version}`,
-            '--omit=dev',
-            '--prefix',
-            '/opt/iobroker',
-            '--loglevel',
-            'verbose'
-        ];
+async function npmInstall(version: string): Promise<void> {
+    const res = await tools.installNodeModule(`iobroker.js-controller@${version}`, {
+        cwd: '/opt/iobroker',
+        debug: true
+    });
 
-        console.log(`Executing "npm ${installArgs.join(' ')}"`);
-        const proc = spawn('npm', installArgs, {});
+    response.stderr = res.stderr.split('\n');
+    response.stdout = res.stdout.split('\n');
+    response.success = res.success;
 
-        proc.stdout.on('data', message => {
-            console.log('stdout: ' + message);
-        });
+    if (!res.success) {
+        throw new Error(`Could not install js-controller@${version}`);
+    }
+}
 
-        proc.stderr.on('data', message => {
-            console.error('stderr: ' + message);
-        });
+/**
+ * Starts the web server for admin communication
+ */
+function startWebServer(): void {
+    // TODO: use admin protocol and certs
+    const server = http.createServer((req, res) => {
+        res.writeHead(200);
+        res.end(JSON.stringify(response));
+        if (!response.running) {
+            console.log('Final information delivered, shutting down');
+            server.close(() => {
+                process.exit();
+            });
+        }
+    });
 
-        proc.on('exit', code => {
-            code === 0 ? resolve() : reject(new Error('Could not install js-controller'));
-        });
+    // TODO: use admin port?
+    server.listen('8086', () => {
+        console.log('Server is running on http://localhost:8086');
     });
 }
 
@@ -85,13 +108,20 @@ function npmInstall(version: string): Promise<void> {
  */
 async function main(): Promise<void> {
     const { version } = parseCliCommands();
+    startWebServer();
+
     await stopController();
     console.log('Successfully stopped js-controller');
 
-    await npmInstall(version);
+    try {
+        await npmInstall(version);
+        await startController();
+        console.log('Successfully started js-controller');
+    } catch (e) {
+        console.error(e.message);
+    }
 
-    await startController();
-    console.log('Successfully started js-controller');
+    response.running = false;
 }
 
 /**
