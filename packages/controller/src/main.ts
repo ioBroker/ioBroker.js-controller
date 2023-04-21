@@ -2401,7 +2401,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
     logger.debug(`${hostLogPrefix} Incoming Host message ${msg.command}`);
     switch (msg.command) {
         case 'shell':
-            if (config.system && config.system.allowShellCommands) {
+            if (config.system?.allowShellCommands) {
                 logger.info(`${hostLogPrefix} ${tools.appName} execute shell command: ${msg.message}`);
                 exec(msg.message, { windowsHide: true }, (err, stdout, stderr) => {
                     if (err) {
@@ -3128,6 +3128,26 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             const result = startMultihost();
             if (msg.callback) {
                 sendTo(msg.from, msg.command, { result: result }, msg.callback);
+            }
+            break;
+        }
+
+        case 'upgradeController': {
+            if (['win32', 'darwin'].includes(os.platform())) {
+                if (msg.callback) {
+                    sendTo(msg.from, msg.command, { result: false }, msg.callback);
+                }
+                break;
+            }
+
+            const upgradeProcessPath = require.resolve('./lib/upgradeManager');
+            spawn(process.execPath, [upgradeProcessPath, msg.message.version, msg.message.adminInstance], {
+                detached: true,
+                stdio: 'ignore'
+            });
+
+            if (msg.callback) {
+                sendTo(msg.from, msg.command, { result: true }, msg.callback);
             }
             break;
         }
