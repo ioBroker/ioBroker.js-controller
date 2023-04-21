@@ -184,6 +184,11 @@ function startSecureWebServer(params: SecureWebServerParameters): void {
     });
 }
 
+/**
+ * Get certificates from the DB
+ *
+ * @param params certificate information
+ */
 async function getCertificates(params: GetCertificatesParams): Promise<Certificates> {
     const { objects, certPublicName, certPrivateName } = params;
 
