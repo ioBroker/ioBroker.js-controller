@@ -135,6 +135,33 @@ function startWebServer(params: WebServerParameters): void {
 }
 
 /**
+ * This function is called when the webserver receives a message
+ *
+ * @param req received message
+ * @param res server response
+ * @param server https or https server instance
+ */
+function webServerCallback(
+    req: http.IncomingMessage,
+    res: http.ServerResponse,
+    server: http.Server | https.Server
+): void {
+    res.writeHead(200);
+    res.end(JSON.stringify(response));
+
+    if (!response.running) {
+        console.log('Final information delivered');
+
+        server.close(async () => {
+            await startController();
+            console.log('Successfully started js-controller');
+
+            process.exit();
+        });
+    }
+}
+
+/**
  * Start an insecure web server for admin communication
  *
  * @param params Web server configuration
@@ -143,15 +170,7 @@ function startInsecureWebServer(params: InsecureWebServerParameters): void {
     const { port } = params;
 
     const server = http.createServer((req, res) => {
-        res.writeHead(200);
-        res.end(JSON.stringify(response));
-
-        if (!response.running) {
-            console.log('Final information delivered, shutting down');
-            server.close(() => {
-                process.exit();
-            });
-        }
+        webServerCallback(req, res, server);
     });
 
     server.listen(port, () => {
@@ -168,15 +187,7 @@ function startSecureWebServer(params: SecureWebServerParameters): void {
     const { port, certPublic, certPrivate } = params;
 
     const server = https.createServer({ key: certPrivate, cert: certPublic }, (req, res) => {
-        res.writeHead(200);
-        res.end(JSON.stringify(response));
-
-        if (!response.running) {
-            console.log('Final information delivered, shutting down');
-            server.close(() => {
-                process.exit();
-            });
-        }
+        webServerCallback(req, res, server);
     });
 
     server.listen(port, () => {
@@ -247,15 +258,13 @@ async function main(): Promise<void> {
     const { version, adminInstance } = parseCliCommands();
     const webServerParameters = await collectWebServerParameters(adminInstance);
 
-    startWebServer(webServerParameters);
-
     await stopController();
     console.log('Successfully stopped js-controller');
 
+    startWebServer(webServerParameters);
+
     try {
         await npmInstall(version);
-        await startController();
-        console.log('Successfully started js-controller');
     } catch (e) {
         console.error(e.message);
     }
