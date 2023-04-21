@@ -262,7 +262,7 @@ async function startMultihost(__config?: Record<string, any>): Promise<boolean |
     }
 
     const _config = __config || getConfig();
-    if (_config.multihostService && _config.multihostService.enabled) {
+    if (_config.multihostService?.enabled) {
         if (mhService) {
             try {
                 mhService.close(() => {
@@ -300,7 +300,7 @@ async function startMultihost(__config?: Record<string, any>): Promise<boolean |
                     errText = e.message;
                 }
 
-                if (obj && obj.native && obj.native.secret) {
+                if (obj?.native?.secret) {
                     if (!_config.multihostService.password.startsWith(`$/aes-192-cbc:`)) {
                         // if old encryption was used, we need to decrypt in old fashion
                         tools.decryptPhrase(obj.native.secret, _config.multihostService.password, secret =>
@@ -517,7 +517,7 @@ function createStates(onConnect: () => void): void {
                     for (const transport in logger.transports) {
                         if (
                             logger.transports[transport].level === currentLevel &&
-                            // @ts-expect-error its our custom property
+                            // @ts-expect-error it's our custom property
                             !logger.transports[transport]._defaultConfigLoglevel
                         ) {
                             logger.transports[transport].level = state.val as string;
