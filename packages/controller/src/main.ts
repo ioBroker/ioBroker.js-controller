@@ -13,7 +13,7 @@ import schedule from 'node-schedule';
 import os from 'os';
 import fs from 'fs-extra';
 import path from 'path';
-import cp from 'child_process';
+import cp, { spawn, exec } from 'child_process';
 import semver from 'semver';
 import restart from './lib/restart';
 import { tools as dbTools } from '@iobroker/js-controller-common-db';
@@ -112,9 +112,6 @@ let pluginHandler: InstanceType<typeof PluginHandler>;
 let notificationHandler: NotificationHandler;
 /** array of instances which have requested repo update */
 let requestedRepoUpdates: RepoRequester[] = [];
-
-const exec = cp.exec;
-const spawn = cp.spawn;
 
 let upload: InstanceType<typeof Upload>; // will be used only once by upload of adapter
 
@@ -3140,11 +3137,18 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 break;
             }
 
+            logger.info(`Controller will upgrade itself to version ${msg.message.version}`);
             const upgradeProcessPath = require.resolve('./lib/upgradeManager');
-            spawn(process.execPath, [upgradeProcessPath, msg.message.version, msg.message.adminInstance], {
-                detached: true,
-                stdio: 'ignore'
-            });
+            const upgradeProcess = spawn(
+                process.execPath,
+                [upgradeProcessPath, msg.message.version, msg.message.adminInstance],
+                {
+                    detached: true,
+                    stdio: 'ignore'
+                }
+            );
+
+            upgradeProcess.unref();
 
             if (msg.callback) {
                 sendTo(msg.from, msg.command, { result: true }, msg.callback);
