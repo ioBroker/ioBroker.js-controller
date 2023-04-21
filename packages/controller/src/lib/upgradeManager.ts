@@ -1,11 +1,42 @@
 import { ChildProcessPromise, exec as execAsync } from 'promisify-child-process';
 import { tools } from '@iobroker/js-controller-common';
 import { valid } from 'semver';
+import { dbConnectAsync } from '@iobroker/js-controller-cli';
 import http from 'http';
+import https from 'https';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 
 interface UpgradeArguments {
     /** Version of controller to upgrade too */
     version: string;
+    /** Admin instance which triggered the upgrade */
+    adminInstance: number;
+}
+
+interface Certificates {
+    /** Public certificate */
+    certPublic: string;
+    /** Private certificate */
+    certPrivate: string;
+}
+
+interface InsecureWebServerParameters {
+    /** if https should be used for the webserver */
+    useHttps: false;
+    /** port of the web server */
+    port: number;
+}
+
+type SecureWebServerParameters = Omit<InsecureWebServerParameters, 'useHttps'> & { useHttps: true } & Certificates;
+type WebServerParameters = InsecureWebServerParameters | SecureWebServerParameters;
+
+interface GetCertificatesParams {
+    /** The objects DB */
+    objects: ObjectsClient;
+    /** Name of the public certificate */
+    certPublicName: string;
+    /** Name of the private certificate */
+    certPrivateName: string;
 }
 
 interface ServerResponse {
@@ -41,7 +72,7 @@ function startController(): ChildProcessPromise {
  * Print how the module should be used
  */
 function printUsage(): void {
-    console.info('Example usage: "node upgradeManager.js <version>"');
+    console.info('Example usage: "node upgradeManager.js <version> <adminInstance>"');
 }
 
 /**
@@ -51,6 +82,8 @@ function parseCliCommands(): UpgradeArguments {
     const additionalArgs = process.argv.slice(2);
 
     const version = additionalArgs[0];
+    const adminInstance = parseInt(additionalArgs[1]);
+
     const isValid = !!valid(version);
 
     if (!isValid) {
@@ -58,7 +91,12 @@ function parseCliCommands(): UpgradeArguments {
         throw new Error('The provided version is not valid');
     }
 
-    return { version };
+    if (isNaN(adminInstance)) {
+        printUsage();
+        throw new Error('Please provide a valid admin instance');
+    }
+
+    return { version, adminInstance };
 }
 
 /**
@@ -82,13 +120,32 @@ async function npmInstall(version: string): Promise<void> {
 }
 
 /**
- * Starts the web server for admin communication
+ * Starts the web server for admin communication either secure or insecure
+ *
+ * @param params Web server configuration
  */
-function startWebServer(): void {
-    // TODO: use admin protocol and certs
+function startWebServer(params: WebServerParameters): void {
+    const { useHttps } = params;
+
+    if (useHttps) {
+        startSecureWebServer(params);
+    } else {
+        startInsecureWebServer(params);
+    }
+}
+
+/**
+ * Start an insecure web server for admin communication
+ *
+ * @param params Web server configuration
+ */
+function startInsecureWebServer(params: InsecureWebServerParameters): void {
+    const { port } = params;
+
     const server = http.createServer((req, res) => {
         res.writeHead(200);
         res.end(JSON.stringify(response));
+
         if (!response.running) {
             console.log('Final information delivered, shutting down');
             server.close(() => {
@@ -97,18 +154,95 @@ function startWebServer(): void {
         }
     });
 
-    // TODO: use admin port?
-    server.listen('8086', () => {
-        console.log('Server is running on http://localhost:8086');
+    server.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
     });
+}
+
+/**
+ * Start a secure web server for admin communication
+ *
+ * @param params Web server configuration
+ */
+function startSecureWebServer(params: SecureWebServerParameters): void {
+    const { port, certPublic, certPrivate } = params;
+
+    const server = https.createServer({ key: certPrivate, cert: certPublic }, (req, res) => {
+        res.writeHead(200);
+        res.end(JSON.stringify(response));
+
+        if (!response.running) {
+            console.log('Final information delivered, shutting down');
+            server.close(() => {
+                process.exit();
+            });
+        }
+    });
+
+    server.listen(port, () => {
+        console.log(`Server is running on http://localhost:${port}`);
+    });
+}
+
+async function getCertificates(params: GetCertificatesParams): Promise<Certificates> {
+    const { objects, certPublicName, certPrivateName } = params;
+
+    const obj = await objects.getObjectAsync('system.certificates');
+
+    if (!obj) {
+        throw new Error('No certificates found');
+    }
+
+    const certs = obj.native.certificates;
+
+    return { certPrivate: certs[certPrivateName], certPublic: certs[certPublicName] };
+}
+
+/**
+ * Collect parameters for webserver from admin instance
+ *
+ * @param adminInstance specified admin instance
+ */
+async function collectWebServerParameters(adminInstance: number): Promise<WebServerParameters> {
+    const { objects } = await dbConnectAsync(false);
+
+    const obj = await objects.getObjectAsync(`system.adapter.admin.${adminInstance}`);
+
+    if (!obj) {
+        printUsage();
+        throw new Error('Please provide a valid admin instance');
+    }
+
+    if (obj.native.secure) {
+        const { certPublic: certPublicName, certPrivate: certPrivateName } = obj.native;
+        const { certPublic, certPrivate } = await getCertificates({
+            objects,
+            certPublicName,
+            certPrivateName
+        });
+
+        return {
+            useHttps: obj.native.secure,
+            port: obj.native.port,
+            certPublic,
+            certPrivate
+        };
+    }
+
+    return {
+        useHttps: false,
+        port: obj.native.port
+    };
 }
 
 /**
  * Main logic
  */
 async function main(): Promise<void> {
-    const { version } = parseCliCommands();
-    startWebServer();
+    const { version, adminInstance } = parseCliCommands();
+    const webServerParameters = await collectWebServerParameters(adminInstance);
+
+    startWebServer(webServerParameters);
 
     await stopController();
     console.log('Successfully stopped js-controller');
