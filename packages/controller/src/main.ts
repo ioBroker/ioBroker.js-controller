@@ -2435,7 +2435,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 logger.info(`${hostLogPrefix} ${tools.appName.toLowerCase()} ${extraArgs.join(' ')}`);
 
                 try {
-                    const child = spawn('node', args, { windowsHide: true });
+                    const child = spawn(process.execPath, args, { windowsHide: true });
                     if (child.stdout) {
                         child.stdout.on('data', data => {
                             data = data.toString().replace(/\n/g, '');
@@ -3137,7 +3137,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 break;
             }
 
-            logger.info(`Controller will upgrade itself to version ${msg.message.version}`);
+            logger.info(`${hostLogPrefix} Controller will upgrade itself to version ${msg.message.version}`);
             const upgradeProcessPath = require.resolve('./lib/upgradeManager');
             const upgradeProcess = spawn(
                 process.execPath,
@@ -3831,7 +3831,7 @@ function installAdapters(): void {
 
         try {
             task.inProgress = true;
-            const child = spawn('node', installArgs, installOptions);
+            const child = spawn(process.execPath, installArgs, installOptions);
             if (child.stdout) {
                 child.stdout.on('data', data => {
                     data = data.toString().replace(/\n/g, '');
