@@ -5,6 +5,7 @@ import { dbConnectAsync } from '@iobroker/js-controller-cli';
 import http from 'http';
 import https from 'https';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import { setTimeout as wait } from 'timers/promises';
 
 interface UpgradeArguments {
     /** Version of controller to upgrade too */
@@ -54,11 +55,15 @@ const response: ServerResponse = {
     stdout: []
 };
 
+/** Wait ms until controller is stopped */
+const STOP_TIMEOUT_MS = 3_000;
+
 /**
  * Stops the js-controller via cli call
  */
-function stopController(): ChildProcessPromise {
-    return execAsync(`${tools.appNameLowerCase} stop`);
+async function stopController(): Promise<void> {
+    await execAsync(`${tools.appNameLowerCase} stop`);
+    await wait(STOP_TIMEOUT_MS);
 }
 
 /**
@@ -126,7 +131,6 @@ async function npmInstall(version: string): Promise<void> {
  */
 function startWebServer(params: WebServerParameters): void {
     const { useHttps } = params;
-
     if (useHttps) {
         startSecureWebServer(params);
     } else {
@@ -258,6 +262,7 @@ async function main(): Promise<void> {
     const { version, adminInstance } = parseCliCommands();
     const webServerParameters = await collectWebServerParameters(adminInstance);
 
+    console.log('Stopping controller');
     await stopController();
     console.log('Successfully stopped js-controller');
 
