@@ -3140,8 +3140,15 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             logger.info(`${hostLogPrefix} Controller will upgrade itself to version ${msg.message.version}`);
             const upgradeProcessPath = require.resolve('./lib/upgradeManager');
             const upgradeProcess = spawn(
-                process.execPath,
-                [upgradeProcessPath, msg.message.version, msg.message.adminInstance],
+                'sudo',
+                [
+                    'systemd-run',
+                    '--no-ask-password',
+                    process.execPath,
+                    upgradeProcessPath,
+                    msg.message.version,
+                    msg.message.adminInstance
+                ],
                 {
                     detached: true,
                     stdio: 'ignore'
