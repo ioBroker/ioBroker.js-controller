@@ -13,12 +13,13 @@ The ioBroker.js-controller is the heart of any ioBroker installation. The contro
 **Please check the js-controller compatibility information below which version runs on your Node.js version**
 
 ## Compatibility
-* js-controller 4.x works with Node.js 12.x, 14.x and 16.x (incl. up to NPM 8)
+* js-controller 5.x works with Node.js 16.x and 18.x
+* js-controller 4.x works with Node.js 12.x, 14.x, 16.x (incl. up to NPM 8) and probably 18.x
 * js-controller 3.x works with Node.js 10.x, 12.x, 14.x and probably 16.x (first tests look good, NPM 7 still has some issues, so NPM6 is best)
 * js-controller 2.x works with Node.js 8.x, 10.x , 12.x and probably 14.x (untested)
 * js-controller 1.x works with Node.js 4.x, 6.x, 8.x and probably 10.x (untested)
 
-Please try to stay current with your Node.js version because the support is limited in Time. As of now (April 2021) all Node.js versions below 12.x are no longer supported by Node.js and considered EOL (End Of Life).
+Please try to stay current with your Node.js version because the support is limited in time. As of now (April 2023) all Node.js versions below 16.x are no longer supported by Node.js and considered EOL (End Of Life).
 To upgrade your Node.js version and ioBroker please follow https://forum.iobroker.net/topic/44566/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten-2021-edition !
 
 ## Links
