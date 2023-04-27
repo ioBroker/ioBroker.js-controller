@@ -27,6 +27,7 @@ export interface CLICommandParams {
     cwd?: string;
     path?: string;
     module?: string;
+    wait?: boolean;
 }
 
 export type CLICommandOptions = CLICommandContext & CLICommandParams;
