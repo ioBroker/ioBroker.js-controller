@@ -12,7 +12,7 @@ import { tools } from '@iobroker/js-controller-common';
 import path from 'path';
 import { Upload } from './setupUpload';
 import { EXIT_CODES } from '@iobroker/js-controller-common';
-import cpPromise from 'promisify-child-process';
+import { exec as execAsync } from 'promisify-child-process';
 import tar from 'tar';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
@@ -57,7 +57,7 @@ export class BackupRestore {
     private readonly HOSTNAME_PLACEHOLDER = '$$__hostname__$$';
     /** Same as HOSTNAME_PLACEHOLDER but used in replace method */
     private readonly HOSTNAME_PLACEHOLDER_REPLACE = '$$$$__hostname__$$$$';
-    /** Regex to replace all occurrences of the Hostname placeholder */
+    /** Regex to replace all occurrences of the HOSTNAME_PLACEHOLDER */
     private readonly HOSTNAME_PLACEHOLDER_REGEX = /\$\$__hostname__\$\$/g;
 
     constructor(options: CLIBackupRestoreOptions) {
@@ -740,7 +740,7 @@ export class BackupRestore {
             // js-controller version has changed (setup never called for this version)
             console.log('Forced restore - executing setup ...');
             try {
-                await cpPromise.exec(
+                await execAsync(
                     `"${process.execPath}" "${path.join(controllerDir, `${tools.appName.toLowerCase()}.js`)}" setup`
                 );
             } catch (e) {
