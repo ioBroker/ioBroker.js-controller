@@ -5,7 +5,7 @@ import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import { fork } from 'child_process';
 
 /** Command ioBroker debug ... */
-export class CLICompact extends CLICommand {
+export class CLIDebug extends CLICommand {
     constructor(options: CLICommandOptions) {
         super(options);
     }

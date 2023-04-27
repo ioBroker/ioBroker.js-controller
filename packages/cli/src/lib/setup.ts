@@ -11,8 +11,8 @@ import { PluginHandler } from '@iobroker/plugin-base';
 import * as CLITools from './cli/cliTools';
 import { CLIHost } from './cli/cliHost';
 import { CLIStates } from './cli/cliStates';
+import { CLIDebug } from './cli/cliDebug';
 import { error as CLIError } from './cli/messages';
-// TODO: these imports are okay as setup.ts will be moved into cli package soon
 import type { CLICommandContext, CLICommandOptions } from './cli/cliCommand';
 import type { DbConnectCallback, DbConnectAsyncReturn } from './_Types';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
@@ -32,7 +32,6 @@ const cli = {
         logs: require('./cli/cliLogs.js'),
         cert: require('./cli/cliCert.js'),
         compact: require('./cli/cliCompact.js'),
-        debug: require('./cli/cliDebug.js'),
         plugin: require('./cli/cliPlugin.js')
     }
 } as const;
@@ -540,7 +539,7 @@ async function processCommand(
         }
 
         case 'debug': {
-            const debugCommand = new cli.command.debug(commandOptions);
+            const debugCommand = new CLIDebug(commandOptions);
             debugCommand.execute(args);
             break;
         }
