@@ -38,7 +38,7 @@ export class CLICompact extends CLICommand {
      * Executes a command
      * @param args
      */
-    async execute(args: any[]) {
+    async execute(args: any[]): Promise<void> {
         const { callback, ...params } = this.options;
         const adapter = args[0];
         if (!adapter) {
