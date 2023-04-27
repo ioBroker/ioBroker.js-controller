@@ -809,7 +809,7 @@ export class BackupRestore {
                     console.warn('The current version of js-controller differs from the version in the backup.');
                     console.warn('The js-controller version of the backup can not be restored automatically.');
                     console.warn(
-                        `To restore the js-controller version of the backup, execute "npm i iobroker.js-controller@${hostObj.value.common.installedVersion} --production" inside your ioBroker directory`
+                        `To restore the js-controller version of the backup, execute "npm i iobroker.js-controller@${hostObj.value.common.installedVersion} --omit=dev" inside your ioBroker directory`
                     );
                     console.warn(
                         'If you really want to restore the backup with the current installed js-controller, execute the restore command with the --force flag'
