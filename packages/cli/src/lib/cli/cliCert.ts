@@ -41,10 +41,11 @@ export class CLICert extends CLICommand {
         if (certificates) {
             console.log(JSON.stringify(certificates, null, 2));
             for (const [certName, cert] of Object.entries(certificates)) {
+                // use the command `iobroker object set ...` to update the certificate
+                console.log(`Update certificate ${certName}`);
+
+                const objectsCommandArgs = ['set', id, `${certPropPath}.${certName}=${cert as string}`];
                 await new Promise(resolve => {
-                    // use the command `iobroker object set ...` to update the certificate
-                    console.log(`Update certificate ${certName}`);
-                    const objectsCommandArgs = ['set', id, `${certPropPath}.${certName}=${cert}`];
                     const objectsCommand = new CLIObjects({ ...this.options, callback: resolve });
                     objectsCommand.execute(objectsCommandArgs);
                 });
@@ -69,7 +70,7 @@ export class CLICert extends CLICommand {
             const { objects } = params;
 
             objects.getObject('system.certificates', (err, certs) => {
-                if (!err && certs && certs.native && certs.native.certificates && certs.native.certificates[certName]) {
+                if (!err && certs?.native?.certificates?.[certName]) {
                     const certInfo = tools.getCertificateInfo(certs.native.certificates[certName]);
                     if (certInfo) {
                         console.log(JSON.stringify(certInfo, null, 2));
