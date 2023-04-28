@@ -14,6 +14,7 @@ import { CLIStates } from './cli/cliStates';
 import { CLIDebug } from './cli/cliDebug';
 import { CLICert } from './cli/cliCert';
 import { CLIObjects } from './cli/cliObjects';
+import { CLICompact } from './cli/cliCompact';
 import { error as CLIError } from './cli/messages';
 import type { CLICommandContext, CLICommandOptions } from './cli/cliCommand';
 import type { DbConnectCallback, DbConnectAsyncReturn } from './_Types';
@@ -31,7 +32,6 @@ const cli = {
         process: require('./cli/cliProcess.js'),
         message: require('./cli/cliMessage.js'),
         logs: require('./cli/cliLogs.js'),
-        compact: require('./cli/cliCompact.js'),
         plugin: require('./cli/cliPlugin.js')
     }
 } as const;
@@ -2766,7 +2766,7 @@ async function processCommand(
         }
 
         case 'compact': {
-            const compactCommand = new cli.command.compact(commandOptions);
+            const compactCommand = new CLICompact(commandOptions);
             compactCommand.execute(args);
             break;
         }
