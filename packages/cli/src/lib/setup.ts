@@ -15,6 +15,7 @@ import { CLIDebug } from './cli/cliDebug';
 import { CLICert } from './cli/cliCert';
 import { CLIObjects } from './cli/cliObjects';
 import { CLICompact } from './cli/cliCompact';
+import { CLILogs } from './cli/cliLogs';
 import { error as CLIError } from './cli/messages';
 import type { CLICommandContext, CLICommandOptions } from './cli/cliCommand';
 import type { DbConnectCallback, DbConnectAsyncReturn } from './_Types';
@@ -31,7 +32,6 @@ const cli = {
     command: {
         process: require('./cli/cliProcess.js'),
         message: require('./cli/cliMessage.js'),
-        logs: require('./cli/cliLogs.js'),
         plugin: require('./cli/cliPlugin.js')
     }
 } as const;
@@ -1191,7 +1191,7 @@ async function processCommand(
         }
 
         case 'logs': {
-            const logsCommand = new cli.command.logs(commandOptions);
+            const logsCommand = new CLILogs(commandOptions);
             logsCommand.execute(args, params);
             break;
         }

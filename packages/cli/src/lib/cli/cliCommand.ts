@@ -31,6 +31,7 @@ export interface CLICommandParams {
     yes?: boolean;
     f?: boolean;
     y?: boolean;
+    all?: boolean;
 }
 
 export type CLICommandOptions = CLICommandContext & CLICommandParams;
