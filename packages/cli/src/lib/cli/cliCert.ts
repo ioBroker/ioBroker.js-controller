@@ -1,28 +1,26 @@
-'use strict';
-const { CLICommand } = require('./cliCommand.js');
-const CLIObjects = require('./cliObjects.js');
-const messages = require('./messages.js');
-const { tools } = require('@iobroker/js-controller-common');
+import { CLICommand, CLICommandOptions } from './cliCommand.js';
+import { CLIObjects } from './cliObjects';
+import * as messages from './messages';
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 
 /** Command ioBroker cert ... */
-module.exports = class CLICert extends CLICommand {
-    /** @param {import('./cliCommand.js').CLICommandOptions} options */
-    constructor(options) {
+export class CLICert extends CLICommand {
+    constructor(options: CLICommandOptions) {
         super(options);
     }
 
     /**
      * Executes a command
-     * @param {any[]} args
+     * @param args
      */
-    execute(args) {
+    execute(args: any[]): void | Promise<void> {
         const { callback, showHelp } = this.options;
         const command = args[0];
 
         switch (command) {
             case 'renew':
             case 'create':
-                return this.create(args);
+                return this.create();
             case 'view':
                 return this.view(args);
             default:
@@ -33,33 +31,35 @@ module.exports = class CLICert extends CLICommand {
     }
 
     /**
-     * create new private certificate
-     * @param {any[]} [_args]
+     * Create new private certificate
      */
-    async create(_args) {
+    async create(): Promise<void> {
         const id = 'system.certificates';
         const certPropPath = 'native.certificates';
 
         const certificates = tools.generateDefaultCertificates();
         if (certificates) {
             console.log(JSON.stringify(certificates, null, 2));
-            for (const cert of Object.keys(certificates)) {
+            for (const [certName, cert] of Object.entries(certificates)) {
                 await new Promise(resolve => {
                     // use the command `iobroker object set ...` to update the certificate
-                    console.log(`Update certificate ${cert}`);
-                    const objectsCommandArgs = ['set', id, `${certPropPath}.${cert}=${certificates[cert]}`];
+                    console.log(`Update certificate ${certName}`);
+                    const objectsCommandArgs = ['set', id, `${certPropPath}.${certName}=${cert}`];
                     const objectsCommand = new CLIObjects({ ...this.options, callback: resolve });
                     objectsCommand.execute(objectsCommandArgs);
                 });
             }
         }
 
-        this.options.callback();
+        this.options.callback(EXIT_CODES.NO_ERROR);
     }
 
-    // view-command
-    // usage: view [<certificate name>]
-    view(_args) {
+    /**
+     * View the certificates on CLI
+     *
+     * @param _args
+     */
+    view(_args: any[]): void {
         let certName = _args[1];
         if (certName === undefined) {
             certName = 'defaultPublic';
@@ -73,7 +73,7 @@ module.exports = class CLICert extends CLICommand {
                     const certInfo = tools.getCertificateInfo(certs.native.certificates[certName]);
                     if (certInfo) {
                         console.log(JSON.stringify(certInfo, null, 2));
-                        return void callback();
+                        return void callback(EXIT_CODES.NO_ERROR);
                     } else {
                         messages.error.cert(certName);
                         return void callback(3);
@@ -85,4 +85,4 @@ module.exports = class CLICert extends CLICommand {
             });
         });
     }
-};
+}

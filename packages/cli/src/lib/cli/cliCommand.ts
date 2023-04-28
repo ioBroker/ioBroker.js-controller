@@ -3,7 +3,7 @@ import type { DbConnectCallback } from '../_Types';
 export interface CLICommandContext {
     /** Invoke this before doing anything in the database */
     dbConnect: (callback: DbConnectCallback) => void;
-    callback: (code: number) => void;
+    callback: (code?: number) => void;
     showHelp: (yargs?: any) => void;
 }
 
@@ -28,6 +28,9 @@ export interface CLICommandParams {
     path?: string;
     module?: string;
     wait?: boolean;
+    yes?: boolean;
+    f?: boolean;
+    y?: boolean;
 }
 
 export type CLICommandOptions = CLICommandContext & CLICommandParams;

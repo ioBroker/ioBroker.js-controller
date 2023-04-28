@@ -12,6 +12,8 @@ import * as CLITools from './cli/cliTools';
 import { CLIHost } from './cli/cliHost';
 import { CLIStates } from './cli/cliStates';
 import { CLIDebug } from './cli/cliDebug';
+import { CLICert } from './cli/cliCert';
+import { CLIObjects } from './cli/cliObjects';
 import { error as CLIError } from './cli/messages';
 import type { CLICommandContext, CLICommandOptions } from './cli/cliCommand';
 import type { DbConnectCallback, DbConnectAsyncReturn } from './_Types';
@@ -26,11 +28,9 @@ tools.ensureDNSOrder();
  */
 const cli = {
     command: {
-        object: require('./cli/cliObjects.js'),
         process: require('./cli/cliProcess.js'),
         message: require('./cli/cliMessage.js'),
         logs: require('./cli/cliLogs.js'),
-        cert: require('./cli/cliCert.js'),
         compact: require('./cli/cliCompact.js'),
         plugin: require('./cli/cliPlugin.js')
     }
@@ -661,10 +661,9 @@ async function processCommand(
 
                             await new Promise(resolve => {
                                 // Creates a fresh certificate
-                                const Cert = cli.command.cert;
                                 // Create a new instance of the cert command,
                                 // but use the resolve method as a callback
-                                const cert = new Cert({ ...commandOptions, callback: resolve });
+                                const cert = new CLICert({ ...commandOptions, callback: resolve });
                                 cert.create();
                             });
                         }
@@ -1172,7 +1171,7 @@ async function processCommand(
 
         case 'o':
         case 'object': {
-            const objectsCommand = new cli.command.object(commandOptions);
+            const objectsCommand = new CLIObjects(commandOptions);
             objectsCommand.execute(args);
             break;
         }
@@ -2761,7 +2760,7 @@ async function processCommand(
         }
 
         case 'cert': {
-            const certCommand = new cli.command.cert(commandOptions);
+            const certCommand = new CLICert(commandOptions);
             certCommand.execute(args);
             break;
         }
