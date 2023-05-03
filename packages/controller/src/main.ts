@@ -1371,8 +1371,10 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
             err = e;
         }
 
-        if (err || !systemConfig || !systemConfig.common) {
-            logger.warn(`System config object is corrupt, please run "iobroker setup first". Error: ${err.message}`);
+        if (err || !systemConfig?.common) {
+            logger.warn(
+                `System config object is corrupt, please run "${tools.appNameLowerCase} setup first". Error: ${err.message}`
+            );
             systemConfig = systemConfig || { common: {} };
             systemConfig.common = systemConfig.common || {};
         }
@@ -1438,7 +1440,7 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
             delete diag.country;
         }
 
-        if (!err && doc && doc.rows.length) {
+        if (!err && doc?.rows.length) {
             doc.rows.sort((a, b) => {
                 try {
                     return semver.lt(
@@ -1502,12 +1504,17 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
                 return new Promise(resolve => {
                     visUtils(objects, null, 0, null, async (err: any, points: any) => {
                         let total = null;
+                        diag.numberVisProjects = 0;
+
                         const tasks = [];
-                        if (points && points.length) {
+                        if (points?.length) {
                             for (const point of points) {
                                 if (point.id === 'vis.0.datapoints.total') {
                                     total = point.val;
+                                } else {
+                                    diag.numberVisProjects++;
                                 }
+
                                 tasks.push({
                                     _id: point.id,
                                     type: 'state',
