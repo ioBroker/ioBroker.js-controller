@@ -7010,16 +7010,24 @@ export class AdapterClass extends EventEmitter {
      * As we have a special case (first arg can be error or result, we need to promisify manually)
      */
     sendToAsync(instanceName: unknown, command: unknown, message?: unknown, options?: unknown): any {
-        const callback: ioBroker.MessageCallback = resOrError => {
-            if (resOrError instanceof Error) {
-                throw resOrError;
-            }
+        return new Promise((resolve, reject) => {
+            const callback: ioBroker.MessageCallback = resOrError => {
+                if (resOrError instanceof Error) {
+                    reject(resOrError);
+                }
 
-            callback(resOrError);
-        };
+                resolve(resOrError);
+            };
 
-        // validation takes place inside sendTo so skip here
-        this.sendTo(instanceName as string, command as string, message as string, callback, options as SendToOptions);
+            // validation takes place inside sendTo so skip here
+            this.sendTo(
+                instanceName as string,
+                command as string,
+                message as string,
+                callback,
+                options as SendToOptions
+            );
+        });
     }
 
     private async _sendTo(_options: InternalSendToOptions): Promise<void> {
@@ -7112,6 +7120,7 @@ export class AdapterClass extends EventEmitter {
                     if (options?.timeout) {
                         timer = setTimeout(() => {
                             const callbackObj = this.callbacks.get(callbackId);
+
                             if (callbackObj) {
                                 callbackObj.cb(new Error('Timeout exceeded'));
                                 this.callbacks.delete(callbackId);

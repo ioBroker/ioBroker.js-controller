@@ -1020,9 +1020,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     it(testName + 'sendTo with timeout should reject in time', () => {
-        expect(context.adapter.sendToAsync('testInstance.0', 'test', {}, { timeout: 500 })).to.be.rejectedWith(
-            /Timeout exceeded'/g,
-            'Should have thrown after timeout is over'
-        );
+        return expect(
+            context.adapter.sendToAsync('testInstance.0', 'test', {}, { timeout: 500 })
+        ).to.be.eventually.rejectedWith('Timeout exceeded', 'Should have thrown after timeout is over');
     });
 }
