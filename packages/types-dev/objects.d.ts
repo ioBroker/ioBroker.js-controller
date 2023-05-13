@@ -442,6 +442,7 @@ declare global {
         /**
          * Object which defines, if the adapter supports receiving messages via sendTo.
          * Additionally, it defines if specific messages are supported.
+         * If one property is enabled, the object `system.adapter.<adaptername>.<adapterinstance>.messagebox will be created to send messages to the adapter (used for email, pushover, etc...)
          */
         interface SupportedMessages {
             /** If custom messages are supported (same as legacy messagebox) */
@@ -510,7 +511,7 @@ declare global {
             materializeTab: boolean;
             /** Whether the admin configuration dialog is written in materialize style. Required for Admin 3+ */
             materialize: boolean;
-            /** If `true`, the object `system.adapter.<adaptername>.<adapterinstance>.messagebox will be created to send messages to the adapter (used for email, pushover, etc...) */
+            /** @deprecated Use @see supportedMessages up from controller v5 */
             messagebox?: true;
             /** Messages which are supported by the adapter, supportedMessages.custom: true is the equivalent to messagebox: true */
             supportedMessages?: SupportedMessages;
@@ -560,7 +561,7 @@ declare global {
             subscribe?: any; // ?
             /** If `true`, this adapter provides custom per-state settings. Requires a `custom_m.html` file in the `admin` directory. */
             supportCustoms?: boolean;
-            /** Whether the adapter supports the signal stopInstance via messagebox */
+            /** @deprecated Use @see supportedMessages up from controller v5 */
             supportStopInstance?: boolean;
             /** The translated names of this adapter to be shown in the admin UI */
             titleLang?: Record<Languages, string>;
