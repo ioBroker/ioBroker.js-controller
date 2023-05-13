@@ -102,7 +102,8 @@ import type {
     SetStateChangedResult,
     CheckStatesResult,
     Pattern,
-    MessageCallbackObject
+    MessageCallbackObject,
+    SendToOptions
 } from '../_Types';
 
 tools.ensureDNSOrder();
@@ -1066,11 +1067,6 @@ export class AdapterClass extends EventEmitter {
          * Promise-version of `Adapter.fileExists`
          */
         this.fileExistsAsync = tools.promisify(this.fileExists, this);
-
-        /**
-         * Promise-version of `Adapter.sendTo`
-         */
-        this.sendToAsync = tools.promisifyNoError(this.sendTo, this);
 
         /**
          * Promise-version of `Adapter.sendToHost`
@@ -6956,7 +6952,8 @@ export class AdapterClass extends EventEmitter {
         instanceName: string,
         command: string,
         message: any,
-        callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo
+        callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo,
+        options?: SendToOptions
     ): void;
 
     /**
@@ -7005,6 +7002,23 @@ export class AdapterClass extends EventEmitter {
             options,
             callback: callback as ioBroker.MessageCallbackInfo | ioBroker.MessageCallback
         });
+    }
+
+    /**
+     * Async version of sendTo
+     * As we have a special case (first arg can be error or result, we need to promisify manually)
+     */
+    sendToAsync(instanceName: unknown, command: unknown, message?: unknown, options?: unknown): any {
+        const callback: ioBroker.MessageCallback = resOrError => {
+            if (resOrError instanceof Error) {
+                throw resOrError;
+            }
+
+            callback(resOrError);
+        };
+
+        // validation takes place inside sendTo so skip here
+        this.sendTo(instanceName as string, command as string, message as string, callback, options as SendToOptions);
     }
 
     private async _sendTo(_options: InternalSendToOptions): Promise<void> {
