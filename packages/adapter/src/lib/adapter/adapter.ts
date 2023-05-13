@@ -10,6 +10,7 @@ import { PluginHandler } from '@iobroker/plugin-base';
 import semver from 'semver';
 import path from 'path';
 import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
+import { isMessageboxSupported } from './utils';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
@@ -7064,7 +7065,7 @@ export class AdapterClass extends EventEmitter {
             if (callback) {
                 if (typeof callback === 'function') {
                     // force subscribe even no messagebox enabled
-                    if (!this.isMessageboxSupported(this.common!) && !this.mboxSubscribed) {
+                    if (!isMessageboxSupported(this.common!) && !this.mboxSubscribed) {
                         this.mboxSubscribed = true;
                         adapterStates.subscribeMessage(`system.adapter.${this.namespace}`);
                     }
@@ -7215,7 +7216,7 @@ export class AdapterClass extends EventEmitter {
             if (callback) {
                 if (typeof callback === 'function') {
                     // force subscribe even no messagebox enabled
-                    if (!this.isMessageboxSupported(this.common!) && !this.mboxSubscribed) {
+                    if (!isMessageboxSupported(this.common!) && !this.mboxSubscribed) {
                         this.mboxSubscribed = true;
                         adapterStates.subscribeMessage(`system.adapter.${this.namespace}`);
                     }
@@ -11503,13 +11504,13 @@ export class AdapterClass extends EventEmitter {
                     if (
                         typeof this._options.message === 'function' &&
                         // @ts-expect-error, we should infer correctly that this is an InstanceObject in this case
-                        !this.isMessageboxSupported(adapterConfig.common)
+                        !isMessageboxSupported(adapterConfig.common)
                     ) {
                         this._logger.error(
                             `${this.namespaceLog} : message handler implemented, but messagebox not enabled. Define common.messagebox in io-package.json for adapter or delete message handler.`
                         );
-                        // @ts-expect-error
-                    } else if (this.isMessageboxSupported(adapterConfig.common)) {
+                        // @ts-expect-error we should infer adapterConfig correctly
+                    } else if (isMessageboxSupported(adapterConfig.common)) {
                         this.mboxSubscribed = true;
                         adapterStates.subscribeMessage(`system.adapter.${this.namespace}`);
                     }
@@ -11949,19 +11950,6 @@ export class AdapterClass extends EventEmitter {
         } else {
             setImmediate(() => this._extendObjects(tasks, callback));
         }
-    }
-
-    /**
-     * Internal method to check if messagebox is configured
-     *
-     * @param instanceCommon Instance common
-     */
-    private isMessageboxSupported(instanceCommon: ioBroker.InstanceCommon): boolean {
-        if (!tools.isObject(instanceCommon.supportedMessages)) {
-            return !!instanceCommon.messagebox;
-        }
-
-        return Object.values(instanceCommon.supportedMessages).includes(true);
     }
 
     private async _init(): Promise<void> {
