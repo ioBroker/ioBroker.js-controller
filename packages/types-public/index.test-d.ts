@@ -796,7 +796,16 @@ const _metaObject: ioBroker.MetaObject = {
 const _instanceObject: ioBroker.InstanceObject = {
     _id: 'system.adapter.test.0',
     type: 'instance',
-    common: { enabled: true, host: 'my host', mode: 'daemon', name: 'instance 1', version: '1.0.0' },
+    common: {
+        enabled: true,
+        host: 'my host',
+        mode: 'daemon',
+        name: 'instance 1',
+        version: '1.0.0',
+        platform: 'Javascript/Node.js',
+        materialize: true,
+        installedVersion: '1.0.0'
+    },
     native: {}
 };
 

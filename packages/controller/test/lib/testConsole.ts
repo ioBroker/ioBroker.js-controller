@@ -715,7 +715,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 version: '1.0.0',
                 host: 'system.host.test',
                 enabled: true,
-                mode: 'daemon'
+                mode: 'daemon',
+                platform: 'Javascript/Node.js',
+                materialize: true,
+                installedVersion: '1.0.0'
             },
             native: {},
             type: 'instance'

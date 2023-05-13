@@ -327,7 +327,6 @@ declare global {
             compactGroup?: number;
             /** String (or array) with names of attributes in common of instance, which will not be deleted. */
             preserveSettings?: string | string[];
-            installedVersion?: string;
             installedFrom?: string;
             /** Arguments passed to the adapter process, this disables compact mode */
             nodeProcessParams?: string[];
@@ -508,7 +507,7 @@ declare global {
             /** Path to the start file of the adapter. Should be the same as in `package.json` */
             main?: string;
             /** Whether the admin tab is written in materialize style. Required for Admin 3+ */
-            materializeTab: boolean;
+            materializeTab?: boolean;
             /** Whether the admin configuration dialog is written in materialize style. Required for Admin 3+ */
             materialize: boolean;
             /** @deprecated Use @see supportedMessages up from controller v5 */
