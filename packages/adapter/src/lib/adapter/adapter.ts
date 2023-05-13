@@ -387,7 +387,8 @@ export interface AdapterClass {
     sendToAsync(
         instanceName: string,
         command: string,
-        message: ioBroker.MessagePayload
+        message: ioBroker.MessagePayload,
+        options?: SendToOptions
     ): Promise<ioBroker.Message | undefined>;
 
     /**
