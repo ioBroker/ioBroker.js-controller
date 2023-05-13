@@ -115,8 +115,36 @@
           "$ref": "#/definitions/multilingual"
         },
         "messagebox": {
-          "description": "true if messagebox supported. Hence, the adapter can receive sendTo messages.",
+          "description": "true if messagebox supported. Hence, the adapter can receive sendTo messages. Up from controller v5, please use common.supportedMessages.notifications.custom = true",
           "type": "boolean"
+        },
+        "supportedMessages": {
+          "description": "Object which defines, if the adapter supports receiving messages via sendTo. Additionally, it defines if specific messages are supported.",
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "custom": {
+              "description": "If custom messages are supported (same as legacy messagebox)",
+              "type": "boolean"
+            },
+            "notifications": {
+              "description": "If notification handling is supported, for information, see https://github.com/foxriver76/ioBroker.notification-manager#requirements-for-messaging-adapters",
+              "type": "boolean"
+            },
+            "stopInstance": {
+              "description": "If adapter supports signal stopInstance. Use number if you need more than 1000 ms for stop routine. The signal will be sent before stop to the adapter. (used if problems occurred with SIGTERM). (Same as legacy `supportStopInstance`)",
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "number",
+                  "multipleOf": 1,
+                  "minimum": 1000
+                }
+              ]
+            }
+          }
         },
         "readme": {
           "description": "Url of the ReadMe file",
@@ -1142,7 +1170,7 @@
           "type": "boolean"
         },
         "supportStopInstance": {
-          "description": "If adapter supports signal stopInstance (messagebox required). Use number if you need more than 1000 ms for stop routine. The signal will be sent before stop to the adapter. (used if problems occurred with SIGTERM)",
+          "description": "If adapter supports signal stopInstance (messagebox required). Use number if you need more than 1000 ms for stop routine. The signal will be sent before stop to the adapter. (used if problems occurred with SIGTERM). (Up from controller v5, please use `common.supportedMessages.stopInstance`)",
           "anyOf": [
             {
               "type": "boolean"
