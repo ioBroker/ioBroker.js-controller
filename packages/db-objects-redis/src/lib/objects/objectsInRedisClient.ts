@@ -1597,7 +1597,7 @@ export class ObjectsInRedisClient {
         });
     }
 
-    readDirAsync(id: string, name: string, options: CallOptions): ioBroker.ReadDirPromise {
+    readDirAsync(id: string, name: string, options?: CallOptions): ioBroker.ReadDirPromise {
         return new Promise((resolve, reject) =>
             this.readDir(id, name, options, (err, res) => (err ? reject(err) : resolve(res!)))
         );
