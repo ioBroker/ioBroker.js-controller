@@ -11,8 +11,12 @@ import { PluginHandler } from '@iobroker/plugin-base';
 import * as CLITools from './cli/cliTools';
 import { CLIHost } from './cli/cliHost';
 import { CLIStates } from './cli/cliStates';
+import { CLIDebug } from './cli/cliDebug';
+import { CLICert } from './cli/cliCert';
+import { CLIObjects } from './cli/cliObjects';
+import { CLICompact } from './cli/cliCompact';
+import { CLILogs } from './cli/cliLogs';
 import { error as CLIError } from './cli/messages';
-// TODO: these imports are okay as setup.ts will be moved into cli package soon
 import type { CLICommandContext, CLICommandOptions } from './cli/cliCommand';
 import type { DbConnectCallback, DbConnectAsyncReturn } from './_Types';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
@@ -26,13 +30,8 @@ tools.ensureDNSOrder();
  */
 const cli = {
     command: {
-        object: require('./cli/cliObjects.js'),
         process: require('./cli/cliProcess.js'),
         message: require('./cli/cliMessage.js'),
-        logs: require('./cli/cliLogs.js'),
-        cert: require('./cli/cliCert.js'),
-        compact: require('./cli/cliCompact.js'),
-        debug: require('./cli/cliDebug.js'),
         plugin: require('./cli/cliPlugin.js')
     }
 } as const;
@@ -545,7 +544,7 @@ async function processCommand(
         }
 
         case 'debug': {
-            const debugCommand = new cli.command.debug(commandOptions);
+            const debugCommand = new CLIDebug(commandOptions);
             debugCommand.execute(args);
             break;
         }
@@ -667,10 +666,9 @@ async function processCommand(
 
                             await new Promise(resolve => {
                                 // Creates a fresh certificate
-                                const Cert = cli.command.cert;
                                 // Create a new instance of the cert command,
                                 // but use the resolve method as a callback
-                                const cert = new Cert({ ...commandOptions, callback: resolve });
+                                const cert = new CLICert({ ...commandOptions, callback: resolve });
                                 cert.create();
                             });
                         }
@@ -1178,7 +1176,7 @@ async function processCommand(
 
         case 'o':
         case 'object': {
-            const objectsCommand = new cli.command.object(commandOptions);
+            const objectsCommand = new CLIObjects(commandOptions);
             objectsCommand.execute(args);
             break;
         }
@@ -1198,7 +1196,7 @@ async function processCommand(
         }
 
         case 'logs': {
-            const logsCommand = new cli.command.logs(commandOptions);
+            const logsCommand = new CLILogs(commandOptions);
             logsCommand.execute(args, params);
             break;
         }
@@ -2767,13 +2765,13 @@ async function processCommand(
         }
 
         case 'cert': {
-            const certCommand = new cli.command.cert(commandOptions);
+            const certCommand = new CLICert(commandOptions);
             certCommand.execute(args);
             break;
         }
 
         case 'compact': {
-            const compactCommand = new cli.command.compact(commandOptions);
+            const compactCommand = new CLICompact(commandOptions);
             compactCommand.execute(args);
             break;
         }

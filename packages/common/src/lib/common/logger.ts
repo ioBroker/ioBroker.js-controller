@@ -414,7 +414,7 @@ export function logger(
     };
 
     log.on('error', error => {
-        console.log('Logger error: ' + error);
+        console.log(`Logger error: ${error.message}`);
     });
 
     // This cannot be deleted, because file rotate works with the size of files and not with the time
@@ -497,9 +497,6 @@ export function logger(
             }, 3_600_000); // every hour
         }
     };
-
-    //winston.unhandleExceptions();
-    //log.unexceptions.handle();
 
     return log;
 }

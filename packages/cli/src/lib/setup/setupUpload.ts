@@ -354,7 +354,6 @@ export class Upload {
         let _dirs: File[] = [];
         let files: ioBroker.ReadDirResult[];
         try {
-            // @ts-expect-error should be fixed with #1917
             files = await this.objects.readDirAsync(adapter, path);
         } catch {
             // ignore err
