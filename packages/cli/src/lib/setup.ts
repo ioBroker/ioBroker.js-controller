@@ -54,6 +54,11 @@ interface InternalRebuildOptions {
     debug: boolean;
 }
 
+interface DbConnectParams {
+    /** DB connect timeout, default is 10_000 */
+    timeout?: number;
+}
+
 function initYargs(): yargs.Argv {
     _yargs = yargs
         .scriptName(tools.appName)
@@ -3125,7 +3130,7 @@ function dbConnect(onlyCheck: boolean, params: Record<string, any>, callback: Db
  */
 function dbConnect(
     onlyCheck: boolean | Record<string, any> | DbConnectCallback,
-    params?: Record<string, any> | DbConnectCallback,
+    params?: DbConnectParams | DbConnectCallback,
     callback?: DbConnectCallback
 ): void {
     if (typeof onlyCheck === 'object') {
@@ -3158,8 +3163,8 @@ function dbConnect(
     config.objects = config.objects || { type: 'jsonl' };
     // Make sure the DB has enough time (5s). JsonL can take a bit longer if the process just crashed before
     // because the lockfile might not have been freed.
-    config.states.connectTimeout = Math.max(config.states.connectTimeout || 0, 5000);
-    config.objects.connectTimeout = Math.max(config.objects.connectTimeout || 0, 5000);
+    config.states.connectTimeout = Math.max(config.states.connectTimeout || 0, 5_000);
+    config.objects.connectTimeout = Math.max(config.objects.connectTimeout || 0, 5_000);
 
     Objects = getObjectsConstructor(); // Objects DB Client object
     States = getStatesConstructor(); // States DB Client object
@@ -3323,14 +3328,21 @@ function dbConnect(
 
             console.log('No connection to databases possible ...');
             if (onlyCheck) {
-                // @ts-expect-error todo make a conditional return type to allow it if onlycheck true?
-                callback && callback(null, null, true, config.objects.type, config);
+                callback &&
+                    callback({
+                        // TODO types: allow null if onlyCheck is true
+                        objects: null as any,
+                        states: null as any,
+                        isOffline: true,
+                        objectsDBType: config.objects.type,
+                        config
+                    });
                 callback = undefined;
             } else {
                 return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
             }
             // @ts-expect-error todo fix it
-        }, (params.timeout || 10000) + config.objects.connectTimeout);
+        }, (params.timeout || 10_000) + config.objects.connectTimeout);
     }, params.timeout || config.objects.connectTimeout * 2);
 
     // try to connect as client
@@ -3405,8 +3417,10 @@ function dbConnect(
 
 /**
  * Connects to the DB or tests the connection.
+ * @param onlyCheck if only connection check should be performed
+ * @param params options used by dbConnect
  */
-function dbConnectAsync(onlyCheck: boolean, params?: Record<string, any>): Promise<DbConnectAsyncReturn> {
+export function dbConnectAsync(onlyCheck: boolean, params?: DbConnectParams): Promise<DbConnectAsyncReturn> {
     return new Promise(resolve => dbConnect(onlyCheck, params || {}, params => resolve(params)));
 }
 
