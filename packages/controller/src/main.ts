@@ -1484,7 +1484,7 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
         }
 
         let visFound = false;
-        if (!err && doc && doc.rows.length) {
+        if (!err && doc?.rows.length) {
             // Read installed versions of all adapters
             for (const row of doc.rows) {
                 diag.adapters[row.value.common.name] = {
@@ -1498,49 +1498,43 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
         }
         // read number of vis datapoints
         if (visFound) {
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
-            const visUtils = require('./lib/vis/states');
+            const { calcProjects } = await import('./lib/vis/states');
             try {
-                return new Promise(resolve => {
-                    visUtils(objects, null, 0, null, async (err: any, points: any) => {
-                        let total = null;
-                        diag.numberVisProjects = 0;
+                const points = await calcProjects(objects!, 0);
+                let total = null;
+                const tasks = [];
 
-                        const tasks = [];
-                        if (points?.length) {
-                            for (const point of points) {
-                                if (point.id === 'vis.0.datapoints.total') {
-                                    total = point.val;
-                                } else {
-                                    diag.numberVisProjects++;
-                                }
+                if (points?.length) {
+                    for (const point of points) {
+                        if (point.id === 'vis.0.datapoints.total') {
+                            total = point.val;
+                        }
 
-                                tasks.push({
-                                    _id: point.id,
-                                    type: 'state',
-                                    native: {},
-                                    common: {
-                                        name: 'Datapoints count',
-                                        role: 'state',
-                                        type: 'number',
-                                        read: true,
-                                        write: false
-                                    },
-                                    state: {
-                                        val: point.val,
-                                        ack: true
-                                    }
-                                });
+                        tasks.push({
+                            _id: point.id,
+                            type: 'state',
+                            native: {},
+                            common: {
+                                name: 'Datapoints count',
+                                role: 'state',
+                                type: 'number',
+                                read: true,
+                                write: false
+                            },
+                            state: {
+                                val: point.val,
+                                ack: true
                             }
-                        }
-                        if (total !== null) {
-                            diag.vis = total;
-                        }
+                        });
+                    }
+                }
 
-                        await extendObjects(tasks);
-                        resolve(diag);
-                    });
-                });
+                if (total !== null) {
+                    diag.vis = total;
+                }
+
+                await extendObjects(tasks);
+                return diag;
             } catch (e) {
                 logger.error(`${hostLogPrefix} cannot call visUtils: ${e.message}`);
                 return diag;
