@@ -7,7 +7,7 @@ import path from 'path';
 import child_process from 'child_process';
 
 const RECOMMENDED_NPM_VERSION = 8;
-/** Time to wait for npm version determiantion */
+/** Time to wait for npm version determination */
 const EXEC_TIMEOUT = 10_000;
 /** Duplicated from exitCodes */
 const EXIT_CODE_CANNOT_INSTALL_NPM_PACKET = 25;
