@@ -43,7 +43,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-20.04, macos-latest]
-        node: [14, 16, 18]
+        node: [16, 18, 20]
 
     steps:
       - uses: actions/checkout@v3
@@ -73,10 +73,6 @@ jobs:
         run: |
           choco install redis-64 --version 3.0.503
           powershell "Start-Process redis-server.exe -PassThru"
-
-      - name: Ensure NPM version
-        if: matrix.node == 14
-        run: npm i -g npm@7
 
       - name: NPM version
         run: npm -v

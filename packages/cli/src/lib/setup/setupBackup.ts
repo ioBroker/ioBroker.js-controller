@@ -110,7 +110,6 @@ export class BackupRestore {
         fs.ensureDirSync(destPath);
 
         try {
-            // @ts-expect-error #1917
             const res = await this.objects.readDirAsync(id, srcPath);
             if (res) {
                 for (const entry of res) {

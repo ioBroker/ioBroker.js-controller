@@ -2,7 +2,7 @@
     "name": "iobroker.js-controller",
     "version": "5.0.1-alpha.0-20230418-efa3e809",
     "engines": {
-        "node": ">=14.18.0 < 15 || >= 16.4.0"
+        "node": ">=16.4.0"
     },
     "optionalDependencies": {
         "greenlock": "^4.0.4",
