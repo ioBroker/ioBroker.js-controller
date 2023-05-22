@@ -1018,4 +1018,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         );
         await context.adapter.subscribeStatesAsync('*hm-rpc.0._.**test/*');
     });
+
+    it(testName + 'sendTo with timeout should reject in time', () => {
+        return expect(
+            context.adapter.sendToAsync('testInstance.0', 'test', {}, { timeout: 500 })
+        ).to.be.eventually.rejectedWith('Timeout exceeded', 'Should have thrown after timeout is over');
+    });
 }

@@ -316,11 +316,27 @@ export interface InternalAddChannelToEnumOptions {
     callback?: ioBroker.ErrorCallback;
 }
 
+export interface SendToOptions {
+    /** Method throws or calls error cb, if callback not called in time, works for single targets only */
+    timeout?: number;
+}
+
 export interface InternalSendToOptions {
     instanceName: string;
     command: string;
     message: any;
     callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo;
+    options?: SendToOptions;
+}
+
+/** Message Callback used internally */
+export interface MessageCallbackObject {
+    /** the callback itself */
+    cb: ioBroker.MessageCallback;
+    /** The timestamp of the initial message */
+    time: number;
+    /** An optional timer, if a timeout has been specified */
+    timer?: NodeJS.Timeout;
 }
 
 export interface InternalSendToHostOptions {

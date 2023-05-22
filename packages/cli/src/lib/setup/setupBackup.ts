@@ -12,7 +12,7 @@ import { tools } from '@iobroker/js-controller-common';
 import path from 'path';
 import { Upload } from './setupUpload';
 import { EXIT_CODES } from '@iobroker/js-controller-common';
-import cpPromise from 'promisify-child-process';
+import { exec as execAsync } from 'promisify-child-process';
 import tar from 'tar';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
@@ -53,6 +53,12 @@ export class BackupRestore {
     private readonly upload: Upload;
     private configParts: string[];
     private readonly configDir: string;
+    /** Placeholder inserted during backup creation if no custom hostname defined */
+    private readonly HOSTNAME_PLACEHOLDER = '$$__hostname__$$';
+    /** Same as HOSTNAME_PLACEHOLDER but used in replace method */
+    private readonly HOSTNAME_PLACEHOLDER_REPLACE = '$$$$__hostname__$$$$';
+    /** Regex to replace all occurrences of the HOSTNAME_PLACEHOLDER */
+    private readonly HOSTNAME_PLACEHOLDER_REGEX = /\$\$__hostname__\$\$/g;
 
     constructor(options: CLIBackupRestoreOptions) {
         options = options || {};
@@ -104,7 +110,6 @@ export class BackupRestore {
         fs.ensureDirSync(destPath);
 
         try {
-            // @ts-expect-error #1917
             const res = await this.objects.readDirAsync(id, srcPath);
             if (res) {
                 for (const entry of res) {
@@ -287,32 +292,25 @@ export class BackupRestore {
             console.error(`host.${hostname} Cannot get objects: ${e.message}`);
         }
 
-        if (!noConfig) {
-            result.config = null;
+        let isCustomHostname = false;
+        let config: ioBroker.IoBrokerJson | undefined;
+
+        // read iobroker.json
+        try {
+            config = (await fs.readJSON(tools.getConfigFileName())) as ioBroker.IoBrokerJson;
+            // if a hostname is configured
+            isCustomHostname = !!config.system.hostname;
+        } catch (e) {
+            console.error(`host.${hostname} Cannot read config file: ${e.message}`);
         }
 
-        if (!noConfig && fs.existsSync(tools.getConfigFileName())) {
-            result.config = fs.readJSONSync(tools.getConfigFileName());
-        }
+        result.config = !noConfig && config ? config : null;
 
         const r = new RegExp(`^system\\.host\\.${hostname}\\.(\\w+)$`);
 
         try {
             const keys = await this.states.getKeys('*');
-
-            // NOTE for all "replace" with $$$$ ... result will be just $$
             const objs = await this.states.getStates(keys!);
-
-            // read iobroker.json
-            let isCustomHostname;
-
-            try {
-                const config = await fs.readJSON(tools.getConfigFileName());
-                // if a hostname is configured
-                isCustomHostname = !!config.system.hostname;
-            } catch (e) {
-                console.error(`host.${hostname} Cannot read config file: ${e.message}`);
-            }
 
             if (keys && objs) {
                 for (let i = 0; i < keys.length; i++) {
@@ -323,12 +321,15 @@ export class BackupRestore {
                     }
 
                     if (!isCustomHostname) {
-                        // if its a default hostname, we will have a new default after restore and need to replace
+                        // if it's a default hostname, we will have a new default after restore and need to replace
                         if (obj.from === `system.host.${hostname}` || r.test(obj.from)) {
-                            obj.from.replace(`system.host.${hostname}`, 'system.host.$$$$__hostname__$$$$');
+                            obj.from.replace(
+                                `system.host.${hostname}`,
+                                `system.host.${this.HOSTNAME_PLACEHOLDER_REPLACE}`
+                            );
                         }
                         if (r.test(keys[i])) {
-                            keys[i] = keys[i].replace(hostname, '$$$$__hostname__$$$$');
+                            keys[i] = keys[i].replace(hostname, this.HOSTNAME_PLACEHOLDER_REPLACE);
                         }
                     }
                     result.states[keys[i]] = obj;
@@ -351,33 +352,36 @@ export class BackupRestore {
         // try to find user files
         if (result.objects) {
             for (const object of result.objects) {
-                if (!object || !object.value || !object.value._id || !object.value.common) {
+                if (!object?.value || !object.value._id || !object.value.common) {
                     continue;
                 }
-                if (
-                    object.value._id.match(/^system\.adapter\.([\w\d_-]+).(\d+)$/) &&
-                    object.value.common.host === hostname
-                ) {
-                    object.value.common.host = '$$__hostname__$$';
-                    if (object.value) {
-                        object.value.common.host = '$$__hostname__$$';
-                    }
-                } else if (r.test(object.value._id)) {
-                    object.value._id = object.value._id.replace(hostname, '$$$$__hostname__$$$$');
-                    object.id = object.value._id;
-                } else if (object.value._id === 'system.host.' + hostname) {
-                    object.value._id = 'system.host.$$__hostname__$$';
-                    object.value.common.name = object.value._id;
-                    object.value.common.hostname = '$$__hostname__$$';
-                    if (object.value.native && object.value.native.os) {
-                        object.value.native.os.hostname = '$$__hostname__$$';
-                    }
-                    object.id = object.value._id;
-                    if (object.value) {
+
+                if (!isCustomHostname) {
+                    if (
+                        object.value._id.match(/^system\.adapter\.([\w\d_-]+).(\d+)$/) &&
+                        object.value.common.host === hostname
+                    ) {
+                        object.value.common.host = this.HOSTNAME_PLACEHOLDER;
+                        if (object.value) {
+                            object.value.common.host = this.HOSTNAME_PLACEHOLDER;
+                        }
+                    } else if (r.test(object.value._id)) {
+                        object.value._id = object.value._id.replace(hostname, this.HOSTNAME_PLACEHOLDER_REPLACE);
+                        object.id = object.value._id;
+                    } else if (object.value._id === `system.host.${hostname}`) {
+                        object.value._id = `system.host.${this.HOSTNAME_PLACEHOLDER}`;
                         object.value.common.name = object.value._id;
-                        object.value.common.hostname = '$$__hostname__$$';
+                        object.value.common.hostname = this.HOSTNAME_PLACEHOLDER;
                         if (object.value.native && object.value.native.os) {
-                            object.value.native.os.hostname = '$$__hostname__$$';
+                            object.value.native.os.hostname = this.HOSTNAME_PLACEHOLDER;
+                        }
+                        object.id = object.value._id;
+                        if (object.value) {
+                            object.value.common.name = object.value._id;
+                            object.value.common.hostname = this.HOSTNAME_PLACEHOLDER;
+                            if (object.value.native && object.value.native.os) {
+                                object.value.native.os.hostname = this.HOSTNAME_PLACEHOLDER;
+                            }
                         }
                     }
                 }
@@ -670,7 +674,7 @@ export class BackupRestore {
         let data = fs.readFileSync(`${tmpDir}/backup/backup.json`, 'utf8');
         const hostname = tools.getHostName();
         // replace all hostnames of instances etc with the new host
-        data = data.replace(/\$\$__hostname__\$\$/g, hostname);
+        data = data.replace(this.HOSTNAME_PLACEHOLDER_REGEX, hostname);
         fs.writeFileSync(`${tmpDir}/backup/backup_.json`, data);
         let restore: Backup;
         try {
@@ -735,7 +739,7 @@ export class BackupRestore {
             // js-controller version has changed (setup never called for this version)
             console.log('Forced restore - executing setup ...');
             try {
-                await cpPromise.exec(
+                await execAsync(
                     `"${process.execPath}" "${path.join(controllerDir, `${tools.appName.toLowerCase()}.js`)}" setup`
                 );
             } catch (e) {
@@ -804,7 +808,7 @@ export class BackupRestore {
                     console.warn('The current version of js-controller differs from the version in the backup.');
                     console.warn('The js-controller version of the backup can not be restored automatically.');
                     console.warn(
-                        `To restore the js-controller version of the backup, execute "npm i iobroker.js-controller@${hostObj.value.common.installedVersion} --production" inside your ioBroker directory`
+                        `To restore the js-controller version of the backup, execute "npm i iobroker.js-controller@${hostObj.value.common.installedVersion} --omit=dev" inside your ioBroker directory`
                     );
                     console.warn(
                         'If you really want to restore the backup with the current installed js-controller, execute the restore command with the --force flag'

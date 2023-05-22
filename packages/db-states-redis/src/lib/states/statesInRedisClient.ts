@@ -96,8 +96,8 @@ export class StateRedisClient {
         this.namespaceSession = (this.settings.namespaceSession || 'session') + '.';
         this.metaNamespace = (this.settings.metaNamespace || 'meta') + '.';
 
-        this.globalMessageId = Math.round(Math.random() * 100000000);
-        this.globalLogId = Math.round(Math.random() * 100000000);
+        this.globalMessageId = Math.round(Math.random() * 100_000_000);
+        this.globalLogId = Math.round(Math.random() * 100_000_000);
         this.namespace = this.settings.namespace || this.settings.hostname || '';
 
         this.supportedProtocolVersions = ['4'];

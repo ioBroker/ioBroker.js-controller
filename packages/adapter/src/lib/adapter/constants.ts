@@ -29,7 +29,8 @@ export const SUPPORTED_FEATURES = [
     'DEL_INSTANCE_CUSTOM', // instances/adapter can be deleted with --custom flag to remove corresponding custom of all objects. Since js-controller 4.0
     'BINARY_STATE_EVENT', // stateChange event could be received for binary states too. Deprecated in js-controller 5.0
     'CUSTOM_FULL_VIEW', // `getObjectView('system', 'custom-full', ...)` will return full objects and not only `common.custom` part. Since `js-controller` 5.0
-    'ADAPTER_GET_OBJECTS_BY_ARRAY' // getForeignObjects supports array of ids too. Since js-controller 5.0
+    'ADAPTER_GET_OBJECTS_BY_ARRAY', // getForeignObjects supports array of ids too. Since js-controller 5.0
+    'CONTROLLER_UI_UPGRADE' // Controller can be updated via sendToHost('upgradeController', ...)
 ];
 
 /** Maximum possible value for 32-bit signed integer */

@@ -63,7 +63,7 @@ export function splitAdapterOrInstanceIdentifierWithVersion(
         name: res[1],
         instance: res[2] || null,
         version: res[3] || null,
-        nameWithVersion: `${res[1]}${res[3] ? '@' + res[3] : ''}`
+        nameWithVersion: `${res[1]}${res[3] ? `@${res[3]}` : ''}`
     };
 }
 
