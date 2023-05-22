@@ -143,6 +143,10 @@
                   "minimum": 1000
                 }
               ]
+            },
+            "getHistory": {
+              "description": "If adapter supports getHistory message. (Same as legacy `getHistory`, to avoid problems, set both flags in parallel for now)",
+              "type": "boolean"
             }
           }
         },
@@ -948,7 +952,7 @@
           "type": "string"
         },
         "getHistory": {
-          "description": "if adapter supports getHistory message",
+          "description": "if adapter supports getHistory message. (Up from controller v5, please use `common.supportedMessages.getHistory`)",
           "type": "boolean"
         },
         "globalDependencies": {
