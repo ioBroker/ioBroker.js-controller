@@ -13,12 +13,13 @@ The ioBroker.js-controller is the heart of any ioBroker installation. The contro
 **Please check the js-controller compatibility information below which version runs on your Node.js version**
 
 ## Compatibility
-* js-controller 4.x works with Node.js 12.x, 14.x and 16.x (incl. up to NPM 8)
+* js-controller 5.x works with Node.js 16.x, 18.x and probably 20.x
+* js-controller 4.x works with Node.js 12.x, 14.x, 16.x (incl. up to NPM 8) and probably 18.x
 * js-controller 3.x works with Node.js 10.x, 12.x, 14.x and probably 16.x (first tests look good, NPM 7 still has some issues, so NPM6 is best)
 * js-controller 2.x works with Node.js 8.x, 10.x , 12.x and probably 14.x (untested)
 * js-controller 1.x works with Node.js 4.x, 6.x, 8.x and probably 10.x (untested)
 
-Please try to stay current with your Node.js version because the support is limited in Time. As of now (April 2021) all Node.js versions below 12.x are no longer supported by Node.js and considered EOL (End Of Life).
+Please try to stay current with your Node.js version because the support is limited in time. As of now (April 2023) all Node.js versions below 16.x are no longer supported by Node.js and considered EOL (End Of Life).
 To upgrade your Node.js version and ioBroker please follow https://forum.iobroker.net/topic/44566/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten-2021-edition !
 
 ## Links
@@ -77,6 +78,24 @@ If port 8081 is occupied, you can install a second Admin UI on an alternate port
 **Feature status:** stable
 
 The command line interface is described at https://www.iobroker.net/#de/documentation/config/cli.md
+
+### Controller UI Upgrade
+**Feature status:** New in 5.0.0
+
+**Feature Flag for detection:** `CONTROLLER_UI_UPGRADE`
+
+The controller can be updated via `sendToHost`. This feature is used by Admin UI to allow upgrades without usage of CLI.
+The controller will start a detached process, and host a web server on the same port as the provided Admin instance.
+
+Example:
+
+```typescript
+sendToHostAsync('system.host.test', 'upgradeController', { version: '5.0.5', adminInstance: 0 });
+```
+
+In this example, the controller will be upgraded to version `5.0.5` and the web server will 
+take the configuration (http/s, port, certificates) of `system.adapter.admin.0`.
+During the update, you can perform a `GET` request against the webserver to get the current status of the upgrade.
 
 ### Hostname
 **Feature status:** stable
@@ -574,7 +593,7 @@ if you need to ensure this for non-standard adapter processes (e.g. own started 
 ### Object and State Aliases
 **Feature status:** stable (since 2.0.0)
 
-**Feature Flag for detection: ALIAS, ALIAS_SEPARATE_READ_WRITE_ID**
+**Feature Flag for detection:** `ALIAS, ALIAS_SEPARATE_READ_WRITE_ID`
 
 The Alias Feature allows defining one object/state to be the "alias" of another object/state.
 
@@ -614,7 +633,7 @@ To create an alias object simple create a new object with a own name in the `ali
 }
 ```
 
-or using different read and write ids (supported starting js-controller 3.0, check using feature flag ALIAS_SEPARATE_READ_WRITE_ID):
+or using different read and write ids (supported starting js-controller 3.0, check using feature flag `ALIAS_SEPARATE_READ_WRITE_ID`):
 
 ```
 {
@@ -815,12 +834,6 @@ With such a setup, ioBroker will connect to one of these sentinel processes to g
 ... Files vs PEM content
 ... TODO
 
-#### Let's Encrypt support
-
-... see web
-... letsencrypt.js
-... TODO
-
 ### js-controller Host Messages
 
 ... TODO
@@ -908,7 +921,7 @@ The values are not decrypted when the object itself is read!
 
 With this change and the Admin support for this soon the adapter developer do not need to struggle around with encryption or decryption of adapter values and can simply configure this.
 
-To preserve backward compatibility you can check for the feature flag ADAPTER_AUTO_DECRYPT_NATIVE or add a global Admin dependency to the respective Admin (>=4.0.10) version. 
+To preserve backward compatibility you can check for the feature flag `ADAPTER_AUTO_DECRYPT_NATIVE` or add a global Admin dependency to the respective Admin (>=4.0.10) version. 
 
 #### Protect free reading of adapter configuration fields
 **Feature status:** Stable, since js-controller 2.0

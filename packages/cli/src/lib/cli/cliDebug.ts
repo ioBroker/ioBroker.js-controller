@@ -1,34 +1,28 @@
-'use strict';
-const CLI = require('./messages.js');
-const { CLICommand } = require('./cliCommand.js');
-const CLITools = require('./cliTools');
-const { tools, EXIT_CODES } = require('@iobroker/js-controller-common');
-const child_process = require('child_process');
+import * as CLI from './messages.js';
+import { CLICommand, CLICommandOptions } from './cliCommand.js';
+import * as CLITools from './cliTools';
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
+import { fork } from 'child_process';
 
 /** Command ioBroker debug ... */
-module.exports = class CLICompact extends CLICommand {
-    /** @param {import('./cliCommand.js').CLICommandOptions} options */
-    constructor(options) {
+export class CLIDebug extends CLICommand {
+    constructor(options: CLICommandOptions) {
         super(options);
     }
 
     /**
-     * Cehcks if the adpter instance is running
+     * Checks if the adapter instance is running
      *
-     * @param {string} adapter
-     * @param {string} instance
-     * @return {Promise<boolean>}
-     * @private
+     * @param adapter adapter name
+     * @param instance instance id
      */
-    _isInstanceRunning(adapter, instance) {
+    private _isInstanceRunning(adapter: string, instance: string): Promise<boolean> {
         const { dbConnect } = this.options;
         return new Promise(resolve => {
-            dbConnect(async params => {
-                const { states } = params;
-
+            dbConnect(async ({ states }) => {
                 try {
                     const state = await states.getStateAsync(`system.adapter.${adapter}.${instance}.alive`);
-                    if (state && state.val) {
+                    if (state?.val) {
                         resolve(true);
                         return;
                     }
@@ -42,9 +36,9 @@ module.exports = class CLICompact extends CLICommand {
 
     /**
      * Executes a command
-     * @param {any[]} args
+     * @param args
      */
-    async execute(args) {
+    async execute(args: any[]): Promise<void> {
         const { callback, ...params } = this.options;
         const adapter = args[0];
         if (!adapter) {
@@ -52,7 +46,7 @@ module.exports = class CLICompact extends CLICommand {
             return void callback(34);
         }
 
-        const { name, instance } = CLITools.splitAdapterOrInstanceIdentifierWithVersion(adapter);
+        const { name, instance } = CLITools.splitAdapterOrInstanceIdentifierWithVersion(adapter)!;
 
         if (await this._isInstanceRunning(name, instance || '0')) {
             CLI.error.instanceAlreadyRunning(`${name}.${instance || '0'}`);
@@ -84,10 +78,10 @@ module.exports = class CLICompact extends CLICommand {
             }${params.port || ''}`
         ];
         // And wait until the sub process has finished
-        const cp = child_process.fork(mainFile, adapterArgs, {
+        const cp = fork(mainFile, adapterArgs, {
             cwd: adapterDir,
             execArgv: nodeArgs
         });
         cp.on('exit', code => callback(code || 0));
     }
-};
+}

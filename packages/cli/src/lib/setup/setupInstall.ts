@@ -337,7 +337,7 @@ export class Install {
             options.unsafePerm = true;
         }
 
-        console.log(` Installing ${npmUrl}... (System call)`);
+        console.log(`Installing ${npmUrl}... (System call)`);
 
         const result = await tools.installNodeModule(npmUrl, {
             debug: !!debug,

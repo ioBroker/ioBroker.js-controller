@@ -159,7 +159,7 @@
         "@typescript-eslint/no-unsafe-call": "off",
         "@typescript-eslint/no-implied-eval": "off",
         "@typescript-eslint/explicit-module-boundary-types": [
-          "warn",
+          "error",
           {
             "allowArgumentsExplicitlyTypedAsAny": true
           }
