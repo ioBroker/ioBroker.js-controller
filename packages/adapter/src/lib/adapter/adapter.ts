@@ -590,7 +590,7 @@ export class AdapterClass extends EventEmitter {
     private overwriteLogLevel: boolean = false;
     adapterReady: boolean = false;
     /** Callbacks from sendTo */
-    private readonly callbacks = new Map<number, MessageCallbackObject>();
+    private readonly messageCallbacks = new Map<number, MessageCallbackObject>();
     /**
      * Contains a live cache of the adapter's states.
      * NOTE: This is only defined if the adapter was initialized with the option states: true.
@@ -2122,9 +2122,9 @@ export class AdapterClass extends EventEmitter {
                     this._delays.clear();
                 }
 
-                if (this.callbacks.size) {
-                    this.callbacks.forEach(callbackObj => clearTimeout(callbackObj.timer));
-                    this.callbacks.clear();
+                if (this.messageCallbacks.size) {
+                    this.messageCallbacks.forEach(callbackObj => clearTimeout(callbackObj.timer));
+                    this.messageCallbacks.clear();
                 }
 
                 if (adapterStates && updateAliveState) {
@@ -7119,22 +7119,22 @@ export class AdapterClass extends EventEmitter {
 
                     if (options?.timeout) {
                         timer = setTimeout(() => {
-                            const callbackObj = this.callbacks.get(callbackId);
+                            const callbackObj = this.messageCallbacks.get(callbackId);
 
                             if (callbackObj) {
                                 callbackObj.cb(new Error('Timeout exceeded'));
-                                this.callbacks.delete(callbackId);
+                                this.messageCallbacks.delete(callbackId);
                             }
                         }, options.timeout);
                     }
 
-                    this.callbacks.set(callbackId, { cb: callback, time: Date.now(), timer });
+                    this.messageCallbacks.set(callbackId, { cb: callback, time: Date.now(), timer });
 
                     // delete too old callbacks IDs
                     const now = Date.now();
-                    for (const [_id, cb] of this.callbacks) {
+                    for (const [_id, cb] of this.messageCallbacks) {
                         if (now - cb.time > 3_600_000) {
-                            this.callbacks.delete(_id);
+                            this.messageCallbacks.delete(_id);
                         }
                     }
                 } else {
@@ -7277,7 +7277,7 @@ export class AdapterClass extends EventEmitter {
                         this._callbackId = 1;
                     }
 
-                    this.callbacks.set(obj.callback.id, { cb: callback, time: Date.now() });
+                    this.messageCallbacks.set(obj.callback.id, { cb: callback, time: Date.now() });
                 } else {
                     obj.callback = callback;
                     obj.callback.ack = true;
@@ -10938,7 +10938,7 @@ export class AdapterClass extends EventEmitter {
                         let callbackObj: MessageCallbackObject | undefined;
 
                         if (obj.callback?.id) {
-                            callbackObj = this.callbacks.get(obj.callback.id);
+                            callbackObj = this.messageCallbacks.get(obj.callback.id);
                         }
 
                         // If callback stored for this request
@@ -10951,13 +10951,13 @@ export class AdapterClass extends EventEmitter {
                                     clearTimeout(callbackObj.timer);
                                 }
 
-                                this.callbacks.delete(obj.callback.id);
+                                this.messageCallbacks.delete(obj.callback.id);
                             }
                             // delete too old callbacks IDs, like garbage collector
                             const now = Date.now();
-                            for (const [_id, callback] of this.callbacks) {
+                            for (const [_id, callback] of this.messageCallbacks) {
                                 if (now - callback.time > 3_600_000) {
-                                    this.callbacks.delete(_id);
+                                    this.messageCallbacks.delete(_id);
                                 }
                             }
                         } else if (!this._stopInProgress) {
