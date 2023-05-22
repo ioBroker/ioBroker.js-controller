@@ -88,7 +88,6 @@
         "start": "node iobroker.js start",
         "stop": "node iobroker.js stop",
         "restart": "node iobroker.js restart",
-        "prepublishOnly": "node build/lib/scripts/scripts.js --prepublish",
         "release": "release-script",
         "test": "mocha test --exit",
         "test-jsonl": "mocha test/jsonl/ --exit",
