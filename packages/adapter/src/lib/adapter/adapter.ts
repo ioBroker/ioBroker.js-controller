@@ -101,7 +101,9 @@ import type {
     MaybePromise,
     SetStateChangedResult,
     CheckStatesResult,
-    Pattern
+    Pattern,
+    MessageCallbackObject,
+    SendToOptions
 } from '../_Types';
 
 tools.ensureDNSOrder();
@@ -385,7 +387,8 @@ export interface AdapterClass {
     sendToAsync(
         instanceName: string,
         command: string,
-        message: ioBroker.MessagePayload
+        message: ioBroker.MessagePayload,
+        options?: SendToOptions
     ): Promise<ioBroker.Message | undefined>;
 
     /**
@@ -586,8 +589,8 @@ export class AdapterClass extends EventEmitter {
     private eventLoopLags: number[] = [];
     private overwriteLogLevel: boolean = false;
     adapterReady: boolean = false;
-    private callbacks?: Record<string, { cb: ioBroker.MessageCallback; time?: number }>;
-
+    /** Callbacks from sendTo */
+    private readonly messageCallbacks = new Map<number, MessageCallbackObject>();
     /**
      * Contains a live cache of the adapter's states.
      * NOTE: This is only defined if the adapter was initialized with the option states: true.
@@ -1065,11 +1068,6 @@ export class AdapterClass extends EventEmitter {
          * Promise-version of `Adapter.fileExists`
          */
         this.fileExistsAsync = tools.promisify(this.fileExists, this);
-
-        /**
-         * Promise-version of `Adapter.sendTo`
-         */
-        this.sendToAsync = tools.promisifyNoError(this.sendTo, this);
 
         /**
          * Promise-version of `Adapter.sendToHost`
@@ -2122,6 +2120,11 @@ export class AdapterClass extends EventEmitter {
                 if (this._delays.size) {
                     this._delays.forEach(timer => clearTimeout(timer));
                     this._delays.clear();
+                }
+
+                if (this.messageCallbacks.size) {
+                    this.messageCallbacks.forEach(callbackObj => clearTimeout(callbackObj.timer));
+                    this.messageCallbacks.clear();
                 }
 
                 if (adapterStates && updateAliveState) {
@@ -6950,7 +6953,8 @@ export class AdapterClass extends EventEmitter {
         instanceName: string,
         command: string,
         message: any,
-        callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo
+        callback?: ioBroker.MessageCallback | ioBroker.MessageCallbackInfo,
+        options?: SendToOptions
     ): void;
 
     /**
@@ -6962,6 +6966,7 @@ export class AdapterClass extends EventEmitter {
      * @param instanceName name of the instance where the message must be sent to. E.g. "pushover.0" or "system.adapter.pushover.0".
      * @param command command name, like "send", "browse", "list". Command is depend on target adapter implementation.
      * @param message object that will be given as argument for request
+     * @param options optional options to define a timeout. This allows to get an error callback if no answer received in time (only if target is specific instance)
      * @param callback optional return result
      *        ```js
      *            function (result) {
@@ -6970,7 +6975,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    sendTo(instanceName: unknown, command: unknown, message: unknown, callback?: unknown): any {
+    sendTo(instanceName: unknown, command: unknown, message: unknown, callback?: unknown, options?: unknown): any {
         if (typeof message === 'function' && typeof callback === 'undefined') {
             callback = message;
             message = undefined;
@@ -6987,16 +6992,46 @@ export class AdapterClass extends EventEmitter {
             Validator.assertOptionalCallback(callback, 'callback');
         }
 
+        if (options !== undefined) {
+            Validator.assertObject(options, 'options');
+        }
+
         return this._sendTo({
             instanceName,
             command,
             message,
+            options,
             callback: callback as ioBroker.MessageCallbackInfo | ioBroker.MessageCallback
         });
     }
 
+    /**
+     * Async version of sendTo
+     * As we have a special case (first arg can be error or result, we need to promisify manually)
+     */
+    sendToAsync(instanceName: unknown, command: unknown, message?: unknown, options?: unknown): any {
+        return new Promise((resolve, reject) => {
+            const callback: ioBroker.MessageCallback = resOrError => {
+                if (resOrError instanceof Error) {
+                    reject(resOrError);
+                }
+
+                resolve(resOrError);
+            };
+
+            // validation takes place inside sendTo so skip here
+            this.sendTo(
+                instanceName as string,
+                command as string,
+                message as string,
+                callback,
+                options as SendToOptions
+            );
+        });
+    }
+
     private async _sendTo(_options: InternalSendToOptions): Promise<void> {
-        const { command, message, callback } = _options;
+        const { command, message, callback, options } = _options;
         let { instanceName } = _options;
 
         const obj: ioBroker.SendableMessage = {
@@ -7039,27 +7074,26 @@ export class AdapterClass extends EventEmitter {
                 return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
             }
 
-            // Send to all instances of adapter
-            adapterObjects.getObjectView(
-                'system',
-                'instance',
-                {
+            try {
+                // Send to all instances of adapter
+                const res = await adapterObjects.getObjectView('system', 'instance', {
                     startkey: `${instanceName}.`,
                     endkey: `${instanceName}.\u9999`
-                },
-                async (err, _obj) => {
-                    if (_obj && _obj.rows) {
-                        for (const row of _obj.rows) {
-                            try {
-                                await adapterStates!.pushMessage(row.id, obj);
-                            } catch (e) {
-                                // @ts-expect-error TODO it could also be the cb object
-                                return tools.maybeCallbackWithError(callback, e);
-                            }
+                });
+
+                if (res?.rows) {
+                    for (const row of res.rows) {
+                        try {
+                            await adapterStates!.pushMessage(row.id, obj);
+                        } catch (e) {
+                            // @ts-expect-error TODO it could also be the cb object
+                            return tools.maybeCallbackWithError(callback, e);
                         }
                     }
                 }
-            );
+            } catch {
+                //ignore
+            }
         } else {
             if (callback) {
                 if (typeof callback === 'function') {
@@ -7078,16 +7112,29 @@ export class AdapterClass extends EventEmitter {
                     if (this._callbackId >= 0xffffffff) {
                         this._callbackId = 1;
                     }
-                    if (!this.callbacks) {
-                        this.callbacks = {};
+
+                    const callbackId = obj.callback.id;
+
+                    let timer: undefined | NodeJS.Timeout;
+
+                    if (options?.timeout) {
+                        timer = setTimeout(() => {
+                            const callbackObj = this.messageCallbacks.get(callbackId);
+
+                            if (callbackObj) {
+                                callbackObj.cb(new Error('Timeout exceeded'));
+                                this.messageCallbacks.delete(callbackId);
+                            }
+                        }, options.timeout);
                     }
-                    this.callbacks[`_${obj.callback.id}`] = { cb: callback };
+
+                    this.messageCallbacks.set(callbackId, { cb: callback, time: Date.now(), timer });
 
                     // delete too old callbacks IDs
                     const now = Date.now();
-                    for (const [_id, cb] of Object.entries(this.callbacks)) {
-                        if (now - cb.time! > 3_600_000) {
-                            delete this.callbacks[_id];
+                    for (const [_id, cb] of this.messageCallbacks) {
+                        if (now - cb.time > 3_600_000) {
+                            this.messageCallbacks.delete(_id);
                         }
                     }
                 } else {
@@ -7229,8 +7276,8 @@ export class AdapterClass extends EventEmitter {
                     if (this._callbackId >= 0xffffffff) {
                         this._callbackId = 1;
                     }
-                    this.callbacks = this.callbacks || {};
-                    this.callbacks[`_${obj.callback.id}`] = { cb: callback };
+
+                    this.messageCallbacks.set(obj.callback.id, { cb: callback, time: Date.now() });
                 } else {
                     obj.callback = callback;
                     obj.callback.ack = true;
@@ -10888,25 +10935,29 @@ export class AdapterClass extends EventEmitter {
                     const obj = state as unknown as ioBroker.Message;
 
                     if (obj) {
+                        let callbackObj: MessageCallbackObject | undefined;
+
+                        if (obj.callback?.id) {
+                            callbackObj = this.messageCallbacks.get(obj.callback.id);
+                        }
+
                         // If callback stored for this request
-                        if (
-                            obj.callback &&
-                            obj.callback.ack &&
-                            obj.callback.id &&
-                            this.callbacks &&
-                            this.callbacks[`_${obj.callback.id}`]
-                        ) {
+                        if (obj.callback && obj.callback.ack && obj.callback.id && callbackObj) {
                             // Call callback function
-                            if (typeof this.callbacks[`_${obj.callback.id}`].cb === 'function') {
-                                this.callbacks[`_${obj.callback.id}`].cb(obj.message);
-                                delete this.callbacks[`_${obj.callback.id}`];
+                            if (typeof callbackObj.cb === 'function') {
+                                callbackObj.cb(obj.message);
+
+                                if (callbackObj.timer) {
+                                    clearTimeout(callbackObj.timer);
+                                }
+
+                                this.messageCallbacks.delete(obj.callback.id);
                             }
                             // delete too old callbacks IDs, like garbage collector
                             const now = Date.now();
-                            for (const _id of Object.keys(this.callbacks)) {
-                                // @ts-expect-error
-                                if (now - this.callbacks[_id].time > 3600000) {
-                                    delete this.callbacks[_id];
+                            for (const [_id, callback] of this.messageCallbacks) {
+                                if (now - callback.time > 3_600_000) {
+                                    this.messageCallbacks.delete(_id);
                                 }
                             }
                         } else if (!this._stopInProgress) {
