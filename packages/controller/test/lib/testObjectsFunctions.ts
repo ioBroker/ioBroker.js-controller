@@ -319,7 +319,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     enabled: true,
                     version: '1.0.0',
                     host: 'system.host.test',
-                    mode: 'daemon'
+                    mode: 'daemon',
+                    materialize: true,
+                    platform: 'Javascript/Node.js',
+                    installedVersion: '1.0.0'
                 },
                 native: {
                     model: 'S P85D',
@@ -359,7 +362,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     enabled: true,
                     version: '1.0.0',
                     host: 'system.host.test',
-                    mode: 'daemon'
+                    mode: 'daemon',
+                    platform: 'Javascript/Node.js',
+                    materialize: true,
+                    installedVersion: '1.0.0'
                 },
                 native: {
                     model: 'S P85D',
@@ -1098,7 +1104,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         enabled: true,
                         version: '1.0.0',
                         host: 'system.host.test',
-                        mode: 'daemon'
+                        mode: 'daemon',
+                        platform: 'Javascript/Node.js',
+                        materialize: true,
+                        installedVersion: '1.0.0'
                     },
                     native: {
                         model: 'S P85D',
@@ -1140,7 +1149,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         enabled: true,
                         version: '1.0.0',
                         host: 'system.host.test',
-                        mode: 'daemon'
+                        mode: 'daemon',
+                        platform: 'Javascript/Node.js',
+                        materialize: true,
+                        installedVersion: '1.0.0'
                     },
                     native: {
                         model: 'S P85D',

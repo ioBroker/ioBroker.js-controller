@@ -10,6 +10,7 @@ import { PluginHandler } from '@iobroker/plugin-base';
 import semver from 'semver';
 import path from 'path';
 import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
+import { isMessageboxSupported } from './utils';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
@@ -664,7 +665,7 @@ export class AdapterClass extends EventEmitter {
     private _aliasObjectsSubscribed?: boolean;
     config?: Record<string, any>;
     host?: string;
-    common?: Record<string, any>;
+    common?: ioBroker.InstanceCommon;
     private mboxSubscribed?: boolean;
     /** Stop the adapter */
     stop?: () => Promise<void>;
@@ -2193,7 +2194,7 @@ export class AdapterClass extends EventEmitter {
                     }
                     this.terminate(exitCode);
                 }
-            }, (this.common && this.common.stopTimeout) || 500);
+            }, this.common?.stopTimeout || 500);
         }
     }
 
@@ -7098,7 +7099,7 @@ export class AdapterClass extends EventEmitter {
             if (callback) {
                 if (typeof callback === 'function') {
                     // force subscribe even no messagebox enabled
-                    if (!this.common!.messagebox && !this.mboxSubscribed) {
+                    if (!isMessageboxSupported(this.common!) && !this.mboxSubscribed) {
                         this.mboxSubscribed = true;
                         adapterStates.subscribeMessage(`system.adapter.${this.namespace}`);
                     }
@@ -7262,7 +7263,7 @@ export class AdapterClass extends EventEmitter {
             if (callback) {
                 if (typeof callback === 'function') {
                     // force subscribe even no messagebox enabled
-                    if (!this.common!.messagebox && !this.mboxSubscribed) {
+                    if (!isMessageboxSupported(this.common!) && !this.mboxSubscribed) {
                         this.mboxSubscribed = true;
                         adapterStates.subscribeMessage(`system.adapter.${this.namespace}`);
                     }
@@ -11466,7 +11467,7 @@ export class AdapterClass extends EventEmitter {
                                     done = true;
                                     this.terminate(EXIT_CODES.NO_ADAPTER_CONFIG_FOUND);
                                 }
-                            }, 1000);
+                            }, 1_000);
                             return;
                         }
                     }
@@ -11551,13 +11552,16 @@ export class AdapterClass extends EventEmitter {
                     // Monitor logging state
                     adapterStates.subscribe('*.logging');
 
-                    // @ts-expect-error
-                    if (typeof this._options.message === 'function' && !adapterConfig.common.messagebox) {
+                    if (
+                        typeof this._options.message === 'function' &&
+                        // @ts-expect-error, we should infer correctly that this is an InstanceObject in this case
+                        !isMessageboxSupported(adapterConfig.common)
+                    ) {
                         this._logger.error(
                             `${this.namespaceLog} : message handler implemented, but messagebox not enabled. Define common.messagebox in io-package.json for adapter or delete message handler.`
                         );
-                        // @ts-expect-error
-                    } else if (adapterConfig.common.messagebox) {
+                        // @ts-expect-error we should infer adapterConfig correctly
+                    } else if (isMessageboxSupported(adapterConfig.common)) {
                         this.mboxSubscribed = true;
                         adapterStates.subscribeMessage(`system.adapter.${this.namespace}`);
                     }
