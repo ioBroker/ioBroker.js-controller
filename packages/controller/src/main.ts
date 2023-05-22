@@ -13,7 +13,7 @@ import schedule from 'node-schedule';
 import os from 'os';
 import fs from 'fs-extra';
 import path from 'path';
-import cp from 'child_process';
+import cp, { spawn, exec } from 'child_process';
 import semver from 'semver';
 import restart from './lib/restart';
 import { tools as dbTools } from '@iobroker/js-controller-common-db';
@@ -112,9 +112,6 @@ let pluginHandler: InstanceType<typeof PluginHandler>;
 let notificationHandler: NotificationHandler;
 /** array of instances which have requested repo update */
 let requestedRepoUpdates: RepoRequester[] = [];
-
-const exec = cp.exec;
-const spawn = cp.spawn;
 
 let upload: InstanceType<typeof Upload>; // will be used only once by upload of adapter
 
@@ -262,7 +259,7 @@ async function startMultihost(__config?: Record<string, any>): Promise<boolean |
     }
 
     const _config = __config || getConfig();
-    if (_config.multihostService && _config.multihostService.enabled) {
+    if (_config.multihostService?.enabled) {
         if (mhService) {
             try {
                 mhService.close(() => {
@@ -300,7 +297,7 @@ async function startMultihost(__config?: Record<string, any>): Promise<boolean |
                     errText = e.message;
                 }
 
-                if (obj && obj.native && obj.native.secret) {
+                if (obj?.native?.secret) {
                     if (!_config.multihostService.password.startsWith(`$/aes-192-cbc:`)) {
                         // if old encryption was used, we need to decrypt in old fashion
                         tools.decryptPhrase(obj.native.secret, _config.multihostService.password, secret =>
@@ -517,7 +514,7 @@ function createStates(onConnect: () => void): void {
                     for (const transport in logger.transports) {
                         if (
                             logger.transports[transport].level === currentLevel &&
-                            // @ts-expect-error its our custom property
+                            // @ts-expect-error it's our custom property
                             !logger.transports[transport]._defaultConfigLoglevel
                         ) {
                             logger.transports[transport].level = state.val as string;
@@ -1371,8 +1368,10 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
             err = e;
         }
 
-        if (err || !systemConfig || !systemConfig.common) {
-            logger.warn(`System config object is corrupt, please run "iobroker setup first". Error: ${err.message}`);
+        if (err || !systemConfig?.common) {
+            logger.warn(
+                `System config object is corrupt, please run "${tools.appNameLowerCase} setup first". Error: ${err.message}`
+            );
             systemConfig = systemConfig || { common: {} };
             systemConfig.common = systemConfig.common || {};
         }
@@ -1438,7 +1437,7 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
             delete diag.country;
         }
 
-        if (!err && doc && doc.rows.length) {
+        if (!err && doc?.rows.length) {
             doc.rows.sort((a, b) => {
                 try {
                     return semver.lt(
@@ -2400,7 +2399,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
     logger.debug(`${hostLogPrefix} Incoming Host message ${msg.command}`);
     switch (msg.command) {
         case 'shell':
-            if (config.system && config.system.allowShellCommands) {
+            if (config.system?.allowShellCommands) {
                 logger.info(`${hostLogPrefix} ${tools.appName} execute shell command: ${msg.message}`);
                 exec(msg.message, { windowsHide: true }, (err, stdout, stderr) => {
                     if (err) {
@@ -2437,7 +2436,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 logger.info(`${hostLogPrefix} ${tools.appName.toLowerCase()} ${extraArgs.join(' ')}`);
 
                 try {
-                    const child = spawn('node', args, { windowsHide: true });
+                    const child = spawn(process.execPath, args, { windowsHide: true });
                     if (child.stdout) {
                         child.stdout.on('data', data => {
                             data = data.toString().replace(/\n/g, '');
@@ -3131,6 +3130,40 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
         }
 
+        case 'upgradeController': {
+            if (['win32', 'darwin'].includes(os.platform())) {
+                if (msg.callback) {
+                    sendTo(msg.from, msg.command, { result: false }, msg.callback);
+                }
+                break;
+            }
+
+            logger.info(`${hostLogPrefix} Controller will upgrade itself to version ${msg.message.version}`);
+            const upgradeProcessPath = require.resolve('./lib/upgradeManager');
+            const upgradeProcess = spawn(
+                'sudo',
+                [
+                    'systemd-run',
+                    '--no-ask-password',
+                    process.execPath,
+                    upgradeProcessPath,
+                    msg.message.version,
+                    msg.message.adminInstance
+                ],
+                {
+                    detached: true,
+                    stdio: 'ignore'
+                }
+            );
+
+            upgradeProcess.unref();
+
+            if (msg.callback) {
+                sendTo(msg.from, msg.command, { result: true }, msg.callback);
+            }
+            break;
+        }
+
         case 'getInterfaces':
             if (msg.callback && msg.from) {
                 sendTo(msg.from, msg.command, { result: os.networkInterfaces() }, msg.callback);
@@ -3806,7 +3839,7 @@ function installAdapters(): void {
 
         try {
             task.inProgress = true;
-            const child = spawn('node', installArgs, installOptions);
+            const child = spawn(process.execPath, installArgs, installOptions);
             if (child.stdout) {
                 child.stdout.on('data', data => {
                     data = data.toString().replace(/\n/g, '');
