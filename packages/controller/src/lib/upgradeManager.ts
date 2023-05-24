@@ -49,10 +49,11 @@ interface ServerResponse {
     success?: boolean;
 }
 
-/** Wait ms until controller is stopped */
-const STOP_TIMEOUT_MS = 3_000;
-
 class UpgradeManager {
+    /** Wait ms until controller is stopped */
+    private readonly STOP_TIMEOUT_MS = 3_000;
+    /** Wait ms for delivery of final response */
+    private readonly SHUTDOWN_TIMEOUT = 10_000;
     /** Instance of admin to get information from */
     private readonly adminInstance: number;
     /** Desired controller version */
@@ -63,6 +64,11 @@ class UpgradeManager {
         stderr: [],
         stdout: []
     };
+    /** Used to stop the stop shutdown timeout */
+    private shutdownAbortController: undefined | AbortController;
+
+    /** The server used for communicating upgrade status */
+    private server?: https.Server | http.Server;
 
     constructor(args: UpgradeArguments) {
         this.adminInstance = args.adminInstance;
@@ -94,11 +100,28 @@ class UpgradeManager {
     }
 
     /**
+     * Log via console and provide the logs for the server too
+     *
+     * @param message the message which will be logged
+     * @param error if it is an error
+     */
+    log(message: string, error = false): void {
+        if (error) {
+            console.error(message);
+            this.response.stderr.push(message);
+            return;
+        }
+
+        console.info(message);
+        this.response.stdout.push(message);
+    }
+
+    /**
      * Stops the js-controller via cli call
      */
     async stopController(): Promise<void> {
         await execAsync(`${tools.appNameLowerCase} stop`);
-        await wait(STOP_TIMEOUT_MS);
+        await wait(this.STOP_TIMEOUT_MS);
     }
 
     /**
@@ -148,25 +171,38 @@ class UpgradeManager {
     }
 
     /**
+     * Shuts down the server, restarts the controller and exists the program
+     */
+    shutdownApp(): void {
+        if (this.shutdownAbortController) {
+            this.shutdownAbortController.abort();
+        }
+
+        if (!this.server) {
+            process.exit();
+        }
+
+        this.server.close(async () => {
+            await this.startController();
+            this.log('Successfully started js-controller');
+
+            process.exit();
+        });
+    }
+
+    /**
      * This function is called when the webserver receives a message
      *
      * @param req received message
      * @param res server response
-     * @param server https or https server instance
      */
-    webServerCallback(req: http.IncomingMessage, res: http.ServerResponse, server: http.Server | https.Server): void {
+    webServerCallback(req: http.IncomingMessage, res: http.ServerResponse): void {
         res.writeHead(200);
         res.end(JSON.stringify(this.response));
 
         if (!this.response.running) {
-            console.log('Final information delivered');
-
-            server.close(async () => {
-                await this.startController();
-                console.log('Successfully started js-controller');
-
-                process.exit();
-            });
+            this.log('Final information delivered');
+            this.shutdownApp();
         }
     }
 
@@ -178,12 +214,12 @@ class UpgradeManager {
     startInsecureWebServer(params: InsecureWebServerParameters): void {
         const { port } = params;
 
-        const server = http.createServer((req, res) => {
-            this.webServerCallback(req, res, server);
+        this.server = http.createServer((req, res) => {
+            this.webServerCallback(req, res);
         });
 
-        server.listen(port, () => {
-            console.log(`Server is running on http://localhost:${port}`);
+        this.server.listen(port, () => {
+            this.log(`Server is running on http://localhost:${port}`);
         });
     }
 
@@ -195,12 +231,12 @@ class UpgradeManager {
     startSecureWebServer(params: SecureWebServerParameters): void {
         const { port, certPublic, certPrivate } = params;
 
-        const server = https.createServer({ key: certPrivate, cert: certPublic }, (req, res) => {
-            this.webServerCallback(req, res, server);
+        this.server = https.createServer({ key: certPrivate, cert: certPublic }, (req, res) => {
+            this.webServerCallback(req, res);
         });
 
-        server.listen(port, () => {
-            console.log(`Server is running on http://localhost:${port}`);
+        this.server.listen(port, () => {
+            this.log(`Server is running on http://localhost:${port}`);
         });
     }
 
@@ -259,10 +295,18 @@ class UpgradeManager {
     }
 
     /**
-     * Tells the upgrade manager, that server can be shut down on next response
+     * Tells the upgrade manager, that server can be shut down on next response or on timeout
      */
-    setFinished(): void {
+    async setFinished(): Promise<void> {
         this.response.running = false;
+
+        await this.startShutdownTimeout();
+    }
+
+    async startShutdownTimeout(): Promise<void> {
+        this.shutdownAbortController = new AbortController();
+        await wait(this.SHUTDOWN_TIMEOUT, null, { signal: this.shutdownAbortController.signal });
+        this.shutdownApp();
     }
 }
 
@@ -275,19 +319,19 @@ async function main(): Promise<void> {
 
     const webServerParameters = await upgradeManager.collectWebServerParameters();
 
-    console.log('Stopping controller');
+    upgradeManager.log('Stopping controller');
     await upgradeManager.stopController();
-    console.log('Successfully stopped js-controller');
+    upgradeManager.log('Successfully stopped js-controller');
 
     upgradeManager.startWebServer(webServerParameters);
 
     try {
         await upgradeManager.npmInstall();
     } catch (e) {
-        console.error(e.message);
+        upgradeManager.log(e.message, true);
     }
 
-    upgradeManager.setFinished();
+    await upgradeManager.setFinished();
 }
 
 /**
