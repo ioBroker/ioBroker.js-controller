@@ -303,9 +303,14 @@ class UpgradeManager {
         await this.startShutdownTimeout();
     }
 
+    /**
+     * Start a timeout which starts controller and shuts down the app if expired
+     */
     async startShutdownTimeout(): Promise<void> {
         this.shutdownAbortController = new AbortController();
         await wait(this.SHUTDOWN_TIMEOUT, null, { signal: this.shutdownAbortController.signal });
+
+        this.log('Timeout expired, initializing shutdown');
         this.shutdownApp();
     }
 }
