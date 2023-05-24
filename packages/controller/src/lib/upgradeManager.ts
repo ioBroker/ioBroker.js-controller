@@ -65,7 +65,7 @@ class UpgradeManager {
         stdout: []
     };
     /** Used to stop the stop shutdown timeout */
-    private shutdownAbortController: undefined | AbortController;
+    private shutdownAbortController?: AbortController;
 
     /** The server used for communicating upgrade status */
     private server?: https.Server | http.Server;
