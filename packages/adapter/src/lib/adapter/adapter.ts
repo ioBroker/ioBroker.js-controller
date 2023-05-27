@@ -2369,7 +2369,18 @@ export class AdapterClass extends EventEmitter {
 
     private async _updateConfig(options: InternalUpdateConfigOptions): ioBroker.SetObjectPromise {
         // merge the old and new configuration
-        const _config = Object.assign({}, this.config, options.newConfig);
+        let _config = Object.assign({}, this.config, options.newConfig);
+
+        // Encrypt all attributes of encryptedNative before update the config
+        if (Array.isArray(this.adapterConfig.encryptedNative)) {
+            for (const attr of this.adapterConfig.encryptedNative) {
+                // we can only decrypt strings
+                if (typeof this.config[attr] === 'string') {
+                    _config[attr] = this.encrypt(this.config[attr])
+                }
+            }
+        }
+
         // update the adapter config object
         const configObjId = `system.adapter.${this.namespace}`;
         let obj;
