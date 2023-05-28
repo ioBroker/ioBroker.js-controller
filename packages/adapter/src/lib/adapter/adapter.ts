@@ -2367,19 +2367,25 @@ export class AdapterClass extends EventEmitter {
         return this._updateConfig({ newConfig });
     }
 
-    private async _updateConfig(options: InternalUpdateConfigOptions): ioBroker.SetObjectPromise {
+    private async _updateConfig(options: InternalUpdateConfigOptions, useAutoEncryption?: boolean): ioBroker.SetObjectPromise {
         // merge the old and new configuration
         let _config = Object.assign({}, this.config, options.newConfig);
 
-        // Encrypt all attributes of encryptedNative before update the config
-        if (Array.isArray(this.adapterConfig.encryptedNative)) {
-            for (const attr of this.adapterConfig.encryptedNative) {
-                // we can only decrypt strings
-                if (typeof this.config[attr] === 'string') {
-                    _config[attr] = this.encrypt(this.config[attr])
+        if(useAutoEncryption) {
+            // Encrypt all attributes of encryptedNative before update the config
+            if (Array.isArray(this.adapterConfig.encryptedNative)) {
+                for (const attr of this.adapterConfig.encryptedNative) {
+                    // we can only decrypt strings
+                    if (typeof this.config[attr] === 'string') {
+                        _config[attr] = this.encrypt(this.config[attr])
+                    }
                 }
             }
+        } else {
+            this._logger.warn('Auto encryption is not used. Values from encryptedNative are overwritten with decrypted value.'+
+            'Please use useAutoEncryption parameter.');
         }
+        
 
         // update the adapter config object
         const configObjId = `system.adapter.${this.namespace}`;
