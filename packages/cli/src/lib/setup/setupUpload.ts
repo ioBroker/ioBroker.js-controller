@@ -701,6 +701,7 @@ export class Upload {
 
     /**
      * Extends the `system.instance.adapter.<instanceNumber>` objects with the native properties from adapters io-package.json
+     *
      * @param name name of the adapter
      * @param ioPack parsed io-package content
      * @param hostname name of the host where the adapter is installed on
