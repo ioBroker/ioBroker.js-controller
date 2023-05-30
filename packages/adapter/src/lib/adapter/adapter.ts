@@ -38,7 +38,8 @@ import {
     ACCESS_GROUP_READ,
     ACCESS_USER_WRITE,
     ACCESS_USER_READ,
-    NO_PROTECT_ADAPTERS
+    NO_PROTECT_ADAPTERS,
+    STATE_QUALITY
 } from './constants';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import type {
@@ -688,7 +689,7 @@ export class AdapterClass extends EventEmitter {
     private statesConnectedTime?: number;
     /** Constants for frequent use in adapters */
     readonly constants = {
-        STATE_QUALITY: ioBroker.STATE_QUALITY
+        STATE_QUALITY
     } as const;
 
     constructor(options: AdapterOptions | string) {

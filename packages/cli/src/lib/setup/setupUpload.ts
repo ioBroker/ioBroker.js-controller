@@ -699,6 +699,13 @@ export class Upload {
         return target as ioBroker.InstanceCommon;
     }
 
+    /**
+     * Extends the `system.instance.adapter.<instanceNumber>` objects with the native properties from adapters io-package.json
+     * @param name name of the adapter
+     * @param ioPack parsed io-package content
+     * @param hostname name of the host where the adapter is installed on
+     * @param logger instance of logger
+     */
     async _upgradeAdapterObjectsHelper(
         name: string,
         ioPack: Record<string, any>,
@@ -752,20 +759,6 @@ export class Upload {
                         newObject.ts = Date.now();
 
                         await this.objects.setObjectAsync(newObject._id, newObject);
-
-                        // @ts-expect-error TODO: instance object is no state remove this part?
-                        if (newObject.common.def !== undefined && newObject.common.def !== null) {
-                            // set default state value
-                            const state = await this.states.getStateAsync(newObject._id);
-                            if (!state) {
-                                await this.states.setStateAsync(newObject._id, {
-                                    // @ts-expect-error see above
-                                    val: newObject.common.def,
-                                    ack: true,
-                                    q: 0x40 // substitute value from device or adapter
-                                });
-                            }
-                        }
                     }
                 }
             }
