@@ -30,7 +30,6 @@ import {
     ALIAS_STARTS_WITH,
     SYSTEM_ADMIN_USER,
     SYSTEM_ADMIN_GROUP,
-    QUALITY_SUBS_INITIAL,
     SUPPORTED_FEATURES,
     ERROR_PERMISSION,
     ACCESS_EVERY_READ,
@@ -612,7 +611,7 @@ export class AdapterClass extends EventEmitter {
     performStrictObjectChecks: boolean;
     private readonly _logger: Winston.Logger;
     private _restartScheduleJob: any;
-    private _schedule: typeof NodeSchedule | undefined;
+    private _schedule?: typeof NodeSchedule;
     private namespaceLog: string;
     namespace: `${string}.${number}`;
     name: string;
@@ -687,6 +686,10 @@ export class AdapterClass extends EventEmitter {
     private logRequired?: boolean;
     private patterns?: Record<string, { regex: string }>;
     private statesConnectedTime?: number;
+    /** Constants for frequent use in adapters */
+    readonly constants = {
+        STATE_QUALITY: ioBroker.STATE_QUALITY
+    } as const;
 
     constructor(options: AdapterOptions | string) {
         super();
@@ -2794,7 +2797,7 @@ export class AdapterClass extends EventEmitter {
                 if (!state || state.val === undefined) {
                     await this.setForeignStateAsync(id, {
                         val: obj.common.def,
-                        q: QUALITY_SUBS_INITIAL,
+                        q: this.constants.STATE_QUALITY.SUBSTITUTE_INITIAL_VALUE,
                         ack: true
                     });
                 }
@@ -3138,7 +3141,7 @@ export class AdapterClass extends EventEmitter {
                         try {
                             await this.setForeignStateAsync(options.id, {
                                 val: defState,
-                                q: QUALITY_SUBS_INITIAL,
+                                q: this.constants.STATE_QUALITY.SUBSTITUTE_INITIAL_VALUE,
                                 ack: true
                             });
                         } catch (e) {
@@ -3444,7 +3447,7 @@ export class AdapterClass extends EventEmitter {
                             try {
                                 await this.setForeignStateAsync(id, {
                                     val: defState,
-                                    q: QUALITY_SUBS_INITIAL,
+                                    q: this.constants.STATE_QUALITY.SUBSTITUTE_INITIAL_VALUE,
                                     ack: true
                                 });
                             } catch (e) {
