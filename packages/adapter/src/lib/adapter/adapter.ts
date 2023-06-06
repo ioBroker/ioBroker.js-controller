@@ -9859,12 +9859,15 @@ export class AdapterClass extends EventEmitter {
 
         Validator.assertPattern(pattern, 'pattern');
         Validator.assertOptionalCallback(callback, 'callback');
+        if (options !== null && options !== undefined) {
+            Validator.assertObject(options, 'options');
+        }
 
-        return this.subscribeForeignStates(
-            Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true),
+        return this._subscribeForeignStates({
+            pattern: Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true),
             options,
             callback
-        );
+        });
     }
 
     unsubscribeStates(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
@@ -9892,12 +9895,15 @@ export class AdapterClass extends EventEmitter {
 
         Validator.assertPattern(pattern, 'pattern');
         Validator.assertOptionalCallback(callback, 'callback');
+        if (options !== null && options !== undefined) {
+            Validator.assertObject(options, 'options');
+        }
 
-        return this.unsubscribeForeignStates(
-            Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true),
+        return this._unsubscribeForeignStates({
+            pattern: Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true),
             options,
             callback
-        );
+        });
     }
 
     setForeignBinaryState(id: string, binary: Buffer, callback: ioBroker.SetStateCallback): void;
