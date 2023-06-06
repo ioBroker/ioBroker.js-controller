@@ -1,7 +1,7 @@
 /**
  *      Object DB in memory - Server
  *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2023 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -38,9 +38,13 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
                 this.log.silly(`${this.namespace} objects change: ${id} ${JSON.stringify(this.change)}`);
             };
         }
+
+        this.META_ID = '**META**';
+        /** @type {Record<string, any>} */
         this.fileOptions = {};
         this.files = {};
         this.writeTimer = null;
+        /** @type {string[]} */
         this.writeIds = [];
         this.preserveSettings = ['custom'];
         this.defaultNewAcl = this.settings.defaultNewAcl || null;
@@ -48,7 +52,7 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
         this.writeFileInterval =
             this.settings.connection && typeof this.settings.connection.writeFileInterval === 'number'
                 ? parseInt(this.settings.connection.writeFileInterval)
-                : 5000;
+                : 5_000;
         if (!settings.jsonlDB) {
             this.log.silly(`${this.namespace} Objects DB uses file write interval of ${this.writeFileInterval} ms`);
         }
@@ -59,12 +63,10 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
         this.existingMetaObjects = {};
 
         // Handle some < js-controller 2.0 broken objects and correct them
-        for (const key of Object.keys(this.dataset)) {
-            const obj = this.dataset[key];
+        for (const obj of Object.values(this.dataset)) {
             if (tools.isObject(obj) && obj.acl && obj.acl.permissions && !obj.acl.object) {
                 obj.acl.object = obj.acl.permissions;
                 delete obj.acl.permissions;
-                this.dataset[key] = obj;
             }
         }
 
@@ -96,11 +98,11 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
         if (force) {
             this.writeTimer = null;
             // Store dirs description
-            for (let _id = 0; _id < this.writeIds.length; _id++) {
-                const location = path.join(this.objectsDir, this.writeIds[_id], '_data.json');
+            for (const writeId of this.writeIds) {
+                const location = path.join(this.objectsDir, writeId, '_data.json');
                 try {
-                    if (fs.existsSync(path.join(this.objectsDir, this.writeIds[_id]))) {
-                        fs.writeFileSync(location, JSON.stringify(this.fileOptions[this.writeIds[_id]]));
+                    if (fs.existsSync(path.join(this.objectsDir, writeId))) {
+                        fs.writeFileSync(location, JSON.stringify(this.fileOptions[writeId]));
                     }
                 } catch (e) {
                     this.log.error(`${this.namespace} Cannot write files: ${location}: ${e.message}`);
@@ -110,16 +112,16 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
         } else {
             this.writeTimer = setTimeout(() => {
                 // Store dirs description
-                for (let id = 0; id < this.writeIds.length; id++) {
-                    const location = path.join(this.objectsDir, this.writeIds[id], '_data.json');
+                for (const writeId of this.writeIds) {
+                    const location = path.join(this.objectsDir, writeId, '_data.json');
                     try {
-                        fs.writeFileSync(location, JSON.stringify(this.fileOptions[this.writeIds[id]]));
+                        fs.writeFileSync(location, JSON.stringify(this.fileOptions[writeId]));
                     } catch (e) {
                         this.log.error(`${this.namespace} Cannot write files: ${location}: ${e.message}`);
                     }
                 }
                 this.writeIds = [];
-            }, 1000);
+            }, 1_000);
         }
     }
 
@@ -427,7 +429,7 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
             }
 
             if (this.fileOptions[id][name] && !this.fileOptions[id][name].acl) {
-                // all files belongs to admin by default, but everyone can edit it
+                // all files belong to admin by default, but everyone can edit it
                 this.fileOptions[id][name].acl = {
                     owner: (this.defaultNewAcl && this.defaultNewAcl.owner) || utils.CONSTS.SYSTEM_ADMIN_USER,
                     ownerGroup:
@@ -548,7 +550,7 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
                 // read all entries and delete every one
                 fs.readdirSync(location).forEach(dir => this._unlink(id, name + '/' + dir));
 
-                this.log.debug('Delete directory ' + path.join(id, name));
+                this.log.debug(`Delete directory ${path.join(id, name)}`);
                 try {
                     fs.removeSync(location);
                 } catch (e) {
@@ -651,16 +653,16 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
 
         _files.sort();
         const res = [];
-        for (let j = 0; j < _files.length; j++) {
-            if (_files[j] === '..' || _files[j] === '.') {
+        for (const file of _files) {
+            if (file === '..' || file === '.') {
                 continue;
             }
-            if (fs.existsSync(path.join(location, _files[j]))) {
+            if (fs.existsSync(path.join(location, file))) {
                 try {
-                    const stats = fs.statSync(path.join(location, _files[j]));
+                    const stats = fs.statSync(path.join(location, file));
                     const acl =
-                        this.fileOptions[id][name + _files[j]] && this.fileOptions[id][name + _files[j]].acl
-                            ? deepClone(this.fileOptions[id][name + _files[j]].acl) // copy settings
+                        this.fileOptions[id][name + file] && this.fileOptions[id][name + file].acl
+                            ? deepClone(this.fileOptions[id][name + file].acl) // copy settings
                             : {
                                   read: true,
                                   write: true,
@@ -734,25 +736,22 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
                     }
 
                     res.push({
-                        file: _files[j],
+                        file,
                         stats: stats,
                         isDir: stats.isDirectory(),
                         acl: acl,
-                        modifiedAt: this.fileOptions[id][name + _files[j]]
-                            ? this.fileOptions[id][name + _files[j]].modifiedAt
+                        modifiedAt: this.fileOptions[id][name + file]
+                            ? this.fileOptions[id][name + file].modifiedAt
                             : undefined,
-                        createdAt: this.fileOptions[id][name + _files[j]]
-                            ? this.fileOptions[id][name + _files[j]].createdAt
+                        createdAt: this.fileOptions[id][name + file]
+                            ? this.fileOptions[id][name + file].createdAt
                             : undefined
                     });
                 } catch (e) {
                     this.log.error(
-                        `${this.namespace} Cannot read permissions of ${path.join(
-                            this.objectsDir,
-                            id,
-                            name,
-                            _files[j]
-                        )}: ${e.message}`
+                        `${this.namespace} Cannot read permissions of ${path.join(this.objectsDir, id, name, file)}: ${
+                            e.message
+                        }`
                     );
                 }
             }
@@ -864,10 +863,10 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
     }
 
     _ensureMetaDict() {
-        let meta = this.dataset['**META**'];
+        let meta = this.dataset[this.META_ID];
         if (!meta) {
             meta = {};
-            this.dataset['**META**'] = meta;
+            this.dataset[this.META_ID] = meta;
         }
         return meta;
     }
@@ -893,7 +892,7 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
         const meta = this._ensureMetaDict();
         meta[id] = value;
         // Make sure the object gets re-written, especially when using an external DB
-        this.dataset['**META**'] = meta;
+        this.dataset[this.META_ID] = meta;
 
         setImmediate(() => {
             // publish event in states
@@ -920,14 +919,20 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
         this.stateTimer = this.stateTimer || setTimeout(() => this.saveState(), this.writeFileInterval);
     }
 
-    // needed by server
+    /**
+     * Delete the given object from the dataset
+     *
+     * @param  {string} id unique id of the object
+     * @private
+     */
     _delObject(id) {
         const obj = this.dataset[id];
         if (!obj) {
-            throw new Error(utils.ERRORS.ERROR_NOT_FOUND);
+            // Not existent, so goal reached :-)
+            return;
         }
 
-        if (obj.common && obj.common.dontDelete) {
+        if (obj.common?.dontDelete) {
             throw new Error('Object is marked as non deletable');
         }
 
@@ -958,7 +963,7 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
 
         const f = eval('(' + func.map.replace(/emit/g, '_emit_') + ')');
 
-        for (const id of Object.keys(this.dataset)) {
+        for (const [id, obj] of Object.entries(this.dataset)) {
             if (params) {
                 if (params.startkey && id < params.startkey) {
                     continue;
@@ -967,7 +972,7 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
                     continue;
                 }
             }
-            const obj = this.dataset[id];
+
             if (obj) {
                 try {
                     f(obj);
@@ -979,9 +984,9 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
         // Calculate max
         if (func.reduce === '_stats') {
             let max = null;
-            for (let i = 0; i < result.rows.length; i++) {
-                if (max === null || result.rows[i].value > max) {
-                    max = result.rows[i].value;
+            for (const row of result.rows) {
+                if (max === null || row.value > max) {
+                    max = row.value;
                 }
             }
             if (max !== null) {
@@ -1008,7 +1013,9 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
         return this._applyView(designObj.views[search], params);
     }
 
-    // Destructor of the class. Called by shutting down.
+    /**
+     * Destructor of the class. Called by shutting down.
+     */
     async destroy() {
         await super.destroy();
 

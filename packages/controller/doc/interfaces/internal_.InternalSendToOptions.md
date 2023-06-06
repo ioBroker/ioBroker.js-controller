@@ -12,6 +12,7 @@
 - [command](internal_.InternalSendToOptions.md#command)
 - [instanceName](internal_.InternalSendToOptions.md#instancename)
 - [message](internal_.InternalSendToOptions.md#message)
+- [options](internal_.InternalSendToOptions.md#options)
 
 ## Properties
 
@@ -21,7 +22,7 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:323](https://github.com/ioBroker/ioBroker.js-controller/blob/ba81a916/packages/adapter/src/lib/_Types.ts#L323)
+[adapter/src/lib/_Types.ts:328](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/adapter/src/lib/_Types.ts#L328)
 
 ___
 
@@ -31,7 +32,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:321](https://github.com/ioBroker/ioBroker.js-controller/blob/ba81a916/packages/adapter/src/lib/_Types.ts#L321)
+[adapter/src/lib/_Types.ts:326](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/adapter/src/lib/_Types.ts#L326)
 
 ___
 
@@ -41,7 +42,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:320](https://github.com/ioBroker/ioBroker.js-controller/blob/ba81a916/packages/adapter/src/lib/_Types.ts#L320)
+[adapter/src/lib/_Types.ts:325](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/adapter/src/lib/_Types.ts#L325)
 
 ___
 
@@ -51,4 +52,14 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:322](https://github.com/ioBroker/ioBroker.js-controller/blob/ba81a916/packages/adapter/src/lib/_Types.ts#L322)
+[adapter/src/lib/_Types.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/adapter/src/lib/_Types.ts#L327)
+
+___
+
+### options
+
+• `Optional` **options**: [`SendToOptions`](internal_.SendToOptions.md)
+
+#### Defined in
+
+[adapter/src/lib/_Types.ts:329](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/adapter/src/lib/_Types.ts#L329)
