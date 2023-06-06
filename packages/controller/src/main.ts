@@ -3032,18 +3032,33 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         if (msg.message.link) {
                             if (!error && base64) {
                                 const buff = Buffer.from(base64, 'base64');
-                                states!.setBinaryState(`${hostObjectPrefix}.zip.${msg.message.link}`, buff, err => {
-                                    if (err) {
-                                        sendTo(msg.from, msg.command, { error: err }, msg.callback);
-                                    } else {
-                                        sendTo(
-                                            msg.from,
-                                            msg.command,
-                                            `${hostObjectPrefix}.zip.${msg.message.link}`,
-                                            msg.callback
-                                        );
-                                    }
-                                });
+                                if (msg.message.storeToFile) {
+                                    objects!.writeFile(msg.message.storeToFile, `zip/${msg.message.link}`, buff, err => {
+                                        if (err) {
+                                            sendTo(msg.from, msg.command, { error: err }, msg.callback);
+                                        } else {
+                                            sendTo(
+                                                msg.from,
+                                                msg.command,
+                                                `${msg.message.storeToFile}/zip/${msg.message.link}`,
+                                                msg.callback
+                                            );
+                                        }
+                                    });
+                                } else {
+                                    states!.setBinaryState(`${hostObjectPrefix}.zip.${msg.message.link}`, buff, err => {
+                                        if (err) {
+                                            sendTo(msg.from, msg.command, {error: err}, msg.callback);
+                                        } else {
+                                            sendTo(
+                                                msg.from,
+                                                msg.command,
+                                                `${hostObjectPrefix}.zip.${msg.message.link}`,
+                                                msg.callback
+                                            );
+                                        }
+                                    });
+                                }
                             } else {
                                 sendTo(msg.from, msg.command, { error }, msg.callback);
                             }
