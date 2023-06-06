@@ -3033,22 +3033,32 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                             if (!error && base64) {
                                 const buff = Buffer.from(base64, 'base64');
                                 if (msg.message.storeToFile) {
-                                    objects!.writeFile(msg.message.storeToFile, `zip/${msg.message.link}`, buff, err => {
-                                        if (err) {
-                                            sendTo(msg.from, msg.command, { error: err }, msg.callback);
-                                        } else {
-                                            sendTo(
-                                                msg.from,
-                                                msg.command,
-                                                `${msg.message.storeToFile}/zip/${msg.message.link}`,
-                                                msg.callback
-                                            );
+                                    objects!.writeFile(
+                                        msg.message.storeToFile,
+                                        `zip/${msg.message.link}`,
+                                        buff,
+                                        err => {
+                                            if (err) {
+                                                sendTo(msg.from, msg.command, { error: err }, msg.callback);
+                                            } else {
+                                                sendTo(
+                                                    msg.from,
+                                                    msg.command,
+                                                    `${msg.message.storeToFile}/zip/${msg.message.link}`,
+                                                    msg.callback
+                                                );
+                                            }
                                         }
-                                    });
+                                    );
                                 } else {
+                                    logger.warn(
+                                        `${hostLogPrefix} Saving in binary states is deprecated.` +
+                                            'Please add the "storeToFile" attribute to request (with e.g. "admin.0" value) to save ZIP in file'
+                                    );
+
                                     states!.setBinaryState(`${hostObjectPrefix}.zip.${msg.message.link}`, buff, err => {
                                         if (err) {
-                                            sendTo(msg.from, msg.command, {error: err}, msg.callback);
+                                            sendTo(msg.from, msg.command, { error: err }, msg.callback);
                                         } else {
                                             sendTo(
                                                 msg.from,
