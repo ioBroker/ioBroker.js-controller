@@ -189,11 +189,11 @@ export class Upgrade {
             return Promise.reject(err);
         }
 
-        if (objs && objs.rows && objs.rows.length) {
+        if (objs?.rows?.length) {
             for (const dName in allDeps) {
                 if (dName === 'js-controller') {
                     const version = allDeps[dName];
-                    // Check only if version not *, else we dont have to read io-pack unnecessarily
+                    // Check only if version not *, else we don't have to read io-pack unnecessarily
                     if (version !== '*') {
                         const iopkg_ = fs.readJSONSync(`${tools.getControllerDir()}/package.json`);
                         try {
@@ -625,7 +625,7 @@ export class Upgrade {
                 }
                 console.warn(`Unable to get version for "${adapter}". Update anyway.`);
                 console.log(`Update ${adapter} from @${installedVersion} to @${version}`);
-                // Get the adapter from web site
+                // Get the adapter from website
                 // @ts-expect-error it could also call processExit internally but we want change it in future anyway
                 const { packetName, stoppedList } = await this.install.downloadPacket(sources, `${adapter}@${version}`);
                 await finishUpgrade(packetName);

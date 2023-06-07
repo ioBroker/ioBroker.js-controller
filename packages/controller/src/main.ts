@@ -30,6 +30,7 @@ import { Upload } from '@iobroker/js-controller-cli';
 import decache from 'decache';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import { getDefaultNodeArgs } from './lib/tools';
+import { AdapterAutoUpgradeManager } from './lib/adapterAutoUpgradeManager';
 
 type TaskObject = ioBroker.SettableObject & { state?: ioBroker.SettableState };
 type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
@@ -110,6 +111,7 @@ const controllerVersions: Record<string, string> = {};
 
 let pluginHandler: InstanceType<typeof PluginHandler>;
 let notificationHandler: NotificationHandler;
+let autoUpgradeManager: AdapterAutoUpgradeManager;
 /** array of instances which have requested repo update */
 let requestedRepoUpdates: RepoRequester[] = [];
 
@@ -624,6 +626,8 @@ async function initializeController(): Promise<void> {
             logger.error(`${hostLogPrefix} Could not add notifications config of this host: ${e.message}`);
         }
     }
+
+    autoUpgradeManager = new AdapterAutoUpgradeManager({ objects });
 
     checkSystemLocaleSupported();
 
@@ -2499,7 +2503,10 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     try {
                         const obj = await collectDiagInfo(systemConfig.common.diag);
                         // if user selected 'none' we will have null here and do not want to send it
-                        obj && tools.sendDiagInfo(obj); // Ignore the response here and do not wait for result to decrease the repo fetching as it used in admin GUI
+                        if (obj) {
+                            // Ignore the response here and do not wait for result to decrease the repo fetching as it used in admin GUI
+                            tools.sendDiagInfo(obj);
+                        }
                     } catch (e) {
                         logger.error(`${hostLogPrefix} cannot collect diagnostics: ${e.message}`);
                     }
@@ -2602,6 +2609,13 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 }
 
                 requestedRepoUpdates = [];
+                try {
+                    await autoUpgradeManager.upgradeAdapters();
+                } catch (e) {
+                    logger.error(
+                        `${hostLogPrefix} An error occurred while processing automatic adapter upgrades: ${e.message}`
+                    );
+                }
             } else {
                 logger.error(
                     `${hostLogPrefix} Invalid request ${
@@ -2624,7 +2638,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     async (err, doc) => {
                         const result: Record<string, any> = tools.getInstalledInfo(version);
                         result.hosts = {};
-                        if (doc && doc.rows.length) {
+                        if (doc?.rows.length) {
                             // Read installed versions of all hosts
                             for (const row of doc.rows) {
                                 // If desired local version, do not ask it, just answer
