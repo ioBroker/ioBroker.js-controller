@@ -113,9 +113,7 @@ export class AdapterAutoUpgradeManager {
             objects: this.objects,
             states: this.states,
             params: {},
-            processExit: () => {
-                return undefined;
-            }
+            processExit: () => undefined
         });
 
         await upgrade.upgradeAdapter(repoName, `${name}@${version}`, false, true, false);
