@@ -627,7 +627,7 @@ async function initializeController(): Promise<void> {
         }
     }
 
-    autoUpgradeManager = new AdapterAutoUpgradeManager({ objects, states });
+    autoUpgradeManager = new AdapterAutoUpgradeManager({ objects, states, logger, logPrefix: hostLogPrefix });
 
     checkSystemLocaleSupported();
 
@@ -2602,6 +2602,14 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                             logger.warn(`${hostLogPrefix} Repository object could not be updated: ${e.message}`);
                         }
                     }
+
+                    try {
+                        await autoUpgradeManager.upgradeAdapters();
+                    } catch (e) {
+                        logger.error(
+                            `${hostLogPrefix} An error occurred while processing automatic adapter upgrades: ${e.message}`
+                        );
+                    }
                 }
 
                 for (const requester of requestedRepoUpdates) {
@@ -2609,13 +2617,6 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 }
 
                 requestedRepoUpdates = [];
-                try {
-                    await autoUpgradeManager.upgradeAdapters();
-                } catch (e) {
-                    logger.error(
-                        `${hostLogPrefix} An error occurred while processing automatic adapter upgrades: ${e.message}`
-                    );
-                }
             } else {
                 logger.error(
                     `${hostLogPrefix} Invalid request ${
@@ -2725,7 +2726,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             if (msg.callback && msg.from) {
                 if (os.platform() === 'linux') {
                     const _args = ['/dev'];
-                    logger.info(hostLogPrefix + ' ls /dev');
+                    logger.info(`${hostLogPrefix} ls /dev`);
                     const _child = spawn('ls', _args, { windowsHide: true });
                     let result = '';
                     if (_child.stdout) {
@@ -3240,13 +3241,13 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         config = JSON.parse(config);
                         sendTo(msg.from, msg.command, { config, isActive: uptimeStart > stat.mtimeMs }, msg.callback);
                     } catch {
-                        const error = 'Cannot parse file ' + configFile;
-                        logger.error(hostLogPrefix + ' ' + error);
+                        const error = `Cannot parse file ${configFile}`;
+                        logger.error(`${hostLogPrefix} ${error}`);
                         sendTo(msg.from, msg.command, { error }, msg.callback);
                     }
                 } else {
-                    const error = 'Cannot find file ' + configFile;
-                    logger.error(hostLogPrefix + ' ' + error);
+                    const error = `Cannot find file ${configFile}`;
+                    logger.error(`${hostLogPrefix} ${error}`);
                     sendTo(msg.from, msg.command, { error }, msg.callback);
                 }
             } else {
@@ -5659,8 +5660,8 @@ export function init(compactGroupId?: number): void {
     const ts = logger.transports.find(t => t.name === 'NT');
     ts!.on('logged', info => {
         info.from = hostLogPrefix;
-        for (let i = 0; i < logList.length; i++) {
-            states!.pushLog(logList[i], info);
+        for (const log of logList) {
+            states!.pushLog(log, info);
         }
     });
 

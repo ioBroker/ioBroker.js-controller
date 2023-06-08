@@ -1,5 +1,6 @@
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
+import type { logger } from '@iobroker/js-controller-common';
 import { Upgrade } from '@iobroker/js-controller-cli';
 import semver from 'semver';
 
@@ -8,6 +9,10 @@ interface AdapterAutoUpgradeOptions {
     objects: ObjectsClient;
     /** The states DB client */
     states: StatesClient;
+    /** Logger which needs to be prefixed */
+    logger: ReturnType<typeof logger>;
+    /** Prefix for log messages */
+    logPrefix: string;
 }
 
 interface UpgradeAdapterOptions extends RepositoryAdapter {
@@ -45,22 +50,31 @@ export class AdapterAutoUpgradeManager {
         minor: '^',
         major: '>'
     } as const;
+    /** Prefix for log messages */
+    private logPrefix: string;
+    /** Logger which needs to be prefixed */
+    private logger: ReturnType<typeof logger>;
 
     constructor(options: AdapterAutoUpgradeOptions) {
         this.objects = options.objects;
         this.states = options.states;
+        this.logger = options.logger;
+        this.logPrefix = options.logPrefix;
     }
 
     /**
      * Checks the current `system.repositories` object and checks if one needs to be performed according to the adapter configuration
      */
     async upgradeAdapters(): Promise<void> {
+        this.logger.info(`${this.logPrefix} Check for available automatic adapter upgrades`);
         const repoName = await this.getConfiguredRepositoryName();
         const repoInformation = await this.getRepository(repoName);
 
         const installedAdaptersConfig = await this.getAutoUpdateConfiguration();
 
         for (const adapterConfig of installedAdaptersConfig) {
+            this.logger.info(this.logPrefix + ' ' + JSON.stringify(adapterConfig));
+
             const repoAdapterInfo = repoInformation[adapterConfig.name];
             if (!repoAdapterInfo) {
                 continue;
@@ -78,6 +92,9 @@ export class AdapterAutoUpgradeManager {
                 )
             ) {
                 await this.upgradeAdapter({ ...repoAdapterInfo, repoName });
+                this.logger.info(
+                    `${this.logPrefix} Successfully upgraded adapter "${repoAdapterInfo.name}" to ${repoAdapterInfo.version}`
+                );
             }
         }
     }
@@ -89,6 +106,8 @@ export class AdapterAutoUpgradeManager {
      */
     private async upgradeAdapter(options: UpgradeAdapterOptions): Promise<void> {
         const { repoName, name, version } = options;
+
+        this.logger.info(`${this.logPrefix} Upgrade adapter "${name}" to ${version}`);
 
         const upgrade = new Upgrade({
             objects: this.objects,
