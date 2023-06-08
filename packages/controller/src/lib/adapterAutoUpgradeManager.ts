@@ -1,9 +1,18 @@
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import type { Client as StatesClient } from '@iobroker/db-states-redis';
+import { Upgrade } from '@iobroker/js-controller-cli';
 import semver from 'semver';
 
 interface AdapterAutoUpgradeOptions {
     /** The objects DB client */
     objects: ObjectsClient;
+    /** The states DB client */
+    states: StatesClient;
+}
+
+interface UpgradeAdapterOptions extends RepositoryAdapter {
+    /** Current active repository */
+    repoName: string;
 }
 
 interface RepositoryAdapter {
@@ -28,9 +37,18 @@ interface AdapterUpgradeConfiguration {
 
 export class AdapterAutoUpgradeManager {
     private readonly objects: ObjectsClient;
+    private readonly states: StatesClient;
+    /** Mapping from semver range to range identifier */
+    private SEMVER_RANGE_MAPPING = {
+        none: '',
+        patch: '~',
+        minor: '^',
+        major: '>'
+    } as const;
 
     constructor(options: AdapterAutoUpgradeOptions) {
         this.objects = options.objects;
+        this.states = options.states;
     }
 
     /**
@@ -43,10 +61,45 @@ export class AdapterAutoUpgradeManager {
         const installedAdaptersConfig = await this.getAutoUpdateConfiguration();
 
         for (const adapterConfig of installedAdaptersConfig) {
-            // TODO: check if repo version is newer than installed
-            // TODO: check if repo version is in range
-            // TODO: if in range upgrade to the new version
+            const repoAdapterInfo = repoInformation[adapterConfig.name];
+            if (!repoAdapterInfo) {
+                continue;
+            }
+
+            if (semver.gt(adapterConfig.version, repoAdapterInfo.version)) {
+                continue;
+            }
+
+            if (
+                semver.satisfies(
+                    repoAdapterInfo.version,
+                    `${this.SEMVER_RANGE_MAPPING[adapterConfig.upgradePolicy]}${adapterConfig.version}`,
+                    { includePrerelease: true }
+                )
+            ) {
+                await this.upgradeAdapter({ ...repoAdapterInfo, repoName });
+            }
         }
+    }
+
+    /**
+     * Upgrade specified adapter to given version
+     *
+     * @param options information of the adapter to install, e.g. version and name, sa well as active repo
+     */
+    private async upgradeAdapter(options: UpgradeAdapterOptions): Promise<void> {
+        const { repoName, name, version } = options;
+
+        const upgrade = new Upgrade({
+            objects: this.objects,
+            states: this.states,
+            params: {},
+            processExit: () => {
+                return undefined;
+            }
+        });
+
+        await upgrade.upgradeAdapter(repoName, `${name}@${version}`, false, true, false);
     }
 
     /**

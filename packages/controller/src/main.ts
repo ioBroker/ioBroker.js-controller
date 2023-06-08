@@ -627,7 +627,7 @@ async function initializeController(): Promise<void> {
         }
     }
 
-    autoUpgradeManager = new AdapterAutoUpgradeManager({ objects });
+    autoUpgradeManager = new AdapterAutoUpgradeManager({ objects, states });
 
     checkSystemLocaleSupported();
 

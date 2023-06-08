@@ -17,6 +17,7 @@ import { CLIObjects } from './cli/cliObjects';
 import { CLICompact } from './cli/cliCompact';
 import { CLILogs } from './cli/cliLogs';
 import { error as CLIError } from './cli/messages';
+import { getRepository } from './setup/utils';
 import type { CLICommandContext, CLICommandOptions } from './cli/cliCommand';
 import type { DbConnectCallback, DbConnectAsyncReturn } from './_Types';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
@@ -622,7 +623,6 @@ async function processCommand(
                             const install = new Install({
                                 objects: objects!,
                                 states: states!,
-                                getRepository,
                                 processExit: callback,
                                 params
                             });
@@ -816,7 +816,6 @@ async function processCommand(
                 const install = new Install({
                     objects,
                     states,
-                    getRepository,
                     processExit: callback,
                     params
                 });
@@ -920,7 +919,6 @@ async function processCommand(
                 const install = new Install({
                     objects,
                     states,
-                    getRepository,
                     processExit: callback,
                     params
                 });
@@ -945,7 +943,7 @@ async function processCommand(
                         // @ts-expect-error todo check or handle null return value
                         const { stoppedList } = await install.downloadPacket(repoUrl, installName);
                         await install.installAdapter(installName, repoUrl);
-                        await install.enableInstances(stoppedList, true); // even if unlikely make sure to reenable disabled instances
+                        await install.enableInstances(stoppedList, true); // even if unlikely make sure to re-enable disabled instances
                         if (command !== 'install' && command !== 'i') {
                             await install.createInstance(name, params);
                         }
@@ -1125,7 +1123,6 @@ async function processCommand(
                     const install = new Install({
                         objects,
                         states,
-                        getRepository,
                         processExit: callback,
                         params
                     });
@@ -1140,7 +1137,6 @@ async function processCommand(
                     const install = new Install({
                         objects,
                         states,
-                        getRepository,
                         processExit: callback,
                         params
                     });
@@ -1215,10 +1211,8 @@ async function processCommand(
                 const upgrade = new Upgrade({
                     objects,
                     states,
-                    getRepository,
                     params,
-                    processExit: callback,
-                    restartController
+                    processExit: callback
                 });
 
                 if (adapter) {
@@ -1243,7 +1237,7 @@ async function processCommand(
                 } else {
                     // upgrade all
                     try {
-                        const links = await getRepository();
+                        const links = await getRepository({ objects });
                         if (!links) {
                             return void callback(EXIT_CODES.INVALID_REPO);
                         }
@@ -2976,70 +2970,6 @@ async function restartController(): Promise<void> {
     });
 
     child.unref();
-}
-
-async function getRepository(repoName?: string, params?: Record<string, any>): Promise<Record<string, any>> {
-    params = params || {};
-
-    if (!objects) {
-        await dbConnectAsync(params as any);
-    }
-
-    if (!repoName || repoName === 'auto') {
-        const systemConfig = await objects!.getObjectAsync('system.config');
-        repoName = systemConfig!.common.activeRepo;
-    }
-
-    const repoArr = !Array.isArray(repoName) ? [repoName!] : repoName!;
-
-    const systemRepos = (await objects!.getObjectAsync('system.repositories'))!;
-    const allSources = {};
-    let changed = false;
-    let anyFound = false;
-    for (let r = 0; r < repoArr.length; r++) {
-        const repo = repoArr[r];
-        if (systemRepos.native.repositories[repo]) {
-            if (typeof systemRepos.native.repositories[repo] === 'string') {
-                systemRepos.native.repositories[repo] = {
-                    link: systemRepos.native.repositories[repo],
-                    json: null
-                };
-                changed = true;
-            }
-
-            // If repo is not yet loaded
-            if (!systemRepos.native.repositories[repo].json) {
-                console.log(`Update repository "${repo}" under "${systemRepos.native.repositories[repo].link}"`);
-                const data = await tools.getRepositoryFileAsync(systemRepos.native.repositories[repo].link);
-                systemRepos.native.repositories[repo].json = data.json;
-                systemRepos.native.repositories[repo].hash = data.hash;
-                systemRepos.from = `system.host.${tools.getHostName()}.cli`;
-                systemRepos.ts = new Date().getTime();
-                changed = true;
-            }
-
-            if (systemRepos.native.repositories[repo].json) {
-                Object.assign(allSources, systemRepos.native.repositories[repo].json);
-                anyFound = true;
-            }
-        }
-
-        if (changed) {
-            await objects!.setObjectAsync('system.repositories', systemRepos);
-        }
-    }
-
-    if (!anyFound) {
-        console.error(
-            `ERROR: No repositories defined. Please define one repository as active:  "iob repo set <${Object.keys(
-                systemRepos.native.repositories
-            ).join(' | ')}>`
-        );
-        // @ts-expect-error todo throw code or description?
-        throw new Error(EXIT_CODES.INVALID_REPO);
-    } else {
-        return allSources;
-    }
 }
 
 async function resetDbConnect(): Promise<void> {

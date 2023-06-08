@@ -17,9 +17,10 @@ import deepClone from 'deep-clone';
 import { URL } from 'url';
 import { Upload } from './setupUpload';
 import { PacketManager } from './setupPacketManager';
+import { getRepository } from './utils';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import type { GetRepositoryHandler, ProcessExitCallback } from '../_Types';
+import type { ProcessExitCallback } from '../_Types';
 
 const hostname = tools.getHostName();
 const osPlatform = process.platform;
@@ -34,7 +35,6 @@ interface NpmInstallResult {
 
 export interface CLIInstallOptions {
     params: Record<string, any>;
-    getRepository: GetRepositoryHandler;
     states: StatesRedisClient;
     objects: ObjectsRedisClient;
     processExit: ProcessExitCallback;
@@ -70,7 +70,6 @@ export class Install {
     private readonly objects: ObjectsRedisClient;
     private readonly states: StatesRedisClient;
     private readonly processExit: ProcessExitCallback;
-    private readonly getRepository: GetRepositoryHandler;
     private readonly params: Record<string, any>;
     private readonly tarballRegex: RegExp;
     private upload: Upload;
@@ -90,14 +89,10 @@ export class Install {
         if (!options.processExit) {
             throw new Error('Invalid arguments: processExit is missing');
         }
-        if (!options.getRepository) {
-            throw new Error('Invalid arguments: getRepository is missing');
-        }
 
         this.objects = options.objects;
         this.states = options.states;
         this.processExit = options.processExit;
-        this.getRepository = options.getRepository;
         this.params = options.params || {};
 
         this.tarballRegex = /\/tarball\/[^/]+$/;
@@ -151,7 +146,7 @@ export class Install {
 
         if (!repoUrl || !tools.isObject(repoUrl)) {
             try {
-                sources = await this.getRepository(repoUrl, this.params);
+                sources = await getRepository({ repoName: repoUrl, objects: this.objects });
             } catch (err) {
                 return this.processExit(err);
             }

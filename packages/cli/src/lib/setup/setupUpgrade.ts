@@ -1,11 +1,3 @@
-/**
- *      Upgrade command
- *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
- *
- *      MIT License
- *
- */
 import Debug from 'debug';
 import * as fs from 'fs-extra';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
@@ -15,9 +7,10 @@ import { Install } from './setupInstall';
 import rl from 'readline-sync';
 import tty from 'tty';
 import path from 'path';
+import { getRepository } from './utils';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
-import type { GetRepositoryHandler, ProcessExitCallback } from '../_Types';
+import type { ProcessExitCallback } from '../_Types';
 
 const debug = Debug('iobroker:cli');
 
@@ -25,8 +18,6 @@ type IoPackDependencies = string[] | Record<string, any>[] | Record<string, any>
 
 interface CLIUpgradeOptions {
     processExit: ProcessExitCallback;
-    restartController: () => void;
-    getRepository: GetRepositoryHandler;
     objects: ObjectsInRedisClient;
     states: StatesInRedisClient;
     params: Record<string, any>;
@@ -39,7 +30,6 @@ export class Upgrade {
     private objects: ObjectsInRedisClient;
     private readonly processExit: ProcessExitCallback;
     private readonly params: Record<string, any>;
-    private readonly getRepository: GetRepositoryHandler;
 
     constructor(options: CLIUpgradeOptions) {
         options = options || {};
@@ -47,15 +37,8 @@ export class Upgrade {
         if (!options.processExit) {
             throw new Error('Invalid arguments: processExit is missing');
         }
-        if (!options.restartController) {
-            throw new Error('Invalid arguments: restartController is missing');
-        }
-        if (!options.getRepository) {
-            throw new Error('Invalid arguments: getRepository is missing');
-        }
 
         this.processExit = options.processExit;
-        this.getRepository = options.getRepository;
         this.params = options.params;
         this.objects = options.objects;
 
@@ -316,7 +299,7 @@ export class Upgrade {
         let sources: Record<string, any>;
         if (!repoUrlOrObject || !tools.isObject(repoUrlOrObject)) {
             try {
-                sources = await this.getRepository(repoUrlOrObject, this.params);
+                sources = await getRepository({ repoName: repoUrlOrObject, objects: this.objects });
             } catch (e) {
                 return this.processExit(e);
             }
@@ -651,7 +634,7 @@ export class Upgrade {
         let sources: Record<string, any>;
         if (!repoUrlOrObject || !tools.isObject(repoUrlOrObject)) {
             try {
-                const result = await this.getRepository(repoUrlOrObject, this.params);
+                const result = await getRepository({ repoName: repoUrlOrObject, objects: this.objects });
                 if (!result) {
                     return console.warn(`Cannot get repository under "${repoUrlOrObject}"`);
                 }
