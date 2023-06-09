@@ -17,6 +17,7 @@
 * (bluefox) Added CLI option to restart/start/stop all instances of an adapter (e.g. `iob stop admin` now also works)
 * (foxriver76) Allow to use `iob host oldname` command when new host already exists but has no instances
 * (foxriver76) Added an admin notification if redis is misconfigured and info how to fix it
+* (foxriver76) Enable upgrade of js-controller via Admin UI (Linux only)
 
 **Optimizations and Fixes**
 * (foxriver76) Speedup "getStates" calls with many IDs often used by visualizations: JSONL 17 times faster, Redis 23 times faster
@@ -41,6 +42,7 @@
 * (foxriver76) Do not crash if we cannot initialize db backup directory on start
 * (foxriver76) Fixed issue with certificate validity on leap years
 * (Apollon77/foxriver76) Make sure that all relevant files are removed when eraseOnUpload is used
+* (foxriver76) fix wrong hostname after backup restore
 * (Apollon77, foxriver76, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 
 **Developer relevant DEPRECATIONS/WARNINGS**
@@ -64,6 +66,8 @@
 * (foxriver76) Added support for getForeignObjects with an array of strings as pattern
 * (AlCalzone) Preparations to allow js-controller Dev version to be used with dev-server
 * (foxriver76) Validate max timeout value (max 32bit max number) on setTimeout/setInterval and throw on error to prevent issues
+* (foxriver76) new `io-package` flag `common.supportedMessages` to replace `messagebox` and other messagebox-related properties
+* (foxriver76) `adapter.sendTo` now accepts an optional `timeout` argument
 
 * **Developer relevant Optimizations and Fixes**
 * (foxriver76) Ensure setObjectNotExists returns id on success
