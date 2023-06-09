@@ -29,6 +29,15 @@ interface RepositoryAdapter {
     [other: string]: any;
 }
 
+interface UpgradedAdapter {
+    /** Name of the adapter */
+    name: string;
+    /** Version before upgrade */
+    oldVersion: string;
+    /** Newly installed version */
+    newVersion: string;
+}
+
 type UpgradePolicy = 'none' | 'patch' | 'minor' | 'major';
 
 interface AdapterUpgradeConfiguration {
@@ -51,7 +60,7 @@ export class AdapterAutoUpgradeManager {
         major: '>'
     } as const;
     /** Prefix for log messages */
-    private logPrefix: string;
+    private readonly logPrefix: string;
     /** Logger which needs to be prefixed */
     private logger: ReturnType<typeof logger>;
 
@@ -65,16 +74,15 @@ export class AdapterAutoUpgradeManager {
     /**
      * Checks the current `system.repositories` object and checks if one needs to be performed according to the adapter configuration
      */
-    async upgradeAdapters(): Promise<void> {
+    async upgradeAdapters(): Promise<UpgradedAdapter[]> {
         this.logger.info(`${this.logPrefix} Check for available automatic adapter upgrades`);
+        const upgradedAdapters: UpgradedAdapter[] = [];
         const repoName = await this.getConfiguredRepositoryName();
         const repoInformation = await this.getRepository(repoName);
 
         const installedAdaptersConfig = await this.getAutoUpdateConfiguration();
 
         for (const adapterConfig of installedAdaptersConfig) {
-            this.logger.info(this.logPrefix + ' ' + JSON.stringify(adapterConfig));
-
             const repoAdapterInfo = repoInformation[adapterConfig.name];
             if (!repoAdapterInfo) {
                 continue;
@@ -91,12 +99,25 @@ export class AdapterAutoUpgradeManager {
                     { includePrerelease: true }
                 )
             ) {
-                await this.upgradeAdapter({ ...repoAdapterInfo, repoName });
-                this.logger.info(
-                    `${this.logPrefix} Successfully upgraded adapter "${repoAdapterInfo.name}" to ${repoAdapterInfo.version}`
-                );
+                try {
+                    await this.upgradeAdapter({ ...repoAdapterInfo, repoName });
+                    upgradedAdapters.push({
+                        name: repoAdapterInfo.name,
+                        newVersion: repoAdapterInfo.version,
+                        oldVersion: adapterConfig.version
+                    });
+                    this.logger.info(
+                        `${this.logPrefix} Successfully upgraded adapter "${repoAdapterInfo.name}" to ${repoAdapterInfo.version}`
+                    );
+                } catch (e) {
+                    this.logger.error(
+                        `${this.logPrefix} Could not upgrade adapter "${repoAdapterInfo.name}" to ${repoAdapterInfo.version}: ${e.message}`
+                    );
+                }
             }
         }
+
+        return upgradedAdapters;
     }
 
     /**

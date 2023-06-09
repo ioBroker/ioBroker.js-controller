@@ -2604,7 +2604,18 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     }
 
                     try {
-                        await autoUpgradeManager.upgradeAdapters();
+                        const upgradedAdapters = await autoUpgradeManager.upgradeAdapters();
+
+                        if (upgradedAdapters.length) {
+                            await notificationHandler.addMessage(
+                                'system',
+                                'automaticAdapterUpgradeSuccessful',
+                                upgradedAdapters
+                                    .map(entry => `${entry.name}: ${entry.oldVersion} -> ${entry.newVersion}`)
+                                    .join('\n'),
+                                `system.host.${hostname}`
+                            );
+                        }
                     } catch (e) {
                         logger.error(
                             `${hostLogPrefix} An error occurred while processing automatic adapter upgrades: ${e.message}`
