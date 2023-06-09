@@ -428,6 +428,9 @@
             "loglevel": "info",
             "icon": "admin.png",
             "messagebox": true,
+            "supportedMessages": {
+                "custom": true
+            },
             "enabled": true,
             "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/admin/admin.png",
             "keywords": [

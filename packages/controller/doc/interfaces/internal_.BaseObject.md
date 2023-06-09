@@ -63,7 +63,7 @@ The ID of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:608](https://github.com/ioBroker/ioBroker.js-controller/blob/d22bbffe/packages/types-dev/objects.d.ts#L608)
+[types-dev/objects.d.ts:623](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/types-dev/objects.d.ts#L623)
 
 ___
 
@@ -73,7 +73,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:615](https://github.com/ioBroker/ioBroker.js-controller/blob/d22bbffe/packages/types-dev/objects.d.ts#L615)
+[types-dev/objects.d.ts:630](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/types-dev/objects.d.ts#L630)
 
 ___
 
@@ -83,7 +83,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:613](https://github.com/ioBroker/ioBroker.js-controller/blob/d22bbffe/packages/types-dev/objects.d.ts#L613)
+[types-dev/objects.d.ts:628](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/types-dev/objects.d.ts#L628)
 
 ___
 
@@ -93,7 +93,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:614](https://github.com/ioBroker/ioBroker.js-controller/blob/d22bbffe/packages/types-dev/objects.d.ts#L614)
+[types-dev/objects.d.ts:629](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/types-dev/objects.d.ts#L629)
 
 ___
 
@@ -103,7 +103,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:616](https://github.com/ioBroker/ioBroker.js-controller/blob/d22bbffe/packages/types-dev/objects.d.ts#L616)
+[types-dev/objects.d.ts:631](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/types-dev/objects.d.ts#L631)
 
 ___
 
@@ -113,7 +113,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:612](https://github.com/ioBroker/ioBroker.js-controller/blob/d22bbffe/packages/types-dev/objects.d.ts#L612)
+[types-dev/objects.d.ts:627](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/types-dev/objects.d.ts#L627)
 
 ___
 
@@ -125,7 +125,7 @@ These properties can only be edited if correct password is provided
 
 #### Defined in
 
-[types-dev/objects.d.ts:621](https://github.com/ioBroker/ioBroker.js-controller/blob/d22bbffe/packages/types-dev/objects.d.ts#L621)
+[types-dev/objects.d.ts:636](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/types-dev/objects.d.ts#L636)
 
 ___
 
@@ -135,7 +135,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:619](https://github.com/ioBroker/ioBroker.js-controller/blob/d22bbffe/packages/types-dev/objects.d.ts#L619)
+[types-dev/objects.d.ts:634](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/types-dev/objects.d.ts#L634)
 
 ___
 
@@ -145,7 +145,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:609](https://github.com/ioBroker/ioBroker.js-controller/blob/d22bbffe/packages/types-dev/objects.d.ts#L609)
+[types-dev/objects.d.ts:624](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/types-dev/objects.d.ts#L624)
 
 ___
 
@@ -157,4 +157,4 @@ The user who created or updated this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:618](https://github.com/ioBroker/ioBroker.js-controller/blob/d22bbffe/packages/types-dev/objects.d.ts#L618)
+[types-dev/objects.d.ts:633](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/types-dev/objects.d.ts#L633)

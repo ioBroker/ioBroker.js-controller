@@ -105,6 +105,9 @@
       "zh-cn": "Javascript / Node.js实现了ioBroker控制器"
     },
     "messagebox": true,
+    "supportedMessages": {
+      "custom": true
+    },
     "readme": "https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md",
     "authors": [
       "bluefox <bluefox@gmail.com>",

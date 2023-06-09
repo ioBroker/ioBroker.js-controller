@@ -303,7 +303,7 @@ declare global {
         }
 
         type InstanceMode = 'none' | 'daemon' | 'subscribe' | 'schedule' | 'once' | 'extension';
-        interface InstanceCommon extends ObjectCommon {
+        interface InstanceCommon extends AdapterCommon {
             version: string;
             /** The name of the host where this instance is running */
             host: string;
@@ -327,7 +327,6 @@ declare global {
             compactGroup?: number;
             /** String (or array) with names of attributes in common of instance, which will not be deleted. */
             preserveSettings?: string | string[];
-            installedVersion?: string;
             installedFrom?: string;
             /** Arguments passed to the adapter process, this disables compact mode */
             nodeProcessParams?: string[];
@@ -439,6 +438,20 @@ declare global {
                   color: string;
               };
 
+        /**
+         * Object which defines, if the adapter supports receiving messages via sendTo.
+         * Additionally, it defines if specific messages are supported.
+         * If one property is enabled, the object `system.adapter.<adaptername>.<adapterinstance>.messagebox will be created to send messages to the adapter (used for email, pushover, etc...)
+         */
+        interface SupportedMessages {
+            /** If custom messages are supported (same as legacy messagebox) */
+            custom: boolean;
+            /** If notification handling is supported, for information, see https://github.com/foxriver76/ioBroker.notification-manager#requirements-for-messaging-adapters */
+            notifications: boolean;
+            /** If adapter supports signal stopInstance. Use number if you need more than 1000 ms for stop routine. The signal will be sent before stop to the adapter. (used if problems occurred with SIGTERM). */
+            stopInstance: boolean | number;
+        }
+
         interface AdapterCommon extends ObjectCommon {
             /** Custom attributes to be shown in admin in the object browser */
             adminColumns?: any[];
@@ -494,11 +507,13 @@ declare global {
             /** Path to the start file of the adapter. Should be the same as in `package.json` */
             main?: string;
             /** Whether the admin tab is written in materialize style. Required for Admin 3+ */
-            materializeTab: boolean;
+            materializeTab?: boolean;
             /** Whether the admin configuration dialog is written in materialize style. Required for Admin 3+ */
             materialize: boolean;
-            /** If `true`, the object `system.adapter.<adaptername>.<adapterinstance>.messagebox will be created to send messages to the adapter (used for email, pushover, etc...) */
+            /** @deprecated Use @see supportedMessages up from controller v5 */
             messagebox?: true;
+            /** Messages which are supported by the adapter, supportedMessages.custom: true is the equivalent to messagebox: true */
+            supportedMessages?: SupportedMessages;
             mode: InstanceMode;
             /** Name of the adapter (without leading `ioBroker.`) */
             name: string;
@@ -545,7 +560,7 @@ declare global {
             subscribe?: any; // ?
             /** If `true`, this adapter provides custom per-state settings. Requires a `custom_m.html` file in the `admin` directory. */
             supportCustoms?: boolean;
-            /** Whether the adapter supports the signal stopInstance via messagebox */
+            /** @deprecated Use @see supportedMessages up from controller v5 */
             supportStopInstance?: boolean;
             /** The translated names of this adapter to be shown in the admin UI */
             titleLang?: Record<Languages, string>;

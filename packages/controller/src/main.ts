@@ -5092,7 +5092,7 @@ async function stopInstance(id: string, force: boolean, callback?: (() => void) 
     );
 
     const instance = proc.config;
-    if (!instance || !instance.common || !instance.common.mode) {
+    if (!instance?.common?.mode) {
         if (proc.process) {
             proc.stopping = true;
             if (!proc.startedAsCompactGroup) {
@@ -5161,7 +5161,10 @@ async function stopInstance(id: string, force: boolean, callback?: (() => void) 
                         callback();
                         callback = null;
                     }
-                } else if (instance.common.messagebox && instance.common.supportStopInstance) {
+                } else if (
+                    (instance.common.messagebox && instance.common.supportStopInstance) ||
+                    instance.common.supportedMessages?.stopInstance
+                ) {
                     // Send to adapter signal "stopInstance" because on some systems SIGTERM does not work
                     sendTo(instance._id, 'stopInstance', null, result => {
                         const stopTimeout = stopTimeouts[id];
@@ -5190,10 +5193,10 @@ async function stopInstance(id: string, force: boolean, callback?: (() => void) 
                         }
                     });
 
-                    const timeoutDuration =
-                        instance.common.supportStopInstance === true
-                            ? 1_000
-                            : instance.common.supportStopInstance || 1_000;
+                    const supportStopInstanceVal: true | number =
+                        instance.common.supportStopInstance || instance.common.supportedMessages.stopInstance;
+
+                    const timeoutDuration = supportStopInstanceVal === true ? 1_000 : supportStopInstanceVal || 1_000;
                     // If no response from adapter, kill it in 1 second
                     stopTimeout.callback = callback;
                     stopTimeout.timeout = setTimeout(() => {
@@ -5203,7 +5206,7 @@ async function stopInstance(id: string, force: boolean, callback?: (() => void) 
                         if (stopTimeout) {
                             stopTimeout.timeout = null;
                         }
-                        if (proc && proc.process && !proc.startedAsCompactGroup) {
+                        if (proc?.process && !proc.startedAsCompactGroup) {
                             logger.info(
                                 `${hostLogPrefix} stopInstance timeout ${timeoutDuration} ${instance._id} killing pid  ${proc.process.pid}`
                             );

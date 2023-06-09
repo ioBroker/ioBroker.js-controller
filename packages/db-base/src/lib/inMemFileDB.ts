@@ -108,7 +108,7 @@ interface SubscriptionClient {
 export class InMemoryFileDB {
     private settings: FileDbSettings;
     private readonly change: ChangeFunction | undefined;
-    private dataset: Record<string, any>;
+    protected dataset: Record<string, any>;
     private readonly namespace: string;
     private lastSave: null | number;
     private stateTimer: NodeJS.Timeout | null;
