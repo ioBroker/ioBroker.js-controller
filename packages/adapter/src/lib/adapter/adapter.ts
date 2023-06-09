@@ -255,9 +255,9 @@ export interface AdapterClass {
     /** Subscribe from changes of states (which might not belong to this adapter) */
     unsubscribeForeignStatesAsync(pattern: string | string[], options?: unknown): Promise<void>;
     /** Subscribe to changes of states in this instance */
-    subscribeStatesAsync(pattern: string, options?: unknown): Promise<void>;
+    subscribeStatesAsync(pattern: Pattern, options?: unknown): Promise<void>;
     /** Subscribe from changes of states in this instance */
-    unsubscribeStatesAsync(pattern: string, options?: unknown): Promise<void>;
+    unsubscribeStatesAsync(pattern: Pattern, options?: unknown): Promise<void>;
     /**
      * Writes a binary state into Redis. The ID will not be prefixed with the adapter namespace.
      *
@@ -9451,8 +9451,8 @@ export class AdapterClass extends EventEmitter {
         return tools.maybeCallback(callback);
     }
 
-    subscribeForeignStates(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
-    subscribeForeignStates(pattern: string | string[], options: unknown, callback?: ioBroker.ErrorCallback): void;
+    subscribeForeignStates(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
+    subscribeForeignStates(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Subscribe for changes on all states of all adapters (and system states), that pass the pattern
@@ -9840,8 +9840,8 @@ export class AdapterClass extends EventEmitter {
         return tools.maybeCallback(callback);
     }
 
-    subscribeStates(pattern: string, callback?: ioBroker.ErrorCallback): void;
-    subscribeStates(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    subscribeStates(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
+    subscribeStates(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Subscribe for changes on all states of this instance, that pass the pattern
@@ -9856,34 +9856,26 @@ export class AdapterClass extends EventEmitter {
      * @param callback
      */
     subscribeStates(pattern: unknown, options: unknown, callback?: unknown): any {
-        // Todo check rights for options
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
 
+        Validator.assertPattern(pattern, 'pattern');
         Validator.assertOptionalCallback(callback, 'callback');
-        Validator.assertString(pattern, 'pattern');
-
-        if (!adapterStates) {
-            // if states is no longer existing, we do not need to unsubscribe
-            this._logger.info(
-                `${this.namespaceLog} subscribeStates not processed because States database not connected`
-            );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        if (options !== null && options !== undefined) {
+            Validator.assertObject(options, 'options');
         }
 
-        // Exception. Handle the '*' case automatically
-        if (!pattern || pattern === '*') {
-            adapterStates.subscribeUser(`${this.namespace}.*`, callback);
-        } else {
-            const fixedPattern = this._utils.fixId(pattern, true);
-            adapterStates.subscribeUser(fixedPattern, callback);
-        }
+        return this._subscribeForeignStates({
+            pattern: Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true),
+            options,
+            callback
+        });
     }
 
-    unsubscribeStates(pattern: string, callback?: ioBroker.ErrorCallback): void;
-    unsubscribeStates(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeStates(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeStates(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Unsubscribe for changes for given pattern for own states.
@@ -9900,29 +9892,22 @@ export class AdapterClass extends EventEmitter {
      * @param callback
      */
     unsubscribeStates(pattern: unknown, options: unknown, callback?: unknown): any {
-        // Todo check rights for options
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
 
-        Validator.assertString(pattern, 'pattern');
+        Validator.assertPattern(pattern, 'pattern');
         Validator.assertOptionalCallback(callback, 'callback');
-
-        if (!adapterStates) {
-            // if states is no longer existing, we do not need to unsubscribe
-            this._logger.info(
-                `${this.namespaceLog} unsubscribeStates not processed because States database not connected`
-            );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        if (options !== null && options !== undefined) {
+            Validator.assertObject(options, 'options');
         }
 
-        if (!pattern || pattern === '*') {
-            adapterStates.unsubscribeUser(`${this.namespace}.*`, callback);
-        } else {
-            const fixedPattern = this._utils.fixId(pattern, true);
-            adapterStates.unsubscribeUser(fixedPattern, callback);
-        }
+        return this._unsubscribeForeignStates({
+            pattern: Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true),
+            options,
+            callback
+        });
     }
 
     setForeignBinaryState(id: string, binary: Buffer, callback: ioBroker.SetStateCallback): void;
