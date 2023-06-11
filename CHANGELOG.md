@@ -43,6 +43,7 @@
 * (foxriver76) Fixed issue with certificate validity on leap years
 * (Apollon77/foxriver76) Make sure that all relevant files are removed when eraseOnUpload is used
 * (foxriver76) fix wrong hostname after backup restore
+* (bluefox) allow CLI vendor update without explicitly specifying vendor file (default file is used)
 * (Apollon77, foxriver76, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 
 **Developer relevant DEPRECATIONS/WARNINGS**
@@ -74,6 +75,8 @@
 * (foxriver76) Fix Typings for sendTo/sendToHost
 * (Bluefox) Add User permission check to requireLog
 * (foxriver76) added `nonEdit` property of objects to types and document functionality
+* (foxriver76) introduced constants for state quality
+* (foxriver76) `subscribeStates` now also accepts an array of ids
 * general dependency updates
 * code style optimizations and streamline code
 
