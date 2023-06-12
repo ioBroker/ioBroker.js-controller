@@ -26,7 +26,7 @@ Whether a user may create objects of this type
 
 #### Defined in
 
-[types-dev/index.d.ts:78](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/types-dev/index.d.ts#L78)
+[types-dev/index.d.ts:100](https://github.com/ioBroker/ioBroker.js-controller/blob/fb48eb1c/packages/types-dev/index.d.ts#L100)
 
 ___
 
@@ -38,7 +38,7 @@ Whether a user may delete objects of this type
 
 #### Defined in
 
-[types-dev/index.d.ts:80](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/types-dev/index.d.ts#L80)
+[types-dev/index.d.ts:102](https://github.com/ioBroker/ioBroker.js-controller/blob/fb48eb1c/packages/types-dev/index.d.ts#L102)
 
 ___
 
@@ -50,7 +50,7 @@ Whether a user may enumerate objects of this type
 
 #### Defined in
 
-[types-dev/index.d.ts:72](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/types-dev/index.d.ts#L72)
+[types-dev/index.d.ts:94](https://github.com/ioBroker/ioBroker.js-controller/blob/fb48eb1c/packages/types-dev/index.d.ts#L94)
 
 ___
 
@@ -62,7 +62,7 @@ Whether a user may read objects of this type
 
 #### Defined in
 
-[types-dev/index.d.ts:74](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/types-dev/index.d.ts#L74)
+[types-dev/index.d.ts:96](https://github.com/ioBroker/ioBroker.js-controller/blob/fb48eb1c/packages/types-dev/index.d.ts#L96)
 
 ___
 
@@ -74,4 +74,4 @@ Whether a user may write objects of this type
 
 #### Defined in
 
-[types-dev/index.d.ts:76](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/types-dev/index.d.ts#L76)
+[types-dev/index.d.ts:98](https://github.com/ioBroker/ioBroker.js-controller/blob/fb48eb1c/packages/types-dev/index.d.ts#L98)
