@@ -3022,66 +3022,63 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'readObjectsAsZip':
             if (msg.callback && msg.from) {
-                zipFiles.readObjectsAsZip(
-                    objects!,
-                    msg.message.id,
-                    msg.message.adapter,
-                    msg.message.options,
-                    (error, base64) => {
-                        // If client supports file via link
-                        if (msg.message.link) {
-                            if (!error && base64) {
-                                const buff = Buffer.from(base64, 'base64');
-                                if (msg.message.fileStorageNamespace) {
-                                    objects!.writeFile(
-                                        msg.message.fileStorageNamespace,
-                                        `zip/${msg.message.link}`,
-                                        buff,
-                                        err => {
-                                            if (err) {
-                                                sendTo(msg.from, msg.command, { error: err }, msg.callback);
-                                            } else {
-                                                sendTo(
-                                                    msg.from,
-                                                    msg.command,
-                                                    `${msg.message.fileStorageNamespace}/zip/${msg.message.link}`,
-                                                    msg.callback
-                                                );
-                                            }
-                                        }
-                                    );
-                                } else {
-                                    logger.warn(
-                                        `${hostLogPrefix} Saving in binary state "${hostObjectPrefix}.zip.${msg.message.link}" is deprecated. ` +
-                                            'Please add the "fileStorageNamespace" attribute to request (with e.g. "admin.0" value)' + 
-                                            ` to save ZIP in file as "zip/${msg.message.link}"`
-                                    );
+                let base64: string;
+                try {
+                    base64 = await zipFiles.readObjectsAsZip(
+                        objects!,
+                        msg.message.id,
+                        msg.message.adapter,
+                        msg.message.options
+                    );
+                } catch (e) {
+                    sendTo(msg.from, msg.command, { error: e }, msg.callback);
+                    return;
+                }
 
-                                    states!.setBinaryState(`${hostObjectPrefix}.zip.${msg.message.link}`, buff, err => {
-                                        if (err) {
-                                            sendTo(msg.from, msg.command, { error: err }, msg.callback);
-                                        } else {
-                                            sendTo(
-                                                msg.from,
-                                                msg.command,
-                                                `${hostObjectPrefix}.zip.${msg.message.link}`,
-                                                msg.callback
-                                            );
-                                        }
-                                    });
-                                }
-                            } else {
-                                sendTo(msg.from, msg.command, { error }, msg.callback);
-                            }
-                        } else {
-                            if (base64) {
-                                sendTo(msg.from, msg.command, { error, data: base64 }, msg.callback);
-                            } else {
-                                sendTo(msg.from, msg.command, { error }, msg.callback);
-                            }
+                // If client supports file via link
+                if (msg.message.link) {
+                    const buff = Buffer.from(base64, 'base64');
+                    if (msg.message.fileStorageNamespace) {
+                        try {
+                            await objects!.writeFileAsync(
+                                msg.message.fileStorageNamespace,
+                                `zip/${msg.message.link}`,
+                                buff
+                            );
+                        } catch (e) {
+                            sendTo(msg.from, msg.command, { error: e }, msg.callback);
+                            return;
                         }
+
+                        sendTo(
+                            msg.from,
+                            msg.command,
+                            `${msg.message.fileStorageNamespace}/zip/${msg.message.link}`,
+                            msg.callback
+                        );
+                    } else {
+                        logger.warn(
+                            `${hostLogPrefix} Saving in binary state "${hostObjectPrefix}.zip.${msg.message.link}" is deprecated. ` +
+                                'Please add the "fileStorageNamespace" attribute to request (with e.g. "admin.0" value)' +
+                                ` to save ZIP in file as "zip/${msg.message.link}"`
+                        );
+
+                        states!.setBinaryState(`${hostObjectPrefix}.zip.${msg.message.link}`, buff, err => {
+                            if (err) {
+                                sendTo(msg.from, msg.command, { error: err }, msg.callback);
+                            } else {
+                                sendTo(
+                                    msg.from,
+                                    msg.command,
+                                    `${hostObjectPrefix}.zip.${msg.message.link}`,
+                                    msg.callback
+                                );
+                            }
+                        });
                     }
-                );
+                } else {
+                    sendTo(msg.from, msg.command, { data: base64 }, msg.callback);
+                }
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
