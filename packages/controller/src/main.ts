@@ -3052,8 +3052,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                     );
                                 } else {
                                     logger.warn(
-                                        `${hostLogPrefix} Saving in binary states is deprecated.` +
-                                            'Please add the "fileStorageNamespace" attribute to request (with e.g. "admin.0" value) to save ZIP in file as "${hostObjectPrefix}.zip.${msg.message.link}"'
+                                        `${hostLogPrefix} Saving in binary state "${hostObjectPrefix}.zip.${msg.message.link}" is deprecated. ` +
+                                            'Please add the "fileStorageNamespace" attribute to request (with e.g. "admin.0" value)' + 
+                                            ` to save ZIP in file as "zip/${msg.message.link}"`
                                     );
 
                                     states!.setBinaryState(`${hostObjectPrefix}.zip.${msg.message.link}`, buff, err => {
