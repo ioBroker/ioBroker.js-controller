@@ -3032,9 +3032,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         if (msg.message.link) {
                             if (!error && base64) {
                                 const buff = Buffer.from(base64, 'base64');
-                                if (msg.message.storeToFile) {
+                                if (msg.message.fileStorageNamespace) {
                                     objects!.writeFile(
-                                        msg.message.storeToFile,
+                                        msg.message.fileStorageNamespace,
                                         `zip/${msg.message.link}`,
                                         buff,
                                         err => {
@@ -3044,7 +3044,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                                 sendTo(
                                                     msg.from,
                                                     msg.command,
-                                                    `${msg.message.storeToFile}/zip/${msg.message.link}`,
+                                                    `${msg.message.fileStorageNamespace}/zip/${msg.message.link}`,
                                                     msg.callback
                                                 );
                                             }
@@ -3053,7 +3053,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                 } else {
                                     logger.warn(
                                         `${hostLogPrefix} Saving in binary states is deprecated.` +
-                                            'Please add the "storeToFile" attribute to request (with e.g. "admin.0" value) to save ZIP in file'
+                                            'Please add the "fileStorageNamespace" attribute to request (with e.g. "admin.0" value) to save ZIP in file as "${hostObjectPrefix}.zip.${msg.message.link}"'
                                     );
 
                                     states!.setBinaryState(`${hostObjectPrefix}.zip.${msg.message.link}`, buff, err => {
