@@ -3,7 +3,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## 5.0.2 (2023-06-11) - Jana
+## 5.0.3 (2023-06-13) - Jana
 **BREAKING CHANGES**
 * Support for Node.js 12 is dropped! Supported are Node.js 14.18.0+, 16.4.0+ and 18.x
 * Backups created with the new js-controller version cannot be restored on hosts with lower js-controller version!
