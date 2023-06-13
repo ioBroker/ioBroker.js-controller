@@ -398,10 +398,10 @@ declare global {
         /** Infers the return type from a callback-style API and and leaves null and undefined in */
         type CallbackReturnTypeOf<T extends (...args: any[]) => any> = SecondParameterOf<T>;
 
-        type GetStateCallback = (err: Error | null, state?: State | null) => void;
+        type GetStateCallback = (err?: Error | null, state?: State | null) => void;
         type GetStatePromise = Promise<CallbackReturnTypeOf<GetStateCallback>>;
 
-        type GetStatesCallback = (err: Error | null, states?: Record<string, State>) => void;
+        type GetStatesCallback = (err?: Error | null, states?: Record<string, State>) => void;
         type GetStatesPromise = Promise<NonNullCallbackReturnTypeOf<GetStatesCallback>>;
 
         type GetBinaryStateCallback = (err?: Error | null, state?: Buffer) => void;
