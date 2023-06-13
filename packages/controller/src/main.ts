@@ -2298,7 +2298,7 @@ async function sendTo(
 
 async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host): Promise<Record<string, any> | null | undefined> {
     const state = await states!.getState(`${hostId}.alive`);
-    if (state && state.val) {
+    if (state?.val) {
         return new Promise(resolve => {
             let timeout: NodeJS.Timeout | null = setTimeout(() => {
                 timeout = null;
@@ -2358,13 +2358,13 @@ async function startAdapterUpload(): Promise<void> {
     const logger = msg.from
         ? {
               log: (text: string) =>
-                  // @ts-expect-error formally text is not allowed in Message, why not warpped in message payload property?
+                  // @ts-expect-error formally text is not allowed in Message, why not wrapped in message payload property?
                   states!.pushMessage(msg.from, { command: 'log', text, from: `system.host.${hostname}` }),
               warn: (text: string) =>
-                  // @ts-expect-error formally text is not allowed in Message, why not warpped in message payload property?
+                  // @ts-expect-error formally text is not allowed in Message, why not wrapped in message payload property?
                   states!.pushMessage(msg.from, { command: 'warn', text, from: `system.host.${hostname}` }),
               error: (text: string) =>
-                  // @ts-expect-error formally text is not allowed in Message, why not warpped in message payload property?
+                  // @ts-expect-error formally text is not allowed in Message, why not wrapped in message payload property?
                   states!.pushMessage(msg.from, { command: 'error', text, from: `system.host.${hostname}` })
           }
         : undefined;

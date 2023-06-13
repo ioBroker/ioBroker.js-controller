@@ -1,11 +1,13 @@
 import { ChildProcessPromise, exec as execAsync } from 'promisify-child-process';
-import { tools } from '@iobroker/js-controller-common';
+import { tools, logger } from '@iobroker/js-controller-common';
 import { valid } from 'semver';
 import { dbConnectAsync } from '@iobroker/js-controller-cli';
 import http from 'http';
 import https from 'https';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import { setTimeout as wait } from 'timers/promises';
+import type { Logger } from 'winston';
+import fs from 'fs-extra';
 
 interface UpgradeArguments {
     /** Version of controller to upgrade too */
@@ -66,13 +68,26 @@ class UpgradeManager {
     };
     /** Used to stop the stop shutdown timeout */
     private shutdownAbortController?: AbortController;
+    /** Logger to log to file and other transports */
+    private readonly logger: Logger;
 
     /** The server used for communicating upgrade status */
     private server?: https.Server | http.Server;
+    /** Name of the host for logging purposes */
+    private readonly hostname = tools.getHostName();
 
     constructor(args: UpgradeArguments) {
         this.adminInstance = args.adminInstance;
         this.version = args.version;
+        this.logger = this.setupLogger();
+    }
+
+    /**
+     * Set up the logger, to stream to file and other configured transports
+     */
+    setupLogger(): Logger {
+        const config = fs.readJSONSync(tools.getConfigFileName());
+        return logger({ ...config.log, noStdout: false });
     }
 
     /**
@@ -107,12 +122,12 @@ class UpgradeManager {
      */
     log(message: string, error = false): void {
         if (error) {
-            console.error(message);
+            this.logger.error(`host.${this.hostname} [CONTROLLER_AUTO_UPGRADE] ${message}`);
             this.response.stderr.push(message);
             return;
         }
 
-        console.info(message);
+        this.logger.info(`host.${this.hostname} [CONTROLLER_AUTO_UPGRADE] ${message}`);
         this.response.stdout.push(message);
     }
 
@@ -147,8 +162,15 @@ class UpgradeManager {
             debug: true
         });
 
-        this.response.stderr = res.stderr.split('\n');
-        this.response.stdout = res.stdout.split('\n');
+        this.response.stderr.push(...res.stderr.split('\n'));
+        this.response.stdout.push(...res.stdout.split('\n'));
+
+        if (res.stderr) {
+            this.log(res.stderr, true);
+        } else if (res.stdout) {
+            this.log(res.stdout);
+        }
+
         this.response.success = res.success;
 
         if (!res.success) {
@@ -308,10 +330,16 @@ class UpgradeManager {
      */
     async startShutdownTimeout(): Promise<void> {
         this.shutdownAbortController = new AbortController();
-        await wait(this.SHUTDOWN_TIMEOUT, null, { signal: this.shutdownAbortController.signal });
+        try {
+            await wait(this.SHUTDOWN_TIMEOUT, null, { signal: this.shutdownAbortController.signal });
 
-        this.log('Timeout expired, initializing shutdown');
-        this.shutdownApp();
+            this.log('Timeout expired, initializing shutdown');
+            this.shutdownApp();
+        } catch (e) {
+            if (e.code !== 'ABORT_ERR') {
+                this.log(e.message, true);
+            }
+        }
     }
 }
 
