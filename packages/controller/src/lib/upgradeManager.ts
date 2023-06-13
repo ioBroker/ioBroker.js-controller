@@ -85,7 +85,7 @@ class UpgradeManager {
     /**
      * Set up the logger, to stream to file and other configured transports
      */
-    setupLogger(): Logger {
+    private setupLogger(): Logger {
         const config = fs.readJSONSync(tools.getConfigFileName());
         return logger({ ...config.log, noStdout: false });
     }
