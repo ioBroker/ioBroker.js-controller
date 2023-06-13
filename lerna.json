@@ -1,22 +1,17 @@
 {
-  "useWorkspaces": true,
-  "version": "5.0.2",
-  "//": "Set up some command options",
-  "command": {
-    "//": "Running a script should show the output while it is generated",
-    "run": {
-      "stream": true
-    },
-    "version": {
-      "//": "This is required for the release-script",
-      "allowBranch": [
-        "master",
-        "*.x"
-      ],
-      "ignoreChanges": [
-        "*.md"
-      ],
-      "exact": true
+    "useWorkspaces": true,
+    "version": "5.0.3-alpha.0-20230613-ac19e215",
+    "//": "Set up some command options",
+    "command": {
+        "//": "Running a script should show the output while it is generated",
+        "run": {
+            "stream": true
+        },
+        "version": {
+            "//": "This is required for the release-script",
+            "allowBranch": ["master", "*.x"],
+            "ignoreChanges": ["*.md"],
+            "exact": true
+        }
     }
-  }
 }
