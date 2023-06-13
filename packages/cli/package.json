@@ -16,7 +16,7 @@
         "fs-extra": "^11.1.0",
         "mime-types": "^2.1.35",
         "readline-sync": "^1.4.10",
-        "semver": "^7.3.7",
+        "semver": "^7.5.1",
         "yargs": "^17.6.2"
     },
     "keywords": [
