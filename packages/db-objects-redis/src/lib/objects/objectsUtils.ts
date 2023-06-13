@@ -7,7 +7,6 @@
  *
  */
 
-'use strict';
 import { Writable, WritableOptions } from 'stream';
 import path from 'path';
 import deepClone from 'deep-clone';
