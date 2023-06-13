@@ -1021,8 +1021,8 @@ export class BackupRestore {
     /**
      * Restores a backup
      *
-     * @param _name - backup name or index
-     * @param force - if force, js-controller is allowed to have a different version
+     * @param _name - backup name, absolute path or index
+     * @param force - if force flag is set, js-controller is allowed to have a different version
      * @param dontDeleteAdapters - skip adapter deletion, e.g. for setup custom db migration
      * @param callback
      */
@@ -1080,7 +1080,7 @@ export class BackupRestore {
             name = BackupRestore.getBackupDir() + name;
             const regEx = new RegExp(`_backup${tools.appName}`, 'i');
             if (!regEx.test(name)) {
-                name += '_backup' + tools.appName;
+                name += `_backup${tools.appName}`;
             }
             if (!name.match(/\.tar\.gz$/i)) {
                 name += '.tar.gz';
@@ -1092,7 +1092,9 @@ export class BackupRestore {
         }
 
         // delete /backup/backup.json
-        fs.existsSync(`${tmpDir}/backup/backup.json`) && fs.unlinkSync(`${tmpDir}/backup/backup.json`);
+        if (fs.existsSync(`${tmpDir}/backup/backup.json`)) {
+            fs.unlinkSync(`${tmpDir}/backup/backup.json`);
+        }
 
         tar.extract(
             {

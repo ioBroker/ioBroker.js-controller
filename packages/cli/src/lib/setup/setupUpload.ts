@@ -623,10 +623,10 @@ export class Upload {
                 await this.checkRestartOther(adapter);
                 await new Promise<void>(resolve => setTimeout(() => resolve(), 25));
                 // @ts-expect-error TODO rev is not required and should not exist on an object?
-                await this.upload(adapter, isAdmin, files, id, result && result.rev, logger);
+                await this.upload(adapter, isAdmin, files, id, result?.rev, logger);
             } else {
                 // @ts-expect-error TODO rev is not required and should not exist on an object?
-                await this.upload(adapter, isAdmin, files, id, result && result.rev, logger);
+                await this.upload(adapter, isAdmin, files, id, result?.rev, logger);
             }
         }
         return adapter;
