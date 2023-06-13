@@ -1,6 +1,6 @@
 {
     "name": "iobroker.js-controller",
-    "version": "5.0.1-alpha.0-20230611-fb48eb1c",
+    "version": "5.0.3-alpha.0-20230613-ac19e215",
     "engines": {
         "node": ">=16.4.0"
     },
@@ -37,7 +37,6 @@
         "jsonwebtoken": "^9.0.0",
         "jszip": "^3.10.1",
         "loadavg-windows": "^1.1.1",
-        "mime": "^3.0.0",
         "node-schedule": "^2.1.1",
         "pidusage": "^3.0.2",
         "promisify-child-process": "^4.1.1",

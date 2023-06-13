@@ -2298,7 +2298,7 @@ async function sendTo(
 
 async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host): Promise<Record<string, any> | null | undefined> {
     const state = await states!.getState(`${hostId}.alive`);
-    if (state && state.val) {
+    if (state?.val) {
         return new Promise(resolve => {
             let timeout: NodeJS.Timeout | null = setTimeout(() => {
                 timeout = null;
@@ -2358,13 +2358,13 @@ async function startAdapterUpload(): Promise<void> {
     const logger = msg.from
         ? {
               log: (text: string) =>
-                  // @ts-expect-error formally text is not allowed in Message, why not warpped in message payload property?
+                  // @ts-expect-error formally text is not allowed in Message, why not wrapped in message payload property?
                   states!.pushMessage(msg.from, { command: 'log', text, from: `system.host.${hostname}` }),
               warn: (text: string) =>
-                  // @ts-expect-error formally text is not allowed in Message, why not warpped in message payload property?
+                  // @ts-expect-error formally text is not allowed in Message, why not wrapped in message payload property?
                   states!.pushMessage(msg.from, { command: 'warn', text, from: `system.host.${hostname}` }),
               error: (text: string) =>
-                  // @ts-expect-error formally text is not allowed in Message, why not warpped in message payload property?
+                  // @ts-expect-error formally text is not allowed in Message, why not wrapped in message payload property?
                   states!.pushMessage(msg.from, { command: 'error', text, from: `system.host.${hostname}` })
           }
         : undefined;
@@ -3022,40 +3022,63 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'readObjectsAsZip':
             if (msg.callback && msg.from) {
-                zipFiles.readObjectsAsZip(
-                    objects!,
-                    msg.message.id,
-                    msg.message.adapter,
-                    msg.message.options,
-                    (error, base64) => {
-                        // If client supports file via link
-                        if (msg.message.link) {
-                            if (!error && base64) {
-                                const buff = Buffer.from(base64, 'base64');
-                                states!.setBinaryState(`${hostObjectPrefix}.zip.${msg.message.link}`, buff, err => {
-                                    if (err) {
-                                        sendTo(msg.from, msg.command, { error: err }, msg.callback);
-                                    } else {
-                                        sendTo(
-                                            msg.from,
-                                            msg.command,
-                                            `${hostObjectPrefix}.zip.${msg.message.link}`,
-                                            msg.callback
-                                        );
-                                    }
-                                });
-                            } else {
-                                sendTo(msg.from, msg.command, { error }, msg.callback);
-                            }
-                        } else {
-                            if (base64) {
-                                sendTo(msg.from, msg.command, { error, data: base64 }, msg.callback);
-                            } else {
-                                sendTo(msg.from, msg.command, { error }, msg.callback);
-                            }
+                let base64: string;
+                try {
+                    base64 = await zipFiles.readObjectsAsZip(
+                        objects!,
+                        msg.message.id,
+                        msg.message.adapter,
+                        msg.message.options
+                    );
+                } catch (e) {
+                    sendTo(msg.from, msg.command, { error: e }, msg.callback);
+                    return;
+                }
+
+                // If client supports file via link
+                if (msg.message.link) {
+                    const buff = Buffer.from(base64, 'base64');
+                    if (msg.message.fileStorageNamespace) {
+                        try {
+                            await objects!.writeFileAsync(
+                                msg.message.fileStorageNamespace,
+                                `zip/${msg.message.link}`,
+                                buff
+                            );
+                        } catch (e) {
+                            sendTo(msg.from, msg.command, { error: e }, msg.callback);
+                            return;
                         }
+
+                        sendTo(
+                            msg.from,
+                            msg.command,
+                            `${msg.message.fileStorageNamespace}/zip/${msg.message.link}`,
+                            msg.callback
+                        );
+                    } else {
+                        logger.warn(
+                            `${hostLogPrefix} Saving in binary state "${hostObjectPrefix}.zip.${msg.message.link}" is deprecated. ` +
+                                'Please add the "fileStorageNamespace" attribute to request (with e.g. "admin.0" value)' +
+                                ` to save ZIP in file as "zip/${msg.message.link}"`
+                        );
+
+                        states!.setBinaryState(`${hostObjectPrefix}.zip.${msg.message.link}`, buff, err => {
+                            if (err) {
+                                sendTo(msg.from, msg.command, { error: err }, msg.callback);
+                            } else {
+                                sendTo(
+                                    msg.from,
+                                    msg.command,
+                                    `${hostObjectPrefix}.zip.${msg.message.link}`,
+                                    msg.callback
+                                );
+                            }
+                        });
                     }
-                );
+                } else {
+                    sendTo(msg.from, msg.command, { data: base64 }, msg.callback);
+                }
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }

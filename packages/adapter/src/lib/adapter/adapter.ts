@@ -8650,7 +8650,6 @@ export class AdapterClass extends EventEmitter {
             this._logger.info(
                 `${this.namespaceLog} getForeignState not processed because States database not connected`
             );
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -8658,14 +8657,12 @@ export class AdapterClass extends EventEmitter {
             this._logger.info(
                 `${this.namespaceLog} getForeignState not processed because Objects database not connected`
             );
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         try {
             this._utils.validateId(id, true, options);
         } catch (err) {
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
             return tools.maybeCallbackWithError(callback, err);
         }
 
@@ -8682,7 +8679,6 @@ export class AdapterClass extends EventEmitter {
                 obj = (await adapterObjects.getObject(id, options)) as ioBroker.StateObject | null | undefined;
             }
         } catch (e) {
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
             return tools.maybeCallbackWithError(callback, e);
         }
 
@@ -8702,11 +8698,7 @@ export class AdapterClass extends EventEmitter {
                     this._utils.validateId(aliasId, true, null);
                 } catch (e) {
                     this._logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
-                    return tools.maybeCallbackWithError(
-                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                        callback,
-                        `Error validating alias id of ${id}: ${e.message}`
-                    );
+                    return tools.maybeCallbackWithError(callback, `Error validating alias id of ${id}: ${e.message}`);
                 }
 
                 if (aliasId) {
@@ -8721,7 +8713,6 @@ export class AdapterClass extends EventEmitter {
                                 | undefined;
                         }
                     } catch (e) {
-                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                         return tools.maybeCallbackWithError(callback, e);
                     }
 
@@ -8734,13 +8725,11 @@ export class AdapterClass extends EventEmitter {
                             // @ts-expect-error void return possible fix it
                             state = await adapterStates!.getState(aliasId);
                         } catch (e) {
-                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                             return tools.maybeCallbackWithError(callback, e);
                         }
                     }
 
                     return tools.maybeCallbackWithError(
-                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                         callback,
                         null,
                         tools.formatAliasValue({
@@ -8756,15 +8745,12 @@ export class AdapterClass extends EventEmitter {
                 }
             } else {
                 this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 8`);
-                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                 return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
             }
         } else {
             if (this.oStates && this.oStates[id]) {
-                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                 return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
             } else {
-                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                 return adapterStates!.getState(id, callback);
             }
         }
@@ -9098,7 +9084,6 @@ export class AdapterClass extends EventEmitter {
     ): void {
         adapterStates!.getStates(keys, (err, arr) => {
             if (err) {
-                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                 return tools.maybeCallbackWithError(callback, err);
             }
 
@@ -9235,7 +9220,7 @@ export class AdapterClass extends EventEmitter {
             this._logger.info(
                 `${this.namespaceLog} getForeignStates not processed because States database not connected`
             );
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -9244,7 +9229,7 @@ export class AdapterClass extends EventEmitter {
             this._logger.info(
                 `${this.namespaceLog} getForeignStates not processed because Objects database not connected`
             );
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -9255,7 +9240,6 @@ export class AdapterClass extends EventEmitter {
                     const { objs, ids } = await this._checkStates(pattern, options, 'getState');
                     this._processStates(ids, objs, callback);
                 } catch (e) {
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                     return tools.maybeCallbackWithError(callback, e);
                 }
             } else {
@@ -9281,7 +9265,6 @@ export class AdapterClass extends EventEmitter {
             if (options.user === SYSTEM_ADMIN_USER && options.maintenance) {
                 adapterStates.getKeys(pattern, (err, keys) => {
                     if (err) {
-                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                         return tools.maybeCallbackWithError(callback, err);
                     } else {
                         this._processStatesSecondary(keys || [], null, null, callback);
@@ -9296,11 +9279,9 @@ export class AdapterClass extends EventEmitter {
                     options.checked = undefined;
                 }
                 if (err) {
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                     return tools.maybeCallbackWithError(callback, err);
                 }
                 if (!res || !res.rows) {
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                     return tools.maybeCallbackWithError(callback, null, {});
                 }
                 const keys = [];
@@ -9309,16 +9290,21 @@ export class AdapterClass extends EventEmitter {
                 // filter out
                 let regEx;
                 // process patterns like "*.someValue". The patterns "someValue.*" will be processed by getObjectView
-                if (pattern !== '*' && pattern[pattern.length - 1] !== '*') {
-                    regEx = new RegExp(tools.pattern2RegEx(pattern));
-                }
-                for (let i = 0; i < res.rows.length; i++) {
-                    const id = res.rows[i].id;
-                    if (id && (!regEx || regEx.test(id))) {
-                        keys.push(id);
-                        objs.push(res.rows[i].value);
+                try {
+                    if (pattern !== '*' && pattern[pattern.length - 1] !== '*') {
+                        regEx = new RegExp(tools.pattern2RegEx(pattern));
                     }
+                    for (const row of res.rows) {
+                        const id = row.id;
+                        if (id && (!regEx || regEx.test(id))) {
+                            keys.push(id);
+                            objs.push(row.value);
+                        }
+                    }
+                } catch (e) {
+                    return tools.maybeCallbackWithError(callback, e);
                 }
+
                 options._objects = objs;
                 this.getForeignStates(keys, options, callback);
             });
@@ -10794,7 +10780,7 @@ export class AdapterClass extends EventEmitter {
                     } catch {
                         // ignore
                     }
-                    if (!state || !state.val) {
+                    if (!state?.val) {
                         this.patterns = {};
                     } else {
                         try {

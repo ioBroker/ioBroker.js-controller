@@ -12,7 +12,7 @@ import { tools } from '@iobroker/js-controller-common';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual } from 'util';
 import axios from 'axios';
-import mime from 'mime';
+import mime from 'mime-types';
 import { join } from 'path';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
@@ -408,7 +408,7 @@ export class Upload {
                 continue;
             }
 
-            const mimeType = mime.getType(file);
+            const mimeType = mime.lookup(file);
             let attNameArr = file.split(this.regApp);
             // try to find anyway if adapter is not lower case
             if (attNameArr.length === 1 && file.toLowerCase().includes(tools.appName.toLowerCase())) {
@@ -623,10 +623,10 @@ export class Upload {
                 await this.checkRestartOther(adapter);
                 await new Promise<void>(resolve => setTimeout(() => resolve(), 25));
                 // @ts-expect-error TODO rev is not required and should not exist on an object?
-                await this.upload(adapter, isAdmin, files, id, result && result.rev, logger);
+                await this.upload(adapter, isAdmin, files, id, result?.rev, logger);
             } else {
                 // @ts-expect-error TODO rev is not required and should not exist on an object?
-                await this.upload(adapter, isAdmin, files, id, result && result.rev, logger);
+                await this.upload(adapter, isAdmin, files, id, result?.rev, logger);
             }
         }
         return adapter;
