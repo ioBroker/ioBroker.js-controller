@@ -30,6 +30,10 @@ async function calcProject(
             continue;
         }
 
+        if (!(await objects.fileExists(`vis.${instance}`, `/${project.file}/vis-views.json`))) {
+            continue;
+        }
+
         // calculate datapoints in one project
         const data = await objects.readFile(`vis.${instance}`, `/${project.file}/vis-views.json`);
         let json;
