@@ -17,7 +17,7 @@
     "importsNotUsedAsValues": "error",
     // Avoid TS errors in external dependencies
     "skipLibCheck": true,
-    // Enable syntax help for importes JSON files
+    // Enable syntax help for imports JSON files
     "resolveJsonModule": true,
     "useUnknownInCatchVariables": false,
     "typeRoots": [
