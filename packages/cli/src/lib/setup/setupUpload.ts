@@ -610,7 +610,12 @@ export class Upload {
 
         if (forceUpload) {
             // only skip if explicitly opted out
-            if (cfg?.common?.eraseOnUpload !== false) {
+            // The visualization check is needed as user of legacy systems often stored files inside adapter directories like `vis`
+            // in the long term, such adapters should explicitly opt out, so we can hopefully remove this line in 2-3 versions (current 5.0)
+            if (
+                cfg?.common?.eraseOnUpload !== false &&
+                !(cfg?.common?.eraseOnUpload === undefined && cfg?.common?.type === 'visualization')
+            ) {
                 const { filesToDelete } = await this.collectExistingFilesToDelete(
                     isAdmin ? `${adapter}.admin` : adapter,
                     '/',

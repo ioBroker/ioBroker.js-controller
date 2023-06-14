@@ -439,7 +439,7 @@ declare global {
             createdAt?: number;
         }
         type ReadDirCallback = (err?: NodeJS.ErrnoException | null, entries?: ReadDirResult[]) => void;
-        type ReadDirPromise = Promise<NonNullCallbackReturnTypeOf<ReadDirCallback>>;
+        type ReadDirPromise = Promise<ReadDirResult[]>;
 
         type ReadFileCallback = (err?: NodeJS.ErrnoException | null, data?: Buffer | string, mimeType?: string) => void;
         type ReadFilePromise = Promise<{ file: string | Buffer; mimeType?: string }>;
