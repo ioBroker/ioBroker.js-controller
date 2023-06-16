@@ -1,5 +1,3 @@
-import deepClone from 'deep-clone';
-
 /**
  * Constants needed for adapter.js
  */
