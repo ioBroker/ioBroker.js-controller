@@ -347,12 +347,19 @@ function getMac(callback: (e?: Error | null, mac?: string) => void): void {
             }
 
             if (result === null) {
-                callback(new Error('could not determine the mac address from:\n' + stdout));
+                callback(new Error(`could not determine the mac address from:\n${stdout}`));
             } else {
                 callback(null, result.replace(/-/g, ':').toLowerCase());
             }
         }
     });
+}
+
+/**
+ * Controller UI upgrade is not supported on Windows and MacOS
+ */
+export function isControllerUiUpgradeSupported(): boolean {
+    return !['win32', 'darwin'].includes(os.platform());
 }
 
 /**
@@ -543,7 +550,7 @@ export async function createUuid(objects: any): Promise<void | string> {
     );
     const promiseCheckUuid = new Promise<void | string>(resolve =>
         objects.getObject('system.meta.uuid', (err: Error | null, obj: ioBroker.Object) => {
-            if (!err && obj && obj.native && obj.native.uuid) {
+            if (!err && obj?.native?.uuid) {
                 const PROBLEM_UUIDS = [
                     'ab265f4a-67f9-a46a-c0b2-61e4b95cefe5',
                     '7abd3182-d399-f7bd-da19-9550d8babede',

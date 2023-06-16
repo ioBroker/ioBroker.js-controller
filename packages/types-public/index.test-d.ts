@@ -490,7 +490,10 @@ adapter.getHistory('state.id', {}, (_err, _result?: ioBroker.GetHistoryResult) =
 (() => adapter.terminate('Reason'))();
 (() => adapter.terminate('Reason', 4))();
 
+// @ts-expect-error
 adapter.supportsFeature && !!adapter.supportsFeature('foo');
+adapter.supportsFeature && !!adapter.supportsFeature('ADAPTER_SET_OBJECT_SETS_DEFAULT_VALUE');
+
 () => {
     const instance = adapter.getPluginInstance('my-plugin');
     instance && instance.someMethod();
