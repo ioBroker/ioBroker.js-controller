@@ -4941,7 +4941,7 @@ export class AdapterClass extends EventEmitter {
             id += (id ? '.' : '') + channel;
         }
 
-        if (stateOrPoint !== true && stateOrPoint !== false) {
+        if (typeof stateOrPoint === 'string') {
             if (stateOrPoint) {
                 id += (id ? '.' : '') + stateOrPoint;
             }
@@ -5741,8 +5741,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    deleteState(stateName: string, options?: unknown, callback?: ioBroker.ErrorCallback): void;
     deleteState(parentChannel: string, stateName: string, options?: unknown, callback?: ioBroker.ErrorCallback): void;
+    deleteState(stateName: string, options?: unknown, callback?: ioBroker.ErrorCallback): void;
     deleteState(
         parentDevice: string,
         parentChannel: string,
@@ -5754,7 +5754,7 @@ export class AdapterClass extends EventEmitter {
     deleteState(
         parentDevice: unknown,
         parentChannel: unknown,
-        stateName: unknown,
+        stateName?: unknown,
         options?: unknown,
         callback?: unknown
     ): any {
@@ -5791,6 +5791,9 @@ export class AdapterClass extends EventEmitter {
                 parentDevice = '';
             }
         }
+
+        parentChannel = parentChannel ?? '';
+        stateName = stateName ?? '';
 
         Validator.assertString(parentDevice, 'parentDevice');
         Validator.assertString(parentChannel, 'parentChannel');
