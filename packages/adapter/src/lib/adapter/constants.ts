@@ -1,3 +1,5 @@
+import deepClone from 'deep-clone';
+
 /**
  * Constants needed for adapter.js
  */
@@ -47,7 +49,9 @@ export enum STATE_QUALITY {
     /** The sensor has reported an error */
     SENSOR_ERROR_REPORT = 0x84
 }
-export const SUPPORTED_FEATURES = [
+
+/** Using the const array just for type inference */
+const SUPPORTED_FEATURES_INTERNAL = [
     'ALIAS', // Alias Feature supported, Since `js-controller` 2.0
     'ALIAS_SEPARATE_READ_WRITE_ID', // Alias support separated ids for read and write, Since `js-controller` 3.0
     'ADAPTER_GETPORT_BIND', // getPort method of adapter supports second parameter to bind to a special network interface, Since js-controller 2.0
@@ -64,7 +68,11 @@ export const SUPPORTED_FEATURES = [
     'CUSTOM_FULL_VIEW', // `getObjectView('system', 'custom-full', ...)` will return full objects and not only `common.custom` part. Since `js-controller` 5.0
     'ADAPTER_GET_OBJECTS_BY_ARRAY', // getForeignObjects supports array of ids too. Since js-controller 5.0
     'CONTROLLER_UI_UPGRADE' // Controller can be updated via sendToHost('upgradeController', ...)
-];
+] as const;
+
+export const SUPPORTED_FEATURES = [...SUPPORTED_FEATURES_INTERNAL];
+
+export type SupportedFeature = (typeof SUPPORTED_FEATURES)[number];
 
 /** Maximum possible value for 32-bit signed integer */
 export const MAX_TIMEOUT = 2 ** 32 / 2 - 1;

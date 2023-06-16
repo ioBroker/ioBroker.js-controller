@@ -38,7 +38,8 @@ import {
     ACCESS_USER_WRITE,
     ACCESS_USER_READ,
     NO_PROTECT_ADAPTERS,
-    STATE_QUALITY
+    STATE_QUALITY,
+    SupportedFeature
 } from './constants';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import type {
@@ -1485,7 +1486,7 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    supportsFeature(featureName: string): boolean;
+    supportsFeature(featureName: SupportedFeature): boolean;
 
     /**
      * Method to check for available Features for adapter development
@@ -1502,7 +1503,7 @@ export class AdapterClass extends EventEmitter {
      */
     supportsFeature(featureName: unknown): boolean {
         if (typeof featureName === 'string') {
-            return this.SUPPORTED_FEATURES.includes(featureName);
+            return this.SUPPORTED_FEATURES.includes(featureName as SupportedFeature);
         } else {
             return false;
         }
