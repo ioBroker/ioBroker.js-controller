@@ -1,8 +1,24 @@
 import type { TestContext } from '../_Types';
 
 export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
+    const testName = `${context.name} ${context.adapterShortName} state helpers: `;
+
     // deleteChannel
     // deleteState
+    it(testName + 'delete state should validate the input', async () => {
+        await context.adapter.deleteStateAsync('test');
+        await context.adapter.deleteStateAsync('dev', 'channel', 'state');
+        await context.adapter.deleteStateAsync('channel', 'state');
+
+        context.adapter.deleteState('test', 'string');
+
+        // @ts-expect-error invalid test case
+        return expect(context.adapter.deleteStateAsync({})).to.be.eventually.rejectedWith(
+            /needs to be of type "string" but type "object"/g,
+            'Should have thrown on invalid input'
+        );
+    });
+
     // getDevices
     // getChannelsOf
     // getStatesOf
@@ -10,7 +26,6 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     // createChannel
     // createState
     // deleteDevice
-    const testName = `${context.name} ${context.adapterShortName} state helpers: `;
 
     // setBinaryState
     it(testName + 'requireLog should activate corresponding state', async () => {

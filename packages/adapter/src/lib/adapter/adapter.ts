@@ -5741,8 +5741,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    deleteState(stateName: string, options?: unknown, callback?: ioBroker.ErrorCallback): void;
     deleteState(parentChannel: string, stateName: string, options?: unknown, callback?: ioBroker.ErrorCallback): void;
+    deleteState(stateName: string, options?: unknown, callback?: ioBroker.ErrorCallback): void;
     deleteState(
         parentDevice: string,
         parentChannel: string,
@@ -5792,7 +5792,6 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
-        parentDevice = parentDevice ?? '';
         parentChannel = parentChannel ?? '';
         stateName = stateName ?? '';
 
