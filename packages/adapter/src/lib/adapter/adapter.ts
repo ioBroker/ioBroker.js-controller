@@ -1384,9 +1384,9 @@ export class AdapterClass extends EventEmitter {
         }
 
         const isNotCritical =
-            exitCode === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
-            exitCode === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ||
-            exitCode === EXIT_CODES.NO_ERROR;
+            _exitCode === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
+            _exitCode === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ||
+            _exitCode === EXIT_CODES.NO_ERROR;
         const text = `${this.namespaceLog} Terminated (${Validator.getErrorText(_exitCode)}): ${_reason}`;
         if (isNotCritical) {
             this._logger.info(text);
