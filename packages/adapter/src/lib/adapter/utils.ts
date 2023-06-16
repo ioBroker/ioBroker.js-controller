@@ -1,5 +1,4 @@
-import { isObject } from '@iobroker/js-controller-common/tools';
-import { isControllerUiUpgradeSupported } from '@iobroker/js-controller-common/build/lib/common/tools';
+import { isObject, isControllerUiUpgradeSupported } from '@iobroker/js-controller-common/tools';
 import { SUPPORTED_FEATURES, SupportedFeature } from './constants';
 
 /**
