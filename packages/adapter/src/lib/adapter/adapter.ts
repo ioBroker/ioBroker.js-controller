@@ -9381,6 +9381,13 @@ export class AdapterClass extends EventEmitter {
                 }
 
                 if (sourceObj?.common) {
+                    // TODO: this is just a test, remove it after short test period (version 5.0)
+                    if (sourceObj._id !== sourceId) {
+                        this._logger.error(
+                            `${this.namespaceLog} Alias ids do not match sourceId=${sourceId}, sourceObjId=${sourceObj._id}, report this at https://github.com/ioBroker/ioBroker.js-controller/issues`
+                        );
+                    }
+
                     if (!this.aliases.has(sourceObj._id)) {
                         // TODO what means this, we ensured alias existed, did some async stuff now it's gone -> alias has been deleted?
                         this._logger.error(
