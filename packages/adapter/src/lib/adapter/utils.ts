@@ -1,4 +1,6 @@
 import { isObject } from '@iobroker/js-controller-common/tools';
+import { isControllerUiUpgradeSupported } from '@iobroker/js-controller-common/build/lib/common/tools';
+import { SUPPORTED_FEATURES } from './constants';
 
 /**
  * Check if messagebox is configured for given instance
@@ -12,4 +14,18 @@ export function isMessageboxSupported(instanceCommon: ioBroker.InstanceCommon): 
     }
 
     return Object.values(instanceCommon.supportedMessages).find(val => val !== false) !== undefined;
+}
+
+/**
+ * Get the supported features for the current running controller
+ */
+export function getSupportedFeatures(): string[] {
+    if (!isControllerUiUpgradeSupported()) {
+        const idx = SUPPORTED_FEATURES.indexOf('CONTROLLER_UI_UPGRADE');
+        if (idx !== -1) {
+            SUPPORTED_FEATURES.splice(idx, 1);
+        }
+    }
+
+    return SUPPORTED_FEATURES;
 }

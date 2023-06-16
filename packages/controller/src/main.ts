@@ -3154,7 +3154,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
         }
 
         case 'upgradeController': {
-            if (['win32', 'darwin'].includes(os.platform())) {
+            if (!tools.isControllerUiUpgradeSupported()) {
                 if (msg.callback) {
                     sendTo(msg.from, msg.command, { result: false }, msg.callback);
                 }
