@@ -23,6 +23,22 @@ import { maybeCallbackWithError } from './maybeCallback';
 const extend = require('node.extend');
 import { setDefaultResultOrder } from 'dns';
 
+type DockerInformation =
+    | {
+          /** If it is a Docker installation */
+          isDocker: boolean;
+          /** If it is the official Docker image */
+          isOfficial: true;
+          /** Semver string for official Docker image */
+          officialVersion: string;
+      }
+    | {
+          /** If it is a Docker installation */
+          isDocker: boolean;
+          /** If it is the official Docker image */
+          isOfficial: false;
+      };
+
 interface FormatAliasValueOptions {
     /** Common attribute of source object */
     sourceCommon?: Partial<ioBroker.StateCommon>;
@@ -54,6 +70,8 @@ let diskusage: typeof import('diskusage');
 
 const randomID = Math.round(Math.random() * 10000000000000); // Used for creation of User-Agent
 const VENDOR_FILE = '/etc/iob-vendor.json';
+/** This file contains the version string in an official docker image */
+const OFFICIAL_DOCKER_FILE = '/opt/scripts/.docker_config/.thisisdocker';
 
 let lastCalculationOfIps: number;
 let ownIpArr: string[] = [];
@@ -356,6 +374,20 @@ function getMac(callback: (e?: Error | null, mac?: string) => void): void {
 }
 
 /**
+ * Get information of a Docker installation
+ */
+export function getDockerInformation(): DockerInformation {
+    try {
+        const versionString = fs.readFileSync(OFFICIAL_DOCKER_FILE, { encoding: 'utf-8' });
+        return { isDocker: true, isOfficial: true, officialVersion: versionString };
+    } catch {
+        // ignore error
+    }
+
+    return { isDocker: isDocker(), isOfficial: false };
+}
+
+/**
  * Checks if we are running inside a docker container
  */
 export function isDocker(): boolean {
@@ -369,7 +401,7 @@ export function isDocker(): boolean {
 
     try {
         // ioBroker docker image specific, will be created during build process
-        fs.statSync('/opt/scripts/.docker_config/.thisisdocker');
+        fs.statSync(OFFICIAL_DOCKER_FILE);
         return true;
     } catch {
         // ignore error
