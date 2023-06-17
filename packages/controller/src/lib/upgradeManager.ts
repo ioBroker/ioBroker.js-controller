@@ -9,7 +9,7 @@ import { setTimeout as wait } from 'timers/promises';
 import type { Logger } from 'winston';
 import fs from 'fs-extra';
 
-interface UpgradeArguments {
+export interface UpgradeArguments {
     /** Version of controller to upgrade too */
     version: string;
     /** Admin instance which triggered the upgrade */
@@ -135,7 +135,11 @@ class UpgradeManager {
      * Stops the js-controller via cli call
      */
     async stopController(): Promise<void> {
-        await execAsync(`${tools.appNameLowerCase} stop`);
+        if (tools.isDocker()) {
+            await execAsync('m on -kbn');
+        } else {
+            await execAsync(`${tools.appNameLowerCase} stop`);
+        }
         await wait(this.STOP_TIMEOUT_MS);
     }
 
@@ -143,6 +147,10 @@ class UpgradeManager {
      * Starts the js-controller via cli
      */
     startController(): ChildProcessPromise {
+        if (tools.isDocker()) {
+            return execAsync('m off -y');
+        }
+
         return execAsync(`${tools.appNameLowerCase} start`);
     }
 

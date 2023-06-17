@@ -68,10 +68,12 @@ events.EventEmitter.prototype.setMaxListeners(100);
 let npmVersion: string;
 let diskusage: typeof import('diskusage');
 
-const randomID = Math.round(Math.random() * 10000000000000); // Used for creation of User-Agent
+const randomID = Math.round(Math.random() * 10_000_000_000_000); // Used for creation of User-Agent
 const VENDOR_FILE = '/etc/iob-vendor.json';
 /** This file contains the version string in an official docker image */
 const OFFICIAL_DOCKER_FILE = '/opt/scripts/.docker_config/.thisisdocker';
+/** Version of official Docker image which started to support UI upgrade */
+const DOCKER_VERSION_UI_UPGRADE = '8.0.0';
 
 let lastCalculationOfIps: number;
 let ownIpArr: string[] = [];
@@ -365,7 +367,7 @@ function getMac(callback: (e?: Error | null, mac?: string) => void): void {
             }
 
             if (result === null) {
-                callback(new Error('could not determine the mac address from:\n' + stdout));
+                callback(new Error(`could not determine the mac address from:\n${stdout}`));
             } else {
                 callback(null, result.replace(/-/g, ':').toLowerCase());
             }
@@ -385,6 +387,27 @@ export function getDockerInformation(): DockerInformation {
     }
 
     return { isDocker: isDocker(), isOfficial: false };
+}
+
+/**
+ * Controller UI upgrade is not supported on Windows and MacOS
+ */
+export function isControllerUiUpgradeSupported(): boolean {
+    const dockerInfo = getDockerInformation();
+
+    if (dockerInfo.isDocker) {
+        if (!dockerInfo.isOfficial) {
+            return false;
+        }
+
+        if (semver.lt(dockerInfo.officialVersion, DOCKER_VERSION_UI_UPGRADE)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    return !['win32', 'darwin'].includes(os.platform());
 }
 
 /**
@@ -575,7 +598,7 @@ export async function createUuid(objects: any): Promise<void | string> {
     );
     const promiseCheckUuid = new Promise<void | string>(resolve =>
         objects.getObject('system.meta.uuid', (err: Error | null, obj: ioBroker.Object) => {
-            if (!err && obj && obj.native && obj.native.uuid) {
+            if (!err && obj?.native?.uuid) {
                 const PROBLEM_UUIDS = [
                     'ab265f4a-67f9-a46a-c0b2-61e4b95cefe5',
                     '7abd3182-d399-f7bd-da19-9550d8babede',
@@ -1397,7 +1420,7 @@ export async function getRepositoryFileAsync(
 
     if (url.startsWith('http://') || url.startsWith('https://')) {
         try {
-            _hash = await axios({ url: url.replace(/\.json$/, '-hash.json'), timeout: 10000 });
+            _hash = await axios({ url: url.replace(/\.json$/, '-hash.json'), timeout: 10_000 });
         } catch {
             // ignore missing hash file
         }
@@ -1412,7 +1435,7 @@ export async function getRepositoryFileAsync(
             try {
                 data = await axios({
                     url,
-                    timeout: 10000,
+                    timeout: 10_000,
                     headers: { 'User-Agent': agent }
                 });
                 data = data.data;
@@ -1557,7 +1580,7 @@ function getSystemNpmVersion(callback?: (err?: Error, version?: string | null) =
                 callback(new Error('timeout'));
                 callback = undefined;
             }
-        }, 10000);
+        }, 10_000);
 
         exec(
             'npm -v',
