@@ -30,6 +30,7 @@ import { Upload } from '@iobroker/js-controller-cli';
 import decache from 'decache';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import { getDefaultNodeArgs } from './lib/tools';
+import type { UpgradeArguments } from './lib/upgradeManager';
 
 type TaskObject = ioBroker.SettableObject & { state?: ioBroker.SettableState };
 type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
@@ -3161,25 +3162,10 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 break;
             }
 
-            logger.info(`${hostLogPrefix} Controller will upgrade itself to version ${msg.message.version}`);
-            const upgradeProcessPath = require.resolve('./lib/upgradeManager');
-            const upgradeProcess = spawn(
-                'sudo',
-                [
-                    'systemd-run',
-                    '--no-ask-password',
-                    process.execPath,
-                    upgradeProcessPath,
-                    msg.message.version,
-                    msg.message.adminInstance
-                ],
-                {
-                    detached: true,
-                    stdio: 'ignore'
-                }
-            );
+            const { version, adminInstance } = msg.message;
 
-            upgradeProcess.unref();
+            logger.info(`${hostLogPrefix} Controller will upgrade itself to version ${version}`);
+            startUpgradeManager({ version, adminInstance });
 
             if (msg.callback) {
                 sendTo(msg.from, msg.command, { result: true }, msg.callback);
@@ -6063,6 +6049,43 @@ async function _getNumberOfInstances(): Promise<
     } catch {
         return { noInstances: null, noCompactInstances: null };
     }
+}
+
+/**
+ * Start a detached process of the upgrade manager
+ * Handles Docker installation accordingly
+ *
+ * @param options Arguments passed to the UpgradeManager process
+ */
+function startUpgradeManager(options: UpgradeArguments): void {
+    const { version, adminInstance } = options;
+    const upgradeProcessPath = require.resolve('./lib/upgradeManager');
+    let upgradeProcess: cp.ChildProcess;
+
+    if (tools.isDocker()) {
+        upgradeProcess = spawn(process.execPath, [upgradeProcessPath, version, adminInstance.toString()], {
+            detached: true,
+            stdio: 'ignore'
+        });
+    } else {
+        upgradeProcess = spawn(
+            'sudo',
+            [
+                'systemd-run',
+                '--no-ask-password',
+                process.execPath,
+                upgradeProcessPath,
+                version,
+                adminInstance.toString()
+            ],
+            {
+                detached: true,
+                stdio: 'ignore'
+            }
+        );
+    }
+
+    upgradeProcess.unref();
 }
 
 if (module === require.main) {

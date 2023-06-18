@@ -23,6 +23,22 @@ import { maybeCallbackWithError } from './maybeCallback';
 const extend = require('node.extend');
 import { setDefaultResultOrder } from 'dns';
 
+type DockerInformation =
+    | {
+          /** If it is a Docker installation */
+          isDocker: boolean;
+          /** If it is the official Docker image */
+          isOfficial: true;
+          /** Semver string for official Docker image */
+          officialVersion: string;
+      }
+    | {
+          /** If it is a Docker installation */
+          isDocker: boolean;
+          /** If it is the official Docker image */
+          isOfficial: false;
+      };
+
 interface FormatAliasValueOptions {
     /** Common attribute of source object */
     sourceCommon?: Partial<ioBroker.StateCommon>;
@@ -52,8 +68,12 @@ events.EventEmitter.prototype.setMaxListeners(100);
 let npmVersion: string;
 let diskusage: typeof import('diskusage');
 
-const randomID = Math.round(Math.random() * 10000000000000); // Used for creation of User-Agent
+const randomID = Math.round(Math.random() * 10_000_000_000_000); // Used for creation of User-Agent
 const VENDOR_FILE = '/etc/iob-vendor.json';
+/** This file contains the version string in an official docker image */
+const OFFICIAL_DOCKER_FILE = '/opt/scripts/.docker_config/.thisisdocker';
+/** Version of official Docker image which started to support UI upgrade */
+const DOCKER_VERSION_UI_UPGRADE = '8.0.0';
 
 let lastCalculationOfIps: number;
 let ownIpArr: string[] = [];
@@ -356,9 +376,37 @@ function getMac(callback: (e?: Error | null, mac?: string) => void): void {
 }
 
 /**
+ * Get information of a Docker installation
+ */
+export function getDockerInformation(): DockerInformation {
+    try {
+        const versionString = fs.readFileSync(OFFICIAL_DOCKER_FILE, { encoding: 'utf-8' });
+        return { isDocker: true, isOfficial: true, officialVersion: versionString };
+    } catch {
+        // ignore error
+    }
+
+    return { isDocker: isDocker(), isOfficial: false };
+}
+
+/**
  * Controller UI upgrade is not supported on Windows and MacOS
  */
 export function isControllerUiUpgradeSupported(): boolean {
+    const dockerInfo = getDockerInformation();
+
+    if (dockerInfo.isDocker) {
+        if (!dockerInfo.isOfficial) {
+            return false;
+        }
+
+        if (semver.lt(dockerInfo.officialVersion, DOCKER_VERSION_UI_UPGRADE)) {
+            return false;
+        }
+
+        return true;
+    }
+
     return !['win32', 'darwin'].includes(os.platform());
 }
 
@@ -376,7 +424,7 @@ export function isDocker(): boolean {
 
     try {
         // ioBroker docker image specific, will be created during build process
-        fs.statSync('/opt/scripts/.docker_config/.thisisdocker');
+        fs.statSync(OFFICIAL_DOCKER_FILE);
         return true;
     } catch {
         // ignore error
@@ -1372,7 +1420,7 @@ export async function getRepositoryFileAsync(
 
     if (url.startsWith('http://') || url.startsWith('https://')) {
         try {
-            _hash = await axios({ url: url.replace(/\.json$/, '-hash.json'), timeout: 10000 });
+            _hash = await axios({ url: url.replace(/\.json$/, '-hash.json'), timeout: 10_000 });
         } catch {
             // ignore missing hash file
         }
@@ -1387,7 +1435,7 @@ export async function getRepositoryFileAsync(
             try {
                 data = await axios({
                     url,
-                    timeout: 10000,
+                    timeout: 10_000,
                     headers: { 'User-Agent': agent }
                 });
                 data = data.data;
@@ -1532,7 +1580,7 @@ function getSystemNpmVersion(callback?: (err?: Error, version?: string | null) =
                 callback(new Error('timeout'));
                 callback = undefined;
             }
-        }, 10000);
+        }, 10_000);
 
         exec(
             'npm -v',
