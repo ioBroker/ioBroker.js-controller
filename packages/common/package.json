@@ -27,6 +27,9 @@
         "winston-daily-rotate-file": "^4.7.1",
         "winston-transport": "^4.5.0"
     },
+    "devDependencies": {
+        "@iobroker/types-dev": "file:../types-dev"
+    },
     "keywords": [
         "ioBroker"
     ],

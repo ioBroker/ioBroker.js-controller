@@ -14,21 +14,17 @@
     // Don't emit anything by default. This will be turned on in the subprojects
     "noEmit": true,
     // Avoid unnecessary runtime imports
+    // TODO: Migrate this to ESLint rules and the "verbatimModuleSyntax" option:
+    // https://typescript-eslint.io/rules/consistent-type-imports/
+    // and optionally
+    // https://typescript-eslint.io/rules/consistent-type-exports/
     "importsNotUsedAsValues": "error",
+    "ignoreDeprecations": "5.0",
     // Avoid TS errors in external dependencies
     "skipLibCheck": true,
     // Enable syntax help for importes JSON files
     "resolveJsonModule": true,
     "useUnknownInCatchVariables": false,
-    "typeRoots": [
-      "node_modules/@types",
-      "packages"
-    ],
-    "types": [
-      "@iobroker/types-dev",
-      "node",
-      "mocha"
-    ],
     "pretty": true
   },
   "include": [
