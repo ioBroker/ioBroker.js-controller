@@ -104,7 +104,8 @@ import type {
     CheckStatesResult,
     Pattern,
     MessageCallbackObject,
-    SendToOptions
+    SendToOptions,
+    GetCertificatesPromiseReturnType
 } from '../_Types';
 
 tools.ensureDNSOrder();
@@ -324,7 +325,11 @@ export interface AdapterClass {
         options?: unknown
     ): ioBroker.SetObjectPromise;
     // TODO: correct types
-    getCertificatesAsync(...args: any[]): Promise<any>;
+    getCertificatesAsync(
+        publicName?: string,
+        privateName?: string,
+        chainedName?: string
+    ): Promise<GetCertificatesPromiseReturnType>;
     /** Get all states, channels, devices and folders of this adapter */
     getAdapterObjectsAsync(): Promise<Record<string, ioBroker.AdapterScopedObject>>;
 
@@ -2259,89 +2264,117 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    getCertificates(publicName: unknown, privateName: unknown, chainedName: unknown, callback: unknown): void {
+    getCertificates(
+        publicName: unknown,
+        privateName: unknown,
+        chainedName: unknown,
+        callback: unknown
+    ): Promise<GetCertificatesPromiseReturnType | void> {
         if (!this.config) {
             throw new Error(tools.ERRORS.ERROR_NOT_READY);
         }
 
         if (typeof publicName === 'function') {
             callback = publicName;
-            publicName = null;
+            publicName = undefined;
         }
         if (typeof privateName === 'function') {
             callback = privateName;
-            privateName = null;
+            privateName = undefined;
         }
         if (typeof chainedName === 'function') {
             callback = chainedName;
-            chainedName = null;
+            chainedName = undefined;
         }
         publicName = publicName || this.config.certPublic;
         privateName = privateName || this.config.certPrivate;
         chainedName = chainedName || this.config.certChained;
 
-        Validator.assertString(publicName, 'publicName');
-        Validator.assertString(privateName, 'privateName');
-        Validator.assertString(chainedName, 'chainedName');
+        if (publicName !== undefined) {
+            Validator.assertString(publicName, 'publicName');
+        }
+
+        if (privateName !== undefined) {
+            Validator.assertString(privateName, 'privateName');
+        }
+
+        if (chainedName !== undefined) {
+            Validator.assertString(chainedName, 'chainedName');
+        }
+
         Validator.assertOptionalCallback(callback, 'callback');
 
         return this._getCertificates({ publicName, privateName, chainedName, callback });
     }
 
-    private _getCertificates(options: InternalGetCertificatesOptions): void {
-        // Load certificates
-        this.getForeignObject('system.certificates', null, (err, obj) => {
-            if (
-                err ||
-                !obj ||
-                !obj.native.certificates ||
-                !options.publicName ||
-                !options.privateName ||
-                !obj.native.certificates[options.publicName] ||
-                !obj.native.certificates[options.privateName] ||
-                (options.chainedName && !obj.native.certificates[options.chainedName])
-            ) {
-                this._logger.error(
-                    `${this.namespaceLog} Cannot configure secure web server, because no certificates found: ${options.publicName}, ${options.privateName}, ${options.chainedName}`
-                );
-                if (options.publicName === 'defaultPublic' || options.privateName === 'defaultPrivate') {
-                    this._logger.info(
-                        `${this.namespaceLog} Default certificates seem to be configured but missing. You can execute "iobroker cert create" in your shell to create these.`
-                    );
-                }
-                // @ts-expect-error
-                return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_NOT_FOUND);
-            } else {
-                let ca;
-                if (options.chainedName) {
-                    const chained = this._readFileCertificate(obj.native.certificates[options.chainedName]).split(
-                        '-----END CERTIFICATE-----\r\n'
-                    );
-                    // it is still file name and the file maybe does not exist, but we can omit this error
-                    if (chained.join('').length >= 512) {
-                        ca = [];
-                        for (const cert of chained) {
-                            if (cert.replace(/(\r\n|\r|\n)/g, '').trim()) {
-                                ca.push(`${cert}-----END CERTIFICATE-----\r\n`);
-                            }
-                        }
-                        ca = ca.join('');
-                    }
-                }
+    private async _getCertificates(
+        options: InternalGetCertificatesOptions
+    ): Promise<[cert: ioBroker.Certificates, useLetsEncryptCert?: boolean] | void> {
+        const { publicName, chainedName, privateName, callback } = options;
+        let obj: ioBroker.OtherObject | undefined | null;
 
-                return tools.maybeCallbackWithError(
-                    // @ts-expect-error
-                    options.callback,
-                    null,
-                    {
-                        key: this._readFileCertificate(obj.native.certificates[options.privateName]),
-                        cert: this._readFileCertificate(obj.native.certificates[options.publicName]),
-                        ca
-                    },
-                    obj.native.letsEncrypt
+        if (!adapterObjects) {
+            this._logger.info(
+                `${this.namespaceLog} getCertificates not processed because Objects database not connected`
+            );
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        try {
+            // Load certificates
+            obj = await adapterObjects.getObject('system.certificates');
+        } catch {
+            // ignore
+        }
+
+        if (
+            !obj ||
+            !obj.native.certificates ||
+            !publicName ||
+            !privateName ||
+            !obj.native.certificates[publicName] ||
+            !obj.native.certificates[privateName] ||
+            (chainedName && !obj.native.certificates[chainedName])
+        ) {
+            this._logger.error(
+                `${this.namespaceLog} Cannot configure secure web server, because no certificates found: ${publicName}, ${privateName}, ${chainedName}`
+            );
+            if (publicName === 'defaultPublic' || privateName === 'defaultPrivate') {
+                this._logger.info(
+                    `${this.namespaceLog} Default certificates seem to be configured but missing. You can execute "iobroker cert create" in your shell to create these.`
                 );
             }
-        });
+
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_NOT_FOUND);
+        } else {
+            let ca: string | undefined;
+            if (chainedName) {
+                const chained = this._readFileCertificate(obj.native.certificates[chainedName]).split(
+                    '-----END CERTIFICATE-----\r\n'
+                );
+                // it is still file name and the file maybe does not exist, but we can omit this error
+                if (chained.join('').length >= 512) {
+                    const caArr = [];
+                    for (const cert of chained) {
+                        if (cert.replace(/(\r\n|\r|\n)/g, '').trim()) {
+                            caArr.push(`${cert}-----END CERTIFICATE-----\r\n`);
+                        }
+                    }
+                    ca = caArr.join('');
+                }
+            }
+
+            return tools.maybeCallbackWithError(
+                callback,
+                null,
+                {
+                    key: this._readFileCertificate(obj.native.certificates[privateName]),
+                    cert: this._readFileCertificate(obj.native.certificates[publicName]),
+                    ca
+                },
+                obj.native.letsEncrypt
+            );
+        }
     }
 
     /**
