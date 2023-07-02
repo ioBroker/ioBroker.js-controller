@@ -165,7 +165,7 @@ jobs:
             npx lerna publish from-package --yes
           fi
 
-      - name: Create Github Release for Nightly
+      - name: Create Github Release
         if: steps.automerge.outputs.mergeResult == 'merged'
         uses: ncipollo/release-action@v1
         env:
@@ -177,7 +177,7 @@ jobs:
           prerelease: $PRERELEASE
           body: "${{ contains(steps.version.outputs.result, '-') && 'nightly release' || 'official release' }}"
 
-      - name: Notify Sentry.io about the Nightly release
+      - name: Notify Sentry.io about the release
         if: steps.automerge.outputs.mergeResult == 'merged'
         env:
           VERSION: ${{ steps.version.outputs.result }}
