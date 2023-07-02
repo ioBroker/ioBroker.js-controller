@@ -92,12 +92,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         done();
     });
 
-    //getCertificates
-    it(context.name + ' ' + context.adapterShortName + ' adapter: returns SSL certificates by name', function (done) {
-        this.timeout(3_000);
-        // TODO: sync
-        // TODO: async
-        done();
+    // getCertificates
+    it(context.name + ' ' + context.adapterShortName + ' adapter: returns SSL certificates by name', async () => {
+        // has to work without chained certificate
+        const certs = await context.adapter.getCertificatesAsync('defaultPublic', 'defaultPrivate');
+        expect(certs).to.be.ok;
     });
 
     it(context.name + ' ' + context.adapterShortName + ' adapter: get the user id', async () => {

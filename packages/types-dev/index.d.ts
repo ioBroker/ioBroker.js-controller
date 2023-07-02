@@ -217,11 +217,11 @@ declare global {
 
         interface Certificates {
             /** private key file */
-            key: string | Buffer;
+            key: string;
             /** public certificate */
-            cert: string | Buffer;
+            cert: string;
             /** chained CA certificates */
-            ca: Array<string | Buffer>;
+            ca?: string;
         }
 
         type MessagePayload = any;
@@ -395,7 +395,7 @@ declare global {
             SecondParameterOf<T>,
             null | undefined
         >;
-        /** Infers the return type from a callback-style API and and leaves null and undefined in */
+        /** Infers the return type from a callback-style API and leaves null and undefined in */
         type CallbackReturnTypeOf<T extends (...args: any[]) => any> = SecondParameterOf<T>;
 
         type GetStateCallback = (err?: Error | null, state?: State | null) => void;

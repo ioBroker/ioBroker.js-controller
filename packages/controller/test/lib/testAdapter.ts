@@ -286,65 +286,6 @@ function testAdapter(options: Record<string, any>): void {
             test.register(it, expect, context);
         }
 
-        // sendTo => controller => adapter
-        // sendToHost - cannot be tested
-
-        // this test is 15 seconds long. Enable it only if ready to push
-        /*
-        it(`${options.name} ${context.adapterShortName} adapter: Check if uptime changes`, function (done) {
-            this.timeout(20_000);
-
-            context.states.getState(`system.adapter.${context.adapterShortName}.0.uptime`, function (err, state1) {
-                expect(err).to.be.not.ok;
-                expect(state1).to.be.ok;
-                expect(state1.val).to.be.ok;
-
-                setTimeout(function () {
-                    context.states.getState(
-                        `system.adapter.${context.adapterShortName}.0.uptime`,
-                        function (err, state2) {
-                            expect(err).to.be.not.ok;
-                            expect(state2).to.be.ok;
-                            expect(state2.val).to.be.ok;
-                            if (state2.val !== state1.val) {
-                                expect(state2.val).to.be.above(state1.val);
-                                done();
-                            } else {
-                                setTimeout(function () {
-                                    context.states.getState(
-                                        `system.adapter.${context.adapterShortName}.0.uptime`,
-                                        function (err, state2) {
-                                            expect(err).to.be.not.ok;
-                                            expect(state2).to.be.ok;
-                                            expect(state2.val).to.be.ok;
-                                            if (state2.val !== state1.val) {
-                                                expect(state2.val).to.be.above(state1.val);
-                                                done();
-                                            } else {
-                                                setTimeout(function () {
-                                                    context.states.getState(
-                                                        `system.adapter.${context.adapterShortName}.0.uptime`,
-                                                        function (err, state2) {
-                                                            expect(err).to.be.not.ok;
-                                                            expect(state2).to.be.ok;
-                                                            expect(state2.val).to.be.ok;
-                                                            expect(state2.val).to.be.above(state1.val);
-                                                            done();
-                                                        }
-                                                    );
-                                                }, 6_000);
-                                            }
-                                        }
-                                    );
-                                }, 5_000);
-                            }
-                        }
-                    );
-                }, 5_000);
-            });
-        });
-         */
-
         after(`${options.name} ${context.adapterShortName} adapter: Stop js-controller`, async function () {
             this.timeout(35_000);
 
