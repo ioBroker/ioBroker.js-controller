@@ -1,0 +1,140 @@
+name: Release:minor
+
+on:
+  workflow_dispatch: # Manually on demand
+
+jobs:
+  publish-config:
+    runs-on: ubuntu-20.04
+
+    strategy:
+      matrix:
+        node: [16.x] # This should be LTS
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0 # Fetch the history, or this action won't work
+
+      - name: Use Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node }}
+
+      - name: Prepare installation
+        run: |
+          sudo add-apt-repository ppa:chris-lea/redis-server -y
+          sudo apt-get update -q
+          sudo apt-get install redis-server redis-sentinel -y
+          sudo systemctl start redis-server
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts # install typescript and @types do not `setup first`
+
+      - name: Build TS files
+        run: npm run build
+
+      - name: Build Docs
+        run: npm run build:doc
+
+      - name: Run scripts
+        run: npm run preinstall && npm run install
+
+      - name: Test
+        run: npm test
+
+      - name: Determine the version bump
+        id: version
+        uses: actions/github-script@v6
+        with:
+          result-encoding: string
+          script: |
+            const semver = require('semver');
+
+            const prevVersion = require(`${process.env.GITHUB_WORKSPACE}/lerna.json`).version;
+
+            const parsed = semver.parse(prevVersion);
+
+            // Figure out the next version
+            const version = `${semver.inc(parsed, 'patch')}`;
+
+            // ensure that io-pack is in sync
+            const fs = require('fs');
+            const ioPack = JSON.parse(fs.readFileSync(`${process.env.GITHUB_WORKSPACE}/packages/controller/io-package.json`));
+            ioPack.common.version = semver.inc(version, 'patch');
+            fs.writeFileSync(
+                `${process.env.GITHUB_WORKSPACE}/packages/controller/io-package.json`,
+                JSON.stringify(ioPack, null, 2)
+            );
+
+            return version;
+
+      - name: Prepare changelog and io-package.json
+        env:
+          VERSION: ${{ steps.version.outputs.result }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            process.env.VERSION = '5.0.6';
+            process.env.GITHUB_WORKSPACE = __dirname;
+            
+            const semver = require('semver');
+            const fs = require('fs-extra');
+            
+            const MAX_NEWS = 20;
+            const path = `${process.env.GITHUB_WORKSPACE}/packages/controller/io-package.json`;
+            
+            const ioPack = require(path);
+            
+            let news = ioPack.common.news;
+            
+            const prevNewsVersion = Object.keys(news)[0];
+            
+            // add new news as first entry
+            news = { [process.env.VERSION]: Object.values(news)[0], ...news };
+            
+            const isPatch = semver.satisfies(process.env.VERSION, `~${prevNewsVersion}`);
+            
+            if (isPatch) {
+              delete news[prevNewsVersion];
+            }
+            
+            // if too much news, remove them
+            while (Object.keys(news).length > MAX_NEWS) {
+              const newsVersions = Object.keys(news);
+              delete news[newsVersions[newsVersions.length - 1]];
+            }
+            
+            ioPack.common.news = news;
+            
+            fs.writeFileSync(path, JSON.stringify(ioPack, null, 2));
+
+      - name: Bump version locally
+        env:
+          VERSION: ${{ steps.version.outputs.result }}
+        run: |
+          git config --global user.email "moritz.heusinger@gmail.com"
+          git config --global user.name "Github Action"
+          
+          git add .
+          git commit -m "v${VERSION}" && npx lerna version ${VERSION} --no-push --exact --ignore-scripts --no-commit-hooks --yes --amend --force-publish || npx lerna version ${VERSION} --exact --no-push --ignore-scripts --no-commit-hooks --yes --force-publish
+
+      - name: Create Pull Request
+        id: cpr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ secrets.PR_TOKEN }}
+          commit-message: "[OFFICIAL RELEASE] ${{ steps.version.outputs.result }}"
+          committer: foxriver76 <moritz.heusinger@gmail.com>
+          author: foxriver76 <moritz.heusinger@gmail.com>
+          signoff: false
+          branch: official-release
+          delete-branch: true
+          title: "[OFFICIAL RELEASE] ${{ steps.version.outputs.result }}"
+          body: |
+            Update version by release action
+          labels: |
+            automated pr
+          assignees: foxriver76
+          draft: false
