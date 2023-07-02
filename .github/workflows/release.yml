@@ -2,6 +2,16 @@ name: Release:minor
 
 on:
   workflow_dispatch: # Manually on demand
+    inputs:
+      versionBump:
+        description: 'Type of version bump'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
 
 jobs:
   publish-config:
@@ -44,6 +54,8 @@ jobs:
       - name: Determine the version bump
         id: version
         uses: actions/github-script@v6
+        env:
+          VERSION_BUMP: ${{ inputs.versionBump }}
         with:
           result-encoding: string
           script: |
@@ -54,7 +66,7 @@ jobs:
             const parsed = semver.parse(prevVersion);
 
             // Figure out the next version
-            const version = `${semver.inc(parsed, 'patch')}`;
+            const version = `${semver.inc(parsed, process.env.VERSION_BUMP)}`;
 
             return version;
 
