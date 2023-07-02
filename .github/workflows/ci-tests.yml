@@ -154,14 +154,18 @@ jobs:
       - name: Publish npm
         if: steps.automerge.outputs.mergeResult == 'merged'
         env:
-          VERSION: ${{ steps.version.outputs.result }}
+          PRERELEASE: ${{ contains(steps.version.outputs.result, '-') }}
         run: |
           npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
           npm whoami
 
-          npx lerna publish from-package --yes --dist-tag dev
+          if [[ "$PRERELEASE" == "true" ]]; then
+            npx lerna publish from-package --yes --dist-tag dev
+          else
+            npx lerna publish from-package --yes
+          fi
 
-      - name: Create Github Release for Nightly
+      - name: Create Github Release
         if: steps.automerge.outputs.mergeResult == 'merged'
         uses: ncipollo/release-action@v1
         env:
@@ -170,10 +174,10 @@ jobs:
           tag: v${{ steps.version.outputs.result }}
           name: Release v${{ steps.version.outputs.result }}
           draft: false
-          prerelease: true
-          body: 'nightly release'
+          prerelease: $PRERELEASE
+          body: "${{ contains(steps.version.outputs.result, '-') && 'nightly release' || 'official release' }}"
 
-      - name: Notify Sentry.io about the Nightly release
+      - name: Notify Sentry.io about the release
         if: steps.automerge.outputs.mergeResult == 'merged'
         env:
           VERSION: ${{ steps.version.outputs.result }}
@@ -184,85 +188,6 @@ jobs:
           export SENTRY_ORG=iobroker
           export SENTRY_PROJECT=iobroker-js-controller
           export SENTRY_VERSION=iobroker.js-controller@${VERSION}
-          sentry-cli releases new $SENTRY_VERSION
-          sentry-cli releases set-commits $SENTRY_VERSION --auto
-          sentry-cli releases finalize $SENTRY_VERSION
-
-  # Deploys the final package to NPM when a versioned tag was pushed
-  deploy:
-    needs: [ci]
-
-    # Trigger this step only when a commit on any branch is tagged with a version number
-    if: |
-      contains(github.event.head_commit.message, '[skip ci]') == false &&
-      github.event_name == 'push' &&
-      startsWith(github.ref, 'refs/tags/v')
-
-    runs-on: ubuntu-20.04
-    strategy:
-      matrix:
-        node-version: [16]
-
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
-      - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node }}
-
-      - name: Extract the version and commit body from the tag
-        id: extract_release
-        # The body may be multiline, therefore newlines and % need to be escaped
-        run: |
-          VERSION="${{ github.ref }}"
-          VERSION=${VERSION##*/v}
-          echo "::set-output name=VERSION::$VERSION"
-          BODY=$(git show -s --format=%b)
-          BODY="${BODY//'%'/'%25'}"
-          BODY="${BODY//$'\n'/'%0A'}"
-          BODY="${BODY//$'\r'/'%0D'}"
-          echo "::set-output name=BODY::$BODY"
-
-      - name: Install dependencies
-        run: npm ci --ignore-scripts # install typescript and @types do not `setup first`
-
-      - name: Build TS files
-        run: npm run build
-
-      - name: Publish package to npm
-        env:
-          PRERELEASE: ${{ contains(steps.extract_release.outputs.VERSION, '-') }}
-        run: |
-          npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
-          npm whoami
-          if [[ "$PRERELEASE" == "true" ]]; then
-            npx lerna publish from-package --yes next
-          else
-            npx lerna publish from-package --yes
-          fi
-
-      - name: Create Github Release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release v${{ steps.extract_release.outputs.VERSION }}
-          draft: false
-          # Prerelease versions create prereleases on GitHub
-          prerelease: ${{ contains(steps.extract_release.outputs.VERSION, '-') }}
-          body: ${{ steps.extract_release.outputs.BODY }}
-
-      - name: Notify Sentry.io about the release
-        run: |
-          npm i -g @sentry/cli
-          export SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
-          export SENTRY_URL=https://sentry.iobroker.net
-          export SENTRY_ORG=iobroker
-          export SENTRY_PROJECT=iobroker-js-controller
-          export SENTRY_VERSION=iobroker.js-controller@${{ steps.extract_release.outputs.VERSION }}
           sentry-cli releases new $SENTRY_VERSION
           sentry-cli releases set-commits $SENTRY_VERSION --auto
           sentry-cli releases finalize $SENTRY_VERSION
