@@ -1,4 +1,4 @@
-name: Release:minor
+name: Official release
 
 on:
   workflow_dispatch: # Manually on demand
