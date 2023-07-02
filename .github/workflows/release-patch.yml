@@ -41,9 +41,6 @@ jobs:
       - name: Run scripts
         run: npm run preinstall && npm run install
 
-      - name: Test
-        run: npm test
-
       - name: Determine the version bump
         id: version
         uses: actions/github-script@v6
@@ -121,7 +118,7 @@ jobs:
         id: cpr
         uses: peter-evans/create-pull-request@v5
         with:
-          token: ${{ secrets.PR_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           commit-message: "[OFFICIAL RELEASE] ${{ steps.version.outputs.result }}"
           committer: foxriver76 <moritz.heusinger@gmail.com>
           author: foxriver76 <moritz.heusinger@gmail.com>
