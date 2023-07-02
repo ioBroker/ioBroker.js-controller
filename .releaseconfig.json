@@ -1,5 +1,5 @@
 {
-	"plugins": ["iobroker", "lerna", "license"],
+	"plugins": ["iobroker", "lerna", "manual-review", "license"],
 	"license": [
 		"{LICENSE,README}{,.md}",
 		"packages/*/{LICENSE,README}{,.md}"
