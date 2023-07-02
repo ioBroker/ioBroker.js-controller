@@ -170,15 +170,17 @@ export interface InternalCalculatePermissionsOptions {
 }
 
 export type GetCertificatesCallback = (
-    err: string | null,
+    err?: Error | null,
     certs?: ioBroker.Certificates,
     useLetsEncryptCert?: boolean
 ) => void;
 
+export type GetCertificatesPromiseReturnType = [cert: ioBroker.Certificates, useLetsEncryptCert?: boolean];
+
 export interface InternalGetCertificatesOptions {
-    publicName: string;
-    privateName: string;
-    chainedName: string;
+    publicName?: string;
+    privateName?: string;
+    chainedName?: string;
     callback?: GetCertificatesCallback;
 }
 

@@ -295,8 +295,8 @@ declare global {
         }
 
         interface MetaCommon extends ObjectCommon {
-            // Meta objects have two additional CommonTypes
-            type: CommonType | 'meta.user' | 'meta.folder';
+            // Can be of type `user` for folders, where a user can store files or `folder` for adapter internal structures
+            type: 'meta.user' | 'meta.folder';
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
