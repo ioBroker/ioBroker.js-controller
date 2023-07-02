@@ -114,7 +114,7 @@ jobs:
           git config --global user.email "moritz.heusinger@gmail.com"
           git config --global user.name "Github Action"
           
-          // release script fails because of branch protection, but we will use the local changes to create a PR
+          # release script fails because of branch protection, but we will use the local changes to create a PR
           npm run release patch -- --all --yes || true
 
       - name: Create Pull Request
