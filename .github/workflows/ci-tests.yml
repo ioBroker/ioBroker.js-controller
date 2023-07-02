@@ -155,6 +155,7 @@ jobs:
         if: steps.automerge.outputs.mergeResult == 'merged'
         env:
           VERSION: ${{ steps.version.outputs.result }}
+          PRERELEASE: ${{ contains(steps.version.outputs.result, '-') }}
         run: |
           npm config set //registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}
           npm whoami
@@ -166,6 +167,7 @@ jobs:
         uses: ncipollo/release-action@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PRERELEASE: ${{ contains(steps.version.outputs.result, '-') }}
         with:
           tag: v${{ steps.version.outputs.result }}
           name: Release v${{ steps.version.outputs.result }}

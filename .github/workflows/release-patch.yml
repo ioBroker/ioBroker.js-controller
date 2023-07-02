@@ -107,9 +107,6 @@ jobs:
             
             const WIP_MARKER = '__WORK IN PROGRESS__';
             
-            process.env.GITHUB_WORKSPACE = __dirname;
-            process.env.VERSION = '5.0.6';
-            
             const TEMP_PLACEHOLDER = '**TEMP_PLACEHOLDER_GH_ACTION**';
             const changelog = fs
             .readFileSync(`${process.env.GITHUB_WORKSPACE}/CHANGELOG.md`, { encoding: 'utf-8' })
