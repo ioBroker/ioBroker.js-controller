@@ -16,34 +16,34 @@
 
 ### ca
 
-• **ca**: (`string` \| `Buffer`)[]
+• `Optional` **ca**: `string`
 
 chained CA certificates
 
 #### Defined in
 
-[types-dev/index.d.ts:224](https://github.com/ioBroker/ioBroker.js-controller/blob/464b0fd6/packages/types-dev/index.d.ts#L224)
+[types-dev/index.d.ts:224](https://github.com/ioBroker/ioBroker.js-controller/blob/82d63f20/packages/types-dev/index.d.ts#L224)
 
 ___
 
 ### cert
 
-• **cert**: `string` \| `Buffer`
+• **cert**: `string`
 
 public certificate
 
 #### Defined in
 
-[types-dev/index.d.ts:222](https://github.com/ioBroker/ioBroker.js-controller/blob/464b0fd6/packages/types-dev/index.d.ts#L222)
+[types-dev/index.d.ts:222](https://github.com/ioBroker/ioBroker.js-controller/blob/82d63f20/packages/types-dev/index.d.ts#L222)
 
 ___
 
 ### key
 
-• **key**: `string` \| `Buffer`
+• **key**: `string`
 
 private key file
 
 #### Defined in
 
-[types-dev/index.d.ts:220](https://github.com/ioBroker/ioBroker.js-controller/blob/464b0fd6/packages/types-dev/index.d.ts#L220)
+[types-dev/index.d.ts:220](https://github.com/ioBroker/ioBroker.js-controller/blob/82d63f20/packages/types-dev/index.d.ts#L220)
