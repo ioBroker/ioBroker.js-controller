@@ -1,5 +1,4 @@
-import { ChildProcessPromise, exec as execAsync } from 'promisify-child-process';
-import { tools, logger } from '@iobroker/js-controller-common';
+import { tools } from '@iobroker/js-controller-common';
 import { valid } from 'semver';
 import { dbConnectAsync } from '@iobroker/js-controller-cli';
 import http from 'http';
@@ -8,13 +7,6 @@ import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import { setTimeout as wait } from 'timers/promises';
 import type { Logger } from 'winston';
 import fs from 'fs-extra';
-
-export interface UpgradeArguments {
-    /** Version of controller to upgrade too */
-    version: string;
-    /** Admin instance which triggered the upgrade */
-    adminInstance: number;
-}
 
 interface Certificates {
     /** Public certificate */
@@ -33,9 +25,18 @@ interface InsecureWebServerParameters {
 type SecureWebServerParameters = Omit<InsecureWebServerParameters, 'useHttps'> & { useHttps: true } & Certificates;
 type WebServerParameters = InsecureWebServerParameters | SecureWebServerParameters;
 
-interface GetCertificatesParams {
-    /** The objects DB */
+export type AdapterUpgradeManagerOptions = WebServerParameters & {
+    /** Version of adapter to upgrade too */
+    version: string;
+    /** Name of the adapter to upgrade */
+    adapterName: string;
+    /** The objects DB client */
     objects: ObjectsClient;
+    /** A logger instance */
+    logger: Logger;
+};
+
+interface GetCertificatesParams {
     /** Name of the public certificate */
     certPublicName: string;
     /** Name of the private certificate */
@@ -51,13 +52,13 @@ interface ServerResponse {
     success?: boolean;
 }
 
-class UpgradeManager {
+export class AdapterUpgradeManager {
     /** Wait ms until controller is stopped */
     private readonly STOP_TIMEOUT_MS = 3_000;
     /** Wait ms for delivery of final response */
     private readonly SHUTDOWN_TIMEOUT = 10_000;
-    /** Instance of admin to get information from */
-    private readonly adminInstance: number;
+    /** Name of the adapter to upgrade */
+    private readonly adapterName: string;
     /** Desired controller version */
     private readonly version: string;
     /** Response send by webserver */
@@ -75,43 +76,14 @@ class UpgradeManager {
     private server?: https.Server | http.Server;
     /** Name of the host for logging purposes */
     private readonly hostname = tools.getHostName();
+    /** The objects DB client */
+    private readonly objects: ObjectsClient;
 
-    constructor(args: UpgradeArguments) {
-        this.adminInstance = args.adminInstance;
-        this.version = args.version;
-        this.logger = this.setupLogger();
-    }
-
-    /**
-     * Set up the logger, to stream to file and other configured transports
-     */
-    private setupLogger(): Logger {
-        const config = fs.readJSONSync(tools.getConfigFileName());
-        return logger({ ...config.log, noStdout: false });
-    }
-
-    /**
-     * Parse the commands from the cli
-     */
-    static parseCliCommands(): UpgradeArguments {
-        const additionalArgs = process.argv.slice(2);
-
-        const version = additionalArgs[0];
-        const adminInstance = parseInt(additionalArgs[1]);
-
-        const isValid = !!valid(version);
-
-        if (!isValid) {
-            UpgradeManager.printUsage();
-            throw new Error('The provided version is not valid');
-        }
-
-        if (isNaN(adminInstance)) {
-            UpgradeManager.printUsage();
-            throw new Error('Please provide a valid admin instance');
-        }
-
-        return { version, adminInstance };
+    constructor(options: AdapterUpgradeManagerOptions) {
+        this.adapterName = options.adapterName;
+        this.version = options.version;
+        this.logger = options.logger;
+        this.objects = options.objects;
     }
 
     /**
@@ -155,14 +127,7 @@ class UpgradeManager {
     }
 
     /**
-     * Print how the module should be used
-     */
-    static printUsage(): void {
-        console.info('Example usage: "node upgradeManager.js <version> <adminInstance>"');
-    }
-
-    /**
-     * Install given version of js-controller
+     * Install given version of adapter
      */
     async npmInstall(): Promise<void> {
         const res = await tools.installNodeModule(`iobroker.js-controller@${this.version}`, {
@@ -201,7 +166,7 @@ class UpgradeManager {
     }
 
     /**
-     * Shuts down the server, restarts the controller and exits the program
+     * Shuts down the server, restarts the adapter and exits the program
      */
     shutdownApp(): void {
         if (this.shutdownAbortController) {
@@ -276,9 +241,9 @@ class UpgradeManager {
      * @param params certificate information
      */
     async getCertificates(params: GetCertificatesParams): Promise<Certificates> {
-        const { objects, certPublicName, certPrivateName } = params;
+        const { certPublicName, certPrivateName } = params;
 
-        const obj = await objects.getObjectAsync('system.certificates');
+        const obj = await this.objects.getObjectAsync('system.certificates');
 
         if (!obj) {
             throw new Error('No certificates found');
@@ -287,41 +252,6 @@ class UpgradeManager {
         const certs = obj.native.certificates;
 
         return { certPrivate: certs[certPrivateName], certPublic: certs[certPublicName] };
-    }
-
-    /**
-     * Collect parameters for webserver from admin instance
-     */
-    async collectWebServerParameters(): Promise<WebServerParameters> {
-        const { objects } = await dbConnectAsync(false);
-
-        const obj = await objects.getObjectAsync(`system.adapter.admin.${this.adminInstance}`);
-
-        if (!obj) {
-            UpgradeManager.printUsage();
-            throw new Error('Please provide a valid admin instance');
-        }
-
-        if (obj.native.secure) {
-            const { certPublic: certPublicName, certPrivate: certPrivateName } = obj.native;
-            const { certPublic, certPrivate } = await this.getCertificates({
-                objects,
-                certPublicName,
-                certPrivateName
-            });
-
-            return {
-                useHttps: obj.native.secure,
-                port: obj.native.port,
-                certPublic,
-                certPrivate
-            };
-        }
-
-        return {
-            useHttps: false,
-            port: obj.native.port
-        };
     }
 
     /**
@@ -334,7 +264,7 @@ class UpgradeManager {
     }
 
     /**
-     * Start a timeout which starts controller and shuts down the app if expired
+     * Start a timeout which starts adapter and shuts down the server if expired
      */
     async startShutdownTimeout(): Promise<void> {
         this.shutdownAbortController = new AbortController();
@@ -349,36 +279,4 @@ class UpgradeManager {
             }
         }
     }
-}
-
-/**
- * Main logic
- */
-async function main(): Promise<void> {
-    const upgradeArguments = UpgradeManager.parseCliCommands();
-    const upgradeManager = new UpgradeManager(upgradeArguments);
-
-    const webServerParameters = await upgradeManager.collectWebServerParameters();
-
-    upgradeManager.log('Stopping controller');
-    await upgradeManager.stopController();
-    upgradeManager.log('Successfully stopped js-controller');
-
-    upgradeManager.startWebServer(webServerParameters);
-
-    try {
-        await upgradeManager.npmInstall();
-    } catch (e) {
-        upgradeManager.log(e.message, true);
-    }
-
-    await upgradeManager.setFinished();
-}
-
-/**
- * This file always needs to be executed in a process different from js-controller
- * else it will be canceled when the file itself stops the controller
- */
-if (require.main === module) {
-    main();
 }
