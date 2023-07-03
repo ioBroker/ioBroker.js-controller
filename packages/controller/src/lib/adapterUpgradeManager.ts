@@ -180,9 +180,9 @@ export class AdapterUpgradeManager {
     }
 
     /**
-     * Shuts down the server, restarts the adapter and exits the program
+     * Shuts down the server, restarts the adapter
      */
-    shutdownApp(): void {
+    shutdownServer(): void {
         if (this.shutdownAbortController) {
             this.shutdownAbortController.abort();
         }
@@ -194,8 +194,6 @@ export class AdapterUpgradeManager {
         this.server.close(async () => {
             await this.startAdapter();
             this.logger.info(`${this.hostname} Successfully started adapter`);
-
-            process.exit();
         });
     }
 
@@ -211,7 +209,7 @@ export class AdapterUpgradeManager {
 
         if (!this.response.running) {
             this.logger.info(`${this.hostname} Final information delivered`);
-            this.shutdownApp();
+            this.shutdownServer();
         }
     }
 
@@ -308,7 +306,7 @@ export class AdapterUpgradeManager {
             await wait(this.SHUTDOWN_TIMEOUT, null, { signal: this.shutdownAbortController.signal });
 
             this.logger.info(`${this.hostname} Timeout expired, initializing shutdown`);
-            this.shutdownApp();
+            this.shutdownServer();
         } catch (e) {
             if (e.code !== 'ABORT_ERR') {
                 this.logger.error(`${this.hostname} ${e.message}`);
