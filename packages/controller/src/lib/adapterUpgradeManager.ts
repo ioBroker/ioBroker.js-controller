@@ -1,5 +1,4 @@
 import { tools } from '@iobroker/js-controller-common';
-import { ChildProcessPromise, exec as execAsync } from 'promisify-child-process';
 import http from 'http';
 import https from 'https';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
@@ -20,10 +19,14 @@ interface InsecureWebServerParameters {
     port: number;
 }
 
-type SecureWebServerParameters = Omit<InsecureWebServerParameters, 'useHttps'> & { useHttps: true } & Certificates;
+type SecureWebServerParameters = Omit<InsecureWebServerParameters, 'useHttps'> & {
+    useHttps: true;
+    certPrivateName: string;
+    certPublicName: string;
+};
 type WebServerParameters = InsecureWebServerParameters | SecureWebServerParameters;
 
-export type AdapterUpgradeManagerOptions = WebServerParameters & {
+export type AdapterUpgradeManagerOptions = {
     /** Version of adapter to upgrade too */
     version: string;
     /** Name of the adapter to upgrade */
@@ -32,7 +35,7 @@ export type AdapterUpgradeManagerOptions = WebServerParameters & {
     objects: ObjectsClient;
     /** A logger instance */
     logger: Logger;
-};
+} & WebServerParameters;
 
 interface GetCertificatesParams {
     /** Name of the public certificate */
@@ -78,12 +81,27 @@ export class AdapterUpgradeManager {
     private readonly objects: ObjectsClient;
     /** List of instances which have been stopped */
     private stoppedInstances: string[] = [];
+    /** If webserver should be started with https */
+    private readonly useHttps: boolean;
+    /** Public certificate name if https is desired */
+    private readonly certPublicName?: string;
+    /** Private certificate name if https is desired */
+    private readonly certPrivateName?: string;
+    /** Port where the webserver should be running */
+    private readonly port: number;
 
     constructor(options: AdapterUpgradeManagerOptions) {
         this.adapterName = options.adapterName;
         this.version = options.version;
         this.logger = options.logger;
         this.objects = options.objects;
+        this.useHttps = options.useHttps;
+        this.port = options.port;
+
+        if (options.useHttps) {
+            this.certPublicName = options.certPublicName;
+            this.certPrivateName = options.certPrivateName;
+        }
     }
 
     /**
@@ -147,15 +165,17 @@ export class AdapterUpgradeManager {
 
     /**
      * Starts the web server for admin communication either secure or insecure
-     *
-     * @param params Web server configuration
      */
-    startWebServer(params: WebServerParameters): void {
-        const { useHttps } = params;
-        if (useHttps) {
-            this.startSecureWebServer(params);
+    async startWebServer(): Promise<void> {
+        if (this.useHttps && this.certPublicName && this.certPrivateName) {
+            await this.startSecureWebServer({
+                certPublicName: this.certPublicName,
+                certPrivateName: this.certPrivateName,
+                port: this.port,
+                useHttps: true
+            });
         } else {
-            this.startInsecureWebServer(params);
+            this.startInsecureWebServer({ port: this.port, useHttps: false });
         }
     }
 
@@ -237,8 +257,10 @@ export class AdapterUpgradeManager {
      *
      * @param params Web server configuration
      */
-    startSecureWebServer(params: SecureWebServerParameters): void {
-        const { port, certPublic, certPrivate } = params;
+    async startSecureWebServer(params: SecureWebServerParameters): Promise<void> {
+        const { port, certPublicName, certPrivateName } = params;
+
+        const { certPublic, certPrivate } = await this.getCertificates({ certPublicName, certPrivateName });
 
         this.server = https.createServer({ key: certPrivate, cert: certPublic }, (req, res) => {
             this.webServerCallback(req, res);
@@ -271,7 +293,7 @@ export class AdapterUpgradeManager {
     /**
      * Tells the upgrade manager, that server can be shut down on next response or on timeout
      */
-    async setFinished(): Promise<void> {
+    private async setFinished(): Promise<void> {
         this.response.running = false;
 
         await this.startShutdownTimeout();
