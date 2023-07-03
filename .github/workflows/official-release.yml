@@ -52,7 +52,6 @@ jobs:
         run: npm run preinstall && npm run install
 
       - name: Test
-        if: steps.changes.outputs.result == 'ok'
         run: npm test
 
       - name: Determine the version bump
