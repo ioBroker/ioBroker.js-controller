@@ -189,7 +189,7 @@ export class Upgrade {
             return Promise.reject(err);
         }
 
-        if (objs && objs.rows && objs.rows.length) {
+        if (objs?.rows?.length) {
             for (const dName in allDeps) {
                 if (dName === 'js-controller') {
                     const version = allDeps[dName];
@@ -226,9 +226,7 @@ export class Upgrade {
                         // local dep get all instances on same host
                         locInstances = objs.rows.filter(
                             obj =>
-                                obj &&
-                                obj.value &&
-                                obj.value.common &&
+                                obj?.value?.common &&
                                 obj.value.common.name === dName &&
                                 obj.value.common.host === this.hostname
                         );
@@ -560,8 +558,8 @@ export class Upgrade {
                     console.log(`Can not check version information to display upgrade infos: ${err.message}`);
                 }
                 console.log(`Update ${adapter} from @${installedVersion} to @${targetVersion}`);
-                // Get the adapter from web site
-                // @ts-expect-error it could also call processExit internally but we want change it in future anyway
+                // Get the adapter from website
+                // @ts-expect-error it could also call processExit internally, but we want change it in future anyway
                 const { packetName, stoppedList } = await this.install.downloadPacket(
                     sources,
                     `${adapter}@${targetVersion}`
@@ -606,7 +604,7 @@ export class Upgrade {
                     console.log(`Can not check version information to display upgrade infos: ${err.message}`);
                 }
                 console.log(`Update ${adapter} from @${installedVersion} to @${targetVersion}`);
-                // @ts-expect-error it could also call processExit internally but we want change it in future anyway
+                // @ts-expect-error it could also call processExit internally, but we want change it in future anyway
                 const { packetName, stoppedList } = await this.install.downloadPacket(
                     sources,
                     `${adapter}@${targetVersion}`
@@ -625,7 +623,7 @@ export class Upgrade {
                 }
                 console.warn(`Unable to get version for "${adapter}". Update anyway.`);
                 console.log(`Update ${adapter} from @${installedVersion} to @${version}`);
-                // Get the adapter from web site
+                // Get the adapter from website
                 // @ts-expect-error it could also call processExit internally but we want change it in future anyway
                 const { packetName, stoppedList } = await this.install.downloadPacket(sources, `${adapter}@${version}`);
                 await finishUpgrade(packetName);
@@ -696,7 +694,7 @@ export class Upgrade {
                 console.warn(`Controller is running. Please stop ioBroker first.`);
             } else {
                 console.log(`Update ${controllerName} from @${installed.common.version} to @${repoController.version}`);
-                // Get the controller from web site
+                // Get the controller from website
                 await this.install.downloadPacket(sources, `${controllerName}@${repoController.version}`, {
                     stopDb: true
                 });

@@ -1,12 +1,10 @@
 import { tools } from '@iobroker/js-controller-common';
-import { valid } from 'semver';
-import { dbConnectAsync } from '@iobroker/js-controller-cli';
+import { ChildProcessPromise, exec as execAsync } from 'promisify-child-process';
 import http from 'http';
 import https from 'https';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import { setTimeout as wait } from 'timers/promises';
 import type { Logger } from 'winston';
-import fs from 'fs-extra';
 
 interface Certificates {
     /** Public certificate */
@@ -78,6 +76,8 @@ export class AdapterUpgradeManager {
     private readonly hostname = tools.getHostName();
     /** The objects DB client */
     private readonly objects: ObjectsClient;
+    /** List of instances which have been stopped */
+    private stoppedInstances: string[] = [];
 
     constructor(options: AdapterUpgradeManagerOptions) {
         this.adapterName = options.adapterName;
@@ -87,50 +87,47 @@ export class AdapterUpgradeManager {
     }
 
     /**
-     * Log via console and provide the logs for the server too
-     *
-     * @param message the message which will be logged
-     * @param error if it is an error
+     * Stops the adapter and returns ids of stopped instances
      */
-    log(message: string, error = false): void {
-        if (error) {
-            this.logger.error(`host.${this.hostname} [CONTROLLER_AUTO_UPGRADE] ${message}`);
-            this.response.stderr.push(message);
-            return;
-        }
-
-        this.logger.info(`host.${this.hostname} [CONTROLLER_AUTO_UPGRADE] ${message}`);
-        this.response.stdout.push(message);
-    }
-
-    /**
-     * Stops the js-controller via cli call
-     */
-    async stopController(): Promise<void> {
-        if (tools.isDocker()) {
-            await execAsync('m on -kbn');
-        } else {
-            await execAsync(`${tools.appNameLowerCase} stop`);
-        }
+    async stopAdapter(): Promise<void> {
+        this.stoppedInstances = await this.getAllEnabledInstances();
+        await this.enableInstances(this.stoppedInstances, false);
         await wait(this.STOP_TIMEOUT_MS);
     }
 
     /**
-     * Starts the js-controller via cli
+     * Start all instances which were enabled before the upgrade
      */
-    startController(): ChildProcessPromise {
-        if (tools.isDocker()) {
-            return execAsync('m off -y');
-        }
+    async startAdapter(): Promise<void> {
+        await this.enableInstances(this.stoppedInstances, true);
+    }
 
-        return execAsync(`${tools.appNameLowerCase} start`);
+    /**
+     * Start or stop given instances
+     *
+     * @param instances id of instances which will be stopped
+     * @param enabled if enable or disable instances
+     */
+    async enableInstances(instances: string[], enabled: boolean): Promise<void> {
+        const ts = Date.now();
+        for (const instance of instances) {
+            const updatedObj = {
+                common: {
+                    enabled
+                },
+                from: `system.host.${this.hostname}`,
+                ts
+            } as Partial<ioBroker.InstanceObject>;
+
+            await this.objects.extendObjectAsync(instance, updatedObj);
+        }
     }
 
     /**
      * Install given version of adapter
      */
-    async npmInstall(): Promise<void> {
-        const res = await tools.installNodeModule(`iobroker.js-controller@${this.version}`, {
+    async performUpgrade(): Promise<void> {
+        const res = await tools.installNodeModule(`${tools.appName}.${this.adapterName}@${this.version}`, {
             cwd: '/opt/iobroker',
             debug: true
         });
@@ -139,16 +136,13 @@ export class AdapterUpgradeManager {
         this.response.stdout.push(...res.stdout.split('\n'));
 
         if (res.stderr) {
-            this.log(res.stderr, true);
+            this.logger.error(`${this.hostname} ${res.stderr}`);
         } else if (res.stdout) {
-            this.log(res.stdout);
+            this.logger.info(`${this.hostname} ${res.stdout}`);
         }
 
         this.response.success = res.success;
-
-        if (!res.success) {
-            throw new Error(`Could not install js-controller@${this.version}`);
-        }
+        await this.setFinished();
     }
 
     /**
@@ -178,8 +172,8 @@ export class AdapterUpgradeManager {
         }
 
         this.server.close(async () => {
-            await this.startController();
-            this.log('Successfully started js-controller');
+            await this.startAdapter();
+            this.logger.info(`${this.hostname} Successfully started adapter`);
 
             process.exit();
         });
@@ -196,9 +190,29 @@ export class AdapterUpgradeManager {
         res.end(JSON.stringify(this.response));
 
         if (!this.response.running) {
-            this.log('Final information delivered');
+            this.logger.info(`${this.hostname} Final information delivered`);
             this.shutdownApp();
         }
+    }
+
+    /**
+     * Get all instances of the adapter
+     */
+    async getAllEnabledInstances(): Promise<string[]> {
+        const res = await this.objects.getObjectListAsync({
+            startkey: `system.adapter.${this.adapterName}.`,
+            endkey: `system.adapter.${this.adapterName}.\u9999`
+        });
+
+        let enabledInstances: string[] = [];
+
+        if (res) {
+            enabledInstances = res.rows
+                .filter(row => row.value.common.enabled && this.hostname === row.value.common.host)
+                .map(row => row.value._id);
+        }
+
+        return enabledInstances;
     }
 
     /**
@@ -214,7 +228,7 @@ export class AdapterUpgradeManager {
         });
 
         this.server.listen(port, () => {
-            this.log(`Server is running on http://localhost:${port}`);
+            this.logger.info(`${this.hostname} Server is running on http://localhost:${port}`);
         });
     }
 
@@ -231,7 +245,7 @@ export class AdapterUpgradeManager {
         });
 
         this.server.listen(port, () => {
-            this.log(`Server is running on http://localhost:${port}`);
+            this.logger.info(`${this.hostname} Server is running on http://localhost:${port}`);
         });
     }
 
@@ -271,11 +285,11 @@ export class AdapterUpgradeManager {
         try {
             await wait(this.SHUTDOWN_TIMEOUT, null, { signal: this.shutdownAbortController.signal });
 
-            this.log('Timeout expired, initializing shutdown');
+            this.logger.info(`${this.hostname} Timeout expired, initializing shutdown`);
             this.shutdownApp();
         } catch (e) {
             if (e.code !== 'ABORT_ERR') {
-                this.log(e.message, true);
+                this.logger.error(`${this.hostname} ${e.message}`);
             }
         }
     }

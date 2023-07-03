@@ -556,7 +556,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
                     const { objects: objectsNew, states: statesNew } = await this.dbConnectAsync(true, {
                         ...this.params,
-                        timeout: 20000
+                        timeout: 20_000
                     });
 
                     this.objects = objectsNew;

@@ -2128,11 +2128,12 @@ async function processCommand(
                     node: '>=12'
                 },
                 optionalDependencies: {} as Record<string, string>,
-                dependencies: {} as Record<string, string>,
+                dependencies: {
+                    [`${tools.appName.toLowerCase()}.js-controller`]: '*',
+                    [`${tools.appName.toLowerCase()}.admin`]: '*'
+                },
                 author: 'bluefox <dogafox@gmail.com>'
             };
-            json.dependencies[`${tools.appName.toLowerCase()}.js-controller`] = '*';
-            json.dependencies[`${tools.appName.toLowerCase()}.admin`] = '*';
 
             // @ts-expect-error todo fix it
             tools.getRepositoryFile(null, null, (_err, sources, _sourcesHash) => {
@@ -2211,9 +2212,9 @@ async function processCommand(
                             }
                         }
                         if (changed) {
-                            obj.from = 'system.host.' + tools.getHostName() + '.cli';
+                            obj.from = `system.host.${tools.getHostName()}.cli`;
                             obj.ts = new Date().getTime();
-                            objects!.setObject('system.adapter.' + instance, obj, () => {
+                            objects!.setObject(`system.adapter.${instance}`, obj, () => {
                                 console.log(`Instance settings for "${instance}" are changed.`);
                                 return void callback();
                             });
@@ -2989,8 +2990,7 @@ async function getRepository(repoName?: string, params?: Record<string, any>): P
     const allSources = {};
     let changed = false;
     let anyFound = false;
-    for (let r = 0; r < repoArr.length; r++) {
-        const repo = repoArr[r];
+    for (const repo of repoArr) {
         if (systemRepos.native.repositories[repo]) {
             if (typeof systemRepos.native.repositories[repo] === 'string') {
                 systemRepos.native.repositories[repo] = {
