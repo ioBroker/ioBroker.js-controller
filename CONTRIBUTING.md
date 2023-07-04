@@ -54,4 +54,5 @@ in your local iobroker folder, e.g. `/opt/iobroker`. Then build the project in t
 where you have applied changes too in the build folder with the ones from the corresponding build directory of your workspace.
 
 ### Release
-Prepare the changelog, add news to `io-package.json` manually and run `npm run release`
+Prepare the changelog with a `## __WORK IN PROGRESS__` header. When this is present on `master` branch, you can use the `Official release` workflow, 
+which is triggered by a workflow dispatch button directly on GitHub.
