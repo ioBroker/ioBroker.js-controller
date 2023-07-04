@@ -154,7 +154,7 @@ export class AdapterUpgradeManager {
      */
     async performUpgrade(): Promise<void> {
         const processExitHandler: ProcessExitCallback = exitCode => {
-            this.logger.error(`Upgrade process exited with code: ${exitCode}`);
+            this.log(`Upgrade process exited with code: ${exitCode}`, true);
         };
 
         const upgrade = new Upgrade({
@@ -168,9 +168,9 @@ export class AdapterUpgradeManager {
         try {
             await upgrade.upgradeAdapter(undefined, `${this.adapterName}@${this.version}`, true, true, false);
             this.response.success = true;
-            this.logger.info(`Successfully upgraded ${this.adapterName} to version ${this.version}`);
+            this.log(`Successfully upgraded ${this.adapterName} to version ${this.version}`);
         } catch (e) {
-            this.logger.error(e.message);
+            this.log(e.message, true);
             this.response.success = false;
         }
 
@@ -207,7 +207,7 @@ export class AdapterUpgradeManager {
 
         this.server.close(async () => {
             await this.startAdapter();
-            this.logger.info(`${this.hostname} Successfully started adapter`);
+            this.log('Successfully started adapter');
         });
     }
 
@@ -222,7 +222,7 @@ export class AdapterUpgradeManager {
         res.end(JSON.stringify(this.response));
 
         if (!this.response.running) {
-            this.logger.info(`${this.hostname} Final information delivered`);
+            this.log('Final information delivered');
             this.shutdownServer();
         }
     }
@@ -248,6 +248,23 @@ export class AdapterUpgradeManager {
     }
 
     /**
+     * Log via logger and provide the logs for the server too
+     *
+     * @param message the message which will be logged
+     * @param error if it is an error
+     */
+    log(message: string, error = false): void {
+        if (error) {
+            this.logger.error(`host.${this.hostname} ${message}`);
+            this.response.stderr.push(message);
+            return;
+        }
+
+        this.logger.info(`host.${this.hostname} [CONTROLLER_AUTO_UPGRADE] ${message}`);
+        this.response.stdout.push(message);
+    }
+
+    /**
      * Start an insecure web server for admin communication
      *
      * @param params Web server configuration
@@ -260,7 +277,7 @@ export class AdapterUpgradeManager {
         });
 
         this.server.listen(port, () => {
-            this.logger.info(`${this.hostname} Server is running on http://localhost:${port}`);
+            this.log(`Server is running on http://localhost:${port}`);
         });
     }
 
@@ -279,7 +296,7 @@ export class AdapterUpgradeManager {
         });
 
         this.server.listen(port, () => {
-            this.logger.info(`${this.hostname} Server is running on http://localhost:${port}`);
+            this.log(`Server is running on http://localhost:${port}`);
         });
     }
 
@@ -319,11 +336,11 @@ export class AdapterUpgradeManager {
         try {
             await wait(this.SHUTDOWN_TIMEOUT, null, { signal: this.shutdownAbortController.signal });
 
-            this.logger.info(`${this.hostname} Timeout expired, initializing shutdown`);
+            this.log('Timeout expired, initializing shutdown');
             this.shutdownServer();
         } catch (e) {
             if (e.code !== 'ABORT_ERR') {
-                this.logger.error(`${this.hostname} ${e.message}`);
+                this.log(e.message, true);
             }
         }
     }
