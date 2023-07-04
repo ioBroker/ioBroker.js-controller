@@ -3183,6 +3183,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 version,
                 useHttps,
                 objects: objects!,
+                states: states!,
                 port,
                 certPrivateName: msg.message.certPrivateName,
                 certPublicName: msg.message.certPublicName

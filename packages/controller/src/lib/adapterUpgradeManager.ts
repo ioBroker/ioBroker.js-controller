@@ -2,8 +2,11 @@ import { tools } from '@iobroker/js-controller-common';
 import http from 'http';
 import https from 'https';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { setTimeout as wait } from 'timers/promises';
 import type { Logger } from 'winston';
+import { Upgrade } from '@iobroker/js-controller-cli';
+import type { ProcessExitCallback } from '@iobroker/js-controller-cli/build/lib/_Types';
 
 interface Certificates {
     /** Public certificate */
@@ -33,6 +36,8 @@ export type AdapterUpgradeManagerOptions = {
     adapterName: string;
     /** The objects DB client */
     objects: ObjectsClient;
+    /** The states DB client */
+    states: StatesClient;
     /** A logger instance */
     logger: Logger;
 } & WebServerParameters;
@@ -79,6 +84,8 @@ export class AdapterUpgradeManager {
     private readonly hostname = tools.getHostName();
     /** The objects DB client */
     private readonly objects: ObjectsClient;
+    /** The states DB client */
+    private readonly states: StatesClient;
     /** List of instances which have been stopped */
     private stoppedInstances: string[] = [];
     /** If webserver should be started with https */
@@ -95,6 +102,7 @@ export class AdapterUpgradeManager {
         this.version = options.version;
         this.logger = options.logger;
         this.objects = options.objects;
+        this.states = options.states;
         this.useHttps = options.useHttps;
         this.port = options.port;
 
@@ -145,21 +153,27 @@ export class AdapterUpgradeManager {
      * Install given version of adapter
      */
     async performUpgrade(): Promise<void> {
-        const res = await tools.installNodeModule(`${tools.appName}.${this.adapterName}@${this.version}`, {
-            cwd: '/opt/iobroker',
-            debug: true
+        const processExitHandler: ProcessExitCallback = exitCode => {
+            this.logger.error(`Upgrade process exited with code: ${exitCode}`);
+        };
+
+        const upgrade = new Upgrade({
+            objects: this.objects,
+            processExit: processExitHandler,
+            states: this.states,
+            restartController: () => undefined,
+            params: {}
         });
 
-        this.response.stderr.push(...res.stderr.split('\n'));
-        this.response.stdout.push(...res.stdout.split('\n'));
-
-        if (res.stderr) {
-            this.logger.error(`${this.hostname} ${res.stderr}`);
-        } else if (res.stdout) {
-            this.logger.info(`${this.hostname} ${res.stdout}`);
+        try {
+            await upgrade.upgradeAdapter(undefined, `${this.adapterName}@${this.version}`, true, true, false);
+            this.response.success = true;
+            this.logger.info(`Successfully upgraded ${this.adapterName} to version ${this.version}`);
+        } catch (e) {
+            this.logger.error(e.message);
+            this.response.success = false;
         }
 
-        this.response.success = res.success;
         await this.setFinished();
     }
 

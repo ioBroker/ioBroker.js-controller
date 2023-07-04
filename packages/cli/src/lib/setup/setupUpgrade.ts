@@ -36,7 +36,7 @@ export class Upgrade {
     private readonly hostname = tools.getHostName();
     private readonly upload: Upload;
     private readonly install: Install;
-    private objects: ObjectsInRedisClient;
+    private readonly objects: ObjectsInRedisClient;
     private readonly processExit: ProcessExitCallback;
     private readonly params: Record<string, any>;
 
@@ -293,14 +293,14 @@ export class Upgrade {
     /**
      * Try to async upgrade adapter from given source with some checks
      *
-     * @param repoUrlOrObject url of the selected repository or parsed repo
+     * @param repoUrlOrObject url of the selected repository or parsed repo, if undefined use current active repository
      * @param adapter name of the adapter (can also include version like web@3.0.0)
      * @param forceDowngrade flag to force downgrade
      * @param autoConfirm automatically confirm the tty questions (bypass)
      * @param upgradeAll if true, this is an upgrade all call, we don't do major upgrades if no tty
      */
     async upgradeAdapter(
-        repoUrlOrObject: string | Record<string, any>,
+        repoUrlOrObject: string | Record<string, any> | undefined,
         adapter: string,
         forceDowngrade: boolean,
         autoConfirm: boolean,
@@ -421,7 +421,7 @@ export class Upgrade {
             const isDowngrade = semver.lt(targetVersion, installedVersion);
 
             // if information in repo files -> show news
-            if (repoAdapter && repoAdapter.news) {
+            if (repoAdapter?.news) {
                 const news = repoAdapter.news;
 
                 let first = true;
