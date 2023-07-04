@@ -22,6 +22,7 @@ import type { DbConnectCallback, DbConnectAsyncReturn } from './_Types';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type { Client as StateRedisClient } from '@iobroker/db-states-redis';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
+import { getRepository } from './setup/utils';
 
 tools.ensureDNSOrder();
 
@@ -623,7 +624,6 @@ async function processCommand(
                             const install = new Install({
                                 objects: objects!,
                                 states: states!,
-                                getRepository,
                                 processExit: callback,
                                 params
                             });
@@ -817,7 +817,6 @@ async function processCommand(
                 const install = new Install({
                     objects,
                     states,
-                    getRepository,
                     processExit: callback,
                     params
                 });
@@ -921,7 +920,6 @@ async function processCommand(
                 const install = new Install({
                     objects,
                     states,
-                    getRepository,
                     processExit: callback,
                     params
                 });
@@ -1126,7 +1124,6 @@ async function processCommand(
                     const install = new Install({
                         objects,
                         states,
-                        getRepository,
                         processExit: callback,
                         params
                     });
@@ -1141,7 +1138,6 @@ async function processCommand(
                     const install = new Install({
                         objects,
                         states,
-                        getRepository,
                         processExit: callback,
                         params
                     });
@@ -1216,7 +1212,6 @@ async function processCommand(
                 const upgrade = new Upgrade({
                     objects,
                     states,
-                    getRepository,
                     params,
                     processExit: callback,
                     restartController
@@ -1244,7 +1239,7 @@ async function processCommand(
                 } else {
                     // upgrade all
                     try {
-                        const links = await getRepository();
+                        const links = await getRepository(objects);
                         if (!links) {
                             return void callback(EXIT_CODES.INVALID_REPO);
                         }
@@ -2160,7 +2155,7 @@ async function processCommand(
         }
 
         case 'set': {
-            const instance = args[0];
+            const instance = args[0] as `${string}.${number}`;
             if (!instance) {
                 console.warn('please specify instance.');
                 return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
@@ -2169,65 +2164,71 @@ async function processCommand(
                 console.warn(`please specify instance, like "${instance}.0"`);
                 return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
             }
-            dbConnect(params, () => {
-                objects!.getObject('system.adapter.' + instance, (err, obj) => {
-                    if (!err && obj) {
-                        let changed = false;
-                        for (let a = 0; a < process.argv.length; a++) {
-                            if (
-                                process.argv[a].startsWith('--') &&
-                                process.argv[a + 1] &&
-                                !process.argv[a + 1].startsWith('--')
-                            ) {
-                                const attr = process.argv[a].substring(2);
-                                let val: number | string | boolean = process.argv[a + 1];
-                                if (val === '__EMPTY__') {
-                                    val = '';
-                                } else if (val === 'true') {
-                                    val = true;
-                                } else if (val === 'false') {
-                                    val = false;
-                                } else if (parseFloat(val).toString() === val) {
-                                    val = parseFloat(val);
-                                }
-                                if (attr.indexOf('.') !== -1) {
-                                    const parts = attr.split('.');
-                                    if (!obj.native[parts[0]] || obj.native[parts[0]][parts[1]] === undefined) {
-                                        console.warn(`Adapter "${instance}" has no setting "${attr}".`);
-                                    } else {
-                                        changed = true;
-                                        obj.native[parts[0]][parts[1]] = val;
-                                        console.log(`New ${attr} for "${instance}" is: ${val}`);
-                                    }
-                                } else {
-                                    if (obj.native[attr] === undefined) {
-                                        console.warn(`Adapter "${instance}" has no setting "${attr}".`);
-                                    } else {
-                                        changed = true;
-                                        obj.native[attr] = val;
-                                        console.log(`New ${attr} for "${instance}" is: ${val}`);
-                                    }
-                                }
-                                a++;
+            const { objects } = await dbConnectAsync(false, params);
+
+            let obj: ioBroker.InstanceObject | undefined | null;
+
+            try {
+                obj = await objects.getObjectAsync(`system.adapter.${instance}`);
+            } catch {
+                // ignore
+            }
+
+            if (obj) {
+                let changed = false;
+                for (let a = 0; a < process.argv.length; a++) {
+                    if (
+                        process.argv[a].startsWith('--') &&
+                        process.argv[a + 1] &&
+                        !process.argv[a + 1].startsWith('--')
+                    ) {
+                        const attr = process.argv[a].substring(2);
+                        let val: number | string | boolean = process.argv[a + 1];
+                        if (val === '__EMPTY__') {
+                            val = '';
+                        } else if (val === 'true') {
+                            val = true;
+                        } else if (val === 'false') {
+                            val = false;
+                        } else if (parseFloat(val).toString() === val) {
+                            val = parseFloat(val);
+                        }
+                        if (attr.indexOf('.') !== -1) {
+                            const parts = attr.split('.');
+                            if (!obj.native[parts[0]] || obj.native[parts[0]][parts[1]] === undefined) {
+                                console.warn(`Adapter "${instance}" has no setting "${attr}".`);
+                            } else {
+                                changed = true;
+                                obj.native[parts[0]][parts[1]] = val;
+                                console.log(`New ${attr} for "${instance}" is: ${val}`);
+                            }
+                        } else {
+                            if (obj.native[attr] === undefined) {
+                                console.warn(`Adapter "${instance}" has no setting "${attr}".`);
+                            } else {
+                                changed = true;
+                                obj.native[attr] = val;
+                                console.log(`New ${attr} for "${instance}" is: ${val}`);
                             }
                         }
-                        if (changed) {
-                            obj.from = `system.host.${tools.getHostName()}.cli`;
-                            obj.ts = new Date().getTime();
-                            objects!.setObject(`system.adapter.${instance}`, obj, () => {
-                                console.log(`Instance settings for "${instance}" are changed.`);
-                                return void callback();
-                            });
-                        } else {
-                            console.log('No parameters set.');
-                            return void callback();
-                        }
-                    } else {
-                        CLIError.invalidInstance(instance);
-                        return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
+                        a++;
                     }
-                });
-            });
+                }
+                if (changed) {
+                    obj.from = `system.host.${tools.getHostName()}.cli`;
+                    obj.ts = new Date().getTime();
+                    objects.setObject(`system.adapter.${instance}`, obj, () => {
+                        console.log(`Instance settings for "${instance}" are changed.`);
+                        return void callback();
+                    });
+                } else {
+                    console.log('No parameters set.');
+                    return void callback();
+                }
+            } else {
+                CLIError.invalidInstance(instance);
+                return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
+            }
             break;
         }
 
@@ -2970,69 +2971,6 @@ async function restartController(): Promise<void> {
     });
 
     child.unref();
-}
-
-async function getRepository(repoName?: string, params?: Record<string, any>): Promise<Record<string, any>> {
-    params = params || {};
-
-    if (!objects) {
-        await dbConnectAsync(params as any);
-    }
-
-    if (!repoName || repoName === 'auto') {
-        const systemConfig = await objects!.getObjectAsync('system.config');
-        repoName = systemConfig!.common.activeRepo;
-    }
-
-    const repoArr = !Array.isArray(repoName) ? [repoName!] : repoName!;
-
-    const systemRepos = (await objects!.getObjectAsync('system.repositories'))!;
-    const allSources = {};
-    let changed = false;
-    let anyFound = false;
-    for (const repo of repoArr) {
-        if (systemRepos.native.repositories[repo]) {
-            if (typeof systemRepos.native.repositories[repo] === 'string') {
-                systemRepos.native.repositories[repo] = {
-                    link: systemRepos.native.repositories[repo],
-                    json: null
-                };
-                changed = true;
-            }
-
-            // If repo is not yet loaded
-            if (!systemRepos.native.repositories[repo].json) {
-                console.log(`Update repository "${repo}" under "${systemRepos.native.repositories[repo].link}"`);
-                const data = await tools.getRepositoryFileAsync(systemRepos.native.repositories[repo].link);
-                systemRepos.native.repositories[repo].json = data.json;
-                systemRepos.native.repositories[repo].hash = data.hash;
-                systemRepos.from = `system.host.${tools.getHostName()}.cli`;
-                systemRepos.ts = new Date().getTime();
-                changed = true;
-            }
-
-            if (systemRepos.native.repositories[repo].json) {
-                Object.assign(allSources, systemRepos.native.repositories[repo].json);
-                anyFound = true;
-            }
-        }
-
-        if (changed) {
-            await objects!.setObjectAsync('system.repositories', systemRepos);
-        }
-    }
-
-    if (!anyFound) {
-        console.error(
-            `ERROR: No repositories defined. Please define one repository as active:  "iob repo set <${Object.keys(
-                systemRepos.native.repositories
-            ).join(' | ')}>`
-        );
-        // @ts-expect-error todo throw code or description?
-        throw new Error(EXIT_CODES.INVALID_REPO);
-    } else {
-        return allSources;
-    }
 }
 
 async function resetDbConnect(): Promise<void> {
