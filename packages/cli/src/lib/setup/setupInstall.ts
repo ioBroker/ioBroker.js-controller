@@ -339,7 +339,7 @@ export class Install {
         npmUrl: string,
         options: CLIDownloadPacketOptions,
         debug: boolean,
-        isRetry: boolean
+        isRetry?: boolean
     ): Promise<void | NpmInstallResult> {
         if (typeof options !== 'object') {
             options = {};
@@ -436,6 +436,7 @@ export class Install {
                     if (success) {
                         return this._npmInstall(npmUrl, options, debug, true);
                     }
+                    return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
                 }
             } else {
                 console.error(result.stderr);
