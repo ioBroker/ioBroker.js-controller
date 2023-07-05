@@ -410,32 +410,38 @@ export class Install {
             // command succeeded
             return { _url: npmUrl, installDir: path.dirname(installDir) };
         } else {
+            // if we see ENOTEMPTY error
             if (!isRetry && result.stderr.includes('ENOTEMPTY')) {
                 // try to manually remove the directory and start installation again
                 // detect node_modules folder
                 const pack = await tools.detectPackageManagerWithFallback();
+                // extract adapter name
                 const name = npmUrl
                     .replace(/\\/g, '/')
                     .replace(/\.git$/, '')
                     .split('/')
                     .pop();
+                
                 if (name) {
                     const folderPath = path.join(pack.cwd, 'node_modules', name.toLowerCase());
                     console.error(
                         `host.${hostname} Cannot install ${npmUrl}: try to delete adapter folder manually ("${folderPath}")`
                     );
                     let success = false;
+                    // delete adapter folder in node_modules
                     try {
                         deleteFoldersRecursive(folderPath);
                         success = true;
                     } catch (e) {
-                        // ignore
+                        // error by folder deletion
                         console.error(`host.${hostname} Cannot delete adapter folder: ${e}`);
                         console.error(`host.${hostname} installation aborted`);
                     }
                     if (success) {
+                        // retry installation
                         return this._npmInstall(npmUrl, options, debug, true);
                     }
+                    // inform about failure
                     return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
                 }
             } else {
