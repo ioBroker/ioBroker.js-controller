@@ -79,6 +79,49 @@ If port 8081 is occupied, you can install a second Admin UI on an alternate port
 
 The command line interface is described at https://www.iobroker.net/#de/documentation/config/cli.md
 
+### Adapter Upgrade with Webserver
+**Feature status:** New in 5.0.0
+
+**Feature Flag for detection:** `ADAPTER_WEBSERVER_UPGRADE`
+
+An adapter can be upgraded via `sendToHost`. The adapter sends parameters to the `js-controller` which contain the 
+information of the adapter to upgrade as well as information to start a webserver. The webserver can be polled by a UI,
+even if the adapter itself is stopped during upgrade or does not know of the upgrade.
+
+Example: 
+
+```typescript
+sendToHostAsync('system.host.test', 'upgradeAdapterWithWebserver', { 
+    version: '1.0.5', 
+    adapterName: 'hm-rpc', 
+    useHttps: true, 
+    port: 8081, 
+    certPrivateName: 'defaultPrivate',
+    certPublicName: 'defaultPublic' 
+});
+```
+
+In this example the controller will upgrade the adapter `hm-rpc` to version `1.0.5`. During the upgrade, 
+the log and status information is provided by a webserver running on port `8081`, and using `https` with 
+the given certificates.
+
+During the update, you can perform a `GET` request against the webserver to get the current status of the upgrade.
+
+The webserver response is defined as following:
+
+```typescript
+interface ServerResponse {
+    /** If the update is still running */
+    running: boolean;
+    /** Stderr log during the upgrade */
+    stderr: string[];
+    /** Stdout log during the upgrade */
+    stdout: string[];
+    /** If installation process succeeded */
+    success?: boolean;
+}
+```
+
 ### Controller UI Upgrade
 **Feature status:** New in 5.0.0
 
@@ -96,6 +139,21 @@ sendToHostAsync('system.host.test', 'upgradeController', { version: '5.0.5', adm
 In this example, the controller will be upgraded to version `5.0.5` and the web server will 
 take the configuration (http/s, port, certificates) of `system.adapter.admin.0`.
 During the update, you can perform a `GET` request against the webserver to get the current status of the upgrade.
+
+The webserver response is defined as following:
+
+```typescript
+interface ServerResponse {
+    /** If the update is still running */
+    running: boolean;
+    /** Stderr log during the upgrade */
+    stderr: string[];
+    /** Stdout log during the upgrade */
+    stdout: string[];
+    /** If installation process succeeded */
+    success?: boolean;
+}
+```
 
 ### Hostname
 **Feature status:** stable

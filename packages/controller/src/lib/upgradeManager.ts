@@ -201,7 +201,7 @@ class UpgradeManager {
     }
 
     /**
-     * Shuts down the server, restarts the controller and exists the program
+     * Shuts down the server, restarts the controller and exits the program
      */
     shutdownApp(): void {
         if (this.shutdownAbortController) {

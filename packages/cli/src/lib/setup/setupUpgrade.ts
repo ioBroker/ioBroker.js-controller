@@ -17,7 +17,8 @@ import tty from 'tty';
 import path from 'path';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
-import type { GetRepositoryHandler, ProcessExitCallback } from '../_Types';
+import type { ProcessExitCallback } from '../_Types';
+import { getRepository } from './utils';
 
 const debug = Debug('iobroker:cli');
 
@@ -26,7 +27,6 @@ type IoPackDependencies = string[] | Record<string, any>[] | Record<string, any>
 interface CLIUpgradeOptions {
     processExit: ProcessExitCallback;
     restartController: () => void;
-    getRepository: GetRepositoryHandler;
     objects: ObjectsInRedisClient;
     states: StatesInRedisClient;
     params: Record<string, any>;
@@ -36,10 +36,9 @@ export class Upgrade {
     private readonly hostname = tools.getHostName();
     private readonly upload: Upload;
     private readonly install: Install;
-    private objects: ObjectsInRedisClient;
+    private readonly objects: ObjectsInRedisClient;
     private readonly processExit: ProcessExitCallback;
     private readonly params: Record<string, any>;
-    private readonly getRepository: GetRepositoryHandler;
 
     constructor(options: CLIUpgradeOptions) {
         options = options || {};
@@ -50,12 +49,8 @@ export class Upgrade {
         if (!options.restartController) {
             throw new Error('Invalid arguments: restartController is missing');
         }
-        if (!options.getRepository) {
-            throw new Error('Invalid arguments: getRepository is missing');
-        }
 
         this.processExit = options.processExit;
-        this.getRepository = options.getRepository;
         this.params = options.params;
         this.objects = options.objects;
 
@@ -189,7 +184,7 @@ export class Upgrade {
             return Promise.reject(err);
         }
 
-        if (objs && objs.rows && objs.rows.length) {
+        if (objs?.rows?.length) {
             for (const dName in allDeps) {
                 if (dName === 'js-controller') {
                     const version = allDeps[dName];
@@ -226,9 +221,7 @@ export class Upgrade {
                         // local dep get all instances on same host
                         locInstances = objs.rows.filter(
                             obj =>
-                                obj &&
-                                obj.value &&
-                                obj.value.common &&
+                                obj?.value?.common &&
                                 obj.value.common.name === dName &&
                                 obj.value.common.host === this.hostname
                         );
@@ -300,14 +293,14 @@ export class Upgrade {
     /**
      * Try to async upgrade adapter from given source with some checks
      *
-     * @param repoUrlOrObject url of the selected repository or parsed repo
+     * @param repoUrlOrObject url of the selected repository or parsed repo, if undefined use current active repository
      * @param adapter name of the adapter (can also include version like web@3.0.0)
      * @param forceDowngrade flag to force downgrade
      * @param autoConfirm automatically confirm the tty questions (bypass)
      * @param upgradeAll if true, this is an upgrade all call, we don't do major upgrades if no tty
      */
     async upgradeAdapter(
-        repoUrlOrObject: string | Record<string, any>,
+        repoUrlOrObject: string | Record<string, any> | undefined,
         adapter: string,
         forceDowngrade: boolean,
         autoConfirm: boolean,
@@ -316,7 +309,7 @@ export class Upgrade {
         let sources: Record<string, any>;
         if (!repoUrlOrObject || !tools.isObject(repoUrlOrObject)) {
             try {
-                sources = await this.getRepository(repoUrlOrObject, this.params);
+                sources = await getRepository(this.objects, repoUrlOrObject);
             } catch (e) {
                 return this.processExit(e);
             }
@@ -428,7 +421,7 @@ export class Upgrade {
             const isDowngrade = semver.lt(targetVersion, installedVersion);
 
             // if information in repo files -> show news
-            if (repoAdapter && repoAdapter.news) {
+            if (repoAdapter?.news) {
                 const news = repoAdapter.news;
 
                 let first = true;
@@ -560,8 +553,8 @@ export class Upgrade {
                     console.log(`Can not check version information to display upgrade infos: ${err.message}`);
                 }
                 console.log(`Update ${adapter} from @${installedVersion} to @${targetVersion}`);
-                // Get the adapter from web site
-                // @ts-expect-error it could also call processExit internally but we want change it in future anyway
+                // Get the adapter from website
+                // @ts-expect-error it could also call processExit internally, but we want change it in future anyway
                 const { packetName, stoppedList } = await this.install.downloadPacket(
                     sources,
                     `${adapter}@${targetVersion}`
@@ -606,7 +599,7 @@ export class Upgrade {
                     console.log(`Can not check version information to display upgrade infos: ${err.message}`);
                 }
                 console.log(`Update ${adapter} from @${installedVersion} to @${targetVersion}`);
-                // @ts-expect-error it could also call processExit internally but we want change it in future anyway
+                // @ts-expect-error it could also call processExit internally, but we want change it in future anyway
                 const { packetName, stoppedList } = await this.install.downloadPacket(
                     sources,
                     `${adapter}@${targetVersion}`
@@ -625,7 +618,7 @@ export class Upgrade {
                 }
                 console.warn(`Unable to get version for "${adapter}". Update anyway.`);
                 console.log(`Update ${adapter} from @${installedVersion} to @${version}`);
-                // Get the adapter from web site
+                // Get the adapter from website
                 // @ts-expect-error it could also call processExit internally but we want change it in future anyway
                 const { packetName, stoppedList } = await this.install.downloadPacket(sources, `${adapter}@${version}`);
                 await finishUpgrade(packetName);
@@ -651,7 +644,7 @@ export class Upgrade {
         let sources: Record<string, any>;
         if (!repoUrlOrObject || !tools.isObject(repoUrlOrObject)) {
             try {
-                const result = await this.getRepository(repoUrlOrObject, this.params);
+                const result = await getRepository(this.objects, repoUrlOrObject);
                 if (!result) {
                     return console.warn(`Cannot get repository under "${repoUrlOrObject}"`);
                 }
@@ -696,7 +689,7 @@ export class Upgrade {
                 console.warn(`Controller is running. Please stop ioBroker first.`);
             } else {
                 console.log(`Update ${controllerName} from @${installed.common.version} to @${repoController.version}`);
-                // Get the controller from web site
+                // Get the controller from website
                 await this.install.downloadPacket(sources, `${controllerName}@${repoController.version}`, {
                     stopDb: true
                 });

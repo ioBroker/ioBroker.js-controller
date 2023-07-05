@@ -5,3 +5,5 @@ export { Vendor } from './lib/setup/setupVendor';
 export { Upload } from './lib/setup/setupUpload';
 // required by testConsole
 export { BackupRestore } from './lib/setup/setupBackup';
+// used by adapter upgrade manager
+export { Upgrade } from './lib/setup/setupUpgrade';
