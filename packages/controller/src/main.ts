@@ -3258,13 +3258,13 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         config = JSON.parse(config);
                         sendTo(msg.from, msg.command, { config, isActive: uptimeStart > stat.mtimeMs }, msg.callback);
                     } catch {
-                        const error = 'Cannot parse file ' + configFile;
-                        logger.error(hostLogPrefix + ' ' + error);
+                        const error = `Cannot parse file ${configFile}`;
+                        logger.error(`${hostLogPrefix} ${error}`);
                         sendTo(msg.from, msg.command, { error }, msg.callback);
                     }
                 } else {
-                    const error = 'Cannot find file ' + configFile;
-                    logger.error(hostLogPrefix + ' ' + error);
+                    const error = `Cannot find file ${configFile}`;
+                    logger.error(`${hostLogPrefix} ${error}`);
                     sendTo(msg.from, msg.command, { error }, msg.callback);
                 }
             } else {

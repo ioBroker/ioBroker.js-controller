@@ -1624,21 +1624,21 @@ export interface InstallNodeModuleOptions {
  * Figure out which package manager is in charge, but with a fallback to npm.
  * @param cwd Which directory to work in. If none is given, this defaults to ioBroker's root directory.
  */
-async function detectPackageManagerWithFallback(cwd?: string): Promise<PackageManager> {
+export async function detectPackageManagerWithFallback(cwd?: string): Promise<PackageManager> {
     try {
         // For the first attempt, use pak's default of requiring a lockfile. This makes sure we find ioBroker's root dir
         return await detectPackageManager(
             typeof cwd === 'string'
                 ? // If a cwd was provided, use it
                   { cwd }
-                : // Otherwise try to find the ioBroker root dir
+                : // Otherwise, try to find the ioBroker root dir
                   {
                       cwd: (isDevServerInstallation() && require.main?.path) || __dirname,
                       setCwdToPackageRoot: true
                   }
         );
     } catch {
-        // Lockfile not found, use default to avoid picking up a wrong package manager
+        // Lockfile does not found, use default to avoid picking up a wrong package manager
         // like a globally installed yarn
     }
 

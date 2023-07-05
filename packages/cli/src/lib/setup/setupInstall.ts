@@ -1,7 +1,7 @@
 /**
  *      Install adapter
  *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2023 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -63,6 +63,25 @@ interface CreateInstanceOptions {
     enabled?: boolean | 'true' | 'false';
     host?: string;
     port?: number;
+}
+
+function deleteFoldersRecursive(path: string): void {
+    if (path.endsWith('/')) {
+        path = path.substring(0, path.length - 1);
+    }
+    if (fs.existsSync(path)) {
+        const files = fs.readdirSync(path);
+        for (const file of files) {
+            const curPath = `${path}/${file}`;
+            const stat = fs.statSync(curPath);
+            if (stat.isDirectory()) {
+                deleteFoldersRecursive(curPath);
+            } else {
+                fs.unlinkSync(curPath);
+            }
+        }
+        fs.rmdirSync(path);
+    }
 }
 
 export class Install {
@@ -319,7 +338,8 @@ export class Install {
     private async _npmInstall(
         npmUrl: string,
         options: CLIDownloadPacketOptions,
-        debug: boolean
+        debug: boolean,
+        isRetry: boolean
     ): Promise<void | NpmInstallResult> {
         if (typeof options !== 'object') {
             options = {};
@@ -340,7 +360,7 @@ export class Install {
         });
 
         if (result.success || result.exitCode === 1) {
-            // code 1 is strange error that cannot be explained. Everything is installed but error :(
+            // code 1 is a strange error that cannot be explained. Everything is installed but error :(
 
             // Determine where the packet would be installed if npm succeeds
             // TODO: There's probably a better way to figure this out
@@ -385,14 +405,43 @@ export class Install {
                 console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
                 return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
             }
-            // create file that indicates, that npm was called there
+            // create file that indicates that npm was called there
             fs.writeFileSync(path.join(installDir, 'iob_npm.done'), ' ');
             // command succeeded
             return { _url: npmUrl, installDir: path.dirname(installDir) };
         } else {
-            console.error(result.stderr);
-            console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
-            return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
+            if (!isRetry && result.stderr.includes('ENOTEMPTY')) {
+                // try to manually remove the directory and start installation again
+                // detect node_modules folder
+                const pack = await tools.detectPackageManagerWithFallback();
+                const name = npmUrl
+                    .replace(/\\/g, '/')
+                    .replace(/\.git$/, '')
+                    .split('/')
+                    .pop();
+                if (name) {
+                    const folderPath = path.join(pack.cwd, 'node_modules', name.toLowerCase());
+                    console.error(
+                        `host.${hostname} Cannot install ${npmUrl}: try to delete adapter folder manually ("${folderPath}")`
+                    );
+                    let success = false;
+                    try {
+                        deleteFoldersRecursive(folderPath);
+                        success = true;
+                    } catch (e) {
+                        // ignore
+                        console.error(`host.${hostname} Cannot delete adapter folder: ${e}`);
+                        console.error(`host.${hostname} installation aborted`);
+                    }
+                    if (success) {
+                        return this._npmInstall(npmUrl, options, debug, true);
+                    }
+                }
+            } else {
+                console.error(result.stderr);
+                console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
+                return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
+            }
         }
     }
 
