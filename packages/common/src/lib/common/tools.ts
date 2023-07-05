@@ -73,7 +73,7 @@ const VENDOR_FILE = '/etc/iob-vendor.json';
 /** This file contains the version string in an official docker image */
 const OFFICIAL_DOCKER_FILE = '/opt/scripts/.docker_config/.thisisdocker';
 /** Version of official Docker image which started to support UI upgrade */
-const DOCKER_VERSION_UI_UPGRADE = '8.0.0';
+const DOCKER_VERSION_UI_UPGRADE = '8.1.0';
 
 let lastCalculationOfIps: number;
 let ownIpArr: string[] = [];
