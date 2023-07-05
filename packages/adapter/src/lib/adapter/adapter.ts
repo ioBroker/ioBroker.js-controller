@@ -7371,7 +7371,7 @@ export class AdapterClass extends EventEmitter {
             from: `system.adapter.${this.namespace}`
         };
 
-        await adapterStates.pushMessage(this.host!, obj as any);
+        await adapterStates.pushMessage(`system.host.${this.host}`, obj as any);
     }
 
     // external signatures
