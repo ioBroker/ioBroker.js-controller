@@ -31,6 +31,7 @@ import decache from 'decache';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import { getDefaultNodeArgs } from './lib/tools';
 import type { UpgradeArguments } from './lib/upgradeManager';
+import { AdapterUpgradeManager } from './lib/adapterUpgradeManager';
 
 type TaskObject = ioBroker.SettableObject & { state?: ioBroker.SettableState };
 type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
@@ -3170,6 +3171,28 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             if (msg.callback) {
                 sendTo(msg.from, msg.command, { result: true }, msg.callback);
             }
+            break;
+        }
+
+        case 'upgradeAdapterWithWebserver': {
+            const { version, adapterName, useHttps, port } = msg.message;
+
+            const upgradeManager = new AdapterUpgradeManager({
+                logger,
+                adapterName,
+                version,
+                useHttps,
+                objects: objects!,
+                states: states!,
+                port,
+                certPrivateName: msg.message.certPrivateName,
+                certPublicName: msg.message.certPublicName
+            });
+
+            await upgradeManager.stopAdapter();
+            await upgradeManager.startWebServer();
+            await upgradeManager.performUpgrade();
+
             break;
         }
 
