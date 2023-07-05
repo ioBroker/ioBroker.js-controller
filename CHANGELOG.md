@@ -5,7 +5,7 @@
 -->
 ## ## __WORK IN PROGRESS__ - Jana
 **BREAKING CHANGES**
-* Support for Node.js 12 is dropped! Supported are Node.js 14.18.0+, 16.4.0+ and 18.x
+* Support for Node.js 12 and 14 is dropped! Supported are Node.js 16.4.0+ and 18.x
 * Backups created with the new js-controller version cannot be restored on hosts with lower js-controller version!
 * Update recommended npm version to 8
 * Deprecate binary states, Adapters will change to use Files instead!
