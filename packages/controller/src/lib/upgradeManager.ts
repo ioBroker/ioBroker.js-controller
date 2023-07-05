@@ -136,7 +136,7 @@ class UpgradeManager {
      */
     async stopController(): Promise<void> {
         if (tools.isDocker()) {
-            await execAsync('m on -kbn');
+            await execAsync('/opt/scripts/maintenance.sh on -kbn');
         } else {
             await execAsync(`${tools.appNameLowerCase} stop`);
         }
@@ -148,7 +148,7 @@ class UpgradeManager {
      */
     startController(): ChildProcessPromise {
         if (tools.isDocker()) {
-            return execAsync('m off -y');
+            return execAsync('/opt/scripts/maintenance.sh off -y');
         }
 
         return execAsync(`${tools.appNameLowerCase} start`);
