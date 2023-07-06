@@ -3632,11 +3632,11 @@ export class AdapterClass extends EventEmitter {
      *                   for (var i = 0; i < doc.rows.length; i++) {
      *                       var id  = doc.rows[i].id;
      *                        var obj = doc.rows[i].value;
-     *                        console.log('Found ' + id + ': ' + JSON.stringify(obj));
+     *                        adapter.log.info('Found ' + id + ': ' + JSON.stringify(obj));
      *                   }
-     *                           if (!doc.rows.length) console.log('No objects found.');
+     *                           if (!doc.rows.length) adapter.log.info('No objects found.');
      *               } else {
-     *                   console.log('No objects found: ' + err);
+     *                   adapter.log.info('No objects found: ' + err);
      *               }
      *           }
      *           ```
@@ -3740,11 +3740,11 @@ export class AdapterClass extends EventEmitter {
      *                   for (var i = 0; i < res.rows.length; i++) {
      *                       var id  = res.rows[i].id;
      *                       var obj = res.rows[i].value;
-     *                       console.log('Found ' + id + ': ' + JSON.stringify(obj));
+     *                       adapter.log.info('Found ' + id + ': ' + JSON.stringify(obj));
      *                   }
-     *                   if (!res.rows.length) console.log('No objects found.');
+     *                   if (!res.rows.length) adapter.log.info('No objects found.');
      *              } else {
-     *                  console.log('No objects found: ' + err);
+     *                  adapter.log.info('No objects found: ' + err);
      *              }
      *          }
      *       ```
@@ -6410,7 +6410,7 @@ export class AdapterClass extends EventEmitter {
      * ```js
      *      adapter.chmodFile('vis.0', '/main/vis-views.json', {mode: 0x644}, function (err, processed) {
      *        if (err) adapter.log.error('Cannot read file: ' + err);
-     *        console.log('New files: ' + JSON.stringify(processed));
+     *        adapter.log.info('New files: ' + JSON.stringify(processed));
      *      });
      * ```
      *
@@ -6457,7 +6457,7 @@ export class AdapterClass extends EventEmitter {
      * ```js
      *      adapter.chownFile('vis.0', '/main/vis-views.json', {owner: 'newOwner', ownerGroup: 'newgroup'}, function (err, processed) {
      *        if (err) adapter.log.error('Cannot read file: ' + err);
-     *        console.log('New files: ' + JSON.stringify(processed));
+     *        adapter.log.info('New files: ' + JSON.stringify(processed));
      *      });
      * ```
      *
@@ -6652,7 +6652,7 @@ export class AdapterClass extends EventEmitter {
      *      adapter.readFile('vis.0', '/main/vis-views.json', function (err, data) {
      *        // All enums
      *        if (err) adapter.log.error('Cannot read file: ' + err);
-     *        console.log('Content of file is: ' + data);
+     *        adapter.log.info('Content of file is: ' + data);
      *      });
      * ```
      *
@@ -7758,7 +7758,7 @@ export class AdapterClass extends EventEmitter {
 
     private _checkState(obj: ioBroker.StateObject, options: Record<string, any>, command: CheckStateCommand): boolean {
         const limitToOwnerRights = options.limitToOwnerRights === true;
-        if (obj && obj.acl) {
+        if (obj?.acl) {
             obj.acl.state = obj.acl.state || obj.acl.object;
 
             if (obj.acl.state) {
@@ -7889,9 +7889,9 @@ export class AdapterClass extends EventEmitter {
             }
 
             const objs: ioBroker.StateObject[] = [];
+
             for (const obj of options._objects) {
                 if (obj && this._checkState(obj, options, command)) {
-                    ids.push(obj._id);
                     objs.push(obj);
                 }
             }
@@ -9115,57 +9115,55 @@ export class AdapterClass extends EventEmitter {
         this.getForeignStates(fixedPattern, options, callback);
     }
 
-    private _processStatesSecondary(
+    private async _processStatesSecondary(
         keys: string[],
         targetObjs: (ioBroker.StateObject | null)[] | null,
-        srcObjs: (ioBroker.StateObject | null)[] | null,
-        callback: ioBroker.GetStatesCallback
-    ): void {
-        adapterStates!.getStates(keys, (err, arr) => {
-            if (err) {
-                return tools.maybeCallbackWithError(callback, err);
-            }
+        srcObjs: (ioBroker.StateObject | null)[] | null
+    ): Promise<ioBroker.GetStatesPromise> {
+        const arr = await adapterStates!.getStates(keys);
 
-            const result: Record<string, Partial<ioBroker.State> | null> = {};
+        const result: Record<string, Partial<ioBroker.State> | null> = {};
 
-            for (let i = 0; i < keys.length; i++) {
-                const obj = targetObjs && targetObjs[i];
+        for (let i = 0; i < keys.length; i++) {
+            const obj = targetObjs && targetObjs[i];
 
-                if (obj?.common?.alias) {
-                    // @ts-expect-error
-                    if (obj.common.alias.val !== undefined) {
-                        // @ts-expect-error
-                        result[obj._id] = { val: obj.common.alias.val, ts: Date.now(), q: 0 };
-                    } else if (srcObjs![i]) {
-                        result[obj._id] =
-                            tools.formatAliasValue({
-                                // @ts-expect-error
-                                sourceCommon: srcObjs[i].common,
-                                targetCommon: obj.common,
-                                state: arr![i] || null,
-                                logger: this._logger,
-                                logNamespace: this.namespaceLog,
-                                // @ts-expect-error
-                                sourceId: srcObjs[i]._id,
-                                targetId: obj._id
-                            }) || null;
-                    } else {
-                        result[obj._id || keys[i]] = arr![i] || null;
-                    }
+            if (obj?.common?.alias && srcObjs) {
+                const srcObj = srcObjs[i];
+
+                if (srcObj) {
+                    result[obj._id] =
+                        tools.formatAliasValue({
+                            sourceCommon: srcObj.common,
+                            targetCommon: obj.common,
+                            state: arr![i] || null,
+                            logger: this._logger,
+                            logNamespace: this.namespaceLog,
+                            sourceId: srcObj._id,
+                            targetId: obj._id
+                        }) || null;
                 } else {
-                    result[obj?._id || keys[i]] = arr![i] || null;
+                    result[obj._id || keys[i]] = arr![i] || null;
                 }
+            } else {
+                result[obj?._id || keys[i]] = arr![i] || null;
             }
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-            return tools.maybeCallbackWithError(callback, null, result);
-        });
+        }
+
+        // @ts-expect-error adapt the return type?
+        return result;
     }
 
+    /**
+     * Ensures, that object information is read, and the alias id is mapped to the source id if an alias is contained in the getStates call
+     * The adaption of the actual values is then performed in _processStatesSecondary, to apply alias conversion methods
+     *
+     * @param keys all ids of the getStates call
+     * @param targetObjs the target objects (e.g. alias objects or the actual objects)
+     */
     private async _processStates(
         keys: string[],
-        targetObjs: (ioBroker.StateObject | null)[],
-        callback: ioBroker.GetStatesCallback
-    ): Promise<void> {
+        targetObjs: (ioBroker.StateObject | null)[]
+    ): ioBroker.GetStatesPromise {
         let aliasFound;
         const aIds = keys.map(id => {
             if (id.startsWith(ALIAS_STARTS_WITH)) {
@@ -9182,8 +9180,8 @@ export class AdapterClass extends EventEmitter {
             keys = [...keys];
 
             // read aliases objects
-            // @ts-expect-error fix later
-            targetObjs = await this._getObjectsByArray(aIds, targetObjs, this._options);
+            // @ts-expect-error aIds array can also contain null values, but probably the code can work with that, so adapt methods types?
+            targetObjs = (await this._getObjectsByArray(aIds, targetObjs)) as ioBroker.StateObject[];
             const srcIds: string[] = [];
             // replace aliases ID with targets
             targetObjs.forEach((obj, i) => {
@@ -9204,9 +9202,9 @@ export class AdapterClass extends EventEmitter {
             // srcObjs and targetObjs could be merged
             const srcObjs = await this._getObjectsByArray(srcIds, null, this._options);
             // @ts-expect-error fix later
-            this._processStatesSecondary(keys, targetObjs, srcObjs, callback);
+            return this._processStatesSecondary(keys, targetObjs, srcObjs);
         } else {
-            this._processStatesSecondary(keys, null, null, callback);
+            return this._processStatesSecondary(keys, null, null);
         }
     }
 
@@ -9277,12 +9275,14 @@ export class AdapterClass extends EventEmitter {
             if (options.user && options.user !== SYSTEM_ADMIN_USER) {
                 try {
                     const { objs, ids } = await this._checkStates(pattern, options, 'getState');
-                    this._processStates(ids, objs, callback);
+                    const res = await this._processStates(ids, objs);
+                    return tools.maybeCallbackWithError(callback, null, res);
                 } catch (e) {
                     return tools.maybeCallbackWithError(callback, e);
                 }
             } else {
-                this._processStates(pattern, options && options._objects, callback);
+                const res = await this._processStates(pattern, options?._objects);
+                return tools.maybeCallbackWithError(callback, null, res);
             }
         } else {
             // read first the keys for pattern
@@ -9302,24 +9302,23 @@ export class AdapterClass extends EventEmitter {
 
             // in special maintenance mode, just returns all states. Aliases are not supported in this mode
             if (options.user === SYSTEM_ADMIN_USER && options.maintenance) {
-                adapterStates.getKeys(pattern, (err, keys) => {
-                    if (err) {
-                        return tools.maybeCallbackWithError(callback, err);
-                    } else {
-                        this._processStatesSecondary(keys || [], null, null, callback);
-                    }
-                });
+                try {
+                    const keys = await adapterStates.getKeys(pattern);
+                    const res = await this._processStatesSecondary(keys || [], null, null);
+                    return tools.maybeCallbackWithError(callback, null, res);
+                } catch (e) {
+                    return tools.maybeCallbackWithError(callback, e);
+                }
             }
 
-            adapterObjects.getObjectView('system', 'state', params, options, (err, res) => {
+            try {
+                const res = await adapterObjects.getObjectView('system', 'state', params, options);
                 if (originalChecked !== undefined) {
                     options.checked = originalChecked;
                 } else {
                     options.checked = undefined;
                 }
-                if (err) {
-                    return tools.maybeCallbackWithError(callback, err);
-                }
+
                 if (!res || !res.rows) {
                     return tools.maybeCallbackWithError(callback, null, {});
                 }
@@ -9346,7 +9345,9 @@ export class AdapterClass extends EventEmitter {
 
                 options._objects = objs;
                 this.getForeignStates(keys, options, callback);
-            });
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
         }
     }
 
@@ -10843,7 +10844,7 @@ export class AdapterClass extends EventEmitter {
                 const state = stateOrMessage as ioBroker.State | null;
 
                 if (!id || typeof id !== 'string') {
-                    console.log(`Something is wrong! ${JSON.stringify(id)}`);
+                    this._logger.warn(`${this.namespaceLog} Invalid id on system state change: ${JSON.stringify(id)}`);
                     return;
                 }
 
@@ -11051,7 +11052,7 @@ export class AdapterClass extends EventEmitter {
                 this.inputCount++;
 
                 if (!id || typeof id !== 'string') {
-                    console.log(`Something is wrong! ${JSON.stringify(id)}`);
+                    this._logger.warn(`${this.namespaceLog} Invalid id on state change: ${JSON.stringify(id)}`);
                     return;
                 }
 
