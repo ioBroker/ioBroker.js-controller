@@ -174,7 +174,7 @@ jobs:
           tag: v${{ steps.version.outputs.result }}
           name: Release v${{ steps.version.outputs.result }}
           draft: false
-          prerelease: $PRERELEASE
+          prerelease: ${{ contains(steps.version.outputs.result, '-') }}
           body: "${{ contains(steps.version.outputs.result, '-') && 'nightly release' || 'official release' }}"
 
       - name: Notify Sentry.io about the release
