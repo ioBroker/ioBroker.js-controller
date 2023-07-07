@@ -401,14 +401,14 @@ export class Install {
 
                 if (adapterName) {
                     // detect node_modules folder
-                    const adapterFolderPath = tools.getAdapterDir(adapterName);
+                    const adapterPath = tools.getAdapterDir(adapterName);
                     console.error(
-                        `host.${hostname} Cannot install ${npmUrl}: try to delete adapter folder manually ("${adapterFolderPath}")`
+                        `host.${hostname} Cannot install ${npmUrl}: try to delete adapter folder manually ("${adapterPath}")`
                     );
                     // delete adapter folder in node_modules
-                    if (adapterFolderPath && fs.existsSync(adapterFolderPath)) {
+                    if (adapterPath && fs.existsSync(adapterPath)) {
                         try {
-                            fs.rmSync(adapterFolderPath, { recursive: true, force: true });
+                            fs.rmSync(adapterPath, { recursive: true, force: true });
                             return this._npmInstall(npmUrl, options, debug, true);
                         } catch (e) {
                             // error by folder deletion
