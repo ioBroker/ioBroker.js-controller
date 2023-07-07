@@ -343,7 +343,7 @@ export class Install {
         npmUrl: string,
         options: CLIDownloadPacketOptions,
         debug: boolean,
-        isRetry?: boolean
+        isRetry?: number
     ): Promise<void | NpmInstallResult> {
         if (typeof options !== 'object') {
             options = {};
@@ -405,39 +405,56 @@ export class Install {
             // command succeeded
             return { _url: npmUrl, installDir: path.dirname(installDir) };
         } else {
-            if (!isRetry && result.stderr.includes('ENOTEMPTY')) {
-                // try to manually remove the directory and start installation again
-                const adapterName = Install.getAdapterNameFromUrl(npmUrl);
+            isRetry = isRetry || 0;
+            const adapterName = Install.getAdapterNameFromUrl(npmUrl);
+            if (adapterName && isRetry < 2 && result.stderr.includes('ENOTEMPTY')) {
+                // detect node_modules folder
+                const adapterPath = tools.getAdapterDir(adapterName);
+                if (adapterPath) {
+                    if (isRetry === 0) {
+                        // level 1: try to remove temporary npm folders
+                        const parts = adapterPath.replace(/\\/g, '/').split('/');
+                        parts.pop();
+                        if (parts[parts.length - 1] === 'node_modules') {
+                            // node modules detected, so scan it for ".*-????????" and for ".local-chromium"
+                            const nodeModulesPath = parts.join('/');
+                            let foundNpmGarbage = false;
+                            fs.readdirSync(nodeModulesPath).forEach(file => {
+                                if (file.match(/^\..*-[a-zA-Z0-9]{8}$/) || file === '.local-chromium') {
+                                    console.warn(`host.${hostname} deleted npm temp directory: "${file}")`);
+                                    foundNpmGarbage = true;
+                                    fs.rmSync(path.join(nodeModulesPath, file), { recursive: true, force: true });
+                                }
+                            });
+                            if (foundNpmGarbage) {
+                                return this._npmInstall(npmUrl, options, debug, 1);
+                            }
+                        }
+                    }
 
-                if (adapterName) {
-                    // detect node_modules folder
-                    const adapterPath = tools.getAdapterDir(adapterName);
+                    // level 2: try to manually remove the directory and start installation again
                     console.error(
                         `host.${hostname} Cannot install ${npmUrl}: try to delete adapter folder manually ("${adapterPath}")`
                     );
                     // delete adapter folder in node_modules
-                    if (adapterPath && fs.existsSync(adapterPath)) {
+                    if (fs.existsSync(adapterPath)) {
                         try {
                             fs.rmSync(adapterPath, { recursive: true, force: true });
-                            return this._npmInstall(npmUrl, options, debug, true);
+                            return this._npmInstall(npmUrl, options, debug, 2);
                         } catch (e) {
                             // error by folder deletion
                             console.error(`host.${hostname} Cannot delete adapter folder: ${e}`);
                             console.error(`host.${hostname} installation aborted`);
                         }
                     } else {
-                        console.error(result.stderr);
                         console.error(`host.${hostname} adapter folder does not exist, but error ENOTEMPTY occurred!`);
-                        console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
                     }
-                    // inform about failure
-                    return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
                 }
-            } else {
-                console.error(result.stderr);
-                console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
-                return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
             }
+
+            console.error(result.stderr);
+            console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
+            return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
         }
     }
 
