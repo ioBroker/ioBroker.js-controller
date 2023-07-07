@@ -254,7 +254,8 @@
                 "en": "Can do everything with ioBroker"
             },
             "members": [
-                "system.user.admin"
+                "system.user.admin",
+                "system.user.queen"
             ],
             "dontDelete": true,
             "acl": {
@@ -378,6 +379,27 @@
             "ownerGroup": "system.group.user"
         },
         "_id": "system.user.governor"
+    },
+    "system.user.queen": {
+        "common": {
+            "name": "Queen",
+            "icon": "",
+            "color": false,
+            "desc": "As the mightiest chess figure, the queen has the same rights as admin by belonging to the administrator group",
+            "enabled": true,
+            "password": "pbkdf2$10000$41042c09409f8c13128bfa640790e59cb22aaf28f56af6564f2da453e7e0882bf78e439818f209eac1edc04486472c9c5dc47b3c2712edc09ed5b0e482f67d3a2315910b9b998d458b106566942c8291c72c36f8fa0ff6d738a9430a833ed79740e4853e7bb2d6cde32b86db6a56136010c8daf866c18f0e8b22ef822f8c1e1017c775f9c7e777175762a1747082255fdbfc0af191268b2c2dc304fca2c42f5277c752a1929b8363a4751c019cfe0e747f5c935a9aae841861e6a50768ec8aed44dd99013f158d3d9b75bf19854664f10dd617bd87f08c90b67de9da8bbd73590b6aec4cf76657b974e058a5ba9f55b14c9d2c779068e3f1c2d0d9a0c3e7a1d9$94244cb339a17d981c21dc3fdd450fe8"
+        },
+        "type": "user",
+        "native": {},
+        "from": "system.adapter.admin.0",
+        "user": "system.user.admin",
+        "ts": 1607426917204,
+        "acl": {
+            "object": 1636,
+            "owner": "system.user.admin",
+            "ownerGroup": "system.group.administrator"
+        },
+        "_id": "system.user.queen"
     },
     "system.user.admin": {
         "type": "user",
