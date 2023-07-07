@@ -65,25 +65,6 @@ interface CreateInstanceOptions {
     port?: number;
 }
 
-function deleteFoldersRecursive(path: string): void {
-    if (path.endsWith('/')) {
-        path = path.substring(0, path.length - 1);
-    }
-    if (fs.existsSync(path)) {
-        const files = fs.readdirSync(path);
-        for (const file of files) {
-            const curPath = `${path}/${file}`;
-            const stat = fs.statSync(curPath);
-            if (stat.isDirectory()) {
-                deleteFoldersRecursive(curPath);
-            } else {
-                fs.unlinkSync(curPath);
-            }
-        }
-        fs.rmdirSync(path);
-    }
-}
-
 export class Install {
     private readonly isRootOnUnix: boolean;
     private readonly objects: ObjectsRedisClient;
@@ -410,36 +391,34 @@ export class Install {
             // command succeeded
             return { _url: npmUrl, installDir: path.dirname(installDir) };
         } else {
-            // if we see ENOTEMPTY error
             if (!isRetry && result.stderr.includes('ENOTEMPTY')) {
                 // try to manually remove the directory and start installation again
-                // detect node_modules folder
-                const pack = await tools.detectPackageManagerWithFallback();
-                // extract adapter name
-                const name = npmUrl
+                const adapterName = npmUrl
                     .replace(/\\/g, '/')
                     .replace(/\.git$/, '')
                     .split('/')
                     .pop();
-                
-                if (name) {
-                    const folderPath = path.join(pack.cwd, 'node_modules', name.toLowerCase());
+
+                if (adapterName) {
+                    // detect node_modules folder
+                    const adapterFolderPath = tools.getAdapterDir(adapterName);
                     console.error(
-                        `host.${hostname} Cannot install ${npmUrl}: try to delete adapter folder manually ("${folderPath}")`
+                        `host.${hostname} Cannot install ${npmUrl}: try to delete adapter folder manually ("${adapterFolderPath}")`
                     );
-                    let success = false;
                     // delete adapter folder in node_modules
-                    try {
-                        deleteFoldersRecursive(folderPath);
-                        success = true;
-                    } catch (e) {
-                        // error by folder deletion
-                        console.error(`host.${hostname} Cannot delete adapter folder: ${e}`);
-                        console.error(`host.${hostname} installation aborted`);
-                    }
-                    if (success) {
-                        // retry installation
-                        return this._npmInstall(npmUrl, options, debug, true);
+                    if (adapterFolderPath && fs.existsSync(adapterFolderPath)) {
+                        try {
+                            fs.rmSync(adapterFolderPath, { recursive: true, force: true });
+                            return this._npmInstall(npmUrl, options, debug, true);
+                        } catch (e) {
+                            // error by folder deletion
+                            console.error(`host.${hostname} Cannot delete adapter folder: ${e}`);
+                            console.error(`host.${hostname} installation aborted`);
+                        }
+                    } else {
+                        console.error(result.stderr);
+                        console.error(`host.${hostname} adapter folder does not exist, but error ENOTEMPTY occurred!`);
+                        console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
                     }
                     // inform about failure
                     return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
