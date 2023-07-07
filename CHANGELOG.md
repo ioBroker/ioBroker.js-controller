@@ -17,9 +17,10 @@
 * (bluefox) Added CLI option to restart/start/stop all instances of an adapter (e.g. `iob stop admin` now also works)
 * (foxriver76) Allow to use `iob host oldname` command when new host already exists but has no instances
 * (foxriver76) Added an admin notification if redis is misconfigured and info how to fix it
-* (foxriver76) Enable upgrade of js-controller via Admin UI (Linux only)
+* (foxriver76) Enable upgrade of js-controller via Admin UI (Linux/Docker only)
 
 **Optimizations and Fixes**
+* (buanet) Fix start/stop js-controller during upgrade via Admin UI in Docker
 * (foxriver76) Speedup "getStates" calls with many IDs often used by visualizations: JSONL 17 times faster, Redis 23 times faster
 * (foxriver76) significantly reduce backup size
 * (foxriver76) Enhance CLI help for list command to show all possible types to list
