@@ -316,6 +316,29 @@ export class Install {
         }
     }
 
+    private static getAdapterNameFromUrl(npmUrl: string): string {
+        npmUrl = npmUrl
+            .replace(/\\/g, '/') // it could be the Windows path
+            .replace(/\.git$/, '') // it could be https://github.com/ioBroker/ioBroker.NAME.git
+            .toLowerCase();
+
+        // If the user installed a git commit-ish, the url contains stuff that doesn't belong in a folder name
+        // e.g. iobroker/iobroker.javascript#branch-name
+        if (npmUrl.includes('#')) {
+            npmUrl = npmUrl.substring(0, npmUrl.indexOf('#'));
+        }
+        if (npmUrl.includes('/') && !npmUrl.startsWith('@')) {
+            // only scoped packages (e.g. @types/node ) may have a slash in their path
+            npmUrl = npmUrl.substring(npmUrl.lastIndexOf('/') + 1);
+        }
+        if (!npmUrl.startsWith('@')) {
+            // it is a version, so cut off the version
+            npmUrl = npmUrl.split('@')[0];
+        }
+
+        return npmUrl;
+    }
+
     private async _npmInstall(
         npmUrl: string,
         options: CLIDownloadPacketOptions,
@@ -349,16 +372,7 @@ export class Install {
             if (options.packetName) {
                 packetDirName = `${tools.appName.toLowerCase()}.${options.packetName}`;
             } else {
-                packetDirName = npmUrl.toLowerCase();
-                // If the user installed a git commit-ish, the url contains stuff that doesn't belong in a folder name
-                // e.g. iobroker/iobroker.javascript#branch-name
-                if (packetDirName.includes('#')) {
-                    packetDirName = packetDirName.substring(0, packetDirName.indexOf('#'));
-                }
-                if (packetDirName.includes('/') && !packetDirName.startsWith('@')) {
-                    // only scoped packages (e.g. @types/node ) may have a slash in their path
-                    packetDirName = packetDirName.substring(packetDirName.lastIndexOf('/') + 1);
-                }
+                packetDirName = Install.getAdapterNameFromUrl(npmUrl);
             }
             const installDir = tools.getAdapterDir(packetDirName);
 
@@ -393,11 +407,7 @@ export class Install {
         } else {
             if (!isRetry && result.stderr.includes('ENOTEMPTY')) {
                 // try to manually remove the directory and start installation again
-                const adapterName = npmUrl
-                    .replace(/\\/g, '/')
-                    .replace(/\.git$/, '')
-                    .split('/')
-                    .pop();
+                const adapterName = Install.getAdapterNameFromUrl(npmUrl);
 
                 if (adapterName) {
                     // detect node_modules folder
