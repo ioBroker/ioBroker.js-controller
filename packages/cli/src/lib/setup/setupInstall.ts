@@ -420,7 +420,7 @@ export class Install {
                             const nodeModulesPath = parts.join('/');
                             let foundNpmGarbage = false;
                             fs.readdirSync(nodeModulesPath).forEach(file => {
-                                if (file.match(/^\..*-[a-zA-Z0-9]{8}$/) || file === '.local-chromium') {
+                                if (file.match(/^\..*-[a-zA-Z0-9]{8}$/) && file !== '.local-chromium') {
                                     console.warn(`host.${hostname} deleted npm temp directory: "${file}")`);
                                     foundNpmGarbage = true;
                                     fs.rmSync(path.join(nodeModulesPath, file), { recursive: true, force: true });
