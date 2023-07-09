@@ -400,7 +400,10 @@ export function isControllerUiUpgradeSupported(): boolean {
             return false;
         }
 
-        if (semver.lt(dockerInfo.officialVersion, DOCKER_VERSION_UI_UPGRADE)) {
+        if (
+            !semver.valid(dockerInfo.officialVersion) ||
+            semver.lt(dockerInfo.officialVersion, DOCKER_VERSION_UI_UPGRADE)
+        ) {
             return false;
         }
 
