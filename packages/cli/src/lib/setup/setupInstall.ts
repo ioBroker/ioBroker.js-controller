@@ -33,6 +33,17 @@ interface NpmInstallResult {
     _url: string;
 }
 
+interface NpmInstallOptions {
+    /** url of the package */
+    npmUrl: string;
+    /** Additional options*/
+    options: CLIDownloadPacketOptions;
+    /** if debug logging is desired */
+    debug: boolean;
+    /** a maximum of 2 retries can be attempted, with different error handling per attempt */
+    retryAttempt: 0 | 1 | 2;
+}
+
 export interface CLIInstallOptions {
     params: Record<string, any>;
     states: StatesRedisClient;
@@ -310,13 +321,17 @@ export class Install {
         }
 
         try {
-            return await this._npmInstall(npmUrl, options, debug);
+            return await this._npmInstall({ npmUrl, options, debug, retryAttempt: 0 });
         } catch (err) {
             console.error(`Could not install ${npmUrl}: ${err.message}`);
         }
     }
 
-    private static getAdapterNameFromUrl(npmUrl: string): string {
+    /**
+     * Extract the adapterName e.g. `hm-rpc` from url
+     * @param npmUrl url of the npm packet
+     */
+    private getAdapterNameFromUrl(npmUrl: string): string {
         npmUrl = npmUrl
             .replace(/\\/g, '/') // it could be the Windows path
             .replace(/\.git$/, '') // it could be https://github.com/ioBroker/ioBroker.NAME.git
@@ -339,12 +354,15 @@ export class Install {
         return npmUrl;
     }
 
-    private async _npmInstall(
-        npmUrl: string,
-        options: CLIDownloadPacketOptions,
-        debug: boolean,
-        isRetry?: number
-    ): Promise<void | NpmInstallResult> {
+    /**
+     * Perform npm installation of given package
+     *
+     * @param installOptions options of package to install
+     */
+    private async _npmInstall(installOptions: NpmInstallOptions): Promise<void | NpmInstallResult> {
+        const { npmUrl, debug, retryAttempt } = installOptions;
+        let { options } = installOptions;
+
         if (typeof options !== 'object') {
             options = {};
         }
@@ -372,7 +390,7 @@ export class Install {
             if (options.packetName) {
                 packetDirName = `${tools.appName.toLowerCase()}.${options.packetName}`;
             } else {
-                packetDirName = Install.getAdapterNameFromUrl(npmUrl);
+                packetDirName = this.getAdapterNameFromUrl(npmUrl);
             }
             const installDir = tools.getAdapterDir(packetDirName);
 
@@ -405,56 +423,67 @@ export class Install {
             // command succeeded
             return { _url: npmUrl, installDir: path.dirname(installDir) };
         } else {
-            isRetry = isRetry || 0;
-            const adapterName = Install.getAdapterNameFromUrl(npmUrl);
-            if (adapterName && isRetry < 2 && result.stderr.includes('ENOTEMPTY')) {
-                // detect node_modules folder
-                const adapterPath = tools.getAdapterDir(adapterName);
-                if (adapterPath) {
-                    if (isRetry === 0) {
-                        // level 1: try to remove temporary npm folders
-                        const parts = adapterPath.replace(/\\/g, '/').split('/');
-                        parts.pop();
-                        if (parts[parts.length - 1] === 'node_modules') {
-                            // node modules detected, so scan it for ".*-????????" and for ".local-chromium"
-                            const nodeModulesPath = parts.join('/');
-                            let foundNpmGarbage = false;
-                            fs.readdirSync(nodeModulesPath).forEach(file => {
-                                if (file.match(/^\..*-[a-zA-Z0-9]{8}$/) && file !== '.local-chromium') {
-                                    console.warn(`host.${hostname} deleted npm temp directory: "${file}")`);
-                                    foundNpmGarbage = true;
-                                    fs.rmSync(path.join(nodeModulesPath, file), { recursive: true, force: true });
-                                }
-                            });
-                            if (foundNpmGarbage) {
-                                return this._npmInstall(npmUrl, options, debug, 1);
-                            }
-                        }
-                    }
-
-                    // level 2: try to manually remove the directory and start installation again
-                    console.error(
-                        `host.${hostname} Cannot install ${npmUrl}: try to delete adapter folder manually ("${adapterPath}")`
-                    );
-                    // delete adapter folder in node_modules
-                    if (fs.existsSync(adapterPath)) {
-                        try {
-                            fs.rmSync(adapterPath, { recursive: true, force: true });
-                            return this._npmInstall(npmUrl, options, debug, 2);
-                        } catch (e) {
-                            // error by folder deletion
-                            console.error(`host.${hostname} Cannot delete adapter folder: ${e}`);
-                            console.error(`host.${hostname} installation aborted`);
-                        }
-                    } else {
-                        console.error(`host.${hostname} adapter folder does not exist, but error ENOTEMPTY occurred!`);
-                    }
-                }
+            const adapterName = this.getAdapterNameFromUrl(npmUrl);
+            if (adapterName && retryAttempt < 2 && result.stderr.includes('ENOTEMPTY')) {
+                return this.handleNpmNotEmptyError({ adapterName, retryAttempt, npmUrl, options, debug });
             }
 
             console.error(result.stderr);
             console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
             return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
+        }
+    }
+
+    /**
+     * Handle the NPM `ENOTEMPTY` error, by deleting different affected directories and retrying installation
+     *
+     * @param installOptions options of package to install
+     */
+    private handleNpmNotEmptyError(
+        installOptions: NpmInstallOptions & { adapterName: string }
+    ): Promise<void | NpmInstallResult> | void {
+        const { debug, adapterName, retryAttempt, npmUrl, options } = installOptions;
+        // detect node_modules folder
+        const adapterPath = tools.getAdapterDir(adapterName);
+        if (adapterPath) {
+            if (retryAttempt === 0) {
+                // attempt 1: try to remove temporary npm folders
+                const parts = adapterPath.replace(/\\/g, '/').split('/');
+                parts.pop();
+                if (parts[parts.length - 1] === 'node_modules') {
+                    // node modules detected, so scan it for ".*-????????"
+                    const nodeModulesPath = parts.join('/');
+                    let foundNpmGarbage = false;
+                    fs.readdirSync(nodeModulesPath).forEach(file => {
+                        if (file.match(/^\..*-[a-zA-Z0-9]{8}$/) && file !== '.local-chromium') {
+                            console.warn(`host.${hostname} deleted npm temp directory: "${file}")`);
+                            foundNpmGarbage = true;
+                            fs.rmSync(path.join(nodeModulesPath, file), { recursive: true, force: true });
+                        }
+                    });
+                    if (foundNpmGarbage) {
+                        return this._npmInstall({ npmUrl, options, debug, retryAttempt: 1 });
+                    }
+                }
+            }
+
+            // attempt 2: try to automatically remove the directory and start installation again
+            console.error(
+                `host.${hostname} Cannot install ${npmUrl}: try to delete adapter folder automatically ("${adapterPath}")`
+            );
+            // delete adapter folder in node_modules
+            if (fs.existsSync(adapterPath)) {
+                try {
+                    fs.rmSync(adapterPath, { recursive: true, force: true });
+                    return this._npmInstall({ npmUrl, options, debug, retryAttempt: 2 });
+                } catch (e) {
+                    // error by folder deletion
+                    console.error(`host.${hostname} Cannot delete adapter folder: ${e.message}`);
+                    console.error(`host.${hostname} installation aborted`);
+                }
+            } else {
+                console.error(`host.${hostname} adapter folder does not exist, but error ENOTEMPTY occurred!`);
+            }
         }
     }
 
@@ -467,7 +496,6 @@ export class Install {
 
     // this command is executed always on THIS host
     private async _checkDependencies(
-        adapter: string,
         deps: Dependencies,
         globalDeps: Dependencies,
         _options: Record<string, any>
@@ -488,7 +516,7 @@ export class Install {
             endkey: 'system.adapter.\u9999'
         });
 
-        if (objs && objs.rows && objs.rows.length) {
+        if (objs?.rows?.length) {
             for (const dName in allDeps) {
                 let isFound = false;
 
@@ -523,9 +551,7 @@ export class Install {
                         // local dep get all instances on same host
                         locInstances = objs.rows.filter(
                             obj =>
-                                obj &&
-                                obj.value &&
-                                obj.value.common &&
+                                obj?.value?.common &&
                                 obj.value.common.name === dName &&
                                 obj.value.common.host === hostname
                         );
@@ -605,7 +631,6 @@ export class Install {
 
         // check if some dependencies are missing and install them if some found
         await this._checkDependencies(
-            adapter,
             adapterConf.common.dependencies,
             adapterConf.common.globalDependencies,
             this.params
