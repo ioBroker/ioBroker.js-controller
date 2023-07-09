@@ -1638,7 +1638,7 @@ async function detectPackageManagerWithFallback(cwd?: string): Promise<PackageMa
                   }
         );
     } catch {
-        // Lockfile does not found, use default to avoid picking up a wrong package manager
+        // Lockfile not found, use default to avoid picking up a wrong package manager
         // like a globally installed yarn
     }
 
