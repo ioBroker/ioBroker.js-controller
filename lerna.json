@@ -1,6 +1,6 @@
 {
     "useWorkspaces": true,
-    "version": "5.0.7-alpha.0-20230708-3160f6ba",
+    "version": "5.0.7",
     "//": "Set up some command options",
     "command": {
         "//": "Running a script should show the output while it is generated",
