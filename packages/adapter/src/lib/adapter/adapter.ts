@@ -10690,7 +10690,7 @@ export class AdapterClass extends EventEmitter {
                         messages.splice(0, messages.length - this._config.states.maxQueue);
                     }
                 }
-            } else if (adapterStates && adapterStates.pushLog) {
+            } else if (adapterStates?.pushLog) {
                 // Send to all adapter, that required logs
                 for (const instanceId of this.logList) {
                     adapterStates.pushLog(instanceId, info);
@@ -10713,20 +10713,26 @@ export class AdapterClass extends EventEmitter {
                             clearTimeout(this.logOffTimer);
                         }
                         // disable log receiving after 10 seconds
-                        this.logOffTimer = setTimeout(() => {
+                        this.logOffTimer = setTimeout(async () => {
                             this.logOffTimer = null;
                             this._logger.silly(`${this.namespaceLog} Change log subscriber state: FALSE`);
                             this.outputCount++;
                             if (adapterStates) {
-                                this.setForeignState(
-                                    `system.adapter.${this.namespace}.logging`,
-                                    {
-                                        val: false,
-                                        ack: true,
-                                        from: `system.adapter.${this.namespace}`
-                                    },
-                                    options
-                                );
+                                try {
+                                    await this.setForeignStateAsync(
+                                        `system.adapter.${this.namespace}.logging`,
+                                        {
+                                            val: false,
+                                            ack: true,
+                                            from: `system.adapter.${this.namespace}`
+                                        },
+                                        options
+                                    );
+                                } catch (e) {
+                                    this._logger.warn(
+                                        `${this.namespaceLog} Could not change log subscriber state to "false": ${e.message}`
+                                    );
+                                }
                             }
                         }, 10_000);
                     } else {
@@ -10736,15 +10742,21 @@ export class AdapterClass extends EventEmitter {
                         } else {
                             this._logger.silly(`${this.namespaceLog} Change log subscriber state: true`);
                             this.outputCount++;
-                            await this.setForeignStateAsync(
-                                `system.adapter.${this.namespace}.logging`,
-                                {
-                                    val: true,
-                                    ack: true,
-                                    from: `system.adapter.${this.namespace}`
-                                },
-                                options
-                            );
+                            try {
+                                await this.setForeignStateAsync(
+                                    `system.adapter.${this.namespace}.logging`,
+                                    {
+                                        val: true,
+                                        ack: true,
+                                        from: `system.adapter.${this.namespace}`
+                                    },
+                                    options
+                                );
+                            } catch (e) {
+                                this._logger.warn(
+                                    `${this.namespaceLog} Could not change log subscriber state to "true": ${e.message}`
+                                );
+                            }
                         }
                     }
                 }
