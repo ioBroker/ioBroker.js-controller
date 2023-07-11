@@ -173,12 +173,6 @@ class UpgradeManager {
         this.response.stderr.push(...res.stderr.split('\n'));
         this.response.stdout.push(...res.stdout.split('\n'));
 
-        if (res.stderr) {
-            this.log(res.stderr, true);
-        } else if (res.stdout) {
-            this.log(res.stdout);
-        }
-
         this.response.success = res.success;
 
         if (!res.success) {
@@ -266,7 +260,7 @@ class UpgradeManager {
         });
 
         this.server.listen(port, () => {
-            this.log(`Server is running on http://localhost:${port}`);
+            this.log(`Server is running on https://localhost:${port}`);
         });
     }
 
