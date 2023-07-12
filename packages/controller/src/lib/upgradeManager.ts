@@ -222,6 +222,7 @@ class UpgradeManager {
      */
     webServerCallback(req: http.IncomingMessage, res: http.ServerResponse): void {
         res.writeHead(200);
+        res.setHeader('Access-Control-Allow-Origin', '*');
         res.end(JSON.stringify(this.response));
 
         if (!this.response.running) {
