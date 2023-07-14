@@ -12,6 +12,7 @@
 
 **Features**
 * (foxriver76) Show npm error message on failing adapter installations and update also without debug parameter
+* (bluefox/Apollon77/foxriver76) Try to solve `ENOTEMPTY` errors automatically on adapter upgrades/installations
 * (foxriver76) Introduce iobroker setting (dnsResolution) to choose between verbatim and ipv4 first dns resolution order
 * (foxriver76) Add support for windows for `iob fix`
 * (bluefox) Added CLI option to restart/start/stop all instances of an adapter (e.g. `iob stop admin` now also works)
