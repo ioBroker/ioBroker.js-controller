@@ -20,6 +20,7 @@ import { PacketManager } from './setupPacketManager';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { ProcessExitCallback } from '../_Types';
+import type { CommandResult } from '@alcalzone/pak';
 import { getRepository } from './utils';
 
 const hostname = tools.getHostName();
@@ -40,8 +41,13 @@ interface NpmInstallOptions {
     options: CLIDownloadPacketOptions;
     /** if debug logging is desired */
     debug: boolean;
-    /** a maximum of 2 retries can be attempted, with different error handling per attempt */
-    retryAttempt: 0 | 1 | 2;
+    /** if it is a retry, do not perform special error handling again */
+    isRetry: boolean;
+}
+
+interface NotEmptyErrorOptions extends Omit<NpmInstallOptions, 'isRetry'> {
+    /** Result of the failed installation process */
+    result: CommandResult;
 }
 
 export interface CLIInstallOptions {
@@ -321,7 +327,7 @@ export class Install {
         }
 
         try {
-            return await this._npmInstall({ npmUrl, options, debug, retryAttempt: 0 });
+            return await this._npmInstall({ npmUrl, options, debug, isRetry: false });
         } catch (err) {
             console.error(`Could not install ${npmUrl}: ${err.message}`);
         }
@@ -360,7 +366,7 @@ export class Install {
      * @param installOptions options of package to install
      */
     private async _npmInstall(installOptions: NpmInstallOptions): Promise<void | NpmInstallResult> {
-        const { npmUrl, debug, retryAttempt } = installOptions;
+        const { npmUrl, debug, isRetry } = installOptions;
         let { options } = installOptions;
 
         if (typeof options !== 'object') {
@@ -424,8 +430,8 @@ export class Install {
             return { _url: npmUrl, installDir: path.dirname(installDir) };
         } else {
             const adapterName = this.getAdapterNameFromUrl(npmUrl);
-            if (adapterName && retryAttempt < 2 && result.stderr.includes('ENOTEMPTY')) {
-                return this.handleNpmNotEmptyError({ adapterName, retryAttempt, npmUrl, options, debug });
+            if (adapterName && !isRetry && result.stderr.includes('ENOTEMPTY')) {
+                return this.handleNpmNotEmptyError({ npmUrl, options, debug, result });
             }
 
             console.error(result.stderr);
@@ -437,54 +443,46 @@ export class Install {
     /**
      * Handle the NPM `ENOTEMPTY` error, by deleting different affected directories and retrying installation
      *
-     * @param installOptions options of package to install
+     * @param notEmptyErrorOptions options of package to install
      */
     private handleNpmNotEmptyError(
-        installOptions: NpmInstallOptions & { adapterName: string }
+        notEmptyErrorOptions: NotEmptyErrorOptions
     ): Promise<void | NpmInstallResult> | void {
-        const { debug, adapterName, retryAttempt, npmUrl, options } = installOptions;
-        // detect node_modules folder
-        const adapterPath = tools.getAdapterDir(adapterName);
-        if (adapterPath) {
-            if (retryAttempt === 0) {
-                // attempt 1: try to remove temporary npm folders
-                const parts = adapterPath.replace(/\\/g, '/').split('/');
-                parts.pop();
-                if (parts[parts.length - 1] === 'node_modules') {
-                    // node modules detected, so scan it for ".*-????????"
-                    const nodeModulesPath = parts.join('/');
-                    let foundNpmGarbage = false;
-                    fs.readdirSync(nodeModulesPath).forEach(file => {
-                        if (file.match(/^\..*-[a-zA-Z0-9]{8}$/) && file !== '.local-chromium') {
-                            console.warn(`host.${hostname} deleted npm temp directory: "${file}")`);
-                            foundNpmGarbage = true;
-                            fs.rmSync(path.join(nodeModulesPath, file), { recursive: true, force: true });
-                        }
-                    });
-                    if (foundNpmGarbage) {
-                        return this._npmInstall({ npmUrl, options, debug, retryAttempt: 1 });
-                    }
-                }
-            }
+        const { debug, npmUrl, options, result } = notEmptyErrorOptions;
 
-            // attempt 2: try to automatically remove the directory and start installation again
-            console.error(
-                `host.${hostname} Cannot install ${npmUrl}: try to delete adapter folder automatically ("${adapterPath}")`
-            );
-            // delete adapter folder in node_modules
-            if (fs.existsSync(adapterPath)) {
-                try {
-                    fs.rmSync(adapterPath, { recursive: true, force: true });
-                    return this._npmInstall({ npmUrl, options, debug, retryAttempt: 2 });
-                } catch (e) {
-                    // error by folder deletion
-                    console.error(`host.${hostname} Cannot delete adapter folder: ${e.message}`);
-                    console.error(`host.${hostname} installation aborted`);
+        console.info('Try to solve ENOTEMPTY error automatically');
+
+        const errorFilePath = result.stderr
+            .split('\n')
+            ?.find(line => line.startsWith('npm ERR! dest'))
+            ?.split('dest')[1]
+            .trim();
+
+        const affectedNodeModulesPath = errorFilePath ? path.join(errorFilePath, '..') : undefined;
+
+        if (affectedNodeModulesPath) {
+            const parts = affectedNodeModulesPath.replace(/\\/g, '/').split('/');
+            if (parts[parts.length - 1] === 'node_modules') {
+                // node modules detected, so scan it for ".*-????????"
+                let foundNpmGarbage = false;
+                fs.readdirSync(affectedNodeModulesPath).forEach(file => {
+                    if (file.match(/^\..*-[a-zA-Z0-9]{8}$/) && file !== '.local-chromium') {
+                        fs.rmSync(path.join(affectedNodeModulesPath, file), { recursive: true, force: true });
+                        foundNpmGarbage = true;
+                        console.warn(`host.${hostname} deleted npm temp directory: "${file}")`);
+                    }
+                });
+
+                if (foundNpmGarbage) {
+                    return this._npmInstall({ npmUrl, options, debug, isRetry: true });
                 }
-            } else {
-                console.error(`host.${hostname} adapter folder does not exist, but error ENOTEMPTY occurred!`);
             }
         }
+
+        console.error('Could not handle ENOTEMPTY, because no deletable files were found');
+        console.error(result.stderr);
+        console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
+        return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
     }
 
     private async _npmUninstall(packageName: string, debug: boolean): Promise<void> {
