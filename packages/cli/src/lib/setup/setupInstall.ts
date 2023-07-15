@@ -429,8 +429,7 @@ export class Install {
             // command succeeded
             return { _url: npmUrl, installDir: path.dirname(installDir) };
         } else {
-            const adapterName = this.getAdapterNameFromUrl(npmUrl);
-            if (adapterName && !isRetry && result.stderr.includes('ENOTEMPTY')) {
+            if (!isRetry && result.stderr.includes('ENOTEMPTY')) {
                 return this.handleNpmNotEmptyError({ npmUrl, options, debug, result });
             }
 
