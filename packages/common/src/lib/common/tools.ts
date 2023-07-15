@@ -1634,7 +1634,7 @@ async function detectPackageManagerWithFallback(cwd?: string): Promise<PackageMa
             typeof cwd === 'string'
                 ? // If a cwd was provided, use it
                   { cwd }
-                : // Otherwise try to find the ioBroker root dir
+                : // Otherwise, try to find the ioBroker root dir
                   {
                       cwd: (isDevServerInstallation() && require.main?.path) || __dirname,
                       setCwdToPackageRoot: true
