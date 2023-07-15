@@ -40,7 +40,7 @@ If the script uses a compiled language like TypeScript, this contains the compil
 
 #### Defined in
 
-[types-dev/objects.d.ts:424](https://github.com/ioBroker/ioBroker.js-controller/blob/40736237/packages/types-dev/objects.d.ts#L424)
+[types-dev/objects.d.ts:424](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L424)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:429](https://github.com/ioBroker/ioBroker.js-controller/blob/40736237/packages/types-dev/objects.d.ts#L429)
+[types-dev/objects.d.ts:429](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L429)
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:417](https://github.com/ioBroker/ioBroker.js-controller/blob/40736237/packages/types-dev/objects.d.ts#L417)
+[types-dev/objects.d.ts:417](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L417)
 
 ___
 
@@ -72,7 +72,7 @@ If the script uses a compiled language like TypeScript, this contains the genera
 
 #### Defined in
 
-[types-dev/objects.d.ts:426](https://github.com/ioBroker/ioBroker.js-controller/blob/40736237/packages/types-dev/objects.d.ts#L426)
+[types-dev/objects.d.ts:426](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L426)
 
 ___
 
@@ -88,7 +88,7 @@ When set to true, this object may not be deleted
 
 #### Defined in
 
-[types-dev/objects.d.ts:159](https://github.com/ioBroker/ioBroker.js-controller/blob/40736237/packages/types-dev/objects.d.ts#L159)
+[types-dev/objects.d.ts:159](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L159)
 
 ___
 
@@ -100,7 +100,7 @@ Whether this script should be executed
 
 #### Defined in
 
-[types-dev/objects.d.ts:420](https://github.com/ioBroker/ioBroker.js-controller/blob/40736237/packages/types-dev/objects.d.ts#L420)
+[types-dev/objects.d.ts:420](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L420)
 
 ___
 
@@ -112,7 +112,7 @@ The instance id of the instance which executes this script
 
 #### Defined in
 
-[types-dev/objects.d.ts:414](https://github.com/ioBroker/ioBroker.js-controller/blob/40736237/packages/types-dev/objects.d.ts#L414)
+[types-dev/objects.d.ts:414](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L414)
 
 ___
 
@@ -124,7 +124,7 @@ Defines the type of the script, e.g. TypeScript/ts, JavaScript/js or Blockly
 
 #### Defined in
 
-[types-dev/objects.d.ts:412](https://github.com/ioBroker/ioBroker.js-controller/blob/40736237/packages/types-dev/objects.d.ts#L412)
+[types-dev/objects.d.ts:412](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L412)
 
 ___
 
@@ -140,7 +140,7 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 #### Defined in
 
-[types-dev/objects.d.ts:162](https://github.com/ioBroker/ioBroker.js-controller/blob/40736237/packages/types-dev/objects.d.ts#L162)
+[types-dev/objects.d.ts:162](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L162)
 
 ___
 
@@ -156,7 +156,7 @@ Icon for this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/40736237/packages/types-dev/objects.d.ts#L167)
+[types-dev/objects.d.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L167)
 
 ___
 
@@ -172,7 +172,7 @@ The name of this object as a simple string or an object with translations
 
 #### Defined in
 
-[types-dev/objects.d.ts:410](https://github.com/ioBroker/ioBroker.js-controller/blob/40736237/packages/types-dev/objects.d.ts#L410)
+[types-dev/objects.d.ts:410](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L410)
 
 ___
 
@@ -188,7 +188,7 @@ role of the object
 
 #### Defined in
 
-[types-dev/objects.d.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/40736237/packages/types-dev/objects.d.ts#L169)
+[types-dev/objects.d.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L169)
 
 ___
 
@@ -200,7 +200,7 @@ The source code of this script
 
 #### Defined in
 
-[types-dev/objects.d.ts:416](https://github.com/ioBroker/ioBroker.js-controller/blob/40736237/packages/types-dev/objects.d.ts#L416)
+[types-dev/objects.d.ts:416](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L416)
 
 ___
 
@@ -212,7 +212,7 @@ Is used to determine whether a script has changed and needs to be recompiled
 
 #### Defined in
 
-[types-dev/objects.d.ts:422](https://github.com/ioBroker/ioBroker.js-controller/blob/40736237/packages/types-dev/objects.d.ts#L422)
+[types-dev/objects.d.ts:422](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L422)
 
 ___
 
@@ -222,4 +222,4 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:418](https://github.com/ioBroker/ioBroker.js-controller/blob/40736237/packages/types-dev/objects.d.ts#L418)
+[types-dev/objects.d.ts:418](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L418)
