@@ -34,7 +34,7 @@ The default permissions of this group
 
 #### Defined in
 
-[types-dev/objects.d.ts:402](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L402)
+[types-dev/objects.d.ts:402](https://github.com/ioBroker/ioBroker.js-controller/blob/4e47270e/packages/types-dev/objects.d.ts#L402)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:406](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L406)
+[types-dev/objects.d.ts:406](https://github.com/ioBroker/ioBroker.js-controller/blob/4e47270e/packages/types-dev/objects.d.ts#L406)
 
 ___
 
@@ -60,7 +60,7 @@ When set to true, this object may not be deleted
 
 #### Defined in
 
-[types-dev/objects.d.ts:159](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L159)
+[types-dev/objects.d.ts:159](https://github.com/ioBroker/ioBroker.js-controller/blob/4e47270e/packages/types-dev/objects.d.ts#L159)
 
 ___
 
@@ -72,7 +72,7 @@ A group can be disabled, if missing, group is active
 
 #### Defined in
 
-[types-dev/objects.d.ts:404](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L404)
+[types-dev/objects.d.ts:404](https://github.com/ioBroker/ioBroker.js-controller/blob/4e47270e/packages/types-dev/objects.d.ts#L404)
 
 ___
 
@@ -88,7 +88,7 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 #### Defined in
 
-[types-dev/objects.d.ts:162](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L162)
+[types-dev/objects.d.ts:162](https://github.com/ioBroker/ioBroker.js-controller/blob/4e47270e/packages/types-dev/objects.d.ts#L162)
 
 ___
 
@@ -104,7 +104,7 @@ Icon for this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L167)
+[types-dev/objects.d.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/4e47270e/packages/types-dev/objects.d.ts#L167)
 
 ___
 
@@ -116,7 +116,7 @@ The users of this group
 
 #### Defined in
 
-[types-dev/objects.d.ts:400](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L400)
+[types-dev/objects.d.ts:400](https://github.com/ioBroker/ioBroker.js-controller/blob/4e47270e/packages/types-dev/objects.d.ts#L400)
 
 ___
 
@@ -132,7 +132,7 @@ The name of this group
 
 #### Defined in
 
-[types-dev/objects.d.ts:398](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L398)
+[types-dev/objects.d.ts:398](https://github.com/ioBroker/ioBroker.js-controller/blob/4e47270e/packages/types-dev/objects.d.ts#L398)
 
 ___
 
@@ -148,4 +148,4 @@ role of the object
 
 #### Defined in
 
-[types-dev/objects.d.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/6130d295/packages/types-dev/objects.d.ts#L169)
+[types-dev/objects.d.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/4e47270e/packages/types-dev/objects.d.ts#L169)
