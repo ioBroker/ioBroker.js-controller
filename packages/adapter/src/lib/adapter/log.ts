@@ -1,3 +1,5 @@
+import type Winston from 'winston';
+
 /**
  * Log class for adapter.js
  *
@@ -6,17 +8,17 @@
 export class Log {
     private readonly namespaceLog: string;
     readonly level: string;
-    private readonly logger: any;
+    private readonly logger: Winston.Logger;
 
     /**
      * @param namespaceLog Logging namespace to prefix
      * @param level The log level
      * @param logger logger instance
      */
-    constructor(namespaceLog: string, level: string, logger: any) {
+    constructor(namespaceLog: string, level: string, logger: Winston.Logger) {
         this.namespaceLog = namespaceLog;
         this.level = level;
-        // We have to bind the this context here or it is possible that `this` is
+        // We have to bind the `this` context here, or it is possible that `this` is
         // undefined when passing around the logger methods. This happens e.g. when doing this:
         //   const log = new Log(...);
         //   const test = log.info;

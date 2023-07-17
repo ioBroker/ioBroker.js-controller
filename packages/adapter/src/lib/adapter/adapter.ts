@@ -613,7 +613,8 @@ export class AdapterClass extends EventEmitter {
     private readonly _timers = new Set<NodeJS.Timeout>();
     private readonly _intervals = new Set<NodeJS.Timeout>();
     private readonly _delays = new Set<NodeJS.Timeout>();
-    log?: Log;
+    /** For ease of use the log property is always defined, however it is only available after `ready` has been called. */
+    log!: Log;
     performStrictObjectChecks: boolean;
     private readonly _logger: Winston.Logger;
     private _restartScheduleJob: any;
@@ -668,7 +669,7 @@ export class AdapterClass extends EventEmitter {
     latitude?: number;
     private _defaultObjs?: Record<string, Partial<ioBroker.StateCommon>>;
     private _aliasObjectsSubscribed?: boolean;
-    config?: Record<string, any>;
+    config: ioBroker.AdapterConfig = {};
     host?: string;
     common?: ioBroker.InstanceCommon;
     private mboxSubscribed?: boolean;
@@ -2143,7 +2144,7 @@ export class AdapterClass extends EventEmitter {
                 if (adapterStates && updateAliveState) {
                     this.outputCount++;
                     adapterStates.setState(`${id}.alive`, { val: false, ack: true, from: id }, () => {
-                        if (!isPause && this._logger) {
+                        if (!isPause) {
                             this._logger.info(`${this.namespaceLog} terminating`);
                         }
 
@@ -2151,7 +2152,7 @@ export class AdapterClass extends EventEmitter {
                         this.terminate(exitCode);
                     });
                 } else {
-                    if (!isPause && this.log) {
+                    if (!isPause) {
                         this._logger.info(`${this.namespaceLog} terminating`);
                     }
                     this.terminate(exitCode);
@@ -2195,13 +2196,13 @@ export class AdapterClass extends EventEmitter {
 
                     // Give 1 seconds to write the value
                     setTimeout(() => {
-                        if (!isPause && this.log) {
+                        if (!isPause) {
                             this._logger.info(`${this.namespaceLog} terminating with timeout`);
                         }
                         this.terminate(exitCode);
-                    }, 1000);
+                    }, 1_000);
                 } else {
-                    if (!isPause && this.log) {
+                    if (!isPause) {
                         this._logger.info(`${this.namespaceLog} terminating`);
                     }
                     this.terminate(exitCode);
@@ -2270,10 +2271,6 @@ export class AdapterClass extends EventEmitter {
         chainedName: unknown,
         callback: unknown
     ): Promise<GetCertificatesPromiseReturnType | void> {
-        if (!this.config) {
-            throw new Error(tools.ERRORS.ERROR_NOT_READY);
-        }
-
         if (typeof publicName === 'function') {
             callback = publicName;
             publicName = undefined;
@@ -2286,9 +2283,9 @@ export class AdapterClass extends EventEmitter {
             callback = chainedName;
             chainedName = undefined;
         }
-        publicName = publicName || this.config.certPublic;
-        privateName = privateName || this.config.certPrivate;
-        chainedName = chainedName || this.config.certChained;
+        publicName = publicName || (this.config as any).certPublic;
+        privateName = privateName || (this.config as any).certPrivate;
+        chainedName = chainedName || (this.config as any).certChained;
 
         if (publicName !== undefined) {
             Validator.assertString(publicName, 'publicName');
@@ -2466,16 +2463,12 @@ export class AdapterClass extends EventEmitter {
     }
 
     private async _getEncryptedConfig(options: InternalGetEncryptedConfigOptions): Promise<string | void> {
-        if (!this.config) {
-            throw new Error(tools.ERRORS.ERROR_NOT_READY);
-        }
-
         if (Object.prototype.hasOwnProperty.call(this.config, options.attribute)) {
             if (this._systemSecret !== undefined) {
                 return tools.maybeCallbackWithError(
                     options.callback,
                     null,
-                    tools.decrypt(this._systemSecret, this.config[options.attribute])
+                    tools.decrypt(this._systemSecret, (this.config as any)[options.attribute])
                 );
             } else {
                 try {
@@ -2490,7 +2483,7 @@ export class AdapterClass extends EventEmitter {
                 return tools.maybeCallbackWithError(
                     options.callback,
                     null,
-                    tools.decrypt(this._systemSecret, this.config[options.attribute])
+                    tools.decrypt(this._systemSecret, (this.config as any)[options.attribute])
                 );
             }
         } else {
@@ -10635,7 +10628,7 @@ export class AdapterClass extends EventEmitter {
                                 this.logRedirect!(true, id);
                             }
                         }
-                        if (this.logList.size && messages && messages.length && adapterStates) {
+                        if (this.logList.size && messages?.length && adapterStates) {
                             for (const message of messages) {
                                 for (const instanceId of this.logList) {
                                     adapterStates.pushLog(instanceId, message);
@@ -12018,7 +12011,7 @@ export class AdapterClass extends EventEmitter {
         const _initDBs = (): void => {
             this._initObjects(() => {
                 if (this.inited) {
-                    this.log && this._logger.warn(`${this.namespaceLog} Reconnection to DB.`);
+                    this._logger.warn(`${this.namespaceLog} Reconnection to DB.`);
                     return;
                 }
 
