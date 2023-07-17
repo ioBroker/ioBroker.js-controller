@@ -9,6 +9,20 @@ import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 
 const expect = chai.expect;
 
+declare global {
+    // eslint-disable-next-line @typescript-eslint/no-namespace
+    namespace ioBroker {
+        interface AdapterConfig {
+            paramBoolean: boolean;
+            paramNumber: number;
+            username: string;
+            password: string;
+            secondPassword: string;
+            paramString: string;
+        }
+    }
+}
+
 before(() => {
     chai.should();
     chai.use(chaiAsPromised);
@@ -222,14 +236,14 @@ function testAdapter(options: Record<string, any>): void {
                 expect(context.adapter.log!.debug).to.be.a('function');
                 expect(context.adapter.log!.warn).to.be.a('function');
                 expect(context.adapter.log!.error).to.be.a('function');
-                expect(context.adapter.config!.paramString).to.be.equal('value1');
-                expect(context.adapter.config!.paramNumber).to.be.equal(42);
-                expect(context.adapter.config!.paramBoolean).to.be.equal(false);
-                expect(context.adapter.config!.username).to.be.equal('tesla');
+                expect(context.adapter.config.paramString).to.be.equal('value1');
+                expect(context.adapter.config.paramNumber).to.be.equal(42);
+                expect(context.adapter.config.paramBoolean).to.be.equal(false);
+                expect(context.adapter.config.username).to.be.equal('tesla');
                 // password has to be winning (decrypted via legacy - backward compatibility)
-                expect(context.adapter.config!.password).to.be.equal('winning');
+                expect(context.adapter.config.password).to.be.equal('winning');
                 // secondPassword should be decrypted with AES-256 correctly
-                expect(context.adapter.config!.secondPassword).to.be.equal('ii-€+winning*-³§"');
+                expect(context.adapter.config.secondPassword).to.be.equal('ii-€+winning*-³§"');
 
                 let count = 0;
 
