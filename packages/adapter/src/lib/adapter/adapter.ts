@@ -105,7 +105,8 @@ import type {
     Pattern,
     MessageCallbackObject,
     SendToOptions,
-    GetCertificatesPromiseReturnType
+    GetCertificatesPromiseReturnType,
+    InternalAdapterConfig
 } from '../_Types';
 
 tools.ensureDNSOrder();
@@ -2283,9 +2284,12 @@ export class AdapterClass extends EventEmitter {
             callback = chainedName;
             chainedName = undefined;
         }
-        publicName = publicName || (this.config as any).certPublic;
-        privateName = privateName || (this.config as any).certPrivate;
-        chainedName = chainedName || (this.config as any).certChained;
+
+        const config = this.config as InternalAdapterConfig;
+
+        publicName = publicName || config.certPublic;
+        privateName = privateName || config.certPrivate;
+        chainedName = chainedName || config.certChained;
 
         if (publicName !== undefined) {
             Validator.assertString(publicName, 'publicName');
@@ -2463,31 +2467,27 @@ export class AdapterClass extends EventEmitter {
     }
 
     private async _getEncryptedConfig(options: InternalGetEncryptedConfigOptions): Promise<string | void> {
-        if (Object.prototype.hasOwnProperty.call(this.config, options.attribute)) {
+        const { attribute, callback } = options;
+
+        const value = (this.config as InternalAdapterConfig)[attribute];
+
+        if (typeof value === 'string') {
             if (this._systemSecret !== undefined) {
-                return tools.maybeCallbackWithError(
-                    options.callback,
-                    null,
-                    tools.decrypt(this._systemSecret, (this.config as any)[options.attribute])
-                );
+                return tools.maybeCallbackWithError(callback, null, tools.decrypt(this._systemSecret, value));
             } else {
                 try {
                     const data = await this.getForeignObjectAsync('system.config');
-                    if (data && data.native) {
+                    if (data?.native) {
                         this._systemSecret = data.native.secret;
                     }
                 } catch {
                     // do nothing - we initialize default secret below
                 }
                 this._systemSecret = this._systemSecret || DEFAULT_SECRET;
-                return tools.maybeCallbackWithError(
-                    options.callback,
-                    null,
-                    tools.decrypt(this._systemSecret, (this.config as any)[options.attribute])
-                );
+                return tools.maybeCallbackWithError(callback, null, tools.decrypt(this._systemSecret, value));
             }
         } else {
-            return tools.maybeCallbackWithError(options.callback, `Attribute "${options.attribute}" not found`);
+            return tools.maybeCallbackWithError(callback, `Attribute "${attribute}" not found`);
         }
     }
 
