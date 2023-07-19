@@ -430,3 +430,9 @@ export interface InternalDeleteStateFromEnumOptions {
     options?: Record<string, any> | null;
     callback?: ioBroker.ErrorCallback;
 }
+
+/**
+ * The internal adapter config type should only be used to access config properties which are set by the adapter developers.
+ * Only use it like `this.config as InternalAdapterConfig`
+ */
+export type InternalAdapterConfig = Record<string, unknown>;

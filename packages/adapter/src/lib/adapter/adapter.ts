@@ -105,7 +105,8 @@ import type {
     Pattern,
     MessageCallbackObject,
     SendToOptions,
-    GetCertificatesPromiseReturnType
+    GetCertificatesPromiseReturnType,
+    InternalAdapterConfig
 } from '../_Types';
 
 tools.ensureDNSOrder();
@@ -613,7 +614,8 @@ export class AdapterClass extends EventEmitter {
     private readonly _timers = new Set<NodeJS.Timeout>();
     private readonly _intervals = new Set<NodeJS.Timeout>();
     private readonly _delays = new Set<NodeJS.Timeout>();
-    log?: Log;
+    /** For ease of use the log property is always defined, however it is only available after `ready` has been called. */
+    log!: Log;
     performStrictObjectChecks: boolean;
     private readonly _logger: Winston.Logger;
     private _restartScheduleJob: any;
@@ -668,7 +670,7 @@ export class AdapterClass extends EventEmitter {
     latitude?: number;
     private _defaultObjs?: Record<string, Partial<ioBroker.StateCommon>>;
     private _aliasObjectsSubscribed?: boolean;
-    config?: Record<string, any>;
+    config: ioBroker.AdapterConfig = {};
     host?: string;
     common?: ioBroker.InstanceCommon;
     private mboxSubscribed?: boolean;
@@ -2143,7 +2145,7 @@ export class AdapterClass extends EventEmitter {
                 if (adapterStates && updateAliveState) {
                     this.outputCount++;
                     adapterStates.setState(`${id}.alive`, { val: false, ack: true, from: id }, () => {
-                        if (!isPause && this._logger) {
+                        if (!isPause) {
                             this._logger.info(`${this.namespaceLog} terminating`);
                         }
 
@@ -2151,7 +2153,7 @@ export class AdapterClass extends EventEmitter {
                         this.terminate(exitCode);
                     });
                 } else {
-                    if (!isPause && this.log) {
+                    if (!isPause) {
                         this._logger.info(`${this.namespaceLog} terminating`);
                     }
                     this.terminate(exitCode);
@@ -2195,13 +2197,13 @@ export class AdapterClass extends EventEmitter {
 
                     // Give 1 seconds to write the value
                     setTimeout(() => {
-                        if (!isPause && this.log) {
+                        if (!isPause) {
                             this._logger.info(`${this.namespaceLog} terminating with timeout`);
                         }
                         this.terminate(exitCode);
-                    }, 1000);
+                    }, 1_000);
                 } else {
-                    if (!isPause && this.log) {
+                    if (!isPause) {
                         this._logger.info(`${this.namespaceLog} terminating`);
                     }
                     this.terminate(exitCode);
@@ -2270,10 +2272,6 @@ export class AdapterClass extends EventEmitter {
         chainedName: unknown,
         callback: unknown
     ): Promise<GetCertificatesPromiseReturnType | void> {
-        if (!this.config) {
-            throw new Error(tools.ERRORS.ERROR_NOT_READY);
-        }
-
         if (typeof publicName === 'function') {
             callback = publicName;
             publicName = undefined;
@@ -2286,9 +2284,12 @@ export class AdapterClass extends EventEmitter {
             callback = chainedName;
             chainedName = undefined;
         }
-        publicName = publicName || this.config.certPublic;
-        privateName = privateName || this.config.certPrivate;
-        chainedName = chainedName || this.config.certChained;
+
+        const config = this.config as InternalAdapterConfig;
+
+        publicName = publicName || config.certPublic;
+        privateName = privateName || config.certPrivate;
+        chainedName = chainedName || config.certChained;
 
         if (publicName !== undefined) {
             Validator.assertString(publicName, 'publicName');
@@ -2466,35 +2467,27 @@ export class AdapterClass extends EventEmitter {
     }
 
     private async _getEncryptedConfig(options: InternalGetEncryptedConfigOptions): Promise<string | void> {
-        if (!this.config) {
-            throw new Error(tools.ERRORS.ERROR_NOT_READY);
-        }
+        const { attribute, callback } = options;
 
-        if (Object.prototype.hasOwnProperty.call(this.config, options.attribute)) {
+        const value = (this.config as InternalAdapterConfig)[attribute];
+
+        if (typeof value === 'string') {
             if (this._systemSecret !== undefined) {
-                return tools.maybeCallbackWithError(
-                    options.callback,
-                    null,
-                    tools.decrypt(this._systemSecret, this.config[options.attribute])
-                );
+                return tools.maybeCallbackWithError(callback, null, tools.decrypt(this._systemSecret, value));
             } else {
                 try {
                     const data = await this.getForeignObjectAsync('system.config');
-                    if (data && data.native) {
+                    if (data?.native) {
                         this._systemSecret = data.native.secret;
                     }
                 } catch {
                     // do nothing - we initialize default secret below
                 }
                 this._systemSecret = this._systemSecret || DEFAULT_SECRET;
-                return tools.maybeCallbackWithError(
-                    options.callback,
-                    null,
-                    tools.decrypt(this._systemSecret, this.config[options.attribute])
-                );
+                return tools.maybeCallbackWithError(callback, null, tools.decrypt(this._systemSecret, value));
             }
         } else {
-            return tools.maybeCallbackWithError(options.callback, `Attribute "${options.attribute}" not found`);
+            return tools.maybeCallbackWithError(callback, `Attribute "${attribute}" not found`);
         }
     }
 
@@ -10635,7 +10628,7 @@ export class AdapterClass extends EventEmitter {
                                 this.logRedirect!(true, id);
                             }
                         }
-                        if (this.logList.size && messages && messages.length && adapterStates) {
+                        if (this.logList.size && messages?.length && adapterStates) {
                             for (const message of messages) {
                                 for (const instanceId of this.logList) {
                                     adapterStates.pushLog(instanceId, message);
@@ -12018,7 +12011,7 @@ export class AdapterClass extends EventEmitter {
         const _initDBs = (): void => {
             this._initObjects(() => {
                 if (this.inited) {
-                    this.log && this._logger.warn(`${this.namespaceLog} Reconnection to DB.`);
+                    this._logger.warn(`${this.namespaceLog} Reconnection to DB.`);
                     return;
                 }
 
