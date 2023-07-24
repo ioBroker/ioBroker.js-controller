@@ -1508,8 +1508,8 @@ export function getAdapterDir(adapter: string): string | null {
     let adapterPath;
     for (const possibility of possibilities) {
         // special case to not read adapters from js-controller/node_module/adapter and check first in parent directory
-        if (fs.existsSync(`${__dirname}/../../${possibility}`)) {
-            adapterPath = `${__dirname}/../../${possibility}`;
+        if (fs.existsSync(`${__dirname}/../../../../../../${possibility}`)) {
+            adapterPath = path.normalize(`${__dirname}/../../../../../../${possibility}`);
         } else {
             try {
                 adapterPath = require.resolve(possibility, {
