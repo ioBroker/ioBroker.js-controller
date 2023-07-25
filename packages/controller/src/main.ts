@@ -3166,7 +3166,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             const { version, adminInstance } = msg.message;
 
             logger.info(`${hostLogPrefix} Controller will upgrade itself to version ${version}`);
-            startUpgradeManager({ version, adminInstance });
+            await startUpgradeManager({ version, adminInstance });
 
             if (msg.callback) {
                 sendTo(msg.from, msg.command, { result: true }, msg.callback);
@@ -6080,17 +6080,14 @@ async function _getNumberOfInstances(): Promise<
  *
  * @param options Arguments passed to the UpgradeManager process
  */
-function startUpgradeManager(options: UpgradeArguments): void {
+async function startUpgradeManager(options: UpgradeArguments): Promise<void> {
     const { version, adminInstance } = options;
     const upgradeProcessPath = require.resolve('./lib/upgradeManager');
     let upgradeProcess: cp.ChildProcess;
 
-    if (tools.isDocker()) {
-        upgradeProcess = spawn(process.execPath, [upgradeProcessPath, version, adminInstance.toString()], {
-            detached: true,
-            stdio: 'ignore'
-        });
-    } else {
+    const isSystemd = await tools.isIoBrokerInstalledAsSystemd();
+
+    if (isSystemd) {
         upgradeProcess = spawn(
             'sudo',
             [
@@ -6106,6 +6103,11 @@ function startUpgradeManager(options: UpgradeArguments): void {
                 stdio: 'ignore'
             }
         );
+    } else {
+        upgradeProcess = spawn(process.execPath, [upgradeProcessPath, version, adminInstance.toString()], {
+            detached: true,
+            stdio: 'ignore'
+        });
     }
 
     upgradeProcess.unref();

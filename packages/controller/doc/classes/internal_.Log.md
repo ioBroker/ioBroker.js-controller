@@ -42,7 +42,7 @@ It prefixes every message with the given namespace
 
 #### Defined in
 
-[adapter/src/lib/adapter/log.ts:18](https://github.com/ioBroker/ioBroker.js-controller/blob/7a194a15/packages/adapter/src/lib/adapter/log.ts#L18)
+[adapter/src/lib/adapter/log.ts:18](https://github.com/ioBroker/ioBroker.js-controller/blob/78752620/packages/adapter/src/lib/adapter/log.ts#L18)
 
 ## Properties
 
@@ -52,7 +52,7 @@ It prefixes every message with the given namespace
 
 #### Defined in
 
-[adapter/src/lib/adapter/log.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/7a194a15/packages/adapter/src/lib/adapter/log.ts#L10)
+[adapter/src/lib/adapter/log.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/78752620/packages/adapter/src/lib/adapter/log.ts#L10)
 
 ## Methods
 
@@ -72,7 +72,7 @@ It prefixes every message with the given namespace
 
 #### Defined in
 
-[adapter/src/lib/adapter/log.ts:38](https://github.com/ioBroker/ioBroker.js-controller/blob/7a194a15/packages/adapter/src/lib/adapter/log.ts#L38)
+[adapter/src/lib/adapter/log.ts:38](https://github.com/ioBroker/ioBroker.js-controller/blob/78752620/packages/adapter/src/lib/adapter/log.ts#L38)
 
 ___
 
@@ -92,7 +92,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/log.ts:46](https://github.com/ioBroker/ioBroker.js-controller/blob/7a194a15/packages/adapter/src/lib/adapter/log.ts#L46)
+[adapter/src/lib/adapter/log.ts:46](https://github.com/ioBroker/ioBroker.js-controller/blob/78752620/packages/adapter/src/lib/adapter/log.ts#L46)
 
 ___
 
@@ -112,7 +112,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/log.ts:42](https://github.com/ioBroker/ioBroker.js-controller/blob/7a194a15/packages/adapter/src/lib/adapter/log.ts#L42)
+[adapter/src/lib/adapter/log.ts:42](https://github.com/ioBroker/ioBroker.js-controller/blob/78752620/packages/adapter/src/lib/adapter/log.ts#L42)
 
 ___
 
@@ -132,7 +132,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/log.ts:34](https://github.com/ioBroker/ioBroker.js-controller/blob/7a194a15/packages/adapter/src/lib/adapter/log.ts#L34)
+[adapter/src/lib/adapter/log.ts:34](https://github.com/ioBroker/ioBroker.js-controller/blob/78752620/packages/adapter/src/lib/adapter/log.ts#L34)
 
 ___
 
@@ -152,4 +152,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/log.ts:50](https://github.com/ioBroker/ioBroker.js-controller/blob/7a194a15/packages/adapter/src/lib/adapter/log.ts#L50)
+[adapter/src/lib/adapter/log.ts:50](https://github.com/ioBroker/ioBroker.js-controller/blob/78752620/packages/adapter/src/lib/adapter/log.ts#L50)

@@ -4015,4 +4015,16 @@ export function ensureDNSOrder(): void {
     setDefaultResultOrder(dnsOrder);
 }
 
+/**
+ * Determine if ioBroker is installed as systemd service
+ */
+export async function isIoBrokerInstalledAsSystemd(): Promise<boolean> {
+    try {
+        const res = await execAsync('systemctl status iobroker');
+        return !res.stderr;
+    } catch {
+        return false;
+    }
+}
+
 export * from './maybeCallback';
