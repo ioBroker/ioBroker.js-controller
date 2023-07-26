@@ -6074,7 +6074,7 @@ async function _getNumberOfInstances(): Promise<
 }
 
 /**
- * Mark the instance as offline on state level
+ * Mark given adapter instance as offline on state level
  *
  * @param id id of the instance
  */
