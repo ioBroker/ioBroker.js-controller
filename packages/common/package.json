@@ -49,6 +49,9 @@
         "*": {
             "tools": [
                 "build/lib/common/tools"
+            ],
+            "constants": [
+                "build/lib/common/constants"
             ]
         }
     },
@@ -59,7 +62,8 @@
     "exports": {
         ".": "./build/index.js",
         "./package.json": "./package.json",
-        "./tools": "./build/lib/common/tools.js"
+        "./tools": "./build/lib/common/tools.js",
+        "./constants": "./build/lib/common/constants.js"
     },
     "files": [
         "build/lib/",
