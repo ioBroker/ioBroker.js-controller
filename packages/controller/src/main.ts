@@ -3110,7 +3110,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                 // Read current state of all log subscribers
                 states!.getKeys('*.logging', (err, keys) => {
-                    if (keys && keys.length) {
+                    if (keys?.length) {
                         states!.getStates(keys, (err, objs) => {
                             if (objs) {
                                 for (let i = 0; i < keys.length; i++) {
@@ -3129,8 +3129,8 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                 }
                             }
                             setTimeout(() => {
-                                for (let m = 0; m < logs.length; m++) {
-                                    logger.error(`${hostLogPrefix} LOGINFO: ${logs[m]}`);
+                                for (const log of logs) {
+                                    logger.error(`${hostLogPrefix} LOGINFO: ${log}`);
                                 }
                                 logs = [];
                             }, 3_000);
