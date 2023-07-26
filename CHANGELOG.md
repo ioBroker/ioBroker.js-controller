@@ -19,6 +19,7 @@
 * (foxriver76) Allow to use `iob host oldname` command when new host already exists but has no instances
 * (foxriver76) Added an admin notification if redis is misconfigured and info how to fix it
 * (foxriver76/buanet) Enable upgrade of js-controller via Admin UI (Linux/Docker only)
+* (foxriver76) automatically reset `info.connection` if adapter instance is stopped
 
 **Optimizations and Fixes**
 * (foxriver76) Speedup "getStates" calls with many IDs often used by visualizations: JSONL 17 times faster, Redis 23 times faster

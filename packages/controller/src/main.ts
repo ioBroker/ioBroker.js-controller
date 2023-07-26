@@ -21,6 +21,7 @@ import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual, inspect } from 'util';
 import { tools, EXIT_CODES, logger as toolsLogger } from '@iobroker/js-controller-common';
+import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
 import { PluginHandler } from '@iobroker/plugin-base';
 import { NotificationHandler } from '@iobroker/js-controller-common-db';
 import * as zipFiles from './lib/zipFiles';
@@ -1171,7 +1172,7 @@ async function changeHost(
             obj.common.host = newHostname;
             logger.info(
                 `${hostLogPrefix} Reassign instance ${obj._id.substring(
-                    'system.adapter.'.length
+                    SYSTEM_ADAPTER_PREFIX.length
                 )} from ${oldHostname} to ${newHostname}`
             );
             obj.from = `system.host.${tools.getHostName()}`;
@@ -1239,10 +1240,10 @@ function cleanAutoSubscribes(instanceID: ioBroker.ObjectIDs.Instance, callback: 
     objects!.getObjectView(
         'system',
         'instance',
-        { startkey: 'system.adapter.', endkey: 'system.adapter.\u9999' },
+        { startkey: SYSTEM_ADAPTER_PREFIX, endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999` },
         (err, res) => {
             let count = 0;
-            if (res && res.rows) {
+            if (res?.rows) {
                 for (const row of res.rows) {
                     // remove this instance from autoSubscribe
                     if (row.value?.common.subscribable) {
@@ -1259,7 +1260,7 @@ function cleanAutoSubscribes(instanceID: ioBroker.ObjectIDs.Instance, callback: 
 
 async function delObjects(objs: ioBroker.GetObjectViewItem<ioBroker.AnyObject>[]): Promise<void> {
     for (const row of objs) {
-        if (row && row.id) {
+        if (row?.id) {
             logger.info(`${hostLogPrefix} Delete state "${row.id}"`);
             try {
                 if (row.value && row.value.type === 'state') {
@@ -1308,8 +1309,8 @@ function checkHost(callback: () => void): void {
                     'system',
                     'instance',
                     {
-                        startkey: 'system.adapter.',
-                        endkey: 'system.adapter.\u9999'
+                        startkey: SYSTEM_ADAPTER_PREFIX,
+                        endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
                     },
                     async (err, doc) => {
                         if (err && err.message.startsWith('Cannot find ')) {
@@ -1475,8 +1476,8 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
 
         try {
             doc = await objects!.getObjectViewAsync('system', 'adapter', {
-                startkey: 'system.adapter.',
-                endkey: 'system.adapter.\u9999'
+                startkey: SYSTEM_ADAPTER_PREFIX,
+                endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
             });
         } catch (e) {
             err = e;
@@ -2260,8 +2261,8 @@ async function sendTo(
 
     const obj: ioBroker.SendableMessage = { command, message, from: hostObjectPrefix };
 
-    if (!objName.startsWith('system.adapter.') && !objName.startsWith('system.host.')) {
-        objName = `system.adapter.${objName}`;
+    if (!objName.startsWith(SYSTEM_ADAPTER_PREFIX) && !objName.startsWith('system.host.')) {
+        objName = `${SYSTEM_ADAPTER_PREFIX}${objName}`;
     }
 
     if (callback) {
@@ -3109,7 +3110,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                 // Read current state of all log subscribers
                 states!.getKeys('*.logging', (err, keys) => {
-                    if (keys && keys.length) {
+                    if (keys?.length) {
                         states!.getStates(keys, (err, objs) => {
                             if (objs) {
                                 for (let i = 0; i < keys.length; i++) {
@@ -3128,8 +3129,8 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                 }
                             }
                             setTimeout(() => {
-                                for (let m = 0; m < logs.length; m++) {
-                                    logger.error(`${hostLogPrefix} LOGINFO: ${logs[m]}`);
+                                for (const log of logs) {
+                                    logger.error(`${hostLogPrefix} LOGINFO: ${log}`);
                                 }
                                 logs = [];
                             }, 3_000);
@@ -3586,7 +3587,7 @@ function initInstances(): void {
             proc.config.common.enabled &&
             (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance)
         ) {
-            if (id.startsWith('system.adapter.admin')) {
+            if (id.startsWith(`${SYSTEM_ADAPTER_PREFIX}admin`)) {
                 // do not process if still running. It will be started when old one will be finished
                 if (proc.process) {
                     logger.info(`${hostLogPrefix} instance "${id}" was not started, because running.`);
@@ -3613,7 +3614,7 @@ function initInstances(): void {
             proc.config.common.enabled &&
             (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance)
         ) {
-            if (!id.startsWith('system.adapter.admin')) {
+            if (!id.startsWith(`${SYSTEM_ADAPTER_PREFIX}admin`)) {
                 // do not process if still running. It will be started when old one will be finished
                 if (proc.process) {
                     logger.info(`${hostLogPrefix} instance "${id}" was not started, because already running.`);
@@ -3706,8 +3707,8 @@ function checkVersion(name: string, version: string, instances: Record<string, i
  */
 async function checkVersions(id: string, deps: Dependencies, globalDeps: Dependencies): Promise<void> {
     const res = await objects!.getObjectViewAsync('system', 'instance', {
-        startkey: 'system.adapter.',
-        endkey: 'system.adapter.\u9999'
+        startkey: SYSTEM_ADAPTER_PREFIX,
+        endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
     });
     const instances: Record<string, ioBroker.InstanceObject> = {};
     const globInstances: Record<string, ioBroker.InstanceObject> = {};
@@ -4353,9 +4354,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                 );
                 // Exit Handler for normal Adapters started as own processes
                 const exitHandler = (code: number, signal: string): void => {
-                    outputCount += 2;
-                    states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
-                    states!.setState(`${id}.connected`, { val: false, ack: true, from: hostObjectPrefix });
+                    setInstanceOfflineStates(id);
 
                     // if we have waiting kill timeouts from stopInstance clear them
                     // and call callback because process ended now
@@ -5794,7 +5793,7 @@ export function init(compactGroupId?: number): void {
     }
 
     createObjects(async () => {
-        objects!.subscribe('system.adapter.*');
+        objects!.subscribe(`${SYSTEM_ADAPTER_PREFIX}*`);
         // TODO: remove this backward shim if controller 4.0 is old enough
         // subscribe to host objects to detect upgrade from one of the hosts for sets migration
         objects!.subscribe('system.host.*');
@@ -5827,7 +5826,7 @@ export function init(compactGroupId?: number): void {
             states!.subscribe('*.logging');
 
             // Subscribe for all logging objects
-            states!.subscribe('system.adapter.*.alive');
+            states!.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.alive`);
 
             // set current Loglevel and subscribe for changes
             states!.setState(`${hostObjectPrefix}.logLevel`, {
@@ -6053,8 +6052,8 @@ async function _getNumberOfInstances(): Promise<
     try {
         let noCompactInstances = 0;
         const instancesView = await objects!.getObjectViewAsync('system', 'instance', {
-            startkey: 'system.adapter.',
-            endkey: 'system.adapter.\u9999'
+            startkey: SYSTEM_ADAPTER_PREFIX,
+            endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
         });
 
         const noInstances = instancesView!.rows.length;
@@ -6071,6 +6070,26 @@ async function _getNumberOfInstances(): Promise<
         return { noInstances, noCompactInstances };
     } catch {
         return { noInstances: null, noCompactInstances: null };
+    }
+}
+
+/**
+ * Mark given adapter instance as offline on state level
+ *
+ * @param id id of the instance
+ */
+async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promise<void> {
+    outputCount += 2;
+    await states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
+    await states!.setState(`${id}.connected`, { val: false, ack: true, from: hostObjectPrefix });
+
+    const adapterInstance = id.substring(SYSTEM_ADAPTER_PREFIX.length);
+
+    const state = await states!.getState(`${adapterInstance}.connection`);
+
+    if (state?.val === true) {
+        outputCount++;
+        await states!.setState(adapterInstance, { val: false, ack: true, from: hostObjectPrefix });
     }
 }
 
