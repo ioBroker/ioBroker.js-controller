@@ -6085,7 +6085,7 @@ async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promis
 
     const adapterInstance = id.substring(SYSTEM_ADAPTER_PREFIX.length);
 
-    const state = await states!.getState(`${adapterInstance}.connection`);
+    const state = await states!.getState(`${adapterInstance}.info.connection`);
 
     if (state?.val === true) {
         outputCount++;
