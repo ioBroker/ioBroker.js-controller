@@ -13,5 +13,6 @@
   "dtsRollup": {
     "enabled": true,
     "untrimmedFilePath": "./build/types.d.ts"
-  }
+  },
+  "bundledPackages": []
 }
