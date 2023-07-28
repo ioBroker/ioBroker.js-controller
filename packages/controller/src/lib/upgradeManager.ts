@@ -221,8 +221,10 @@ class UpgradeManager {
      * @param res server response
      */
     webServerCallback(req: http.IncomingMessage, res: http.ServerResponse): void {
-        res.writeHead(200);
-        res.setHeader('Access-Control-Allow-Origin', '*');
+        res.writeHead(200, {
+            'Access-Control-Allow-Origin': '*'
+        });
+
         res.end(JSON.stringify(this.response));
 
         if (!this.response.running) {
@@ -352,6 +354,7 @@ class UpgradeManager {
 async function main(): Promise<void> {
     const upgradeArguments = UpgradeManager.parseCliCommands();
     const upgradeManager = new UpgradeManager(upgradeArguments);
+    registerErrorHandlers(upgradeManager);
 
     const webServerParameters = await upgradeManager.collectWebServerParameters();
 
@@ -376,4 +379,19 @@ async function main(): Promise<void> {
  */
 if (require.main === module) {
     main();
+}
+
+/**
+ * Stream unhandled errors to the log files
+ *
+ * @param upgradeManager the instance of Upgrade Manager
+ */
+function registerErrorHandlers(upgradeManager: UpgradeManager): void {
+    process.on('uncaughtException', e => {
+        upgradeManager.log(`Uncaught Exception: ${e.stack}`, true);
+    });
+
+    process.on('unhandledRejection', rej => {
+        upgradeManager.log(`Unhandled rejection: ${rej instanceof Error ? rej.stack : JSON.stringify(rej)}`, true);
+    });
 }
