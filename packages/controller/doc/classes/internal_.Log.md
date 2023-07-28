@@ -38,11 +38,11 @@ It prefixes every message with the given namespace
 | :------ | :------ | :------ |
 | `namespaceLog` | `string` | Logging namespace to prefix |
 | `level` | `string` | The log level |
-| `logger` | `Logger` | logger instance |
+| `logger` | `any` | logger instance |
 
 #### Defined in
 
-[adapter/src/lib/adapter/log.ts:18](https://github.com/ioBroker/ioBroker.js-controller/blob/d8eef178/packages/adapter/src/lib/adapter/log.ts#L18)
+[adapter/src/lib/adapter/log.ts:17](https://github.com/ioBroker/ioBroker.js-controller/blob/180be0b1/packages/adapter/src/lib/adapter/log.ts#L17)
 
 ## Properties
 
@@ -52,7 +52,7 @@ It prefixes every message with the given namespace
 
 #### Defined in
 
-[adapter/src/lib/adapter/log.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/d8eef178/packages/adapter/src/lib/adapter/log.ts#L10)
+[adapter/src/lib/adapter/log.ts:8](https://github.com/ioBroker/ioBroker.js-controller/blob/180be0b1/packages/adapter/src/lib/adapter/log.ts#L8)
 
 ## Methods
 
@@ -72,7 +72,7 @@ It prefixes every message with the given namespace
 
 #### Defined in
 
-[adapter/src/lib/adapter/log.ts:38](https://github.com/ioBroker/ioBroker.js-controller/blob/d8eef178/packages/adapter/src/lib/adapter/log.ts#L38)
+[adapter/src/lib/adapter/log.ts:37](https://github.com/ioBroker/ioBroker.js-controller/blob/180be0b1/packages/adapter/src/lib/adapter/log.ts#L37)
 
 ___
 
@@ -92,7 +92,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/log.ts:46](https://github.com/ioBroker/ioBroker.js-controller/blob/d8eef178/packages/adapter/src/lib/adapter/log.ts#L46)
+[adapter/src/lib/adapter/log.ts:45](https://github.com/ioBroker/ioBroker.js-controller/blob/180be0b1/packages/adapter/src/lib/adapter/log.ts#L45)
 
 ___
 
@@ -112,7 +112,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/log.ts:42](https://github.com/ioBroker/ioBroker.js-controller/blob/d8eef178/packages/adapter/src/lib/adapter/log.ts#L42)
+[adapter/src/lib/adapter/log.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/180be0b1/packages/adapter/src/lib/adapter/log.ts#L41)
 
 ___
 
@@ -132,7 +132,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/log.ts:34](https://github.com/ioBroker/ioBroker.js-controller/blob/d8eef178/packages/adapter/src/lib/adapter/log.ts#L34)
+[adapter/src/lib/adapter/log.ts:33](https://github.com/ioBroker/ioBroker.js-controller/blob/180be0b1/packages/adapter/src/lib/adapter/log.ts#L33)
 
 ___
 
@@ -152,4 +152,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/log.ts:50](https://github.com/ioBroker/ioBroker.js-controller/blob/d8eef178/packages/adapter/src/lib/adapter/log.ts#L50)
+[adapter/src/lib/adapter/log.ts:49](https://github.com/ioBroker/ioBroker.js-controller/blob/180be0b1/packages/adapter/src/lib/adapter/log.ts#L49)
