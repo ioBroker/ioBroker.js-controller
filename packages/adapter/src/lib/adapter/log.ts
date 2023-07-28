@@ -1,5 +1,3 @@
-import type Winston from 'winston';
-
 /**
  * Log class for adapter.js
  *
@@ -8,14 +6,15 @@ import type Winston from 'winston';
 export class Log {
     private readonly namespaceLog: string;
     readonly level: string;
-    private readonly logger: Winston.Logger;
+    // TODO: this should be a winston.Logger, but the exported types will mess up because of https://github.com/microsoft/rushstack/issues/2220
+    private readonly logger: any;
 
     /**
      * @param namespaceLog Logging namespace to prefix
      * @param level The log level
      * @param logger logger instance
      */
-    constructor(namespaceLog: string, level: string, logger: Winston.Logger) {
+    constructor(namespaceLog: string, level: string, logger: any) {
         this.namespaceLog = namespaceLog;
         this.level = level;
         // We have to bind the `this` context here, or it is possible that `this` is
