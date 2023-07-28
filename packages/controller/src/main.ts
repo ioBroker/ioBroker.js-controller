@@ -6061,7 +6061,7 @@ async function _getNumberOfInstances(): Promise<
         if (config.system.compact) {
             for (const row of instancesView!.rows) {
                 const state = await states!.getStateAsync(`${row.id}.compactMode`);
-                if (state && state.val) {
+                if (state?.val) {
                     noCompactInstances++;
                 }
             }
