@@ -440,6 +440,17 @@ export function isDocker(): boolean {
     }
 }
 
+/**
+ * Get string of docker platform
+ */
+export function getDockerString(): String {
+    const dockerInfo = getDockerInformation();
+    if (!dockerInfo.isOfficial) {
+        return 'docker';
+    }
+    return `docker (official ${dockerInfo.officialVersion}`;
+}
+
 // Build unique uuid based on MAC address if possible
 function uuid(givenMac: string | null, callback: (uuid: string) => void): void {
     if (typeof givenMac === 'function') {
@@ -2067,7 +2078,7 @@ export async function getHostInfo(objects: any): Promise<Record<string, any>> {
     const dateObj = new Date();
 
     const data: Record<string, any> = {
-        Platform: isDocker() ? 'docker' : os.platform(),
+        Platform: isDocker() ? getDockerString() : os.platform(),
         os: process.platform,
         Architecture: os.arch(),
         CPUs: cpus && Array.isArray(cpus) ? cpus.length : null,
