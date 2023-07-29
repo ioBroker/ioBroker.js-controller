@@ -39,7 +39,7 @@ type DockerInformation =
           isOfficial: false;
       };
 
-interface HostInfo {
+export interface HostInfo {
     /** Converted OS for human readability */
     Platform: NodeJS.Platform | 'docker' | 'Windows' | 'OSX';
     /** The underlying OS */
@@ -2086,9 +2086,9 @@ function makeid(length: number): string {
  * @param objects db
  */
 export async function getHostInfo(objects: any): Promise<HostInfo> {
-    if (diskusage) {
+    if (!diskusage) {
         try {
-            diskusage = diskusage || require('diskusage');
+            diskusage = require('diskusage');
         } catch {
             // ignore
         }
