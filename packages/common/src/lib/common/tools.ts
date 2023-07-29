@@ -448,7 +448,7 @@ export function getDockerString(): String {
     if (!dockerInfo.isOfficial) {
         return 'docker';
     }
-    return `docker (official ${dockerInfo.officialVersion}`;
+    return `docker (official ${dockerInfo.officialVersion})`;
 }
 
 // Build unique uuid based on MAC address if possible
