@@ -22,7 +22,7 @@
         "build": "ts-node build.ts",
         "test": "tsd"
     },
-    "main": "",
+    "main": "index.js",
     "types": "index.d.ts",
     "license": "MIT",
     "publishConfig": {
