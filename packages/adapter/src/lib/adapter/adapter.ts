@@ -2575,7 +2575,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    setInterval(cb: TimeoutCallback, timeout: number, ...args: any[]): ioBroker.Interval | void;
+    setInterval(cb: TimeoutCallback, timeout: number, ...args: any[]): NodeJS.Timeout | void;
 
     /**
      * Same as setInterval
