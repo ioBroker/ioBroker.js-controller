@@ -410,7 +410,7 @@ function getMac(callback: (e?: Error | null, mac?: string) => void): void {
  */
 export function getDockerInformation(): DockerInformation {
     try {
-        const versionString = fs.readFileSync(OFFICIAL_DOCKER_FILE, { encoding: 'utf-8' });
+        const versionString = fs.readFileSync(OFFICIAL_DOCKER_FILE, { encoding: 'utf-8' }).trim();
         return { isDocker: true, isOfficial: true, officialVersion: versionString };
     } catch {
         // ignore error

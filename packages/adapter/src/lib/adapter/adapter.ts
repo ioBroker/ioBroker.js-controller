@@ -2575,7 +2575,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    setInterval(cb: TimeoutCallback, timeout: number, ...args: any[]): NodeJS.Timeout | void;
+    setInterval(cb: TimeoutCallback, timeout: number, ...args: any[]): ioBroker.Interval | void;
 
     /**
      * Same as setInterval
@@ -2660,7 +2660,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    setObject(id: unknown, obj: unknown, options: unknown, callback?: unknown): Promise<void> {
+    setObject(id: unknown, obj: unknown, options: unknown, callback?: unknown): Promise<void> | void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -7372,26 +7372,26 @@ export class AdapterClass extends EventEmitter {
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         callback?: T
-    ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
+    ): T extends ioBroker.SetStateCallback ? void : ioBroker.SetStatePromise;
     setState<T extends ioBroker.SetStateCallback>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
         callback?: T
-    ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
+    ): T extends ioBroker.SetStateCallback ? void : ioBroker.SetStatePromise;
     setState<T extends ioBroker.SetStateCallback>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         options?: Partial<GetUserGroupsOptions> | null,
         callback?: T
-    ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
+    ): T extends ioBroker.SetStateCallback ? void : ioBroker.SetStatePromise;
     setState<T extends ioBroker.SetStateCallback>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
         options?: Partial<GetUserGroupsOptions> | null,
         callback?: T
-    ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
+    ): T extends ioBroker.SetStateCallback ? void : ioBroker.SetStatePromise;
 
     /**
      * Writes value into states DB.
@@ -7424,7 +7424,13 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    setState(id: unknown, state: unknown, ack: unknown, options?: unknown, callback?: unknown): Promise<void | string> {
+    setState(
+        id: unknown,
+        state: unknown,
+        ack: unknown,
+        options?: unknown,
+        callback?: unknown
+    ): Promise<void | string> | void {
         if (typeof state === 'object' && typeof ack !== 'boolean') {
             callback = options;
             options = ack;

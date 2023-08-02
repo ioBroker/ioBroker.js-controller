@@ -505,8 +505,8 @@ declare global {
 
         type GetSessionCallback = (session: Session) => void;
 
-        type Timeout = number & { __ioBrokerBrand: 'Timeout' };
-        type Interval = number & { __ioBrokerBrand: 'Interval' };
+        type Timeout = NodeJS.Timeout & { __ioBrokerBrand: 'Timeout' };
+        type Interval = NodeJS.Timeout & { __ioBrokerBrand: 'Interval' };
 
         /**
          * The ioBroker global config
