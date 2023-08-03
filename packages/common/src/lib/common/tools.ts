@@ -2239,7 +2239,7 @@ export function getDefaultDataDir(): string {
         return './data/';
     }
 
-    return path.join(getRootDir(), `${appNameLowerCase}-data/`);
+    return path.join('..', '..', `${appNameLowerCase}-data/`);
 }
 
 /**
