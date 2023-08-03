@@ -2492,7 +2492,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    setTimeout(cb: TimeoutCallback, timeout: number, ...args: any[]): ioBroker.Timeout;
+    setTimeout(cb: TimeoutCallback, timeout: number, ...args: any[]): ioBroker.Timeout | undefined;
     /**
      * Same as setTimeout
      * but it clears the running timers on unload
@@ -2503,7 +2503,7 @@ export class AdapterClass extends EventEmitter {
      * @param args - as many arguments as needed, which will be passed to setTimeout
      * @returns timer id
      */
-    setTimeout(cb: unknown, timeout: unknown, ...args: unknown[]): ioBroker.Timeout | void {
+    setTimeout(cb: unknown, timeout: unknown, ...args: unknown[]): ioBroker.Timeout | undefined {
         if (typeof cb !== 'function') {
             this._logger.warn(
                 `${this.namespaceLog} setTimeout expected callback to be of type "function", but got "${typeof cb}"`
@@ -2532,7 +2532,7 @@ export class AdapterClass extends EventEmitter {
         return timer as unknown as ioBroker.Timeout;
     }
 
-    clearTimeout(timer: ioBroker.Timeout): void;
+    clearTimeout(timer: ioBroker.Timeout | undefined): void;
 
     /**
      * Same as clearTimeout
@@ -2542,8 +2542,8 @@ export class AdapterClass extends EventEmitter {
      */
     clearTimeout(timer: unknown): void {
         // should we validate this?
-        clearTimeout(timer as any);
-        this._timers.delete(timer as any);
+        clearTimeout(timer as NodeJS.Timeout);
+        this._timers.delete(timer as NodeJS.Timeout);
     }
 
     // external signature
@@ -2575,7 +2575,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    setInterval(cb: TimeoutCallback, timeout: number, ...args: any[]): ioBroker.Interval;
+    setInterval(cb: TimeoutCallback, timeout: number, ...args: any[]): ioBroker.Interval | undefined;
 
     /**
      * Same as setInterval
@@ -2587,7 +2587,7 @@ export class AdapterClass extends EventEmitter {
      * @param args - as many arguments as needed, which will be passed to setTimeout
      * @returns interval interval object
      */
-    setInterval(cb: unknown, timeout: unknown, ...args: unknown[]): ioBroker.Interval | void {
+    setInterval(cb: unknown, timeout: unknown, ...args: unknown[]): ioBroker.Interval | undefined {
         if (typeof cb !== 'function') {
             this._logger.error(
                 `${this.namespaceLog} setInterval expected callback to be of type "function", but got "${typeof cb}"`
@@ -2610,7 +2610,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    clearInterval(interval: ioBroker.Interval): void;
+    clearInterval(interval: ioBroker.Interval | undefined): void;
 
     /**
      * Same as clearInterval
@@ -2620,8 +2620,8 @@ export class AdapterClass extends EventEmitter {
      */
     clearInterval(interval: unknown): void {
         // should we validate it is a valid interval?
-        clearInterval(interval as any);
-        this._intervals.delete(interval as any);
+        clearInterval(interval as NodeJS.Timeout);
+        this._intervals.delete(interval as NodeJS.Timeout);
     }
 
     setObject(id: string, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
