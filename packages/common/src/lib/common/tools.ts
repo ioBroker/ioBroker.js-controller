@@ -2252,7 +2252,7 @@ export function getConfigFileName(): string {
         if (!path.isAbsolute(envDataDir)) {
             envDataDir = path.join(getControllerDir(), envDataDir);
         }
-        return path.join(envDataDir, `${_appName}.json`);
+        return path.join(envDataDir, `${appNameLowerCase}.json`);
     }
 
     let devConfigDir;
