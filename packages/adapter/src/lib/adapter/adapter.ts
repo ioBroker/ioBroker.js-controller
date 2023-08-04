@@ -2541,7 +2541,11 @@ export class AdapterClass extends EventEmitter {
      * @param timer - the timer object
      */
     clearTimeout(timer: unknown): void {
-        // should we validate this?
+        if (timer === undefined) {
+            return;
+        }
+
+        // should we further validate this?
         clearTimeout(timer as NodeJS.Timeout);
         this._timers.delete(timer as NodeJS.Timeout);
     }
@@ -2619,7 +2623,11 @@ export class AdapterClass extends EventEmitter {
      * @param interval - interval object
      */
     clearInterval(interval: unknown): void {
-        // should we validate it is a valid interval?
+        if (interval === undefined) {
+            return;
+        }
+
+        // should we further validate it is a valid interval?
         clearInterval(interval as NodeJS.Timeout);
         this._intervals.delete(interval as NodeJS.Timeout);
     }
