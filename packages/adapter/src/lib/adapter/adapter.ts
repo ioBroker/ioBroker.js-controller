@@ -1619,19 +1619,19 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    getUserID(username: string): Promise<string | void>;
+    getUserID(username: string): Promise<string | undefined>;
     /**
      * Return ID of given username
      *
      * @param username - name of the user
      */
-    getUserID(username: unknown): Promise<string | void> {
+    getUserID(username: unknown): Promise<string | undefined> {
         Validator.assertString(username, 'username');
 
         return this._getUserID({ username });
     }
 
-    private async _getUserID(options: InternalGetUserIDOptions): Promise<void | string> {
+    private async _getUserID(options: InternalGetUserIDOptions): Promise<string | undefined> {
         if (!this.usernames[options.username]) {
             try {
                 // did not find username, we should have a look in the cache
@@ -10796,11 +10796,10 @@ export class AdapterClass extends EventEmitter {
         this._initializeTimeout = setTimeout(() => {
             this._initializeTimeout = null;
             if (this._config.isInstall) {
-                this._logger && this._logger.warn(`${this.namespaceLog} no connection to states DB. Terminating.`);
+                this._logger.warn(`${this.namespaceLog} no connection to states DB. Terminating.`);
                 this.terminate(EXIT_CODES.NO_ERROR);
             } else {
-                this._logger &&
-                    this._logger.warn(`${this.namespaceLog} slow connection to states DB. Still waiting ...`);
+                this._logger.warn(`${this.namespaceLog} slow connection to states DB. Still waiting ...`);
             }
         }, this._config.states.connectTimeout || 2_000);
 
@@ -10960,8 +10959,8 @@ export class AdapterClass extends EventEmitter {
                 // If someone want to have log messages
                 if (id.endsWith('.logging')) {
                     const instance = id.substring(0, id.length - '.logging'.length);
-                    this._logger &&
-                        this._logger.silly(`${this.namespaceLog} ${instance}: logging ${state ? state.val : false}`);
+
+                    this._logger.silly(`${this.namespaceLog} ${instance}: logging ${state ? state.val : false}`);
                     this.logRedirect!(state ? !!state.val : false, instance);
                 } else if (id === `log.system.adapter.${this.namespace}`) {
                     this._options.logTransporter && this.processLog && this.processLog(state);
@@ -11101,10 +11100,7 @@ export class AdapterClass extends EventEmitter {
                         if (this.connected) {
                             return;
                         } // If reconnected in the meantime, do not terminate
-                        this._logger &&
-                            this._logger.warn(
-                                `${this.namespaceLog} Cannot connect/reconnect to states DB. Terminating`
-                            );
+                        this._logger.warn(`${this.namespaceLog} Cannot connect/reconnect to states DB. Terminating`);
                         this.terminate(EXIT_CODES.NO_ERROR);
                     }, 5000);
             }
@@ -11115,11 +11111,10 @@ export class AdapterClass extends EventEmitter {
         this._initializeTimeout = setTimeout(() => {
             this._initializeTimeout = null;
             if (this._config.isInstall) {
-                this._logger && this._logger.warn(`${this.namespaceLog} no connection to objects DB. Terminating`);
+                this._logger.warn(`${this.namespaceLog} no connection to objects DB. Terminating`);
                 this.terminate(EXIT_CODES.NO_ERROR);
             } else {
-                this._logger &&
-                    this._logger.warn(`${this.namespaceLog} slow connection to objects DB. Still waiting ...`);
+                this._logger.warn(`${this.namespaceLog} slow connection to objects DB. Still waiting ...`);
             }
         }, this._config.objects.connectTimeout * 2); // Because we do not connect only anymore, give it a bit more time
 
@@ -11172,10 +11167,8 @@ export class AdapterClass extends EventEmitter {
                         if (this.connected) {
                             return;
                         } // If reconnected in the meantime, do not terminate
-                        this._logger &&
-                            this._logger.warn(
-                                `${this.namespaceLog} Cannot connect/reconnect to objects DB. Terminating`
-                            );
+
+                        this._logger.warn(`${this.namespaceLog} Cannot connect/reconnect to objects DB. Terminating`);
                         this.terminate(EXIT_CODES.NO_ERROR);
                     }, 4000);
             },
