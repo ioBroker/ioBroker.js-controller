@@ -1619,19 +1619,19 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    getUserID(username: string): Promise<string | void>;
+    getUserID(username: string): Promise<string | undefined>;
     /**
      * Return ID of given username
      *
      * @param username - name of the user
      */
-    getUserID(username: unknown): Promise<string | void> {
+    getUserID(username: unknown): Promise<string | undefined> {
         Validator.assertString(username, 'username');
 
         return this._getUserID({ username });
     }
 
-    private async _getUserID(options: InternalGetUserIDOptions): Promise<void | string> {
+    private async _getUserID(options: InternalGetUserIDOptions): Promise<string | undefined> {
         if (!this.usernames[options.username]) {
             try {
                 // did not find username, we should have a look in the cache
@@ -2492,7 +2492,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    setTimeout(cb: TimeoutCallback, timeout: number, ...args: any[]): NodeJS.Timeout | void;
+    setTimeout(cb: TimeoutCallback, timeout: number, ...args: any[]): ioBroker.Timeout | undefined;
     /**
      * Same as setTimeout
      * but it clears the running timers on unload
@@ -2503,7 +2503,7 @@ export class AdapterClass extends EventEmitter {
      * @param args - as many arguments as needed, which will be passed to setTimeout
      * @returns timer id
      */
-    setTimeout(cb: unknown, timeout: unknown, ...args: unknown[]): NodeJS.Timeout | void {
+    setTimeout(cb: unknown, timeout: unknown, ...args: unknown[]): ioBroker.Timeout | undefined {
         if (typeof cb !== 'function') {
             this._logger.warn(
                 `${this.namespaceLog} setTimeout expected callback to be of type "function", but got "${typeof cb}"`
@@ -2529,10 +2529,10 @@ export class AdapterClass extends EventEmitter {
         );
         this._timers.add(timer);
 
-        return timer;
+        return timer as unknown as ioBroker.Timeout;
     }
 
-    clearTimeout(timer: NodeJS.Timeout): void;
+    clearTimeout(timer: ioBroker.Timeout | undefined): void;
 
     /**
      * Same as clearTimeout
@@ -2541,9 +2541,13 @@ export class AdapterClass extends EventEmitter {
      * @param timer - the timer object
      */
     clearTimeout(timer: unknown): void {
-        // should we validate this?
-        clearTimeout(timer as any);
-        this._timers.delete(timer as any);
+        if (timer === undefined) {
+            return;
+        }
+
+        // should we further validate this?
+        clearTimeout(timer as NodeJS.Timeout);
+        this._timers.delete(timer as NodeJS.Timeout);
     }
 
     // external signature
@@ -2575,7 +2579,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    setInterval(cb: TimeoutCallback, timeout: number, ...args: any[]): NodeJS.Timeout | void;
+    setInterval(cb: TimeoutCallback, timeout: number, ...args: any[]): ioBroker.Interval | undefined;
 
     /**
      * Same as setInterval
@@ -2587,7 +2591,7 @@ export class AdapterClass extends EventEmitter {
      * @param args - as many arguments as needed, which will be passed to setTimeout
      * @returns interval interval object
      */
-    setInterval(cb: unknown, timeout: unknown, ...args: unknown[]): NodeJS.Timeout | void {
+    setInterval(cb: unknown, timeout: unknown, ...args: unknown[]): ioBroker.Interval | undefined {
         if (typeof cb !== 'function') {
             this._logger.error(
                 `${this.namespaceLog} setInterval expected callback to be of type "function", but got "${typeof cb}"`
@@ -2606,11 +2610,11 @@ export class AdapterClass extends EventEmitter {
         const id = setInterval(() => cb(...args), timeout);
         this._intervals.add(id);
 
-        return id;
+        return id as unknown as ioBroker.Interval;
     }
 
     // external signature
-    clearInterval(interval: NodeJS.Timeout): void;
+    clearInterval(interval: ioBroker.Interval | undefined): void;
 
     /**
      * Same as clearInterval
@@ -2619,9 +2623,13 @@ export class AdapterClass extends EventEmitter {
      * @param interval - interval object
      */
     clearInterval(interval: unknown): void {
-        // should we validate it is a valid interval?
-        clearInterval(interval as any);
-        this._intervals.delete(interval as any);
+        if (interval === undefined) {
+            return;
+        }
+
+        // should we further validate it is a valid interval?
+        clearInterval(interval as NodeJS.Timeout);
+        this._intervals.delete(interval as NodeJS.Timeout);
     }
 
     setObject(id: string, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
@@ -2660,7 +2668,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    setObject(id: unknown, obj: unknown, options: unknown, callback?: unknown): Promise<void> {
+    setObject(id: unknown, obj: unknown, options: unknown, callback?: unknown): Promise<void> | void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -7372,26 +7380,26 @@ export class AdapterClass extends EventEmitter {
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         callback?: T
-    ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
+    ): T extends ioBroker.SetStateCallback ? void : ioBroker.SetStatePromise;
     setState<T extends ioBroker.SetStateCallback>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
         callback?: T
-    ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
+    ): T extends ioBroker.SetStateCallback ? void : ioBroker.SetStatePromise;
     setState<T extends ioBroker.SetStateCallback>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         options?: Partial<GetUserGroupsOptions> | null,
         callback?: T
-    ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
+    ): T extends ioBroker.SetStateCallback ? void : ioBroker.SetStatePromise;
     setState<T extends ioBroker.SetStateCallback>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
         options?: Partial<GetUserGroupsOptions> | null,
         callback?: T
-    ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
+    ): T extends ioBroker.SetStateCallback ? void : ioBroker.SetStatePromise;
 
     /**
      * Writes value into states DB.
@@ -7424,7 +7432,13 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    setState(id: unknown, state: unknown, ack: unknown, options?: unknown, callback?: unknown): Promise<void | string> {
+    setState(
+        id: unknown,
+        state: unknown,
+        ack: unknown,
+        options?: unknown,
+        callback?: unknown
+    ): Promise<void | string> | void {
         if (typeof state === 'object' && typeof ack !== 'boolean') {
             callback = options;
             options = ack;
@@ -10782,11 +10796,10 @@ export class AdapterClass extends EventEmitter {
         this._initializeTimeout = setTimeout(() => {
             this._initializeTimeout = null;
             if (this._config.isInstall) {
-                this._logger && this._logger.warn(`${this.namespaceLog} no connection to states DB. Terminating.`);
+                this._logger.warn(`${this.namespaceLog} no connection to states DB. Terminating.`);
                 this.terminate(EXIT_CODES.NO_ERROR);
             } else {
-                this._logger &&
-                    this._logger.warn(`${this.namespaceLog} slow connection to states DB. Still waiting ...`);
+                this._logger.warn(`${this.namespaceLog} slow connection to states DB. Still waiting ...`);
             }
         }, this._config.states.connectTimeout || 2_000);
 
@@ -10946,8 +10959,8 @@ export class AdapterClass extends EventEmitter {
                 // If someone want to have log messages
                 if (id.endsWith('.logging')) {
                     const instance = id.substring(0, id.length - '.logging'.length);
-                    this._logger &&
-                        this._logger.silly(`${this.namespaceLog} ${instance}: logging ${state ? state.val : false}`);
+
+                    this._logger.silly(`${this.namespaceLog} ${instance}: logging ${state ? state.val : false}`);
                     this.logRedirect!(state ? !!state.val : false, instance);
                 } else if (id === `log.system.adapter.${this.namespace}`) {
                     this._options.logTransporter && this.processLog && this.processLog(state);
@@ -11087,10 +11100,7 @@ export class AdapterClass extends EventEmitter {
                         if (this.connected) {
                             return;
                         } // If reconnected in the meantime, do not terminate
-                        this._logger &&
-                            this._logger.warn(
-                                `${this.namespaceLog} Cannot connect/reconnect to states DB. Terminating`
-                            );
+                        this._logger.warn(`${this.namespaceLog} Cannot connect/reconnect to states DB. Terminating`);
                         this.terminate(EXIT_CODES.NO_ERROR);
                     }, 5000);
             }
@@ -11101,11 +11111,10 @@ export class AdapterClass extends EventEmitter {
         this._initializeTimeout = setTimeout(() => {
             this._initializeTimeout = null;
             if (this._config.isInstall) {
-                this._logger && this._logger.warn(`${this.namespaceLog} no connection to objects DB. Terminating`);
+                this._logger.warn(`${this.namespaceLog} no connection to objects DB. Terminating`);
                 this.terminate(EXIT_CODES.NO_ERROR);
             } else {
-                this._logger &&
-                    this._logger.warn(`${this.namespaceLog} slow connection to objects DB. Still waiting ...`);
+                this._logger.warn(`${this.namespaceLog} slow connection to objects DB. Still waiting ...`);
             }
         }, this._config.objects.connectTimeout * 2); // Because we do not connect only anymore, give it a bit more time
 
@@ -11158,10 +11167,8 @@ export class AdapterClass extends EventEmitter {
                         if (this.connected) {
                             return;
                         } // If reconnected in the meantime, do not terminate
-                        this._logger &&
-                            this._logger.warn(
-                                `${this.namespaceLog} Cannot connect/reconnect to objects DB. Terminating`
-                            );
+
+                        this._logger.warn(`${this.namespaceLog} Cannot connect/reconnect to objects DB. Terminating`);
                         this.terminate(EXIT_CODES.NO_ERROR);
                     }, 4000);
             },
