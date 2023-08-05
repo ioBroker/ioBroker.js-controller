@@ -318,8 +318,6 @@ declare global {
                 | 'restartLoop'
                 | 'fileToJsonl';
         }
-
-        // eslint-disable-next-line @typescript-eslint/no-empty-interface
         interface AdapterConfig {
             // This is a stub to be augmented in every adapter
         }

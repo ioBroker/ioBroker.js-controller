@@ -173,6 +173,7 @@
             "allowProtectedClassPropertyAccess": true
           }
         ],
+        "@typescript-eslint/no-unsafe-declaration-merging": "off",
         "quote-props": [
           "error",
           "as-needed"

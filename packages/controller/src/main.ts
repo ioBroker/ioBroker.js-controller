@@ -591,10 +591,13 @@ function createStates(onConnect: () => void): void {
 
             statesDisconnectTimeout && clearTimeout(statesDisconnectTimeout);
 
-            statesDisconnectTimeout = setTimeout(() => {
-                statesDisconnectTimeout = null;
-                handleDisconnect();
-            }, (config.states.connectTimeout || 2000) + (!compactGroupController ? 500 : 0));
+            statesDisconnectTimeout = setTimeout(
+                () => {
+                    statesDisconnectTimeout = null;
+                    handleDisconnect();
+                },
+                (config.states.connectTimeout || 2000) + (!compactGroupController ? 500 : 0)
+            );
         }
     });
 }
@@ -696,10 +699,13 @@ function createObjects(onConnect: () => void): void {
             // on reconnection this will be determiend anew
             isPrimary = false;
             objectsDisconnectTimeout && clearTimeout(objectsDisconnectTimeout);
-            objectsDisconnectTimeout = setTimeout(() => {
-                objectsDisconnectTimeout = null;
-                handleDisconnect();
-            }, (config.objects.connectTimeout || 2000) + (!compactGroupController ? 500 : 0));
+            objectsDisconnectTimeout = setTimeout(
+                () => {
+                    objectsDisconnectTimeout = null;
+                    handleDisconnect();
+                },
+                (config.objects.connectTimeout || 2000) + (!compactGroupController ? 500 : 0)
+            );
             // give main controller a bit longer, so that adapter and compact processes can exit before
         },
         change: async (id, obj) => {
