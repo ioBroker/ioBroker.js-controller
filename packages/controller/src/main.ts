@@ -30,7 +30,7 @@ import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { Upload } from '@iobroker/js-controller-cli';
 import decache from 'decache';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
-import { getDefaultNodeArgs } from './lib/tools';
+import { getDefaultNodeArgs, HostInfo } from '@iobroker/js-controller-common/tools';
 import type { UpgradeArguments } from './lib/upgradeManager';
 import { AdapterUpgradeManager } from './lib/adapterUpgradeManager';
 
@@ -2903,15 +2903,14 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 // node.js --version
                 // npm --version
                 // uptime
-                let data;
+                let hostInfo: HostInfo;
                 try {
-                    data = (await tools.getHostInfo(objects)) || {};
+                    hostInfo = await tools.getHostInfo(objects);
                 } catch (e) {
                     logger.error(`${hostLogPrefix} cannot get getHostInfo: ${e.message}`);
                     return null;
                 }
 
-                data.Uptime = Math.round((Date.now() - uptimeStart) / 1_000);
                 // add information about running instances
                 let count = 0;
                 for (const proc of Object.values(procs)) {
@@ -2925,10 +2924,14 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     location = path.normalize(`${controllerDir}/../../`);
                 }
 
-                data['Active instances'] = count;
-                data.location = location;
+                const enrichedHostInfo = {
+                    ...hostInfo,
+                    'Active instances': count,
+                    location,
+                    Uptime: Math.round((Date.now() - uptimeStart) / 1_000)
+                };
 
-                sendTo(msg.from, msg.command, data, msg.callback);
+                sendTo(msg.from, msg.command, enrichedHostInfo, msg.callback);
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
@@ -6061,7 +6064,7 @@ async function _getNumberOfInstances(): Promise<
         if (config.system.compact) {
             for (const row of instancesView!.rows) {
                 const state = await states!.getStateAsync(`${row.id}.compactMode`);
-                if (state && state.val) {
+                if (state?.val) {
                     noCompactInstances++;
                 }
             }

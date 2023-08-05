@@ -39,6 +39,37 @@ type DockerInformation =
           isOfficial: false;
       };
 
+export interface HostInfo {
+    /** Converted OS for human readability */
+    Platform: NodeJS.Platform | 'docker' | 'Windows' | 'OSX';
+    /** The underlying OS */
+    os: NodeJS.Platform;
+    /** Information about the docker installation */
+    dockerInformation?: DockerInformation;
+    /** Host architecture */
+    Architecture: string;
+    /** Number of CPUs */
+    CPUs: number | null;
+    /** CPU speed */
+    Speed: number | null;
+    /** CPU model */
+    Model: string | null;
+    /** Total RAM of host */
+    RAM: number;
+    /** System uptime in seconds */
+    'System uptime': number;
+    /** Node.JS version */
+    'Node.js': string;
+    /** Current time to compare to local time */
+    time: number;
+    /** Timezone offset to compare to local time */
+    timeOffset: number;
+    /** Number of available adapters */
+    'adapters count': number;
+    /** NPM version */
+    NPM: string;
+}
+
 interface FormatAliasValueOptions {
     /** Common attribute of source object */
     sourceCommon?: Partial<ioBroker.StateCommon>;
@@ -379,7 +410,7 @@ function getMac(callback: (e?: Error | null, mac?: string) => void): void {
  */
 export function getDockerInformation(): DockerInformation {
     try {
-        const versionString = fs.readFileSync(OFFICIAL_DOCKER_FILE, { encoding: 'utf-8' });
+        const versionString = fs.readFileSync(OFFICIAL_DOCKER_FILE, { encoding: 'utf-8' }).trim();
         return { isDocker: true, isOfficial: true, officialVersion: versionString };
     } catch {
         // ignore error
@@ -2056,36 +2087,13 @@ function makeid(length: number): string {
  *
  * @param objects db
  */
-export async function getHostInfo(objects: any): Promise<Record<string, any>> {
-    if (diskusage) {
+export async function getHostInfo(objects: any): Promise<HostInfo> {
+    if (!diskusage) {
         try {
-            diskusage = diskusage || require('diskusage');
+            diskusage = require('diskusage');
         } catch {
             // ignore
         }
-    }
-
-    const cpus = os.cpus();
-    const dateObj = new Date();
-
-    const data: Record<string, any> = {
-        Platform: isDocker() ? 'docker' : os.platform(),
-        os: process.platform,
-        Architecture: os.arch(),
-        CPUs: cpus && Array.isArray(cpus) ? cpus.length : null,
-        Speed: cpus && Array.isArray(cpus) ? cpus[0].speed : null,
-        Model: cpus && Array.isArray(cpus) ? cpus[0].model : null,
-        RAM: os.totalmem(),
-        'System uptime': Math.round(os.uptime()),
-        'Node.js': process.version,
-        time: dateObj.getTime(), // give infos to compare the local times
-        timeOffset: dateObj.getTimezoneOffset()
-    };
-
-    if (data.Platform === 'win32') {
-        data.Platform = 'Windows';
-    } else if (data.Platform === 'darwin') {
-        data.Platform = 'OSX';
     }
 
     const systemConfig: ioBroker.OtherObject = await objects.getObjectAsync('system.config');
@@ -2100,21 +2108,46 @@ export async function getHostInfo(objects: any): Promise<Record<string, any>> {
         repos
             .filter(repo => systemRepos.native.repositories[repo] && systemRepos.native.repositories[repo].json)
             .forEach(repo => Object.assign(allRepos, systemRepos.native.repositories[repo].json));
-
-        data['adapters count'] = Object.keys(allRepos).length;
     }
 
     if (!npmVersion) {
         try {
             const version = await getSystemNpmVersionAsync();
-            data.NPM = `v${version || ' ---'}`;
             npmVersion = version;
         } catch (e) {
             console.error(`Cannot get NPM version: ${e.message}`);
         }
-    } else {
-        data.NPM = npmVersion;
     }
+
+    const cpus = os.cpus();
+    const dateObj = new Date();
+
+    const data: HostInfo = {
+        Platform: isDocker() ? 'docker' : os.platform(),
+        os: process.platform,
+        Architecture: os.arch(),
+        CPUs: cpus && Array.isArray(cpus) ? cpus.length : null,
+        Speed: cpus && Array.isArray(cpus) ? cpus[0].speed : null,
+        Model: cpus && Array.isArray(cpus) ? cpus[0].model : null,
+        RAM: os.totalmem(),
+        'System uptime': Math.round(os.uptime()),
+        'Node.js': process.version,
+        time: dateObj.getTime(),
+        timeOffset: dateObj.getTimezoneOffset(),
+        NPM: npmVersion,
+        'adapters count': Object.keys(allRepos).length
+    };
+
+    if (data.Platform === 'win32') {
+        data.Platform = 'Windows';
+    } else if (data.Platform === 'darwin') {
+        data.Platform = 'OSX';
+    }
+
+    if (data.Platform === 'docker') {
+        data.dockerInformation = getDockerInformation();
+    }
+
     try {
         const info = await getDiskInfoAsync(data.Platform);
         if (info) {
@@ -2208,30 +2241,20 @@ export function getDefaultDataDir(): string {
         return './data/';
     }
 
-    const _appName = appName.toLowerCase();
-
-    // if debugging with npm5
-    if (fs.existsSync(`${__dirname}/../../../node_modules/${_appName}.js-controller`)) {
-        return `../${_appName}-data/`;
-    } else {
-        // If installed with npm
-        return `../../${_appName}-data/`;
-    }
+    return path.join('..', '..', `${appNameLowerCase}-data/`);
 }
 
 /**
  * Returns the path of the config file
  */
 export function getConfigFileName(): string {
-    const _appName = appName.toLowerCase();
-
     // Allow overriding the config file location with an environment variable
     let envDataDir = process.env[`${appName.toUpperCase()}_DATA_DIR`];
     if (envDataDir) {
         if (!path.isAbsolute(envDataDir)) {
             envDataDir = path.join(getControllerDir(), envDataDir);
         }
-        return path.join(envDataDir, `${_appName}.json`);
+        return path.join(envDataDir, `${appNameLowerCase}.json`);
     }
 
     let devConfigDir;
@@ -2244,10 +2267,10 @@ export function getConfigFileName(): string {
         devConfigParts.splice(devConfigParts.length - 4, 4);
         devConfigDir = devConfigParts.join('/');
         devConfigDir += '/controller'; // go inside controller dir
-        if (fs.existsSync(`${devConfigDir}/conf/${_appName}.json`)) {
-            return `${devConfigDir}/conf/${_appName}.json`;
-        } else if (fs.existsSync(`${devConfigDir}/data/${_appName}.json`)) {
-            return `${devConfigDir}/data/${_appName}.json`;
+        if (fs.existsSync(`${devConfigDir}/conf/${appNameLowerCase}.json`)) {
+            return `${devConfigDir}/conf/${appNameLowerCase}.json`;
+        } else if (fs.existsSync(`${devConfigDir}/data/${appNameLowerCase}.json`)) {
+            return `${devConfigDir}/data/${appNameLowerCase}.json`;
         }
     }
 
@@ -2256,8 +2279,8 @@ export function getConfigFileName(): string {
 
     // if debugging with npm5 -> node_modules on e.g. /opt/node_modules
     if (
-        fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${_appName.toLowerCase()}.js-controller`) ||
-        fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${_appName}.js-controller`)
+        fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${appNameLowerCase}.js-controller`) ||
+        fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${appName}.js-controller`)
     ) {
         // remove /node_modules/' + appName + '.js-controller/lib
         configParts.splice(configParts.length - 8, 8);
@@ -2268,11 +2291,11 @@ export function getConfigFileName(): string {
         configDir = configParts.join('/');
     }
 
-    if (!fs.existsSync(`${configDir}/${_appName}-data/${_appName}.json`) && devConfigDir) {
-        return `${devConfigDir}/data/${_appName}.json`;
+    if (!fs.existsSync(`${configDir}/${appNameLowerCase}-data/${appNameLowerCase}.json`) && devConfigDir) {
+        return `${devConfigDir}/data/${appNameLowerCase}.json`;
     }
 
-    return `${configDir}/${_appName}-data/${_appName}.json`;
+    return `${configDir}/${appNameLowerCase}-data/${appNameLowerCase}.json`;
 }
 
 /**
