@@ -2191,24 +2191,27 @@ export class AdapterClass extends EventEmitter {
 
             // Even if the developer forgets to call the unload callback, we need to stop the process
             // Therefore wait a short while and then force the unload
-            setTimeout(() => {
-                if (adapterStates) {
-                    finishUnload();
+            setTimeout(
+                () => {
+                    if (adapterStates) {
+                        finishUnload();
 
-                    // Give 1 seconds to write the value
-                    setTimeout(() => {
+                        // Give 1 seconds to write the value
+                        setTimeout(() => {
+                            if (!isPause) {
+                                this._logger.info(`${this.namespaceLog} terminating with timeout`);
+                            }
+                            this.terminate(exitCode);
+                        }, 1_000);
+                    } else {
                         if (!isPause) {
-                            this._logger.info(`${this.namespaceLog} terminating with timeout`);
+                            this._logger.info(`${this.namespaceLog} terminating`);
                         }
                         this.terminate(exitCode);
-                    }, 1_000);
-                } else {
-                    if (!isPause) {
-                        this._logger.info(`${this.namespaceLog} terminating`);
                     }
-                    this.terminate(exitCode);
-                }
-            }, this.common?.stopTimeout || 500);
+                },
+                this.common?.stopTimeout || 500
+            );
         }
     }
 

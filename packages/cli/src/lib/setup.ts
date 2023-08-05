@@ -3105,176 +3105,182 @@ function dbConnect(
     let isStatesConnected = false;
 
     // Detect timeout or try to open file itself
-    setTimeout(async () => {
-        if (isObjectConnected && isStatesConnected) {
-            return;
-        }
-
-        if (!isObjectConnected) {
-            if (objects) {
-                // Destroy Client we tried to connect with
-                await objects.destroy();
-                objects = null;
+    setTimeout(
+        async () => {
+            if (isObjectConnected && isStatesConnected) {
+                return;
             }
-            if (dbTools.objectsDbHasServer(config.objects.type)) {
-                // Just open in memory DB itself
-                Objects = (await import(`@iobroker/db-objects-${config.objects.type}`)).Server;
-                objects = new Objects!({
-                    connection: config.objects,
-                    logger: {
-                        silly: (_msg: string) => {
-                            /** do not log on this level */
-                        },
-                        debug: (_msg: string) => {
-                            /** do not log on this level */
-                        },
-                        info: (_msg: string) => {
-                            /** do not log on this level */
-                        },
-                        warn: (msg: string) => console.log(msg),
-                        error: (msg: string) => console.log(msg)
-                    },
-                    connected: async () => {
-                        isObjectConnected = true;
-                        if (isStatesConnected && typeof callback === 'function') {
-                            try {
-                                await initializePlugins(config);
-                            } catch {
-                                // ignore in silence
-                            }
-                            return void callback({
-                                objects: objects!,
-                                states: states!,
-                                isOffline: true,
-                                objectsDBType: config.objects.type,
-                                config
-                            });
-                        }
-                    }
-                });
-            } else {
-                console.log(
-                    `No connection to objects ${config.objects.host}:${config.objects.port}[${config.objects.type}]`
-                );
-                if (onlyCheck) {
-                    callback &&
-                        callback({
-                            objects: objects!,
-                            states: states!,
-                            isOffline: true,
-                            objectsDBType: config.objects.type,
-                            config
-                        });
-                    callback = undefined;
-                } else {
-                    return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
-                }
-            }
-        }
 
-        if (!isStatesConnected) {
-            if (states) {
-                // Destroy Client we tried to connect with
-                await states.destroy();
-                states = null;
-            }
-            if (dbTools.statesDbHasServer(config.states.type)) {
-                // Just open in memory DB itself
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                States = require(`@iobroker/db-states-${config.states.type}`).Server;
-
-                states = new States!({
-                    connection: config.states,
-                    logger: {
-                        silly: (_msg: string) => {
-                            /** do not log on this level */
-                        },
-                        debug: (_msg: string) => {
-                            /** do not log on this level */
-                        },
-                        info: (_msg: string) => {
-                            /** do not log on this level */
-                        },
-                        warn: (msg: string) => console.log(msg),
-                        error: (msg: string) => console.log(msg)
-                    },
-                    connected: async () => {
-                        isStatesConnected = true;
-                        if (isObjectConnected && typeof callback === 'function') {
-                            try {
-                                await initializePlugins(config);
-                            } catch {
-                                // ignore in silence
-                            }
-                            return void callback({
-                                objects: objects!,
-                                states: states!,
-                                isOffline: true,
-                                objectsDBType: config.objects.type,
-                                config
-                            });
-                        }
-                    },
-                    // react on change
-                    // @ts-expect-error todo according to types and first look states.onchange does not exist
-                    change: (id, msg) => states?.onChange(id, msg)
-                });
-                // @ts-expect-error todo according to types and first look states.onchange does not exist
-                states!.onChange = null; // here the custom onChange handler could be installed
-            } else {
-                if (states) {
-                    // Destroy Client we tried to connect with
-                    await (states as StateRedisClient).destroy();
-                    states = null;
-                }
+            if (!isObjectConnected) {
                 if (objects) {
                     // Destroy Client we tried to connect with
                     await objects.destroy();
                     objects = null;
                 }
-                console.log(
-                    `No connection to states ${config.states.host}:${config.states.port}[${config.states.type}]`
-                );
-                if (onlyCheck) {
-                    callback &&
-                        callback({
-                            objects: objects!,
-                            states: states!,
-                            isOffline: true,
-                            objectsDBType: config.objects.type,
-                            config
-                        });
-                    callback = undefined;
+                if (dbTools.objectsDbHasServer(config.objects.type)) {
+                    // Just open in memory DB itself
+                    Objects = (await import(`@iobroker/db-objects-${config.objects.type}`)).Server;
+                    objects = new Objects!({
+                        connection: config.objects,
+                        logger: {
+                            silly: (_msg: string) => {
+                                /** do not log on this level */
+                            },
+                            debug: (_msg: string) => {
+                                /** do not log on this level */
+                            },
+                            info: (_msg: string) => {
+                                /** do not log on this level */
+                            },
+                            warn: (msg: string) => console.log(msg),
+                            error: (msg: string) => console.log(msg)
+                        },
+                        connected: async () => {
+                            isObjectConnected = true;
+                            if (isStatesConnected && typeof callback === 'function') {
+                                try {
+                                    await initializePlugins(config);
+                                } catch {
+                                    // ignore in silence
+                                }
+                                return void callback({
+                                    objects: objects!,
+                                    states: states!,
+                                    isOffline: true,
+                                    objectsDBType: config.objects.type,
+                                    config
+                                });
+                            }
+                        }
+                    });
                 } else {
-                    return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
+                    console.log(
+                        `No connection to objects ${config.objects.host}:${config.objects.port}[${config.objects.type}]`
+                    );
+                    if (onlyCheck) {
+                        callback &&
+                            callback({
+                                objects: objects!,
+                                states: states!,
+                                isOffline: true,
+                                objectsDBType: config.objects.type,
+                                config
+                            });
+                        callback = undefined;
+                    } else {
+                        return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
+                    }
                 }
             }
-        }
 
-        setTimeout(() => {
-            // Failsafe
-            if (isObjectConnected && isStatesConnected) {
-                return;
-            }
+            if (!isStatesConnected) {
+                if (states) {
+                    // Destroy Client we tried to connect with
+                    await states.destroy();
+                    states = null;
+                }
+                if (dbTools.statesDbHasServer(config.states.type)) {
+                    // Just open in memory DB itself
+                    // eslint-disable-next-line @typescript-eslint/no-var-requires
+                    States = require(`@iobroker/db-states-${config.states.type}`).Server;
 
-            console.log('No connection to databases possible ...');
-            if (onlyCheck) {
-                callback &&
-                    callback({
-                        // TODO types: allow null if onlyCheck is true
-                        objects: null as any,
-                        states: null as any,
-                        isOffline: true,
-                        objectsDBType: config.objects.type,
-                        config
+                    states = new States!({
+                        connection: config.states,
+                        logger: {
+                            silly: (_msg: string) => {
+                                /** do not log on this level */
+                            },
+                            debug: (_msg: string) => {
+                                /** do not log on this level */
+                            },
+                            info: (_msg: string) => {
+                                /** do not log on this level */
+                            },
+                            warn: (msg: string) => console.log(msg),
+                            error: (msg: string) => console.log(msg)
+                        },
+                        connected: async () => {
+                            isStatesConnected = true;
+                            if (isObjectConnected && typeof callback === 'function') {
+                                try {
+                                    await initializePlugins(config);
+                                } catch {
+                                    // ignore in silence
+                                }
+                                return void callback({
+                                    objects: objects!,
+                                    states: states!,
+                                    isOffline: true,
+                                    objectsDBType: config.objects.type,
+                                    config
+                                });
+                            }
+                        },
+                        // react on change
+                        // @ts-expect-error todo according to types and first look states.onchange does not exist
+                        change: (id, msg) => states?.onChange(id, msg)
                     });
-                callback = undefined;
-            } else {
-                return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
+                    // @ts-expect-error todo according to types and first look states.onchange does not exist
+                    states!.onChange = null; // here the custom onChange handler could be installed
+                } else {
+                    if (states) {
+                        // Destroy Client we tried to connect with
+                        await (states as StateRedisClient).destroy();
+                        states = null;
+                    }
+                    if (objects) {
+                        // Destroy Client we tried to connect with
+                        await objects.destroy();
+                        objects = null;
+                    }
+                    console.log(
+                        `No connection to states ${config.states.host}:${config.states.port}[${config.states.type}]`
+                    );
+                    if (onlyCheck) {
+                        callback &&
+                            callback({
+                                objects: objects!,
+                                states: states!,
+                                isOffline: true,
+                                objectsDBType: config.objects.type,
+                                config
+                            });
+                        callback = undefined;
+                    } else {
+                        return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
+                    }
+                }
             }
-            // @ts-expect-error todo fix it
-        }, (params.timeout || 10_000) + config.objects.connectTimeout);
-    }, params.timeout || config.objects.connectTimeout * 2);
+
+            setTimeout(
+                () => {
+                    // Failsafe
+                    if (isObjectConnected && isStatesConnected) {
+                        return;
+                    }
+
+                    console.log('No connection to databases possible ...');
+                    if (onlyCheck) {
+                        callback &&
+                            callback({
+                                // TODO types: allow null if onlyCheck is true
+                                objects: null as any,
+                                states: null as any,
+                                isOffline: true,
+                                objectsDBType: config.objects.type,
+                                config
+                            });
+                        callback = undefined;
+                    } else {
+                        return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
+                    }
+                },
+                // @ts-expect-error todo fix it
+                (params.timeout || 10_000) + config.objects.connectTimeout
+            );
+        },
+        params.timeout || config.objects.connectTimeout * 2
+    );
 
     // try to connect as client
     objects = new Objects!({
