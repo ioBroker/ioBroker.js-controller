@@ -1,17 +1,19 @@
 {
-    "useWorkspaces": true,
-    "version": "5.0.11",
-    "//": "Set up some command options",
-    "command": {
-        "//": "Running a script should show the output while it is generated",
-        "run": {
-            "stream": true
-        },
-        "version": {
-            "//": "This is required for the release-script",
-            "allowBranch": ["master", "*.x"],
-            "ignoreChanges": ["*.md"],
-            "exact": true
-        }
+  "version": "5.0.11",
+  "command": {
+    "run": {
+      "stream": true
+    },
+    "version": {
+      "allowBranch": [
+        "master",
+        "*.x"
+      ],
+      "ignoreChanges": [
+        "*.md"
+      ],
+      "exact": true
     }
+  },
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }
