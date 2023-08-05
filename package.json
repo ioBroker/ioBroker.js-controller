@@ -63,7 +63,7 @@
     "gulp": "^4.0.2",
     "gulp-jsdoc3": "^3.0.0",
     "gulp-replace": "^1.1.4",
-    "lerna": "^6.3.0",
+    "lerna": "^7.1.4",
     "mocha": "^10.1.0",
     "prettier": "^3.0.1",
     "semver": "^7.5.2",
