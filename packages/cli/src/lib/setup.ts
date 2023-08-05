@@ -3274,8 +3274,8 @@ function dbConnect(
                     } else {
                         return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
                     }
-                    // @ts-expect-error todo fix it
                 },
+                // @ts-expect-error todo fix it
                 (params.timeout || 10_000) + config.objects.connectTimeout
             );
         },
