@@ -2,8 +2,8 @@ import { execAsync } from '@iobroker/js-controller-common/tools';
 import type { InternalLogger } from '@iobroker/js-controller-common/build/lib/common/tools';
 
 enum LOG_LEVELS {
-    silly = 4,
-    debug = 3,
+    silly = 5,
+    debug = 4,
     log = 3,
     info = 2,
     warn = 1,
