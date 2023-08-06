@@ -11,6 +11,7 @@
 * Deprecate binary states, Adapters will change to use Files instead!
 
 **Features**
+* (foxriver76) added method `sendToUserInterfaceClient` to push messages to UI client
 * (foxriver76) Show npm error message on failing adapter installations and update also without debug parameter
 * (bluefox/Apollon77/foxriver76) Try to solve `ENOTEMPTY` errors automatically on adapter upgrades/installations
 * (foxriver76) Introduce iobroker setting (dnsResolution) to choose between verbatim and ipv4 first dns resolution order
