@@ -92,8 +92,14 @@ export class UserInterfaceMessagingController {
         if (!this.subscribeCallback) {
             return;
         }
+
         const handler = this.extractHandlerFromMessage(msg);
         const clientId = this.handlerToId(handler);
+
+        if (this.heartbeatTimers.has(clientId)) {
+            this.heartbeatTimers.get(clientId)!.timer.refresh();
+            return;
+        }
 
         const resOrAwaitable = this.subscribeCallback({ clientId, message: msg });
         let res: UserInterfaceClientSubscribeReturnType;
