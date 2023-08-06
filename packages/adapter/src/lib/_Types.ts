@@ -4,7 +4,7 @@ export interface AdapterOptions {
     logTransporter?: boolean;
     /** if true, the date format from system.config */
     useFormatDate?: boolean;
-    /** if it is possible for other instances to retrive states of this adapter automatically */
+    /** if it is possible for other instances to retrieve states of this adapter automatically */
     subscribable?: boolean;
     /** compact group instance if running in compact mode */
     compactInstance?: number;
@@ -32,6 +32,10 @@ export interface AdapterOptions {
     stateChange?: ioBroker.StateChangeHandler;
     /** callback function (id, file) that will be called if file changed */
     fileChange?: ioBroker.FileChangeHandler;
+    /** callback function that will be called when a new UI client subscribes */
+    clientSubscribe?: ClientSubscribeHandler;
+    /** callback function that will be called when a new UI client unsubscribes */
+    clientUnsubscribe?: ClientUnsubscribeHandler;
     /** callback to inform about new message the adapter */
     message?: ioBroker.MessageHandler;
     /** callback to stop the adapter */
@@ -45,6 +49,24 @@ export interface AdapterOptions {
     /** Handler to handle uncaught exceptions, return true if no further handling required */
     error?: ioBroker.ErrorHandler;
 }
+
+export interface ClientHandler {
+    /** The session id of the client connection */
+    sid: string;
+    /** Name of the subscriber */
+    from: string;
+    /** Individual type which can be specified by client */
+    type: string;
+}
+
+type ClientUnsubscribeReason = 'disconnect' | 'timeout' | 'client_unsubscribe';
+
+export type ClientSubscribeHandler = (handler: ClientHandler, message: ioBroker.Message) => void | Promise<void>;
+export type ClientUnsubscribeHandler = (
+    handler: ClientHandler,
+    message: ioBroker.Message,
+    reason: ClientUnsubscribeReason
+) => void | Promise<void>;
 
 export type Pattern = string | string[];
 

@@ -106,8 +106,10 @@ import type {
     MessageCallbackObject,
     SendToOptions,
     GetCertificatesPromiseReturnType,
-    InternalAdapterConfig
+    InternalAdapterConfig,
+    ClientHandler
 } from '../_Types';
+import { MessagingController } from './messagingController';
 
 tools.ensureDNSOrder();
 
@@ -701,6 +703,8 @@ export class AdapterClass extends EventEmitter {
 
     /** Features supported by the running instance */
     private readonly SUPPORTED_FEATURES = getSupportedFeatures();
+    /** Controller for messaging related functionality */
+    private messagingController = new MessagingController(this);
 
     constructor(options: AdapterOptions | string) {
         super();
@@ -7341,6 +7345,26 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
+    /**
+     * Send a message to an active UI Client
+     *
+     * @param handler handler of the UI client
+     * @param data data to send to the client
+     */
+    sendToClient(handler: unknown, data: unknown): Promise<void> {
+        if (!adapterStates) {
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        Validator.assertObject(handler, 'handler');
+
+        return this.messagingController.sendToClient({
+            handler: handler as ClientHandler,
+            data,
+            states: adapterStates
+        });
+    }
+
     registerNotification<Scope extends keyof ioBroker.NotificationScopes>(
         scope: Scope,
         category: ioBroker.NotificationScopes[Scope] | null,
@@ -10998,6 +11022,18 @@ export class AdapterClass extends EventEmitter {
                                 }
                             }
                         } else if (!this._stopInProgress) {
+                            if (obj.command === 'clientSubscribe') {
+                                return this.messagingController.registerClientSubscribeByMessage({
+                                    msg: obj,
+                                    callback: this._options.clientSubscribe
+                                });
+                            } else if (obj.command === 'clientUnsubscribe') {
+                                return this.messagingController.removeClientSubscribeByMessage({
+                                    msg: obj,
+                                    callback: this._options.clientUnsubscribe
+                                });
+                            }
+
                             if (this._options.message) {
                                 // Else inform about new message the adapter
                                 this._options.message(obj);
