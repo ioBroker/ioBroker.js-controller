@@ -53,8 +53,8 @@ export interface AdapterOptions {
 type UserInterfaceClientUnsubscribeReason = 'timeout' | 'client_unsubscribe';
 
 export interface UserInterfaceSubscribeInfo {
-    /** The handler id, which can be used to send information to clients */
-    handlerId: string;
+    /** The client id, which can be used to send information to clients */
+    clientId: string;
     /** The message used for subscription */
     message: ioBroker.Message;
 }
@@ -72,7 +72,7 @@ export interface UserInterfaceClientSubscribeReturnType {
 
 type UserInterfaceUnsubscribeInfoBaseObject = {
     /** The handler id, which can be used to send information to clients */
-    handlerId: string;
+    clientId: string;
 };
 
 export type UserInterfaceUnsubscribeInfo = UserInterfaceUnsubscribeInfoBaseObject &

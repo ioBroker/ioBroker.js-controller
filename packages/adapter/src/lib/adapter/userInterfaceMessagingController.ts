@@ -24,8 +24,8 @@ export interface MessagingControllerOptions {
 }
 
 export interface SendToClientOptions {
-    /** ID of the handler to send the message to */
-    handlerId: string;
+    /** ID of the client to send the message to */
+    clientId: string;
     /** Data to send to the client */
     data: unknown;
     /** The states db */
@@ -68,13 +68,13 @@ export class UserInterfaceMessagingController {
      * @param options Data and client information
      */
     sendToClient(options: SendToClientOptions): Promise<void> {
-        const { states, handlerId, data } = options;
+        const { states, clientId, data } = options;
 
-        if (!this.handlers.has(handlerId)) {
-            throw new Error(`Handler "${handlerId}" is not registered`);
+        if (!this.handlers.has(clientId)) {
+            throw new Error(`Client "${clientId}" is not registered`);
         }
 
-        const handler = this.handlers.get(handlerId)!;
+        const handler = this.handlers.get(clientId)!;
 
         return states.pushMessage(handler.from, {
             command: 'im',
@@ -93,9 +93,9 @@ export class UserInterfaceMessagingController {
             return;
         }
         const handler = this.extractHandlerFromMessage(msg);
-        const handlerId = this.handlerToId(handler);
+        const clientId = this.handlerToId(handler);
 
-        const resOrAwaitable = this.subscribeCallback({ handlerId, message: msg });
+        const resOrAwaitable = this.subscribeCallback({ clientId, message: msg });
         let res: UserInterfaceClientSubscribeReturnType;
 
         if (resOrAwaitable instanceof Promise) {
@@ -108,11 +108,11 @@ export class UserInterfaceMessagingController {
             return;
         }
 
-        this.handlers.set(handlerId, handler);
+        this.handlers.set(clientId, handler);
 
         if (res.heartbeat) {
-            const timer = setTimeout(() => this.heartbeatExpired(handlerId), res.heartbeat);
-            this.heartbeatTimers.set(handlerId, { heartbeat: res.heartbeat, timer });
+            const timer = setTimeout(() => this.heartbeatExpired(clientId), res.heartbeat);
+            this.heartbeatTimers.set(clientId, { heartbeat: res.heartbeat, timer });
         }
     }
 
@@ -123,22 +123,22 @@ export class UserInterfaceMessagingController {
      */
     removeClientSubscribeByMessage(msg: ioBroker.Message): void {
         const handler = this.extractHandlerFromMessage(msg);
-        const handlerId = this.handlerToId(handler);
+        const clientId = this.handlerToId(handler);
 
-        if (this.heartbeatTimers.has(handlerId)) {
-            const timer = this.heartbeatTimers.get(handlerId)!;
+        if (this.heartbeatTimers.has(clientId)) {
+            const timer = this.heartbeatTimers.get(clientId)!;
 
             clearTimeout(timer.timer);
-            this.heartbeatTimers.delete(handlerId);
+            this.heartbeatTimers.delete(clientId);
         }
 
-        if (!this.handlers.has(handlerId)) {
+        if (!this.handlers.has(clientId)) {
             return;
         }
 
-        this.handlers.delete(handlerId);
+        this.handlers.delete(clientId);
         if (this.unsubscribeCallback) {
-            this.unsubscribeCallback({ handlerId, message: msg, reason: 'client_unsubscribe' });
+            this.unsubscribeCallback({ clientId, message: msg, reason: 'client_unsubscribe' });
         }
     }
 
@@ -165,14 +165,14 @@ export class UserInterfaceMessagingController {
     /**
      * Handle expired heartbeat
      *
-     * @param handlerId the id of the expired handler
+     * @param clientId the id of the expired client
      */
-    private heartbeatExpired(handlerId: string): void {
-        this.handlers.delete(handlerId);
-        this.heartbeatTimers.delete(handlerId);
+    private heartbeatExpired(clientId: string): void {
+        this.handlers.delete(clientId);
+        this.heartbeatTimers.delete(clientId);
 
         if (this.unsubscribeCallback) {
-            this.unsubscribeCallback({ handlerId, reason: 'timeout' });
+            this.unsubscribeCallback({ clientId, reason: 'timeout' });
         }
     }
 }

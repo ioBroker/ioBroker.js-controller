@@ -7353,18 +7353,18 @@ export class AdapterClass extends EventEmitter {
     /**
      * Send a message to an active UI Client
      *
-     * @param handlerId handler of the UI client
+     * @param clientId id of the UI client
      * @param data data to send to the client
      */
-    sendToUiClient(handlerId: unknown, data: unknown): Promise<void> {
+    sendToUserInterfaceClient(clientId: unknown, data: unknown): Promise<void> {
         if (!adapterStates) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        Validator.assertString(handlerId, 'handlerId');
+        Validator.assertString(clientId, 'clientId');
 
         return this.uiMessagingController.sendToClient({
-            handlerId,
+            clientId,
             data,
             states: adapterStates
         });
