@@ -1,6 +1,10 @@
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { AdapterClass } from './adapter';
-import type { ClientSubscribeHandler, ClientSubscribeReturnType, ClientUnsubscribeHandler } from '../_Types';
+import type {
+    UserInterfaceClientSubscribeHandler,
+    UserInterfaceClientSubscribeReturnType,
+    UserInterfaceClientUnsubscribeHandler
+} from '../_Types';
 import { clearTimeout } from 'timers';
 
 export interface HeartbeatTimer {
@@ -14,9 +18,9 @@ export interface MessagingControllerOptions {
     /** The adapter using this messaging controller */
     adapter: AdapterClass;
     /** Callback to call if successfully subscribed */
-    subscribeCallback?: ClientSubscribeHandler;
+    subscribeCallback?: UserInterfaceClientSubscribeHandler;
     /** Callback to call if successfully unsubscribed */
-    unsubscribeCallback?: ClientUnsubscribeHandler;
+    unsubscribeCallback?: UserInterfaceClientUnsubscribeHandler;
 }
 
 export interface SendToClientOptions {
@@ -43,9 +47,9 @@ export class UserInterfaceMessagingController {
     /** The adapter using this messaging controller */
     private readonly adapter: AdapterClass;
     /** Callback to call if successfully subscribed */
-    private readonly unsubscribeCallback?: ClientUnsubscribeHandler;
+    private readonly unsubscribeCallback?: UserInterfaceClientUnsubscribeHandler;
     /** Callback to call if successfully unsubscribed */
-    private readonly subscribeCallback?: ClientSubscribeHandler;
+    private readonly subscribeCallback?: UserInterfaceClientSubscribeHandler;
     /** All currently registered client handlers */
     private readonly handlers = new Map<string, ClientHandler>();
     /** Collection of current heartbeat timers */
@@ -92,7 +96,7 @@ export class UserInterfaceMessagingController {
         const handlerId = this.handlerToId(handler);
 
         const resOrAwaitable = this.subscribeCallback({ handlerId, message: msg });
-        let res: ClientSubscribeReturnType;
+        let res: UserInterfaceClientSubscribeReturnType;
 
         if (resOrAwaitable instanceof Promise) {
             res = await resOrAwaitable;

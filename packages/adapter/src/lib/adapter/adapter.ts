@@ -837,8 +837,8 @@ export class AdapterClass extends EventEmitter {
 
         this.uiMessagingController = new UserInterfaceMessagingController({
             adapter: this,
-            subscribeCallback: this._options.clientSubscribe,
-            unsubscribeCallback: this._options.clientUnsubscribe
+            subscribeCallback: this._options.uiClientSubscribe,
+            unsubscribeCallback: this._options.uiClientUnsubscribe
         });
 
         // Create dynamic methods
@@ -7356,7 +7356,7 @@ export class AdapterClass extends EventEmitter {
      * @param handlerId handler of the UI client
      * @param data data to send to the client
      */
-    sendToClient(handlerId: unknown, data: unknown): Promise<void> {
+    sendToUiClient(handlerId: unknown, data: unknown): Promise<void> {
         if (!adapterStates) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }

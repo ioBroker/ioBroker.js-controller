@@ -33,9 +33,9 @@ export interface AdapterOptions {
     /** callback function (id, file) that will be called if file changed */
     fileChange?: ioBroker.FileChangeHandler;
     /** callback function that will be called when a new UI client subscribes */
-    clientSubscribe?: ClientSubscribeHandler;
+    uiClientSubscribe?: UserInterfaceClientSubscribeHandler;
     /** callback function that will be called when a new UI client unsubscribes */
-    clientUnsubscribe?: ClientUnsubscribeHandler;
+    uiClientUnsubscribe?: UserInterfaceClientUnsubscribeHandler;
     /** callback to inform about new message the adapter */
     message?: ioBroker.MessageHandler;
     /** callback to stop the adapter */
@@ -50,35 +50,36 @@ export interface AdapterOptions {
     error?: ioBroker.ErrorHandler;
 }
 
-type ClientUnsubscribeReason = 'timeout' | 'client_unsubscribe';
+type UserInterfaceClientUnsubscribeReason = 'timeout' | 'client_unsubscribe';
 
-interface SubscribeInfo {
+export interface UserInterfaceSubscribeInfo {
     /** The handler id, which can be used to send information to clients */
     handlerId: string;
     /** The message used for subscription */
     message: ioBroker.Message;
 }
 
-export type ClientSubscribeHandler = (
-    subscribeInfo: SubscribeInfo
-) => ClientSubscribeReturnType | Promise<ClientSubscribeReturnType>;
-export interface ClientSubscribeReturnType {
+export type UserInterfaceClientSubscribeHandler = (
+    subscribeInfo: UserInterfaceSubscribeInfo
+) => UserInterfaceClientSubscribeReturnType | Promise<UserInterfaceClientSubscribeReturnType>;
+
+export interface UserInterfaceClientSubscribeReturnType {
     /** If the adapter has accepted the client subscription */
     accepted: boolean;
     /** Optional heartbeat, if set, the client needs to re-subscribe every heartbeat interval */
     heartbeat?: number;
 }
 
-type UnsubscribeInfoBaseObject = {
+type UserInterfaceUnsubscribeInfoBaseObject = {
     /** The handler id, which can be used to send information to clients */
     handlerId: string;
 };
 
-type UnsubscribeInfo = UnsubscribeInfoBaseObject &
+export type UserInterfaceUnsubscribeInfo = UserInterfaceUnsubscribeInfoBaseObject &
     (
         | {
               /** Reason for unsubscribe */
-              reason: Exclude<ClientUnsubscribeReason, 'client_unsubscribe'>;
+              reason: Exclude<UserInterfaceClientUnsubscribeReason, 'client_unsubscribe'>;
           }
         | {
               /** Reason for unsubscribe */
@@ -88,7 +89,9 @@ type UnsubscribeInfo = UnsubscribeInfoBaseObject &
           }
     );
 
-export type ClientUnsubscribeHandler = (unsubscribeInfo: UnsubscribeInfo) => void | Promise<void>;
+export type UserInterfaceClientUnsubscribeHandler = (
+    unsubscribeInfo: UserInterfaceUnsubscribeInfo
+) => void | Promise<void>;
 
 export type Pattern = string | string[];
 
