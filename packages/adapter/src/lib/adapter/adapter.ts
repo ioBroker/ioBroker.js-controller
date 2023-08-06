@@ -122,6 +122,13 @@ let Objects: typeof ObjectsInRedisClient;
  * Here we define dynamically created methods
  */
 export interface AdapterClass {
+    on(event: 'stateChange', listener: ioBroker.StateChangeHandler): this;
+    on(event: 'objectChange', listener: ioBroker.ObjectChangeHandler): this;
+    on(event: 'fileChange', listener: ioBroker.FileChangeHandler): this;
+    on(event: 'ready', listener: ioBroker.ReadyHandler): this;
+    on(event: 'install', listener: ioBroker.ReadyHandler): this;
+    on(event: 'unload', listener: ioBroker.UnloadHandler): this;
+    on(event: 'message', listener: ioBroker.MessageHandler): this;
     /** Extend an object and create it if it might not exist */
     extendObjectAsync(
         id: string,
