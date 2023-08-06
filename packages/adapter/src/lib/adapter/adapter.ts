@@ -129,6 +129,9 @@ export interface AdapterClass {
     on(event: 'install', listener: ioBroker.ReadyHandler): this;
     on(event: 'unload', listener: ioBroker.UnloadHandler): this;
     on(event: 'message', listener: ioBroker.MessageHandler): this;
+    /** Only emitted for compact instances */
+    on(event: 'exit', listener: (exitCode: number, reason: string) => Promise<void> | void): this;
+    on(event: 'log', listener: (info: any) => Promise<void> | void): this;
     /** Extend an object and create it if it might not exist */
     extendObjectAsync(
         id: string,
