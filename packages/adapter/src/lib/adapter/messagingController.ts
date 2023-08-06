@@ -1,38 +1,61 @@
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { AdapterClass } from './adapter';
-import type { ClientHandler, ClientSubscribeHandler, ClientUnsubscribeHandler } from '../_Types';
+import type { ClientSubscribeHandler, ClientSubscribeReturnType, ClientUnsubscribeHandler } from '../_Types';
+import { clearTimeout } from 'timers';
+
+export interface HeartbeatTimer {
+    /** The actual timer */
+    timer: NodeJS.Timeout;
+    /** The heartbeat interval */
+    heartbeat: number;
+}
+
+export interface MessagingControllerOptions {
+    /** The adapter using this messaging controller */
+    adapter: AdapterClass;
+    /** Callback to call if successfully subscribed */
+    subscribeCallback?: ClientSubscribeHandler;
+    /** Callback to call if successfully unsubscribed */
+    unsubscribeCallback?: ClientUnsubscribeHandler;
+}
 
 export interface SendToClientOptions {
-    /** The client handler to send the message to */
-    handler: ClientHandler;
+    /** ID of the handler to send the message to */
+    handlerId: string;
     /** Data to send to the client */
     data: unknown;
     /** The states db */
     states: StatesInRedisClient;
 }
 
-export interface RegisterClientBaseOptions {
-    /** The message which contains the subscribe/unsubscribe command */
-    msg: ioBroker.Message;
-}
-
-export interface RegisterClientOptions extends RegisterClientBaseOptions {
-    /** Callback to call if successfully subscribed */
-    callback?: ClientSubscribeHandler;
-}
-
-export interface UnregisterClientOptions extends RegisterClientBaseOptions {
-    /** Callback to call if successfully unsubscribed */
-    callback?: ClientUnsubscribeHandler;
+export interface ClientHandler {
+    /** The session id of the client connection */
+    sid: string;
+    /** Name of the subscriber */
+    from: string;
+    /** Timestamp of subscription */
+    ts: number;
+    /** Individual type which can be specified */
+    type: string;
 }
 
 export class MessagingController {
     /** The adapter using this messaging controller */
     private readonly adapter: AdapterClass;
+    /** Callback to call if successfully subscribed */
+    private readonly unsubscribeCallback?: ClientUnsubscribeHandler;
+    /** Callback to call if successfully unsubscribed */
+    private readonly subscribeCallback?: ClientSubscribeHandler;
     /** All currently registered client handlers */
     private readonly handlers = new Map<string, ClientHandler>();
-    constructor(adapter: AdapterClass) {
+    /** Collection of current heartbeat timers */
+    private heartbeatTimers = new Map<string, HeartbeatTimer>();
+    constructor(options: MessagingControllerOptions) {
+        const { adapter, unsubscribeCallback, subscribeCallback } = options;
+
         this.adapter = adapter;
+        this.unsubscribeCallback = unsubscribeCallback;
+        this.subscribeCallback = subscribeCallback;
     }
 
     /**
@@ -41,7 +64,13 @@ export class MessagingController {
      * @param options Data and client information
      */
     sendToClient(options: SendToClientOptions): Promise<void> {
-        const { states, handler, data } = options;
+        const { states, handlerId, data } = options;
+
+        if (!this.handlers.has(handlerId)) {
+            throw new Error(`Handler "${handlerId}" is not registered`);
+        }
+
+        const handler = this.handlers.get(handlerId)!;
 
         return states.pushMessage(handler.from, {
             command: 'im',
@@ -53,35 +82,59 @@ export class MessagingController {
     /**
      * Register subscription from new client
      *
-     * @param options Message and handler information
+     * @param msg The subscribe message
      */
-    registerClientSubscribeByMessage(options: RegisterClientOptions): void {
-        const { msg, callback } = options;
+    async registerClientSubscribeByMessage(msg: ioBroker.Message): Promise<void> {
+        if (!this.subscribeCallback) {
+            return;
+        }
         const handler = this.extractHandlerFromMessage(msg);
+        const handlerId = this.handlerToId(handler);
 
-        this.handlers.set(this.handlerToId(handler), handler);
-        if (callback) {
-            callback(handler, msg);
+        const resOrAwaitable = this.subscribeCallback({ handlerId, message: msg });
+        let res: ClientSubscribeReturnType;
+
+        if (resOrAwaitable instanceof Promise) {
+            res = await resOrAwaitable;
+        } else {
+            res = resOrAwaitable;
+        }
+
+        if (!res.accepted) {
+            return;
+        }
+
+        this.handlers.set(handlerId, handler);
+
+        if (res.heartbeat) {
+            const timer = setTimeout(() => this.heartbeatExpired(handlerId), res.heartbeat);
+            this.heartbeatTimers.set(handlerId, { heartbeat: res.heartbeat, timer });
         }
     }
 
     /**
      * Remove a client subscription, issued by message
      *
-     * @param options Message and handler information
+     * @param msg The unsubscribe message
      */
-    removeClientSubscribeByMessage(options: UnregisterClientOptions): void {
-        const { msg, callback } = options;
+    removeClientSubscribeByMessage(msg: ioBroker.Message): void {
         const handler = this.extractHandlerFromMessage(msg);
         const handlerId = this.handlerToId(handler);
+
+        if (this.heartbeatTimers.has(handlerId)) {
+            const timer = this.heartbeatTimers.get(handlerId)!;
+
+            clearTimeout(timer.timer);
+            this.heartbeatTimers.delete(handlerId);
+        }
 
         if (!this.handlers.has(handlerId)) {
             return;
         }
 
         this.handlers.delete(handlerId);
-        if (callback) {
-            callback(handler, msg, 'client_unsubscribe');
+        if (this.unsubscribeCallback) {
+            this.unsubscribeCallback({ handlerId, message: msg, reason: 'client_unsubscribe' });
         }
     }
 
@@ -102,6 +155,20 @@ export class MessagingController {
      * @param msg the subscribe or unsubscribe message
      */
     private extractHandlerFromMessage(msg: ioBroker.Message): ClientHandler {
-        return { sid: msg.message.sid, from: msg.from, type: msg.message.type };
+        return { sid: msg.message.sid, from: msg.from, type: msg.message.type, ts: Date.now() };
+    }
+
+    /**
+     * Handle expired heartbeat
+     *
+     * @param handlerId the id of the expired handler
+     */
+    private heartbeatExpired(handlerId: string): void {
+        this.handlers.delete(handlerId);
+        this.heartbeatTimers.delete(handlerId);
+
+        if (this.unsubscribeCallback) {
+            this.unsubscribeCallback({ handlerId, reason: 'timeout' });
+        }
     }
 }

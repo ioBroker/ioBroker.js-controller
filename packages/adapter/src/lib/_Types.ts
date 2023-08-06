@@ -50,23 +50,45 @@ export interface AdapterOptions {
     error?: ioBroker.ErrorHandler;
 }
 
-export interface ClientHandler {
-    /** The session id of the client connection */
-    sid: string;
-    /** Name of the subscriber */
-    from: string;
-    /** Individual type which can be specified by client */
-    type: string;
+type ClientUnsubscribeReason = 'timeout' | 'client_unsubscribe';
+
+interface SubscribeInfo {
+    /** The handler id, which can be used to send information to clients */
+    handlerId: string;
+    /** The message used for subscription */
+    message: ioBroker.Message;
 }
 
-type ClientUnsubscribeReason = 'disconnect' | 'timeout' | 'client_unsubscribe';
+export type ClientSubscribeHandler = (
+    subscribeInfo: SubscribeInfo
+) => ClientSubscribeReturnType | Promise<ClientSubscribeReturnType>;
+export interface ClientSubscribeReturnType {
+    /** If the adapter has accepted the client subscription */
+    accepted: boolean;
+    /** Optional heartbeat, if set, the client needs to re-subscribe every heartbeat interval */
+    heartbeat?: number;
+}
 
-export type ClientSubscribeHandler = (handler: ClientHandler, message: ioBroker.Message) => void | Promise<void>;
-export type ClientUnsubscribeHandler = (
-    handler: ClientHandler,
-    message: ioBroker.Message,
-    reason: ClientUnsubscribeReason
-) => void | Promise<void>;
+type UnsubscribeInfoBaseObject = {
+    /** The handler id, which can be used to send information to clients */
+    handlerId: string;
+};
+
+type UnsubscribeInfo = UnsubscribeInfoBaseObject &
+    (
+        | {
+              /** Reason for unsubscribe */
+              reason: Exclude<ClientUnsubscribeReason, 'client_unsubscribe'>;
+          }
+        | {
+              /** Reason for unsubscribe */
+              reason: 'client_unsubscribe';
+              /** Message used for unsubscribe */
+              message: ioBroker.Message;
+          }
+    );
+
+export type ClientUnsubscribeHandler = (unsubscribeInfo: UnsubscribeInfo) => void | Promise<void>;
 
 export type Pattern = string | string[];
 

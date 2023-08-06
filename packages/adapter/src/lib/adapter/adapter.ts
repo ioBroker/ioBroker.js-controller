@@ -106,8 +106,7 @@ import type {
     MessageCallbackObject,
     SendToOptions,
     GetCertificatesPromiseReturnType,
-    InternalAdapterConfig,
-    ClientHandler
+    InternalAdapterConfig
 } from '../_Types';
 import { MessagingController } from './messagingController';
 
@@ -704,7 +703,7 @@ export class AdapterClass extends EventEmitter {
     /** Features supported by the running instance */
     private readonly SUPPORTED_FEATURES = getSupportedFeatures();
     /** Controller for messaging related functionality */
-    private messagingController = new MessagingController(this);
+    private readonly messagingController: MessagingController;
 
     constructor(options: AdapterOptions | string) {
         super();
@@ -835,6 +834,12 @@ export class AdapterClass extends EventEmitter {
             this._logger.error(`${this.namespaceLog} Cannot find: ${this.adapterDir}/io-package.json`);
             this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
         }
+
+        this.messagingController = new MessagingController({
+            adapter: this,
+            subscribeCallback: this._options.clientSubscribe,
+            unsubscribeCallback: this._options.clientUnsubscribe
+        });
 
         // Create dynamic methods
         /**
@@ -7348,18 +7353,18 @@ export class AdapterClass extends EventEmitter {
     /**
      * Send a message to an active UI Client
      *
-     * @param handler handler of the UI client
+     * @param handlerId handler of the UI client
      * @param data data to send to the client
      */
-    sendToClient(handler: unknown, data: unknown): Promise<void> {
+    sendToClient(handlerId: unknown, data: unknown): Promise<void> {
         if (!adapterStates) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        Validator.assertObject(handler, 'handler');
+        Validator.assertString(handlerId, 'handlerId');
 
         return this.messagingController.sendToClient({
-            handler: handler as ClientHandler,
+            handlerId,
             data,
             states: adapterStates
         });
@@ -11023,15 +11028,9 @@ export class AdapterClass extends EventEmitter {
                             }
                         } else if (!this._stopInProgress) {
                             if (obj.command === 'clientSubscribe') {
-                                return this.messagingController.registerClientSubscribeByMessage({
-                                    msg: obj,
-                                    callback: this._options.clientSubscribe
-                                });
+                                return this.messagingController.registerClientSubscribeByMessage(obj);
                             } else if (obj.command === 'clientUnsubscribe') {
-                                return this.messagingController.removeClientSubscribeByMessage({
-                                    msg: obj,
-                                    callback: this._options.clientUnsubscribe
-                                });
+                                return this.messagingController.removeClientSubscribeByMessage(obj);
                             }
 
                             if (this._options.message) {
