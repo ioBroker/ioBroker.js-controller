@@ -39,7 +39,7 @@ export interface ClientHandler {
     type: string;
 }
 
-export class MessagingController {
+export class UserInterfaceMessagingController {
     /** The adapter using this messaging controller */
     private readonly adapter: AdapterClass;
     /** Callback to call if successfully subscribed */

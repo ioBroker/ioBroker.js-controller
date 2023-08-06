@@ -108,7 +108,7 @@ import type {
     GetCertificatesPromiseReturnType,
     InternalAdapterConfig
 } from '../_Types';
-import { MessagingController } from './messagingController';
+import { UserInterfaceMessagingController } from './userInterfaceMessagingController';
 
 tools.ensureDNSOrder();
 
@@ -703,7 +703,7 @@ export class AdapterClass extends EventEmitter {
     /** Features supported by the running instance */
     private readonly SUPPORTED_FEATURES = getSupportedFeatures();
     /** Controller for messaging related functionality */
-    private readonly messagingController: MessagingController;
+    private readonly uiMessagingController: UserInterfaceMessagingController;
 
     constructor(options: AdapterOptions | string) {
         super();
@@ -835,7 +835,7 @@ export class AdapterClass extends EventEmitter {
             this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
         }
 
-        this.messagingController = new MessagingController({
+        this.uiMessagingController = new UserInterfaceMessagingController({
             adapter: this,
             subscribeCallback: this._options.clientSubscribe,
             unsubscribeCallback: this._options.clientUnsubscribe
@@ -7363,7 +7363,7 @@ export class AdapterClass extends EventEmitter {
 
         Validator.assertString(handlerId, 'handlerId');
 
-        return this.messagingController.sendToClient({
+        return this.uiMessagingController.sendToClient({
             handlerId,
             data,
             states: adapterStates
@@ -11028,9 +11028,9 @@ export class AdapterClass extends EventEmitter {
                             }
                         } else if (!this._stopInProgress) {
                             if (obj.command === 'clientSubscribe') {
-                                return this.messagingController.registerClientSubscribeByMessage(obj);
+                                return this.uiMessagingController.registerClientSubscribeByMessage(obj);
                             } else if (obj.command === 'clientUnsubscribe') {
-                                return this.messagingController.removeClientSubscribeByMessage(obj);
+                                return this.uiMessagingController.removeClientSubscribeByMessage(obj);
                             }
 
                             if (this._options.message) {
