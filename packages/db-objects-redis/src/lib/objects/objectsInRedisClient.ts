@@ -1043,20 +1043,18 @@ export class ObjectsInRedisClient {
         options: { virtualFile?: any; user?: any; group?: any; mode?: any; mimeType?: string },
         callback: ioBroker.ErrorCallback | undefined,
         meta: {
-            acl?: any;
-            stats?: any;
-            notExists?: any;
-            mimeType?: any;
-            binary?: any;
-            modifiedAt?: any;
+            acl?: Record<string, any>;
+            stats?: { size: number };
+            notExists?: boolean;
+            mimeType?: string;
+            binary?: boolean;
+            modifiedAt?: number;
             virtualFile?: boolean;
             createdAt?: number;
         }
     ): Promise<void> {
-        const ext = name.match(/\.[^.]+$/);
-        if (!ext) {
-            return tools.maybeCallbackWithError(callback, new Error(`Invalid name "${name}" on _writeFile`));
-        }
+        const matchedExtension = name.match(/\.[^.]+$/);
+        const ext = matchedExtension ? matchedExtension[0] : '';
 
         const isTextData = typeof data === 'string';
 

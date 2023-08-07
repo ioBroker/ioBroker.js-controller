@@ -194,6 +194,30 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(file).to.be.equal(dataText);
     });
 
+    it(testName + 'writeFile without extension should infer text from string content', async () => {
+        const objId = `vis.0`;
+        /** unknown extension but string content should lead to plain text */
+        const fileName = 'testFile';
+        const dataText = "Toto, I've a feeling we're not in Kansas anymore.";
+        // create an object of type file first
+        await context.adapter.setForeignObjectAsync(objId, {
+            type: 'meta',
+            common: {
+                name: 'Files and more',
+                type: 'meta.user'
+            },
+            native: {}
+        });
+
+        // now we write a file state
+        await context.adapter.writeFileAsync(objId, fileName, dataText);
+
+        const { file, mimeType } = await context.adapter.readFileAsync(objId, fileName);
+
+        expect(mimeType).to.be.equal('text/plain');
+        expect(file).to.be.equal(dataText);
+    });
+
     it(testName + 'deleteFile', async () => {
         const objId = `vis.0`;
         const fileName = 'testFile.bin';
