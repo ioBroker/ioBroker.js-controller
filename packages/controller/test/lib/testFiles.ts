@@ -196,7 +196,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
     it(testName + 'writeFile without extension should infer text from string content', async () => {
         const objId = `vis.0`;
-        /** unknown extension but string content should lead to plain text */
+        /** no extension but string content should lead to plain text */
         const fileName = 'testFile';
         const dataText = "Toto, I've a feeling we're not in Kansas anymore.";
         // create an object of type file first
