@@ -838,25 +838,17 @@ export class StateRedisClient {
     }
 
     // Used for restore function (do not call it)
-    async setRawState(
-        id: string,
-        state: ioBroker.SettableState,
-        callback: (err: Error | undefined | null, id?: string) => void
-    ): Promise<string | void> {
+    async setRawState(id: string, state: ioBroker.SettableState): Promise<string> {
         if (!id || typeof id !== 'string') {
-            return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
+            throw new Error(`invalid id ${JSON.stringify(id)}`);
         }
 
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        try {
-            await this.client.set(this.namespaceRedis + id, JSON.stringify(state));
-            return tools.maybeCallbackWithError(callback, null, id);
-        } catch (e) {
-            return tools.maybeCallbackWithRedisError(callback, e, id);
-        }
+        await this.client.set(this.namespaceRedis + id, JSON.stringify(state));
+        return id;
     }
 
     /**

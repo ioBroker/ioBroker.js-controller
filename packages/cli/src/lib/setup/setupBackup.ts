@@ -1,12 +1,3 @@
-/**
- *      Backup
- *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
- *
- *      MIT License
- *
- */
-
 import fs from 'fs-extra';
 import { tools } from '@iobroker/js-controller-common';
 import path from 'path';
@@ -457,7 +448,6 @@ export class BackupRestore {
     private async _setStateHelper(statesList: string[], stateObjects: Record<string, ioBroker.State>): Promise<void> {
         for (let i = 0; i < statesList.length; i++) {
             try {
-                // @ts-expect-error #1917 TODO revisit after merge
                 await this.states.setRawState(statesList[i], stateObjects[statesList[i]]);
             } catch (err) {
                 console.log(`host.${hostname} Could not set value for state ${statesList[i]}: ${err.message}`);
@@ -587,7 +577,7 @@ export class BackupRestore {
                 pkg = fs.readJSONSync(`${adapterDir}/io-package.json`);
             }
 
-            if (pkg && pkg.objects && pkg.objects.length) {
+            if (pkg?.objects?.length) {
                 console.log(`host.${hostname} Setup "${dir}" adapter`);
                 await this._reloadAdapterObject(pkg.objects);
             }
@@ -706,6 +696,8 @@ export class BackupRestore {
             // prevent having wrong versions of adapters
             await this._removeAllAdapters();
         }
+
+        // TODO: connect to new db
 
         // stop all adapters
         console.log(`host.${hostname} Clear all objects and states...`);
