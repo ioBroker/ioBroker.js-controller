@@ -7,14 +7,7 @@
  *
  */
 
-import type {
-    CleanDatabaseHandler,
-    DbConnectAsync,
-    IoPackage,
-    ProcessExitCallback,
-    ResetDbConnect,
-    RestartController
-} from '../_Types';
+import type { CleanDatabaseHandler, IoPackage, ProcessExitCallback, RestartController } from '../_Types';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
@@ -22,6 +15,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
 import { tools as dbTools } from '@iobroker/js-controller-common-db';
+import { resetDbConnect, dbConnectAsync } from './dbConnection';
 import { BackupRestore } from './setupBackup';
 import crypto from 'crypto';
 import deepClone from 'deep-clone';
@@ -36,12 +30,10 @@ const COLOR_GREEN = '\x1b[32m';
 const CONTROLLER_DIR = tools.getControllerDir();
 
 export interface CLISetupOptions {
-    dbConnectAsync: DbConnectAsync;
     cleanDatabase: CleanDatabaseHandler;
     processExit: ProcessExitCallback;
     params: Record<string, any>;
     restartController: RestartController;
-    resetDbConnect: ResetDbConnect;
 }
 
 type ConfigObject = ioBroker.OtherObject & { type: 'config' };
@@ -51,19 +43,15 @@ export class Setup {
     private readonly processExit: ProcessExitCallback;
     private states: StatesRedisClient | undefined;
     private objects: ObjectsRedisClient | undefined;
-    private readonly dbConnectAsync: DbConnectAsync;
     private readonly params: Record<string, any>;
     private readonly cleanDatabase: CleanDatabaseHandler;
     private readonly restartController: RestartController;
-    private readonly resetDbConnect: ResetDbConnect;
 
     constructor(options: CLISetupOptions) {
         this.options = options;
         this.processExit = options.processExit;
-        this.dbConnectAsync = options.dbConnectAsync;
         this.params = options.params;
         this.cleanDatabase = options.cleanDatabase;
-        this.resetDbConnect = options.resetDbConnect;
         this.restartController = options.restartController;
 
         this.dbSetup = this.dbSetup.bind(this);
@@ -288,7 +276,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
      * @param checkCertificateOnly
      */
     async setupObjects(callback: () => void, checkCertificateOnly?: boolean): Promise<void> {
-        const { states: _states, objects: _objects } = await this.dbConnectAsync(false, this.params);
+        const { states: _states, objects: _objects } = await dbConnectAsync(false, this.params);
         this.objects = _objects;
         this.states = _states;
         const iopkg = fs.readJsonSync(path.join(CONTROLLER_DIR, 'io-package.json'));
@@ -506,11 +494,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             if (answer === 'Y' || answer === 'y' || answer === 'J' || answer === 'j') {
                 console.log(`Connecting to previous DB "${oldConfig.objects.type}"...`);
 
-                const {
-                    objects: objectsOld,
-                    states: statesOld,
-                    isOffline
-                } = await this.dbConnectAsync(false, this.params);
+                const { objects: objectsOld, states: statesOld, isOffline } = await dbConnectAsync(false, this.params);
 
                 if (!isOffline) {
                     console.error(COLOR_RED);
@@ -545,7 +529,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                     }
 
                     console.log(`Backup created: ${filePath}`);
-                    await this.resetDbConnect();
+                    await resetDbConnect();
 
                     console.log(`updating conf/${tools.appName.toLowerCase()}.json`);
                     fs.writeFileSync(`${tools.getConfigFileName()}.bak`, JSON.stringify(oldConfig, null, 2));
@@ -554,7 +538,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                     console.log('');
                     console.log(`Connecting to new DB "${newConfig.objects.type}" (can take up to 20s) ...`);
 
-                    const { objects: objectsNew, states: statesNew } = await this.dbConnectAsync(true, {
+                    const { objects: objectsNew, states: statesNew } = await dbConnectAsync(true, {
                         ...this.params,
                         timeout: 20_000
                     });

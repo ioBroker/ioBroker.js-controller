@@ -18,7 +18,7 @@ import { CLILogs } from './cli/cliLogs';
 import { error as CLIError } from './cli/messages';
 import type { CLICommandContext, CLICommandOptions } from './cli/cliCommand';
 import { getRepository } from './setup/utils';
-import { dbConnect, dbConnectAsync, exitApplicationSave, resetDbConnect } from './setup/dbConnection';
+import { dbConnect, dbConnectAsync, exitApplicationSave } from './setup/dbConnection';
 
 tools.ensureDNSOrder();
 
@@ -572,11 +572,9 @@ async function processCommand(
         case 'setup': {
             const { Setup } = await import('./setup/setupSetup');
             const setup = new Setup({
-                dbConnectAsync,
                 processExit: callback,
                 cleanDatabase,
                 restartController,
-                resetDbConnect,
                 params
             });
             if (args[0] === 'custom' || params.custom) {
