@@ -709,6 +709,8 @@ adapter.clearInterval(adapter.setTimeout(() => {}, 10));
 adapter.clearTimeout(adapter.setInterval(() => {}, 10));
 
 adapter.sendToUserInterfaceClient({ data: 'blabla', clientId: '123-456-789' });
+// @ts-expect-error clientId has to be string
+adapter.sendToUserInterfaceClient({ data: 'blabla', clientId: 12 });
 // send to all clients
 adapter.sendToUserInterfaceClient({ data: [1, 2, 3] });
 
