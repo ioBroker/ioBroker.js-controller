@@ -913,11 +913,8 @@ export class Install {
         }
 
         if (defaultLogLevel) {
-            // @ts-expect-error TODO should it be loglevel or logLevel
             instanceObj.common.loglevel = defaultLogLevel;
-            // @ts-expect-error TODO should it be loglevel or logLevel
         } else if (!instanceObj.common.loglevel) {
-            // @ts-expect-error TODO should it be loglevel or logLevel looked into my objects -> loglevel
             instanceObj.common.loglevel = 'info';
         }
 
