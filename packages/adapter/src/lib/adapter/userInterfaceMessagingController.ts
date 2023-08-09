@@ -43,7 +43,7 @@ export interface ClientHandler {
 }
 
 /**
- * The message has sort keys, to save bytes for high-throughput messaging
+ * The message has short keys, to save bytes for high-throughput messaging
  */
 interface UserInterfaceMessage {
     /** The individual type of the client handler */
