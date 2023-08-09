@@ -501,7 +501,7 @@ declare global {
             localLinks?: Record<string, string>;
             /** @deprecated Use @see localLinks */
             localLink?: string;
-            logLevel?: LogLevel;
+            loglevel?: LogLevel;
             /** Whether this adapter receives logs from other hosts and adapters (e.g. to strore them somewhere) */
             logTransporter?: boolean;
             /** Path to the start file of the adapter. Should be the same as in `package.json` */
