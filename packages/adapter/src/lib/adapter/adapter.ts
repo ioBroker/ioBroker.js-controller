@@ -107,7 +107,9 @@ import type {
     SendToOptions,
     GetCertificatesPromiseReturnType,
     InternalAdapterConfig,
-    UserInterfaceClientRemoveMessage
+    UserInterfaceClientRemoveMessage,
+    SendToUserInterfaceClientOptions,
+    AllPropsUnknown
 } from '../_Types';
 import { UserInterfaceMessagingController } from './userInterfaceMessagingController';
 
@@ -7361,15 +7363,25 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
+    sendToUserInterfaceClient(options: SendToUserInterfaceClientOptions): Promise<void>;
+
     /**
      * Send a message to an active UI Client
      *
-     * @param clientId id of the UI client
-     * @param data data to send to the client
+     * @param options clientId and data options
      */
-    sendToUserInterfaceClient(clientId: unknown, data: unknown): Promise<void> {
+    sendToUserInterfaceClient(options: AllPropsUnknown<SendToUserInterfaceClientOptions>): Promise<void> {
         if (!adapterStates) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        const { clientId, data } = options;
+
+        if (clientId === undefined) {
+            return this.uiMessagingController.sendToAllClients({
+                data,
+                states: adapterStates
+            });
         }
 
         Validator.assertString(clientId, 'clientId');

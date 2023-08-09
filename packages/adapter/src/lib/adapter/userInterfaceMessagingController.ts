@@ -25,13 +25,15 @@ export interface MessagingControllerOptions {
 }
 
 export interface SendToClientOptions {
-    /** ID of the client to send the message to */
+    /** ID of the client to send the message to, will send to all if omitted */
     clientId: string;
     /** Data to send to the client */
     data: unknown;
     /** The states db */
     states: StatesInRedisClient;
 }
+
+export type SendToAllClientOptions = Omit<SendToClientOptions, 'clientId'>;
 
 export interface ClientHandler {
     /** The session id of the client connection */
@@ -74,9 +76,9 @@ export class UserInterfaceMessagingController {
     }
 
     /**
-     * Send a message to the client configured by the handler
+     * Send a message to the given clientId
      *
-     * @param options Data and client information
+     * @param options Data, states and client information
      */
     sendToClient(options: SendToClientOptions): Promise<void> {
         const { states, clientId, data } = options;
@@ -92,6 +94,19 @@ export class UserInterfaceMessagingController {
             message: { m: handler.type, s: handler.sid, d: data } satisfies UserInterfaceMessage,
             from: `system.adapter.${this.adapter.namespace}`
         });
+    }
+
+    /**
+     * Send a message to all active clients
+     *
+     * @param options Data and states options
+     */
+    async sendToAllClients(options: SendToAllClientOptions): Promise<void> {
+        const { states, data } = options;
+
+        for (const clientId of Object.keys(this.handlers)) {
+            await this.sendToClient({ clientId, data, states });
+        }
     }
 
     /**

@@ -1,3 +1,5 @@
+import type { Optional } from 'typedoc/dist/lib/utils/validation';
+
 export interface AdapterOptions {
     subscribesChange?: (subs: Record<string, { regex: RegExp }>) => void;
     /** If the adapter collects logs from all adapters (experts only). Default: false */
@@ -224,6 +226,15 @@ export type CommandsPermissionsObject = {
 export type CommandsPermissions = CommandsPermissionsObject | CommandsPermissionsEntry[];
 
 export type CalculatePermissionsCallback = (result: ioBroker.PermissionSet) => void;
+
+export interface SendToUserInterfaceClientOptions {
+    /** id of the UI client, if not given send to all active clients */
+    clientId?: string;
+    /** data to send to the client */
+    data: unknown;
+}
+
+export type AllPropsUnknown<T> = { [K in keyof T]: unknown };
 
 export interface InternalCalculatePermissionsOptions {
     user: string;
