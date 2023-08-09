@@ -1,5 +1,3 @@
-import type { Optional } from 'typedoc/dist/lib/utils/validation';
-
 export interface AdapterOptions {
     subscribesChange?: (subs: Record<string, { regex: RegExp }>) => void;
     /** If the adapter collects logs from all adapters (experts only). Default: false */
