@@ -2650,7 +2650,8 @@ export class AdapterClass extends EventEmitter {
      * Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
      * <b>common</b>, <b>native</b> and <b>type</b> attributes are mandatory, and it will be checked.
      * Additionally, type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.g.:
-     * ```js{
+     * ```js
+     * {
      *     common: {
      *          name: 'object name',
      *          type: 'number', // string, boolean, object, mixed, array
@@ -2658,7 +2659,8 @@ export class AdapterClass extends EventEmitter {
      *     },
      *     native: {},
      *     type: 'state' // channel, device
-     * }```
+     * }
+     * ```
      *
      * @param id object ID, that must be overwritten or created.
      * @param obj new object
