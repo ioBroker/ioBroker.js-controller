@@ -1,11 +1,12 @@
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { AdapterClass } from './adapter';
 import type {
+    ClientUnsubscribeReason,
+    UserInterfaceClientRemoveMessage,
     UserInterfaceClientSubscribeHandler,
     UserInterfaceClientSubscribeReturnType,
     UserInterfaceClientUnsubscribeHandler
 } from '../_Types';
-import { clearTimeout } from 'timers';
 
 export interface HeartbeatTimer {
     /** The actual timer */
@@ -37,10 +38,20 @@ export interface ClientHandler {
     sid: string;
     /** Name of the subscriber */
     from: string;
-    /** Timestamp of subscription */
-    ts: number;
     /** Individual type which can be specified */
     type: string;
+}
+
+/**
+ * The message has sort keys, to save bytes for high-throughput messaging
+ */
+interface UserInterfaceMessage {
+    /** The individual type of the client handler */
+    m: string;
+    /** The session id of the client connection */
+    s: string;
+    /** The actual data */
+    d: unknown;
 }
 
 export class UserInterfaceMessagingController {
@@ -78,7 +89,7 @@ export class UserInterfaceMessagingController {
 
         return states.pushMessage(handler.from, {
             command: 'im',
-            message: { m: handler.type, s: handler.sid, d: data },
+            message: { m: handler.type, s: handler.sid, d: data } satisfies UserInterfaceMessage,
             from: `system.adapter.${this.adapter.namespace}`
         });
     }
@@ -127,9 +138,12 @@ export class UserInterfaceMessagingController {
      *
      * @param msg The unsubscribe message
      */
-    removeClientSubscribeByMessage(msg: ioBroker.Message): void {
+    removeClientSubscribeByMessage(msg: UserInterfaceClientRemoveMessage): void {
         const handler = this.extractHandlerFromMessage(msg);
         const clientId = this.handlerToId(handler);
+
+        const reason: ClientUnsubscribeReason =
+            msg.command === 'clientSubscribeError' ? msg.command : msg.message.reason;
 
         if (this.heartbeatTimers.has(clientId)) {
             const timer = this.heartbeatTimers.get(clientId)!;
@@ -144,7 +158,7 @@ export class UserInterfaceMessagingController {
 
         this.handlers.delete(clientId);
         if (this.unsubscribeCallback) {
-            this.unsubscribeCallback({ clientId, message: msg, reason: 'client_unsubscribe' });
+            this.unsubscribeCallback({ clientId, message: msg, reason });
         }
     }
 
@@ -165,7 +179,7 @@ export class UserInterfaceMessagingController {
      * @param msg the subscribe or unsubscribe message
      */
     private extractHandlerFromMessage(msg: ioBroker.Message): ClientHandler {
-        return { sid: msg.message.sid, from: msg.from, type: msg.message.type, ts: Date.now() };
+        return { sid: msg.message.sid, from: msg.from, type: msg.message.type };
     }
 
     /**

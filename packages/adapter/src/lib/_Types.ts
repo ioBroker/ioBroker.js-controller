@@ -50,7 +50,9 @@ export interface AdapterOptions {
     error?: ioBroker.ErrorHandler;
 }
 
-type UserInterfaceClientUnsubscribeReason = 'timeout' | 'client_unsubscribe';
+type MessageUnsubscribeReason = 'client' | 'disconnect';
+export type ClientUnsubscribeReason = MessageUnsubscribeReason | 'clientSubscribeError';
+type UserInterfaceClientUnsubscribeReason = ClientUnsubscribeReason | 'timeout';
 
 export interface UserInterfaceSubscribeInfo {
     /** The client id, which can be used to send information to clients */
@@ -79,11 +81,11 @@ export type UserInterfaceUnsubscribeInfo = UserInterfaceUnsubscribeInfoBaseObjec
     (
         | {
               /** Reason for unsubscribe */
-              reason: Exclude<UserInterfaceClientUnsubscribeReason, 'client_unsubscribe'>;
+              reason: Exclude<UserInterfaceClientUnsubscribeReason, ClientUnsubscribeReason>;
           }
         | {
               /** Reason for unsubscribe */
-              reason: 'client_unsubscribe';
+              reason: ClientUnsubscribeReason;
               /** Message used for unsubscribe */
               message: ioBroker.Message;
           }
@@ -92,6 +94,20 @@ export type UserInterfaceUnsubscribeInfo = UserInterfaceUnsubscribeInfoBaseObjec
 export type UserInterfaceClientUnsubscribeHandler = (
     unsubscribeInfo: UserInterfaceUnsubscribeInfo
 ) => void | Promise<void>;
+
+export type UserInterfaceClientRemoveMessage =
+    | (ioBroker.Message & {
+          command: 'clientUnsubscribe';
+          message: {
+              reason: MessageUnsubscribeReason;
+          };
+      })
+    | (ioBroker.Message & {
+          command: 'clientSubscribeError';
+          message: {
+              reason: undefined;
+          };
+      });
 
 export type Pattern = string | string[];
 

@@ -106,7 +106,8 @@ import type {
     MessageCallbackObject,
     SendToOptions,
     GetCertificatesPromiseReturnType,
-    InternalAdapterConfig
+    InternalAdapterConfig,
+    UserInterfaceClientRemoveMessage
 } from '../_Types';
 import { UserInterfaceMessagingController } from './userInterfaceMessagingController';
 
@@ -11039,8 +11040,12 @@ export class AdapterClass extends EventEmitter {
                         } else if (!this._stopInProgress) {
                             if (obj.command === 'clientSubscribe') {
                                 return this.uiMessagingController.registerClientSubscribeByMessage(obj);
-                            } else if (obj.command === 'clientUnsubscribe') {
-                                return this.uiMessagingController.removeClientSubscribeByMessage(obj);
+                            }
+
+                            if (obj.command === 'clientUnsubscribe' || obj.command === 'clientSubscribeError') {
+                                return this.uiMessagingController.removeClientSubscribeByMessage(
+                                    obj as UserInterfaceClientRemoveMessage
+                                );
                             }
 
                             if (this._options.message) {
