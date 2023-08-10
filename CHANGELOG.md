@@ -46,6 +46,7 @@
 * (Apollon77/foxriver76) Make sure that all relevant files are removed when eraseOnUpload is used
 * (foxriver76) fix wrong hostname after backup restore
 * (bluefox) allow CLI vendor update without explicitly specifying vendor file (default file is used)
+* (foxriver76) fix backup restore restoring to old database and using new one afterwards
 * (Apollon77, foxriver76, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 
 **Developer relevant DEPRECATIONS/WARNINGS**
