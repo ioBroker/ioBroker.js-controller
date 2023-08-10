@@ -23,6 +23,7 @@ import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis'
 import type { Client as StateRedisClient } from '@iobroker/db-states-redis';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import { getRepository } from './setup/utils';
+import { IoBrokerError } from './setup/customError';
 
 tools.ensureDNSOrder();
 
@@ -1331,9 +1332,9 @@ async function processCommand(
                     console.log(`Backup created: ${filePath!}`);
                     console.log('This backup can only be restored with js-controller version up from 4.1');
                     return void callback(EXIT_CODES.NO_ERROR);
-                } catch (err) {
-                    console.log(`Cannot create backup: ${err}`);
-                    return void callback(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
+                } catch (e) {
+                    console.log(`Cannot create backup: ${e.message}`);
+                    return void callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
                 }
             });
             break;
