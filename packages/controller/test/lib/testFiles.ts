@@ -218,7 +218,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(file).to.be.equal(dataText);
     });
 
-    it(testName + 'writeFile with known extension should be infered', async () => {
+    it(testName + 'writeFile with known extension should be inferred', async () => {
         const objId = `vis.0`;
         /** no extension but string content should lead to plain text */
         const fileName = 'testFile.json';
@@ -239,7 +239,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         const { file, mimeType } = await context.adapter.readFileAsync(objId, fileName);
 
-        expect(mimeType).to.be.equal('text/json');
+        expect(mimeType).to.be.equal('application/json');
         expect(file).to.be.equal(content);
     });
 
