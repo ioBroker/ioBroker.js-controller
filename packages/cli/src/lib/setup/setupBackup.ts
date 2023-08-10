@@ -8,15 +8,15 @@
  */
 
 import fs from 'fs-extra';
-import { tools } from '@iobroker/js-controller-common';
+import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
 import path from 'path';
 import { Upload } from './setupUpload';
-import { EXIT_CODES } from '@iobroker/js-controller-common';
 import { exec as execAsync } from 'promisify-child-process';
 import tar from 'tar';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { CleanDatabaseHandler, ProcessExitCallback, RestartController } from '../_Types';
+import { IoBrokerError } from './error';
 
 const hostname = tools.getHostName();
 
@@ -201,7 +201,7 @@ export class BackupRestore {
      *
      * @param name - backup name
      */
-    private _packBackup(name: string): Promise<string> | void {
+    private _packBackup(name: string): Promise<string> {
         // 2021_10_25 BF (TODO): store letsencrypt files too
         const letsEncrypt = `${this.configDir}/letsencrypt`;
         if (fs.existsSync(letsEncrypt)) {
@@ -210,27 +210,27 @@ export class BackupRestore {
             } catch (e) {
                 console.error(`host.${hostname} Could not backup "${letsEncrypt}" directory: ${e.message}`);
                 this.removeTempBackupDir();
-                return void this.processExit(EXIT_CODES.CANNOT_COPY_DIR);
+                throw new IoBrokerError({ message: e.message, code: EXIT_CODES.CANNOT_COPY_DIR });
             }
         }
 
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             const f = fs.createWriteStream(name);
             f.on('finish', () => {
                 this.removeTempBackupDir();
                 resolve(path.normalize(name));
             });
 
-            f.on('error', err => {
-                console.error(`host.${hostname} Cannot pack directory ${tmpDir}/backup: ${err.message}`);
-                this.processExit(EXIT_CODES.CANNOT_GZIP_DIRECTORY);
+            f.on('error', e => {
+                console.error(`host.${hostname} Cannot pack directory ${tmpDir}/backup: ${e.message}`);
+                reject(new IoBrokerError({ message: e.message, code: EXIT_CODES.CANNOT_GZIP_DIRECTORY }));
             });
 
             try {
                 tar.create({ gzip: true, cwd: `${tmpDir}/` }, ['backup']).pipe(f);
-            } catch (err) {
-                console.error(`host.${hostname} Cannot pack directory ${tmpDir}/backup: ${err.message}`);
-                return void this.processExit(EXIT_CODES.CANNOT_GZIP_DIRECTORY);
+            } catch (e) {
+                console.error(`host.${hostname} Cannot pack directory ${tmpDir}/backup: ${e.message}`);
+                reject(new IoBrokerError({ message: e.message, code: EXIT_CODES.CANNOT_GZIP_DIRECTORY }));
             }
         });
     }
@@ -241,7 +241,7 @@ export class BackupRestore {
      * @param name - name of the backup
      * @param noConfig - do not store configs
      */
-    async createBackup(name: string, noConfig?: boolean): Promise<string | void> {
+    async createBackup(name: string, noConfig?: boolean): Promise<string> {
         if (!name) {
             const d = new Date();
             name =
@@ -379,7 +379,7 @@ export class BackupRestore {
                         if (object.value) {
                             object.value.common.name = object.value._id;
                             object.value.common.hostname = this.HOSTNAME_PLACEHOLDER;
-                            if (object.value.native && object.value.native.os) {
+                            if (object.value.native?.os) {
                                 object.value.native.os.hostname = this.HOSTNAME_PLACEHOLDER;
                             }
                         }
@@ -387,7 +387,7 @@ export class BackupRestore {
                 }
 
                 // Read all files
-                if (object.value.type === 'meta' && object.value.common && object.value.common.type === 'meta.user') {
+                if (object.value.type === 'meta' && object.value.common?.type === 'meta.user') {
                     // do not process "xxx.0. " and "xxx.0."
                     if (object.id.trim() === object.id && object.id[object.id.length - 1] !== '.') {
                         await this.copyDir(object.id, '', `${tmpDir}/backup/files/${object.id}`);
@@ -395,7 +395,7 @@ export class BackupRestore {
                 }
 
                 // Read all files
-                if (object.value.type === 'instance' && object.value.common && object.value.common.dataFolder) {
+                if (object.value.type === 'instance' && object.value.common?.dataFolder) {
                     let dataFolderPath = object.value.common.dataFolder;
 
                     if (dataFolderPath[0] !== '/' && !dataFolderPath.match(/^\w:/)) {
@@ -410,7 +410,7 @@ export class BackupRestore {
                                 `host.${hostname} Could not backup "${dataFolderPath}" directory: ${e.message}`
                             );
                             this.removeTempBackupDir();
-                            return void this.processExit(EXIT_CODES.CANNOT_COPY_DIR);
+                            throw new IoBrokerError({ message: e.message, code: EXIT_CODES.CANNOT_COPY_DIR });
                         }
                     }
                 }
@@ -439,11 +439,15 @@ export class BackupRestore {
 
             this._validateBackupAfterCreation();
             return await this._packBackup(name);
-        } catch (err) {
-            console.error(`host.${hostname} Backup not created: ${err.message}`);
+        } catch (e) {
+            console.error(`host.${hostname} Backup not created: ${e.message}`);
             this.removeTempBackupDir();
 
-            return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
+            if (e instanceof IoBrokerError) {
+                throw e;
+            }
+
+            throw new IoBrokerError({ message: e.message, code: EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP });
         }
     }
 
