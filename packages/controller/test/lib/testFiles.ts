@@ -218,6 +218,31 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(file).to.be.equal(dataText);
     });
 
+    it(testName + 'writeFile with known extension should be infered', async () => {
+        const objId = `vis.0`;
+        /** no extension but string content should lead to plain text */
+        const fileName = 'testFile.json';
+        const dataJson = { quote: "Toto, I've a feeling we're not in Kansas anymore." };
+        const content = JSON.stringify(dataJson);
+        // create an object of type file first
+        await context.adapter.setForeignObjectAsync(objId, {
+            type: 'meta',
+            common: {
+                name: 'Files and more',
+                type: 'meta.user'
+            },
+            native: {}
+        });
+
+        // now we write a file state
+        await context.adapter.writeFileAsync(objId, fileName, content);
+
+        const { file, mimeType } = await context.adapter.readFileAsync(objId, fileName);
+
+        expect(mimeType).to.be.equal('text/json');
+        expect(file).to.be.equal(content);
+    });
+
     it(testName + 'deleteFile', async () => {
         const objId = `vis.0`;
         const fileName = 'testFile.bin';
