@@ -414,6 +414,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(exists).to.be.true;
     });
 
+    // TODO: here are also a few file tests, move them to testFiles.ts instead
     it(testName + 'should create and read file', done => {
         const objects = context.objects;
         objects.setObject(testId, { type: 'meta', native: {} } as ioBroker.SettableMetaObject, err => {
