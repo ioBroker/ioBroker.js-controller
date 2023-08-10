@@ -434,7 +434,7 @@ export class BackupRestore {
         console.log(`host.${hostname} ${result.objects?.length || 'no'} objects saved`);
 
         try {
-            fs.writeFileSync(`${tmpDir}/backup/backup.json`, JSON.stringify(result, null, 2));
+            await fs.writeJSON(`${tmpDir}/backup/backup.json`, result, { spaces: 2 });
             result = null; // ... to allow GC to clean it up because no longer needed
 
             this._validateBackupAfterCreation();
