@@ -23,7 +23,7 @@ import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis'
 import type { Client as StateRedisClient } from '@iobroker/db-states-redis';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import { getRepository } from './setup/utils';
-import { IoBrokerError } from './setup/error';
+import { IoBrokerError } from './setup/customError';
 
 tools.ensureDNSOrder();
 

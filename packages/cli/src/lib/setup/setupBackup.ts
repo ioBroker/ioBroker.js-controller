@@ -16,7 +16,7 @@ import tar from 'tar';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { CleanDatabaseHandler, ProcessExitCallback, RestartController } from '../_Types';
-import { IoBrokerError } from './error';
+import { IoBrokerError } from './customError';
 
 const hostname = tools.getHostName();
 
