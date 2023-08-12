@@ -3185,7 +3185,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
         }
 
         case 'upgradeAdapterWithWebserver': {
-            const { version, adapterName, useHttps, port } = msg.message;
+            const { version, adapterName, useHttps, port, certPrivateName, certPublicName } = msg.message;
 
             const upgradeManager = new AdapterUpgradeManager({
                 logger,
@@ -3195,8 +3195,8 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 objects: objects!,
                 states: states!,
                 port,
-                certPrivateName: msg.message.certPrivateName,
-                certPublicName: msg.message.certPublicName
+                certPrivateName,
+                certPublicName
             });
 
             await upgradeManager.stopAdapter();

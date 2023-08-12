@@ -4,10 +4,9 @@ import { EXIT_CODES } from '@iobroker/js-controller-common';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual } from 'util';
 import Debug from 'debug';
-import { tools as dbTools, getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
+import { tools as dbTools } from '@iobroker/js-controller-common-db';
 import path from 'path';
 import yargs from 'yargs';
-import { PluginHandler } from '@iobroker/plugin-base';
 import * as CLITools from './cli/cliTools';
 import { CLIHost } from './cli/cliHost';
 import { CLIStates } from './cli/cliStates';
@@ -18,11 +17,9 @@ import { CLICompact } from './cli/cliCompact';
 import { CLILogs } from './cli/cliLogs';
 import { error as CLIError } from './cli/messages';
 import type { CLICommandContext, CLICommandOptions } from './cli/cliCommand';
-import type { DbConnectCallback, DbConnectAsyncReturn } from './_Types';
-import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
-import type { Client as StateRedisClient } from '@iobroker/db-states-redis';
-import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import { getRepository } from './setup/utils';
+import { dbConnect, dbConnectAsync, exitApplicationSave } from './setup/dbConnection';
+import { IoBrokerError } from './setup/customError';
 
 tools.ensureDNSOrder();
 
@@ -39,8 +36,6 @@ const cli = {
 
 const debug = Debug('iobroker:cli');
 
-let pluginHandler: InstanceType<typeof PluginHandler>;
-
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 require('events').EventEmitter.prototype._maxListeners = 100;
 process.setMaxListeners(0);
@@ -53,11 +48,6 @@ interface InternalRebuildOptions {
     cwd?: string;
     module?: string;
     debug: boolean;
-}
-
-interface DbConnectParams {
-    /** DB connect timeout, default is 10_000 */
-    timeout?: number;
 }
 
 function initYargs(): yargs.Argv {
@@ -513,11 +503,6 @@ function showHelp(_yargs?: yargs.Argv): void {
     }
 }
 
-let Objects: typeof ObjectsInRedisClient | null; // constructor
-let objects: ObjectsInRedisClient | null; // instance
-let States: typeof StateRedisClient | null; // constructor
-let states: StateRedisClient | null; // instance
-
 /**
  * Process the given CLI command
  *
@@ -571,7 +556,6 @@ async function processCommand(
             break;
 
         case 'update': {
-            Objects = getObjectsConstructor();
             const repoUrl = args[0]; // Repo url or name
             dbConnect(params, async ({ objects, states }) => {
                 const { Repo } = await import('./setup/setupRepo');
@@ -589,216 +573,207 @@ async function processCommand(
         case 'setup': {
             const { Setup } = await import('./setup/setupSetup');
             const setup = new Setup({
-                dbConnectAsync,
                 processExit: callback,
                 cleanDatabase,
                 restartController,
-                resetDbConnect,
                 params
             });
             if (args[0] === 'custom' || params.custom) {
                 const exitCode = await setup.setupCustom();
                 callback(exitCode);
-            } else {
-                let isFirst = false;
-                let isRedis = false;
-
-                // we support "first" and "redis" without "--" flag
-                for (const arg of args) {
-                    if (arg === 'first') {
-                        isFirst = true;
-                    } else if (arg === 'redis') {
-                        isRedis = true;
-                    }
-                }
-
-                // and as --flag
-                isRedis = params.redis || isRedis;
-                isFirst = params.first || isFirst;
-
-                setup.setup(
-                    async () => {
-                        if (isFirst) {
-                            // Creates all instances that are needed on a fresh installation
-                            const { Install } = await import('./setup/setupInstall');
-                            const install = new Install({
-                                objects: objects!,
-                                states: states!,
-                                processExit: callback,
-                                params
-                            });
-                            // Define the necessary instances
-                            const initialInstances = ['admin', 'discovery', 'backitup'];
-                            // And try to install each of them
-                            for (const instance of initialInstances) {
-                                try {
-                                    const adapterInstalled = !!require.resolve(
-                                        `${tools.appName.toLowerCase()}.${instance}`,
-                                        {
-                                            paths: tools.getDefaultRequireResolvePaths(module)
-                                        }
-                                    );
-
-                                    if (adapterInstalled) {
-                                        let otherInstanceExists = false;
-                                        try {
-                                            // check if another instance exists
-                                            const res = await objects!.getObjectViewAsync('system', 'instance', {
-                                                startkey: `system.adapter.${instance}`,
-                                                endkey: `system.adapter.${instance}\u9999`
-                                            });
-
-                                            otherInstanceExists = !!res?.rows?.length;
-                                        } catch {
-                                            // ignore - on install we have no object views
-                                        }
-
-                                        if (!otherInstanceExists) {
-                                            await install.createInstance(instance, {
-                                                enabled: true,
-                                                ignoreIfExists: true
-                                            });
-                                        }
-                                    }
-                                } catch {
-                                    // not found, just continue
-                                }
-                            }
-
-                            await new Promise(resolve => {
-                                // Creates a fresh certificate
-                                // Create a new instance of the cert command,
-                                // but use the resolve method as a callback
-                                const cert = new CLICert({ ...commandOptions, callback: resolve });
-                                cert.create();
-                            });
-                        }
-
-                        // we update existing things, in first as well as normnal setup
-                        // Rename repositories
-                        const { Repo } = await import('./setup/setupRepo');
-                        const repo = new Repo({ objects: objects!, states: states! });
-
-                        try {
-                            await repo.rename('default', 'stable', 'http://download.iobroker.net/sources-dist.json');
-                            await repo.rename(
-                                'latest',
-                                'beta',
-                                'http://download.iobroker.net/sources-dist-latest.json'
-                            );
-                        } catch (err) {
-                            console.warn(`Cannot rename: ${err.message}`);
-                        }
-
-                        // there has been a bug that user can upload js-controller
-                        try {
-                            await objects!.delObjectAsync('system.adapter.js-controller');
-                        } catch {
-                            // ignore
-                        }
-
-                        try {
-                            const configFile = tools.getConfigFileName();
-
-                            const configOrig = fs.readJSONSync(configFile);
-                            const config = deepClone(configOrig);
-
-                            config.objects.options = config.objects.options || {
-                                auth_pass: null,
-                                retry_max_delay: 5000
-                            };
-                            if (
-                                config.objects.options.retry_max_delay === 15000 ||
-                                !config.objects.options.retry_max_delay
-                            ) {
-                                config.objects.options.retry_max_delay = 5000;
-                            }
-                            config.states.options = config.states.options || {
-                                auth_pass: null,
-                                retry_max_delay: 5000
-                            };
-                            if (
-                                config.states.options.retry_max_delay === 15000 ||
-                                !config.states.options.retry_max_delay
-                            ) {
-                                config.states.options.retry_max_delay = 5000;
-                            }
-
-                            let migrated = '';
-                            // We migrate file to jsonl
-                            if (config.states.type === 'file') {
-                                config.states.type = 'jsonl';
-
-                                if (dbTools.isLocalStatesDbServer('file', config.states.host)) {
-                                    // silent config change on secondaries
-                                    console.log('States DB type migrated from "file" to "jsonl"');
-                                    migrated += 'States';
-                                }
-                            }
-
-                            if (config.objects.type === 'file') {
-                                config.objects.type = 'jsonl';
-                                if (dbTools.isLocalObjectsDbServer('file', config.objects.host)) {
-                                    // silent config change on secondaries
-                                    console.log('Objects DB type migrated from "file" to "jsonl"');
-                                    migrated += migrated ? ' and Objects' : 'Objects';
-                                }
-                            }
-
-                            if (migrated) {
-                                const { NotificationHandler } = await import('@iobroker/js-controller-common-db');
-
-                                const hostname = tools.getHostName();
-
-                                const notificationSettings = {
-                                    states: states!,
-                                    objects: objects!,
-                                    log: console,
-                                    logPrefix: '',
-                                    host: hostname
-                                };
-
-                                const notificationHandler = new NotificationHandler(notificationSettings);
-
-                                try {
-                                    const ioPackage = fs.readJsonSync(
-                                        path.join(tools.getControllerDir(), 'io-package.json')
-                                    );
-                                    await notificationHandler.addConfig(ioPackage.notifications);
-
-                                    await notificationHandler.addMessage(
-                                        'system',
-                                        'fileToJsonl',
-                                        `Migrated: ${migrated}`,
-                                        `system.host.${hostname}`
-                                    );
-
-                                    notificationHandler.storeNotifications();
-                                } catch (e) {
-                                    console.warn(`Could not add File-to-JSONL notification: ${e.message}`);
-                                }
-                            }
-
-                            if (!isDeepStrictEqual(config, configOrig)) {
-                                fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
-                                console.log('ioBroker configuration updated');
-                            }
-                        } catch (err) {
-                            console.log(`Could not update ioBroker configuration: ${err.message}`);
-                        }
-
-                        return void callback();
-                    },
-                    isFirst,
-                    isRedis
-                );
+                return;
             }
+
+            let isFirst = false;
+            let isRedis = false;
+
+            // we support "first" and "redis" without "--" flag
+            for (const arg of args) {
+                if (arg === 'first') {
+                    isFirst = true;
+                } else if (arg === 'redis') {
+                    isRedis = true;
+                }
+            }
+
+            // and as --flag
+            isRedis = params.redis || isRedis;
+            isFirst = params.first || isFirst;
+
+            setup.setup(
+                async () => {
+                    const { states, objects } = await dbConnectAsync(false, params);
+                    if (isFirst) {
+                        // Creates all instances that are needed on a fresh installation
+                        const { Install } = await import('./setup/setupInstall');
+                        const install = new Install({
+                            objects,
+                            states,
+                            processExit: callback,
+                            params
+                        });
+                        // Define the necessary instances
+                        const initialInstances = ['admin', 'discovery', 'backitup'];
+                        // And try to install each of them
+                        for (const instance of initialInstances) {
+                            try {
+                                const adapterInstalled = !!require.resolve(
+                                    `${tools.appName.toLowerCase()}.${instance}`,
+                                    {
+                                        paths: tools.getDefaultRequireResolvePaths(module)
+                                    }
+                                );
+
+                                if (adapterInstalled) {
+                                    let otherInstanceExists = false;
+                                    try {
+                                        // check if another instance exists
+                                        const res = await objects.getObjectViewAsync('system', 'instance', {
+                                            startkey: `system.adapter.${instance}`,
+                                            endkey: `system.adapter.${instance}\u9999`
+                                        });
+
+                                        otherInstanceExists = !!res?.rows?.length;
+                                    } catch {
+                                        // ignore - on install we have no object views
+                                    }
+
+                                    if (!otherInstanceExists) {
+                                        await install.createInstance(instance, {
+                                            enabled: true,
+                                            ignoreIfExists: true
+                                        });
+                                    }
+                                }
+                            } catch {
+                                // not found, just continue
+                            }
+                        }
+
+                        await new Promise(resolve => {
+                            // Creates a fresh certificate
+                            // Create a new instance of the cert command,
+                            // but use the resolve method as a callback
+                            const cert = new CLICert({ ...commandOptions, callback: resolve });
+                            cert.create();
+                        });
+                    }
+
+                    // we update existing things, in first as well as normnal setup
+                    // Rename repositories
+                    const { Repo } = await import('./setup/setupRepo');
+                    const repo = new Repo({ objects, states });
+
+                    try {
+                        await repo.rename('default', 'stable', 'http://download.iobroker.net/sources-dist.json');
+                        await repo.rename('latest', 'beta', 'http://download.iobroker.net/sources-dist-latest.json');
+                    } catch (err) {
+                        console.warn(`Cannot rename: ${err.message}`);
+                    }
+
+                    // there has been a bug that user can upload js-controller
+                    try {
+                        await objects.delObjectAsync('system.adapter.js-controller');
+                    } catch {
+                        // ignore
+                    }
+
+                    try {
+                        const configFile = tools.getConfigFileName();
+
+                        const configOrig = fs.readJSONSync(configFile);
+                        const config = deepClone(configOrig);
+
+                        config.objects.options = config.objects.options || {
+                            auth_pass: null,
+                            retry_max_delay: 5000
+                        };
+                        if (
+                            config.objects.options.retry_max_delay === 15000 ||
+                            !config.objects.options.retry_max_delay
+                        ) {
+                            config.objects.options.retry_max_delay = 5000;
+                        }
+                        config.states.options = config.states.options || {
+                            auth_pass: null,
+                            retry_max_delay: 5000
+                        };
+                        if (config.states.options.retry_max_delay === 15000 || !config.states.options.retry_max_delay) {
+                            config.states.options.retry_max_delay = 5000;
+                        }
+
+                        let migrated = '';
+                        // We migrate file to jsonl
+                        if (config.states.type === 'file') {
+                            config.states.type = 'jsonl';
+
+                            if (dbTools.isLocalStatesDbServer('file', config.states.host)) {
+                                // silent config change on secondaries
+                                console.log('States DB type migrated from "file" to "jsonl"');
+                                migrated += 'States';
+                            }
+                        }
+
+                        if (config.objects.type === 'file') {
+                            config.objects.type = 'jsonl';
+                            if (dbTools.isLocalObjectsDbServer('file', config.objects.host)) {
+                                // silent config change on secondaries
+                                console.log('Objects DB type migrated from "file" to "jsonl"');
+                                migrated += migrated ? ' and Objects' : 'Objects';
+                            }
+                        }
+
+                        if (migrated) {
+                            const { NotificationHandler } = await import('@iobroker/js-controller-common-db');
+
+                            const hostname = tools.getHostName();
+
+                            const notificationSettings = {
+                                states,
+                                objects,
+                                log: console,
+                                logPrefix: '',
+                                host: hostname
+                            };
+
+                            const notificationHandler = new NotificationHandler(notificationSettings);
+
+                            try {
+                                const ioPackage = fs.readJsonSync(
+                                    path.join(tools.getControllerDir(), 'io-package.json')
+                                );
+                                await notificationHandler.addConfig(ioPackage.notifications);
+
+                                await notificationHandler.addMessage(
+                                    'system',
+                                    'fileToJsonl',
+                                    `Migrated: ${migrated}`,
+                                    `system.host.${hostname}`
+                                );
+
+                                notificationHandler.storeNotifications();
+                            } catch (e) {
+                                console.warn(`Could not add File-to-JSONL notification: ${e.message}`);
+                            }
+                        }
+
+                        if (!isDeepStrictEqual(config, configOrig)) {
+                            fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
+                            console.log('ioBroker configuration updated');
+                        }
+                    } catch (err) {
+                        console.log(`Could not update ioBroker configuration: ${err.message}`);
+                    }
+
+                    return void callback();
+                },
+                isFirst,
+                isRedis
+            );
             break;
         }
 
         case 'url': {
-            Objects = getObjectsConstructor();
-
             let url = args[0];
             const name = args[1];
 
@@ -833,10 +808,9 @@ async function processCommand(
         }
 
         case 'info': {
-            Objects = getObjectsConstructor();
             dbConnect(params, async ({ objects }) => {
                 try {
-                    const data = await tools.getHostInfo(objects!);
+                    const data = await tools.getHostInfo(objects);
                     const formatters = await import('./setup/formatters');
                     const formatInfo = {
                         Uptime: formatters.formatSeconds,
@@ -869,8 +843,6 @@ async function processCommand(
         case 'add':
         case 'install':
         case 'i': {
-            Objects = getObjectsConstructor();
-
             let name = args[0];
             let instance = args[1];
             let repoUrl = args[2];
@@ -928,7 +900,7 @@ async function processCommand(
                     // if host argument provided we should check, that host actually exists in mh environment
                     let obj;
                     try {
-                        obj = await objects!.getObjectAsync(`system.host.${params.host}`);
+                        obj = await objects.getObjectAsync(`system.host.${params.host}`);
                     } catch (err) {
                         console.warn(`Could not check existence of host "${params.host}": ${err.message}`);
                     }
@@ -977,7 +949,7 @@ async function processCommand(
                     options.cwd = commandOptions.path;
                 } else {
                     console.log('Path argument needs to be an absolute path!');
-                    return void processExit(EXIT_CODES.INVALID_ARGUMENTS);
+                    return void exitApplicationSave(EXIT_CODES.INVALID_ARGUMENTS);
                 }
             }
 
@@ -998,13 +970,12 @@ async function processCommand(
                 return void callback();
             } else {
                 console.error('Rebuilding native modules failed');
-                return void processExit(result.exitCode);
+                return void exitApplicationSave(result.exitCode);
             }
         }
 
         case 'upload':
         case 'u': {
-            Objects = getObjectsConstructor();
             const name = args[0];
             const subTree = args[1];
             if (name) {
@@ -1199,8 +1170,6 @@ async function processCommand(
         }
 
         case 'upgrade': {
-            Objects = getObjectsConstructor();
-
             let adapter: string | null = CLITools.normalizeAdapterName(args[0]);
 
             if (adapter === 'all') {
@@ -1303,11 +1272,16 @@ async function processCommand(
                     processExit: callback
                 });
 
-                backup.restoreBackup(args[0], !!params.force, false, exitCode => {
-                    if (exitCode === EXIT_CODES.NO_ERROR) {
-                        console.log('System successfully restored!');
+                backup.restoreBackup({
+                    name: args[0],
+                    force: !!params.force,
+                    dontDeleteAdapters: false,
+                    callback: ({ exitCode }) => {
+                        if (exitCode === EXIT_CODES.NO_ERROR) {
+                            console.log('System successfully restored!');
+                        }
+                        return void callback(exitCode);
                     }
-                    return void callback(exitCode);
                 });
             });
             break;
@@ -1331,9 +1305,9 @@ async function processCommand(
                     console.log(`Backup created: ${filePath!}`);
                     console.log('This backup can only be restored with js-controller version up from 4.1');
                     return void callback(EXIT_CODES.NO_ERROR);
-                } catch (err) {
-                    console.log(`Cannot create backup: ${err}`);
-                    return void callback(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
+                } catch (e) {
+                    console.log(`Cannot create backup: ${e.message}`);
+                    return void callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
                 }
             });
             break;
@@ -1354,10 +1328,10 @@ async function processCommand(
                 try {
                     await backup.validateBackup(name);
                     console.log('Backup OK');
-                    return void processExit(0);
+                    return void exitApplicationSave(0);
                 } catch (err) {
                     console.log(`Backup check failed: ${err.message}`);
-                    return void processExit(1);
+                    return void exitApplicationSave(1);
                 }
             });
             break;
@@ -1392,7 +1366,7 @@ async function processCommand(
                 }
 
                 if (pattern === '*') {
-                    objects!.getObjectList(
+                    objects.getObjectList(
                         {
                             startkey: 'system.adapter.',
                             endkey: 'system.adapter.\u9999'
@@ -1406,7 +1380,7 @@ async function processCommand(
                                         continue;
                                     }
                                     count++;
-                                    objects!.touch(
+                                    objects.touch(
                                         arr.rows[i].value.common.name as string,
                                         '*',
                                         { user: 'system.user.admin' },
@@ -1451,15 +1425,15 @@ async function processCommand(
                     const path = parts.join('/');
 
                     // @ts-expect-error todo processed should not exist, how to proceeed?
-                    objects!.touch(id, path, { user: 'system.user.admin' }, async (err, processed) => {
+                    objects.touch(id, path, { user: 'system.user.admin' }, async (err, processed) => {
                         if (err) {
                             console.error(err);
                         } else {
                             if (processed) {
                                 const { List } = await import('./setup/setupList');
                                 const list = new List({
-                                    states: states!,
-                                    objects: objects!,
+                                    states,
+                                    objects,
                                     processExit: callback
                                 });
                                 for (let i = 0; i < processed.length; i++) {
@@ -1481,7 +1455,7 @@ async function processCommand(
                 console.log('No file path found. Example: "touch /vis.0/main/*"');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
-            dbConnect(params, () => {
+            dbConnect(params, ({ objects, states }) => {
                 // extract id
                 pattern = pattern.replace(/\\/g, '/');
                 if (pattern[0] === '/') {
@@ -1489,7 +1463,7 @@ async function processCommand(
                 }
 
                 if (pattern === '*') {
-                    objects!.getObjectList(
+                    objects.getObjectList(
                         {
                             startkey: 'system.adapter.',
                             endkey: 'system.adapter.\u9999'
@@ -1503,7 +1477,7 @@ async function processCommand(
                                         continue;
                                     }
                                     count++;
-                                    objects!.rm(
+                                    objects.rm(
                                         arr.rows[i].value.common.name as string,
                                         '*',
                                         { user: 'system.user.admin' },
@@ -1515,8 +1489,8 @@ async function processCommand(
                                             if (!--count) {
                                                 const { List } = await import('./setup/setupList');
                                                 const list = new List({
-                                                    states: states!,
-                                                    objects: objects!,
+                                                    states,
+                                                    objects,
                                                     processExit: callback
                                                 });
                                                 files.sort((a, b) => a.id.localeCompare(b.id));
@@ -1548,15 +1522,15 @@ async function processCommand(
                     const id = parts.shift();
                     const path = parts.join('/');
 
-                    objects!.rm(id, path, { user: 'system.user.admin' }, async (err, processed) => {
+                    objects.rm(id, path, { user: 'system.user.admin' }, async (err, processed) => {
                         if (err) {
                             console.error(err);
                         } else {
                             if (processed) {
                                 const { List } = await import('./setup/setupList');
                                 const list = new List({
-                                    states: states!,
-                                    objects: objects!,
+                                    states,
+                                    objects,
                                     processExit: callback
                                 });
                                 list.showFileHeader();
@@ -1566,7 +1540,7 @@ async function processCommand(
                                 }
                             }
                         }
-                        setTimeout(callback, 1000);
+                        setTimeout(callback, 1_000);
                     });
                 }
             });
@@ -1589,7 +1563,7 @@ async function processCommand(
                 CLIError.requiredArgumentMissing('file path', 'chmod 777 /vis.0/main/*');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
-            dbConnect(params, () => {
+            dbConnect(params, ({ objects, states }) => {
                 // extract id
                 pattern = pattern.replace(/\\/g, '/');
                 if (pattern[0] === '/') {
@@ -1597,7 +1571,7 @@ async function processCommand(
                 }
 
                 if (pattern === '*') {
-                    objects!.getObjectList(
+                    objects.getObjectList(
                         {
                             startkey: 'system.adapter.',
                             endkey: 'system.adapter.\u9999'
@@ -1611,7 +1585,7 @@ async function processCommand(
                                         continue;
                                     }
                                     count++;
-                                    objects!.chmodFile(
+                                    objects.chmodFile(
                                         arr.rows[i].value.common.name as string,
                                         '*',
                                         {
@@ -1626,8 +1600,8 @@ async function processCommand(
                                             if (!--count) {
                                                 const { List } = await import('./setup/setupList');
                                                 const list = new List({
-                                                    states: states!,
-                                                    objects: objects!,
+                                                    states,
+                                                    objects,
                                                     processExit: callback
                                                 });
                                                 files.sort((a, b) => a.id.localeCompare(b.id));
@@ -1659,15 +1633,15 @@ async function processCommand(
                     const id = parts.shift();
                     const path = parts.join('/');
 
-                    objects!.chmodFile(id, path, { user: 'system.user.admin', mode: mode }, async (err, processed) => {
+                    objects.chmodFile(id, path, { user: 'system.user.admin', mode: mode }, async (err, processed) => {
                         if (err) {
                             console.error(err);
                         } else {
                             if (processed) {
                                 const { List } = await import('./setup/setupList');
                                 const list = new List({
-                                    states: states!,
-                                    objects: objects!,
+                                    states,
+                                    objects,
                                     processExit: callback
                                 });
                                 list.showFileHeader();
@@ -1708,7 +1682,7 @@ async function processCommand(
                 CLIError.requiredArgumentMissing('file path', 'chown user /vis.0/main/*');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
-            dbConnect(params, () => {
+            dbConnect(params, ({ objects, states }) => {
                 // extract id
                 pattern = pattern.replace(/\\/g, '/');
                 if (pattern[0] === '/') {
@@ -1716,7 +1690,7 @@ async function processCommand(
                 }
 
                 if (pattern === '*') {
-                    objects!.getObjectList(
+                    objects.getObjectList(
                         {
                             startkey: 'system.adapter.',
                             endkey: 'system.adapter.\u9999'
@@ -1730,7 +1704,7 @@ async function processCommand(
                                         continue;
                                     }
                                     count++;
-                                    objects!.chownFile(
+                                    objects.chownFile(
                                         arr.rows[i].value.common.name as string,
                                         '*',
                                         {
@@ -1746,8 +1720,8 @@ async function processCommand(
                                             if (!--count) {
                                                 const { List } = await import('./setup/setupList');
                                                 const list = new List({
-                                                    states: states!,
-                                                    objects: objects!,
+                                                    states,
+                                                    objects,
                                                     processExit: callback
                                                 });
                                                 files.sort((a, b) => a.id.localeCompare(b.id));
@@ -1779,7 +1753,7 @@ async function processCommand(
                     const id = parts.shift();
                     const path = parts.join('/');
 
-                    objects!.chownFile(
+                    objects.chownFile(
                         id,
                         path,
                         {
@@ -1795,8 +1769,8 @@ async function processCommand(
                                 if (processed) {
                                     const { List } = await import('./setup/setupList');
                                     const list = new List({
-                                        states: states!,
-                                        objects: objects!,
+                                        states,
+                                        objects,
                                         processExit: callback
                                     });
                                     list.showFileHeader();
@@ -2430,7 +2404,7 @@ async function processCommand(
                             const dirExists = objects.dirExists('meta.user');
                             if (!dirExists) {
                                 // create meta.user, so users see them as upload target
-                                await objects!.mkdirAsync('meta.user');
+                                await objects.mkdirAsync('meta.user');
                                 console.log('Successfully created "meta.user" directory');
                             }
                         }
@@ -2507,7 +2481,7 @@ async function processCommand(
         }
 
         case 'checklog': {
-            dbConnect(params, ({ objects, isOffline, objectsDBType }) => {
+            dbConnect(params, ({ objects, states, isOffline, objectsDBType }) => {
                 if (isOffline && dbTools.objectsDbHasServer(objectsDBType)) {
                     console.log(`${tools.appName} is not running`);
                     return void callback(EXIT_CODES.CONTROLLER_NOT_RUNNING);
@@ -2525,7 +2499,7 @@ async function processCommand(
                                     const parts = res.rows[i]!.id.split('.');
                                     // ignore system.host.name.alive and so on
                                     if (parts.length === 3) {
-                                        states!.pushMessage(res.rows[i]!.id, {
+                                        states.pushMessage(res.rows[i]!.id, {
                                             command: 'checkLogging',
                                             message: null,
                                             from: 'console'
@@ -2542,7 +2516,6 @@ async function processCommand(
         }
 
         case 'repo': {
-            Objects = getObjectsConstructor();
             let repoUrlOrCommand = args[0]; // Repo url or name or "add" / "del" / "set" / "show" / "addset" / "unset"
             const repoName = args[1]; // Repo url or name
             let repoUrl = args[2]; // Repo url or name
@@ -2667,7 +2640,7 @@ async function processCommand(
                 console.log('Invalid parameters. Following is possible: enable, browse, connect, status');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
-                dbConnect(params, async ({ objects }) => {
+                dbConnect(params, async ({ objects, states }) => {
                     const { Multihost } = await import('./setup/setupMultihost');
                     const mh = new Multihost({
                         params,
@@ -2692,7 +2665,7 @@ async function processCommand(
                                 console.error(err);
                                 return void callback(EXIT_CODES.CANNOT_ENABLE_MULTIHOST);
                             } else {
-                                states!.pushMessage(
+                                states.pushMessage(
                                     `system.host.${tools.getHostName()}`,
                                     {
                                         command: 'updateMultihost',
@@ -2710,7 +2683,7 @@ async function processCommand(
                                 console.error(err);
                                 return void callback(EXIT_CODES.CANNOT_ENABLE_MULTIHOST);
                             } else {
-                                states!.pushMessage(
+                                states.pushMessage(
                                     `system.host.${tools.getHostName()}`,
                                     {
                                         command: 'updateMultihost',
@@ -2823,27 +2796,6 @@ async function processCommand(
     }
 }
 
-/**
- * Exits the process and saves objects before exit - never resolves
- *
- * @param  exitCode
- */
-async function processExit(exitCode?: number): Promise<never> {
-    if (pluginHandler) {
-        pluginHandler.destroyAll();
-    }
-
-    if (objects?.destroy) {
-        await objects.destroy();
-    }
-    if (states?.destroy) {
-        await states.destroy();
-    }
-    return new Promise(() => {
-        setTimeout(() => process.exit(exitCode), 1000);
-    });
-}
-
 const OBJECTS_THAT_CANNOT_BE_DELETED = [
     '0_userdata.0',
     'alias.0',
@@ -2857,12 +2809,13 @@ const OBJECTS_THAT_CANNOT_BE_DELETED = [
 ];
 
 async function delObjects(ids: string[]): Promise<void> {
-    if (ids && ids.length) {
-        for (let i = 0; i < ids.length; i++) {
-            const id = ids[i];
+    const { objects } = await dbConnectAsync(false);
+
+    if (ids?.length) {
+        for (const id of ids) {
             if (!OBJECTS_THAT_CANNOT_BE_DELETED.includes(id)) {
                 try {
-                    await objects!.delObjectAsync(id);
+                    await objects.delObjectAsync(id);
                 } catch (err) {
                     console.warn(`[Not critical] Cannot delete object ${id}: ${JSON.stringify(err)}`);
                 }
@@ -2872,14 +2825,16 @@ async function delObjects(ids: string[]): Promise<void> {
 }
 
 async function delStates(): Promise<number> {
-    const keys = await states!.getKeys('*');
+    const { states } = await dbConnectAsync(false);
+
+    const keys = await states.getKeys('*');
     if (keys) {
         console.log(`clean ${keys.length} states...`);
-        for (let i = 0; i < keys.length; i++) {
+        for (const key of keys) {
             try {
-                await states!.delState(keys[i]);
+                await states.delState(key);
             } catch (err) {
-                console.error(`[Not critical] Cannot delete state ${keys[i]}: ${err.message}`);
+                console.error(`[Not critical] Cannot delete state ${key}: ${err.message}`);
             }
         }
     }
@@ -2892,8 +2847,10 @@ async function delStates(): Promise<number> {
  * @param isDeleteDb - if whole db should be destroyed
  */
 async function cleanDatabase(isDeleteDb: boolean): Promise<number> {
+    const { objects } = await dbConnectAsync(false);
+
     if (isDeleteDb) {
-        await objects!.destroyDBAsync();
+        await objects.destroyDBAsync();
         // Clean up states
         const keysCount = await delStates();
         return keysCount;
@@ -2902,7 +2859,7 @@ async function cleanDatabase(isDeleteDb: boolean): Promise<number> {
         let ids: string[] = [];
 
         try {
-            const res = await objects!.getObjectListAsync({ startkey: '\u0000', endkey: '\u9999' });
+            const res = await objects.getObjectListAsync({ startkey: '\u0000', endkey: '\u9999' });
             if (res?.rows.length) {
                 console.log(`clean ${res.rows.length} objects...`);
                 ids = res.rows.map(e => e.id);
@@ -2919,14 +2876,14 @@ async function cleanDatabase(isDeleteDb: boolean): Promise<number> {
 }
 
 function unsetup(params: Record<string, any>, callback: ExitCodeCb): void {
-    dbConnect(params, () => {
-        objects!.delObject('system.meta.uuid', err => {
+    dbConnect(params, ({ objects }) => {
+        objects.delObject('system.meta.uuid', err => {
             if (err) {
                 console.log(`uuid cannot be deleted: ${err.message}`);
             } else {
                 console.log('system.meta.uuid deleted');
             }
-            objects!.getObject('system.config', (_err, obj) => {
+            objects.getObject('system.config', (_err, obj) => {
                 if (obj?.common.licenseConfirmed || obj?.common.language || obj?.native?.secret) {
                     obj.common.licenseConfirmed = false;
                     obj.common.language = '';
@@ -2939,7 +2896,7 @@ function unsetup(params: Record<string, any>, callback: ExitCodeCb): void {
                     obj.from = `system.host.${tools.getHostName()}.cli`;
                     obj.ts = new Date().getTime();
 
-                    objects!.setObject('system.config', obj as any, err => {
+                    objects.setObject('system.config', obj as any, err => {
                         if (err) {
                             console.log(`not found: ${err.message}`);
                             return void callback(EXIT_CODES.CANNOT_SET_OBJECT);
@@ -2973,394 +2930,6 @@ async function restartController(): Promise<void> {
     child.unref();
 }
 
-async function resetDbConnect(): Promise<void> {
-    if (objects) {
-        await objects.destroy();
-        objects = null;
-    }
-    if (states) {
-        await states.destroy();
-        states = null;
-    }
-    if (Objects) {
-        Objects = null;
-    }
-    if (States) {
-        States = null;
-    }
-}
-
-/**
- * Checks if system is offline
- *
- * @param onlyCheck - returns true then
- */
-async function checkSystemOffline(onlyCheck: boolean): Promise<boolean> {
-    if (!objects || !states) {
-        // should never happen
-        return true;
-    }
-    if (onlyCheck) {
-        return true;
-    }
-
-    const offlineStatus = !(await tools.isHostRunning(objects, states));
-
-    return offlineStatus;
-}
-
-/**
- * Initialize plugins from io-pack and config json
- *
- * @param config - parsed content of iobroker.json
- */
-function initializePlugins(config: Record<string, any>): Promise<void> {
-    const ioPackage = fs.readJsonSync(path.join(tools.getControllerDir(), 'io-package.json'));
-    const packageJson = fs.readJsonSync(path.join(tools.getControllerDir(), 'package.json'));
-    const hostname = tools.getHostName();
-
-    const pluginSettings: PluginHandlerSettings = {
-        namespace: `system.host.${hostname}`,
-        logNamespace: `host.${hostname}`,
-        scope: 'controller',
-        log: {
-            // cli should be clean, only log warn/error
-            silly: (_msg: string) => {
-                /** do not log on this level */
-            },
-            debug: (_msg: string) => {
-                /** do not log on this level */
-            },
-            info: (_msg: string) => {
-                /** do not log on this level */
-            },
-            warn: (msg: string) => console.log(msg),
-            error: (msg: string) => console.log(msg),
-            level: 'warn'
-        },
-        iobrokerConfig: config,
-        parentPackage: packageJson,
-        controllerVersion: ioPackage.common.version
-    };
-
-    pluginHandler = new PluginHandler(pluginSettings);
-    pluginHandler.addPlugins(ioPackage.common.plugins, tools.getControllerDir()); // Plugins from io-package have priority over ...
-    pluginHandler.addPlugins(config.plugins, tools.getControllerDir()); // ... plugins from iobroker.json
-    pluginHandler.setDatabaseForPlugins(objects, states);
-
-    return new Promise(resolve => {
-        pluginHandler.initPlugins(ioPackage, () => resolve());
-    });
-}
-
-function dbConnect(callback: DbConnectCallback): void;
-function dbConnect(params: Record<string, any>, callback: DbConnectCallback): void;
-function dbConnect(onlyCheck: boolean, params: Record<string, any>, callback: DbConnectCallback): void;
-/**
- * Connects to the DB or tests the connection.
- */
-function dbConnect(
-    onlyCheck: boolean | Record<string, any> | DbConnectCallback,
-    params?: DbConnectParams | DbConnectCallback,
-    callback?: DbConnectCallback
-): void {
-    if (typeof onlyCheck === 'object') {
-        callback = params as DbConnectCallback;
-        params = onlyCheck;
-        onlyCheck = false;
-    }
-    if (typeof onlyCheck === 'function') {
-        callback = onlyCheck;
-        onlyCheck = false;
-    }
-    if (typeof params === 'function') {
-        callback = params as DbConnectCallback;
-        params = {};
-    }
-
-    if (!callback) {
-        throw new Error('No callback for dbConnect');
-    }
-
-    params = params || {};
-
-    const config = fs.readJSONSync(tools.getConfigFileName());
-
-    if (objects && states) {
-        return void callback({ objects, states, isOffline: false, objectsDBType: config.objects.type, config });
-    }
-
-    config.states = config.states || { type: 'jsonl' };
-    config.objects = config.objects || { type: 'jsonl' };
-    // Make sure the DB has enough time (5s). JsonL can take a bit longer if the process just crashed before
-    // because the lockfile might not have been freed.
-    config.states.connectTimeout = Math.max(config.states.connectTimeout || 0, 5_000);
-    config.objects.connectTimeout = Math.max(config.objects.connectTimeout || 0, 5_000);
-
-    Objects = getObjectsConstructor(); // Objects DB Client object
-    States = getStatesConstructor(); // States DB Client object
-
-    // Give to controller 2 seconds for connection
-    let isObjectConnected = false;
-    let isStatesConnected = false;
-
-    // Detect timeout or try to open file itself
-    setTimeout(
-        async () => {
-            if (isObjectConnected && isStatesConnected) {
-                return;
-            }
-
-            if (!isObjectConnected) {
-                if (objects) {
-                    // Destroy Client we tried to connect with
-                    await objects.destroy();
-                    objects = null;
-                }
-                if (dbTools.objectsDbHasServer(config.objects.type)) {
-                    // Just open in memory DB itself
-                    Objects = (await import(`@iobroker/db-objects-${config.objects.type}`)).Server;
-                    objects = new Objects!({
-                        connection: config.objects,
-                        logger: {
-                            silly: (_msg: string) => {
-                                /** do not log on this level */
-                            },
-                            debug: (_msg: string) => {
-                                /** do not log on this level */
-                            },
-                            info: (_msg: string) => {
-                                /** do not log on this level */
-                            },
-                            warn: (msg: string) => console.log(msg),
-                            error: (msg: string) => console.log(msg)
-                        },
-                        connected: async () => {
-                            isObjectConnected = true;
-                            if (isStatesConnected && typeof callback === 'function') {
-                                try {
-                                    await initializePlugins(config);
-                                } catch {
-                                    // ignore in silence
-                                }
-                                return void callback({
-                                    objects: objects!,
-                                    states: states!,
-                                    isOffline: true,
-                                    objectsDBType: config.objects.type,
-                                    config
-                                });
-                            }
-                        }
-                    });
-                } else {
-                    console.log(
-                        `No connection to objects ${config.objects.host}:${config.objects.port}[${config.objects.type}]`
-                    );
-                    if (onlyCheck) {
-                        callback &&
-                            callback({
-                                objects: objects!,
-                                states: states!,
-                                isOffline: true,
-                                objectsDBType: config.objects.type,
-                                config
-                            });
-                        callback = undefined;
-                    } else {
-                        return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
-                    }
-                }
-            }
-
-            if (!isStatesConnected) {
-                if (states) {
-                    // Destroy Client we tried to connect with
-                    await states.destroy();
-                    states = null;
-                }
-                if (dbTools.statesDbHasServer(config.states.type)) {
-                    // Just open in memory DB itself
-                    // eslint-disable-next-line @typescript-eslint/no-var-requires
-                    States = require(`@iobroker/db-states-${config.states.type}`).Server;
-
-                    states = new States!({
-                        connection: config.states,
-                        logger: {
-                            silly: (_msg: string) => {
-                                /** do not log on this level */
-                            },
-                            debug: (_msg: string) => {
-                                /** do not log on this level */
-                            },
-                            info: (_msg: string) => {
-                                /** do not log on this level */
-                            },
-                            warn: (msg: string) => console.log(msg),
-                            error: (msg: string) => console.log(msg)
-                        },
-                        connected: async () => {
-                            isStatesConnected = true;
-                            if (isObjectConnected && typeof callback === 'function') {
-                                try {
-                                    await initializePlugins(config);
-                                } catch {
-                                    // ignore in silence
-                                }
-                                return void callback({
-                                    objects: objects!,
-                                    states: states!,
-                                    isOffline: true,
-                                    objectsDBType: config.objects.type,
-                                    config
-                                });
-                            }
-                        },
-                        // react on change
-                        // @ts-expect-error todo according to types and first look states.onchange does not exist
-                        change: (id, msg) => states?.onChange(id, msg)
-                    });
-                    // @ts-expect-error todo according to types and first look states.onchange does not exist
-                    states!.onChange = null; // here the custom onChange handler could be installed
-                } else {
-                    if (states) {
-                        // Destroy Client we tried to connect with
-                        await (states as StateRedisClient).destroy();
-                        states = null;
-                    }
-                    if (objects) {
-                        // Destroy Client we tried to connect with
-                        await objects.destroy();
-                        objects = null;
-                    }
-                    console.log(
-                        `No connection to states ${config.states.host}:${config.states.port}[${config.states.type}]`
-                    );
-                    if (onlyCheck) {
-                        callback &&
-                            callback({
-                                objects: objects!,
-                                states: states!,
-                                isOffline: true,
-                                objectsDBType: config.objects.type,
-                                config
-                            });
-                        callback = undefined;
-                    } else {
-                        return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
-                    }
-                }
-            }
-
-            setTimeout(
-                () => {
-                    // Failsafe
-                    if (isObjectConnected && isStatesConnected) {
-                        return;
-                    }
-
-                    console.log('No connection to databases possible ...');
-                    if (onlyCheck) {
-                        callback &&
-                            callback({
-                                // TODO types: allow null if onlyCheck is true
-                                objects: null as any,
-                                states: null as any,
-                                isOffline: true,
-                                objectsDBType: config.objects.type,
-                                config
-                            });
-                        callback = undefined;
-                    } else {
-                        return void processExit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
-                    }
-                },
-                // @ts-expect-error todo fix it
-                (params.timeout || 10_000) + config.objects.connectTimeout
-            );
-        },
-        params.timeout || config.objects.connectTimeout * 2
-    );
-
-    // try to connect as client
-    objects = new Objects!({
-        connection: config.objects,
-        logger: {
-            silly: (_msg: string) => {
-                /** do not log on this level */
-            },
-            debug: (_msg: string) => {
-                /** do not log on this level */
-            },
-            info: (_msg: string) => {
-                /** do not log on this level */
-            },
-            warn: (msg: string) => console.log(msg),
-            error: (msg: string) => console.log(msg)
-        },
-        connected: async () => {
-            if (isObjectConnected) {
-                return;
-            }
-            isObjectConnected = true;
-
-            if (isStatesConnected && typeof callback === 'function') {
-                const isOffline = await checkSystemOffline(onlyCheck as boolean);
-                try {
-                    await initializePlugins(config);
-                } catch {
-                    // ignore in silence
-                }
-                callback({ objects: objects!, states: states!, isOffline, objectsDBType: config.objects.type, config });
-            }
-        }
-    });
-
-    states = new States!({
-        connection: config.states,
-        logger: {
-            silly: (_msg: string) => {
-                /** do not log on this level */
-            },
-            debug: (_msg: string) => {
-                /** do not log on this level */
-            },
-            info: (_msg: string) => {
-                /** do not log on this level */
-            },
-            warn: (msg: string) => console.log(msg),
-            error: (msg: string) => console.log(msg)
-        },
-        connected: async () => {
-            if (isStatesConnected) {
-                return;
-            }
-            isStatesConnected = true;
-
-            if (isObjectConnected && typeof callback === 'function') {
-                const isOffline = await checkSystemOffline(onlyCheck as boolean);
-                try {
-                    await initializePlugins(config);
-                } catch {
-                    // ignore in silence
-                }
-                callback({ objects: objects!, states: states!, isOffline, objectsDBType: config.objects.type, config });
-            }
-        },
-        // @ts-expect-error todo according to types and first look states.onchange does not exist
-        change: (id, state) => states?.onChange(id, state)
-    });
-}
-
-/**
- * Connects to the DB or tests the connection.
- * @param onlyCheck if only connection check should be performed
- * @param params options used by dbConnect
- */
-export function dbConnectAsync(onlyCheck: boolean, params?: DbConnectParams): Promise<DbConnectAsyncReturn> {
-    return new Promise(resolve => dbConnect(onlyCheck, params || {}, params => resolve(params)));
-}
-
 /**
  * Method which should be called from CLI to initialize the handling of all args
  */
@@ -3381,10 +2950,10 @@ export function execute(): void {
         args.push(process.argv[i]);
     }
 
-    processCommand(command, args, _yargs.argv, processExit);
+    processCommand(command, args, _yargs.argv, exitApplicationSave);
 }
 
 process.on('unhandledRejection', (e: any) => {
     console.error(`Uncaught Rejection: ${e.stack || e}`);
-    processExit(EXIT_CODES.UNCAUGHT_EXCEPTION);
+    exitApplicationSave(EXIT_CODES.UNCAUGHT_EXCEPTION);
 });
