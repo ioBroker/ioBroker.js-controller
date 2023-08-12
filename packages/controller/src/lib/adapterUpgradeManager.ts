@@ -7,6 +7,8 @@ import { setTimeout as wait } from 'timers/promises';
 import type { Logger } from 'winston';
 import { Upgrade } from '@iobroker/js-controller-cli';
 import type { ProcessExitCallback } from '@iobroker/js-controller-cli/build/lib/_Types';
+import type { Socket } from 'node:net';
+import type { Duplex } from 'node:stream';
 
 interface Certificates {
     /** Public certificate */
@@ -80,6 +82,8 @@ export class AdapterUpgradeManager {
 
     /** The server used for communicating upgrade status */
     private server?: https.Server | http.Server;
+    /** All socket connections of the webserver */
+    private sockets = new Set<Socket | Duplex>();
     /** Name of the host for logging purposes */
     private readonly hostname = tools.getHostName();
     /** The objects DB client */
@@ -205,10 +209,22 @@ export class AdapterUpgradeManager {
             return;
         }
 
+        this.destroySockets();
+
         this.server.close(async () => {
             await this.startAdapter();
             this.log('Successfully started adapter');
         });
+    }
+
+    /**
+     * Destroy all sockets, to prevent, requests from keeping server alive
+     */
+    destroySockets(): void {
+        for (const socket of this.sockets) {
+            socket.destroy();
+            this.sockets.delete(socket);
+        }
     }
 
     /**
@@ -276,6 +292,8 @@ export class AdapterUpgradeManager {
             this.webServerCallback(req, res);
         });
 
+        this.monitorSockets(this.server);
+
         this.server.listen(port, () => {
             this.log(`Server is running on http://localhost:${port}`);
         });
@@ -295,8 +313,25 @@ export class AdapterUpgradeManager {
             this.webServerCallback(req, res);
         });
 
+        this.monitorSockets(this.server);
+
         this.server.listen(port, () => {
             this.log(`Server is running on http://localhost:${port}`);
+        });
+    }
+
+    /**
+     * Keep track of all existing sockets
+     *
+     * @param server the webserver
+     */
+    monitorSockets(server: http.Server | https.Server): void {
+        server.on('connection', socket => {
+            this.sockets.add(socket);
+
+            server.once('close', () => {
+                this.sockets.delete(socket);
+            });
         });
     }
 
