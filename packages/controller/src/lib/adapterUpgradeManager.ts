@@ -202,7 +202,7 @@ export class AdapterUpgradeManager {
         }
 
         if (!this.server) {
-            process.exit();
+            return;
         }
 
         this.server.close(async () => {
