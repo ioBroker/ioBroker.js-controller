@@ -218,7 +218,7 @@ export class AdapterUpgradeManager {
     }
 
     /**
-     * Destroy all sockets, to prevent, requests from keeping server alive
+     * Destroy all sockets, to prevent requests from keeping server alive
      */
     destroySockets(): void {
         for (const socket of this.sockets) {
