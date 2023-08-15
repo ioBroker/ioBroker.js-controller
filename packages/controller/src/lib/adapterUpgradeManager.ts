@@ -59,13 +59,13 @@ interface ServerResponse {
 }
 
 export class AdapterUpgradeManager {
-    /** Wait ms until controller is stopped */
+    /** Wait ms until adapter is stopped */
     private readonly STOP_TIMEOUT_MS = 3_000;
     /** Wait ms for delivery of final response */
     private readonly SHUTDOWN_TIMEOUT = 10_000;
     /** Name of the adapter to upgrade */
     private readonly adapterName: string;
-    /** Desired controller version */
+    /** Desired adapter version */
     private readonly version: string;
     /** Response send by webserver */
     private readonly response: ServerResponse = {
@@ -260,7 +260,7 @@ export class AdapterUpgradeManager {
             return;
         }
 
-        this.logger.info(`host.${this.hostname} [CONTROLLER_AUTO_UPGRADE] ${message}`);
+        this.logger.info(`host.${this.hostname} [WEBSERVER_UPGRADE] (${this.adapterName}) ${message}`);
         this.response.stdout.push(message);
     }
 

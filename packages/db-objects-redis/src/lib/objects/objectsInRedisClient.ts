@@ -1058,7 +1058,7 @@ export class ObjectsInRedisClient {
 
         const isTextData = typeof data === 'string';
 
-        const { mimeType, isBinary } = utils.getMimeType(ext[0], isTextData);
+        const { mimeType, isBinary } = utils.getMimeType(ext, isTextData);
 
         const metaID = this.getFileId(id, name, true);
         if (!this.client) {

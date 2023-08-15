@@ -1,28 +1,14 @@
-/**
- *      Backup
- *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
- *
- *      MIT License
- *
- */
-
 import fs from 'fs-extra';
-import { tools } from '@iobroker/js-controller-common';
+import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
 import path from 'path';
 import { Upload } from './setupUpload';
-import { EXIT_CODES } from '@iobroker/js-controller-common';
 import { exec as execAsync } from 'promisify-child-process';
 import tar from 'tar';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { CleanDatabaseHandler, ProcessExitCallback, RestartController } from '../_Types';
-
-const hostname = tools.getHostName();
-
-const controllerDir = tools.getControllerDir();
-const tmpDir = path.normalize(path.join(controllerDir, 'tmp'));
-const bkpDir = path.normalize(path.join(controllerDir, 'backups'));
+import { dbConnectAsync, resetDbConnect } from './dbConnection';
+import { IoBrokerError } from './customError';
 
 export interface CLIBackupRestoreOptions {
     dbMigration?: boolean;
@@ -35,22 +21,55 @@ export interface CLIBackupRestoreOptions {
 
 type BackupObject = Omit<ioBroker.GetObjectListItem, 'doc'>;
 
+export interface RestoreBackupReturnValue {
+    /** Exit code of the process */
+    exitCode: number;
+    /** The new states db connection after restore */
+    states: StatesRedisClient;
+    /** The new objects db connection after restore */
+    objects: ObjectsRedisClient;
+}
+
+interface RestoreAfterStopOptions {
+    /** restart controller after restore */
+    restartOnFinish: boolean;
+    /** skip the controller version check */
+    force: boolean;
+    /** skip adapter deletion, e.g. for setup custom db migration */
+    dontDeleteAdapters: boolean;
+}
+
 interface Backup {
-    config?: null | Record<string, any>;
+    config?: null | ioBroker.IoBrokerJson;
     objects: null | BackupObject[];
     states: Record<string, ioBroker.State>;
 }
 
+export interface RestoreBackupOptions {
+    /** backup name, absolute path or index */
+    name: string | number;
+    /** if force flag is set, js-controller is allowed to have a different version */
+    force: boolean;
+    /** skip adapter deletion, e.g. for setup custom db migration */
+    dontDeleteAdapters: boolean;
+    callback: (res: RestoreBackupReturnValue) => void;
+}
+
+const controllerDir = tools.getControllerDir();
+
 export class BackupRestore {
-    private readonly objects: ObjectsRedisClient;
-    private readonly states: StatesRedisClient;
+    private readonly hostname = tools.getHostName();
+    private readonly tmpDir = path.normalize(path.join(controllerDir, 'tmp'));
+    private readonly bkpDir = path.normalize(path.join(controllerDir, 'backups'));
+    private objects: ObjectsRedisClient;
+    private states: StatesRedisClient;
     private readonly processExit: CLIBackupRestoreOptions['processExit'];
     private readonly restartController: CLIBackupRestoreOptions['restartController'];
     private readonly cleanDatabase: CLIBackupRestoreOptions['cleanDatabase'];
     private readonly dbMigration: boolean;
     /** these adapters will be reinstalled during restore, while others will be installed after next controller start */
-    private readonly PRESERVE_ADAPTERS: string[];
-    private readonly upload: Upload;
+    private readonly PRESERVE_ADAPTERS = ['admin', 'backitup'] as const;
+    private upload: Upload;
     private configParts: string[];
     private readonly configDir: string;
     /** Placeholder inserted during backup creation if no custom hostname defined */
@@ -85,7 +104,6 @@ export class BackupRestore {
         this.cleanDatabase = options.cleanDatabase;
         this.restartController = options.restartController;
         this.dbMigration = options.dbMigration || false;
-        this.PRESERVE_ADAPTERS = ['admin', 'backitup'];
 
         this.upload = new Upload(options);
 
@@ -190,9 +208,9 @@ export class BackupRestore {
      */
     private removeTempBackupDir(): void {
         try {
-            fs.rmSync(`${tmpDir}/backup`, { recursive: true, force: true });
+            fs.rmSync(`${this.tmpDir}/backup`, { recursive: true, force: true });
         } catch (e) {
-            console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
+            console.error(`host.${this.hostname} Cannot clear temporary backup directory: ${e.message}`);
         }
     }
 
@@ -201,36 +219,36 @@ export class BackupRestore {
      *
      * @param name - backup name
      */
-    private _packBackup(name: string): Promise<string> | void {
+    private _packBackup(name: string): Promise<string> {
         // 2021_10_25 BF (TODO): store letsencrypt files too
         const letsEncrypt = `${this.configDir}/letsencrypt`;
         if (fs.existsSync(letsEncrypt)) {
             try {
-                this.copyFolderRecursiveSync(letsEncrypt, `${tmpDir}/backup`);
+                this.copyFolderRecursiveSync(letsEncrypt, `${this.tmpDir}/backup`);
             } catch (e) {
-                console.error(`host.${hostname} Could not backup "${letsEncrypt}" directory: ${e.message}`);
+                console.error(`host.${this.hostname} Could not backup "${letsEncrypt}" directory: ${e.message}`);
                 this.removeTempBackupDir();
-                return void this.processExit(EXIT_CODES.CANNOT_COPY_DIR);
+                throw new IoBrokerError({ message: e.message, code: EXIT_CODES.CANNOT_COPY_DIR });
             }
         }
 
-        return new Promise(resolve => {
+        return new Promise((resolve, reject) => {
             const f = fs.createWriteStream(name);
             f.on('finish', () => {
                 this.removeTempBackupDir();
                 resolve(path.normalize(name));
             });
 
-            f.on('error', err => {
-                console.error(`host.${hostname} Cannot pack directory ${tmpDir}/backup: ${err.message}`);
-                this.processExit(EXIT_CODES.CANNOT_GZIP_DIRECTORY);
+            f.on('error', e => {
+                console.error(`host.${this.hostname} Cannot pack directory ${this.tmpDir}/backup: ${e.message}`);
+                reject(new IoBrokerError({ message: e.message, code: EXIT_CODES.CANNOT_GZIP_DIRECTORY }));
             });
 
             try {
-                tar.create({ gzip: true, cwd: `${tmpDir}/` }, ['backup']).pipe(f);
-            } catch (err) {
-                console.error(`host.${hostname} Cannot pack directory ${tmpDir}/backup: ${err.message}`);
-                return void this.processExit(EXIT_CODES.CANNOT_GZIP_DIRECTORY);
+                tar.create({ gzip: true, cwd: `${this.tmpDir}/` }, ['backup']).pipe(f);
+            } catch (e) {
+                console.error(`host.${this.hostname} Cannot pack directory ${this.tmpDir}/backup: ${e.message}`);
+                reject(new IoBrokerError({ message: e.message, code: EXIT_CODES.CANNOT_GZIP_DIRECTORY }));
             }
         });
     }
@@ -239,9 +257,9 @@ export class BackupRestore {
      * Creates backup and stores with given name
      *
      * @param name - name of the backup
-     * @param noConfig - do not store configs
+     * @param noConfig - do not store configs (used by setup custom migration)
      */
-    async createBackup(name: string, noConfig?: boolean): Promise<string | void> {
+    async createBackup(name: string, noConfig?: boolean): Promise<string> {
         if (!name) {
             const d = new Date();
             name =
@@ -341,13 +359,13 @@ export class BackupRestore {
             console.error(`host.${hostname} Cannot get states: ${e.message}`);
         }
 
-        fs.ensureDirSync(bkpDir);
-        fs.ensureDirSync(tmpDir);
+        fs.ensureDirSync(this.bkpDir);
+        fs.ensureDirSync(this.tmpDir);
 
         this.removeTempBackupDir();
 
-        fs.ensureDirSync(`${tmpDir}/backup`);
-        fs.ensureDirSync(`${tmpDir}/backup/files`);
+        fs.ensureDirSync(`${this.tmpDir}/backup`);
+        fs.ensureDirSync(`${this.tmpDir}/backup/files`);
 
         // try to find user files
         if (result.objects) {
@@ -379,7 +397,7 @@ export class BackupRestore {
                         if (object.value) {
                             object.value.common.name = object.value._id;
                             object.value.common.hostname = this.HOSTNAME_PLACEHOLDER;
-                            if (object.value.native && object.value.native.os) {
+                            if (object.value.native?.os) {
                                 object.value.native.os.hostname = this.HOSTNAME_PLACEHOLDER;
                             }
                         }
@@ -387,15 +405,15 @@ export class BackupRestore {
                 }
 
                 // Read all files
-                if (object.value.type === 'meta' && object.value.common && object.value.common.type === 'meta.user') {
+                if (object.value.type === 'meta' && object.value.common?.type === 'meta.user') {
                     // do not process "xxx.0. " and "xxx.0."
                     if (object.id.trim() === object.id && object.id[object.id.length - 1] !== '.') {
-                        await this.copyDir(object.id, '', `${tmpDir}/backup/files/${object.id}`);
+                        await this.copyDir(object.id, '', `${this.tmpDir}/backup/files/${object.id}`);
                     }
                 }
 
                 // Read all files
-                if (object.value.type === 'instance' && object.value.common && object.value.common.dataFolder) {
+                if (object.value.type === 'instance' && object.value.common?.dataFolder) {
                     let dataFolderPath = object.value.common.dataFolder;
 
                     if (dataFolderPath[0] !== '/' && !dataFolderPath.match(/^\w:/)) {
@@ -404,13 +422,13 @@ export class BackupRestore {
 
                     if (fs.existsSync(dataFolderPath)) {
                         try {
-                            this.copyFolderRecursiveSync(dataFolderPath, `${tmpDir}/backup`);
+                            this.copyFolderRecursiveSync(dataFolderPath, `${this.tmpDir}/backup`);
                         } catch (e) {
                             console.error(
                                 `host.${hostname} Could not backup "${dataFolderPath}" directory: ${e.message}`
                             );
                             this.removeTempBackupDir();
-                            return void this.processExit(EXIT_CODES.CANNOT_COPY_DIR);
+                            throw new IoBrokerError({ message: e.message, code: EXIT_CODES.CANNOT_COPY_DIR });
                         }
                     }
                 }
@@ -421,7 +439,7 @@ export class BackupRestore {
         try {
             const data = await this.objects.readFile('vis', 'css/vis-common-user.css');
             if (data) {
-                const dir = `${tmpDir}/backup/files/`;
+                const dir = `${this.tmpDir}/backup/files/`;
                 fs.ensureDirSync(`${dir}vis`);
                 fs.ensureDirSync(`${dir}vis/css`);
 
@@ -434,16 +452,20 @@ export class BackupRestore {
         console.log(`host.${hostname} ${result.objects?.length || 'no'} objects saved`);
 
         try {
-            fs.writeFileSync(`${tmpDir}/backup/backup.json`, JSON.stringify(result, null, 2));
+            await fs.writeJSON(`${this.tmpDir}/backup/backup.json`, result, { spaces: 0 });
             result = null; // ... to allow GC to clean it up because no longer needed
 
             this._validateBackupAfterCreation();
             return await this._packBackup(name);
-        } catch (err) {
-            console.error(`host.${hostname} Backup not created: ${err.message}`);
+        } catch (e) {
+            console.error(`host.${hostname} Backup not created: ${e.message}`);
             this.removeTempBackupDir();
 
-            return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
+            if (e instanceof IoBrokerError) {
+                throw e;
+            }
+
+            throw new IoBrokerError({ message: e.message, code: EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP });
         }
     }
 
@@ -457,13 +479,12 @@ export class BackupRestore {
     private async _setStateHelper(statesList: string[], stateObjects: Record<string, ioBroker.State>): Promise<void> {
         for (let i = 0; i < statesList.length; i++) {
             try {
-                // @ts-expect-error #1917 TODO revisit after merge
                 await this.states.setRawState(statesList[i], stateObjects[statesList[i]]);
             } catch (err) {
-                console.log(`host.${hostname} Could not set value for state ${statesList[i]}: ${err.message}`);
+                console.log(`host.${this.hostname} Could not set value for state ${statesList[i]}: ${err.message}`);
             }
             if (i % 200 === 0) {
-                console.log(`host.${hostname} Processed ${i}/${statesList.length} states`);
+                console.log(`host.${this.hostname} Processed ${i}/${statesList.length} states`);
             }
         }
     }
@@ -491,11 +512,11 @@ export class BackupRestore {
             try {
                 await this.objects.setObjectAsync(_objects[i].id, _objects[i].value);
             } catch (err) {
-                console.warn(`host.${hostname} Cannot restore ${_objects[i].id}: ${err.message}`);
+                console.warn(`host.${this.hostname} Cannot restore ${_objects[i].id}: ${err.message}`);
             }
 
             if (i % 200 === 0) {
-                console.log(`host.${hostname} Processed ${i}/${_objects.length} objects`);
+                console.log(`host.${this.hostname} Processed ${i}/${_objects.length} objects`);
             }
         }
     }
@@ -522,7 +543,7 @@ export class BackupRestore {
                 // object not existing -> create it
                 try {
                     await this.objects.setObjectAsync(object._id, object);
-                    console.log(`host.${hostname} object ${object._id} created`);
+                    console.log(`host.${this.hostname} object ${object._id} created`);
                 } catch {
                     // ignore
                 }
@@ -578,7 +599,8 @@ export class BackupRestore {
             await this.upload.uploadAdapter(adapterName, false, true);
             await this.upload.uploadAdapter(adapterName, true, true);
 
-            let pkg = null;
+            let pkg;
+
             if (!dir) {
                 console.error('Wrong');
             }
@@ -587,8 +609,8 @@ export class BackupRestore {
                 pkg = fs.readJSONSync(`${adapterDir}/io-package.json`);
             }
 
-            if (pkg && pkg.objects && pkg.objects.length) {
-                console.log(`host.${hostname} Setup "${dir}" adapter`);
+            if (pkg?.objects?.length) {
+                console.log(`host.${this.hostname} Setup "${dir}" adapter`);
                 await this._reloadAdapterObject(pkg.objects);
             }
         }
@@ -616,7 +638,7 @@ export class BackupRestore {
                 const parts = uploadPath.split('/');
                 const adapter = parts.splice(0, 2)[1];
                 const _path = `${parts.join('/')}/${file}`;
-                console.log(`host.${hostname} Upload user file "${adapter}/${_path}`);
+                console.log(`host.${this.hostname} Upload user file "${adapter}/${_path}`);
                 try {
                     await this.objects.writeFileAsync(adapter, _path, fs.readFileSync(`${root + uploadPath}/${file}`));
                 } catch (err) {
@@ -661,26 +683,22 @@ export class BackupRestore {
     /**
      * Restore after controller has been stopped
      *
-     * @param restartOnFinish - restart controller after restore
-     * @param force - skip the controller version check
-     * @param dontDeleteAdapters - skip adapter deletion, e.g. for setup custom db migration
+     * @param options The restore options
      */
-    private async _restoreAfterStop(
-        restartOnFinish: boolean,
-        force: boolean,
-        dontDeleteAdapters: boolean
-    ): Promise<number> {
+    private async _restoreAfterStop(options: RestoreAfterStopOptions): Promise<number> {
+        const { force, restartOnFinish, dontDeleteAdapters } = options;
+
         // Open file
-        let data = fs.readFileSync(`${tmpDir}/backup/backup.json`, 'utf8');
+        let data = fs.readFileSync(`${this.tmpDir}/backup/backup.json`, 'utf8');
         const hostname = tools.getHostName();
         // replace all hostnames of instances etc with the new host
         data = data.replace(this.HOSTNAME_PLACEHOLDER_REGEX, hostname);
-        fs.writeFileSync(`${tmpDir}/backup/backup_.json`, data);
+        fs.writeFileSync(`${this.tmpDir}/backup/backup_.json`, data);
         let restore: Backup;
         try {
             restore = JSON.parse(data);
         } catch (err) {
-            console.error(`Cannot parse "${tmpDir}/backup/backup_.json": ${err.message}`);
+            console.error(`Cannot parse "${this.tmpDir}/backup/backup_.json": ${err.message}`);
             return EXIT_CODES.CANNOT_RESTORE_BACKUP;
         }
 
@@ -707,15 +725,15 @@ export class BackupRestore {
             await this._removeAllAdapters();
         }
 
-        // stop all adapters
-        console.log(`host.${hostname} Clear all objects and states...`);
-        await this.cleanDatabase(false);
-        console.log(`host.${hostname} done.`);
-        // upload all data into DB
         // restore ioBroker.json
         if (restore.config) {
             fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(restore.config, null, 2));
+            await this.connectToNewDatabase(restore.config);
         }
+
+        console.log(`host.${hostname} Clear all objects and states...`);
+        await this.cleanDatabase(false);
+        console.log(`host.${hostname} done.`);
 
         const sList = Object.keys(restore.states);
 
@@ -724,14 +742,14 @@ export class BackupRestore {
         await this._setStateHelper(sList, restore.states);
         console.log(`${sList.length} states restored.`);
         // Load user files into DB
-        await this._uploadUserFiles(`${tmpDir}/backup/files`);
+        await this._uploadUserFiles(`${this.tmpDir}/backup/files`);
         // reload objects of adapters (if some couldn't be removed - normally this shouldn't be necessary anymore)
         await this._reloadAdaptersObjects();
         // Reload host objects
         const packageIO = fs.readJSONSync(path.join(controllerDir, 'io-package.json'));
         await this._reloadAdapterObject(packageIO ? packageIO.objects : null);
         // copy all files into iob-data
-        await this._copyBackupedFiles(path.join(tmpDir, 'backup'));
+        await this._copyBackupedFiles(path.join(this.tmpDir, 'backup'));
         // reinstall preserve adapters
         await this._restorePreservedAdapters();
 
@@ -750,10 +768,31 @@ export class BackupRestore {
         }
 
         if (restartOnFinish) {
+            console.log('restart');
             this.restartController();
         }
 
         return EXIT_CODES.NO_ERROR;
+    }
+
+    /**
+     * Connects to the database which is configured in `iobroker.json`
+     * Meant to be used after configuration file has been overwritten
+     *
+     * @param config The new config, needed for logging purposes
+     */
+    private async connectToNewDatabase(config: ioBroker.IoBrokerJson): Promise<void> {
+        console.log(
+            `host.${this.hostname} Connecting to new DB "${config.states.type}/${config.objects.type}" (can take up to 20s) ...`
+        );
+        await resetDbConnect();
+        const { objects, states } = await dbConnectAsync(false);
+        console.log(`host.${this.hostname} Successfully connected to new DB`);
+
+        this.upload = new Upload({ states, objects });
+
+        this.objects = objects;
+        this.states = states;
     }
 
     /**
@@ -850,17 +889,17 @@ export class BackupRestore {
      */
     private _validateBackupAfterCreation(): void {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const backupJSON = require(`${tmpDir}/backup/backup.json`);
+        const backupJSON = require(`${this.tmpDir}/backup/backup.json`);
         if (!backupJSON.objects || !backupJSON.objects.length) {
             throw new Error('Backup does not contain valid objects');
         }
 
         // we check all other json files, we assume them as optional, because user created files may be no valid json
         try {
-            this._checkDirectory(`${tmpDir}/backup/files`);
+            this._checkDirectory(`${this.tmpDir}/backup/files`);
         } catch (err) {
-            console.warn(`host.${hostname} One or more optional files are corrupted: ${err.message}`);
-            console.warn(`host.${hostname} Please ensure that self-created JSON files are valid`);
+            console.warn(`host.${this.hostname} One or more optional files are corrupted: ${err.message}`);
+            console.warn(`host.${this.hostname} Please ensure that self-created JSON files are valid`);
         }
     }
 
@@ -906,7 +945,7 @@ export class BackupRestore {
                 }
                 return void this.processExit(10);
             } else {
-                console.log(`host.${hostname} Using backup file ${name}`);
+                console.log(`host.${this.hostname} Using backup file ${name}`);
             }
         }
 
@@ -922,40 +961,40 @@ export class BackupRestore {
             }
         }
         if (!fs.existsSync(name)) {
-            console.error(`host.${hostname} Cannot find ${name}`);
+            console.error(`host.${this.hostname} Cannot find ${name}`);
             return void this.processExit(11);
         }
 
-        if (fs.existsSync(`${tmpDir}/backup/backup.json`)) {
-            fs.unlinkSync(`${tmpDir}/backup/backup.json`);
+        if (fs.existsSync(`${this.tmpDir}/backup/backup.json`)) {
+            fs.unlinkSync(`${this.tmpDir}/backup/backup.json`);
         }
 
         return new Promise(resolve => {
             tar.extract(
                 {
                     file: name,
-                    cwd: tmpDir
+                    cwd: this.tmpDir
                 },
                 undefined,
                 err => {
                     if (err) {
-                        console.error(`host.${hostname} Cannot extract from file "${name}": ${err.message}`);
+                        console.error(`host.${this.hostname} Cannot extract from file "${name}": ${err.message}`);
                         return void this.processExit(9);
                     }
-                    if (!fs.existsSync(`${tmpDir}/backup/backup.json`)) {
+                    if (!fs.existsSync(`${this.tmpDir}/backup/backup.json`)) {
                         console.error(
-                            `host.${hostname} Validation failed. Cannot find extracted file from file "${tmpDir}/backup/backup.json"`
+                            `host.${this.hostname} Validation failed. Cannot find extracted file from file "${this.tmpDir}/backup/backup.json"`
                         );
                         return void this.processExit(9);
                     }
 
-                    console.log(`host.${hostname} Starting validation ...`);
+                    console.log(`host.${this.hostname} Starting validation ...`);
                     let backupJSON;
                     try {
-                        backupJSON = require(`${tmpDir}/backup/backup.json`);
+                        backupJSON = require(`${this.tmpDir}/backup/backup.json`);
                     } catch (err) {
                         console.error(
-                            `host.${hostname} Backup corrupted. Backup ${name} does not contain a valid backup.json file: ${err.message}`
+                            `host.${this.hostname} Backup corrupted. Backup ${name} does not contain a valid backup.json file: ${err.message}`
                         );
                         this.removeTempBackupDir();
 
@@ -963,24 +1002,26 @@ export class BackupRestore {
                     }
 
                     if (!backupJSON || !backupJSON.objects || !backupJSON.objects.length) {
-                        console.error(`host.${hostname} Backup corrupted. Backup does not contain valid objects`);
+                        console.error(`host.${this.hostname} Backup corrupted. Backup does not contain valid objects`);
                         try {
                             this.removeTempBackupDir();
                         } catch (e) {
-                            console.error(`host.${hostname} Cannot clear temporary backup directory: ${e.message}`);
+                            console.error(
+                                `host.${this.hostname} Cannot clear temporary backup directory: ${e.message}`
+                            );
                         }
                         return void this.processExit(26);
                     }
 
-                    console.log(`host.${hostname} backup.json OK`);
+                    console.log(`host.${this.hostname} backup.json OK`);
 
                     try {
-                        this._checkDirectory(`${tmpDir}/backup/files`, true);
+                        this._checkDirectory(`${this.tmpDir}/backup/files`, true);
                         this.removeTempBackupDir();
 
                         resolve();
                     } catch (err) {
-                        console.error(`host.${hostname} Backup corrupted: ${err.message}`);
+                        console.error(`host.${this.hostname} Backup corrupted: ${err.message}`);
                         return void this.processExit(26);
                     }
                 }
@@ -1008,10 +1049,10 @@ export class BackupRestore {
                     try {
                         require(filePath);
                         if (verbose) {
-                            console.log(`host.${hostname} ${file} OK`);
+                            console.log(`host.${this.hostname} ${file} OK`);
                         }
                     } catch {
-                        throw new Error(`host.${hostname} ${filePath} is not a valid json file`);
+                        throw new Error(`host.${this.hostname} ${filePath} is not a valid json file`);
                     }
                 }
             }
@@ -1021,17 +1062,11 @@ export class BackupRestore {
     /**
      * Restores a backup
      *
-     * @param _name - backup name, absolute path or index
-     * @param force - if force flag is set, js-controller is allowed to have a different version
-     * @param dontDeleteAdapters - skip adapter deletion, e.g. for setup custom db migration
-     * @param callback
+     * @param options Restore options
      */
-    restoreBackup(
-        _name: string | number,
-        force: boolean,
-        dontDeleteAdapters: boolean,
-        callback: (exitCode: number) => void
-    ): void {
+    restoreBackup(options: RestoreBackupOptions): void {
+        const { name: _name, dontDeleteAdapters, force, callback } = options;
+
         let backups;
         let name = typeof _name === 'number' ? _name.toString() : _name;
 
@@ -1071,7 +1106,7 @@ export class BackupRestore {
                     );
                 }
             } else {
-                console.log(`host.${hostname} Using backup file ${name}`);
+                console.log(`host.${this.hostname} Using backup file ${name}`);
             }
         }
 
@@ -1087,29 +1122,29 @@ export class BackupRestore {
             }
         }
         if (!fs.existsSync(name)) {
-            console.error(`host.${hostname} Cannot find ${name}`);
+            console.error(`host.${this.hostname} Cannot find ${name}`);
             return void this.processExit(11);
         }
 
         // delete /backup/backup.json
-        if (fs.existsSync(`${tmpDir}/backup/backup.json`)) {
-            fs.unlinkSync(`${tmpDir}/backup/backup.json`);
+        if (fs.existsSync(`${this.tmpDir}/backup/backup.json`)) {
+            fs.unlinkSync(`${this.tmpDir}/backup/backup.json`);
         }
 
         tar.extract(
             {
                 file: name,
-                cwd: tmpDir
+                cwd: this.tmpDir
             },
             undefined,
             err => {
                 if (err) {
-                    console.error(`host.${hostname} Cannot extract from file "${name}": ${err.message}`);
+                    console.error(`host.${this.hostname} Cannot extract from file "${name}": ${err.message}`);
                     return void this.processExit(9);
                 }
-                if (!fs.existsSync(`${tmpDir}/backup/backup.json`)) {
+                if (!fs.existsSync(`${this.tmpDir}/backup/backup.json`)) {
                     console.error(
-                        `host.${hostname} Cannot find extracted file from file "${tmpDir}/backup/backup.json"`
+                        `host.${this.hostname} Cannot find extracted file from file "${this.tmpDir}/backup/backup.json"`
                     );
                     return void this.processExit(9);
                 }
@@ -1120,20 +1155,32 @@ export class BackupRestore {
                     name: `${tools.appName} controller`,
                     pidfile: path.join(controllerDir, `${tools.appName}.pid`),
                     cwd: controllerDir,
-                    stopTimeout: 1000
+                    stopTimeout: 1_000
                 });
                 daemon.on('error', async () => {
-                    const exitCode = await this._restoreAfterStop(false, force, dontDeleteAdapters);
-                    callback && callback(exitCode);
+                    const exitCode = await this._restoreAfterStop({
+                        restartOnFinish: false,
+                        force,
+                        dontDeleteAdapters
+                    });
+                    callback && callback({ exitCode, objects: this.objects, states: this.states });
                 });
                 daemon.on('stopped', async () => {
-                    const exitCode = await this._restoreAfterStop(true, force, dontDeleteAdapters);
-                    callback && callback(exitCode);
+                    const exitCode = await this._restoreAfterStop({
+                        restartOnFinish: true,
+                        force,
+                        dontDeleteAdapters
+                    });
+                    callback && callback({ exitCode, objects: this.objects, states: this.states });
                 });
                 daemon.on('notrunning', async () => {
-                    console.log(`host.${hostname} OK.`);
-                    const exitCode = await this._restoreAfterStop(false, force, dontDeleteAdapters);
-                    callback && callback(exitCode);
+                    console.log(`host.${this.hostname} OK.`);
+                    const exitCode = await this._restoreAfterStop({
+                        restartOnFinish: false,
+                        force,
+                        dontDeleteAdapters
+                    });
+                    callback && callback({ exitCode, objects: this.objects, states: this.states });
                 });
 
                 daemon.stop();
@@ -1148,7 +1195,7 @@ export class BackupRestore {
         for (const adapterName of this.PRESERVE_ADAPTERS) {
             try {
                 const adapterObj = await this.objects.getObjectAsync(`system.adapter.${adapterName}`);
-                if (adapterObj && adapterObj.common && adapterObj.common.version) {
+                if (adapterObj?.common?.version) {
                     let installSource;
                     // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                     if (adapterObj.common.installedFrom) {
