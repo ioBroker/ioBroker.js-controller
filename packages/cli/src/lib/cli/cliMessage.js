@@ -81,11 +81,7 @@ module.exports = class CLIMessage extends CLICommand {
  * @param {any} message The message to send
  * @returns {Promise<void>}
  */
-function sendMessage(states, targetId, command, message) {
-    return new Promise(resolve => {
-        states.pushMessage(targetId, { command, message, from: 'cli' }, () => {
-            CLI.success.messageSent(targetId, command, message);
-            resolve();
-        });
-    });
+async function sendMessage(states, targetId, command, message) {
+    await states.pushMessage(targetId, { command, message, from: 'cli' });
+    CLI.success.messageSent(targetId, command, message);
 }

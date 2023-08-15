@@ -1184,17 +1184,13 @@ export class StateRedisClient {
         return this.unsubscribe(pattern, true, callback);
     }
 
-    async pushMessage(
-        id: string,
-        message: ioBroker.SendableMessage,
-        callback?: (err: Error | undefined | null, id?: string) => void
-    ): Promise<string | void> {
+    async pushMessage(id: string, message: ioBroker.SendableMessage): Promise<void> {
         if (!id || typeof id !== 'string') {
-            return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
+            throw new Error(`invalid id ${JSON.stringify(id)}`);
         }
 
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         const fullMessage: ioBroker.Message = { ...message, _id: this.globalMessageId++ };
@@ -1202,12 +1198,8 @@ export class StateRedisClient {
         if (this.globalMessageId >= 0xffffffff) {
             this.globalMessageId = 0;
         }
-        try {
-            await this.client.publish(this.namespaceMsg + id, JSON.stringify(fullMessage));
-            return tools.maybeCallbackWithError(callback, null, id);
-        } catch (e) {
-            return tools.maybeCallbackWithRedisError(callback, e);
-        }
+
+        await this.client.publish(this.namespaceMsg + id, JSON.stringify(fullMessage));
     }
 
     async subscribeMessage(id: string, callback?: ioBroker.ErrorCallback): Promise<void> {
