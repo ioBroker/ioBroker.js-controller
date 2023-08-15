@@ -4,7 +4,7 @@ export interface AdapterOptions {
     logTransporter?: boolean;
     /** if true, the date format from system.config */
     useFormatDate?: boolean;
-    /** if it is possible for other instances to retrive states of this adapter automatically */
+    /** if it is possible for other instances to retrieve states of this adapter automatically */
     subscribable?: boolean;
     /** compact group instance if running in compact mode */
     compactInstance?: number;
@@ -32,6 +32,10 @@ export interface AdapterOptions {
     stateChange?: ioBroker.StateChangeHandler;
     /** callback function (id, file) that will be called if file changed */
     fileChange?: ioBroker.FileChangeHandler;
+    /** callback function that will be called when a new UI client subscribes */
+    uiClientSubscribe?: UserInterfaceClientSubscribeHandler;
+    /** callback function that will be called when a new UI client unsubscribes */
+    uiClientUnsubscribe?: UserInterfaceClientUnsubscribeHandler;
     /** callback to inform about new message the adapter */
     message?: ioBroker.MessageHandler;
     /** callback to stop the adapter */
@@ -45,6 +49,66 @@ export interface AdapterOptions {
     /** Handler to handle uncaught exceptions, return true if no further handling required */
     error?: ioBroker.ErrorHandler;
 }
+
+type MessageUnsubscribeReason = 'client' | 'disconnect';
+export type ClientUnsubscribeReason = MessageUnsubscribeReason | 'clientSubscribeError';
+type UserInterfaceClientUnsubscribeReason = ClientUnsubscribeReason | 'timeout';
+
+export interface UserInterfaceSubscribeInfo {
+    /** The client id, which can be used to send information to clients */
+    clientId: string;
+    /** The message used for subscription */
+    message: ioBroker.Message;
+}
+
+export type UserInterfaceClientSubscribeHandler = (
+    subscribeInfo: UserInterfaceSubscribeInfo
+) => UserInterfaceClientSubscribeReturnType | Promise<UserInterfaceClientSubscribeReturnType>;
+
+export interface UserInterfaceClientSubscribeReturnType {
+    /** If the adapter has accepted the client subscription */
+    accepted: boolean;
+    /** Optional heartbeat, if set, the client needs to re-subscribe every heartbeat interval */
+    heartbeat?: number;
+}
+
+type UserInterfaceUnsubscribeInfoBaseObject = {
+    /** The handler id, which can be used to send information to clients */
+    clientId: string;
+};
+
+export type UserInterfaceUnsubscribeInfo = UserInterfaceUnsubscribeInfoBaseObject &
+    (
+        | {
+              /** Reason for unsubscribe */
+              reason: Exclude<UserInterfaceClientUnsubscribeReason, ClientUnsubscribeReason>;
+              message?: undefined;
+          }
+        | {
+              /** Reason for unsubscribe */
+              reason: ClientUnsubscribeReason;
+              /** Message used for unsubscribe */
+              message: ioBroker.Message;
+          }
+    );
+
+export type UserInterfaceClientUnsubscribeHandler = (
+    unsubscribeInfo: UserInterfaceUnsubscribeInfo
+) => void | Promise<void>;
+
+export type UserInterfaceClientRemoveMessage =
+    | (ioBroker.Message & {
+          command: 'clientUnsubscribe';
+          message: {
+              reason: MessageUnsubscribeReason;
+          };
+      })
+    | (ioBroker.Message & {
+          command: 'clientSubscribeError';
+          message: {
+              reason: undefined;
+          };
+      });
 
 export type Pattern = string | string[];
 
@@ -161,6 +225,15 @@ export type CommandsPermissionsObject = {
 export type CommandsPermissions = CommandsPermissionsObject | CommandsPermissionsEntry[];
 
 export type CalculatePermissionsCallback = (result: ioBroker.PermissionSet) => void;
+
+export interface SendToUserInterfaceClientOptions {
+    /** id of the UI client, if not given send to all active clients */
+    clientId?: string;
+    /** data to send to the client */
+    data: unknown;
+}
+
+export type AllPropsUnknown<T> = { [K in keyof T]: unknown };
 
 export interface InternalCalculatePermissionsOptions {
     user: string;

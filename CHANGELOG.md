@@ -3,7 +3,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## 5.0.11 (2023-07-30) - Jana
+## __WORK IN PROGRESS__ - Jana
 **BREAKING CHANGES**
 * Support for Node.js 12 and 14 is dropped! Supported are Node.js 16.4.0+ and 18.x
 * Backups created with the new js-controller version cannot be restored on hosts with lower js-controller version!
@@ -11,6 +11,7 @@
 * Deprecate binary states, Adapters will change to use Files instead!
 
 **Features**
+* (foxriver76) added method `sendToUserInterfaceClient` to push messages to UI client
 * (foxriver76) Show npm error message on failing adapter installations and update also without debug parameter
 * (bluefox/Apollon77/foxriver76) Try to solve `ENOTEMPTY` errors automatically on adapter upgrades/installations
 * (foxriver76) Introduce iobroker setting (dnsResolution) to choose between verbatim and ipv4 first dns resolution order
