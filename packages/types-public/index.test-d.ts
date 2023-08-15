@@ -708,6 +708,12 @@ adapter.clearInterval(adapter.setTimeout(() => {}, 10));
 // @ts-expect-error
 adapter.clearTimeout(adapter.setInterval(() => {}, 10));
 
+adapter.sendToUI({ data: 'blabla', clientId: '123-456-789' });
+// @ts-expect-error clientId has to be string
+adapter.sendToUI({ data: 'blabla', clientId: 12 });
+// send to all clients
+adapter.sendToUI({ data: [1, 2, 3] });
+
 // Error callbacks were changed to Error objects
 adapter.delFile(null, 'foo', err => {
     if (err) {
