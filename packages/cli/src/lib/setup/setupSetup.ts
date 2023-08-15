@@ -7,14 +7,7 @@
  *
  */
 
-import type {
-    CleanDatabaseHandler,
-    DbConnectAsync,
-    IoPackage,
-    ProcessExitCallback,
-    ResetDbConnect,
-    RestartController
-} from '../_Types';
+import type { CleanDatabaseHandler, IoPackage, ProcessExitCallback, RestartController } from '../_Types';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
@@ -22,6 +15,7 @@ import fs from 'fs-extra';
 import path from 'path';
 import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
 import { tools as dbTools } from '@iobroker/js-controller-common-db';
+import { resetDbConnect, dbConnectAsync } from './dbConnection';
 import { BackupRestore } from './setupBackup';
 import crypto from 'crypto';
 import deepClone from 'deep-clone';
@@ -36,12 +30,10 @@ const COLOR_GREEN = '\x1b[32m';
 const CONTROLLER_DIR = tools.getControllerDir();
 
 export interface CLISetupOptions {
-    dbConnectAsync: DbConnectAsync;
     cleanDatabase: CleanDatabaseHandler;
     processExit: ProcessExitCallback;
     params: Record<string, any>;
     restartController: RestartController;
-    resetDbConnect: ResetDbConnect;
 }
 
 type ConfigObject = ioBroker.OtherObject & { type: 'config' };
@@ -51,19 +43,15 @@ export class Setup {
     private readonly processExit: ProcessExitCallback;
     private states: StatesRedisClient | undefined;
     private objects: ObjectsRedisClient | undefined;
-    private readonly dbConnectAsync: DbConnectAsync;
     private readonly params: Record<string, any>;
     private readonly cleanDatabase: CleanDatabaseHandler;
     private readonly restartController: RestartController;
-    private readonly resetDbConnect: ResetDbConnect;
 
     constructor(options: CLISetupOptions) {
         this.options = options;
         this.processExit = options.processExit;
-        this.dbConnectAsync = options.dbConnectAsync;
         this.params = options.params;
         this.cleanDatabase = options.cleanDatabase;
-        this.resetDbConnect = options.resetDbConnect;
         this.restartController = options.restartController;
 
         this.dbSetup = this.dbSetup.bind(this);
@@ -288,7 +276,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
      * @param checkCertificateOnly
      */
     async setupObjects(callback: () => void, checkCertificateOnly?: boolean): Promise<void> {
-        const { states: _states, objects: _objects } = await this.dbConnectAsync(false, this.params);
+        const { states: _states, objects: _objects } = await dbConnectAsync(false, this.params);
         this.objects = _objects;
         this.states = _states;
         const iopkg = fs.readJsonSync(path.join(CONTROLLER_DIR, 'io-package.json'));
@@ -297,7 +285,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
         if (checkCertificateOnly) {
             let certObj;
-            if (iopkg && iopkg.objects) {
+            if (iopkg?.objects) {
                 for (const obj of iopkg.objects) {
                     if (obj && obj._id === 'system.certificates') {
                         certObj = obj;
@@ -371,7 +359,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
      * @param newConfig - updated config
      * @param oldConfig - previous config
      */
-    async migrateObjects(newConfig: Record<string, any>, oldConfig: Record<string, any>): Promise<EXIT_CODES> {
+    async migrateObjects(newConfig: ioBroker.IoBrokerJson, oldConfig: ioBroker.IoBrokerJson): Promise<EXIT_CODES> {
         // allow migration if one of the db types changed or host changed of redis
         const oldStatesHasServer = dbTools.statesDbHasServer(oldConfig.states.type);
         const oldObjectsHasServer = dbTools.statesDbHasServer(oldConfig.objects.type);
@@ -504,13 +492,9 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             }
 
             if (answer === 'Y' || answer === 'y' || answer === 'J' || answer === 'j') {
-                console.log(`Connecting to previous DB "${oldConfig.objects.type}"...`);
+                console.log(`Connecting to previous DB "${oldConfig.states.type}/${oldConfig.objects.type}"...`);
 
-                const {
-                    objects: objectsOld,
-                    states: statesOld,
-                    isOffline
-                } = await this.dbConnectAsync(false, this.params);
+                const { objects: objectsOld, states: statesOld, isOffline } = await dbConnectAsync(false, this.params);
 
                 if (!isOffline) {
                     console.error(COLOR_RED);
@@ -519,7 +503,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                     return EXIT_CODES.CONTROLLER_RUNNING;
                 }
 
-                // TODO: rm this if procesExit is gone from BackupRestore
+                // TODO: rm this if processExit is gone from BackupRestore
                 // eslint-disable-next-line no-async-promise-executor
                 return new Promise(async resolve => {
                     const backupCreate = new BackupRestore({
@@ -545,18 +529,20 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                     }
 
                     console.log(`Backup created: ${filePath}`);
-                    await this.resetDbConnect();
+                    await resetDbConnect();
 
                     console.log(`updating conf/${tools.appName.toLowerCase()}.json`);
                     fs.writeFileSync(`${tools.getConfigFileName()}.bak`, JSON.stringify(oldConfig, null, 2));
                     fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(newConfig, null, 2));
 
                     console.log('');
-                    console.log(`Connecting to new DB "${newConfig.objects.type}" (can take up to 20s) ...`);
+                    console.log(
+                        `Connecting to new DB "${newConfig.states.type}/${newConfig.objects.type}" (can take up to 20s) ...`
+                    );
 
-                    const { objects: objectsNew, states: statesNew } = await this.dbConnectAsync(true, {
+                    const { objects: objectsNew, states: statesNew } = await dbConnectAsync(true, {
                         ...this.params,
-                        timeout: 20000
+                        timeout: 20_000
                     });
 
                     this.objects = objectsNew;
@@ -572,7 +558,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                         fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));
                         fs.unlinkSync(`${tools.getConfigFileName()}.bak`);
 
-                        return EXIT_CODES.MIGRATION_ERROR;
+                        return resolve(EXIT_CODES.MIGRATION_ERROR);
                     }
 
                     const backupRestore = new BackupRestore({
@@ -585,24 +571,32 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                     });
                     console.log('Restore backup ...');
                     console.log(`${COLOR_GREEN}This can take some time ... please be patient!${COLOR_RESET}`);
-                    backupRestore.restoreBackup(filePath, false, true, async exitCode => {
-                        if (exitCode) {
-                            console.log(`Error happened during restore. Exit-Code: ${exitCode}`);
-                            console.log();
-                            console.log(`restoring conf/${tools.appName.toLowerCase()}.json`);
-                            fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));
-                            fs.unlinkSync(tools.getConfigFileName() + '.bak');
-                        } else {
-                            await this._maybeMigrateSets();
-                            console.log('Backup restored - Migration successful');
-                            console.log(COLOR_YELLOW);
-                            console.log('Important: If your system consists of multiple hosts please execute ');
-                            console.log('"iobroker upload all" on the master AFTER all other hosts/slaves have ');
-                            console.log('also been updated to this states/objects database configuration AND are');
-                            console.log(`running!${COLOR_RESET}`);
-                        }
+                    backupRestore.restoreBackup({
+                        name: filePath,
+                        force: false,
+                        dontDeleteAdapters: true,
+                        callback: async ({ exitCode, states, objects }) => {
+                            this.objects = objects;
+                            this.states = states;
 
-                        resolve(exitCode ? EXIT_CODES.MIGRATION_ERROR : EXIT_CODES.NO_ERROR);
+                            if (exitCode) {
+                                console.log(`Error happened during restore. Exit-Code: ${exitCode}`);
+                                console.log();
+                                console.log(`restoring conf/${tools.appName.toLowerCase()}.json`);
+                                fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));
+                                fs.unlinkSync(`${tools.getConfigFileName()}.bak`);
+                            } else {
+                                await this._maybeMigrateSets();
+                                console.log('Backup restored - Migration successful');
+                                console.log(COLOR_YELLOW);
+                                console.log('Important: If your system consists of multiple hosts please execute ');
+                                console.log('"iobroker upload all" on the master AFTER all other hosts/slaves have ');
+                                console.log('also been updated to this states/objects database configuration AND are');
+                                console.log(`running!${COLOR_RESET}`);
+                            }
+
+                            resolve(exitCode ? EXIT_CODES.MIGRATION_ERROR : EXIT_CODES.NO_ERROR);
+                        }
                     });
                 });
             } else if (!newObjectsHasServer) {

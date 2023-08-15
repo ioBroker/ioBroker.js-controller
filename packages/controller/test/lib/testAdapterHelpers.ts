@@ -92,12 +92,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         done();
     });
 
-    //getCertificates
-    it(context.name + ' ' + context.adapterShortName + ' adapter: returns SSL certificates by name', function (done) {
-        this.timeout(3_000);
-        // TODO: sync
-        // TODO: async
-        done();
+    // getCertificates
+    it(context.name + ' ' + context.adapterShortName + ' adapter: returns SSL certificates by name', async () => {
+        // has to work without chained certificate
+        const certs = await context.adapter.getCertificatesAsync('defaultPublic', 'defaultPrivate');
+        expect(certs).to.be.ok;
     });
 
     it(context.name + ' ' + context.adapterShortName + ' adapter: get the user id', async () => {
@@ -303,9 +302,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     // Check setTimeout throw
     it(context.name + ' ' + context.adapterShortName + ' adapter: check setTimeout', done => {
         // is valid
-        const timeout = context.adapter.setTimeout(() => {
-            /** pass */
-        }, 2 ** 32 / 2 - 1);
+        const timeout = context.adapter.setTimeout(
+            () => {
+                /** pass */
+            },
+            2 ** 32 / 2 - 1
+        );
         context.adapter.clearTimeout(timeout!);
 
         // is valid
@@ -314,9 +316,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         }, 0);
 
         expect(() => {
-            context.adapter.setTimeout(() => {
-                /** pass */
-            }, 2 ** 32 / 2);
+            context.adapter.setTimeout(
+                () => {
+                    /** pass */
+                },
+                2 ** 32 / 2
+            );
         }).to.throw(/is larger than/, 'Invalid timeout not thrown');
 
         expect(() => {
@@ -331,9 +336,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     // Check setInterval throw
     it(context.name + ' ' + context.adapterShortName + ' adapter: check setInterval', done => {
         // is valid
-        let interval = context.adapter.setInterval(() => {
-            /** pass */
-        }, 2 ** 32 / 2 - 1);
+        let interval = context.adapter.setInterval(
+            () => {
+                /** pass */
+            },
+            2 ** 32 / 2 - 1
+        );
         context.adapter.clearInterval(interval!);
 
         // is valid
@@ -344,9 +352,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         context.adapter.clearInterval(interval!);
 
         expect(() => {
-            context.adapter.setInterval(() => {
-                /** pass */
-            }, 2 ** 32 / 2);
+            context.adapter.setInterval(
+                () => {
+                    /** pass */
+                },
+                2 ** 32 / 2
+            );
         }).to.throw(/is larger than/, 'Invalid timeout not thrown');
 
         expect(() => {

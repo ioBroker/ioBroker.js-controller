@@ -7,13 +7,12 @@
  *
  */
 
-'use strict';
 import { Writable, WritableOptions } from 'stream';
 import path from 'path';
 import deepClone from 'deep-clone';
 import { tools } from '@iobroker/db-base';
 import * as CONSTS from './constants';
-import mime from 'mime';
+import mime from 'mime-types';
 
 export * as CONSTS from './constants';
 export const ERRORS = CONSTS.ERRORS;
@@ -57,7 +56,7 @@ const textTypes = ['.js', '.json', '.svg'];
  */
 function getKnownMimeType(ext: string): FileMimeInformation | null {
     try {
-        const mimeType = mime.getType(ext);
+        const mimeType = mime.lookup(ext);
         if (mimeType) {
             return { mimeType, isBinary: !mimeType.startsWith('text/') && !textTypes.includes(ext) };
         }

@@ -21,6 +21,7 @@ import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual, inspect } from 'util';
 import { tools, EXIT_CODES, logger as toolsLogger } from '@iobroker/js-controller-common';
+import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
 import { PluginHandler } from '@iobroker/plugin-base';
 import { NotificationHandler } from '@iobroker/js-controller-common-db';
 import * as zipFiles from './lib/zipFiles';
@@ -29,7 +30,9 @@ import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { Upload } from '@iobroker/js-controller-cli';
 import decache from 'decache';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
-import { getDefaultNodeArgs } from './lib/tools';
+import { getDefaultNodeArgs, HostInfo } from '@iobroker/js-controller-common/tools';
+import type { UpgradeArguments } from './lib/upgradeManager';
+import { AdapterUpgradeManager } from './lib/adapterUpgradeManager';
 
 type TaskObject = ioBroker.SettableObject & { state?: ioBroker.SettableState };
 type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
@@ -588,10 +591,13 @@ function createStates(onConnect: () => void): void {
 
             statesDisconnectTimeout && clearTimeout(statesDisconnectTimeout);
 
-            statesDisconnectTimeout = setTimeout(() => {
-                statesDisconnectTimeout = null;
-                handleDisconnect();
-            }, (config.states.connectTimeout || 2000) + (!compactGroupController ? 500 : 0));
+            statesDisconnectTimeout = setTimeout(
+                () => {
+                    statesDisconnectTimeout = null;
+                    handleDisconnect();
+                },
+                (config.states.connectTimeout || 2000) + (!compactGroupController ? 500 : 0)
+            );
         }
     });
 }
@@ -693,10 +699,13 @@ function createObjects(onConnect: () => void): void {
             // on reconnection this will be determiend anew
             isPrimary = false;
             objectsDisconnectTimeout && clearTimeout(objectsDisconnectTimeout);
-            objectsDisconnectTimeout = setTimeout(() => {
-                objectsDisconnectTimeout = null;
-                handleDisconnect();
-            }, (config.objects.connectTimeout || 2000) + (!compactGroupController ? 500 : 0));
+            objectsDisconnectTimeout = setTimeout(
+                () => {
+                    objectsDisconnectTimeout = null;
+                    handleDisconnect();
+                },
+                (config.objects.connectTimeout || 2000) + (!compactGroupController ? 500 : 0)
+            );
             // give main controller a bit longer, so that adapter and compact processes can exit before
         },
         change: async (id, obj) => {
@@ -1169,7 +1178,7 @@ async function changeHost(
             obj.common.host = newHostname;
             logger.info(
                 `${hostLogPrefix} Reassign instance ${obj._id.substring(
-                    'system.adapter.'.length
+                    SYSTEM_ADAPTER_PREFIX.length
                 )} from ${oldHostname} to ${newHostname}`
             );
             obj.from = `system.host.${tools.getHostName()}`;
@@ -1237,10 +1246,10 @@ function cleanAutoSubscribes(instanceID: ioBroker.ObjectIDs.Instance, callback: 
     objects!.getObjectView(
         'system',
         'instance',
-        { startkey: 'system.adapter.', endkey: 'system.adapter.\u9999' },
+        { startkey: SYSTEM_ADAPTER_PREFIX, endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999` },
         (err, res) => {
             let count = 0;
-            if (res && res.rows) {
+            if (res?.rows) {
                 for (const row of res.rows) {
                     // remove this instance from autoSubscribe
                     if (row.value?.common.subscribable) {
@@ -1257,7 +1266,7 @@ function cleanAutoSubscribes(instanceID: ioBroker.ObjectIDs.Instance, callback: 
 
 async function delObjects(objs: ioBroker.GetObjectViewItem<ioBroker.AnyObject>[]): Promise<void> {
     for (const row of objs) {
-        if (row && row.id) {
+        if (row?.id) {
             logger.info(`${hostLogPrefix} Delete state "${row.id}"`);
             try {
                 if (row.value && row.value.type === 'state') {
@@ -1306,8 +1315,8 @@ function checkHost(callback: () => void): void {
                     'system',
                     'instance',
                     {
-                        startkey: 'system.adapter.',
-                        endkey: 'system.adapter.\u9999'
+                        startkey: SYSTEM_ADAPTER_PREFIX,
+                        endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
                     },
                     async (err, doc) => {
                         if (err && err.message.startsWith('Cannot find ')) {
@@ -1473,8 +1482,8 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
 
         try {
             doc = await objects!.getObjectViewAsync('system', 'adapter', {
-                startkey: 'system.adapter.',
-                endkey: 'system.adapter.\u9999'
+                startkey: SYSTEM_ADAPTER_PREFIX,
+                endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
             });
         } catch (e) {
             err = e;
@@ -2258,8 +2267,8 @@ async function sendTo(
 
     const obj: ioBroker.SendableMessage = { command, message, from: hostObjectPrefix };
 
-    if (!objName.startsWith('system.adapter.') && !objName.startsWith('system.host.')) {
-        objName = `system.adapter.${objName}`;
+    if (!objName.startsWith(SYSTEM_ADAPTER_PREFIX) && !objName.startsWith('system.host.')) {
+        objName = `${SYSTEM_ADAPTER_PREFIX}${objName}`;
     }
 
     if (callback) {
@@ -2298,7 +2307,7 @@ async function sendTo(
 
 async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host): Promise<Record<string, any> | null | undefined> {
     const state = await states!.getState(`${hostId}.alive`);
-    if (state && state.val) {
+    if (state?.val) {
         return new Promise(resolve => {
             let timeout: NodeJS.Timeout | null = setTimeout(() => {
                 timeout = null;
@@ -2358,13 +2367,13 @@ async function startAdapterUpload(): Promise<void> {
     const logger = msg.from
         ? {
               log: (text: string) =>
-                  // @ts-expect-error formally text is not allowed in Message, why not warpped in message payload property?
+                  // @ts-expect-error formally text is not allowed in Message, why not wrapped in message payload property?
                   states!.pushMessage(msg.from, { command: 'log', text, from: `system.host.${hostname}` }),
               warn: (text: string) =>
-                  // @ts-expect-error formally text is not allowed in Message, why not warpped in message payload property?
+                  // @ts-expect-error formally text is not allowed in Message, why not wrapped in message payload property?
                   states!.pushMessage(msg.from, { command: 'warn', text, from: `system.host.${hostname}` }),
               error: (text: string) =>
-                  // @ts-expect-error formally text is not allowed in Message, why not warpped in message payload property?
+                  // @ts-expect-error formally text is not allowed in Message, why not wrapped in message payload property?
                   states!.pushMessage(msg.from, { command: 'error', text, from: `system.host.${hostname}` })
           }
         : undefined;
@@ -2900,15 +2909,14 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 // node.js --version
                 // npm --version
                 // uptime
-                let data;
+                let hostInfo: HostInfo;
                 try {
-                    data = (await tools.getHostInfo(objects)) || {};
+                    hostInfo = await tools.getHostInfo(objects);
                 } catch (e) {
                     logger.error(`${hostLogPrefix} cannot get getHostInfo: ${e.message}`);
                     return null;
                 }
 
-                data.Uptime = Math.round((Date.now() - uptimeStart) / 1_000);
                 // add information about running instances
                 let count = 0;
                 for (const proc of Object.values(procs)) {
@@ -2922,10 +2930,14 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     location = path.normalize(`${controllerDir}/../../`);
                 }
 
-                data['Active instances'] = count;
-                data.location = location;
+                const enrichedHostInfo = {
+                    ...hostInfo,
+                    'Active instances': count,
+                    location,
+                    Uptime: Math.round((Date.now() - uptimeStart) / 1_000)
+                };
 
-                sendTo(msg.from, msg.command, data, msg.callback);
+                sendTo(msg.from, msg.command, enrichedHostInfo, msg.callback);
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
@@ -3022,40 +3034,63 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'readObjectsAsZip':
             if (msg.callback && msg.from) {
-                zipFiles.readObjectsAsZip(
-                    objects!,
-                    msg.message.id,
-                    msg.message.adapter,
-                    msg.message.options,
-                    (error, base64) => {
-                        // If client supports file via link
-                        if (msg.message.link) {
-                            if (!error && base64) {
-                                const buff = Buffer.from(base64, 'base64');
-                                states!.setBinaryState(`${hostObjectPrefix}.zip.${msg.message.link}`, buff, err => {
-                                    if (err) {
-                                        sendTo(msg.from, msg.command, { error: err }, msg.callback);
-                                    } else {
-                                        sendTo(
-                                            msg.from,
-                                            msg.command,
-                                            `${hostObjectPrefix}.zip.${msg.message.link}`,
-                                            msg.callback
-                                        );
-                                    }
-                                });
-                            } else {
-                                sendTo(msg.from, msg.command, { error }, msg.callback);
-                            }
-                        } else {
-                            if (base64) {
-                                sendTo(msg.from, msg.command, { error, data: base64 }, msg.callback);
-                            } else {
-                                sendTo(msg.from, msg.command, { error }, msg.callback);
-                            }
+                let base64: string;
+                try {
+                    base64 = await zipFiles.readObjectsAsZip(
+                        objects!,
+                        msg.message.id,
+                        msg.message.adapter,
+                        msg.message.options
+                    );
+                } catch (e) {
+                    sendTo(msg.from, msg.command, { error: e }, msg.callback);
+                    return;
+                }
+
+                // If client supports file via link
+                if (msg.message.link) {
+                    const buff = Buffer.from(base64, 'base64');
+                    if (msg.message.fileStorageNamespace) {
+                        try {
+                            await objects!.writeFileAsync(
+                                msg.message.fileStorageNamespace,
+                                `zip/${msg.message.link}`,
+                                buff
+                            );
+                        } catch (e) {
+                            sendTo(msg.from, msg.command, { error: e }, msg.callback);
+                            return;
                         }
+
+                        sendTo(
+                            msg.from,
+                            msg.command,
+                            `${msg.message.fileStorageNamespace}/zip/${msg.message.link}`,
+                            msg.callback
+                        );
+                    } else {
+                        logger.warn(
+                            `${hostLogPrefix} Saving in binary state "${hostObjectPrefix}.zip.${msg.message.link}" is deprecated. ` +
+                                'Please add the "fileStorageNamespace" attribute to request (with e.g. "admin.0" value)' +
+                                ` to save ZIP in file as "zip/${msg.message.link}"`
+                        );
+
+                        states!.setBinaryState(`${hostObjectPrefix}.zip.${msg.message.link}`, buff, err => {
+                            if (err) {
+                                sendTo(msg.from, msg.command, { error: err }, msg.callback);
+                            } else {
+                                sendTo(
+                                    msg.from,
+                                    msg.command,
+                                    `${hostObjectPrefix}.zip.${msg.message.link}`,
+                                    msg.callback
+                                );
+                            }
+                        });
                     }
-                );
+                } else {
+                    sendTo(msg.from, msg.command, { data: base64 }, msg.callback);
+                }
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
@@ -3084,7 +3119,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                 // Read current state of all log subscribers
                 states!.getKeys('*.logging', (err, keys) => {
-                    if (keys && keys.length) {
+                    if (keys?.length) {
                         states!.getStates(keys, (err, objs) => {
                             if (objs) {
                                 for (let i = 0; i < keys.length; i++) {
@@ -3103,8 +3138,8 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                 }
                             }
                             setTimeout(() => {
-                                for (let m = 0; m < logs.length; m++) {
-                                    logger.error(`${hostLogPrefix} LOGINFO: ${logs[m]}`);
+                                for (const log of logs) {
+                                    logger.error(`${hostLogPrefix} LOGINFO: ${log}`);
                                 }
                                 logs = [];
                             }, 3_000);
@@ -3131,36 +3166,43 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
         }
 
         case 'upgradeController': {
-            if (['win32', 'darwin'].includes(os.platform())) {
+            if (!tools.isControllerUiUpgradeSupported()) {
                 if (msg.callback) {
                     sendTo(msg.from, msg.command, { result: false }, msg.callback);
                 }
                 break;
             }
 
-            logger.info(`${hostLogPrefix} Controller will upgrade itself to version ${msg.message.version}`);
-            const upgradeProcessPath = require.resolve('./lib/upgradeManager');
-            const upgradeProcess = spawn(
-                'sudo',
-                [
-                    'systemd-run',
-                    '--no-ask-password',
-                    process.execPath,
-                    upgradeProcessPath,
-                    msg.message.version,
-                    msg.message.adminInstance
-                ],
-                {
-                    detached: true,
-                    stdio: 'ignore'
-                }
-            );
+            const { version, adminInstance } = msg.message;
 
-            upgradeProcess.unref();
+            logger.info(`${hostLogPrefix} Controller will upgrade itself to version ${version}`);
+            await startUpgradeManager({ version, adminInstance });
 
             if (msg.callback) {
                 sendTo(msg.from, msg.command, { result: true }, msg.callback);
             }
+            break;
+        }
+
+        case 'upgradeAdapterWithWebserver': {
+            const { version, adapterName, useHttps, port, certPrivateName, certPublicName } = msg.message;
+
+            const upgradeManager = new AdapterUpgradeManager({
+                logger,
+                adapterName,
+                version,
+                useHttps,
+                objects: objects!,
+                states: states!,
+                port,
+                certPrivateName,
+                certPublicName
+            });
+
+            await upgradeManager.stopAdapter();
+            await upgradeManager.startWebServer();
+            await upgradeManager.performUpgrade();
+
             break;
         }
 
@@ -3226,13 +3268,13 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         config = JSON.parse(config);
                         sendTo(msg.from, msg.command, { config, isActive: uptimeStart > stat.mtimeMs }, msg.callback);
                     } catch {
-                        const error = 'Cannot parse file ' + configFile;
-                        logger.error(hostLogPrefix + ' ' + error);
+                        const error = `Cannot parse file ${configFile}`;
+                        logger.error(`${hostLogPrefix} ${error}`);
                         sendTo(msg.from, msg.command, { error }, msg.callback);
                     }
                 } else {
-                    const error = 'Cannot find file ' + configFile;
-                    logger.error(hostLogPrefix + ' ' + error);
+                    const error = `Cannot find file ${configFile}`;
+                    logger.error(`${hostLogPrefix} ${error}`);
                     sendTo(msg.from, msg.command, { error }, msg.callback);
                 }
             } else {
@@ -3554,7 +3596,7 @@ function initInstances(): void {
             proc.config.common.enabled &&
             (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance)
         ) {
-            if (id.startsWith('system.adapter.admin')) {
+            if (id.startsWith(`${SYSTEM_ADAPTER_PREFIX}admin`)) {
                 // do not process if still running. It will be started when old one will be finished
                 if (proc.process) {
                     logger.info(`${hostLogPrefix} instance "${id}" was not started, because running.`);
@@ -3581,7 +3623,7 @@ function initInstances(): void {
             proc.config.common.enabled &&
             (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance)
         ) {
-            if (!id.startsWith('system.adapter.admin')) {
+            if (!id.startsWith(`${SYSTEM_ADAPTER_PREFIX}admin`)) {
                 // do not process if still running. It will be started when old one will be finished
                 if (proc.process) {
                     logger.info(`${hostLogPrefix} instance "${id}" was not started, because already running.`);
@@ -3674,8 +3716,8 @@ function checkVersion(name: string, version: string, instances: Record<string, i
  */
 async function checkVersions(id: string, deps: Dependencies, globalDeps: Dependencies): Promise<void> {
     const res = await objects!.getObjectViewAsync('system', 'instance', {
-        startkey: 'system.adapter.',
-        endkey: 'system.adapter.\u9999'
+        startkey: SYSTEM_ADAPTER_PREFIX,
+        endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
     });
     const instances: Record<string, ioBroker.InstanceObject> = {};
     const globInstances: Record<string, ioBroker.InstanceObject> = {};
@@ -4321,9 +4363,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                 );
                 // Exit Handler for normal Adapters started as own processes
                 const exitHandler = (code: number, signal: string): void => {
-                    outputCount += 2;
-                    states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
-                    states!.setState(`${id}.connected`, { val: false, ack: true, from: hostObjectPrefix });
+                    setInstanceOfflineStates(id);
 
                     // if we have waiting kill timeouts from stopInstance clear them
                     // and call callback because process ended now
@@ -5762,7 +5802,7 @@ export function init(compactGroupId?: number): void {
     }
 
     createObjects(async () => {
-        objects!.subscribe('system.adapter.*');
+        objects!.subscribe(`${SYSTEM_ADAPTER_PREFIX}*`);
         // TODO: remove this backward shim if controller 4.0 is old enough
         // subscribe to host objects to detect upgrade from one of the hosts for sets migration
         objects!.subscribe('system.host.*');
@@ -5795,7 +5835,7 @@ export function init(compactGroupId?: number): void {
             states!.subscribe('*.logging');
 
             // Subscribe for all logging objects
-            states!.subscribe('system.adapter.*.alive');
+            states!.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.alive`);
 
             // set current Loglevel and subscribe for changes
             states!.setState(`${hostObjectPrefix}.logLevel`, {
@@ -6021,8 +6061,8 @@ async function _getNumberOfInstances(): Promise<
     try {
         let noCompactInstances = 0;
         const instancesView = await objects!.getObjectViewAsync('system', 'instance', {
-            startkey: 'system.adapter.',
-            endkey: 'system.adapter.\u9999'
+            startkey: SYSTEM_ADAPTER_PREFIX,
+            endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
         });
 
         const noInstances = instancesView!.rows.length;
@@ -6030,7 +6070,7 @@ async function _getNumberOfInstances(): Promise<
         if (config.system.compact) {
             for (const row of instancesView!.rows) {
                 const state = await states!.getStateAsync(`${row.id}.compactMode`);
-                if (state && state.val) {
+                if (state?.val) {
                     noCompactInstances++;
                 }
             }
@@ -6040,6 +6080,65 @@ async function _getNumberOfInstances(): Promise<
     } catch {
         return { noInstances: null, noCompactInstances: null };
     }
+}
+
+/**
+ * Mark given adapter instance as offline on state level
+ *
+ * @param id id of the instance
+ */
+async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promise<void> {
+    outputCount += 2;
+    await states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
+    await states!.setState(`${id}.connected`, { val: false, ack: true, from: hostObjectPrefix });
+
+    const adapterInstance = id.substring(SYSTEM_ADAPTER_PREFIX.length);
+
+    const state = await states!.getState(`${adapterInstance}.info.connection`);
+
+    if (state?.val === true) {
+        outputCount++;
+        await states!.setState(adapterInstance, { val: false, ack: true, from: hostObjectPrefix });
+    }
+}
+
+/**
+ * Start a detached process of the upgrade manager
+ * Handles Docker installation accordingly
+ *
+ * @param options Arguments passed to the UpgradeManager process
+ */
+async function startUpgradeManager(options: UpgradeArguments): Promise<void> {
+    const { version, adminInstance } = options;
+    const upgradeProcessPath = require.resolve('./lib/upgradeManager');
+    let upgradeProcess: cp.ChildProcess;
+
+    const isSystemd = await tools.isIoBrokerInstalledAsSystemd();
+
+    if (isSystemd) {
+        upgradeProcess = spawn(
+            'sudo',
+            [
+                'systemd-run',
+                '--no-ask-password',
+                process.execPath,
+                upgradeProcessPath,
+                version,
+                adminInstance.toString()
+            ],
+            {
+                detached: true,
+                stdio: 'ignore'
+            }
+        );
+    } else {
+        upgradeProcess = spawn(process.execPath, [upgradeProcessPath, version, adminInstance.toString()], {
+            detached: true,
+            stdio: 'ignore'
+        });
+    }
+
+    upgradeProcess.unref();
 }
 
 if (module === require.main) {

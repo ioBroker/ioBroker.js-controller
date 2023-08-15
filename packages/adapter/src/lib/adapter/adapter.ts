@@ -10,7 +10,7 @@ import { PluginHandler } from '@iobroker/plugin-base';
 import semver from 'semver';
 import path from 'path';
 import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
-import { isMessageboxSupported } from './utils';
+import { getSupportedFeatures, isMessageboxSupported } from './utils';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
@@ -30,8 +30,6 @@ import {
     ALIAS_STARTS_WITH,
     SYSTEM_ADMIN_USER,
     SYSTEM_ADMIN_GROUP,
-    QUALITY_SUBS_INITIAL,
-    SUPPORTED_FEATURES,
     ERROR_PERMISSION,
     ACCESS_EVERY_READ,
     ACCESS_EVERY_WRITE,
@@ -39,7 +37,9 @@ import {
     ACCESS_GROUP_READ,
     ACCESS_USER_WRITE,
     ACCESS_USER_READ,
-    NO_PROTECT_ADAPTERS
+    NO_PROTECT_ADAPTERS,
+    STATE_QUALITY,
+    SupportedFeature
 } from './constants';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import type {
@@ -104,7 +104,9 @@ import type {
     CheckStatesResult,
     Pattern,
     MessageCallbackObject,
-    SendToOptions
+    SendToOptions,
+    GetCertificatesPromiseReturnType,
+    InternalAdapterConfig
 } from '../_Types';
 
 tools.ensureDNSOrder();
@@ -255,9 +257,9 @@ export interface AdapterClass {
     /** Subscribe from changes of states (which might not belong to this adapter) */
     unsubscribeForeignStatesAsync(pattern: string | string[], options?: unknown): Promise<void>;
     /** Subscribe to changes of states in this instance */
-    subscribeStatesAsync(pattern: string, options?: unknown): Promise<void>;
+    subscribeStatesAsync(pattern: Pattern, options?: unknown): Promise<void>;
     /** Subscribe from changes of states in this instance */
-    unsubscribeStatesAsync(pattern: string, options?: unknown): Promise<void>;
+    unsubscribeStatesAsync(pattern: Pattern, options?: unknown): Promise<void>;
     /**
      * Writes a binary state into Redis. The ID will not be prefixed with the adapter namespace.
      *
@@ -324,7 +326,11 @@ export interface AdapterClass {
         options?: unknown
     ): ioBroker.SetObjectPromise;
     // TODO: correct types
-    getCertificatesAsync(...args: any[]): Promise<any>;
+    getCertificatesAsync(
+        publicName?: string,
+        privateName?: string,
+        chainedName?: string
+    ): Promise<GetCertificatesPromiseReturnType>;
     /** Get all states, channels, devices and folders of this adapter */
     getAdapterObjectsAsync(): Promise<Record<string, ioBroker.AdapterScopedObject>>;
 
@@ -608,11 +614,12 @@ export class AdapterClass extends EventEmitter {
     private readonly _timers = new Set<NodeJS.Timeout>();
     private readonly _intervals = new Set<NodeJS.Timeout>();
     private readonly _delays = new Set<NodeJS.Timeout>();
-    log?: Log;
+    /** For ease of use the log property is always defined, however it is only available after `ready` has been called. */
+    log!: Log;
     performStrictObjectChecks: boolean;
     private readonly _logger: Winston.Logger;
     private _restartScheduleJob: any;
-    private _schedule: typeof NodeSchedule | undefined;
+    private _schedule?: typeof NodeSchedule;
     private namespaceLog: string;
     namespace: `${string}.${number}`;
     name: string;
@@ -663,7 +670,7 @@ export class AdapterClass extends EventEmitter {
     latitude?: number;
     private _defaultObjs?: Record<string, Partial<ioBroker.StateCommon>>;
     private _aliasObjectsSubscribed?: boolean;
-    config?: Record<string, any>;
+    config: ioBroker.AdapterConfig = {};
     host?: string;
     common?: ioBroker.InstanceCommon;
     private mboxSubscribed?: boolean;
@@ -687,6 +694,13 @@ export class AdapterClass extends EventEmitter {
     private logRequired?: boolean;
     private patterns?: Record<string, { regex: string }>;
     private statesConnectedTime?: number;
+    /** Constants for frequent use in adapters */
+    readonly constants = {
+        STATE_QUALITY
+    } as const;
+
+    /** Features supported by the running instance */
+    private readonly SUPPORTED_FEATURES = getSupportedFeatures();
 
     constructor(options: AdapterOptions | string) {
         super();
@@ -706,8 +720,8 @@ export class AdapterClass extends EventEmitter {
             this._config.objects = this._config.objects || { type: 'jsonl' };
             // Make sure the DB has enough time (5s). JsonL can take a bit longer if the process just crashed before
             // because the lockfile might not have been freed.
-            this._config.states.connectTimeout = Math.max(this._config.states.connectTimeout || 0, 5000);
-            this._config.objects.connectTimeout = Math.max(this._config.objects.connectTimeout || 0, 5000);
+            this._config.states.connectTimeout = Math.max(this._config.states.connectTimeout || 0, 5_000);
+            this._config.objects.connectTimeout = Math.max(this._config.objects.connectTimeout || 0, 5_000);
         } else {
             throw new Error(`Cannot find ${configFileName}`);
         }
@@ -1377,9 +1391,9 @@ export class AdapterClass extends EventEmitter {
         }
 
         const isNotCritical =
-            exitCode === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
-            exitCode === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ||
-            exitCode === EXIT_CODES.NO_ERROR;
+            _exitCode === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
+            _exitCode === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ||
+            _exitCode === EXIT_CODES.NO_ERROR;
         const text = `${this.namespaceLog} Terminated (${Validator.getErrorText(_exitCode)}): ${_reason}`;
         if (isNotCritical) {
             this._logger.info(text);
@@ -1479,7 +1493,7 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    supportsFeature(featureName: string): boolean;
+    supportsFeature(featureName: SupportedFeature): boolean;
 
     /**
      * Method to check for available Features for adapter development
@@ -1496,7 +1510,7 @@ export class AdapterClass extends EventEmitter {
      */
     supportsFeature(featureName: unknown): boolean {
         if (typeof featureName === 'string') {
-            return SUPPORTED_FEATURES.includes(featureName);
+            return this.SUPPORTED_FEATURES.includes(featureName as SupportedFeature);
         } else {
             return false;
         }
@@ -1605,19 +1619,19 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    getUserID(username: string): Promise<string | void>;
+    getUserID(username: string): Promise<string | undefined>;
     /**
      * Return ID of given username
      *
      * @param username - name of the user
      */
-    getUserID(username: unknown): Promise<string | void> {
+    getUserID(username: unknown): Promise<string | undefined> {
         Validator.assertString(username, 'username');
 
         return this._getUserID({ username });
     }
 
-    private async _getUserID(options: InternalGetUserIDOptions): Promise<void | string> {
+    private async _getUserID(options: InternalGetUserIDOptions): Promise<string | undefined> {
         if (!this.usernames[options.username]) {
             try {
                 // did not find username, we should have a look in the cache
@@ -2131,7 +2145,7 @@ export class AdapterClass extends EventEmitter {
                 if (adapterStates && updateAliveState) {
                     this.outputCount++;
                     adapterStates.setState(`${id}.alive`, { val: false, ack: true, from: id }, () => {
-                        if (!isPause && this._logger) {
+                        if (!isPause) {
                             this._logger.info(`${this.namespaceLog} terminating`);
                         }
 
@@ -2139,7 +2153,7 @@ export class AdapterClass extends EventEmitter {
                         this.terminate(exitCode);
                     });
                 } else {
-                    if (!isPause && this.log) {
+                    if (!isPause) {
                         this._logger.info(`${this.namespaceLog} terminating`);
                     }
                     this.terminate(exitCode);
@@ -2177,24 +2191,27 @@ export class AdapterClass extends EventEmitter {
 
             // Even if the developer forgets to call the unload callback, we need to stop the process
             // Therefore wait a short while and then force the unload
-            setTimeout(() => {
-                if (adapterStates) {
-                    finishUnload();
+            setTimeout(
+                () => {
+                    if (adapterStates) {
+                        finishUnload();
 
-                    // Give 1 seconds to write the value
-                    setTimeout(() => {
-                        if (!isPause && this.log) {
-                            this._logger.info(`${this.namespaceLog} terminating with timeout`);
+                        // Give 1 seconds to write the value
+                        setTimeout(() => {
+                            if (!isPause) {
+                                this._logger.info(`${this.namespaceLog} terminating with timeout`);
+                            }
+                            this.terminate(exitCode);
+                        }, 1_000);
+                    } else {
+                        if (!isPause) {
+                            this._logger.info(`${this.namespaceLog} terminating`);
                         }
                         this.terminate(exitCode);
-                    }, 1000);
-                } else {
-                    if (!isPause && this.log) {
-                        this._logger.info(`${this.namespaceLog} terminating`);
                     }
-                    this.terminate(exitCode);
-                }
-            }, this.common?.stopTimeout || 500);
+                },
+                this.common?.stopTimeout || 500
+            );
         }
     }
 
@@ -2252,89 +2269,116 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    getCertificates(publicName: unknown, privateName: unknown, chainedName: unknown, callback: unknown): void {
-        if (!this.config) {
-            throw new Error(tools.ERRORS.ERROR_NOT_READY);
-        }
-
+    getCertificates(
+        publicName: unknown,
+        privateName: unknown,
+        chainedName: unknown,
+        callback: unknown
+    ): Promise<GetCertificatesPromiseReturnType | void> {
         if (typeof publicName === 'function') {
             callback = publicName;
-            publicName = null;
+            publicName = undefined;
         }
         if (typeof privateName === 'function') {
             callback = privateName;
-            privateName = null;
+            privateName = undefined;
         }
         if (typeof chainedName === 'function') {
             callback = chainedName;
-            chainedName = null;
+            chainedName = undefined;
         }
-        publicName = publicName || this.config.certPublic;
-        privateName = privateName || this.config.certPrivate;
-        chainedName = chainedName || this.config.certChained;
 
-        Validator.assertString(publicName, 'publicName');
-        Validator.assertString(privateName, 'privateName');
-        Validator.assertString(chainedName, 'chainedName');
+        const config = this.config as InternalAdapterConfig;
+
+        publicName = publicName || config.certPublic;
+        privateName = privateName || config.certPrivate;
+        chainedName = chainedName || config.certChained;
+
+        if (publicName !== undefined) {
+            Validator.assertString(publicName, 'publicName');
+        }
+
+        if (privateName !== undefined) {
+            Validator.assertString(privateName, 'privateName');
+        }
+
+        if (chainedName !== undefined) {
+            Validator.assertString(chainedName, 'chainedName');
+        }
+
         Validator.assertOptionalCallback(callback, 'callback');
 
         return this._getCertificates({ publicName, privateName, chainedName, callback });
     }
 
-    private _getCertificates(options: InternalGetCertificatesOptions): void {
-        // Load certificates
-        this.getForeignObject('system.certificates', null, (err, obj) => {
-            if (
-                err ||
-                !obj ||
-                !obj.native.certificates ||
-                !options.publicName ||
-                !options.privateName ||
-                !obj.native.certificates[options.publicName] ||
-                !obj.native.certificates[options.privateName] ||
-                (options.chainedName && !obj.native.certificates[options.chainedName])
-            ) {
-                this._logger.error(
-                    `${this.namespaceLog} Cannot configure secure web server, because no certificates found: ${options.publicName}, ${options.privateName}, ${options.chainedName}`
-                );
-                if (options.publicName === 'defaultPublic' || options.privateName === 'defaultPrivate') {
-                    this._logger.info(
-                        `${this.namespaceLog} Default certificates seem to be configured but missing. You can execute "iobroker cert create" in your shell to create these.`
-                    );
-                }
-                // @ts-expect-error
-                return tools.maybeCallbackWithError(options.callback, tools.ERRORS.ERROR_NOT_FOUND);
-            } else {
-                let ca;
-                if (options.chainedName) {
-                    const chained = this._readFileCertificate(obj.native.certificates[options.chainedName]).split(
-                        '-----END CERTIFICATE-----\r\n'
-                    );
-                    // it is still file name and the file maybe does not exist, but we can omit this error
-                    if (chained.join('').length >= 512) {
-                        ca = [];
-                        for (const cert of chained) {
-                            if (cert.replace(/(\r\n|\r|\n)/g, '').trim()) {
-                                ca.push(`${cert}-----END CERTIFICATE-----\r\n`);
-                            }
-                        }
-                        ca = ca.join('');
-                    }
-                }
+    private async _getCertificates(
+        options: InternalGetCertificatesOptions
+    ): Promise<[cert: ioBroker.Certificates, useLetsEncryptCert?: boolean] | void> {
+        const { publicName, chainedName, privateName, callback } = options;
+        let obj: ioBroker.OtherObject | undefined | null;
 
-                return tools.maybeCallbackWithError(
-                    // @ts-expect-error
-                    options.callback,
-                    null,
-                    {
-                        key: this._readFileCertificate(obj.native.certificates[options.privateName]),
-                        cert: this._readFileCertificate(obj.native.certificates[options.publicName]),
-                        ca
-                    },
-                    obj.native.letsEncrypt
+        if (!adapterObjects) {
+            this._logger.info(
+                `${this.namespaceLog} getCertificates not processed because Objects database not connected`
+            );
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        try {
+            // Load certificates
+            obj = await adapterObjects.getObject('system.certificates');
+        } catch {
+            // ignore
+        }
+
+        if (
+            !obj ||
+            !obj.native.certificates ||
+            !publicName ||
+            !privateName ||
+            !obj.native.certificates[publicName] ||
+            !obj.native.certificates[privateName] ||
+            (chainedName && !obj.native.certificates[chainedName])
+        ) {
+            this._logger.error(
+                `${this.namespaceLog} Cannot configure secure web server, because no certificates found: ${publicName}, ${privateName}, ${chainedName}`
+            );
+            if (publicName === 'defaultPublic' || privateName === 'defaultPrivate') {
+                this._logger.info(
+                    `${this.namespaceLog} Default certificates seem to be configured but missing. You can execute "iobroker cert create" in your shell to create these.`
                 );
             }
-        });
+
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_NOT_FOUND);
+        } else {
+            let ca: string | undefined;
+            if (chainedName) {
+                const chained = this._readFileCertificate(obj.native.certificates[chainedName]).split(
+                    '-----END CERTIFICATE-----\r\n'
+                );
+                // it is still file name and the file maybe does not exist, but we can omit this error
+                if (chained.join('').length >= 512) {
+                    const caArr = [];
+                    for (const cert of chained) {
+                        if (cert.replace(/(\r\n|\r|\n)/g, '').trim()) {
+                            caArr.push(`${cert}-----END CERTIFICATE-----\r\n`);
+                        }
+                    }
+                    ca = caArr.join('');
+                }
+            }
+
+            return tools.maybeCallbackWithError(
+                callback,
+                null,
+                {
+                    key: this._readFileCertificate(obj.native.certificates[privateName]),
+                    cert: this._readFileCertificate(obj.native.certificates[publicName]),
+                    ca
+                },
+                obj.native.letsEncrypt
+            );
+        }
     }
 
     /**
@@ -2437,40 +2481,32 @@ export class AdapterClass extends EventEmitter {
     }
 
     private async _getEncryptedConfig(options: InternalGetEncryptedConfigOptions): Promise<string | void> {
-        if (!this.config) {
-            throw new Error(tools.ERRORS.ERROR_NOT_READY);
-        }
+        const { attribute, callback } = options;
 
-        if (Object.prototype.hasOwnProperty.call(this.config, options.attribute)) {
+        const value = (this.config as InternalAdapterConfig)[attribute];
+
+        if (typeof value === 'string') {
             if (this._systemSecret !== undefined) {
-                return tools.maybeCallbackWithError(
-                    options.callback,
-                    null,
-                    tools.decrypt(this._systemSecret, this.config[options.attribute])
-                );
+                return tools.maybeCallbackWithError(callback, null, tools.decrypt(this._systemSecret, value));
             } else {
                 try {
                     const data = await this.getForeignObjectAsync('system.config');
-                    if (data && data.native) {
+                    if (data?.native) {
                         this._systemSecret = data.native.secret;
                     }
                 } catch {
                     // do nothing - we initialize default secret below
                 }
                 this._systemSecret = this._systemSecret || DEFAULT_SECRET;
-                return tools.maybeCallbackWithError(
-                    options.callback,
-                    null,
-                    tools.decrypt(this._systemSecret, this.config[options.attribute])
-                );
+                return tools.maybeCallbackWithError(callback, null, tools.decrypt(this._systemSecret, value));
             }
         } else {
-            return tools.maybeCallbackWithError(options.callback, `Attribute "${options.attribute}" not found`);
+            return tools.maybeCallbackWithError(callback, `Attribute "${attribute}" not found`);
         }
     }
 
     // external signature
-    setTimeout(cb: TimeoutCallback, timeout: number, ...args: any[]): NodeJS.Timeout | void;
+    setTimeout(cb: TimeoutCallback, timeout: number, ...args: any[]): ioBroker.Timeout | undefined;
     /**
      * Same as setTimeout
      * but it clears the running timers on unload
@@ -2481,7 +2517,7 @@ export class AdapterClass extends EventEmitter {
      * @param args - as many arguments as needed, which will be passed to setTimeout
      * @returns timer id
      */
-    setTimeout(cb: unknown, timeout: unknown, ...args: unknown[]): NodeJS.Timeout | void {
+    setTimeout(cb: unknown, timeout: unknown, ...args: unknown[]): ioBroker.Timeout | undefined {
         if (typeof cb !== 'function') {
             this._logger.warn(
                 `${this.namespaceLog} setTimeout expected callback to be of type "function", but got "${typeof cb}"`
@@ -2507,10 +2543,10 @@ export class AdapterClass extends EventEmitter {
         );
         this._timers.add(timer);
 
-        return timer;
+        return timer as unknown as ioBroker.Timeout;
     }
 
-    clearTimeout(timer: NodeJS.Timeout): void;
+    clearTimeout(timer: ioBroker.Timeout | undefined): void;
 
     /**
      * Same as clearTimeout
@@ -2519,9 +2555,13 @@ export class AdapterClass extends EventEmitter {
      * @param timer - the timer object
      */
     clearTimeout(timer: unknown): void {
-        // should we validate this?
-        clearTimeout(timer as any);
-        this._timers.delete(timer as any);
+        if (timer === undefined) {
+            return;
+        }
+
+        // should we further validate this?
+        clearTimeout(timer as NodeJS.Timeout);
+        this._timers.delete(timer as NodeJS.Timeout);
     }
 
     // external signature
@@ -2553,7 +2593,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    setInterval(cb: TimeoutCallback, timeout: number, ...args: any[]): NodeJS.Timeout | void;
+    setInterval(cb: TimeoutCallback, timeout: number, ...args: any[]): ioBroker.Interval | undefined;
 
     /**
      * Same as setInterval
@@ -2565,7 +2605,7 @@ export class AdapterClass extends EventEmitter {
      * @param args - as many arguments as needed, which will be passed to setTimeout
      * @returns interval interval object
      */
-    setInterval(cb: unknown, timeout: unknown, ...args: unknown[]): NodeJS.Timeout | void {
+    setInterval(cb: unknown, timeout: unknown, ...args: unknown[]): ioBroker.Interval | undefined {
         if (typeof cb !== 'function') {
             this._logger.error(
                 `${this.namespaceLog} setInterval expected callback to be of type "function", but got "${typeof cb}"`
@@ -2584,11 +2624,11 @@ export class AdapterClass extends EventEmitter {
         const id = setInterval(() => cb(...args), timeout);
         this._intervals.add(id);
 
-        return id;
+        return id as unknown as ioBroker.Interval;
     }
 
     // external signature
-    clearInterval(interval: NodeJS.Timeout): void;
+    clearInterval(interval: ioBroker.Interval | undefined): void;
 
     /**
      * Same as clearInterval
@@ -2597,9 +2637,13 @@ export class AdapterClass extends EventEmitter {
      * @param interval - interval object
      */
     clearInterval(interval: unknown): void {
-        // should we validate it is a valid interval?
-        clearInterval(interval as any);
-        this._intervals.delete(interval as any);
+        if (interval === undefined) {
+            return;
+        }
+
+        // should we further validate it is a valid interval?
+        clearInterval(interval as NodeJS.Timeout);
+        this._intervals.delete(interval as NodeJS.Timeout);
     }
 
     setObject(id: string, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
@@ -2617,7 +2661,8 @@ export class AdapterClass extends EventEmitter {
      * Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
      * <b>common</b>, <b>native</b> and <b>type</b> attributes are mandatory, and it will be checked.
      * Additionally, type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.g.:
-     * ```js{
+     * ```js
+     * {
      *     common: {
      *          name: 'object name',
      *          type: 'number', // string, boolean, object, mixed, array
@@ -2625,7 +2670,8 @@ export class AdapterClass extends EventEmitter {
      *     },
      *     native: {},
      *     type: 'state' // channel, device
-     * }```
+     * }
+     * ```
      *
      * @param id object ID, that must be overwritten or created.
      * @param obj new object
@@ -2638,7 +2684,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    setObject(id: unknown, obj: unknown, options: unknown, callback?: unknown): Promise<void> {
+    setObject(id: unknown, obj: unknown, options: unknown, callback?: unknown): Promise<void> | void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -2805,7 +2851,7 @@ export class AdapterClass extends EventEmitter {
                 if (!state || state.val === undefined) {
                     await this.setForeignStateAsync(id, {
                         val: obj.common.def,
-                        q: QUALITY_SUBS_INITIAL,
+                        q: this.constants.STATE_QUALITY.SUBSTITUTE_INITIAL_VALUE,
                         ack: true
                     });
                 }
@@ -3149,7 +3195,7 @@ export class AdapterClass extends EventEmitter {
                         try {
                             await this.setForeignStateAsync(options.id, {
                                 val: defState,
-                                q: QUALITY_SUBS_INITIAL,
+                                q: this.constants.STATE_QUALITY.SUBSTITUTE_INITIAL_VALUE,
                                 ack: true
                             });
                         } catch (e) {
@@ -3455,7 +3501,7 @@ export class AdapterClass extends EventEmitter {
                             try {
                                 await this.setForeignStateAsync(id, {
                                     val: defState,
-                                    q: QUALITY_SUBS_INITIAL,
+                                    q: this.constants.STATE_QUALITY.SUBSTITUTE_INITIAL_VALUE,
                                     ack: true
                                 });
                             } catch (e) {
@@ -3603,11 +3649,11 @@ export class AdapterClass extends EventEmitter {
      *                   for (var i = 0; i < doc.rows.length; i++) {
      *                       var id  = doc.rows[i].id;
      *                        var obj = doc.rows[i].value;
-     *                        console.log('Found ' + id + ': ' + JSON.stringify(obj));
+     *                        adapter.log.info('Found ' + id + ': ' + JSON.stringify(obj));
      *                   }
-     *                           if (!doc.rows.length) console.log('No objects found.');
+     *                           if (!doc.rows.length) adapter.log.info('No objects found.');
      *               } else {
-     *                   console.log('No objects found: ' + err);
+     *                   adapter.log.info('No objects found: ' + err);
      *               }
      *           }
      *           ```
@@ -3711,11 +3757,11 @@ export class AdapterClass extends EventEmitter {
      *                   for (var i = 0; i < res.rows.length; i++) {
      *                       var id  = res.rows[i].id;
      *                       var obj = res.rows[i].value;
-     *                       console.log('Found ' + id + ': ' + JSON.stringify(obj));
+     *                       adapter.log.info('Found ' + id + ': ' + JSON.stringify(obj));
      *                   }
-     *                   if (!res.rows.length) console.log('No objects found.');
+     *                   if (!res.rows.length) adapter.log.info('No objects found.');
      *              } else {
-     *                  console.log('No objects found: ' + err);
+     *                  adapter.log.info('No objects found: ' + err);
      *              }
      *          }
      *       ```
@@ -4945,7 +4991,7 @@ export class AdapterClass extends EventEmitter {
             id += (id ? '.' : '') + channel;
         }
 
-        if (stateOrPoint !== true && stateOrPoint !== false) {
+        if (typeof stateOrPoint === 'string') {
             if (stateOrPoint) {
                 id += (id ? '.' : '') + stateOrPoint;
             }
@@ -5745,8 +5791,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    deleteState(stateName: string, options?: unknown, callback?: ioBroker.ErrorCallback): void;
     deleteState(parentChannel: string, stateName: string, options?: unknown, callback?: ioBroker.ErrorCallback): void;
+    deleteState(stateName: string, options?: unknown, callback?: ioBroker.ErrorCallback): void;
     deleteState(
         parentDevice: string,
         parentChannel: string,
@@ -5758,7 +5804,7 @@ export class AdapterClass extends EventEmitter {
     deleteState(
         parentDevice: unknown,
         parentChannel: unknown,
-        stateName: unknown,
+        stateName?: unknown,
         options?: unknown,
         callback?: unknown
     ): any {
@@ -5795,6 +5841,9 @@ export class AdapterClass extends EventEmitter {
                 parentDevice = '';
             }
         }
+
+        parentChannel = parentChannel ?? '';
+        stateName = stateName ?? '';
 
         Validator.assertString(parentDevice, 'parentDevice');
         Validator.assertString(parentChannel, 'parentChannel');
@@ -6378,7 +6427,7 @@ export class AdapterClass extends EventEmitter {
      * ```js
      *      adapter.chmodFile('vis.0', '/main/vis-views.json', {mode: 0x644}, function (err, processed) {
      *        if (err) adapter.log.error('Cannot read file: ' + err);
-     *        console.log('New files: ' + JSON.stringify(processed));
+     *        adapter.log.info('New files: ' + JSON.stringify(processed));
      *      });
      * ```
      *
@@ -6425,7 +6474,7 @@ export class AdapterClass extends EventEmitter {
      * ```js
      *      adapter.chownFile('vis.0', '/main/vis-views.json', {owner: 'newOwner', ownerGroup: 'newgroup'}, function (err, processed) {
      *        if (err) adapter.log.error('Cannot read file: ' + err);
-     *        console.log('New files: ' + JSON.stringify(processed));
+     *        adapter.log.info('New files: ' + JSON.stringify(processed));
      *      });
      * ```
      *
@@ -6620,7 +6669,7 @@ export class AdapterClass extends EventEmitter {
      *      adapter.readFile('vis.0', '/main/vis-views.json', function (err, data) {
      *        // All enums
      *        if (err) adapter.log.error('Cannot read file: ' + err);
-     *        console.log('Content of file is: ' + data);
+     *        adapter.log.info('Content of file is: ' + data);
      *      });
      * ```
      *
@@ -7339,7 +7388,7 @@ export class AdapterClass extends EventEmitter {
             from: `system.adapter.${this.namespace}`
         };
 
-        await adapterStates.pushMessage(this.host!, obj as any);
+        await adapterStates.pushMessage(`system.host.${this.host}`, obj as any);
     }
 
     // external signatures
@@ -7347,26 +7396,26 @@ export class AdapterClass extends EventEmitter {
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         callback?: T
-    ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
+    ): T extends ioBroker.SetStateCallback ? void : ioBroker.SetStatePromise;
     setState<T extends ioBroker.SetStateCallback>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
         callback?: T
-    ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
+    ): T extends ioBroker.SetStateCallback ? void : ioBroker.SetStatePromise;
     setState<T extends ioBroker.SetStateCallback>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         options?: Partial<GetUserGroupsOptions> | null,
         callback?: T
-    ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
+    ): T extends ioBroker.SetStateCallback ? void : ioBroker.SetStatePromise;
     setState<T extends ioBroker.SetStateCallback>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
         options?: Partial<GetUserGroupsOptions> | null,
         callback?: T
-    ): T extends ioBroker.SetStateCallback ? Promise<void> : ioBroker.SetStatePromise;
+    ): T extends ioBroker.SetStateCallback ? void : ioBroker.SetStatePromise;
 
     /**
      * Writes value into states DB.
@@ -7399,7 +7448,13 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    setState(id: unknown, state: unknown, ack: unknown, options?: unknown, callback?: unknown): Promise<void | string> {
+    setState(
+        id: unknown,
+        state: unknown,
+        ack: unknown,
+        options?: unknown,
+        callback?: unknown
+    ): Promise<void | string> | void {
         if (typeof state === 'object' && typeof ack !== 'boolean') {
             callback = options;
             options = ack;
@@ -7726,7 +7781,7 @@ export class AdapterClass extends EventEmitter {
 
     private _checkState(obj: ioBroker.StateObject, options: Record<string, any>, command: CheckStateCommand): boolean {
         const limitToOwnerRights = options.limitToOwnerRights === true;
-        if (obj && obj.acl) {
+        if (obj?.acl) {
             obj.acl.state = obj.acl.state || obj.acl.object;
 
             if (obj.acl.state) {
@@ -7857,9 +7912,9 @@ export class AdapterClass extends EventEmitter {
             }
 
             const objs: ioBroker.StateObject[] = [];
+
             for (const obj of options._objects) {
                 if (obj && this._checkState(obj, options, command)) {
-                    ids.push(obj._id);
                     objs.push(obj);
                 }
             }
@@ -8657,7 +8712,6 @@ export class AdapterClass extends EventEmitter {
             this._logger.info(
                 `${this.namespaceLog} getForeignState not processed because States database not connected`
             );
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -8665,14 +8719,12 @@ export class AdapterClass extends EventEmitter {
             this._logger.info(
                 `${this.namespaceLog} getForeignState not processed because Objects database not connected`
             );
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
         try {
             this._utils.validateId(id, true, options);
         } catch (err) {
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
             return tools.maybeCallbackWithError(callback, err);
         }
 
@@ -8689,7 +8741,6 @@ export class AdapterClass extends EventEmitter {
                 obj = (await adapterObjects.getObject(id, options)) as ioBroker.StateObject | null | undefined;
             }
         } catch (e) {
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
             return tools.maybeCallbackWithError(callback, e);
         }
 
@@ -8709,11 +8760,7 @@ export class AdapterClass extends EventEmitter {
                     this._utils.validateId(aliasId, true, null);
                 } catch (e) {
                     this._logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
-                    return tools.maybeCallbackWithError(
-                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                        callback,
-                        `Error validating alias id of ${id}: ${e.message}`
-                    );
+                    return tools.maybeCallbackWithError(callback, `Error validating alias id of ${id}: ${e.message}`);
                 }
 
                 if (aliasId) {
@@ -8728,7 +8775,6 @@ export class AdapterClass extends EventEmitter {
                                 | undefined;
                         }
                     } catch (e) {
-                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                         return tools.maybeCallbackWithError(callback, e);
                     }
 
@@ -8741,13 +8787,11 @@ export class AdapterClass extends EventEmitter {
                             // @ts-expect-error void return possible fix it
                             state = await adapterStates!.getState(aliasId);
                         } catch (e) {
-                            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                             return tools.maybeCallbackWithError(callback, e);
                         }
                     }
 
                     return tools.maybeCallbackWithError(
-                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                         callback,
                         null,
                         tools.formatAliasValue({
@@ -8763,15 +8807,12 @@ export class AdapterClass extends EventEmitter {
                 }
             } else {
                 this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 8`);
-                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                 return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
             }
         } else {
             if (this.oStates && this.oStates[id]) {
-                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                 return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
             } else {
-                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                 return adapterStates!.getState(id, callback);
             }
         }
@@ -9097,58 +9138,55 @@ export class AdapterClass extends EventEmitter {
         this.getForeignStates(fixedPattern, options, callback);
     }
 
-    private _processStatesSecondary(
+    private async _processStatesSecondary(
         keys: string[],
         targetObjs: (ioBroker.StateObject | null)[] | null,
-        srcObjs: (ioBroker.StateObject | null)[] | null,
-        callback: ioBroker.GetStatesCallback
-    ): void {
-        adapterStates!.getStates(keys, (err, arr) => {
-            if (err) {
-                // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                return tools.maybeCallbackWithError(callback, err);
-            }
+        srcObjs: (ioBroker.StateObject | null)[] | null
+    ): Promise<ioBroker.GetStatesPromise> {
+        const arr = await adapterStates!.getStates(keys);
 
-            const result: Record<string, Partial<ioBroker.State> | null> = {};
+        const result: Record<string, Partial<ioBroker.State> | null> = {};
 
-            for (let i = 0; i < keys.length; i++) {
-                const obj = targetObjs && targetObjs[i];
+        for (let i = 0; i < keys.length; i++) {
+            const obj = targetObjs && targetObjs[i];
 
-                if (obj?.common?.alias) {
-                    // @ts-expect-error
-                    if (obj.common.alias.val !== undefined) {
-                        // @ts-expect-error
-                        result[obj._id] = { val: obj.common.alias.val, ts: Date.now(), q: 0 };
-                    } else if (srcObjs![i]) {
-                        result[obj._id] =
-                            tools.formatAliasValue({
-                                // @ts-expect-error
-                                sourceCommon: srcObjs[i].common,
-                                targetCommon: obj.common,
-                                state: arr![i] || null,
-                                logger: this._logger,
-                                logNamespace: this.namespaceLog,
-                                // @ts-expect-error
-                                sourceId: srcObjs[i]._id,
-                                targetId: obj._id
-                            }) || null;
-                    } else {
-                        result[obj._id || keys[i]] = arr![i] || null;
-                    }
+            if (obj?.common?.alias && srcObjs) {
+                const srcObj = srcObjs[i];
+
+                if (srcObj) {
+                    result[obj._id] =
+                        tools.formatAliasValue({
+                            sourceCommon: srcObj.common,
+                            targetCommon: obj.common,
+                            state: arr![i] || null,
+                            logger: this._logger,
+                            logNamespace: this.namespaceLog,
+                            sourceId: srcObj._id,
+                            targetId: obj._id
+                        }) || null;
                 } else {
-                    result[obj?._id || keys[i]] = arr![i] || null;
+                    result[obj._id || keys[i]] = arr![i] || null;
                 }
+            } else {
+                result[obj?._id || keys[i]] = arr![i] || null;
             }
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-            return tools.maybeCallbackWithError(callback, null, result);
-        });
+        }
+
+        // @ts-expect-error adapt the return type?
+        return result;
     }
 
+    /**
+     * Ensures, that object information is read, and the alias id is mapped to the source id if an alias is contained in the getStates call
+     * The adaption of the actual values is then performed in _processStatesSecondary, to apply alias conversion methods
+     *
+     * @param keys all ids of the getStates call
+     * @param targetObjs the target objects (e.g. alias objects or the actual objects)
+     */
     private async _processStates(
         keys: string[],
-        targetObjs: (ioBroker.StateObject | null)[],
-        callback: ioBroker.GetStatesCallback
-    ): Promise<void> {
+        targetObjs: (ioBroker.StateObject | null)[]
+    ): ioBroker.GetStatesPromise {
         let aliasFound;
         const aIds = keys.map(id => {
             if (id.startsWith(ALIAS_STARTS_WITH)) {
@@ -9165,8 +9203,8 @@ export class AdapterClass extends EventEmitter {
             keys = [...keys];
 
             // read aliases objects
-            // @ts-expect-error fix later
-            targetObjs = await this._getObjectsByArray(aIds, targetObjs, this._options);
+            // @ts-expect-error aIds array can also contain null values, but probably the code can work with that, so adapt methods types?
+            targetObjs = (await this._getObjectsByArray(aIds, targetObjs)) as ioBroker.StateObject[];
             const srcIds: string[] = [];
             // replace aliases ID with targets
             targetObjs.forEach((obj, i) => {
@@ -9187,9 +9225,9 @@ export class AdapterClass extends EventEmitter {
             // srcObjs and targetObjs could be merged
             const srcObjs = await this._getObjectsByArray(srcIds, null, this._options);
             // @ts-expect-error fix later
-            this._processStatesSecondary(keys, targetObjs, srcObjs, callback);
+            return this._processStatesSecondary(keys, targetObjs, srcObjs);
         } else {
-            this._processStatesSecondary(keys, null, null, callback);
+            return this._processStatesSecondary(keys, null, null);
         }
     }
 
@@ -9242,7 +9280,7 @@ export class AdapterClass extends EventEmitter {
             this._logger.info(
                 `${this.namespaceLog} getForeignStates not processed because States database not connected`
             );
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -9251,7 +9289,7 @@ export class AdapterClass extends EventEmitter {
             this._logger.info(
                 `${this.namespaceLog} getForeignStates not processed because Objects database not connected`
             );
-            // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
+
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
@@ -9260,13 +9298,14 @@ export class AdapterClass extends EventEmitter {
             if (options.user && options.user !== SYSTEM_ADMIN_USER) {
                 try {
                     const { objs, ids } = await this._checkStates(pattern, options, 'getState');
-                    this._processStates(ids, objs, callback);
+                    const res = await this._processStates(ids, objs);
+                    return tools.maybeCallbackWithError(callback, null, res);
                 } catch (e) {
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                     return tools.maybeCallbackWithError(callback, e);
                 }
             } else {
-                this._processStates(pattern, options && options._objects, callback);
+                const res = await this._processStates(pattern, options?._objects);
+                return tools.maybeCallbackWithError(callback, null, res);
             }
         } else {
             // read first the keys for pattern
@@ -9286,28 +9325,24 @@ export class AdapterClass extends EventEmitter {
 
             // in special maintenance mode, just returns all states. Aliases are not supported in this mode
             if (options.user === SYSTEM_ADMIN_USER && options.maintenance) {
-                adapterStates.getKeys(pattern, (err, keys) => {
-                    if (err) {
-                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                        return tools.maybeCallbackWithError(callback, err);
-                    } else {
-                        this._processStatesSecondary(keys || [], null, null, callback);
-                    }
-                });
+                try {
+                    const keys = await adapterStates.getKeys(pattern);
+                    const res = await this._processStatesSecondary(keys || [], null, null);
+                    return tools.maybeCallbackWithError(callback, null, res);
+                } catch (e) {
+                    return tools.maybeCallbackWithError(callback, e);
+                }
             }
 
-            adapterObjects.getObjectView('system', 'state', params, options, (err, res) => {
+            try {
+                const res = await adapterObjects.getObjectView('system', 'state', params, options);
                 if (originalChecked !== undefined) {
                     options.checked = originalChecked;
                 } else {
                     options.checked = undefined;
                 }
-                if (err) {
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
-                    return tools.maybeCallbackWithError(callback, err);
-                }
+
                 if (!res || !res.rows) {
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                     return tools.maybeCallbackWithError(callback, null, {});
                 }
                 const keys = [];
@@ -9316,19 +9351,26 @@ export class AdapterClass extends EventEmitter {
                 // filter out
                 let regEx;
                 // process patterns like "*.someValue". The patterns "someValue.*" will be processed by getObjectView
-                if (pattern !== '*' && pattern[pattern.length - 1] !== '*') {
-                    regEx = new RegExp(tools.pattern2RegEx(pattern));
-                }
-                for (let i = 0; i < res.rows.length; i++) {
-                    const id = res.rows[i].id;
-                    if (id && (!regEx || regEx.test(id))) {
-                        keys.push(id);
-                        objs.push(res.rows[i].value);
+                try {
+                    if (pattern !== '*' && pattern[pattern.length - 1] !== '*') {
+                        regEx = new RegExp(tools.pattern2RegEx(pattern));
                     }
+                    for (const row of res.rows) {
+                        const id = row.id;
+                        if (id && (!regEx || regEx.test(id))) {
+                            keys.push(id);
+                            objs.push(row.value);
+                        }
+                    }
+                } catch (e) {
+                    return tools.maybeCallbackWithError(callback, e);
                 }
+
                 options._objects = objs;
                 this.getForeignStates(keys, options, callback);
-            });
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
         }
     }
 
@@ -9458,8 +9500,8 @@ export class AdapterClass extends EventEmitter {
         return tools.maybeCallback(callback);
     }
 
-    subscribeForeignStates(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
-    subscribeForeignStates(pattern: string | string[], options: unknown, callback?: ioBroker.ErrorCallback): void;
+    subscribeForeignStates(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
+    subscribeForeignStates(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Subscribe for changes on all states of all adapters (and system states), that pass the pattern
@@ -9847,8 +9889,8 @@ export class AdapterClass extends EventEmitter {
         return tools.maybeCallback(callback);
     }
 
-    subscribeStates(pattern: string, callback?: ioBroker.ErrorCallback): void;
-    subscribeStates(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    subscribeStates(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
+    subscribeStates(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Subscribe for changes on all states of this instance, that pass the pattern
@@ -9863,34 +9905,26 @@ export class AdapterClass extends EventEmitter {
      * @param callback
      */
     subscribeStates(pattern: unknown, options: unknown, callback?: unknown): any {
-        // Todo check rights for options
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
 
+        Validator.assertPattern(pattern, 'pattern');
         Validator.assertOptionalCallback(callback, 'callback');
-        Validator.assertString(pattern, 'pattern');
-
-        if (!adapterStates) {
-            // if states is no longer existing, we do not need to unsubscribe
-            this._logger.info(
-                `${this.namespaceLog} subscribeStates not processed because States database not connected`
-            );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        if (options !== null && options !== undefined) {
+            Validator.assertObject(options, 'options');
         }
 
-        // Exception. Handle the '*' case automatically
-        if (!pattern || pattern === '*') {
-            adapterStates.subscribeUser(`${this.namespace}.*`, callback);
-        } else {
-            const fixedPattern = this._utils.fixId(pattern, true);
-            adapterStates.subscribeUser(fixedPattern, callback);
-        }
+        return this._subscribeForeignStates({
+            pattern: Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true),
+            options,
+            callback
+        });
     }
 
-    unsubscribeStates(pattern: string, callback?: ioBroker.ErrorCallback): void;
-    unsubscribeStates(pattern: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeStates(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
+    unsubscribeStates(pattern: Pattern, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Unsubscribe for changes for given pattern for own states.
@@ -9907,29 +9941,22 @@ export class AdapterClass extends EventEmitter {
      * @param callback
      */
     unsubscribeStates(pattern: unknown, options: unknown, callback?: unknown): any {
-        // Todo check rights for options
         if (typeof options === 'function') {
             callback = options;
             options = null;
         }
 
-        Validator.assertString(pattern, 'pattern');
+        Validator.assertPattern(pattern, 'pattern');
         Validator.assertOptionalCallback(callback, 'callback');
-
-        if (!adapterStates) {
-            // if states is no longer existing, we do not need to unsubscribe
-            this._logger.info(
-                `${this.namespaceLog} unsubscribeStates not processed because States database not connected`
-            );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        if (options !== null && options !== undefined) {
+            Validator.assertObject(options, 'options');
         }
 
-        if (!pattern || pattern === '*') {
-            adapterStates.unsubscribeUser(`${this.namespace}.*`, callback);
-        } else {
-            const fixedPattern = this._utils.fixId(pattern, true);
-            adapterStates.unsubscribeUser(fixedPattern, callback);
-        }
+        return this._unsubscribeForeignStates({
+            pattern: Array.isArray(pattern) ? pattern : this._utils.fixId(pattern, true),
+            options,
+            callback
+        });
     }
 
     setForeignBinaryState(id: string, binary: Buffer, callback: ioBroker.SetStateCallback): void;
@@ -10631,7 +10658,7 @@ export class AdapterClass extends EventEmitter {
                                 this.logRedirect!(true, id);
                             }
                         }
-                        if (this.logList.size && messages && messages.length && adapterStates) {
+                        if (this.logList.size && messages?.length && adapterStates) {
                             for (const message of messages) {
                                 for (const instanceId of this.logList) {
                                     adapterStates.pushLog(instanceId, message);
@@ -10686,7 +10713,7 @@ export class AdapterClass extends EventEmitter {
                         messages.splice(0, messages.length - this._config.states.maxQueue);
                     }
                 }
-            } else if (adapterStates && adapterStates.pushLog) {
+            } else if (adapterStates?.pushLog) {
                 // Send to all adapter, that required logs
                 for (const instanceId of this.logList) {
                     adapterStates.pushLog(instanceId, info);
@@ -10709,20 +10736,26 @@ export class AdapterClass extends EventEmitter {
                             clearTimeout(this.logOffTimer);
                         }
                         // disable log receiving after 10 seconds
-                        this.logOffTimer = setTimeout(() => {
+                        this.logOffTimer = setTimeout(async () => {
                             this.logOffTimer = null;
                             this._logger.silly(`${this.namespaceLog} Change log subscriber state: FALSE`);
                             this.outputCount++;
                             if (adapterStates) {
-                                this.setForeignState(
-                                    `system.adapter.${this.namespace}.logging`,
-                                    {
-                                        val: false,
-                                        ack: true,
-                                        from: `system.adapter.${this.namespace}`
-                                    },
-                                    options
-                                );
+                                try {
+                                    await this.setForeignStateAsync(
+                                        `system.adapter.${this.namespace}.logging`,
+                                        {
+                                            val: false,
+                                            ack: true,
+                                            from: `system.adapter.${this.namespace}`
+                                        },
+                                        options
+                                    );
+                                } catch (e) {
+                                    this._logger.warn(
+                                        `${this.namespaceLog} Could not change log subscriber state to "false": ${e.message}`
+                                    );
+                                }
                             }
                         }, 10_000);
                     } else {
@@ -10732,15 +10765,21 @@ export class AdapterClass extends EventEmitter {
                         } else {
                             this._logger.silly(`${this.namespaceLog} Change log subscriber state: true`);
                             this.outputCount++;
-                            await this.setForeignStateAsync(
-                                `system.adapter.${this.namespace}.logging`,
-                                {
-                                    val: true,
-                                    ack: true,
-                                    from: `system.adapter.${this.namespace}`
-                                },
-                                options
-                            );
+                            try {
+                                await this.setForeignStateAsync(
+                                    `system.adapter.${this.namespace}.logging`,
+                                    {
+                                        val: true,
+                                        ack: true,
+                                        from: `system.adapter.${this.namespace}`
+                                    },
+                                    options
+                                );
+                            } catch (e) {
+                                this._logger.warn(
+                                    `${this.namespaceLog} Could not change log subscriber state to "true": ${e.message}`
+                                );
+                            }
                         }
                     }
                 }
@@ -10773,11 +10812,10 @@ export class AdapterClass extends EventEmitter {
         this._initializeTimeout = setTimeout(() => {
             this._initializeTimeout = null;
             if (this._config.isInstall) {
-                this._logger && this._logger.warn(`${this.namespaceLog} no connection to states DB. Terminating.`);
+                this._logger.warn(`${this.namespaceLog} no connection to states DB. Terminating.`);
                 this.terminate(EXIT_CODES.NO_ERROR);
             } else {
-                this._logger &&
-                    this._logger.warn(`${this.namespaceLog} slow connection to states DB. Still waiting ...`);
+                this._logger.warn(`${this.namespaceLog} slow connection to states DB. Still waiting ...`);
             }
         }, this._config.states.connectTimeout || 2_000);
 
@@ -10816,7 +10854,7 @@ export class AdapterClass extends EventEmitter {
                     } catch {
                         // ignore
                     }
-                    if (!state || !state.val) {
+                    if (!state?.val) {
                         this.patterns = {};
                     } else {
                         try {
@@ -10840,7 +10878,7 @@ export class AdapterClass extends EventEmitter {
                 const state = stateOrMessage as ioBroker.State | null;
 
                 if (!id || typeof id !== 'string') {
-                    console.log(`Something is wrong! ${JSON.stringify(id)}`);
+                    this._logger.warn(`${this.namespaceLog} Invalid id on system state change: ${JSON.stringify(id)}`);
                     return;
                 }
 
@@ -10937,8 +10975,8 @@ export class AdapterClass extends EventEmitter {
                 // If someone want to have log messages
                 if (id.endsWith('.logging')) {
                     const instance = id.substring(0, id.length - '.logging'.length);
-                    this._logger &&
-                        this._logger.silly(`${this.namespaceLog} ${instance}: logging ${state ? state.val : false}`);
+
+                    this._logger.silly(`${this.namespaceLog} ${instance}: logging ${state ? state.val : false}`);
                     this.logRedirect!(state ? !!state.val : false, instance);
                 } else if (id === `log.system.adapter.${this.namespace}`) {
                     this._options.logTransporter && this.processLog && this.processLog(state);
@@ -11048,7 +11086,7 @@ export class AdapterClass extends EventEmitter {
                 this.inputCount++;
 
                 if (!id || typeof id !== 'string') {
-                    console.log(`Something is wrong! ${JSON.stringify(id)}`);
+                    this._logger.warn(`${this.namespaceLog} Invalid id on state change: ${JSON.stringify(id)}`);
                     return;
                 }
 
@@ -11078,10 +11116,7 @@ export class AdapterClass extends EventEmitter {
                         if (this.connected) {
                             return;
                         } // If reconnected in the meantime, do not terminate
-                        this._logger &&
-                            this._logger.warn(
-                                `${this.namespaceLog} Cannot connect/reconnect to states DB. Terminating`
-                            );
+                        this._logger.warn(`${this.namespaceLog} Cannot connect/reconnect to states DB. Terminating`);
                         this.terminate(EXIT_CODES.NO_ERROR);
                     }, 5000);
             }
@@ -11092,11 +11127,10 @@ export class AdapterClass extends EventEmitter {
         this._initializeTimeout = setTimeout(() => {
             this._initializeTimeout = null;
             if (this._config.isInstall) {
-                this._logger && this._logger.warn(`${this.namespaceLog} no connection to objects DB. Terminating`);
+                this._logger.warn(`${this.namespaceLog} no connection to objects DB. Terminating`);
                 this.terminate(EXIT_CODES.NO_ERROR);
             } else {
-                this._logger &&
-                    this._logger.warn(`${this.namespaceLog} slow connection to objects DB. Still waiting ...`);
+                this._logger.warn(`${this.namespaceLog} slow connection to objects DB. Still waiting ...`);
             }
         }, this._config.objects.connectTimeout * 2); // Because we do not connect only anymore, give it a bit more time
 
@@ -11149,10 +11183,8 @@ export class AdapterClass extends EventEmitter {
                         if (this.connected) {
                             return;
                         } // If reconnected in the meantime, do not terminate
-                        this._logger &&
-                            this._logger.warn(
-                                `${this.namespaceLog} Cannot connect/reconnect to objects DB. Terminating`
-                            );
+
+                        this._logger.warn(`${this.namespaceLog} Cannot connect/reconnect to objects DB. Terminating`);
                         this.terminate(EXIT_CODES.NO_ERROR);
                     }, 4000);
             },
@@ -11188,20 +11220,6 @@ export class AdapterClass extends EventEmitter {
 
                 // if alias
                 if (id.startsWith(ALIAS_STARTS_WITH)) {
-                    // aliases['sourceId'] = {
-                    //     source: {common attributes},
-                    //     targets: [
-                    //         {
-                    //             alias: {},
-                    //             id: 'aliasId',
-                    //             pattern: 'some pattern',
-                    //             type: stateType,
-                    //             max: number,
-                    //             min: number,
-                    //         }
-                    //     ]
-                    // };
-
                     // if `this.aliases` is empty, or no target found, it's a new alias
                     let isNewAlias = true;
 
@@ -11277,7 +11295,7 @@ export class AdapterClass extends EventEmitter {
 
                 // process auto-subscribe adapters
                 if (id.startsWith('system.adapter.')) {
-                    if (obj && obj.common && obj.common.subscribable) {
+                    if (obj?.common?.subscribable) {
                         const _id = id.substring(15); // 'system.adapter.'.length
                         if (obj.common.enabled) {
                             if (!this.autoSubscribe.includes(_id)) {
@@ -11377,7 +11395,7 @@ export class AdapterClass extends EventEmitter {
         } else {
             adapterStates.getState(`system.adapter.${this.namespace}.alive`, (err, resAlive) => {
                 adapterStates!.getState(`system.adapter.${this.namespace}.sigKill`, (err, killRes) => {
-                    if (killRes && killRes.val !== undefined) {
+                    if (killRes?.val !== undefined) {
                         killRes.val = parseInt(killRes.val as any, 10);
                     }
                     if (
@@ -11616,7 +11634,7 @@ export class AdapterClass extends EventEmitter {
                 if (this._systemSecret === undefined) {
                     try {
                         const data = await adapterObjects.getObjectAsync('system.config');
-                        if (data && data.native) {
+                        if (data?.native) {
                             this._systemSecret = data.native.secret;
                         }
                     } catch {
@@ -11648,9 +11666,9 @@ export class AdapterClass extends EventEmitter {
                     }
                 } else {
                     // remove encrypted native from supported features, otherwise this can cause issues, if no adapter upload done with js-c v3+ yet
-                    const idx = SUPPORTED_FEATURES.indexOf('ADAPTER_AUTO_DECRYPT_NATIVE');
+                    const idx = this.SUPPORTED_FEATURES.indexOf('ADAPTER_AUTO_DECRYPT_NATIVE');
                     if (idx !== -1) {
-                        SUPPORTED_FEATURES.splice(idx, 1);
+                        this.SUPPORTED_FEATURES.splice(idx, 1);
                     }
                 }
 
@@ -11691,7 +11709,7 @@ export class AdapterClass extends EventEmitter {
                     );
                     this._config.system = this._config.system || {};
                     this._config.system.statisticsInterval =
-                        parseInt(this._config.system.statisticsInterval, 10) || 15000;
+                        parseInt(this._config.system.statisticsInterval, 10) || 15_000;
                     if (!this._config.isInstall) {
                         this._reportInterval = setInterval(
                             () => this._reportStatus(),
@@ -11849,7 +11867,7 @@ export class AdapterClass extends EventEmitter {
 
         try {
             this._stop(false, false, EXIT_CODES.UNCAUGHT_EXCEPTION, false);
-            setTimeout(() => this.terminate(EXIT_CODES.UNCAUGHT_EXCEPTION), 1000);
+            setTimeout(() => this.terminate(EXIT_CODES.UNCAUGHT_EXCEPTION), 1_000);
         } catch (err) {
             this._logger.error(`${this.namespaceLog} exception by stop: ${err ? err.message : err}`);
         }
@@ -11858,12 +11876,7 @@ export class AdapterClass extends EventEmitter {
     private async _createInstancesObjects(instanceObj: ioBroker.InstanceObject): Promise<void> {
         let objs: ioBroker.AnyObject[];
 
-        if (
-            instanceObj &&
-            instanceObj.common &&
-            !('onlyWWW' in instanceObj.common) &&
-            instanceObj.common.mode !== 'once'
-        ) {
+        if (instanceObj?.common && !('onlyWWW' in instanceObj.common) && instanceObj.common.mode !== 'once') {
             // @ts-expect-error
             objs = tools.getInstanceIndicatorObjects(this.namespace, instanceObj.common.wakeup);
         } else {
@@ -11934,7 +11947,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         // create logging object for log-transporter instances
-        if (instanceObj && instanceObj.common && instanceObj.common.logTransporter) {
+        if (instanceObj?.common?.logTransporter) {
             // create system.adapter.ADAPTERNAME.instance.logger
             objs.push({
                 _id: `system.adapter.${this.namespace}.logging`,
@@ -12021,7 +12034,7 @@ export class AdapterClass extends EventEmitter {
         const _initDBs = (): void => {
             this._initObjects(() => {
                 if (this.inited) {
-                    this.log && this._logger.warn(`${this.namespaceLog} Reconnection to DB.`);
+                    this._logger.warn(`${this.namespaceLog} Reconnection to DB.`);
                     return;
                 }
 

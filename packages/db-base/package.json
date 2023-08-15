@@ -1,54 +1,54 @@
 {
-    "name": "@iobroker/db-base",
-    "version": "5.0.1-alpha.0-20230525-c580eb7e",
-    "engines": {
-        "node": ">=12.0.0"
-    },
-    "dependencies": {
-        "@iobroker/js-controller-common": "file:../common",
-        "deep-clone": "^3.0.3",
-        "fs-extra": "^11.1.0",
-        "respjs": "^4.2.0"
-    },
-    "keywords": [
-        "ioBroker",
-        "redis",
-        "redundancy"
-    ],
-    "author": "bluefox <dogafox@gmail.com>",
-    "contributors": [
-        "bluefox <dogafox@gmail.com>",
-        "Apollon77 <iobroker@fischer-ka.de>",
-        "foxriver76 <moritz.heusinger@gmail.com>"
-    ],
-    "repository": {
-        "type": "git",
-        "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/db-base"
-    },
-    "scripts": {
-        "build": "tsc -b tsconfig.build.json"
-    },
-    "main": "build/index.js",
-    "license": "MIT",
-    "publishConfig": {
-        "access": "public"
-    },
-    "exports": {
-        ".": "./build/index.js",
-        "./package.json": "./package.json",
-        "./inMemFileDB": "./build/lib/inMemFileDB.js"
-    },
-    "types": "build/index.d.ts",
-    "typesVersions": {
-        "*": {
-            "inMemFileDB": [
-                "build/lib/inMemFileDB"
-            ]
-        }
-    },
-    "files": [
-        "build/lib/",
-        "build/index.js",
-        "build/index.d.ts"
-    ]
+  "name": "@iobroker/db-base",
+  "version": "5.0.12-alpha.0-20230812-0eb416fc",
+  "engines": {
+    "node": ">=12.0.0"
+  },
+  "dependencies": {
+    "@iobroker/js-controller-common": "file:../common",
+    "deep-clone": "^3.0.3",
+    "fs-extra": "^11.1.0",
+    "respjs": "^4.2.0"
+  },
+  "keywords": [
+    "ioBroker",
+    "redis",
+    "redundancy"
+  ],
+  "author": "bluefox <dogafox@gmail.com>",
+  "contributors": [
+    "bluefox <dogafox@gmail.com>",
+    "Apollon77 <iobroker@fischer-ka.de>",
+    "foxriver76 <moritz.heusinger@gmail.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/db-base"
+  },
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json"
+  },
+  "main": "build/index.js",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "exports": {
+    ".": "./build/index.js",
+    "./package.json": "./package.json",
+    "./inMemFileDB": "./build/lib/inMemFileDB.js"
+  },
+  "types": "build/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "inMemFileDB": [
+        "build/lib/inMemFileDB"
+      ]
+    }
+  },
+  "files": [
+    "build/lib/",
+    "build/index.js",
+    "build/index.d.ts"
+  ]
 }

@@ -6,6 +6,7 @@
 export class Log {
     private readonly namespaceLog: string;
     readonly level: string;
+    // TODO: this should be a winston.Logger, but the exported types will mess up because of https://github.com/microsoft/rushstack/issues/2220
     private readonly logger: any;
 
     /**
@@ -16,7 +17,7 @@ export class Log {
     constructor(namespaceLog: string, level: string, logger: any) {
         this.namespaceLog = namespaceLog;
         this.level = level;
-        // We have to bind the this context here or it is possible that `this` is
+        // We have to bind the `this` context here, or it is possible that `this` is
         // undefined when passing around the logger methods. This happens e.g. when doing this:
         //   const log = new Log(...);
         //   const test = log.info;

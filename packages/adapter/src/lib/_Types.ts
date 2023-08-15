@@ -170,15 +170,17 @@ export interface InternalCalculatePermissionsOptions {
 }
 
 export type GetCertificatesCallback = (
-    err: string | null,
+    err?: Error | null,
     certs?: ioBroker.Certificates,
     useLetsEncryptCert?: boolean
 ) => void;
 
+export type GetCertificatesPromiseReturnType = [cert: ioBroker.Certificates, useLetsEncryptCert?: boolean];
+
 export interface InternalGetCertificatesOptions {
-    publicName: string;
-    privateName: string;
-    chainedName: string;
+    publicName?: string;
+    privateName?: string;
+    chainedName?: string;
     callback?: GetCertificatesCallback;
 }
 
@@ -428,3 +430,9 @@ export interface InternalDeleteStateFromEnumOptions {
     options?: Record<string, any> | null;
     callback?: ioBroker.ErrorCallback;
 }
+
+/**
+ * The internal adapter config type should only be used to access config properties which are set by the adapter developers.
+ * Only use it like `this.config as InternalAdapterConfig`
+ */
+export type InternalAdapterConfig = Record<string, unknown>;
