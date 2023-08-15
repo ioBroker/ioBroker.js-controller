@@ -2412,15 +2412,20 @@ export class AdapterClass extends EventEmitter {
     }
 
     private async _updateConfig(options: InternalUpdateConfigOptions): ioBroker.SetObjectPromise {
-        // merge the old and new configuration
-        let _config = Object.assign({}, this.config, options.newConfig);
+        const { newConfig } = options;
 
-        // Encrypt all attributes of encryptedNative before update the config
-        if (Array.isArray(this.adapterConfig.encryptedNative)) {
+        // merge the old and new configuration
+        const config: Record<string, unknown> = { ...this.config, ...newConfig };
+
+        if (
+            this.adapterConfig &&
+            'encryptedNative' in this.adapterConfig &&
+            Array.isArray(this.adapterConfig.encryptedNative)
+        ) {
             for (const attr of this.adapterConfig.encryptedNative) {
-                // we can only decrypt strings
-                if (typeof _config[attr] === 'string') {
-                    _config[attr] = this.encrypt(_config[attr])
+                const val = config[attr];
+                if (typeof val === 'string') {
+                    config[attr] = this.encrypt(val);
                 }
             }
         }
@@ -2438,7 +2443,7 @@ export class AdapterClass extends EventEmitter {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        obj.native = _config;
+        obj.native = config;
         return this.setForeignObjectAsync(configObjId, obj);
     }
 
@@ -11689,12 +11694,11 @@ export class AdapterClass extends EventEmitter {
                 });
 
                 if (this._options.instance === undefined) {
-                    this.version =
-                        this.pack && this.pack.version
-                            ? this.pack.version
-                            : this.ioPack && this.ioPack.common
-                            ? this.ioPack.common.version
-                            : 'unknown';
+                    this.version = this.pack?.version
+                        ? this.pack.version
+                        : this.ioPack?.common
+                        ? this.ioPack.common.version
+                        : 'unknown';
                     // display if it's a non-official version - only if installedFrom is explicitly given and differs it's not npm
                     const isNpmVersion =
                         !this.ioPack ||
@@ -11795,7 +11799,6 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Calls the ready handler, if it is an install run it calls the install handler instead
-     * @private
      */
     private _callReadyHandler(): void {
         if (

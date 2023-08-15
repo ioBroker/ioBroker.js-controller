@@ -4184,7 +4184,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
     }
 
     const args =
-        instance && instance._id && instance.common
+        instance?._id && instance.common
             ? [instance._id.split('.').pop(), instance.common.loglevel || 'info']
             : [0, 'info'];
 
@@ -4638,7 +4638,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                             proc.process = cp.fork(adapterMainFile, args, {
                                 execArgv: tools.getDefaultNodeArgs(adapterMainFile),
                                 stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
-                                // @ts-expect-error missing from types but we already tested it is needed
+                                // @ts-expect-error missing from types, but we already tested it is needed
                                 windowsHide: true,
                                 cwd: adapterDir!
                             });
