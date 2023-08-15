@@ -82,6 +82,7 @@ export type UserInterfaceUnsubscribeInfo = UserInterfaceUnsubscribeInfoBaseObjec
         | {
               /** Reason for unsubscribe */
               reason: Exclude<UserInterfaceClientUnsubscribeReason, ClientUnsubscribeReason>;
+              message?: undefined;
           }
         | {
               /** Reason for unsubscribe */

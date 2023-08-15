@@ -7363,14 +7363,14 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    sendToUserInterfaceClient(options: SendToUserInterfaceClientOptions): Promise<void>;
+    sendToUI(options: SendToUserInterfaceClientOptions): Promise<void>;
 
     /**
      * Send a message to an active UI Client
      *
      * @param options clientId and data options
      */
-    sendToUserInterfaceClient(options: AllPropsUnknown<SendToUserInterfaceClientOptions>): Promise<void> {
+    sendToUI(options: AllPropsUnknown<SendToUserInterfaceClientOptions>): Promise<void> {
         if (!adapterStates) {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
