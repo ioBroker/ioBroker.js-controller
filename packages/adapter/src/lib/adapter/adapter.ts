@@ -2513,23 +2513,32 @@ export class AdapterClass extends EventEmitter {
         const value = (this.config as InternalAdapterConfig)[attribute];
 
         if (typeof value === 'string') {
-            if (this._systemSecret !== undefined) {
-                return tools.maybeCallbackWithError(callback, null, tools.decrypt(this._systemSecret, value));
-            } else {
-                try {
-                    const data = await this.getForeignObjectAsync('system.config');
-                    if (data?.native) {
-                        this._systemSecret = data.native.secret;
-                    }
-                } catch {
-                    // do nothing - we initialize default secret below
-                }
-                this._systemSecret = this._systemSecret || DEFAULT_SECRET;
-                return tools.maybeCallbackWithError(callback, null, tools.decrypt(this._systemSecret, value));
-            }
+            const secret = await this.getSystemSecret();
+            return tools.maybeCallbackWithError(callback, null, tools.decrypt(secret, value));
         } else {
             return tools.maybeCallbackWithError(callback, `Attribute "${attribute}" not found`);
         }
+    }
+
+    /**
+     * Get the system secret, after retrived once it will be read from cache
+     */
+    private async getSystemSecret(): Promise<string> {
+        if (this._systemSecret !== undefined) {
+            return this._systemSecret;
+        }
+
+        try {
+            const data = await this.getForeignObjectAsync('system.config');
+            if (data?.native) {
+                this._systemSecret = data.native.secret;
+            }
+        } catch {
+            // do nothing - we initialize default secret below
+        }
+
+        this._systemSecret = this._systemSecret || DEFAULT_SECRET;
+        return this._systemSecret;
     }
 
     // external signature
@@ -8886,10 +8895,10 @@ export class AdapterClass extends EventEmitter {
                 // ignore
             }
 
-            if (data && data.common) {
+            if (data?.common) {
                 this.defaultHistory = data.common.defaultHistory;
             }
-            if (data && data.native) {
+            if (data?.native) {
                 this._systemSecret = data.native.secret;
             }
 
@@ -8906,10 +8915,10 @@ export class AdapterClass extends EventEmitter {
                     // ignore
                 }
 
-                if (_obj && _obj.rows) {
-                    for (let i = 0; i < _obj.rows.length; i++) {
-                        if (_obj.rows[i].value.common && _obj.rows[i].value.common.type === 'storage') {
-                            this.defaultHistory = _obj.rows[i].id.substring('system.adapter.'.length);
+                if (_obj?.rows) {
+                    for (const row of _obj.rows) {
+                        if (row.value.common && row.value.common.type === 'storage') {
+                            this.defaultHistory = row.id.substring('system.adapter.'.length);
                             break;
                         }
                     }
@@ -11226,7 +11235,7 @@ export class AdapterClass extends EventEmitter {
                 // Read dateformat if using of formatDate is announced
                 if (this._options.useFormatDate) {
                     adapterObjects.getObject('system.config', (err, data) => {
-                        if (data && data.common) {
+                        if (data?.common) {
                             this.dateFormat = data.common.dateFormat;
                             this.isFloatComma = data.common.isFloatComma;
                             this.language = data.common.language;
@@ -11234,7 +11243,7 @@ export class AdapterClass extends EventEmitter {
                             this.latitude = data.common.latitude;
                             this.defaultHistory = data.common.defaultHistory;
                         }
-                        if (data && data.native) {
+                        if (data?.native) {
                             this._systemSecret = data.native.secret;
                         }
                         return tools.maybeCallback(cb);
@@ -11697,18 +11706,8 @@ export class AdapterClass extends EventEmitter {
                     await this.subscribeObjectsAsync('*');
                 }
 
-                // read the systemSecret
-                if (this._systemSecret === undefined) {
-                    try {
-                        const data = await adapterObjects.getObjectAsync('system.config');
-                        if (data?.native) {
-                            this._systemSecret = data.native.secret;
-                        }
-                    } catch {
-                        // ignore
-                    }
-                    this._systemSecret = this._systemSecret || DEFAULT_SECRET;
-                }
+                // initialize the system secret
+                await this.getSystemSecret();
 
                 // Decrypt all attributes of encryptedNative
                 const promises = [];
