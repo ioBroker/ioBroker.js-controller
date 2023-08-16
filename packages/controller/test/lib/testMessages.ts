@@ -14,14 +14,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 context.onAdapterMessage = null;
             };
 
-            context.states.pushMessage(
-                gid,
-                { message: { test: 1 }, command: 'test', from: `system.adapter.${context.adapterShortName}` },
-                (err, id) => {
-                    expect(err).to.be.null;
-                    expect(id).to.be.equal(gid);
-                }
-            );
+            context.states.pushMessage(gid, {
+                message: { test: 1 },
+                command: 'test',
+                from: `system.adapter.${context.adapterShortName}`
+            });
         });
     });
     it(testName + 'check pushMessage Buffer', function (done) {
@@ -36,18 +33,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 context.onAdapterMessage = null;
             };
 
-            context.states.pushMessage(
-                gid,
-                {
-                    command: 'test',
-                    from: `system.adapter.${context.adapterShortName}`,
-                    message: { test: Buffer.from('ABCDEFG') }
-                },
-                function (err, id) {
-                    expect(err).to.be.null;
-                    expect(id).to.be.equal(gid);
-                }
-            );
+            context.states.pushMessage(gid, {
+                command: 'test',
+                from: `system.adapter.${context.adapterShortName}`,
+                message: { test: Buffer.from('ABCDEFG') }
+            });
         });
     });
     it(testName + 'check unsubscribeMessage', function (done) {

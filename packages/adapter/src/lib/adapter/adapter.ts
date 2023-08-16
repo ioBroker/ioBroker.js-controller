@@ -106,8 +106,12 @@ import type {
     MessageCallbackObject,
     SendToOptions,
     GetCertificatesPromiseReturnType,
-    InternalAdapterConfig
+    InternalAdapterConfig,
+    UserInterfaceClientRemoveMessage,
+    SendToUserInterfaceClientOptions,
+    AllPropsUnknown
 } from '../_Types';
+import { UserInterfaceMessagingController } from './userInterfaceMessagingController';
 
 tools.ensureDNSOrder();
 
@@ -121,6 +125,16 @@ let Objects: typeof ObjectsInRedisClient;
  * Here we define dynamically created methods
  */
 export interface AdapterClass {
+    on(event: 'stateChange', listener: ioBroker.StateChangeHandler): this;
+    on(event: 'objectChange', listener: ioBroker.ObjectChangeHandler): this;
+    on(event: 'fileChange', listener: ioBroker.FileChangeHandler): this;
+    on(event: 'ready', listener: ioBroker.ReadyHandler): this;
+    on(event: 'install', listener: ioBroker.ReadyHandler): this;
+    on(event: 'unload', listener: ioBroker.UnloadHandler): this;
+    on(event: 'message', listener: ioBroker.MessageHandler): this;
+    /** Only emitted for compact instances */
+    on(event: 'exit', listener: (exitCode: number, reason: string) => Promise<void> | void): this;
+    on(event: 'log', listener: (info: any) => Promise<void> | void): this;
     /** Extend an object and create it if it might not exist */
     extendObjectAsync(
         id: string,
@@ -701,6 +715,8 @@ export class AdapterClass extends EventEmitter {
 
     /** Features supported by the running instance */
     private readonly SUPPORTED_FEATURES = getSupportedFeatures();
+    /** Controller for messaging related functionality */
+    private readonly uiMessagingController: UserInterfaceMessagingController;
 
     constructor(options: AdapterOptions | string) {
         super();
@@ -831,6 +847,12 @@ export class AdapterClass extends EventEmitter {
             this._logger.error(`${this.namespaceLog} Cannot find: ${this.adapterDir}/io-package.json`);
             this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
         }
+
+        this.uiMessagingController = new UserInterfaceMessagingController({
+            adapter: this,
+            subscribeCallback: this._options.uiClientSubscribe,
+            unsubscribeCallback: this._options.uiClientUnsubscribe
+        });
 
         // Create dynamic methods
         /**
@@ -7359,6 +7381,36 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
+    sendToUI(options: SendToUserInterfaceClientOptions): Promise<void>;
+
+    /**
+     * Send a message to an active UI Client
+     *
+     * @param options clientId and data options
+     */
+    sendToUI(options: AllPropsUnknown<SendToUserInterfaceClientOptions>): Promise<void> {
+        if (!adapterStates) {
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        const { clientId, data } = options;
+
+        if (clientId === undefined) {
+            return this.uiMessagingController.sendToAllClients({
+                data,
+                states: adapterStates
+            });
+        }
+
+        Validator.assertString(clientId, 'clientId');
+
+        return this.uiMessagingController.sendToClient({
+            clientId,
+            data,
+            states: adapterStates
+        });
+    }
+
     registerNotification<Scope extends keyof ioBroker.NotificationScopes>(
         scope: Scope,
         category: ioBroker.NotificationScopes[Scope] | null,
@@ -11016,6 +11068,16 @@ export class AdapterClass extends EventEmitter {
                                 }
                             }
                         } else if (!this._stopInProgress) {
+                            if (obj.command === 'clientSubscribe') {
+                                return this.uiMessagingController.registerClientSubscribeByMessage(obj);
+                            }
+
+                            if (obj.command === 'clientUnsubscribe' || obj.command === 'clientSubscribeError') {
+                                return this.uiMessagingController.removeClientSubscribeByMessage(
+                                    obj as UserInterfaceClientRemoveMessage
+                                );
+                            }
+
                             if (this._options.message) {
                                 // Else inform about new message the adapter
                                 this._options.message(obj);
