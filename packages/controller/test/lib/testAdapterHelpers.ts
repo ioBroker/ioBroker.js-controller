@@ -475,7 +475,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 context.adapter.decrypt(oldConfig?.native.password)
             );
 
-            // updated encrypted value is correctly encrypted
+            // updated encrypted value is correctly decrypted
             expect(newConfig?.native.secondPassword).to.exist;
             expect(context.adapter.decrypt(newConfig?.native.secondPassword)).to.be.equal(passphrase);
         }
