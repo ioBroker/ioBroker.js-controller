@@ -2453,7 +2453,7 @@ export class AdapterClass extends EventEmitter {
         let mergedConfig: Record<string, unknown>;
 
         // merge the old and new configuration
-        if (this.adapterConfig && 'encryptedNative' in obj && Array.isArray(obj.encryptedNative)) {
+        if ('encryptedNative' in obj && Array.isArray(obj.encryptedNative)) {
             const secret = await this.getSystemSecret();
             decryptArray({ obj: oldConfig, secret, keys: obj.encryptedNative });
             mergedConfig = { ...oldConfig, ...newConfig };
