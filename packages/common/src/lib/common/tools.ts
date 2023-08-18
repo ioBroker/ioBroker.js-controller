@@ -3977,18 +3977,22 @@ export function maybeArrayToString<T>(maybeArr: T): T extends any[] ? string : T
     return maybeArr;
 }
 
+type DNSOrder = 'ipv4first' | 'verbatim';
+
 /**
  * Get the configured DNS resolution order
  */
-function getDNSResolutionOrder(): 'ipv4first' | 'verbatim' {
-    let dnsOrder: 'ipv4first' | 'verbatim' = 'ipv4first';
+function getDNSResolutionOrder(): DNSOrder {
+    let dnsOrder: DNSOrder = 'ipv4first';
 
     try {
         const configName = getConfigFileName();
         const config: ioBroker.IoBrokerJson = fs.readJSONSync(configName);
         dnsOrder = config.dnsResolution || dnsOrder;
     } catch (e) {
-        console.warn(`Could not determine dns resolution order, fallback to "ipv4first": ${e.message}`);
+        if (e.code !== 'ENOENT') {
+            console.warn(`Could not determine dns resolution order, fallback to "ipv4first": ${e.message}`);
+        }
     }
 
     return dnsOrder;
