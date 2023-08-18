@@ -3199,6 +3199,10 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 certPublicName
             });
 
+            if (msg.callback) {
+                sendTo(msg.from, msg.command, { result: true }, msg.callback);
+            }
+
             await upgradeManager.stopAdapter();
             await upgradeManager.startWebServer();
             await upgradeManager.performUpgrade();
