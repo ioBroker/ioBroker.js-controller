@@ -10,7 +10,7 @@ import { PluginHandler } from '@iobroker/plugin-base';
 import semver from 'semver';
 import path from 'path';
 import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
-import { getSupportedFeatures, isMessageboxSupported } from './utils';
+import { decryptArray, encryptArray, getSupportedFeatures, isMessageboxSupported } from './utils';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
@@ -2436,22 +2436,6 @@ export class AdapterClass extends EventEmitter {
     private async _updateConfig(options: InternalUpdateConfigOptions): ioBroker.SetObjectPromise {
         const { newConfig } = options;
 
-        // merge the old and new configuration
-        const config: Record<string, unknown> = { ...this.config, ...newConfig };
-
-        if (
-            this.adapterConfig &&
-            'encryptedNative' in this.adapterConfig &&
-            Array.isArray(this.adapterConfig.encryptedNative)
-        ) {
-            for (const attr of this.adapterConfig.encryptedNative) {
-                const val = config[attr];
-                if (typeof val === 'string') {
-                    config[attr] = this.encrypt(val);
-                }
-            }
-        }
-
         // update the adapter config object
         const configObjId = `system.adapter.${this.namespace}`;
         let obj;
@@ -2465,7 +2449,21 @@ export class AdapterClass extends EventEmitter {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        obj.native = config;
+        const oldConfig = obj.native;
+        let mergedConfig: Record<string, unknown>;
+
+        // merge the old and new configuration
+        if (this.adapterConfig && 'encryptedNative' in obj && Array.isArray(obj.encryptedNative)) {
+            const secret = await this.getSystemSecret();
+            decryptArray({ obj: oldConfig, secret, keys: obj.encryptedNative });
+            mergedConfig = { ...oldConfig, ...newConfig };
+            encryptArray({ obj: mergedConfig, secret, keys: obj.encryptedNative });
+        } else {
+            mergedConfig = { ...oldConfig, ...newConfig };
+        }
+
+        obj.native = mergedConfig;
+
         return this.setForeignObjectAsync(configObjId, obj);
     }
 
