@@ -10,7 +10,7 @@ import { PluginHandler } from '@iobroker/plugin-base';
 import semver from 'semver';
 import path from 'path';
 import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
-import { getSupportedFeatures, isMessageboxSupported } from './utils';
+import { decryptArray, encryptArray, getSupportedFeatures, isMessageboxSupported } from './utils';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
@@ -2434,8 +2434,8 @@ export class AdapterClass extends EventEmitter {
     }
 
     private async _updateConfig(options: InternalUpdateConfigOptions): ioBroker.SetObjectPromise {
-        // merge the old and new configuration
-        const _config = Object.assign({}, this.config, options.newConfig);
+        const { newConfig } = options;
+
         // update the adapter config object
         const configObjId = `system.adapter.${this.namespace}`;
         let obj;
@@ -2449,7 +2449,21 @@ export class AdapterClass extends EventEmitter {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        obj.native = _config;
+        const oldConfig = obj.native;
+        let mergedConfig: Record<string, unknown>;
+
+        // merge the old and new configuration
+        if ('encryptedNative' in obj && Array.isArray(obj.encryptedNative)) {
+            const secret = await this.getSystemSecret();
+            decryptArray({ obj: oldConfig, secret, keys: obj.encryptedNative });
+            mergedConfig = { ...oldConfig, ...newConfig };
+            encryptArray({ obj: mergedConfig, secret, keys: obj.encryptedNative });
+        } else {
+            mergedConfig = { ...oldConfig, ...newConfig };
+        }
+
+        obj.native = mergedConfig;
+
         return this.setForeignObjectAsync(configObjId, obj);
     }
 
@@ -2497,23 +2511,32 @@ export class AdapterClass extends EventEmitter {
         const value = (this.config as InternalAdapterConfig)[attribute];
 
         if (typeof value === 'string') {
-            if (this._systemSecret !== undefined) {
-                return tools.maybeCallbackWithError(callback, null, tools.decrypt(this._systemSecret, value));
-            } else {
-                try {
-                    const data = await this.getForeignObjectAsync('system.config');
-                    if (data?.native) {
-                        this._systemSecret = data.native.secret;
-                    }
-                } catch {
-                    // do nothing - we initialize default secret below
-                }
-                this._systemSecret = this._systemSecret || DEFAULT_SECRET;
-                return tools.maybeCallbackWithError(callback, null, tools.decrypt(this._systemSecret, value));
-            }
+            const secret = await this.getSystemSecret();
+            return tools.maybeCallbackWithError(callback, null, tools.decrypt(secret, value));
         } else {
             return tools.maybeCallbackWithError(callback, `Attribute "${attribute}" not found`);
         }
+    }
+
+    /**
+     * Get the system secret, after retrived once it will be read from cache
+     */
+    private async getSystemSecret(): Promise<string> {
+        if (this._systemSecret !== undefined) {
+            return this._systemSecret;
+        }
+
+        try {
+            const data = await this.getForeignObjectAsync('system.config');
+            if (data?.native) {
+                this._systemSecret = data.native.secret;
+            }
+        } catch {
+            // do nothing - we initialize default secret below
+        }
+
+        this._systemSecret = this._systemSecret || DEFAULT_SECRET;
+        return this._systemSecret;
     }
 
     // external signature
@@ -8870,10 +8893,10 @@ export class AdapterClass extends EventEmitter {
                 // ignore
             }
 
-            if (data && data.common) {
+            if (data?.common) {
                 this.defaultHistory = data.common.defaultHistory;
             }
-            if (data && data.native) {
+            if (data?.native) {
                 this._systemSecret = data.native.secret;
             }
 
@@ -8890,10 +8913,10 @@ export class AdapterClass extends EventEmitter {
                     // ignore
                 }
 
-                if (_obj && _obj.rows) {
-                    for (let i = 0; i < _obj.rows.length; i++) {
-                        if (_obj.rows[i].value.common && _obj.rows[i].value.common.type === 'storage') {
-                            this.defaultHistory = _obj.rows[i].id.substring('system.adapter.'.length);
+                if (_obj?.rows) {
+                    for (const row of _obj.rows) {
+                        if (row.value.common && row.value.common.type === 'storage') {
+                            this.defaultHistory = row.id.substring('system.adapter.'.length);
                             break;
                         }
                     }
@@ -11210,7 +11233,7 @@ export class AdapterClass extends EventEmitter {
                 // Read dateformat if using of formatDate is announced
                 if (this._options.useFormatDate) {
                     adapterObjects.getObject('system.config', (err, data) => {
-                        if (data && data.common) {
+                        if (data?.common) {
                             this.dateFormat = data.common.dateFormat;
                             this.isFloatComma = data.common.isFloatComma;
                             this.language = data.common.language;
@@ -11218,7 +11241,7 @@ export class AdapterClass extends EventEmitter {
                             this.latitude = data.common.latitude;
                             this.defaultHistory = data.common.defaultHistory;
                         }
-                        if (data && data.native) {
+                        if (data?.native) {
                             this._systemSecret = data.native.secret;
                         }
                         return tools.maybeCallback(cb);
@@ -11681,18 +11704,8 @@ export class AdapterClass extends EventEmitter {
                     await this.subscribeObjectsAsync('*');
                 }
 
-                // read the systemSecret
-                if (this._systemSecret === undefined) {
-                    try {
-                        const data = await adapterObjects.getObjectAsync('system.config');
-                        if (data?.native) {
-                            this._systemSecret = data.native.secret;
-                        }
-                    } catch {
-                        // ignore
-                    }
-                    this._systemSecret = this._systemSecret || DEFAULT_SECRET;
-                }
+                // initialize the system secret
+                await this.getSystemSecret();
 
                 // Decrypt all attributes of encryptedNative
                 const promises = [];
@@ -11740,12 +11753,11 @@ export class AdapterClass extends EventEmitter {
                 });
 
                 if (this._options.instance === undefined) {
-                    this.version =
-                        this.pack && this.pack.version
-                            ? this.pack.version
-                            : this.ioPack && this.ioPack.common
-                            ? this.ioPack.common.version
-                            : 'unknown';
+                    this.version = this.pack?.version
+                        ? this.pack.version
+                        : this.ioPack?.common
+                        ? this.ioPack.common.version
+                        : 'unknown';
                     // display if it's a non-official version - only if installedFrom is explicitly given and differs it's not npm
                     const isNpmVersion =
                         !this.ioPack ||
@@ -11846,7 +11858,6 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Calls the ready handler, if it is an install run it calls the install handler instead
-     * @private
      */
     private _callReadyHandler(): void {
         if (

@@ -451,6 +451,36 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(decrypted).to.equal('topSecret');
     });
 
+    it(
+        context.name + ' ' + context.adapterShortName + ' adapter: updateConfig needs to respect encryptedNative',
+        async () => {
+            const oldConfig = await context.adapter.getForeignObjectAsync(
+                `system.adapter.${context.adapter.namespace}`
+            );
+
+            const passphrase = 'SavePassword123';
+
+            await context.adapter.updateConfig({ secondPassword: passphrase });
+            const newConfig = await context.adapter.getForeignObjectAsync(
+                `system.adapter.${context.adapter.namespace}`
+            );
+
+            // non encrypted and non updated params stay the same
+            expect(newConfig?.native.paramString).to.exist;
+            expect(newConfig?.native.paramString).to.be.equal(oldConfig?.native.paramString);
+
+            // encrypted non updated passwords, decrypt to the same value
+            expect(newConfig?.native.password).to.exist;
+            expect(context.adapter.decrypt(newConfig?.native.password)).to.be.equal(
+                context.adapter.decrypt(oldConfig?.native.password)
+            );
+
+            // updated encrypted value is correctly decrypted
+            expect(newConfig?.native.secondPassword).to.exist;
+            expect(context.adapter.decrypt(newConfig?.native.secondPassword)).to.be.equal(passphrase);
+        }
+    );
+
     // setState object validation
     for (const method of ['setState', 'setStateChanged', 'setForeignState', 'setForeignStateChanged']) {
         describe(`${context.name} ${context.adapterShortName} adapter: ${method} validates the state object`, () => {
