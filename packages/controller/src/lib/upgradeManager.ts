@@ -8,6 +8,8 @@ import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import { setTimeout as wait } from 'timers/promises';
 import type { Logger } from 'winston';
 import fs from 'fs-extra';
+import type { Socket } from 'node:net';
+import type { Duplex } from 'node:stream';
 
 export interface UpgradeArguments {
     /** Version of controller to upgrade too */
@@ -73,6 +75,8 @@ class UpgradeManager {
 
     /** The server used for communicating upgrade status */
     private server?: https.Server | http.Server;
+    /** All socket connections of the webserver */
+    private sockets = new Set<Socket | Duplex>();
     /** Name of the host for logging purposes */
     private readonly hostname = tools.getHostName();
 
@@ -206,12 +210,24 @@ class UpgradeManager {
             process.exit();
         }
 
+        this.destroySockets();
+
         this.server.close(async () => {
             await this.startController();
             this.log('Successfully started js-controller');
 
             process.exit();
         });
+    }
+
+    /**
+     * Destroy all sockets, to prevent requests from keeping server alive
+     */
+    destroySockets(): void {
+        for (const socket of this.sockets) {
+            socket.destroy();
+            this.sockets.delete(socket);
+        }
     }
 
     /**
@@ -245,6 +261,8 @@ class UpgradeManager {
             this.webServerCallback(req, res);
         });
 
+        this.monitorSockets(this.server);
+
         this.server.listen(port, () => {
             this.log(`Server is running on http://localhost:${port}`);
         });
@@ -262,8 +280,25 @@ class UpgradeManager {
             this.webServerCallback(req, res);
         });
 
+        this.monitorSockets(this.server);
+
         this.server.listen(port, () => {
             this.log(`Server is running on https://localhost:${port}`);
+        });
+    }
+
+    /**
+     * Keep track of all existing sockets
+     *
+     * @param server the webserver
+     */
+    monitorSockets(server: http.Server | https.Server): void {
+        server.on('connection', socket => {
+            this.sockets.add(socket);
+
+            server.once('close', () => {
+                this.sockets.delete(socket);
+            });
         });
     }
 
