@@ -31,7 +31,7 @@
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:70](https://github.com/ioBroker/ioBroker.js-controller/blob/25f18577/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L70)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:70](https://github.com/ioBroker/ioBroker.js-controller/blob/edb14082/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L70)
 
 ## Methods
 
@@ -53,7 +53,7 @@ Register subscription from new client
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:117](https://github.com/ioBroker/ioBroker.js-controller/blob/25f18577/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L117)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:117](https://github.com/ioBroker/ioBroker.js-controller/blob/edb14082/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L117)
 
 ___
 
@@ -75,7 +75,7 @@ Remove a client subscription, issued by message
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:156](https://github.com/ioBroker/ioBroker.js-controller/blob/25f18577/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L156)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:156](https://github.com/ioBroker/ioBroker.js-controller/blob/edb14082/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L156)
 
 ___
 
@@ -97,7 +97,7 @@ Send a message to all active clients
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:104](https://github.com/ioBroker/ioBroker.js-controller/blob/25f18577/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L104)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:104](https://github.com/ioBroker/ioBroker.js-controller/blob/edb14082/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L104)
 
 ___
 
@@ -119,4 +119,4 @@ Send a message to the given clientId
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:83](https://github.com/ioBroker/ioBroker.js-controller/blob/25f18577/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L83)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:83](https://github.com/ioBroker/ioBroker.js-controller/blob/edb14082/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L83)
