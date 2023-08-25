@@ -3,21 +3,24 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## 5.0.0 (2023-03-27) - Jana
+## 5.0.12 (2023-08-18) - Jana
 **BREAKING CHANGES**
-* Support for Node.js 12 is dropped! Supported are Node.js 14.18.0+, 16.4.0+ and 18.x
+* Support for Node.js 12 and 14 is dropped! Supported are Node.js 16.4.0+ and 18.x
 * Backups created with the new js-controller version cannot be restored on hosts with lower js-controller version!
 * Update recommended npm version to 8
 * Deprecate binary states, Adapters will change to use Files instead!
 
 **Features**
+* (foxriver76) added method `sendToUserInterfaceClient` to push messages to UI client
 * (foxriver76) Show npm error message on failing adapter installations and update also without debug parameter
+* (bluefox/Apollon77/foxriver76) Try to solve `ENOTEMPTY` errors automatically on adapter upgrades/installations
 * (foxriver76) Introduce iobroker setting (dnsResolution) to choose between verbatim and ipv4 first dns resolution order
 * (foxriver76) Add support for windows for `iob fix`
 * (bluefox) Added CLI option to restart/start/stop all instances of an adapter (e.g. `iob stop admin` now also works)
 * (foxriver76) Allow to use `iob host oldname` command when new host already exists but has no instances
 * (foxriver76) Added an admin notification if redis is misconfigured and info how to fix it
-* (foxriver76) Enable upgrade of js-controller via Admin UI (Linux only)
+* (foxriver76/buanet) Enable upgrade of js-controller via Admin UI (Linux/Docker only)
+* (foxriver76) automatically reset `info.connection` if adapter instance is stopped
 
 **Optimizations and Fixes**
 * (foxriver76) Speedup "getStates" calls with many IDs often used by visualizations: JSONL 17 times faster, Redis 23 times faster
@@ -43,6 +46,8 @@
 * (foxriver76) Fixed issue with certificate validity on leap years
 * (Apollon77/foxriver76) Make sure that all relevant files are removed when eraseOnUpload is used
 * (foxriver76) fix wrong hostname after backup restore
+* (bluefox) allow CLI vendor update without explicitly specifying vendor file (default file is used)
+* (foxriver76) fix backup restore restoring to old database and using new one afterwards
 * (Apollon77, foxriver76, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 
 **Developer relevant DEPRECATIONS/WARNINGS**
@@ -74,6 +79,8 @@
 * (foxriver76) Fix Typings for sendTo/sendToHost
 * (Bluefox) Add User permission check to requireLog
 * (foxriver76) added `nonEdit` property of objects to types and document functionality
+* (foxriver76) introduced constants for state quality
+* (foxriver76) `subscribeStates` now also accepts an array of ids
 * general dependency updates
 * code style optimizations and streamline code
 

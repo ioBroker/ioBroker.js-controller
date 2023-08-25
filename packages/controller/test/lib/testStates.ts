@@ -271,6 +271,40 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         );
     });
 
+    it(testName + 'Test subscribe local states on array', async () => {
+        const sGid = `${gid}subscribeArray`;
+        const testVal = 50;
+
+        await context.adapter.setObjectAsync(sGid, {
+            common: {
+                read: true,
+                write: true,
+                name: 'test1',
+                type: 'number',
+                role: 'level',
+                min: -100,
+                max: 100
+            },
+            native: {},
+            type: 'state'
+        });
+
+        await context.adapter.subscribeStatesAsync([sGid]);
+
+        return new Promise(resolve => {
+            context.onAdapterStateChanged = (id, state) => {
+                if (id === `${context.adapterShortName}.0.${sGid}`) {
+                    expect(state).to.be.ok;
+                    expect(state!.val).to.equal(testVal);
+                    context.onAdapterStateChanged = null;
+                    resolve();
+                }
+            };
+
+            context.adapter.setState(sGid, testVal);
+        });
+    });
+
     // unsubscribeStates
     it(testName + 'Test unsubscribe local states', function (done) {
         this.timeout(3_000);

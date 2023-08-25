@@ -12,7 +12,7 @@ import { tools } from '@iobroker/js-controller-common';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual } from 'util';
 import axios from 'axios';
-import mime from 'mime';
+import mime from 'mime-types';
 import { join } from 'path';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
@@ -408,7 +408,7 @@ export class Upload {
                 continue;
             }
 
-            const mimeType = mime.getType(file);
+            const mimeType = mime.lookup(file);
             let attNameArr = file.split(this.regApp);
             // try to find anyway if adapter is not lower case
             if (attNameArr.length === 1 && file.toLowerCase().includes(tools.appName.toLowerCase())) {
@@ -610,7 +610,12 @@ export class Upload {
 
         if (forceUpload) {
             // only skip if explicitly opted out
-            if (cfg?.common?.eraseOnUpload !== false) {
+            // The visualization check is needed as user of legacy systems often stored files inside adapter directories like `vis`
+            // in the long term, such adapters should explicitly opt out, so we can hopefully remove this line in 2-3 versions (current 5.0)
+            if (
+                cfg?.common?.eraseOnUpload !== false &&
+                !(cfg?.common?.eraseOnUpload === undefined && cfg?.common?.type === 'visualization')
+            ) {
                 const { filesToDelete } = await this.collectExistingFilesToDelete(
                     isAdmin ? `${adapter}.admin` : adapter,
                     '/',
@@ -623,10 +628,10 @@ export class Upload {
                 await this.checkRestartOther(adapter);
                 await new Promise<void>(resolve => setTimeout(() => resolve(), 25));
                 // @ts-expect-error TODO rev is not required and should not exist on an object?
-                await this.upload(adapter, isAdmin, files, id, result && result.rev, logger);
+                await this.upload(adapter, isAdmin, files, id, result?.rev, logger);
             } else {
                 // @ts-expect-error TODO rev is not required and should not exist on an object?
-                await this.upload(adapter, isAdmin, files, id, result && result.rev, logger);
+                await this.upload(adapter, isAdmin, files, id, result?.rev, logger);
             }
         }
         return adapter;
@@ -699,6 +704,14 @@ export class Upload {
         return target as ioBroker.InstanceCommon;
     }
 
+    /**
+     * Extends the `system.instance.adapter.<instanceNumber>` objects with the native properties from adapters io-package.json
+     *
+     * @param name name of the adapter
+     * @param ioPack parsed io-package content
+     * @param hostname name of the host where the adapter is installed on
+     * @param logger instance of logger
+     */
     async _upgradeAdapterObjectsHelper(
         name: string,
         ioPack: Record<string, any>,
@@ -752,20 +765,6 @@ export class Upload {
                         newObject.ts = Date.now();
 
                         await this.objects.setObjectAsync(newObject._id, newObject);
-
-                        // @ts-expect-error TODO: instance object is no state remove this part?
-                        if (newObject.common.def !== undefined && newObject.common.def !== null) {
-                            // set default state value
-                            const state = await this.states.getStateAsync(newObject._id);
-                            if (!state) {
-                                await this.states.setStateAsync(newObject._id, {
-                                    // @ts-expect-error see above
-                                    val: newObject.common.def,
-                                    ack: true,
-                                    q: 0x40 // substitute value from device or adapter
-                                });
-                            }
-                        }
                     }
                 }
             }

@@ -1,13 +1,17 @@
 import { ChildProcessPromise, exec as execAsync } from 'promisify-child-process';
-import { tools } from '@iobroker/js-controller-common';
+import { tools, logger } from '@iobroker/js-controller-common';
 import { valid } from 'semver';
 import { dbConnectAsync } from '@iobroker/js-controller-cli';
 import http from 'http';
 import https from 'https';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import { setTimeout as wait } from 'timers/promises';
+import type { Logger } from 'winston';
+import fs from 'fs-extra';
+import type { Socket } from 'node:net';
+import type { Duplex } from 'node:stream';
 
-interface UpgradeArguments {
+export interface UpgradeArguments {
     /** Version of controller to upgrade too */
     version: string;
     /** Admin instance which triggered the upgrade */
@@ -66,13 +70,28 @@ class UpgradeManager {
     };
     /** Used to stop the stop shutdown timeout */
     private shutdownAbortController?: AbortController;
+    /** Logger to log to file and other transports */
+    private readonly logger: Logger;
 
     /** The server used for communicating upgrade status */
     private server?: https.Server | http.Server;
+    /** All socket connections of the webserver */
+    private sockets = new Set<Socket | Duplex>();
+    /** Name of the host for logging purposes */
+    private readonly hostname = tools.getHostName();
 
     constructor(args: UpgradeArguments) {
         this.adminInstance = args.adminInstance;
         this.version = args.version;
+        this.logger = this.setupLogger();
+    }
+
+    /**
+     * Set up the logger, to stream to file and other configured transports
+     */
+    private setupLogger(): Logger {
+        const config = fs.readJSONSync(tools.getConfigFileName());
+        return logger({ ...config.log, noStdout: false });
     }
 
     /**
@@ -107,12 +126,12 @@ class UpgradeManager {
      */
     log(message: string, error = false): void {
         if (error) {
-            console.error(message);
+            this.logger.error(`host.${this.hostname} [CONTROLLER_AUTO_UPGRADE] ${message}`);
             this.response.stderr.push(message);
             return;
         }
 
-        console.info(message);
+        this.logger.info(`host.${this.hostname} [CONTROLLER_AUTO_UPGRADE] ${message}`);
         this.response.stdout.push(message);
     }
 
@@ -120,7 +139,11 @@ class UpgradeManager {
      * Stops the js-controller via cli call
      */
     async stopController(): Promise<void> {
-        await execAsync(`${tools.appNameLowerCase} stop`);
+        if (tools.isDocker()) {
+            await execAsync('/opt/scripts/maintenance.sh on -kbn');
+        } else {
+            await execAsync(`${tools.appNameLowerCase} stop`);
+        }
         await wait(this.STOP_TIMEOUT_MS);
     }
 
@@ -128,6 +151,10 @@ class UpgradeManager {
      * Starts the js-controller via cli
      */
     startController(): ChildProcessPromise {
+        if (tools.isDocker()) {
+            return execAsync('/opt/scripts/maintenance.sh off -y');
+        }
+
         return execAsync(`${tools.appNameLowerCase} start`);
     }
 
@@ -147,8 +174,9 @@ class UpgradeManager {
             debug: true
         });
 
-        this.response.stderr = res.stderr.split('\n');
-        this.response.stdout = res.stdout.split('\n');
+        this.response.stderr.push(...res.stderr.split('\n'));
+        this.response.stdout.push(...res.stdout.split('\n'));
+
         this.response.success = res.success;
 
         if (!res.success) {
@@ -171,7 +199,7 @@ class UpgradeManager {
     }
 
     /**
-     * Shuts down the server, restarts the controller and exists the program
+     * Shuts down the server, restarts the controller and exits the program
      */
     shutdownApp(): void {
         if (this.shutdownAbortController) {
@@ -182,6 +210,8 @@ class UpgradeManager {
             process.exit();
         }
 
+        this.destroySockets();
+
         this.server.close(async () => {
             await this.startController();
             this.log('Successfully started js-controller');
@@ -191,13 +221,26 @@ class UpgradeManager {
     }
 
     /**
+     * Destroy all sockets, to prevent requests from keeping server alive
+     */
+    destroySockets(): void {
+        for (const socket of this.sockets) {
+            socket.destroy();
+            this.sockets.delete(socket);
+        }
+    }
+
+    /**
      * This function is called when the webserver receives a message
      *
      * @param req received message
      * @param res server response
      */
     webServerCallback(req: http.IncomingMessage, res: http.ServerResponse): void {
-        res.writeHead(200);
+        res.writeHead(200, {
+            'Access-Control-Allow-Origin': '*'
+        });
+
         res.end(JSON.stringify(this.response));
 
         if (!this.response.running) {
@@ -218,6 +261,8 @@ class UpgradeManager {
             this.webServerCallback(req, res);
         });
 
+        this.monitorSockets(this.server);
+
         this.server.listen(port, () => {
             this.log(`Server is running on http://localhost:${port}`);
         });
@@ -235,8 +280,25 @@ class UpgradeManager {
             this.webServerCallback(req, res);
         });
 
+        this.monitorSockets(this.server);
+
         this.server.listen(port, () => {
-            this.log(`Server is running on http://localhost:${port}`);
+            this.log(`Server is running on https://localhost:${port}`);
+        });
+    }
+
+    /**
+     * Keep track of all existing sockets
+     *
+     * @param server the webserver
+     */
+    monitorSockets(server: http.Server | https.Server): void {
+        server.on('connection', socket => {
+            this.sockets.add(socket);
+
+            server.once('close', () => {
+                this.sockets.delete(socket);
+            });
         });
     }
 
@@ -308,10 +370,16 @@ class UpgradeManager {
      */
     async startShutdownTimeout(): Promise<void> {
         this.shutdownAbortController = new AbortController();
-        await wait(this.SHUTDOWN_TIMEOUT, null, { signal: this.shutdownAbortController.signal });
+        try {
+            await wait(this.SHUTDOWN_TIMEOUT, null, { signal: this.shutdownAbortController.signal });
 
-        this.log('Timeout expired, initializing shutdown');
-        this.shutdownApp();
+            this.log('Timeout expired, initializing shutdown');
+            this.shutdownApp();
+        } catch (e) {
+            if (e.code !== 'ABORT_ERR') {
+                this.log(e.message, true);
+            }
+        }
     }
 }
 
@@ -321,6 +389,7 @@ class UpgradeManager {
 async function main(): Promise<void> {
     const upgradeArguments = UpgradeManager.parseCliCommands();
     const upgradeManager = new UpgradeManager(upgradeArguments);
+    registerErrorHandlers(upgradeManager);
 
     const webServerParameters = await upgradeManager.collectWebServerParameters();
 
@@ -345,4 +414,19 @@ async function main(): Promise<void> {
  */
 if (require.main === module) {
     main();
+}
+
+/**
+ * Stream unhandled errors to the log files
+ *
+ * @param upgradeManager the instance of Upgrade Manager
+ */
+function registerErrorHandlers(upgradeManager: UpgradeManager): void {
+    process.on('uncaughtException', e => {
+        upgradeManager.log(`Uncaught Exception: ${e.stack}`, true);
+    });
+
+    process.on('unhandledRejection', rej => {
+        upgradeManager.log(`Unhandled rejection: ${rej instanceof Error ? rej.stack : JSON.stringify(rej)}`, true);
+    });
 }

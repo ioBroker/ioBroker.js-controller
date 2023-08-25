@@ -232,15 +232,8 @@ export async function readObjectsAsZip(
     objects: ObjectsClient,
     rootId: string,
     adapter: string,
-    options: any,
-    callback: (err?: Error | null, base64?: string) => void
-): Promise<void> {
-    if (typeof options === 'function') {
-        callback = options;
-        options = null;
-    }
-    options = options || {};
-
+    options: any = {}
+): Promise<string> {
     if (adapter) {
         // try to load processor of adapter
         try {
@@ -250,47 +243,35 @@ export async function readObjectsAsZip(
         }
     }
 
-    objects.getConfigKeys(`${rootId}.*`, options, (err, keys) => {
-        if (!keys) {
-            callback(err);
-            return;
+    const keys = await objects.getKeysAsync(`${rootId}.*`, options);
+    if (!keys) {
+        throw new Error('No matching keys found');
+    }
+
+    const objs = await objects.getObjectsAsync(keys, options);
+    const zip = new JSZip();
+
+    for (let f = 0; f < objs.length; f++) {
+        let data: Record<string, any> = { id: keys[f], data: objs[f] };
+
+        if (options.stringify) {
+            try {
+                data = options.stringify(data, options ? options.settings : null);
+            } catch {
+                data.id = keys[f].replace(/\./g, '/').substring(rootId.length + 1) + '.json';
+            }
+        } else {
+            data.id = keys[f].replace(/\./g, '/').substring(rootId.length + 1) + '.json';
+        }
+        if (typeof data.data === 'object') {
+            data.data = JSON.stringify(data.data, null, 2);
         }
 
-        objects.getObjects(keys, options, async (err, objs) => {
-            const zip = new JSZip();
+        zip.file(data.id, data.data);
+    }
 
-            if (!objs) {
-                callback(err);
-                return;
-            }
-
-            for (let f = 0; f < objs.length; f++) {
-                let data: Record<string, any> = { id: keys[f], data: objs[f] };
-
-                if (options.stringify) {
-                    try {
-                        data = options.stringify(data, options ? options.settings : null);
-                    } catch {
-                        data.id = keys[f].replace(/\./g, '/').substring(rootId.length + 1) + '.json';
-                    }
-                } else {
-                    data.id = keys[f].replace(/\./g, '/').substring(rootId.length + 1) + '.json';
-                }
-                if (typeof data.data === 'object') {
-                    data.data = JSON.stringify(data.data, null, 2);
-                }
-
-                zip.file(data.id, data.data);
-            }
-
-            try {
-                const base64 = await zip.generateAsync({ type: 'base64' });
-                callback(err, base64);
-            } catch (e) {
-                callback(e.message);
-            }
-        });
-    });
+    const base64 = await zip.generateAsync({ type: 'base64' });
+    return base64;
 }
 
 async function _writeOneObject(

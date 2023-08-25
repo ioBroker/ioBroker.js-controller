@@ -1,4 +1,5 @@
-export { execute, dbConnectAsync } from './lib/setup';
+export { execute } from './lib/setup';
+export { dbConnectAsync } from './lib/setup/dbConnection';
 export { Vendor } from './lib/setup/setupVendor';
 export { Upload } from './lib/setup/setupUpload';
 export { Upgrade } from './lib/setup/setupUpgrade';

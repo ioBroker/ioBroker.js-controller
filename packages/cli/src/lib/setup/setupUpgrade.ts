@@ -27,9 +27,8 @@ export class Upgrade {
     private readonly hostname = tools.getHostName();
     private readonly upload: Upload;
     private readonly install: Install;
-    private objects: ObjectsInRedisClient;
+    private readonly objects: ObjectsInRedisClient;
     private readonly processExit: ProcessExitCallback;
-    private readonly params: Record<string, any>;
 
     constructor(options: CLIUpgradeOptions) {
         options = options || {};
@@ -39,7 +38,6 @@ export class Upgrade {
         }
 
         this.processExit = options.processExit;
-        this.params = options.params;
         this.objects = options.objects;
 
         this.upload = new Upload(options);
@@ -209,9 +207,7 @@ export class Upgrade {
                         // local dep get all instances on same host
                         locInstances = objs.rows.filter(
                             obj =>
-                                obj &&
-                                obj.value &&
-                                obj.value.common &&
+                                obj?.value?.common &&
                                 obj.value.common.name === dName &&
                                 obj.value.common.host === this.hostname
                         );
@@ -283,14 +279,14 @@ export class Upgrade {
     /**
      * Try to async upgrade adapter from given source with some checks
      *
-     * @param repoUrlOrObject url of the selected repository or parsed repo
+     * @param repoUrlOrObject url of the selected repository or parsed repo, if undefined use current active repository
      * @param adapter name of the adapter (can also include version like web@3.0.0)
      * @param forceDowngrade flag to force downgrade
      * @param autoConfirm automatically confirm the tty questions (bypass)
      * @param upgradeAll if true, this is an upgrade all call, we don't do major upgrades if no tty
      */
     async upgradeAdapter(
-        repoUrlOrObject: string | Record<string, any>,
+        repoUrlOrObject: string | Record<string, any> | undefined,
         adapter: string,
         forceDowngrade: boolean,
         autoConfirm: boolean,
@@ -411,7 +407,7 @@ export class Upgrade {
             const isDowngrade = semver.lt(targetVersion, installedVersion);
 
             // if information in repo files -> show news
-            if (repoAdapter && repoAdapter.news) {
+            if (repoAdapter?.news) {
                 const news = repoAdapter.news;
 
                 let first = true;
@@ -543,8 +539,8 @@ export class Upgrade {
                     console.log(`Can not check version information to display upgrade infos: ${err.message}`);
                 }
                 console.log(`Update ${adapter} from @${installedVersion} to @${targetVersion}`);
-                // Get the adapter from web site
-                // @ts-expect-error it could also call processExit internally but we want change it in future anyway
+                // Get the adapter from website
+                // @ts-expect-error it could also call processExit internally, but we want change it in future anyway
                 const { packetName, stoppedList } = await this.install.downloadPacket(
                     sources,
                     `${adapter}@${targetVersion}`
@@ -589,7 +585,7 @@ export class Upgrade {
                     console.log(`Can not check version information to display upgrade infos: ${err.message}`);
                 }
                 console.log(`Update ${adapter} from @${installedVersion} to @${targetVersion}`);
-                // @ts-expect-error it could also call processExit internally but we want change it in future anyway
+                // @ts-expect-error it could also call processExit internally, but we want change it in future anyway
                 const { packetName, stoppedList } = await this.install.downloadPacket(
                     sources,
                     `${adapter}@${targetVersion}`
@@ -679,7 +675,7 @@ export class Upgrade {
                 console.warn(`Controller is running. Please stop ioBroker first.`);
             } else {
                 console.log(`Update ${controllerName} from @${installed.common.version} to @${repoController.version}`);
-                // Get the controller from web site
+                // Get the controller from website
                 await this.install.downloadPacket(sources, `${controllerName}@${repoController.version}`, {
                     stopDb: true
                 });

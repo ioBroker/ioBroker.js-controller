@@ -366,40 +366,39 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         );
     }).timeout(3_000);
 
-    it(testName + 'Read alias state by not admin', done => {
-        prepareGroupsAndUsers(context.objects).then(() => {
-            context.adapter.setForeignState(gAliasID, 10, false, { user: 'system.user.userC' }, () => {
-                context.adapter.getForeignState(gid, { user: 'system.user.userC' }, (err, state) => {
-                    // It must be scaled from 0, 10, 100 %
-                    // to                     -100, -80, 100
-                    expect((state!.val as number).toFixed(3)).to.be.equal('-80.000');
-                    expect(state!.ack).to.be.false;
+    it(testName + 'Read alias state by not admin', async () => {
+        await prepareGroupsAndUsers(context.objects);
+        await context.adapter.setForeignStateAsync(gAliasID, 10, false, { user: 'system.user.userC' });
+        let state = await context.adapter.getForeignStateAsync(gid, { user: 'system.user.userC' });
+        // It must be scaled from 0, 10, 100 %
+        // to                     -100, -80, 100
+        expect((state!.val as number).toFixed(3)).to.be.equal('-80.000');
+        expect(state!.ack).to.be.false;
 
-                    context.adapter.setForeignState(gid, 10, false, { user: 'system.user.userC' }, () => {
-                        context.adapter.getForeignState(gAliasID, { user: 'system.user.userC' }, (err, state) => {
-                            // It must be scaled from -100, 10, 100
-                            // to                     0, 55, 100 %
-                            expect((state!.val as number).toFixed(3)).to.be.equal('55.000');
-                            expect(state!.ack).to.be.false;
-                            done();
-                        });
-                    });
-                });
-            });
-        });
+        await context.adapter.setForeignStateAsync(gid, 10, false, { user: 'system.user.userC' });
+        state = await context.adapter.getForeignStateAsync(gAliasID, { user: 'system.user.userC' });
+        // It must be scaled from -100, 10, 100
+        // to                     0, 55, 100 %
+        expect((state!.val as number).toFixed(3)).to.be.equal('55.000');
+        expect(state!.ack).to.be.false;
     }).timeout(3_000);
 
-    it(testName + 'Read alias state by not admin without rights', done => {
-        prepareGroupsAndUsers(context.objects).then(() => {
-            context.adapter.setForeignState(gAliasID, 10, false, { user: 'system.user.userD' }, err => {
-                expect(err!.message).to.be.equal('permissionError');
+    it(testName + 'Read alias state by not admin without rights', async () => {
+        await prepareGroupsAndUsers(context.objects);
 
-                context.adapter.getForeignState(gid, { user: 'system.user.userD' }, err => {
-                    expect(err!.message).to.be.equal('permissionError');
-                    done();
-                });
-            });
-        });
+        try {
+            await context.adapter.setForeignStateAsync(gAliasID, 10, false, { user: 'system.user.userD' });
+            expect(1).to.be.equal(2, 'Should have thrown a permissionError');
+        } catch (e) {
+            expect(e.message).to.be.equal('permissionError');
+        }
+
+        try {
+            await context.adapter.getForeignStateAsync(gid, { user: 'system.user.userD' });
+            expect(1).to.be.equal(2, 'Should have thrown a permissionError');
+        } catch (e) {
+            expect(e.message).to.be.equal('permissionError');
+        }
     }).timeout(3_000);
 
     // test subscriptions
@@ -1003,4 +1002,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         // read def is 5
         expect(states[`${gAliasID}aliasReadWriteGetStates`].val).to.be.equal(5);
     }).timeout(3_000);
+
+    it(testName + 'Read alias states via getStates should apply permissions', async () => {
+        const states = await context.adapter.getForeignStatesAsync(`${gAliasID}*`, { user: 'system.user.queen' });
+        console.log('ressss');
+        console.log(states);
+        // on permission problems, we will receive only an id with null, ensure that this does not happen
+        expect(states[`${gAliasID}C`]).to.be.ok;
+    });
 }

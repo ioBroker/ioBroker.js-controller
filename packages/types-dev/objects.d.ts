@@ -295,8 +295,8 @@ declare global {
         }
 
         interface MetaCommon extends ObjectCommon {
-            // Meta objects have two additional CommonTypes
-            type: CommonType | 'meta.user' | 'meta.folder';
+            // Can be of type `user` for folders, where a user can store files or `folder` for adapter internal structures
+            type: 'meta.user' | 'meta.folder';
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
@@ -501,7 +501,7 @@ declare global {
             localLinks?: Record<string, string>;
             /** @deprecated Use @see localLinks */
             localLink?: string;
-            logLevel?: LogLevel;
+            loglevel?: LogLevel;
             /** Whether this adapter receives logs from other hosts and adapters (e.g. to strore them somewhere) */
             logTransporter?: boolean;
             /** Path to the start file of the adapter. Should be the same as in `package.json` */

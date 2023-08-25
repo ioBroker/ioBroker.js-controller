@@ -490,7 +490,10 @@ adapter.getHistory('state.id', {}, (_err, _result?: ioBroker.GetHistoryResult) =
 (() => adapter.terminate('Reason'))();
 (() => adapter.terminate('Reason', 4))();
 
+// @ts-expect-error
 adapter.supportsFeature && !!adapter.supportsFeature('foo');
+adapter.supportsFeature && !!adapter.supportsFeature('ADAPTER_SET_OBJECT_SETS_DEFAULT_VALUE');
+
 () => {
     const instance = adapter.getPluginInstance('my-plugin');
     instance && instance.someMethod();
@@ -685,21 +688,31 @@ declare let enumObj: ioBroker.EnumObject;
 enumObj.common.members && enumObj.common.members.map(() => 1);
 
 // Adapter.clearTimeout and clearInterval are not compatible with the builtins
-adapter.clearTimeout(adapter.setTimeout(() => {}, 10)!);
-adapter.clearInterval(adapter.setInterval(() => {}, 10)!);
+adapter.clearTimeout(adapter.setTimeout(() => {}, 10));
+adapter.clearInterval(adapter.setInterval(() => {}, 10));
+// @ts-expect-error
+adapter.clearInterval(adapter.setTimeout(() => {}, 10));
+// @ts-expect-error
+adapter.clearTimeout(adapter.setInterval(() => {}, 10));
 // @ts-expect-error
 clearTimeout(adapter.setTimeout(() => {}, 10));
 // @ts-expect-error
 clearInterval(adapter.setInterval(() => {}, 10));
-// todo types need to be implemented to not allow interchanging between nodejs and iob timers @ts-expect-error
+// @ts-expect-error
 adapter.clearTimeout(setTimeout(() => {}, 10));
-// todo types need to be implemented to not allow interchanging between nodejs and iob timers @ts-expect-error
+// @ts-expect-error
 adapter.clearInterval(setInterval(() => {}, 10));
 // And they must not be switched
 // @ts-expect-error
 adapter.clearInterval(adapter.setTimeout(() => {}, 10));
 // @ts-expect-error
 adapter.clearTimeout(adapter.setInterval(() => {}, 10));
+
+adapter.sendToUI({ data: 'blabla', clientId: '123-456-789' });
+// @ts-expect-error clientId has to be string
+adapter.sendToUI({ data: 'blabla', clientId: 12 });
+// send to all clients
+adapter.sendToUI({ data: [1, 2, 3] });
 
 // Error callbacks were changed to Error objects
 adapter.delFile(null, 'foo', err => {

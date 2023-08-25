@@ -9,6 +9,20 @@ import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 
 const expect = chai.expect;
 
+declare global {
+    // eslint-disable-next-line @typescript-eslint/no-namespace
+    namespace ioBroker {
+        interface AdapterConfig {
+            paramBoolean: boolean;
+            paramNumber: number;
+            username: string;
+            password: string;
+            secondPassword: string;
+            paramString: string;
+        }
+    }
+}
+
 before(() => {
     chai.should();
     chai.use(chaiAsPromised);
@@ -222,14 +236,14 @@ function testAdapter(options: Record<string, any>): void {
                 expect(context.adapter.log!.debug).to.be.a('function');
                 expect(context.adapter.log!.warn).to.be.a('function');
                 expect(context.adapter.log!.error).to.be.a('function');
-                expect(context.adapter.config!.paramString).to.be.equal('value1');
-                expect(context.adapter.config!.paramNumber).to.be.equal(42);
-                expect(context.adapter.config!.paramBoolean).to.be.equal(false);
-                expect(context.adapter.config!.username).to.be.equal('tesla');
+                expect(context.adapter.config.paramString).to.be.equal('value1');
+                expect(context.adapter.config.paramNumber).to.be.equal(42);
+                expect(context.adapter.config.paramBoolean).to.be.equal(false);
+                expect(context.adapter.config.username).to.be.equal('tesla');
                 // password has to be winning (decrypted via legacy - backward compatibility)
-                expect(context.adapter.config!.password).to.be.equal('winning');
+                expect(context.adapter.config.password).to.be.equal('winning');
                 // secondPassword should be decrypted with AES-256 correctly
-                expect(context.adapter.config!.secondPassword).to.be.equal('ii-€+winning*-³§"');
+                expect(context.adapter.config.secondPassword).to.be.equal('ii-€+winning*-³§"');
 
                 let count = 0;
 
@@ -285,65 +299,6 @@ function testAdapter(options: Record<string, any>): void {
         for (const test of tests) {
             test.register(it, expect, context);
         }
-
-        // sendTo => controller => adapter
-        // sendToHost - cannot be tested
-
-        // this test is 15 seconds long. Enable it only if ready to push
-        /*
-        it(`${options.name} ${context.adapterShortName} adapter: Check if uptime changes`, function (done) {
-            this.timeout(20_000);
-
-            context.states.getState(`system.adapter.${context.adapterShortName}.0.uptime`, function (err, state1) {
-                expect(err).to.be.not.ok;
-                expect(state1).to.be.ok;
-                expect(state1.val).to.be.ok;
-
-                setTimeout(function () {
-                    context.states.getState(
-                        `system.adapter.${context.adapterShortName}.0.uptime`,
-                        function (err, state2) {
-                            expect(err).to.be.not.ok;
-                            expect(state2).to.be.ok;
-                            expect(state2.val).to.be.ok;
-                            if (state2.val !== state1.val) {
-                                expect(state2.val).to.be.above(state1.val);
-                                done();
-                            } else {
-                                setTimeout(function () {
-                                    context.states.getState(
-                                        `system.adapter.${context.adapterShortName}.0.uptime`,
-                                        function (err, state2) {
-                                            expect(err).to.be.not.ok;
-                                            expect(state2).to.be.ok;
-                                            expect(state2.val).to.be.ok;
-                                            if (state2.val !== state1.val) {
-                                                expect(state2.val).to.be.above(state1.val);
-                                                done();
-                                            } else {
-                                                setTimeout(function () {
-                                                    context.states.getState(
-                                                        `system.adapter.${context.adapterShortName}.0.uptime`,
-                                                        function (err, state2) {
-                                                            expect(err).to.be.not.ok;
-                                                            expect(state2).to.be.ok;
-                                                            expect(state2.val).to.be.ok;
-                                                            expect(state2.val).to.be.above(state1.val);
-                                                            done();
-                                                        }
-                                                    );
-                                                }, 6_000);
-                                            }
-                                        }
-                                    );
-                                }, 5_000);
-                            }
-                        }
-                    );
-                }, 5_000);
-            });
-        });
-         */
 
         after(`${options.name} ${context.adapterShortName} adapter: Stop js-controller`, async function () {
             this.timeout(35_000);

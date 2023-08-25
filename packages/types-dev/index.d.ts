@@ -13,16 +13,38 @@ type AtLeastOne<T, Req = { [K in keyof T]-?: T[K] }, Opt = { [K in keyof T]+?: T
 
 declare global {
     namespace ioBroker {
-        enum StateQuality {
-            good = 0x00, // or undefined or null
-            bad = 0x01,
-            general_problem = 0x01,
-            general_device_problem = 0x41,
-            general_sensor_problem = 0x81,
-            device_not_connected = 0x42,
-            sensor_not_connected = 0x82,
-            device_reports_error = 0x44,
-            sensor_reports_error = 0x84
+        /** Two-way mapping for state quality ("q" attribute of a state) */
+        enum STATE_QUALITY {
+            /** The default value for a state */
+            GOOD = 0x00,
+            /** General problem */
+            BAD = 0x01,
+            /** The instance cannot establish a connection */
+            CONNECTION_PROBLEM = 0x02,
+            /** Substitute value from controller, do not set this in adapters */
+            SUBSTITUTE_FROM_CONTROLLER = 0x10,
+            /** Quality for default values */
+            SUBSTITUTE_INITIAL_VALUE = 0x20,
+            /** Substitute value from instance or device */
+            SUBSTITUTE_DEVICE_INSTANCE_VALUE = 0x40,
+            /** Substitute value from a sensor */
+            SUBSTITUTE_SENSOR_VALUE = 0x80,
+            /** General problem by instance */
+            GENERAL_INSTANCE_PROBLEM = 0x11,
+            /** General problem by device */
+            GENERAL_DEVICE_PROBLEM = 0x41,
+            /** General problem by sensor */
+            GENERAL_SENSOR_PROBLEM = 0x81,
+            /** The instance is not connected */
+            INSTANCE_NOT_CONNECTED = 0x12,
+            /** The device is not connected */
+            DEVICE_NOT_CONNECTED = 0x42,
+            /** The sensor is not connected */
+            SENSOR_NOT_CONNECTED = 0x82,
+            /** The device has reported an error */
+            DEVICE_ERROR_REPORT = 0x44,
+            /** The sensor has reported an error */
+            SENSOR_ERROR_REPORT = 0x84
         }
 
         type StateValue = string | number | boolean | null;
@@ -50,7 +72,7 @@ declare global {
             expire?: number;
 
             /** Optional quality of the state value */
-            q?: StateQuality;
+            q?: STATE_QUALITY;
 
             /** Optional comment */
             c?: string;
@@ -195,11 +217,11 @@ declare global {
 
         interface Certificates {
             /** private key file */
-            key: string | Buffer;
+            key: string;
             /** public certificate */
-            cert: string | Buffer;
+            cert: string;
             /** chained CA certificates */
-            ca: Array<string | Buffer>;
+            ca?: string;
         }
 
         type MessagePayload = any;
@@ -296,8 +318,6 @@ declare global {
                 | 'restartLoop'
                 | 'fileToJsonl';
         }
-
-        // eslint-disable-next-line @typescript-eslint/no-empty-interface
         interface AdapterConfig {
             // This is a stub to be augmented in every adapter
         }
@@ -373,13 +393,13 @@ declare global {
             SecondParameterOf<T>,
             null | undefined
         >;
-        /** Infers the return type from a callback-style API and and leaves null and undefined in */
+        /** Infers the return type from a callback-style API and leaves null and undefined in */
         type CallbackReturnTypeOf<T extends (...args: any[]) => any> = SecondParameterOf<T>;
 
-        type GetStateCallback = (err: Error | null, state?: State | null) => void;
+        type GetStateCallback = (err?: Error | null, state?: State | null) => void;
         type GetStatePromise = Promise<CallbackReturnTypeOf<GetStateCallback>>;
 
-        type GetStatesCallback = (err: Error | null, states?: Record<string, State>) => void;
+        type GetStatesCallback = (err?: Error | null, states?: Record<string, State>) => void;
         type GetStatesPromise = Promise<NonNullCallbackReturnTypeOf<GetStatesCallback>>;
 
         type GetBinaryStateCallback = (err?: Error | null, state?: Buffer) => void;
@@ -417,7 +437,7 @@ declare global {
             createdAt?: number;
         }
         type ReadDirCallback = (err?: NodeJS.ErrnoException | null, entries?: ReadDirResult[]) => void;
-        type ReadDirPromise = Promise<NonNullCallbackReturnTypeOf<ReadDirCallback>>;
+        type ReadDirPromise = Promise<ReadDirResult[]>;
 
         type ReadFileCallback = (err?: NodeJS.ErrnoException | null, data?: Buffer | string, mimeType?: string) => void;
         type ReadFilePromise = Promise<{ file: string | Buffer; mimeType?: string }>;

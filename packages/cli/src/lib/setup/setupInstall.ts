@@ -1,7 +1,7 @@
 /**
  *      Install adapter
  *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2023 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -21,6 +21,7 @@ import { getRepository } from './utils';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { ProcessExitCallback } from '../_Types';
+import type { CommandResult } from '@alcalzone/pak';
 
 const hostname = tools.getHostName();
 const osPlatform = process.platform;
@@ -31,6 +32,22 @@ const RECOMMENDED_NPM_VERSION = 8;
 interface NpmInstallResult {
     installDir: string;
     _url: string;
+}
+
+interface NpmInstallOptions {
+    /** url of the package */
+    npmUrl: string;
+    /** Additional options*/
+    options: CLIDownloadPacketOptions;
+    /** if debug logging is desired */
+    debug: boolean;
+    /** if it is a retry, do not perform special error handling again */
+    isRetry: boolean;
+}
+
+interface NotEmptyErrorOptions extends Omit<NpmInstallOptions, 'isRetry'> {
+    /** Result of the failed installation process */
+    result: CommandResult;
 }
 
 export interface CLIInstallOptions {
@@ -310,17 +327,48 @@ export class Install {
         }
 
         try {
-            return await this._npmInstall(npmUrl, options, debug);
+            return await this._npmInstall({ npmUrl, options, debug, isRetry: false });
         } catch (err) {
             console.error(`Could not install ${npmUrl}: ${err.message}`);
         }
     }
 
-    private async _npmInstall(
-        npmUrl: string,
-        options: CLIDownloadPacketOptions,
-        debug: boolean
-    ): Promise<void | NpmInstallResult> {
+    /**
+     * Extract the adapterName e.g. `hm-rpc` from url
+     * @param npmUrl url of the npm packet
+     */
+    private getAdapterNameFromUrl(npmUrl: string): string {
+        npmUrl = npmUrl
+            .replace(/\\/g, '/') // it could be the Windows path
+            .replace(/\.git$/, '') // it could be https://github.com/ioBroker/ioBroker.NAME.git
+            .toLowerCase();
+
+        // If the user installed a git commit-ish, the url contains stuff that doesn't belong in a folder name
+        // e.g. iobroker/iobroker.javascript#branch-name
+        if (npmUrl.includes('#')) {
+            npmUrl = npmUrl.substring(0, npmUrl.indexOf('#'));
+        }
+        if (npmUrl.includes('/') && !npmUrl.startsWith('@')) {
+            // only scoped packages (e.g. @types/node ) may have a slash in their path
+            npmUrl = npmUrl.substring(npmUrl.lastIndexOf('/') + 1);
+        }
+        if (!npmUrl.startsWith('@')) {
+            // it is a version, so cut off the version
+            npmUrl = npmUrl.split('@')[0];
+        }
+
+        return npmUrl;
+    }
+
+    /**
+     * Perform npm installation of given package
+     *
+     * @param installOptions options of package to install
+     */
+    private async _npmInstall(installOptions: NpmInstallOptions): Promise<void | NpmInstallResult> {
+        const { npmUrl, debug, isRetry } = installOptions;
+        let { options } = installOptions;
+
         if (typeof options !== 'object') {
             options = {};
         }
@@ -340,7 +388,7 @@ export class Install {
         });
 
         if (result.success || result.exitCode === 1) {
-            // code 1 is strange error that cannot be explained. Everything is installed but error :(
+            // code 1 is a strange error that cannot be explained. Everything is installed but error :(
 
             // Determine where the packet would be installed if npm succeeds
             // TODO: There's probably a better way to figure this out
@@ -348,16 +396,7 @@ export class Install {
             if (options.packetName) {
                 packetDirName = `${tools.appName.toLowerCase()}.${options.packetName}`;
             } else {
-                packetDirName = npmUrl.toLowerCase();
-                // If the user installed a git commit-ish, the url contains stuff that doesn't belong in a folder name
-                // e.g. iobroker/iobroker.javascript#branch-name
-                if (packetDirName.includes('#')) {
-                    packetDirName = packetDirName.substring(0, packetDirName.indexOf('#'));
-                }
-                if (packetDirName.includes('/') && !packetDirName.startsWith('@')) {
-                    // only scoped packages (e.g. @types/node ) may have a slash in their path
-                    packetDirName = packetDirName.substring(packetDirName.lastIndexOf('/') + 1);
-                }
+                packetDirName = this.getAdapterNameFromUrl(npmUrl);
             }
             const installDir = tools.getAdapterDir(packetDirName);
 
@@ -385,15 +424,64 @@ export class Install {
                 console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
                 return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
             }
-            // create file that indicates, that npm was called there
+            // create file that indicates that npm was called there
             fs.writeFileSync(path.join(installDir, 'iob_npm.done'), ' ');
             // command succeeded
             return { _url: npmUrl, installDir: path.dirname(installDir) };
         } else {
+            if (!isRetry && result.stderr.includes('ENOTEMPTY')) {
+                return this.handleNpmNotEmptyError({ npmUrl, options, debug, result });
+            }
+
             console.error(result.stderr);
             console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
             return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
         }
+    }
+
+    /**
+     * Handle the NPM `ENOTEMPTY` error, by deleting different affected directories and retrying installation
+     *
+     * @param notEmptyErrorOptions options of package to install
+     */
+    private handleNpmNotEmptyError(
+        notEmptyErrorOptions: NotEmptyErrorOptions
+    ): Promise<void | NpmInstallResult> | void {
+        const { debug, npmUrl, options, result } = notEmptyErrorOptions;
+
+        console.info('Try to solve ENOTEMPTY error automatically');
+
+        const errorFilePath = result.stderr
+            .split('\n')
+            ?.find(line => line.startsWith('npm ERR! dest'))
+            ?.split('dest')[1]
+            .trim();
+
+        const affectedNodeModulesPath = errorFilePath ? path.join(errorFilePath, '..') : undefined;
+
+        if (affectedNodeModulesPath) {
+            const parts = affectedNodeModulesPath.replace(/\\/g, '/').split('/');
+            if (parts[parts.length - 1] === 'node_modules') {
+                // node modules detected, so scan it for ".*-????????"
+                let foundNpmGarbage = false;
+                fs.readdirSync(affectedNodeModulesPath).forEach(file => {
+                    if (file.match(/^\..*-[a-zA-Z0-9]{8}$/) && file !== '.local-chromium') {
+                        fs.rmSync(path.join(affectedNodeModulesPath, file), { recursive: true, force: true });
+                        foundNpmGarbage = true;
+                        console.warn(`host.${hostname} deleted npm temp directory: "${file}")`);
+                    }
+                });
+
+                if (foundNpmGarbage) {
+                    return this._npmInstall({ npmUrl, options, debug, isRetry: true });
+                }
+            }
+        }
+
+        console.error('Could not handle ENOTEMPTY, because no deletable files were found');
+        console.error(result.stderr);
+        console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
+        return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
     }
 
     private async _npmUninstall(packageName: string, debug: boolean): Promise<void> {
@@ -405,7 +493,6 @@ export class Install {
 
     // this command is executed always on THIS host
     private async _checkDependencies(
-        adapter: string,
         deps: Dependencies,
         globalDeps: Dependencies,
         _options: Record<string, any>
@@ -426,7 +513,7 @@ export class Install {
             endkey: 'system.adapter.\u9999'
         });
 
-        if (objs && objs.rows && objs.rows.length) {
+        if (objs?.rows?.length) {
             for (const dName in allDeps) {
                 let isFound = false;
 
@@ -461,9 +548,7 @@ export class Install {
                         // local dep get all instances on same host
                         locInstances = objs.rows.filter(
                             obj =>
-                                obj &&
-                                obj.value &&
-                                obj.value.common &&
+                                obj?.value?.common &&
                                 obj.value.common.name === dName &&
                                 obj.value.common.host === hostname
                         );
@@ -543,7 +628,6 @@ export class Install {
 
         // check if some dependencies are missing and install them if some found
         await this._checkDependencies(
-            adapter,
             adapterConf.common.dependencies,
             adapterConf.common.globalDependencies,
             this.params
@@ -829,11 +913,8 @@ export class Install {
         }
 
         if (defaultLogLevel) {
-            // @ts-expect-error TODO should it be loglevel or logLevel
             instanceObj.common.loglevel = defaultLogLevel;
-            // @ts-expect-error TODO should it be loglevel or logLevel
         } else if (!instanceObj.common.loglevel) {
-            // @ts-expect-error TODO should it be loglevel or logLevel looked into my objects -> loglevel
             instanceObj.common.loglevel = 'info';
         }
 

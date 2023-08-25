@@ -26,6 +26,7 @@ export async function getRepository(options: GetRepositoryOptions): Promise<Reco
     const repoArr = !Array.isArray(repoName) ? [repoName!] : repoName!;
 
     const systemRepos = (await objects!.getObjectAsync('system.repositories'))!;
+
     const allSources = {};
     let changed = false;
     let anyFound = false;
@@ -57,7 +58,7 @@ export async function getRepository(options: GetRepositoryOptions): Promise<Reco
         }
 
         if (changed) {
-            await objects!.setObjectAsync('system.repositories', systemRepos);
+            await objects.setObjectAsync('system.repositories', systemRepos);
         }
     }
 

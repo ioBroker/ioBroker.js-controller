@@ -40,11 +40,11 @@ export class Vendor {
     /**
      * Read info from  '/etc/iob_vendor.json' and executes instructions stored there
      *
-     * @param file file path
+     * @param file file path if not given, default path is used
      * @param password vendor password
      * @param logger
      */
-    async checkVendor(file: string, password: string, logger?: any): Promise<void> {
+    async checkVendor(file: string | undefined, password: string, logger?: any): Promise<void> {
         logger = logger || {
             debug: (text: string) => console.log(text),
             info: (text: string) => console.log(text),

@@ -21,34 +21,34 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:182](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/adapter/src/lib/_Types.ts#L182)
+[adapter/src/lib/_Types.ts:257](https://github.com/ioBroker/ioBroker.js-controller/blob/edb14082/packages/adapter/src/lib/_Types.ts#L257)
 
 ___
 
 ### chainedName
 
-• **chainedName**: `string`
+• `Optional` **chainedName**: `string`
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/adapter/src/lib/_Types.ts#L181)
+[adapter/src/lib/_Types.ts:256](https://github.com/ioBroker/ioBroker.js-controller/blob/edb14082/packages/adapter/src/lib/_Types.ts#L256)
 
 ___
 
 ### privateName
 
-• **privateName**: `string`
+• `Optional` **privateName**: `string`
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:180](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/adapter/src/lib/_Types.ts#L180)
+[adapter/src/lib/_Types.ts:255](https://github.com/ioBroker/ioBroker.js-controller/blob/edb14082/packages/adapter/src/lib/_Types.ts#L255)
 
 ___
 
 ### publicName
 
-• **publicName**: `string`
+• `Optional` **publicName**: `string`
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:179](https://github.com/ioBroker/ioBroker.js-controller/blob/c580eb7e/packages/adapter/src/lib/_Types.ts#L179)
+[adapter/src/lib/_Types.ts:254](https://github.com/ioBroker/ioBroker.js-controller/blob/edb14082/packages/adapter/src/lib/_Types.ts#L254)

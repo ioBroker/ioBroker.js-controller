@@ -1,6 +1,5 @@
 import { expect } from 'chai';
 import fs from 'fs';
-import semverDiff from 'semver/functions/diff';
 
 describe('Test package.json and io-package.json', () => {
     it('Test package files', done => {
@@ -18,15 +17,13 @@ describe('Test package.json and io-package.json', () => {
         expect(ioPackage.common.version, 'ERROR: Version number in io-package.json needs to exist').to.exist;
         expect(npmPackage.version, 'ERROR: Version number in package.json needs to exist').to.exist;
 
-        const versionDiff = semverDiff(ioPackage.common.version, npmPackage.version);
+        // package version can have prerelease
+        const npmVersion = npmPackage.version.split('-')[0];
 
-        // we don't put pre-releases into io-pack, so they are allowed to differ here
-        if (versionDiff && versionDiff !== 'prerelease') {
-            expect(
-                ioPackage.common.version,
-                'ERROR: Version numbers in package.json and io-package.json needs to match'
-            ).to.be.equal(npmPackage.version);
-        }
+        expect(
+            ioPackage.common.version,
+            'ERROR: Version numbers in package.json and io-package.json needs to match'
+        ).to.be.equal(npmVersion);
 
         if (!ioPackage.common.news || !ioPackage.common.news[ioPackage.common.version]) {
             console.log(
