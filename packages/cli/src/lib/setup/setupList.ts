@@ -629,11 +629,12 @@ export class List {
                                                 create: true,
                                                 list: true
                                             },
-                                            // @ts-expect-error check types
-                                            user: {
+                                            users: {
                                                 write: true,
                                                 create: true,
-                                                delete: true
+                                                delete: true,
+                                                list: true,
+                                                read: true
                                             },
                                             other: {
                                                 execute: true,
