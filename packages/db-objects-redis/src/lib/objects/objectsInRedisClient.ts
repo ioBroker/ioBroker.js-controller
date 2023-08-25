@@ -4502,40 +4502,43 @@ export class ObjectsInRedisClient {
     }
 
     // getObjectList is called without options with callback
-    getObjectList(params: ioBroker.GetObjectListParams, callback: ioBroker.GetObjectListCallback): void;
+    getObjectList(
+        params: ioBroker.GetObjectListParams,
+        callback: ioBroker.GetObjectListCallback<ioBroker.Object>
+    ): void;
 
     // getObjectList is called without options without callback, we return a promise
     getObjectList(
         params: ioBroker.GetObjectListParams
-    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback>>;
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback<ioBroker.Object>>>;
 
     // getObjectList is called with options
-    getObjectList<T extends ioBroker.GetObjectListCallback>(
+    getObjectList<T extends ioBroker.GetObjectListCallback<ioBroker.Object>>(
         params: ioBroker.GetObjectListParams,
         options?: CallOptions | null,
         callback?: T
-    ): T extends ioBroker.GetObjectListCallback
+    ): T extends ioBroker.GetObjectListCallback<ioBroker.Object>
         ? void
-        : Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback>>;
+        : Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback<ioBroker.Object>>>;
 
     // getObjectList is called with callback, thus we call it
     getObjectList(
         params: ioBroker.GetObjectListParams,
         options: CallOptions | null,
-        callback: ioBroker.GetObjectListCallback
+        callback: ioBroker.GetObjectListCallback<ioBroker.Object>
     ): void;
 
     // getObjectList is called without callback, thus we return a promise
     getObjectList(
         params: ioBroker.GetObjectListParams,
         options?: CallOptions | null
-    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback>>;
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback<ioBroker.Object>>>;
 
     getObjectList(
         params: ioBroker.GetObjectListParams,
         options?: CallOptions | null,
-        callback?: ioBroker.GetObjectListCallback
-    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback>> {
+        callback?: ioBroker.GetObjectListCallback<ioBroker.Object>
+    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback<ioBroker.Object>>> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -4569,7 +4572,7 @@ export class ObjectsInRedisClient {
     getObjectListAsync(
         params: ioBroker.GetObjectListParams,
         options?: CallOptions
-    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback>> {
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectListCallback<ioBroker.Object>>> {
         return new Promise((resolve, reject) =>
             this.getObjectList(params, options, (err, arr) => (err ? reject(err) : resolve(arr)))
         );

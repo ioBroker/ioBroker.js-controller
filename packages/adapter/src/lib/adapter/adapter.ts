@@ -3771,11 +3771,14 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    getObjectList(params: ioBroker.GetObjectListParams | null, callback: ioBroker.GetObjectListCallback): void;
+    getObjectList(
+        params: ioBroker.GetObjectListParams | null,
+        callback: ioBroker.GetObjectListCallback<ioBroker.Object>
+    ): void;
     getObjectList(
         params: ioBroker.GetObjectListParams | null,
         options: { sorted?: boolean } | Record<string, any>,
-        callback: ioBroker.GetObjectListCallback
+        callback: ioBroker.GetObjectListCallback<ioBroker.Object>
     ): void;
 
     /**

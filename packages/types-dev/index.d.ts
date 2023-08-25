@@ -492,11 +492,11 @@ declare global {
             /** The same as @link{value} */
             doc: T;
         }
-        type GetObjectListCallback = (
+        type GetObjectListCallback<T extends ioBroker.Object> = (
             err?: Error | null,
-            result?: { rows: GetObjectListItem<ioBroker.Object>[] }
+            result?: { rows: GetObjectListItem<T>[] }
         ) => void;
-        type GetObjectListPromise = Promise<NonNullCallbackReturnTypeOf<GetObjectListCallback>>;
+        type GetObjectListPromise = Promise<NonNullCallbackReturnTypeOf<GetObjectListCallback<ioBroker.Object>>>;
 
         type ExtendObjectCallback = (
             err?: Error | null,
