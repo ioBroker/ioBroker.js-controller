@@ -606,8 +606,6 @@ export class List {
                                     (obj.value.common && reg.test(obj.value.common.name))
                                 ) {
                                     const id = obj.value._id.substring(13);
-                                    //let name = objs.rows[i].value.common.name;
-
                                     if (id === 'administrator') {
                                         obj.value.common.acl = {
                                             file: {
