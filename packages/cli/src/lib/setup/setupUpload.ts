@@ -726,7 +726,7 @@ export class Upload {
 
         if (res) {
             for (const row of res.rows) {
-                if (row.value.common.host === hostname) {
+                if (row.value?.common.host === hostname) {
                     const _obj = await this.objects.getObjectAsync(row.id);
                     const newObject = deepClone(_obj) as ioBroker.InstanceObject;
 
@@ -741,7 +741,6 @@ export class Upload {
                     // protected/encryptedNative and notifications also need to be updated
                     newObject.protectedNative = ioPack.protectedNative || [];
                     newObject.encryptedNative = ioPack.encryptedNative || [];
-                    // @ts-expect-error TODO needs to be added to types
                     newObject.notifications = ioPack.notifications || [];
                     // update instanceObjects and objects
                     // @ts-expect-error TODO needs to be added to types
@@ -839,7 +838,6 @@ export class Upload {
             // protected/encryptedNative and notifications also need to be updated
             obj.protectedNative = ioPack.protectedNative || [];
             obj.encryptedNative = ioPack.encryptedNative || [];
-            // @ts-expect-error TODO needs to be added to types
             obj.notifications = ioPack.notifications || [];
             // update instanceObjects and objects
             // @ts-expect-error TODO needs to be added to types

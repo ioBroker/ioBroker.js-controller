@@ -848,7 +848,7 @@ export class Install {
         // check singletonHost one on host
         if (doc.common.singletonHost) {
             for (const row of res.rows) {
-                if (row.value.common.host === hostname) {
+                if (row.value?.common.host === hostname) {
                     if (ignoreIfExists) {
                         return;
                     }
@@ -1091,7 +1091,7 @@ export class Install {
                         row
                     ): row is ioBroker.GetObjectViewItem<ioBroker.InstanceObject> & {
                         value: ioBroker.InstanceObject;
-                    } => !!row?.value?._id
+                    } => !!row.value?._id
                 )
                 //  ... that matches the pattern
                 .filter(row => instanceRegex.test(row.value._id))
@@ -1140,8 +1140,8 @@ export class Install {
 
                 // add non-duplicates to the list
                 const newObjs = doc.rows
-                    .filter(row => row && row.value && row.value._id)
-                    .map(row => row.value._id)
+                    .filter(row => row?.value?._id)
+                    .map(row => row.value!._id)
                     .filter(id => adapterRegex.test(id))
                     .filter(id => knownObjIDs.indexOf(id) === -1);
                 knownObjIDs.push(...newObjs);
@@ -1211,8 +1211,8 @@ export class Install {
             if (doc && doc.rows && doc.rows.length) {
                 // add non-duplicates to the list
                 const newObjs = doc.rows
-                    .filter(row => row && row.value && row.value._id)
-                    .map(row => row.value._id)
+                    .filter(row => row.value?._id)
+                    .map(row => row.value!._id)
                     .filter(id => adapterRegex.test(id))
                     .filter(id => !knownObjIDs.includes(id));
 
@@ -1249,8 +1249,8 @@ export class Install {
             if (doc && doc.rows && doc.rows.length) {
                 // add non-duplicates to the list
                 const newObjs = doc.rows
-                    .filter(row => row && row.value && row.value._id)
-                    .map(row => row.value._id)
+                    .filter(row => row.value?._id)
+                    .map(row => row.value!._id)
                     .filter(id => adapterRegex.test(id))
                     .filter(id => !knownObjIDs.includes(id));
 
@@ -1286,11 +1286,11 @@ export class Install {
                 endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
             });
 
-            if (doc && doc.rows && doc.rows.length) {
+            if (doc?.rows?.length) {
                 // add non-duplicates to the list
                 const newObjs = doc.rows
-                    .filter(row => row && row.value && row.value._id)
-                    .map(row => row.value._id)
+                    .filter(row => row.value?._id)
+                    .map(row => row.value!._id)
                     .filter(id => adapterRegex.test(id))
                     .filter(id => !knownObjIDs.includes(id));
 
@@ -1313,8 +1313,8 @@ export class Install {
             if (doc && doc.rows && doc.rows.length) {
                 // add non-duplicates to the list
                 const newObjs = doc.rows
-                    .filter(row => row && row.value && row.value._id)
-                    .map(row => row.value._id)
+                    .filter(row => row.value?._id)
+                    .map(row => row.value!._id)
                     .filter(id => sysAdapterRegex.test(id))
                     .filter(id => !knownObjIDs.includes(id));
 
@@ -1856,14 +1856,14 @@ export class Install {
                 // we need to respect host relative to the instance
                 [scopedHostname] = doc.rows
                     .filter(row => row.id === `system.adapter.${adapter}.${instance}`)
-                    .map(row => row.value.common.host);
+                    .map(row => row.value!.common.host);
             }
 
             // fallback is this host
             scopedHostname = scopedHostname || hostname;
 
             for (const row of doc.rows) {
-                if (!row.value.common) {
+                if (!row.value?.common) {
                     // this object seems to be corrupted so it will not need our adapter
                     continue;
                 }
@@ -1887,7 +1887,7 @@ export class Install {
                     }
                 }
 
-                const globalDeps = tools.parseDependencies(row.value.common.globalDependencies);
+                const globalDeps = tools.parseDependencies(row.value!.common.globalDependencies);
 
                 for (const globalDep of Object.keys(globalDeps)) {
                     if (globalDep === adapter) {
@@ -1896,7 +1896,7 @@ export class Install {
                             if (this._checkDependencyFulfilledForeignHosts(adapter, doc.rows, scopedHostname)) {
                                 break;
                             } else {
-                                return row.value.common.name;
+                                return row.value!.common.name;
                             }
                         } else if (
                             this._checkDependencyFulfilledForeignHosts(adapter, doc.rows, scopedHostname) ||
@@ -1905,7 +1905,7 @@ export class Install {
                             // another instance of our adapter is on another host or on ours, no need to search further
                             break;
                         } else {
-                            return row.value.common.name;
+                            return row.value!.common.name;
                         }
                     }
                 }

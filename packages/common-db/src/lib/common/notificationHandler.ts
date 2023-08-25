@@ -169,7 +169,7 @@ export class NotificationHandler {
             if (res && Array.isArray(res.rows)) {
                 for (const entry of res.rows) {
                     // check that instance has notifications settings
-                    if (entry && entry.value) {
+                    if (entry?.value) {
                         if (entry.value.notifications) {
                             await this.addConfig(entry.value.notifications);
                         }

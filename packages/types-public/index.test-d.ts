@@ -768,6 +768,7 @@ const _adapterObject: ioBroker.AdapterObject = {
         materializeTab: false,
         mode: 'daemon',
         name: 'test',
+        automaticUpgrade: 'minor',
         platform: 'Javascript/Node.js',
         titleLang: {
             de: 'foo',

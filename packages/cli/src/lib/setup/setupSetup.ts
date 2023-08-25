@@ -1007,17 +1007,15 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         const usersView = await this.objects.getObjectViewAsync('system', 'user');
         const groupView = await this.objects.getObjectViewAsync('system', 'group');
 
-        const existingUsers = usersView!.rows.map(
-            (obj: ioBroker.GetObjectViewItem<ioBroker.UserObject>) => obj.value!._id
-        );
+        const existingUsers = usersView!.rows.map(obj => obj.value!._id);
 
         for (const group of groupView!.rows) {
             // reference for readability
-            const groupMembers = group.value.common.members;
+            const groupMembers = group.value!.common.members;
 
             if (!Array.isArray(groupMembers)) {
                 // fix legacy objects
-                const obj = group.value;
+                const obj = group.value!;
                 obj.common.members = [];
                 await this.objects.setObjectAsync(obj._id, obj);
                 continue;
@@ -1029,13 +1027,13 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 if (!existingUsers.includes(groupMembers[i])) {
                     // we have found a non-existing user, so remove it
                     changed = true;
-                    console.log(`Removed non-existing user "${groupMembers[i]}" from group "${group.value._id}"`);
+                    console.log(`Removed non-existing user "${groupMembers[i]}" from group "${group.value!._id}"`);
                     groupMembers.splice(i, 1);
                 }
             }
 
             if (changed) {
-                await this.objects.setObjectAsync(group.value._id, group.value);
+                await this.objects.setObjectAsync(group.value!._id, group.value!);
             }
         }
     }

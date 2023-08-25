@@ -284,7 +284,7 @@ export function decryptPhrase(password: string, data: any, callback: (decrypted?
  * @return true if only one host object exists
  */
 export async function isSingleHost(objects: any): Promise<boolean> {
-    const res: { rows: ioBroker.GetObjectListItem[] } = await objects.getObjectList({
+    const res: { rows: ioBroker.GetObjectListItem<ioBroker.HostObject>[] } = await objects.getObjectList({
         startkey: 'system.host.',
         endkey: 'system.host.\u9999'
     });
@@ -2869,7 +2869,7 @@ export async function removeIdFromAllEnums(objects: any, id: string, allEnums?: 
  * @returns parsedDeps parsed dependencies
  */
 export function parseDependencies(
-    dependencies: string[] | Record<string, string>[] | string | Record<string, string>
+    dependencies: string[] | Record<string, string>[] | string | Record<string, string> | undefined
 ): Record<string, string> {
     let adapters: Record<string, string> = {};
     if (Array.isArray(dependencies)) {

@@ -19,7 +19,7 @@ export interface CLIBackupRestoreOptions {
     restartController: RestartController;
 }
 
-type BackupObject = Omit<ioBroker.GetObjectListItem, 'doc'>;
+type BackupObject = Omit<ioBroker.GetObjectListItem<ioBroker.Object>, 'doc'>;
 
 export interface RestoreBackupReturnValue {
     /** Exit code of the process */

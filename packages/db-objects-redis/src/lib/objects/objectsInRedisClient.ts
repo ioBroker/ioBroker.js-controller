@@ -39,7 +39,7 @@ interface ViewFuncResult<T extends ioBroker.AnyObject> {
 }
 
 interface ObjectListResult {
-    rows: ioBroker.GetObjectListItem[];
+    rows: ioBroker.GetObjectListItem<ioBroker.Object>[];
 }
 
 interface RedisConnectionOptions extends ConnectionOptions {
@@ -67,8 +67,8 @@ export interface ObjectsSettings {
 interface CallOptions {
     groups?: string[];
     group?: string;
-    user?: string;
-    owner?: string;
+    user?: ioBroker.ObjectIDs.User;
+    owner?: ioBroker.ObjectIDs.User;
     ownerGroup?: string;
     acl?: any;
     [other: string]: any;
@@ -1016,7 +1016,10 @@ export class ObjectsInRedisClient {
         }
     }
 
-    getUserGroup(user: string, callback: GetUserGroupCallbackNoError): Promise<GetUserGroupPromiseReturn> | void {
+    getUserGroup(
+        user: ioBroker.ObjectIDs.User,
+        callback: GetUserGroupCallbackNoError
+    ): Promise<GetUserGroupPromiseReturn> | void {
         return utils.getUserGroup(this, user, (error, user, userGroups, userAcl) => {
             if (error) {
                 this.log.error(`${this.namespace} ${error.stack}`);
@@ -4339,7 +4342,7 @@ export class ObjectsInRedisClient {
                 );
             }
 
-            if (obj.views && obj.views[search]) {
+            if (obj.views?.[search]) {
                 return this._applyViewFunc(obj.views[search], params, options, callback);
             } else {
                 this.log.error(`${this.namespace} Cannot find search "${search}" in "${design}"`);
@@ -4411,12 +4414,16 @@ export class ObjectsInRedisClient {
         }
     }
 
-    getObjectViewAsync(
-        design: string,
-        search: string,
+    getObjectViewAsync<Design extends string = string, Search extends string = string>(
+        design: Design,
+        search: Search,
         params?: ioBroker.GetObjectViewParams,
         options?: CallOptions
-    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectViewCallback<any>>> {
+    ): Promise<
+        ioBroker.CallbackReturnTypeOf<
+            ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>
+        >
+    > {
         return new Promise((resolve, reject) =>
             this.getObjectView(design, search, params, options, (err, arr) => (err ? reject(err) : resolve(arr)))
         );

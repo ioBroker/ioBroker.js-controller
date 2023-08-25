@@ -486,11 +486,11 @@ declare global {
         ) => void;
         type GetObjectViewPromise<T extends AnyObject> = Promise<NonNullCallbackReturnTypeOf<GetObjectViewCallback<T>>>;
 
-        interface GetObjectListItem extends GetObjectViewItem<ioBroker.Object> {
+        interface GetObjectListItem<T extends ioBroker.Object> extends GetObjectViewItem<T> {
             /** A copy of the object */
-            value: ioBroker.Object;
+            value: T;
             /** The same as @link{value} */
-            doc: ioBroker.Object;
+            doc: T;
         }
         type GetObjectListCallback = (err?: Error | null, result?: { rows: GetObjectListItem[] }) => void;
         type GetObjectListPromise = Promise<NonNullCallbackReturnTypeOf<GetObjectListCallback>>;

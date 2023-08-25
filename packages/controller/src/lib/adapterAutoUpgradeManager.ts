@@ -38,15 +38,13 @@ interface UpgradedAdapter {
     newVersion: string;
 }
 
-type UpgradePolicy = 'none' | 'patch' | 'minor' | 'major';
-
 interface AdapterUpgradeConfiguration {
     /** Name of the adapter */
     name: string;
     /** Current installed version */
     version: string;
     /** Configured upgrade policy */
-    upgradePolicy: UpgradePolicy;
+    upgradePolicy: ioBroker.AutoUpgradePolicy;
 }
 
 export class AdapterAutoUpgradeManager {
@@ -183,12 +181,13 @@ export class AdapterAutoUpgradeManager {
         }
 
         return res.rows
-            .filter(row => row.value.common.automaticUpgrade !== 'none')
+            .filter(row => row.value?.common.automaticUpgrade && row.value.common.automaticUpgrade !== 'none')
             .map(row => {
                 return {
-                    name: row.value.common.name,
-                    version: row.value.common.version,
-                    upgradePolicy: row.value.common.automaticUpgrade
+                    // ts can not infer, that we filtered out falsy row.value entries
+                    name: row.value!.common.name,
+                    version: row.value!.common.version,
+                    upgradePolicy: row.value!.common.automaticUpgrade!
                 };
             });
     }

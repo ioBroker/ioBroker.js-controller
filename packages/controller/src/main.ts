@@ -1474,9 +1474,9 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
             // Read installed versions of all hosts
             for (const row of doc.rows) {
                 diag.hosts.push({
-                    version: row.value.common.installedVersion,
-                    platform: row.value.common.platform,
-                    type: row.value.native.os.platform
+                    version: row.value!.common.installedVersion,
+                    platform: row.value!.common.platform,
+                    type: row.value!.native.os.platform
                 });
             }
         }
@@ -1497,11 +1497,11 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
         if (!err && doc?.rows.length) {
             // Read installed versions of all adapters
             for (const row of doc.rows) {
-                diag.adapters[row.value.common.name] = {
-                    version: row.value.common.version,
-                    platform: row.value.common.platform
+                diag.adapters[row.value!.common.name] = {
+                    version: row.value!.common.version,
+                    platform: row.value!.common.platform
                 };
-                if (row.value.common.name === 'vis') {
+                if (row.value!.common.name === 'vis') {
                     visFound = true;
                 }
             }
@@ -3751,9 +3751,9 @@ async function checkVersions(id: string, deps: Dependencies, globalDeps: Depende
     });
     const instances: Record<string, ioBroker.InstanceObject> = {};
     const globInstances: Record<string, ioBroker.InstanceObject> = {};
-    if (res && res.rows) {
+    if (res?.rows) {
         res.rows.forEach(item => {
-            if (!item.value._id) {
+            if (!item.value?._id) {
                 return;
             }
             globInstances[item.value._id] = item.value;

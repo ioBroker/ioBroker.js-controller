@@ -334,7 +334,6 @@ export class List {
 
                                     console.log(`${id.padStart(39)}: ${type.padStart(39)} - ${name || ''}`);
                                 } else {
-                                    // @ts-expect-error if we would have a design object it would have no type TODO up from 5.1 we can remove this
                                     console.log(obj.value._id);
                                 }
                             }
@@ -620,7 +619,6 @@ export class List {
                                                 create: true,
                                                 list: true
                                             },
-                                            // @ts-expect-error todo discuss, is create missing or intended?
                                             object: {
                                                 read: true,
                                                 write: true,
