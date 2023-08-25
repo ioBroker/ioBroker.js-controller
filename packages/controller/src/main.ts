@@ -2524,6 +2524,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 const globalRepo = {};
 
                 const systemRepos = await objects!.getObjectAsync('system.repositories');
+                let changed = false;
 
                 // Check if repositories exists
                 if (systemRepos?.native?.repositories) {
@@ -2539,8 +2540,6 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     if (!Array.isArray(active)) {
                         active = [active];
                     }
-
-                    let changed = false;
 
                     for (const repo of active) {
                         if (systemRepos.native.repositories[repo]) {
@@ -2604,31 +2603,13 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                             logger.warn(`${hostLogPrefix} Requested repository "${repo}" does not exist in config.`);
                         }
                     }
+
                     if (changed) {
                         try {
                             await objects!.setObjectAsync('system.repositories', systemRepos);
                         } catch (e) {
                             logger.warn(`${hostLogPrefix} Repository object could not be updated: ${e.message}`);
                         }
-                    }
-
-                    try {
-                        const upgradedAdapters = await autoUpgradeManager.upgradeAdapters();
-
-                        if (upgradedAdapters.length) {
-                            await notificationHandler.addMessage(
-                                'system',
-                                'automaticAdapterUpgradeSuccessful',
-                                upgradedAdapters
-                                    .map(entry => `${entry.name}: ${entry.oldVersion} -> ${entry.newVersion}`)
-                                    .join('\n'),
-                                `system.host.${hostname}`
-                            );
-                        }
-                    } catch (e) {
-                        logger.error(
-                            `${hostLogPrefix} An error occurred while processing automatic adapter upgrades: ${e.message}`
-                        );
                     }
                 }
 
@@ -2637,6 +2618,10 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 }
 
                 requestedRepoUpdates = [];
+
+                if (changed) {
+                    await autoUpgradeAdapters();
+                }
             } else {
                 logger.error(
                     `${hostLogPrefix} Invalid request ${
@@ -6169,6 +6154,26 @@ async function startUpgradeManager(options: UpgradeArguments): Promise<void> {
     }
 
     upgradeProcess.unref();
+}
+
+/**
+ * Upgrade all upgradeable adapters with respect to their auto upgrade policy
+ */
+async function autoUpgradeAdapters(): Promise<void> {
+    try {
+        const upgradedAdapters = await autoUpgradeManager.upgradeAdapters();
+
+        if (upgradedAdapters.length) {
+            await notificationHandler.addMessage(
+                'system',
+                'automaticAdapterUpgradeSuccessful',
+                upgradedAdapters.map(entry => `${entry.name}: ${entry.oldVersion} -> ${entry.newVersion}`).join('\n'),
+                `system.host.${hostname}`
+            );
+        }
+    } catch (e) {
+        logger.error(`${hostLogPrefix} An error occurred while processing automatic adapter upgrades: ${e.message}`);
+    }
 }
 
 if (module === require.main) {
