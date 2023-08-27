@@ -3850,12 +3850,12 @@ export class ObjectsInRedisClient {
          */
         const filterEntries = (arr: ObjectIdValue[], duplicateFiltering: boolean): ObjectIdValue[] => {
             if (duplicateFiltering) {
-                const included: Record<string, boolean> = {};
+                const included = new Map<string, boolean>();
                 return arr.filter(obj => {
-                    if (included[obj.id] || obj.id === 'parseError') {
+                    if (included.has(obj.id) || obj.id === 'parseError') {
                         return false;
                     } else {
-                        included[obj.id] = true;
+                        included.set(obj.id, true);
                         return true;
                     }
                 });
@@ -5123,7 +5123,7 @@ export class ObjectsInRedisClient {
             }
 
             // check for custom
-            if (obj.value.common && obj.value.common.custom) {
+            if (obj.value.common?.custom) {
                 const migrated = await this.client.sadd(
                     `${this.setNamespace}object.common.custom`,
                     this.objNamespace + obj.id
