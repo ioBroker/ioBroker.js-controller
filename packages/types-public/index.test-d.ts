@@ -781,7 +781,8 @@ const _adapterObject: ioBroker.AdapterObject = {
             en: 'foo',
             'zh-cn': 'foo'
         },
-        version: '1.2.3'
+        version: '1.2.3',
+        blockedVersions: ['~3.14.0', '4.0.1']
     }
 };
 
