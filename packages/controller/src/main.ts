@@ -30,7 +30,6 @@ import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { Upload } from '@iobroker/js-controller-cli';
 import decache from 'decache';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
-import { AdapterAutoUpgradeManager } from './lib/adapterAutoUpgradeManager';
 import { getDefaultNodeArgs, HostInfo } from '@iobroker/js-controller-common/tools';
 import type { UpgradeArguments } from './lib/upgradeManager';
 import { AdapterUpgradeManager } from './lib/adapterUpgradeManager';
@@ -114,7 +113,6 @@ const controllerVersions: Record<string, string> = {};
 
 let pluginHandler: InstanceType<typeof PluginHandler>;
 let notificationHandler: NotificationHandler;
-let autoUpgradeManager: AdapterAutoUpgradeManager;
 /** array of instances which have requested repo update */
 let requestedRepoUpdates: RepoRequester[] = [];
 
@@ -632,8 +630,6 @@ async function initializeController(): Promise<void> {
             logger.error(`${hostLogPrefix} Could not add notifications config of this host: ${e.message}`);
         }
     }
-
-    autoUpgradeManager = new AdapterAutoUpgradeManager({ objects, states, logger, logPrefix: hostLogPrefix });
 
     checkSystemLocaleSupported();
 
@@ -2524,10 +2520,11 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 const globalRepo = {};
 
                 const systemRepos = await objects!.getObjectAsync('system.repositories');
-                let changed = false;
 
                 // Check if repositories exists
                 if (systemRepos?.native?.repositories) {
+                    let changed = false;
+
                     let updateRepo = false;
                     if (tools.isObject(msg.message)) {
                         updateRepo = msg.message.update;
@@ -2618,10 +2615,6 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 }
 
                 requestedRepoUpdates = [];
-
-                if (changed) {
-                    await autoUpgradeAdapters();
-                }
             } else {
                 logger.error(
                     `${hostLogPrefix} Invalid request ${
@@ -6154,26 +6147,6 @@ async function startUpgradeManager(options: UpgradeArguments): Promise<void> {
     }
 
     upgradeProcess.unref();
-}
-
-/**
- * Upgrade all upgradeable adapters with respect to their auto upgrade policy
- */
-async function autoUpgradeAdapters(): Promise<void> {
-    try {
-        const upgradedAdapters = await autoUpgradeManager.upgradeAdapters();
-
-        if (upgradedAdapters.length) {
-            await notificationHandler.addMessage(
-                'system',
-                'automaticAdapterUpgradeSuccessful',
-                upgradedAdapters.map(entry => `${entry.name}: ${entry.oldVersion} -> ${entry.newVersion}`).join('\n'),
-                `system.host.${hostname}`
-            );
-        }
-    } catch (e) {
-        logger.error(`${hostLogPrefix} An error occurred while processing automatic adapter upgrades: ${e.message}`);
-    }
 }
 
 if (module === require.main) {

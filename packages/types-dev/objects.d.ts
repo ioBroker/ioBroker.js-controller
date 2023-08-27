@@ -472,8 +472,6 @@ declare global {
                 singleton?: boolean;
             };
             allowInit?: boolean;
-            /** If the adapter should be automatically upgraded and which version ranges are supported */
-            automaticUpgrade?: AutoUpgradePolicy;
             /** Possible values for the instance mode (if more than one is possible) */
             availableModes?: InstanceMode[];
             /** Whether this adapter includes custom blocks for Blockly. If true, `admin/blockly.js` must exist. */
