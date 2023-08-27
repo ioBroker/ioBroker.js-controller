@@ -3833,11 +3833,10 @@ export class ObjectsInRedisClient {
     private async _applyViewFunc(
         func: ObjectViewFunction,
         params?: ioBroker.GetObjectViewParams,
-        options: CallOptions = {},
-        callback?: ioBroker.GetObjectViewCallback<any>
-    ): Promise<void | ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectViewCallback<any>>> {
+        options: CallOptions = {}
+    ): ioBroker.GetObjectViewPromise<any> {
         if (!this.client) {
-            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
         const result: ViewFuncResult<any> = {
             rows: []
@@ -3887,12 +3886,12 @@ export class ObjectsInRedisClient {
         );
 
         // filter by type
-        if (wildCardLastPos && func && func.map && this.scripts.filter && matches) {
+        if (wildCardLastPos && func?.map && this.scripts.filter && matches) {
             let cursor = '0';
             let filterRequired = true;
             do {
                 if (!this.client) {
-                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
+                    throw new Error(ERRORS.ERROR_DB_CLOSED);
                 }
 
                 let objs: string[];
@@ -3909,7 +3908,7 @@ export class ObjectsInRedisClient {
                     ]);
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
-                    return tools.maybeCallbackWithError(callback, e);
+                    throw e;
                 }
                 objs = objs || [];
                 // if real redis we will have e.g. [[objs..], '0'], else [{}, .., {}]
@@ -3974,12 +3973,11 @@ export class ObjectsInRedisClient {
 
             // apply filter if needed
             result.rows = filterEntries(result.rows, filterRequired);
-            return tools.maybeCallbackWithError(callback, null, result);
+            return result;
         } else if (
             // filter by script
             wildCardLastPos &&
-            func &&
-            func.map &&
+            func?.map &&
             this.scripts.script &&
             func.map.includes('doc.common.engineType')
         ) {
@@ -3987,7 +3985,7 @@ export class ObjectsInRedisClient {
             let filterRequired = true;
             do {
                 if (!this.client) {
-                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
+                    throw new Error(ERRORS.ERROR_DB_CLOSED);
                 }
                 let res: string[] | [objStrings: string[], cursor: string];
                 try {
@@ -4002,7 +4000,7 @@ export class ObjectsInRedisClient {
                     ]);
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get "scripts" view: ${e.message}`);
-                    return tools.maybeCallbackWithError(callback, e, result);
+                    throw e;
                 }
 
                 let objs: string[];
@@ -4032,12 +4030,11 @@ export class ObjectsInRedisClient {
 
             // apply filter if needed
             result.rows = filterEntries(result.rows, filterRequired);
-            return tools.maybeCallbackWithError(callback, null, result);
+            return result;
         } else if (
             // filter by hm-rega programs
             wildCardLastPos &&
-            func &&
-            func.map &&
+            func?.map &&
             this.scripts.programs &&
             func.map.includes("doc.native.TypeName === 'PROGRAM'")
         ) {
@@ -4045,7 +4042,7 @@ export class ObjectsInRedisClient {
             let filterRequired = true;
             do {
                 if (!this.client) {
-                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
+                    throw new Error(ERRORS.ERROR_DB_CLOSED);
                 }
 
                 let objs: string[];
@@ -4061,7 +4058,7 @@ export class ObjectsInRedisClient {
                     ]);
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
-                    return tools.maybeCallbackWithError(callback, e);
+                    throw e;
                 }
                 // if real redis we will have e.g. [[objs..], '0'], else [{}, .., {}]
                 if (Array.isArray(objs[0])) {
@@ -4088,12 +4085,11 @@ export class ObjectsInRedisClient {
 
             // apply filter if needed
             result.rows = filterEntries(result.rows, filterRequired);
-            return tools.maybeCallbackWithError(callback, null, result);
+            return result;
         } else if (
             // filter by hm-rega variables
             wildCardLastPos &&
-            func &&
-            func.map &&
+            func?.map &&
             this.scripts.variables &&
             func.map.includes("doc.native.TypeName === 'ALARMDP'")
         ) {
@@ -4101,7 +4097,7 @@ export class ObjectsInRedisClient {
             let filterRequired = true;
             do {
                 if (!this.client) {
-                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
+                    throw new Error(ERRORS.ERROR_DB_CLOSED);
                 }
 
                 let objs: string[];
@@ -4117,7 +4113,7 @@ export class ObjectsInRedisClient {
                     ]);
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view ${e.message}`);
-                    return tools.maybeCallbackWithError(callback, e);
+                    throw e;
                 }
                 // if real redis we will have e.g. [[objs..], '0'], else [{}, .., {}]
                 if (Array.isArray(objs[0])) {
@@ -4144,12 +4140,11 @@ export class ObjectsInRedisClient {
 
             // apply filter if needed
             result.rows = filterEntries(result.rows, filterRequired);
-            typeof callback === 'function' && callback(null, result);
+            return result;
         } else if (
             // filter by custom, redis also returns if common.custom is not present
             wildCardLastPos &&
-            func &&
-            func.map &&
+            func?.map &&
             this.scripts.custom &&
             func.map.includes('doc.common.custom')
         ) {
@@ -4157,7 +4152,7 @@ export class ObjectsInRedisClient {
             let filterRequired = true;
             do {
                 if (!this.client) {
-                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
+                    throw new Error(ERRORS.ERROR_DB_CLOSED);
                 }
                 let objs: string[];
                 try {
@@ -4172,7 +4167,7 @@ export class ObjectsInRedisClient {
                     ]);
                 } catch (e) {
                     this.log.warn(`${this.namespace} Cannot get view: ${e.message}`);
-                    return tools.maybeCallbackWithError(callback, e);
+                    throw e;
                 }
                 // if real redis we will have e.g. [[objs..], '0'], else [{}, .., {}]
                 if (Array.isArray(objs[0])) {
@@ -4206,7 +4201,7 @@ export class ObjectsInRedisClient {
 
             // apply filter if needed
             result.rows = filterEntries(result.rows, filterRequired);
-            return tools.maybeCallbackWithError(callback, null, result);
+            return result;
         } else {
             if (!wildCardLastPos) {
                 this.log.debug(
@@ -4223,14 +4218,10 @@ export class ObjectsInRedisClient {
             }
 
             let keys;
-            try {
-                keys = await this._getKeysViaScan(searchKeys);
-            } catch (e) {
-                return tools.maybeCallbackWithRedisError(callback, e);
-            }
+            keys = await this._getKeysViaScan(searchKeys);
 
             if (!this.client) {
-                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
+                throw new Error(ERRORS.ERROR_DB_CLOSED);
             }
 
             const endAfterWildcard = params.endkey.substr(wildcardPos + 1);
@@ -4305,19 +4296,18 @@ export class ObjectsInRedisClient {
                     result.rows = [];
                 }
             }
-            return tools.maybeCallbackWithError(callback, null, result);
+            return result;
         }
     }
 
-    private async _getObjectView(
-        design: string,
-        search: string,
+    private async _getObjectView<Design extends string = string, Search extends string = string>(
+        design: Design,
+        search: Search,
         params?: ioBroker.GetObjectViewParams,
-        options?: CallOptions,
-        callback?: ioBroker.GetObjectViewCallback<any>
-    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectViewCallback<any>> | void> {
+        options?: CallOptions
+    ): ioBroker.GetObjectViewPromise<ioBroker.InferGetObjectViewItemType<Design, Search>> {
         if (!this.client) {
-            return tools.maybeCallbackWithRedisError(callback, ERRORS.ERROR_DB_CLOSED);
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
 
         let obj;
@@ -4325,7 +4315,7 @@ export class ObjectsInRedisClient {
             obj = await this.client.get(`${this.objNamespace}_design/${design}`);
         } catch (e) {
             this.log.error(`${this.namespace} Cannot find view "${design}" for search "${search}" : ${e.message}`);
-            return tools.maybeCallbackWithError(callback, new Error(`Cannot find view "${design}"`));
+            throw new Error(`Cannot find view "${design}"`);
         }
 
         if (obj) {
@@ -4333,24 +4323,18 @@ export class ObjectsInRedisClient {
                 obj = JSON.parse(obj);
             } catch {
                 this.log.error(`${this.namespace} Cannot parse JSON: ${obj}`);
-                return tools.maybeCallbackWithError(
-                    callback,
-                    new Error(`Cannot parse JSON: "_design/${design}" / "${obj}"`)
-                );
+                throw new Error(`Cannot parse JSON: "_design/${design}" / "${obj}"`);
             }
 
             if (obj.views?.[search]) {
-                return this._applyViewFunc(obj.views[search], params, options, callback);
+                return this._applyViewFunc(obj.views[search], params, options);
             } else {
                 this.log.error(`${this.namespace} Cannot find search "${search}" in "${design}"`);
-                return tools.maybeCallbackWithError(
-                    callback,
-                    new Error(`Cannot find search "${search}" in "${design}"`)
-                );
+                throw new Error(`Cannot find search "${search}" in "${design}"`);
             }
         } else {
             this.log.error(`${this.namespace} Cannot find view "${design}" for search "${search}"`);
-            return tools.maybeCallbackWithError(callback, new Error(`Cannot find view "${design}"`));
+            throw new Error(`Cannot find view "${design}"`);
         }
     }
 
@@ -4396,16 +4380,21 @@ export class ObjectsInRedisClient {
             );
         }
 
-        if (options && options.acl) {
+        if (options?.acl) {
             options.acl = null;
         }
 
         if (typeof callback === 'function') {
-            utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
+            utils.checkObjectRights(this, null, null, options, 'list', async (err, options) => {
                 if (err) {
                     return tools.maybeCallbackWithRedisError(callback, err);
                 } else {
-                    return this._getObjectView(design, search, params, options, callback);
+                    try {
+                        const res = await this._getObjectView(design, search, params, options);
+                        return tools.maybeCallbackWithError(callback, null, res);
+                    } catch (e) {
+                        return tools.maybeCallbackWithRedisError(callback, e);
+                    }
                 }
             });
         }
@@ -4416,14 +4405,8 @@ export class ObjectsInRedisClient {
         search: Search,
         params?: ioBroker.GetObjectViewParams,
         options?: CallOptions
-    ): Promise<
-        ioBroker.CallbackReturnTypeOf<
-            ioBroker.GetObjectViewCallback<ioBroker.InferGetObjectViewItemType<Design, Search>>
-        >
-    > {
-        return new Promise((resolve, reject) =>
-            this.getObjectView(design, search, params, options, (err, arr) => (err ? reject(err) : resolve(arr)))
-        );
+    ): ioBroker.GetObjectViewPromise<ioBroker.InferGetObjectViewItemType<Design, Search>> {
+        return this.getObjectView(design, search, params, options);
     }
 
     private async _getObjectList(
