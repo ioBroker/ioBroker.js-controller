@@ -2584,13 +2584,11 @@ export class ObjectsInRedisClient {
         }
     }
 
-    subscribeConfig(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
-    subscribeConfig(pattern: string | string[], options?: CallOptions, callback?: ioBroker.ErrorCallback): void;
-    subscribeConfig(pattern: string | string[], options?: any, callback?: ioBroker.ErrorCallback): void {
-        if (typeof options === 'function') {
-            callback = options;
-            options = null;
-        }
+    private subscribeConfig(
+        pattern: string | string[],
+        options?: CallOptions | null,
+        callback?: ioBroker.ErrorCallback
+    ): void {
         utils.checkObjectRights(this, null, null, options, 'list', err => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
@@ -2600,7 +2598,17 @@ export class ObjectsInRedisClient {
         });
     }
 
-    subscribe(pattern: string | string[], options?: CallOptions, callback?: ioBroker.ErrorCallback): void {
+    subscribe(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
+    subscribe(pattern: string | string[], options?: CallOptions, callback?: ioBroker.ErrorCallback): void;
+    subscribe(
+        pattern: string | string[],
+        options?: CallOptions | ioBroker.ErrorCallback | null,
+        callback?: ioBroker.ErrorCallback
+    ): void {
+        if (typeof options === 'function') {
+            callback = options;
+            options = null;
+        }
         return this.subscribeConfig(pattern, options, callback);
     }
 
@@ -2659,23 +2667,11 @@ export class ObjectsInRedisClient {
         }
     }
 
-    // User has not provided any options
-    unsubscribeConfig(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
-    // User has provided options
-    unsubscribeConfig(
+    private unsubscribeConfig(
         pattern: string | string[],
         options?: CallOptions | null,
         callback?: ioBroker.ErrorCallback
-    ): void;
-    unsubscribeConfig(
-        pattern: string | string[],
-        options?: CallOptions | ioBroker.ErrorCallback | null,
-        callback?: ioBroker.ErrorCallback
     ): void {
-        if (typeof options === 'function') {
-            callback = options;
-            options = null;
-        }
         utils.checkObjectRights(this, null, null, options, 'list', async err => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
@@ -2690,7 +2686,20 @@ export class ObjectsInRedisClient {
         });
     }
 
-    unsubscribe(pattern: string | string[], options?: CallOptions | null, callback?: ioBroker.ErrorCallback): void {
+    // User has not provided any options
+    unsubscribe(pattern: string | string[], callback?: ioBroker.ErrorCallback): void;
+    // User has provided options
+    unsubscribe(pattern: string | string[], options?: CallOptions | null, callback?: ioBroker.ErrorCallback): void;
+    unsubscribe(
+        pattern: string | string[],
+        options?: CallOptions | ioBroker.ErrorCallback | null,
+        callback?: ioBroker.ErrorCallback
+    ): void {
+        if (typeof options === 'function') {
+            callback = options;
+            options = null;
+        }
+
         return this.unsubscribeConfig(pattern, options, callback);
     }
 
@@ -2743,7 +2752,7 @@ export class ObjectsInRedisClient {
                         commands.push(['sadd', `${this.setNamespace}object.type.${obj.type}`, id]);
                     }
 
-                    if (obj.common && obj.common.custom) {
+                    if (obj.common?.custom) {
                         // add to "common" set
                         commands.push(['sadd', `${this.setNamespace}object.common.custom`, id]);
                     }
@@ -2763,7 +2772,7 @@ export class ObjectsInRedisClient {
     }
 
     private _chownObject(pattern: string, options: CallOptions, callback?: ioBroker.ChownObjectCallback): void {
-        this.getConfigKeys(
+        this.getKeys(
             pattern,
             options,
             async (err, keys) => {
@@ -2891,7 +2900,7 @@ export class ObjectsInRedisClient {
     }
 
     private _chmodObject(pattern: string, options: CallOptions, callback?: ioBroker.ChownObjectCallback): void {
-        this.getConfigKeys(
+        this.getKeys(
             pattern,
             options,
             async (err, keys) => {
@@ -3105,9 +3114,9 @@ export class ObjectsInRedisClient {
     private async _getKeys(
         pattern: string,
         options: CallOptions,
-        callback?: ioBroker.GetConfigKeysCallback,
+        callback?: ioBroker.GetKeysCallback,
         dontModify?: boolean
-    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetConfigKeysCallback> | void> {
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetKeysCallback> | void> {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
         }
@@ -3187,24 +3196,24 @@ export class ObjectsInRedisClient {
     getKeys(
         pattern: string,
         options: CallOptions | null | undefined,
-        callback: ioBroker.GetConfigKeysCallback,
+        callback: ioBroker.GetKeysCallback,
         dontModify?: boolean
     ): void;
     // User has provided callback without options, we call it
-    getKeys(pattern: string, callback: ioBroker.GetConfigKeysCallback): void;
+    getKeys(pattern: string, callback: ioBroker.GetKeysCallback): void;
     // User has provided no callback, we return a promise
     getKeys(
         pattern: string,
         options?: CallOptions | null,
         callback?: undefined,
         dontModify?: boolean
-    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetConfigKeysCallback>>;
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetKeysCallback>>;
     getKeys(
         pattern: string,
-        options?: CallOptions | null | ioBroker.GetConfigKeysCallback,
-        callback?: ioBroker.GetConfigKeysCallback,
+        options?: CallOptions | null | ioBroker.GetKeysCallback,
+        callback?: ioBroker.GetKeysCallback,
         dontModify?: boolean
-    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetConfigKeysCallback>> {
+    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetKeysCallback>> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -3225,20 +3234,8 @@ export class ObjectsInRedisClient {
         }
     }
 
-    getKeysAsync(
-        id: string,
-        options?: CallOptions
-    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetConfigKeysCallback>> {
+    getKeysAsync(id: string, options?: CallOptions): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetKeysCallback>> {
         return this.getKeys(id, options);
-    }
-
-    getConfigKeys(
-        pattern: string,
-        options: CallOptions,
-        callback: ioBroker.GetConfigKeysCallback,
-        dontModify?: boolean
-    ): void {
-        return this.getKeys(pattern, options, callback, dontModify);
     }
 
     private async _getObjects(
@@ -4789,32 +4786,6 @@ export class ObjectsInRedisClient {
         return new Promise((resolve, reject) =>
             this.extendObject(id, obj, options || null, (err, res) => (err ? reject(err) : resolve(res)))
         );
-    }
-
-    setConfig(
-        id: string,
-        obj: ioBroker.SettableOtherObject,
-        options: CallOptions,
-        callback: ioBroker.SetObjectCallback
-    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>> {
-        return this.setObject(id, obj, options, callback);
-    }
-
-    delConfig(id: string, options: CallOptions, callback: ioBroker.ErrorCallback): void {
-        return this.delObject(id, options, callback);
-    }
-
-    getConfig(id: string, options: CallOptions, callback: ioBroker.GetObjectCallback): void {
-        return this.getObject(id, options, callback);
-    }
-
-    getConfigs(
-        keys: string[],
-        options: CallOptions,
-        callback: (err?: Error | null, objs?: ioBroker.AnyObject[]) => void,
-        dontModify: boolean
-    ): void {
-        return this.getObjects(keys, options, callback, dontModify);
     }
 
     /**

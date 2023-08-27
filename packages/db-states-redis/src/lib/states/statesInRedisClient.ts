@@ -1044,9 +1044,9 @@ export class StateRedisClient {
 
     async getKeys(
         pattern: string,
-        callback?: ioBroker.GetConfigKeysCallback,
+        callback?: ioBroker.GetKeysCallback,
         dontModify?: boolean
-    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetConfigKeysCallback> | void> {
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetKeysCallback> | void> {
         if (!pattern || typeof pattern !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid pattern ${JSON.stringify(pattern)}`);
         }
