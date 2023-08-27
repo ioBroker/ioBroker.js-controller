@@ -1249,7 +1249,7 @@ function cleanAutoSubscribes(instanceID: ioBroker.ObjectIDs.Instance, callback: 
         { startkey: SYSTEM_ADAPTER_PREFIX, endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999` },
         (err, res) => {
             let count = 0;
-            if (res?.rows) {
+            if (res) {
                 for (const row of res.rows) {
                     // remove this instance from autoSubscribe
                     if (row.value?.common.subscribable) {
@@ -3729,19 +3729,19 @@ async function checkVersions(id: string, deps: Dependencies, globalDeps: Depende
     });
     const instances: Record<string, ioBroker.InstanceObject> = {};
     const globInstances: Record<string, ioBroker.InstanceObject> = {};
-    if (res?.rows) {
-        res.rows.forEach(item => {
-            if (!item.value?._id) {
-                return;
-            }
-            globInstances[item.value._id] = item.value;
-        });
-        Object.keys(globInstances).forEach(id => {
-            if (globInstances[id]?.common && globInstances[id].common.host === hostname) {
-                instances[id] = globInstances[id];
-            }
-        });
-    }
+
+    res.rows.forEach(item => {
+        if (!item.value?._id) {
+            return;
+        }
+        globInstances[item.value._id] = item.value;
+    });
+
+    Object.keys(globInstances).forEach(id => {
+        if (globInstances[id]?.common && globInstances[id].common.host === hostname) {
+            instances[id] = globInstances[id];
+        }
+    });
 
     // this ensures we have a real object with correct structure
     deps = tools.parseDependencies(deps);

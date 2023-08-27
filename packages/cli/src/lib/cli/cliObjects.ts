@@ -480,7 +480,7 @@ export class CLIObjects extends CLICommand {
         for (const type of types) {
             try {
                 const res = await objects.getObjectViewAsync('system', type, params);
-                res?.rows.forEach(item => {
+                res.rows.forEach(item => {
                     if (item.value) {
                         result.push(item.value);
                     }

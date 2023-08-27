@@ -633,7 +633,7 @@ async function processCommand(
                                             endkey: `system.adapter.${instance}\u9999`
                                         });
 
-                                        otherInstanceExists = !!res?.rows?.length;
+                                        otherInstanceExists = !!res.rows.length;
                                     } catch {
                                         // ignore - on install we have no object views
                                     }
@@ -2859,7 +2859,7 @@ async function cleanDatabase(isDeleteDb: boolean): Promise<number> {
 
         try {
             const res = await objects.getObjectListAsync({ startkey: '\u0000', endkey: '\u9999' });
-            if (res?.rows.length) {
+            if (res.rows.length) {
                 console.log(`clean ${res.rows.length} objects...`);
                 ids = res.rows.map(e => e.id);
             }
