@@ -478,7 +478,7 @@ declare global {
             /** The ID of this object */
             id: string;
             /** A copy of the object from the DB */
-            value: T | null;
+            value: T;
         }
         type GetObjectViewCallback<T extends AnyObject> = (
             err?: Error | null,

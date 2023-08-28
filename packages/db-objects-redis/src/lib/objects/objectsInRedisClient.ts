@@ -3852,7 +3852,7 @@ export class ObjectsInRedisClient {
             if (duplicateFiltering) {
                 const included = new Map<string, boolean>();
                 return arr.filter(obj => {
-                    if (included.has(obj.id) || obj.id === 'parseError') {
+                    if (included.has(obj.id) || obj.value === null) {
                         return false;
                     } else {
                         included.set(obj.id, true);
@@ -3862,7 +3862,7 @@ export class ObjectsInRedisClient {
             } else {
                 return arr.filter(obj => {
                     // only filter parse Errors
-                    return obj.id !== 'parseError';
+                    return obj.value !== null;
                 });
             }
         };
