@@ -199,15 +199,13 @@ export class Upgrade {
                     let locInstances: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[] = [];
                     // if global dep get all instances of adapter
                     if (globalDeps[dName] !== undefined) {
-                        gInstances = objs.rows.filter(
-                            obj => obj && obj.value && obj.value.common && obj.value.common.name === dName
-                        );
+                        gInstances = objs.rows.filter(obj => obj.value.common && obj.value.common.name === dName);
                     }
                     if (deps[dName] !== undefined) {
                         // local dep get all instances on same host
                         locInstances = objs.rows.filter(
                             obj =>
-                                obj?.value?.common &&
+                                obj.value.common &&
                                 obj.value.common.name === dName &&
                                 obj.value.common.host === this.hostname
                         );
@@ -219,7 +217,7 @@ export class Upgrade {
                     let isFound = false;
                     // we check, that all instances match - respect different local and global dep versions
                     for (const instance of locInstances) {
-                        const instanceVersion = instance.value!.common.version;
+                        const instanceVersion = instance.value.common.version;
                         try {
                             if (
                                 !semver.satisfies(instanceVersion, deps[dName], {
@@ -244,7 +242,7 @@ export class Upgrade {
                     }
 
                     for (const instance of gInstances) {
-                        const instanceVersion = instance.value!.common.version;
+                        const instanceVersion = instance.value.common.version;
                         try {
                             if (
                                 !semver.satisfies(instanceVersion, globalDeps[dName], {
