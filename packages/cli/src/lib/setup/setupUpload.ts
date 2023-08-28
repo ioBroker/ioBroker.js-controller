@@ -726,7 +726,7 @@ export class Upload {
 
         if (res) {
             for (const row of res.rows) {
-                if (row.value?.common.host === hostname) {
+                if (row.value.common.host === hostname) {
                     const _obj = await this.objects.getObjectAsync(row.id);
                     const newObject = deepClone(_obj) as ioBroker.InstanceObject;
 

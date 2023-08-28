@@ -10420,14 +10420,12 @@ export class AdapterClass extends EventEmitter {
                     endkey: 'system.adapter.\u9999'
                 });
 
-                if (res) {
-                    this.autoSubscribe = [];
-                    for (const row of res.rows) {
-                        if (row.value?.common.subscribable) {
-                            const _id = row.id.substring(15); // cut system.adapter.
-                            if (!this.autoSubscribe.includes(_id)) {
-                                this.autoSubscribe.push(_id);
-                            }
+                this.autoSubscribe = [];
+                for (const row of res.rows) {
+                    if (row.value?.common.subscribable) {
+                        const _id = row.id.substring(15); // cut system.adapter.
+                        if (!this.autoSubscribe.includes(_id)) {
+                            this.autoSubscribe.push(_id);
                         }
                     }
                 }

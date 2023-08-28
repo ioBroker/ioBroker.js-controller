@@ -253,11 +253,9 @@ export class AdapterUpgradeManager {
 
         let enabledInstances: string[] = [];
 
-        if (res) {
-            enabledInstances = res.rows
-                .filter(row => row.value.common.enabled && this.hostname === row.value.common.host)
-                .map(row => row.value._id);
-        }
+        enabledInstances = res.rows
+            .filter(row => row.value.common.enabled && this.hostname === row.value.common.host)
+            .map(row => row.value._id);
 
         return enabledInstances;
     }
