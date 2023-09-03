@@ -166,19 +166,15 @@ export class NotificationHandler {
                 endkey: 'system.adapter.\u9999'
             });
 
-            if (res && Array.isArray(res.rows)) {
-                for (const entry of res.rows) {
-                    // check that instance has notifications settings
-                    if (entry && entry.value) {
-                        if (entry.value.notifications) {
-                            await this.addConfig(entry.value.notifications);
-                        }
+            for (const entry of res.rows) {
+                // check that instance has notifications settings
+                if (entry.value.notifications) {
+                    await this.addConfig(entry.value.notifications);
+                }
 
-                        if (entry.value.common && entry.value.common.host === this.host) {
-                            // if its on our current host
-                            instancesOnHost.push(entry.id);
-                        }
-                    }
+                if (entry.value.common && entry.value.common.host === this.host) {
+                    // if it's on our current host
+                    instancesOnHost.push(entry.id);
                 }
             }
         } catch (e) {
@@ -211,7 +207,7 @@ export class NotificationHandler {
         // if valid attributes, store it
         if (Array.isArray(notifications)) {
             for (const scopeObj of notifications) {
-                // create state object for each scope if non existing
+                // create state object for each scope if non-existing
                 let obj;
                 try {
                     obj = await this.objects.getObjectAsync(`system.host.${this.host}.notifications.${scopeObj.scope}`);

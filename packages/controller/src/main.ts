@@ -637,16 +637,15 @@ async function initializeController(): Promise<void> {
         connected = true;
         if (!isStopping) {
             pluginHandler.setDatabaseForPlugins(objects, states);
-            pluginHandler.initPlugins(ioPackage, () => {
+            pluginHandler.initPlugins(ioPackage, async () => {
                 states!.subscribe(`${hostObjectPrefix}.plugins.*`);
 
                 // Do not start if we're still stopping the instances
-                checkHost(() => {
-                    startMultihost(config);
-                    setMeta();
-                    started = true;
-                    getInstances();
-                });
+                await checkHost();
+                startMultihost(config);
+                setMeta();
+                started = true;
+                getInstances();
             });
         }
     } else {
@@ -1249,7 +1248,7 @@ function cleanAutoSubscribes(instanceID: ioBroker.ObjectIDs.Instance, callback: 
         { startkey: SYSTEM_ADAPTER_PREFIX, endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999` },
         (err, res) => {
             let count = 0;
-            if (res?.rows) {
+            if (res) {
                 for (const row of res.rows) {
                     // remove this instance from autoSubscribe
                     if (row.value?.common.subscribable) {
@@ -1291,72 +1290,74 @@ async function delObjects(objs: ioBroker.GetObjectViewItem<ioBroker.AnyObject>[]
  * <p>
  *
  */
-function checkHost(callback: () => void): void {
+async function checkHost(): Promise<void> {
     const objectData = objects!.getStatus();
     // only file master host controller needs to check/fix the host assignments from the instances
     // for redis it is currently not possible to detect a single host system with a changed hostname for sure!
     if (compactGroupController || !objectData.server) {
-        return callback && callback();
+        return;
     }
-    objects!.getObjectView(
-        'system',
-        'host',
-        {
+
+    let hostDoc;
+
+    try {
+        hostDoc = await objects!.getObjectViewAsync('system', 'host', {
             startkey: 'system.host.',
             endkey: 'system.host.\u9999'
-        },
-        (_err, doc) => {
-            if (!_err && doc?.rows.length === 1 && doc?.rows[0].value!.common.name !== hostname) {
-                const oldHostname = doc.rows[0].value!.common.name;
-                const oldId = doc.rows[0].value!._id;
+        });
+    } catch {
+        // ignore
+    }
 
-                // find out all instances and rewrite it to actual hostname
-                objects!.getObjectView(
-                    'system',
-                    'instance',
-                    {
-                        startkey: SYSTEM_ADAPTER_PREFIX,
-                        endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
-                    },
-                    async (err, doc) => {
-                        if (err && err.message.startsWith('Cannot find ')) {
-                            typeof callback === 'function' && callback();
-                        } else if (!doc?.rows || doc.rows.length === 0) {
-                            logger.info(`${hostLogPrefix} no instances found`);
-                            // no instances found
-                            typeof callback === 'function' && callback();
-                        } else {
-                            // reassign all instances
-                            await changeHost(doc.rows, oldHostname, hostname);
-                            logger.info(`${hostLogPrefix} Delete host ${oldId}`);
+    if (hostDoc?.rows.length === 1 && hostDoc?.rows[0].value.common.name !== hostname) {
+        const oldHostname = hostDoc.rows[0].value.common.name;
+        const oldId = hostDoc.rows[0].value._id;
 
-                            // delete host object
-                            objects!.delObject(oldId, () =>
-                                // delete all hosts states
-                                objects!.getObjectView(
-                                    'system',
-                                    'state',
-                                    {
-                                        startkey: `system.host.${oldHostname}.`,
-                                        endkey: `system.host.${oldHostname}.\u9999`,
-                                        include_docs: true
-                                    },
-                                    async (_err, doc) => {
-                                        if (doc?.rows) {
-                                            await delObjects(doc.rows);
-                                        }
-                                        callback && callback();
-                                    }
-                                )
-                            );
-                        }
-                    }
-                );
-            } else if (typeof callback === 'function') {
-                callback();
+        let instanceDoc;
+
+        try {
+            // find out all instances and rewrite it to actual hostname
+            instanceDoc = await objects!.getObjectViewAsync('system', 'instance', {
+                startkey: SYSTEM_ADAPTER_PREFIX,
+                endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
+            });
+        } catch (e) {
+            if (e.message.startsWith('Cannot find ')) {
+                return;
             }
         }
-    );
+
+        if (!instanceDoc?.rows || instanceDoc.rows.length === 0) {
+            logger.info(`${hostLogPrefix} no instances found`);
+            // no instances found
+            return;
+        } else {
+            // reassign all instances
+            await changeHost(instanceDoc.rows, oldHostname, hostname);
+            logger.info(`${hostLogPrefix} Delete host ${oldId}`);
+
+            try {
+                // delete host object
+                await objects!.delObjectAsync(oldId);
+            } catch {
+                // ignore
+            }
+
+            try {
+                // delete all hosts states
+                const newHostDoc = await objects!.getObjectViewAsync('system', 'state', {
+                    startkey: `system.host.${oldHostname}.`,
+                    endkey: `system.host.${oldHostname}.\u9999`,
+                    include_docs: true
+                });
+
+                await delObjects(newHostDoc.rows);
+                return;
+            } catch {
+                // ignore
+            }
+        }
+    }
 }
 
 /**
@@ -2508,7 +2509,10 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     try {
                         const obj = await collectDiagInfo(systemConfig.common.diag);
                         // if user selected 'none' we will have null here and do not want to send it
-                        obj && tools.sendDiagInfo(obj); // Ignore the response here and do not wait for result to decrease the repo fetching as it used in admin GUI
+                        if (obj) {
+                            // Ignore the response here and do not wait for result to decrease the repo fetching as it used in admin GUI
+                            tools.sendDiagInfo(obj);
+                        }
                     } catch (e) {
                         logger.error(`${hostLogPrefix} cannot collect diagnostics: ${e.message}`);
                     }
@@ -2520,6 +2524,8 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                 // Check if repositories exists
                 if (systemRepos?.native?.repositories) {
+                    let changed = false;
+
                     let updateRepo = false;
                     if (tools.isObject(msg.message)) {
                         updateRepo = msg.message.update;
@@ -2532,8 +2538,6 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     if (!Array.isArray(active)) {
                         active = [active];
                     }
-
-                    let changed = false;
 
                     for (const repo of active) {
                         if (systemRepos.native.repositories[repo]) {
@@ -2597,6 +2601,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                             logger.warn(`${hostLogPrefix} Requested repository "${repo}" does not exist in config.`);
                         }
                     }
+
                     if (changed) {
                         try {
                             await objects!.setObjectAsync('system.repositories', systemRepos);
@@ -2633,7 +2638,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     async (err, doc) => {
                         const result: Record<string, any> = tools.getInstalledInfo(version);
                         result.hosts = {};
-                        if (doc && doc.rows.length) {
+                        if (doc?.rows.length) {
                             // Read installed versions of all hosts
                             for (const row of doc.rows) {
                                 // If desired local version, do not ask it, just answer
@@ -2720,7 +2725,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             if (msg.callback && msg.from) {
                 if (os.platform() === 'linux') {
                     const _args = ['/dev'];
-                    logger.info(hostLogPrefix + ' ls /dev');
+                    logger.info(`${hostLogPrefix} ls /dev`);
                     const _child = spawn('ls', _args, { windowsHide: true });
                     let result = '';
                     if (_child.stdout) {
@@ -3725,19 +3730,19 @@ async function checkVersions(id: string, deps: Dependencies, globalDeps: Depende
     });
     const instances: Record<string, ioBroker.InstanceObject> = {};
     const globInstances: Record<string, ioBroker.InstanceObject> = {};
-    if (res && res.rows) {
-        res.rows.forEach(item => {
-            if (!item.value._id) {
-                return;
-            }
-            globInstances[item.value._id] = item.value;
-        });
-        Object.keys(globInstances).forEach(id => {
-            if (globInstances[id]?.common && globInstances[id].common.host === hostname) {
-                instances[id] = globInstances[id];
-            }
-        });
-    }
+
+    res.rows.forEach(item => {
+        if (!item.value._id) {
+            return;
+        }
+        globInstances[item.value._id] = item.value;
+    });
+
+    Object.keys(globInstances).forEach(id => {
+        if (globInstances[id]?.common && globInstances[id].common.host === hostname) {
+            instances[id] = globInstances[id];
+        }
+    });
 
     // this ensures we have a real object with correct structure
     deps = tools.parseDependencies(deps);
@@ -5689,8 +5694,8 @@ export function init(compactGroupId?: number): void {
     const ts = logger.transports.find(t => t.name === 'NT');
     ts!.on('logged', info => {
         info.from = hostLogPrefix;
-        for (let i = 0; i < logList.length; i++) {
-            states!.pushLog(logList[i], info);
+        for (const log of logList) {
+            states!.pushLog(log, info);
         }
     });
 

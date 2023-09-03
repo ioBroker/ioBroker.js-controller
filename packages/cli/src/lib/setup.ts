@@ -633,7 +633,7 @@ async function processCommand(
                                             endkey: `system.adapter.${instance}\u9999`
                                         });
 
-                                        otherInstanceExists = !!res?.rows?.length;
+                                        otherInstanceExists = !!res.rows.length;
                                     } catch {
                                         // ignore - on install we have no object views
                                     }
@@ -916,7 +916,7 @@ async function processCommand(
                         // @ts-expect-error todo check or handle null return value
                         const { stoppedList } = await install.downloadPacket(repoUrl, installName);
                         await install.installAdapter(installName, repoUrl);
-                        await install.enableInstances(stoppedList, true); // even if unlikely make sure to reenable disabled instances
+                        await install.enableInstances(stoppedList, true); // even if unlikely make sure to re-enable disabled instances
                         if (command !== 'install' && command !== 'i') {
                             await install.createInstance(name, params);
                         }
@@ -1182,8 +1182,7 @@ async function processCommand(
                     objects,
                     states,
                     params,
-                    processExit: callback,
-                    restartController
+                    processExit: callback
                 });
 
                 if (adapter) {
@@ -1208,7 +1207,7 @@ async function processCommand(
                 } else {
                     // upgrade all
                     try {
-                        const links = await getRepository(objects);
+                        const links = await getRepository({ objects });
                         if (!links) {
                             return void callback(EXIT_CODES.INVALID_REPO);
                         }
@@ -2860,7 +2859,7 @@ async function cleanDatabase(isDeleteDb: boolean): Promise<number> {
 
         try {
             const res = await objects.getObjectListAsync({ startkey: '\u0000', endkey: '\u9999' });
-            if (res?.rows.length) {
+            if (res.rows.length) {
                 console.log(`clean ${res.rows.length} objects...`);
                 ids = res.rows.map(e => e.id);
             }

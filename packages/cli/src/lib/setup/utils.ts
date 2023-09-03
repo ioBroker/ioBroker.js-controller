@@ -1,21 +1,32 @@
-import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
+import { EXIT_CODES } from '@iobroker/js-controller-common';
+import { tools } from '@iobroker/js-controller-common';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 
+interface GetRepositoryOptions {
+    /** The objects DB client */
+    objects: ObjectsClient;
+    /** Name of the repository */
+    repoName?: string;
+}
+
 /**
- * Get content of the given repository
+ * Get json of the given repository
  *
- * @param objects the objects DB client
- * @param repoName name of the repository, if not given uses current active repository
+ * @param options Repository specific options
  */
-export async function getRepository(objects: ObjectsClient, repoName?: string): Promise<Record<string, any>> {
+export async function getRepository(options: GetRepositoryOptions): Promise<Record<string, any>> {
+    const { objects } = options;
+    let { repoName } = options;
+
     if (!repoName || repoName === 'auto') {
-        const systemConfig = await objects.getObjectAsync('system.config');
+        const systemConfig = await objects!.getObjectAsync('system.config');
         repoName = systemConfig!.common.activeRepo;
     }
 
-    const repoArr = !Array.isArray(repoName) ? [repoName] : repoName;
+    const repoArr = !Array.isArray(repoName) ? [repoName!] : repoName!;
 
-    const systemRepos = (await objects.getObjectAsync('system.repositories'))!;
+    const systemRepos = (await objects!.getObjectAsync('system.repositories'))!;
+
     const allSources = {};
     let changed = false;
     let anyFound = false;

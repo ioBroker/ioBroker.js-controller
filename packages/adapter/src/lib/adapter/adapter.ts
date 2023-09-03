@@ -1583,37 +1583,40 @@ export class AdapterClass extends EventEmitter {
     }
 
     private async _checkPassword(options: InternalCheckPasswordOptions): Promise<void> {
-        if (options.user && !options.user.startsWith('system.user.')) {
+        let { user } = options;
+        const { callback, pw } = options;
+
+        if (user && !user.startsWith('system.user.')) {
             // it's not yet a `system.user.xy` id, thus we assume it's a username
-            if (!this.usernames[options.user]) {
+            if (!this.usernames[user]) {
                 // we did not find the id of the username in our cache -> update cache
                 try {
                     await this._updateUsernameCache();
                 } catch (e) {
                     this._logger.error(`${this.namespaceLog} ${e.message}`);
                 }
-                if (!this.usernames[options.user]) {
+                if (!this.usernames[user]) {
                     // user still not there, it's no valid user -> fallback to legacy check
-                    options.user = `system.user.${options.user
+                    user = `system.user.${user
                         .toString()
                         .replace(this.FORBIDDEN_CHARS, '_')
                         .replace(/\s/g, '_')
                         .replace(/\./g, '_')
                         .toLowerCase()}`;
                 } else {
-                    options.user = this.usernames[options.user].id;
+                    user = this.usernames[user].id;
                 }
             } else {
-                options.user = this.usernames[options.user].id;
+                user = this.usernames[user].id;
             }
         }
 
-        this.getForeignObject(options.user, options, (err, obj) => {
-            if (err || !obj || !obj.common || (!obj.common.enabled && options.user !== SYSTEM_ADMIN_USER)) {
-                return tools.maybeCallback(options.callback, false, options.user);
+        this.getForeignObject(user, options, (err, obj) => {
+            if (err || !obj || !obj.common || (!obj.common.enabled && user !== SYSTEM_ADMIN_USER)) {
+                return tools.maybeCallback(callback, false, user);
             } else {
-                password(options.pw).check(obj.common.password, (err, res) => {
-                    return tools.maybeCallback(options.callback, !!res, options.user);
+                password(pw).check(obj.common.password, (err, res) => {
+                    return tools.maybeCallback(callback, !!res, user);
                 });
             }
         });
@@ -1995,7 +1998,10 @@ export class AdapterClass extends EventEmitter {
     private async _calculatePermissions(
         options: InternalCalculatePermissionsOptions
     ): Promise<void | ioBroker.PermissionSet> {
-        if (options.user && !options.user.startsWith('system.user.')) {
+        const { user } = options;
+        let userId: ioBroker.ObjectIDs.User;
+
+        if (user && !user.startsWith('system.user.')) {
             // it's not yet a `system.user.xy` id, thus we assume it's a username
             if (!this.usernames[options.user]) {
                 // we did not find the id of the username in our cache -> update cache
@@ -2005,24 +2011,26 @@ export class AdapterClass extends EventEmitter {
                     this._logger.error(`${this.namespaceLog} ${e.message}`);
                 }
                 // user still not there, fallback
-                if (!this.usernames[options.user]) {
-                    options.user = `system.user.${options.user
+                if (!this.usernames[user]) {
+                    userId = `system.user.${user
                         .toString()
                         .replace(this.FORBIDDEN_CHARS, '_')
                         .replace(/\s/g, '_')
                         .replace(/\./g, '_')
                         .toLowerCase()}`;
                 } else {
-                    options.user = this.usernames[options.user].id;
+                    userId = this.usernames[user].id as ioBroker.ObjectIDs.User;
                 }
             } else {
-                options.user = this.usernames[options.user].id;
+                userId = this.usernames[user].id as ioBroker.ObjectIDs.User;
             }
+        } else {
+            userId = user as ioBroker.ObjectIDs.User;
         }
 
         // read all groups
-        let acl: Partial<ioBroker.PermissionSet> = { user: options.user };
-        if (options.user === SYSTEM_ADMIN_USER) {
+        let acl: Partial<ioBroker.PermissionSet> = { user: userId };
+        if (userId === SYSTEM_ADMIN_USER) {
             acl.groups = [SYSTEM_ADMIN_GROUP];
             for (const commandPermission of Object.values(options.commandsPermissions)) {
                 if (!commandPermission.type) {
@@ -2041,12 +2049,7 @@ export class AdapterClass extends EventEmitter {
             // aggregate all groups permissions, where this user is
             if (groups) {
                 for (const g of Object.keys(groups)) {
-                    if (
-                        groups[g] &&
-                        groups[g].common &&
-                        groups[g].common.members &&
-                        groups[g].common.members.includes(options.user)
-                    ) {
+                    if (groups[g]?.common?.members && groups[g].common.members.includes(userId)) {
                         acl.groups.push(groups[g]._id);
                         if (groups[g]._id === SYSTEM_ADMIN_GROUP) {
                             acl = {
@@ -2071,7 +2074,7 @@ export class AdapterClass extends EventEmitter {
                                     create: true,
                                     list: true
                                 },
-                                user: options.user,
+                                user: userId,
                                 users: {
                                     read: true,
                                     write: true,
@@ -3768,11 +3771,14 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    getObjectList(params: ioBroker.GetObjectListParams | null, callback: ioBroker.GetObjectListCallback): void;
+    getObjectList(
+        params: ioBroker.GetObjectListParams | null,
+        callback: ioBroker.GetObjectListCallback<ioBroker.Object>
+    ): void;
     getObjectList(
         params: ioBroker.GetObjectListParams | null,
         options: { sorted?: boolean } | Record<string, any>,
-        callback: ioBroker.GetObjectListCallback
+        callback: ioBroker.GetObjectListCallback<ioBroker.Object>
     ): void;
 
     /**
@@ -3902,7 +3908,7 @@ export class AdapterClass extends EventEmitter {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
                 }
-                if (res && res.rows) {
+                if (res?.rows) {
                     for (const row of res.rows) {
                         result[row.id] = row.value;
                     }
@@ -4040,7 +4046,7 @@ export class AdapterClass extends EventEmitter {
                     const result: {
                         [groupName: string]: Record<string, ioBroker.Enum>;
                     } = {};
-                    if (res && res.rows) {
+                    if (res?.rows) {
                         for (const row of res.rows) {
                             const parts: string[] = row.id.split('.', 3);
                             if (!parts[2]) {
@@ -4553,9 +4559,8 @@ export class AdapterClass extends EventEmitter {
                 // read all underlying states
                 adapterObjects!.getObjectList(selector, options, (err, res) => {
                     res &&
-                        res.rows &&
                         res.rows.forEach(
-                            (item: ioBroker.GetObjectListItem) =>
+                            (item: ioBroker.GetObjectListItem<ioBroker.Object>) =>
                                 !tasks.find(task => task.id === item.id) &&
                                 (!item.value || !item.value.common || !item.value.common.dontDelete) && // exclude objects with dontDelete flag
                                 tasks.push({ id: item.id, state: item.value && item.value.type === 'state' })
@@ -4569,7 +4574,7 @@ export class AdapterClass extends EventEmitter {
                     return tools.maybeCallbackWithError(callback, err);
                 } else if (obj) {
                     // do not allow deletion of objects with dontDelete flag
-                    if (obj.common && obj.common.dontDelete) {
+                    if (obj.common?.dontDelete) {
                         return tools.maybeCallbackWithError(callback, new Error('not deletable'));
                     }
 
@@ -5687,7 +5692,7 @@ export class AdapterClass extends EventEmitter {
                     return tools.maybeCallbackWithError(callback, err);
                 }
 
-                if (res && res.rows) {
+                if (res) {
                     for (const row of res.rows) {
                         try {
                             const obj = (await adapterObjects!.getObject(row.id, options)) as
@@ -6419,7 +6424,7 @@ export class AdapterClass extends EventEmitter {
             },
             options,
             async (err, res) => {
-                if (err || !res || !res.rows) {
+                if (err || !res) {
                     return tools.maybeCallbackWithError(callback, err);
                 }
 
@@ -7176,7 +7181,7 @@ export class AdapterClass extends EventEmitter {
                     endkey: `${instanceName}.\u9999`
                 });
 
-                if (res?.rows) {
+                if (res) {
                     for (const row of res.rows) {
                         try {
                             await adapterStates!.pushMessage(row.id, obj);
@@ -7337,7 +7342,7 @@ export class AdapterClass extends EventEmitter {
                         // if states is no longer existing, we do not need to unsubscribe
                         return;
                     }
-                    if (!err && res?.rows?.length) {
+                    if (!err && res?.rows.length) {
                         for (const row of res.rows) {
                             const parts: string[] = row.id.split('.');
                             // ignore system.host.name.alive and so on
@@ -8915,7 +8920,7 @@ export class AdapterClass extends EventEmitter {
 
                 if (_obj?.rows) {
                     for (const row of _obj.rows) {
-                        if (row.value.common && row.value.common.type === 'storage') {
+                        if (row.value?.common && row.value.common.type === 'storage') {
                             this.defaultHistory = row.id.substring('system.adapter.'.length);
                             break;
                         }
@@ -9406,7 +9411,7 @@ export class AdapterClass extends EventEmitter {
                     options.checked = undefined;
                 }
 
-                if (!res || !res.rows) {
+                if (!res) {
                     return tools.maybeCallbackWithError(callback, null, {});
                 }
                 const keys = [];
@@ -10415,14 +10420,12 @@ export class AdapterClass extends EventEmitter {
                     endkey: 'system.adapter.\u9999'
                 });
 
-                if (res && res.rows) {
-                    this.autoSubscribe = [];
-                    for (const row of res.rows) {
-                        if (row.value.common.subscribable) {
-                            const _id = row.id.substring(15); // cut system.adapter.
-                            if (!this.autoSubscribe.includes(_id)) {
-                                this.autoSubscribe.push(_id);
-                            }
+                this.autoSubscribe = [];
+                for (const row of res.rows) {
+                    if (row.value?.common.subscribable) {
+                        const _id = row.id.substring(15); // cut system.adapter.
+                        if (!this.autoSubscribe.includes(_id)) {
+                            this.autoSubscribe.push(_id);
                         }
                     }
                 }

@@ -103,7 +103,7 @@ const defaultAcl = {
 } as const;
 
 // FIXME: This should have better types. Probably Record<string, {acl: ioBroker.ObjectPermissions, [x: string | number | symbol]: any}>
-let users: Record<string, any> = {};
+let users: Record<ioBroker.ObjectIDs.User, any> = {};
 let groups: ioBroker.GroupObject[] = [];
 
 /**
@@ -344,17 +344,16 @@ type GetUserGroupCallback = (
 
 export function getUserGroup(
     objects: any,
-    user: string,
+    user: ioBroker.ObjectIDs.User,
     callback?: GetUserGroupCallback
 ): Promise<GetUserGroupPromiseReturn> | void {
     if (!user || typeof user !== 'string' || !user.startsWith(USER_STARTS_WITH)) {
         console.log(`invalid user name: ${user}`);
-        user = JSON.stringify(user);
-        // deep copy
+
         return tools.maybeCallbackWithError(
             callback,
             `invalid user name: ${user}`,
-            user,
+            deepClone(user),
             [],
             deepClone(defaultAcl.acl)
         );
@@ -391,7 +390,7 @@ export function getUserGroup(
             objects.getObjectList(
                 { startkey: 'system.user.', endkey: 'system.user.\u9999' },
                 { checked: true },
-                (err?: Error | null, arr?: { rows: ioBroker.GetObjectListItem[] }) => {
+                (err?: Error | null, arr?: { rows: ioBroker.GetObjectListItem<ioBroker.UserObject>[] }) => {
                     if (err) {
                         error = err;
                     }

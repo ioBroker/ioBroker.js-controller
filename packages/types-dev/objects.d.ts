@@ -146,8 +146,10 @@ declare global {
                 : AnyObject;
 
         type Languages = 'en' | 'de' | 'ru' | 'pt' | 'nl' | 'fr' | 'it' | 'es' | 'pl' | 'zh-cn';
+        type Translated = { en: string } & { [lang in Languages]?: string };
+
         /** For objects we require the English language to be present */
-        type StringOrTranslated = string | ({ en: string } & { [lang in Languages]?: string });
+        type StringOrTranslated = string | Translated;
 
         type CommonType = 'number' | 'string' | 'boolean' | 'array' | 'object' | 'mixed' | 'file';
 
@@ -397,7 +399,7 @@ declare global {
             /** The name of this group */
             name: string;
             /** The users of this group */
-            members: string[]; // system.user.name, ...
+            members: ObjectIDs.User[]; // system.user.name, ...
             /** The default permissions of this group */
             acl: Omit<PermissionSet, 'user' | 'groups'>;
             /** A group can be disabled, if missing, group is active */
@@ -452,6 +454,8 @@ declare global {
             stopInstance: boolean | number;
         }
 
+        type AutoUpgradePolicy = 'none' | 'patch' | 'minor' | 'major';
+
         interface AdapterCommon extends ObjectCommon {
             /** Custom attributes to be shown in admin in the object browser */
             adminColumns?: any[];
@@ -470,6 +474,8 @@ declare global {
             allowInit?: boolean;
             /** Possible values for the instance mode (if more than one is possible) */
             availableModes?: InstanceMode[];
+            /** Array which lists all blocked versions. Blocked versions will not be started. Use semver notation to specify the version ranges. The information is always used from the io-package.json in the GitHub repository. */
+            blockedVersions?: string[];
             /** Whether this adapter includes custom blocks for Blockly. If true, `admin/blockly.js` must exist. */
             blockly?: boolean;
             /** Where the adapter will get its data from. Set this together with @see dataSource */
@@ -480,9 +486,11 @@ declare global {
             dataFolder?: string;
             /** How the adapter will mainly receive its data. Set this together with @see connectionType */
             dataSource?: 'poll' | 'push' | 'assumption';
-            /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter. */
+            /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter on the same host. */
             dependencies?: Array<Record<string, string>>;
-            /** Which files outside of the README.md have documentation for the adapter */
+            /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter in the whole system. */
+            globalDependencies?: Array<Record<string, string>>;
+            /** Which files outside the README.md have documentation for the adapter */
             docs?: Partial<Record<Languages, string | string[]>>;
             /** Whether new instances should be enabled by default. *Should* be `false`! */
             enabled: boolean;
@@ -711,9 +719,21 @@ declare global {
             protectedNative?: string[];
             /** These properties will be automatically encrypted and decrypted when used with adapter.config */
             encryptedNative?: string[];
+            /** Register notifications for the built-in notification system */
+            notifications?: Notification[];
         }
         interface PartialInstanceObject extends Partial<Omit<InstanceObject, 'common'>> {
             common?: Partial<InstanceCommon>;
+        }
+
+        /** TODO: To be defined */
+        type NotificationCategory = any;
+
+        interface Notification {
+            scope: string;
+            name: Translated;
+            description: Translated;
+            categories: NotificationCategory[];
         }
 
         interface AdapterObject extends BaseObject {
@@ -724,6 +744,8 @@ declare global {
             protectedNative?: string[];
             /** Like protectedNative, but the properties are also encrypted and decrypted automatically */
             encryptedNative?: string[];
+            /** Register notifications for the built-in notification system */
+            notifications?: Notification[];
         }
         interface PartialAdapterObject extends Partial<Omit<AdapterObject, 'common'>> {
             common?: Partial<AdapterCommon>;

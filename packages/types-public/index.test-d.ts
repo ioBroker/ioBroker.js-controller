@@ -366,10 +366,10 @@ adapter.getObjectViewAsync('hm-rpc', 'admin', { startkey: 'foo', endkey: 'bar' }
 });
 // And without repetition some of the special ones:
 adapter.getObjectViewAsync('system', 'instance', { startkey: 'foo', endkey: 'bar' }).then(docs => {
-    docs.rows[0].value!.type; // $ExpectType "instance"
+    docs.rows[0].value.type; // $ExpectType "instance"
 });
 adapter.getObjectViewAsync('system', 'state', { startkey: 'foo', endkey: 'bar' }).then(docs => {
-    docs.rows[0].value!.type; // $ExpectType "state"
+    docs.rows[0].value.type; // $ExpectType "state"
 });
 adapter.getObjectViewAsync('system', 'custom', { startkey: 'foo', endkey: 'bar' }).then(docs => {
     docs.rows[0].value; // $ExpectType Record<string, any> | null
@@ -781,7 +781,8 @@ const _adapterObject: ioBroker.AdapterObject = {
             en: 'foo',
             'zh-cn': 'foo'
         },
-        version: '1.2.3'
+        version: '1.2.3',
+        blockedVersions: ['~3.14.0', '4.0.1']
     }
 };
 

@@ -17,11 +17,11 @@ import deepClone from 'deep-clone';
 import { URL } from 'url';
 import { Upload } from './setupUpload';
 import { PacketManager } from './setupPacketManager';
+import { getRepository } from './utils';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { ProcessExitCallback } from '../_Types';
 import type { CommandResult } from '@alcalzone/pak';
-import { getRepository } from './utils';
 
 const hostname = tools.getHostName();
 const osPlatform = process.platform;
@@ -163,7 +163,7 @@ export class Install {
 
         if (!repoUrl || !tools.isObject(repoUrl)) {
             try {
-                sources = await getRepository(this.objects, repoUrl);
+                sources = await getRepository({ repoName: repoUrl, objects: this.objects });
             } catch (err) {
                 return this.processExit(err);
             }
@@ -513,7 +513,7 @@ export class Install {
             endkey: 'system.adapter.\u9999'
         });
 
-        if (objs?.rows?.length) {
+        if (objs.rows.length) {
             for (const dName in allDeps) {
                 let isFound = false;
 
@@ -540,15 +540,13 @@ export class Install {
                     let locInstances: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[] = [];
                     // if global dep get all instances of adapter
                     if (globalDeps[dName] !== undefined) {
-                        gInstances = objs.rows.filter(
-                            obj => obj && obj.value && obj.value.common && obj.value.common.name === dName
-                        );
+                        gInstances = objs.rows.filter(obj => obj.value.common && obj.value.common.name === dName);
                     }
                     if (deps[dName] !== undefined) {
                         // local dep get all instances on same host
                         locInstances = objs.rows.filter(
                             obj =>
-                                obj?.value?.common &&
+                                obj.value.common &&
                                 obj.value.common.name === dName &&
                                 obj.value.common.host === hostname
                         );
@@ -559,7 +557,7 @@ export class Install {
 
                     // we check, that all existing instances match - respect different versions for local and global deps
                     for (const instance of locInstances) {
-                        const instanceVersion = instance.value!.common.version;
+                        const instanceVersion = instance.value.common.version;
                         if (
                             !semver.satisfies(instanceVersion, deps[dName], {
                                 includePrerelease: true
@@ -575,7 +573,7 @@ export class Install {
                     }
 
                     for (const instance of gInstances) {
-                        const instanceVersion = instance.value!.common.version;
+                        const instanceVersion = instance.value.common.version;
                         if (
                             !semver.satisfies(instanceVersion, globalDeps[dName], {
                                 includePrerelease: true
@@ -803,20 +801,20 @@ export class Install {
             delete options.ignoreIfExists;
         }
 
-        let doc;
+        let obj;
         let err;
         try {
-            doc = await this.objects.getObjectAsync(`system.adapter.${adapter}`);
+            obj = await this.objects.getObjectAsync(`system.adapter.${adapter}`);
         } catch (_err) {
             err = _err;
         }
         // Adapter is not installed - install it now
-        if (err || !doc || !doc.common.installedVersion) {
+        if (err || !obj || !obj.common.installedVersion) {
             await this.installAdapter(adapter);
-            doc = await this.objects.getObjectAsync(`system.adapter.${adapter}`);
+            obj = await this.objects.getObjectAsync(`system.adapter.${adapter}`);
         }
 
-        if (!doc) {
+        if (!obj) {
             console.error('Adapter object not found, cannot create instance');
             return void this.processExit(EXIT_CODES.ADAPTER_NOT_FOUND);
         }
@@ -837,7 +835,7 @@ export class Install {
         }
 
         // Count started instances
-        if (doc.common.singleton && res.rows.length) {
+        if (obj.common.singleton && res.rows.length) {
             if (ignoreIfExists) {
                 return;
             }
@@ -846,7 +844,7 @@ export class Install {
         }
 
         // check singletonHost one on host
-        if (doc.common.singletonHost) {
+        if (obj.common.singletonHost) {
             for (const row of res.rows) {
                 if (row.value.common.host === hostname) {
                     if (ignoreIfExists) {
@@ -882,7 +880,7 @@ export class Install {
             }
         }
 
-        const instanceObj = deepClone(doc);
+        const instanceObj = deepClone(obj);
 
         instanceObj._id = `system.adapter.${adapter}.${instance}`;
         // @ts-expect-error we now convert the adapter object to an instance object
@@ -1086,13 +1084,7 @@ export class Install {
             // add non-duplicates to the list (if instance not given -> only for this host)
             const newObjIDs = doc.rows
                 // only the ones with an ID ...
-                .filter(
-                    (
-                        row
-                    ): row is ioBroker.GetObjectViewItem<ioBroker.InstanceObject> & {
-                        value: ioBroker.InstanceObject;
-                    } => !!row?.value?._id
-                )
+                .filter(row => !!row.value._id)
                 //  ... that matches the pattern
                 .filter(row => instanceRegex.test(row.value._id))
                 // if instance given also delete from foreign host else only instance on this host
@@ -1135,12 +1127,12 @@ export class Install {
                 endkey: `${adapter}.\u9999`
             });
 
-            if (doc && doc.rows.length !== 0) {
+            if (doc.rows.length) {
                 const adapterRegex = new RegExp(`^${adapter}\\.`);
 
                 // add non-duplicates to the list
                 const newObjs = doc.rows
-                    .filter(row => row && row.value && row.value._id)
+                    .filter(row => row.value._id)
                     .map(row => row.value._id)
                     .filter(id => adapterRegex.test(id))
                     .filter(id => knownObjIDs.indexOf(id) === -1);
@@ -1208,10 +1200,10 @@ export class Install {
                 endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
             });
 
-            if (doc && doc.rows && doc.rows.length) {
+            if (doc.rows.length) {
                 // add non-duplicates to the list
                 const newObjs = doc.rows
-                    .filter(row => row && row.value && row.value._id)
+                    .filter(row => row.value._id)
                     .map(row => row.value._id)
                     .filter(id => adapterRegex.test(id))
                     .filter(id => !knownObjIDs.includes(id));
@@ -1246,10 +1238,10 @@ export class Install {
                 endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
             });
 
-            if (doc && doc.rows && doc.rows.length) {
+            if (doc.rows.length) {
                 // add non-duplicates to the list
                 const newObjs = doc.rows
-                    .filter(row => row && row.value && row.value._id)
+                    .filter(row => row.value._id)
                     .map(row => row.value._id)
                     .filter(id => adapterRegex.test(id))
                     .filter(id => !knownObjIDs.includes(id));
@@ -1286,10 +1278,10 @@ export class Install {
                 endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
             });
 
-            if (doc && doc.rows && doc.rows.length) {
+            if (doc.rows.length) {
                 // add non-duplicates to the list
                 const newObjs = doc.rows
-                    .filter(row => row && row.value && row.value._id)
+                    .filter(row => row.value._id)
                     .map(row => row.value._id)
                     .filter(id => adapterRegex.test(id))
                     .filter(id => !knownObjIDs.includes(id));
@@ -1310,10 +1302,10 @@ export class Install {
                 endkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
             });
 
-            if (doc && doc.rows && doc.rows.length) {
+            if (doc.rows.length) {
                 // add non-duplicates to the list
                 const newObjs = doc.rows
-                    .filter(row => row && row.value && row.value._id)
+                    .filter(row => row.value._id)
                     .map(row => row.value._id)
                     .filter(id => sysAdapterRegex.test(id))
                     .filter(id => !knownObjIDs.includes(id));
@@ -1347,7 +1339,7 @@ export class Install {
 
         try {
             const doc = await this.objects.getObjectListAsync({ include_docs: true });
-            if (doc && doc.rows && doc.rows.length) {
+            if (doc.rows.length) {
                 // add non-duplicates to the list
                 const newObjs = doc.rows
                     .filter(row => row && row.value && row.value._id)
@@ -1384,7 +1376,7 @@ export class Install {
         ]) {
             try {
                 const ids = await this.states.getKeys(pattern);
-                if (ids && ids.length) {
+                if (ids?.length) {
                     // add non-duplicates to the list
                     const newStates = ids.filter(id => !knownStateIDs.includes(id));
 
@@ -1842,13 +1834,6 @@ export class Install {
                 startkey: 'system.adapter.',
                 endkey: 'system.adapter.\u9999'
             });
-
-            if (!doc) {
-                console.error(
-                    `Could not check dependent instances for "${adapter}", because instances could not be read`
-                );
-                return;
-            }
 
             let scopedHostname;
 

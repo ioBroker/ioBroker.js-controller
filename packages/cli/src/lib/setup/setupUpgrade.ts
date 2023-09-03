@@ -1,11 +1,3 @@
-/**
- *      Upgrade command
- *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
- *
- *      MIT License
- *
- */
 import Debug from 'debug';
 import * as fs from 'fs-extra';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
@@ -15,10 +7,10 @@ import { Install } from './setupInstall';
 import rl from 'readline-sync';
 import tty from 'tty';
 import path from 'path';
+import { getRepository } from './utils';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { ProcessExitCallback } from '../_Types';
-import { getRepository } from './utils';
 
 const debug = Debug('iobroker:cli');
 
@@ -26,7 +18,6 @@ type IoPackDependencies = string[] | Record<string, any>[] | Record<string, any>
 
 interface CLIUpgradeOptions {
     processExit: ProcessExitCallback;
-    restartController: () => void;
     objects: ObjectsInRedisClient;
     states: StatesInRedisClient;
     params: Record<string, any>;
@@ -38,7 +29,6 @@ export class Upgrade {
     private readonly install: Install;
     private readonly objects: ObjectsInRedisClient;
     private readonly processExit: ProcessExitCallback;
-    private readonly params: Record<string, any>;
 
     constructor(options: CLIUpgradeOptions) {
         options = options || {};
@@ -46,12 +36,8 @@ export class Upgrade {
         if (!options.processExit) {
             throw new Error('Invalid arguments: processExit is missing');
         }
-        if (!options.restartController) {
-            throw new Error('Invalid arguments: restartController is missing');
-        }
 
         this.processExit = options.processExit;
-        this.params = options.params;
         this.objects = options.objects;
 
         this.upload = new Upload(options);
@@ -188,7 +174,7 @@ export class Upgrade {
             for (const dName in allDeps) {
                 if (dName === 'js-controller') {
                     const version = allDeps[dName];
-                    // Check only if version not *, else we dont have to read io-pack unnecessarily
+                    // Check only if version not *, else we don't have to read io-pack unnecessarily
                     if (version !== '*') {
                         const iopkg_ = fs.readJSONSync(`${tools.getControllerDir()}/package.json`);
                         try {
@@ -213,15 +199,13 @@ export class Upgrade {
                     let locInstances: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[] = [];
                     // if global dep get all instances of adapter
                     if (globalDeps[dName] !== undefined) {
-                        gInstances = objs.rows.filter(
-                            obj => obj && obj.value && obj.value.common && obj.value.common.name === dName
-                        );
+                        gInstances = objs.rows.filter(obj => obj.value.common && obj.value.common.name === dName);
                     }
                     if (deps[dName] !== undefined) {
                         // local dep get all instances on same host
                         locInstances = objs.rows.filter(
                             obj =>
-                                obj?.value?.common &&
+                                obj.value.common &&
                                 obj.value.common.name === dName &&
                                 obj.value.common.host === this.hostname
                         );
@@ -233,7 +217,7 @@ export class Upgrade {
                     let isFound = false;
                     // we check, that all instances match - respect different local and global dep versions
                     for (const instance of locInstances) {
-                        const instanceVersion = instance.value!.common.version;
+                        const instanceVersion = instance.value.common.version;
                         try {
                             if (
                                 !semver.satisfies(instanceVersion, deps[dName], {
@@ -258,7 +242,7 @@ export class Upgrade {
                     }
 
                     for (const instance of gInstances) {
-                        const instanceVersion = instance.value!.common.version;
+                        const instanceVersion = instance.value.common.version;
                         try {
                             if (
                                 !semver.satisfies(instanceVersion, globalDeps[dName], {
@@ -309,7 +293,7 @@ export class Upgrade {
         let sources: Record<string, any>;
         if (!repoUrlOrObject || !tools.isObject(repoUrlOrObject)) {
             try {
-                sources = await getRepository(this.objects, repoUrlOrObject);
+                sources = await getRepository({ repoName: repoUrlOrObject, objects: this.objects });
             } catch (e) {
                 return this.processExit(e);
             }
@@ -644,7 +628,7 @@ export class Upgrade {
         let sources: Record<string, any>;
         if (!repoUrlOrObject || !tools.isObject(repoUrlOrObject)) {
             try {
-                const result = await getRepository(this.objects, repoUrlOrObject);
+                const result = await getRepository({ repoName: repoUrlOrObject, objects: this.objects });
                 if (!result) {
                     return console.warn(`Cannot get repository under "${repoUrlOrObject}"`);
                 }

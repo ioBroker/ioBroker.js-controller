@@ -333,9 +333,6 @@ export class List {
                                     const type = obj.value.type;
 
                                     console.log(`${id.padStart(39)}: ${type.padStart(39)} - ${name || ''}`);
-                                } else {
-                                    // @ts-expect-error if we would have a design object it would have no type TODO up from 5.1 we can remove this
-                                    console.log(obj.value._id);
                                 }
                             }
                         }
@@ -609,8 +606,6 @@ export class List {
                                     (obj.value.common && reg.test(obj.value.common.name))
                                 ) {
                                     const id = obj.value._id.substring(13);
-                                    //let name = objs.rows[i].value.common.name;
-
                                     if (id === 'administrator') {
                                         obj.value.common.acl = {
                                             file: {
@@ -620,10 +615,10 @@ export class List {
                                                 create: true,
                                                 list: true
                                             },
-                                            // @ts-expect-error todo discuss, is create missing or intended?
                                             object: {
                                                 read: true,
                                                 write: true,
+                                                create: true,
                                                 delete: true,
                                                 list: true
                                             },
@@ -634,10 +629,12 @@ export class List {
                                                 create: true,
                                                 list: true
                                             },
-                                            user: {
+                                            users: {
                                                 write: true,
                                                 create: true,
-                                                delete: true
+                                                delete: true,
+                                                list: true,
+                                                read: true
                                             },
                                             other: {
                                                 execute: true,
@@ -649,7 +646,7 @@ export class List {
 
                                     let text = id.padEnd(19);
                                     text += ' | ';
-                                    if (obj.value.common.acl && obj.value.common.acl.object) {
+                                    if (obj.value.common.acl?.object) {
                                         text += (obj.value.common.acl.object.list ? '+' : '-') + ' ';
                                         text += (obj.value.common.acl.object.read ? '+' : '-') + ' ';
                                         text += (obj.value.common.acl.object.write ? '+' : '-') + ' ';
@@ -658,7 +655,7 @@ export class List {
                                     } else {
                                         text += '        |';
                                     }
-                                    if (obj.value.common.acl && obj.value.common.acl.state) {
+                                    if (obj.value.common.acl?.state) {
                                         text += ' ';
                                         text += (obj.value.common.acl.state.list ? '+' : '-') + ' ';
                                         text += (obj.value.common.acl.state.read ? '+' : '-') + ' ';
@@ -668,7 +665,7 @@ export class List {
                                     } else {
                                         text += '         |';
                                     }
-                                    if (obj.value.common.acl && obj.value.common.acl.file) {
+                                    if (obj.value.common.acl?.file) {
                                         text += ' ';
                                         text += (obj.value.common.acl.file.list ? '+' : '-') + ' ';
                                         text += (obj.value.common.acl.file.read ? '+' : '-') + ' ';
@@ -679,7 +676,7 @@ export class List {
                                     } else {
                                         text += '           |';
                                     }
-                                    if (obj.value.common.acl && obj.value.common.acl.users) {
+                                    if (obj.value.common.acl?.users) {
                                         text += ' ';
                                         text += (obj.value.common.acl.users.write ? '+' : '-') + ' ';
                                         text += (obj.value.common.acl.users.create ? '+' : '-') + ' ';
@@ -688,7 +685,7 @@ export class List {
                                     } else {
                                         text += '       |';
                                     }
-                                    if (obj.value.common.acl && obj.value.common.acl.other) {
+                                    if (obj.value.common.acl?.other) {
                                         text += ' ';
                                         let others = '';
                                         for (const [r, otherPerm] of Object.entries(obj.value.common.acl.other)) {
@@ -702,7 +699,9 @@ export class List {
 
                                     if (obj.value.common.members) {
                                         for (let m = 0; m < obj.value.common.members.length; m++) {
-                                            obj.value.common.members[m] = obj.value.common.members[m].substring(12);
+                                            obj.value.common.members[m] = obj.value.common.members[m].substring(
+                                                12
+                                            ) as ioBroker.ObjectIDs.User;
                                         }
                                         text += ` ${obj.value.common.members.join(', ')}`;
                                     }
