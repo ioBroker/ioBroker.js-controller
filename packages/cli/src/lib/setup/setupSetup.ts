@@ -1007,9 +1007,9 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         const usersView = await this.objects.getObjectViewAsync('system', 'user');
         const groupView = await this.objects.getObjectViewAsync('system', 'group');
 
-        const existingUsers = usersView!.rows.map(obj => obj.value!._id);
+        const existingUsers = usersView.rows.map(obj => obj.value._id);
 
-        for (const group of groupView!.rows) {
+        for (const group of groupView.rows) {
             // reference for readability
             const groupMembers = group.value!.common.members;
 

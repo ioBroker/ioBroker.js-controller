@@ -476,6 +476,8 @@ declare global {
             automaticUpgrade?: AutoUpgradePolicy;
             /** Possible values for the instance mode (if more than one is possible) */
             availableModes?: InstanceMode[];
+            /** Array which lists all blocked versions. Blocked versions will not be started. Use semver notation to specify the version ranges. The information is always used from the io-package.json in the GitHub repository. */
+            blockedVersions?: string[];
             /** Whether this adapter includes custom blocks for Blockly. If true, `admin/blockly.js` must exist. */
             blockly?: boolean;
             /** Where the adapter will get its data from. Set this together with @see dataSource */

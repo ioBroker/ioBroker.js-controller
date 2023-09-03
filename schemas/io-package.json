@@ -118,6 +118,13 @@
           "description": "true if messagebox supported. Hence, the adapter can receive sendTo messages. Up from controller v5, please use common.supportedMessages.notifications.custom = true",
           "type": "boolean"
         },
+        "blockedVersions": {
+          "description": "Array which lists all blocked versions. Blocked versions will not be started. Use semver notation to specify the version ranges. The information is always used from the io-package.json in the GitHub repository.",
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
         "supportedMessages": {
           "description": "Object which defines, if the adapter supports receiving messages via sendTo. Additionally, it defines if specific messages are supported.",
           "type": "object",

@@ -472,13 +472,13 @@ declare global {
 
         type ChownObjectCallback = (err?: NodeJS.ErrnoException | null, list?: ioBroker.Object[]) => void;
 
-        type GetConfigKeysCallback = (err?: Error | null, list?: string[]) => void;
+        type GetKeysCallback = (err?: Error | null, list?: string[]) => void;
 
         interface GetObjectViewItem<T extends AnyObject> {
             /** The ID of this object */
             id: string;
             /** A copy of the object from the DB */
-            value: T | null;
+            value: T;
         }
         type GetObjectViewCallback<T extends AnyObject> = (
             err?: Error | null,

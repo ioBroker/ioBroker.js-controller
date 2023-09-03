@@ -3908,7 +3908,7 @@ export class AdapterClass extends EventEmitter {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
                 }
-                if (res && res.rows) {
+                if (res?.rows) {
                     for (const row of res.rows) {
                         result[row.id] = row.value;
                     }
@@ -4046,7 +4046,7 @@ export class AdapterClass extends EventEmitter {
                     const result: {
                         [groupName: string]: Record<string, ioBroker.Enum>;
                     } = {};
-                    if (res && res.rows) {
+                    if (res?.rows) {
                         for (const row of res.rows) {
                             const parts: string[] = row.id.split('.', 3);
                             if (!parts[2]) {
@@ -4559,7 +4559,6 @@ export class AdapterClass extends EventEmitter {
                 // read all underlying states
                 adapterObjects!.getObjectList(selector, options, (err, res) => {
                     res &&
-                        res.rows &&
                         res.rows.forEach(
                             (item: ioBroker.GetObjectListItem<ioBroker.Object>) =>
                                 !tasks.find(task => task.id === item.id) &&
@@ -4575,7 +4574,7 @@ export class AdapterClass extends EventEmitter {
                     return tools.maybeCallbackWithError(callback, err);
                 } else if (obj) {
                     // do not allow deletion of objects with dontDelete flag
-                    if (obj.common && obj.common.dontDelete) {
+                    if (obj.common?.dontDelete) {
                         return tools.maybeCallbackWithError(callback, new Error('not deletable'));
                     }
 
@@ -5693,7 +5692,7 @@ export class AdapterClass extends EventEmitter {
                     return tools.maybeCallbackWithError(callback, err);
                 }
 
-                if (res && res.rows) {
+                if (res) {
                     for (const row of res.rows) {
                         try {
                             const obj = (await adapterObjects!.getObject(row.id, options)) as
@@ -6425,7 +6424,7 @@ export class AdapterClass extends EventEmitter {
             },
             options,
             async (err, res) => {
-                if (err || !res || !res.rows) {
+                if (err || !res) {
                     return tools.maybeCallbackWithError(callback, err);
                 }
 
@@ -7182,7 +7181,7 @@ export class AdapterClass extends EventEmitter {
                     endkey: `${instanceName}.\u9999`
                 });
 
-                if (res?.rows) {
+                if (res) {
                     for (const row of res.rows) {
                         try {
                             await adapterStates!.pushMessage(row.id, obj);
@@ -7343,7 +7342,7 @@ export class AdapterClass extends EventEmitter {
                         // if states is no longer existing, we do not need to unsubscribe
                         return;
                     }
-                    if (!err && res?.rows?.length) {
+                    if (!err && res?.rows.length) {
                         for (const row of res.rows) {
                             const parts: string[] = row.id.split('.');
                             // ignore system.host.name.alive and so on
@@ -9412,7 +9411,7 @@ export class AdapterClass extends EventEmitter {
                     options.checked = undefined;
                 }
 
-                if (!res || !res.rows) {
+                if (!res) {
                     return tools.maybeCallbackWithError(callback, null, {});
                 }
                 const keys = [];
@@ -10421,14 +10420,12 @@ export class AdapterClass extends EventEmitter {
                     endkey: 'system.adapter.\u9999'
                 });
 
-                if (res && res.rows) {
-                    this.autoSubscribe = [];
-                    for (const row of res.rows) {
-                        if (row.value?.common.subscribable) {
-                            const _id = row.id.substring(15); // cut system.adapter.
-                            if (!this.autoSubscribe.includes(_id)) {
-                                this.autoSubscribe.push(_id);
-                            }
+                this.autoSubscribe = [];
+                for (const row of res.rows) {
+                    if (row.value?.common.subscribable) {
+                        const _id = row.id.substring(15); // cut system.adapter.
+                        if (!this.autoSubscribe.includes(_id)) {
+                            this.autoSubscribe.push(_id);
                         }
                     }
                 }
