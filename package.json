@@ -55,7 +55,7 @@
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
     "cpy-cli": "^4.2.0",
-    "eslint": "^8.46.0",
+    "eslint": "^8.48.0",
     "eslint-config-prettier": "^8.10.0",
     "eslint-plugin-prettier": "^5.0.0",
     "fs-extra": "^11.1.0",
