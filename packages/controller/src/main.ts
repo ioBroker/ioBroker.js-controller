@@ -2525,12 +2525,10 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 const globalRepo = {};
 
                 const systemRepos = await objects!.getObjectAsync('system.repositories');
-                const changed = false;
+                let changed = false;
 
                 // Check if repositories exists
                 if (systemRepos?.native?.repositories) {
-                    let changed = false;
-
                     let updateRepo = false;
                     if (tools.isObject(msg.message)) {
                         updateRepo = msg.message.update;
