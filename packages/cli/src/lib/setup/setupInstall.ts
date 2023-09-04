@@ -121,7 +121,7 @@ export class Install {
      * Enables or disables given instances
      */
     async enableInstances(instances: ioBroker.InstanceObject[], enabled: boolean): Promise<void> {
-        if (instances && instances.length) {
+        if (instances?.length) {
             const ts = Date.now();
             for (const instance of instances) {
                 const updatedObj = {
@@ -132,7 +132,6 @@ export class Install {
                     ts
                 };
                 console.log(`host.${hostname} Adapter "${instance._id}" is ${enabled ? 'started' : 'stopped.'}`);
-                // @ts-expect-error should be fixed with #1917
                 await this.objects.extendObjectAsync(instance._id, updatedObj);
             }
         }

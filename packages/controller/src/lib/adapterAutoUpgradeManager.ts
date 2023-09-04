@@ -15,18 +15,9 @@ interface AdapterAutoUpgradeOptions {
     logPrefix: string;
 }
 
-interface UpgradeAdapterOptions extends RepositoryAdapter {
+interface UpgradeAdapterOptions extends ioBroker.RepositoryJsonAdapterContent {
     /** Current active repository */
     repoName: string;
-}
-
-interface RepositoryAdapter {
-    /** Adapter name */
-    name: string;
-    /** Newest available version */
-    version: string;
-    /** Other Adapter related properties, not important for this implementation */
-    [other: string]: any;
 }
 
 interface UpgradedAdapter {
@@ -156,15 +147,16 @@ export class AdapterAutoUpgradeManager {
      *
      * @param name Name of the repository
      */
-    private async getRepository(name: string): Promise<Record<string, RepositoryAdapter>> {
+    private async getRepository(name: string): Promise<Record<string, ioBroker.RepositoryJsonAdapterContent>> {
         const obj = await this.objects.getObjectAsync('system.repositories');
 
-        if (!obj?.native?.repositories?.[name]) {
+        const jsonContent = obj?.native?.repositories?.[name]?.json;
+
+        if (!jsonContent) {
             throw new Error(`Could not get repository information for "${name}"`);
         }
 
-        delete obj.native.repositories[name]._repoInfo;
-        return obj.native.repositories[name].json;
+        return jsonContent;
     }
 
     /**

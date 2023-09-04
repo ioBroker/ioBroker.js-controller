@@ -30,29 +30,30 @@ export async function getRepository(options: GetRepositoryOptions): Promise<Reco
     const allSources = {};
     let changed = false;
     let anyFound = false;
-    for (const repo of repoArr) {
-        if (systemRepos.native.repositories[repo]) {
-            if (typeof systemRepos.native.repositories[repo] === 'string') {
+    for (const repoUrl of repoArr) {
+        const repo = systemRepos.native.repositories[repoUrl];
+        if (repo) {
+            if (typeof repo === 'string') {
                 systemRepos.native.repositories[repo] = {
-                    link: systemRepos.native.repositories[repo],
+                    link: repo,
                     json: null
                 };
                 changed = true;
             }
 
             // If repo is not yet loaded
-            if (!systemRepos.native.repositories[repo].json) {
-                console.log(`Update repository "${repo}" under "${systemRepos.native.repositories[repo].link}"`);
-                const data = await tools.getRepositoryFileAsync(systemRepos.native.repositories[repo].link);
-                systemRepos.native.repositories[repo].json = data.json;
-                systemRepos.native.repositories[repo].hash = data.hash;
+            if (!systemRepos.native.repositories[repoUrl].json) {
+                console.log(`Update repository "${repoUrl}" under "${systemRepos.native.repositories[repoUrl].link}"`);
+                const data = await tools.getRepositoryFileAsync(systemRepos.native.repositories[repoUrl].link);
+                systemRepos.native.repositories[repoUrl].json = data.json;
+                systemRepos.native.repositories[repoUrl].hash = data.hash;
                 systemRepos.from = `system.host.${tools.getHostName()}.cli`;
                 systemRepos.ts = new Date().getTime();
                 changed = true;
             }
 
-            if (systemRepos.native.repositories[repo].json) {
-                Object.assign(allSources, systemRepos.native.repositories[repo].json);
+            if (systemRepos.native.repositories[repoUrl].json) {
+                Object.assign(allSources, systemRepos.native.repositories[repoUrl].json);
                 anyFound = true;
             }
         }

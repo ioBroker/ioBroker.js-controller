@@ -31,7 +31,7 @@ import { Upload } from '@iobroker/js-controller-cli';
 import decache from 'decache';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import { AdapterAutoUpgradeManager } from './lib/adapterAutoUpgradeManager';
-import { getDefaultNodeArgs, HostInfo } from '@iobroker/js-controller-common/tools';
+import { getDefaultNodeArgs, HostInfo, RepositoryFile } from '@iobroker/js-controller-common/tools';
 import type { UpgradeArguments } from './lib/upgradeManager';
 import { AdapterUpgradeManager } from './lib/adapterUpgradeManager';
 
@@ -2542,25 +2542,26 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         active = [active];
                     }
 
-                    for (const repo of active) {
-                        if (systemRepos.native.repositories[repo]) {
-                            if (typeof systemRepos.native.repositories[repo] === 'string') {
-                                systemRepos.native.repositories[repo] = {
-                                    link: systemRepos.native.repositories[repo],
+                    for (const repoUrl of active) {
+                        const repo = systemRepos.native.repositories[repoUrl];
+                        if (repo) {
+                            if (typeof repo === 'string') {
+                                systemRepos.native.repositories[repoUrl] = {
+                                    link: repo,
                                     json: null
                                 };
                                 changed = true;
                             }
 
-                            const currentRepo = systemRepos.native.repositories[repo];
+                            const currentRepo = systemRepos.native.repositories[repoUrl];
 
                             // If repo is not yet loaded
                             if (!currentRepo.json || updateRepo) {
                                 logger.info(
-                                    `${hostLogPrefix} Updating repository "${repo}" under "${currentRepo.link}"`
+                                    `${hostLogPrefix} Updating repository "${repoUrl}" under "${currentRepo.link}"`
                                 );
                                 try {
-                                    let result;
+                                    let result: ioBroker.RepositoryInformation | RepositoryFile;
                                     // prevent the request of repos by multiple admin adapters at start
                                     if (
                                         currentRepo.json &&
@@ -2576,15 +2577,17 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                             updateRepo,
                                             currentRepo.json
                                         );
+
+                                        changed = result.json && result.changed;
                                     }
 
                                     // If repo was really changed
-                                    if (result && result.json && result.changed) {
+                                    if (changed) {
                                         currentRepo.json = result.json;
                                         currentRepo.hash = result.hash || '';
                                         currentRepo.time = new Date().toISOString();
-                                        changed = true;
                                     }
+
                                     // Make sure, that time is stored too to prevent the frequent access to repo server
                                     if (!currentRepo.time) {
                                         currentRepo.time = new Date().toISOString();
@@ -2592,7 +2595,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                     }
                                 } catch (e) {
                                     logger.error(
-                                        `${hostLogPrefix} Error by updating repository "${repo}" under "${systemRepos.native.repositories[repo].link}": ${e.message}`
+                                        `${hostLogPrefix} Error by updating repository "${repoUrl}" under "${systemRepos.native.repositories[repoUrl].link}": ${e.message}`
                                     );
                                 }
                             }
@@ -2601,7 +2604,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                 Object.assign(globalRepo, currentRepo.json);
                             }
                         } else {
-                            logger.warn(`${hostLogPrefix} Requested repository "${repo}" does not exist in config.`);
+                            logger.warn(`${hostLogPrefix} Requested repository "${repoUrl}" does not exist in config.`);
                         }
                     }
 

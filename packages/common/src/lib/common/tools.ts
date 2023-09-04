@@ -1428,7 +1428,7 @@ export function getRepositoryFile(
 }
 
 export interface RepositoryFile {
-    json: Record<string, any>;
+    json: ioBroker.RepositoryJson;
     changed: boolean;
     hash: string;
 }
@@ -1439,14 +1439,14 @@ export interface RepositoryFile {
  * @param url URL starting with http:// or https:// or local file link
  * @param hash actual hash
  * @param force Force repository update despite on hash
- * @param _actualRepo Actual repository
+ * @param _actualRepo Actual repository JSON content
  *
  */
 export async function getRepositoryFileAsync(
     url: string,
     hash?: string,
     force?: boolean,
-    _actualRepo?: RepositoryFile
+    _actualRepo?: ioBroker.RepositoryJson | null
 ): Promise<RepositoryFile> {
     let _hash;
     let data;
@@ -1458,7 +1458,7 @@ export async function getRepositoryFileAsync(
             // ignore missing hash file
         }
 
-        if (_actualRepo && !force && hash && _hash && _hash.data && _hash.data.hash === hash) {
+        if (_actualRepo && !force && hash && _hash?.data && _hash.data.hash === hash) {
             data = _actualRepo;
         } else {
             const agent = `${appName}, RND: ${randomID}, Node:${process.version}, V:${
@@ -1490,7 +1490,7 @@ export async function getRepositoryFileAsync(
 
     return {
         json: data,
-        changed: _hash && _hash.data ? hash !== _hash.data.hash : true,
+        changed: _hash?.data ? hash !== _hash.data.hash : true,
         hash: _hash && _hash.data ? _hash.data.hash : ''
     };
 }

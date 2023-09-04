@@ -85,6 +85,8 @@ declare global {
             type User = `system.user.${string}`;
             // Guaranteed host objects
             type Host = `system.host.${string}`;
+            // Guaranteed repository object
+            type Repository = 'system.repositories';
             // Guaranteed config objects
             type Config = `system.${'certificates' | 'config' | 'repositories'}`;
             // Guaranteed design objects
@@ -137,6 +139,8 @@ declare global {
                 ? HostObject
                 : T extends ObjectIDs.Design
                 ? DesignObject
+                : T extends ObjectIDs.Repository
+                ? RepositoryObject
                 : T extends ObjectIDs.Config
                 ? OtherObject & { type: 'config' }
                 : T extends ObjectIDs.AdapterScoped
@@ -713,6 +717,49 @@ declare global {
             common?: Partial<ScheduleCommon>;
         }
 
+        interface RepositoryJsonAdapterContent {
+            /** Adapter name */
+            name: string;
+            /** Newest available version */
+            version: string;
+            /** Other Adapter related properties, not important for this implementation */
+            [other: string]: unknown;
+        }
+
+        interface RepositoryJson {
+            _repoInfo: {
+                /** If it is the official stable repository */
+                stable?: boolean;
+                /** i18n name of the repository */
+                name: Required<ioBroker.Translated>;
+                /** Time of repository update */
+                repoTime: string;
+            };
+            /** Information about each adapter */
+            [adapter: string]: RepositoryJsonAdapterContent;
+        }
+
+        interface RepositoryInformation {
+            /** Url to the repository */
+            link: string;
+            json: RepositoryJson | null;
+            hash?: string;
+            time?: string;
+        }
+
+        interface RepositoryObject extends BaseObject {
+            _id: ObjectIDs.Repository;
+            type: 'config';
+            native: {
+                repositories: {
+                    [repoName: string]: RepositoryInformation;
+                };
+                oldRepositories?: {
+                    [repoName: string]: RepositoryInformation;
+                };
+            };
+        }
+
         interface InstanceObject extends BaseObject {
             _id: ObjectIDs.Instance;
             type: 'instance';
@@ -827,6 +874,7 @@ declare global {
             | ScriptObject
             | ChartObject
             | ScheduleObject
+            | RepositoryObject
             | OtherObject
             | DesignObject;
 
@@ -845,6 +893,7 @@ declare global {
             | PartialScriptObject
             | PartialChartObject
             | PartialScheduleObject
+            | PartialRepositoryObject
             | PartialOtherObject
             | PartialDesignObject;
 
