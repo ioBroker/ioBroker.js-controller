@@ -1419,7 +1419,6 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
         // we need to show city and country at the beginning, so include it now and delete it later if not allowed.
         const diag: Record<string, any> = {
             uuid: obj.native.uuid,
-            // @ts-expect-error fallback has no lang todo
             language: systemConfig.common.language,
             country: '',
             city: '',

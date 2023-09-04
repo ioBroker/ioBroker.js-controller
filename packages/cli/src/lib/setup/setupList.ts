@@ -311,7 +311,7 @@ export class List {
 
     list(type: ListType, filter: string, flags: FlagObject): void {
         this.objects.getObject('system.config', (err, systemConf) => {
-            const lang: ioBroker.Languages = (systemConf && systemConf.common && systemConf.common.language) || 'en';
+            const lang: ioBroker.Languages = systemConf?.common?.language || 'en';
             switch (type) {
                 case 'objects':
                 case 'o':

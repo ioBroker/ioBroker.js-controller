@@ -828,7 +828,7 @@ export class Install {
             endkey: `system.adapter.${adapter}.\u9999`
         });
         const systemConfig = await this.objects.getObjectAsync('system.config');
-        const defaultLogLevel = systemConfig && systemConfig.common && systemConfig.common.defaultLogLevel;
+        const defaultLogLevel = systemConfig?.common?.defaultLogLevel;
         if (!res) {
             console.error(`host.${hostname} error: view instanceStats`);
             return this.processExit(EXIT_CODES.CANNOT_READ_INSTANCES);

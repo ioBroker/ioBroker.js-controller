@@ -36,8 +36,6 @@ export interface CLISetupOptions {
     restartController: RestartController;
 }
 
-type ConfigObject = ioBroker.OtherObject & { type: 'config' };
-
 export class Setup {
     private readonly options: CLISetupOptions;
     private readonly processExit: ProcessExitCallback;
@@ -57,7 +55,7 @@ export class Setup {
         this.dbSetup = this.dbSetup.bind(this);
     }
 
-    async informAboutPlugins(systemConfig?: ConfigObject | null): Promise<void> {
+    async informAboutPlugins(systemConfig?: ioBroker.SystemConfigObject | null): Promise<void> {
         if (!this.states) {
             throw new Error('States not set up, call setupObjects first');
         }
@@ -96,7 +94,7 @@ export class Setup {
 
         let systemLang = 'en';
         let systemDiag = 'extended';
-        if (systemConfig && systemConfig.common) {
+        if (systemConfig?.common) {
             systemDiag = systemConfig.common.diag || 'extended';
             systemLang = systemConfig.common.language || 'en';
         }
@@ -144,7 +142,10 @@ export class Setup {
      * @param systemConfig
      * @param callback
      */
-    async setupReady(systemConfig: ConfigObject | undefined | null, callback: () => void): Promise<void> {
+    async setupReady(
+        systemConfig: ioBroker.SystemConfigObject | undefined | null,
+        callback: () => void
+    ): Promise<void> {
         if (!callback) {
             console.log(`database setup done. You can add adapters and start ${tools.appName} now`);
             return this.processExit(EXIT_CODES.NO_ERROR);
@@ -213,7 +214,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             throw new Error('Objects not set up, call setupObjects first');
         }
 
-        if (iopkg.objects && iopkg.objects.length > 0) {
+        if (iopkg.objects && iopkg.objects?.length > 0) {
             const obj = iopkg.objects.pop()!;
 
             let existingObj: ioBroker.Object | undefined | null;
@@ -236,38 +237,48 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             }
         } else {
             await tools.createUuid(this.objects);
-            let configObj: ConfigObject | null | undefined;
+            let configObj: ioBroker.SystemConfigObject | null | undefined;
             // check if encrypt secret exists
             try {
                 configObj = await this.objects.getObject('system.config');
             } catch {
-                // assume non existing
+                return this.setupReady(configObj, callback);
             }
 
-            let configFixed = false;
-            if (configObj && configObj.type !== 'config') {
-                configObj.type = 'config';
-                configObj.from = `system.host.${tools.getHostName()}.cli`;
-                configObj.ts = Date.now();
-                configFixed = true;
+            const configFixed = await this.fixConfig(configObj);
+
+            if (configFixed) {
+                await this.objects.setObject('system.config', configObj!);
             }
 
-            if (configObj && (!configObj.native || !configObj.native.secret)) {
-                const buf = crypto.randomBytes(24);
-                configObj.native = configObj!.native || {};
-                configObj.native.secret = buf.toString('hex');
-                configObj.from = `system.host.${tools.getHostName()}.cli`;
-                configObj.ts = Date.now();
-                this.objects!.setObject('system.config', configObj!, () => this.setupReady(configObj!, callback));
-            } else {
-                if (configFixed) {
-                    await this.objects.setObject('system.config', configObj!);
-                    this.setupReady(configObj!, callback);
-                } else {
-                    this.setupReady(configObj, callback);
-                }
-            }
+            return this.setupReady(configObj, callback);
         }
+    }
+
+    /**
+     * Fix the config object if existing
+     *
+     * @param configObj the current system.config object
+     */
+    private async fixConfig(configObj: ioBroker.SystemConfigObject | null | undefined): Promise<boolean> {
+        let configFixed = false;
+        if (configObj && configObj.type !== 'config') {
+            configObj.type = 'config';
+            configObj.from = `system.host.${tools.getHostName()}.cli`;
+            configObj.ts = Date.now();
+            configFixed = true;
+        }
+
+        if (configObj && (!configObj.native || !configObj.native.secret)) {
+            const buf = crypto.randomBytes(24);
+            configObj.native = configObj!.native || {};
+            configObj.native.secret = buf.toString('hex');
+            configObj.from = `system.host.${tools.getHostName()}.cli`;
+            configObj.ts = Date.now();
+            await this.objects!.setObject('system.config', configObj!);
+        }
+
+        return configFixed;
     }
 
     /**

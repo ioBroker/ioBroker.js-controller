@@ -16,14 +16,15 @@ interface GetRepositoryOptions {
  */
 export async function getRepository(options: GetRepositoryOptions): Promise<Record<string, any>> {
     const { objects } = options;
-    let { repoName } = options;
+    const { repoName } = options;
 
+    let repoNameorArray: string | string[] | undefined = repoName;
     if (!repoName || repoName === 'auto') {
         const systemConfig = await objects!.getObjectAsync('system.config');
-        repoName = systemConfig!.common.activeRepo;
+        repoNameorArray = systemConfig!.common.activeRepo;
     }
 
-    const repoArr = !Array.isArray(repoName) ? [repoName!] : repoName!;
+    const repoArr = !Array.isArray(repoNameorArray) ? [repoNameorArray!] : repoNameorArray;
 
     const systemRepos = (await objects!.getObjectAsync('system.repositories'))!;
 
