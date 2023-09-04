@@ -1400,6 +1400,8 @@ export class Install {
         const filesToDelete = [
             { id: `vis`, name: `widgets/${adapter}` },
             { id: `vis`, name: `widgets/${adapter}.html` },
+            { id: `vis-2`, name: `widgets/${adapter}` },
+            { id: `vis-2`, name: `widgets/${adapter}.html` },
             { id: adapter },
             { id: `${adapter}.admin` },
             ...metaFilesToDelete.map(id => ({ id }))

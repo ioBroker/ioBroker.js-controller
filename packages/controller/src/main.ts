@@ -1498,12 +1498,12 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
                     version: row.value.common.version,
                     platform: row.value.common.platform
                 };
-                if (row.value.common.name === 'vis') {
+                if (row.value.common.name === 'vis-2') {
                     visFound = true;
                 }
             }
         }
-        // read number of vis datapoints
+        // read the number of vis data points
         if (visFound) {
             const { calcProjects } = await import('./lib/vis/states');
             try {
@@ -1513,7 +1513,7 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
 
                 if (points?.length) {
                     for (const point of points) {
-                        if (point.id === 'vis.0.datapoints.total') {
+                        if (point.id === 'vis-2.0.datapoints.total') {
                             total = point.val;
                         }
 
@@ -1537,7 +1537,7 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
                 }
 
                 if (total !== null) {
-                    diag.vis = total;
+                    diag.vis2 = total;
                 }
 
                 await extendObjects(tasks);

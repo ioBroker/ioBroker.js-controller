@@ -8,7 +8,7 @@ interface CalculatedProject {
 }
 
 /**
- * Calculate number of datapoints for each project of given instance
+ * Calculate the number of data points for each project of given instance
  *
  * @param objects the objects db
  * @param projects the read projects
@@ -30,12 +30,14 @@ async function calcProject(
             continue;
         }
 
-        if (!(await objects.fileExists(`vis.${instance}`, `/${project.file}/vis-views.json`))) {
+        const visProject = await objects.fileExists(`vis-2.${instance}`, `/${project.file}/vis-views.json`);
+
+        if (!visProject) {
             continue;
         }
 
-        // calculate datapoints in one project
-        const data = await objects.readFile(`vis.${instance}`, `/${project.file}/vis-views.json`);
+        // calculate data points in one project
+        const data = await objects.readFile(`vis-2.${instance}`, `/${project.file}/vis-views.json`);
         let json;
         try {
             json = JSON.parse(data.file as string);
@@ -47,7 +49,7 @@ async function calcProject(
         const dps = getUsedObjectIDs(json, false);
         if (dps?.IDs) {
             result.push({
-                id: `vis.${instance}.datapoints.${project.file.replace(/[.\\s]/g, '_')}`,
+                id: `vis-2.${instance}.datapoints.${project.file.replace(/[.\\s]/g, '_')}`,
                 val: dps.IDs.length
             });
         }
@@ -57,15 +59,15 @@ async function calcProject(
 }
 
 /**
- * Calculate number of datapoints for all vis projects of given instance
+ * Calculate the number of data points for all vis projects of given instance
  *
  * @param objects - the objects db
  * @param instance - vis instance
  */
 export async function calcProjects(objects: ObjectsClient, instance: number): Promise<CalculatedProject[]> {
-    const projects = await objects.readDirAsync(`vis.${instance}`, '/');
+    const projects = await objects.readDirAsync(`vis-2.${instance}`, '/');
     if (!projects?.length) {
-        return [{ id: `vis.${instance}.datapoints.total`, val: 0 }];
+        return [{ id: `vis-2.${instance}.datapoints.total`, val: 0 }];
     }
 
     const result = await calcProject(objects, projects, instance);
@@ -74,7 +76,7 @@ export async function calcProjects(objects: ObjectsClient, instance: number): Pr
         for (const entry of result) {
             total += entry.val;
         }
-        result.push({ id: `vis.${instance}.datapoints.total`, val: total });
+        result.push({ id: `vis-2.${instance}.datapoints.total`, val: total });
     }
 
     return result;

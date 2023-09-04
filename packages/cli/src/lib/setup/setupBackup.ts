@@ -449,6 +449,20 @@ export class BackupRestore {
             // do not process 'css/vis-common-user.css'
         }
 
+        // special case: copy vis-2 vis-common-user.css file
+        try {
+            const data = await this.objects.readFile('vis-2', 'css/vis-common-user.css');
+            if (data) {
+                const dir = `${this.tmpDir}/backup/files/`;
+                fs.ensureDirSync(`${dir}vis-2`);
+                fs.ensureDirSync(`${dir}vis-2/css`);
+
+                fs.writeFileSync(`${dir}vis-2/css/vis-common-user.css`, data.file);
+            }
+        } catch {
+            // do not process 'css/vis-common-user.css'
+        }
+
         console.log(`host.${hostname} ${result.objects?.length || 'no'} objects saved`);
 
         try {
