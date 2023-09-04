@@ -262,20 +262,36 @@ Please DO NOT copy files manually into ioBroker storage directories!`
      */
     private async fixConfig(configObj: ioBroker.SystemConfigObject | null | undefined): Promise<boolean> {
         let configFixed = false;
-        if (configObj && configObj.type !== 'config') {
+
+        if (!configObj) {
+            return configFixed;
+        }
+
+        if (configObj.type !== 'config') {
             configObj.type = 'config';
             configObj.from = `system.host.${tools.getHostName()}.cli`;
             configObj.ts = Date.now();
             configFixed = true;
         }
 
-        if (configObj && (!configObj.native || !configObj.native.secret)) {
+        if (!configObj.native?.secret) {
             const buf = crypto.randomBytes(24);
-            configObj.native = configObj!.native || {};
+            configObj.native = configObj.native || {};
             configObj.native.secret = buf.toString('hex');
             configObj.from = `system.host.${tools.getHostName()}.cli`;
             configObj.ts = Date.now();
-            await this.objects!.setObject('system.config', configObj!);
+            await this.objects!.setObject('system.config', configObj);
+        }
+
+        if (!configObj.common.adapterAutoUpgrade && configObj.common.activeRepo.length) {
+            const repoName = configObj.common.activeRepo[0];
+
+            configObj.common.adapterAutoUpgrade = {
+                defaultPolicy: 'none',
+                repositories: {
+                    [repoName]: true
+                }
+            };
         }
 
         return configFixed;
