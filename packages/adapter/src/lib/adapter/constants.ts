@@ -12,7 +12,7 @@ export const ACCESS_EVERY_WRITE = 0x2;
 export const ACCESS_EVERY_READ = 0x4;
 export const ACCESS_USER_READ = 0x400;
 export const ACCESS_USER_WRITE = 0x200;
-export const NO_PROTECT_ADAPTERS = ['admin', 'iot', 'cloud'];
+export const NO_PROTECT_ADAPTERS = ['admin', 'iot', 'cloud', 'discovery'];
 
 /** Two-way mapping for state quality ("q" attribute of a state) */
 export enum STATE_QUALITY {
