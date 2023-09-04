@@ -2778,6 +2778,7 @@ export class AdapterClass extends EventEmitter {
                 this._logger.warn(
                     `${this.namespaceLog} setObject ${options.id} (type=${options.obj.type}) property common missing!`
                 );
+                // @ts-expect-error fix later on
                 options.obj.common = {};
             } else if (options.obj.type === 'state') {
                 // Try to extend the model for type='state'

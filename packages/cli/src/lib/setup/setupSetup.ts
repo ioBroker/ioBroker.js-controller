@@ -261,7 +261,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 this.objects!.setObject('system.config', configObj!, () => this.setupReady(configObj!, callback));
             } else {
                 if (configFixed) {
-                    this.objects.setObject('system.config', configObj!, () => this.setupReady(configObj!, callback));
+                    await this.objects.setObject('system.config', configObj!);
+                    this.setupReady(configObj!, callback);
                 } else {
                     this.setupReady(configObj, callback);
                 }

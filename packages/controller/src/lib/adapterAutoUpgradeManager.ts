@@ -150,13 +150,15 @@ export class AdapterAutoUpgradeManager {
     private async getRepository(name: string): Promise<Record<string, ioBroker.RepositoryJsonAdapterContent>> {
         const obj = await this.objects.getObjectAsync('system.repositories');
 
-        const jsonContent = obj?.native?.repositories?.[name]?.json;
+        const jsonContent: (ioBroker.RepositoryJson & { _repoInfo?: any }) | null | undefined =
+            obj?.native?.repositories?.[name]?.json;
 
         if (!jsonContent) {
             throw new Error(`Could not get repository information for "${name}"`);
         }
 
-        return jsonContent;
+        delete jsonContent._repoInfo;
+        return jsonContent as Record<string, ioBroker.RepositoryJsonAdapterContent>;
     }
 
     /**

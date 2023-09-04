@@ -286,6 +286,10 @@ declare global {
             custom?: undefined;
         }
 
+        interface RepositoryCommon extends ObjectCommon {
+            custom?: undefined;
+        }
+
         interface ChartCommon extends ObjectCommon {
             enabled?: boolean;
             color?: string;
@@ -717,6 +721,10 @@ declare global {
             common?: Partial<ScheduleCommon>;
         }
 
+        interface PartialRepositoryObject extends Partial<Omit<RepositoryObject, 'common'>> {
+            common?: Partial<RepositoryCommon>;
+        }
+
         interface RepositoryJsonAdapterContent {
             /** Adapter name */
             name: string;
@@ -735,8 +743,8 @@ declare global {
                 /** Time of repository update */
                 repoTime: string;
             };
-            /** Information about each adapter */
-            [adapter: string]: RepositoryJsonAdapterContent;
+            /** Information about each adapter - Record needed for _repoInfo */
+            [adapter: string]: RepositoryJsonAdapterContent | Record<string, any>;
         }
 
         interface RepositoryInformation {
@@ -758,6 +766,7 @@ declare global {
                     [repoName: string]: RepositoryInformation;
                 };
             };
+            common: RepositoryCommon;
         }
 
         interface InstanceObject extends BaseObject {

@@ -874,9 +874,12 @@ async () => {
     const host: ioBroker.HostObject | null | undefined = await adapter.getForeignObjectAsync('system.host.my-hostname');
 
     let config: (ioBroker.OtherObject & { type: 'config' }) | null | undefined;
-    config = await adapter.getForeignObjectAsync('system.repositories');
     config = await adapter.getForeignObjectAsync('system.config');
     config = await adapter.getForeignObjectAsync('system.certificates');
+
+    const systemRepo: ioBroker.RepositoryObject | null | undefined = await adapter.getForeignObjectAsync(
+        'system.repositories'
+    );
 
     let misc:
         | ioBroker.FolderObject
