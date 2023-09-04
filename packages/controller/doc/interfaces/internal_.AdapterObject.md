@@ -22,6 +22,7 @@
 - [from](internal_.AdapterObject.md#from)
 - [native](internal_.AdapterObject.md#native)
 - [nonEdit](internal_.AdapterObject.md#nonedit)
+- [notifications](internal_.AdapterObject.md#notifications)
 - [protectedNative](internal_.AdapterObject.md#protectednative)
 - [ts](internal_.AdapterObject.md#ts)
 - [type](internal_.AdapterObject.md#type)
@@ -41,7 +42,7 @@ The ID of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:720](https://github.com/ioBroker/ioBroker.js-controller/blob/edb14082/packages/types-dev/objects.d.ts#L720)
+[types-dev/objects.d.ts:740](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L740)
 
 ___
 
@@ -55,7 +56,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:630](https://github.com/ioBroker/ioBroker.js-controller/blob/edb14082/packages/types-dev/objects.d.ts#L630)
+[types-dev/objects.d.ts:638](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L638)
 
 ___
 
@@ -69,7 +70,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:722](https://github.com/ioBroker/ioBroker.js-controller/blob/edb14082/packages/types-dev/objects.d.ts#L722)
+[types-dev/objects.d.ts:742](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L742)
 
 ___
 
@@ -81,7 +82,7 @@ Like protectedNative, but the properties are also encrypted and decrypted automa
 
 #### Defined in
 
-[types-dev/objects.d.ts:726](https://github.com/ioBroker/ioBroker.js-controller/blob/edb14082/packages/types-dev/objects.d.ts#L726)
+[types-dev/objects.d.ts:746](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L746)
 
 ___
 
@@ -95,7 +96,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:629](https://github.com/ioBroker/ioBroker.js-controller/blob/edb14082/packages/types-dev/objects.d.ts#L629)
+[types-dev/objects.d.ts:637](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L637)
 
 ___
 
@@ -109,7 +110,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:631](https://github.com/ioBroker/ioBroker.js-controller/blob/edb14082/packages/types-dev/objects.d.ts#L631)
+[types-dev/objects.d.ts:639](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L639)
 
 ___
 
@@ -123,7 +124,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:627](https://github.com/ioBroker/ioBroker.js-controller/blob/edb14082/packages/types-dev/objects.d.ts#L627)
+[types-dev/objects.d.ts:635](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L635)
 
 ___
 
@@ -139,7 +140,19 @@ These properties can only be edited if correct password is provided
 
 #### Defined in
 
-[types-dev/objects.d.ts:636](https://github.com/ioBroker/ioBroker.js-controller/blob/edb14082/packages/types-dev/objects.d.ts#L636)
+[types-dev/objects.d.ts:644](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L644)
+
+___
+
+### notifications
+
+• `Optional` **notifications**: [`Notification`](internal_.Notification.md)[]
+
+Register notifications for the built-in notification system
+
+#### Defined in
+
+[types-dev/objects.d.ts:748](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L748)
 
 ___
 
@@ -151,7 +164,7 @@ An array of `native` properties which cannot be accessed from outside the defini
 
 #### Defined in
 
-[types-dev/objects.d.ts:724](https://github.com/ioBroker/ioBroker.js-controller/blob/edb14082/packages/types-dev/objects.d.ts#L724)
+[types-dev/objects.d.ts:744](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L744)
 
 ___
 
@@ -165,7 +178,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:634](https://github.com/ioBroker/ioBroker.js-controller/blob/edb14082/packages/types-dev/objects.d.ts#L634)
+[types-dev/objects.d.ts:642](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L642)
 
 ___
 
@@ -179,7 +192,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:721](https://github.com/ioBroker/ioBroker.js-controller/blob/edb14082/packages/types-dev/objects.d.ts#L721)
+[types-dev/objects.d.ts:741](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L741)
 
 ___
 
@@ -195,4 +208,4 @@ The user who created or updated this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:633](https://github.com/ioBroker/ioBroker.js-controller/blob/edb14082/packages/types-dev/objects.d.ts#L633)
+[types-dev/objects.d.ts:641](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L641)

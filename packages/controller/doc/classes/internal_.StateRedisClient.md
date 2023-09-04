@@ -220,7 +220,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `pattern` | `string` |
-| `callback?` | [`GetConfigKeysCallback`](../modules/internal_.md#getconfigkeyscallback) |
+| `callback?` | [`GetKeysCallback`](../modules/internal_.md#getkeyscallback) |
 | `dontModify?` | `boolean` |
 
 #### Returns
