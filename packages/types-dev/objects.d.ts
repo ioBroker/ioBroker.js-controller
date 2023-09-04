@@ -615,7 +615,6 @@ declare global {
         }
 
         interface SystemConfigCommon extends ObjectCommon {
-            dontDelete: true;
             /** Name of all active repositories */
             activeRepo: string[];
             /** Current configured language */
@@ -643,6 +642,15 @@ declare global {
                 file: number;
                 owner: ObjectIDs.User;
                 ownerGroup: ObjectIDs.Group;
+            };
+            /** Configured auto upgrade policy */
+            adapterAutoUpgrade?: {
+                /** Configuration for each repository */
+                repositories: {
+                    [repoName: string]: boolean;
+                };
+                /** Default policy, if none has been set explicit for the adapter */
+                defaultPolicy: AutoUpgradePolicy;
             };
 
             // Make it possible to narrow the object type using the custom property
