@@ -687,7 +687,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         // test license
         const licenseText =
             'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiaW9icm9rZXIudmlzIiwidHlwZSI6InRlc3QiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiZXhwaXJlcyI6MjQ0NDM5ODA5NSwidmVyc2lvbiI6IjwyIiwiaWQiOiI5NTBkYWEwMC01MzcxLTExZTctYjQwNS14eHh4eHh4eHh4eHh4IiwiaWF0IjoxNDk3NzEzMjk1fQ.K9t9ZtvAsdeNFTJed4Sidq2jrr9UFOYpMt6VLmBdVzWueI9DnCXFS5PwBFTBTmF9WMhVk6LBw5ujIVl130B_5NrHl21PHkCLvJeW7jGsMgWDINuBK5F9k8LZABdsv7uDbqNDSOsVrFwEKOu2V3N5sMWYOVE4N_COIg9saaLvyN69oIP27PTgk1GHuyU4giFKGLPTp10L5p2hxLX0lEPjSdDggbl7dEqEe1-u5WwkyBizp03pMtHGYtjnACtP_KBuOly7QpmAnoPlfFoW79xgRjICbd41wT43IvhKAAo1zfnRAeWfQ7QoUViKsc6N1es87QC4KKw-eToLPXOO5UzWOg';
-        let licenseFile = __dirname + '/visLicense.data';
+        let licenseFile = `${__dirname}/visLicense.data`;
         licenseFile = licenseFile.replace(/\\/g, '/');
         fs.writeFileSync(licenseFile, licenseText);
 
@@ -709,9 +709,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             // ok
         }
 
-        await context.objects.setObjectAsync('system.adapter.vis.0', {
+        await context.objects.setObjectAsync('system.adapter.vis-2.0', {
             common: {
-                name: 'iobroker.vis',
+                name: 'iobroker.vis-2',
                 version: '1.0.0',
                 host: 'system.host.test',
                 enabled: true,
@@ -727,18 +727,18 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         res = await execAsync(`"${process.execPath}" "${iobExecutable}" license ${licenseFile}`);
         fs.unlinkSync(licenseFile);
         expect(res.stderr).to.be.not.ok;
-        let obj = await context.objects.getObjectAsync('system.adapter.vis.0');
+        let obj = await context.objects.getObjectAsync('system.adapter.vis-2.0');
         expect(obj?.native.license).to.be.equal(licenseText);
 
         // license must be taken
         res = await execAsync(`"${process.execPath}" "${iobExecutable}" license ${licenseText}`);
         expect(res.stderr).to.be.not.ok;
-        obj = await context.objects.getObjectAsync('system.adapter.vis.0');
+        obj = await context.objects.getObjectAsync('system.adapter.vis-2.0');
         expect(obj?.native.license).to.be.equal(licenseText);
     }).timeout(20_000);
 
     // info
-    it(testName + 'info', async () => {
+    it(`${testName}info`, async () => {
         const res = await execAsync(`"${process.execPath}" "${iobExecutable}" info`);
         expect(res.stderr).to.be.not.ok;
     }).timeout(10_000);

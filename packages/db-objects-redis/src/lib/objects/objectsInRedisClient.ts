@@ -607,7 +607,7 @@ export class ObjectsInRedisClient {
                                 }
                             } else if (channel.startsWith(this.fileNamespace) && channel.length > this.fileNamespaceL) {
                                 if (onChangeFileUser) {
-                                    // cfg.f.vis.0$%$main/historyChart.js$%$data
+                                    // cfg.f.vis-2.0$%$main/historyChart.js$%$data
                                     const [id, fileName] = channel.substring(this.fileNamespaceL).split('$%$');
 
                                     try {

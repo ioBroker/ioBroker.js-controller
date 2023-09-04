@@ -12,7 +12,7 @@ interface CalculatedProject {
  *
  * @param objects the objects db
  * @param projects the read projects
- * @param instance vis instance
+ * @param instance vis-2 instance
  */
 async function calcProject(
     objects: ObjectsClient,
@@ -59,10 +59,10 @@ async function calcProject(
 }
 
 /**
- * Calculate the number of data points for all vis projects of given instance
+ * Calculate the number of data points for all vis-2 projects of given instance
  *
  * @param objects - the objects db
- * @param instance - vis instance
+ * @param instance - vis-2 instance
  */
 export async function calcProjects(objects: ObjectsClient, instance: number): Promise<CalculatedProject[]> {
     const projects = await objects.readDirAsync(`vis-2.${instance}`, '/');
