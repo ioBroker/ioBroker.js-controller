@@ -294,7 +294,8 @@ async function startMultihost(__config?: Record<string, any>): Promise<boolean |
 
         if (_config.multihostService.secure) {
             if (typeof _config.multihostService.password === 'string' && _config.multihostService.password.length) {
-                let obj, errText;
+                let obj: ioBroker.SystemConfigObject | null | undefined;
+                let errText;
                 try {
                     obj = await objects!.getObjectAsync('system.config');
                 } catch (e) {
@@ -2494,7 +2495,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     return;
                 }
 
-                let systemConfig;
+                let systemConfig: ioBroker.SystemConfigObject | null | undefined;
                 try {
                     systemConfig = await objects!.getObject('system.config');
                 } catch {
@@ -6164,6 +6165,11 @@ async function startUpgradeManager(options: UpgradeArguments): Promise<void> {
  */
 async function autoUpgradeAdapters(): Promise<void> {
     try {
+        if (!(await autoUpgradeManager.isAutoUpgradeEnabled())) {
+            logger.debug(`${hostLogPrefix} Automatic adapter upgrades are disabled for the current repository`);
+            return;
+        }
+
         const upgradedAdapters = await autoUpgradeManager.upgradeAdapters();
 
         if (upgradedAdapters.length) {

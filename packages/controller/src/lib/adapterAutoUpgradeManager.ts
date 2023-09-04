@@ -61,6 +61,27 @@ export class AdapterAutoUpgradeManager {
     }
 
     /**
+     * Checks if auto upgrade is enabled for the current configured repository
+     */
+    async isAutoUpgradeEnabled(): Promise<boolean> {
+        let sysConf: ioBroker.SystemConfigObject | null | undefined;
+
+        try {
+            sysConf = await this.objects.getObjectAsync('system.config');
+        } catch {
+            // ignore
+        }
+
+        if (!sysConf?.common.activeRepo?.length || !sysConf.common.adapterAutoUpgrade) {
+            return false;
+        }
+
+        const activeRepo = sysConf.common.activeRepo[0];
+
+        return sysConf.common.adapterAutoUpgrade.repositories[activeRepo];
+    }
+
+    /**
      * Checks the current `system.repositories` object and checks if one needs to be performed according to the adapter configuration
      */
     async upgradeAdapters(): Promise<UpgradedAdapter[]> {
@@ -174,15 +195,36 @@ export class AdapterAutoUpgradeManager {
             throw new Error('Did not get information about installed adapters');
         }
 
+        const defaultPolicy = await this.getDefaultUpgradePolicy();
+
         return res.rows
-            .filter(row => row.value?.common.automaticUpgrade && row.value.common.automaticUpgrade !== 'none')
+            .filter(
+                row =>
+                    (defaultPolicy && defaultPolicy !== 'none') ||
+                    (row.value?.common.automaticUpgrade && row.value.common.automaticUpgrade !== 'none')
+            )
             .map(row => {
                 return {
                     // ts can not infer, that we filtered out falsy row.value entries
                     name: row.value!.common.name,
                     version: row.value!.common.version,
-                    upgradePolicy: row.value!.common.automaticUpgrade!
+                    upgradePolicy: row.value!.common.automaticUpgrade! || defaultPolicy
                 };
             });
+    }
+
+    /**
+     * Get the default upgrade policy from the system config
+     */
+    private async getDefaultUpgradePolicy(): Promise<ioBroker.AutoUpgradePolicy | undefined> {
+        let sysConf: ioBroker.SystemConfigObject | null | undefined;
+
+        try {
+            sysConf = await this.objects.getObjectAsync('system.config');
+        } catch {
+            // ignore
+        }
+
+        return sysConf?.common.adapterAutoUpgrade?.defaultPolicy;
     }
 }
