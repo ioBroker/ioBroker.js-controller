@@ -1017,7 +1017,7 @@ async function processCommand(
                         if (name.includes('.')) {
                             if (!subTree) {
                                 console.log(
-                                    `Please specify target name, like:\n${tools.appName} upload /file/picture.png /vis.0/main/img/picture.png`
+                                    `Please specify target name, like:\n${tools.appName} upload /file/picture.png /vis-2.0/main/img/picture.png`
                                 );
                                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                             }
@@ -1354,7 +1354,7 @@ async function processCommand(
             let pattern = args[0];
 
             if (!pattern) {
-                console.log('No file path found. Example: "touch /vis.0/main/*"');
+                console.log('No file path found. Example: "touch /vis-2.0/main/*"');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
             dbConnect(params, ({ states, objects }) => {
@@ -1451,7 +1451,7 @@ async function processCommand(
             let pattern = args[0];
 
             if (!pattern) {
-                console.log('No file path found. Example: "touch /vis.0/main/*"');
+                console.log('No file path found. Example: "touch /vis-2.0/main/*"');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
             dbConnect(params, ({ objects, states }) => {
@@ -1551,7 +1551,7 @@ async function processCommand(
             let pattern = args[1];
 
             if (!mode) {
-                CLIError.requiredArgumentMissing('mode', 'chmod 777 /vis.0/main/*');
+                CLIError.requiredArgumentMissing('mode', 'chmod 777 /vis-2.0/main/*');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
                 //yargs has converted it to number
@@ -1559,7 +1559,7 @@ async function processCommand(
             }
 
             if (!pattern) {
-                CLIError.requiredArgumentMissing('file path', 'chmod 777 /vis.0/main/*');
+                CLIError.requiredArgumentMissing('file path', 'chmod 777 /vis-2.0/main/*');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
             dbConnect(params, ({ objects, states }) => {
@@ -1668,17 +1668,17 @@ async function processCommand(
             }
 
             if (!user) {
-                CLIError.requiredArgumentMissing('user', 'chown user /vis.0/main/*');
+                CLIError.requiredArgumentMissing('user', 'chown user /vis-2.0/main/*');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else if (user.substring(12) !== 'system.user.') {
-                user = 'system.user.' + user;
+                user = `system.user.${user}`;
             }
             if (group && group.substring(13) !== 'system.group.') {
-                group = 'system.group.' + group;
+                group = `system.group.${group}`;
             }
 
             if (!pattern) {
-                CLIError.requiredArgumentMissing('file path', 'chown user /vis.0/main/*');
+                CLIError.requiredArgumentMissing('file path', 'chown user /vis-2.0/main/*');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
             dbConnect(params, ({ objects, states }) => {
@@ -2243,18 +2243,20 @@ async function processCommand(
                 cmd !== 'del'
             ) {
                 console.log(
-                    'Invalid parameters: write "file read /vis.0/main/img/picture.png /opt/picture/image.png" to read the file'
+                    'Invalid parameters: write "file read /vis-2.0/main/img/picture.png /opt/picture/image.png" to read the file'
                 );
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
             if (cmd !== 'sync' && !args[1]) {
                 console.log(
-                    'Invalid parameters: write "file read /vis.0/main/img/picture.png /opt/picture/image.png" to read the file from DB and store it on disk'
+                    'Invalid parameters: write "file read /vis-2.0/main/img/picture.png /opt/picture/image.png" to read the file from DB and store it on disk'
                 );
                 console.log(
-                    'or                        "file write /opt/SOURCE/image.png /vis.0/main/DESTINATION/picture.png" to write the file into DB from disk'
+                    'or                        "file write /opt/SOURCE/image.png /vis-2.0/main/DESTINATION/picture.png" to write the file into DB from disk'
                 );
-                console.log('or                        "file rm /vis.0/main/img/picture.png" to delete the file in DB');
+                console.log(
+                    'or                        "file rm /vis-2.0/main/img/picture.png" to delete the file in DB'
+                );
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
 
@@ -2319,14 +2321,14 @@ async function processCommand(
                     }
                     if (!fileSrc || !fs.existsSync(toRead)) {
                         console.log(
-                            `Please provide a valid file name as source file: "file write /opt/SOURCE/script.js /vis/DESTINATION/script.js"`
+                            `Please provide a valid file name as source file: "file write /opt/SOURCE/script.js /vis-2/DESTINATION/script.js"`
                         );
                         return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                     }
                     const srcStat = fs.statSync(toRead);
                     if (!srcStat.isFile()) {
                         console.log(
-                            `Please provide a valid file name as source file: "file write /opt/SOURCE/script.js /vis/DESTINATION/script.js"`
+                            `Please provide a valid file name as source file: "file write /opt/SOURCE/script.js /vis-2/DESTINATION/script.js"`
                         );
                         return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                     }
@@ -2427,13 +2429,13 @@ async function processCommand(
                     }
                 } else {
                     console.log(
-                        'Invalid parameters: write "file read /vis.0/main/img/picture.png /opt/picture/image.png" to read the file from DB and store it on disk'
+                        'Invalid parameters: write "file read /vis-2.0/main/img/picture.png /opt/picture/image.png" to read the file from DB and store it on disk'
                     );
                     console.log(
-                        'or                        "file write /opt/SOURCE/image.png /vis.0/main/DESTINATION/picture.png" to write the file into DB from disk'
+                        'or                        "file write /opt/SOURCE/image.png /vis-2.0/main/DESTINATION/picture.png" to write the file into DB from disk'
                     );
                     console.log(
-                        'or                        "file rm /vis.0/main/img/picture.png" to delete the file in DB'
+                        'or                        "file rm /vis-2.0/main/img/picture.png" to delete the file in DB'
                     );
                     return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                 }

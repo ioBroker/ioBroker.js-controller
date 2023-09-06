@@ -18,7 +18,7 @@ import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis'
 import type Winston from 'winston';
 import type NodeSchedule from 'node-schedule';
 
-// local version is always same as controller version, since lerna exact: true is used
+// local version is always the same as controller version, since lerna exact: true is used
 import { version as controllerVersion } from '@iobroker/js-controller-adapter/package.json';
 
 import { Log } from './log';
@@ -4775,7 +4775,7 @@ export class AdapterClass extends EventEmitter {
     /**
      * Subscribe for the changes of files in specific instance.
      * This is async function!
-     * @param id adapter ID like 'vis.0' or 'vis.admin'
+     * @param id adapter ID like 'vis-2.0' or 'vis-2.admin'
      * @param pattern pattern like 'channel.*' or '*' (all files) - without namespaces. You can use array of patterns
      * @param options optional user context
      */
@@ -4802,7 +4802,7 @@ export class AdapterClass extends EventEmitter {
     /**
      * Unsubscribe for the changes of files on specific instance.
      * This is async function!
-     * @param id adapter ID like 'vis.0' or 'vis.admin'
+     * @param id adapter ID like 'vis-2.0' or 'vis-2.admin'
      * @param pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
      * @param options optional user context
      */
@@ -6464,14 +6464,14 @@ export class AdapterClass extends EventEmitter {
      *
      * This function updates the file access rights
      * ```js
-     *      adapter.chmodFile('vis.0', '/main/vis-views.json', {mode: 0x644}, function (err, processed) {
+     *      adapter.chmodFile('vis-2.0', '/main/vis-views.json', {mode: 0x644}, function (err, processed) {
      *        if (err) adapter.log.error('Cannot read file: ' + err);
      *        adapter.log.info('New files: ' + JSON.stringify(processed));
      *      });
      * ```
      *
-     * @param _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
-     * @param path path to file without adapter name. E.g. If you want to update "/vis.0/main/*", here must be "/main/*" and _adapter must be equal to "vis.0".
+     * @param _adapter adapter name. If the adapter name is null, so the name (not instance) of the current adapter will be taken.
+     * @param path path to file without adapter name. E.g., If you want to update "/vis-2.0/main/*", here must be "/main/*" and _adapter must be equal to "vis-2.0".
      * @param options data with mode
      * @param callback return result
      *        ```js
@@ -6507,18 +6507,18 @@ export class AdapterClass extends EventEmitter {
     chownFile(_adapter: string, path: string, callback: (err?: Error | null, processedFiles?: any) => void): void;
 
     /**
-     * Change file owner
+     * Change a file owner
      *
      * This function updates the file owner and ownerGroup
      * ```js
-     *      adapter.chownFile('vis.0', '/main/vis-views.json', {owner: 'newOwner', ownerGroup: 'newgroup'}, function (err, processed) {
+     *      adapter.chownFile('vis-2.0', '/main/vis-views.json', {owner: 'newOwner', ownerGroup: 'newgroup'}, function (err, processed) {
      *        if (err) adapter.log.error('Cannot read file: ' + err);
      *        adapter.log.info('New files: ' + JSON.stringify(processed));
      *      });
      * ```
      *
-     * @param _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
-     * @param path path to file without adapter name. E.g. If you want to update "/vis.0/main/*", here must be "/main/*" and _adapter must be equal to "vis.0".
+     * @param _adapter adapter name. If the adapter name is null, so the name (not instance) of the current adapter will be taken.
+     * @param path path to file without adapter name. E.g., If you want to update "/vis-2.0/main/*", here must be "/main/*" and _adapter must be equal to "vis-2.0".
      * @param options data with owner and ownerGroup
      * @param callback return result
      *        ```js
@@ -6554,7 +6554,7 @@ export class AdapterClass extends EventEmitter {
      * This function reads the content of directory from DB for given adapter and path.
      * If getEnum called with no enum specified, all enums will be returned:
      * ```js
-     *      adapter.readDir('vis.0', '/main/', function (err, filesOrDirs) {
+     *      adapter.readDir('vis-2.0', '/main/', function (err, filesOrDirs) {
      *        // All enums
      *        if (err) adapter.log.error('Cannot read directory: ' + err);
      *        if (filesOrDirs) {
@@ -6565,8 +6565,8 @@ export class AdapterClass extends EventEmitter {
      *      });
      * ```
      *
-     * @param _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
-     * @param path path to direcory without adapter name. E.g. If you want to read "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
+     * @param _adapter adapter name. If the adapter name is null, so the name (not instance) of the current adapter will be taken.
+     * @param path path to directory without adapter name. E.g., If you want to read "/vis-2.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis-2.0".
      * @param options optional user context
      * @param callback return result
      *        ```js
@@ -6705,15 +6705,15 @@ export class AdapterClass extends EventEmitter {
      *
      * This function reads the content of one file from DB for given adapter and file name.
      * ```js
-     *      adapter.readFile('vis.0', '/main/vis-views.json', function (err, data) {
+     *      adapter.readFile('vis-2.0', '/main/vis-views.json', function (err, data) {
      *        // All enums
      *        if (err) adapter.log.error('Cannot read file: ' + err);
      *        adapter.log.info('Content of file is: ' + data);
      *      });
      * ```
      *
-     * @param _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
-     * @param filename path to file without adapter name. E.g. If you want to read "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
+     * @param _adapter adapter name. If the adapter name is null, so the name (not instance) of the current adapter will be taken.
+     * @param filename path to file without adapter name. E.g., If you want to read "/vis-2.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis-2.0".
      * @param options optional user context
      * @param callback return result
      *        ```js
@@ -6762,13 +6762,13 @@ export class AdapterClass extends EventEmitter {
      *
      * This function writes the content of one file into DB for given adapter and file name.
      * ```js
-     *      adapter.writeFile('vis.0', '/main/vis-views.json', data, function (err) {
+     *      adapter.writeFile('vis-2.0', '/main/vis-views.json', data, function (err) {
      *        err && adapter.log.error('Cannot write file: ' + err);
      *      });
      * ```
      *
-     * @param _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
-     * @param filename path to file without adapter name. E.g. If you want to read "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
+     * @param _adapter adapter name. If the adapter name is null, so the name (not instance) of the current adapter will be taken.
+     * @param filename path to file without adapter name. E.g., If you want to read "/vis-2.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis-2.0".
      * @param data data as UTF8 string or buffer depends on the file extension.
      * @param options optional user context
      * @param callback return result
@@ -6819,7 +6819,7 @@ export class AdapterClass extends EventEmitter {
      * Checks if file exists in DB.
      *
      * @param _adapter adapter name
-     * @param filename path to file without adapter name. E.g. If you want to check "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
+     * @param filename path to file without adapter name. E.g., If you want to check "/vis-2.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis-2.0".
      * @param options optional user context
      * @param callback cb function if none provided, a promise is returned
      */

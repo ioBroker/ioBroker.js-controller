@@ -39,15 +39,15 @@ export class License {
         // read all instances of this adapter
         const arr = await this.objects.getObjectListAsync(
             {
-                startkey: 'system.adapter.' + adapter + '.',
-                endkey: 'system.adapter.' + adapter + '.\u9999'
+                startkey: `system.adapter.${adapter}.`,
+                endkey: `system.adapter.${adapter}.\u9999`
             },
             { checked: true }
         );
 
         let updated = 0;
 
-        if (arr && arr.rows && arr.rows.length) {
+        if (arr.rows.length) {
             for (let g = 0; g < arr.rows.length; g++) {
                 const obj = arr.rows[g].value;
                 if (obj && obj.type === 'instance') {
@@ -66,7 +66,7 @@ export class License {
 
         if (!updated) {
             console.warn(`no instances of ${adapter} found`);
-            if (arr && arr.rows && arr.rows.length) {
+            if (arr.rows.length) {
                 for (let g = 0; g < arr.rows.length; g++) {
                     const obj = arr.rows[g].value;
                     if (obj && obj.type === 'adapter') {
