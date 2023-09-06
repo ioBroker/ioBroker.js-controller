@@ -709,7 +709,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             // ok
         }
 
-        await context.objects.setObjectAsync('system.adapter.vis-2.0', {
+        await context.objects.setObjectAsync('system.adapter.vis.0', {
             common: {
                 name: 'iobroker.vis-2',
                 version: '1.0.0',
@@ -727,13 +727,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         res = await execAsync(`"${process.execPath}" "${iobExecutable}" license ${licenseFile}`);
         fs.unlinkSync(licenseFile);
         expect(res.stderr).to.be.not.ok;
-        let obj = await context.objects.getObjectAsync('system.adapter.vis-2.0');
+        let obj = await context.objects.getObjectAsync('system.adapter.vis.0');
         expect(obj?.native.license).to.be.equal(licenseText);
 
         // license must be taken
         res = await execAsync(`"${process.execPath}" "${iobExecutable}" license ${licenseText}`);
         expect(res.stderr).to.be.not.ok;
-        obj = await context.objects.getObjectAsync('system.adapter.vis-2.0');
+        obj = await context.objects.getObjectAsync('system.adapter.vis.0');
         expect(obj?.native.license).to.be.equal(licenseText);
     }).timeout(20_000);
 
