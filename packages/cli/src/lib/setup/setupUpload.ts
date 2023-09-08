@@ -751,6 +751,14 @@ export class Upload {
                     newObject.common.version = ioPack.common.version;
                     newObject.common.installedVersion = ioPack.common.version;
                     newObject.common.installedFrom = ioPack.common.installedFrom;
+                    // Copy or delete the whole information about vis-2 widgets. Do not merge it.
+                    if (ioPack.common.visWidgets) {
+                        // @ts-expect-error TODO needs to be added to types
+                        newObject.common.visWidgets = ioPack.common.visWidgets;
+                    } else {
+                        // @ts-expect-error TODO needs to be added to types
+                        delete newObject.common.visWidgets;
+                    }
 
                     if (!ioPack.common.compact && newObject.common.compact) {
                         newObject.common.compact = ioPack.common.compact;

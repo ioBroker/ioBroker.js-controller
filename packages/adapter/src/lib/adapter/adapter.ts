@@ -1267,7 +1267,7 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Encrypt the password/value with given key
-     * @param secretVal to use for encrypt (or value if only one parameter is given)
+     * @param secretVal to use for encrypting (or value if only one parameter is given)
      * @param [value] value to encrypt (if secret is provided)
      */
     encrypt(secretVal: unknown, value?: unknown): string {
