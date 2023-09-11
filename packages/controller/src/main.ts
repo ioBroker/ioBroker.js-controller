@@ -33,7 +33,6 @@ import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import { getDefaultNodeArgs, HostInfo } from '@iobroker/js-controller-common/tools';
 import type { UpgradeArguments } from './lib/upgradeManager';
 import { AdapterUpgradeManager } from './lib/adapterUpgradeManager';
-import type { Logger } from 'winston';
 
 type TaskObject = ioBroker.SettableObject & { state?: ioBroker.SettableState };
 type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
