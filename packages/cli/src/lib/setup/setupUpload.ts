@@ -714,7 +714,7 @@ export class Upload {
      */
     async _upgradeAdapterObjectsHelper(
         name: string,
-        ioPack: Record<string, any>,
+        ioPack: ioBroker.AdapterObject,
         hostname: string,
         logger: Logger | typeof console
     ): Promise<string> {
@@ -730,6 +730,8 @@ export class Upload {
                     const _obj = await this.objects.getObjectAsync(row.id);
                     const newObject = deepClone(_obj) as ioBroker.InstanceObject;
 
+                    // TODO: refactor the following assignments into a method, where we can define which attributes need a real override and their defaults
+
                     // all common settings should be taken from new one
                     newObject.common = this.extendCommon(
                         newObject.common,
@@ -743,20 +745,16 @@ export class Upload {
                     newObject.encryptedNative = ioPack.encryptedNative || [];
                     newObject.notifications = ioPack.notifications || [];
                     // update instanceObjects and objects
-                    // @ts-expect-error TODO needs to be added to types
                     newObject.instanceObjects = ioPack.instanceObjects || [];
-                    // @ts-expect-error TODO needs to be added to types
                     newObject.objects = ioPack.objects || [];
 
                     newObject.common.version = ioPack.common.version;
                     newObject.common.installedVersion = ioPack.common.version;
                     newObject.common.installedFrom = ioPack.common.installedFrom;
-                    // Copy or delete the whole information about vis-2 widgets. Do not merge it.
+
                     if (ioPack.common.visWidgets) {
-                        // @ts-expect-error TODO needs to be added to types
                         newObject.common.visWidgets = ioPack.common.visWidgets;
                     } else {
-                        // @ts-expect-error TODO needs to be added to types
                         delete newObject.common.visWidgets;
                     }
 
@@ -778,17 +776,17 @@ export class Upload {
         }
 
         // updates only "_design/system" and co "_design/*"
-        if (ioPack.objects && typeof ioPack.objects === 'object') {
-            for (const _id of Object.keys(ioPack.objects)) {
-                if (name === 'js-controller' && !_id.startsWith('_design/')) {
+        if (Array.isArray(ioPack.objects)) {
+            for (const obj of ioPack.objects) {
+                if (name === 'js-controller' && !obj._id.startsWith('_design/')) {
                     continue;
                 }
 
-                ioPack.objects[_id].from = `system.host.${hostname}.cli`;
-                ioPack.objects[_id].ts = Date.now();
+                obj.from = `system.host.${hostname}.cli`;
+                obj.ts = Date.now();
 
                 try {
-                    await this.objects.setObjectAsync(ioPack.objects[_id]._id, ioPack.objects[_id]);
+                    await this.objects.setObjectAsync(obj._id, obj);
                 } catch (err) {
                     logger.error(`Cannot update object: ${err}`);
                 }
@@ -803,7 +801,7 @@ export class Upload {
      */
     async upgradeAdapterObjects(
         name: string,
-        ioPack?: Record<string, any>,
+        ioPack?: ioBroker.AdapterObject,
         _logger?: Logger | typeof console
     ): Promise<string> {
         const logger = _logger || console;
@@ -811,7 +809,7 @@ export class Upload {
         const adapterDir = tools.getAdapterDir(name);
         let ioPackFile;
         try {
-            ioPackFile = fs.readJSONSync(adapterDir + '/io-package.json');
+            ioPackFile = fs.readJSONSync(`${adapterDir}/io-package.json`);
         } catch {
             if (adapterDir) {
                 logger.error(`Cannot find io-package.json in ${adapterDir}`);
@@ -823,8 +821,8 @@ export class Upload {
         ioPack = ioPack || ioPackFile;
 
         if (ioPack) {
-            // Always update installed From from File on disk if exists and set
-            if (ioPackFile && ioPackFile.common && ioPackFile.common.installedFrom) {
+            // Always update installedFrom from File on disk if exists and set
+            if (ioPackFile?.common?.installedFrom) {
                 ioPack.common = ioPack.common || {};
                 ioPack.common.installedFrom = ioPackFile.common.installedFrom;
             }
@@ -838,7 +836,9 @@ export class Upload {
             const obj: Omit<ioBroker.AdapterObject, '_id'> = _obj || {
                 common: ioPack.common,
                 native: ioPack.native,
-                type: 'adapter'
+                type: 'adapter',
+                instanceObjects: [],
+                objects: []
             };
 
             obj.common = ioPack.common || {};
@@ -848,19 +848,15 @@ export class Upload {
             obj.encryptedNative = ioPack.encryptedNative || [];
             obj.notifications = ioPack.notifications || [];
             // update instanceObjects and objects
-            // @ts-expect-error TODO needs to be added to types
             obj.instanceObjects = ioPack.instanceObjects || [];
-            // @ts-expect-error TODO needs to be added to types
             obj.objects = ioPack.objects || [];
 
             obj.type = 'adapter';
 
-            obj.common!.installedVersion = ioPack.common.version;
+            obj.common.installedVersion = ioPack.common.version;
 
-            // @ts-expect-error TODO needs to be added to types
-            if (obj.common!.news) {
-                // @ts-expect-error TODO needs to be added to types
-                delete obj.common!.news; // remove this information as it could be big, but it will be taken from repo
+            if (obj.common.news) {
+                delete obj.common.news; // remove this information as it could be big, but it will be taken from repo
             }
 
             const hostname = tools.getHostName();

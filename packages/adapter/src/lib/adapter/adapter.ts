@@ -109,7 +109,8 @@ import type {
     InternalAdapterConfig,
     UserInterfaceClientRemoveMessage,
     SendToUserInterfaceClientOptions,
-    AllPropsUnknown
+    AllPropsUnknown,
+    IoPackageInstanceObject
 } from '../_Types';
 import { UserInterfaceMessagingController } from './userInterfaceMessagingController';
 
@@ -11939,7 +11940,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     private async _createInstancesObjects(instanceObj: ioBroker.InstanceObject): Promise<void> {
-        let objs: ioBroker.AnyObject[];
+        let objs: (IoPackageInstanceObject & { state?: unknown })[];
 
         if (instanceObj?.common && !('onlyWWW' in instanceObj.common) && instanceObj.common.mode !== 'once') {
             // @ts-expect-error
@@ -11949,8 +11950,9 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (instanceObj && 'instanceObjects' in instanceObj) {
-            // @ts-expect-error
-            for (const obj of instanceObj.instanceObjects) {
+            for (const instObj of instanceObj.instanceObjects) {
+                const obj: IoPackageInstanceObject & { state?: unknown } = instObj;
+
                 if (!obj._id.startsWith(this.namespace)) {
                     // instanceObjects are normally defined without namespace prefix
                     obj._id = obj._id === '' ? this.namespace : `${this.namespace}.${obj._id}`;
@@ -11959,38 +11961,36 @@ export class AdapterClass extends EventEmitter {
                 if (obj && (obj._id || obj.type === 'meta')) {
                     if (obj.common) {
                         if (obj.common.name) {
+                            const commonName = obj.common.name;
                             // if name has many languages
-                            if (typeof obj.common.name === 'object') {
-                                Object.keys(obj.common.name).forEach(
-                                    lang =>
-                                        (obj.common.name[lang] = obj.common.name[lang].replace(
-                                            '%INSTANCE%',
-                                            this.instance
-                                        ))
-                                );
+                            if (tools.isObject(commonName)) {
+                                for (const [lang, value] of Object.entries(commonName)) {
+                                    commonName[lang as keyof ioBroker.Translated] = value.replace(
+                                        '%INSTANCE%',
+                                        this.instance!.toString()
+                                    );
+                                }
                             } else {
-                                obj.common.name = obj.common.name.replace('%INSTANCE%', this.instance);
+                                obj.common.name = commonName.replace('%INSTANCE%', this.instance!.toString());
                             }
                         }
-                        if (obj.common.desc) {
+                        if ('desc' in obj.common) {
+                            const commonDesc = obj.common.desc;
+
                             // if description has many languages
-                            if (typeof obj.common.desc === 'object') {
-                                Object.keys(obj.common.desc).forEach(
-                                    lang =>
-                                        (obj.common.desc[lang] = obj.common.desc[lang].replace(
-                                            '%INSTANCE%',
-                                            this.instance
-                                        ))
-                                );
+                            if (tools.isObject(commonDesc)) {
+                                for (const [lang, value] of Object.entries(commonDesc)) {
+                                    commonDesc[lang] = value.replace('%INSTANCE%', this.instance);
+                                }
                             } else {
-                                obj.common.desc = obj.common.desc.replace('%INSTANCE%', this.instance);
+                                obj.common.desc = commonDesc.replace('%INSTANCE%', this.instance);
                             }
                         }
 
                         if (obj.type === 'state' && obj.common.def !== undefined) {
                             // default value given - if obj non-existing we have to set it
                             try {
-                                const checkObj = await this.getForeignObjectAsync(obj._id);
+                                const checkObj = await adapterObjects!.objectExists(obj._id);
                                 if (!checkObj) {
                                     obj.state = obj.common.def;
                                 }

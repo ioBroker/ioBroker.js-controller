@@ -33,6 +33,7 @@ import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import { getDefaultNodeArgs, HostInfo } from '@iobroker/js-controller-common/tools';
 import type { UpgradeArguments } from './lib/upgradeManager';
 import { AdapterUpgradeManager } from './lib/adapterUpgradeManager';
+import type { Logger } from 'winston';
 
 type TaskObject = ioBroker.SettableObject & { state?: ioBroker.SettableState };
 type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
@@ -2382,7 +2383,8 @@ async function startAdapterUpload(): Promise<void> {
 
     // @ts-expect-error yes the logger is missing some levels
     await upload.uploadAdapter(uploadTasks[0].adapter, true, true, '', logger);
-    await upload.upgradeAdapterObjects(uploadTasks[0].adapter, logger);
+    // @ts-expect-error the logger is missing some levels
+    await upload.upgradeAdapterObjects(uploadTasks[0].adapter, undefined, logger);
     // @ts-expect-error yes the logger is missing some levels
     await upload.uploadAdapter(uploadTasks[0].adapter, false, true, '', logger);
     // send response to requester

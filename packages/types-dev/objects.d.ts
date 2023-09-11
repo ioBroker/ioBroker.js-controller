@@ -456,6 +456,13 @@ declare global {
 
         type AutoUpgradePolicy = 'none' | 'patch' | 'minor' | 'major';
 
+        interface VisWidget {
+            i18n: 'component' | true | Translated;
+            name: string;
+            url: string;
+            components: string[];
+        }
+
         interface AdapterCommon extends ObjectCommon {
             /** Custom attributes to be shown in admin in the object browser */
             adminColumns?: any[];
@@ -502,6 +509,8 @@ declare global {
             getHistory?: boolean;
             /** Filename of the local icon which is shown for installed adapters. Should be located in the `admin` directory */
             icon?: string;
+            /** Source, where this adapter has been installed from, to enable reinstall on e.g. backup restore */
+            installedFrom?: string;
             /** Which version of this adapter is installed */
             installedVersion: string;
             keywords?: string[];
@@ -525,6 +534,8 @@ declare global {
             mode: InstanceMode;
             /** Name of the adapter (without leading `ioBroker.`) */
             name: string;
+            /** News per version in i18n */
+            news?: Record<string, Record<string, Translated>>;
             /** If `true`, no configuration dialog will be shown */
             noConfig?: true;
             /** If `true`, this adapter's instances will not be shown in the admin overview screen. Useful for icon sets and widgets... */
@@ -580,6 +591,7 @@ declare global {
             unsafePerm?: true;
             /** The available version in the ioBroker repo. */
             version: string;
+            visWidgets?: Record<string, VisWidget>;
             /** If `true`, the adapter will be started if any value is written into `system.adapter.<name>.<instance>.wakeup. Normally the adapter should stop after processing the event. */
             wakeup?: boolean;
             /** Include the adapter version in the URL of the web adapter, e.g. `http://ip:port/1.2.3/material` instead of `http://ip:port/material` */
@@ -721,6 +733,10 @@ declare global {
             encryptedNative?: string[];
             /** Register notifications for the built-in notification system */
             notifications?: Notification[];
+            /** Objects created for each instance, inside the namespace of this adapter */
+            instanceObjects: (StateObject | DeviceObject | ChannelObject | FolderObject | MetaObject)[];
+            /** Objects created for the adapter, anywhere in the global namespace */
+            objects: ioBroker.AnyObject[];
         }
         interface PartialInstanceObject extends Partial<Omit<InstanceObject, 'common'>> {
             common?: Partial<InstanceCommon>;
@@ -746,6 +762,10 @@ declare global {
             encryptedNative?: string[];
             /** Register notifications for the built-in notification system */
             notifications?: Notification[];
+            /** Objects created for each instance, inside the namespace of this adapter */
+            instanceObjects: (StateObject | DeviceObject | ChannelObject | FolderObject | MetaObject)[];
+            /** Objects created for the adapter, anywhere in the global namespace */
+            objects: ioBroker.AnyObject[];
         }
         interface PartialAdapterObject extends Partial<Omit<AdapterObject, 'common'>> {
             common?: Partial<AdapterCommon>;
