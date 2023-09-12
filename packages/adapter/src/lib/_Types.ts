@@ -50,6 +50,13 @@ export interface AdapterOptions {
     error?: ioBroker.ErrorHandler;
 }
 
+export type IoPackageInstanceObject =
+    | ioBroker.StateObject
+    | ioBroker.DeviceObject
+    | ioBroker.ChannelObject
+    | ioBroker.FolderObject
+    | ioBroker.MetaObject;
+
 type MessageUnsubscribeReason = 'client' | 'disconnect';
 export type ClientUnsubscribeReason = MessageUnsubscribeReason | 'clientSubscribeError';
 type UserInterfaceClientUnsubscribeReason = ClientUnsubscribeReason | 'timeout';

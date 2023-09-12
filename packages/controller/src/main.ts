@@ -2382,7 +2382,8 @@ async function startAdapterUpload(): Promise<void> {
 
     // @ts-expect-error yes the logger is missing some levels
     await upload.uploadAdapter(uploadTasks[0].adapter, true, true, '', logger);
-    await upload.upgradeAdapterObjects(uploadTasks[0].adapter, logger);
+    // @ts-expect-error the logger is missing some levels
+    await upload.upgradeAdapterObjects(uploadTasks[0].adapter, undefined, logger);
     // @ts-expect-error yes the logger is missing some levels
     await upload.uploadAdapter(uploadTasks[0].adapter, false, true, '', logger);
     // send response to requester

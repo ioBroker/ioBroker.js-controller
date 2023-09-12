@@ -1199,9 +1199,7 @@ export class BackupRestore {
                 const adapterObj = await this.objects.getObjectAsync(`system.adapter.${adapterName}`);
                 if (adapterObj?.common?.version) {
                     let installSource;
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                     if (adapterObj.common.installedFrom) {
-                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                         installSource = adapterObj.common.installedFrom;
                     } else {
                         installSource = `${tools.appName.toLowerCase()}.${adapterName}@${adapterObj.common.version}`;

@@ -885,9 +885,7 @@ export class Install {
         instanceObj._id = `system.adapter.${adapter}.${instance}`;
         // @ts-expect-error we now convert the adapter object to an instance object
         instanceObj.type = 'instance';
-        // @ts-expect-error types needed TODO
         if (instanceObj.common.news) {
-            // @ts-expect-error types needed TODO
             delete instanceObj.common.news; // remove this information as it could be big, but it will be taken from repo
         }
 

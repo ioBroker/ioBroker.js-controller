@@ -721,7 +721,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 installedVersion: '1.0.0'
             },
             native: {},
-            type: 'instance'
+            type: 'instance',
+            instanceObjects: [],
+            objects: []
         });
         // license must be taken
         res = await execAsync(`"${process.execPath}" "${iobExecutable}" license ${licenseFile}`);
