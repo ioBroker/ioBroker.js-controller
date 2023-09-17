@@ -779,6 +779,7 @@ const _adapterObject: ioBroker.AdapterObject = {
             pt: 'foo',
             ru: 'foo',
             en: 'foo',
+            uk: 'foo',
             'zh-cn': 'foo'
         },
         version: '1.2.3',
