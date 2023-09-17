@@ -885,9 +885,7 @@ export class Install {
         instanceObj._id = `system.adapter.${adapter}.${instance}`;
         // @ts-expect-error we now convert the adapter object to an instance object
         instanceObj.type = 'instance';
-        // @ts-expect-error types needed TODO
         if (instanceObj.common.news) {
-            // @ts-expect-error types needed TODO
             delete instanceObj.common.news; // remove this information as it could be big, but it will be taken from repo
         }
 
@@ -1398,8 +1396,10 @@ export class Install {
     private async _deleteAdapterFiles(adapter: string, metaFilesToDelete: string[]): Promise<void> {
         // special files, which are not meta (vis widgets), combined with meta object ids
         const filesToDelete = [
-            { id: `vis`, name: `widgets/${adapter}` },
-            { id: `vis`, name: `widgets/${adapter}.html` },
+            { id: 'vis', name: `widgets/${adapter}` },
+            { id: 'vis', name: `widgets/${adapter}.html` },
+            { id: 'vis-2', name: `widgets/${adapter}` },
+            { id: 'vis-2', name: `widgets/${adapter}.html` },
             { id: adapter },
             { id: `${adapter}.admin` },
             ...metaFilesToDelete.map(id => ({ id }))

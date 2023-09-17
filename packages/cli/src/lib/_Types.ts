@@ -32,7 +32,5 @@ interface IoPackageCommon extends ioBroker.AdapterCommon {
     };
 }
 export interface IoPackage extends ioBroker.AdapterObject {
-    objects: ioBroker.Object[];
-    instanceObjects: ioBroker.Object[];
     common: IoPackageCommon;
 }

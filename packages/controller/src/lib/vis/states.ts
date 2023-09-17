@@ -7,18 +7,27 @@ interface CalculatedProject {
     val: number;
 }
 
+interface CalculateProjectsOptions {
+    /** The objects db instance */
+    objects: ObjectsClient;
+    /** Vis instance */
+    instance: number;
+    /** Vis adapter name */
+    visAdapter: 'vis' | 'vis-2';
+}
+
+interface CalculateProjectOptions extends CalculateProjectsOptions {
+    /** The read project directories */
+    projects: ioBroker.ReadDirResult[];
+}
+
 /**
- * Calculate number of datapoints for each project of given instance
+ * Calculate the number of data points for each project of given instance
  *
- * @param objects the objects db
- * @param projects the read projects
- * @param instance vis instance
+ * @param options - database and project information
  */
-async function calcProject(
-    objects: ObjectsClient,
-    projects: ioBroker.ReadDirResult[],
-    instance: number
-): Promise<CalculatedProject[]> {
+async function calcProject(options: CalculateProjectOptions): Promise<CalculatedProject[]> {
+    const { visAdapter, instance, objects, projects } = options;
     const result: CalculatedProject[] = [];
 
     if (!projects?.length) {
@@ -30,12 +39,12 @@ async function calcProject(
             continue;
         }
 
-        if (!(await objects.fileExists(`vis.${instance}`, `/${project.file}/vis-views.json`))) {
+        if (!(await objects.fileExists(`${visAdapter}.${instance}`, `/${project.file}/vis-views.json`))) {
             continue;
         }
 
-        // calculate datapoints in one project
-        const data = await objects.readFile(`vis.${instance}`, `/${project.file}/vis-views.json`);
+        // calculate data points in one project
+        const data = await objects.readFile(`${visAdapter}.${instance}`, `/${project.file}/vis-views.json`);
         let json;
         try {
             json = JSON.parse(data.file as string);
@@ -47,7 +56,7 @@ async function calcProject(
         const dps = getUsedObjectIDs(json, false);
         if (dps?.IDs) {
             result.push({
-                id: `vis.${instance}.datapoints.${project.file.replace(/[.\\s]/g, '_')}`,
+                id: `${visAdapter}.${instance}.datapoints.${project.file.replace(/[.\\s]/g, '_')}`,
                 val: dps.IDs.length
             });
         }
@@ -57,24 +66,24 @@ async function calcProject(
 }
 
 /**
- * Calculate number of datapoints for all vis projects of given instance
+ * Calculate the number of data points for all vis projects of given instance
  *
- * @param objects - the objects db
- * @param instance - vis instance
+ * @param options - db and vis options
  */
-export async function calcProjects(objects: ObjectsClient, instance: number): Promise<CalculatedProject[]> {
-    const projects = await objects.readDirAsync(`vis.${instance}`, '/');
+export async function calcProjects(options: CalculateProjectsOptions): Promise<CalculatedProject[]> {
+    const { visAdapter, instance, objects } = options;
+    const projects = await objects.readDirAsync(`${visAdapter}.${instance}`, '/');
     if (!projects?.length) {
-        return [{ id: `vis.${instance}.datapoints.total`, val: 0 }];
+        return [{ id: `${visAdapter}.${instance}.datapoints.total`, val: 0 }];
     }
 
-    const result = await calcProject(objects, projects, instance);
+    const result = await calcProject({ objects, projects, instance, visAdapter });
     if (result?.length) {
         let total = 0;
         for (const entry of result) {
             total += entry.val;
         }
-        result.push({ id: `vis.${instance}.datapoints.total`, val: total });
+        result.push({ id: `${visAdapter}.${instance}.datapoints.total`, val: total });
     }
 
     return result;

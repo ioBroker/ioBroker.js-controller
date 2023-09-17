@@ -246,7 +246,7 @@ How the initialization happens:
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:721](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L721)
+[adapter/src/lib/adapter/adapter.ts:722](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L722)
 
 ## Properties
 
@@ -258,7 +258,7 @@ A RegExp to test for forbidden chars in object IDs
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:646](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L646)
+[adapter/src/lib/adapter/adapter.ts:647](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L647)
 
 ___
 
@@ -270,7 +270,7 @@ contents of io-package.json
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:664](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L664)
+[adapter/src/lib/adapter/adapter.ts:665](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L665)
 
 ___
 
@@ -280,7 +280,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:666](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L666)
+[adapter/src/lib/adapter/adapter.ts:667](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L667)
 
 ___
 
@@ -290,7 +290,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:612](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L612)
+[adapter/src/lib/adapter/adapter.ts:613](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L613)
 
 ___
 
@@ -300,7 +300,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:689](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L689)
+[adapter/src/lib/adapter/adapter.ts:690](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L690)
 
 ___
 
@@ -310,7 +310,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:687](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L687)
+[adapter/src/lib/adapter/adapter.ts:688](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L688)
 
 ___
 
@@ -320,7 +320,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:665](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L665)
+[adapter/src/lib/adapter/adapter.ts:666](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L666)
 
 ___
 
@@ -338,7 +338,7 @@ Constants for frequent use in adapters
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:712](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L712)
+[adapter/src/lib/adapter/adapter.ts:713](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L713)
 
 ___
 
@@ -350,7 +350,7 @@ the configured date format of system.config, only available if requested via Ada
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:676](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L676)
+[adapter/src/lib/adapter/adapter.ts:677](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L677)
 
 ___
 
@@ -360,7 +360,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:688](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L688)
+[adapter/src/lib/adapter/adapter.ts:689](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L689)
 
 ___
 
@@ -370,7 +370,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:660](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L660)
+[adapter/src/lib/adapter/adapter.ts:661](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L661)
 
 ___
 
@@ -382,7 +382,7 @@ contents of io-package.json
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:670](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L670)
+[adapter/src/lib/adapter/adapter.ts:671](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L671)
 
 ___
 
@@ -394,7 +394,7 @@ if float comma instead of dot is used, only available if requested via AdapterOp
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:678](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L678)
+[adapter/src/lib/adapter/adapter.ts:679](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L679)
 
 ___
 
@@ -406,7 +406,7 @@ configured language of system.config, only available if requested via AdapterOpt
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:680](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L680)
+[adapter/src/lib/adapter/adapter.ts:681](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L681)
 
 ___
 
@@ -418,7 +418,7 @@ latitude configured in system.config, only available if requested via AdapterOpt
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:684](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L684)
+[adapter/src/lib/adapter/adapter.ts:685](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L685)
 
 ___
 
@@ -430,7 +430,7 @@ For ease of use the log property is always defined, however it is only available
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:632](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L632)
+[adapter/src/lib/adapter/adapter.ts:633](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L633)
 
 ___
 
@@ -442,7 +442,7 @@ longitude configured in system.config, only available if requested via AdapterOp
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:682](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L682)
+[adapter/src/lib/adapter/adapter.ts:683](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L683)
 
 ___
 
@@ -452,7 +452,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:639](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L639)
+[adapter/src/lib/adapter/adapter.ts:640](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L640)
 
 ___
 
@@ -462,7 +462,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:638](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L638)
+[adapter/src/lib/adapter/adapter.ts:639](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L639)
 
 ___
 
@@ -475,7 +475,7 @@ NOTE: This is only defined if the adapter was initialized with the option object
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:624](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L624)
+[adapter/src/lib/adapter/adapter.ts:625](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L625)
 
 ___
 
@@ -488,7 +488,7 @@ NOTE: This is only defined if the adapter was initialized with the option states
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:619](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L619)
+[adapter/src/lib/adapter/adapter.ts:620](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L620)
 
 ___
 
@@ -500,7 +500,7 @@ contents of package.json
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:668](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L668)
+[adapter/src/lib/adapter/adapter.ts:669](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L669)
 
 ___
 
@@ -510,7 +510,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:633](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L633)
+[adapter/src/lib/adapter/adapter.ts:634](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L634)
 
 ___
 
@@ -534,7 +534,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:696](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L696)
+[adapter/src/lib/adapter/adapter.ts:697](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L697)
 
 ___
 
@@ -563,7 +563,7 @@ Note, that stopping will stop after 10 seconds, not immediately
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:705](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L705)
+[adapter/src/lib/adapter/adapter.ts:706](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L706)
 
 ___
 
@@ -583,7 +583,7 @@ Stop the adapter
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:692](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L692)
+[adapter/src/lib/adapter/adapter.ts:693](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L693)
 
 ___
 
@@ -595,7 +595,7 @@ contents of iobroker.json if required via AdapterOptions
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:674](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L674)
+[adapter/src/lib/adapter/adapter.ts:675](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L675)
 
 ___
 
@@ -605,7 +605,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:693](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L693)
+[adapter/src/lib/adapter/adapter.ts:694](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L694)
 
 ## Methods
 
@@ -629,7 +629,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5477](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5477)
+[adapter/src/lib/adapter/adapter.ts:5478](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5478)
 
 ▸ **addChannelToEnum**(`enumName`, `addTo`, `parentDevice`, `channelName`, `options`, `callback?`): `void`
 
@@ -650,7 +650,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5484](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5484)
+[adapter/src/lib/adapter/adapter.ts:5485](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5485)
 
 ___
 
@@ -674,7 +674,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:205](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L205)
+[adapter/src/lib/adapter/adapter.ts:206](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L206)
 
 ___
 
@@ -699,7 +699,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6175](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6175)
+[adapter/src/lib/adapter/adapter.ts:6176](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6176)
 
 ▸ **addStateToEnum**(`enumName`, `addTo`, `parentDevice`, `parentChannel`, `stateName`, `options`, `callback?`): `void`
 
@@ -721,7 +721,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6183](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6183)
+[adapter/src/lib/adapter/adapter.ts:6184](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6184)
 
 ___
 
@@ -746,7 +746,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:222](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L222)
+[adapter/src/lib/adapter/adapter.ts:223](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L223)
 
 ___
 
@@ -774,7 +774,7 @@ The function reads permissions of user's groups (it can be more than one) and me
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:1868](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L1868)
+[adapter/src/lib/adapter/adapter.ts:1869](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L1869)
 
 ▸ **calculatePermissions**(`user`, `commandsPermissions`, `callback?`): `Promise`<`void` \| [`PermissionSet`](../interfaces/internal_.PermissionSet.md)\>
 
@@ -797,7 +797,7 @@ The function reads permissions of user's groups (it can be more than one) and me
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:1874](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L1874)
+[adapter/src/lib/adapter/adapter.ts:1875](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L1875)
 
 ___
 
@@ -821,7 +821,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:329](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L329)
+[adapter/src/lib/adapter/adapter.ts:330](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L330)
 
 ___
 
@@ -848,7 +848,7 @@ This function used mostly internally and the adapter developer do not require it
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:1784](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L1784)
+[adapter/src/lib/adapter/adapter.ts:1785](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L1785)
 
 ▸ **checkGroup**(`user`, `group`, `callback?`): `Promise`<`void`\>
 
@@ -870,7 +870,7 @@ This function used mostly internally and the adapter developer do not require it
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:1785](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L1785)
+[adapter/src/lib/adapter/adapter.ts:1786](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L1786)
 
 ___
 
@@ -894,7 +894,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L327)
+[adapter/src/lib/adapter/adapter.ts:328](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L328)
 
 ___
 
@@ -919,7 +919,7 @@ validates user and password
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:1542](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L1542)
+[adapter/src/lib/adapter/adapter.ts:1543](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L1543)
 
 ▸ **checkPassword**(`user`, `pw`, `callback`): `Promise`<`void`\>
 
@@ -939,7 +939,7 @@ validates user and password
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:1548](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L1548)
+[adapter/src/lib/adapter/adapter.ts:1549](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L1549)
 
 ___
 
@@ -963,7 +963,7 @@ Validates username and password
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:323](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L323)
+[adapter/src/lib/adapter/adapter.ts:324](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L324)
 
 ___
 
@@ -975,7 +975,7 @@ Change file access rights
 
 This function updates the file access rights
 ```js
-     adapter.chmodFile('vis.0', '/main/vis-views.json', {mode: 0x644}, function (err, processed) {
+     adapter.chmodFile('vis-2.0', '/main/vis-views.json', {mode: 0x644}, function (err, processed) {
        if (err) adapter.log.error('Cannot read file: ' + err);
        adapter.log.info('New files: ' + JSON.stringify(processed));
      });
@@ -986,7 +986,7 @@ This function updates the file access rights
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `adapter` | ``null`` \| `string` | - |
-| `path` | `string` | path to file without adapter name. E.g. If you want to update "/vis.0/main/*", here must be "/main/*" and _adapter must be equal to "vis.0". |
+| `path` | `string` | path to file without adapter name. E.g., If you want to update "/vis-2.0/main/*", here must be "/main/*" and _adapter must be equal to "vis-2.0". |
 | `options` | `Record`<`string`, `any`\> \| { `mode`: `string` \| `number`  } | data with mode |
 | `callback` | [`ChownFileCallback`](../modules/internal_.md#chownfilecallback) | return result ```js function (err, processedFiles) { list of processed files with new groups } ``` |
 
@@ -996,7 +996,7 @@ This function updates the file access rights
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6453](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6453)
+[adapter/src/lib/adapter/adapter.ts:6454](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6454)
 
 ▸ **chmodFile**(`adapter`, `path`, `callback`): `void`
 
@@ -1004,7 +1004,7 @@ Change file access rights
 
 This function updates the file access rights
 ```js
-     adapter.chmodFile('vis.0', '/main/vis-views.json', {mode: 0x644}, function (err, processed) {
+     adapter.chmodFile('vis-2.0', '/main/vis-views.json', {mode: 0x644}, function (err, processed) {
        if (err) adapter.log.error('Cannot read file: ' + err);
        adapter.log.info('New files: ' + JSON.stringify(processed));
      });
@@ -1015,7 +1015,7 @@ This function updates the file access rights
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `adapter` | ``null`` \| `string` | - |
-| `path` | `string` | path to file without adapter name. E.g. If you want to update "/vis.0/main/*", here must be "/main/*" and _adapter must be equal to "vis.0". |
+| `path` | `string` | path to file without adapter name. E.g., If you want to update "/vis-2.0/main/*", here must be "/main/*" and _adapter must be equal to "vis-2.0". |
 | `callback` | [`ChownFileCallback`](../modules/internal_.md#chownfilecallback) | return result ```js function (err, processedFiles) { list of processed files with new groups } ``` |
 
 #### Returns
@@ -1024,7 +1024,7 @@ This function updates the file access rights
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6460](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6460)
+[adapter/src/lib/adapter/adapter.ts:6461](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6461)
 
 ___
 
@@ -1048,7 +1048,7 @@ Changes access rights of all files in the adapter directory
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:238](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L238)
+[adapter/src/lib/adapter/adapter.ts:239](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L239)
 
 ___
 
@@ -1056,11 +1056,11 @@ ___
 
 ▸ **chownFile**(`_adapter`, `path`, `options`, `callback`): `void`
 
-Change file owner
+Change a file owner
 
 This function updates the file owner and ownerGroup
 ```js
-     adapter.chownFile('vis.0', '/main/vis-views.json', {owner: 'newOwner', ownerGroup: 'newgroup'}, function (err, processed) {
+     adapter.chownFile('vis-2.0', '/main/vis-views.json', {owner: 'newOwner', ownerGroup: 'newgroup'}, function (err, processed) {
        if (err) adapter.log.error('Cannot read file: ' + err);
        adapter.log.info('New files: ' + JSON.stringify(processed));
      });
@@ -1070,8 +1070,8 @@ This function updates the file owner and ownerGroup
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `_adapter` | `string` | adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken. |
-| `path` | `string` | path to file without adapter name. E.g. If you want to update "/vis.0/main/*", here must be "/main/*" and _adapter must be equal to "vis.0". |
+| `_adapter` | `string` | adapter name. If the adapter name is null, so the name (not instance) of the current adapter will be taken. |
+| `path` | `string` | path to file without adapter name. E.g., If you want to update "/vis-2.0/main/*", here must be "/main/*" and _adapter must be equal to "vis-2.0". |
 | `options` | `unknown` | data with owner and ownerGroup |
 | `callback` | (`err?`: ``null`` \| `Error`, `processedFiles?`: `any`) => `void` | return result ```js function (err, processedFiles) { list of processed files with new groups } ``` |
 
@@ -1081,15 +1081,15 @@ This function updates the file owner and ownerGroup
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6500](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6500)
+[adapter/src/lib/adapter/adapter.ts:6501](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6501)
 
 ▸ **chownFile**(`_adapter`, `path`, `callback`): `void`
 
-Change file owner
+Change a file owner
 
 This function updates the file owner and ownerGroup
 ```js
-     adapter.chownFile('vis.0', '/main/vis-views.json', {owner: 'newOwner', ownerGroup: 'newgroup'}, function (err, processed) {
+     adapter.chownFile('vis-2.0', '/main/vis-views.json', {owner: 'newOwner', ownerGroup: 'newgroup'}, function (err, processed) {
        if (err) adapter.log.error('Cannot read file: ' + err);
        adapter.log.info('New files: ' + JSON.stringify(processed));
      });
@@ -1099,8 +1099,8 @@ This function updates the file owner and ownerGroup
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `_adapter` | `string` | adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken. |
-| `path` | `string` | path to file without adapter name. E.g. If you want to update "/vis.0/main/*", here must be "/main/*" and _adapter must be equal to "vis.0". |
+| `_adapter` | `string` | adapter name. If the adapter name is null, so the name (not instance) of the current adapter will be taken. |
+| `path` | `string` | path to file without adapter name. E.g., If you want to update "/vis-2.0/main/*", here must be "/main/*" and _adapter must be equal to "vis-2.0". |
 | `callback` | (`err?`: ``null`` \| `Error`, `processedFiles?`: `any`) => `void` | return result ```js function (err, processedFiles) { list of processed files with new groups } ``` |
 
 #### Returns
@@ -1109,7 +1109,7 @@ This function updates the file owner and ownerGroup
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6507](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6507)
+[adapter/src/lib/adapter/adapter.ts:6508](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6508)
 
 ___
 
@@ -1129,7 +1129,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:244](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L244)
+[adapter/src/lib/adapter/adapter.ts:245](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L245)
 
 ___
 
@@ -1152,7 +1152,7 @@ but it checks the running intervals on unload
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:2668](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L2668)
+[adapter/src/lib/adapter/adapter.ts:2669](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L2669)
 
 ___
 
@@ -1175,7 +1175,7 @@ but it checks the running timers on unload
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:2586](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L2586)
+[adapter/src/lib/adapter/adapter.ts:2587](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L2587)
 
 ___
 
@@ -1197,7 +1197,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5118](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5118)
+[adapter/src/lib/adapter/adapter.ts:5119](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5119)
 
 ▸ **createChannel**(`parentDevice`, `channelName`, `roleOrCommon`, `callback?`): `void`
 
@@ -1216,7 +1216,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5119](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5119)
+[adapter/src/lib/adapter/adapter.ts:5120](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5120)
 
 ▸ **createChannel**(`parentDevice`, `channelName`, `roleOrCommon`, `native`, `callback?`): `void`
 
@@ -1236,7 +1236,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5125](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5125)
+[adapter/src/lib/adapter/adapter.ts:5126](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5126)
 
 ▸ **createChannel**(`parentDevice`, `channelName`, `roleOrCommon`, `native`, `options`, `callback?`): `void`
 
@@ -1257,7 +1257,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5132](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5132)
+[adapter/src/lib/adapter/adapter.ts:5133](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5133)
 
 ___
 
@@ -1281,7 +1281,7 @@ Creates an object with type channel. It must be located under a device
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:501](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L501)
+[adapter/src/lib/adapter/adapter.ts:502](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L502)
 
 ▸ **createChannelAsync**(`parentDevice`, `channelName`, `roleOrCommon`, `native?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
@@ -1300,7 +1300,7 @@ Creates an object with type channel. It must be located under a device
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:506](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L506)
+[adapter/src/lib/adapter/adapter.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L507)
 
 ▸ **createChannelAsync**(`parentDevice`, `channelName`, `roleOrCommon`, `native`, `options?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
@@ -1320,7 +1320,7 @@ Creates an object with type channel. It must be located under a device
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:512](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L512)
+[adapter/src/lib/adapter/adapter.ts:513](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L513)
 
 ___
 
@@ -1341,7 +1341,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5044](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5044)
+[adapter/src/lib/adapter/adapter.ts:5045](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5045)
 
 ▸ **createDevice**(`deviceName`, `common`, `callback?`): `void`
 
@@ -1359,7 +1359,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5045](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5045)
+[adapter/src/lib/adapter/adapter.ts:5046](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5046)
 
 ▸ **createDevice**(`deviceName`, `common`, `native`, `callback?`): `void`
 
@@ -1378,7 +1378,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5050](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5050)
+[adapter/src/lib/adapter/adapter.ts:5051](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5051)
 
 ▸ **createDevice**(`deviceName`, `common`, `native`, `options`, `callback?`): `void`
 
@@ -1398,7 +1398,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5056](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5056)
+[adapter/src/lib/adapter/adapter.ts:5057](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5057)
 
 ___
 
@@ -1421,7 +1421,7 @@ creates an object with type device
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:480](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L480)
+[adapter/src/lib/adapter/adapter.ts:481](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L481)
 
 ▸ **createDeviceAsync**(`deviceName`, `common`, `native?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
@@ -1439,7 +1439,7 @@ creates an object with type device
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:481](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L481)
+[adapter/src/lib/adapter/adapter.ts:482](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L482)
 
 ▸ **createDeviceAsync**(`deviceName`, `common`, `native`, `options?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
@@ -1458,7 +1458,7 @@ creates an object with type device
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:486](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L486)
+[adapter/src/lib/adapter/adapter.ts:487](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L487)
 
 ___
 
@@ -1481,7 +1481,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5203](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5203)
+[adapter/src/lib/adapter/adapter.ts:5204](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5204)
 
 ▸ **createState**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `callback?`): `void`
 
@@ -1501,7 +1501,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5209](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5209)
+[adapter/src/lib/adapter/adapter.ts:5210](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5210)
 
 ▸ **createState**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `native`, `callback?`): `void`
 
@@ -1522,7 +1522,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5216](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5216)
+[adapter/src/lib/adapter/adapter.ts:5217](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5217)
 
 ▸ **createState**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `native`, `options`, `callback?`): `void`
 
@@ -1544,7 +1544,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5224](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5224)
+[adapter/src/lib/adapter/adapter.ts:5225](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5225)
 
 ___
 
@@ -1569,7 +1569,7 @@ Creates a state and the corresponding object. It must be located in a channel un
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:523](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L523)
+[adapter/src/lib/adapter/adapter.ts:524](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L524)
 
 ▸ **createStateAsync**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `native?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
@@ -1589,7 +1589,7 @@ Creates a state and the corresponding object. It must be located in a channel un
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:529](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L529)
+[adapter/src/lib/adapter/adapter.ts:530](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L530)
 
 ▸ **createStateAsync**(`parentDevice`, `parentChannel`, `stateName`, `roleOrCommon`, `native`, `options?`): [`SetObjectPromise`](../modules/internal_.md#setobjectpromise)
 
@@ -1610,7 +1610,7 @@ Creates a state and the corresponding object. It must be located in a channel un
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:536](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L536)
+[adapter/src/lib/adapter/adapter.ts:537](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L537)
 
 ___
 
@@ -1633,7 +1633,7 @@ Decrypt the password/value with given key
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:1245](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L1245)
+[adapter/src/lib/adapter/adapter.ts:1246](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L1246)
 
 ▸ **decrypt**(`value`): `string`
 
@@ -1651,7 +1651,7 @@ Decrypt the password/value with given key
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:1246](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L1246)
+[adapter/src/lib/adapter/adapter.ts:1247](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L1247)
 
 ___
 
@@ -1678,7 +1678,7 @@ Please use `delFile` instead of binary states
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:10360](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L10360)
+[adapter/src/lib/adapter/adapter.ts:10361](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L10361)
 
 ▸ **delBinaryState**(`id`, `options`, `callback?`): `void`
 
@@ -1702,7 +1702,7 @@ Please use `delFile` instead of binary states
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:10361](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L10361)
+[adapter/src/lib/adapter/adapter.ts:10362](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L10362)
 
 ___
 
@@ -1730,7 +1730,7 @@ Please use `delFile` instead of binary states
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:315](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L315)
+[adapter/src/lib/adapter/adapter.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L316)
 
 ___
 
@@ -1754,7 +1754,7 @@ Deletes a given file
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:418](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L418)
+[adapter/src/lib/adapter/adapter.ts:419](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L419)
 
 ▸ **delFile**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -1773,7 +1773,7 @@ Deletes a given file
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:419](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L419)
+[adapter/src/lib/adapter/adapter.ts:420](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L420)
 
 ___
 
@@ -1797,7 +1797,7 @@ Deletes a given file
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:250](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L250)
+[adapter/src/lib/adapter/adapter.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L251)
 
 ___
 
@@ -1824,7 +1824,7 @@ Please use `delFile` instead of binary states
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:10298](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L10298)
+[adapter/src/lib/adapter/adapter.ts:10299](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L10299)
 
 ▸ **delForeignBinaryState**(`id`, `options`, `callback?`): `void`
 
@@ -1848,7 +1848,7 @@ Please use `delFile` instead of binary states
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:10299](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L10299)
+[adapter/src/lib/adapter/adapter.ts:10300](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L10300)
 
 ___
 
@@ -1875,7 +1875,7 @@ Please use `delFile` instead of binary states
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:307](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L307)
+[adapter/src/lib/adapter/adapter.ts:308](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L308)
 
 ___
 
@@ -1900,7 +1900,7 @@ The full ID with namespace must be specified. The corresponding state will be de
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4497](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4497)
+[adapter/src/lib/adapter/adapter.ts:4498](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4498)
 
 ▸ **delForeignObject**(`id`, `options`, `callback?`): `void`
 
@@ -1922,7 +1922,7 @@ The full ID with namespace must be specified. The corresponding state will be de
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4498](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4498)
+[adapter/src/lib/adapter/adapter.ts:4499](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4499)
 
 ___
 
@@ -1945,7 +1945,7 @@ Deletes an object (which might not belong to this adapter) from the object db
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:183](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L183)
+[adapter/src/lib/adapter/adapter.ts:184](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L184)
 
 ___
 
@@ -1975,7 +1975,7 @@ No error is returned if state does not exist.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:9115](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L9115)
+[adapter/src/lib/adapter/adapter.ts:9116](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L9116)
 
 ▸ **delForeignState**(`id`, `options`, `callback?`): `void`
 
@@ -2002,7 +2002,7 @@ No error is returned if state does not exist.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:9116](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L9116)
+[adapter/src/lib/adapter/adapter.ts:9117](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L9117)
 
 ___
 
@@ -2025,7 +2025,7 @@ Deletes a state from the states DB, but not the associated object
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:264](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L264)
+[adapter/src/lib/adapter/adapter.ts:265](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L265)
 
 ___
 
@@ -2053,7 +2053,7 @@ The corresponding state will be deleted too if the object has type "state".
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4437](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4437)
+[adapter/src/lib/adapter/adapter.ts:4438](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4438)
 
 ▸ **delObject**(`id`, `options?`, `callback?`): `void`
 
@@ -2078,7 +2078,7 @@ The corresponding state will be deleted too if the object has type "state".
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4438](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4438)
+[adapter/src/lib/adapter/adapter.ts:4439](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4439)
 
 ___
 
@@ -2101,7 +2101,7 @@ Deletes an object from the object db
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L181)
+[adapter/src/lib/adapter/adapter.ts:182](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L182)
 
 ___
 
@@ -2134,7 +2134,7 @@ No error is returned if state does not exist.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:9063](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L9063)
+[adapter/src/lib/adapter/adapter.ts:9064](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L9064)
 
 ▸ **delState**(`id`, `options`, `callback?`): `void`
 
@@ -2164,7 +2164,7 @@ No error is returned if state does not exist.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:9064](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L9064)
+[adapter/src/lib/adapter/adapter.ts:9065](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L9065)
 
 ___
 
@@ -2187,7 +2187,7 @@ Deletes a state from the states DB, but not the associated object. Consider usin
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:262](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L262)
+[adapter/src/lib/adapter/adapter.ts:263](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L263)
 
 ___
 
@@ -2212,7 +2212,7 @@ promise when timeout is over
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:2605](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L2605)
+[adapter/src/lib/adapter/adapter.ts:2606](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L2606)
 
 ___
 
@@ -2239,7 +2239,7 @@ deleteChannel
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5725](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5725)
+[adapter/src/lib/adapter/adapter.ts:5726](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5726)
 
 ▸ **deleteChannel**(`channelName`, `options?`, `callback?`): `void`
 
@@ -2263,7 +2263,7 @@ deleteChannel
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5726](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5726)
+[adapter/src/lib/adapter/adapter.ts:5727](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5727)
 
 ▸ **deleteChannel**(`parentDevice`, `channelName`, `options?`, `callback?`): `void`
 
@@ -2288,7 +2288,7 @@ deleteChannel
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5727](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5727)
+[adapter/src/lib/adapter/adapter.ts:5728](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5728)
 
 ___
 
@@ -2311,7 +2311,7 @@ Deletes a channel and its states. It must have been created with createChannel
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:548](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L548)
+[adapter/src/lib/adapter/adapter.ts:549](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L549)
 
 ▸ **deleteChannelAsync**(`parentDevice`, `channelName`, `options?`): `Promise`<`void`\>
 
@@ -2329,7 +2329,7 @@ Deletes a channel and its states. It must have been created with createChannel
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:549](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L549)
+[adapter/src/lib/adapter/adapter.ts:550](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L550)
 
 ___
 
@@ -2352,7 +2352,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5610](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5610)
+[adapter/src/lib/adapter/adapter.ts:5611](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5611)
 
 ▸ **deleteChannelFromEnum**(`enumName`, `parentDevice`, `channelName`, `options`, `callback?`): `void`
 
@@ -2372,7 +2372,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5616](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5616)
+[adapter/src/lib/adapter/adapter.ts:5617](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5617)
 
 ___
 
@@ -2395,7 +2395,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:212](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L212)
+[adapter/src/lib/adapter/adapter.ts:213](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L213)
 
 ___
 
@@ -2418,7 +2418,7 @@ Delete device with all its channels and states.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5411](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5411)
+[adapter/src/lib/adapter/adapter.ts:5412](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5412)
 
 ▸ **deleteDevice**(`deviceName`, `options`, `callback?`): `void`
 
@@ -2438,7 +2438,7 @@ Delete device with all its channels and states.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5412](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5412)
+[adapter/src/lib/adapter/adapter.ts:5413](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5413)
 
 ___
 
@@ -2461,7 +2461,7 @@ deletes a device, its channels and states
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:204](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L204)
+[adapter/src/lib/adapter/adapter.ts:205](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L205)
 
 ___
 
@@ -2484,7 +2484,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5833](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5833)
+[adapter/src/lib/adapter/adapter.ts:5834](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5834)
 
 ▸ **deleteState**(`stateName`, `options?`, `callback?`): `void`
 
@@ -2502,7 +2502,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5834](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5834)
+[adapter/src/lib/adapter/adapter.ts:5835](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5835)
 
 ▸ **deleteState**(`parentDevice`, `parentChannel`, `stateName`, `options?`, `callback?`): `void`
 
@@ -2522,7 +2522,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5835](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5835)
+[adapter/src/lib/adapter/adapter.ts:5836](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5836)
 
 ___
 
@@ -2545,7 +2545,7 @@ Deletes a state. It must have been created with createState
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:554](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L554)
+[adapter/src/lib/adapter/adapter.ts:555](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L555)
 
 ▸ **deleteStateAsync**(`parentChannel`, `stateName`, `options?`): `Promise`<`void`\>
 
@@ -2563,7 +2563,7 @@ Deletes a state. It must have been created with createState
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:555](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L555)
+[adapter/src/lib/adapter/adapter.ts:556](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L556)
 
 ▸ **deleteStateAsync**(`parentDevice`, `parentChannel`, `stateName`, `options?`): `Promise`<`void`\>
 
@@ -2582,7 +2582,7 @@ Deletes a state. It must have been created with createState
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:556](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L556)
+[adapter/src/lib/adapter/adapter.ts:557](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L557)
 
 ___
 
@@ -2606,7 +2606,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6322](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6322)
+[adapter/src/lib/adapter/adapter.ts:6323](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6323)
 
 ▸ **deleteStateFromEnum**(`enumName`, `parentDevice`, `parentChannel`, `stateName`, `options`, `callback?`): `void`
 
@@ -2627,7 +2627,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6329](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6329)
+[adapter/src/lib/adapter/adapter.ts:6330](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6330)
 
 ___
 
@@ -2651,7 +2651,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:230](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L230)
+[adapter/src/lib/adapter/adapter.ts:231](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L231)
 
 ___
 
@@ -2672,7 +2672,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:1330](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L1330)
+[adapter/src/lib/adapter/adapter.ts:1331](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L1331)
 
 ___
 
@@ -2688,7 +2688,7 @@ Disables and stops the adapter instance.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:2477](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L2477)
+[adapter/src/lib/adapter/adapter.ts:2478](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L2478)
 
 ___
 
@@ -2702,7 +2702,7 @@ Encrypt the password/value with given key
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `secretVal` | `string` | to use for encrypt (or value if only one parameter is given) |
+| `secretVal` | `string` | to use for encrypting (or value if only one parameter is given) |
 | `value?` | `string` | value to encrypt (if secret is provided) |
 
 #### Returns
@@ -2711,7 +2711,7 @@ Encrypt the password/value with given key
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:1265](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L1265)
+[adapter/src/lib/adapter/adapter.ts:1266](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L1266)
 
 ▸ **encrypt**(`value`): `string`
 
@@ -2729,7 +2729,7 @@ Encrypt the password/value with given key
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:1266](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L1266)
+[adapter/src/lib/adapter/adapter.ts:1267](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L1267)
 
 ___
 
@@ -2761,7 +2761,7 @@ ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC989
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:3360](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L3360)
+[adapter/src/lib/adapter/adapter.ts:3361](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L3361)
 
 ▸ **extendForeignObject**<`T`\>(`id`, `objPart`, `options`, `callback?`): `void`
 
@@ -2790,7 +2790,7 @@ ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC989
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:3365](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L3365)
+[adapter/src/lib/adapter/adapter.ts:3366](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L3366)
 
 ___
 
@@ -2820,7 +2820,7 @@ Extend an object (which might not belong to this adapter) and create it if it mi
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:153](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L153)
+[adapter/src/lib/adapter/adapter.ts:154](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L154)
 
 ___
 
@@ -2878,7 +2878,7 @@ We will get as output:
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID, that must be extended |
-| `objPart` | [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"state"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"channel"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"device"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"folder"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"enum"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"meta"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"host"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"adapter"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"instance"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"user"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"group"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"script"``  } \| `Object` \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"schedule"``  } \| `Object` \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"design"``  } | - |
+| `objPart` | [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"state"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"device"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"channel"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"folder"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"meta"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"enum"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"host"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"adapter"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"instance"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"user"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"group"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"script"``  } \| `Object` \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"schedule"``  } \| `Object` \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"design"``  } | - |
 | `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | return result ```js function (err, obj) { if (err) adapter.log.error(err); // obj is {"id": id} } ``` |
 
 #### Returns
@@ -2887,7 +2887,7 @@ We will get as output:
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:2985](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L2985)
+[adapter/src/lib/adapter/adapter.ts:2986](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L2986)
 
 ▸ **extendObject**(`id`, `objPart`, `options`, `callback?`): `void`
 
@@ -2941,7 +2941,7 @@ We will get as output:
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID, that must be extended |
-| `objPart` | [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"state"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"channel"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"device"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"folder"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"enum"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"meta"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"host"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"adapter"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"instance"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"user"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"group"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"script"``  } \| `Object` \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"schedule"``  } \| `Object` \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"design"``  } | - |
+| `objPart` | [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"state"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"device"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"channel"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"folder"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"meta"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"enum"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"host"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"adapter"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"instance"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"user"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"group"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"script"``  } \| `Object` \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"schedule"``  } \| `Object` \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"design"``  } | - |
 | `options` | [`ExtendObjectOptions`](../interfaces/internal_.ExtendObjectOptions.md) | optional user context |
 | `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | return result ```js function (err, obj) { if (err) adapter.log.error(err); // obj is {"id": id} } ``` |
 
@@ -2951,7 +2951,7 @@ We will get as output:
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:2986](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L2986)
+[adapter/src/lib/adapter/adapter.ts:2987](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L2987)
 
 ___
 
@@ -2966,7 +2966,7 @@ Extend an object and create it if it might not exist
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `objPart` | [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"state"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"channel"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"device"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"folder"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"enum"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"meta"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"host"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"adapter"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"instance"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"user"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"group"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"script"``  } \| `Object` \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"schedule"``  } \| `Object` \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"design"``  } |
+| `objPart` | [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"state"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"device"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"channel"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"folder"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"meta"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"enum"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"host"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"adapter"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"instance"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"user"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"group"``  } \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"script"``  } \| `Object` \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"schedule"``  } \| `Object` \| [`AnyPartialObject`](../modules/internal_.md#anypartialobject) & { `type?`: ``"design"``  } |
 | `options?` | [`ExtendObjectOptions`](../interfaces/internal_.ExtendObjectOptions.md) |
 
 #### Returns
@@ -2975,7 +2975,7 @@ Extend an object and create it if it might not exist
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:139](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L139)
+[adapter/src/lib/adapter/adapter.ts:140](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L140)
 
 ___
 
@@ -2998,7 +2998,7 @@ Checks if file exists in DB.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6809](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6809)
+[adapter/src/lib/adapter/adapter.ts:6810](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6810)
 
 ▸ **fileExists**(`adapterName`, `path`, `callback?`): `void`
 
@@ -3018,7 +3018,7 @@ Checks if file exists in DB.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6810](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6810)
+[adapter/src/lib/adapter/adapter.ts:6811](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6811)
 
 ▸ **fileExists**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -3039,7 +3039,7 @@ Checks if file exists in DB.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6811](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6811)
+[adapter/src/lib/adapter/adapter.ts:6812](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6812)
 
 ___
 
@@ -3063,7 +3063,7 @@ Checks if a file exists in the DB
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:257](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L257)
+[adapter/src/lib/adapter/adapter.ts:258](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L258)
 
 ___
 
@@ -3089,7 +3089,7 @@ Find object by the exact name or ID.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4298](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4298)
+[adapter/src/lib/adapter/adapter.ts:4299](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4299)
 
 ▸ **findForeignObject**(`idOrName`, `type`, `options`, `callback`): `void`
 
@@ -3112,7 +3112,7 @@ Find object by the exact name or ID.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4299](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4299)
+[adapter/src/lib/adapter/adapter.ts:4300](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4300)
 
 ___
 
@@ -3135,7 +3135,7 @@ Finds an object by its ID or name
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:496](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L496)
+[adapter/src/lib/adapter/adapter.ts:497](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L497)
 
 ___
 
@@ -3158,7 +3158,7 @@ Checks if an object exists to the given id
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:3588](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L3588)
+[adapter/src/lib/adapter/adapter.ts:3589](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L3589)
 
 ___
 
@@ -3179,7 +3179,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6893](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6893)
+[adapter/src/lib/adapter/adapter.ts:6894](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6894)
 
 ▸ **formatDate**(`dateObj`, `isDuration`, `format?`): `string`
 
@@ -3197,7 +3197,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6894](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6894)
+[adapter/src/lib/adapter/adapter.ts:6895](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6895)
 
 ___
 
@@ -3218,7 +3218,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6858](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6858)
+[adapter/src/lib/adapter/adapter.ts:6859](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6859)
 
 ▸ **formatValue**(`value`, `decimals`, `format?`): `string`
 
@@ -3236,7 +3236,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6859](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6859)
+[adapter/src/lib/adapter/adapter.ts:6860](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6860)
 
 ___
 
@@ -3258,7 +3258,7 @@ Get all states, channels and devices of this adapter.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:2903](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L2903)
+[adapter/src/lib/adapter/adapter.ts:2904](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L2904)
 
 ___
 
@@ -3274,7 +3274,7 @@ Get all states, channels, devices and folders of this adapter
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:349](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L349)
+[adapter/src/lib/adapter/adapter.ts:350](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L350)
 
 ___
 
@@ -3301,7 +3301,7 @@ Please use `readFile` instead of binary states
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:10280](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L10280)
+[adapter/src/lib/adapter/adapter.ts:10281](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L10281)
 
 ▸ **getBinaryState**(`id`, `options`, `callback`): `void`
 
@@ -3325,7 +3325,7 @@ Please use `readFile` instead of binary states
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:10281](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L10281)
+[adapter/src/lib/adapter/adapter.ts:10282](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L10282)
 
 ___
 
@@ -3353,7 +3353,7 @@ Please use `readFile` instead of binary states
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:302](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L302)
+[adapter/src/lib/adapter/adapter.ts:303](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L303)
 
 ___
 
@@ -3382,7 +3382,7 @@ The result can be directly used for creation of https server.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:2271](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L2271)
+[adapter/src/lib/adapter/adapter.ts:2272](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L2272)
 
 ___
 
@@ -3404,7 +3404,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:343](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L343)
+[adapter/src/lib/adapter/adapter.ts:344](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L344)
 
 ___
 
@@ -3426,7 +3426,7 @@ Returns a list of all channels in this adapter instance
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:568](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L568)
+[adapter/src/lib/adapter/adapter.ts:569](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L569)
 
 ▸ **getChannels**(`parentDevice`, `callback`): `void`
 
@@ -3443,7 +3443,7 @@ Returns a list of all channels in this adapter instance
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:569](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L569)
+[adapter/src/lib/adapter/adapter.ts:570](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L570)
 
 ▸ **getChannels**(`parentDevice`, `options`, `callback`): `void`
 
@@ -3461,7 +3461,7 @@ Returns a list of all channels in this adapter instance
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:570](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L570)
+[adapter/src/lib/adapter/adapter.ts:571](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L571)
 
 ___
 
@@ -3477,7 +3477,7 @@ Returns a list of all channels in this adapter instance
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:580](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L580)
+[adapter/src/lib/adapter/adapter.ts:581](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L581)
 
 ▸ **getChannelsAsync**(`parentDevice`, `options?`): `Promise`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)[]\>
 
@@ -3494,7 +3494,7 @@ Returns a list of all channels in this adapter instance
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:581](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L581)
+[adapter/src/lib/adapter/adapter.ts:582](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L582)
 
 ___
 
@@ -3514,7 +3514,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5992](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5992)
+[adapter/src/lib/adapter/adapter.ts:5993](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5993)
 
 ▸ **getChannelsOf**(`parentDevice`, `callback`): `void`
 
@@ -3531,7 +3531,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5993](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5993)
+[adapter/src/lib/adapter/adapter.ts:5994](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5994)
 
 ▸ **getChannelsOf**(`parentDevice`, `options`, `callback`): `void`
 
@@ -3549,7 +3549,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5994](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5994)
+[adapter/src/lib/adapter/adapter.ts:5995](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5995)
 
 ___
 
@@ -3565,7 +3565,7 @@ Returns a list of all channels in this adapter instance
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:562](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L562)
+[adapter/src/lib/adapter/adapter.ts:563](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L563)
 
 ▸ **getChannelsOfAsync**(`parentDevice`, `options?`): `Promise`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md)[]\>
 
@@ -3582,7 +3582,7 @@ Returns a list of all channels in this adapter instance
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:563](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L563)
+[adapter/src/lib/adapter/adapter.ts:564](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L564)
 
 ___
 
@@ -3602,7 +3602,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5938](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5938)
+[adapter/src/lib/adapter/adapter.ts:5939](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5939)
 
 ▸ **getDevices**(`options`, `callback`): `void`
 
@@ -3619,7 +3619,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:5939](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L5939)
+[adapter/src/lib/adapter/adapter.ts:5940](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L5940)
 
 ___
 
@@ -3641,7 +3641,7 @@ Returns a list of all devices in this adapter instance
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:220](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L220)
+[adapter/src/lib/adapter/adapter.ts:221](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L221)
 
 ___
 
@@ -3666,7 +3666,7 @@ It returns promise if no callback is provided.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:2494](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L2494)
+[adapter/src/lib/adapter/adapter.ts:2495](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L2495)
 
 ___
 
@@ -3700,7 +3700,7 @@ If getEnum called with no enum specified, all enums will be returned:
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:3833](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L3833)
+[adapter/src/lib/adapter/adapter.ts:3834](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L3834)
 
 ▸ **getEnum**(`name`, `callback`): `void`
 
@@ -3731,7 +3731,7 @@ If getEnum called with no enum specified, all enums will be returned:
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:3834](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L3834)
+[adapter/src/lib/adapter/adapter.ts:3835](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L3835)
 
 ▸ **getEnum**(`name`, `options`, `callback`): `void`
 
@@ -3763,7 +3763,7 @@ If getEnum called with no enum specified, all enums will be returned:
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:3835](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L3835)
+[adapter/src/lib/adapter/adapter.ts:3836](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L3836)
 
 ___
 
@@ -3786,7 +3786,7 @@ Returns the enum tree, filtered by the optional enum name
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:177](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L177)
+[adapter/src/lib/adapter/adapter.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L178)
 
 ___
 
@@ -3810,7 +3810,7 @@ Get enums of specified tree or all enums if nothing specified as object with val
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:3922](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L3922)
+[adapter/src/lib/adapter/adapter.ts:3923](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L3923)
 
 ▸ **getEnums**(`enumList`, `callback`): `void`
 
@@ -3831,7 +3831,7 @@ Get enums of specified tree or all enums if nothing specified as object with val
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:3923](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L3923)
+[adapter/src/lib/adapter/adapter.ts:3924](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L3924)
 
 ▸ **getEnums**(`enumList`, `options`, `callback`): `void`
 
@@ -3853,7 +3853,7 @@ Get enums of specified tree or all enums if nothing specified as object with val
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:3924](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L3924)
+[adapter/src/lib/adapter/adapter.ts:3925](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L3925)
 
 ___
 
@@ -3876,7 +3876,7 @@ Returns the enum tree, filtered by the optional enum name
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:179](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L179)
+[adapter/src/lib/adapter/adapter.ts:180](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L180)
 
 ___
 
@@ -3903,7 +3903,7 @@ Please use `readFile` instead of binary states
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:10198](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L10198)
+[adapter/src/lib/adapter/adapter.ts:10199](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L10199)
 
 ▸ **getForeignBinaryState**(`id`, `options`, `callback`): `void`
 
@@ -3927,7 +3927,7 @@ Please use `readFile` instead of binary states
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:10199](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L10199)
+[adapter/src/lib/adapter/adapter.ts:10200](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L10200)
 
 ___
 
@@ -3952,7 +3952,7 @@ Please use `readFile` instead of binary states
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:295](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L295)
+[adapter/src/lib/adapter/adapter.ts:296](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L296)
 
 ___
 
@@ -3983,7 +3983,7 @@ ID must be specified with namespace.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4357](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4357)
+[adapter/src/lib/adapter/adapter.ts:4358](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4358)
 
 ▸ **getForeignObject**<`T`\>(`id`, `options`, `callback`): `void` \| `Promise`<``null`` \| `void` \| [`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"read"``\>\>
 
@@ -4011,7 +4011,7 @@ ID must be specified with namespace.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4361](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4361)
+[adapter/src/lib/adapter/adapter.ts:4362](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4362)
 
 ___
 
@@ -4040,7 +4040,7 @@ Reads an object (which might not belong to this adapter) from the object db
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:352](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L352)
+[adapter/src/lib/adapter/adapter.ts:353](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L353)
 
 ___
 
@@ -4090,7 +4090,7 @@ Get all objects in the system of specified type. E.g.:
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4069](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4069)
+[adapter/src/lib/adapter/adapter.ts:4070](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4070)
 
 ▸ **getForeignObjects**(`pattern`, `callback`): `void`
 
@@ -4137,7 +4137,7 @@ Get all objects in the system of specified type. E.g.:
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4070](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4070)
+[adapter/src/lib/adapter/adapter.ts:4071](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4071)
 
 ▸ **getForeignObjects**(`pattern`, `options`, `callback`): `void`
 
@@ -4185,7 +4185,7 @@ Get all objects in the system of specified type. E.g.:
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4071](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4071)
+[adapter/src/lib/adapter/adapter.ts:4072](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4072)
 
 ▸ **getForeignObjects**<`T`\>(`pattern`, `type`, `callback`): `void`
 
@@ -4239,7 +4239,7 @@ Get all objects in the system of specified type. E.g.:
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4072](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4072)
+[adapter/src/lib/adapter/adapter.ts:4073](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4073)
 
 ▸ **getForeignObjects**<`T`\>(`pattern`, `type`, `enums`, `callback`): `void`
 
@@ -4294,7 +4294,7 @@ Get all objects in the system of specified type. E.g.:
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4077](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4077)
+[adapter/src/lib/adapter/adapter.ts:4078](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4078)
 
 ▸ **getForeignObjects**<`T`\>(`pattern`, `type`, `options`, `callback`): `void`
 
@@ -4349,7 +4349,7 @@ Get all objects in the system of specified type. E.g.:
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4083](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4083)
+[adapter/src/lib/adapter/adapter.ts:4084](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4084)
 
 ▸ **getForeignObjects**<`T`\>(`pattern`, `type`, `enums`, `options`, `callback`): `void`
 
@@ -4405,7 +4405,7 @@ Get all objects in the system of specified type. E.g.:
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4089](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4089)
+[adapter/src/lib/adapter/adapter.ts:4090](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4090)
 
 ___
 
@@ -4436,7 +4436,7 @@ Get foreign objects by pattern, by specific type and resolve their enums.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:464](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L464)
+[adapter/src/lib/adapter/adapter.ts:465](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L465)
 
 ▸ **getForeignObjectsAsync**<`T`\>(`pattern`, `type`, `options?`): [`GetObjectsPromiseTyped`](../modules/internal_.md#getobjectspromisetyped)<`T`\>
 
@@ -4460,7 +4460,7 @@ Get foreign objects by pattern, by specific type and resolve their enums.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:470](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L470)
+[adapter/src/lib/adapter/adapter.ts:471](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L471)
 
 ▸ **getForeignObjectsAsync**(`pattern`, `options?`): [`GetObjectsPromise`](../modules/internal_.md#getobjectspromise)
 
@@ -4477,7 +4477,7 @@ Get foreign objects by pattern, by specific type and resolve their enums.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:475](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L475)
+[adapter/src/lib/adapter/adapter.ts:476](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L476)
 
 ___
 
@@ -4506,7 +4506,7 @@ explanation
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:8736](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L8736)
+[adapter/src/lib/adapter/adapter.ts:8737](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L8737)
 
 ▸ **getForeignState**(`id`, `options`, `callback`): [`GetStatePromise`](../modules/internal_.md#getstatepromise)
 
@@ -4532,7 +4532,7 @@ explanation
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:8737](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L8737)
+[adapter/src/lib/adapter/adapter.ts:8738](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L8738)
 
 ___
 
@@ -4555,7 +4555,7 @@ Read a value (which might not belong to this adapter) from the states DB.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:321](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L321)
+[adapter/src/lib/adapter/adapter.ts:322](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L322)
 
 ___
 
@@ -4587,7 +4587,7 @@ Allows to read all states of current adapter according to pattern. To read all s
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:9303](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L9303)
+[adapter/src/lib/adapter/adapter.ts:9304](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L9304)
 
 ▸ **getForeignStates**(`pattern`, `options`, `callback`): `void`
 
@@ -4616,7 +4616,7 @@ Allows to read all states of current adapter according to pattern. To read all s
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:9304](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L9304)
+[adapter/src/lib/adapter/adapter.ts:9305](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L9305)
 
 ___
 
@@ -4639,7 +4639,7 @@ Read all states (which might not belong to this adapter) which match the given p
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:268](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L268)
+[adapter/src/lib/adapter/adapter.ts:269](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L269)
 
 ___
 
@@ -4693,7 +4693,7 @@ explanation
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:8936](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L8936)
+[adapter/src/lib/adapter/adapter.ts:8937](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L8937)
 
 ▸ **getHistory**(`id`, `callback`): `void`
 
@@ -4742,7 +4742,7 @@ explanation
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:8937](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L8937)
+[adapter/src/lib/adapter/adapter.ts:8938](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L8938)
 
 ___
 
@@ -4762,7 +4762,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:260](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L260)
+[adapter/src/lib/adapter/adapter.ts:261](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L261)
 
 ___
 
@@ -4787,7 +4787,7 @@ It is not required, that ID consists namespace. E.g. to get object of "adapterNa
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:3615](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L3615)
+[adapter/src/lib/adapter/adapter.ts:3616](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L3616)
 
 ▸ **getObject**(`id`, `options`, `callback`): `void`
 
@@ -4809,7 +4809,7 @@ It is not required, that ID consists namespace. E.g. to get object of "adapterNa
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:3616](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L3616)
+[adapter/src/lib/adapter/adapter.ts:3617](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L3617)
 
 ___
 
@@ -4832,7 +4832,7 @@ Reads an object from the object db
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:159](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L159)
+[adapter/src/lib/adapter/adapter.ts:160](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L160)
 
 ___
 
@@ -4858,7 +4858,7 @@ to get all objects of the instance.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:3774](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L3774)
+[adapter/src/lib/adapter/adapter.ts:3775](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L3775)
 
 ▸ **getObjectList**(`params`, `options`, `callback`): `void`
 
@@ -4881,7 +4881,7 @@ to get all objects of the instance.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:3778](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L3778)
+[adapter/src/lib/adapter/adapter.ts:3779](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L3779)
 
 ___
 
@@ -4904,7 +4904,7 @@ Returns a list of objects with id between params.startkey and params.endkey
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:172](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L172)
+[adapter/src/lib/adapter/adapter.ts:173](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L173)
 
 ___
 
@@ -4939,7 +4939,7 @@ to get all objects of the instance.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:3658](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L3658)
+[adapter/src/lib/adapter/adapter.ts:3659](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L3659)
 
 ▸ **getObjectView**<`Design`, `Search`\>(`design`, `search`, `params`, `options`, `callback`): `void`
 
@@ -4971,7 +4971,7 @@ to get all objects of the instance.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:3664](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L3664)
+[adapter/src/lib/adapter/adapter.ts:3665](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L3665)
 
 ___
 
@@ -5005,7 +5005,7 @@ or http://guide.couchdb.org/editions/1/en/views.html
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:165](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L165)
+[adapter/src/lib/adapter/adapter.ts:166](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L166)
 
 ___
 
@@ -5029,7 +5029,7 @@ plugin configuration or null if not existent or not isActive
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:10397](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L10397)
+[adapter/src/lib/adapter/adapter.ts:10398](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L10398)
 
 ___
 
@@ -5053,7 +5053,7 @@ plugin instance or null if not existent or not isActive
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:10379](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L10379)
+[adapter/src/lib/adapter/adapter.ts:10380](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L10380)
 
 ___
 
@@ -5084,7 +5084,7 @@ Looks for first free TCP port starting with given one:
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:1452](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L1452)
+[adapter/src/lib/adapter/adapter.ts:1453](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L1453)
 
 ▸ **getPort**(`port`, `callback?`): `void`
 
@@ -5110,7 +5110,7 @@ Looks for first free TCP port starting with given one:
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:1453](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L1453)
+[adapter/src/lib/adapter/adapter.ts:1454](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L1454)
 
 ___
 
@@ -5132,7 +5132,7 @@ Helper function that looks for first free TCP port starting with the given one.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:319](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L319)
+[adapter/src/lib/adapter/adapter.ts:320](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L320)
 
 ___
 
@@ -5153,7 +5153,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:1286](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L1286)
+[adapter/src/lib/adapter/adapter.ts:1287](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L1287)
 
 ___
 
@@ -5183,7 +5183,7 @@ explanation
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:8705](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L8705)
+[adapter/src/lib/adapter/adapter.ts:8706](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L8706)
 
 ▸ **getState**(`id`, `options`, `callback`): `void`
 
@@ -5210,7 +5210,7 @@ explanation
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:8706](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L8706)
+[adapter/src/lib/adapter/adapter.ts:8707](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L8707)
 
 ___
 
@@ -5233,7 +5233,7 @@ Read a value from the states DB.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:189](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L189)
+[adapter/src/lib/adapter/adapter.ts:190](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L190)
 
 ___
 
@@ -5265,7 +5265,7 @@ Allows to read all states of current adapter according to pattern. To read all s
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:9174](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L9174)
+[adapter/src/lib/adapter/adapter.ts:9175](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L9175)
 
 ▸ **getStates**(`pattern`, `options`, `callback`): `void`
 
@@ -5294,7 +5294,7 @@ Allows to read all states of current adapter according to pattern. To read all s
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:9175](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L9175)
+[adapter/src/lib/adapter/adapter.ts:9176](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L9176)
 
 ___
 
@@ -5317,7 +5317,7 @@ Read all states of this adapter which match the given pattern
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:266](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L266)
+[adapter/src/lib/adapter/adapter.ts:267](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L267)
 
 ___
 
@@ -5337,7 +5337,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6063](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6063)
+[adapter/src/lib/adapter/adapter.ts:6064](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6064)
 
 ▸ **getStatesOf**(`parentDevice`, `callback`): `void`
 
@@ -5354,7 +5354,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6064](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6064)
+[adapter/src/lib/adapter/adapter.ts:6065](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6065)
 
 ▸ **getStatesOf**(`parentDevice`, `parentChannel`, `callback`): `void`
 
@@ -5372,7 +5372,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6065](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6065)
+[adapter/src/lib/adapter/adapter.ts:6066](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6066)
 
 ▸ **getStatesOf**(`parentDevice`, `parentChannel`, `options`, `callback`): `void`
 
@@ -5391,7 +5391,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6070](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6070)
+[adapter/src/lib/adapter/adapter.ts:6071](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6071)
 
 ___
 
@@ -5407,7 +5407,7 @@ Returns a list of all states in this adapter instance
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:588](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L588)
+[adapter/src/lib/adapter/adapter.ts:589](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L589)
 
 ▸ **getStatesOfAsync**(`parentDevice`, `parentChannel?`): `Promise`<[`StateObject`](../interfaces/internal_.StateObject.md)[]\>
 
@@ -5424,7 +5424,7 @@ Returns a list of all states in this adapter instance
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:589](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L589)
+[adapter/src/lib/adapter/adapter.ts:590](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L590)
 
 ▸ **getStatesOfAsync**(`parentDevice`, `parentChannel`, `options?`): `Promise`<[`StateObject`](../interfaces/internal_.StateObject.md)[]\>
 
@@ -5442,7 +5442,7 @@ Returns a list of all states in this adapter instance
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:590](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L590)
+[adapter/src/lib/adapter/adapter.ts:591](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L591)
 
 ___
 
@@ -5467,7 +5467,7 @@ list of suitable licenses
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:10441](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L10441)
+[adapter/src/lib/adapter/adapter.ts:10442](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L10442)
 
 ___
 
@@ -5489,7 +5489,7 @@ Return ID of given username
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:1647](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L1647)
+[adapter/src/lib/adapter/adapter.ts:1648](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L1648)
 
 ___
 
@@ -5516,7 +5516,7 @@ parsed ID as an object
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:9028](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L9028)
+[adapter/src/lib/adapter/adapter.ts:9029](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L9029)
 
 ___
 
@@ -5538,7 +5538,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6674](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6674)
+[adapter/src/lib/adapter/adapter.ts:6675](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6675)
 
 ▸ **mkdir**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -5557,7 +5557,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6675](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6675)
+[adapter/src/lib/adapter/adapter.ts:6676](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6676)
 
 ___
 
@@ -5579,7 +5579,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:252](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L252)
+[adapter/src/lib/adapter/adapter.ts:253](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L253)
 
 ___
 
@@ -5602,7 +5602,7 @@ Checks if an object exists to the given id, id will be fixed first
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:3561](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L3561)
+[adapter/src/lib/adapter/adapter.ts:3562](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L3562)
 
 ___
 
@@ -5623,7 +5623,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:128](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L128)
+[adapter/src/lib/adapter/adapter.ts:129](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L129)
 
 ▸ **on**(`event`, `listener`): [`AdapterClass`](AdapterClass.md)
 
@@ -5640,7 +5640,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:129](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L129)
+[adapter/src/lib/adapter/adapter.ts:130](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L130)
 
 ▸ **on**(`event`, `listener`): [`AdapterClass`](AdapterClass.md)
 
@@ -5657,7 +5657,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:130](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L130)
+[adapter/src/lib/adapter/adapter.ts:131](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L131)
 
 ▸ **on**(`event`, `listener`): [`AdapterClass`](AdapterClass.md)
 
@@ -5674,7 +5674,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:131](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L131)
+[adapter/src/lib/adapter/adapter.ts:132](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L132)
 
 ▸ **on**(`event`, `listener`): [`AdapterClass`](AdapterClass.md)
 
@@ -5691,7 +5691,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:132](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L132)
+[adapter/src/lib/adapter/adapter.ts:133](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L133)
 
 ▸ **on**(`event`, `listener`): [`AdapterClass`](AdapterClass.md)
 
@@ -5708,7 +5708,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:133](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L133)
+[adapter/src/lib/adapter/adapter.ts:134](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L134)
 
 ▸ **on**(`event`, `listener`): [`AdapterClass`](AdapterClass.md)
 
@@ -5725,7 +5725,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:134](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L134)
+[adapter/src/lib/adapter/adapter.ts:135](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L135)
 
 ▸ **on**(`event`, `listener`): [`AdapterClass`](AdapterClass.md)
 
@@ -5744,7 +5744,7 @@ Only emitted for compact instances
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:136](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L136)
+[adapter/src/lib/adapter/adapter.ts:137](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L137)
 
 ▸ **on**(`event`, `listener`): [`AdapterClass`](AdapterClass.md)
 
@@ -5761,7 +5761,7 @@ Only emitted for compact instances
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:137](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L137)
+[adapter/src/lib/adapter/adapter.ts:138](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L138)
 
 ___
 
@@ -5774,7 +5774,7 @@ Read directory from DB.
 This function reads the content of directory from DB for given adapter and path.
 If getEnum called with no enum specified, all enums will be returned:
 ```js
-     adapter.readDir('vis.0', '/main/', function (err, filesOrDirs) {
+     adapter.readDir('vis-2.0', '/main/', function (err, filesOrDirs) {
        // All enums
        if (err) adapter.log.error('Cannot read directory: ' + err);
        if (filesOrDirs) {
@@ -5790,7 +5790,7 @@ If getEnum called with no enum specified, all enums will be returned:
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `adapterName` | ``null`` \| `string` | - |
-| `path` | `string` | path to direcory without adapter name. E.g. If you want to read "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0". |
+| `path` | `string` | path to directory without adapter name. E.g., If you want to read "/vis-2.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis-2.0". |
 | `callback` | [`ReadDirCallback`](../modules/internal_.md#readdircallback) | return result ```js function (err, filesOrDirs) { // filesOrDirs is array with elements like // { // file: 'views.json, // stats: node.js stats object like https://nodejs.org/api/fs.html#fs_class_fs_stats , // isDir: true/false, // acl: access control list object, // modifiedAt: time when modified, // createdAt: time when created // } } ``` |
 
 #### Returns
@@ -5799,7 +5799,7 @@ If getEnum called with no enum specified, all enums will be returned:
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6548](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6548)
+[adapter/src/lib/adapter/adapter.ts:6549](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6549)
 
 ▸ **readDir**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -5808,7 +5808,7 @@ Read directory from DB.
 This function reads the content of directory from DB for given adapter and path.
 If getEnum called with no enum specified, all enums will be returned:
 ```js
-     adapter.readDir('vis.0', '/main/', function (err, filesOrDirs) {
+     adapter.readDir('vis-2.0', '/main/', function (err, filesOrDirs) {
        // All enums
        if (err) adapter.log.error('Cannot read directory: ' + err);
        if (filesOrDirs) {
@@ -5824,7 +5824,7 @@ If getEnum called with no enum specified, all enums will be returned:
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `adapterName` | ``null`` \| `string` | - |
-| `path` | `string` | path to direcory without adapter name. E.g. If you want to read "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0". |
+| `path` | `string` | path to directory without adapter name. E.g., If you want to read "/vis-2.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis-2.0". |
 | `options` | `unknown` | optional user context |
 | `callback` | [`ReadDirCallback`](../modules/internal_.md#readdircallback) | return result ```js function (err, filesOrDirs) { // filesOrDirs is array with elements like // { // file: 'views.json, // stats: node.js stats object like https://nodejs.org/api/fs.html#fs_class_fs_stats , // isDir: true/false, // acl: access control list object, // modifiedAt: time when modified, // createdAt: time when created // } } ``` |
 
@@ -5834,7 +5834,7 @@ If getEnum called with no enum specified, all enums will be returned:
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6549](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6549)
+[adapter/src/lib/adapter/adapter.ts:6550](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6550)
 
 ___
 
@@ -5858,7 +5858,7 @@ reads the content of directory from DB for given adapter and path
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:246](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L246)
+[adapter/src/lib/adapter/adapter.ts:247](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L247)
 
 ___
 
@@ -5870,7 +5870,7 @@ Read file from DB.
 
 This function reads the content of one file from DB for given adapter and file name.
 ```js
-     adapter.readFile('vis.0', '/main/vis-views.json', function (err, data) {
+     adapter.readFile('vis-2.0', '/main/vis-views.json', function (err, data) {
        // All enums
        if (err) adapter.log.error('Cannot read file: ' + err);
        adapter.log.info('Content of file is: ' + data);
@@ -5891,7 +5891,7 @@ This function reads the content of one file from DB for given adapter and file n
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6700](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6700)
+[adapter/src/lib/adapter/adapter.ts:6701](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6701)
 
 ▸ **readFile**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -5899,7 +5899,7 @@ Read file from DB.
 
 This function reads the content of one file from DB for given adapter and file name.
 ```js
-     adapter.readFile('vis.0', '/main/vis-views.json', function (err, data) {
+     adapter.readFile('vis-2.0', '/main/vis-views.json', function (err, data) {
        // All enums
        if (err) adapter.log.error('Cannot read file: ' + err);
        adapter.log.info('Content of file is: ' + data);
@@ -5921,7 +5921,7 @@ This function reads the content of one file from DB for given adapter and file n
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6701](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6701)
+[adapter/src/lib/adapter/adapter.ts:6702](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6702)
 
 ___
 
@@ -5945,7 +5945,7 @@ reads the content of directory from DB for given adapter and path
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:254](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L254)
+[adapter/src/lib/adapter/adapter.ts:255](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L255)
 
 ___
 
@@ -5975,7 +5975,7 @@ Send notification with given scope and category to host of this adapter
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:7426](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L7426)
+[adapter/src/lib/adapter/adapter.ts:7427](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L7427)
 
 ___
 
@@ -5998,7 +5998,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6640](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6640)
+[adapter/src/lib/adapter/adapter.ts:6641](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6641)
 
 ▸ **rename**(`adapterName`, `oldName`, `newName`, `options`, `callback`): `void`
 
@@ -6018,7 +6018,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6641](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6641)
+[adapter/src/lib/adapter/adapter.ts:6642](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6642)
 
 ___
 
@@ -6041,7 +6041,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L251)
+[adapter/src/lib/adapter/adapter.ts:252](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L252)
 
 ___
 
@@ -6057,7 +6057,7 @@ Restarts an instance of the adapter.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:2413](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L2413)
+[adapter/src/lib/adapter/adapter.ts:2414](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L2414)
 
 ___
 
@@ -6084,7 +6084,7 @@ If no instance given (e.g. "pushover"), the callback argument will be ignored. B
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:7047](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L7047)
+[adapter/src/lib/adapter/adapter.ts:7048](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L7048)
 
 ▸ **sendTo**(`instanceName`, `command`, `message`, `callback?`, `options?`): `void`
 
@@ -6109,7 +6109,7 @@ If no instance given (e.g. "pushover"), the callback argument will be ignored. B
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:7052](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L7052)
+[adapter/src/lib/adapter/adapter.ts:7053](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L7053)
 
 ___
 
@@ -6132,7 +6132,7 @@ Sends a message to a specific instance or all instances of some specific adapter
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:407](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L407)
+[adapter/src/lib/adapter/adapter.ts:408](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L408)
 
 ▸ **sendToAsync**(`instanceName`, `command`, `message`, `options?`): `Promise`<`undefined` \| [`Message`](../interfaces/internal_.Message.md)\>
 
@@ -6154,7 +6154,7 @@ As we have a special case (first arg can be error or result, we need to promisif
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:408](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L408)
+[adapter/src/lib/adapter/adapter.ts:409](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L409)
 
 ▸ **sendToAsync**(`instanceName`, `command`, `message?`, `options?`): `any`
 
@@ -6176,7 +6176,7 @@ As we have a special case (first arg can be error or result, we need to promisif
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:7112](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L7112)
+[adapter/src/lib/adapter/adapter.ts:7113](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L7113)
 
 ___
 
@@ -6203,7 +6203,7 @@ If no host name given (e.g. null), the callback argument will be ignored. Becaus
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:7255](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L7255)
+[adapter/src/lib/adapter/adapter.ts:7256](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L7256)
 
 ▸ **sendToHost**(`hostName`, `command`, `message`, `callback?`): `void`
 
@@ -6227,7 +6227,7 @@ If no host name given (e.g. null), the callback argument will be ignored. Becaus
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:7260](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L7260)
+[adapter/src/lib/adapter/adapter.ts:7261](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L7261)
 
 ___
 
@@ -6250,7 +6250,7 @@ Sends a message to a specific host or all hosts.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:397](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L397)
+[adapter/src/lib/adapter/adapter.ts:398](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L398)
 
 ▸ **sendToHostAsync**(`hostName`, `command`, `message`): `Promise`<`undefined` \| [`Message`](../interfaces/internal_.Message.md)\>
 
@@ -6268,7 +6268,7 @@ Sends a message to a specific host or all hosts.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:398](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L398)
+[adapter/src/lib/adapter/adapter.ts:399](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L399)
 
 ___
 
@@ -6290,7 +6290,7 @@ Send a message to an active UI Client
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:7396](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L7396)
+[adapter/src/lib/adapter/adapter.ts:7397](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L7397)
 
 ___
 
@@ -6318,7 +6318,7 @@ Please use `writeFile` instead of binary states
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:10178](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L10178)
+[adapter/src/lib/adapter/adapter.ts:10179](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L10179)
 
 ▸ **setBinaryState**(`id`, `binary`, `options`, `callback`): `void`
 
@@ -6343,7 +6343,7 @@ Please use `writeFile` instead of binary states
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:10179](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L10179)
+[adapter/src/lib/adapter/adapter.ts:10180](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L10180)
 
 ___
 
@@ -6372,7 +6372,7 @@ Please use `writeFile` instead of binary states
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:290](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L290)
+[adapter/src/lib/adapter/adapter.ts:291](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L291)
 
 ___
 
@@ -6398,7 +6398,7 @@ Set capabilities of the given executable. Only works on Linux systems.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:145](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L145)
+[adapter/src/lib/adapter/adapter.ts:146](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L146)
 
 ___
 
@@ -6426,7 +6426,7 @@ Please use `writeFile` instead of binary states
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:10031](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L10031)
+[adapter/src/lib/adapter/adapter.ts:10032](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L10032)
 
 ▸ **setForeignBinaryState**(`id`, `binary`, `options`, `callback`): `void`
 
@@ -6451,7 +6451,7 @@ Please use `writeFile` instead of binary states
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:10032](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L10032)
+[adapter/src/lib/adapter/adapter.ts:10033](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L10033)
 
 ___
 
@@ -6479,7 +6479,7 @@ Please use `writeFile` instead of binary states
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:282](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L282)
+[adapter/src/lib/adapter/adapter.ts:283](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L283)
 
 ___
 
@@ -6511,7 +6511,7 @@ ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC989
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:3253](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L3253)
+[adapter/src/lib/adapter/adapter.ts:3254](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L3254)
 
 ▸ **setForeignObject**<`T`\>(`id`, `obj`, `options`, `callback?`): `void`
 
@@ -6540,7 +6540,7 @@ ID must be specified as a full name with adapter namespace. E.g "hm-rpc.0.ABC989
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:3258](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L3258)
+[adapter/src/lib/adapter/adapter.ts:3259](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L3259)
 
 ___
 
@@ -6570,7 +6570,7 @@ Creates or overwrites an object (which might not belong to this adapter) in the 
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:337](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L337)
+[adapter/src/lib/adapter/adapter.ts:338](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L338)
 
 ___
 
@@ -6603,7 +6603,7 @@ New object will be created only if no object exists with such ID.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4930](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4930)
+[adapter/src/lib/adapter/adapter.ts:4931](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4931)
 
 ▸ **setForeignObjectNotExists**<`T`\>(`id`, `obj`, `options`, `callback?`): `void`
 
@@ -6633,7 +6633,7 @@ New object will be created only if no object exists with such ID.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4935](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4935)
+[adapter/src/lib/adapter/adapter.ts:4936](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4936)
 
 ___
 
@@ -6663,7 +6663,7 @@ Creates an object (which might not belong to this adapter) in the object db. Exi
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:197](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L197)
+[adapter/src/lib/adapter/adapter.ts:198](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L198)
 
 ___
 
@@ -6690,7 +6690,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:8253](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L8253)
+[adapter/src/lib/adapter/adapter.ts:8254](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L8254)
 
 ▸ **setForeignState**(`id`, `state`, `ack`, `callback?`): `void`
 
@@ -6714,7 +6714,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:8258](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L8258)
+[adapter/src/lib/adapter/adapter.ts:8259](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L8259)
 
 ▸ **setForeignState**(`id`, `state`, `options`, `callback?`): `void`
 
@@ -6738,7 +6738,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:8264](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L8264)
+[adapter/src/lib/adapter/adapter.ts:8265](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L8265)
 
 ▸ **setForeignState**(`id`, `state`, `ack`, `options`, `callback?`): `void`
 
@@ -6763,7 +6763,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:8270](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L8270)
+[adapter/src/lib/adapter/adapter.ts:8271](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L8271)
 
 ___
 
@@ -6787,7 +6787,7 @@ Writes a value (which might not belong to this adapter) into the states DB.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:444](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L444)
+[adapter/src/lib/adapter/adapter.ts:445](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L445)
 
 ▸ **setForeignStateAsync**(`id`, `state`, `options?`): [`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
@@ -6805,7 +6805,7 @@ Writes a value (which might not belong to this adapter) into the states DB.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:449](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L449)
+[adapter/src/lib/adapter/adapter.ts:450](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L450)
 
 ▸ **setForeignStateAsync**(`id`, `state`, `ack`, `options`): [`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
@@ -6824,7 +6824,7 @@ Writes a value (which might not belong to this adapter) into the states DB.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:454](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L454)
+[adapter/src/lib/adapter/adapter.ts:455](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L455)
 
 ___
 
@@ -6851,7 +6851,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:8564](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L8564)
+[adapter/src/lib/adapter/adapter.ts:8565](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L8565)
 
 ▸ **setForeignStateChanged**(`id`, `state`, `ack`, `callback?`): `void`
 
@@ -6875,7 +6875,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:8569](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L8569)
+[adapter/src/lib/adapter/adapter.ts:8570](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L8570)
 
 ▸ **setForeignStateChanged**(`id`, `state`, `options`, `callback?`): `void`
 
@@ -6899,7 +6899,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:8575](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L8575)
+[adapter/src/lib/adapter/adapter.ts:8576](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L8576)
 
 ▸ **setForeignStateChanged**(`id`, `state`, `ack`, `options`, `callback?`): `void`
 
@@ -6924,7 +6924,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:8581](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L8581)
+[adapter/src/lib/adapter/adapter.ts:8582](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L8582)
 
 ___
 
@@ -6948,7 +6948,7 @@ Writes a value (which might not belong to this adapter) into the states DB only 
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:357](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L357)
+[adapter/src/lib/adapter/adapter.ts:358](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L358)
 
 ▸ **setForeignStateChangedAsync**(`id`, `state`, `options?`): [`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
 
@@ -6966,7 +6966,7 @@ Writes a value (which might not belong to this adapter) into the states DB only 
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:362](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L362)
+[adapter/src/lib/adapter/adapter.ts:363](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L363)
 
 ▸ **setForeignStateChangedAsync**(`id`, `state`, `ack`, `options`): [`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
 
@@ -6985,7 +6985,7 @@ Writes a value (which might not belong to this adapter) into the states DB only 
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:367](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L367)
+[adapter/src/lib/adapter/adapter.ts:368](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L368)
 
 ___
 
@@ -7013,7 +7013,7 @@ interval interval object
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:2633](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L2633)
+[adapter/src/lib/adapter/adapter.ts:2634](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L2634)
 
 ___
 
@@ -7044,7 +7044,7 @@ Additionally, type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID, that must be overwritten or created. |
-| `obj` | `Omit`<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| `Omit`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.host.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}.${number}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.user.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.group.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChartObject`](../interfaces/internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScheduleObject`](../interfaces/internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DesignObject`](../interfaces/internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`\_design/${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } | new object |
+| `obj` | `Omit`<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| `Omit`<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.host.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}.${number}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.user.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.group.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChartObject`](../interfaces/internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScheduleObject`](../interfaces/internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DesignObject`](../interfaces/internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`\_design/${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } | new object |
 | `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | return result ```js function (err, obj) { // obj is {id: id} if (err) adapter.log.error('Cannot write object: ' + err); } ``` |
 
 #### Returns
@@ -7053,7 +7053,7 @@ Additionally, type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:2686](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L2686)
+[adapter/src/lib/adapter/adapter.ts:2687](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L2687)
 
 ▸ **setObject**(`id`, `obj`, `options`, `callback?`): `Promise`<`void`\>
 
@@ -7080,7 +7080,7 @@ Additionally, type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID, that must be overwritten or created. |
-| `obj` | `Omit`<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| `Omit`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.host.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}.${number}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.user.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.group.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChartObject`](../interfaces/internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScheduleObject`](../interfaces/internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DesignObject`](../interfaces/internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`\_design/${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } | new object |
+| `obj` | `Omit`<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| `Omit`<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.host.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}.${number}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.user.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.group.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChartObject`](../interfaces/internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScheduleObject`](../interfaces/internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DesignObject`](../interfaces/internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`\_design/${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } | new object |
 | `options` | `unknown` | optional user context |
 | `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | return result ```js function (err, obj) { // obj is {id: id} if (err) adapter.log.error('Cannot write object: ' + err); } ``` |
 
@@ -7090,7 +7090,7 @@ Additionally, type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:2687](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L2687)
+[adapter/src/lib/adapter/adapter.ts:2688](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L2688)
 
 ▸ **setObject**(`id`, `obj`, `callback?`): `Promise`<`void`\>
 
@@ -7117,7 +7117,7 @@ Additionally, type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID, that must be overwritten or created. |
-| `obj` | `Omit`<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| `Omit`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.host.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}.${number}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.user.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.group.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChartObject`](../interfaces/internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScheduleObject`](../interfaces/internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DesignObject`](../interfaces/internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`\_design/${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } | new object |
+| `obj` | `Omit`<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| `Omit`<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.host.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}.${number}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.user.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.group.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChartObject`](../interfaces/internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScheduleObject`](../interfaces/internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DesignObject`](../interfaces/internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`\_design/${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } | new object |
 | `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | return result ```js function (err, obj) { // obj is {id: id} if (err) adapter.log.error('Cannot write object: ' + err); } ``` |
 
 #### Returns
@@ -7126,7 +7126,7 @@ Additionally, type "state" requires <b>role</b>, <b>type</b> and <b>name</b>, e.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:2693](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L2693)
+[adapter/src/lib/adapter/adapter.ts:2694](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L2694)
 
 ___
 
@@ -7141,7 +7141,7 @@ Creates or overwrites an object in the object db
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `obj` | `Omit`<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| `Omit`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.host.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}.${number}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.user.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.group.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChartObject`](../interfaces/internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScheduleObject`](../interfaces/internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DesignObject`](../interfaces/internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`\_design/${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } |
+| `obj` | `Omit`<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| `Omit`<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.host.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}.${number}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.user.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.group.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChartObject`](../interfaces/internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScheduleObject`](../interfaces/internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DesignObject`](../interfaces/internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`\_design/${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } |
 | `options?` | `unknown` |
 
 #### Returns
@@ -7150,7 +7150,7 @@ Creates or overwrites an object in the object db
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:335](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L335)
+[adapter/src/lib/adapter/adapter.ts:336](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L336)
 
 ___
 
@@ -7168,7 +7168,7 @@ New object will be created only if no object exists with such ID.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID, that must be overwritten or created. |
-| `obj` | `Omit`<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| `Omit`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.host.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}.${number}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.user.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.group.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChartObject`](../interfaces/internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScheduleObject`](../interfaces/internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DesignObject`](../interfaces/internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`\_design/${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } | new object |
+| `obj` | `Omit`<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| `Omit`<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.host.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}.${number}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.user.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.group.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChartObject`](../interfaces/internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScheduleObject`](../interfaces/internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DesignObject`](../interfaces/internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`\_design/${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } | new object |
 | `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | return result ```js function (err, obj) { // obj is {id: id} if (err) adapter.log.error('Cannot write object: ' + err); } ``` |
 
 #### Returns
@@ -7177,7 +7177,7 @@ New object will be created only if no object exists with such ID.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4830](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4830)
+[adapter/src/lib/adapter/adapter.ts:4831](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4831)
 
 ▸ **setObjectNotExists**(`id`, `obj`, `options`, `callback?`): `void` \| `Promise`<`undefined` \| `void` \| { `id`: `string`  }\>
 
@@ -7191,7 +7191,7 @@ New object will be created only if no object exists with such ID.
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `id` | `string` | object ID, that must be overwritten or created. |
-| `obj` | `Omit`<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| `Omit`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.host.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}.${number}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.user.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.group.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChartObject`](../interfaces/internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScheduleObject`](../interfaces/internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DesignObject`](../interfaces/internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`\_design/${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } | new object |
+| `obj` | `Omit`<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| `Omit`<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.host.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}.${number}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.user.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.group.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChartObject`](../interfaces/internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScheduleObject`](../interfaces/internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DesignObject`](../interfaces/internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`\_design/${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } | new object |
 | `options` | `unknown` | optional user context |
 | `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) | return result ```js function (err, obj) { // obj is {id: id} if (err) adapter.log.error('Cannot write object: ' + err); } ``` |
 
@@ -7201,7 +7201,7 @@ New object will be created only if no object exists with such ID.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4835](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4835)
+[adapter/src/lib/adapter/adapter.ts:4836](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4836)
 
 ___
 
@@ -7216,7 +7216,7 @@ Creates an object in the object db. Existing objects are not overwritten.
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `obj` | `Omit`<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| `Omit`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.host.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}.${number}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.user.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.group.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChartObject`](../interfaces/internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScheduleObject`](../interfaces/internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DesignObject`](../interfaces/internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`\_design/${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } |
+| `obj` | `Omit`<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| `Omit`<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.host.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}.${number}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.user.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.group.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChartObject`](../interfaces/internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScheduleObject`](../interfaces/internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DesignObject`](../interfaces/internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`\_design/${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } |
 | `options?` | `unknown` |
 
 #### Returns
@@ -7225,7 +7225,7 @@ Creates an object in the object db. Existing objects are not overwritten.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:195](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L195)
+[adapter/src/lib/adapter/adapter.ts:196](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L196)
 
 ___
 
@@ -7250,7 +7250,7 @@ sets the user's password
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:1678](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L1678)
+[adapter/src/lib/adapter/adapter.ts:1679](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L1679)
 
 ▸ **setPassword**(`user`, `pw`, `callback?`): `Promise`<`void`\>
 
@@ -7270,7 +7270,7 @@ sets the user's password
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:1685](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L1685)
+[adapter/src/lib/adapter/adapter.ts:1686](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L1686)
 
 ___
 
@@ -7294,7 +7294,7 @@ Sets a new password for the given user
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:325](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L325)
+[adapter/src/lib/adapter/adapter.ts:326](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L326)
 
 ___
 
@@ -7317,7 +7317,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:1307](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L1307)
+[adapter/src/lib/adapter/adapter.ts:1308](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L1308)
 
 ___
 
@@ -7351,7 +7351,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:7464](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L7464)
+[adapter/src/lib/adapter/adapter.ts:7465](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L7465)
 
 ▸ **setState**<`T`\>(`id`, `state`, `ack`, `callback?`): `T` extends [`SetStateCallback`](../modules/internal_.md#setstatecallback) ? `void` : [`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
@@ -7382,7 +7382,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:7469](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L7469)
+[adapter/src/lib/adapter/adapter.ts:7470](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L7470)
 
 ▸ **setState**<`T`\>(`id`, `state`, `options?`, `callback?`): `T` extends [`SetStateCallback`](../modules/internal_.md#setstatecallback) ? `void` : [`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
@@ -7413,7 +7413,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:7475](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L7475)
+[adapter/src/lib/adapter/adapter.ts:7476](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L7476)
 
 ▸ **setState**<`T`\>(`id`, `state`, `ack`, `options?`, `callback?`): `T` extends [`SetStateCallback`](../modules/internal_.md#setstatecallback) ? `void` : [`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
@@ -7445,7 +7445,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:7481](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L7481)
+[adapter/src/lib/adapter/adapter.ts:7482](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L7482)
 
 ___
 
@@ -7469,7 +7469,7 @@ Writes a value into the states DB.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:424](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L424)
+[adapter/src/lib/adapter/adapter.ts:425](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L425)
 
 ▸ **setStateAsync**(`id`, `state`, `options?`): [`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
@@ -7487,7 +7487,7 @@ Writes a value into the states DB.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:429](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L429)
+[adapter/src/lib/adapter/adapter.ts:430](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L430)
 
 ▸ **setStateAsync**(`id`, `state`, `ack`, `options`): [`SetStatePromise`](../modules/internal_.md#setstatepromise)
 
@@ -7506,7 +7506,7 @@ Writes a value into the states DB.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:434](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L434)
+[adapter/src/lib/adapter/adapter.ts:435](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L435)
 
 ___
 
@@ -7534,7 +7534,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:8110](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L8110)
+[adapter/src/lib/adapter/adapter.ts:8111](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L8111)
 
 ▸ **setStateChanged**(`id`, `state`, `ack`, `callback?`): `void`
 
@@ -7559,7 +7559,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:8115](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L8115)
+[adapter/src/lib/adapter/adapter.ts:8116](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L8116)
 
 ▸ **setStateChanged**(`id`, `state`, `options`, `callback?`): `void`
 
@@ -7584,7 +7584,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:8121](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L8121)
+[adapter/src/lib/adapter/adapter.ts:8122](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L8122)
 
 ▸ **setStateChanged**(`id`, `state`, `ack`, `options`, `callback?`): `void`
 
@@ -7610,7 +7610,7 @@ ack, options and callback are optional
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:8127](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L8127)
+[adapter/src/lib/adapter/adapter.ts:8128](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L8128)
 
 ___
 
@@ -7634,7 +7634,7 @@ Writes a value into the states DB only if it has changed.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:377](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L377)
+[adapter/src/lib/adapter/adapter.ts:378](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L378)
 
 ▸ **setStateChangedAsync**(`id`, `state`, `options?`): [`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
 
@@ -7652,7 +7652,7 @@ Writes a value into the states DB only if it has changed.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:382](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L382)
+[adapter/src/lib/adapter/adapter.ts:383](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L383)
 
 ▸ **setStateChangedAsync**(`id`, `state`, `ack`, `options`): [`SetStateChangedPromise`](../modules/internal_.md#setstatechangedpromise)
 
@@ -7671,7 +7671,7 @@ Writes a value into the states DB only if it has changed.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:387](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L387)
+[adapter/src/lib/adapter/adapter.ts:388](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L388)
 
 ___
 
@@ -7699,7 +7699,7 @@ timer id
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:2546](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L2546)
+[adapter/src/lib/adapter/adapter.ts:2547](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L2547)
 
 ___
 
@@ -7714,7 +7714,7 @@ This is async function!
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` | adapter ID like 'vis.0' or 'vis.admin' |
+| `id` | `string` | adapter ID like 'vis-2.0' or 'vis-2.admin' |
 | `pattern` | `string` \| `string`[] | pattern like 'channel.*' or '*' (all files) - without namespaces. You can use array of patterns |
 | `options?` | `unknown` | optional user context |
 
@@ -7724,7 +7724,7 @@ This is async function!
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4773](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4773)
+[adapter/src/lib/adapter/adapter.ts:4774](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4774)
 
 ___
 
@@ -7747,7 +7747,7 @@ Subscribe for the changes of objects in any instance.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4694](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4694)
+[adapter/src/lib/adapter/adapter.ts:4695](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4695)
 
 ▸ **subscribeForeignObjects**(`pattern`, `options`, `callback?`): `void`
 
@@ -7767,7 +7767,7 @@ Subscribe for the changes of objects in any instance.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4695](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4695)
+[adapter/src/lib/adapter/adapter.ts:4696](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4696)
 
 ___
 
@@ -7790,7 +7790,7 @@ Subscribe to changes of objects (which might not belong to this adapter)
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:191](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L191)
+[adapter/src/lib/adapter/adapter.ts:192](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L192)
 
 ___
 
@@ -7818,7 +7818,7 @@ Allows to Subscribe on changes all states of all instances according to pattern.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:9572](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L9572)
+[adapter/src/lib/adapter/adapter.ts:9573](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L9573)
 
 ▸ **subscribeForeignStates**(`pattern`, `options`, `callback?`): `void`
 
@@ -7843,7 +7843,7 @@ Allows to Subscribe on changes all states of all instances according to pattern.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:9573](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L9573)
+[adapter/src/lib/adapter/adapter.ts:9574](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L9574)
 
 ___
 
@@ -7866,7 +7866,7 @@ Subscribe to changes of states (which might not belong to this adapter)
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:270](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L270)
+[adapter/src/lib/adapter/adapter.ts:271](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L271)
 
 ___
 
@@ -7889,7 +7889,7 @@ Subscribe for the changes of objects in this instance.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4609](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4609)
+[adapter/src/lib/adapter/adapter.ts:4610](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4610)
 
 ▸ **subscribeObjects**(`pattern`, `options`, `callback?`): `void`
 
@@ -7909,7 +7909,7 @@ Subscribe for the changes of objects in this instance.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4610](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4610)
+[adapter/src/lib/adapter/adapter.ts:4611](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4611)
 
 ___
 
@@ -7932,7 +7932,7 @@ Subscribe to changes of objects in this instance
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:185](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L185)
+[adapter/src/lib/adapter/adapter.ts:186](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L186)
 
 ___
 
@@ -7960,7 +7960,7 @@ Allows to Subscribe on changes all states of current adapter according to patter
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:9961](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L9961)
+[adapter/src/lib/adapter/adapter.ts:9962](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L9962)
 
 ▸ **subscribeStates**(`pattern`, `options`, `callback?`): `void`
 
@@ -7985,7 +7985,7 @@ Allows to Subscribe on changes all states of current adapter according to patter
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:9962](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L9962)
+[adapter/src/lib/adapter/adapter.ts:9963](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L9963)
 
 ___
 
@@ -8008,7 +8008,7 @@ Subscribe to changes of states in this instance
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:274](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L274)
+[adapter/src/lib/adapter/adapter.ts:275](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L275)
 
 ___
 
@@ -8039,7 +8039,7 @@ true/false if the feature is in the list of supported features
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:1518](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L1518)
+[adapter/src/lib/adapter/adapter.ts:1519](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L1519)
 
 ___
 
@@ -8063,7 +8063,7 @@ Sometimes, the adapter must be stopped if some libraries are missing.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:1369](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L1369)
+[adapter/src/lib/adapter/adapter.ts:1370](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L1370)
 
 ▸ **terminate**(`reason?`, `exitCode?`): `never`
 
@@ -8084,7 +8084,7 @@ Sometimes, the adapter must be stopped if some libraries are missing.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:1370](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L1370)
+[adapter/src/lib/adapter/adapter.ts:1371](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L1371)
 
 ___
 
@@ -8106,7 +8106,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6612](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6612)
+[adapter/src/lib/adapter/adapter.ts:6613](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6613)
 
 ▸ **unlink**(`adapterName`, `path`, `options`, `callback`): `void`
 
@@ -8125,7 +8125,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6613](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6613)
+[adapter/src/lib/adapter/adapter.ts:6614](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6614)
 
 ___
 
@@ -8149,7 +8149,7 @@ Deletes a given file
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:248](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L248)
+[adapter/src/lib/adapter/adapter.ts:249](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L249)
 
 ___
 
@@ -8164,7 +8164,7 @@ This is async function!
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `id` | `string` | adapter ID like 'vis.0' or 'vis.admin' |
+| `id` | `string` | adapter ID like 'vis-2.0' or 'vis-2.admin' |
 | `pattern` | `string` \| `string`[] | pattern like 'channel.*' or '*' (all objects) - without namespaces |
 | `options?` | `unknown` | optional user context |
 
@@ -8174,7 +8174,7 @@ This is async function!
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4800](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4800)
+[adapter/src/lib/adapter/adapter.ts:4801](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4801)
 
 ___
 
@@ -8197,7 +8197,7 @@ Unsubscribe for the patterns on all objects.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4732](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4732)
+[adapter/src/lib/adapter/adapter.ts:4733](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4733)
 
 ▸ **unsubscribeForeignObjects**(`pattern`, `options`, `callback?`): `void`
 
@@ -8217,7 +8217,7 @@ Unsubscribe for the patterns on all objects.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4733](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4733)
+[adapter/src/lib/adapter/adapter.ts:4734](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4734)
 
 ___
 
@@ -8240,7 +8240,7 @@ Unsubscribe from changes of objects (which might not belong to this adapter)
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:193](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L193)
+[adapter/src/lib/adapter/adapter.ts:194](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L194)
 
 ___
 
@@ -8270,7 +8270,7 @@ This function allows to unsubscribe from changes. The pattern must be equal to r
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:9811](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L9811)
+[adapter/src/lib/adapter/adapter.ts:9812](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L9812)
 
 ▸ **unsubscribeForeignStates**(`pattern`, `options`, `callback?`): `void`
 
@@ -8297,7 +8297,7 @@ This function allows to unsubscribe from changes. The pattern must be equal to r
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:9812](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L9812)
+[adapter/src/lib/adapter/adapter.ts:9813](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L9813)
 
 ___
 
@@ -8320,7 +8320,7 @@ Subscribe from changes of states (which might not belong to this adapter)
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:272](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L272)
+[adapter/src/lib/adapter/adapter.ts:273](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L273)
 
 ___
 
@@ -8343,7 +8343,7 @@ Unsubscribe on the changes of objects in this instance.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4651](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4651)
+[adapter/src/lib/adapter/adapter.ts:4652](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4652)
 
 ▸ **unsubscribeObjects**(`pattern`, `options`, `callback?`): `void`
 
@@ -8363,7 +8363,7 @@ Unsubscribe on the changes of objects in this instance.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:4652](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L4652)
+[adapter/src/lib/adapter/adapter.ts:4653](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L4653)
 
 ___
 
@@ -8386,7 +8386,7 @@ Unsubscribe from changes of objects in this instance
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:187](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L187)
+[adapter/src/lib/adapter/adapter.ts:188](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L188)
 
 ___
 
@@ -8416,7 +8416,7 @@ This function allows to unsubscribe from changes. The pattern must be equal to r
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:9995](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L9995)
+[adapter/src/lib/adapter/adapter.ts:9996](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L9996)
 
 ▸ **unsubscribeStates**(`pattern`, `options`, `callback?`): `void`
 
@@ -8443,7 +8443,7 @@ This function allows to unsubscribe from changes. The pattern must be equal to r
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:9996](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L9996)
+[adapter/src/lib/adapter/adapter.ts:9997](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L9997)
 
 ___
 
@@ -8466,7 +8466,7 @@ Subscribe from changes of states in this instance
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:276](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L276)
+[adapter/src/lib/adapter/adapter.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L277)
 
 ___
 
@@ -8493,7 +8493,7 @@ After updating the configuration, the adapter is automatically restarted.
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:2422](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L2422)
+[adapter/src/lib/adapter/adapter.ts:2423](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L2423)
 
 ___
 
@@ -8505,7 +8505,7 @@ Write file to DB.
 
 This function writes the content of one file into DB for given adapter and file name.
 ```js
-     adapter.writeFile('vis.0', '/main/vis-views.json', data, function (err) {
+     adapter.writeFile('vis-2.0', '/main/vis-views.json', data, function (err) {
        err && adapter.log.error('Cannot write file: ' + err);
      });
 ```
@@ -8525,7 +8525,7 @@ This function writes the content of one file into DB for given adapter and file 
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6751](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6751)
+[adapter/src/lib/adapter/adapter.ts:6752](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6752)
 
 ▸ **writeFile**(`adapterName`, `path`, `data`, `options`, `callback`): `void`
 
@@ -8533,7 +8533,7 @@ Write file to DB.
 
 This function writes the content of one file into DB for given adapter and file name.
 ```js
-     adapter.writeFile('vis.0', '/main/vis-views.json', data, function (err) {
+     adapter.writeFile('vis-2.0', '/main/vis-views.json', data, function (err) {
        err && adapter.log.error('Cannot write file: ' + err);
      });
 ```
@@ -8554,7 +8554,7 @@ This function writes the content of one file into DB for given adapter and file 
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:6752](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L6752)
+[adapter/src/lib/adapter/adapter.ts:6753](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L6753)
 
 ___
 
@@ -8577,4 +8577,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:255](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/adapter.ts#L255)
+[adapter/src/lib/adapter/adapter.ts:256](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/adapter.ts#L256)

@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/_Types.ts#L277)
+[adapter/src/lib/_Types.ts:284](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L284)
 
 ___
 
@@ -31,17 +31,17 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:274](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/_Types.ts#L274)
+[adapter/src/lib/_Types.ts:281](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L281)
 
 ___
 
 ### obj
 
-• **obj**: `Omit`<[`StateObject`](internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](internal_.StateACL.md)  } \| `Omit`<[`ChannelObject`](internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`DeviceObject`](internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`FolderObject`](internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`EnumObject`](internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`MetaObject`](internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`HostObject`](internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.host.${string}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`AdapterObject`](internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`InstanceObject`](internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}.${number}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`UserObject`](internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.user.${string}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`GroupObject`](internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.group.${string}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`ScriptObject`](internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`ChartObject`](internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`ScheduleObject`](internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`OtherObject`](internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`DesignObject`](internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`\_design/${string}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  }
+• **obj**: `Omit`<[`StateObject`](internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](internal_.StateACL.md)  } \| `Omit`<[`DeviceObject`](internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`ChannelObject`](internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`FolderObject`](internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`MetaObject`](internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`EnumObject`](internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`HostObject`](internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.host.${string}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`AdapterObject`](internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`InstanceObject`](internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}.${number}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`UserObject`](internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.user.${string}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`GroupObject`](internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.group.${string}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`ScriptObject`](internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`ChartObject`](internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`ScheduleObject`](internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`OtherObject`](internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`<[`DesignObject`](internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`\_design/${string}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  }
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:276](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/_Types.ts#L276)
+[adapter/src/lib/_Types.ts:283](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L283)
 
 ___
 
@@ -51,4 +51,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:275](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/_Types.ts#L275)
+[adapter/src/lib/_Types.ts:282](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L282)

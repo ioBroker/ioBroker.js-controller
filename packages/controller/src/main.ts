@@ -106,6 +106,7 @@ interface RepoRequester {
     callback: ioBroker.MessageCallbackInfo;
 }
 
+const VIS_ADAPTERS = ['vis', 'vis-2'] as const;
 const ioPackage = fs.readJSONSync(path.join(tools.getControllerDir(), 'io-package.json'));
 const version = ioPackage.common.version;
 /** controller versions of multihost environments */
@@ -1490,7 +1491,8 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
             err = e;
         }
 
-        let visFound = false;
+        const foundVisAdapters = new Set<(typeof VIS_ADAPTERS)[number]>();
+
         if (!err && doc?.rows.length) {
             // Read installed versions of all adapters
             for (const row of doc.rows) {
@@ -1498,22 +1500,23 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
                     version: row.value.common.version,
                     platform: row.value.common.platform
                 };
-                if (row.value.common.name === 'vis') {
-                    visFound = true;
+                if (VIS_ADAPTERS.includes(row.value.common.name as (typeof VIS_ADAPTERS)[number])) {
+                    foundVisAdapters.add(row.value.common.name as (typeof VIS_ADAPTERS)[number]);
                 }
             }
         }
-        // read number of vis datapoints
-        if (visFound) {
+        // read the number of vis data points
+        for (const visAdapter of foundVisAdapters) {
             const { calcProjects } = await import('./lib/vis/states');
+
             try {
-                const points = await calcProjects(objects!, 0);
+                const points = await calcProjects({ objects: objects!, instance: 0, visAdapter });
                 let total = null;
                 const tasks = [];
 
                 if (points?.length) {
                     for (const point of points) {
-                        if (point.id === 'vis.0.datapoints.total') {
+                        if (point.id === `${visAdapter}.0.datapoints.total`) {
                             total = point.val;
                         }
 
@@ -1537,18 +1540,16 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
                 }
 
                 if (total !== null) {
-                    diag.vis = total;
+                    diag[visAdapter] = total;
                 }
 
                 await extendObjects(tasks);
-                return diag;
             } catch (e) {
                 logger.error(`${hostLogPrefix} cannot call visUtils: ${e.message}`);
-                return diag;
             }
-        } else {
-            return diag;
         }
+
+        return diag;
     }
 }
 
@@ -2381,7 +2382,8 @@ async function startAdapterUpload(): Promise<void> {
 
     // @ts-expect-error yes the logger is missing some levels
     await upload.uploadAdapter(uploadTasks[0].adapter, true, true, '', logger);
-    await upload.upgradeAdapterObjects(uploadTasks[0].adapter, logger);
+    // @ts-expect-error the logger is missing some levels
+    await upload.upgradeAdapterObjects(uploadTasks[0].adapter, undefined, logger);
     // @ts-expect-error yes the logger is missing some levels
     await upload.uploadAdapter(uploadTasks[0].adapter, false, true, '', logger);
     // send response to requester

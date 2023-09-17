@@ -18,7 +18,7 @@ import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis'
 import type Winston from 'winston';
 import type NodeSchedule from 'node-schedule';
 
-// local version is always same as controller version, since lerna exact: true is used
+// local version is always the same as controller version, since lerna exact: true is used
 import { version as controllerVersion } from '@iobroker/js-controller-adapter/package.json';
 
 import { Log } from './log';
@@ -109,7 +109,8 @@ import type {
     InternalAdapterConfig,
     UserInterfaceClientRemoveMessage,
     SendToUserInterfaceClientOptions,
-    AllPropsUnknown
+    AllPropsUnknown,
+    IoPackageInstanceObject
 } from '../_Types';
 import { UserInterfaceMessagingController } from './userInterfaceMessagingController';
 
@@ -1267,7 +1268,7 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Encrypt the password/value with given key
-     * @param secretVal to use for encrypt (or value if only one parameter is given)
+     * @param secretVal to use for encrypting (or value if only one parameter is given)
      * @param [value] value to encrypt (if secret is provided)
      */
     encrypt(secretVal: unknown, value?: unknown): string {
@@ -4775,7 +4776,7 @@ export class AdapterClass extends EventEmitter {
     /**
      * Subscribe for the changes of files in specific instance.
      * This is async function!
-     * @param id adapter ID like 'vis.0' or 'vis.admin'
+     * @param id adapter ID like 'vis-2.0' or 'vis-2.admin'
      * @param pattern pattern like 'channel.*' or '*' (all files) - without namespaces. You can use array of patterns
      * @param options optional user context
      */
@@ -4802,7 +4803,7 @@ export class AdapterClass extends EventEmitter {
     /**
      * Unsubscribe for the changes of files on specific instance.
      * This is async function!
-     * @param id adapter ID like 'vis.0' or 'vis.admin'
+     * @param id adapter ID like 'vis-2.0' or 'vis-2.admin'
      * @param pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
      * @param options optional user context
      */
@@ -6464,14 +6465,14 @@ export class AdapterClass extends EventEmitter {
      *
      * This function updates the file access rights
      * ```js
-     *      adapter.chmodFile('vis.0', '/main/vis-views.json', {mode: 0x644}, function (err, processed) {
+     *      adapter.chmodFile('vis-2.0', '/main/vis-views.json', {mode: 0x644}, function (err, processed) {
      *        if (err) adapter.log.error('Cannot read file: ' + err);
      *        adapter.log.info('New files: ' + JSON.stringify(processed));
      *      });
      * ```
      *
-     * @param _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
-     * @param path path to file without adapter name. E.g. If you want to update "/vis.0/main/*", here must be "/main/*" and _adapter must be equal to "vis.0".
+     * @param _adapter adapter name. If the adapter name is null, so the name (not instance) of the current adapter will be taken.
+     * @param path path to file without adapter name. E.g., If you want to update "/vis-2.0/main/*", here must be "/main/*" and _adapter must be equal to "vis-2.0".
      * @param options data with mode
      * @param callback return result
      *        ```js
@@ -6507,18 +6508,18 @@ export class AdapterClass extends EventEmitter {
     chownFile(_adapter: string, path: string, callback: (err?: Error | null, processedFiles?: any) => void): void;
 
     /**
-     * Change file owner
+     * Change a file owner
      *
      * This function updates the file owner and ownerGroup
      * ```js
-     *      adapter.chownFile('vis.0', '/main/vis-views.json', {owner: 'newOwner', ownerGroup: 'newgroup'}, function (err, processed) {
+     *      adapter.chownFile('vis-2.0', '/main/vis-views.json', {owner: 'newOwner', ownerGroup: 'newgroup'}, function (err, processed) {
      *        if (err) adapter.log.error('Cannot read file: ' + err);
      *        adapter.log.info('New files: ' + JSON.stringify(processed));
      *      });
      * ```
      *
-     * @param _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
-     * @param path path to file without adapter name. E.g. If you want to update "/vis.0/main/*", here must be "/main/*" and _adapter must be equal to "vis.0".
+     * @param _adapter adapter name. If the adapter name is null, so the name (not instance) of the current adapter will be taken.
+     * @param path path to file without adapter name. E.g., If you want to update "/vis-2.0/main/*", here must be "/main/*" and _adapter must be equal to "vis-2.0".
      * @param options data with owner and ownerGroup
      * @param callback return result
      *        ```js
@@ -6554,7 +6555,7 @@ export class AdapterClass extends EventEmitter {
      * This function reads the content of directory from DB for given adapter and path.
      * If getEnum called with no enum specified, all enums will be returned:
      * ```js
-     *      adapter.readDir('vis.0', '/main/', function (err, filesOrDirs) {
+     *      adapter.readDir('vis-2.0', '/main/', function (err, filesOrDirs) {
      *        // All enums
      *        if (err) adapter.log.error('Cannot read directory: ' + err);
      *        if (filesOrDirs) {
@@ -6565,8 +6566,8 @@ export class AdapterClass extends EventEmitter {
      *      });
      * ```
      *
-     * @param _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
-     * @param path path to direcory without adapter name. E.g. If you want to read "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
+     * @param _adapter adapter name. If the adapter name is null, so the name (not instance) of the current adapter will be taken.
+     * @param path path to directory without adapter name. E.g., If you want to read "/vis-2.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis-2.0".
      * @param options optional user context
      * @param callback return result
      *        ```js
@@ -6705,15 +6706,15 @@ export class AdapterClass extends EventEmitter {
      *
      * This function reads the content of one file from DB for given adapter and file name.
      * ```js
-     *      adapter.readFile('vis.0', '/main/vis-views.json', function (err, data) {
+     *      adapter.readFile('vis-2.0', '/main/vis-views.json', function (err, data) {
      *        // All enums
      *        if (err) adapter.log.error('Cannot read file: ' + err);
      *        adapter.log.info('Content of file is: ' + data);
      *      });
      * ```
      *
-     * @param _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
-     * @param filename path to file without adapter name. E.g. If you want to read "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
+     * @param _adapter adapter name. If the adapter name is null, so the name (not instance) of the current adapter will be taken.
+     * @param filename path to file without adapter name. E.g., If you want to read "/vis-2.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis-2.0".
      * @param options optional user context
      * @param callback return result
      *        ```js
@@ -6762,13 +6763,13 @@ export class AdapterClass extends EventEmitter {
      *
      * This function writes the content of one file into DB for given adapter and file name.
      * ```js
-     *      adapter.writeFile('vis.0', '/main/vis-views.json', data, function (err) {
+     *      adapter.writeFile('vis-2.0', '/main/vis-views.json', data, function (err) {
      *        err && adapter.log.error('Cannot write file: ' + err);
      *      });
      * ```
      *
-     * @param _adapter adapter name. If adapter name is null, so the name (not instance) of current adapter will be taken.
-     * @param filename path to file without adapter name. E.g. If you want to read "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
+     * @param _adapter adapter name. If the adapter name is null, so the name (not instance) of the current adapter will be taken.
+     * @param filename path to file without adapter name. E.g., If you want to read "/vis-2.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis-2.0".
      * @param data data as UTF8 string or buffer depends on the file extension.
      * @param options optional user context
      * @param callback return result
@@ -6819,7 +6820,7 @@ export class AdapterClass extends EventEmitter {
      * Checks if file exists in DB.
      *
      * @param _adapter adapter name
-     * @param filename path to file without adapter name. E.g. If you want to check "/vis.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis.0".
+     * @param filename path to file without adapter name. E.g., If you want to check "/vis-2.0/main/views.json", here must be "/main/views.json" and _adapter must be equal to "vis-2.0".
      * @param options optional user context
      * @param callback cb function if none provided, a promise is returned
      */
@@ -11939,7 +11940,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     private async _createInstancesObjects(instanceObj: ioBroker.InstanceObject): Promise<void> {
-        let objs: ioBroker.AnyObject[];
+        let objs: (IoPackageInstanceObject & { state?: unknown })[];
 
         if (instanceObj?.common && !('onlyWWW' in instanceObj.common) && instanceObj.common.mode !== 'once') {
             // @ts-expect-error
@@ -11949,8 +11950,9 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (instanceObj && 'instanceObjects' in instanceObj) {
-            // @ts-expect-error
-            for (const obj of instanceObj.instanceObjects) {
+            for (const instObj of instanceObj.instanceObjects) {
+                const obj: IoPackageInstanceObject & { state?: unknown } = instObj;
+
                 if (!obj._id.startsWith(this.namespace)) {
                     // instanceObjects are normally defined without namespace prefix
                     obj._id = obj._id === '' ? this.namespace : `${this.namespace}.${obj._id}`;
@@ -11959,38 +11961,36 @@ export class AdapterClass extends EventEmitter {
                 if (obj && (obj._id || obj.type === 'meta')) {
                     if (obj.common) {
                         if (obj.common.name) {
+                            const commonName = obj.common.name;
                             // if name has many languages
-                            if (typeof obj.common.name === 'object') {
-                                Object.keys(obj.common.name).forEach(
-                                    lang =>
-                                        (obj.common.name[lang] = obj.common.name[lang].replace(
-                                            '%INSTANCE%',
-                                            this.instance
-                                        ))
-                                );
+                            if (tools.isObject(commonName)) {
+                                for (const [lang, value] of Object.entries(commonName)) {
+                                    commonName[lang as keyof ioBroker.Translated] = value.replace(
+                                        '%INSTANCE%',
+                                        this.instance!.toString()
+                                    );
+                                }
                             } else {
-                                obj.common.name = obj.common.name.replace('%INSTANCE%', this.instance);
+                                obj.common.name = commonName.replace('%INSTANCE%', this.instance!.toString());
                             }
                         }
-                        if (obj.common.desc) {
+                        if ('desc' in obj.common) {
+                            const commonDesc = obj.common.desc;
+
                             // if description has many languages
-                            if (typeof obj.common.desc === 'object') {
-                                Object.keys(obj.common.desc).forEach(
-                                    lang =>
-                                        (obj.common.desc[lang] = obj.common.desc[lang].replace(
-                                            '%INSTANCE%',
-                                            this.instance
-                                        ))
-                                );
+                            if (tools.isObject(commonDesc)) {
+                                for (const [lang, value] of Object.entries(commonDesc)) {
+                                    commonDesc[lang] = value.replace('%INSTANCE%', this.instance);
+                                }
                             } else {
-                                obj.common.desc = obj.common.desc.replace('%INSTANCE%', this.instance);
+                                obj.common.desc = commonDesc.replace('%INSTANCE%', this.instance);
                             }
                         }
 
                         if (obj.type === 'state' && obj.common.def !== undefined) {
                             // default value given - if obj non-existing we have to set it
                             try {
-                                const checkObj = await this.getForeignObjectAsync(obj._id);
+                                const checkObj = await adapterObjects!.objectExists(obj._id);
                                 if (!checkObj) {
                                     obj.state = obj.common.def;
                                 }

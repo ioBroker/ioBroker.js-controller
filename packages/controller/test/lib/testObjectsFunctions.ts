@@ -329,7 +329,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     username: 'tesla',
                     password: 'winning'
                 },
-                protectedNative: ['username', 'password']
+                protectedNative: ['username', 'password'],
+                objects: [],
+                instanceObjects: []
             },
             function (err) {
                 expect(err).to.be.null;
@@ -372,7 +374,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     username: 'tesla',
                     password: 'winning'
                 },
-                protectedNative: ['username', 'password']
+                protectedNative: ['username', 'password'],
+                objects: [],
+                instanceObjects: []
             },
             function (err) {
                 expect(err).to.be.null;
@@ -1114,7 +1118,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         username: 'tesla',
                         password: 'winning'
                     },
-                    protectedNative: ['username', 'password']
+                    protectedNative: ['username', 'password'],
+                    objects: [],
+                    instanceObjects: []
                 },
                 function (err) {
                     expect(err).to.be.null;
@@ -1159,7 +1165,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         username: 'tesla',
                         password: 'winning'
                     },
-                    protectedNative: ['username', 'password']
+                    protectedNative: ['username', 'password'],
+                    objects: [],
+                    instanceObjects: []
                 },
                 function (err) {
                     expect(err).to.be.null;

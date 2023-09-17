@@ -783,7 +783,9 @@ const _adapterObject: ioBroker.AdapterObject = {
         },
         version: '1.2.3',
         blockedVersions: ['~3.14.0', '4.0.1']
-    }
+    },
+    instanceObjects: [],
+    objects: []
 };
 
 const _folderObject: ioBroker.FolderObject = {
@@ -820,7 +822,9 @@ const _instanceObject: ioBroker.InstanceObject = {
         materialize: true,
         installedVersion: '1.0.0'
     },
-    native: {}
+    native: {},
+    instanceObjects: [],
+    objects: []
 };
 
 const _userObject: ioBroker.UserObject = {
