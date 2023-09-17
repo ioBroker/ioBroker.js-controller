@@ -3035,7 +3035,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 msg.callback && msg.from && sendTo(msg.from, msg.command, {}, msg.callback);
             } catch (error) {
                 logger.error(`${hostLogPrefix} Cannot write zip file as folder: ${error}`);
-                msg.callback && msg.from && sendTo(msg.from, msg.command, { error }, msg.callback);
+                msg.callback && msg.from && sendTo(msg.from, msg.command, { error: error?.toString() }, msg.callback);
             }
             break;
 
@@ -3110,7 +3110,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 msg.message.adapter,
                 Buffer.from(msg.message.data || '', 'base64'),
                 msg.message.options,
-                (error: any) => msg.callback && msg.from && sendTo(msg.from, msg.command, { error }, msg.callback)
+                (error: any) => msg.callback && msg.from && sendTo(msg.from, msg.command, { error: error?.toString() }, msg.callback)
             );
             break;
 
@@ -5662,7 +5662,7 @@ export function init(compactGroupId?: number): void {
             // We could not access logging directory - e.g. because of restored backup
             console.error(`Could not access logging directory "${e.path}", fallback to default`);
 
-            // read a fresh config to avoid overwriting e.g. noStdout
+            // read a fresh config to avoid overwriting e.g., noStdout
             const _config = getConfig();
             // persist the config to be fixed permanently
             const configFile = tools.getConfigFileName();
@@ -5679,7 +5679,7 @@ export function init(compactGroupId?: number): void {
                 `${hostLogPrefix} Your logging path "${e.path}" was invalid, it has been changed to "${fixedLogPath}"`
             );
         } else {
-            // without logger multiple things will have undefined behavior and probably more is wrong -> do not start
+            // without logger multiple things will have undefined behavior, and probably more is wrong -> do not start
             console.error(`Error initializing logger: ${e.stack}`);
             process.exit(EXIT_CODES.UNKNOWN_ERROR);
         }

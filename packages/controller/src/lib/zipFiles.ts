@@ -176,11 +176,12 @@ async function _writeOneFile(
     const parts = fName.split('/');
     parts.pop();
     return new Promise((resolve, reject) =>
-        _checkDir(objects, id, '', parts, options, () =>
+        _checkDir(objects, id, '', parts, options, () => {
+            delete options.virtualFile; // this attribute was added in _checkDir, so delete it by writing of the real files
             objects.writeFile(id, name + filename, data, options, err =>
                 _err || err ? reject(_err || err) : resolve()
-            )
-        )
+            );
+        })
     );
 }
 
