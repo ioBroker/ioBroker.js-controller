@@ -1459,11 +1459,9 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
                         : 0;
                 } catch {
                     logger.error(
-                        `${hostLogPrefix} Invalid versions: ${
-                            a && a.value && a.value.common ? a.value.common.installedVersion : '0.0.0'
-                        }[${a && a.value && a.value.common ? a.value.common.name : 'unknown'}] or ${
-                            b && b.value && b.value.common ? b.value.common.installedVersion : '0.0.0'
-                        }[${b && b.value && b.value.common ? b.value.common.name : 'unknown'}]`
+                        `${hostLogPrefix} Invalid versions: ${a?.value?.common?.installedVersion ?? '0.0.0'}[${
+                            a?.value?.common?.name ?? 'unknown'
+                        }] or ${b?.value?.common?.installedVersion ?? '0.0.0'}[${b?.value?.common?.name ?? 'unknown'}]`
                     );
                     return 0;
                 }
@@ -3038,7 +3036,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 msg.callback && msg.from && sendTo(msg.from, msg.command, {}, msg.callback);
             } catch (error) {
                 logger.error(`${hostLogPrefix} Cannot write zip file as folder: ${error}`);
-                msg.callback && msg.from && sendTo(msg.from, msg.command, { error: error?.toString() }, msg.callback);
+                msg.callback && msg.from && sendTo(msg.from, msg.command, { error }, msg.callback);
             }
             break;
 
@@ -3113,10 +3111,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 msg.message.adapter,
                 Buffer.from(msg.message.data || '', 'base64'),
                 msg.message.options,
-                (error: any) =>
-                    msg.callback &&
-                    msg.from &&
-                    sendTo(msg.from, msg.command, { error: error?.toString() }, msg.callback)
+                error => msg.callback && msg.from && sendTo(msg.from, msg.command, { error }, msg.callback)
             );
             break;
 
@@ -3475,7 +3470,7 @@ async function getInstances(): Promise<void> {
         }
 
         for (const instance of instances) {
-            // register all common fields; that may not be deleted, like "mobile" or "history"
+            // register all common fields that may not be deleted, like "mobile" or "history"
             if (instance.common.preserveSettings) {
                 objects!.addPreserveSettings(instance.common.preserveSettings);
             }
