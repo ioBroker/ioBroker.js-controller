@@ -295,7 +295,7 @@
 
 #### Defined in
 
-[types-dev/objects.d.ts:81](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L81)
+[types-dev/objects.d.ts:81](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L81)
 
 ___
 
@@ -305,7 +305,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:94](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L94)
+[types-dev/objects.d.ts:94](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L94)
 
 ___
 
@@ -317,7 +317,7 @@ All objects that usually appear in an adapter scope
 
 #### Defined in
 
-[types-dev/objects.d.ts:870](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L870)
+[types-dev/objects.d.ts:870](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L870)
 
 ___
 
@@ -327,7 +327,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:833](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L833)
+[types-dev/objects.d.ts:833](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L833)
 
 ___
 
@@ -337,7 +337,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:851](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L851)
+[types-dev/objects.d.ts:851](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L851)
 
 ___
 
@@ -355,7 +355,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L10)
+[types-dev/index.d.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L10)
 
 ___
 
@@ -379,7 +379,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:234](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L234)
+[adapter/src/lib/_Types.ts:234](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/_Types.ts#L234)
 
 ___
 
@@ -403,7 +403,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:4](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/validator.ts#L4)
+[adapter/src/lib/adapter/validator.ts:4](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/adapter/validator.ts#L4)
 
 ___
 
@@ -421,7 +421,7 @@ Infers the return type from a callback-style API and leaves null and undefined i
 
 #### Defined in
 
-[types-dev/index.d.ts:397](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L397)
+[types-dev/index.d.ts:397](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L397)
 
 ___
 
@@ -456,7 +456,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:71](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L71)
+[types-dev/objects.d.ts:71](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L71)
 
 ___
 
@@ -480,7 +480,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:218](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L218)
+[adapter/src/lib/_Types.ts:218](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/_Types.ts#L218)
 
 ___
 
@@ -505,7 +505,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:198](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L198)
+[adapter/src/lib/_Types.ts:198](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/_Types.ts#L198)
 
 ___
 
@@ -515,7 +515,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:171](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L171)
+[adapter/src/lib/_Types.ts:171](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/_Types.ts#L171)
 
 ___
 
@@ -540,7 +540,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:462](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L462)
+[types-dev/index.d.ts:462](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L462)
 
 ___
 
@@ -550,7 +550,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:61](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L61)
+[adapter/src/lib/_Types.ts:61](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/_Types.ts#L61)
 
 ___
 
@@ -560,7 +560,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:232](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L232)
+[adapter/src/lib/_Types.ts:232](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/_Types.ts#L232)
 
 ___
 
@@ -577,7 +577,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:227](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L227)
+[adapter/src/lib/_Types.ts:227](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/_Types.ts#L227)
 
 ___
 
@@ -591,7 +591,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:228](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L228)
+[adapter/src/lib/_Types.ts:228](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/_Types.ts#L228)
 
 ___
 
@@ -601,7 +601,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:154](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L154)
+[types-dev/objects.d.ts:154](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L154)
 
 ___
 
@@ -611,7 +611,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:89](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L89)
+[types-dev/objects.d.ts:89](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L89)
 
 ___
 
@@ -636,7 +636,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:414](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L414)
+[types-dev/index.d.ts:414](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L414)
 
 ___
 
@@ -646,7 +646,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:91](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L91)
+[types-dev/objects.d.ts:91](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L91)
 
 ___
 
@@ -664,7 +664,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:333](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L333)
+[types-dev/index.d.ts:333](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L333)
 
 ___
 
@@ -674,7 +674,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:262](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L262)
+[types-dev/index.d.ts:262](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L262)
 
 ___
 
@@ -684,7 +684,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:77](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L77)
+[types-dev/objects.d.ts:77](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L77)
 
 ___
 
@@ -694,7 +694,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:260](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L260)
+[types-dev/index.d.ts:260](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L260)
 
 ___
 
@@ -720,7 +720,7 @@ Special variant of ErrorCallback for methods where Node.js returns an ErrnoExcep
 
 #### Defined in
 
-[types-dev/index.d.ts:336](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L336)
+[types-dev/index.d.ts:336](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L336)
 
 ___
 
@@ -744,7 +744,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:334](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L334)
+[types-dev/index.d.ts:334](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L334)
 
 ___
 
@@ -768,7 +768,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:331](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L331)
+[types-dev/index.d.ts:331](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L331)
 
 ___
 
@@ -794,7 +794,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:328](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L328)
+[types-dev/index.d.ts:328](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L328)
 
 ___
 
@@ -820,7 +820,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:372](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L372)
+[types-dev/index.d.ts:372](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L372)
 
 ___
 
@@ -851,7 +851,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:338](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L338)
+[types-dev/index.d.ts:338](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L338)
 
 ___
 
@@ -876,7 +876,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:405](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L405)
+[types-dev/index.d.ts:405](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L405)
 
 ___
 
@@ -886,7 +886,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:406](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L406)
+[types-dev/index.d.ts:406](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L406)
 
 ___
 
@@ -912,7 +912,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:252](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L252)
+[adapter/src/lib/_Types.ts:252](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/_Types.ts#L252)
 
 ___
 
@@ -922,7 +922,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:258](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L258)
+[adapter/src/lib/_Types.ts:258](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/_Types.ts#L258)
 
 ___
 
@@ -947,7 +947,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:271](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L271)
+[adapter/src/lib/_Types.ts:271](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/_Types.ts#L271)
 
 ___
 
@@ -973,7 +973,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:352](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L352)
+[types-dev/index.d.ts:352](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L352)
 
 ___
 
@@ -998,7 +998,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:353](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L353)
+[types-dev/index.d.ts:353](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L353)
 
 ___
 
@@ -1008,7 +1008,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:359](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L359)
+[types-dev/index.d.ts:359](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L359)
 
 ___
 
@@ -1035,7 +1035,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:417](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L417)
+[types-dev/index.d.ts:417](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L417)
 
 ___
 
@@ -1045,7 +1045,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:416](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L416)
+[types-dev/index.d.ts:416](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L416)
 
 ___
 
@@ -1070,7 +1070,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:475](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L475)
+[types-dev/index.d.ts:475](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L475)
 
 ___
 
@@ -1101,7 +1101,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:346](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L346)
+[types-dev/index.d.ts:346](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L346)
 
 ___
 
@@ -1133,7 +1133,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:495](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L495)
+[types-dev/index.d.ts:495](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L495)
 
 ___
 
@@ -1143,7 +1143,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:499](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L499)
+[types-dev/index.d.ts:499](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L499)
 
 ___
 
@@ -1159,7 +1159,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:350](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L350)
+[types-dev/index.d.ts:350](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L350)
 
 ___
 
@@ -1191,7 +1191,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:483](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L483)
+[types-dev/index.d.ts:483](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L483)
 
 ___
 
@@ -1207,7 +1207,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:487](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L487)
+[types-dev/index.d.ts:487](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L487)
 
 ___
 
@@ -1232,7 +1232,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:361](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L361)
+[types-dev/index.d.ts:361](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L361)
 
 ___
 
@@ -1263,7 +1263,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:382](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L382)
+[types-dev/index.d.ts:382](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L382)
 
 ___
 
@@ -1294,7 +1294,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:364](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L364)
+[types-dev/index.d.ts:364](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L364)
 
 ___
 
@@ -1304,7 +1304,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:362](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L362)
+[types-dev/index.d.ts:362](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L362)
 
 ___
 
@@ -1320,7 +1320,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:368](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L368)
+[types-dev/index.d.ts:368](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L368)
 
 ___
 
@@ -1344,7 +1344,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L507)
+[types-dev/index.d.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L507)
 
 ___
 
@@ -1369,7 +1369,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:399](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L399)
+[types-dev/index.d.ts:399](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L399)
 
 ___
 
@@ -1379,7 +1379,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:400](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L400)
+[types-dev/index.d.ts:400](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L400)
 
 ___
 
@@ -1404,7 +1404,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:402](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L402)
+[types-dev/index.d.ts:402](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L402)
 
 ___
 
@@ -1414,7 +1414,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:403](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L403)
+[types-dev/index.d.ts:403](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L403)
 
 ___
 
@@ -1424,7 +1424,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:83](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L83)
+[types-dev/objects.d.ts:83](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L83)
 
 ___
 
@@ -1434,7 +1434,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:87](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L87)
+[types-dev/objects.d.ts:87](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L87)
 
 ___
 
@@ -1451,7 +1451,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:911](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L911)
+[types-dev/objects.d.ts:911](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L911)
 
 ___
 
@@ -1461,7 +1461,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:79](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L79)
+[types-dev/objects.d.ts:79](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L79)
 
 ___
 
@@ -1471,7 +1471,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:307](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L307)
+[types-dev/objects.d.ts:307](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L307)
 
 ___
 
@@ -1491,17 +1491,17 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:510](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L510)
+[types-dev/index.d.ts:510](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L510)
 
 ___
 
 ### Languages
 
-Ƭ **Languages**: ``"en"`` \| ``"de"`` \| ``"ru"`` \| ``"pt"`` \| ``"nl"`` \| ``"fr"`` \| ``"it"`` \| ``"es"`` \| ``"pl"`` \| ``"zh-cn"``
+Ƭ **Languages**: ``"en"`` \| ``"de"`` \| ``"ru"`` \| ``"pt"`` \| ``"nl"`` \| ``"fr"`` \| ``"it"`` \| ``"es"`` \| ``"pl"`` \| ``"uk"`` \| ``"zh-cn"``
 
 #### Defined in
 
-[types-dev/objects.d.ts:148](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L148)
+[types-dev/objects.d.ts:148](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L148)
 
 ___
 
@@ -1511,7 +1511,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:201](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L201)
+[types-dev/index.d.ts:201](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L201)
 
 ___
 
@@ -1521,7 +1521,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:173](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L173)
+[adapter/src/lib/_Types.ts:173](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/_Types.ts#L173)
 
 ___
 
@@ -1547,7 +1547,7 @@ Due to backward compatibility first param can be result or error
 
 #### Defined in
 
-[types-dev/index.d.ts:341](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L341)
+[types-dev/index.d.ts:341](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L341)
 
 ___
 
@@ -1571,7 +1571,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:329](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L329)
+[types-dev/index.d.ts:329](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L329)
 
 ___
 
@@ -1581,7 +1581,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:60](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L60)
+[adapter/src/lib/_Types.ts:60](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/_Types.ts#L60)
 
 ___
 
@@ -1591,7 +1591,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:60](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L60)
+[types-dev/objects.d.ts:60](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L60)
 
 ___
 
@@ -1601,7 +1601,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:68](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L68)
+[types-dev/objects.d.ts:68](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L68)
 
 ___
 
@@ -1619,7 +1619,7 @@ Infers the return type from a callback-style API and strips out null and undefin
 
 #### Defined in
 
-[types-dev/index.d.ts:392](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L392)
+[types-dev/index.d.ts:392](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L392)
 
 ___
 
@@ -1629,7 +1629,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:874](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L874)
+[types-dev/objects.d.ts:874](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L874)
 
 ___
 
@@ -1654,7 +1654,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:326](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L326)
+[types-dev/index.d.ts:326](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L326)
 
 ___
 
@@ -1671,7 +1671,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:113](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L113)
+[types-dev/objects.d.ts:113](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L113)
 
 ___
 
@@ -1683,7 +1683,7 @@ Defines the existing object types in ioBroker
 
 #### Defined in
 
-[types-dev/objects.d.ts:38](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L38)
+[types-dev/objects.d.ts:38](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L38)
 
 ___
 
@@ -1693,7 +1693,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:5](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/validator.ts#L5)
+[adapter/src/lib/adapter/validator.ts:5](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/adapter/validator.ts#L5)
 
 ___
 
@@ -1703,7 +1703,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:715](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L715)
+[types-dev/objects.d.ts:715](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L715)
 
 ___
 
@@ -1719,7 +1719,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:887](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L887)
+[types-dev/objects.d.ts:887](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L887)
 
 ___
 
@@ -1729,7 +1729,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:120](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L120)
+[adapter/src/lib/_Types.ts:120](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/_Types.ts#L120)
 
 ___
 
@@ -1739,7 +1739,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:6](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/validator.ts#L6)
+[adapter/src/lib/adapter/validator.ts:6](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/adapter/validator.ts#L6)
 
 ___
 
@@ -1749,7 +1749,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:264](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L264)
+[types-dev/index.d.ts:264](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L264)
 
 ___
 
@@ -1774,7 +1774,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L439)
+[types-dev/index.d.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L439)
 
 ___
 
@@ -1784,7 +1784,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:440](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L440)
+[types-dev/index.d.ts:440](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L440)
 
 ___
 
@@ -1810,7 +1810,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:442](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L442)
+[types-dev/index.d.ts:442](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L442)
 
 ___
 
@@ -1820,7 +1820,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:443](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L443)
+[types-dev/index.d.ts:443](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L443)
 
 ___
 
@@ -1838,7 +1838,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:325](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L325)
+[types-dev/index.d.ts:325](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L325)
 
 ___
 
@@ -1848,7 +1848,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:73](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L73)
+[types-dev/objects.d.ts:73](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L73)
 
 ___
 
@@ -1864,7 +1864,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:384](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L384)
+[types-dev/index.d.ts:384](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L384)
 
 ___
 
@@ -1874,7 +1874,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:36](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L36)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:36](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L36)
 
 ___
 
@@ -1884,7 +1884,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:89](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L89)
+[types-dev/index.d.ts:89](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L89)
 
 ___
 
@@ -1910,7 +1910,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:343](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L343)
+[types-dev/index.d.ts:343](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L343)
 
 ___
 
@@ -1920,7 +1920,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:344](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L344)
+[types-dev/index.d.ts:344](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L344)
 
 ___
 
@@ -1945,7 +1945,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:408](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L408)
+[types-dev/index.d.ts:408](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L408)
 
 ___
 
@@ -1971,7 +1971,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:411](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L411)
+[types-dev/index.d.ts:411](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L411)
 
 ___
 
@@ -1981,7 +1981,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:412](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L412)
+[types-dev/index.d.ts:412](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L412)
 
 ___
 
@@ -1991,7 +1991,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:409](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L409)
+[types-dev/index.d.ts:409](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L409)
 
 ___
 
@@ -2007,7 +2007,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:880](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L880)
+[types-dev/objects.d.ts:880](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L880)
 
 ___
 
@@ -2017,7 +2017,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:81](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L81)
+[types-dev/index.d.ts:81](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L81)
 
 ___
 
@@ -2027,7 +2027,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:75](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L75)
+[types-dev/objects.d.ts:75](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L75)
 
 ___
 
@@ -2052,7 +2052,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L327)
+[types-dev/index.d.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L327)
 
 ___
 
@@ -2062,7 +2062,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:50](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L50)
+[types-dev/index.d.ts:50](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L50)
 
 ___
 
@@ -2070,11 +2070,11 @@ ___
 
 Ƭ **StringOrTranslated**: `string` \| [`Translated`](internal_.md#translated)
 
-For objects we require the English language to be present
+For objects, we require the English language to be present
 
 #### Defined in
 
-[types-dev/objects.d.ts:152](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L152)
+[types-dev/objects.d.ts:152](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L152)
 
 ___
 
@@ -2084,7 +2084,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:509](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L509)
+[types-dev/index.d.ts:509](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L509)
 
 ___
 
@@ -2108,7 +2108,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:278](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L278)
+[adapter/src/lib/_Types.ts:278](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/_Types.ts#L278)
 
 ___
 
@@ -2118,7 +2118,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:149](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L149)
+[types-dev/objects.d.ts:149](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L149)
 
 ___
 
@@ -2142,7 +2142,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:330](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/index.d.ts#L330)
+[types-dev/index.d.ts:330](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/index.d.ts#L330)
 
 ___
 
@@ -2152,7 +2152,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:85](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L85)
+[types-dev/objects.d.ts:85](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L85)
 
 ___
 
@@ -2187,7 +2187,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:106](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L106)
+[adapter/src/lib/_Types.ts:106](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/_Types.ts#L106)
 
 ___
 
@@ -2211,7 +2211,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:71](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L71)
+[adapter/src/lib/_Types.ts:71](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/_Types.ts#L71)
 
 ___
 
@@ -2235,7 +2235,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:102](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L102)
+[adapter/src/lib/_Types.ts:102](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/_Types.ts#L102)
 
 ___
 
@@ -2245,7 +2245,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:62](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L62)
+[adapter/src/lib/_Types.ts:62](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/_Types.ts#L62)
 
 ___
 
@@ -2255,7 +2255,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:87](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L87)
+[adapter/src/lib/_Types.ts:87](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/_Types.ts#L87)
 
 ___
 
@@ -2271,7 +2271,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:82](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/adapter/src/lib/_Types.ts#L82)
+[adapter/src/lib/_Types.ts:82](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/adapter/src/lib/_Types.ts#L82)
 
 ___
 
@@ -2281,4 +2281,4 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:434](https://github.com/ioBroker/ioBroker.js-controller/blob/58a732de/packages/types-dev/objects.d.ts#L434)
+[types-dev/objects.d.ts:434](https://github.com/ioBroker/ioBroker.js-controller/blob/b9cc8f0d/packages/types-dev/objects.d.ts#L434)
