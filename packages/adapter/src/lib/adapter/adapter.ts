@@ -12178,8 +12178,10 @@ export class AdapterClass extends EventEmitter {
         };
 
         this.pluginHandler = new PluginHandler(pluginSettings);
-        if (this.ioPack?.common) {
+        try {
             this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, __dirname]); // first resolve from adapter directory, else from js-controller
+        } catch (e) {
+            this._logger.error(`Could not add plugins: ${e.message}`);
         }
         // finally init
         _initDBs();
