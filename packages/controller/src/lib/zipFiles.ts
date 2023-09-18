@@ -133,26 +133,38 @@ export async function readDirAsZip(
     });
 }
 
-function _checkDir(
-    objects: ObjectsClient,
-    id: string,
-    root: string,
-    parts: string[],
-    options: any,
-    callback: () => void
-): void {
-    if (!parts || !parts.length) {
-        callback();
+interface CheckDirOptions {
+    objects: ObjectsClient;
+    id: string;
+    root: string;
+    parts: string[];
+    options: any;
+}
+
+/**
+ * Check that directory exists recursive
+ *
+ * @param _options directory information and objects db
+ */
+async function _checkDir(_options: CheckDirOptions): Promise<void> {
+    const { parts, id, options, objects } = _options;
+    let { root } = _options;
+
+    if (!parts?.length) {
         return;
     }
+
     root += '/' + parts.shift();
-    objects.readDir(id, root, options, (err, _files) => {
-        if (err?.message === tools.ERRORS.ERROR_NOT_FOUND) {
-            objects.mkdir(id, root, options, _err => _checkDir(objects, id, root, parts, options, callback));
-        } else {
-            _checkDir(objects, id, root, parts, options, callback);
+
+    try {
+        await objects.readDirAsync(id, root, options);
+    } catch (e) {
+        if (e.message === tools.ERRORS.ERROR_NOT_FOUND) {
+            await objects.mkdirAsync(id, root, options);
         }
-    });
+    }
+
+    return _checkDir({ id, objects, options, root, parts });
 }
 
 async function _writeOneFile(
@@ -164,24 +176,16 @@ async function _writeOneFile(
     options: any
 ): Promise<void> {
     let data = await zip.files[filename].async('nodebuffer');
-    let _err: Error;
+
     if (options.parse) {
-        try {
-            data = options.parse(name, filename, data, options ? options.settings : null);
-        } catch (e) {
-            _err = e;
-        }
+        data = options.parse(name, filename, data, options ? options.settings : null);
     }
     const fName = name + filename;
     const parts = fName.split('/');
     parts.pop();
-    return new Promise((resolve, reject) =>
-        _checkDir(objects, id, '', parts, options, () =>
-            objects.writeFile(id, name + filename, data, options, err =>
-                _err || err ? reject(_err || err) : resolve()
-            )
-        )
-    );
+
+    await _checkDir({ objects, id, root: '', parts, options });
+    return objects.writeFileAsync(id, name + filename, data, options);
 }
 
 export async function writeDirAsZip(
