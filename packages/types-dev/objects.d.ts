@@ -145,10 +145,10 @@ declare global {
                 ? ioBroker.Object
                 : AnyObject;
 
-        type Languages = 'en' | 'de' | 'ru' | 'pt' | 'nl' | 'fr' | 'it' | 'es' | 'pl' | 'zh-cn';
+        type Languages = 'en' | 'de' | 'ru' | 'pt' | 'nl' | 'fr' | 'it' | 'es' | 'pl' | 'uk' | 'zh-cn';
         type Translated = { en: string } & { [lang in Languages]?: string };
 
-        /** For objects we require the English language to be present */
+        /** For objects, we require the English language to be present */
         type StringOrTranslated = string | Translated;
 
         type CommonType = 'number' | 'string' | 'boolean' | 'array' | 'object' | 'mixed' | 'file';
