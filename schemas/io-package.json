@@ -115,7 +115,7 @@
           "$ref": "#/definitions/multilingual"
         },
         "messagebox": {
-          "description": "true if messagebox supported. Hence, the adapter can receive sendTo messages. Up from controller v5, please use common.supportedMessages.notifications.custom = true",
+          "description": "true if messagebox supported. Hence, the adapter can receive sendTo messages. Up from controller v5, please use common.supportedMessages.custom = true",
           "type": "boolean"
         },
         "blockedVersions": {
