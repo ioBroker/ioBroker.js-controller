@@ -2005,9 +2005,8 @@ export class ObjectsInRedisClient {
                 if (!options.acl.file.write) {
                     return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
                 } else {
-                    // we create a dummy file (for file this file exists to store meta data)
-                    options = options || {};
-                    options.virtualFile = true; // this is a virtual File
+                    // we create a dummy file (for file this file exists to store meta data) - do not override passed options
+                    options = { ...options, virtualFile: true };
                     const realName = dirName + (dirName!.endsWith('/') ? '' : '/');
                     this.writeFile(id, `${realName}_data.json`, '', options, callback);
                 }
