@@ -291,6 +291,8 @@ declare global {
         interface EnumCommon extends ObjectCommon {
             /** The IDs of the enum members */
             members?: string[];
+            /** Color attribute used in UI */
+            color?: string;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
