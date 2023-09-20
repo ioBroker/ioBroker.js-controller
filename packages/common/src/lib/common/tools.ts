@@ -1525,7 +1525,7 @@ export async function sendDiagInfo(obj: Record<string, any>): Promise<void> {
  */
 export function getAdapterDir(adapter: string): string | null {
     // snip off 'iobroker.'
-    if (adapter.toLowerCase().startsWith(appName.toLowerCase() + '.')) {
+    if (adapter.toLowerCase().startsWith(`${appNameLowerCase}.`)) {
         adapter = adapter.substring(appName.length + 1);
     }
     // snip off instance id
