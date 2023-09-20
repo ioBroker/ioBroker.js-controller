@@ -11885,7 +11885,7 @@ export class AdapterClass extends EventEmitter {
         // give it a chance to handle the error itself instead of restarting it
         if (typeof this._options.error === 'function') {
             try {
-                // if error handler in the adapter returned exactly true,
+                // if the error handler in the adapter returned exactly true,
                 // we expect the error to be handled and do nothing more
                 const wasHandled = this._options.error(err);
                 if (wasHandled === true) {
@@ -12178,8 +12178,11 @@ export class AdapterClass extends EventEmitter {
         };
 
         this.pluginHandler = new PluginHandler(pluginSettings);
-        this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, __dirname]); // first resolve from adapter directory, else from js-controller
-
+        try {
+            this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, __dirname]); // first resolve from adapter directory, else from js-controller
+        } catch (e) {
+            this._logger.error(`Could not add plugins: ${e.message}`);
+        }
         // finally init
         _initDBs();
     }

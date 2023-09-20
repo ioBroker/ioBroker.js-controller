@@ -148,6 +148,9 @@ export class BackupRestore {
         }
     }
 
+    /**
+     * Get the directory where backups should be stored
+     */
     static getBackupDir(): string {
         return path.join(tools.getRootDir(), 'backups/').replace(/\\/g, '/');
     }
