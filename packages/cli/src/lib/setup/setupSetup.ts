@@ -309,7 +309,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                         const dateCertStart = cert.validityNotBefore.getTime();
                         const dateCertEnd = cert.validityNotAfter.getTime();
 
-                        // check, if certificate is invalid (too old, longer then 825 days or keylength too short)
+                        // check if the certificate is invalid (too old, longer then 825 days or key length too short)
                         if (
                             dateCertEnd <= Date.now() ||
                             cert.keyLength < 2048 ||

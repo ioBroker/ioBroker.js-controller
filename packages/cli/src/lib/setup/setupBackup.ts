@@ -149,13 +149,7 @@ export class BackupRestore {
     }
 
     static getBackupDir(): string {
-        const dataDir = path.join(controllerDir, tools.getDefaultDataDir()).replace(/\\/g, '/');
-
-        const parts = dataDir.split('/');
-        parts.pop(); // remove data or appName-data
-        parts.pop();
-
-        return path.normalize(`${parts.join('/')}/backups/`);
+        return path.join(tools.getRootDir(), 'backups/').replace(/\\/g, '/');
     }
 
     copyFileSync(source: string, target: string): void {

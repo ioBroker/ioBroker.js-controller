@@ -1978,7 +1978,7 @@ export const MAX_CERT_VALIDITY = 365 * 24 * 60 * 60 * 1_000;
  * Returns default SSL certificates (private and public)
  *
  *
- *  Following info will be returned:
+ *  The following info will be returned:
  *     - defaultPrivate: private RSA key
  *     - defaultPublic: public certificate
  *
@@ -2174,7 +2174,7 @@ export function getControllerDir(): string {
                 paths: getDefaultRequireResolvePaths(module)
             });
             if (fs.existsSync(possiblePath)) {
-                return path.dirname(possiblePath);
+                return path.dirname(possiblePath).replace(/\\/g, '/');
             }
         } catch {
             /* not found */
@@ -2191,14 +2191,14 @@ export function getControllerDir(): string {
             try {
                 const possiblePath = path.join(checkPath, pkg);
                 if (fs.existsSync(path.join(possiblePath, `${appNameLowerCase}.js`))) {
-                    return possiblePath;
+                    return possiblePath.replace(/\\/g, '/');
                 }
             } catch {
                 // not found, continue with next possibility
             }
         }
 
-        // Controller not found here - go to the parent dir
+        // Controller isn't found here - go to the parent dir
         const newPath = path.dirname(checkPath);
         if (newPath === checkPath) {
             // We already reached the root dir, abort
@@ -2214,7 +2214,7 @@ export function getControllerDir(): string {
  * Get the root dir of the ioBroker installation
  */
 export function getRootDir(): string {
-    return path.join(getControllerDir(), '..', '..');
+    return path.join(getControllerDir(), '..', '..').replace(/\\/g, '/');
 }
 
 /** Returns whether the current process is executed via dev-server */
