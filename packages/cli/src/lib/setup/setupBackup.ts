@@ -152,7 +152,7 @@ export class BackupRestore {
      * Get the directory where backups should be stored
      */
     static getBackupDir(): string {
-        return path.join(tools.getRootDir(), 'backups/').replace(/\\/g, '/');
+        return path.join(tools.getRootDir(), 'backups/');
     }
 
     copyFileSync(source: string, target: string): void {
@@ -634,7 +634,7 @@ export class BackupRestore {
                     console.error(`Error: ${err}`);
                 }
             } else {
-                const parts = uploadPath.replace(/\\/g, '/').split('/');
+                const parts = uploadPath.split('/');
                 const adapter = parts.splice(0, 2)[1];
                 const _path = `${parts.join('/')}/${file}`;
                 console.log(`host.${this.hostname} Upload user file "${adapter}/${_path}`);

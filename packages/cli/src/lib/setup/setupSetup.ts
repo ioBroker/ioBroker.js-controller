@@ -1167,7 +1167,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                         .replace(/\\/g, '/')
                         .includes(`node_modules/${tools.appName.toLowerCase()}.js-controller`)
                 ) {
-                    const parts = config.dataDir.replace(/\\/g, '/').split('/');
+                    const parts = config.dataDir.split('/');
                     // Remove appName-data/
                     parts.pop();
                     parts.pop();

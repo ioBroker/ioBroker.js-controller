@@ -2174,7 +2174,7 @@ export function getControllerDir(): string {
                 paths: getDefaultRequireResolvePaths(module)
             });
             if (fs.existsSync(possiblePath)) {
-                return path.dirname(possiblePath).replace(/\\/g, '/');
+                return path.dirname(possiblePath);
             }
         } catch {
             /* not found */
@@ -2191,7 +2191,7 @@ export function getControllerDir(): string {
             try {
                 const possiblePath = path.join(checkPath, pkg);
                 if (fs.existsSync(path.join(possiblePath, `${appNameLowerCase}.js`))) {
-                    return possiblePath.replace(/\\/g, '/');
+                    return possiblePath;
                 }
             } catch {
                 // not found, continue with next possibility
@@ -2214,7 +2214,7 @@ export function getControllerDir(): string {
  * Get the root dir of the ioBroker installation
  */
 export function getRootDir(): string {
-    return path.join(getControllerDir(), '..', '..').replace(/\\/g, '/');
+    return path.join(getControllerDir(), '..', '..');
 }
 
 /** Returns whether the current process is executed via dev-server */
