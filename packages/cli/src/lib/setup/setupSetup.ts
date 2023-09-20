@@ -1130,7 +1130,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
 
         const configFileName = tools.getConfigFileName();
 
-        // only change config if non existing - else setup custom has to be used
+        // only change config if non-existing - else setup custom has to be used
         if (!fs.existsSync(configFileName)) {
             isCreated = true;
             config = fs.readJsonSync(path.join(CONTROLLER_DIR, 'conf', `${tools.appName.toLowerCase()}-dist.json`));
@@ -1167,7 +1167,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                         .replace(/\\/g, '/')
                         .includes(`node_modules/${tools.appName.toLowerCase()}.js-controller`)
                 ) {
-                    const parts = config.dataDir.split('/');
+                    const parts = config.dataDir.replace(/\\/g, '/').split('/');
                     // Remove appName-data/
                     parts.pop();
                     parts.pop();

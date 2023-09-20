@@ -2277,7 +2277,7 @@ export function getConfigFileName(): string {
     let configDir = __dirname.replace(/\\/g, '/');
     const configParts = configDir.split('/');
 
-    // if debugging with npm5 -> node_modules on e.g. /opt/node_modules
+    // if debugging with npm5 -> node_modules on e.g., /opt/node_modules
     if (
         fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${appNameLowerCase}.js-controller`) ||
         fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${appName}.js-controller`)

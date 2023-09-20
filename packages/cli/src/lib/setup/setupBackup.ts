@@ -149,7 +149,7 @@ export class BackupRestore {
     }
 
     static getBackupDir(): string {
-        const dataDir = path.join(controllerDir, tools.getDefaultDataDir());
+        const dataDir = path.join(controllerDir, tools.getDefaultDataDir()).replace(/\\/g, '/');
 
         const parts = dataDir.split('/');
         parts.pop(); // remove data or appName-data
@@ -637,7 +637,7 @@ export class BackupRestore {
                     console.error(`Error: ${err}`);
                 }
             } else {
-                const parts = uploadPath.split('/');
+                const parts = uploadPath.replace(/\\/g, '/').split('/');
                 const adapter = parts.splice(0, 2)[1];
                 const _path = `${parts.join('/')}/${file}`;
                 console.log(`host.${this.hostname} Upload user file "${adapter}/${_path}`);
