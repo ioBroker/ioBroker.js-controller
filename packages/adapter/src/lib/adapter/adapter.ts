@@ -10043,7 +10043,11 @@ export class AdapterClass extends EventEmitter {
      */
     setForeignBinaryState(id: unknown, binary: unknown, options: unknown, callback?: unknown): any {
         this._logger.info(
-            `${this.namespaceLog} Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files`
+            `${
+                this.namespaceLog
+            } Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files (${
+                id as string
+            })`
         );
 
         if (typeof options === 'function') {
@@ -10208,7 +10212,11 @@ export class AdapterClass extends EventEmitter {
      */
     getForeignBinaryState(id: unknown, options: unknown, callback?: unknown): any {
         this._logger.info(
-            `${this.namespaceLog} Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files`
+            `${
+                this.namespaceLog
+            } Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files (${
+                id as string
+            })`
         );
 
         if (typeof options === 'function') {
@@ -10309,7 +10317,11 @@ export class AdapterClass extends EventEmitter {
      */
     delForeignBinaryState(id: unknown, options: unknown, callback?: unknown): any {
         this._logger.info(
-            `${this.namespaceLog} Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files`
+            `${
+                this.namespaceLog
+            } Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files (${
+                id as string
+            })`
         );
 
         if (typeof options === 'function') {
