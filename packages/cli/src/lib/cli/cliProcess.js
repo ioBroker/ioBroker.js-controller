@@ -353,13 +353,13 @@ function setupDaemonize() {
     }
     const startObj = {
         main: path.join(rootDir, 'controller.js'),
-        name: tools.appName + ' controller',
-        pidfile: path.join(rootDir, tools.appName + '.pid'),
+        name: `${tools.appName} controller`,
+        pidfile: path.join(rootDir, `${tools.appName}.pid`),
         cwd: rootDir,
         stopTimeout: 6000
     };
     if (memoryLimitMB) {
-        startObj.args = '--max-old-space-size=' + memoryLimitMB;
+        startObj.args = `--max-old-space-size=${memoryLimitMB}`;
     }
 
     const daemon = require('daemonize2').setup(startObj);
