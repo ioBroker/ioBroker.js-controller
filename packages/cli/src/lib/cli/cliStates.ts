@@ -129,10 +129,13 @@ export class CLIStates extends CLICommand {
      * @param args
      */
     private _getBinary(args: any[]): void {
-        console.warn('Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files');
-
         const { callback, dbConnect } = this.options;
         const id = args[1];
+
+        console.warn(
+            `Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files (${id})`
+        );
+
         dbConnect(async params => {
             const { states } = params;
 
