@@ -237,7 +237,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         const id = `${context.adapterShortName}.0.${gid}`;
 
         // add the state to the enum, so we can check enum functionality
-        await context.adapter.addStateToEnumAsync('enum.rooms', 'kitchen', '', '', `${gid}`);
+        await context.adapter.addStateToEnumAsync('enum.rooms', 'kitchen', '', '', gid);
 
         // when no argument is provided, all enums should be taken into account
         const objs = await context.adapter.getForeignObjects([id]);
