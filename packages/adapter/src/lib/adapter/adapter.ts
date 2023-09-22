@@ -177,7 +177,7 @@ export interface AdapterClass {
     /** Returns the enum tree, filtered by the optional enum name */
     getEnumAsync(name: string, options?: unknown): Promise<{ result: Record<string, any>; requestEnum: string }>;
     /** Returns the enum tree, filtered by the optional enum name */
-    getEnumsAsync(enumList: ioBroker.EnumList, options?: unknown): ioBroker.GetEnumsPromise;
+    getEnumsAsync(enumList?: ioBroker.EnumList, options?: unknown): ioBroker.GetEnumsPromise;
     /** Deletes an object from the object db */
     delObjectAsync(id: string, options?: ioBroker.DelObjectOptions): Promise<void>;
     /** Deletes an object (which might not belong to this adapter) from the object db */
@@ -3895,7 +3895,7 @@ export class AdapterClass extends EventEmitter {
         if (!_enum.startsWith('enum.')) {
             _enum = `enum.${_enum}`;
         }
-        const result: Record<string, ioBroker.Enum> = {};
+        const result: Record<string, ioBroker.EnumObject> = {};
 
         adapterObjects.getObjectView(
             'system',
@@ -3970,10 +3970,10 @@ export class AdapterClass extends EventEmitter {
         _enumList: unknown,
         options?: unknown,
         callback?: unknown
-    ): Promise<{ [groupName: string]: Record<string, ioBroker.Enum> } | void> {
+    ): Promise<{ [groupName: string]: Record<string, ioBroker.EnumObject> } | void> {
         if (typeof _enumList === 'function') {
             callback = _enumList;
-            _enumList = null;
+            _enumList = undefined;
         }
         if (typeof options === 'function') {
             callback = options;
@@ -3985,12 +3985,12 @@ export class AdapterClass extends EventEmitter {
             Validator.assertObject(options, 'options');
         }
 
-        return this._getEnums({ _enumList: _enumList as ioBroker.EnumList, options, callback });
+        return this._getEnums({ _enumList: _enumList as ioBroker.EnumList | undefined, options, callback });
     }
 
     private async _getEnums(
         _options: InternalGetEnumsOptions
-    ): Promise<{ [groupName: string]: Record<string, ioBroker.Enum> } | void> {
+    ): Promise<{ [groupName: string]: Record<string, ioBroker.EnumObject> } | void> {
         const { options, callback } = _options;
         let { _enumList } = _options;
 
@@ -4000,7 +4000,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         const _enums: {
-            [groupName: string]: Record<string, ioBroker.Enum>;
+            [groupName: string]: Record<string, ioBroker.EnumObject>;
         } = {};
         if (_enumList) {
             if (typeof _enumList === 'string') {
@@ -4045,7 +4045,7 @@ export class AdapterClass extends EventEmitter {
                         return tools.maybeCallbackWithError(callback, err);
                     }
                     const result: {
-                        [groupName: string]: Record<string, ioBroker.Enum>;
+                        [groupName: string]: Record<string, ioBroker.EnumObject>;
                     } = {};
                     if (res?.rows) {
                         for (const row of res.rows) {
@@ -4151,7 +4151,7 @@ export class AdapterClass extends EventEmitter {
 
         if (typeof enums === 'function') {
             callback = enums;
-            enums = null;
+            enums = undefined;
         }
         if (typeof type === 'function') {
             callback = type;
@@ -4163,7 +4163,7 @@ export class AdapterClass extends EventEmitter {
         }
         if (typeof enums === 'object' && !Array.isArray(enums)) {
             options = enums;
-            enums = null;
+            enums = undefined;
         }
 
         Validator.assertOptionalCallback(callback, 'callback');
@@ -4181,7 +4181,7 @@ export class AdapterClass extends EventEmitter {
         return this._getForeignObjects({
             pattern,
             type,
-            enums: enums as ioBroker.EnumList | undefined | null,
+            enums: enums as ioBroker.EnumList | undefined,
             options,
             callback
         });
@@ -4227,12 +4227,10 @@ export class AdapterClass extends EventEmitter {
 
         // don't forget, that enums returns names in row[x].id and not IDs, you can find id in rows[x].value._id
         let _enums;
-        if (enums) {
-            try {
-                _enums = await this.getEnumsAsync(enums, null);
-            } catch (e) {
-                this._logger.warn(`Cannot get enums on getForeignObjects: ${e.message}`);
-            }
+        try {
+            _enums = await this.getEnumsAsync(enums);
+        } catch (e) {
+            this._logger.warn(`Cannot get enums on getForeignObjects: ${e.message}`);
         }
 
         const list: Record<string, any> = {};
@@ -4261,17 +4259,17 @@ export class AdapterClass extends EventEmitter {
 
                 list[id].enums = {};
                 for (const _enum of Object.values(_enums)) {
-                    for (const e of Object.keys(_enum)) {
-                        if (!_enum[e]?.common?.members) {
+                    for (const [enumID, enumObj] of Object.entries(_enum)) {
+                        if (!enumObj?.common?.members) {
                             continue;
                         }
 
                         if (
-                            _enum[e].common.members.includes(id) ||
-                            _enum[e].common.members.includes(channel) ||
-                            _enum[e].common.members.includes(device)
+                            enumObj.common.members.includes(id) ||
+                            enumObj.common.members.includes(channel) ||
+                            enumObj.common.members.includes(device)
                         ) {
-                            list[id].enums[e] = _enum[e].common.name;
+                            list[id].enums[enumID] = enumObj.common.name;
                         }
                     }
                 }

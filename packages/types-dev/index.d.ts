@@ -259,8 +259,6 @@ declare global {
 
         type EnumList = string | string[];
 
-        type Enum = any; // TODO: implement this
-
         type Plugin = Record<string, any>; // TODO: Add definition
 
         interface DirectoryEntry {
@@ -349,11 +347,11 @@ declare global {
         ) => void;
         type GetObjectPromise<T extends string = string> = Promise<CallbackReturnTypeOf<GetObjectCallback<T>>>;
 
-        type GetEnumCallback = (err?: Error | null, enums?: Record<string, Enum>, requestedEnum?: string) => void;
+        type GetEnumCallback = (err?: Error | null, enums?: Record<string, EnumObject>, requestedEnum?: string) => void;
         type GetEnumsCallback = (
             err?: Error | null,
             result?: {
-                [groupName: string]: Record<string, Enum>;
+                [groupName: string]: Record<string, EnumObject>;
             }
         ) => void;
         type GetEnumsPromise = Promise<NonNullCallbackReturnTypeOf<GetEnumsCallback>>;

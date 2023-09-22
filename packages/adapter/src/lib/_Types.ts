@@ -305,7 +305,7 @@ export interface InternalGetHistoryOptions {
 export interface InternalGetObjectsOptions {
     pattern: Pattern;
     type?: string;
-    enums?: ioBroker.EnumList | null;
+    enums?: ioBroker.EnumList;
     options?: Record<string, any> | null;
     callback?: ioBroker.GetObjectsCallbackTyped<any>;
 }

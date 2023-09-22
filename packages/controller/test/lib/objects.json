@@ -107,7 +107,6 @@
                 "de": "Die Liste von Räumen",
                 "ru": "Список комнат"
             },
-            "members": [],
             "object-non-deletable": true
         },
         "type": "enum",
@@ -115,6 +114,33 @@
             "owner": "system.user.admin",
             "ownerGroup": "system.group.administrator",
             "object": 1911
+        }
+    },
+    "enum.rooms.kitchen": {
+        "_id": "enum.rooms.kitchen",
+        "type": "enum",
+        "common": {
+            "name": {
+                "en": "Kitchen",
+                "ru": "Кухня",
+                "de": "Küche",
+                "fr": "Cuisine",
+                "it": "Cucina",
+                "nl": "Keuken",
+                "pl": "Kuchnia",
+                "pt": "Cozinha",
+                "es": "Cocina",
+                "zh-cn": "厨房"
+            },
+            "color": "",
+            "desc": "",
+            "members": []
+        },
+        "native": {},
+        "acl": {
+            "object": 1636,
+            "owner": "system.user.admin",
+            "ownerGroup": "system.group.administrator"
         }
     },
     "system.group.user": {
