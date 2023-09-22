@@ -3313,9 +3313,9 @@ export class ObjectsInRedisClient {
         return tools.maybeCallbackWithError(callback, null, result);
     }
 
-    getObjects(keys: string[], callback: (err?: Error | null, objs?: ioBroker.AnyObject[]) => void): void;
     // No callback provided, we return a Promise
     getObjects(keys: string[], options?: CallOptions | null): Promise<ioBroker.AnyObject[]>;
+    getObjects(keys: string[], callback: (err?: Error | null, objs?: ioBroker.AnyObject[]) => void): void;
     // Callback provided, thus we call it
     getObjects(
         keys: string[],

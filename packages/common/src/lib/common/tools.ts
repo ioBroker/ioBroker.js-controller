@@ -1978,7 +1978,7 @@ export const MAX_CERT_VALIDITY = 365 * 24 * 60 * 60 * 1_000;
  * Returns default SSL certificates (private and public)
  *
  *
- *  Following info will be returned:
+ *  The following info will be returned:
  *     - defaultPrivate: private RSA key
  *     - defaultPublic: public certificate
  *
@@ -2198,7 +2198,7 @@ export function getControllerDir(): string {
             }
         }
 
-        // Controller not found here - go to the parent dir
+        // Controller isn't found here - go to the parent dir
         const newPath = path.dirname(checkPath);
         if (newPath === checkPath) {
             // We already reached the root dir, abort
@@ -2277,7 +2277,7 @@ export function getConfigFileName(): string {
     let configDir = __dirname.replace(/\\/g, '/');
     const configParts = configDir.split('/');
 
-    // if debugging with npm5 -> node_modules on e.g. /opt/node_modules
+    // if debugging with npm5 -> node_modules on e.g., /opt/node_modules
     if (
         fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${appNameLowerCase}.js-controller`) ||
         fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${appName}.js-controller`)
