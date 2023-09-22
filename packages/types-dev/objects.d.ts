@@ -648,7 +648,7 @@ declare global {
             // without bugging users to change their code --> https://github.com/microsoft/TypeScript/issues/15300
             native: Record<string, any>;
             common: Record<string, any>;
-            enums?: Record<string, string>;
+            enums?: Record<string, string | Translated>;
             acl?: ObjectACL;
             from?: string;
             /** The user who created or updated this object */
@@ -663,6 +663,7 @@ declare global {
             common: StateCommon;
             acl?: StateACL;
         }
+
         interface PartialStateObject extends Partial<Omit<StateObject, 'common' | 'acl'>> {
             common?: Partial<StateCommon>;
             acl?: Partial<StateACL>;
