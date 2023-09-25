@@ -2257,25 +2257,26 @@ export function getConfigFileName(): string {
         return path.join(envDataDir, `${appNameLowerCase}.json`);
     }
 
-    let devConfigDir;
+    const controllerDir = getControllerDir();
+    const fallbackConfigFile = path.join(controllerDir, 'data', `${appNameLowerCase}.json`);
 
     if (_isDevInstallation()) {
-        const controllerDir = getControllerDir();
+        const devConfigFile = path.join(controllerDir, 'conf', `${appNameLowerCase}.json`);
 
-        if (fs.existsSync(path.join(controllerDir, 'conf', `${appNameLowerCase}.json`))) {
-            return path.join(controllerDir, 'conf', `${appNameLowerCase}.json`);
-        } else if (fs.existsSync(path.join(controllerDir, 'data', `${appNameLowerCase}.json`))) {
-            return path.join(controllerDir, 'data', `${appNameLowerCase}.json`);
+        if (fs.existsSync(devConfigFile)) {
+            return devConfigFile;
+        } else if (fs.existsSync(fallbackConfigFile)) {
+            return fallbackConfigFile;
         }
     }
 
-    const prodConfigFilePath = path.join(getRootDir(), `${appNameLowerCase}-data`, `${appNameLowerCase}.json`);
+    const prodConfigFile = path.join(getRootDir(), `${appNameLowerCase}-data`, `${appNameLowerCase}.json`);
 
-    if (!fs.existsSync(prodConfigFilePath) && devConfigDir) {
-        return path.join(devConfigDir, 'data', `${appNameLowerCase}.json`);
+    if (!fs.existsSync(prodConfigFile)) {
+        return fallbackConfigFile;
     }
 
-    return prodConfigFilePath;
+    return prodConfigFile;
 }
 
 /**
