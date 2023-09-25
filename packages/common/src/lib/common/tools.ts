@@ -2260,17 +2260,12 @@ export function getConfigFileName(): string {
     let devConfigDir;
 
     if (_isDevInstallation()) {
-        devConfigDir = __dirname.replace(/\\/g, '/');
-        const devConfigParts = devConfigDir.split('/');
+        const controllerDir = getControllerDir();
 
-        // dev install -> Remove /lib
-        devConfigParts.splice(devConfigParts.length - 4, 4);
-        devConfigDir = devConfigParts.join('/');
-        devConfigDir += '/controller'; // go inside controller dir
-        if (fs.existsSync(`${devConfigDir}/conf/${appNameLowerCase}.json`)) {
-            return `${devConfigDir}/conf/${appNameLowerCase}.json`;
-        } else if (fs.existsSync(`${devConfigDir}/data/${appNameLowerCase}.json`)) {
-            return `${devConfigDir}/data/${appNameLowerCase}.json`;
+        if (fs.existsSync(path.join(controllerDir, 'conf', `${appNameLowerCase}.json`))) {
+            return path.join(controllerDir, 'conf', `${appNameLowerCase}.json`);
+        } else if (fs.existsSync(path.join(controllerDir, 'data', `${appNameLowerCase}.json`))) {
+            return path.join(controllerDir, 'data', `${appNameLowerCase}.json`);
         }
     }
 
