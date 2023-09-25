@@ -2274,28 +2274,13 @@ export function getConfigFileName(): string {
         }
     }
 
-    let configDir = __dirname.replace(/\\/g, '/');
-    const configParts = configDir.split('/');
+    const prodConfigFilePath = path.join(getRootDir(), `${appNameLowerCase}-data`, `${appNameLowerCase}.json`);
 
-    // if debugging with npm5 -> node_modules on e.g., /opt/node_modules
-    if (
-        fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${appNameLowerCase}.js-controller`) ||
-        fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${appName}.js-controller`)
-    ) {
-        // remove /node_modules/' + appName + '.js-controller/lib
-        configParts.splice(configParts.length - 8, 8);
-        configDir = configParts.join('/');
-    } else {
-        // If installed with npm -> remove node_modules/@iobroker/js-controller-common/src/lib/common
-        configParts.splice(configParts.length - 6, 6);
-        configDir = configParts.join('/');
+    if (!fs.existsSync(prodConfigFilePath) && devConfigDir) {
+        return path.join(devConfigDir, 'data', `${appNameLowerCase}.json`);
     }
 
-    if (!fs.existsSync(`${configDir}/${appNameLowerCase}-data/${appNameLowerCase}.json`) && devConfigDir) {
-        return `${devConfigDir}/data/${appNameLowerCase}.json`;
-    }
-
-    return `${configDir}/${appNameLowerCase}-data/${appNameLowerCase}.json`;
+    return prodConfigFilePath;
 }
 
 /**
@@ -2378,7 +2363,7 @@ export function promisify(
  * @param context (optional) The context (value of `this` to bind the function to)
  * @param returnArgNames (optional) If the callback contains multiple arguments,
  * you can combine them into one object by passing the names as an array.
- * Otherwise the Promise will resolve with an array
+ * Otherwise, the Promise will resolve with an array
  */
 export function promisifyNoError(
     fn: (...args: any[]) => void,
@@ -2424,17 +2409,6 @@ export function promisifyNoError(
             );
         });
     };
-}
-
-/**
- * Creates and executes an array of promises in sequence
- * @param promiseFactories An array of promise-returning functions
- */
-export function promiseSequence(promiseFactories: ((...args: any[]) => Promise<any>)[]): any[] {
-    /** @ts-expect-error don't want to touch now */
-    return promiseFactories.reduce((promise, factory) => {
-        return promise.then(result => factory().then(Array.prototype.concat.bind(result)));
-    }, Promise.resolve([]));
 }
 
 async function _setQualityForStates(states: any, keys: string[], quality: number): Promise<void> {
