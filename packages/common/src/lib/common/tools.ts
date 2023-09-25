@@ -2257,45 +2257,26 @@ export function getConfigFileName(): string {
         return path.join(envDataDir, `${appNameLowerCase}.json`);
     }
 
-    let devConfigDir;
+    const controllerDir = getControllerDir();
+    const fallbackConfigFile = path.join(controllerDir, 'data', `${appNameLowerCase}.json`);
 
     if (_isDevInstallation()) {
-        devConfigDir = __dirname.replace(/\\/g, '/');
-        const devConfigParts = devConfigDir.split('/');
+        const devConfigFile = path.join(controllerDir, 'conf', `${appNameLowerCase}.json`);
 
-        // dev install -> Remove /lib
-        devConfigParts.splice(devConfigParts.length - 4, 4);
-        devConfigDir = devConfigParts.join('/');
-        devConfigDir += '/controller'; // go inside controller dir
-        if (fs.existsSync(`${devConfigDir}/conf/${appNameLowerCase}.json`)) {
-            return `${devConfigDir}/conf/${appNameLowerCase}.json`;
-        } else if (fs.existsSync(`${devConfigDir}/data/${appNameLowerCase}.json`)) {
-            return `${devConfigDir}/data/${appNameLowerCase}.json`;
+        if (fs.existsSync(devConfigFile)) {
+            return devConfigFile;
+        } else if (fs.existsSync(fallbackConfigFile)) {
+            return fallbackConfigFile;
         }
     }
 
-    let configDir = __dirname.replace(/\\/g, '/');
-    const configParts = configDir.split('/');
+    const prodConfigFile = path.join(getRootDir(), `${appNameLowerCase}-data`, `${appNameLowerCase}.json`);
 
-    // if debugging with npm5 -> node_modules on e.g., /opt/node_modules
-    if (
-        fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${appNameLowerCase}.js-controller`) ||
-        fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${appName}.js-controller`)
-    ) {
-        // remove /node_modules/' + appName + '.js-controller/lib
-        configParts.splice(configParts.length - 8, 8);
-        configDir = configParts.join('/');
-    } else {
-        // If installed with npm -> remove node_modules/@iobroker/js-controller-common/src/lib/common
-        configParts.splice(configParts.length - 6, 6);
-        configDir = configParts.join('/');
+    if (!fs.existsSync(prodConfigFile)) {
+        return fallbackConfigFile;
     }
 
-    if (!fs.existsSync(`${configDir}/${appNameLowerCase}-data/${appNameLowerCase}.json`) && devConfigDir) {
-        return `${devConfigDir}/data/${appNameLowerCase}.json`;
-    }
-
-    return `${configDir}/${appNameLowerCase}-data/${appNameLowerCase}.json`;
+    return prodConfigFile;
 }
 
 /**
@@ -2378,7 +2359,7 @@ export function promisify(
  * @param context (optional) The context (value of `this` to bind the function to)
  * @param returnArgNames (optional) If the callback contains multiple arguments,
  * you can combine them into one object by passing the names as an array.
- * Otherwise the Promise will resolve with an array
+ * Otherwise, the Promise will resolve with an array
  */
 export function promisifyNoError(
     fn: (...args: any[]) => void,
@@ -2424,17 +2405,6 @@ export function promisifyNoError(
             );
         });
     };
-}
-
-/**
- * Creates and executes an array of promises in sequence
- * @param promiseFactories An array of promise-returning functions
- */
-export function promiseSequence(promiseFactories: ((...args: any[]) => Promise<any>)[]): any[] {
-    /** @ts-expect-error don't want to touch now */
-    return promiseFactories.reduce((promise, factory) => {
-        return promise.then(result => factory().then(Array.prototype.concat.bind(result)));
-    }, Promise.resolve([]));
 }
 
 async function _setQualityForStates(states: any, keys: string[], quality: number): Promise<void> {
