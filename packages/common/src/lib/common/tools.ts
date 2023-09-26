@@ -2259,8 +2259,9 @@ export function getConfigFileName(): string {
 
     const controllerDir = getControllerDir();
     const fallbackConfigFile = path.join(controllerDir, 'data', `${appNameLowerCase}.json`);
+    const isDevInstallation = _isDevInstallation();
 
-    if (_isDevInstallation()) {
+    if (isDevInstallation) {
         const devConfigFile = path.join(controllerDir, 'conf', `${appNameLowerCase}.json`);
 
         if (fs.existsSync(devConfigFile)) {
@@ -2272,7 +2273,7 @@ export function getConfigFileName(): string {
 
     const prodConfigFile = path.join(getRootDir(), `${appNameLowerCase}-data`, `${appNameLowerCase}.json`);
 
-    if (!fs.existsSync(prodConfigFile)) {
+    if (!fs.existsSync(prodConfigFile) && isDevInstallation) {
         return fallbackConfigFile;
     }
 
