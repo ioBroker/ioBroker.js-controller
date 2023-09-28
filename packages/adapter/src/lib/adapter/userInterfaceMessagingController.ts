@@ -136,16 +136,16 @@ export class UserInterfaceMessagingController {
             res = resOrAwaitable;
         }
 
-        if (!res.accepted) {
-            return;
+        if (res && res.accepted) {
+            this.handlers.set(clientId, handler);
+            if (res.heartbeat) {
+                const timer = setTimeout(() => this.heartbeatExpired(clientId), res.heartbeat);
+                this.heartbeatTimers.set(clientId, { heartbeat: res.heartbeat, timer });
+            }
         }
 
-        this.handlers.set(clientId, handler);
-
-        if (res.heartbeat) {
-            const timer = setTimeout(() => this.heartbeatExpired(clientId), res.heartbeat);
-            this.heartbeatTimers.set(clientId, { heartbeat: res.heartbeat, timer });
-        }
+        // send answer to GUI, that subscription is accepted, or error happened
+        res && this.adapter.sendTo(msg.from, msg.command, res, msg.callback);
     }
 
     /**
@@ -154,27 +154,33 @@ export class UserInterfaceMessagingController {
      * @param msg The unsubscribe message
      */
     removeClientSubscribeByMessage(msg: UserInterfaceClientRemoveMessage): void {
-        const handler = this.extractHandlerFromMessage(msg);
-        const clientId = this.handlerToId(handler);
-
-        const reason: ClientUnsubscribeReason =
-            msg.command === 'clientSubscribeError' ? msg.command : msg.message.reason;
-
-        if (this.heartbeatTimers.has(clientId)) {
-            const timer = this.heartbeatTimers.get(clientId)!;
-
-            clearTimeout(timer.timer);
-            this.heartbeatTimers.delete(clientId);
+        let type = msg.message.type;
+        // to optimize communication, unsubscribe is always an array of all subscribed messages from this GUI client
+        if (!Array.isArray(type)) {
+            // Strange. Should not happen
+            type = [type];
         }
-
-        if (!this.handlers.has(clientId)) {
-            return;
-        }
-
-        this.handlers.delete(clientId);
-        if (this.unsubscribeCallback) {
-            this.unsubscribeCallback({ clientId, message: msg, reason });
-        }
+        // clone message
+        const message = JSON.parse(JSON.stringify(msg));
+        type.forEach((t: string) => {
+            // replace a type in a message
+            message.message.type = t;
+            const handler = this.extractHandlerFromMessage(message);
+            const clientId = this.handlerToId(handler);
+            const reason = msg.command === 'clientSubscribeError' ? msg.command : msg.message.reason;
+            if (this.heartbeatTimers.has(clientId)) {
+                const timer = this.heartbeatTimers.get(clientId);
+                timer && clearTimeout(timer.timer);
+                this.heartbeatTimers.delete(clientId);
+            }
+            if (!this.handlers.has(clientId)) {
+                return;
+            }
+            this.handlers.delete(clientId);
+            if (this.unsubscribeCallback) {
+                this.unsubscribeCallback({ clientId, message, reason });
+            }
+        });
     }
 
     /**
