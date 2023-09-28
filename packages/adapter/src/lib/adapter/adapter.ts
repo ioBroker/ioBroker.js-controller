@@ -3103,12 +3103,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         options.id = this._utils.fixId(options.id, false);
-
-        const mId = options.id.replace(FORBIDDEN_CHARS, '_');
-        if (mId !== options.id) {
-            this._logger.warn(`${this.namespaceLog} Used invalid characters: ${options.id} changed to ${mId}`);
-            options.id = mId;
-        }
+        options.id = this.fixForbiddenCharsInId(options.id);
 
         if ('children' in options.obj || 'parent' in options.obj) {
             this._logger.warn(`${this.namespaceLog} Do not use parent or children for ${options.id}`);
@@ -3316,13 +3311,7 @@ export class AdapterClass extends EventEmitter {
         obj.user = obj.user || options?.user || SYSTEM_ADMIN_USER;
         obj.ts = obj.ts || Date.now();
 
-        if (id) {
-            const mId = id.replace(FORBIDDEN_CHARS, '_');
-            if (mId !== id) {
-                this._logger.warn(`${this.namespaceLog} Used invalid characters: ${id} changed to ${mId}`);
-                id = mId;
-            }
-        }
+        id = this.fixForbiddenCharsInId(id);
 
         // check that alias is valid if given
         if (obj.common && 'alias' in obj.common && obj.common.alias.id) {
@@ -3405,12 +3394,6 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, err);
         }
 
-        const mId = id.replace(FORBIDDEN_CHARS, '_');
-        if (mId !== id) {
-            this._logger.warn(`${this.namespaceLog} Used invalid characters: ${id} changed to ${mId}`);
-            id = mId;
-        }
-
         Validator.assertString(id, 'id');
 
         if (!obj) {
@@ -3424,7 +3407,12 @@ export class AdapterClass extends EventEmitter {
         }
         Validator.assertOptionalCallback(callback, 'callback');
 
-        return this._extendForeignObjectAsync({ id, obj: obj as ioBroker.SettableObject, callback, options });
+        return this._extendForeignObjectAsync({
+            id: this.fixForbiddenCharsInId(id),
+            obj: obj as ioBroker.SettableObject,
+            callback,
+            options
+        });
     }
 
     private async _extendForeignObjectAsync(
@@ -4878,9 +4866,12 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, err);
         }
 
-        id = this._utils.fixId(id);
-
-        return this._setObjectNotExists({ id: id as string, obj: obj as any, options, callback });
+        return this._setObjectNotExists({
+            id: this.fixForbiddenCharsInId(this._utils.fixId(id)),
+            obj: obj as any,
+            options,
+            callback
+        });
     }
 
     private async _setObjectNotExists(
@@ -8369,11 +8360,7 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, warn);
         }
 
-        const mId = id.replace(FORBIDDEN_CHARS, '_');
-        if (mId !== id) {
-            this._logger.warn(`${this.namespaceLog} Used invalid characters: ${id} changed to ${mId}`);
-            id = mId;
-        }
+        id = this.fixForbiddenCharsInId(id);
 
         if (options?.user && options.user !== SYSTEM_ADMIN_USER) {
             let obj: ioBroker.StateObject;
@@ -8680,11 +8667,7 @@ export class AdapterClass extends EventEmitter {
             typeof state.from === 'string' && state.from !== '' ? state.from : `system.adapter.${this.namespace}`;
         state.user = options?.user || SYSTEM_ADMIN_USER;
 
-        const mId = id.replace(FORBIDDEN_CHARS, '_');
-        if (mId !== id) {
-            this._logger.warn(`${this.namespaceLog} Used invalid characters: ${id} changed to ${mId}`);
-            id = mId;
-        }
+        id = this.fixForbiddenCharsInId(id);
 
         if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
             try {
@@ -12100,6 +12083,21 @@ export class AdapterClass extends EventEmitter {
         } else {
             setImmediate(() => this._extendObjects(tasks, callback));
         }
+    }
+
+    /**
+     * Replaces forbidden chars in an id if present
+     * Additionally logs a warning
+     *
+     * @param id the id which will be replaced
+     */
+    private fixForbiddenCharsInId(id: string): string {
+        const mId = id.replace(FORBIDDEN_CHARS, '_');
+        if (mId !== id) {
+            this._logger.warn(`${this.namespaceLog} Used invalid characters: ${id} changed to ${mId}`);
+        }
+
+        return mId;
     }
 
     private async _init(): Promise<void> {
