@@ -21,7 +21,7 @@ id of the UI client, if not given send to all active clients
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:238](https://github.com/ioBroker/ioBroker.js-controller/blob/4361085b/packages/adapter/src/lib/_Types.ts#L238)
+[adapter/src/lib/_Types.ts:238](https://github.com/ioBroker/ioBroker.js-controller/blob/5d3ad273/packages/adapter/src/lib/_Types.ts#L238)
 
 ___
 
@@ -33,4 +33,4 @@ data to send to the client
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:240](https://github.com/ioBroker/ioBroker.js-controller/blob/4361085b/packages/adapter/src/lib/_Types.ts#L240)
+[adapter/src/lib/_Types.ts:240](https://github.com/ioBroker/ioBroker.js-controller/blob/5d3ad273/packages/adapter/src/lib/_Types.ts#L240)
