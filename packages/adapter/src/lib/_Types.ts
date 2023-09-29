@@ -104,16 +104,18 @@ export type UserInterfaceClientUnsubscribeHandler = (
 ) => void | Promise<void>;
 
 export type UserInterfaceClientRemoveMessage =
-    | (ioBroker.Message & {
+    | (Omit<ioBroker.Message, 'message' | 'command'> & {
           command: 'clientUnsubscribe';
           message: {
               reason: MessageUnsubscribeReason;
+              type: string[];
           };
       })
-    | (ioBroker.Message & {
+    | (Omit<ioBroker.Message, 'message' | 'command'> & {
           command: 'clientSubscribeError';
           message: {
               reason: undefined;
+              type: string[];
           };
       });
 

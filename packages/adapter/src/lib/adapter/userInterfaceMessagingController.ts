@@ -1,7 +1,6 @@
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { AdapterClass } from './adapter';
 import type {
-    ClientUnsubscribeReason,
     UserInterfaceClientRemoveMessage,
     UserInterfaceClientSubscribeHandler,
     UserInterfaceClientSubscribeReturnType,
@@ -114,7 +113,9 @@ export class UserInterfaceMessagingController {
      *
      * @param msg The subscribe message
      */
-    async registerClientSubscribeByMessage(msg: ioBroker.Message): Promise<void> {
+    async registerClientSubscribeByMessage(
+        msg: ioBroker.Message
+    ): Promise<UserInterfaceClientSubscribeReturnType | undefined> {
         if (!this.subscribeCallback) {
             return;
         }
@@ -136,51 +137,50 @@ export class UserInterfaceMessagingController {
             res = resOrAwaitable;
         }
 
-        if (res && res.accepted) {
-            this.handlers.set(clientId, handler);
-            if (res.heartbeat) {
-                const timer = setTimeout(() => this.heartbeatExpired(clientId), res.heartbeat);
-                this.heartbeatTimers.set(clientId, { heartbeat: res.heartbeat, timer });
-            }
+        if (!res.accepted) {
+            return res;
         }
 
-        // send answer to GUI, that subscription is accepted, or error happened
-        res && this.adapter.sendTo(msg.from, msg.command, res, msg.callback);
+        this.handlers.set(clientId, handler);
+        if (res.heartbeat) {
+            const timer = setTimeout(() => this.heartbeatExpired(clientId), res.heartbeat);
+            this.heartbeatTimers.set(clientId, { heartbeat: res.heartbeat, timer });
+        }
+
+        return res;
     }
 
     /**
      * Remove a client subscription, issued by message
+     * It contains an array of types which should be unsubscribed
      *
      * @param msg The unsubscribe message
      */
     removeClientSubscribeByMessage(msg: UserInterfaceClientRemoveMessage): void {
-        let type = msg.message.type;
-        // to optimize communication, unsubscribe is always an array of all subscribed messages from this GUI client
-        if (!Array.isArray(type)) {
-            // Strange. Should not happen
-            type = [type];
-        }
-        // clone message
-        const message = JSON.parse(JSON.stringify(msg));
-        type.forEach((t: string) => {
-            // replace a type in a message
-            message.message.type = t;
-            const handler = this.extractHandlerFromMessage(message);
-            const clientId = this.handlerToId(handler);
+        const types = msg.message.type;
+
+        for (const type of types) {
+            const handler = this.extractHandlerFromMessage(msg);
+            const clientId = this.handlerToId({ ...handler, type });
+
             const reason = msg.command === 'clientSubscribeError' ? msg.command : msg.message.reason;
+
             if (this.heartbeatTimers.has(clientId)) {
-                const timer = this.heartbeatTimers.get(clientId);
-                timer && clearTimeout(timer.timer);
+                const timer = this.heartbeatTimers.get(clientId)!;
+
+                clearTimeout(timer.timer);
                 this.heartbeatTimers.delete(clientId);
             }
+
             if (!this.handlers.has(clientId)) {
                 return;
             }
+
             this.handlers.delete(clientId);
             if (this.unsubscribeCallback) {
-                this.unsubscribeCallback({ clientId, message, reason });
+                this.unsubscribeCallback({ clientId, message: msg, reason });
             }
-        });
+        }
     }
 
     /**
