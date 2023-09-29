@@ -10933,7 +10933,7 @@ export class AdapterClass extends EventEmitter {
                 }
             },
             logger: this._logger,
-            change: (id, stateOrMessage) => {
+            change: async (id, stateOrMessage) => {
                 this.inputCount++;
                 // for simplicity reasons we exclude Message for now TODO
                 const state = stateOrMessage as ioBroker.State | null;
@@ -11073,7 +11073,9 @@ export class AdapterClass extends EventEmitter {
                             }
                         } else if (!this._stopInProgress) {
                             if (obj.command === 'clientSubscribe') {
-                                return this.uiMessagingController.registerClientSubscribeByMessage(obj);
+                                const res = await this.uiMessagingController.registerClientSubscribeByMessage(obj);
+                                this.sendTo(obj.from, obj.command, res, obj.callback);
+                                return;
                             }
 
                             if (obj.command === 'clientUnsubscribe' || obj.command === 'clientSubscribeError') {
