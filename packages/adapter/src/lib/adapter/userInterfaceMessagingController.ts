@@ -157,13 +157,13 @@ export class UserInterfaceMessagingController {
      * @param msg The unsubscribe message
      */
     removeClientSubscribeByMessage(msg: UserInterfaceClientRemoveMessage): void {
+        const handler = this.extractHandlerFromMessage(msg);
+        const reason = msg.command === 'clientSubscribeError' ? msg.command : msg.message.reason;
+
         const types = msg.message.type;
 
         for (const type of types) {
-            const handler = this.extractHandlerFromMessage(msg);
             const clientId = this.handlerToId({ ...handler, type });
-
-            const reason = msg.command === 'clientSubscribeError' ? msg.command : msg.message.reason;
 
             if (this.heartbeatTimers.has(clientId)) {
                 const timer = this.heartbeatTimers.get(clientId)!;
