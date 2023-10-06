@@ -92,17 +92,15 @@ export class MHClient {
         timeout = timeout || 2_000;
 
         this.timer = setTimeout(() => {
-            this.stopServer();
-
             if (this.server) {
+                this.stopServer();
                 onFinished();
             }
         }, timeout);
 
         this.server.on('error', err => {
-            this.stopServer();
-
             if (this.server) {
+                this.stopServer();
                 onFinished(err);
             }
         });
@@ -121,7 +119,6 @@ export class MHClient {
         });
 
         this.server.on('listening', () => {
-            // var address = server.address();
             if (isBroadcast) {
                 this.server!.setBroadcast(true);
             }
