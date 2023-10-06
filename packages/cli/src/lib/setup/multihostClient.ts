@@ -119,7 +119,6 @@ export class MHClient {
         });
 
         this.server.on('listening', () => {
-            // var address = server.address();
             if (isBroadcast) {
                 this.server!.setBroadcast(true);
             }
