@@ -113,6 +113,7 @@ import type {
     IoPackageInstanceObject
 } from '../_Types';
 import { UserInterfaceMessagingController } from './userInterfaceMessagingController';
+import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/build/lib/common/constants';
 
 tools.ensureDNSOrder();
 
@@ -10636,8 +10637,8 @@ export class AdapterClass extends EventEmitter {
         }
 
         // Read current state of all log subscribers
-        adapterStates.getKeys('*.logging', (err, keys) => {
-            if (keys && keys.length) {
+        adapterStates.getKeys(`${SYSTEM_ADAPTER_PREFIX}*.logging`, (err, keys) => {
+            if (keys?.length) {
                 if (!adapterStates) {
                     // if adapterState was destroyed, we can not continue
                     return;
@@ -10690,8 +10691,8 @@ export class AdapterClass extends EventEmitter {
             return;
         }
 
-        adapterStates.getKeys('*.logging', (err, keys) => {
-            if (keys && keys.length) {
+        adapterStates.getKeys(`${SYSTEM_ADAPTER_PREFIX}*.logging`, (err, keys) => {
+            if (keys?.length) {
                 if (!adapterStates) {
                     // if adapterState was destroyed, we can not continue
                     return;
@@ -10868,7 +10869,7 @@ export class AdapterClass extends EventEmitter {
     private _initStates(cb: () => void): void {
         this._logger.silly(`${this.namespaceLog} objectDB connected`);
 
-        this._config.states.maxQueue = this._config.states.maxQueue || 1000;
+        this._config.states.maxQueue = this._config.states.maxQueue || 1_000;
 
         this._initializeTimeout = setTimeout(() => {
             this._initializeTimeout = null;
@@ -11034,7 +11035,7 @@ export class AdapterClass extends EventEmitter {
                 }
 
                 // If someone want to have log messages
-                if (id.endsWith('.logging')) {
+                if (id.startsWith(SYSTEM_ADAPTER_PREFIX) && id.endsWith('.logging')) {
                     const instance = id.substring(0, id.length - '.logging'.length);
 
                     this._logger.silly(`${this.namespaceLog} ${instance}: logging ${state ? state.val : false}`);
@@ -11652,7 +11653,7 @@ export class AdapterClass extends EventEmitter {
                     }
 
                     // Monitor logging state
-                    adapterStates.subscribe('*.logging');
+                    adapterStates.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.logging`);
 
                     if (
                         typeof this._options.message === 'function' &&

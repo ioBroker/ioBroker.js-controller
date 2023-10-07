@@ -438,7 +438,7 @@ function createStates(onConnect: () => void): void {
                 return logger.error(`${hostLogPrefix} change event with no ID: ${JSON.stringify(stateOrMessage)}`);
             }
             // If some log transporter activated or deactivated
-            if (id.endsWith('.logging')) {
+            if (id.startsWith(SYSTEM_ADAPTER_PREFIX) && id.endsWith('.logging')) {
                 const state = stateOrMessage as ioBroker.State;
                 logRedirect(state ? (state.val as boolean) : false, id.substring(0, id.length - '.logging'.length), id);
             } else if (!compactGroupController && id === `messagebox.${hostObjectPrefix}`) {
@@ -3126,7 +3126,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 logs.push(`Actual Loglist - ${JSON.stringify(logList)}`);
 
                 // Read the current state of all log subscribers
-                states!.getKeys('*.logging', (err, keys) => {
+                states!.getKeys(`${SYSTEM_ADAPTER_PREFIX}*.logging`, (err, keys) => {
                     if (keys?.length) {
                         states!.getStates(keys, (err, objs) => {
                             if (objs) {
@@ -3140,7 +3140,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                         if (obj.val === true) {
                                             logs.push(`Subscriber - ${id} ENABLED`);
                                         } else {
-                                            logs && logs.push(`Subscriber - ${id} (disabled)`);
+                                            logs.push(`Subscriber - ${id} (disabled)`);
                                         }
                                     }
                                 }
@@ -5844,7 +5844,7 @@ export function init(compactGroupId?: number): void {
                 connectTimeout = null;
             }
             // Subscribe for all logging objects
-            states!.subscribe('*.logging');
+            states!.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.logging`);
 
             // Subscribe for all logging objects
             states!.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.alive`);
@@ -5898,7 +5898,7 @@ export function init(compactGroupId?: number): void {
 
             try {
                 // Read the current state of all log subscribers
-                keys = (await states!.getKeys('*.logging'))!;
+                keys = (await states!.getKeys(`${SYSTEM_ADAPTER_PREFIX}*.logging`))!;
             } catch {
                 // ignore
             }
