@@ -113,7 +113,7 @@ import type {
     IoPackageInstanceObject
 } from '../_Types';
 import { UserInterfaceMessagingController } from './userInterfaceMessagingController';
-import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/build/lib/common/constants';
+import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
 
 tools.ensureDNSOrder();
 
