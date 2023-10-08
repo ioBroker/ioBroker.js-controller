@@ -24,7 +24,7 @@ the callback itself
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:419](https://github.com/ioBroker/ioBroker.js-controller/blob/22337d8f/packages/adapter/src/lib/_Types.ts#L419)
+[adapter/src/lib/_Types.ts:419](https://github.com/ioBroker/ioBroker.js-controller/blob/a67344d3/packages/adapter/src/lib/_Types.ts#L419)
 
 ___
 
@@ -36,7 +36,7 @@ The timestamp of the initial message
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:421](https://github.com/ioBroker/ioBroker.js-controller/blob/22337d8f/packages/adapter/src/lib/_Types.ts#L421)
+[adapter/src/lib/_Types.ts:421](https://github.com/ioBroker/ioBroker.js-controller/blob/a67344d3/packages/adapter/src/lib/_Types.ts#L421)
 
 ___
 
@@ -48,4 +48,4 @@ An optional timer, if a timeout has been specified
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:423](https://github.com/ioBroker/ioBroker.js-controller/blob/22337d8f/packages/adapter/src/lib/_Types.ts#L423)
+[adapter/src/lib/_Types.ts:423](https://github.com/ioBroker/ioBroker.js-controller/blob/a67344d3/packages/adapter/src/lib/_Types.ts#L423)
