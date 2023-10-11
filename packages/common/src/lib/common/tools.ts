@@ -263,7 +263,7 @@ export function decryptPhrase(password: string, data: any, callback: (decrypted?
             }
         });
         decipher.on('error', error => {
-            console.error(`Cannot decode secret: ${error}`);
+            console.error(`Cannot decode secret: ${error.toString()}`);
             callback(null);
         });
 
