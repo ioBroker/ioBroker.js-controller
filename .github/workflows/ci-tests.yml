@@ -24,7 +24,7 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js 16
         uses: actions/setup-node@v3
         with:
@@ -46,7 +46,7 @@ jobs:
         node: [16, 18, 20]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node }}
         uses: actions/setup-node@v3
         with:
@@ -126,7 +126,7 @@ jobs:
 
       - name: Checkout repository
         if: steps.automerge.outputs.mergeResult == 'merged'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Node.js 16
         if: steps.automerge.outputs.mergeResult == 'merged'
