@@ -406,6 +406,7 @@ function initYargs(): yargs.Argv {
         .command(['uuid', 'id'], 'Show uuid of the installation', {})
         .command('unsetup', 'Reset license, installation secret and language', {})
         .command('fix', 'Execute the installation fixer script, this updates your ioBroker installation', {})
+        .command('nodejs-update', 'Upgrade the Node.JS installation to the current LTS', {})
         .command('multihost', 'Multihost management', yargs => {
             yargs
                 .command('enable', 'Enable multihost discovery', {
