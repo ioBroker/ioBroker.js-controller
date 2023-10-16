@@ -39,7 +39,7 @@ An array of IP addresses this host exposes
 
 #### Defined in
 
-[types-dev/objects.d.ts:353](https://github.com/ioBroker/ioBroker.js-controller/blob/a67344d3/packages/types-dev/objects.d.ts#L353)
+[types-dev/objects.d.ts:353](https://github.com/ioBroker/ioBroker.js-controller/blob/9b6770e2/packages/types-dev/objects.d.ts#L353)
 
 ___
 
@@ -51,7 +51,7 @@ The command line of the executable
 
 #### Defined in
 
-[types-dev/objects.d.ts:350](https://github.com/ioBroker/ioBroker.js-controller/blob/a67344d3/packages/types-dev/objects.d.ts#L350)
+[types-dev/objects.d.ts:350](https://github.com/ioBroker/ioBroker.js-controller/blob/9b6770e2/packages/types-dev/objects.d.ts#L350)
 
 ___
 
@@ -61,7 +61,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:358](https://github.com/ioBroker/ioBroker.js-controller/blob/a67344d3/packages/types-dev/objects.d.ts#L358)
+[types-dev/objects.d.ts:358](https://github.com/ioBroker/ioBroker.js-controller/blob/9b6770e2/packages/types-dev/objects.d.ts#L358)
 
 ___
 
@@ -71,7 +71,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:361](https://github.com/ioBroker/ioBroker.js-controller/blob/a67344d3/packages/types-dev/objects.d.ts#L361)
+[types-dev/objects.d.ts:361](https://github.com/ioBroker/ioBroker.js-controller/blob/9b6770e2/packages/types-dev/objects.d.ts#L361)
 
 ___
 
@@ -87,7 +87,7 @@ When set to true, this object may not be deleted
 
 #### Defined in
 
-[types-dev/objects.d.ts:161](https://github.com/ioBroker/ioBroker.js-controller/blob/a67344d3/packages/types-dev/objects.d.ts#L161)
+[types-dev/objects.d.ts:161](https://github.com/ioBroker/ioBroker.js-controller/blob/9b6770e2/packages/types-dev/objects.d.ts#L161)
 
 ___
 
@@ -103,7 +103,7 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 #### Defined in
 
-[types-dev/objects.d.ts:164](https://github.com/ioBroker/ioBroker.js-controller/blob/a67344d3/packages/types-dev/objects.d.ts#L164)
+[types-dev/objects.d.ts:164](https://github.com/ioBroker/ioBroker.js-controller/blob/9b6770e2/packages/types-dev/objects.d.ts#L164)
 
 ___
 
@@ -113,7 +113,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:351](https://github.com/ioBroker/ioBroker.js-controller/blob/a67344d3/packages/types-dev/objects.d.ts#L351)
+[types-dev/objects.d.ts:351](https://github.com/ioBroker/ioBroker.js-controller/blob/9b6770e2/packages/types-dev/objects.d.ts#L351)
 
 ___
 
@@ -129,7 +129,7 @@ Icon for this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/a67344d3/packages/types-dev/objects.d.ts#L169)
+[types-dev/objects.d.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/9b6770e2/packages/types-dev/objects.d.ts#L169)
 
 ___
 
@@ -139,7 +139,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:348](https://github.com/ioBroker/ioBroker.js-controller/blob/a67344d3/packages/types-dev/objects.d.ts#L348)
+[types-dev/objects.d.ts:348](https://github.com/ioBroker/ioBroker.js-controller/blob/9b6770e2/packages/types-dev/objects.d.ts#L348)
 
 ___
 
@@ -155,7 +155,7 @@ The display name of this host
 
 #### Defined in
 
-[types-dev/objects.d.ts:346](https://github.com/ioBroker/ioBroker.js-controller/blob/a67344d3/packages/types-dev/objects.d.ts#L346)
+[types-dev/objects.d.ts:346](https://github.com/ioBroker/ioBroker.js-controller/blob/9b6770e2/packages/types-dev/objects.d.ts#L346)
 
 ___
 
@@ -165,7 +165,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:356](https://github.com/ioBroker/ioBroker.js-controller/blob/a67344d3/packages/types-dev/objects.d.ts#L356)
+[types-dev/objects.d.ts:356](https://github.com/ioBroker/ioBroker.js-controller/blob/9b6770e2/packages/types-dev/objects.d.ts#L356)
 
 ___
 
@@ -181,7 +181,7 @@ role of the object
 
 #### Defined in
 
-[types-dev/objects.d.ts:171](https://github.com/ioBroker/ioBroker.js-controller/blob/a67344d3/packages/types-dev/objects.d.ts#L171)
+[types-dev/objects.d.ts:171](https://github.com/ioBroker/ioBroker.js-controller/blob/9b6770e2/packages/types-dev/objects.d.ts#L171)
 
 ___
 
@@ -191,7 +191,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:347](https://github.com/ioBroker/ioBroker.js-controller/blob/a67344d3/packages/types-dev/objects.d.ts#L347)
+[types-dev/objects.d.ts:347](https://github.com/ioBroker/ioBroker.js-controller/blob/9b6770e2/packages/types-dev/objects.d.ts#L347)
 
 ___
 
@@ -201,4 +201,4 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:355](https://github.com/ioBroker/ioBroker.js-controller/blob/a67344d3/packages/types-dev/objects.d.ts#L355)
+[types-dev/objects.d.ts:355](https://github.com/ioBroker/ioBroker.js-controller/blob/9b6770e2/packages/types-dev/objects.d.ts#L355)
