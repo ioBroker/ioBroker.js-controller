@@ -895,7 +895,7 @@ export class AdapterClass extends EventEmitter {
         this.setObjectAsync = tools.promisify(this.setObject, this);
 
         /**
-         * Promise-version of `Adapter.this.getAdapterObjects`
+         * Promise-version of `Adapter.getAdapterObjects`
          */
         this.getAdapterObjectsAsync = tools.promisifyNoError(this.getAdapterObjects, this);
 
