@@ -26,7 +26,7 @@ export interface AdapterOptions {
     name: string;
     /** If true, the systemConfig (iobroker.json) will be available in this.systemConfig */
     systemConfig?: boolean;
-    /** callback function (id, obj) that will be called if object changed */
+    /** callback function (id, obj) that will be called if an object changed */
     objectChange?: ioBroker.ObjectChangeHandler;
     /** callback function (id, obj) that will be called if state changed */
     stateChange?: ioBroker.StateChangeHandler;
@@ -36,7 +36,7 @@ export interface AdapterOptions {
     uiClientSubscribe?: UserInterfaceClientSubscribeHandler;
     /** callback function that will be called when a new UI client unsubscribes */
     uiClientUnsubscribe?: UserInterfaceClientUnsubscribeHandler;
-    /** callback to inform about new message the adapter */
+    /** callback to inform about a new message the adapter */
     message?: ioBroker.MessageHandler;
     /** callback to stop the adapter */
     unload?: ioBroker.UnloadHandler;
@@ -87,14 +87,14 @@ type UserInterfaceUnsubscribeInfoBaseObject = {
 export type UserInterfaceUnsubscribeInfo = UserInterfaceUnsubscribeInfoBaseObject &
     (
         | {
-              /** Reason for unsubscribe */
+              /** Reason for unsubscribing */
               reason: Exclude<UserInterfaceClientUnsubscribeReason, ClientUnsubscribeReason>;
               message?: undefined;
           }
         | {
-              /** Reason for unsubscribe */
+              /** Reason for unsubscribing */
               reason: ClientUnsubscribeReason;
-              /** Message used for unsubscribe */
+              /** Message used for unsubscribing */
               message: ioBroker.Message;
           }
     );
