@@ -406,6 +406,7 @@ function initYargs(): yargs.Argv {
         .command(['uuid', 'id'], 'Show uuid of the installation', {})
         .command('unsetup', 'Reset license, installation secret and language', {})
         .command('fix', 'Execute the installation fixer script, this updates your ioBroker installation', {})
+        .command('nodejs-update [<major-version>]', 'Upgrade the Node.JS installation to the current LTS', {})
         .command('multihost', 'Multihost management', yargs => {
             yargs
                 .command('enable', 'Enable multihost discovery', {
@@ -431,11 +432,11 @@ function initYargs(): yargs.Argv {
                 .command('<adapter>.<instance> status', 'Show if compact mode is enabled for a specific instance')
                 .command('<adapter>.<instance> group <group-id>', 'Define compact group of a specific adapter')
                 .command(
-                    '<adapter>.<instance> <disable|off> [group-id]',
+                    '<adapter>.<instance> <disable|off> [<group-id>]',
                     'Enable or disable compact mode for specified adapter instance and set compact group optionally'
                 )
                 .command(
-                    '<adapter>.<instance> <enable|on> [group-id]',
+                    '<adapter>.<instance> <enable|on> [<group-id>]',
                     'Enable or disable compact mode for specified adapter instance and set compact group optionally'
                 );
         })
