@@ -228,9 +228,9 @@ function testAdapter(options: Record<string, any>): void {
                 expect(context.adapter.name).to.be.equal(context.adapterShortName);
                 expect(context.adapter.instance).to.be.equal(0);
                 // @ts-expect-error should not exist
-                expect(context.adapter.states).to.be.undefined;
+                expect(context.adapter.#states).to.be.undefined;
                 // @ts-expect-error should not exist
-                expect(context.adapter.objects).to.be.undefined;
+                expect(context.adapter.#objects).to.be.undefined;
                 expect(context.adapter.log).to.be.ok;
                 expect(context.adapter.log!.info).to.be.a('function');
                 expect(context.adapter.log!.debug).to.be.a('function');
