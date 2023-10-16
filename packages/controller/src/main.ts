@@ -33,6 +33,7 @@ import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import { getDefaultNodeArgs, HostInfo } from '@iobroker/js-controller-common/tools';
 import type { UpgradeArguments } from './lib/upgradeManager';
 import { AdapterUpgradeManager } from './lib/adapterUpgradeManager';
+import { PacketManager } from '@iobroker/js-controller-cli';
 
 type TaskObject = ioBroker.SettableObject & { state?: ioBroker.SettableState };
 type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
@@ -2618,6 +2619,8 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 }
 
                 requestedRepoUpdates = [];
+
+                await listUpdatableOsPackages();
             } else {
                 logger.error(
                     `${hostLogPrefix} Invalid request ${
@@ -6112,6 +6115,17 @@ async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promis
         outputCount++;
         await states!.setState(adapterInstance, { val: false, ack: true, from: hostObjectPrefix });
     }
+}
+
+/**
+ * Check for updatable OS packages and register them as notification
+ */
+async function listUpdatableOsPackages(): Promise<void> {
+    const packManager = new PacketManager();
+
+    const packages = await packManager.listUpgradeablePackages();
+
+    await notificationHandler.addMessage('system', 'packageUpdates', packages.join('\n'), `system.host.${hostname}`);
 }
 
 /**

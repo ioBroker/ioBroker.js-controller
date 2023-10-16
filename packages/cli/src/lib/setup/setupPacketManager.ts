@@ -28,6 +28,13 @@ export class PacketManager {
     private dpkg: boolean;
     private sudo: boolean;
     private readonly _readyPromise: Promise<void>;
+    private readonly COMMANDS = {
+        listUpgradeable: {
+            apt: 'list --upgradeable',
+            'apt-get': 'list --upgradeable',
+            yum: 'check-update'
+        }
+    } as const;
 
     constructor(options: PacketManagerOptions = { logLevel: LOG_LEVELS.info }) {
         // detect apt, apt-get or yum
@@ -203,13 +210,34 @@ export class PacketManager {
     }
 
     /**
+     * List all packages for which updates are available
+     */
+    async listUpgradeablePackages(): Promise<string[]> {
+        if (!this.manager) {
+            return [];
+        }
+
+        const { stdout } = await execAsync(
+            `${(this.sudo ? 'sudo ' : '') + this.manager} ${this.COMMANDS.listUpgradeable[this.manager]}`
+        );
+
+        const res = Buffer.isBuffer(stdout) ? stdout.toString('utf-8') : stdout;
+
+        if (!res) {
+            return [];
+        }
+
+        return res.split('\n');
+    }
+
+    /**
      * Installs multiple packets. The returned Promise contains the list of failed packets
      * @param packets
      */
     private async _installPackets(packets: string[]): Promise<string[]> {
         const failed: string[] = [];
 
-        if (packets && packets.length) {
+        if (packets?.length) {
             // Install all packets
             for (const packet of packets) {
                 try {
