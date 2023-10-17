@@ -17,11 +17,11 @@
 
 • `Optional` **maintenance**: `boolean`
 
-in maintenance mode we can access ivnalid ids to delete them, only works with the admin user
+in maintenance mode, we can access invalid ids to delete them, only works with the admin user
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/9b6770e2/packages/adapter/src/lib/adapter/validator.ts#L10)
+[adapter/src/lib/adapter/validator.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/1cfd77e8/packages/adapter/src/lib/adapter/validator.ts#L10)
 
 ___
 
@@ -31,4 +31,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/9b6770e2/packages/adapter/src/lib/adapter/validator.ts#L11)
+[adapter/src/lib/adapter/validator.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/1cfd77e8/packages/adapter/src/lib/adapter/validator.ts#L11)

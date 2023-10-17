@@ -20,4 +20,4 @@ Method throws or calls error cb, if callback not called in time, works for singl
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:405](https://github.com/ioBroker/ioBroker.js-controller/blob/9b6770e2/packages/adapter/src/lib/_Types.ts#L405)
+[adapter/src/lib/_Types.ts:405](https://github.com/ioBroker/ioBroker.js-controller/blob/1cfd77e8/packages/adapter/src/lib/_Types.ts#L405)
