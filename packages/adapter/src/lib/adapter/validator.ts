@@ -6,7 +6,7 @@ type OptionalCallback = undefined | Callback;
 type Pattern = string | string[];
 
 export interface ValidateIdOptions {
-    /** in maintenance mode we can access ivnalid ids to delete them, only works with the admin user */
+    /** in maintenance mode, we can access invalid ids to delete them, only works with the admin user */
     maintenance?: boolean;
     user?: string;
 }
@@ -26,7 +26,7 @@ export class Validator {
      * @param namespaceLog - Log prefix
      * @param logger - Logger instance
      * @param namespace - the namespace of the adapter
-     * @param namespaceRegExp - the namespace RegExp of the adapter adapter.0
+     * @param namespaceRegExp - the namespace RegExp of the adapter `adapter.0`
      */
     constructor(
         objects: any,
@@ -46,7 +46,7 @@ export class Validator {
 
     /**
      * Performs the strict object check, which includes checking object existence, read-only logic, type and min/max
-     * additionally it rounds state values whose objects have a common.step attribute defined
+     * additionally it rounds state values whose objects have a `common.step` attribute defined
      *
      * @param id - id of the state
      * @param state - ioBroker setState object
@@ -70,7 +70,7 @@ export class Validator {
                 return;
             }
 
-            // for a state object we require common.type to exist
+            // for a state object, we require common.type to exist
             if (obj.common && obj.common.type) {
                 // check if we are allowed to write (read-only can only be written with ack: true)
                 if (!state.ack && obj.common.write === false) {
@@ -80,7 +80,7 @@ export class Validator {
                 }
 
                 if (state.val !== null) {
-                    // now check if type is correct, null is always allowed
+                    // now check if a type is correct, null is always allowed
                     if (obj.common.type === 'file') {
                         // file has to be set with setBinaryState
                         this.log.warn(
@@ -96,8 +96,8 @@ export class Validator {
                             (obj.common.type === 'object' && typeof state.val === 'string')
                         )
                     ) {
-                        // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'json'
-                        // array, object, json need to be string
+                        // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'json';
+                        // 'array', 'object', 'json' need to be string
                         if (['object', 'json', 'array'].includes(obj.common.type)) {
                             this.log.info(
                                 `${
@@ -155,7 +155,7 @@ export class Validator {
      * @throws Error when id is invalid
      */
     validateId(id: string | any, isForeignId: boolean, options?: ValidateIdOptions | null): asserts id is string {
-        // there is special maintenance mode to clear the DB from invalid IDs
+        // there is a special maintenance mode to clear the DB from invalid IDs
         if (options && options.maintenance && options.user === SYSTEM_ADMIN_USER) {
             return;
         }
@@ -232,8 +232,8 @@ export class Validator {
     }
 
     /**
-     * Throws if type is not matching the expected type
-     * @param value value to check type of
+     * Throws if a type is not matching the expected type
+     * @param value value to check a type of
      * @param name name of the parameter for logging
      */
     static assertString(value: unknown, name: string): asserts value is string {
@@ -245,8 +245,8 @@ export class Validator {
     }
 
     /**
-     * Throws if type is not a pattern
-     * @param value value to check type of
+     * Throws if a type is not a pattern
+     * @param value value to check a type of
      * @param name name of the parameter for logging
      */
     static assertPattern(value: unknown, name: string): asserts value is Pattern {
@@ -266,8 +266,8 @@ export class Validator {
     }
 
     /**
-     * Throws if type is not matching the expected type
-     * @param value value to check type of
+     * Throws if a type is not matching the expected type
+     * @param value value to check a type of
      * @param name name of the parameter for logging
      */
     static assertBoolean(value: unknown, name: string): asserts value is boolean {
@@ -279,8 +279,8 @@ export class Validator {
     }
 
     /**
-     * Throws if type is not matching the expected type
-     * @param value value to check type of
+     * Throws if a type is not matching the expected type
+     * @param value value to check a type of
      * @param name name of the parameter for logging
      */
     static assertNumber(value: unknown, name: string): asserts value is number {
@@ -292,8 +292,8 @@ export class Validator {
     }
 
     /**
-     * Throws if type is not matching the expected type
-     * @param value value to check type of
+     * Throws if a type is not matching the expected type
+     * @param value value to check a type of
      * @param name name of the parameter for logging
      */
     static assertObject(value: unknown, name: string): asserts value is Record<string, any> {
@@ -303,8 +303,8 @@ export class Validator {
     }
 
     /**
-     * Throws if type is not an optional callback
-     * @param value value to check type of
+     * Throws if a type is not an optional callback
+     * @param value value to check a type of
      * @param name name of the parameter for logging
      */
     static assertBuffer(value: unknown, name: string): asserts value is Buffer {
@@ -314,8 +314,8 @@ export class Validator {
     }
 
     /**
-     * Throws if type is not an optional callback
-     * @param value value to check type of
+     * Throws if a type is not an optional callback
+     * @param value value to check a type of
      * @param name name of the parameter for logging
      */
     static assertOptionalCallback(value: unknown, name: string): asserts value is OptionalCallback {
@@ -327,8 +327,8 @@ export class Validator {
     }
 
     /**
-     * Throws if type is not an optional callback
-     * @param value value to check type of
+     * Throws if a type is not an optional callback
+     * @param value value to check a type of
      * @param name name of the parameter for logging
      */
     static assertCallback(value: unknown, name: string): asserts value is Callback {
@@ -340,7 +340,7 @@ export class Validator {
     }
 
     /**
-     * Adds the namespace to the id if it is missing, if an object is passed it will be converted to an id string
+     * Adds the namespace to the ID if it is missing, if an object is passed it will be converted to an id string
      *
      * @param id id which will be fixed
      * @param isPattern if the id is a pattern
@@ -354,7 +354,7 @@ export class Validator {
         if (typeof id === 'string') {
             result = id;
 
-            // if not instance name itself and also not starts with namespace and "."
+            // if not the instance name itself and also not starts with namespace and "."
             if (id !== this.namespace && !this.namespaceRegExp.test(id)) {
                 if (!isPattern) {
                     result = this.namespace + (id ? `.${id}` : '');
@@ -363,7 +363,7 @@ export class Validator {
                 }
             }
         } else if (tools.isObject(id)) {
-            // If id is an object
+            // If ID is an object
             // Add namespace + device + channel
             result = `${this.namespace}.${id.device ? id.device + '.' : ''}${id.channel ? id.channel + '.' : ''}${
                 id.state ? id.state : ''
@@ -432,7 +432,7 @@ export class Validator {
     }
 
     /**
-     * Validates, that the timeout is not exceeding a 32-bit signed integer
+     * Validates that the timeout is not exceeding a 32-bit signed integer
      *
      * @param ms milliseconds to validate
      */

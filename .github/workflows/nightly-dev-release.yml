@@ -45,11 +45,7 @@ jobs:
 
     - name: Prepare installation
       if: steps.changes.outputs.result == 'ok'
-      run: |
-        sudo add-apt-repository ppa:chris-lea/redis-server -y
-        sudo apt-get update -q
-        sudo apt-get install redis-server redis-sentinel -y
-        sudo systemctl start redis-server
+      uses: ./.github/actions/install-redis-linux
 
     - name: Install dependencies
       if: steps.changes.outputs.result == 'ok'

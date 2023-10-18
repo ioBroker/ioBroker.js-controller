@@ -1,7 +1,7 @@
 /**
  * Notification handler class
  *
- *  2021 foxriver76 <moritz.heusinger@gmail.com>
+ *  2021-2023 foxriver76 <moritz.heusinger@gmail.com>
  */
 
 import fs from 'fs-extra';
@@ -125,7 +125,7 @@ export class NotificationHandler {
      * Get all adapter instances on this host and store their notifications config - and clears up removed instances notifications - should be called once after init
      */
     async getSetupOfAllAdaptersFromHost(): Promise<void> {
-        // create initial notifications object
+        // create the initial notifications object
         let obj;
         try {
             obj = await this.objects.getObjectAsync(`system.host.${this.host}.notifications`);
@@ -181,7 +181,7 @@ export class NotificationHandler {
             throw new Error(`Could not get notifications setup from instances: ${e.message}`);
         }
 
-        // now clear up all notifications which do not belong to our host anymore
+        // now clear up all notifications that do not belong to our host anymore
         for (const scope of Object.keys(this.currentNotifications)) {
             for (const category of Object.keys(this.currentNotifications[scope])) {
                 for (const instance of Object.keys(this.currentNotifications[scope][category])) {
@@ -199,7 +199,7 @@ export class NotificationHandler {
     }
 
     /**
-     * Add a new category to the given scope with provided optional list of regex
+     * Add a new category to the given scope with a provided optional list of regex
      *
      * @param notifications - notifications array
      */
@@ -207,7 +207,7 @@ export class NotificationHandler {
         // if valid attributes, store it
         if (Array.isArray(notifications)) {
             for (const scopeObj of notifications) {
-                // create state object for each scope if non-existing
+                // create the state object for each scope if non-existing
                 let obj;
                 try {
                     obj = await this.objects.getObjectAsync(`system.host.${this.host}.notifications.${scopeObj.scope}`);
@@ -254,7 +254,7 @@ export class NotificationHandler {
                                     regex.push(new RegExp(regexString));
                                 }
                             } else if (typeof categoryObj.regex === 'string') {
-                                // if someone passes string, convert to single entry array
+                                // if someone passes a string, convert to a single entry array
                                 regex = [new RegExp(categoryObj.regex)];
                             }
 
@@ -285,7 +285,7 @@ export class NotificationHandler {
      * @param scope - scope of the message
      * @param category - category of the message, if non we check against regex of scope
      * @param message - message to add
-     * @param instance - instance e.g. hm-rpc.1 or hostname, if hostname it needs to be prefixed like system.host.rpi
+     * @param instance - instance e.g., hm-rpc.1 or hostname, if hostname it needs to be prefixed like system.host.rpi
      */
     async addMessage(
         scope: string,
@@ -344,12 +344,12 @@ export class NotificationHandler {
                     this.currentNotifications[scope][_category][instance].pop();
                 }
 
-                // add new element at beginning
+                // add a new element at the beginning
                 this.currentNotifications[scope][_category][instance].unshift({ message, ts: Date.now() });
             }
         }
 
-        // now count all messages of this scope - if nothing matched it can be undefined and we can skip
+        // now count all messages of this scope - if nothing matched it can be undefined, and we can skip
         if (tools.isObject(this.currentNotifications[scope])) {
             for (const _category of Object.keys(this.currentNotifications[scope])) {
                 const categoryCounter = Object.keys(this.currentNotifications[scope][_category]).length;
@@ -377,7 +377,7 @@ export class NotificationHandler {
             const stateVal: ScopeStateValue = {};
 
             for (const category of Object.keys(this.currentNotifications[scope])) {
-                // count number of instances with this error
+                // count the number of instances with this error
                 const catCounter = Object.keys(this.currentNotifications[scope][category]).length;
                 stateVal[category] = { count: catCounter };
             }
@@ -428,7 +428,7 @@ export class NotificationHandler {
         try {
             this.currentNotifications = fs.readJSONSync(path.join(this.dataDir, 'notifications.json'));
         } catch (e) {
-            // at first start its normal, that we cannot read notifications, so just an info
+            // at first start its normal, that we cannot read notifications, so just info
             this.log.debug(`${this.logPrefix} Could not read notifications.json: ${e.message}`);
         }
     }
@@ -523,7 +523,7 @@ export class NotificationHandler {
                 continue;
             }
             if (scopeFilter && scopeFilter !== scope) {
-                // skip this, because not desired too be deleted
+                // skip this, because not desired to be deleted
                 continue;
             }
 

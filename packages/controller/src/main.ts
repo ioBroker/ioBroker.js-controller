@@ -29,6 +29,7 @@ import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { Upload } from '@iobroker/js-controller-cli';
 import decache from 'decache';
+import isValidCron from 'cron-validate';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import { getDefaultNodeArgs, HostInfo } from '@iobroker/js-controller-common/tools';
 import type { UpgradeArguments } from './lib/upgradeManager';
@@ -5044,7 +5045,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             }
             break;
 
-        case 'schedule':
+        case 'schedule': {
             if (compactGroupController) {
                 logger.debug(`${hostLogPrefix} ${instance._id} schedule is not started by compact group controller`);
                 break;
@@ -5058,6 +5059,16 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             if (proc.schedule) {
                 proc.schedule.cancel();
                 logger.info(`${hostLogPrefix} instance canceled schedule ${instance._id}`);
+            }
+
+            const cronValid = isValidCron(instance.common.schedule);
+            if (!cronValid.isValid()) {
+                logger.error(
+                    `${hostLogPrefix} Cannot schedule start of instance ${instance._id}: ${cronValid
+                        .getError()
+                        .join(', ')}`
+                );
+                break;
             }
 
             proc.schedule = schedule.scheduleJob(instance.common.schedule, () => {
@@ -5124,7 +5135,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             }
 
             break;
-
+        }
         case 'extension':
         case 'subscribe':
             break;
