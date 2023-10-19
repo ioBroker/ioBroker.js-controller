@@ -6132,6 +6132,7 @@ async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promis
  */
 async function listUpdatableOsPackages(): Promise<void> {
     const packManager = new PacketManager();
+    await packManager.ready();
 
     const packages = await packManager.listUpgradeablePackages();
 

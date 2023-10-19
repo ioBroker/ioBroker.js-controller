@@ -57,7 +57,7 @@ export class PacketManager {
             if (!this.manager) {
                 const manager = await this._detectManager();
                 if (manager) {
-                    this.logger?.debug(`Detected packet manager: ${manager}`);
+                    this.logger.debug(`Detected packet manager: ${manager}`);
                     // Check if sudo is available for packet manager and store information
                     this.sudo = (await this._isSudoAvailable()) && (await this._isSudoAvailableForManager());
                 }
@@ -65,7 +65,7 @@ export class PacketManager {
 
             // Check if dpkg is available
             this.dpkg = await this._isDpkgAvailable();
-            this.logger?.debug(`Detected dpkg: ${this.dpkg}`);
+            this.logger.debug(`Detected dpkg: ${this.dpkg}`);
         }
     }
 
@@ -104,7 +104,7 @@ export class PacketManager {
             ) {
                 return true;
             } else {
-                this.logger?.error(`Cannot detect dpkg: ${err.stderr || err.stdout || err}`);
+                this.logger.error(`Cannot detect dpkg: ${err.stderr || err.stdout || err}`);
                 return false;
             }
         }
@@ -119,7 +119,7 @@ export class PacketManager {
             if ((err.stdout && err.stdout.includes('sudo -h')) || (err.stderr && err.stderr.includes('sudo -h'))) {
                 return true;
             } else {
-                this.logger?.error(`Cannot detect sudo: ${err.stderr || err.stdout || err}`);
+                this.logger.error(`Cannot detect sudo: ${err.stderr || err.stdout || err}`);
                 return false;
             }
         }
@@ -130,7 +130,7 @@ export class PacketManager {
             await execAsync(`sudo -n ${this.manager} -v`);
             return true;
         } catch (err) {
-            this.logger?.error(`Cannot detect \\"sudo -n ${this.manager} -v\\": ${err.stderr || err.stdout || err}`);
+            this.logger.error(`Cannot detect \\"sudo -n ${this.manager} -v\\": ${err.stderr || err.stdout || err}`);
             return false;
         }
     }
@@ -139,13 +139,13 @@ export class PacketManager {
      * Detects which package manager is installed. Throws if none can be found
      */
     private async _detectManager(): Promise<Manager | void> {
-        for (const cmd of ['apt-get', 'apt', 'yum'] as const) {
+        for (const cmd of ['apt', 'apt-get', 'yum'] as const) {
             if (await this._isCmd(cmd)) {
                 this.manager = cmd;
                 return cmd;
             }
         }
-        this.logger?.info('No supported packet manager found');
+        this.logger.info('No supported packet manager found');
     }
 
     /**
@@ -162,7 +162,7 @@ export class PacketManager {
         try {
             await execAsync(`${(this.sudo ? 'sudo ' : '') + this.manager} update`);
         } catch (e) {
-            this.logger?.warn(`Cannot update apt sources: ${e.message}`);
+            this.logger.warn(`Cannot update apt sources: ${e.message}`);
         }
     }
 
@@ -226,7 +226,11 @@ export class PacketManager {
             return [];
         }
 
-        return res.split('\n');
+        const packagesList = res.split('\n');
+        // first line is no package, just Listing...
+        packagesList.shift();
+
+        return packagesList;
     }
 
     /**
@@ -243,7 +247,7 @@ export class PacketManager {
                     await this._installPacket(packet);
                 } catch (err) {
                     failed.push(packet);
-                    this.logger?.error(`Cannot install "${packet}": ${err.stderr || err.stdout || err}`);
+                    this.logger.error(`Cannot install "${packet}": ${err.stderr || err.stdout || err}`);
                     // Continue with the next packet
                 }
             }
