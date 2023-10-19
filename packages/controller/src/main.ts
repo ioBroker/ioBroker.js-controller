@@ -6135,6 +6135,10 @@ async function listUpdatableOsPackages(): Promise<void> {
 
     const packages = await packManager.listUpgradeablePackages();
 
+    if (!packages.length) {
+        return;
+    }
+
     await notificationHandler.addMessage('system', 'packageUpdates', packages.join('\n'), `system.host.${hostname}`);
 }
 
