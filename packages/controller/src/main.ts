@@ -2619,8 +2619,11 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 }
 
                 requestedRepoUpdates = [];
-
-                await listUpdatableOsPackages();
+                try {
+                    await listUpdatableOsPackages();
+                } catch (e) {
+                    logger.warn(`${hostLogPrefix} Could not check for new OS updates: ${e.message}`);
+                }
             } else {
                 logger.error(
                     `${hostLogPrefix} Invalid request ${
