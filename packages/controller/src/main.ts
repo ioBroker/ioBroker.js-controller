@@ -27,14 +27,13 @@ import { NotificationHandler } from '@iobroker/js-controller-common-db';
 import * as zipFiles from './lib/zipFiles';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
-import { Upload } from '@iobroker/js-controller-cli';
+import { Upload, PacketManager } from '@iobroker/js-controller-cli';
 import decache from 'decache';
 import isValidCron from 'cron-validate';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import { getDefaultNodeArgs, HostInfo } from '@iobroker/js-controller-common/tools';
 import type { UpgradeArguments } from './lib/upgradeManager';
 import { AdapterUpgradeManager } from './lib/adapterUpgradeManager';
-import { PacketManager } from '@iobroker/js-controller-cli';
 
 type TaskObject = ioBroker.SettableObject & { state?: ioBroker.SettableState };
 type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
