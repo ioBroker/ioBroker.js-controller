@@ -307,6 +307,16 @@ declare global {
         }
 
         type InstanceMode = 'none' | 'daemon' | 'subscribe' | 'schedule' | 'once' | 'extension';
+
+        interface AdminUi {
+            /** UI type of config page inside admin UI */
+            config: 'html' | 'json' | 'materialize' | 'none';
+            /** UI type of custom tab inside admin UI */
+            custom?: 'json';
+            /** UI type of tab inside admin UI */
+            tab?: 'html' | 'materialize';
+        }
+
         interface InstanceCommon extends AdapterCommon {
             version: string;
             /** The name of the host where this instance is running */
@@ -336,6 +346,8 @@ declare global {
             nodeProcessParams?: string[];
             /** If adapter can consume log messages, like admin, javascript or logparser */
             logTransporter?: boolean;
+            /** Type of the admin UI */
+            adminUI?: AdminUi;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
