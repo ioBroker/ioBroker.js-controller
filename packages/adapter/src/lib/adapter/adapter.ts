@@ -6927,7 +6927,7 @@ export class AdapterClass extends EventEmitter {
                     dateObj = new Date(_dateObj);
                 } else {
                     // if less 2000.01.01 00:00:00
-                    dateObj = j < 946681200000 ? new Date(j * 1000) : new Date(j);
+                    dateObj = j < 946681200000 ? new Date(j * 1_000) : new Date(j);
                 }
             } else {
                 dateObj = new Date(_dateObj);
@@ -6938,7 +6938,7 @@ export class AdapterClass extends EventEmitter {
         const format = _format || this.dateFormat || 'DD.MM.YYYY';
 
         if (isDuration) {
-            dateObj.setMilliseconds(dateObj.getMilliseconds() + dateObj.getTimezoneOffset() * 60 * 1000);
+            dateObj.setMilliseconds(dateObj.getMilliseconds() + dateObj.getTimezoneOffset() * 60 * 1_000);
         }
 
         const validFormatChars = 'YJГMМDTДhSчmмsс';
@@ -10544,7 +10544,7 @@ export class AdapterClass extends EventEmitter {
             return;
         }
 
-        /** Time after which states regularly set by the status report expire ins seconds */
+        /** Time after which states regularly set by the status report expire in seconds */
         const reportStatusExpirySec = Math.floor(this._config.system.statisticsInterval / 1_000) + 10;
 
         const id = `system.adapter.${this.namespace}`;
@@ -10584,7 +10584,7 @@ export class AdapterClass extends EventEmitter {
                         val: Math.round(100 * stats.cpu) / 100,
                         expire: reportStatusExpirySec
                     });
-                    this.#states.setState(`${id}.cputime`, { ack: true, from: id, val: stats.ctime / 1000 });
+                    this.#states.setState(`${id}.cputime`, { ack: true, from: id, val: stats.ctime / 1_000 });
                     this.outputCount += 2;
                 }
             });
@@ -11839,7 +11839,7 @@ export class AdapterClass extends EventEmitter {
                             this.#states.setState(`${id}.eventLoopLag`, { val: 0, ack: true, from: id });
                             this.outputCount += 6;
                         } else {
-                            tools.measureEventLoopLag(1000, lag => {
+                            tools.measureEventLoopLag(1_000, lag => {
                                 if (lag) {
                                     this.eventLoopLags.push(lag);
                                 }
