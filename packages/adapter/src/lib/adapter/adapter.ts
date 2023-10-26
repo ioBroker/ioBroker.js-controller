@@ -10559,7 +10559,7 @@ export class AdapterClass extends EventEmitter {
             this.#states.setState(`${id}.connected`, {
                 val: true,
                 ack: true,
-                expire: 30,
+                expire: reportStatusExpirySec,
                 from: id
             });
             this.outputCount++;
