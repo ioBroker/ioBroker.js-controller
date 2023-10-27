@@ -68,7 +68,7 @@ interface Process {
     /** the process itself */
     process?: cp.ChildProcess;
     /** the config of the instance (mainly io-pack attributes) */
-    config: ioBroker.InstanceObject & Record<string, any>; //Record<string, any>;
+    config: ioBroker.InstanceObject;
     restartTimer?: NodeJS.Timeout;
     restartExpected?: boolean;
     downloadRetry?: number;
@@ -741,6 +741,7 @@ function createObjects(onConnect: () => void): void {
                         proc.config.common.enabled = false;
                         // @ts-expect-error check if we can handle it different
                         proc.config.common.host = null;
+                        // @ts-expect-error it is only used in checkAndAddInstance, find a way without modifying the InstanceObject
                         proc.config.deleted = true;
                         delete hostAdapter[id];
                         logger.info(`${hostLogPrefix} object deleted ${id}`);
