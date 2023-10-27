@@ -10584,7 +10584,12 @@ export class AdapterClass extends EventEmitter {
                         val: Math.round(100 * stats.cpu) / 100,
                         expire: reportStatusExpirySec
                     });
-                    this.#states.setState(`${id}.cputime`, { ack: true, from: id, val: stats.ctime / 1_000 });
+                    this.#states.setState(`${id}.cputime`, {
+                        ack: true,
+                        from: id,
+                        val: stats.ctime / 1_000,
+                        expire: reportStatusExpirySec
+                    });
                     this.outputCount += 2;
                 }
             });

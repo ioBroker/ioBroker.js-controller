@@ -21,6 +21,7 @@
 * (foxriver76) Added an admin notification if redis is misconfigured and info how to fix it
 * (foxriver76/buanet) Enable upgrade of js-controller via Admin UI (Linux/Docker only)
 * (foxriver76) automatically reset `info.connection` if adapter instance is stopped
+* (foxriver76) automatically reset instance statistics like `cputime` when instance is stopped
 
 **Optimizations and Fixes**
 * (foxriver76) Speedup "getStates" calls with many IDs often used by visualizations: JSONL 17 times faster, Redis 23 times faster
@@ -48,6 +49,10 @@
 * (foxriver76) fix wrong hostname after backup restore
 * (bluefox) allow CLI vendor update without explicitly specifying vendor file (default file is used)
 * (foxriver76) fix backup restore restoring to old database and using new one afterwards
+* (foxriver76) fix that memory limit of instance was not applied
+* (foxriver76) validate cron jobs before executing them for `schedule` adapters
+* (bluefox) new notification category `securityIssues`
+* (foxriver76) no longer assume all states ending with `.logging` are actual log subscribers
 * (Apollon77, foxriver76, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 
 **Developer relevant DEPRECATIONS/WARNINGS**
