@@ -5768,7 +5768,7 @@ export function init(compactGroupId?: number): void {
             const hostView = await objects!.getObjectViewAsync('system', 'host');
             if (hostView?.rows) {
                 for (const row of hostView.rows) {
-                    if (row.value && row.value.common && row.value.common.installedVersion) {
+                    if (row.value?.common?.installedVersion) {
                         controllerVersions[row.id] = row.value.common.installedVersion;
                     }
                 }
