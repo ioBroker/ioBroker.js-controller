@@ -68,7 +68,7 @@ interface Process {
     /** the process itself */
     process?: cp.ChildProcess;
     /** the config of the instance (mainly io-pack attributes) */
-    config: Record<string, any>;
+    config: ioBroker.InstanceObject & Record<string, any>; //Record<string, any>;
     restartTimer?: NodeJS.Timeout;
     restartExpected?: boolean;
     downloadRetry?: number;
@@ -709,10 +709,13 @@ function createObjects(onConnect: () => void): void {
             );
             // give the main controller a bit longer, so that adapter and compact processes can exit before
         },
-        change: async (id, obj) => {
+        change: async (id, _obj) => {
             if (!started || !id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) {
                 return;
             }
+
+            const obj = _obj as ioBroker.InstanceObject | null;
+
             try {
                 logger.debug(`${hostLogPrefix} object change ${id} (from: ${obj ? obj.from : null})`);
                 // known adapter
@@ -736,6 +739,7 @@ function createObjects(onConnect: () => void): void {
                         // instance removed -> remove all notifications
                         await notificationHandler.clearNotifications(null, null, id as any);
                         proc.config.common.enabled = false;
+                        // @ts-expect-error check if we can handle it different
                         proc.config.common.host = null;
                         proc.config.deleted = true;
                         delete hostAdapter[id];
@@ -850,6 +854,7 @@ function createObjects(onConnect: () => void): void {
                             delete hostAdapter[id];
                         }
                     }
+                    // @ts-expect-error it seems like these logic no longer works as we filter for system.adapter ids at the beginning...
                 } else if (obj && obj.type === 'host' && obj.common?.installedVersion) {
                     // host object changed
                     // TODO: remove this shim if 4.0 is old enough
@@ -920,10 +925,10 @@ function createObjects(onConnect: () => void): void {
                         logger.info(`${hostLogPrefix} Multihost controller deletion detected, restarting ...`);
                         restart();
                     }
-                } else if (obj && obj.common) {
+                } else if (obj?.common) {
                     const _ipArr = tools.findIPs();
                     // new adapter
-                    if (!checkAndAddInstance(obj as ioBroker.InstanceObject, _ipArr)) {
+                    if (!checkAndAddInstance(obj, _ipArr)) {
                         return;
                     }
 
@@ -941,7 +946,7 @@ function createObjects(onConnect: () => void): void {
             } catch (err) {
                 if (
                     !compactGroupController ||
-                    (obj && obj.common && obj.common.runAsCompactMode && obj.common.compactGroup === compactGroup)
+                    (obj?.common?.runAsCompactMode && obj.common.compactGroup === compactGroup)
                 ) {
                     logger.error(`${hostLogPrefix} cannot process: ${id}: ${err} / ${err.stack}`);
                 }
@@ -3482,6 +3487,7 @@ async function getInstances(): Promise<void> {
                     const name = instance._id.split('.')[2];
                     const adapterDir = tools.getAdapterDir(name);
                     if (!fs.existsSync(adapterDir!)) {
+                        // @ts-expect-error check if we already need to add the config here
                         procs[instance._id] = { downloadRetry: 0, config: { common: { enabled: false } } };
                         installQueue.push({
                             id: instance._id,
@@ -3727,7 +3733,7 @@ function checkVersion(name: string, version: string, instances: Record<string, i
  * @param deps - same host dependencies as defined in io-pack
  * @param globalDeps - global dependencies, as defined in io-pack
  */
-async function checkVersions(id: string, deps: Dependencies, globalDeps: Dependencies): Promise<void> {
+async function checkVersions(id: string, deps?: Dependencies, globalDeps?: Dependencies): Promise<void> {
     const res = await objects!.getObjectViewAsync('system', 'instance', {
         startkey: SYSTEM_ADAPTER_PREFIX,
         endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
@@ -4065,11 +4071,11 @@ function startScheduledInstance(callback?: () => void): void {
             if (!proc.process) {
                 // reset sigKill to 0 if it was set to another value from "once run"
                 states!.setState(`${instance._id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix }, () => {
-                    const args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
+                    const args = [instance._id.split('.').pop() || '0', instance.common.loglevel || 'info'];
                     try {
                         proc.process = cp.fork(fileNameFull, args, {
                             execArgv: tools.getDefaultNodeArgs(fileNameFull),
-                            // @ts-expect-error missing from types but we already tested it is needed
+                            // @ts-expect-error missing from types, but we already tested it is needed
                             windowsHide: true,
                             cwd: adapterDir
                         });
@@ -4196,20 +4202,22 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         return;
     }
 
+    /** Args passed to the actual adapter code */
     const args =
         instance?._id && instance.common
-            ? [instance._id.split('.').pop(), instance.common.loglevel || 'info']
-            : [0, 'info'];
+            ? [instance._id.split('.').pop() || '0', instance.common.loglevel || 'info']
+            : ['0', 'info'];
+
+    /** Args passed to Node.js */
+    const execArgv: string[] = [];
 
     // define memory limit for adapter
-    //noinspection JSUnresolvedVariable
-    if (instance.common.memoryLimitMB && parseInt(instance.common.memoryLimitMB, 10)) {
-        //noinspection JSUnresolvedVariable
-        args.push(`--max-old-space-size=${parseInt(instance.common.memoryLimitMB, 10)}`);
+    if (instance.common.memoryLimitMB && Math.round(instance.common.memoryLimitMB)) {
+        execArgv.push(`--max-old-space-size=${Math.round(instance.common.memoryLimitMB)}`);
     }
 
     if (Array.isArray(instance.common.nodeProcessParams) && instance.common.nodeProcessParams.length) {
-        args.push(...instance.common.nodeProcessParams);
+        execArgv.push(...instance.common.nodeProcessParams);
 
         if (instance.common.compact) {
             instance.common.compact = false;
@@ -4584,6 +4592,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                 }
 
                                 if (!proc.crashCount || proc.crashCount < 3) {
+                                    /** @ts-expect error if needed add it to types */
                                     proc.restartTimer = setTimeout(
                                         _id => startInstance(_id),
                                         code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP
@@ -4649,7 +4658,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                         // We were not able or should not start as compact mode
                         try {
                             proc.process = cp.fork(adapterMainFile, args, {
-                                execArgv: tools.getDefaultNodeArgs(adapterMainFile),
+                                execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
                                 stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
                                 // @ts-expect-error missing from types, but we already tested it is needed
                                 windowsHide: true,
@@ -4808,21 +4817,24 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
                         handleAdapterProcessStart();
                     } else {
+                        const compactGroup = instance.common.compactGroup!;
+
                         // a group controller for this group is not yet started, execute one
-                        compactProcs[instance.common.compactGroup] = compactProcs[instance.common.compactGroup] || {
+                        compactProcs[compactGroup] = compactProcs[compactGroup] || {
                             instances: []
                         };
 
-                        const compactProc = compactProcs[instance.common.compactGroup];
+                        const compactProc = compactProcs[compactGroup];
                         if (!compactProc.process) {
-                            const compactControllerArgs = [instance.common.compactGroup];
+                            /** Args passed to the actual adapter */
+                            const compactControllerArgs = [compactGroup.toString()];
+                            /** Args passed to Node.js */
+                            const execArgv: string[] = [];
 
                             //noinspection JSUnresolvedVariable
-                            if (instance.common.memoryLimitMB && parseInt(instance.common.memoryLimitMB, 10)) {
+                            if (instance.common.memoryLimitMB && Math.round(instance.common.memoryLimitMB)) {
                                 //noinspection JSUnresolvedVariable
-                                compactControllerArgs.push(
-                                    `--max-old-space-size=${parseInt(instance.common.memoryLimitMB, 10)}`
-                                );
+                                execArgv.push(`--max-old-space-size=${Math.round(instance.common.memoryLimitMB)}`);
                             }
 
                             logger.info(
@@ -4834,6 +4846,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                     path.join(__dirname, 'compactgroupController.js'),
                                     compactControllerArgs,
                                     {
+                                        execArgv,
                                         stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
                                         // @ts-expect-error missing from types, but we already tested it is needed
                                         windowsHide: true
@@ -4849,7 +4862,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                             if (compactProc.process) {
                                 if (compactProc.process.stderr) {
                                     compactProc.process.stderr.on('data', data => {
-                                        const compactProc = compactProcs[instance.common.compactGroup];
+                                        const compactProc = compactProcs[compactGroup];
                                         if (!data || !compactProc || typeof compactProc !== 'object') {
                                             return;
                                         }
@@ -4867,7 +4880,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                     });
                                 }
 
-                                const currentCompactGroup = instance.common.compactGroup;
+                                const currentCompactGroup = instance.common.compactGroup!;
                                 // Exit handler for compact groups
                                 const groupExitHandler = (code: number, signal: string): void => {
                                     if (signal) {
@@ -5002,15 +5015,15 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                     });
                                 };
 
-                                compactProcs[instance.common.compactGroup].process!.on('exit', groupExitHandler);
+                                compactProcs[compactGroup].process!.on('exit', groupExitHandler);
                             }
                         }
-                        if (compactProcs[instance.common.compactGroup].process) {
-                            if (!compactProcs[instance.common.compactGroup].instances.includes(id)) {
-                                compactProcs[instance.common.compactGroup].instances.push(id);
+                        if (compactProcs[compactGroup].process) {
+                            if (!compactProcs[compactGroup].instances.includes(id)) {
+                                compactProcs[compactGroup].instances.push(id);
                             }
 
-                            proc.process = compactProcs[instance.common.compactGroup].process;
+                            proc.process = compactProcs[compactGroup].process;
                             proc.startedAsCompactGroup = true;
                         }
                         handleAdapterProcessStart();
@@ -5085,7 +5098,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                     // @ts-expect-error if mode !== extension we have ensured it exists
                     proc.process = cp.fork(adapterMainFile, args, {
                         // @ts-expect-error if mode !== extension we have ensured it exists
-                        execArgv: tools.getDefaultNodeArgs(adapterMainFile),
+                        execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
                         // @ts-expect-error missing from types, but we already tested it is needed
                         windowsHide: true,
                         cwd: adapterDir!
@@ -5256,8 +5269,8 @@ async function stopInstance(id: string, force: boolean, callback?: (() => void) 
                         }
                     });
 
-                    const supportStopInstanceVal: true | number =
-                        instance.common.supportStopInstance || instance.common.supportedMessages.stopInstance;
+                    const supportStopInstanceVal: boolean | number | undefined =
+                        instance.common.supportStopInstance || instance.common.supportedMessages?.stopInstance;
 
                     const timeoutDuration = supportStopInstanceVal === true ? 1_000 : supportStopInstanceVal || 1_000;
                     // If no response from adapter, kill it in 1 second
