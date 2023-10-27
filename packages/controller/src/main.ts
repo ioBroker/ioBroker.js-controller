@@ -855,77 +855,6 @@ function createObjects(onConnect: () => void): void {
                             delete hostAdapter[id];
                         }
                     }
-                    // @ts-expect-error it seems like these logic no longer works as we filter for system.adapter ids at the beginning...
-                } else if (obj && obj.type === 'host' && obj.common?.installedVersion) {
-                    // host object changed
-                    // TODO: remove this shim if 4.0 is old enough
-                    if (controllerVersions[id]) {
-                        if (
-                            semver.lt(controllerVersions[id], '4.0.0') &&
-                            semver.gte(obj.common.installedVersion, '4.0.0')
-                        ) {
-                            // old version lower 4 new version greater 4, restart needed
-                            logger.info(`${hostLogPrefix} Multihost controller upgrade detected, restarting ...`);
-                            restart();
-                        } else if (
-                            semver.gte(controllerVersions[id], '4.0.0') &&
-                            semver.lt(obj.common.installedVersion, '4.0.0')
-                        ) {
-                            // the controller was above 4 and now below 4
-                            logger.info(`${hostLogPrefix} Multihost controller downgrade detected, restarting ...`);
-                            restart();
-                        }
-                    } else {
-                        //  we don't know this host yet, so it is new to the mh system
-                        let restartRequired = true;
-
-                        // if we are already a multihost, make the version check else restart in all cases
-                        if (Object.keys(controllerVersions).length > 1) {
-                            if (semver.lt(obj.common.installedVersion, '4.0.0')) {
-                                for (const controllerVersion of Object.values(controllerVersions)) {
-                                    if (semver.lt(controllerVersion, '4.0.0')) {
-                                        // there was another host < 4 so no restart required
-                                        restartRequired = false;
-                                        break;
-                                    }
-                                }
-                            } else {
-                                // version is greater equal 4
-                                for (const controllerVersion of Object.values(controllerVersions)) {
-                                    if (semver.gte(controllerVersion, '4.0.0')) {
-                                        // there was already another host greater equal 4 -> no restart needed
-                                        restartRequired = false;
-                                        break;
-                                    }
-                                }
-                            }
-                        } else {
-                            // change from single to multihost - deactivate sets asap but also restart
-                            await objects!.deactivateSets();
-                        }
-
-                        if (restartRequired) {
-                            logger.info(`${hostLogPrefix} New multihost participant detected, restarting ...`);
-                            restart();
-                        }
-                    }
-
-                    controllerVersions[id] = obj.common.installedVersion;
-                } else if (!obj && /^system\.host\.[^.]+$/.test(id)) {
-                    const delVersion = controllerVersions[id];
-                    delete controllerVersions[id];
-                    // host object deleted
-                    if (delVersion && semver.lt(delVersion, '4.0.0')) {
-                        // check if the only below 4 host has been deleted, then we need restart
-                        for (const version of Object.values(controllerVersions)) {
-                            if (semver.lt(version, '4.0.0')) {
-                                // another version below 4, so still need old protocol
-                                return;
-                            }
-                        }
-                        logger.info(`${hostLogPrefix} Multihost controller deletion detected, restarting ...`);
-                        restart();
-                    }
                 } else if (obj?.common) {
                     const _ipArr = tools.findIPs();
                     // new adapter
@@ -5833,9 +5762,6 @@ export function init(compactGroupId?: number): void {
 
     createObjects(async () => {
         objects!.subscribe(`${SYSTEM_ADAPTER_PREFIX}*`);
-        // TODO: remove this backward shim if controller 4.0 is old enough
-        // subscribe to host objects to detect upgrade from one of the hosts for sets migration
-        objects!.subscribe('system.host.*');
 
         // get the current host versions
         try {
