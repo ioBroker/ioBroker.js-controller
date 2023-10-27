@@ -348,6 +348,8 @@ declare global {
             logTransporter?: boolean;
             /** Type of the admin UI */
             adminUI?: AdminUi;
+            /** Optional memory limit for this instance */
+            memoryLimitMB?: number;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
@@ -578,6 +580,8 @@ declare global {
             preserveSettings?: string | string[];
             /** Which adapters must be restarted after installing or updating this adapter. */
             restartAdapters?: string[];
+            /** CRON schedule to restart mode `daemon` adapters */
+            restartSchedule?: string;
             /** If the adapter runs in `schedule` mode, this contains the CRON */
             schedule?: string;
             serviceStates?: boolean | string;
