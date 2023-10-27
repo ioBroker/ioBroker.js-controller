@@ -11819,7 +11819,6 @@ export class AdapterClass extends EventEmitter {
                     }
                 }
 
-                // @ts-expect-error restartSchedule can exist - adjust types
                 if (adapterConfig && 'common' in adapterConfig && adapterConfig.common.restartSchedule) {
                     try {
                         this._schedule = await import('node-schedule');
@@ -11830,11 +11829,9 @@ export class AdapterClass extends EventEmitter {
                     }
                     if (this._schedule) {
                         this._logger.debug(
-                            // @ts-expect-error restartSchedule can exist - adjust types
                             `${this.namespaceLog} Schedule restart: ${adapterConfig.common.restartSchedule}`
                         );
                         this._restartScheduleJob = this._schedule.scheduleJob(
-                            // @ts-expect-error restartSchedule can exist - adjust types
                             adapterConfig.common.restartSchedule,
                             () => {
                                 this._logger.info(`${this.namespaceLog} Scheduled restart.`);
