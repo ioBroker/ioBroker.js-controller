@@ -6927,7 +6927,7 @@ export class AdapterClass extends EventEmitter {
                     dateObj = new Date(_dateObj);
                 } else {
                     // if less 2000.01.01 00:00:00
-                    dateObj = j < 946681200000 ? new Date(j * 1000) : new Date(j);
+                    dateObj = j < 946681200000 ? new Date(j * 1_000) : new Date(j);
                 }
             } else {
                 dateObj = new Date(_dateObj);
@@ -6938,7 +6938,7 @@ export class AdapterClass extends EventEmitter {
         const format = _format || this.dateFormat || 'DD.MM.YYYY';
 
         if (isDuration) {
-            dateObj.setMilliseconds(dateObj.getMilliseconds() + dateObj.getTimezoneOffset() * 60 * 1000);
+            dateObj.setMilliseconds(dateObj.getMilliseconds() + dateObj.getTimezoneOffset() * 60 * 1_000);
         }
 
         const validFormatChars = 'YJГMМDTДhSчmмsс';
@@ -10543,16 +10543,25 @@ export class AdapterClass extends EventEmitter {
         if (!this.#states) {
             return;
         }
+
+        /** Time after which states regularly set by the status report expire in seconds */
+        const reportStatusExpirySec = Math.floor(this._config.system.statisticsInterval / 1_000) + 10;
+
         const id = `system.adapter.${this.namespace}`;
         this.#states.setState(`${id}.alive`, {
             val: true,
             ack: true,
-            expire: Math.floor(this._config.system.statisticsInterval / 1000) + 10,
+            expire: reportStatusExpirySec,
             from: id
         });
         this.outputCount++;
         if (this.connected) {
-            this.#states.setState(`${id}.connected`, { val: true, ack: true, expire: 30, from: id });
+            this.#states.setState(`${id}.connected`, {
+                val: true,
+                ack: true,
+                expire: reportStatusExpirySec,
+                from: id
+            });
             this.outputCount++;
         }
         if (!this.startedInCompactMode) {
@@ -10572,9 +10581,10 @@ export class AdapterClass extends EventEmitter {
                     this.#states.setState(`${id}.cpu`, {
                         ack: true,
                         from: id,
-                        val: Math.round(100 * stats.cpu) / 100
+                        val: Math.round(100 * stats.cpu) / 100,
+                        expire: reportStatusExpirySec
                     });
-                    this.#states.setState(`${id}.cputime`, { ack: true, from: id, val: stats.ctime / 1000 });
+                    this.#states.setState(`${id}.cputime`, { ack: true, from: id, val: stats.ctime / 1_000 });
                     this.outputCount += 2;
                 }
             });
@@ -10587,7 +10597,8 @@ export class AdapterClass extends EventEmitter {
                             .toFixed(2)
                     ),
                     ack: true,
-                    from: id
+                    from: id,
+                    expire: reportStatusExpirySec
                 });
                 this.#states.setState(`${id}.memHeapTotal`, {
                     val: parseFloat(
@@ -10595,7 +10606,8 @@ export class AdapterClass extends EventEmitter {
                             .toFixed(2)
                     ),
                     ack: true,
-                    from: id
+                    from: id,
+                    expire: reportStatusExpirySec
                 });
                 this.#states.setState(`${id}.memHeapUsed`, {
                     val: parseFloat(
@@ -10603,7 +10615,8 @@ export class AdapterClass extends EventEmitter {
                             .toFixed(2)
                     ),
                     ack: true,
-                    from: id
+                    from: id,
+                    expire: reportStatusExpirySec
                 });
             } catch (err) {
                 this._logger.warn(`${this.namespaceLog} Could not query used process memory: ${err.message}`);
@@ -10611,7 +10624,12 @@ export class AdapterClass extends EventEmitter {
             this.outputCount += 3;
             if (this.eventLoopLags.length) {
                 const eventLoopLag = Math.ceil(this.eventLoopLags.reduce((a, b) => a + b) / this.eventLoopLags.length);
-                this.#states.setState(`${id}.eventLoopLag`, { val: eventLoopLag, ack: true, from: id }); // average of measured values
+                this.#states.setState(`${id}.eventLoopLag`, {
+                    val: eventLoopLag,
+                    ack: true,
+                    from: id,
+                    expire: reportStatusExpirySec
+                }); // average of measured values
                 this.eventLoopLags = [];
                 this.outputCount++;
             }
@@ -10620,10 +10638,21 @@ export class AdapterClass extends EventEmitter {
         this.#states.setState(`${id}.uptime`, {
             val: parseInt(process.uptime().toFixed(), 10),
             ack: true,
-            from: id
+            from: id,
+            expire: reportStatusExpirySec
         });
-        this.#states.setState(`${id}.inputCount`, { val: this.inputCount, ack: true, from: id });
-        this.#states.setState(`${id}.outputCount`, { val: this.outputCount, ack: true, from: id });
+        this.#states.setState(`${id}.inputCount`, {
+            val: this.inputCount,
+            ack: true,
+            from: id,
+            expire: reportStatusExpirySec
+        });
+        this.#states.setState(`${id}.outputCount`, {
+            val: this.outputCount,
+            ack: true,
+            from: id,
+            expire: reportStatusExpirySec
+        });
         this.inputCount = 0;
         this.outputCount = 0;
     }
@@ -11810,7 +11839,7 @@ export class AdapterClass extends EventEmitter {
                             this.#states.setState(`${id}.eventLoopLag`, { val: 0, ack: true, from: id });
                             this.outputCount += 6;
                         } else {
-                            tools.measureEventLoopLag(1000, lag => {
+                            tools.measureEventLoopLag(1_000, lag => {
                                 if (lag) {
                                     this.eventLoopLags.push(lag);
                                 }
