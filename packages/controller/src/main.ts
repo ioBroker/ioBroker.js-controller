@@ -421,7 +421,7 @@ function handleDisconnect(): void {
         stop(true, () => {
             restartTimeout = setTimeout(() => {
                 processMessage({ command: 'cmdExec', message: { data: '_restart' }, from: hostObjectPrefix });
-                setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
+                setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1_000);
             }, 10_000);
         });
     }
@@ -908,7 +908,7 @@ function startAliveInterval(): void {
     reportInterval = setInterval(reportStatus, config.system.statisticsInterval);
 
     reportStatus();
-    tools.measureEventLoopLag(1000, lag => eventLoopLags.push(lag!));
+    tools.measureEventLoopLag(1_000, lag => eventLoopLags.push(lag!));
 }
 
 /**
@@ -966,7 +966,7 @@ function reportStatus(): void {
     states.setState(`${id}.alive`, {
         val: true,
         ack: true,
-        expire: Math.floor(config.system.statisticsInterval / 1000) + 10,
+        expire: Math.floor(config.system.statisticsInterval / 1_000) + 10,
         from: id
     });
 
@@ -991,7 +991,7 @@ function reportStatus(): void {
                     from: id,
                     val: Math.round(100 * stats.cpu) / 100
                 });
-                states.setState(`${id}.cputime`, { ack: true, from: id, val: stats.ctime / 1000 });
+                states.setState(`${id}.cputime`, { ack: true, from: id, val: stats.ctime / 1_000 });
                 outputCount += 2;
             }
         });
@@ -1021,11 +1021,10 @@ function reportStatus(): void {
     }
 
     // provide machine infos
-
     states.setState(`${id}.load`, { val: Math.round(os.loadavg()[0] * 100) / 100, ack: true, from: id }); //require('loadavg-windows')
     states.setState(`${id}.uptime`, { val: Math.round(process.uptime()), ack: true, from: id });
-    states.setState(`${id}.mem`, { val: Math.round((1000 * os.freemem()) / os.totalmem()) / 10, ack: true, from: id });
-    states.setState(`${id}.freemem`, { val: Math.round(os.freemem() / 1048576 /* 1MB */), ack: true, from: id });
+    states.setState(`${id}.mem`, { val: Math.round((1_000 * os.freemem()) / os.totalmem()) / 10, ack: true, from: id });
+    states.setState(`${id}.freemem`, { val: Math.round(os.freemem() / 1_048_576 /* 1MB */), ack: true, from: id });
 
     if (fs.existsSync('/proc/meminfo')) {
         try {
@@ -2406,7 +2405,10 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         if (msg.from) {
                             sendTo(msg.from, 'cmdExit', { id: msg.message.id, data: exitCode });
                             // Sometimes finished command is lost, recent it
-                            setTimeout(() => sendTo(msg.from, 'cmdExit', { id: msg.message.id, data: exitCode }), 1000);
+                            setTimeout(
+                                () => sendTo(msg.from, 'cmdExit', { id: msg.message.id, data: exitCode }),
+                                1_000
+                            );
                         }
                     });
                 } catch (e) {
@@ -3740,7 +3742,7 @@ function storePids(): void {
                 );
                 logger.error(`${hostLogPrefix} Please consider running the installation fixer when on Linux.`);
             }
-        }, 1000);
+        }, 1_000);
     }
 }
 
@@ -3891,7 +3893,7 @@ function installAdapters(): void {
                     }
                 }
 
-                setTimeout(() => installAdapters(), 1000);
+                setTimeout(() => installAdapters(), 1_000);
             });
             child.on('error', err => {
                 logger.error(
@@ -3902,7 +3904,7 @@ function installAdapters(): void {
                 setTimeout(() => {
                     installQueue.shift();
                     installAdapters();
-                }, 1000);
+                }, 1_000);
             });
         } catch (err) {
             logger.error(
@@ -3911,7 +3913,7 @@ function installAdapters(): void {
             setTimeout(() => {
                 installQueue.shift();
                 installAdapters();
-            }, 1000);
+            }, 1_000);
         }
     } else {
         if (task.rebuild) {
@@ -5247,7 +5249,7 @@ async function stopInstance(id: string, force: boolean, callback?: (() => void) 
                             callback = null;
                         }
                     }
-                    const timeoutDuration = instance.common.stopTimeout || 1000;
+                    const timeoutDuration = instance.common.stopTimeout || 1_000;
                     // If no response from adapter, kill it in 1 second
                     stopTimeout.callback = callback;
                     stopTimeout.timeout = setTimeout(() => {
@@ -5481,7 +5483,7 @@ function stop(force?: boolean, callback?: () => void): void {
             if (typeof callback === 'function') {
                 return void callback();
             } else {
-                setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
+                setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1_000);
             }
             return;
         }
