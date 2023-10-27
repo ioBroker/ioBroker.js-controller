@@ -4170,7 +4170,6 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         mode = 'daemon';
     }
 
-    //noinspection JSUnresolvedVariable
     if (instance.common.wakeup) {
         // TODO
     }
@@ -4332,7 +4331,6 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         }
     }
 
-    //noinspection JSUnresolvedVariable
     if (instance.common.subscribe || instance.common.wakeup) {
         proc.subscribe = instance.common.subscribe || `${instance._id}.wakeup`;
         const parts = instance._id.split('.');
@@ -4461,7 +4459,6 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                 storePids();
                                 return;
                             } else {
-                                //noinspection JSUnresolvedVariable
                                 if (code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION && proc?.restartExpected) {
                                     logger.info(`${hostLogPrefix} instance ${id} terminated for restart.`);
                                 } else if (code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) {
@@ -4587,7 +4584,6 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                 logger.info(`${hostLogPrefix} Restart adapter ${id} because enabled`);
 
                                 const restartTimerExisting = !!proc.restartTimer;
-                                //noinspection JSUnresolvedVariable
                                 if (proc.restartTimer) {
                                     clearTimeout(proc.restartTimer);
                                 }
@@ -4832,9 +4828,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                             /** Args passed to Node.js */
                             const execArgv: string[] = [];
 
-                            //noinspection JSUnresolvedVariable
                             if (instance.common.memoryLimitMB && Math.round(instance.common.memoryLimitMB)) {
-                                //noinspection JSUnresolvedVariable
                                 execArgv.push(`--max-old-space-size=${Math.round(instance.common.memoryLimitMB)}`);
                             }
 
@@ -5093,7 +5087,6 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             });
             logger.info(`${hostLogPrefix} instance scheduled ${instance._id} ${instance.common.schedule}`);
             // Start one time adapter by start or if configuration changed
-            //noinspection JSUnresolvedVariable
             if (instance.common.allowInit) {
                 try {
                     // @ts-expect-error if mode !== extension we have ensured it exists
