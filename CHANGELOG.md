@@ -3,6 +3,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+
 ## __WORK IN PROGRESS__ - Jana
 **BREAKING CHANGES**
 * Support for Node.js 12 and 14 is dropped! Supported are Node.js 16.4.0+ and 18.x
