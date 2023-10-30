@@ -29,7 +29,7 @@ import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { Upload } from '@iobroker/js-controller-cli';
 import decache from 'decache';
-import isValidCron from 'cron-validate';
+import cronParser from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import { getDefaultNodeArgs, HostInfo } from '@iobroker/js-controller-common/tools';
 import type { UpgradeArguments } from './lib/upgradeManager';
@@ -4997,13 +4997,10 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                 logger.info(`${hostLogPrefix} instance canceled schedule ${instance._id}`);
             }
 
-            const cronValid = isValidCron(instance.common.schedule);
-            if (!cronValid.isValid()) {
-                logger.error(
-                    `${hostLogPrefix} Cannot schedule start of instance ${instance._id}: ${cronValid
-                        .getError()
-                        .join(', ')}`
-                );
+            try {
+                cronParser.parseExpression(instance.common.schedule);
+            } catch (e) {
+                logger.error(`${hostLogPrefix} Cannot schedule start of instance ${instance._id}: ${e.message}`);
                 break;
             }
 
