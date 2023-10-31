@@ -26,7 +26,7 @@ If custom messages are supported (same as legacy messagebox)
 
 #### Defined in
 
-[types-dev/objects.d.ts:466](https://github.com/ioBroker/ioBroker.js-controller/blob/4ff35a28/packages/types-dev/objects.d.ts#L466)
+[types-dev/objects.d.ts:466](https://github.com/ioBroker/ioBroker.js-controller/blob/6de2db83/packages/types-dev/objects.d.ts#L466)
 
 ___
 
@@ -38,7 +38,7 @@ If notification handling is supported, for information, see https://github.com/f
 
 #### Defined in
 
-[types-dev/objects.d.ts:468](https://github.com/ioBroker/ioBroker.js-controller/blob/4ff35a28/packages/types-dev/objects.d.ts#L468)
+[types-dev/objects.d.ts:468](https://github.com/ioBroker/ioBroker.js-controller/blob/6de2db83/packages/types-dev/objects.d.ts#L468)
 
 ___
 
@@ -50,4 +50,4 @@ If adapter supports signal stopInstance. Use number if you need more than 1000 m
 
 #### Defined in
 
-[types-dev/objects.d.ts:470](https://github.com/ioBroker/ioBroker.js-controller/blob/4ff35a28/packages/types-dev/objects.d.ts#L470)
+[types-dev/objects.d.ts:470](https://github.com/ioBroker/ioBroker.js-controller/blob/6de2db83/packages/types-dev/objects.d.ts#L470)
