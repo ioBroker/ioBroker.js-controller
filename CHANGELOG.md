@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__ - Jana
+## 5.0.16 (2023-10-31) - Jana
 **BREAKING CHANGES**
 * Support for Node.js 12 and 14 is dropped! Supported are Node.js 16.4.0+ and 18.x
 * Backups created with the new js-controller version cannot be restored on hosts with lower js-controller version!
