@@ -463,11 +463,15 @@ declare global {
          */
         interface SupportedMessages {
             /** If custom messages are supported (same as legacy messagebox) */
-            custom: boolean;
+            custom?: boolean;
             /** If notification handling is supported, for information, see https://github.com/foxriver76/ioBroker.notification-manager#requirements-for-messaging-adapters */
-            notifications: boolean;
+            notifications?: boolean;
             /** If adapter supports signal stopInstance. Use number if you need more than 1000 ms for stop routine. The signal will be sent before stop to the adapter. (used if problems occurred with SIGTERM). */
-            stopInstance: boolean | number;
+            stopInstance?: boolean | number;
+            /** If adapter supports the device manager and thus responds to the corresponding messages */
+            deviceManager?: boolean;
+            /** If adapter supports getHistory message. */
+            getHistory?: boolean;
         }
 
         type AutoUpgradePolicy = 'none' | 'patch' | 'minor' | 'major';

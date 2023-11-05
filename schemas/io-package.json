@@ -134,6 +134,10 @@
               "description": "If custom messages are supported (same as legacy messagebox)",
               "type": "boolean"
             },
+            "deviceManager": {
+              "description": "If adapter supports the device manager and thus responds to the corresponding messages",
+              "type": "boolean"
+            },
             "notifications": {
               "description": "If notification handling is supported, for information, see https://github.com/foxriver76/ioBroker.notification-manager#requirements-for-messaging-adapters",
               "type": "boolean"
