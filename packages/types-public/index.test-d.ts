@@ -769,6 +769,9 @@ const _adapterObject: ioBroker.AdapterObject = {
         mode: 'daemon',
         name: 'test',
         platform: 'Javascript/Node.js',
+        supportedMessages: {
+            deviceManager: true
+        },
         titleLang: {
             de: 'foo',
             es: 'foo',
