@@ -1308,6 +1308,7 @@
                   }
                 },
                 "ignoreInVersions": {
+                  "description": "The vis widget does not support the listed major versions of vis",
                   "type": "array",
                   "items": {
                     "type": "number",
