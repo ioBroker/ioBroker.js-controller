@@ -481,6 +481,8 @@ declare global {
             name: string;
             url: string;
             components: string[];
+            /** The vis widget does not support the listed major versions of vis */
+            ignoreInVersions: number[];
         }
 
         interface AdapterCommon extends ObjectCommon {
