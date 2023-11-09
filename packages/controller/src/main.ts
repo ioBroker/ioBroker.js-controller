@@ -1021,9 +1021,9 @@ function reportStatus(): void {
     }
 
     // provide machine infos
-    states.setState(`${id}.load`, { val: Math.round(os.loadavg()[0] * 100) / 100, ack: true, from: id }); //require('loadavg-windows')
+    states.setState(`${id}.load`, { val: Math.round(os.loadavg()[0] * 100) / 100, ack: true, from: id });
     states.setState(`${id}.uptime`, { val: Math.round(process.uptime()), ack: true, from: id });
-    states.setState(`${id}.mem`, { val: Math.round((1_000 * os.freemem()) / os.totalmem()) / 10, ack: true, from: id });
+    states.setState(`${id}.mem`, { val: Math.round(100 - (os.freemem() / os.totalmem()) * 100), ack: true, from: id });
     states.setState(`${id}.freemem`, { val: Math.round(os.freemem() / 1_048_576 /* 1MB */), ack: true, from: id });
 
     if (fs.existsSync('/proc/meminfo')) {
