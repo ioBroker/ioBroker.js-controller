@@ -271,8 +271,14 @@ declare global {
             custom?: undefined;
         }
         interface DeviceCommon extends ObjectCommon {
-            // TODO: any other definition for device?
-
+            statusStates?: {
+                /** State which is truthy if device is online */
+                onlineId?: string;
+                /** State which is truthy if device is offline */
+                offlineId?: string;
+                /** State which is truthy if device is in error state */
+                errorId?: string;
+            };
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
         }
