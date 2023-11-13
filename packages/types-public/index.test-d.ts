@@ -813,6 +813,20 @@ const _metaObject: ioBroker.MetaObject = {
     native: {}
 };
 
+const _deviceObject: ioBroker.DeviceObject = {
+    _id: '',
+    type: 'device',
+    common: {
+        name: 'my device',
+        statusStates: {
+            offlineId: 'device.isOffline',
+            onlineId: 'device.isOnline',
+            errorId: 'device.isError'
+        }
+    },
+    native: {}
+};
+
 const _instanceObject: ioBroker.InstanceObject = {
     _id: 'system.adapter.test.0',
     type: 'instance',
