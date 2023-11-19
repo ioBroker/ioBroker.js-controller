@@ -66,7 +66,7 @@ export class Upload {
         if (hosts) {
             for (const host of hosts) {
                 const state = await this.states.getStateAsync(`${host}.alive`);
-                if (state && state.val) {
+                if (state?.val) {
                     result.push(host);
                 }
             }
@@ -81,7 +81,7 @@ export class Upload {
                 startkey: 'system.host.',
                 endkey: 'system.host.\u9999'
             });
-            if (arr && arr.rows) {
+            if (arr?.rows) {
                 for (const row of arr.rows) {
                     if (row.value.type !== 'host') {
                         continue;
@@ -114,7 +114,7 @@ export class Upload {
             const adapterConf = await fs.readJSON(join(adapterDir, 'io-package.json'));
             if (adapterConf.common.restartAdapters) {
                 if (!Array.isArray(adapterConf.common.restartAdapters)) {
-                    // its not an array, now it can only be a single adapter as string
+                    // it's not an array, now it can only be a single adapter as string
                     if (typeof adapterConf.common.restartAdapters !== 'string') {
                         return;
                     }
@@ -123,12 +123,12 @@ export class Upload {
 
                 if (adapterConf.common.restartAdapters.length && adapterConf.common.restartAdapters[0]) {
                     const instances = await tools.getAllInstances(adapterConf.common.restartAdapters, this.objects);
-                    if (instances && instances.length) {
+                    if (instances?.length) {
                         for (const instance of instances) {
                             try {
                                 const obj = await this.objects.getObjectAsync(instance);
                                 // if instance is enabled
-                                if (obj && obj.common && obj.common.enabled) {
+                                if (obj?.common?.enabled) {
                                     obj.common.enabled = false; // disable instance
 
                                     obj.from = `system.host.${tools.getHostName()}.cli`;
@@ -169,7 +169,7 @@ export class Upload {
             this.states.unsubscribeMessage(from);
             // @ts-expect-error todo: I don't think this works
             this.states.onChange = null;
-        }, 60000);
+        }, 60_000);
 
         // @ts-expect-error todo: I don't think this works
         this.states.onChange = (id, msg) => {
@@ -326,7 +326,6 @@ export class Upload {
         if (files && files.length) {
             for (const file of files) {
                 try {
-                    // @ts-expect-error should be fixed with #1917
                     await this.objects.unlinkAsync(file.adapter, file.path);
                 } catch (err) {
                     logger.error(`Cannot delete file "${file.path}": ${err}`);

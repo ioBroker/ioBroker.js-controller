@@ -1387,7 +1387,7 @@ export class ObjectsInRedisClient {
         });
     }
 
-    unlinkAsync(id: string, name: string, options: CallOptions): Promise<void> {
+    unlinkAsync(id: string, name: string, options?: CallOptions): Promise<void> {
         return new Promise<void>((resolve, reject) =>
             this.unlink(id, name, options, err => (err ? reject(err) : resolve()))
         );
