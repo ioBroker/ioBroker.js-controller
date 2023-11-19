@@ -213,32 +213,29 @@ export class Upload {
     }
 
     async uploadAdapterFullAsync(adapters: string[]): Promise<void> {
-        if (adapters && adapters.length) {
+        if (adapters?.length) {
             const liveHosts = await this.getHosts(true);
             for (const adapter of adapters) {
                 // Find the host which has this adapter
                 const instances = await tools.getInstances(adapter, this.objects, true);
                 // try to find instance on this host
-                let instance = instances.find(obj => obj && obj.common && obj.common.host === hostname);
+                let instance = instances.find(obj => obj?.common?.host === hostname);
 
                 // try to find enabled instance on live host
                 instance =
-                    instance ||
-                    instances.find(
-                        obj => obj && obj.common && obj.common.enabled && liveHosts.includes(obj.common.host)
-                    );
+                    instance || instances.find(obj => obj?.common?.enabled && liveHosts.includes(obj.common.host));
 
                 // try to find any instance
-                instance = instance || instances.find(obj => obj && obj.common && liveHosts.includes(obj.common.host));
+                instance = instance || instances.find(obj => obj?.common && liveHosts.includes(obj.common.host));
 
                 if (instance && instance.common.host !== hostname) {
                     console.log(`Send upload command to host "${instance.common.host}"... `);
                     // send upload message to the host
                     const response = await this.sendToHostFromCliAsync(instance.common.host, 'upload', adapter);
                     if (response) {
-                        console.log('Upload result: ' + response.result);
+                        console.log(`Upload result: ${response.result}`);
                     } else {
-                        console.error('No answer from ' + instance.common.host);
+                        console.error(`No answer from ${instance.common.host}`);
                     }
                 } else {
                     if (!instance) {
@@ -289,7 +286,7 @@ export class Upload {
                     responseType: 'arraybuffer',
                     validateStatus: status => status === 200
                 });
-                if (result && result.data) {
+                if (result?.data) {
                     await this.objects.writeFileAsync(adapter, target, result.data);
                 } else {
                     console.error(`Empty response from URL "${source}"`);
@@ -339,10 +336,10 @@ export class Upload {
     }
 
     /**
-     * Collect Files of an adapter specific directory from the iobroker storage
+     * Collect Files of an adapter specific directory from the ioBroker storage
      *
-     * @param adapter Adaptername
-     * @param path path in the adapterspecific storage space
+     * @param adapter Adapter name
+     * @param path path in the adapter specific storage space
      * @param logger Logger instance
      */
     async collectExistingFilesToDelete(
@@ -360,7 +357,7 @@ export class Upload {
             files = [];
         }
 
-        if (files && files.length) {
+        if (files?.length) {
             for (const file of files) {
                 if (file.file === '.' || file.file === '..') {
                     continue;
@@ -544,7 +541,7 @@ export class Upload {
         }
 
         // check for common.wwwDontUpload (required for legacy adapters and admin)
-        if (!isAdmin && cfg && cfg.common && cfg.common.wwwDontUpload) {
+        if (!isAdmin && cfg?.common?.wwwDontUpload) {
             return adapter;
         }
 
@@ -592,7 +589,7 @@ export class Upload {
         // Read all names with subtrees from local directory
         const files = this.walk(dir);
         if (!result) {
-            // @ts-expect-error types needed admin is not allowed for meta but it should be allowed
+            // @ts-expect-error types needed admin is not allowed for meta, but it should be allowed
             await this.objects.setObjectAsync(id, {
                 type: 'meta',
                 common: {
@@ -635,19 +632,19 @@ export class Upload {
         return adapter;
     }
 
-    extendNative(target: Record<string, any>, additional: Record<string, any>): Record<string, any> {
+    extendNative(target: Record<string, any>, additional: Record<string, unknown>): Record<string, any> {
         if (tools.isObject(additional)) {
-            for (const attr of Object.keys(additional)) {
+            for (const [attr, attrData] of Object.entries(additional)) {
                 if (target[attr] === undefined) {
-                    target[attr] = additional[attr];
-                } else if (typeof additional[attr] === 'object' && !(additional[attr] instanceof Array)) {
+                    target[attr] = attrData;
+                } else if (typeof attrData === 'object' && !(attrData instanceof Array)) {
                     try {
                         target[attr] = target[attr] || {};
                     } catch {
                         console.warn(`Cannot update attribute ${attr} of native`);
                     }
                     if (typeof target[attr] === 'object' && target[attr] !== null) {
-                        this.extendNative(target[attr], additional[attr]);
+                        this.extendNative(target[attr], attrData);
                     }
                 }
             }
@@ -672,15 +669,15 @@ export class Upload {
                 'tier'
             ];
 
-            for (const attr of Object.keys(additional)) {
-                // preserve these attributes, except, they werde undefined before and preserve titleLang if current titleLang is of type string (changed by user)
-                if (preserveAttributes.includes(attr) || (attr === 'titleLang' && typeof target[attr] === 'string')) {
+            for (const [attr, attrData] of Object.entries(additional)) {
+                // preserve these attributes, except, they were undefined before and preserve titleLang if current titleLang is of type string (changed by user)
+                if (preserveAttributes.includes(attr) || (attr === 'titleLang' && typeof attrData === 'string')) {
                     if (target[attr] === undefined) {
-                        target[attr] = additional[attr];
+                        target[attr] = attrData;
                     }
-                } else if (typeof additional[attr] !== 'object' || additional[attr] instanceof Array) {
+                } else if (typeof attrData !== 'object' || attrData instanceof Array) {
                     try {
-                        target[attr] = additional[attr];
+                        target[attr] = attrData;
 
                         // dataFolder can have wildcards
                         if (attr === 'dataFolder' && target.dataFolder && target.dataFolder.includes('%INSTANCE%')) {
@@ -695,7 +692,7 @@ export class Upload {
                         target[attr] = {}; // here we clean the simple value with object
                     }
 
-                    this.extendCommon(target[attr], additional[attr], instance);
+                    this.extendCommon(target[attr], attrData, instance);
                 }
             }
         }
