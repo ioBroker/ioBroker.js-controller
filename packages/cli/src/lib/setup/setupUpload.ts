@@ -40,7 +40,7 @@ export class Upload {
     private readonly regApp: RegExp;
     private callbackId: number;
     private readonly sendToHostFromCliAsync: (...args: any[]) => Promise<any>;
-    private callbacks?: Record<string, any>;
+    private callbacks: Record<string, any> = {};
     private lastProgressUpdate: number;
 
     constructor(_options: CLIUploadOptions) {
@@ -164,7 +164,9 @@ export class Upload {
         const from = `system.host.${hostname}_cli_${time}`;
 
         const timeout = setTimeout(() => {
-            callback && callback();
+            if (callback) {
+                callback();
+            }
             callback = null;
             this.states.unsubscribeMessage(from);
             // @ts-expect-error todo: I don't think this works
@@ -204,7 +206,7 @@ export class Upload {
             if (this.callbackId > 0xffffffff) {
                 this.callbackId = 1;
             }
-            this.callbacks = this.callbacks || {};
+
             this.callbacks[`_${obj.callback.id}`] = { cb: callback };
 
             // we cannot receive answers from hosts in CLI, so this command is "fire and forget"
@@ -413,23 +415,27 @@ export class Upload {
 
             let attName = attNameArr.pop()!;
             attName = attName.split('/').slice(2).join('/');
-            if (files.length - f > 100) {
-                (!f || !((files.length - f - 1) % 50)) &&
-                    logger.log(`upload [${files.length - f - 1}] ${id} ${file} ${attName} ${mimeType}`);
-            } else if (files.length - f - 1 > 20) {
-                (!f || !((files.length - f - 1) % 10)) &&
-                    logger.log(`upload [${files.length - f - 1}] ${id} ${file} ${attName} ${mimeType}`);
+
+            const remainingFiles = files.length - f - 1;
+
+            if (remainingFiles >= 100) {
+                (!f || !(remainingFiles % 50)) &&
+                    logger.log(`upload [${remainingFiles}] ${id} ${file} ${attName} ${mimeType}`);
+            } else if (remainingFiles > 20) {
+                if (!f || !(remainingFiles % 10)) {
+                    logger.log(`upload [${remainingFiles}] ${id} ${file} ${attName} ${mimeType}`);
+                }
             } else {
-                logger.log(`upload [${files.length - f - 1}] ${id} ${file} ${attName} ${mimeType}`);
+                logger.log(`upload [${remainingFiles}] ${id} ${file} ${attName} ${mimeType}`);
             }
 
             // Update upload indicator
             if (!isAdmin) {
                 const now = Date.now();
-                if (now - this.lastProgressUpdate > 1000) {
+                if (now - this.lastProgressUpdate > 1_000) {
                     this.lastProgressUpdate = now;
                     await this.states.setStateAsync(uploadID, {
-                        val: Math.round((1000 * (files.length - f)) / files.length) / 10,
+                        val: Math.round((1_000 * (files.length - f)) / files.length) / 10,
                         ack: true
                     });
                 }
