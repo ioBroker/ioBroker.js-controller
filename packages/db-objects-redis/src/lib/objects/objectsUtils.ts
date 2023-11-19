@@ -166,7 +166,7 @@ export function insert(
     _ignore: any,
     options: Record<string, any> | string,
     _obj: any,
-    callback: (err: Error | null | undefined) => void
+    callback: (err?: Error | null) => void
 ): WMStrm {
     if (typeof options === 'string') {
         options = { mimeType: options };

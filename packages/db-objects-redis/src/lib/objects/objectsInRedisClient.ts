@@ -1034,7 +1034,7 @@ export class ObjectsInRedisClient {
         ignore: any,
         options: string | Record<string, any>,
         obj: any,
-        callback: (err: Error | null | undefined) => void
+        callback: (err?: Error | null) => void
     ): WMStrm {
         return utils.insert(this, id, attName, ignore, options, obj, callback);
     }
