@@ -444,11 +444,9 @@ export class Upload {
                     const stream = fs.createReadStream(file);
                     stream.on('error', e => reject(e));
                     stream.pipe(
-                        this.objects.insert(id, attName, null, mimeType || {}, { rev }, (err, res) => {
-                            err && console.log(err);
-                            if (res) {
-                                // @ts-expect-error it always returns null, check it also rev seems to do nothing
-                                rev = res.rev;
+                        this.objects.insert(id, attName, null, mimeType || {}, { rev }, err => {
+                            if (err) {
+                                console.log(err);
                             }
                             resolve();
                         })

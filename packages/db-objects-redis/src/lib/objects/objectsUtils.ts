@@ -166,7 +166,7 @@ export function insert(
     _ignore: any,
     options: Record<string, any> | string,
     _obj: any,
-    callback: (err: Error | null | undefined, param: null) => void
+    callback: (err: Error | null | undefined) => void
 ): WMStrm {
     if (typeof options === 'string') {
         options = { mimeType: options };
@@ -176,14 +176,14 @@ export function insert(
     const strm = new WMStrm(`${id}/${attName}`, {});
     strm.on('finish', () => {
         let error: null | string = null;
-        if (!memStore[id + '/' + attName]) {
+        if (!memStore[`${id}/${attName}`]) {
             error = `File ${id} / ${attName} is empty`;
         }
-        objects.writeFile(id, attName, memStore[id + '/' + attName] || '', options, () => {
-            if (memStore[id + '/' + attName] !== undefined) {
-                delete memStore[id + '/' + attName];
+        objects.writeFile(id, attName, memStore[`${id}/${attName}`] || '', options, () => {
+            if (memStore[`${id}/${attName}`] !== undefined) {
+                delete memStore[`${id}/${attName}`];
             }
-            return tools.maybeCallbackWithError(callback, error, null);
+            return tools.maybeCallbackWithError(callback, error);
         });
     });
     return strm;
