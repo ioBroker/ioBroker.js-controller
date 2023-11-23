@@ -2686,6 +2686,7 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
                 transformer: targetCommon.alias.read,
                 firstCommon: targetCommon,
                 secondCommon: sourceCommon,
+                isRead: true,
                 state
             });
         } catch (e) {
@@ -2708,6 +2709,7 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
                 transformer: sourceCommon.alias.write,
                 firstCommon: sourceCommon,
                 secondCommon: targetCommon,
+                isRead: false,
                 state
             });
         } catch (e) {

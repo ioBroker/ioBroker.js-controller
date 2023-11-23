@@ -7,6 +7,8 @@ interface ApplyAliasTransformerOptions {
     secondCommon: Partial<ioBroker.StateCommon>;
     /** The actual transformer function as a string */
     transformer: string;
+    /** If this is a read function, determines the naming of the passed variables */
+    isRead: boolean;
 }
 
 interface ApplyAliasConvenienceConversionOptions {
@@ -28,9 +30,20 @@ interface ApplyAliasAutoScalingOptions extends ApplyAliasConvenienceConversionOp
  * @param options state, common information and transformer function
  */
 export function applyAliasTransformer(options: ApplyAliasTransformerOptions): ioBroker.StateValue {
-    const { state, firstCommon, secondCommon, transformer } = options;
+    const { state, firstCommon, secondCommon, transformer, isRead } = options;
 
-    const func = new Function('val', 'tType', 'tMin', 'tMax', 'sType', 'sMin', 'sMax', `return ${transformer}`);
+    const prefix = isRead ? 's' : 't';
+
+    const func = new Function(
+        'val',
+        'type',
+        'min',
+        'max',
+        `${prefix}Type`,
+        `${prefix}Min`,
+        `${prefix}Max`,
+        `return ${transformer}`
+    );
 
     return func(
         state.val,
