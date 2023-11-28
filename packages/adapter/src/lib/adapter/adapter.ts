@@ -2189,7 +2189,7 @@ export class AdapterClass extends EventEmitter {
                 }
             };
 
-            // if we were never ready, we don't trigger unload
+            // if we were never ready, we don't trigger the unloading
             if (this.adapterReady) {
                 if (typeof this._options.unload === 'function') {
                     if (this._options.unload.length >= 1) {
@@ -2218,31 +2218,34 @@ export class AdapterClass extends EventEmitter {
                 }
             }
 
-            // Even if the developer forgets to call the unload callback, we need to stop the process
-            // Therefore wait a short while and then force the unload
-            setTimeout(() => {
-                if (this.#states) {
-                    finishUnload();
+            // Even if the developer forgets to call the unload callback, we need to stop the process.
+            // Therefore, wait a short while and then force the unloading
+            setTimeout(
+                () => {
+                    if (this.#states) {
+                        finishUnload();
 
-                    // Give 1 seconds to write the value
-                    setTimeout(() => {
+                        // Give 1 second to write the value
+                        setTimeout(() => {
+                            if (!isPause) {
+                                this._logger.info(`${this.namespaceLog} terminating with timeout`);
+                            }
+                            this.terminate(exitCode);
+                        }, 1_000);
+                    } else {
                         if (!isPause) {
-                            this._logger.info(`${this.namespaceLog} terminating with timeout`);
+                            this._logger.info(`${this.namespaceLog} terminating`);
                         }
                         this.terminate(exitCode);
-                    }, 1_000);
-                } else {
-                    if (!isPause) {
-                        this._logger.info(`${this.namespaceLog} terminating`);
                     }
-                    this.terminate(exitCode);
-                }
-            }, this.common?.stopTimeout || 500);
+                },
+                this.common?.stopTimeout || 500
+            );
         }
     }
 
     /**
-     * Reads the file certificate from given path and adds a file watcher to restart adapter on cert changes
+     * Reads the file certificate from a given path and adds a file watcher to restart adapter on cert changes
      * if a cert is passed it is returned as it is
      * @param cert
      */
@@ -2382,7 +2385,7 @@ export class AdapterClass extends EventEmitter {
                 const chained = this._readFileCertificate(obj.native.certificates[chainedName]).split(
                     '-----END CERTIFICATE-----\r\n'
                 );
-                // it is still file name and the file maybe does not exist, but we can omit this error
+                // it is still a file name, and the file maybe does not exist, but we can omit this error
                 if (chained.join('').length >= 512) {
                     const caArr = [];
                     for (const cert of chained) {
@@ -2423,7 +2426,7 @@ export class AdapterClass extends EventEmitter {
     updateConfig(newConfig: Record<string, any>): ioBroker.SetObjectPromise;
     /**
      * Updates the adapter config with new values. Only a subset of the configuration has to be provided,
-     * since merging with the existing config is done automatically, e.g. like this:
+     * since merging with the existing config is done automatically, e.g., like this:
      *
      * `adapter.updateConfig({prop1: "newValue1"})`
      *
@@ -2546,8 +2549,8 @@ export class AdapterClass extends EventEmitter {
     // external signature
     setTimeout(cb: TimeoutCallback, timeout: number, ...args: any[]): ioBroker.Timeout | undefined;
     /**
-     * Same as setTimeout
-     * but it clears the running timers on unload
+     * Same as setTimeout,
+     * but it clears the running timers on unloading
      * does not work after unload has been called
      *
      * @param cb - timer callback
@@ -2635,7 +2638,7 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Same as setInterval
-     * but it clears the running intervals on unload
+     * but it clears the running intervals on unloading
      * does not work after unload has been called
      *
      * @param cb - interval callback
@@ -2693,7 +2696,7 @@ export class AdapterClass extends EventEmitter {
     ): Promise<void>;
     setObject(id: string, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
     /**
-     * Creates or overwrites object in objectDB.
+     * Creates or overwrites an object in objectDB.
      *
      * This function can create or overwrite objects in objectDB for this adapter.
      * Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
