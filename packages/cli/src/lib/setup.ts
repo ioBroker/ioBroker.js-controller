@@ -687,20 +687,23 @@ async function processCommand(
 
                         config.objects.options = config.objects.options || {
                             auth_pass: null,
-                            retry_max_delay: 5000
+                            retry_max_delay: 5_000
                         };
                         if (
-                            config.objects.options.retry_max_delay === 15000 ||
+                            config.objects.options.retry_max_delay === 15_000 ||
                             !config.objects.options.retry_max_delay
                         ) {
-                            config.objects.options.retry_max_delay = 5000;
+                            config.objects.options.retry_max_delay = 5_000;
                         }
                         config.states.options = config.states.options || {
                             auth_pass: null,
-                            retry_max_delay: 5000
+                            retry_max_delay: 5_000
                         };
-                        if (config.states.options.retry_max_delay === 15000 || !config.states.options.retry_max_delay) {
-                            config.states.options.retry_max_delay = 5000;
+                        if (
+                            config.states.options.retry_max_delay === 15_000 ||
+                            !config.states.options.retry_max_delay
+                        ) {
+                            config.states.options.retry_max_delay = 5_000;
                         }
 
                         let migrated = '';
@@ -1372,16 +1375,16 @@ async function processCommand(
                             endkey: 'system.adapter.\u9999'
                         },
                         (err, arr) => {
-                            if (!err && arr && arr.rows) {
+                            if (!err && arr?.rows) {
                                 const files: any[] = [];
                                 let count = 0;
-                                for (let i = 0; i < arr.rows.length; i++) {
-                                    if (arr.rows[i].value.type !== 'adapter') {
+                                for (const row of arr.rows) {
+                                    if (row.value.type !== 'adapter') {
                                         continue;
                                     }
                                     count++;
                                     objects.touch(
-                                        arr.rows[i].value.common.name as string,
+                                        row.value.common.name,
                                         '*',
                                         { user: 'system.user.admin' },
                                         // @ts-expect-error todo this looks wrong, we have no cb args other than err
@@ -1398,16 +1401,12 @@ async function processCommand(
                                                 });
                                                 files.sort((a, b) => a.id.localeCompare(b.id));
 
-                                                for (let k = 0; k < files.length; k++) {
-                                                    for (let t = 0; t < files[k].processed.length; t++) {
-                                                        list.showFile(
-                                                            files[k].id,
-                                                            files[k].processed[t].path,
-                                                            files[k].processed[t]
-                                                        );
+                                                for (const file of files) {
+                                                    for (const processedFile of processed) {
+                                                        list.showFile(file.id, processedFile.path, processedFile);
                                                     }
                                                 }
-                                                setTimeout(callback, 1000);
+                                                setTimeout(callback, 1_000);
                                             }
                                         }
                                     );
@@ -1424,7 +1423,7 @@ async function processCommand(
                     const id = parts.shift();
                     const path = parts.join('/');
 
-                    // @ts-expect-error todo processed should not exist, how to proceeed?
+                    // @ts-expect-error todo processed should not exist, how to proceed?
                     objects.touch(id, path, { user: 'system.user.admin' }, async (err, processed) => {
                         if (err) {
                             console.error(err);
@@ -1436,12 +1435,12 @@ async function processCommand(
                                     objects,
                                     processExit: callback
                                 });
-                                for (let i = 0; i < processed.length; i++) {
-                                    list.showFile(id, processed[i].path, processed[i]);
+                                for (const processedFile of processed) {
+                                    list.showFile(id, processedFile.path, processedFile);
                                 }
                             }
                         }
-                        setTimeout(callback, 1000);
+                        setTimeout(callback, 1_000);
                     });
                 }
             });
@@ -1469,16 +1468,16 @@ async function processCommand(
                             endkey: 'system.adapter.\u9999'
                         },
                         (err, arr) => {
-                            if (!err && arr && arr.rows) {
+                            if (!err && arr?.rows) {
                                 const files: any[] = [];
                                 let count = 0;
-                                for (let i = 0; i < arr.rows.length; i++) {
-                                    if (arr.rows[i].value.type !== 'adapter') {
+                                for (const row of arr.rows) {
+                                    if (row.value.type !== 'adapter') {
                                         continue;
                                     }
                                     count++;
                                     objects.rm(
-                                        arr.rows[i].value.common.name as string,
+                                        row.value.common.name,
                                         '*',
                                         { user: 'system.user.admin' },
                                         // @ts-expect-error todo id should not exist according to types check it
@@ -1496,16 +1495,12 @@ async function processCommand(
                                                 files.sort((a, b) => a.id.localeCompare(b.id));
 
                                                 list.showFileHeader();
-                                                for (let k = 0; k < files.length; k++) {
-                                                    for (let t = 0; t < files[k].processed.length; t++) {
-                                                        list.showFile(
-                                                            files[k].id,
-                                                            files[k].processed[t].path,
-                                                            files[k].processed[t]
-                                                        );
+                                                for (const file of files) {
+                                                    for (const processedFile of processed) {
+                                                        list.showFile(file.id, processedFile.path, processedFile);
                                                     }
                                                 }
-                                                setTimeout(callback, 1000);
+                                                setTimeout(callback, 1_000);
                                             }
                                         }
                                     );
@@ -1577,16 +1572,16 @@ async function processCommand(
                             endkey: 'system.adapter.\u9999'
                         },
                         (err, arr) => {
-                            if (!err && arr && arr.rows) {
+                            if (!err && arr?.rows) {
                                 const files: any[] = [];
                                 let count = 0;
-                                for (let i = 0; i < arr.rows.length; i++) {
-                                    if (arr.rows[i].value.type !== 'adapter') {
+                                for (const row of arr.rows) {
+                                    if (row.value.type !== 'adapter') {
                                         continue;
                                     }
                                     count++;
                                     objects.chmodFile(
-                                        arr.rows[i].value.common.name as string,
+                                        row.value.common.name,
                                         '*',
                                         {
                                             user: 'system.user.admin',
@@ -1607,16 +1602,12 @@ async function processCommand(
                                                 files.sort((a, b) => a.id.localeCompare(b.id));
 
                                                 list.showFileHeader();
-                                                for (let k = 0; k < files.length; k++) {
-                                                    for (let t = 0; t < files[k].processed.length; t++) {
-                                                        list.showFile(
-                                                            files[k].id,
-                                                            files[k].processed[t].path,
-                                                            files[k].processed[t]
-                                                        );
+                                                for (const file of files) {
+                                                    for (const processedFile of file.processed) {
+                                                        list.showFile(file.id, processedFile.path, processedFile);
                                                     }
                                                 }
-                                                setTimeout(callback, 1000);
+                                                setTimeout(callback, 1_000);
                                             }
                                         }
                                     );
@@ -1651,7 +1642,7 @@ async function processCommand(
                                 }
                             }
                         }
-                        setTimeout(callback, 1000);
+                        setTimeout(callback, 1_000);
                     });
                 }
             });
@@ -1696,16 +1687,16 @@ async function processCommand(
                             endkey: 'system.adapter.\u9999'
                         },
                         (err, arr) => {
-                            if (!err && arr && arr.rows) {
+                            if (!err && arr?.rows) {
                                 const files: any[] = [];
                                 let count = 0;
-                                for (let i = 0; i < arr.rows.length; i++) {
-                                    if (arr.rows[i].value.type !== 'adapter') {
+                                for (const row of arr.rows) {
+                                    if (row.value.type !== 'adapter') {
                                         continue;
                                     }
                                     count++;
                                     objects.chownFile(
-                                        arr.rows[i].value.common.name as string,
+                                        row.value.common.name as string,
                                         '*',
                                         {
                                             user: 'system.user.admin',
@@ -1736,7 +1727,7 @@ async function processCommand(
                                                         );
                                                     }
                                                 }
-                                                setTimeout(callback, 1000);
+                                                setTimeout(callback, 1_000);
                                             }
                                         }
                                     );
@@ -1780,7 +1771,7 @@ async function processCommand(
                                     }
                                 }
                             }
-                            setTimeout(callback, 1000);
+                            setTimeout(callback, 1_000);
                         }
                     );
                 }
