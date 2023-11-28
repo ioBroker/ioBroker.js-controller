@@ -387,7 +387,7 @@ export class Install {
             unsafePerm: !!options.unsafePerm
         });
 
-        // code 1 is a strange error that cannot be explained. Everything is installed but error
+        // code 1 is sometimes a real error and sometimes a strange error, where everything is installed but error
         const isSuccess = result.success || (result.exitCode === 1 && !result.stderr.startsWith('npm ERR!'));
 
         if (isSuccess) {
