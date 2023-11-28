@@ -1034,7 +1034,7 @@ export class ObjectsInRedisClient {
         ignore: any,
         options: string | Record<string, any>,
         obj: any,
-        callback: (err: Error | null | undefined, param: null) => void
+        callback: (err?: Error | null) => void
     ): WMStrm {
         return utils.insert(this, id, attName, ignore, options, obj, callback);
     }
@@ -1387,7 +1387,7 @@ export class ObjectsInRedisClient {
         });
     }
 
-    unlinkAsync(id: string, name: string, options: CallOptions): Promise<void> {
+    unlinkAsync(id: string, name: string, options?: CallOptions): Promise<void> {
         return new Promise<void>((resolve, reject) =>
             this.unlink(id, name, options, err => (err ? reject(err) : resolve()))
         );

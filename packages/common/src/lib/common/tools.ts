@@ -22,6 +22,7 @@ import { maybeCallbackWithError } from './maybeCallback';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
 import { setDefaultResultOrder } from 'dns';
+import { applyAliasAutoScaling, applyAliasConvenienceConversion, applyAliasTransformer } from './aliasProcessing';
 
 type DockerInformation =
     | {
@@ -293,20 +294,22 @@ export async function isSingleHost(objects: any): Promise<boolean> {
 }
 
 /**
- * Checks if at least one host is running in a MH environment
+ * Checks if at least one host is running in a Multihost environment
  *
  * @param objects the objects db
  * @param states the states db
  * @return true if one or more hosts running else false
  */
 export async function isHostRunning(objects: any, states: any): Promise<boolean> {
-    // do it without an object view for now, can be reverted if no one downgrades to < 4 (redis-sets)
+    // do it without an object view for now, TODO: can be reverted if no one downgrades to < 4 (redis-sets)
     // const res = await objects.getObjectViewAsync('system', 'host', { startkey: '', endkey: '\u9999' });
     const res: GetObjectViewResult = await objects.getObjectList({
         startkey: 'system.host.',
         endkey: 'system.host.\u9999'
     });
-    res.rows = res.rows.filter(obj => obj.value && obj.value.type === 'host');
+
+    // TODO: this check should be redundant as soon as we go back to the object view approach
+    res.rows = res.rows.filter(obj => obj.value?.type === 'host');
 
     for (const hostObj of res.rows) {
         const state: ioBroker.State = await states.getState(`${hostObj.id}.alive`);
@@ -2427,14 +2430,14 @@ export function setQualityForInstance(objects: any, states: any, namespace: stri
                 endkey: `${namespace}.\u9999`,
                 include_docs: false
             },
-            (err: Error | null, _states?: GetObjectViewResult) => {
+            (err: Error | null, _states?: GetObjectViewResult<ioBroker.StateObject>) => {
                 if (err) {
                     reject(err);
                 } else {
                     let keys: string[] = [];
-                    if (_states && _states.rows) {
-                        for (let s = 0; s < _states.rows.length; s++) {
-                            const id = _states.rows[s].id;
+                    if (_states?.rows) {
+                        for (const row of _states.rows) {
+                            const id = row.id;
                             // if instance still active, but a device is offline
                             if (!(q & 0x10) && id.match(/\.info\.connection$/)) {
                                 continue;
@@ -2656,7 +2659,8 @@ export function measureEventLoopLag(ms: number, cb: (eventLoopLag?: number) => v
 }
 
 /**
- * This function convert state values by read and write of aliases. Function is synchron.
+ * This function convert state values by read and write of aliases. Function is synchronous.
+ * On errors, null is returned instead
  *
  * @param options
  */
@@ -2680,35 +2684,22 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
             return null;
         }
         try {
-            // process the value here
-            const func = new Function(
-                'val',
-                'type',
-                'min',
-                'max',
-                'sType',
-                'sMin',
-                'sMax',
-                `return ${targetCommon.alias.read}`
-            );
-            state.val = func(
-                state.val,
-                targetCommon.type,
-                targetCommon.min,
-                targetCommon.max,
-                sourceCommon.type,
-                sourceCommon.min,
-                sourceCommon.max
-            );
+            state.val = applyAliasTransformer({
+                transformer: targetCommon.alias.read,
+                firstCommon: targetCommon,
+                secondCommon: sourceCommon,
+                isRead: true,
+                state
+            });
         } catch (e) {
             logger.error(
-                `${logNamespace} Invalid read function for "${targetId}": "${targetCommon.alias.read}" => ${e.message}`
+                `${logNamespace}Invalid read function for "${targetId}": "${targetCommon.alias.read}" => ${e.message}`
             );
             return null;
         }
     }
 
-    if (sourceCommon && sourceCommon.alias && sourceCommon.alias.write) {
+    if (sourceCommon?.alias?.write) {
         if (!targetCommon) {
             logger.error(
                 `${logNamespace}target for "${sourceId}" does not exist for "write" function: "${sourceCommon.alias.write}"`
@@ -2716,82 +2707,23 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
             return null;
         }
         try {
-            // process the value here
-            const func = new Function(
-                'val',
-                'type',
-                'min',
-                'max',
-                'tType',
-                'tMin',
-                'tMax',
-                `return ${sourceCommon.alias.write}`
-            );
-            state.val = func(
-                state.val,
-                sourceCommon.type,
-                sourceCommon.min,
-                sourceCommon.max,
-                targetCommon.type,
-                targetCommon.min,
-                targetCommon.max
-            );
+            state.val = applyAliasTransformer({
+                transformer: sourceCommon.alias.write,
+                firstCommon: sourceCommon,
+                secondCommon: targetCommon,
+                isRead: false,
+                state
+            });
         } catch (e) {
             logger.error(
-                `${logNamespace} Invalid write function for "${sourceId}": "${sourceCommon.alias.write}" => ${e.message}`
+                `${logNamespace}Invalid write function for "${sourceId}": "${sourceCommon.alias.write}" => ${e.message}`
             );
             return null;
         }
     }
 
-    if (targetCommon && typeof state.val !== targetCommon.type && state.val !== null) {
-        if (targetCommon.type === 'boolean') {
-            const lowerVal = typeof state.val === 'string' ? state.val.toLowerCase() : state.val;
-            if (lowerVal === 'off' || lowerVal === 'aus' || state.val === '0') {
-                state.val = false;
-            } else {
-                // this also handles strings like "EIN" or such that will be true
-                state.val = !!state.val;
-            }
-        } else if (targetCommon.type === 'number') {
-            state.val = parseFloat(state.val as any);
-        } else if (targetCommon.type === 'string') {
-            state.val = state.val.toString();
-        }
-    }
-
-    // auto-scaling, only if val not null and unit for target (x)or source is %
-    if (
-        ((targetCommon && targetCommon.alias && !targetCommon.alias.read) ||
-            (sourceCommon && sourceCommon.alias && !sourceCommon.alias.write)) &&
-        state.val !== null
-    ) {
-        if (
-            targetCommon &&
-            targetCommon.type === 'number' &&
-            targetCommon.unit === '%' &&
-            sourceCommon &&
-            sourceCommon.type === 'number' &&
-            sourceCommon.unit !== '%' &&
-            sourceCommon.min !== undefined &&
-            sourceCommon.max !== undefined
-        ) {
-            // scale target between 0 and 100 % based on sources min/max
-            state.val = (((state.val as any) - sourceCommon.min) / (sourceCommon.max - sourceCommon.min)) * 100;
-        } else if (
-            sourceCommon &&
-            sourceCommon.type === 'number' &&
-            sourceCommon.unit === '%' &&
-            targetCommon &&
-            targetCommon.unit !== '%' &&
-            targetCommon.type === 'number' &&
-            targetCommon.min !== undefined &&
-            targetCommon.max !== undefined
-        ) {
-            // scale target based on its min/max by its source (assuming source is meant to be 0 - 100 %)
-            state.val = ((targetCommon.max - targetCommon.min) * (state.val as any)) / 100 + targetCommon.min;
-        }
-    }
+    state.val = applyAliasConvenienceConversion({ state, targetCommon });
+    state.val = applyAliasAutoScaling({ state, sourceCommon, targetCommon });
 
     return state;
 }
@@ -3089,18 +3021,10 @@ export async function getAllInstances(adapters: string[], objects: any): Promise
     return instances;
 }
 
-export interface GetObjectViewResult {
-    rows: ioBroker.GetObjectViewItem<ioBroker.Object>[];
-}
-
-export interface GetObjectViewInstanceEntry {
-    id: string;
-    value: ioBroker.InstanceObject;
-}
-
-export interface GetObjectViewInstanceResult {
-    rows: GetObjectViewInstanceEntry[];
-}
+/** Just a helper, as we have no access to DB package and the specific types here */
+type GetObjectViewResult<TObject extends ioBroker.AnyObject = ioBroker.Object> = Awaited<
+    ioBroker.GetObjectViewPromise<TObject>
+>;
 
 /**
  * Get all existing enums
@@ -3108,13 +3032,13 @@ export interface GetObjectViewInstanceResult {
  * @param objects - objects db
  * @returns Promise
  */
-export async function getAllEnums(objects: any): Promise<Record<string, any>> {
+export async function getAllEnums(objects: any): Promise<Record<string, ioBroker.EnumObject>> {
     const allEnums: Record<string, any> = {};
-    const res: GetObjectViewResult = await objects.getObjectViewAsync('system', 'enum', {
+    const res: GetObjectViewResult<ioBroker.EnumObject> = await objects.getObjectViewAsync('system', 'enum', {
         startkey: 'enum.',
         endkey: 'enum.\u9999'
     });
-    if (res && res.rows) {
+    if (res?.rows) {
         for (const row of res.rows) {
             allEnums[row.id] = row.value;
         }
@@ -3130,21 +3054,27 @@ export async function getAllEnums(objects: any): Promise<Record<string, any>> {
  * @param objects objects DB
  * @param withObjects return objects instead of only ids
  */
-export async function getInstances(adapter: string, objects: any, withObjects: boolean): Promise<any[] | string[]> {
+export async function getInstances<TWithObjects extends boolean>(
+    adapter: string,
+    objects: any,
+    withObjects: TWithObjects
+): Promise<TWithObjects extends true ? ioBroker.InstanceObject[] : ioBroker.ObjectIDs.Instance[]> {
     const arr = await objects.getObjectListAsync({
         startkey: `system.adapter.${adapter}.`,
         endkey: `system.adapter.${adapter}.\u9999`
     });
+
     const instances = [];
-    if (arr && arr.rows) {
-        for (let i = 0; i < arr.rows.length; i++) {
-            if (arr.rows[i].value.type !== 'instance') {
+
+    if (arr?.rows) {
+        for (const row of arr.rows) {
+            if (row.value.type !== 'instance') {
                 continue;
             }
             if (withObjects) {
-                instances.push(arr.rows[i].value);
+                instances.push(row.value);
             } else {
-                instances.push(arr.rows[i].value._id);
+                instances.push(row.value._id);
             }
         }
     }
@@ -3630,14 +3560,14 @@ export async function getInstancesOrderedByStartPrio(
         logPrefix += ' ';
     }
 
-    let doc: GetObjectViewInstanceResult = { rows: [] };
+    let doc: GetObjectViewResult<ioBroker.InstanceObject> = { rows: [] };
     try {
         doc = await objects.getObjectViewAsync('system', 'instance', {
             startkey: 'system.adapter.',
             endkey: 'system.adapter.\u9999'
         });
     } catch (e) {
-        if (e.message && e.message.startsWith('Cannot find ')) {
+        if (e.message?.startsWith('Cannot find ')) {
             logger.error(`${logPrefix} _design/system missing - call node ${appName}.js setup`);
         } else {
             logger.error(`${logPrefix} Can not get instances: ${e.message}`);
@@ -3648,12 +3578,13 @@ export async function getInstancesOrderedByStartPrio(
         logger.info(`${logPrefix} no instances found`);
     } else {
         for (const row of doc.rows) {
-            if (row && row.value) {
+            if (row?.value) {
                 if (row.value._id.startsWith('system.adapter.admin')) {
                     instances.admin.push(row.value);
-                    /** @ts-expect-error https://github.com/ioBroker/adapter-core/issues/427 */
-                } else if (row.value.common && allowedTiers.includes(parseInt(row.value.common.tier))) {
-                    /** @ts-expect-error we have checked that it is in allowedTiers, thus it is valid */
+                } else if (
+                    row.value.common?.tier !== undefined &&
+                    allowedTiers.includes(Math.round(row.value.common.tier))
+                ) {
                     instances[row.value.common.tier].push(row.value);
                 } else {
                     // no valid tier, so put it in the last one
@@ -3743,12 +3674,12 @@ export async function setExecutableCapabilities(
 async function _readLicenses(login: string, password: string): Promise<any[]> {
     const config = {
         headers: { Authorization: `Basic ${Buffer.from(`${login}:${password}`).toString('base64')}` },
-        timeout: 4000
+        timeout: 4_000
     };
 
     try {
         const response = await axios.get(`https://iobroker.net:3001/api/v1/licenses`, config);
-        if (response.data && response.data.length) {
+        if (response.data?.length) {
             const now = Date.now();
             response.data = response.data.filter(
                 (license: { validTill: string | number }) =>

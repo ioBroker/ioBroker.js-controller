@@ -2972,9 +2972,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 );
 
                 msg.callback && msg.from && sendTo(msg.from, msg.command, {}, msg.callback);
-            } catch (error) {
-                logger.error(`${hostLogPrefix} Cannot write zip file as folder: ${error}`);
-                msg.callback && msg.from && sendTo(msg.from, msg.command, { error }, msg.callback);
+            } catch (e) {
+                logger.error(`${hostLogPrefix} Cannot write zip file as folder: ${e.message}`);
+                msg.callback && msg.from && sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
             }
             break;
 
@@ -2989,7 +2989,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         msg.message.options
                     );
                 } catch (e) {
-                    sendTo(msg.from, msg.command, { error: e }, msg.callback);
+                    sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
                     return;
                 }
 
@@ -3004,7 +3004,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                 buff
                             );
                         } catch (e) {
-                            sendTo(msg.from, msg.command, { error: e }, msg.callback);
+                            sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
                             return;
                         }
 
@@ -3023,7 +3023,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                         states!.setBinaryState(`${hostObjectPrefix}.zip.${msg.message.link}`, buff, err => {
                             if (err) {
-                                sendTo(msg.from, msg.command, { error: err }, msg.callback);
+                                sendTo(msg.from, msg.command, { error: err.message }, msg.callback);
                             } else {
                                 sendTo(
                                     msg.from,
@@ -3049,7 +3049,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 msg.message.adapter,
                 Buffer.from(msg.message.data || '', 'base64'),
                 msg.message.options,
-                error => msg.callback && msg.from && sendTo(msg.from, msg.command, { error }, msg.callback)
+                err => msg.callback && msg.from && sendTo(msg.from, msg.command, { error: err?.message }, msg.callback)
             );
             break;
 

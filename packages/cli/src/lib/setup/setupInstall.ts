@@ -1409,8 +1409,7 @@ export class Install {
         for (const file of filesToDelete) {
             const id = typeof file === 'object' ? file.id : file;
             try {
-                // @ts-expect-error #1917
-                await this.objects.unlinkAsync(id, file.name || '');
+                await this.objects.unlinkAsync(id, file.name ?? '');
                 console.log(`host.${hostname} file ${id + (file.name ? `/${file.name}` : '')} deleted`);
             } catch (err) {
                 err !== tools.ERRORS.ERROR_NOT_FOUND &&
