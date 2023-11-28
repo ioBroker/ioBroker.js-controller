@@ -387,9 +387,10 @@ export class Install {
             unsafePerm: !!options.unsafePerm
         });
 
-        if (result.success || result.exitCode === 1) {
-            // code 1 is a strange error that cannot be explained. Everything is installed but error :(
+        // code 1 is sometimes a real error and sometimes a strange error, where everything is installed but error
+        const isSuccess = result.success || (result.exitCode === 1 && !result.stderr.startsWith('npm ERR!'));
 
+        if (isSuccess) {
             // Determine where the packet would be installed if npm succeeds
             // TODO: There's probably a better way to figure this out
             let packetDirName: string;
@@ -403,17 +404,17 @@ export class Install {
             // inject the installedFrom information in io-package
             if (installDir && fs.existsSync(installDir)) {
                 const ioPackPath = path.join(installDir, 'io-package.json');
-                let iopack;
+                let ioPackContent: Record<string, any> | null;
                 try {
-                    iopack = fs.readJSONSync(ioPackPath);
+                    ioPackContent = fs.readJSONSync(ioPackPath);
                 } catch {
-                    iopack = null;
+                    ioPackContent = null;
                 }
-                if (iopack) {
-                    iopack.common = iopack.common || {};
-                    iopack.common.installedFrom = npmUrl;
+                if (ioPackContent) {
+                    ioPackContent.common = ioPackContent.common || {};
+                    ioPackContent.common.installedFrom = npmUrl;
                     try {
-                        fs.writeFileSync(ioPackPath, JSON.stringify(iopack, null, 2), 'utf8');
+                        fs.writeJsonSync(ioPackPath, ioPackContent, { encoding: 'utf8', spaces: 2 });
                     } catch {
                         // OK
                     }
