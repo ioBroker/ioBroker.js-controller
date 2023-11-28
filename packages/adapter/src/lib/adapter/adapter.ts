@@ -10463,7 +10463,7 @@ export class AdapterClass extends EventEmitter {
                 let adapterObj: ioBroker.AdapterObject | null | undefined = null;
                 try {
                     adapterObj = adapterName
-                        ? await this.getForeignObjectAsync(`system.adapter.${adapterName.replace(/\.action$/, '')}`)
+                        ? await this.getForeignObjectAsync(`system.adapter.${adapterName}`)
                         : null;
                 } catch {
                     // ignore
