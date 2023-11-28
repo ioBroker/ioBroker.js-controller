@@ -10462,9 +10462,7 @@ export class AdapterClass extends EventEmitter {
                 const cert = fs.readFileSync(path.join(__dirname, '..', '..', 'cert', 'cloudCert.crt'));
                 let adapterObj: ioBroker.AdapterObject | null | undefined = null;
                 try {
-                    adapterObj = adapterName
-                        ? await this.getForeignObjectAsync(`system.adapter.${adapterName}`)
-                        : null;
+                    adapterObj = adapterName ? await this.getForeignObjectAsync(`system.adapter.${adapterName}`) : null;
                 } catch {
                     // ignore
                 }
