@@ -22,6 +22,7 @@ import { maybeCallbackWithError } from './maybeCallback';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
 import { setDefaultResultOrder } from 'dns';
+import { applyAliasAutoScaling, applyAliasConvenienceConversion, applyAliasTransformer } from './aliasProcessing';
 
 type DockerInformation =
     | {
@@ -2658,7 +2659,8 @@ export function measureEventLoopLag(ms: number, cb: (eventLoopLag?: number) => v
 }
 
 /**
- * This function convert state values by read and write of aliases. Function is synchron.
+ * This function convert state values by read and write of aliases. Function is synchronous.
+ * On errors, null is returned instead
  *
  * @param options
  */
@@ -2682,35 +2684,22 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
             return null;
         }
         try {
-            // process the value here
-            const func = new Function(
-                'val',
-                'type',
-                'min',
-                'max',
-                'sType',
-                'sMin',
-                'sMax',
-                `return ${targetCommon.alias.read}`
-            );
-            state.val = func(
-                state.val,
-                targetCommon.type,
-                targetCommon.min,
-                targetCommon.max,
-                sourceCommon.type,
-                sourceCommon.min,
-                sourceCommon.max
-            );
+            state.val = applyAliasTransformer({
+                transformer: targetCommon.alias.read,
+                firstCommon: targetCommon,
+                secondCommon: sourceCommon,
+                isRead: true,
+                state
+            });
         } catch (e) {
             logger.error(
-                `${logNamespace} Invalid read function for "${targetId}": "${targetCommon.alias.read}" => ${e.message}`
+                `${logNamespace}Invalid read function for "${targetId}": "${targetCommon.alias.read}" => ${e.message}`
             );
             return null;
         }
     }
 
-    if (sourceCommon && sourceCommon.alias && sourceCommon.alias.write) {
+    if (sourceCommon?.alias?.write) {
         if (!targetCommon) {
             logger.error(
                 `${logNamespace}target for "${sourceId}" does not exist for "write" function: "${sourceCommon.alias.write}"`
@@ -2718,82 +2707,23 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
             return null;
         }
         try {
-            // process the value here
-            const func = new Function(
-                'val',
-                'type',
-                'min',
-                'max',
-                'tType',
-                'tMin',
-                'tMax',
-                `return ${sourceCommon.alias.write}`
-            );
-            state.val = func(
-                state.val,
-                sourceCommon.type,
-                sourceCommon.min,
-                sourceCommon.max,
-                targetCommon.type,
-                targetCommon.min,
-                targetCommon.max
-            );
+            state.val = applyAliasTransformer({
+                transformer: sourceCommon.alias.write,
+                firstCommon: sourceCommon,
+                secondCommon: targetCommon,
+                isRead: false,
+                state
+            });
         } catch (e) {
             logger.error(
-                `${logNamespace} Invalid write function for "${sourceId}": "${sourceCommon.alias.write}" => ${e.message}`
+                `${logNamespace}Invalid write function for "${sourceId}": "${sourceCommon.alias.write}" => ${e.message}`
             );
             return null;
         }
     }
 
-    if (targetCommon && typeof state.val !== targetCommon.type && state.val !== null) {
-        if (targetCommon.type === 'boolean') {
-            const lowerVal = typeof state.val === 'string' ? state.val.toLowerCase() : state.val;
-            if (lowerVal === 'off' || lowerVal === 'aus' || state.val === '0') {
-                state.val = false;
-            } else {
-                // this also handles strings like "EIN" or such that will be true
-                state.val = !!state.val;
-            }
-        } else if (targetCommon.type === 'number') {
-            state.val = parseFloat(state.val as any);
-        } else if (targetCommon.type === 'string') {
-            state.val = state.val.toString();
-        }
-    }
-
-    // auto-scaling, only if val not null and unit for target (x)or source is %
-    if (
-        ((targetCommon && targetCommon.alias && !targetCommon.alias.read) ||
-            (sourceCommon && sourceCommon.alias && !sourceCommon.alias.write)) &&
-        state.val !== null
-    ) {
-        if (
-            targetCommon &&
-            targetCommon.type === 'number' &&
-            targetCommon.unit === '%' &&
-            sourceCommon &&
-            sourceCommon.type === 'number' &&
-            sourceCommon.unit !== '%' &&
-            sourceCommon.min !== undefined &&
-            sourceCommon.max !== undefined
-        ) {
-            // scale target between 0 and 100 % based on sources min/max
-            state.val = (((state.val as any) - sourceCommon.min) / (sourceCommon.max - sourceCommon.min)) * 100;
-        } else if (
-            sourceCommon &&
-            sourceCommon.type === 'number' &&
-            sourceCommon.unit === '%' &&
-            targetCommon &&
-            targetCommon.unit !== '%' &&
-            targetCommon.type === 'number' &&
-            targetCommon.min !== undefined &&
-            targetCommon.max !== undefined
-        ) {
-            // scale target based on its min/max by its source (assuming source is meant to be 0 - 100 %)
-            state.val = ((targetCommon.max - targetCommon.min) * (state.val as any)) / 100 + targetCommon.min;
-        }
-    }
+    state.val = applyAliasConvenienceConversion({ state, targetCommon });
+    state.val = applyAliasAutoScaling({ state, sourceCommon, targetCommon });
 
     return state;
 }
