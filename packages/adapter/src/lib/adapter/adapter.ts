@@ -2220,27 +2220,24 @@ export class AdapterClass extends EventEmitter {
 
             // Even if the developer forgets to call the unload callback, we need to stop the process
             // Therefore wait a short while and then force the unload
-            setTimeout(
-                () => {
-                    if (this.#states) {
-                        finishUnload();
+            setTimeout(() => {
+                if (this.#states) {
+                    finishUnload();
 
-                        // Give 1 seconds to write the value
-                        setTimeout(() => {
-                            if (!isPause) {
-                                this._logger.info(`${this.namespaceLog} terminating with timeout`);
-                            }
-                            this.terminate(exitCode);
-                        }, 1_000);
-                    } else {
+                    // Give 1 seconds to write the value
+                    setTimeout(() => {
                         if (!isPause) {
-                            this._logger.info(`${this.namespaceLog} terminating`);
+                            this._logger.info(`${this.namespaceLog} terminating with timeout`);
                         }
                         this.terminate(exitCode);
+                    }, 1_000);
+                } else {
+                    if (!isPause) {
+                        this._logger.info(`${this.namespaceLog} terminating`);
                     }
-                },
-                this.common?.stopTimeout || 500
-            );
+                    this.terminate(exitCode);
+                }
+            }, this.common?.stopTimeout || 500);
         }
     }
 
@@ -10460,7 +10457,21 @@ export class AdapterClass extends EventEmitter {
             if (obj && obj.native && obj.native.licenses && obj.native.licenses.length) {
                 const now = Date.now();
                 const cert = fs.readFileSync(path.join(__dirname, '..', '..', 'cert', 'cloudCert.crt'));
-                const version = semver.major(this.pack!.version);
+                let adapterObj: ioBroker.AdapterObject | null | undefined = null;
+                try {
+                    adapterObj = adapterName
+                        ? await this.getForeignObjectAsync(`system.adapter.${adapterName.replace(/\.action$/, '')}`)
+                        : null;
+                } catch {
+                    // ignore
+                }
+
+                let version: number;
+                if (adapterObj) {
+                    version = semver.major(adapterObj?.common?.version);
+                } else {
+                    version = semver.major(this.pack!.version);
+                }
 
                 obj.native.licenses.forEach((license: Record<string, any>) => {
                     try {
