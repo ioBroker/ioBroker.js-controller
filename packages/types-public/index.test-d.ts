@@ -769,6 +769,9 @@ const _adapterObject: ioBroker.AdapterObject = {
         mode: 'daemon',
         name: 'test',
         platform: 'Javascript/Node.js',
+        supportedMessages: {
+            deviceManager: true
+        },
         titleLang: {
             de: 'foo',
             es: 'foo',
@@ -807,6 +810,20 @@ const _metaObject: ioBroker.MetaObject = {
     _id: '',
     type: 'meta',
     common: { type: 'meta.folder', name: 'foobar' },
+    native: {}
+};
+
+const _deviceObject: ioBroker.DeviceObject = {
+    _id: '',
+    type: 'device',
+    common: {
+        name: 'my device',
+        statusStates: {
+            offlineId: 'device.isOffline',
+            onlineId: 'device.isOnline',
+            errorId: 'device.isError'
+        }
+    },
     native: {}
 };
 

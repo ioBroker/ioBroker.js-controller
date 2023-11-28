@@ -10,6 +10,7 @@
 
 - [components](internal_.VisWidget.md#components)
 - [i18n](internal_.VisWidget.md#i18n)
+- [ignoreInVersions](internal_.VisWidget.md#ignoreinversions)
 - [name](internal_.VisWidget.md#name)
 - [url](internal_.VisWidget.md#url)
 
@@ -21,7 +22,7 @@
 
 #### Defined in
 
-[types-dev/objects.d.ts:479](https://github.com/ioBroker/ioBroker.js-controller/blob/7a63a861/packages/types-dev/objects.d.ts#L479)
+[types-dev/objects.d.ts:489](https://github.com/ioBroker/ioBroker.js-controller/blob/9e3b8273/packages/types-dev/objects.d.ts#L489)
 
 ___
 
@@ -31,7 +32,19 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:476](https://github.com/ioBroker/ioBroker.js-controller/blob/7a63a861/packages/types-dev/objects.d.ts#L476)
+[types-dev/objects.d.ts:486](https://github.com/ioBroker/ioBroker.js-controller/blob/9e3b8273/packages/types-dev/objects.d.ts#L486)
+
+___
+
+### ignoreInVersions
+
+• **ignoreInVersions**: `number`[]
+
+The vis widget does not support the listed major versions of vis
+
+#### Defined in
+
+[types-dev/objects.d.ts:491](https://github.com/ioBroker/ioBroker.js-controller/blob/9e3b8273/packages/types-dev/objects.d.ts#L491)
 
 ___
 
@@ -41,7 +54,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:477](https://github.com/ioBroker/ioBroker.js-controller/blob/7a63a861/packages/types-dev/objects.d.ts#L477)
+[types-dev/objects.d.ts:487](https://github.com/ioBroker/ioBroker.js-controller/blob/9e3b8273/packages/types-dev/objects.d.ts#L487)
 
 ___
 
@@ -51,4 +64,4 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:478](https://github.com/ioBroker/ioBroker.js-controller/blob/7a63a861/packages/types-dev/objects.d.ts#L478)
+[types-dev/objects.d.ts:488](https://github.com/ioBroker/ioBroker.js-controller/blob/9e3b8273/packages/types-dev/objects.d.ts#L488)
