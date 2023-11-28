@@ -2189,7 +2189,7 @@ export class AdapterClass extends EventEmitter {
                 }
             };
 
-            // if we were never ready, we don't trigger the unloading
+            // if we were never ready, we don't trigger the unload procedure
             if (this.adapterReady) {
                 if (typeof this._options.unload === 'function') {
                     if (this._options.unload.length >= 1) {
@@ -2219,7 +2219,7 @@ export class AdapterClass extends EventEmitter {
             }
 
             // Even if the developer forgets to call the unload callback, we need to stop the process.
-            // Therefore, wait a short while and then force the unloading
+            // Therefore, wait a short while and then force the unload procedure
             setTimeout(
                 () => {
                     if (this.#states) {
@@ -2550,7 +2550,7 @@ export class AdapterClass extends EventEmitter {
     setTimeout(cb: TimeoutCallback, timeout: number, ...args: any[]): ioBroker.Timeout | undefined;
     /**
      * Same as setTimeout,
-     * but it clears the running timers on unloading
+     * but it clears the running timers during the unload process
      * does not work after unload has been called
      *
      * @param cb - timer callback
@@ -2638,7 +2638,7 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Same as setInterval
-     * but it clears the running intervals on unloading
+     * but it clears the running intervals during the unload process
      * does not work after unload has been called
      *
      * @param cb - interval callback
@@ -10450,29 +10450,26 @@ export class AdapterClass extends EventEmitter {
             const obj = await this.getForeignObjectAsync('system.licenses');
             const uuidObj = await this.getForeignObjectAsync('system.meta.uuid');
             let uuid: string;
-            if (!uuidObj || !uuidObj.native || !uuidObj.native.uuid) {
+            if (!uuidObj?.native?.uuid) {
                 this._logger.warn(`${this.namespaceLog} No UUID found!`);
                 return licenses;
             } else {
                 uuid = uuidObj.native.uuid;
             }
 
-            if (obj && obj.native && obj.native.licenses && obj.native.licenses.length) {
+            if (obj?.native?.licenses?.length) {
                 const now = Date.now();
                 const cert = fs.readFileSync(path.join(__dirname, '..', '..', 'cert', 'cloudCert.crt'));
-                let adapterObj: ioBroker.AdapterObject | null | undefined = null;
-                try {
-                    adapterObj = adapterName ? await this.getForeignObjectAsync(`system.adapter.${adapterName}`) : null;
-                } catch {
-                    // ignore
+                let adapterObj: ioBroker.AdapterObject | null | undefined;
+                if (adapterName) {
+                    try {
+                        adapterObj = await this.getForeignObjectAsync(`system.adapter.${adapterName}`);
+                    } catch {
+                        // ignore
+                    }
                 }
 
-                let version: number;
-                if (adapterObj) {
-                    version = semver.major(adapterObj?.common?.version);
-                } else {
-                    version = semver.major(this.pack!.version);
-                }
+                const version = semver.major(adapterObj?.common?.version || this.pack!.version);
 
                 obj.native.licenses.forEach((license: Record<string, any>) => {
                     try {
