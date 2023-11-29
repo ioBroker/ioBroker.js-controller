@@ -13,7 +13,7 @@ interface Logger extends InternalLogger {
     log(message: string): void;
 }
 
-type Manager = 'apt' | 'apt-get' | 'yum' | '';
+type Manager = 'apt' | 'yum' | '';
 
 interface PacketManagerOptions {
     logLevel: LOG_LEVELS;
@@ -30,13 +30,12 @@ export class PacketManager {
     private readonly COMMANDS = {
         listUpgradeable: {
             apt: 'list --upgradeable',
-            'apt-get': 'list --upgradeable',
             yum: 'check-update'
         }
     } as const;
 
     constructor(options: PacketManagerOptions = { logLevel: LOG_LEVELS.info }) {
-        // detect apt, apt-get or yum
+        // detect apt or yum
         this.manager = options?.manager || '';
         this.logger = options?.logger || {
             silly: text => options.logLevel >= LOG_LEVELS.silly && console.log(text),
@@ -139,7 +138,7 @@ export class PacketManager {
      * Detects which package manager is installed. Throws if none can be found
      */
     private async _detectManager(): Promise<Manager | void> {
-        for (const cmd of ['apt', 'apt-get', 'yum'] as const) {
+        for (const cmd of ['apt', 'yum'] as const) {
             if (await this._isCmd(cmd)) {
                 this.manager = cmd;
                 return cmd;
@@ -154,7 +153,7 @@ export class PacketManager {
     async update(): Promise<void> {
         await this.ready();
 
-        if (this.manager !== 'apt' && this.manager !== 'apt-get') {
+        if (this.manager !== 'apt') {
             // ignore
             return;
         }
