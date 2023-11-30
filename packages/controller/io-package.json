@@ -104,6 +104,7 @@
       "pl": "Implementacja JavaScript/Node.js kontrolera ioBroker",
       "zh-cn": "Javascript / Node.js实现了ioBroker控制器"
     },
+    "tier": 1,
     "messagebox": true,
     "supportedMessages": {
       "custom": true
