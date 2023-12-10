@@ -1482,7 +1482,7 @@ ___
 | `ignore` | `any` |
 | `options` | `string` \| `Record`<`string`, `any`\> |
 | `obj` | `any` |
-| `callback` | (`err`: `undefined` \| ``null`` \| `Error`, `param`: ``null``) => `void` |
+| `callback` | (`err?`: ``null`` \| `Error`) => `void` |
 
 #### Returns
 
@@ -2239,7 +2239,7 @@ ___
 
 ### unlinkAsync
 
-▸ **unlinkAsync**(`id`, `name`, `options`): `Promise`<`void`\>
+▸ **unlinkAsync**(`id`, `name`, `options?`): `Promise`<`void`\>
 
 #### Parameters
 
@@ -2247,7 +2247,7 @@ ___
 | :------ | :------ |
 | `id` | `string` |
 | `name` | `string` |
-| `options` | [`CallOptions`](../interfaces/internal_.CallOptions.md) |
+| `options?` | [`CallOptions`](../interfaces/internal_.CallOptions.md) |
 
 #### Returns
 

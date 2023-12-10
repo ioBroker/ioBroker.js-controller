@@ -1,13 +1,13 @@
 {
   "name": "@iobroker/js-controller-cli",
-  "version": "5.0.14",
+  "version": "5.0.18-alpha.0-20231201-5b321f38",
   "engines": {
     "node": ">=16.4.0"
   },
   "dependencies": {
     "@iobroker/js-controller-common": "file:../common",
     "@iobroker/js-controller-common-db": "file:../common-db",
-    "axios": "^1.5.1",
+    "axios": "^1.6.0",
     "chokidar": "^3.5.3",
     "daemonize2": "^0.4.2",
     "debug": "^4.3.4",

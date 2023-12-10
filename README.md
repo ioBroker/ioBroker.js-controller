@@ -608,7 +608,8 @@ Logic and scripting engines, which should be able to act as fast as possible
 to work with states delivered by higher TIER adapters.
 
 #### TIER 2
-Adapters which deliver data from external APIs, which are important and can change at any time
+Adapters which deliver data from external APIs, which are important and can change at any time.
+This also often includes messaging adapters.
 
 #### TIER 3
 Adapters which are not time-critical like Visualization, Backup adapters, and adapters whose information does 

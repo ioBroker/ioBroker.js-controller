@@ -2189,7 +2189,7 @@ export class AdapterClass extends EventEmitter {
                 }
             };
 
-            // if we were never ready, we don't trigger unload
+            // if we were never ready, we don't trigger the unload procedure
             if (this.adapterReady) {
                 if (typeof this._options.unload === 'function') {
                     if (this._options.unload.length >= 1) {
@@ -2218,14 +2218,14 @@ export class AdapterClass extends EventEmitter {
                 }
             }
 
-            // Even if the developer forgets to call the unload callback, we need to stop the process
-            // Therefore wait a short while and then force the unload
+            // Even if the developer forgets to call the unload callback, we need to stop the process.
+            // Therefore, wait a short while and then force the unload procedure
             setTimeout(
                 () => {
                     if (this.#states) {
                         finishUnload();
 
-                        // Give 1 seconds to write the value
+                        // Give 1 second to write the value
                         setTimeout(() => {
                             if (!isPause) {
                                 this._logger.info(`${this.namespaceLog} terminating with timeout`);
@@ -2245,7 +2245,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     /**
-     * Reads the file certificate from given path and adds a file watcher to restart adapter on cert changes
+     * Reads the file certificate from a given path and adds a file watcher to restart adapter on cert changes
      * if a cert is passed it is returned as it is
      * @param cert
      */
@@ -2385,7 +2385,7 @@ export class AdapterClass extends EventEmitter {
                 const chained = this._readFileCertificate(obj.native.certificates[chainedName]).split(
                     '-----END CERTIFICATE-----\r\n'
                 );
-                // it is still file name and the file maybe does not exist, but we can omit this error
+                // it is still a file name, and the file maybe does not exist, but we can omit this error
                 if (chained.join('').length >= 512) {
                     const caArr = [];
                     for (const cert of chained) {
@@ -2426,7 +2426,7 @@ export class AdapterClass extends EventEmitter {
     updateConfig(newConfig: Record<string, any>): ioBroker.SetObjectPromise;
     /**
      * Updates the adapter config with new values. Only a subset of the configuration has to be provided,
-     * since merging with the existing config is done automatically, e.g. like this:
+     * since merging with the existing config is done automatically, e.g., like this:
      *
      * `adapter.updateConfig({prop1: "newValue1"})`
      *
@@ -2549,8 +2549,8 @@ export class AdapterClass extends EventEmitter {
     // external signature
     setTimeout(cb: TimeoutCallback, timeout: number, ...args: any[]): ioBroker.Timeout | undefined;
     /**
-     * Same as setTimeout
-     * but it clears the running timers on unload
+     * Same as setTimeout,
+     * but it clears the running timers during the unload process
      * does not work after unload has been called
      *
      * @param cb - timer callback
@@ -2638,7 +2638,7 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Same as setInterval
-     * but it clears the running intervals on unload
+     * but it clears the running intervals during the unload process
      * does not work after unload has been called
      *
      * @param cb - interval callback
@@ -2696,7 +2696,7 @@ export class AdapterClass extends EventEmitter {
     ): Promise<void>;
     setObject(id: string, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
     /**
-     * Creates or overwrites object in objectDB.
+     * Creates or overwrites an object in objectDB.
      *
      * This function can create or overwrite objects in objectDB for this adapter.
      * Only Ids that belong to this adapter can be modified. So the function automatically adds "adapter.X." to ID.
@@ -6927,7 +6927,7 @@ export class AdapterClass extends EventEmitter {
                     dateObj = new Date(_dateObj);
                 } else {
                     // if less 2000.01.01 00:00:00
-                    dateObj = j < 946681200000 ? new Date(j * 1000) : new Date(j);
+                    dateObj = j < 946681200000 ? new Date(j * 1_000) : new Date(j);
                 }
             } else {
                 dateObj = new Date(_dateObj);
@@ -6938,7 +6938,7 @@ export class AdapterClass extends EventEmitter {
         const format = _format || this.dateFormat || 'DD.MM.YYYY';
 
         if (isDuration) {
-            dateObj.setMilliseconds(dateObj.getMilliseconds() + dateObj.getTimezoneOffset() * 60 * 1000);
+            dateObj.setMilliseconds(dateObj.getMilliseconds() + dateObj.getTimezoneOffset() * 60 * 1_000);
         }
 
         const validFormatChars = 'YJГMМDTДhSчmмsс';
@@ -10450,17 +10450,26 @@ export class AdapterClass extends EventEmitter {
             const obj = await this.getForeignObjectAsync('system.licenses');
             const uuidObj = await this.getForeignObjectAsync('system.meta.uuid');
             let uuid: string;
-            if (!uuidObj || !uuidObj.native || !uuidObj.native.uuid) {
+            if (!uuidObj?.native?.uuid) {
                 this._logger.warn(`${this.namespaceLog} No UUID found!`);
                 return licenses;
             } else {
                 uuid = uuidObj.native.uuid;
             }
 
-            if (obj && obj.native && obj.native.licenses && obj.native.licenses.length) {
+            if (obj?.native?.licenses?.length) {
                 const now = Date.now();
                 const cert = fs.readFileSync(path.join(__dirname, '..', '..', 'cert', 'cloudCert.crt'));
-                const version = semver.major(this.pack!.version);
+                let adapterObj: ioBroker.AdapterObject | null | undefined;
+                if (adapterName) {
+                    try {
+                        adapterObj = await this.getForeignObjectAsync(`system.adapter.${adapterName}`);
+                    } catch {
+                        // ignore
+                    }
+                }
+
+                const version = semver.major(adapterObj?.common?.version || this.pack!.version);
 
                 obj.native.licenses.forEach((license: Record<string, any>) => {
                     try {
@@ -10543,16 +10552,25 @@ export class AdapterClass extends EventEmitter {
         if (!this.#states) {
             return;
         }
+
+        /** Time after which states regularly set by the status report expire in seconds */
+        const reportStatusExpirySec = Math.floor(this._config.system.statisticsInterval / 1_000) + 10;
+
         const id = `system.adapter.${this.namespace}`;
         this.#states.setState(`${id}.alive`, {
             val: true,
             ack: true,
-            expire: Math.floor(this._config.system.statisticsInterval / 1000) + 10,
+            expire: reportStatusExpirySec,
             from: id
         });
         this.outputCount++;
         if (this.connected) {
-            this.#states.setState(`${id}.connected`, { val: true, ack: true, expire: 30, from: id });
+            this.#states.setState(`${id}.connected`, {
+                val: true,
+                ack: true,
+                expire: reportStatusExpirySec,
+                from: id
+            });
             this.outputCount++;
         }
         if (!this.startedInCompactMode) {
@@ -10572,9 +10590,15 @@ export class AdapterClass extends EventEmitter {
                     this.#states.setState(`${id}.cpu`, {
                         ack: true,
                         from: id,
-                        val: Math.round(100 * stats.cpu) / 100
+                        val: Math.round(100 * stats.cpu) / 100,
+                        expire: reportStatusExpirySec
                     });
-                    this.#states.setState(`${id}.cputime`, { ack: true, from: id, val: stats.ctime / 1000 });
+                    this.#states.setState(`${id}.cputime`, {
+                        ack: true,
+                        from: id,
+                        val: stats.ctime / 1_000,
+                        expire: reportStatusExpirySec
+                    });
                     this.outputCount += 2;
                 }
             });
@@ -10587,7 +10611,8 @@ export class AdapterClass extends EventEmitter {
                             .toFixed(2)
                     ),
                     ack: true,
-                    from: id
+                    from: id,
+                    expire: reportStatusExpirySec
                 });
                 this.#states.setState(`${id}.memHeapTotal`, {
                     val: parseFloat(
@@ -10595,7 +10620,8 @@ export class AdapterClass extends EventEmitter {
                             .toFixed(2)
                     ),
                     ack: true,
-                    from: id
+                    from: id,
+                    expire: reportStatusExpirySec
                 });
                 this.#states.setState(`${id}.memHeapUsed`, {
                     val: parseFloat(
@@ -10603,7 +10629,8 @@ export class AdapterClass extends EventEmitter {
                             .toFixed(2)
                     ),
                     ack: true,
-                    from: id
+                    from: id,
+                    expire: reportStatusExpirySec
                 });
             } catch (err) {
                 this._logger.warn(`${this.namespaceLog} Could not query used process memory: ${err.message}`);
@@ -10611,7 +10638,12 @@ export class AdapterClass extends EventEmitter {
             this.outputCount += 3;
             if (this.eventLoopLags.length) {
                 const eventLoopLag = Math.ceil(this.eventLoopLags.reduce((a, b) => a + b) / this.eventLoopLags.length);
-                this.#states.setState(`${id}.eventLoopLag`, { val: eventLoopLag, ack: true, from: id }); // average of measured values
+                this.#states.setState(`${id}.eventLoopLag`, {
+                    val: eventLoopLag,
+                    ack: true,
+                    from: id,
+                    expire: reportStatusExpirySec
+                }); // average of measured values
                 this.eventLoopLags = [];
                 this.outputCount++;
             }
@@ -10620,10 +10652,21 @@ export class AdapterClass extends EventEmitter {
         this.#states.setState(`${id}.uptime`, {
             val: parseInt(process.uptime().toFixed(), 10),
             ack: true,
-            from: id
+            from: id,
+            expire: reportStatusExpirySec
         });
-        this.#states.setState(`${id}.inputCount`, { val: this.inputCount, ack: true, from: id });
-        this.#states.setState(`${id}.outputCount`, { val: this.outputCount, ack: true, from: id });
+        this.#states.setState(`${id}.inputCount`, {
+            val: this.inputCount,
+            ack: true,
+            from: id,
+            expire: reportStatusExpirySec
+        });
+        this.#states.setState(`${id}.outputCount`, {
+            val: this.outputCount,
+            ack: true,
+            from: id,
+            expire: reportStatusExpirySec
+        });
         this.inputCount = 0;
         this.outputCount = 0;
     }
@@ -11810,7 +11853,7 @@ export class AdapterClass extends EventEmitter {
                             this.#states.setState(`${id}.eventLoopLag`, { val: 0, ack: true, from: id });
                             this.outputCount += 6;
                         } else {
-                            tools.measureEventLoopLag(1000, lag => {
+                            tools.measureEventLoopLag(1_000, lag => {
                                 if (lag) {
                                     this.eventLoopLags.push(lag);
                                 }
@@ -11819,7 +11862,6 @@ export class AdapterClass extends EventEmitter {
                     }
                 }
 
-                // @ts-expect-error restartSchedule can exist - adjust types
                 if (adapterConfig && 'common' in adapterConfig && adapterConfig.common.restartSchedule) {
                     try {
                         this._schedule = await import('node-schedule');
@@ -11830,11 +11872,9 @@ export class AdapterClass extends EventEmitter {
                     }
                     if (this._schedule) {
                         this._logger.debug(
-                            // @ts-expect-error restartSchedule can exist - adjust types
                             `${this.namespaceLog} Schedule restart: ${adapterConfig.common.restartSchedule}`
                         );
                         this._restartScheduleJob = this._schedule.scheduleJob(
-                            // @ts-expect-error restartSchedule can exist - adjust types
                             adapterConfig.common.restartSchedule,
                             () => {
                                 this._logger.info(`${this.namespaceLog} Scheduled restart.`);

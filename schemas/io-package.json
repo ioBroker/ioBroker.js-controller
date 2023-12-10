@@ -64,6 +64,7 @@
         "name",
         "version",
         "platform",
+        "tier",
         "titleLang",
         "news",
         "desc",
@@ -132,6 +133,10 @@
           "properties": {
             "custom": {
               "description": "If custom messages are supported (same as legacy messagebox)",
+              "type": "boolean"
+            },
+            "deviceManager": {
+              "description": "If adapter supports the device manager and thus responds to the corresponding messages",
               "type": "boolean"
             },
             "notifications": {
@@ -1301,6 +1306,14 @@
                   "minItems": 1,
                   "items": {
                     "type": "string"
+                  }
+                },
+                "ignoreInVersions": {
+                  "description": "The vis widget does not support the listed major versions of vis",
+                  "type": "array",
+                  "items": {
+                    "type": "number",
+                    "multipleOf": 1
                   }
                 }
               }

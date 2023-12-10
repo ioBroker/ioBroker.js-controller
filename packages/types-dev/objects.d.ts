@@ -271,8 +271,14 @@ declare global {
             custom?: undefined;
         }
         interface DeviceCommon extends ObjectCommon {
-            // TODO: any other definition for device?
-
+            statusStates?: {
+                /** State which is truthy if device is online */
+                onlineId?: string;
+                /** State which is truthy if device is offline */
+                offlineId?: string;
+                /** State which is truthy if device is in error state */
+                errorId?: string;
+            };
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
         }
@@ -307,6 +313,16 @@ declare global {
         }
 
         type InstanceMode = 'none' | 'daemon' | 'subscribe' | 'schedule' | 'once' | 'extension';
+
+        interface AdminUi {
+            /** UI type of config page inside admin UI */
+            config: 'html' | 'json' | 'materialize' | 'none';
+            /** UI type of custom tab inside admin UI */
+            custom?: 'json';
+            /** UI type of tab inside admin UI */
+            tab?: 'html' | 'materialize';
+        }
+
         interface InstanceCommon extends AdapterCommon {
             version: string;
             /** The name of the host where this instance is running */
@@ -336,6 +352,10 @@ declare global {
             nodeProcessParams?: string[];
             /** If adapter can consume log messages, like admin, javascript or logparser */
             logTransporter?: boolean;
+            /** Type of the admin UI */
+            adminUI?: AdminUi;
+            /** Optional memory limit for this instance */
+            memoryLimitMB?: number;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
@@ -449,11 +469,15 @@ declare global {
          */
         interface SupportedMessages {
             /** If custom messages are supported (same as legacy messagebox) */
-            custom: boolean;
+            custom?: boolean;
             /** If notification handling is supported, for information, see https://github.com/foxriver76/ioBroker.notification-manager#requirements-for-messaging-adapters */
-            notifications: boolean;
+            notifications?: boolean;
             /** If adapter supports signal stopInstance. Use number if you need more than 1000 ms for stop routine. The signal will be sent before stop to the adapter. (used if problems occurred with SIGTERM). */
-            stopInstance: boolean | number;
+            stopInstance?: boolean | number;
+            /** If adapter supports the device manager and thus responds to the corresponding messages */
+            deviceManager?: boolean;
+            /** If adapter supports getHistory message. */
+            getHistory?: boolean;
         }
 
         type AutoUpgradePolicy = 'none' | 'patch' | 'minor' | 'major';
@@ -463,6 +487,8 @@ declare global {
             name: string;
             url: string;
             components: string[];
+            /** The vis widget does not support the listed major versions of vis */
+            ignoreInVersions: number[];
         }
 
         interface AdapterCommon extends ObjectCommon {
@@ -566,6 +592,8 @@ declare global {
             preserveSettings?: string | string[];
             /** Which adapters must be restarted after installing or updating this adapter. */
             restartAdapters?: string[];
+            /** CRON schedule to restart mode `daemon` adapters */
+            restartSchedule?: string;
             /** If the adapter runs in `schedule` mode, this contains the CRON */
             schedule?: string;
             serviceStates?: boolean | string;
