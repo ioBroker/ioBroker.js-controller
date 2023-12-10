@@ -3,9 +3,9 @@
  *
  * It prefixes every message with the given namespace
  */
-export class Log {
+export class Log implements ioBroker.Logger {
     private readonly namespaceLog: string;
-    readonly level: string;
+    readonly level: ioBroker.LogLevel;
     // TODO: this should be a winston.Logger, but the exported types will mess up because of https://github.com/microsoft/rushstack/issues/2220
     private readonly logger: any;
 
@@ -14,7 +14,7 @@ export class Log {
      * @param level The log level
      * @param logger logger instance
      */
-    constructor(namespaceLog: string, level: string, logger: any) {
+    constructor(namespaceLog: string, level: ioBroker.LogLevel, logger: any) {
         this.namespaceLog = namespaceLog;
         this.level = level;
         // We have to bind the `this` context here, or it is possible that `this` is

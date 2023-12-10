@@ -153,7 +153,7 @@ declare global {
                 ? ioBroker.Object
                 : AnyObject;
 
-        type Languages = 'en' | 'de' | 'ru' | 'pt' | 'nl' | 'fr' | 'it' | 'es' | 'pl' | 'zh-cn';
+        type Languages = 'en' | 'de' | 'ru' | 'pt' | 'nl' | 'fr' | 'it' | 'es' | 'pl' | 'uk' | 'zh-cn';
         type Translated = { en: string } & { [lang in Languages]?: string };
 
         /** For objects, we require the English language to be present */
@@ -279,8 +279,14 @@ declare global {
             custom?: undefined;
         }
         interface DeviceCommon extends ObjectCommon {
-            // TODO: any other definition for device?
-
+            statusStates?: {
+                /** State which is truthy if device is online */
+                onlineId?: string;
+                /** State which is truthy if device is offline */
+                offlineId?: string;
+                /** State which is truthy if device is in error state */
+                errorId?: string;
+            };
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
         }
@@ -303,6 +309,8 @@ declare global {
         interface EnumCommon extends ObjectCommon {
             /** The IDs of the enum members */
             members?: string[];
+            /** Color attribute used in UI */
+            color?: string;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
@@ -317,6 +325,16 @@ declare global {
         }
 
         type InstanceMode = 'none' | 'daemon' | 'subscribe' | 'schedule' | 'once' | 'extension';
+
+        interface AdminUi {
+            /** UI type of config page inside admin UI */
+            config: 'html' | 'json' | 'materialize' | 'none';
+            /** UI type of custom tab inside admin UI */
+            custom?: 'json';
+            /** UI type of tab inside admin UI */
+            tab?: 'html' | 'materialize';
+        }
+
         interface InstanceCommon extends AdapterCommon {
             version: string;
             /** The name of the host where this instance is running */
@@ -346,6 +364,10 @@ declare global {
             nodeProcessParams?: string[];
             /** If adapter can consume log messages, like admin, javascript or logparser */
             logTransporter?: boolean;
+            /** Type of the admin UI */
+            adminUI?: AdminUi;
+            /** Optional memory limit for this instance */
+            memoryLimitMB?: number;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
@@ -459,14 +481,27 @@ declare global {
          */
         interface SupportedMessages {
             /** If custom messages are supported (same as legacy messagebox) */
-            custom: boolean;
+            custom?: boolean;
             /** If notification handling is supported, for information, see https://github.com/foxriver76/ioBroker.notification-manager#requirements-for-messaging-adapters */
-            notifications: boolean;
+            notifications?: boolean;
             /** If adapter supports signal stopInstance. Use number if you need more than 1000 ms for stop routine. The signal will be sent before stop to the adapter. (used if problems occurred with SIGTERM). */
-            stopInstance: boolean | number;
+            stopInstance?: boolean | number;
+            /** If adapter supports the device manager and thus responds to the corresponding messages */
+            deviceManager?: boolean;
+            /** If adapter supports getHistory message. */
+            getHistory?: boolean;
         }
 
         type AutoUpgradePolicy = 'none' | 'patch' | 'minor' | 'major';
+
+        interface VisWidget {
+            i18n: 'component' | true | Translated;
+            name: string;
+            url: string;
+            components: string[];
+            /** The vis widget does not support the listed major versions of vis */
+            ignoreInVersions: number[];
+        }
 
         interface AdapterCommon extends ObjectCommon {
             /** Custom attributes to be shown in admin in the object browser */
@@ -516,6 +551,8 @@ declare global {
             getHistory?: boolean;
             /** Filename of the local icon which is shown for installed adapters. Should be located in the `admin` directory */
             icon?: string;
+            /** Source, where this adapter has been installed from, to enable reinstall on e.g. backup restore */
+            installedFrom?: string;
             /** Which version of this adapter is installed */
             installedVersion: string;
             keywords?: string[];
@@ -539,6 +576,8 @@ declare global {
             mode: InstanceMode;
             /** Name of the adapter (without leading `ioBroker.`) */
             name: string;
+            /** News per version in i18n */
+            news?: Record<string, Record<string, Translated>>;
             /** If `true`, no configuration dialog will be shown */
             noConfig?: true;
             /** If `true`, this adapter's instances will not be shown in the admin overview screen. Useful for icon sets and widgets... */
@@ -567,6 +606,8 @@ declare global {
             preserveSettings?: string | string[];
             /** Which adapters must be restarted after installing or updating this adapter. */
             restartAdapters?: string[];
+            /** CRON schedule to restart mode `daemon` adapters */
+            restartSchedule?: string;
             /** If the adapter runs in `schedule` mode, this contains the CRON */
             schedule?: string;
             serviceStates?: boolean | string;
@@ -594,6 +635,7 @@ declare global {
             unsafePerm?: true;
             /** The available version in the ioBroker repo. */
             version: string;
+            visWidgets?: Record<string, VisWidget>;
             /** If `true`, the adapter will be started if any value is written into `system.adapter.<name>.<instance>.wakeup. Normally the adapter should stop after processing the event. */
             wakeup?: boolean;
             /** Include the adapter version in the URL of the web adapter, e.g. `http://ip:port/1.2.3/material` instead of `http://ip:port/material` */
@@ -691,7 +733,7 @@ declare global {
             // without bugging users to change their code --> https://github.com/microsoft/TypeScript/issues/15300
             native: Record<string, any>;
             common: Record<string, any>;
-            enums?: Record<string, string>;
+            enums?: Record<string, string | Translated>;
             acl?: ObjectACL;
             from?: string;
             /** The user who created or updated this object */
@@ -706,6 +748,7 @@ declare global {
             common: StateCommon;
             acl?: StateACL;
         }
+
         interface PartialStateObject extends Partial<Omit<StateObject, 'common' | 'acl'>> {
             common?: Partial<StateCommon>;
             acl?: Partial<StateACL>;
@@ -826,6 +869,10 @@ declare global {
             encryptedNative?: string[];
             /** Register notifications for the built-in notification system */
             notifications?: Notification[];
+            /** Objects created for each instance, inside the namespace of this adapter */
+            instanceObjects: (StateObject | DeviceObject | ChannelObject | FolderObject | MetaObject)[];
+            /** Objects created for the adapter, anywhere in the global namespace */
+            objects: ioBroker.AnyObject[];
         }
         interface PartialInstanceObject extends Partial<Omit<InstanceObject, 'common'>> {
             common?: Partial<InstanceCommon>;
@@ -851,6 +898,10 @@ declare global {
             encryptedNative?: string[];
             /** Register notifications for the built-in notification system */
             notifications?: Notification[];
+            /** Objects created for each instance, inside the namespace of this adapter */
+            instanceObjects: (StateObject | DeviceObject | ChannelObject | FolderObject | MetaObject)[];
+            /** Objects created for the adapter, anywhere in the global namespace */
+            objects: ioBroker.AnyObject[];
         }
         interface PartialAdapterObject extends Partial<Omit<AdapterObject, 'common'>> {
             common?: Partial<AdapterCommon>;

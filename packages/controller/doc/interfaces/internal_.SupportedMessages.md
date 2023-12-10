@@ -13,6 +13,8 @@ If one property is enabled, the object `system.adapter.<adaptername>.<adapterins
 ### Properties
 
 - [custom](internal_.SupportedMessages.md#custom)
+- [deviceManager](internal_.SupportedMessages.md#devicemanager)
+- [getHistory](internal_.SupportedMessages.md#gethistory)
 - [notifications](internal_.SupportedMessages.md#notifications)
 - [stopInstance](internal_.SupportedMessages.md#stopinstance)
 
@@ -20,34 +22,58 @@ If one property is enabled, the object `system.adapter.<adaptername>.<adapterins
 
 ### custom
 
-• **custom**: `boolean`
+• `Optional` **custom**: `boolean`
 
 If custom messages are supported (same as legacy messagebox)
 
 #### Defined in
 
-[types-dev/objects.d.ts:450](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L450)
+[types-dev/objects.d.ts:472](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L472)
+
+___
+
+### deviceManager
+
+• `Optional` **deviceManager**: `boolean`
+
+If adapter supports the device manager and thus responds to the corresponding messages
+
+#### Defined in
+
+[types-dev/objects.d.ts:478](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L478)
+
+___
+
+### getHistory
+
+• `Optional` **getHistory**: `boolean`
+
+If adapter supports getHistory message.
+
+#### Defined in
+
+[types-dev/objects.d.ts:480](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L480)
 
 ___
 
 ### notifications
 
-• **notifications**: `boolean`
+• `Optional` **notifications**: `boolean`
 
 If notification handling is supported, for information, see https://github.com/foxriver76/ioBroker.notification-manager#requirements-for-messaging-adapters
 
 #### Defined in
 
-[types-dev/objects.d.ts:452](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L452)
+[types-dev/objects.d.ts:474](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L474)
 
 ___
 
 ### stopInstance
 
-• **stopInstance**: `number` \| `boolean`
+• `Optional` **stopInstance**: `number` \| `boolean`
 
 If adapter supports signal stopInstance. Use number if you need more than 1000 ms for stop routine. The signal will be sent before stop to the adapter. (used if problems occurred with SIGTERM).
 
 #### Defined in
 
-[types-dev/objects.d.ts:454](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L454)
+[types-dev/objects.d.ts:476](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L476)

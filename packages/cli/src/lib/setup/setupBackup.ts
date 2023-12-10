@@ -78,6 +78,8 @@ export class BackupRestore {
     private readonly HOSTNAME_PLACEHOLDER_REPLACE = '$$$$__hostname__$$$$';
     /** Regex to replace all occurrences of the HOSTNAME_PLACEHOLDER */
     private readonly HOSTNAME_PLACEHOLDER_REGEX = /\$\$__hostname__\$\$/g;
+    /** Vis adapters have special files which need to be copied during backup */
+    private readonly VIS_ADAPTERS = ['vis', 'vis-2'] as const;
 
     constructor(options: CLIBackupRestoreOptions) {
         options = options || {};
@@ -146,14 +148,11 @@ export class BackupRestore {
         }
     }
 
+    /**
+     * Get the directory where backups should be stored
+     */
     static getBackupDir(): string {
-        const dataDir = path.join(controllerDir, tools.getDefaultDataDir());
-
-        const parts = dataDir.split('/');
-        parts.pop(); // remove data or appName-data
-        parts.pop();
-
-        return path.normalize(`${parts.join('/')}/backups/`);
+        return path.join(tools.getRootDir(), 'backups/');
     }
 
     copyFileSync(source: string, target: string): void {
@@ -435,18 +434,18 @@ export class BackupRestore {
             }
         }
 
-        // special case: copy vis vis-common-user.css file
-        try {
-            const data = await this.objects.readFile('vis', 'css/vis-common-user.css');
-            if (data) {
-                const dir = `${this.tmpDir}/backup/files/`;
-                fs.ensureDirSync(`${dir}vis`);
-                fs.ensureDirSync(`${dir}vis/css`);
+        for (const visAdapter of this.VIS_ADAPTERS) {
+            try {
+                const data = await this.objects.readFile(visAdapter, 'css/vis-common-user.css');
+                if (data) {
+                    const dir = path.join(this.tmpDir, 'backup', 'files', visAdapter, 'css');
+                    fs.ensureDirSync(dir);
 
-                fs.writeFileSync(`${dir}vis/css/vis-common-user.css`, data.file);
+                    fs.writeFileSync(path.join(dir, 'vis-common-user.css'), data.file);
+                }
+            } catch {
+                // do not process 'css/vis-common-user.css'
             }
-        } catch {
-            // do not process 'css/vis-common-user.css'
         }
 
         console.log(`host.${hostname} ${result.objects?.length || 'no'} objects saved`);
@@ -1197,9 +1196,7 @@ export class BackupRestore {
                 const adapterObj = await this.objects.getObjectAsync(`system.adapter.${adapterName}`);
                 if (adapterObj?.common?.version) {
                     let installSource;
-                    // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                     if (adapterObj.common.installedFrom) {
-                        // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                         installSource = adapterObj.common.installedFrom;
                     } else {
                         installSource = `${tools.appName.toLowerCase()}.${adapterName}@${adapterObj.common.version}`;

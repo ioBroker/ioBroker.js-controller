@@ -40,7 +40,7 @@ export class Upload {
     private readonly regApp: RegExp;
     private callbackId: number;
     private readonly sendToHostFromCliAsync: (...args: any[]) => Promise<any>;
-    private callbacks?: Record<string, any>;
+    private callbacks: Record<string, any> = {};
     private lastProgressUpdate: number;
 
     constructor(_options: CLIUploadOptions) {
@@ -66,7 +66,7 @@ export class Upload {
         if (hosts) {
             for (const host of hosts) {
                 const state = await this.states.getStateAsync(`${host}.alive`);
-                if (state && state.val) {
+                if (state?.val) {
                     result.push(host);
                 }
             }
@@ -81,7 +81,7 @@ export class Upload {
                 startkey: 'system.host.',
                 endkey: 'system.host.\u9999'
             });
-            if (arr && arr.rows) {
+            if (arr?.rows) {
                 for (const row of arr.rows) {
                     if (row.value.type !== 'host') {
                         continue;
@@ -114,7 +114,7 @@ export class Upload {
             const adapterConf = await fs.readJSON(join(adapterDir, 'io-package.json'));
             if (adapterConf.common.restartAdapters) {
                 if (!Array.isArray(adapterConf.common.restartAdapters)) {
-                    // its not an array, now it can only be a single adapter as string
+                    // it's not an array, now it can only be a single adapter as string
                     if (typeof adapterConf.common.restartAdapters !== 'string') {
                         return;
                     }
@@ -123,12 +123,12 @@ export class Upload {
 
                 if (adapterConf.common.restartAdapters.length && adapterConf.common.restartAdapters[0]) {
                     const instances = await tools.getAllInstances(adapterConf.common.restartAdapters, this.objects);
-                    if (instances && instances.length) {
+                    if (instances?.length) {
                         for (const instance of instances) {
                             try {
                                 const obj = await this.objects.getObjectAsync(instance);
                                 // if instance is enabled
-                                if (obj && obj.common && obj.common.enabled) {
+                                if (obj?.common?.enabled) {
                                     obj.common.enabled = false; // disable instance
 
                                     obj.from = `system.host.${tools.getHostName()}.cli`;
@@ -164,12 +164,14 @@ export class Upload {
         const from = `system.host.${hostname}_cli_${time}`;
 
         const timeout = setTimeout(() => {
-            callback && callback();
+            if (callback) {
+                callback();
+            }
             callback = null;
             this.states.unsubscribeMessage(from);
             // @ts-expect-error todo: I don't think this works
             this.states.onChange = null;
-        }, 60000);
+        }, 60_000);
 
         // @ts-expect-error todo: I don't think this works
         this.states.onChange = (id, msg) => {
@@ -204,7 +206,7 @@ export class Upload {
             if (this.callbackId > 0xffffffff) {
                 this.callbackId = 1;
             }
-            this.callbacks = this.callbacks || {};
+
             this.callbacks[`_${obj.callback.id}`] = { cb: callback };
 
             // we cannot receive answers from hosts in CLI, so this command is "fire and forget"
@@ -213,32 +215,29 @@ export class Upload {
     }
 
     async uploadAdapterFullAsync(adapters: string[]): Promise<void> {
-        if (adapters && adapters.length) {
+        if (adapters?.length) {
             const liveHosts = await this.getHosts(true);
             for (const adapter of adapters) {
                 // Find the host which has this adapter
                 const instances = await tools.getInstances(adapter, this.objects, true);
                 // try to find instance on this host
-                let instance = instances.find(obj => obj && obj.common && obj.common.host === hostname);
+                let instance = instances.find(obj => obj?.common?.host === hostname);
 
                 // try to find enabled instance on live host
                 instance =
-                    instance ||
-                    instances.find(
-                        obj => obj && obj.common && obj.common.enabled && liveHosts.includes(obj.common.host)
-                    );
+                    instance || instances.find(obj => obj?.common?.enabled && liveHosts.includes(obj.common.host));
 
                 // try to find any instance
-                instance = instance || instances.find(obj => obj && obj.common && liveHosts.includes(obj.common.host));
+                instance = instance || instances.find(obj => obj?.common && liveHosts.includes(obj.common.host));
 
                 if (instance && instance.common.host !== hostname) {
                     console.log(`Send upload command to host "${instance.common.host}"... `);
                     // send upload message to the host
                     const response = await this.sendToHostFromCliAsync(instance.common.host, 'upload', adapter);
                     if (response) {
-                        console.log('Upload result: ' + response.result);
+                        console.log(`Upload result: ${response.result}`);
                     } else {
-                        console.error('No answer from ' + instance.common.host);
+                        console.error(`No answer from ${instance.common.host}`);
                     }
                 } else {
                     if (!instance) {
@@ -289,7 +288,7 @@ export class Upload {
                     responseType: 'arraybuffer',
                     validateStatus: status => status === 200
                 });
-                if (result && result.data) {
+                if (result?.data) {
                     await this.objects.writeFileAsync(adapter, target, result.data);
                 } else {
                     console.error(`Empty response from URL "${source}"`);
@@ -329,7 +328,6 @@ export class Upload {
         if (files && files.length) {
             for (const file of files) {
                 try {
-                    // @ts-expect-error should be fixed with #1917
                     await this.objects.unlinkAsync(file.adapter, file.path);
                 } catch (err) {
                     logger.error(`Cannot delete file "${file.path}": ${err}`);
@@ -339,10 +337,10 @@ export class Upload {
     }
 
     /**
-     * Collect Files of an adapter specific directory from the iobroker storage
+     * Collect Files of an adapter specific directory from the ioBroker storage
      *
-     * @param adapter Adaptername
-     * @param path path in the adapterspecific storage space
+     * @param adapter Adapter name
+     * @param path path in the adapter specific storage space
      * @param logger Logger instance
      */
     async collectExistingFilesToDelete(
@@ -360,7 +358,7 @@ export class Upload {
             files = [];
         }
 
-        if (files && files.length) {
+        if (files?.length) {
             for (const file of files) {
                 if (file.file === '.' || file.file === '..') {
                     continue;
@@ -417,23 +415,27 @@ export class Upload {
 
             let attName = attNameArr.pop()!;
             attName = attName.split('/').slice(2).join('/');
-            if (files.length - f > 100) {
-                (!f || !((files.length - f - 1) % 50)) &&
-                    logger.log(`upload [${files.length - f - 1}] ${id} ${file} ${attName} ${mimeType}`);
-            } else if (files.length - f - 1 > 20) {
-                (!f || !((files.length - f - 1) % 10)) &&
-                    logger.log(`upload [${files.length - f - 1}] ${id} ${file} ${attName} ${mimeType}`);
+
+            const remainingFiles = files.length - f - 1;
+
+            if (remainingFiles >= 100) {
+                (!f || !(remainingFiles % 50)) &&
+                    logger.log(`upload [${remainingFiles}] ${id} ${file} ${attName} ${mimeType}`);
+            } else if (remainingFiles > 20) {
+                if (!f || !(remainingFiles % 10)) {
+                    logger.log(`upload [${remainingFiles}] ${id} ${file} ${attName} ${mimeType}`);
+                }
             } else {
-                logger.log(`upload [${files.length - f - 1}] ${id} ${file} ${attName} ${mimeType}`);
+                logger.log(`upload [${remainingFiles}] ${id} ${file} ${attName} ${mimeType}`);
             }
 
             // Update upload indicator
             if (!isAdmin) {
                 const now = Date.now();
-                if (now - this.lastProgressUpdate > 1000) {
+                if (now - this.lastProgressUpdate > 1_000) {
                     this.lastProgressUpdate = now;
                     await this.states.setStateAsync(uploadID, {
-                        val: Math.round((1000 * (files.length - f)) / files.length) / 10,
+                        val: Math.round((1_000 * (files.length - f)) / files.length) / 10,
                         ack: true
                     });
                 }
@@ -444,11 +446,9 @@ export class Upload {
                     const stream = fs.createReadStream(file);
                     stream.on('error', e => reject(e));
                     stream.pipe(
-                        this.objects.insert(id, attName, null, mimeType || {}, { rev }, (err, res) => {
-                            err && console.log(err);
-                            if (res) {
-                                // @ts-expect-error it always returns null, check it also rev seems to do nothing
-                                rev = res.rev;
+                        this.objects.insert(id, attName, null, mimeType || {}, { rev }, err => {
+                            if (err) {
+                                console.log(err);
                             }
                             resolve();
                         })
@@ -546,7 +546,7 @@ export class Upload {
         }
 
         // check for common.wwwDontUpload (required for legacy adapters and admin)
-        if (!isAdmin && cfg && cfg.common && cfg.common.wwwDontUpload) {
+        if (!isAdmin && cfg?.common?.wwwDontUpload) {
             return adapter;
         }
 
@@ -594,7 +594,7 @@ export class Upload {
         // Read all names with subtrees from local directory
         const files = this.walk(dir);
         if (!result) {
-            // @ts-expect-error types needed admin is not allowed for meta but it should be allowed
+            // @ts-expect-error types needed admin is not allowed for meta, but it should be allowed
             await this.objects.setObjectAsync(id, {
                 type: 'meta',
                 common: {
@@ -637,19 +637,19 @@ export class Upload {
         return adapter;
     }
 
-    extendNative(target: Record<string, any>, additional: Record<string, any>): Record<string, any> {
+    extendNative(target: Record<string, any>, additional: Record<string, unknown>): Record<string, any> {
         if (tools.isObject(additional)) {
-            for (const attr of Object.keys(additional)) {
+            for (const [attr, attrData] of Object.entries(additional)) {
                 if (target[attr] === undefined) {
-                    target[attr] = additional[attr];
-                } else if (typeof additional[attr] === 'object' && !(additional[attr] instanceof Array)) {
+                    target[attr] = attrData;
+                } else if (typeof attrData === 'object' && !(attrData instanceof Array)) {
                     try {
                         target[attr] = target[attr] || {};
                     } catch {
                         console.warn(`Cannot update attribute ${attr} of native`);
                     }
                     if (typeof target[attr] === 'object' && target[attr] !== null) {
-                        this.extendNative(target[attr], additional[attr]);
+                        this.extendNative(target[attr], attrData);
                     }
                 }
             }
@@ -674,15 +674,15 @@ export class Upload {
                 'tier'
             ];
 
-            for (const attr of Object.keys(additional)) {
-                // preserve these attributes, except, they werde undefined before and preserve titleLang if current titleLang is of type string (changed by user)
-                if (preserveAttributes.includes(attr) || (attr === 'titleLang' && typeof target[attr] === 'string')) {
+            for (const [attr, attrData] of Object.entries(additional)) {
+                // preserve these attributes, except, they were undefined before and preserve titleLang if current titleLang is of type string (changed by user)
+                if (preserveAttributes.includes(attr) || (attr === 'titleLang' && typeof attrData === 'string')) {
                     if (target[attr] === undefined) {
-                        target[attr] = additional[attr];
+                        target[attr] = attrData;
                     }
-                } else if (typeof additional[attr] !== 'object' || additional[attr] instanceof Array) {
+                } else if (typeof attrData !== 'object' || attrData instanceof Array) {
                     try {
-                        target[attr] = additional[attr];
+                        target[attr] = attrData;
 
                         // dataFolder can have wildcards
                         if (attr === 'dataFolder' && target.dataFolder && target.dataFolder.includes('%INSTANCE%')) {
@@ -697,7 +697,7 @@ export class Upload {
                         target[attr] = {}; // here we clean the simple value with object
                     }
 
-                    this.extendCommon(target[attr], additional[attr], instance);
+                    this.extendCommon(target[attr], attrData, instance);
                 }
             }
         }
@@ -714,7 +714,7 @@ export class Upload {
      */
     async _upgradeAdapterObjectsHelper(
         name: string,
-        ioPack: Record<string, any>,
+        ioPack: ioBroker.AdapterObject,
         hostname: string,
         logger: Logger | typeof console
     ): Promise<string> {
@@ -730,6 +730,8 @@ export class Upload {
                     const _obj = await this.objects.getObjectAsync(row.id);
                     const newObject = deepClone(_obj) as ioBroker.InstanceObject;
 
+                    // TODO: refactor the following assignments into a method, where we can define which attributes need a real override and their defaults
+
                     // all common settings should be taken from new one
                     newObject.common = this.extendCommon(
                         newObject.common,
@@ -743,14 +745,18 @@ export class Upload {
                     newObject.encryptedNative = ioPack.encryptedNative || [];
                     newObject.notifications = ioPack.notifications || [];
                     // update instanceObjects and objects
-                    // @ts-expect-error TODO needs to be added to types
                     newObject.instanceObjects = ioPack.instanceObjects || [];
-                    // @ts-expect-error TODO needs to be added to types
                     newObject.objects = ioPack.objects || [];
 
                     newObject.common.version = ioPack.common.version;
                     newObject.common.installedVersion = ioPack.common.version;
                     newObject.common.installedFrom = ioPack.common.installedFrom;
+
+                    if (ioPack.common.visWidgets) {
+                        newObject.common.visWidgets = ioPack.common.visWidgets;
+                    } else {
+                        delete newObject.common.visWidgets;
+                    }
 
                     if (!ioPack.common.compact && newObject.common.compact) {
                         newObject.common.compact = ioPack.common.compact;
@@ -770,17 +776,17 @@ export class Upload {
         }
 
         // updates only "_design/system" and co "_design/*"
-        if (ioPack.objects && typeof ioPack.objects === 'object') {
-            for (const _id of Object.keys(ioPack.objects)) {
-                if (name === 'js-controller' && !_id.startsWith('_design/')) {
+        if (Array.isArray(ioPack.objects)) {
+            for (const obj of ioPack.objects) {
+                if (name === 'js-controller' && !obj._id.startsWith('_design/')) {
                     continue;
                 }
 
-                ioPack.objects[_id].from = `system.host.${hostname}.cli`;
-                ioPack.objects[_id].ts = Date.now();
+                obj.from = `system.host.${hostname}.cli`;
+                obj.ts = Date.now();
 
                 try {
-                    await this.objects.setObjectAsync(ioPack.objects[_id]._id, ioPack.objects[_id]);
+                    await this.objects.setObjectAsync(obj._id, obj);
                 } catch (err) {
                     logger.error(`Cannot update object: ${err}`);
                 }
@@ -795,7 +801,7 @@ export class Upload {
      */
     async upgradeAdapterObjects(
         name: string,
-        ioPack?: Record<string, any>,
+        ioPack?: ioBroker.AdapterObject,
         _logger?: Logger | typeof console
     ): Promise<string> {
         const logger = _logger || console;
@@ -803,7 +809,7 @@ export class Upload {
         const adapterDir = tools.getAdapterDir(name);
         let ioPackFile;
         try {
-            ioPackFile = fs.readJSONSync(adapterDir + '/io-package.json');
+            ioPackFile = fs.readJSONSync(`${adapterDir}/io-package.json`);
         } catch {
             if (adapterDir) {
                 logger.error(`Cannot find io-package.json in ${adapterDir}`);
@@ -815,8 +821,8 @@ export class Upload {
         ioPack = ioPack || ioPackFile;
 
         if (ioPack) {
-            // Always update installed From from File on disk if exists and set
-            if (ioPackFile && ioPackFile.common && ioPackFile.common.installedFrom) {
+            // Always update installedFrom from File on disk if exists and set
+            if (ioPackFile?.common?.installedFrom) {
                 ioPack.common = ioPack.common || {};
                 ioPack.common.installedFrom = ioPackFile.common.installedFrom;
             }
@@ -830,7 +836,9 @@ export class Upload {
             const obj: Omit<ioBroker.AdapterObject, '_id'> = _obj || {
                 common: ioPack.common,
                 native: ioPack.native,
-                type: 'adapter'
+                type: 'adapter',
+                instanceObjects: [],
+                objects: []
             };
 
             obj.common = ioPack.common || {};
@@ -840,19 +848,15 @@ export class Upload {
             obj.encryptedNative = ioPack.encryptedNative || [];
             obj.notifications = ioPack.notifications || [];
             // update instanceObjects and objects
-            // @ts-expect-error TODO needs to be added to types
             obj.instanceObjects = ioPack.instanceObjects || [];
-            // @ts-expect-error TODO needs to be added to types
             obj.objects = ioPack.objects || [];
 
             obj.type = 'adapter';
 
-            obj.common!.installedVersion = ioPack.common.version;
+            obj.common.installedVersion = ioPack.common.version;
 
-            // @ts-expect-error TODO needs to be added to types
-            if (obj.common!.news) {
-                // @ts-expect-error TODO needs to be added to types
-                delete obj.common!.news; // remove this information as it could be big, but it will be taken from repo
+            if (obj.common.news) {
+                delete obj.common.news; // remove this information as it could be big, but it will be taken from repo
             }
 
             const hostname = tools.getHostName();

@@ -22,17 +22,17 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:303](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/_Types.ts#L303)
+[adapter/src/lib/_Types.ts:312](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L312)
 
 ___
 
 ### enums
 
-• `Optional` **enums**: ``null`` \| [`EnumList`](../modules/internal_.md#enumlist)
+• `Optional` **enums**: [`EnumList`](../modules/internal_.md#enumlist)
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:301](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/_Types.ts#L301)
+[adapter/src/lib/_Types.ts:310](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L310)
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:302](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/_Types.ts#L302)
+[adapter/src/lib/_Types.ts:311](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L311)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:299](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/_Types.ts#L299)
+[adapter/src/lib/_Types.ts:308](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L308)
 
 ___
 
@@ -62,4 +62,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:300](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/_Types.ts#L300)
+[adapter/src/lib/_Types.ts:309](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L309)

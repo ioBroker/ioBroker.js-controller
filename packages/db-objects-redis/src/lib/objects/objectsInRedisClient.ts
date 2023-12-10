@@ -607,7 +607,7 @@ export class ObjectsInRedisClient {
                                 }
                             } else if (channel.startsWith(this.fileNamespace) && channel.length > this.fileNamespaceL) {
                                 if (onChangeFileUser) {
-                                    // cfg.f.vis.0$%$main/historyChart.js$%$data
+                                    // cfg.f.vis-2.0$%$main/historyChart.js$%$data
                                     const [id, fileName] = channel.substring(this.fileNamespaceL).split('$%$');
 
                                     try {
@@ -1034,7 +1034,7 @@ export class ObjectsInRedisClient {
         ignore: any,
         options: string | Record<string, any>,
         obj: any,
-        callback: (err: Error | null | undefined, param: null) => void
+        callback: (err?: Error | null) => void
     ): WMStrm {
         return utils.insert(this, id, attName, ignore, options, obj, callback);
     }
@@ -1387,7 +1387,7 @@ export class ObjectsInRedisClient {
         });
     }
 
-    unlinkAsync(id: string, name: string, options: CallOptions): Promise<void> {
+    unlinkAsync(id: string, name: string, options?: CallOptions): Promise<void> {
         return new Promise<void>((resolve, reject) =>
             this.unlink(id, name, options, err => (err ? reject(err) : resolve()))
         );
@@ -2005,9 +2005,8 @@ export class ObjectsInRedisClient {
                 if (!options.acl.file.write) {
                     return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
                 } else {
-                    // we create a dummy file (for file this file exists to store meta data)
-                    options = options || {};
-                    options.virtualFile = true; // this is a virtual File
+                    // we create a dummy file (for file this file exists to store meta data) - do not override passed options
+                    options = { ...options, virtualFile: true };
                     const realName = dirName + (dirName!.endsWith('/') ? '' : '/');
                     this.writeFile(id, `${realName}_data.json`, '', options, callback);
                 }
@@ -3314,9 +3313,9 @@ export class ObjectsInRedisClient {
         return tools.maybeCallbackWithError(callback, null, result);
     }
 
-    getObjects(keys: string[], callback: (err?: Error | null, objs?: ioBroker.AnyObject[]) => void): void;
     // No callback provided, we return a Promise
     getObjects(keys: string[], options?: CallOptions | null): Promise<ioBroker.AnyObject[]>;
+    getObjects(keys: string[], callback: (err?: Error | null, objs?: ioBroker.AnyObject[]) => void): void;
     // Callback provided, thus we call it
     getObjects(
         keys: string[],

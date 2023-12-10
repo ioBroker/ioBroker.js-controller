@@ -29,6 +29,7 @@ import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { Upload } from '@iobroker/js-controller-cli';
 import decache from 'decache';
+import cronParser from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import { AdapterAutoUpgradeManager } from './lib/adapterAutoUpgradeManager';
 import { getDefaultNodeArgs, HostInfo, RepositoryFile } from '@iobroker/js-controller-common/tools';
@@ -68,7 +69,7 @@ interface Process {
     /** the process itself */
     process?: cp.ChildProcess;
     /** the config of the instance (mainly io-pack attributes) */
-    config: Record<string, any>;
+    config: ioBroker.InstanceObject;
     restartTimer?: NodeJS.Timeout;
     restartExpected?: boolean;
     downloadRetry?: number;
@@ -107,6 +108,7 @@ interface RepoRequester {
     callback: ioBroker.MessageCallbackInfo;
 }
 
+const VIS_ADAPTERS = ['vis', 'vis-2'] as const;
 const ioPackage = fs.readJSONSync(path.join(tools.getControllerDir(), 'io-package.json'));
 const version = ioPackage.common.version;
 /** controller versions of multihost environments */
@@ -121,7 +123,7 @@ let requestedRepoUpdates: RepoRequester[] = [];
 let upload: InstanceType<typeof Upload>; // will be used only once by upload of adapter
 
 /* Use require('loadavg-windows') to enjoy os.loadavg() on Windows OS.
-   Currently, Node.js on Windows platform does not implement os.loadavg() functionality - it returns [0,0,0]
+   Currently, Node.js on a Windows platform does not implement os.loadavg() functionality - it returns [0,0,0]
    Expect first results after 1 min from application start (before 1 min runtime it will return [0,0,0])
    Requiring it on other operating systems has NO influence.*/
 if (os.platform() === 'win32') {
@@ -422,7 +424,7 @@ function handleDisconnect(): void {
         stop(true, () => {
             restartTimeout = setTimeout(() => {
                 processMessage({ command: 'cmdExec', message: { data: '_restart' }, from: hostObjectPrefix });
-                setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
+                setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1_000);
             }, 10_000);
         });
     }
@@ -440,7 +442,7 @@ function createStates(onConnect: () => void): void {
                 return logger.error(`${hostLogPrefix} change event with no ID: ${JSON.stringify(stateOrMessage)}`);
             }
             // If some log transporter activated or deactivated
-            if (id.endsWith('.logging')) {
+            if (id.startsWith(SYSTEM_ADAPTER_PREFIX) && id.endsWith('.logging')) {
                 const state = stateOrMessage as ioBroker.State;
                 logRedirect(state ? (state.val as boolean) : false, id.substring(0, id.length - '.logging'.length), id);
             } else if (!compactGroupController && id === `messagebox.${hostObjectPrefix}`) {
@@ -700,7 +702,7 @@ function createObjects(onConnect: () => void): void {
             if (restartTimeout) {
                 return;
             }
-            // on reconnection this will be determiend anew
+            // on reconnection this will be determined anew
             isPrimary = false;
             objectsDisconnectTimeout && clearTimeout(objectsDisconnectTimeout);
             objectsDisconnectTimeout = setTimeout(
@@ -710,12 +712,15 @@ function createObjects(onConnect: () => void): void {
                 },
                 (config.objects.connectTimeout || 2000) + (!compactGroupController ? 500 : 0)
             );
-            // give main controller a bit longer, so that adapter and compact processes can exit before
+            // give the main controller a bit longer, so that adapter and compact processes can exit before
         },
-        change: async (id, obj) => {
+        change: async (id, _obj) => {
             if (!started || !id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) {
                 return;
             }
+
+            const obj = _obj as ioBroker.InstanceObject | null;
+
             try {
                 logger.debug(`${hostLogPrefix} object change ${id} (from: ${obj ? obj.from : null})`);
                 // known adapter
@@ -724,7 +729,7 @@ function createObjects(onConnect: () => void): void {
                 if (proc) {
                     // if adapter deleted
                     if (!obj) {
-                        // deleted: also remove from instance list of compactGroup
+                        // deleted: also remove from an instance list of compactGroup
                         if (
                             !compactGroupController &&
                             proc.config.common.compactGroup &&
@@ -739,7 +744,9 @@ function createObjects(onConnect: () => void): void {
                         // instance removed -> remove all notifications
                         await notificationHandler.clearNotifications(null, null, id as any);
                         proc.config.common.enabled = false;
+                        // @ts-expect-error check if we can handle it different
                         proc.config.common.host = null;
+                        // @ts-expect-error it is only used in checkAndAddInstance, find a way without modifying the InstanceObject
                         proc.config.deleted = true;
                         delete hostAdapter[id];
                         logger.info(`${hostLogPrefix} object deleted ${id}`);
@@ -794,7 +801,7 @@ function createObjects(onConnect: () => void): void {
                                     proc.restartTimer = setTimeout(_id => startInstance(_id), restartTimeout, id);
                                 }
                             } else {
-                                // moved: also remove from instance list of compactGroup
+                                // moved: also remove from an instance list of compactGroup
                                 if (
                                     !compactGroupController &&
                                     proc.config.common.compactGroup &&
@@ -818,7 +825,7 @@ function createObjects(onConnect: () => void): void {
                             }
                         });
                     } else if (installQueue.find(obj => obj.id === id)) {
-                        // ignore object changes when still in install queue
+                        // ignore object changes when still in the installation queue
                         logger.debug(
                             `${hostLogPrefix} ignore object change because the adapter is still in installation/rebuild queue`
                         );
@@ -833,7 +840,7 @@ function createObjects(onConnect: () => void): void {
                                 startInstance(id);
                             }
                         } else {
-                            // moved: also remove from instance list of compactGroup
+                            // moved: also remove from an instance list of compactGroup
                             if (
                                 !compactGroupController &&
                                 proc.config.common.compactGroup &&
@@ -853,80 +860,10 @@ function createObjects(onConnect: () => void): void {
                             delete hostAdapter[id];
                         }
                     }
-                } else if (obj && obj.type === 'host' && obj.common?.installedVersion) {
-                    // host object changed
-                    // TODO: remove this shim if 4.0 is old enough
-                    if (controllerVersions[id]) {
-                        if (
-                            semver.lt(controllerVersions[id], '4.0.0') &&
-                            semver.gte(obj.common.installedVersion, '4.0.0')
-                        ) {
-                            // old version lower 4 new version greater 4, restart needed
-                            logger.info(`${hostLogPrefix} Multihost controller upgrade detected, restarting ...`);
-                            restart();
-                        } else if (
-                            semver.gte(controllerVersions[id], '4.0.0') &&
-                            semver.lt(obj.common.installedVersion, '4.0.0')
-                        ) {
-                            // controller was above 4 and now below 4
-                            logger.info(`${hostLogPrefix} Multihost controller downgrade detected, restarting ...`);
-                            restart();
-                        }
-                    } else {
-                        //  we don't know this host yet, so it is new to the mh system
-                        let restartRequired = true;
-
-                        // if we are a already a multihost make the version check else restart in all cases
-                        if (Object.keys(controllerVersions).length > 1) {
-                            if (semver.lt(obj.common.installedVersion, '4.0.0')) {
-                                for (const controllerVersion of Object.values(controllerVersions)) {
-                                    if (semver.lt(controllerVersion, '4.0.0')) {
-                                        // there was another host < 4 so no restart required
-                                        restartRequired = false;
-                                        break;
-                                    }
-                                }
-                            } else {
-                                // version is greater equal 4
-                                for (const controllerVersion of Object.values(controllerVersions)) {
-                                    if (semver.gte(controllerVersion, '4.0.0')) {
-                                        // there was already another host greater equal 4 -> no restart needed
-                                        restartRequired = false;
-                                        break;
-                                    }
-                                }
-                            }
-                        } else {
-                            // change from single to multihost - deactivate sets asap but also restart
-                            await objects!.deactivateSets();
-                        }
-
-                        if (restartRequired) {
-                            logger.info(`${hostLogPrefix} New multihost participant detected, restarting ...`);
-                            restart();
-                        }
-                    }
-
-                    controllerVersions[id] = obj.common.installedVersion;
-                } else if (!obj && /^system\.host\.[^.]+$/.test(id)) {
-                    const delVersion = controllerVersions[id];
-                    delete controllerVersions[id];
-                    // host object deleted
-                    if (delVersion && semver.lt(delVersion, '4.0.0')) {
-                        // check if the only below 4 host has been deleted, then we need restart
-                        for (const version of Object.values(controllerVersions)) {
-                            if (semver.lt(version, '4.0.0')) {
-                                // another version below 4, so still need old protocol
-                                return;
-                            }
-                        }
-                        logger.info(`${hostLogPrefix} Multihost controller deletion detected, restarting ...`);
-                        restart();
-                    }
-                } else if (obj && obj.common) {
+                } else if (obj?.common) {
                     const _ipArr = tools.findIPs();
                     // new adapter
-                    if (!checkAndAddInstance(obj as ioBroker.InstanceObject, _ipArr)) {
+                    if (!checkAndAddInstance(obj, _ipArr)) {
                         return;
                     }
 
@@ -935,7 +872,7 @@ function createObjects(onConnect: () => void): void {
                         proc.config.common.enabled &&
                         (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance)
                     ) {
-                        // We should give is a slight delay to allow an pot. former existing process on other host to exit
+                        // We should give a slight delay to allow a potentially former existing process on another host to exit
                         const restartTimeout = (proc.config.common.stopTimeout || 500) + 2_500;
                         // @ts-expect-error tell ts it is an instance id
                         proc.restartTimer = setTimeout(_id => startInstance(_id), restartTimeout, id);
@@ -944,7 +881,7 @@ function createObjects(onConnect: () => void): void {
             } catch (err) {
                 if (
                     !compactGroupController ||
-                    (obj && obj.common && obj.common.runAsCompactMode && obj.common.compactGroup === compactGroup)
+                    (obj?.common?.runAsCompactMode && obj.common.compactGroup === compactGroup)
                 ) {
                     logger.error(`${hostLogPrefix} cannot process: ${id}: ${err} / ${err.stack}`);
                 }
@@ -976,7 +913,7 @@ function startAliveInterval(): void {
     reportInterval = setInterval(reportStatus, config.system.statisticsInterval);
 
     reportStatus();
-    tools.measureEventLoopLag(1000, lag => eventLoopLags.push(lag!));
+    tools.measureEventLoopLag(1_000, lag => eventLoopLags.push(lag!));
 }
 
 /**
@@ -1016,7 +953,7 @@ async function checkPrimaryHost(): Promise<void> {
         } else {
             const lockExtended = !!(await objects!.extendPrimaryHostLock(PRIMARY_HOST_LOCK_TIME));
             if (!lockExtended) {
-                // if we are host, lock extension should always work, fallback to acquire lock
+                // if we are host, a lock extension should always work, fallback to acquire lock
                 isPrimary = !!(await objects!.setPrimaryHost(PRIMARY_HOST_LOCK_TIME));
             }
         }
@@ -1034,7 +971,7 @@ function reportStatus(): void {
     states.setState(`${id}.alive`, {
         val: true,
         ack: true,
-        expire: Math.floor(config.system.statisticsInterval / 1000) + 10,
+        expire: Math.floor(config.system.statisticsInterval / 1_000) + 10,
         from: id
     });
 
@@ -1059,7 +996,7 @@ function reportStatus(): void {
                     from: id,
                     val: Math.round(100 * stats.cpu) / 100
                 });
-                states.setState(`${id}.cputime`, { ack: true, from: id, val: stats.ctime / 1000 });
+                states.setState(`${id}.cputime`, { ack: true, from: id, val: stats.ctime / 1_000 });
                 outputCount += 2;
             }
         });
@@ -1089,11 +1026,10 @@ function reportStatus(): void {
     }
 
     // provide machine infos
-
-    states.setState(`${id}.load`, { val: Math.round(os.loadavg()[0] * 100) / 100, ack: true, from: id }); //require('loadavg-windows')
+    states.setState(`${id}.load`, { val: Math.round(os.loadavg()[0] * 100) / 100, ack: true, from: id });
     states.setState(`${id}.uptime`, { val: Math.round(process.uptime()), ack: true, from: id });
-    states.setState(`${id}.mem`, { val: Math.round((1000 * os.freemem()) / os.totalmem()) / 10, ack: true, from: id });
-    states.setState(`${id}.freemem`, { val: Math.round(os.freemem() / 1048576 /* 1MB */), ack: true, from: id });
+    states.setState(`${id}.mem`, { val: Math.round(100 - (os.freemem() / os.totalmem()) * 100), ack: true, from: id });
+    states.setState(`${id}.freemem`, { val: Math.round(os.freemem() / 1_048_576 /* 1MB */), ack: true, from: id });
 
     if (fs.existsSync('/proc/meminfo')) {
         try {
@@ -1227,7 +1163,7 @@ function cleanAutoSubscribe(instance: string, autoInstance: ioBroker.ObjectIDs.I
                 }
             }
 
-            // check if array is now empty
+            // check if the array is now empty
             if (!Object.keys(subs[pattern]).length) {
                 modified = true;
                 delete subs[pattern];
@@ -1366,7 +1302,7 @@ async function checkHost(): Promise<void> {
 }
 
 /**
- * Collects the dialog information, e.g. used by Admin "System Settings"
+ * Collects the dialog information, e.g., used by Admin "System Settings"
  *
  * @param type - type of required information
  */
@@ -1462,11 +1398,9 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
                         : 0;
                 } catch {
                     logger.error(
-                        `${hostLogPrefix} Invalid versions: ${
-                            a && a.value && a.value.common ? a.value.common.installedVersion : '0.0.0'
-                        }[${a && a.value && a.value.common ? a.value.common.name : 'unknown'}] or ${
-                            b && b.value && b.value.common ? b.value.common.installedVersion : '0.0.0'
-                        }[${b && b.value && b.value.common ? b.value.common.name : 'unknown'}]`
+                        `${hostLogPrefix} Invalid versions: ${a?.value?.common?.installedVersion ?? '0.0.0'}[${
+                            a?.value?.common?.name ?? 'unknown'
+                        }] or ${b?.value?.common?.installedVersion ?? '0.0.0'}[${b?.value?.common?.name ?? 'unknown'}]`
                     );
                     return 0;
                 }
@@ -1494,7 +1428,8 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
             err = e;
         }
 
-        let visFound = false;
+        const foundVisAdapters = new Set<(typeof VIS_ADAPTERS)[number]>();
+
         if (!err && doc?.rows.length) {
             // Read installed versions of all adapters
             for (const row of doc.rows) {
@@ -1502,22 +1437,24 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
                     version: row.value!.common.version,
                     platform: row.value!.common.platform
                 };
-                if (row.value!.common.name === 'vis') {
-                    visFound = true;
+
+                if (VIS_ADAPTERS.includes(row.value.common.name as (typeof VIS_ADAPTERS)[number])) {
+                    foundVisAdapters.add(row.value.common.name as (typeof VIS_ADAPTERS)[number]);
                 }
             }
         }
-        // read number of vis datapoints
-        if (visFound) {
+        // read the number of vis data points
+        for (const visAdapter of foundVisAdapters) {
             const { calcProjects } = await import('./lib/vis/states');
+
             try {
-                const points = await calcProjects(objects!, 0);
+                const points = await calcProjects({ objects: objects!, instance: 0, visAdapter });
                 let total = null;
                 const tasks = [];
 
                 if (points?.length) {
                     for (const point of points) {
-                        if (point.id === 'vis.0.datapoints.total') {
+                        if (point.id === `${visAdapter}.0.datapoints.total`) {
                             total = point.val;
                         }
 
@@ -1541,18 +1478,16 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
                 }
 
                 if (total !== null) {
-                    diag.vis = total;
+                    diag[visAdapter] = total;
                 }
 
                 await extendObjects(tasks);
-                return diag;
             } catch (e) {
                 logger.error(`${hostLogPrefix} cannot call visUtils: ${e.message}`);
-                return diag;
             }
-        } else {
-            return diag;
         }
+
+        return diag;
     }
 }
 
@@ -1646,7 +1581,7 @@ function setMeta(): void {
                     cmd:
                         process.argv[0] +
                         ' ' +
-                        (process.execArgv.join(' ') + ' ').replace(/--inspect-brk=\d+ /, '') +
+                        `${process.execArgv.join(' ')} `.replace(/--inspect-brk=\d+ /, '') +
                         process.argv.slice(1).join(' '),
                     hostname: hostname,
                     address: tools.findIPs()
@@ -1667,7 +1602,7 @@ function setMeta(): void {
                     cmd:
                         process.argv[0] +
                         ' ' +
-                        (process.execArgv.join(' ') + ' ').replace(/--inspect-brk=\d+ /, '') +
+                        `${process.execArgv.join(' ')} `.replace(/--inspect-brk=\d+ /, '') +
                         process.argv.slice(1).join(' '),
                     hostname: hostname,
                     address: tools.findIPs(),
@@ -1789,7 +1724,7 @@ function setMeta(): void {
     }
 
     obj = {
-        _id: id + '.instancesAsProcess',
+        _id: `${id}.instancesAsProcess`,
         type: 'state',
         common: {
             name: 'Controller - number of instance processes',
@@ -1805,7 +1740,7 @@ function setMeta(): void {
     tasks.push(obj);
 
     obj = {
-        _id: id + '.instancesAsCompact',
+        _id: `${id}.instancesAsCompact`,
         type: 'state',
         common: {
             name: 'Controller - number of instances started in this host process',
@@ -1821,7 +1756,7 @@ function setMeta(): void {
     tasks.push(obj);
 
     obj = {
-        _id: id + '.cpu',
+        _id: `${id}.cpu`,
         type: 'state',
         common: {
             name: 'Controller - cpu usage in % of one core',
@@ -1837,7 +1772,7 @@ function setMeta(): void {
     tasks.push(obj);
 
     obj = {
-        _id: id + '.cputime',
+        _id: `${id}.cputime`,
         type: 'state',
         common: {
             name: 'Controller - accumulated cputime in seconds',
@@ -1853,7 +1788,7 @@ function setMeta(): void {
     tasks.push(obj);
 
     obj = {
-        _id: id + '.mem',
+        _id: `${id}.mem`,
         type: 'state',
         common: {
             type: 'number',
@@ -1887,12 +1822,12 @@ function setMeta(): void {
 
     if (fs.existsSync('/proc/meminfo')) {
         obj = {
-            _id: id + '.memAvailable',
+            _id: `${id}.memAvailable`,
             type: 'state',
             common: {
                 type: 'number',
                 role: 'value',
-                name: hostname + ' - available memory from /proc/meminfo in MB',
+                name: `${hostname} - available memory from /proc/meminfo in MB`,
                 read: true,
                 write: false,
                 min: 0,
@@ -1904,7 +1839,7 @@ function setMeta(): void {
     }
 
     obj = {
-        _id: id + '.memHeapTotal',
+        _id: `${id}.memHeapTotal`,
         type: 'state',
         common: {
             type: 'number',
@@ -1920,7 +1855,7 @@ function setMeta(): void {
     tasks.push(obj);
 
     obj = {
-        _id: id + '.memRss',
+        _id: `${id}.memRss`,
         type: 'state',
         common: {
             type: 'number',
@@ -1937,7 +1872,7 @@ function setMeta(): void {
     tasks.push(obj);
 
     obj = {
-        _id: id + '.uptime',
+        _id: `${id}.uptime`,
         type: 'state',
         common: {
             type: 'number',
@@ -1953,7 +1888,7 @@ function setMeta(): void {
     tasks.push(obj);
 
     obj = {
-        _id: id + '.load',
+        _id: `${id}.load`,
         type: 'state',
         common: {
             unit: '',
@@ -1961,17 +1896,17 @@ function setMeta(): void {
             role: 'value',
             read: true,
             write: false,
-            name: hostname + ' - load average 1min'
+            name: `${hostname} - load average 1min`
         },
         native: {}
     };
     tasks.push(obj);
 
     obj = {
-        _id: id + '.alive',
+        _id: `${id}.alive`,
         type: 'state',
         common: {
-            name: hostname + ' - alive status',
+            name: `${hostname} - alive status`,
             read: true,
             write: false,
             type: 'boolean',
@@ -1982,10 +1917,10 @@ function setMeta(): void {
     tasks.push(obj);
 
     obj = {
-        _id: id + '.freemem',
+        _id: `${id}.freemem`,
         type: 'state',
         common: {
-            name: hostname + ' - available RAM in MB',
+            name: `${hostname} - available RAM in MB`,
             unit: 'MB',
             read: true,
             write: false,
@@ -1997,7 +1932,7 @@ function setMeta(): void {
     tasks.push(obj);
 
     obj = {
-        _id: id + '.inputCount',
+        _id: `${id}.inputCount`,
         type: 'state',
         common: {
             name: 'Controller - input level in events/15 seconds',
@@ -2013,7 +1948,7 @@ function setMeta(): void {
     tasks.push(obj);
 
     obj = {
-        _id: id + '.outputCount',
+        _id: `${id}.outputCount`,
         type: 'state',
         common: {
             name: 'Controller - output level in events/15 seconds',
@@ -2029,7 +1964,7 @@ function setMeta(): void {
     tasks.push(obj);
 
     obj = {
-        _id: id + '.eventLoopLag',
+        _id: `${id}.eventLoopLag`,
         type: 'state',
         common: {
             name: 'Controller - The Node.js event loop lag in ms, averaged over 15 seconds',
@@ -2045,7 +1980,7 @@ function setMeta(): void {
     tasks.push(obj);
 
     obj = {
-        _id: id + '.zip',
+        _id: `${id}.zip`,
         type: 'folder',
         common: {
             name: 'ZIP files',
@@ -2056,7 +1991,7 @@ function setMeta(): void {
     tasks.push(obj);
 
     obj = {
-        _id: id + '.logLevel',
+        _id: `${id}.logLevel`,
         type: 'state',
         common: {
             name: 'Controller - Loglevel',
@@ -2093,10 +2028,10 @@ function setMeta(): void {
 
     if (config.system.checkDiskInterval) {
         obj = {
-            _id: id + '.diskSize',
+            _id: `${id}.diskSize`,
             type: 'state',
             common: {
-                name: hostname + ' - disk total size',
+                name: `${hostname} - disk total size`,
                 desc: 'Disk size of logical volume where the server is installed in MiB',
                 type: 'number',
                 read: true,
@@ -2109,10 +2044,10 @@ function setMeta(): void {
         tasks.push(obj);
 
         obj = {
-            _id: id + '.diskFree',
+            _id: `${id}.diskFree`,
             type: 'state',
             common: {
-                name: hostname + ' - disk free size',
+                name: `${hostname} - disk free size`,
                 desc: 'Free disk size of the logical volume where the server is installed in MiB',
                 type: 'number',
                 read: true,
@@ -2125,10 +2060,10 @@ function setMeta(): void {
         tasks.push(obj);
 
         obj = {
-            _id: id + '.diskWarning',
+            _id: `${id}.diskWarning`,
             type: 'state',
             common: {
-                name: hostname + ' - disk warning level',
+                name: `${hostname} - disk warning level`,
                 desc: 'Show warning in admin if the free disk space is below this value',
                 type: 'number',
                 read: true,
@@ -2173,7 +2108,7 @@ function setMeta(): void {
                             }
                             return !pluginHandler.pluginExists(out1.id.substring(pluginStatesIndex, nameEndIndex));
                         } else if (out1.id.startsWith(`${hostObjectPrefix}.notifications.`)) {
-                            // notifications states are allowed to exist if their scope still exists
+                            // notification states are allowed to exist if their scope still exists
                             return !notificationHandler.scopeExists(out1.id.substring(notificationStatesIndex));
                         }
                     }
@@ -2252,7 +2187,7 @@ function initMessageQueue(): void {
 }
 
 /**
- * Send message to other adapter instance
+ * Send a message to other adapter instance
  *
  * @param objName - adapter name (hm-rpc) or id like system.host.rpi/system.adapter,hm-rpc
  * @param command
@@ -2333,6 +2268,7 @@ async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host): Promise<Reco
         return null;
     }
 }
+
 /**
  Helper function that serialize deletion of states
  @param list array with states
@@ -2346,12 +2282,13 @@ async function _deleteAllZipPackages(list: string[]): Promise<void> {
         }
     }
 }
+
 /**
  * This function deletes all ZIP packages that were not downloaded.
- * ZIP Package is temporary file, that should be deleted straight after it downloaded and if it still exists, so clear it
+ * ZIP Package is a temporary file that should be deleted straight after it is downloaded and if it still exists, so clear it
  */
 async function deleteAllZipPackages(): Promise<void> {
-    const list = await states!.getKeys(hostObjectPrefix + '.zip.*');
+    const list = await states!.getKeys(`${hostObjectPrefix}.zip.*`);
     await _deleteAllZipPackages(list!);
 }
 
@@ -2385,7 +2322,8 @@ async function startAdapterUpload(): Promise<void> {
 
     // @ts-expect-error yes the logger is missing some levels
     await upload.uploadAdapter(uploadTasks[0].adapter, true, true, '', logger);
-    await upload.upgradeAdapterObjects(uploadTasks[0].adapter, logger);
+    // @ts-expect-error the logger is missing some levels
+    await upload.upgradeAdapterObjects(uploadTasks[0].adapter, undefined, logger);
     // @ts-expect-error yes the logger is missing some levels
     await upload.uploadAdapter(uploadTasks[0].adapter, false, true, '', logger);
     // send response to requester
@@ -2472,7 +2410,10 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         if (msg.from) {
                             sendTo(msg.from, 'cmdExit', { id: msg.message.id, data: exitCode });
                             // Sometimes finished command is lost, recent it
-                            setTimeout(() => sendTo(msg.from, 'cmdExit', { id: msg.message.id, data: exitCode }), 1000);
+                            setTimeout(
+                                () => sendTo(msg.from, 'cmdExit', { id: msg.message.id, data: exitCode }),
+                                1_000
+                            );
                         }
                     });
                 } catch (e) {
@@ -2512,9 +2453,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     lastDiagSend = Date.now();
                     try {
                         const obj = await collectDiagInfo(systemConfig.common.diag);
-                        // if user selected 'none' we will have null here and do not want to send it
+                        // if the user selected 'none', we will have null here and do not want to send it
                         if (obj) {
-                            // Ignore the response here and do not wait for result to decrease the repo fetching as it used in admin GUI
+                            // Ignore the response here and do not wait for a result to decrease the repo fetching as it used in admin GUI
                             tools.sendDiagInfo(obj);
                         }
                     } catch (e) {
@@ -2527,7 +2468,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 const systemRepos = await objects!.getObjectAsync('system.repositories');
                 let changed = false;
 
-                // Check if repositories exists
+                // Check if repositories exist
                 if (systemRepos?.native?.repositories) {
                     let updateRepo = false;
                     if (tools.isObject(msg.message)) {
@@ -2637,7 +2578,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'getInstalled':
             if (msg.callback && msg.from) {
-                // Get list of all hosts
+                // Get a list of all hosts
                 objects!.getObjectView(
                     'system',
                     'host',
@@ -2651,7 +2592,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         if (doc?.rows.length) {
                             // Read installed versions of all hosts
                             for (const row of doc.rows) {
-                                // If desired local version, do not ask it, just answer
+                                // If desired a local version, do not ask it, just answer
                                 if (row.id === hostObjectPrefix) {
                                     const ioPackCommon = deepClone(ioPackage.common);
 
@@ -2682,9 +2623,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 // read adapter file
                 const dir = tools.getAdapterDir(msg.message);
                 let _result = null;
-                if (fs.existsSync(dir + '/io-package.json')) {
+                if (fs.existsSync(`${dir}/io-package.json`)) {
                     try {
-                        _result = fs.readJSONSync(dir + '/io-package.json');
+                        _result = fs.readJSONSync(`${dir}/io-package.json`);
                     } catch {
                         logger.error(`${hostLogPrefix} cannot read and parse "${dir}/io-package.json"`);
                     }
@@ -2842,7 +2783,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                 msg.callback
                             );
                         } catch (e) {
-                            sendTo(msg.from, msg.command, { error: 'Cannot read file: ' + e }, msg.callback);
+                            sendTo(msg.from, msg.command, { error: `Cannot read file: ${e}` }, msg.callback);
                         }
                     } else {
                         sendTo(msg.from, msg.command, { error: 'Cannot find file' }, msg.callback);
@@ -2997,6 +2938,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
             break;
+
         case 'delLogs': {
             // @ts-expect-error types not know this one
             const logFile = logger.getFileName(); //controllerDir + '/log/' + tools.appName + '.log';
@@ -3041,9 +2983,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 );
 
                 msg.callback && msg.from && sendTo(msg.from, msg.command, {}, msg.callback);
-            } catch (error) {
-                logger.error(`${hostLogPrefix} Cannot write zip file as folder: ${error}`);
-                msg.callback && msg.from && sendTo(msg.from, msg.command, { error }, msg.callback);
+            } catch (e) {
+                logger.error(`${hostLogPrefix} Cannot write zip file as folder: ${e.message}`);
+                msg.callback && msg.from && sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
             }
             break;
 
@@ -3058,7 +3000,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         msg.message.options
                     );
                 } catch (e) {
-                    sendTo(msg.from, msg.command, { error: e }, msg.callback);
+                    sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
                     return;
                 }
 
@@ -3073,7 +3015,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                 buff
                             );
                         } catch (e) {
-                            sendTo(msg.from, msg.command, { error: e }, msg.callback);
+                            sendTo(msg.from, msg.command, { error: e.message }, msg.callback);
                             return;
                         }
 
@@ -3092,7 +3034,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                         states!.setBinaryState(`${hostObjectPrefix}.zip.${msg.message.link}`, buff, err => {
                             if (err) {
-                                sendTo(msg.from, msg.command, { error: err }, msg.callback);
+                                sendTo(msg.from, msg.command, { error: err.message }, msg.callback);
                             } else {
                                 sendTo(
                                     msg.from,
@@ -3118,7 +3060,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 msg.message.adapter,
                 Buffer.from(msg.message.data || '', 'base64'),
                 msg.message.options,
-                (error: any) => msg.callback && msg.from && sendTo(msg.from, msg.command, { error }, msg.callback)
+                err => msg.callback && msg.from && sendTo(msg.from, msg.command, { error: err?.message }, msg.callback)
             );
             break;
 
@@ -3132,8 +3074,8 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 // LogList
                 logs.push(`Actual Loglist - ${JSON.stringify(logList)}`);
 
-                // Read current state of all log subscribers
-                states!.getKeys('*.logging', (err, keys) => {
+                // Read the current state of all log subscribers
+                states!.getKeys(`${SYSTEM_ADAPTER_PREFIX}*.logging`, (err, keys) => {
                     if (keys?.length) {
                         states!.getStates(keys, (err, objs) => {
                             if (objs) {
@@ -3147,7 +3089,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                         if (obj.val === true) {
                                             logs.push(`Subscriber - ${id} ENABLED`);
                                         } else {
-                                            logs && logs.push(`Subscriber - ${id} (disabled)`);
+                                            logs.push(`Subscriber - ${id} (disabled)`);
                                         }
                                     }
                                 }
@@ -3162,11 +3104,11 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     }
                 });
 
-                // Get list of all active adapters and send them message with command checkLogging
+                // Get a list of all active adapters and send them a message with command checkLogging
                 for (const _id of Object.keys(procs)) {
                     if (procs[_id].process) {
                         outputCount++;
-                        states!.setState(_id + '.checkLogging', { val: true, ack: false, from: hostObjectPrefix });
+                        states!.setState(`${_id}.checkLogging`, { val: true, ack: false, from: hostObjectPrefix });
                     }
                 }
             })();
@@ -3313,7 +3255,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         try {
                             config = JSON.parse(msg.message);
                         } catch {
-                            error = 'Cannot parse data ' + msg.message;
+                            error = `Cannot parse data ${msg.message}`;
                         }
                     } else {
                         config = msg.message;
@@ -3336,12 +3278,12 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         try {
                             fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
                         } catch {
-                            error = 'Cannot write file ' + configFile;
+                            error = `Cannot write file ${configFile}`;
                         }
                     }
                 }
             } else {
-                error = 'No data found for writeBaseSettings ' + msg.from;
+                error = `No data found for writeBaseSettings ${msg.from}`;
             }
 
             if (error) {
@@ -3477,7 +3419,7 @@ async function getInstances(): Promise<void> {
         }
 
         for (const instance of instances) {
-            // register all common fields, that may not be deleted, like "mobile" or "history"
+            // register all common fields that may not be deleted, like "mobile" or "history"
             if (instance.common.preserveSettings) {
                 objects!.addPreserveSettings(instance.common.preserveSettings);
             }
@@ -3488,6 +3430,7 @@ async function getInstances(): Promise<void> {
                     const name = instance._id.split('.')[2];
                     const adapterDir = tools.getAdapterDir(name);
                     if (!fs.existsSync(adapterDir!)) {
+                        // @ts-expect-error check if we already need to add the config here
                         procs[instance._id] = { downloadRetry: 0, config: { common: { enabled: false } } };
                         installQueue.push({
                             id: instance._id,
@@ -3628,7 +3571,7 @@ function initInstances(): void {
                     // @ts-expect-error tell ts it is an instance id
                     proc.restartTimer = setTimeout(_id => startInstance(_id), interval * seconds, id);
 
-                    seconds += 2; // 4 seconds pause between starts
+                    seconds += 2; // 4-seconds pause between starts
                 }
             }
         } else if (procs[id].process) {
@@ -3643,7 +3586,7 @@ function initInstances(): void {
             (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance)
         ) {
             if (!id.startsWith(`${SYSTEM_ADAPTER_PREFIX}admin`)) {
-                // do not process if still running. It will be started when old one will be finished
+                // Do not process if still running. It will be started when the old one is finished
                 if (proc.process) {
                     logger.info(`${hostLogPrefix} instance "${id}" was not started, because already running.`);
                     continue;
@@ -3692,7 +3635,7 @@ function checkVersion(name: string, version: string, instances: Record<string, i
     let isFound = false;
 
     if (name === 'js-controller') {
-        // Check only version
+        // Check only a version
         if (version) {
             if (!semver.satisfies(ioPackage.common.version, version, { includePrerelease: true })) {
                 throw new Error(
@@ -3727,13 +3670,13 @@ function checkVersion(name: string, version: string, instances: Record<string, i
 }
 
 /**
- * Chceks if alle dependencies of an adapter are satisfied
+ * Checks if all dependencies of an adapter are satisfied
  *
  * @param id - instance id of the requiring instance (only used for logging)
  * @param deps - same host dependencies as defined in io-pack
  * @param globalDeps - global dependencies, as defined in io-pack
  */
-async function checkVersions(id: string, deps: Dependencies, globalDeps: Dependencies): Promise<void> {
+async function checkVersions(id: string, deps?: Dependencies, globalDeps?: Dependencies): Promise<void> {
     const res = await objects!.getObjectViewAsync('system', 'instance', {
         startkey: SYSTEM_ADAPTER_PREFIX,
         endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
@@ -3810,7 +3753,7 @@ function storePids(): void {
                 );
                 logger.error(`${hostLogPrefix} Please consider running the installation fixer when on Linux.`);
             }
-        }, 1000);
+        }, 1_000);
     }
 }
 
@@ -3862,7 +3805,7 @@ function installAdapters(): void {
         const installArgs = [];
         const installOptions = { windowsHide: true };
         if (!task.rebuild && task.installedFrom && proc.downloadRetry < 3) {
-            // two tries with installed location, afterwards we try normal npm version install
+            // two tries with installed location, afterward we try the normal npm version install
             if (tools.isShortGithubUrl(task.installedFrom) || task.installedFrom.includes('://')) {
                 // Installing from URL supports raw http(s) and file URLs as well as the short GitHub URL format
                 installArgs.push('url');
@@ -3936,7 +3879,7 @@ function installAdapters(): void {
                                         from: hostObjectPrefix
                                     });
                                 } else if (task.rebuild) {
-                                    // on rebuild we send a restart signal via object change to also reach compact group processes
+                                    // on rebuild, we send a restart signal via object change to also reach compact group processes
                                     objects!.extendObject(task.id, {});
                                 } else {
                                     startInstance(task.id, task.wakeUp);
@@ -3961,7 +3904,7 @@ function installAdapters(): void {
                     }
                 }
 
-                setTimeout(() => installAdapters(), 1000);
+                setTimeout(() => installAdapters(), 1_000);
             });
             child.on('error', err => {
                 logger.error(
@@ -3972,7 +3915,7 @@ function installAdapters(): void {
                 setTimeout(() => {
                     installQueue.shift();
                     installAdapters();
-                }, 1000);
+                }, 1_000);
             });
         } catch (err) {
             logger.error(
@@ -3981,7 +3924,7 @@ function installAdapters(): void {
             setTimeout(() => {
                 installQueue.shift();
                 installAdapters();
-            }, 1000);
+            }, 1_000);
         }
     } else {
         if (task.rebuild) {
@@ -4069,13 +4012,13 @@ function startScheduledInstance(callback?: () => void): void {
             // Remember the last run
             proc.lastStart = Date.now();
             if (!proc.process) {
-                // reset sigKill to 0 if it was set to an other value from "once run"
+                // reset sigKill to 0 if it was set to another value from "once run"
                 states!.setState(`${instance._id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix }, () => {
-                    const args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
+                    const args = [instance._id.split('.').pop() || '0', instance.common.loglevel || 'info'];
                     try {
                         proc.process = cp.fork(fileNameFull, args, {
                             execArgv: tools.getDefaultNodeArgs(fileNameFull),
-                            // @ts-expect-error missing from types but we already tested it is needed
+                            // @ts-expect-error missing from types, but we already tested it is needed
                             windowsHide: true,
                             cwd: adapterDir
                         });
@@ -4169,12 +4112,11 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         mode = 'daemon';
     }
 
-    //noinspection JSUnresolvedVariable
     if (instance.common.wakeup) {
         // TODO
     }
 
-    // Check if all required adapters installed and have valid version
+    // Check if all required adapters installed and have a valid version
     if (instance.common.dependencies || instance.common.globalDependencies) {
         try {
             await checkVersions(id, instance.common.dependencies, instance.common.globalDependencies);
@@ -4202,20 +4144,22 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         return;
     }
 
+    /** Args passed to the actual adapter code */
     const args =
         instance?._id && instance.common
-            ? [instance._id.split('.').pop(), instance.common.loglevel || 'info']
-            : [0, 'info'];
+            ? [instance._id.split('.').pop() || '0', instance.common.loglevel || 'info']
+            : ['0', 'info'];
+
+    /** Args passed to Node.js */
+    const execArgv: string[] = [];
 
     // define memory limit for adapter
-    //noinspection JSUnresolvedVariable
-    if (instance.common.memoryLimitMB && parseInt(instance.common.memoryLimitMB, 10)) {
-        //noinspection JSUnresolvedVariable
-        args.push(`--max-old-space-size=${parseInt(instance.common.memoryLimitMB, 10)}`);
+    if (instance.common.memoryLimitMB && Math.round(instance.common.memoryLimitMB)) {
+        execArgv.push(`--max-old-space-size=${Math.round(instance.common.memoryLimitMB)}`);
     }
 
     if (Array.isArray(instance.common.nodeProcessParams) && instance.common.nodeProcessParams.length) {
-        args.push(...instance.common.nodeProcessParams);
+        execArgv.push(...instance.common.nodeProcessParams);
 
         if (instance.common.compact) {
             instance.common.compact = false;
@@ -4329,7 +4273,6 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         }
     }
 
-    //noinspection JSUnresolvedVariable
     if (instance.common.subscribe || instance.common.wakeup) {
         proc.subscribe = instance.common.subscribe || `${instance._id}.wakeup`;
         const parts = instance._id.split('.');
@@ -4458,7 +4401,6 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                 storePids();
                                 return;
                             } else {
-                                //noinspection JSUnresolvedVariable
                                 if (code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION && proc?.restartExpected) {
                                     logger.info(`${hostLogPrefix} instance ${id} terminated for restart.`);
                                 } else if (code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) {
@@ -4523,7 +4465,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                     // execute directly
                                     processMessage(msg as any);
                                 } else {
-                                    // send to main controller to make sure only one npm process runs at a time
+                                    // send to the main controller to make sure only one npm process runs at a time
                                     sendTo(`system.host.${hostname}`, 'rebuildAdapter', msg);
                                 }
                             } else {
@@ -4545,7 +4487,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                 mode !== 'once'
                             ) {
                                 if (code === EXIT_CODES.UNCAUGHT_EXCEPTION) {
-                                    // if its an uncaught exception, detect restart loop
+                                    // if it's an uncaught exception, detect restart loop
                                     proc.crashCount = proc.crashCount ?? 0;
                                     proc.crashCount++;
                                     logger.debug(`${hostLogPrefix} Crash count of ${id}: ${proc.crashCount}`);
@@ -4557,7 +4499,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                         clearTimeout(proc.crashResetTimer);
                                     }
 
-                                    // after 10 minutes without crash, we reset counter
+                                    // after 10 minutes without a crash, we reset the counter
                                     logger.debug(`${hostLogPrefix} Initialize crash timer of ${id}`);
                                     proc.crashResetTimer = setTimeout(() => {
                                         logger.debug(
@@ -4584,12 +4526,12 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                 logger.info(`${hostLogPrefix} Restart adapter ${id} because enabled`);
 
                                 const restartTimerExisting = !!proc.restartTimer;
-                                //noinspection JSUnresolvedVariable
                                 if (proc.restartTimer) {
                                     clearTimeout(proc.restartTimer);
                                 }
 
                                 if (!proc.crashCount || proc.crashCount < 3) {
+                                    /** @ts-expect error if needed add it to types */
                                     proc.restartTimer = setTimeout(
                                         _id => startInstance(_id),
                                         code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP
@@ -4655,7 +4597,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                         // We were not able or should not start as compact mode
                         try {
                             proc.process = cp.fork(adapterMainFile, args, {
-                                execArgv: tools.getDefaultNodeArgs(adapterMainFile),
+                                execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
                                 stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
                                 // @ts-expect-error missing from types, but we already tested it is needed
                                 windowsHide: true,
@@ -4759,7 +4701,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                             try {
                                 decache(adapterMainFile);
 
-                                // Prior to requiring the main file make sure that the esbuild require hook was loaded
+                                // Prior to requiring the main file, make sure that the esbuild require hook was loaded
                                 // if this is a TypeScript adapter
                                 if (adapterMainFile.endsWith('.ts')) {
                                     require('@alcalzone/esbuild-register');
@@ -4788,7 +4730,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                     delete proc.process;
                                 }
 
-                                // if started let it end itself
+                                // if started, let it end itself
                                 await states!.setState(`${id}.sigKill`, {
                                     val: -1,
                                     ack: false,
@@ -4814,21 +4756,22 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
                         handleAdapterProcessStart();
                     } else {
+                        const compactGroup = instance.common.compactGroup!;
+
                         // a group controller for this group is not yet started, execute one
-                        compactProcs[instance.common.compactGroup] = compactProcs[instance.common.compactGroup] || {
+                        compactProcs[compactGroup] = compactProcs[compactGroup] || {
                             instances: []
                         };
 
-                        const compactProc = compactProcs[instance.common.compactGroup];
+                        const compactProc = compactProcs[compactGroup];
                         if (!compactProc.process) {
-                            const compactControllerArgs = [instance.common.compactGroup];
+                            /** Args passed to the actual adapter */
+                            const compactControllerArgs = [compactGroup.toString()];
+                            /** Args passed to Node.js */
+                            const execArgv: string[] = [];
 
-                            //noinspection JSUnresolvedVariable
-                            if (instance.common.memoryLimitMB && parseInt(instance.common.memoryLimitMB, 10)) {
-                                //noinspection JSUnresolvedVariable
-                                compactControllerArgs.push(
-                                    '--max-old-space-size=' + parseInt(instance.common.memoryLimitMB, 10)
-                                );
+                            if (instance.common.memoryLimitMB && Math.round(instance.common.memoryLimitMB)) {
+                                execArgv.push(`--max-old-space-size=${Math.round(instance.common.memoryLimitMB)}`);
                             }
 
                             logger.info(
@@ -4840,8 +4783,9 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                     path.join(__dirname, 'compactgroupController.js'),
                                     compactControllerArgs,
                                     {
+                                        execArgv,
                                         stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
-                                        // @ts-expect-error missing from types but we already tested it is needed
+                                        // @ts-expect-error missing from types, but we already tested it is needed
                                         windowsHide: true
                                     }
                                 );
@@ -4855,7 +4799,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                             if (compactProc.process) {
                                 if (compactProc.process.stderr) {
                                     compactProc.process.stderr.on('data', data => {
-                                        const compactProc = compactProcs[instance.common.compactGroup];
+                                        const compactProc = compactProcs[compactGroup];
                                         if (!data || !compactProc || typeof compactProc !== 'object') {
                                             return;
                                         }
@@ -4873,7 +4817,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                     });
                                 }
 
-                                const currentCompactGroup = instance.common.compactGroup;
+                                const currentCompactGroup = instance.common.compactGroup!;
                                 // Exit handler for compact groups
                                 const groupExitHandler = (code: number, signal: string): void => {
                                     if (signal) {
@@ -4988,7 +4932,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                                     clearTimeout(proc.restartTimer);
                                                 }
 
-                                                // START_IMMEDIATELY_AFTER_STOP is special code that adapter wants itself to be restarted immediately
+                                                // START_IMMEDIATELY_AFTER_STOP is a special code that adapter wants itself to be restarted immediately
                                                 proc.restartTimer = setTimeout(
                                                     _id => startInstance(_id),
                                                     code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP
@@ -5008,15 +4952,15 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                     });
                                 };
 
-                                compactProcs[instance.common.compactGroup].process!.on('exit', groupExitHandler);
+                                compactProcs[compactGroup].process!.on('exit', groupExitHandler);
                             }
                         }
-                        if (compactProcs[instance.common.compactGroup].process) {
-                            if (!compactProcs[instance.common.compactGroup].instances.includes(id)) {
-                                compactProcs[instance.common.compactGroup].instances.push(id);
+                        if (compactProcs[compactGroup].process) {
+                            if (!compactProcs[compactGroup].instances.includes(id)) {
+                                compactProcs[compactGroup].instances.push(id);
                             }
 
-                            proc.process = compactProcs[instance.common.compactGroup].process;
+                            proc.process = compactProcs[compactGroup].process;
                             proc.startedAsCompactGroup = true;
                         }
                         handleAdapterProcessStart();
@@ -5048,7 +4992,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             }
             break;
 
-        case 'schedule':
+        case 'schedule': {
             if (compactGroupController) {
                 logger.debug(`${hostLogPrefix} ${instance._id} schedule is not started by compact group controller`);
                 break;
@@ -5064,6 +5008,13 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                 logger.info(`${hostLogPrefix} instance canceled schedule ${instance._id}`);
             }
 
+            try {
+                cronParser.parseExpression(instance.common.schedule);
+            } catch (e) {
+                logger.error(`${hostLogPrefix} Cannot schedule start of instance ${instance._id}: ${e.message}`);
+                break;
+            }
+
             proc.schedule = schedule.scheduleJob(instance.common.schedule, () => {
                 // queue up, but only if not already queued
                 scheduledInstances[id] = {
@@ -5075,14 +5026,13 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             });
             logger.info(`${hostLogPrefix} instance scheduled ${instance._id} ${instance.common.schedule}`);
             // Start one time adapter by start or if configuration changed
-            //noinspection JSUnresolvedVariable
             if (instance.common.allowInit) {
                 try {
                     // @ts-expect-error if mode !== extension we have ensured it exists
                     proc.process = cp.fork(adapterMainFile, args, {
                         // @ts-expect-error if mode !== extension we have ensured it exists
-                        execArgv: tools.getDefaultNodeArgs(adapterMainFile),
-                        // @ts-expect-error missing from types but we already tested it is needed
+                        execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
+                        // @ts-expect-error missing from types, but we already tested it is needed
                         windowsHide: true,
                         cwd: adapterDir!
                     });
@@ -5128,7 +5078,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             }
 
             break;
-
+        }
         case 'extension':
         case 'subscribe':
             break;
@@ -5156,7 +5106,7 @@ async function stopInstance(id: string, force: boolean, callback?: (() => void) 
             proc.stopping = true;
             if (!proc.startedAsCompactGroup) {
                 try {
-                    proc.process.kill(); // call stop directly in adapter.js or call kill of process
+                    proc.process.kill(); // call stop directly in adapter.js or call kill of a process
                 } catch (e) {
                     logger.error(`${hostLogPrefix} Cannot stop ${id}: ${JSON.stringify(e)}`);
                 }
@@ -5210,7 +5160,7 @@ async function stopInstance(id: string, force: boolean, callback?: (() => void) 
                     logger.info(`${hostLogPrefix} stopInstance forced ${instance._id} killing pid ${proc.process.pid}`);
                     proc.stopping = true;
                     try {
-                        proc.process.kill(); // call stop directly in adapter.js or call kill of process
+                        proc.process.kill(); // call stop directly in adapter.js or call kill of a process
                     } catch (e) {
                         logger.error(`${hostLogPrefix} Cannot stop ${id}: ${JSON.stringify(e)}`);
                     }
@@ -5239,7 +5189,7 @@ async function stopInstance(id: string, force: boolean, callback?: (() => void) 
                         if (proc.process && !proc.startedAsCompactGroup) {
                             proc.stopping = true;
                             try {
-                                proc.process.kill(); // call stop directly in adapter.js or call kill of process
+                                proc.process.kill(); // call stop directly in adapter.js or call kill of a process
                             } catch (e) {
                                 logger.error(`${hostLogPrefix} Cannot stop ${id}: ${JSON.stringify(e)}`);
                             }
@@ -5252,8 +5202,8 @@ async function stopInstance(id: string, force: boolean, callback?: (() => void) 
                         }
                     });
 
-                    const supportStopInstanceVal: true | number =
-                        instance.common.supportStopInstance || instance.common.supportedMessages.stopInstance;
+                    const supportStopInstanceVal: boolean | number | undefined =
+                        instance.common.supportStopInstance || instance.common.supportedMessages?.stopInstance;
 
                     const timeoutDuration = supportStopInstanceVal === true ? 1_000 : supportStopInstanceVal || 1_000;
                     // If no response from adapter, kill it in 1 second
@@ -5271,7 +5221,7 @@ async function stopInstance(id: string, force: boolean, callback?: (() => void) 
                             );
                             proc.stopping = true;
                             try {
-                                proc.process.kill(); // call stop directly in adapter.js or call kill of process
+                                proc.process.kill(); // call stop directly in adapter.js or call kill of a process
                             } catch (e) {
                                 logger.error(`${hostLogPrefix} Cannot stop ${id}: ${JSON.stringify(e)}`);
                             }
@@ -5288,7 +5238,7 @@ async function stopInstance(id: string, force: boolean, callback?: (() => void) 
                 } else if (!proc.startedAsCompactGroup) {
                     let err;
                     try {
-                        // if started let it end itself as first try
+                        // if started, let it end itself as first try
                         await states!.setState(`${id}.sigKill`, { val: -1, ack: false, from: hostObjectPrefix });
                     } catch (e) {
                         err = e;
@@ -5307,7 +5257,7 @@ async function stopInstance(id: string, force: boolean, callback?: (() => void) 
                             callback = null;
                         }
                     }
-                    const timeoutDuration = instance.common.stopTimeout || 1000;
+                    const timeoutDuration = instance.common.stopTimeout || 1_000;
                     // If no response from adapter, kill it in 1 second
                     stopTimeout.callback = callback;
                     stopTimeout.timeout = setTimeout(() => {
@@ -5324,7 +5274,7 @@ async function stopInstance(id: string, force: boolean, callback?: (() => void) 
                             );
                             proc.stopping = true;
                             try {
-                                proc.process.kill(); // call stop directly in adapter.js or call kill of process
+                                proc.process.kill(); // call stop directly in adapter.js or call kill of a process
                             } catch (e) {
                                 logger.error(`${hostLogPrefix} Cannot stop ${id}: ${JSON.stringify(e)}`);
                             }
@@ -5425,7 +5375,7 @@ function stopInstances(forceStop: boolean, callback?: ((wasForced?: boolean) => 
     }
 
     try {
-        isStopping = isStopping || Date.now(); // Sometimes process receives SIGTERM twice
+        isStopping = isStopping || Date.now(); // Sometimes a process receives SIGTERM twice
         const elapsed = Date.now() - isStopping;
         logger.debug(
             `${hostLogPrefix} stop isStopping=${elapsed} isDaemon=${isDaemon} allInstancesStopped=${allInstancesStopped}`
@@ -5442,7 +5392,7 @@ function stopInstances(forceStop: boolean, callback?: ((wasForced?: boolean) => 
             stopInstance(id, forceStop); // sends kill signal via sigKill state or a kill after timeouts or if forced
         }
         if (forceStop || isDaemon) {
-            // send instances SIGTERM, only needed if running in background (isDaemon)
+            // send instances SIGTERM, only needed if running in a background (isDaemon)
             // or slave lost connection to master
             for (const id of Object.keys(compactProcs)) {
                 const proc = compactProcs[id];
@@ -5481,7 +5431,7 @@ function stopInstances(forceStop: boolean, callback?: ((wasForced?: boolean) => 
 }
 
 /**
- * Stops the js-controller and all running adapter instances, if no cb provided pids.txt will be deleted and process exit will be called
+ * Stops the js-controller and all running adapter instances, if no cb provided pids.txt is deleted and process exit will be called
  *
  * @param force kills instances under all circumstances
  * @param callback callback function
@@ -5519,7 +5469,7 @@ function stop(force?: boolean, callback?: () => void): void {
         notificationHandler && notificationHandler.storeNotifications();
 
         try {
-            // if we are the host we should now let someone else take over
+            // if we are the host, we should now let someone else take over
             if (isPrimary) {
                 await objects!.releasePrimaryHost();
                 isPrimary = false;
@@ -5541,7 +5491,7 @@ function stop(force?: boolean, callback?: () => void): void {
             if (typeof callback === 'function') {
                 return void callback();
             } else {
-                setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
+                setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1_000);
             }
             return;
         }
@@ -5613,7 +5563,7 @@ export function init(compactGroupId?: number): void {
         stopTimeout += 5_000;
     }
 
-    // If bootstrap file detected, it must be deleted, but give time for bootstrap process to use this file
+    // If bootstrap file detected, it must be deleted, but give time for a bootstrap process to use this file
     if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
         setTimeout(() => {
             try {
@@ -5667,10 +5617,10 @@ export function init(compactGroupId?: number): void {
         logger = toolsLogger(config.log);
     } catch (e) {
         if (e.code === 'EACCES_LOG') {
-            // We could not access logging directory - e.g. because of restored backup
+            // We could not access logging directory - e.g., because of restored backup
             console.error(`Could not access logging directory "${e.path}", fallback to default`);
 
-            // read a fresh config to avoid overwriting e.g. noStdout
+            // read a fresh config to avoid overwriting e.g., noStdout
             const _config = getConfig();
             // persist the config to be fixed permanently
             const configFile = tools.getConfigFileName();
@@ -5687,7 +5637,7 @@ export function init(compactGroupId?: number): void {
                 `${hostLogPrefix} Your logging path "${e.path}" was invalid, it has been changed to "${fixedLogPath}"`
             );
         } else {
-            // without logger multiple things will have undefined behavior and probably more is wrong -> do not start
+            // without logger multiple things will have undefined behavior, and probably more is wrong -> do not start
             console.error(`Error initializing logger: ${e.stack}`);
             process.exit(EXIT_CODES.UNKNOWN_ERROR);
         }
@@ -5822,16 +5772,13 @@ export function init(compactGroupId?: number): void {
 
     createObjects(async () => {
         objects!.subscribe(`${SYSTEM_ADAPTER_PREFIX}*`);
-        // TODO: remove this backward shim if controller 4.0 is old enough
-        // subscribe to host objects to detect upgrade from one of the hosts for sets migration
-        objects!.subscribe('system.host.*');
 
         // get the current host versions
         try {
             const hostView = await objects!.getObjectViewAsync('system', 'host');
             if (hostView?.rows) {
                 for (const row of hostView.rows) {
-                    if (row.value && row.value.common && row.value.common.installedVersion) {
+                    if (row.value?.common?.installedVersion) {
                         controllerVersions[row.id] = row.value.common.installedVersion;
                     }
                 }
@@ -5840,7 +5787,7 @@ export function init(compactGroupId?: number): void {
             // ignore
         }
 
-        // create states object
+        // create the states object
         createStates(async () => {
             // Subscribe for connection state of all instances
             // Disabled in 1.5.x
@@ -5851,7 +5798,7 @@ export function init(compactGroupId?: number): void {
                 connectTimeout = null;
             }
             // Subscribe for all logging objects
-            states!.subscribe('*.logging');
+            states!.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.logging`);
 
             // Subscribe for all logging objects
             states!.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.alive`);
@@ -5904,8 +5851,8 @@ export function init(compactGroupId?: number): void {
             let keys: string[] | undefined;
 
             try {
-                // Read current state of all log subscribers
-                keys = (await states!.getKeys('*.logging'))!;
+                // Read the current state of all log subscribers
+                keys = (await states!.getKeys(`${SYSTEM_ADAPTER_PREFIX}*.logging`))!;
             } catch {
                 // ignore
             }
@@ -6027,7 +5974,7 @@ export function init(compactGroupId?: number): void {
  */
 function _determineRebuildArgsFromLog(text: string): RebuildArgs | undefined {
     let matches;
-    // Try to get path for this case after a →
+    // Try to get a path for this case after a →
     if (text.includes('Could not locate the bindings file.')) {
         matches = text.match(/→ (.+)$/gm);
         if (matches) {
@@ -6035,7 +5982,7 @@ function _determineRebuildArgsFromLog(text: string): RebuildArgs | undefined {
         }
     }
 
-    // else, extract rebuild path the standard way - it is always
+    // else, extract a rebuild path the standard way - it is always
     // between the only two single quotes
     if (!matches) {
         matches = text.match(/'.+'/g);

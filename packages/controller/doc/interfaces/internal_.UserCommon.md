@@ -34,7 +34,7 @@ User color for Admin adapter
 
 #### Defined in
 
-[types-dev/objects.d.ts:392](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L392)
+[types-dev/objects.d.ts:414](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L414)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:395](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L395)
+[types-dev/objects.d.ts:417](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L417)
 
 ___
 
@@ -60,7 +60,7 @@ When set to true, this object may not be deleted
 
 #### Defined in
 
-[types-dev/objects.d.ts:161](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L161)
+[types-dev/objects.d.ts:161](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L161)
 
 ___
 
@@ -72,7 +72,7 @@ Whether this user is enabled
 
 #### Defined in
 
-[types-dev/objects.d.ts:390](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L390)
+[types-dev/objects.d.ts:412](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L412)
 
 ___
 
@@ -88,7 +88,7 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 #### Defined in
 
-[types-dev/objects.d.ts:164](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L164)
+[types-dev/objects.d.ts:164](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L164)
 
 ___
 
@@ -104,7 +104,7 @@ Icon for this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L169)
+[types-dev/objects.d.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L169)
 
 ___
 
@@ -120,7 +120,7 @@ The username
 
 #### Defined in
 
-[types-dev/objects.d.ts:386](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L386)
+[types-dev/objects.d.ts:408](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L408)
 
 ___
 
@@ -132,7 +132,7 @@ The hashed password
 
 #### Defined in
 
-[types-dev/objects.d.ts:388](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L388)
+[types-dev/objects.d.ts:410](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L410)
 
 ___
 
@@ -148,4 +148,4 @@ role of the object
 
 #### Defined in
 
-[types-dev/objects.d.ts:171](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/types-dev/objects.d.ts#L171)
+[types-dev/objects.d.ts:171](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L171)

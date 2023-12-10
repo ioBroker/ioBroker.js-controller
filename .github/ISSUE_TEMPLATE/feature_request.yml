@@ -1,0 +1,42 @@
+name: Enhancement
+description: Report an enhancement idea
+title: "[enhancement]: "
+labels: ["enhancement :arrow_up:"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for taking the time to fill out this report!
+
+  - type: checkboxes
+    id: checked-other-issues
+    attributes:
+      label: No existing issues.
+      description: By submitting this issue, you confirm, that you have checked the existing issues for your request.
+      options:
+        - label: There is no existing issue for my request.
+          required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: Please describe your enhancement idea as detailed as possible
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: Why?
+      description: Why do you think the project would benefit from this idea?
+    validations:
+      required: true
+
+  - type: textarea
+    id: how
+    attributes:
+      label: How?
+      description: If possible, please describe how do you think this should be implemented.
+    validations:
+      required: false
