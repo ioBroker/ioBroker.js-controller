@@ -642,7 +642,7 @@ export class Upload {
             for (const [attr, attrData] of Object.entries(additional)) {
                 if (target[attr] === undefined) {
                     target[attr] = attrData;
-                } else if (typeof attrData === 'object' && !(attrData instanceof Array)) {
+                } else if (tools.isObject(attrData)) {
                     try {
                         target[attr] = target[attr] || {};
                     } catch {
