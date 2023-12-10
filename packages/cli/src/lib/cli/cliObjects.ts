@@ -1,4 +1,4 @@
-import { CLICommand, CLICommandOptions } from './cliCommand';
+import { CLICommand, type CLICommandOptions } from './cliCommand';
 
 import * as CLI from './messages.js';
 import { formatValue } from './cliTools';

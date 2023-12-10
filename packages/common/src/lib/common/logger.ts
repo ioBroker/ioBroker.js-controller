@@ -7,10 +7,12 @@ import * as tools from './tools';
 import Transport from 'winston-transport';
 import { LEVEL } from 'triple-beam';
 import deepClone from 'deep-clone';
+import type { Syslog } from 'winston-syslog';
+import type { SeqTransport } from '@datalust/winston-seq';
 
 const hostname = tools.getHostName();
 
-let SysLog: typeof import('winston-syslog').Syslog | undefined;
+let SysLog: typeof Syslog | undefined;
 try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     SysLog = require('winston-syslog').Syslog;
@@ -18,7 +20,7 @@ try {
     //console.log('No syslog support');
 }
 
-let Seq: typeof import('@datalust/winston-seq').SeqTransport | undefined;
+let Seq: typeof SeqTransport | undefined;
 try {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     Seq = require('@datalust/winston-seq').SeqTransport;

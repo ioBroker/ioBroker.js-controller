@@ -7,7 +7,7 @@
  *
  */
 
-import { Writable, WritableOptions } from 'stream';
+import { Writable, type WritableOptions } from 'stream';
 import path from 'path';
 import deepClone from 'deep-clone';
 import { tools } from '@iobroker/db-base';

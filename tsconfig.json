@@ -1,8 +1,6 @@
 {
   "extends": "@tsconfig/node18/tsconfig.json",
   "compilerOptions": {
-    // allow to use importsNotUsedAsValues for now
-    "ignoreDeprecations": "5.0",
     // Pass js files through to the build dir
     // but don't complain about errors
     "allowJs": true,
@@ -15,8 +13,6 @@
     "inlineSourceMap": false, // Alternatively inline the source maps
     // Don't emit anything by default. This will be turned on in the subprojects
     "noEmit": true,
-    // Avoid unnecessary runtime imports
-    "importsNotUsedAsValues": "error",
     // Avoid TS errors in external dependencies
     "skipLibCheck": true,
     // Enable syntax help for importing JSON files

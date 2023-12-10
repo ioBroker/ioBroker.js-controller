@@ -31,7 +31,7 @@ import { Upload, PacketManager } from '@iobroker/js-controller-cli';
 import decache from 'decache';
 import cronParser from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
-import { getDefaultNodeArgs, HostInfo } from '@iobroker/js-controller-common/tools';
+import { getDefaultNodeArgs, type HostInfo } from '@iobroker/js-controller-common/tools';
 import type { UpgradeArguments } from './lib/upgradeManager';
 import { AdapterUpgradeManager } from './lib/adapterUpgradeManager';
 
