@@ -1440,7 +1440,7 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
         }
         // read the number of vis data points
         for (const visAdapter of foundVisAdapters) {
-            const { calcProjects } = await import('./lib/vis/states');
+            const { calcProjects } = await import('./lib/vis/states.js');
 
             try {
                 const points = await calcProjects({ objects: objects!, instance: 0, visAdapter });

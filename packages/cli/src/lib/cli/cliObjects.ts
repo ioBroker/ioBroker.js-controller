@@ -617,7 +617,7 @@ export class CLIObjects extends CLICommand {
             return void callback(33);
         }
         if (objList !== null && objList !== undefined) {
-            const { List } = await import('../setup/setupList');
+            const { List } = await import('../setup/setupList.js');
             const list = new List({
                 states,
                 objects,
