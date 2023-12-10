@@ -559,7 +559,7 @@ async function processCommand(
         case 'update': {
             const repoUrl = args[0]; // Repo url or name
             dbConnect(params, async ({ objects, states }) => {
-                const { Repo } = await import('./setup/setupRepo');
+                const { Repo } = await import('./setup/setupRepo.js');
                 const repo = new Repo({
                     objects,
                     states
@@ -572,7 +572,7 @@ async function processCommand(
         }
 
         case 'setup': {
-            const { Setup } = await import('./setup/setupSetup');
+            const { Setup } = await import('./setup/setupSetup.js');
             const setup = new Setup({
                 processExit: callback,
                 cleanDatabase,
@@ -606,7 +606,7 @@ async function processCommand(
                     const { states, objects } = await dbConnectAsync(false, params);
                     if (isFirst) {
                         // Creates all instances that are needed on a fresh installation
-                        const { Install } = await import('./setup/setupInstall');
+                        const { Install } = await import('./setup/setupInstall.js');
                         const install = new Install({
                             objects,
                             states,
@@ -660,9 +660,9 @@ async function processCommand(
                         });
                     }
 
-                    // we update existing things, in first as well as normnal setup
+                    // we update existing things, in first as well as normal setup
                     // Rename repositories
-                    const { Repo } = await import('./setup/setupRepo');
+                    const { Repo } = await import('./setup/setupRepo.js');
                     const repo = new Repo({ objects, states });
 
                     try {
@@ -792,7 +792,7 @@ async function processCommand(
             url = url.trim();
 
             dbConnect(params, async ({ objects, states }) => {
-                const { Install } = await import('./setup/setupInstall');
+                const { Install } = await import('./setup/setupInstall.js');
                 const install = new Install({
                     objects,
                     states,
@@ -815,7 +815,7 @@ async function processCommand(
             dbConnect(params, async ({ objects }) => {
                 try {
                     const data = await tools.getHostInfo(objects);
-                    const formatters = await import('./setup/formatters');
+                    const formatters = await import('./setup/formatters.js');
                     const formatInfo = {
                         Uptime: formatters.formatSeconds,
                         'System uptime': formatters.formatSeconds,
@@ -892,7 +892,7 @@ async function processCommand(
             const adapterDir = tools.getAdapterDir(name);
 
             dbConnect(params, async ({ objects, states }) => {
-                const { Install } = await import('./setup/setupInstall');
+                const { Install } = await import('./setup/setupInstall.js');
                 const install = new Install({
                     objects,
                     states,
@@ -984,7 +984,7 @@ async function processCommand(
             const subTree = args[1];
             if (name) {
                 dbConnect(params, async ({ objects, states }) => {
-                    const { Upload } = await import('./setup/setupUpload');
+                    const { Upload } = await import('./setup/setupUpload.js');
                     const upload = new Upload({ states, objects });
 
                     if (name === 'all') {
@@ -1095,7 +1095,7 @@ async function processCommand(
 
             if (instance || instance === 0) {
                 dbConnect(params, async ({ objects, states }) => {
-                    const { Install } = await import('./setup/setupInstall');
+                    const { Install } = await import('./setup/setupInstall.js');
                     const install = new Install({
                         objects,
                         states,
@@ -1109,7 +1109,7 @@ async function processCommand(
                 });
             } else {
                 dbConnect(params, async ({ objects, states }) => {
-                    const { Install } = await import('./setup/setupInstall');
+                    const { Install } = await import('./setup/setupInstall.js');
                     const install = new Install({
                         objects,
                         states,
@@ -1181,7 +1181,7 @@ async function processCommand(
             }
 
             dbConnect(params, async ({ objects, states }) => {
-                const { Upgrade } = await import('./setup/setupUpgrade');
+                const { Upgrade } = await import('./setup/setupUpgrade.js');
                 const upgrade = new Upgrade({
                     objects,
                     states,
@@ -1259,7 +1259,7 @@ async function processCommand(
         }
 
         case 'restore': {
-            const { BackupRestore } = await import('./setup/setupBackup');
+            const { BackupRestore } = await import('./setup/setupBackup.js');
 
             dbConnect(params, ({ isOffline, objects, states }) => {
                 if (!isOffline) {
@@ -1292,7 +1292,7 @@ async function processCommand(
 
         case 'backup': {
             const name = args[0];
-            const { BackupRestore } = await import('./setup/setupBackup');
+            const { BackupRestore } = await import('./setup/setupBackup.js');
 
             dbConnect(params, async ({ states, objects }) => {
                 const backup = new BackupRestore({
@@ -1318,7 +1318,7 @@ async function processCommand(
 
         case 'validate': {
             const name = args[0];
-            const { BackupRestore } = await import('./setup/setupBackup');
+            const { BackupRestore } = await import('./setup/setupBackup.js');
             dbConnect(params, async ({ objects, states }) => {
                 const backup = new BackupRestore({
                     states,
@@ -1343,7 +1343,7 @@ async function processCommand(
         case 'l':
         case 'list': {
             dbConnect(params, async ({ objects, states }) => {
-                const { List } = await import('./setup/setupList');
+                const { List } = await import('./setup/setupList.js');
                 const list = new List({
                     states,
                     objects,
@@ -1393,7 +1393,7 @@ async function processCommand(
                                                 files.push({ id: _id, processed: processed });
                                             }
                                             if (!--count) {
-                                                const { List } = await import('./setup/setupList');
+                                                const { List } = await import('./setup/setupList.js');
                                                 const list = new List({
                                                     states,
                                                     objects,
@@ -1429,7 +1429,7 @@ async function processCommand(
                             console.error(err);
                         } else {
                             if (processed) {
-                                const { List } = await import('./setup/setupList');
+                                const { List } = await import('./setup/setupList.js');
                                 const list = new List({
                                     states,
                                     objects,
@@ -1486,7 +1486,7 @@ async function processCommand(
                                                 files.push({ id: _id, processed: processed });
                                             }
                                             if (!--count) {
-                                                const { List } = await import('./setup/setupList');
+                                                const { List } = await import('./setup/setupList.js');
                                                 const list = new List({
                                                     states,
                                                     objects,
@@ -1522,7 +1522,7 @@ async function processCommand(
                             console.error(err);
                         } else {
                             if (processed) {
-                                const { List } = await import('./setup/setupList');
+                                const { List } = await import('./setup/setupList.js');
                                 const list = new List({
                                     states,
                                     objects,
@@ -1593,7 +1593,7 @@ async function processCommand(
                                                 files.push({ id: _id, processed: processed });
                                             }
                                             if (!--count) {
-                                                const { List } = await import('./setup/setupList');
+                                                const { List } = await import('./setup/setupList.js');
                                                 const list = new List({
                                                     states,
                                                     objects,
@@ -1629,7 +1629,7 @@ async function processCommand(
                             console.error(err);
                         } else {
                             if (processed) {
-                                const { List } = await import('./setup/setupList');
+                                const { List } = await import('./setup/setupList.js');
                                 const list = new List({
                                     states,
                                     objects,
@@ -1709,7 +1709,7 @@ async function processCommand(
                                                 files.push({ id: _id, processed: processed });
                                             }
                                             if (!--count) {
-                                                const { List } = await import('./setup/setupList');
+                                                const { List } = await import('./setup/setupList.js');
                                                 const list = new List({
                                                     states,
                                                     objects,
@@ -1758,7 +1758,7 @@ async function processCommand(
                             } else {
                                 // call here list
                                 if (processed) {
-                                    const { List } = await import('./setup/setupList');
+                                    const { List } = await import('./setup/setupList.js');
                                     const list = new List({
                                         states,
                                         objects,
@@ -1788,7 +1788,7 @@ async function processCommand(
             }
 
             dbConnect(params, async ({ objects }) => {
-                const { Users } = await import('./setup/setupUsers');
+                const { Users } = await import('./setup/setupUsers.js');
                 const users = new Users({
                     objects,
                     processExit: callback
@@ -1900,7 +1900,7 @@ async function processCommand(
             }
 
             dbConnect(params, async ({ objects }) => {
-                const { Users } = await import('./setup/setupUsers');
+                const { Users } = await import('./setup/setupUsers.js');
                 const users = new Users({
                     objects,
                     processExit: callback
@@ -2015,7 +2015,7 @@ async function processCommand(
             const password = params.password;
 
             dbConnect(params, async ({ objects }) => {
-                const { Users } = await import('./setup/setupUsers');
+                const { Users } = await import('./setup/setupUsers.js');
                 const users = new Users({
                     objects,
                     processExit: callback
@@ -2037,7 +2037,7 @@ async function processCommand(
             const user = args[0];
             const password = params.password;
             dbConnect(params, async ({ objects }) => {
-                const { Users } = await import('./setup/setupUsers');
+                const { Users } = await import('./setup/setupUsers.js');
                 const users = new Users({
                     objects,
                     processExit: callback
@@ -2062,7 +2062,7 @@ async function processCommand(
             const user = args[0];
 
             dbConnect(params, async ({ objects }) => {
-                const { Users } = await import('./setup/setupUsers');
+                const { Users } = await import('./setup/setupUsers.js');
                 const users = new Users({
                     objects,
                     processExit: callback
@@ -2208,7 +2208,7 @@ async function processCommand(
             if (widgetset && widgetset.startsWith('vis-')) {
                 widgetset = widgetset.substring(4);
             }
-            const { VisDebug } = await import('./setup/setupVisDebug');
+            const { VisDebug } = await import('./setup/setupVisDebug.js');
 
             dbConnect(params, ({ objects }) => {
                 const visDebug = new VisDebug({
@@ -2525,7 +2525,7 @@ async function processCommand(
             }
 
             dbConnect(params, async ({ objects, states }) => {
-                const { Repo } = await import('./setup/setupRepo');
+                const { Repo } = await import('./setup/setupRepo.js');
                 const repo = new Repo({
                     objects,
                     states
@@ -2634,7 +2634,7 @@ async function processCommand(
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
                 dbConnect(params, async ({ objects, states }) => {
-                    const { Multihost } = await import('./setup/setupMultihost');
+                    const { Multihost } = await import('./setup/setupMultihost.js');
                     const mh = new Multihost({
                         params,
                         objects
@@ -2712,7 +2712,7 @@ async function processCommand(
             }
 
             const { objects } = await dbConnectAsync(false, params);
-            const { Vendor } = await import('./setup/setupVendor');
+            const { Vendor } = await import('./setup/setupVendor.js');
             const vendor = new Vendor({ objects });
 
             try {
@@ -2752,7 +2752,7 @@ async function processCommand(
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
                 dbConnect(params, async ({ objects }) => {
-                    const { License } = await import('./setup/setupLicense');
+                    const { License } = await import('./setup/setupLicense.js');
                     const license = new License({ objects });
                     try {
                         await license.setLicense(file);

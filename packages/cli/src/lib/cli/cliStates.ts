@@ -1,5 +1,5 @@
 import { tools } from '@iobroker/js-controller-common';
-import { CLICommand, CLICommandOptions } from './cliCommand.js';
+import { CLICommand, type CLICommandOptions } from './cliCommand.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const CLI = require('./messages.js');

@@ -1,6 +1,6 @@
 // Types which are safe to share within this repository AND publicly
 
-import * as fs from 'fs';
+import type * as fs from 'fs';
 import './objects';
 import type { IoBJson } from './config';
 

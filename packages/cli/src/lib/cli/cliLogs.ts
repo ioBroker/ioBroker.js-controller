@@ -1,4 +1,4 @@
-import { CLICommand, CLICommandOptions } from './cliCommand';
+import { CLICommand, type CLICommandOptions } from './cliCommand';
 import { tools, logger as toolsLogger } from '@iobroker/js-controller-common';
 import chokidar from 'chokidar';
 import fs from 'fs-extra';

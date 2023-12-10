@@ -1,5 +1,5 @@
 import * as CLI from './messages.js';
-import { CLICommand, CLICommandOptions } from './cliCommand.js';
+import { CLICommand, type CLICommandOptions } from './cliCommand.js';
 import * as CLITools from './cliTools';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import { fork } from 'child_process';

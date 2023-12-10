@@ -16,7 +16,7 @@ import mime from 'mime-types';
 import { join } from 'path';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import type { InternalLogger } from '@iobroker/js-controller-common/build/lib/common/tools';
+import type { InternalLogger } from '@iobroker/js-controller-common/tools';
 
 const hostname = tools.getHostName();
 
@@ -642,7 +642,7 @@ export class Upload {
             for (const [attr, attrData] of Object.entries(additional)) {
                 if (target[attr] === undefined) {
                     target[attr] = attrData;
-                } else if (typeof attrData === 'object' && !(attrData instanceof Array)) {
+                } else if (tools.isObject(attrData)) {
                     try {
                         target[attr] = target[attr] || {};
                     } catch {

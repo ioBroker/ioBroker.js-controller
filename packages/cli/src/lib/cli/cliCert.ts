@@ -1,4 +1,4 @@
-import { CLICommand, CLICommandOptions } from './cliCommand.js';
+import { CLICommand, type CLICommandOptions } from './cliCommand.js';
 import { CLIObjects } from './cliObjects';
 import * as messages from './messages';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
