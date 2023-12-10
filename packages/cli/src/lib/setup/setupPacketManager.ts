@@ -1,5 +1,4 @@
-import { execAsync } from '@iobroker/js-controller-common/tools';
-import type { InternalLogger } from '@iobroker/js-controller-common/build/lib/common/tools';
+import { execAsync, type InternalLogger } from '@iobroker/js-controller-common/tools';
 
 enum LOG_LEVELS {
     silly = 5,
@@ -14,7 +13,7 @@ interface Logger extends InternalLogger {
     log(message: string): void;
 }
 
-type Manager = 'apt' | 'apt-get' | 'yum' | '';
+type Manager = 'apt' | 'yum' | '';
 
 interface PacketManagerOptions {
     logLevel: LOG_LEVELS;
@@ -28,9 +27,15 @@ export class PacketManager {
     private dpkg: boolean;
     private sudo: boolean;
     private readonly _readyPromise: Promise<void>;
+    private readonly COMMANDS = {
+        listUpgradeable: {
+            apt: 'list --upgradeable',
+            yum: 'check-update'
+        }
+    } as const;
 
     constructor(options: PacketManagerOptions = { logLevel: LOG_LEVELS.info }) {
-        // detect apt, apt-get or yum
+        // detect apt or yum
         this.manager = options?.manager || '';
         this.logger = options?.logger || {
             silly: text => options.logLevel >= LOG_LEVELS.silly && console.log(text),
@@ -51,7 +56,7 @@ export class PacketManager {
             if (!this.manager) {
                 const manager = await this._detectManager();
                 if (manager) {
-                    this.logger?.debug(`Detected packet manager: ${manager}`);
+                    this.logger.debug(`Detected packet manager: ${manager}`);
                     // Check if sudo is available for packet manager and store information
                     this.sudo = (await this._isSudoAvailable()) && (await this._isSudoAvailableForManager());
                 }
@@ -59,7 +64,7 @@ export class PacketManager {
 
             // Check if dpkg is available
             this.dpkg = await this._isDpkgAvailable();
-            this.logger?.debug(`Detected dpkg: ${this.dpkg}`);
+            this.logger.debug(`Detected dpkg: ${this.dpkg}`);
         }
     }
 
@@ -98,7 +103,7 @@ export class PacketManager {
             ) {
                 return true;
             } else {
-                this.logger?.error(`Cannot detect dpkg: ${err.stderr || err.stdout || err}`);
+                this.logger.error(`Cannot detect dpkg: ${err.stderr || err.stdout || err}`);
                 return false;
             }
         }
@@ -113,7 +118,7 @@ export class PacketManager {
             if ((err.stdout && err.stdout.includes('sudo -h')) || (err.stderr && err.stderr.includes('sudo -h'))) {
                 return true;
             } else {
-                this.logger?.error(`Cannot detect sudo: ${err.stderr || err.stdout || err}`);
+                this.logger.error(`Cannot detect sudo: ${err.stderr || err.stdout || err}`);
                 return false;
             }
         }
@@ -124,7 +129,7 @@ export class PacketManager {
             await execAsync(`sudo -n ${this.manager} -v`);
             return true;
         } catch (err) {
-            this.logger?.error(`Cannot detect \\"sudo -n ${this.manager} -v\\": ${err.stderr || err.stdout || err}`);
+            this.logger.error(`Cannot detect \\"sudo -n ${this.manager} -v\\": ${err.stderr || err.stdout || err}`);
             return false;
         }
     }
@@ -133,13 +138,13 @@ export class PacketManager {
      * Detects which package manager is installed. Throws if none can be found
      */
     private async _detectManager(): Promise<Manager | void> {
-        for (const cmd of ['apt-get', 'apt', 'yum'] as const) {
+        for (const cmd of ['apt', 'yum'] as const) {
             if (await this._isCmd(cmd)) {
                 this.manager = cmd;
                 return cmd;
             }
         }
-        this.logger?.info('No supported packet manager found');
+        this.logger.info('No supported packet manager found');
     }
 
     /**
@@ -148,7 +153,7 @@ export class PacketManager {
     async update(): Promise<void> {
         await this.ready();
 
-        if (this.manager !== 'apt' && this.manager !== 'apt-get') {
+        if (this.manager !== 'apt') {
             // ignore
             return;
         }
@@ -156,7 +161,7 @@ export class PacketManager {
         try {
             await execAsync(`${(this.sudo ? 'sudo ' : '') + this.manager} update`);
         } catch (e) {
-            this.logger?.warn(`Cannot update apt sources: ${e.message}`);
+            this.logger.warn(`Cannot update apt sources: ${e.message}`);
         }
     }
 
@@ -203,20 +208,45 @@ export class PacketManager {
     }
 
     /**
+     * List all packages for which updates are available
+     */
+    async listUpgradeablePackages(): Promise<string[]> {
+        if (!this.manager) {
+            return [];
+        }
+
+        const { stdout } = await execAsync(
+            `${(this.sudo ? 'sudo ' : '') + this.manager} ${this.COMMANDS.listUpgradeable[this.manager]}`
+        );
+
+        const res = Buffer.isBuffer(stdout) ? stdout.toString('utf-8') : stdout;
+
+        if (!res) {
+            return [];
+        }
+
+        const packagesList = res.split('\n');
+        // first line is no package, just Listing...
+        packagesList.shift();
+
+        return packagesList;
+    }
+
+    /**
      * Installs multiple packets. The returned Promise contains the list of failed packets
      * @param packets
      */
     private async _installPackets(packets: string[]): Promise<string[]> {
         const failed: string[] = [];
 
-        if (packets && packets.length) {
+        if (packets?.length) {
             // Install all packets
             for (const packet of packets) {
                 try {
                     await this._installPacket(packet);
                 } catch (err) {
                     failed.push(packet);
-                    this.logger?.error(`Cannot install "${packet}": ${err.stderr || err.stdout || err}`);
+                    this.logger.error(`Cannot install "${packet}": ${err.stderr || err.stdout || err}`);
                     // Continue with the next packet
                 }
             }

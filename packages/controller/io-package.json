@@ -1069,6 +1069,38 @@
           },
           "regex": [],
           "limit": 1
+        },
+        {
+          "category": "packageUpdates",
+          "name": {
+            "en": "OS package updates available",
+            "de": "Betriebssystem-Paket-Updates verfügbar",
+            "ru": "Доступны обновления пакетов ОС",
+            "pt": "Actualizações de pacotes do SO disponíveis",
+            "nl": "OS-pakketupdates beschikbaar",
+            "fr": "Mises à jour du système d'exploitation disponibles",
+            "it": "Aggiornamenti del pacchetto OS disponibili",
+            "es": "Actualizaciones de paquetes del SO disponibles",
+            "pl": "Dostępne aktualizacje pakietów systemu operacyjnego",
+            "uk": "Доступні оновлення пакетів ОС",
+            "zh-cn": "提供操作系统软件包更新"
+          },
+          "severity": "notify",
+          "description": {
+            "en": "Some OS packages can be updated.",
+            "de": "Einige Betriebssystempakete können aktualisiert werden.",
+            "ru": "Некоторые пакеты ОС могут быть обновлены.",
+            "pt": "Alguns pacotes do sistema operativo podem ser actualizados.",
+            "nl": "Sommige OS-pakketten kunnen worden bijgewerkt.",
+            "fr": "Certains paquets du système d'exploitation peuvent être mis à jour.",
+            "it": "Alcuni pacchetti del sistema operativo possono essere aggiornati.",
+            "es": "Algunos paquetes del sistema operativo pueden actualizarse.",
+            "pl": "Niektóre pakiety systemu operacyjnego mogą zostać zaktualizowane.",
+            "uk": "Деякі пакунки ОС можна оновити.",
+            "zh-cn": "某些操作系统软件包可以更新。"
+          },
+          "regex": [],
+          "limit": 1
         }
       ]
     }

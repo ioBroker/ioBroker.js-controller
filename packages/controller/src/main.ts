@@ -27,7 +27,7 @@ import { NotificationHandler } from '@iobroker/js-controller-common-db';
 import * as zipFiles from './lib/zipFiles';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
-import { Upload } from '@iobroker/js-controller-cli';
+import { Upload, PacketManager } from '@iobroker/js-controller-cli';
 import decache from 'decache';
 import cronParser from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
@@ -2556,6 +2556,11 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 }
 
                 requestedRepoUpdates = [];
+                try {
+                    await listUpdatableOsPackages();
+                } catch (e) {
+                    logger.warn(`${hostLogPrefix} Could not check for new OS updates: ${e.message}`);
+                }
             } else {
                 logger.error(
                     `${hostLogPrefix} Invalid request ${
@@ -6055,6 +6060,22 @@ async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promis
         outputCount++;
         await states!.setState(adapterInstance, { val: false, ack: true, from: hostObjectPrefix });
     }
+}
+
+/**
+ * Check for updatable OS packages and register them as notification
+ */
+async function listUpdatableOsPackages(): Promise<void> {
+    const packManager = new PacketManager();
+    await packManager.ready();
+
+    const packages = await packManager.listUpgradeablePackages();
+
+    if (!packages.length) {
+        return;
+    }
+
+    await notificationHandler.addMessage('system', 'packageUpdates', packages.join('\n'), `system.host.${hostname}`);
 }
 
 /**
