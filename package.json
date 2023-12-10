@@ -30,7 +30,7 @@
     "@tsconfig/node18": "^18.2.2",
     "@types/chai": "^4.3.3",
     "@types/chai-as-promised": "^7.1.5",
-    "@types/debug": "^4.1.7",
+    "@types/debug": "^4.1.12",
     "@types/event-stream": "^4.0.0",
     "@types/fs-extra": "^11.0.1",
     "@types/ioredis": "^4.28.10",
