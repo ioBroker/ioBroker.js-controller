@@ -26,7 +26,7 @@ export interface AdapterOptions {
     name: string;
     /** If true, the systemConfig (iobroker.json) will be available in this.systemConfig */
     systemConfig?: boolean;
-    /** callback function (id, obj) that will be called if object changed */
+    /** callback function (id, obj) that will be called if an object changed */
     objectChange?: ioBroker.ObjectChangeHandler;
     /** callback function (id, obj) that will be called if state changed */
     stateChange?: ioBroker.StateChangeHandler;
@@ -36,7 +36,7 @@ export interface AdapterOptions {
     uiClientSubscribe?: UserInterfaceClientSubscribeHandler;
     /** callback function that will be called when a new UI client unsubscribes */
     uiClientUnsubscribe?: UserInterfaceClientUnsubscribeHandler;
-    /** callback to inform about new message the adapter */
+    /** callback to inform about a new message the adapter */
     message?: ioBroker.MessageHandler;
     /** callback to stop the adapter */
     unload?: ioBroker.UnloadHandler;
@@ -49,6 +49,13 @@ export interface AdapterOptions {
     /** Handler to handle uncaught exceptions, return true if no further handling required */
     error?: ioBroker.ErrorHandler;
 }
+
+export type IoPackageInstanceObject =
+    | ioBroker.StateObject
+    | ioBroker.DeviceObject
+    | ioBroker.ChannelObject
+    | ioBroker.FolderObject
+    | ioBroker.MetaObject;
 
 type MessageUnsubscribeReason = 'client' | 'disconnect';
 export type ClientUnsubscribeReason = MessageUnsubscribeReason | 'clientSubscribeError';
@@ -80,14 +87,14 @@ type UserInterfaceUnsubscribeInfoBaseObject = {
 export type UserInterfaceUnsubscribeInfo = UserInterfaceUnsubscribeInfoBaseObject &
     (
         | {
-              /** Reason for unsubscribe */
+              /** Reason for unsubscribing */
               reason: Exclude<UserInterfaceClientUnsubscribeReason, ClientUnsubscribeReason>;
               message?: undefined;
           }
         | {
-              /** Reason for unsubscribe */
+              /** Reason for unsubscribing */
               reason: ClientUnsubscribeReason;
-              /** Message used for unsubscribe */
+              /** Message used for unsubscribing */
               message: ioBroker.Message;
           }
     );
@@ -97,16 +104,18 @@ export type UserInterfaceClientUnsubscribeHandler = (
 ) => void | Promise<void>;
 
 export type UserInterfaceClientRemoveMessage =
-    | (ioBroker.Message & {
+    | (Omit<ioBroker.Message, 'message' | 'command'> & {
           command: 'clientUnsubscribe';
           message: {
               reason: MessageUnsubscribeReason;
+              type: string[];
           };
       })
-    | (ioBroker.Message & {
+    | (Omit<ioBroker.Message, 'message' | 'command'> & {
           command: 'clientSubscribeError';
           message: {
               reason: undefined;
+              type: string[];
           };
       });
 
@@ -298,7 +307,7 @@ export interface InternalGetHistoryOptions {
 export interface InternalGetObjectsOptions {
     pattern: Pattern;
     type?: string;
-    enums?: ioBroker.EnumList | null;
+    enums?: ioBroker.EnumList;
     options?: Record<string, any> | null;
     callback?: ioBroker.GetObjectsCallbackTyped<any>;
 }

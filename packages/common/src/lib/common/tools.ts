@@ -22,6 +22,7 @@ import { maybeCallbackWithError } from './maybeCallback';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
 import { setDefaultResultOrder } from 'dns';
+import { applyAliasAutoScaling, applyAliasConvenienceConversion, applyAliasTransformer } from './aliasProcessing';
 
 type DockerInformation =
     | {
@@ -71,9 +72,9 @@ export interface HostInfo {
 }
 
 interface FormatAliasValueOptions {
-    /** Common attribute of source object */
+    /** Common attribute of a source object */
     sourceCommon?: Partial<ioBroker.StateCommon>;
-    /** Common attribute of target object */
+    /** Common attribute of a target object */
     targetCommon?: Partial<ioBroker.StateCommon>;
     /** State to format */
     state: ioBroker.State | null | undefined;
@@ -123,7 +124,7 @@ let ownIpArr: string[] = [];
 export const FORBIDDEN_CHARS = /[^._\-/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+/gu;
 
 /**
- * recursively copy values from old object to new one
+ * recursively copy values from an old object to new one
  *
  * @param oldObj source object
  * @param newObj destination object
@@ -240,7 +241,7 @@ export function checkNonEditable(
 }
 
 /**
- * Checks if version is up-to-date, throws error on invalid version strings
+ * Checks if a version is up-to-date, throws error on invalid version strings
  *
  * @param repoVersion
  * @param installedVersion
@@ -263,7 +264,7 @@ export function decryptPhrase(password: string, data: any, callback: (decrypted?
             }
         });
         decipher.on('error', error => {
-            console.error('Cannot decode secret: ' + error);
+            console.error(`Cannot decode secret: ${error.message}`);
             callback(null);
         });
 
@@ -293,20 +294,22 @@ export async function isSingleHost(objects: any): Promise<boolean> {
 }
 
 /**
- * Checks if at least one host is running in a MH environment
+ * Checks if at least one host is running in a Multihost environment
  *
  * @param objects the objects db
  * @param states the states db
  * @return true if one or more hosts running else false
  */
 export async function isHostRunning(objects: any, states: any): Promise<boolean> {
-    // do it without object view for now, can be reverted if no one downgrades to < 4 (redis-sets)
+    // do it without an object view for now, TODO: can be reverted if no one downgrades to < 4 (redis-sets)
     // const res = await objects.getObjectViewAsync('system', 'host', { startkey: '', endkey: '\u9999' });
     const res: GetObjectViewResult = await objects.getObjectList({
         startkey: 'system.host.',
         endkey: 'system.host.\u9999'
     });
-    res.rows = res.rows.filter(obj => obj.value && obj.value.type === 'host');
+
+    // TODO: this check should be redundant as soon as we go back to the object view approach
+    res.rows = res.rows.filter(obj => obj.value?.type === 'host');
 
     for (const hostObj of res.rows) {
         const state: ioBroker.State = await states.getState(`${hostObj.id}.alive`);
@@ -456,7 +459,7 @@ export function isDocker(): boolean {
     }
 
     try {
-        // ioBroker docker image specific, will be created during build process
+        // ioBroker docker image specific, will be created during a build process
         fs.statSync(OFFICIAL_DOCKER_FILE);
         return true;
     } catch {
@@ -464,7 +467,7 @@ export function isDocker(): boolean {
     }
 
     try {
-        // check docker group, works in most cases, but not on arm
+        // check a docker group, works in most cases, but not on arm
         return fs.readFileSync('/proc/self/cgroup', 'utf8').includes('docker');
     } catch {
         return false;
@@ -726,7 +729,7 @@ export async function getFile(urlOrPath: string, fileName: string, callback: (fi
             } else if (fs.existsSync(`${__dirname}/../tmp/${urlOrPath}`)) {
                 callback && callback(`${__dirname}/../tmp/${urlOrPath}`);
             } else {
-                console.log('File not found: ' + urlOrPath);
+                console.log(`File not found: ${urlOrPath}`);
                 process.exit(EXIT_CODES.FILE_NOT_FOUND);
             }
         } catch (err) {
@@ -989,7 +992,7 @@ export interface AdapterInformation {
     keywords: string[];
     /** path to readme file */
     readme: string;
-    /** Installed Adapter version, not existing on controller */
+    /** The installed adapter version, not existing on controller */
     runningVersion?: string;
     /** type of the adapter */
     type: string;
@@ -1000,7 +1003,7 @@ export interface AdapterInformation {
 }
 
 /**
- * Get list of all installed adapters and controller version on this host
+ * Get a list of all installed adapters and controller version on this host
  * @param hostRunningVersion Version of the running js-controller, will be included in the returned information if provided
  * @returns object containing information about installed host
  */
@@ -1102,7 +1105,7 @@ function getIoPack(
                 getJson(packUrl, '', pack => {
                     const version = sources[name].version;
                     const type = sources[name].type;
-                    // If installed from git or something else
+                    // If installed from git or something else,
                     // js-controller is exception, because can be installed from npm and from git
                     if (sources[name].url && name !== 'js-controller') {
                         if (ioPack && ioPack.common) {
@@ -1313,7 +1316,7 @@ async function _checkRepositoryFileHash(
 }
 
 /**
- * Get list of all adapters and controller in some repository file or in /conf/source-dist.json
+ * Get a list of all adapters and controller in some repository file or in /conf/source-dist.json
  *
  * @param urlOrPath URL starting with http:// or https:// or local file link
  * @param additionalInfo destination object
@@ -1338,10 +1341,10 @@ export function getRepositoryFile(
 
     if (urlOrPath) {
         const parts = urlOrPath.split('/');
-        _path = parts.splice(0, parts.length - 1).join('/') + '/';
+        _path = `${parts.splice(0, parts.length - 1).join('/')}/`;
     }
 
-    // If object was read
+    // If an object was read
     if (urlOrPath && typeof urlOrPath === 'object') {
         if (typeof callback === 'function') {
             callback(null, urlOrPath);
@@ -1520,12 +1523,12 @@ export async function sendDiagInfo(obj: Record<string, any>): Promise<void> {
 /**
  * Finds the adapter directory of a given adapter
  *
- * @param adapter name of the adapter, e.g. hm-rpc
+ * @param adapter name of the adapter, e.g., hm-rpc
  * @returns path to adapter directory or null if no directory found
  */
 export function getAdapterDir(adapter: string): string | null {
     // snip off 'iobroker.'
-    if (adapter.toLowerCase().startsWith(appName.toLowerCase() + '.')) {
+    if (adapter.toLowerCase().startsWith(`${appNameLowerCase}.`)) {
         adapter = adapter.substring(appName.length + 1);
     }
     // snip off instance id
@@ -1597,7 +1600,7 @@ function getSystemNpmVersion(callback?: (err?: Error, version?: string | null) =
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { exec } = require('child_process');
 
-    // remove local node_modules\.bin dir from path
+    // remove local node_modules\.bin dir from a path
     // or we potentially get a wrong npm version
     const newEnv = Object.assign({}, process.env);
     // @ts-expect-error TODO
@@ -1673,7 +1676,7 @@ async function detectPackageManagerWithFallback(cwd?: string): Promise<PackageMa
                   }
         );
     } catch {
-        // Lockfile not found, use default to avoid picking up a wrong package manager
+        // Lockfile is not found, use default to avoid picking up a wrong package manager
         // like a globally installed yarn
     }
 
@@ -1939,7 +1942,7 @@ export function getCertificateInfo(cert: string): null | CertificateInfo {
             cert = fs.readFileSync(cert, 'utf8');
         }
 
-        // cast to any we use some undocumented? properties below
+        // cast to any we use some undocumented? the properties below
         const crt: any = pki.certificateFromPem(cert);
 
         info = {
@@ -1978,7 +1981,7 @@ export const MAX_CERT_VALIDITY = 365 * 24 * 60 * 60 * 1_000;
  * Returns default SSL certificates (private and public)
  *
  *
- *  Following info will be returned:
+ *  The following info will be returned:
  *     - defaultPrivate: private RSA key
  *     - defaultPublic: public certificate
  *
@@ -2099,7 +2102,7 @@ export async function getHostInfo(objects: any): Promise<HostInfo> {
     const systemConfig: ioBroker.OtherObject = await objects.getObjectAsync('system.config');
     const systemRepos: ioBroker.OtherObject = await objects.getObjectAsync('system.repositories');
 
-    // Check if repositories exists
+    // Check if repositories exist
     const allRepos: Record<string, any> = {};
     if (systemRepos?.native?.repositories && systemConfig) {
         const repos: string[] = Array.isArray(systemConfig.common.activeRepo)
@@ -2112,8 +2115,7 @@ export async function getHostInfo(objects: any): Promise<HostInfo> {
 
     if (!npmVersion) {
         try {
-            const version = await getSystemNpmVersionAsync();
-            npmVersion = version;
+            npmVersion = await getSystemNpmVersionAsync();
         } catch (e) {
             console.error(`Cannot get NPM version: ${e.message}`);
         }
@@ -2198,7 +2200,7 @@ export function getControllerDir(): string {
             }
         }
 
-        // Controller not found here - go to the parent dir
+        // Controller isn't found here - go to the parent dir
         const newPath = path.dirname(checkPath);
         if (newPath === checkPath) {
             // We already reached the root dir, abort
@@ -2257,45 +2259,27 @@ export function getConfigFileName(): string {
         return path.join(envDataDir, `${appNameLowerCase}.json`);
     }
 
-    let devConfigDir;
+    const controllerDir = getControllerDir();
+    const fallbackConfigFile = path.join(controllerDir, 'data', `${appNameLowerCase}.json`);
+    const isDevInstallation = _isDevInstallation();
 
-    if (_isDevInstallation()) {
-        devConfigDir = __dirname.replace(/\\/g, '/');
-        const devConfigParts = devConfigDir.split('/');
+    if (isDevInstallation) {
+        const devConfigFile = path.join(controllerDir, 'conf', `${appNameLowerCase}.json`);
 
-        // dev install -> Remove /lib
-        devConfigParts.splice(devConfigParts.length - 4, 4);
-        devConfigDir = devConfigParts.join('/');
-        devConfigDir += '/controller'; // go inside controller dir
-        if (fs.existsSync(`${devConfigDir}/conf/${appNameLowerCase}.json`)) {
-            return `${devConfigDir}/conf/${appNameLowerCase}.json`;
-        } else if (fs.existsSync(`${devConfigDir}/data/${appNameLowerCase}.json`)) {
-            return `${devConfigDir}/data/${appNameLowerCase}.json`;
+        if (fs.existsSync(devConfigFile)) {
+            return devConfigFile;
+        } else if (fs.existsSync(fallbackConfigFile)) {
+            return fallbackConfigFile;
         }
     }
 
-    let configDir = __dirname.replace(/\\/g, '/');
-    const configParts = configDir.split('/');
+    const prodConfigFile = path.join(getRootDir(), `${appNameLowerCase}-data`, `${appNameLowerCase}.json`);
 
-    // if debugging with npm5 -> node_modules on e.g. /opt/node_modules
-    if (
-        fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${appNameLowerCase}.js-controller`) ||
-        fs.existsSync(`${__dirname}/../../../../../../../../node_modules/${appName}.js-controller`)
-    ) {
-        // remove /node_modules/' + appName + '.js-controller/lib
-        configParts.splice(configParts.length - 8, 8);
-        configDir = configParts.join('/');
-    } else {
-        // If installed with npm -> remove node_modules/@iobroker/js-controller-common/src/lib/common
-        configParts.splice(configParts.length - 6, 6);
-        configDir = configParts.join('/');
+    if (!fs.existsSync(prodConfigFile) && isDevInstallation) {
+        return fallbackConfigFile;
     }
 
-    if (!fs.existsSync(`${configDir}/${appNameLowerCase}-data/${appNameLowerCase}.json`) && devConfigDir) {
-        return `${devConfigDir}/data/${appNameLowerCase}.json`;
-    }
-
-    return `${configDir}/${appNameLowerCase}-data/${appNameLowerCase}.json`;
+    return prodConfigFile;
 }
 
 /**
@@ -2320,7 +2304,7 @@ function sliceArgs(argsObj: IArguments, startIndex = 0): any[] {
  * @param context (optional) The context (value of `this` to bind the function to)
  * @param returnArgNames (optional) If the callback contains multiple arguments,
  * you can combine them into one object by passing the names as an array.
- * Otherwise the Promise will resolve with an array
+ * Otherwise, the Promise will resolve with an array
  */
 export function promisify(
     fn: (...args: any[]) => void,
@@ -2378,7 +2362,7 @@ export function promisify(
  * @param context (optional) The context (value of `this` to bind the function to)
  * @param returnArgNames (optional) If the callback contains multiple arguments,
  * you can combine them into one object by passing the names as an array.
- * Otherwise the Promise will resolve with an array
+ * Otherwise, the Promise will resolve with an array
  */
 export function promisifyNoError(
     fn: (...args: any[]) => void,
@@ -2426,17 +2410,6 @@ export function promisifyNoError(
     };
 }
 
-/**
- * Creates and executes an array of promises in sequence
- * @param promiseFactories An array of promise-returning functions
- */
-export function promiseSequence(promiseFactories: ((...args: any[]) => Promise<any>)[]): any[] {
-    /** @ts-expect-error don't want to touch now */
-    return promiseFactories.reduce((promise, factory) => {
-        return promise.then(result => factory().then(Array.prototype.concat.bind(result)));
-    }, Promise.resolve([]));
-}
-
 async function _setQualityForStates(states: any, keys: string[], quality: number): Promise<void> {
     for (const key of keys) {
         try {
@@ -2457,15 +2430,15 @@ export function setQualityForInstance(objects: any, states: any, namespace: stri
                 endkey: `${namespace}.\u9999`,
                 include_docs: false
             },
-            (err: Error | null, _states?: GetObjectViewResult) => {
+            (err: Error | null, _states?: GetObjectViewResult<ioBroker.StateObject>) => {
                 if (err) {
                     reject(err);
                 } else {
                     let keys: string[] = [];
-                    if (_states && _states.rows) {
-                        for (let s = 0; s < _states.rows.length; s++) {
-                            const id = _states.rows[s].id;
-                            // if instance still active, but device is offline
+                    if (_states?.rows) {
+                        for (const row of _states.rows) {
+                            const id = row.id;
+                            // if instance still active, but a device is offline
                             if (!(q & 0x10) && id.match(/\.info\.connection$/)) {
                                 continue;
                             }
@@ -2506,7 +2479,7 @@ export function pattern2RegEx(pattern: string): string {
 }
 
 /**
- * Checks if pattern is valid
+ * Checks if a pattern is valid
  *
  * @pattern pattern to check for validity
  */
@@ -2611,7 +2584,7 @@ export function encrypt(key: string, value: string): string {
  * @param value - value to decrypt
  */
 export function decrypt(key: string, value: string): string {
-    // if not encrypted as aes-192 or key not a valid 48 digit hex -> fallback
+    // if not encrypted as aes-192 or key not a valid 48-digit hex -> fallback
     if (!value.startsWith(`$/aes-192-cbc:`) || !/^[0-9a-f]{48}$/.test(key)) {
         return decryptLegacy(key, value);
     }
@@ -2669,7 +2642,7 @@ export function measureEventLoopLag(ms: number, cb: (eventLoopLag?: number) => v
         // sample of what the process is working on.
         const t = hrtime();
 
-        // we use Math.max to handle case where timers are running efficiently
+        // we use Math.max to handle a case where timers are running efficiently
         // and our callback executes earlier than `ms` due to how timers are
         // implemented. this is ok. it means we're healthy.
         cb && cb(Math.max(0, t - start - ms));
@@ -2686,7 +2659,8 @@ export function measureEventLoopLag(ms: number, cb: (eventLoopLag?: number) => v
 }
 
 /**
- * This function convert state values by read and write of aliases. Function is synchron.
+ * This function convert state values by read and write of aliases. Function is synchronous.
+ * On errors, null is returned instead
  *
  * @param options
  */
@@ -2710,35 +2684,22 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
             return null;
         }
         try {
-            // process the value here
-            const func = new Function(
-                'val',
-                'type',
-                'min',
-                'max',
-                'sType',
-                'sMin',
-                'sMax',
-                `return ${targetCommon.alias.read}`
-            );
-            state.val = func(
-                state.val,
-                targetCommon.type,
-                targetCommon.min,
-                targetCommon.max,
-                sourceCommon.type,
-                sourceCommon.min,
-                sourceCommon.max
-            );
+            state.val = applyAliasTransformer({
+                transformer: targetCommon.alias.read,
+                firstCommon: targetCommon,
+                secondCommon: sourceCommon,
+                isRead: true,
+                state
+            });
         } catch (e) {
             logger.error(
-                `${logNamespace} Invalid read function for "${targetId}": "${targetCommon.alias.read}" => ${e.message}`
+                `${logNamespace}Invalid read function for "${targetId}": "${targetCommon.alias.read}" => ${e.message}`
             );
             return null;
         }
     }
 
-    if (sourceCommon && sourceCommon.alias && sourceCommon.alias.write) {
+    if (sourceCommon?.alias?.write) {
         if (!targetCommon) {
             logger.error(
                 `${logNamespace}target for "${sourceId}" does not exist for "write" function: "${sourceCommon.alias.write}"`
@@ -2746,82 +2707,23 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
             return null;
         }
         try {
-            // process the value here
-            const func = new Function(
-                'val',
-                'type',
-                'min',
-                'max',
-                'tType',
-                'tMin',
-                'tMax',
-                `return ${sourceCommon.alias.write}`
-            );
-            state.val = func(
-                state.val,
-                sourceCommon.type,
-                sourceCommon.min,
-                sourceCommon.max,
-                targetCommon.type,
-                targetCommon.min,
-                targetCommon.max
-            );
+            state.val = applyAliasTransformer({
+                transformer: sourceCommon.alias.write,
+                firstCommon: sourceCommon,
+                secondCommon: targetCommon,
+                isRead: false,
+                state
+            });
         } catch (e) {
             logger.error(
-                `${logNamespace} Invalid write function for "${sourceId}": "${sourceCommon.alias.write}" => ${e.message}`
+                `${logNamespace}Invalid write function for "${sourceId}": "${sourceCommon.alias.write}" => ${e.message}`
             );
             return null;
         }
     }
 
-    if (targetCommon && typeof state.val !== targetCommon.type && state.val !== null) {
-        if (targetCommon.type === 'boolean') {
-            const lowerVal = typeof state.val === 'string' ? state.val.toLowerCase() : state.val;
-            if (lowerVal === 'off' || lowerVal === 'aus' || state.val === '0') {
-                state.val = false;
-            } else {
-                // this also handles strings like "EIN" or such that will be true
-                state.val = !!state.val;
-            }
-        } else if (targetCommon.type === 'number') {
-            state.val = parseFloat(state.val as any);
-        } else if (targetCommon.type === 'string') {
-            state.val = state.val.toString();
-        }
-    }
-
-    // auto-scaling, only if val not null and unit for target (x)or source is %
-    if (
-        ((targetCommon && targetCommon.alias && !targetCommon.alias.read) ||
-            (sourceCommon && sourceCommon.alias && !sourceCommon.alias.write)) &&
-        state.val !== null
-    ) {
-        if (
-            targetCommon &&
-            targetCommon.type === 'number' &&
-            targetCommon.unit === '%' &&
-            sourceCommon &&
-            sourceCommon.type === 'number' &&
-            sourceCommon.unit !== '%' &&
-            sourceCommon.min !== undefined &&
-            sourceCommon.max !== undefined
-        ) {
-            // scale target between 0 and 100 % based on sources min/max
-            state.val = (((state.val as any) - sourceCommon.min) / (sourceCommon.max - sourceCommon.min)) * 100;
-        } else if (
-            sourceCommon &&
-            sourceCommon.type === 'number' &&
-            sourceCommon.unit === '%' &&
-            targetCommon &&
-            targetCommon.unit !== '%' &&
-            targetCommon.type === 'number' &&
-            targetCommon.min !== undefined &&
-            targetCommon.max !== undefined
-        ) {
-            // scale target based on its min/max by its source (assuming source is meant to be 0 - 100 %)
-            state.val = ((targetCommon.max - targetCommon.min) * (state.val as any)) / 100 + targetCommon.min;
-        }
-    }
+    state.val = applyAliasConvenienceConversion({ state, targetCommon });
+    state.val = applyAliasAutoScaling({ state, sourceCommon, targetCommon });
 
     return state;
 }
@@ -2878,7 +2780,7 @@ export function parseDependencies(
                 // No version given, all are okay
                 adapters[rule] = '*';
             } else if (isObject(rule)) {
-                // can be if object containing single adapter or multiple
+                // can be if an object containing a single adapter or multiple
                 Object.keys(rule)
                     .filter(adapter => !adapters[adapter])
                     .forEach(adapter => (adapters[adapter] = rule[adapter]));
@@ -2895,11 +2797,11 @@ export function parseDependencies(
 }
 
 /**
- * Validates types of `obj.common` properties and object.type, if invalid types are used, an error is thrown.
+ * Validates types of `obj.common` properties and `object.type`, if invalid types are used, an error is thrown.
  * If attributes of `obj.common` are not provided, no error is thrown. obj.type has to be there and has to be valid.
  *
  * @param obj an object which will be validated
- * @param extend (optional) if true checks will allow more optional cases for extendObject calls
+ * @param extend (optional) if true checks allow more optional cases for extendObject calls
  * @throws Error if a property has the wrong type or `obj.type` is non-existing
  */
 export function validateGeneralObjectProperties(obj: any, extend?: boolean): void {
@@ -2959,7 +2861,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
         }
 
         if (obj.type === 'state') {
-            // if object type indicates a state, check that common.type matches
+            // if an object type indicates a state, check that `common.type` matches
             const allowedStateTypes = ['number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'];
             if (!allowedStateTypes.includes(obj.common.type)) {
                 throw new Error(
@@ -3022,8 +2924,8 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
                         (obj.common.type === 'object' && typeof obj.common.def === 'string')
                     )
                 ) {
-                    // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'
-                    // array, object, json need to be string
+                    // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json';
+                    // 'array', 'object', 'json' need to be string
                     if (['object', 'json', 'file', 'array'].includes(obj.common.type)) {
                         throw new Error(
                             `Default value has to be stringified but received type "${typeof obj.common.def}"`
@@ -3119,18 +3021,10 @@ export async function getAllInstances(adapters: string[], objects: any): Promise
     return instances;
 }
 
-export interface GetObjectViewResult {
-    rows: ioBroker.GetObjectViewItem<ioBroker.Object>[];
-}
-
-export interface GetObjectViewInstanceEntry {
-    id: string;
-    value: ioBroker.InstanceObject;
-}
-
-export interface GetObjectViewInstanceResult {
-    rows: GetObjectViewInstanceEntry[];
-}
+/** Just a helper, as we have no access to DB package and the specific types here */
+type GetObjectViewResult<TObject extends ioBroker.AnyObject = ioBroker.Object> = Awaited<
+    ioBroker.GetObjectViewPromise<TObject>
+>;
 
 /**
  * Get all existing enums
@@ -3138,13 +3032,13 @@ export interface GetObjectViewInstanceResult {
  * @param objects - objects db
  * @returns Promise
  */
-export async function getAllEnums(objects: any): Promise<Record<string, any>> {
+export async function getAllEnums(objects: any): Promise<Record<string, ioBroker.EnumObject>> {
     const allEnums: Record<string, any> = {};
-    const res: GetObjectViewResult = await objects.getObjectViewAsync('system', 'enum', {
+    const res: GetObjectViewResult<ioBroker.EnumObject> = await objects.getObjectViewAsync('system', 'enum', {
         startkey: 'enum.',
         endkey: 'enum.\u9999'
     });
-    if (res && res.rows) {
+    if (res?.rows) {
         for (const row of res.rows) {
             allEnums[row.id] = row.value;
         }
@@ -3160,21 +3054,27 @@ export async function getAllEnums(objects: any): Promise<Record<string, any>> {
  * @param objects objects DB
  * @param withObjects return objects instead of only ids
  */
-export async function getInstances(adapter: string, objects: any, withObjects: boolean): Promise<any[] | string[]> {
+export async function getInstances<TWithObjects extends boolean>(
+    adapter: string,
+    objects: any,
+    withObjects: TWithObjects
+): Promise<TWithObjects extends true ? ioBroker.InstanceObject[] : ioBroker.ObjectIDs.Instance[]> {
     const arr = await objects.getObjectListAsync({
         startkey: `system.adapter.${adapter}.`,
         endkey: `system.adapter.${adapter}.\u9999`
     });
+
     const instances = [];
-    if (arr && arr.rows) {
-        for (let i = 0; i < arr.rows.length; i++) {
-            if (arr.rows[i].value.type !== 'instance') {
+
+    if (arr?.rows) {
+        for (const row of arr.rows) {
+            if (row.value.type !== 'instance') {
                 continue;
             }
             if (withObjects) {
-                instances.push(arr.rows[i].value);
+                instances.push(row.value);
             } else {
-                instances.push(arr.rows[i].value._id);
+                instances.push(row.value._id);
             }
         }
     }
@@ -3225,7 +3125,7 @@ export function pipeLinewise(input: NodeJS.ReadableStream, output: NodeJS.Writab
 /**
  * Find the adapter main file as full path
  *
- * @param adapter - adapter name of the adapter, e.g. hm-rpc
+ * @param adapter - adapter name of the adapter, e.g., hm-rpc
  * @returns full file name
  */
 export async function resolveAdapterMainFile(adapter: string): Promise<string> {
@@ -3268,7 +3168,7 @@ export async function resolveAdapterMainFile(adapter: string): Promise<string> {
 }
 
 /**
- * Returns the default nodeArgs required to execute the main file, e.g. transpile hooks for TypeScript
+ * Returns the default nodeArgs required to execute the main file, e.g., transpile hooks for TypeScript
  * @param mainFile
  * @returns default node args for cli
  */
@@ -3301,7 +3201,7 @@ export function getDefaultRequireResolvePaths(callerModule: NodeModule): string[
     return ret;
 }
 
-/** This is used for the short github URL format that NPM accepts (<githubname>/<githubrepo>[#<commit-ish>]) */
+/** This is used for the short GitHub URL format that NPM accepts (<githubname>/<githubrepo>[#<commit-ish>]) */
 const shortGithubUrlRegex = /^(?<user>[^/]+)\/(?<repo>[^#]+)(?:#(?<commit>.+))?$/;
 
 /**
@@ -3319,7 +3219,7 @@ export interface ParsedGithubUrl {
 }
 
 /**
- * Tries to parse an URL in the format <githubname>/<githubrepo>[#<commit-ish>] into its separate parts
+ * Tries to parse a URL in the format <githubname>/<githubrepo>[#<commit-ish>] into its separate parts
  * @param url The URL to parse
  */
 export function parseShortGithubUrl(url: string): ParsedGithubUrl | null {
@@ -3364,7 +3264,7 @@ export function parseGithubPathname(pathname: string): ParsedGithubUrl | null {
 
 /**
  * Removes properties which are given by preserve
- * @param preserve - object which has true entries (or array of selected attributes) for all attributes which should be removed from currObj
+ * @param preserve - object which has true entries (or array of selected attributes) for all attributes that should be removed from currObj
  * @param oldObj - old object
  * @param newObj - new object
  */
@@ -3397,8 +3297,8 @@ export function removePreservedProperties(
 /**
  * Returns the array of system.adapter.<namespace>.* objects which are created for every instance
  *
- * @param namespace - adapter namespace + id, e.g. hm-rpc.0
- * @param createWakeup - indicator to create wakeup object too
+ * @param namespace - adapter namespace + id, e.g., hm-rpc.0
+ * @param createWakeup - indicator to create a wakeup object too
  */
 export function getInstanceIndicatorObjects(namespace: string, createWakeup: boolean): ioBroker.StateObject[] {
     const id = `system.adapter.${namespace}`;
@@ -3660,14 +3560,14 @@ export async function getInstancesOrderedByStartPrio(
         logPrefix += ' ';
     }
 
-    let doc: GetObjectViewInstanceResult = { rows: [] };
+    let doc: GetObjectViewResult<ioBroker.InstanceObject> = { rows: [] };
     try {
         doc = await objects.getObjectViewAsync('system', 'instance', {
             startkey: 'system.adapter.',
             endkey: 'system.adapter.\u9999'
         });
     } catch (e) {
-        if (e.message && e.message.startsWith('Cannot find ')) {
+        if (e.message?.startsWith('Cannot find ')) {
             logger.error(`${logPrefix} _design/system missing - call node ${appName}.js setup`);
         } else {
             logger.error(`${logPrefix} Can not get instances: ${e.message}`);
@@ -3678,15 +3578,16 @@ export async function getInstancesOrderedByStartPrio(
         logger.info(`${logPrefix} no instances found`);
     } else {
         for (const row of doc.rows) {
-            if (row && row.value) {
+            if (row?.value) {
                 if (row.value._id.startsWith('system.adapter.admin')) {
                     instances.admin.push(row.value);
-                    /** @ts-expect-error https://github.com/ioBroker/adapter-core/issues/427 */
-                } else if (row.value.common && allowedTiers.includes(parseInt(row.value.common.tier))) {
-                    /** @ts-expect-error we have checked that it is in allowedTiers, thus it is valid */
+                } else if (
+                    row.value.common?.tier !== undefined &&
+                    allowedTiers.includes(Math.round(row.value.common.tier))
+                ) {
                     instances[row.value.common.tier].push(row.value);
                 } else {
-                    // no valid tier so put it in the last one
+                    // no valid tier, so put it in the last one
                     instances['3'].push(row.value);
                 }
             }
@@ -3711,7 +3612,7 @@ export async function setExecutableCapabilities(
     modePermitted?: boolean,
     modeInherited?: boolean
 ): Promise<void> {
-    // if not linux do nothing and silently exit
+    // if not linux do nothing and silent exit
     if (os.platform() !== 'linux') {
         return;
     }
@@ -3727,14 +3628,14 @@ export async function setExecutableCapabilities(
                 // Stdout looks like "0x00000000a80425fb=cap_chown,cap_dac_override,..."
                 if (typeof stdout === 'string' && stdout.startsWith(`0x${capBnd[1]}=`)) {
                     const capBndArr = stdout.substring(capBnd[1].length + 3).split(',');
-                    // if Admin Capability is not included in System Capabilities we remove it from array
+                    // if Admin Capability is not included in System Capabilities, we remove it from an array
                     if (!capBndArr.includes('cap_net_admin')) {
                         capabilities = capabilities.filter(c => c !== 'cap_net_admin');
                     }
                 }
             }
         } catch {
-            // Ok we could not find it out, so update Caps but better without Admin Capability
+            // Ok, we could not find it out, so update Caps but better without Admin Capability
             capabilities = capabilities.filter(c => c !== 'cap_net_admin');
         }
     }
@@ -3759,7 +3660,7 @@ export async function setExecutableCapabilities(
             modes = `+${modes}`;
         }
 
-        // if this throws it needs to be caught outside
+        // if this throws, it needs to be caught outside
         await execAsync(`sudo setcap ${capabilitiesStr}${modes} ${execPath}`);
     }
 }
@@ -3773,12 +3674,12 @@ export async function setExecutableCapabilities(
 async function _readLicenses(login: string, password: string): Promise<any[]> {
     const config = {
         headers: { Authorization: `Basic ${Buffer.from(`${login}:${password}`).toString('base64')}` },
-        timeout: 4000
+        timeout: 4_000
     };
 
     try {
         const response = await axios.get(`https://iobroker.net:3001/api/v1/licenses`, config);
-        if (response.data && response.data.length) {
+        if (response.data?.length) {
             const now = Date.now();
             response.data = response.data.filter(
                 (license: { validTill: string | number }) =>
@@ -3802,7 +3703,7 @@ async function _readLicenses(login: string, password: string): Promise<any[]> {
 
 /**
  * Reads the licenses from iobroker.net
- * Reads the licenses from iobroker.net and if no login/password provided stores it in system.licenses
+ * Reads the licenses from iobroker.net and if no login/password provided stores it in `system.licenses`
  * @param objects Object store instance
  * @param login Login for ioBroker.net
  * @param password Decoded password for ioBroker.net
@@ -3831,7 +3732,7 @@ export async function updateLicenses(objects: any, login: string, password: stri
 
                 // read licenses from iobroker.net
                 const licenses = await _readLicenses(systemLicenses.native.login, password);
-                // save licenses to system.licenses and remember the time
+                // save licenses to system.licenses and remember the time.
                 // merge the information together
                 const oldLicenses: any[] = systemLicenses.native.licenses || [];
                 systemLicenses.native.licenses = licenses;

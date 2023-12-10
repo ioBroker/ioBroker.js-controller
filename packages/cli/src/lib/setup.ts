@@ -406,6 +406,7 @@ function initYargs(): yargs.Argv {
         .command(['uuid', 'id'], 'Show uuid of the installation', {})
         .command('unsetup', 'Reset license, installation secret and language', {})
         .command('fix', 'Execute the installation fixer script, this updates your ioBroker installation', {})
+        .command('nodejs-update [<major-version>]', 'Upgrade the Node.JS installation to the current LTS', {})
         .command('multihost', 'Multihost management', yargs => {
             yargs
                 .command('enable', 'Enable multihost discovery', {
@@ -431,11 +432,11 @@ function initYargs(): yargs.Argv {
                 .command('<adapter>.<instance> status', 'Show if compact mode is enabled for a specific instance')
                 .command('<adapter>.<instance> group <group-id>', 'Define compact group of a specific adapter')
                 .command(
-                    '<adapter>.<instance> <disable|off> [group-id]',
+                    '<adapter>.<instance> <disable|off> [<group-id>]',
                     'Enable or disable compact mode for specified adapter instance and set compact group optionally'
                 )
                 .command(
-                    '<adapter>.<instance> <enable|on> [group-id]',
+                    '<adapter>.<instance> <enable|on> [<group-id>]',
                     'Enable or disable compact mode for specified adapter instance and set compact group optionally'
                 );
         })
@@ -686,20 +687,23 @@ async function processCommand(
 
                         config.objects.options = config.objects.options || {
                             auth_pass: null,
-                            retry_max_delay: 5000
+                            retry_max_delay: 5_000
                         };
                         if (
-                            config.objects.options.retry_max_delay === 15000 ||
+                            config.objects.options.retry_max_delay === 15_000 ||
                             !config.objects.options.retry_max_delay
                         ) {
-                            config.objects.options.retry_max_delay = 5000;
+                            config.objects.options.retry_max_delay = 5_000;
                         }
                         config.states.options = config.states.options || {
                             auth_pass: null,
-                            retry_max_delay: 5000
+                            retry_max_delay: 5_000
                         };
-                        if (config.states.options.retry_max_delay === 15000 || !config.states.options.retry_max_delay) {
-                            config.states.options.retry_max_delay = 5000;
+                        if (
+                            config.states.options.retry_max_delay === 15_000 ||
+                            !config.states.options.retry_max_delay
+                        ) {
+                            config.states.options.retry_max_delay = 5_000;
                         }
 
                         let migrated = '';
@@ -1017,7 +1021,7 @@ async function processCommand(
                         if (name.includes('.')) {
                             if (!subTree) {
                                 console.log(
-                                    `Please specify target name, like:\n${tools.appName} upload /file/picture.png /vis.0/main/img/picture.png`
+                                    `Please specify target name, like:\n${tools.appName} upload /file/picture.png /vis-2.0/main/img/picture.png`
                                 );
                                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                             }
@@ -1354,7 +1358,7 @@ async function processCommand(
             let pattern = args[0];
 
             if (!pattern) {
-                console.log('No file path found. Example: "touch /vis.0/main/*"');
+                console.log('No file path found. Example: "touch /vis-2.0/main/*"');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
             dbConnect(params, ({ states, objects }) => {
@@ -1371,16 +1375,16 @@ async function processCommand(
                             endkey: 'system.adapter.\u9999'
                         },
                         (err, arr) => {
-                            if (!err && arr && arr.rows) {
+                            if (!err && arr?.rows) {
                                 const files: any[] = [];
                                 let count = 0;
-                                for (let i = 0; i < arr.rows.length; i++) {
-                                    if (arr.rows[i].value.type !== 'adapter') {
+                                for (const row of arr.rows) {
+                                    if (row.value.type !== 'adapter') {
                                         continue;
                                     }
                                     count++;
                                     objects.touch(
-                                        arr.rows[i].value.common.name as string,
+                                        row.value.common.name,
                                         '*',
                                         { user: 'system.user.admin' },
                                         // @ts-expect-error todo this looks wrong, we have no cb args other than err
@@ -1397,16 +1401,12 @@ async function processCommand(
                                                 });
                                                 files.sort((a, b) => a.id.localeCompare(b.id));
 
-                                                for (let k = 0; k < files.length; k++) {
-                                                    for (let t = 0; t < files[k].processed.length; t++) {
-                                                        list.showFile(
-                                                            files[k].id,
-                                                            files[k].processed[t].path,
-                                                            files[k].processed[t]
-                                                        );
+                                                for (const file of files) {
+                                                    for (const processedFile of processed) {
+                                                        list.showFile(file.id, processedFile.path, processedFile);
                                                     }
                                                 }
-                                                setTimeout(callback, 1000);
+                                                setTimeout(callback, 1_000);
                                             }
                                         }
                                     );
@@ -1423,7 +1423,7 @@ async function processCommand(
                     const id = parts.shift();
                     const path = parts.join('/');
 
-                    // @ts-expect-error todo processed should not exist, how to proceeed?
+                    // @ts-expect-error todo processed should not exist, how to proceed?
                     objects.touch(id, path, { user: 'system.user.admin' }, async (err, processed) => {
                         if (err) {
                             console.error(err);
@@ -1435,12 +1435,12 @@ async function processCommand(
                                     objects,
                                     processExit: callback
                                 });
-                                for (let i = 0; i < processed.length; i++) {
-                                    list.showFile(id, processed[i].path, processed[i]);
+                                for (const processedFile of processed) {
+                                    list.showFile(id, processedFile.path, processedFile);
                                 }
                             }
                         }
-                        setTimeout(callback, 1000);
+                        setTimeout(callback, 1_000);
                     });
                 }
             });
@@ -1451,7 +1451,7 @@ async function processCommand(
             let pattern = args[0];
 
             if (!pattern) {
-                console.log('No file path found. Example: "touch /vis.0/main/*"');
+                console.log('No file path found. Example: "touch /vis-2.0/main/*"');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
             dbConnect(params, ({ objects, states }) => {
@@ -1468,16 +1468,16 @@ async function processCommand(
                             endkey: 'system.adapter.\u9999'
                         },
                         (err, arr) => {
-                            if (!err && arr && arr.rows) {
+                            if (!err && arr?.rows) {
                                 const files: any[] = [];
                                 let count = 0;
-                                for (let i = 0; i < arr.rows.length; i++) {
-                                    if (arr.rows[i].value.type !== 'adapter') {
+                                for (const row of arr.rows) {
+                                    if (row.value.type !== 'adapter') {
                                         continue;
                                     }
                                     count++;
                                     objects.rm(
-                                        arr.rows[i].value.common.name as string,
+                                        row.value.common.name,
                                         '*',
                                         { user: 'system.user.admin' },
                                         // @ts-expect-error todo id should not exist according to types check it
@@ -1495,16 +1495,12 @@ async function processCommand(
                                                 files.sort((a, b) => a.id.localeCompare(b.id));
 
                                                 list.showFileHeader();
-                                                for (let k = 0; k < files.length; k++) {
-                                                    for (let t = 0; t < files[k].processed.length; t++) {
-                                                        list.showFile(
-                                                            files[k].id,
-                                                            files[k].processed[t].path,
-                                                            files[k].processed[t]
-                                                        );
+                                                for (const file of files) {
+                                                    for (const processedFile of processed) {
+                                                        list.showFile(file.id, processedFile.path, processedFile);
                                                     }
                                                 }
-                                                setTimeout(callback, 1000);
+                                                setTimeout(callback, 1_000);
                                             }
                                         }
                                     );
@@ -1551,7 +1547,7 @@ async function processCommand(
             let pattern = args[1];
 
             if (!mode) {
-                CLIError.requiredArgumentMissing('mode', 'chmod 777 /vis.0/main/*');
+                CLIError.requiredArgumentMissing('mode', 'chmod 777 /vis-2.0/main/*');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
                 //yargs has converted it to number
@@ -1559,7 +1555,7 @@ async function processCommand(
             }
 
             if (!pattern) {
-                CLIError.requiredArgumentMissing('file path', 'chmod 777 /vis.0/main/*');
+                CLIError.requiredArgumentMissing('file path', 'chmod 777 /vis-2.0/main/*');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
             dbConnect(params, ({ objects, states }) => {
@@ -1576,16 +1572,16 @@ async function processCommand(
                             endkey: 'system.adapter.\u9999'
                         },
                         (err, arr) => {
-                            if (!err && arr && arr.rows) {
+                            if (!err && arr?.rows) {
                                 const files: any[] = [];
                                 let count = 0;
-                                for (let i = 0; i < arr.rows.length; i++) {
-                                    if (arr.rows[i].value.type !== 'adapter') {
+                                for (const row of arr.rows) {
+                                    if (row.value.type !== 'adapter') {
                                         continue;
                                     }
                                     count++;
                                     objects.chmodFile(
-                                        arr.rows[i].value.common.name as string,
+                                        row.value.common.name,
                                         '*',
                                         {
                                             user: 'system.user.admin',
@@ -1606,16 +1602,12 @@ async function processCommand(
                                                 files.sort((a, b) => a.id.localeCompare(b.id));
 
                                                 list.showFileHeader();
-                                                for (let k = 0; k < files.length; k++) {
-                                                    for (let t = 0; t < files[k].processed.length; t++) {
-                                                        list.showFile(
-                                                            files[k].id,
-                                                            files[k].processed[t].path,
-                                                            files[k].processed[t]
-                                                        );
+                                                for (const file of files) {
+                                                    for (const processedFile of file.processed) {
+                                                        list.showFile(file.id, processedFile.path, processedFile);
                                                     }
                                                 }
-                                                setTimeout(callback, 1000);
+                                                setTimeout(callback, 1_000);
                                             }
                                         }
                                     );
@@ -1650,7 +1642,7 @@ async function processCommand(
                                 }
                             }
                         }
-                        setTimeout(callback, 1000);
+                        setTimeout(callback, 1_000);
                     });
                 }
             });
@@ -1668,17 +1660,17 @@ async function processCommand(
             }
 
             if (!user) {
-                CLIError.requiredArgumentMissing('user', 'chown user /vis.0/main/*');
+                CLIError.requiredArgumentMissing('user', 'chown user /vis-2.0/main/*');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else if (user.substring(12) !== 'system.user.') {
-                user = 'system.user.' + user;
+                user = `system.user.${user}`;
             }
             if (group && group.substring(13) !== 'system.group.') {
-                group = 'system.group.' + group;
+                group = `system.group.${group}`;
             }
 
             if (!pattern) {
-                CLIError.requiredArgumentMissing('file path', 'chown user /vis.0/main/*');
+                CLIError.requiredArgumentMissing('file path', 'chown user /vis-2.0/main/*');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
             dbConnect(params, ({ objects, states }) => {
@@ -1695,16 +1687,16 @@ async function processCommand(
                             endkey: 'system.adapter.\u9999'
                         },
                         (err, arr) => {
-                            if (!err && arr && arr.rows) {
+                            if (!err && arr?.rows) {
                                 const files: any[] = [];
                                 let count = 0;
-                                for (let i = 0; i < arr.rows.length; i++) {
-                                    if (arr.rows[i].value.type !== 'adapter') {
+                                for (const row of arr.rows) {
+                                    if (row.value.type !== 'adapter') {
                                         continue;
                                     }
                                     count++;
                                     objects.chownFile(
-                                        arr.rows[i].value.common.name as string,
+                                        row.value.common.name as string,
                                         '*',
                                         {
                                             user: 'system.user.admin',
@@ -1735,7 +1727,7 @@ async function processCommand(
                                                         );
                                                     }
                                                 }
-                                                setTimeout(callback, 1000);
+                                                setTimeout(callback, 1_000);
                                             }
                                         }
                                     );
@@ -1779,7 +1771,7 @@ async function processCommand(
                                     }
                                 }
                             }
-                            setTimeout(callback, 1000);
+                            setTimeout(callback, 1_000);
                         }
                     );
                 }
@@ -2243,18 +2235,20 @@ async function processCommand(
                 cmd !== 'del'
             ) {
                 console.log(
-                    'Invalid parameters: write "file read /vis.0/main/img/picture.png /opt/picture/image.png" to read the file'
+                    'Invalid parameters: write "file read /vis-2.0/main/img/picture.png /opt/picture/image.png" to read the file'
                 );
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
             if (cmd !== 'sync' && !args[1]) {
                 console.log(
-                    'Invalid parameters: write "file read /vis.0/main/img/picture.png /opt/picture/image.png" to read the file from DB and store it on disk'
+                    'Invalid parameters: write "file read /vis-2.0/main/img/picture.png /opt/picture/image.png" to read the file from DB and store it on disk'
                 );
                 console.log(
-                    'or                        "file write /opt/SOURCE/image.png /vis.0/main/DESTINATION/picture.png" to write the file into DB from disk'
+                    'or                        "file write /opt/SOURCE/image.png /vis-2.0/main/DESTINATION/picture.png" to write the file into DB from disk'
                 );
-                console.log('or                        "file rm /vis.0/main/img/picture.png" to delete the file in DB');
+                console.log(
+                    'or                        "file rm /vis-2.0/main/img/picture.png" to delete the file in DB'
+                );
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
 
@@ -2319,14 +2313,14 @@ async function processCommand(
                     }
                     if (!fileSrc || !fs.existsSync(toRead)) {
                         console.log(
-                            `Please provide a valid file name as source file: "file write /opt/SOURCE/script.js /vis/DESTINATION/script.js"`
+                            `Please provide a valid file name as source file: "file write /opt/SOURCE/script.js /vis-2/DESTINATION/script.js"`
                         );
                         return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                     }
                     const srcStat = fs.statSync(toRead);
                     if (!srcStat.isFile()) {
                         console.log(
-                            `Please provide a valid file name as source file: "file write /opt/SOURCE/script.js /vis/DESTINATION/script.js"`
+                            `Please provide a valid file name as source file: "file write /opt/SOURCE/script.js /vis-2/DESTINATION/script.js"`
                         );
                         return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                     }
@@ -2427,13 +2421,13 @@ async function processCommand(
                     }
                 } else {
                     console.log(
-                        'Invalid parameters: write "file read /vis.0/main/img/picture.png /opt/picture/image.png" to read the file from DB and store it on disk'
+                        'Invalid parameters: write "file read /vis-2.0/main/img/picture.png /opt/picture/image.png" to read the file from DB and store it on disk'
                     );
                     console.log(
-                        'or                        "file write /opt/SOURCE/image.png /vis.0/main/DESTINATION/picture.png" to write the file into DB from disk'
+                        'or                        "file write /opt/SOURCE/image.png /vis-2.0/main/DESTINATION/picture.png" to write the file into DB from disk'
                     );
                     console.log(
-                        'or                        "file rm /vis.0/main/img/picture.png" to delete the file in DB'
+                        'or                        "file rm /vis-2.0/main/img/picture.png" to delete the file in DB'
                     );
                     return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                 }

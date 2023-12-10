@@ -24,9 +24,9 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js 16
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 16
 
@@ -46,19 +46,15 @@ jobs:
         node: [16, 18, 20]
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
 
       - name: Prepare installation (Linux)
         if: ${{ matrix.os == 'ubuntu-20.04' }}
-        run: |
-          sudo add-apt-repository ppa:chris-lea/redis-server -y
-          sudo apt-get update -q
-          sudo apt-get install redis-server redis-sentinel -y
-          sudo systemctl start redis-server
+        uses: ./.github/actions/install-redis-linux
 
       - name: Prepare installation (MacOS)
         if: ${{ matrix.os == 'macos-latest' }}
@@ -126,11 +122,11 @@ jobs:
 
       - name: Checkout repository
         if: steps.automerge.outputs.mergeResult == 'merged'
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Use Node.js 16
         if: steps.automerge.outputs.mergeResult == 'merged'
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: 16
 

@@ -23,21 +23,17 @@ jobs:
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0 # Fetch the history, or this action won't work
 
       - name: Use Node.js ${{ matrix.node }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node }}
 
       - name: Prepare installation
-        run: |
-          sudo add-apt-repository ppa:chris-lea/redis-server -y
-          sudo apt-get update -q
-          sudo apt-get install redis-server redis-sentinel -y
-          sudo systemctl start redis-server
+        uses: ./.github/actions/install-redis-linux
 
       - name: Install dependencies
         run: npm ci --ignore-scripts # install typescript and @types do not `setup first`

@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "js-controller",
-    "version": "5.0.13",
+    "version": "5.0.18",
     "platform": "Javascript/Node.js",
     "controller": true,
     "mode": "daemon",
@@ -19,7 +19,7 @@
       "zh-cn": "JS控制器"
     },
     "news": {
-      "5.0.12": {
+      "5.0.17": {
         "en": "see CHANGELOG.md",
         "de": "siehe CHANGELOG.md",
         "ru": "см. CHANGELOG.md",
@@ -104,6 +104,7 @@
       "pl": "Implementacja JavaScript/Node.js kontrolera ioBroker",
       "zh-cn": "Javascript / Node.js实现了ioBroker控制器"
     },
+    "tier": 1,
     "messagebox": true,
     "supportedMessages": {
       "custom": true
@@ -680,6 +681,7 @@
         "it": "Notifiche di sistema",
         "es": "Notificaciones del sistema",
         "pl": "Powiadomienia systemowe",
+        "uk": "Системні сповіщення",
         "zh-cn": "系统通知"
       },
       "description": {
@@ -692,6 +694,7 @@
         "it": "Queste notifiche vengono raccolte dal sistema ioBroker e indicano problemi che dovresti controllare e correggere.",
         "es": "Estas notificaciones son recopiladas por el sistema ioBroker y señalan problemas que debe verificar y solucionar.",
         "pl": "Te powiadomienia są zbierane przez system ioBroker i wskazują problemy, które należy sprawdzić i naprawić.",
+        "uk": "Ці сповіщення збираються системою ioBroker і вказують на проблеми, які ви повинні перевірити та виправити.",
         "zh-cn": "这些通知由ioBroker系统收集，并指出您应检查并修复的问题"
       },
       "categories": [
@@ -707,6 +710,7 @@
             "it": "Problemi con la disponibilità della RAM",
             "es": "Problemas con la disponibilidad de RAM",
             "pl": "Problemy z dostępnością pamięci RAM",
+            "uk": "Проблеми з доступністю оперативної пам'яті",
             "zh-cn": "RAM可用性问题"
           },
           "severity": "alert",
@@ -720,6 +724,7 @@
             "it": "Il tuo sistema sta esaurendo la memoria. Controllare il numero di adattatori e processi in esecuzione o se i singoli processi richiedono troppa memoria.",
             "es": "Su sistema se está quedando sin memoria. Verifique el número de adaptadores y procesos en ejecución o si los procesos individuales necesitan demasiada memoria.",
             "pl": "W Twoim systemie kończy się pamięć. Sprawdź liczbę działających adapterów i procesów lub czy pojedyncze procesy wymagają zbyt dużej ilości pamięci.",
+            "uk": "Ваша система не має пам'яті. Будь ласка, перевірте кількість запущених адаптерів та процесів, або чи потребують окремі процеси занадто багато пам'яті.",
             "zh-cn": "您的系统内存不足。请检查正在运行的适配器和进程的数量，或者单个进程是否需要太多内存。"
           },
           "regex": [
@@ -740,6 +745,7 @@
             "it": "Problemi con il file system",
             "es": "Problemas con el sistema de archivos",
             "pl": "Problemy z systemem plików",
+            "uk": "Проблеми з файловою системою",
             "zh-cn": "文件系统问题"
           },
           "severity": "alert",
@@ -753,6 +759,7 @@
             "it": "C'è un errore con il file system. Forse il file system è danneggiato o configurato in modo errato. È richiesto un controllo del file system!",
             "es": "Hay un error con el sistema de archivos. Quizás el sistema de archivos está dañado o configurado incorrectamente. Se requiere una verificación del sistema de archivos.",
             "pl": "Wystąpił błąd w systemie plików. Być może system plików jest uszkodzony lub nieprawidłowo skonfigurowany. Wymagane jest sprawdzenie systemu plików!",
+            "uk": "Помилка файлової системи. Можливо, файлова система пошкоджена або неправильно налаштована. Потрібна перевірка файлової системи!",
             "zh-cn": "文件系统出错。也许文件系统已损坏或配置错误。需要文件系统检查！"
           },
           "regex": [
@@ -778,6 +785,7 @@
             "it": "Problemi con lo spazio libero su disco",
             "es": "Problemas con el espacio libre en disco",
             "pl": "Problemy z wolnym miejscem na dysku",
+            "uk": "Проблеми з вільним місцем на диску",
             "zh-cn": "可用磁盘空间问题"
           },
           "severity": "alert",
@@ -791,6 +799,7 @@
             "it": "Spazio su disco insufficiente sul dispositivo di archiviazione. Si prega di pulire un po 'di spazio su disco.",
             "es": "No queda suficiente espacio en disco en el dispositivo de almacenamiento. Limpie algo de espacio en disco.",
             "pl": "Za mało miejsca na dysku na urządzeniu magazynującym. Proszę wyczyścić trochę miejsca na dysku.",
+            "uk": "На запам'ятовуючому пристрої недостатньо місця на диску. Будь ласка, очистіть місце на диску.",
             "zh-cn": "存储设备上没有足够的磁盘空间。请清理一些磁盘空间。"
           },
           "regex": [
@@ -810,6 +819,7 @@
             "it": "Problemi con i diritti di accesso ai file",
             "es": "Problemas con los derechos de acceso a archivos",
             "pl": "Problemy z prawami dostępu do plików",
+            "uk": "Проблеми з правами доступу до файлів",
             "zh-cn": "文件访问权限问题"
           },
           "severity": "alert",
@@ -823,6 +833,7 @@
             "it": "Si è verificato un problema con i diritti di accesso per i file sul sistema. L'esecuzione del programma di riparazione dell'installazione può risolvere questi problemi. In alternativa, controlla le directory e i file pertinenti.",
             "es": "Existe un problema con los derechos de acceso a los archivos del sistema. Ejecutar el reparador de instalación puede resolver estos problemas. Alternativamente, consulte los directorios y archivos relevantes.",
             "pl": "Wystąpił problem z prawami dostępu do plików w systemie. Uruchomienie narzędzia do naprawy instalacji może rozwiązać te problemy. Alternatywnie sprawdź odpowiednie katalogi i pliki.",
+            "uk": "Є проблема з правами доступу до файлів у системі. Запуск фіксатора встановлення може вирішити ці проблеми. Альтернативно перевірте відповідні каталоги та файли.",
             "zh-cn": "系统上文件的访问权限存在问题。运行安装修复程序可以解决这些问题。或者，检查相关的目录和文件。"
           },
           "regex": [
@@ -843,6 +854,7 @@
             "it": "Problemi con file o directory inesistenti",
             "es": "Problemas con archivos o directorios que no existen",
             "pl": "Problemy z nieistniejącymi plikami lub katalogami",
+            "uk": "Проблеми з неіснуючими файлами або каталогами",
             "zh-cn": "文件或目录不存在的问题"
           },
           "severity": "alert",
@@ -856,6 +868,7 @@
             "it": "Un processo tenta di accedere a un file o una directory inesistente.",
             "es": "Un proceso intenta acceder a un archivo o directorio que no existe.",
             "pl": "Proces próbuje uzyskać dostęp do nieistniejącego pliku lub katalogu.",
+            "uk": "Процес намагається отримати доступ до неіснуючого файлу або каталогу.",
             "zh-cn": "进程尝试访问不存在的文件或目录。"
           },
           "regex": [
@@ -875,6 +888,7 @@
             "it": "Problemi con i server remoti",
             "es": "Problemas con servidores remotos",
             "pl": "Problemy ze zdalnymi serwerami",
+            "uk": "Проблеми з віддаленими серверами",
             "zh-cn": "远程服务器的问题"
           },
           "severity": "alert",
@@ -888,6 +902,7 @@
             "it": "Problema con i server remoti che dovrebbero essere online. Anche i file system remoti montati potrebbero non essere disponibili e devono essere controllati.",
             "es": "Problema con los servidores remotos que se espera que estén en línea. Además, los sistemas de archivos remotos montados pueden no estar disponibles y deben revisarse.",
             "pl": "Problem ze zdalnymi serwerami, które powinny być w trybie online. Również zamontowane zdalne systemy plików mogą być niedostępne i należy je sprawdzić.",
+            "uk": "Проблема з віддаленими серверами, які повинні бути в мережі. Також можуть бути недоступні змонтовані віддалені файлові системи, які потрібно перевірити.",
             "zh-cn": "预期会联机的远程服务器出现问题。安装的远程文件系统也可能不可用，需要进行检查。"
           },
           "regex": [
@@ -907,6 +922,7 @@
             "it": "Problemi con le istanze dell'adattatore che si arrestano frequentemente",
             "es": "Problemas con instancias de adaptador que fallan con frecuencia",
             "pl": "Problemy z często zawieszającymi się instancjami adaptera",
+            "uk": "Проблеми з частими збоями екземплярів адаптера",
             "zh-cn": "适配器实例频繁崩溃的问题"
           },
           "severity": "alert",
@@ -920,6 +936,7 @@
             "it": "Un'istanza dell'adattatore si blocca spesso all'avvio ed è stata interrotta per questo motivo. Il file di registro deve essere controllato prima di riavviare l'istanza.",
             "es": "Una instancia de adaptador falla con frecuencia al iniciarse y se detuvo debido a esto. Es necesario comprobar el archivo de registro antes de reiniciar la instancia.",
             "pl": "Instancja adaptera często ulega awarii podczas uruchamiania i została z tego powodu zatrzymana. Plik dziennika należy sprawdzić przed ponownym uruchomieniem instancji.",
+            "uk": "Екземпляр адаптера часто дає збій при запуску і був зупинений через це. Перед перезапуском екземпляра необхідно перевірити файл журналу.",
             "zh-cn": "适配器实例在启动时经常崩溃，因此已被停止。重新启动实例之前，需要检查日志文件。"
           },
           "regex": [],
@@ -937,6 +954,7 @@
             "it": "Migrazione automatica a JSONL",
             "es": "Migración automática a JSONL",
             "pl": "Automatyczna migracja do JSONL",
+            "uk": "Автоматична міграція на JSONL",
             "zh-cn": "自动迁移到 JSONL"
           },
           "severity": "notify",
@@ -950,6 +968,7 @@
             "it": "Il tipo di database utilizzato nel sistema è stato automaticamente modificato da \"file\" a \"jsonl\". Ciò significa che un normale downgrade è possibile solo a js-controller 3.3 o versioni successive! Inoltre, il file di database ora ha \".jsonl\" come fine del file. Per ulteriori domande, controlla nei nostri forum.",
             "es": "El tipo de base de datos utilizado en su sistema se cambió automáticamente de \"file\" a \"jsonl\". ¡Esto significa que una degradación normal solo es posible a js-controller 3.3 o superior! Además, el archivo de la base de datos ahora tiene \".jsonl\" como final de archivo. Si tiene más preguntas, consulte nuestros foros.",
             "pl": "Używany typ bazy danych w twoim systemie został automatycznie zmieniony z \"file\" na \"jsonl\". Oznacza to, że normalny downgrade jest możliwy tylko do js-controller 3.3 lub nowszego! Dodatkowo plik bazy danych ma teraz końcówkę „.jsonl”. W przypadku dalszych pytań odwiedź nasze fora.",
+            "uk": "Використаний тип бази даних у вашій системі був автоматично змінений з «файлу» на «jsonl». Це означає, що звичайне пониження можливе лише до js-controller 3.3 або вище! Крім того, файл бази даних тепер має розширення «.jsonl». Якщо у вас є додаткові питання, будь ласка, зверніться до наших форумів.",
             "zh-cn": "您系统中使用的数据库类型已自动从“文件”更改为“jsonl”。这意味着只能正常降级到 js-controller 3.3 或更高版本！此外，数据库文件现在以“.jsonl”作为文件结尾。如有更多问题，请查看我们的论坛。"
           },
           "regex": [],
@@ -999,6 +1018,7 @@
             "it": "Il ricorso è stato disattivato",
             "es": "Se desactiva la instalación",
             "pl": "Instytucja została deaktywowana",
+            "uk": "Екземпляр було деактивовано",
             "zh-cn": "案件"
           },
           "severity": "alert",
@@ -1012,8 +1032,8 @@
             "it": "La versione installata è stata bloccata dal team ioBroker.\nSi prega di aggiornare l'adattatore alla versione più recente o disponibile prima di abilitarlo.\nL'istanza deve essere abilitata manualmente.",
             "es": "La versión instalada fue bloqueada por el equipo de ioBroker.\nPor favor, actualice el adaptador a la versión nueva o disponible antes de habilitarlo.\nLa instalación debe ser activada manualmente.",
             "pl": "Wersja została zablokowana przez zespół ioBroker.\nZastosowanie adapter do nowszej lub dostępnej wersji, zanim można go uzyskać.\nInstytucja musi być poddana ręcznie.",
-            "zh-cn": "总的版本被零星球队阻挠。.\n请提供最新资料。.\n必须能够以手工方式进行。.",
-            "uk": "Установлену версію було заблоковано командою ioBroker.\nБудь ласка, оновіть адаптер до офіційної версії в репозиторії, перш ніж увімкнути його.\nЕкземпляр потрібно ввімкнути вручну."
+            "uk": "Установлену версію було заблоковано командою ioBroker.\nБудь ласка, оновіть адаптер до офіційної версії в репозиторії, перш ніж увімкнути його.\nЕкземпляр потрібно ввімкнути вручну.",
+            "zh-cn": "总的版本被零星球队阻挠。.\n请提供最新资料。.\n必须能够以手工方式进行。."
           },
           "regex": [],
           "limit": 1
@@ -1030,6 +1050,7 @@
             "it": "Problemi con il database",
             "es": "Problemy z bazą danych",
             "pl": "Instytucja została deaktywowana",
+            "uk": "Проблеми з базою даних",
             "zh-cn": "数据库的问题"
           },
           "severity": "alert",
@@ -1043,11 +1064,75 @@
             "it": "Forse il database ha problemi interni o è mal configurato.",
             "es": "Hay un error con la base de datos.\nQuizás la base de datos tiene problemas internos o está mal configurada.",
             "pl": "Wystąpił błąd z bazą danych.\nMoże baza danych ma wewnętrzne problemy lub jest źle skonfigurowana.",
-            "zh-cn": "数据库有错误。也许数据库有内部问题或配置错误。",
-            "uk": "Виникла помилка з базою даних.\nМожливо, база даних має внутрішні проблеми або неправильно налаштована."
+            "uk": "Виникла помилка з базою даних.\nМожливо, база даних має внутрішні проблеми або неправильно налаштована.",
+            "zh-cn": "数据库有错误。也许数据库有内部问题或配置错误。"
           },
           "regex": [],
           "limit": 10
+        },
+        {
+          "category": "securityIssues",
+          "name": {
+            "en": "Instance has security issues",
+            "de": "Instanz hat Sicherheitsprobleme",
+            "ru": "Экземпляр имеет проблемы безопасности",
+            "pt": "A instância tem problemas de segurança",
+            "nl": "Instantie heeft beveiligingsproblemen",
+            "fr": "L'instance a des problèmes de sécurité",
+            "it": "L'istanza ha problemi di sicurezza",
+            "es": "La instancia tiene problemas de seguridad",
+            "pl": "Instytucja ma problemy z bezpieczeństwem",
+            "uk": "Екземпляр має проблеми безпеки",
+            "zh-cn": "实例存在安全问题"
+          },
+          "severity": "alert",
+          "description": {
+            "en": "Instance has problems with security and should be checked.",
+            "de": "Instanz hat Probleme mit der Sicherheit und sollte überprüft werden.",
+            "ru": "Экземпляр имеет проблемы с безопасностью и должен быть проверен.",
+            "pt": "A instância tem problemas de segurança e deve ser verificada.",
+            "nl": "Instantie heeft problemen met beveiliging en moet worden gecontroleerd.",
+            "fr": "L'instance a des problèmes de sécurité et doit être vérifiée.",
+            "it": "L'istanza ha problemi di sicurezza e deve essere controllata.",
+            "es": "La instancia tiene problemas de seguridad y debe ser revisada.",
+            "pl": "Instytucja ma problemy z bezpieczeństwem i powinna zostać sprawdzona.",
+            "uk": "Екземпляр має проблеми з безпекою і повинен бути перевірений.",
+            "zh-cn": "实例存在安全问题，应进行检查。"
+          },
+          "regex": [],
+          "limit": 1
+        },
+        {
+          "category": "packageUpdates",
+          "name": {
+            "en": "OS package updates available",
+            "de": "Betriebssystem-Paket-Updates verfügbar",
+            "ru": "Доступны обновления пакетов ОС",
+            "pt": "Actualizações de pacotes do SO disponíveis",
+            "nl": "OS-pakketupdates beschikbaar",
+            "fr": "Mises à jour du système d'exploitation disponibles",
+            "it": "Aggiornamenti del pacchetto OS disponibili",
+            "es": "Actualizaciones de paquetes del SO disponibles",
+            "pl": "Dostępne aktualizacje pakietów systemu operacyjnego",
+            "uk": "Доступні оновлення пакетів ОС",
+            "zh-cn": "提供操作系统软件包更新"
+          },
+          "severity": "notify",
+          "description": {
+            "en": "Some OS packages can be updated.",
+            "de": "Einige Betriebssystempakete können aktualisiert werden.",
+            "ru": "Некоторые пакеты ОС могут быть обновлены.",
+            "pt": "Alguns pacotes do sistema operativo podem ser actualizados.",
+            "nl": "Sommige OS-pakketten kunnen worden bijgewerkt.",
+            "fr": "Certains paquets du système d'exploitation peuvent être mis à jour.",
+            "it": "Alcuni pacchetti del sistema operativo possono essere aggiornati.",
+            "es": "Algunos paquetes del sistema operativo pueden actualizarse.",
+            "pl": "Niektóre pakiety systemu operacyjnego mogą zostać zaktualizowane.",
+            "uk": "Деякі пакунки ОС можна оновити.",
+            "zh-cn": "某些操作系统软件包可以更新。"
+          },
+          "regex": [],
+          "limit": 1
         }
       ]
     }

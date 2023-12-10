@@ -96,7 +96,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         object: 1536, // 0600
                         owner: 'system.user.admin',
                         ownerGroup: 'system.group.administrator'
-                    }
+                    },
+                    objects: [],
+                    instanceObjects: []
                 })
             );
     }).timeout(2_000);

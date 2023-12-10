@@ -31,13 +31,13 @@
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:70](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L70)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:69](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L69)
 
 ## Methods
 
 ### registerClientSubscribeByMessage
 
-▸ **registerClientSubscribeByMessage**(`msg`): `Promise`<`void`\>
+▸ **registerClientSubscribeByMessage**(`msg`): `Promise`<`undefined` \| [`UserInterfaceClientSubscribeReturnType`](../interfaces/internal_.UserInterfaceClientSubscribeReturnType.md)\>
 
 Register subscription from new client
 
@@ -49,11 +49,11 @@ Register subscription from new client
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`<`undefined` \| [`UserInterfaceClientSubscribeReturnType`](../interfaces/internal_.UserInterfaceClientSubscribeReturnType.md)\>
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:117](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L117)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L116)
 
 ___
 
@@ -62,6 +62,7 @@ ___
 ▸ **removeClientSubscribeByMessage**(`msg`): `void`
 
 Remove a client subscription, issued by message
+It contains an array of types which should be unsubscribed
 
 #### Parameters
 
@@ -75,7 +76,7 @@ Remove a client subscription, issued by message
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:156](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L156)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:159](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L159)
 
 ___
 
@@ -97,7 +98,7 @@ Send a message to all active clients
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:104](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L104)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:103](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L103)
 
 ___
 
@@ -119,4 +120,4 @@ Send a message to the given clientId
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:83](https://github.com/ioBroker/ioBroker.js-controller/blob/0b3c6e0e/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L83)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:82](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L82)

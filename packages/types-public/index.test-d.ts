@@ -770,6 +770,9 @@ const _adapterObject: ioBroker.AdapterObject = {
         name: 'test',
         automaticUpgrade: 'minor',
         platform: 'Javascript/Node.js',
+        supportedMessages: {
+            deviceManager: true
+        },
         titleLang: {
             de: 'foo',
             es: 'foo',
@@ -780,11 +783,14 @@ const _adapterObject: ioBroker.AdapterObject = {
             pt: 'foo',
             ru: 'foo',
             en: 'foo',
+            uk: 'foo',
             'zh-cn': 'foo'
         },
         version: '1.2.3',
         blockedVersions: ['~3.14.0', '4.0.1']
-    }
+    },
+    instanceObjects: [],
+    objects: []
 };
 
 const _folderObject: ioBroker.FolderObject = {
@@ -808,6 +814,20 @@ const _metaObject: ioBroker.MetaObject = {
     native: {}
 };
 
+const _deviceObject: ioBroker.DeviceObject = {
+    _id: '',
+    type: 'device',
+    common: {
+        name: 'my device',
+        statusStates: {
+            offlineId: 'device.isOffline',
+            onlineId: 'device.isOnline',
+            errorId: 'device.isError'
+        }
+    },
+    native: {}
+};
+
 const _instanceObject: ioBroker.InstanceObject = {
     _id: 'system.adapter.test.0',
     type: 'instance',
@@ -821,7 +841,9 @@ const _instanceObject: ioBroker.InstanceObject = {
         materialize: true,
         installedVersion: '1.0.0'
     },
-    native: {}
+    native: {},
+    instanceObjects: [],
+    objects: []
 };
 
 const _userObject: ioBroker.UserObject = {

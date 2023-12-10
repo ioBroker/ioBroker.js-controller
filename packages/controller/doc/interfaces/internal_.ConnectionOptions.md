@@ -4,6 +4,12 @@
 
 [<internal>](../modules/internal_.md).ConnectionOptions
 
+## Hierarchy
+
+- **`ConnectionOptions`**
+
+  ↳ [`RedisConnectionOptions`](internal_.RedisConnectionOptions.md)
+
 ## Table of contents
 
 ### Properties

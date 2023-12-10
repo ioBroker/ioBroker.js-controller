@@ -1,7 +1,6 @@
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { AdapterClass } from './adapter';
 import type {
-    ClientUnsubscribeReason,
     UserInterfaceClientRemoveMessage,
     UserInterfaceClientSubscribeHandler,
     UserInterfaceClientSubscribeReturnType,
@@ -114,7 +113,9 @@ export class UserInterfaceMessagingController {
      *
      * @param msg The subscribe message
      */
-    async registerClientSubscribeByMessage(msg: ioBroker.Message): Promise<void> {
+    async registerClientSubscribeByMessage(
+        msg: ioBroker.Message
+    ): Promise<UserInterfaceClientSubscribeReturnType | undefined> {
         if (!this.subscribeCallback) {
             return;
         }
@@ -137,43 +138,48 @@ export class UserInterfaceMessagingController {
         }
 
         if (!res.accepted) {
-            return;
+            return res;
         }
 
         this.handlers.set(clientId, handler);
-
         if (res.heartbeat) {
             const timer = setTimeout(() => this.heartbeatExpired(clientId), res.heartbeat);
             this.heartbeatTimers.set(clientId, { heartbeat: res.heartbeat, timer });
         }
+
+        return res;
     }
 
     /**
      * Remove a client subscription, issued by message
+     * It contains an array of types which should be unsubscribed
      *
      * @param msg The unsubscribe message
      */
     removeClientSubscribeByMessage(msg: UserInterfaceClientRemoveMessage): void {
         const handler = this.extractHandlerFromMessage(msg);
-        const clientId = this.handlerToId(handler);
+        const reason = msg.command === 'clientSubscribeError' ? msg.command : msg.message.reason;
 
-        const reason: ClientUnsubscribeReason =
-            msg.command === 'clientSubscribeError' ? msg.command : msg.message.reason;
+        const types = msg.message.type;
 
-        if (this.heartbeatTimers.has(clientId)) {
-            const timer = this.heartbeatTimers.get(clientId)!;
+        for (const type of types) {
+            const clientId = this.handlerToId({ ...handler, type });
 
-            clearTimeout(timer.timer);
-            this.heartbeatTimers.delete(clientId);
-        }
+            if (this.heartbeatTimers.has(clientId)) {
+                const timer = this.heartbeatTimers.get(clientId)!;
 
-        if (!this.handlers.has(clientId)) {
-            return;
-        }
+                clearTimeout(timer.timer);
+                this.heartbeatTimers.delete(clientId);
+            }
 
-        this.handlers.delete(clientId);
-        if (this.unsubscribeCallback) {
-            this.unsubscribeCallback({ clientId, message: msg, reason });
+            if (!this.handlers.has(clientId)) {
+                return;
+            }
+
+            this.handlers.delete(clientId);
+            if (this.unsubscribeCallback) {
+                this.unsubscribeCallback({ clientId, message: msg, reason });
+            }
         }
     }
 
