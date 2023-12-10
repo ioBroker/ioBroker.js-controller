@@ -12,6 +12,15 @@ The ioBroker.js-controller is the heart of any ioBroker installation. The contro
 
 **Please check the js-controller compatibility information below which version runs on your Node.js version**
 
+## Overview
+- [Compatibility](#compatibility)
+- [Links](#links)
+- [Usage](#usage)
+- [Configuration](#configuration)
+- [Feature Overview](#feature-overview)
+- [Release cycle and Development process overview](#release-cycle-and-development-process-overview)
+- [License](#license)
+
 ## Compatibility
 * js-controller 5.x works with Node.js 16.x, 18.x and probably 20.x
 * js-controller 4.x works with Node.js 12.x, 14.x, 16.x (incl. up to NPM 8) and probably 18.x
@@ -73,6 +82,22 @@ The main configuration is stored in `iobroker-data/iobroker.json`. Normally ther
 The admin adapter is installed automatically and starts a web-server that hosts the Admin UI. Default port is 8081, so just open `http://<iobroker-ip>:8081/`
 
 If port 8081 is occupied, you can install a second Admin UI on an alternate port and change the port for the first admin UI. To do so, run ```iobroker add admin --enabled --port 8090``` and go to the `http://<iobroker-ip>:8090/`. Of course you can change port 8090 to a different one.
+
+### Automatic adapter upgrade
+**Feature status:** New in 5.1.0
+
+Whenever the repository changes, the controller will perform an automatic upgrade of the adapters, w.r.t. the auto-upgrade policy.
+The policy can be configured system-wide and per adapter. Whenever there is no policy on adapter-level the system-wide policy is used as a fallback.
+
+Technically, the system-wide policy is configured in the `system.config` object in `common.adapterAutoUpgrade.defaultPolicy`. The policy is only active for the
+repositories which are set to `true` in `common.adapterAutoUpgrade.repositories`. On adapter level, the policy is configured in `common.automaticUpgrade` 
+of each `system.adapter.<adapterName>` object.
+
+Valid values for the policy are `none`, `patch`, `minor` and `major`. These relate to the version ranges, which will be automatically upgraded. 
+**It is strongly recommended to not configure `major` upgrades to be performed automatically, as these do often contain breaking changes and need manual 
+intervention by the user.**
+
+A successful auto-upgrade will generate a notification in the ioBroker notification system (see [Notification System](#notification-system)).
 
 ### Command Line Interface
 **Feature status:** stable
