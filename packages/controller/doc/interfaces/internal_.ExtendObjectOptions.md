@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / ExtendObjectOptions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / ExtendObjectOptions
 
 # Interface: ExtendObjectOptions
 
-[<internal>](../modules/internal_.md).ExtendObjectOptions
+[\<internal\>](../modules/internal_.md).ExtendObjectOptions
 
 ## Indexable
 
@@ -24,4 +24,4 @@ Which properties of the original object should be preserved
 
 #### Defined in
 
-[types-dev/index.d.ts:302](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L302)
+[types-dev/index.d.ts:302](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L302)

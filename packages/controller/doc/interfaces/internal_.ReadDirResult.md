@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / ReadDirResult
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / ReadDirResult
 
 # Interface: ReadDirResult
 
-[<internal>](../modules/internal_.md).ReadDirResult
+[\<internal\>](../modules/internal_.md).ReadDirResult
 
 Contains the return values of readDir
 
@@ -27,7 +27,7 @@ Access rights
 
 #### Defined in
 
-[types-dev/index.d.ts:431](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L431)
+[types-dev/index.d.ts:431](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L431)
 
 ___
 
@@ -39,7 +39,7 @@ Date of creation
 
 #### Defined in
 
-[types-dev/index.d.ts:435](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L435)
+[types-dev/index.d.ts:435](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L435)
 
 ___
 
@@ -51,7 +51,7 @@ Name of the file or directory
 
 #### Defined in
 
-[types-dev/index.d.ts:425](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L425)
+[types-dev/index.d.ts:425](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L425)
 
 ___
 
@@ -63,7 +63,7 @@ Whether this is a directory or a file
 
 #### Defined in
 
-[types-dev/index.d.ts:429](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L429)
+[types-dev/index.d.ts:429](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L429)
 
 ___
 
@@ -75,16 +75,16 @@ Date of last modification
 
 #### Defined in
 
-[types-dev/index.d.ts:433](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L433)
+[types-dev/index.d.ts:433](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L433)
 
 ___
 
 ### stats
 
-• **stats**: `Partial`<`Stats`\>
+• **stats**: `Partial`\<`Stats`\>
 
 File system stats
 
 #### Defined in
 
-[types-dev/index.d.ts:427](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L427)
+[types-dev/index.d.ts:427](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L427)

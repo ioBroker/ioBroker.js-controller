@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / BackupOptions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / BackupOptions
 
 # Interface: BackupOptions
 
-[<internal>](../modules/internal_.md).BackupOptions
+[\<internal\>](../modules/internal_.md).BackupOptions
 
 ## Table of contents
 

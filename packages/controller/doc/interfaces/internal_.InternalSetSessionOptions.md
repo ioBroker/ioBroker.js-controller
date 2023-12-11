@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / InternalSetSessionOptions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / InternalSetSessionOptions
 
 # Interface: InternalSetSessionOptions
 
-[<internal>](../modules/internal_.md).InternalSetSessionOptions
+[\<internal\>](../modules/internal_.md).InternalSetSessionOptions
 
 ## Table of contents
 
@@ -21,17 +21,17 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L181)
+[adapter/src/lib/_Types.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L181)
 
 ___
 
 ### data
 
-• **data**: `Record`<`string`, `any`\>
+• **data**: `Record`\<`string`, `any`\>
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:180](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L180)
+[adapter/src/lib/_Types.ts:180](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L180)
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L178)
+[adapter/src/lib/_Types.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L178)
 
 ___
 
@@ -51,4 +51,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:179](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L179)
+[adapter/src/lib/_Types.ts:179](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L179)

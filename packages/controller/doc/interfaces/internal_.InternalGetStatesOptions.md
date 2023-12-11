@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / InternalGetStatesOptions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / InternalGetStatesOptions
 
 # Interface: InternalGetStatesOptions
 
-[<internal>](../modules/internal_.md).InternalGetStatesOptions
+[\<internal\>](../modules/internal_.md).InternalGetStatesOptions
 
 ## Table of contents
 
@@ -20,17 +20,17 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:443](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L443)
+[adapter/src/lib/_Types.ts:443](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L443)
 
 ___
 
 ### options
 
-• **options**: `Record`<`string`, `any`\>
+• **options**: `Record`\<`string`, `any`\>
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:442](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L442)
+[adapter/src/lib/_Types.ts:442](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L442)
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:441](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L441)
+[adapter/src/lib/_Types.ts:441](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L441)

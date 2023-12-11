@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / ObjectOperationPermissions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / ObjectOperationPermissions
 
 # Interface: ObjectOperationPermissions
 
-[<internal>](../modules/internal_.md).ObjectOperationPermissions
+[\<internal\>](../modules/internal_.md).ObjectOperationPermissions
 
 Defines access rights for a single object type
 
@@ -26,7 +26,7 @@ Whether a user may create objects of this type
 
 #### Defined in
 
-[types-dev/index.d.ts:100](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L100)
+[types-dev/index.d.ts:100](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L100)
 
 ___
 
@@ -38,7 +38,7 @@ Whether a user may delete objects of this type
 
 #### Defined in
 
-[types-dev/index.d.ts:102](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L102)
+[types-dev/index.d.ts:102](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L102)
 
 ___
 
@@ -50,7 +50,7 @@ Whether a user may enumerate objects of this type
 
 #### Defined in
 
-[types-dev/index.d.ts:94](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L94)
+[types-dev/index.d.ts:94](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L94)
 
 ___
 
@@ -62,7 +62,7 @@ Whether a user may read objects of this type
 
 #### Defined in
 
-[types-dev/index.d.ts:96](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L96)
+[types-dev/index.d.ts:96](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L96)
 
 ___
 
@@ -74,4 +74,4 @@ Whether a user may write objects of this type
 
 #### Defined in
 
-[types-dev/index.d.ts:98](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L98)
+[types-dev/index.d.ts:98](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L98)

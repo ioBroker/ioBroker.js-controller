@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / RedisConnectionOptions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / RedisConnectionOptions
 
 # Interface: RedisConnectionOptions
 
-[<internal>](../modules/internal_.md).RedisConnectionOptions
+[\<internal\>](../modules/internal_.md).RedisConnectionOptions
 
 ## Hierarchy
 
@@ -103,7 +103,7 @@ ___
 
 ### options
 
-• **options**: `Record`<`string`, `any`\>
+• **options**: `Record`\<`string`, `any`\>
 
 #### Inherited from
 
