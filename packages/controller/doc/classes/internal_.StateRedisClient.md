@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / StateRedisClient
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / StateRedisClient
 
 # Class: StateRedisClient
 
-[<internal>](../modules/internal_.md).StateRedisClient
+[\<internal\>](../modules/internal_.md).StateRedisClient
 
 ## Table of contents
 
@@ -51,13 +51,17 @@
 
 ### constructor
 
-• **new StateRedisClient**(`settings`)
+• **new StateRedisClient**(`settings`): [`StateRedisClient`](internal_.StateRedisClient.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `settings` | [`StatesSettings`](../interfaces/internal_.StatesSettings.md) |
+
+#### Returns
+
+[`StateRedisClient`](internal_.StateRedisClient.md)
 
 #### Defined in
 
@@ -91,7 +95,7 @@ ___
 
 ### delBinaryState
 
-▸ **delBinaryState**(`id`, `callback?`): `Promise`<`string` \| `void`\>
+▸ **delBinaryState**(`id`, `callback?`): `Promise`\<`string` \| `void`\>
 
 #### Parameters
 
@@ -102,7 +106,7 @@ ___
 
 #### Returns
 
-`Promise`<`string` \| `void`\>
+`Promise`\<`string` \| `void`\>
 
 #### Defined in
 
@@ -112,7 +116,7 @@ ___
 
 ### delState
 
-▸ **delState**(`id`, `callback?`): `Promise`<`undefined` \| `string` \| `void`\>
+▸ **delState**(`id`, `callback?`): `Promise`\<`undefined` \| `string` \| `void`\>
 
 #### Parameters
 
@@ -123,7 +127,7 @@ ___
 
 #### Returns
 
-`Promise`<`undefined` \| `string` \| `void`\>
+`Promise`\<`undefined` \| `string` \| `void`\>
 
 #### Defined in
 
@@ -133,11 +137,11 @@ ___
 
 ### destroy
 
-▸ **destroy**(): `Promise`<`void`\>
+▸ **destroy**(): `Promise`\<`void`\>
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -147,11 +151,7 @@ ___
 
 ### destroyDB
 
-▸ **destroyDB**(`callback?`): `Promise`<`void`\>
-
-**`Method`**
-
-destroyDB
+▸ **destroyDB**(`callback?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -161,7 +161,11 @@ destroyDB
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
+
+**`Method`**
+
+destroyDB
 
 #### Defined in
 
@@ -171,7 +175,7 @@ ___
 
 ### destroySession
 
-▸ **destroySession**(`id`, `callback?`): `Promise`<`void`\>
+▸ **destroySession**(`id`, `callback?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -182,7 +186,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -192,7 +196,7 @@ ___
 
 ### getBinaryState
 
-▸ **getBinaryState**(`id`, `callback`): `Promise`<`void` \| `Buffer`\>
+▸ **getBinaryState**(`id`, `callback`): `Promise`\<`void` \| `Buffer`\>
 
 #### Parameters
 
@@ -203,7 +207,7 @@ ___
 
 #### Returns
 
-`Promise`<`void` \| `Buffer`\>
+`Promise`\<`void` \| `Buffer`\>
 
 #### Defined in
 
@@ -213,7 +217,7 @@ ___
 
 ### getKeys
 
-▸ **getKeys**(`pattern`, `callback?`, `dontModify?`): `Promise`<`undefined` \| `void` \| `string`[]\>
+▸ **getKeys**(`pattern`, `callback?`, `dontModify?`): `Promise`\<`undefined` \| `void` \| `string`[]\>
 
 #### Parameters
 
@@ -225,7 +229,7 @@ ___
 
 #### Returns
 
-`Promise`<`undefined` \| `void` \| `string`[]\>
+`Promise`\<`undefined` \| `void` \| `string`[]\>
 
 #### Defined in
 
@@ -235,13 +239,13 @@ ___
 
 ### getProtocolVersion
 
-▸ **getProtocolVersion**(): `Promise`<``null`` \| `string`\>
+▸ **getProtocolVersion**(): `Promise`\<``null`` \| `string`\>
 
 Returns the protocol version from DB
 
 #### Returns
 
-`Promise`<``null`` \| `string`\>
+`Promise`\<``null`` \| `string`\>
 
 #### Defined in
 
@@ -251,18 +255,18 @@ ___
 
 ### getSession
 
-▸ **getSession**(`id`, `callback`): `Promise`<``null`` \| `void` \| `Record`<`string`, `any`\>\>
+▸ **getSession**(`id`, `callback`): `Promise`\<``null`` \| `void` \| `Record`\<`string`, `any`\>\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `callback` | (`err`: `undefined` \| ``null`` \| `Error`, `session?`: ``null`` \| `Record`<`string`, `any`\>) => `void` |
+| `callback` | (`err`: `undefined` \| ``null`` \| `Error`, `session?`: ``null`` \| `Record`\<`string`, `any`\>) => `void` |
 
 #### Returns
 
-`Promise`<``null`` \| `void` \| `Record`<`string`, `any`\>\>
+`Promise`\<``null`` \| `void` \| `Record`\<`string`, `any`\>\>
 
 #### Defined in
 
@@ -272,11 +276,7 @@ ___
 
 ### getState
 
-▸ **getState**(`id`, `callback?`): `Promise`<`undefined` \| ``null`` \| `void` \| [`State`](../interfaces/internal_.State.md)\>
-
-**`Method`**
-
-getState
+▸ **getState**(`id`, `callback?`): `Promise`\<`undefined` \| ``null`` \| `void` \| [`State`](../interfaces/internal_.State.md)\>
 
 #### Parameters
 
@@ -287,7 +287,11 @@ getState
 
 #### Returns
 
-`Promise`<`undefined` \| ``null`` \| `void` \| [`State`](../interfaces/internal_.State.md)\>
+`Promise`\<`undefined` \| ``null`` \| `void` \| [`State`](../interfaces/internal_.State.md)\>
+
+**`Method`**
+
+getState
 
 #### Defined in
 
@@ -297,7 +301,7 @@ ___
 
 ### getStateAsync
 
-▸ **getStateAsync**(`id`): `Promise`<`undefined` \| ``null`` \| `void` \| [`State`](../interfaces/internal_.State.md)\>
+▸ **getStateAsync**(`id`): `Promise`\<`undefined` \| ``null`` \| `void` \| [`State`](../interfaces/internal_.State.md)\>
 
 Promise-version of getState
 
@@ -309,7 +313,7 @@ Promise-version of getState
 
 #### Returns
 
-`Promise`<`undefined` \| ``null`` \| `void` \| [`State`](../interfaces/internal_.State.md)\>
+`Promise`\<`undefined` \| ``null`` \| `void` \| [`State`](../interfaces/internal_.State.md)\>
 
 #### Defined in
 
@@ -319,7 +323,7 @@ ___
 
 ### getStates
 
-▸ **getStates**(`keys`, `callback?`, `dontModify?`): `Promise`<`void` \| (``null`` \| [`State`](../interfaces/internal_.State.md))[]\>
+▸ **getStates**(`keys`, `callback?`, `dontModify?`): `Promise`\<`void` \| (``null`` \| [`State`](../interfaces/internal_.State.md))[]\>
 
 #### Parameters
 
@@ -331,7 +335,7 @@ ___
 
 #### Returns
 
-`Promise`<`void` \| (``null`` \| [`State`](../interfaces/internal_.State.md))[]\>
+`Promise`\<`void` \| (``null`` \| [`State`](../interfaces/internal_.State.md))[]\>
 
 #### Defined in
 
@@ -355,7 +359,7 @@ ___
 
 ### pushLog
 
-▸ **pushLog**(`id`, `log`, `callback?`): `Promise`<`string` \| `void`\>
+▸ **pushLog**(`id`, `log`, `callback?`): `Promise`\<`string` \| `void`\>
 
 #### Parameters
 
@@ -367,7 +371,7 @@ ___
 
 #### Returns
 
-`Promise`<`string` \| `void`\>
+`Promise`\<`string` \| `void`\>
 
 #### Defined in
 
@@ -377,7 +381,7 @@ ___
 
 ### pushMessage
 
-▸ **pushMessage**(`id`, `message`): `Promise`<`void`\>
+▸ **pushMessage**(`id`, `message`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -388,7 +392,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -398,7 +402,7 @@ ___
 
 ### setBinaryState
 
-▸ **setBinaryState**(`id`, `data`, `callback?`): `Promise`<`void`\>
+▸ **setBinaryState**(`id`, `data`, `callback?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -410,7 +414,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -420,7 +424,7 @@ ___
 
 ### setProtocolVersion
 
-▸ **setProtocolVersion**(`version`): `Promise`<`void`\>
+▸ **setProtocolVersion**(`version`): `Promise`\<`void`\>
 
 Sets the protocol version to the DB
 
@@ -432,7 +436,7 @@ Sets the protocol version to the DB
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -442,7 +446,7 @@ ___
 
 ### setRawState
 
-▸ **setRawState**(`id`, `state`): `Promise`<`string`\>
+▸ **setRawState**(`id`, `state`): `Promise`\<`string`\>
 
 #### Parameters
 
@@ -453,7 +457,7 @@ ___
 
 #### Returns
 
-`Promise`<`string`\>
+`Promise`\<`string`\>
 
 #### Defined in
 
@@ -463,7 +467,7 @@ ___
 
 ### setSession
 
-▸ **setSession**(`id`, `expireS`, `obj`, `callback?`): `Promise`<`void`\>
+▸ **setSession**(`id`, `expireS`, `obj`, `callback?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -471,12 +475,12 @@ ___
 | :------ | :------ |
 | `id` | `string` |
 | `expireS` | `number` |
-| `obj` | `Record`<`string`, `any`\> |
+| `obj` | `Record`\<`string`, `any`\> |
 | `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -486,11 +490,7 @@ ___
 
 ### setState
 
-▸ **setState**(`id`, `state`, `callback?`): `Promise`<`string` \| `void`\>
-
-**`Method`**
-
-setState
+▸ **setState**(`id`, `state`, `callback?`): `Promise`\<`string` \| `void`\>
 
 #### Parameters
 
@@ -502,7 +502,11 @@ setState
 
 #### Returns
 
-`Promise`<`string` \| `void`\>
+`Promise`\<`string` \| `void`\>
+
+**`Method`**
+
+setState
 
 #### Defined in
 
@@ -512,7 +516,7 @@ ___
 
 ### setStateAsync
 
-▸ **setStateAsync**(`id`, `state`): `Promise`<`string`\>
+▸ **setStateAsync**(`id`, `state`): `Promise`\<`string`\>
 
 Promise-version of setState
 
@@ -525,7 +529,7 @@ Promise-version of setState
 
 #### Returns
 
-`Promise`<`string`\>
+`Promise`\<`string`\>
 
 #### Defined in
 
@@ -535,7 +539,7 @@ ___
 
 ### subscribe
 
-▸ **subscribe**(`pattern`, `callback?`): `Promise`<`void`\>
+▸ **subscribe**(`pattern`, `callback?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -546,13 +550,13 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
 db-states-redis/build/lib/states/statesInRedisClient.d.ts:134
 
-▸ **subscribe**(`pattern`, `asUser`, `callback?`): `Promise`<`void`\>
+▸ **subscribe**(`pattern`, `asUser`, `callback?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -564,7 +568,7 @@ db-states-redis/build/lib/states/statesInRedisClient.d.ts:134
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -574,7 +578,7 @@ ___
 
 ### subscribeLog
 
-▸ **subscribeLog**(`id`, `callback?`): `Promise`<`void`\>
+▸ **subscribeLog**(`id`, `callback?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -585,7 +589,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -595,7 +599,7 @@ ___
 
 ### subscribeMessage
 
-▸ **subscribeMessage**(`id`, `callback?`): `Promise`<`void`\>
+▸ **subscribeMessage**(`id`, `callback?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -606,7 +610,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -616,11 +620,7 @@ ___
 
 ### subscribeUser
 
-▸ **subscribeUser**(`pattern`, `callback?`): `Promise`<`void`\>
-
-**`Method`**
-
-subscribeUser
+▸ **subscribeUser**(`pattern`, `callback?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -631,7 +631,11 @@ subscribeUser
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
+
+**`Method`**
+
+subscribeUser
 
 #### Defined in
 
@@ -641,7 +645,7 @@ ___
 
 ### unsubscribe
 
-▸ **unsubscribe**(`pattern`, `asUser`, `callback?`): `Promise`<`void`\>
+▸ **unsubscribe**(`pattern`, `asUser`, `callback?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -653,13 +657,13 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
 db-states-redis/build/lib/states/statesInRedisClient.d.ts:143
 
-▸ **unsubscribe**(`pattern`, `callback?`): `Promise`<`void`\>
+▸ **unsubscribe**(`pattern`, `callback?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -670,7 +674,7 @@ db-states-redis/build/lib/states/statesInRedisClient.d.ts:143
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -680,7 +684,7 @@ ___
 
 ### unsubscribeLog
 
-▸ **unsubscribeLog**(`id`, `callback?`): `Promise`<`void`\>
+▸ **unsubscribeLog**(`id`, `callback?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -691,7 +695,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -701,7 +705,7 @@ ___
 
 ### unsubscribeMessage
 
-▸ **unsubscribeMessage**(`id`, `callback?`): `Promise`<`void`\>
+▸ **unsubscribeMessage**(`id`, `callback?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -712,7 +716,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -722,11 +726,7 @@ ___
 
 ### unsubscribeUser
 
-▸ **unsubscribeUser**(`pattern`, `callback?`): `Promise`<`void`\>
-
-**`Method`**
-
-unsubscribeUser
+▸ **unsubscribeUser**(`pattern`, `callback?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -737,7 +737,11 @@ unsubscribeUser
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
+
+**`Method`**
+
+unsubscribeUser
 
 #### Defined in
 

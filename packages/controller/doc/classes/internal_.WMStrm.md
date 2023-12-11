@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / WMStrm
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / WMStrm
 
 # Class: WMStrm
 
-[<internal>](../modules/internal_.md).WMStrm
+[\<internal\>](../modules/internal_.md).WMStrm
 
 Writable memory stream
 
@@ -26,7 +26,7 @@ Writable memory stream
 
 ### constructor
 
-• **new WMStrm**(`key`, `options`)
+• **new WMStrm**(`key`, `options`): [`WMStrm`](internal_.WMStrm.md)
 
 #### Parameters
 
@@ -34,6 +34,10 @@ Writable memory stream
 | :------ | :------ |
 | `key` | `string` |
 | `options` | `WritableOptions` |
+
+#### Returns
+
+[`WMStrm`](internal_.WMStrm.md)
 
 #### Overrides
 

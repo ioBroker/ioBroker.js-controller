@@ -1,6 +1,6 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / <internal\>
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / \<internal\>
 
-# Module: <internal\>
+# Module: \<internal\>
 
 ## Table of contents
 
@@ -307,21 +307,21 @@
 
 ### Adapter
 
-Ƭ **Adapter**: \`system.adapter.${string}\`
+Ƭ **Adapter**: \`system.adapter.$\{string}\`
 
 #### Defined in
 
-[types-dev/objects.d.ts:81](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L81)
+[types-dev/objects.d.ts:81](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L81)
 
 ___
 
 ### AdapterScoped
 
-Ƭ **AdapterScoped**: \`${string}.${number}.${string}\`
+Ƭ **AdapterScoped**: \`$\{string}.$\{number}.$\{string}\`
 
 #### Defined in
 
-[types-dev/objects.d.ts:94](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L94)
+[types-dev/objects.d.ts:94](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L94)
 
 ___
 
@@ -333,7 +333,7 @@ All objects that usually appear in an adapter scope
 
 #### Defined in
 
-[types-dev/objects.d.ts:901](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L901)
+[types-dev/objects.d.ts:901](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L901)
 
 ___
 
@@ -343,7 +343,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:864](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L864)
+[types-dev/objects.d.ts:864](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L864)
 
 ___
 
@@ -353,25 +353,25 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:882](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L882)
+[types-dev/objects.d.ts:882](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L882)
 
 ___
 
 ### AtLeastOne
 
-Ƭ **AtLeastOne**<`T`, `Req`, `Opt`\>: { [K in keyof Req]: Omit<Opt, K\> & { [P in K]: Req[P] } }[keyof `Req`]
+Ƭ **AtLeastOne**\<`T`, `Req`, `Opt`\>: \{ [K in keyof Req]: Omit\<Opt, K\> & \{ [P in K]: Req[P] } }[keyof `Req`]
 
 #### Type parameters
 
 | Name | Type |
 | :------ | :------ |
 | `T` | `T` |
-| `Req` | { [K in keyof T]-?: T[K] } |
-| `Opt` | { [K in keyof T]?: T[K] } |
+| `Req` | \{ [K in keyof T]-?: T[K] } |
+| `Opt` | \{ [K in keyof T]?: T[K] } |
 
 #### Defined in
 
-[types-dev/index.d.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L10)
+[types-dev/index.d.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L10)
 
 ___
 
@@ -395,17 +395,17 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:236](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L236)
+[adapter/src/lib/_Types.ts:236](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L236)
 
 ___
 
 ### Callback
 
-Ƭ **Callback**: (...`args`: `any`[]) => `void` \| `Promise`<`void`\>
+Ƭ **Callback**: (...`args`: `any`[]) => `void` \| `Promise`\<`void`\>
 
 #### Type declaration
 
-▸ (`...args`): `void` \| `Promise`<`void`\>
+▸ (`...args`): `void` \| `Promise`\<`void`\>
 
 ##### Parameters
 
@@ -415,17 +415,17 @@ ___
 
 ##### Returns
 
-`void` \| `Promise`<`void`\>
+`void` \| `Promise`\<`void`\>
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:4](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/adapter/validator.ts#L4)
+[adapter/src/lib/adapter/validator.ts:4](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/adapter/validator.ts#L4)
 
 ___
 
 ### CallbackReturnTypeOf
 
-Ƭ **CallbackReturnTypeOf**<`T`\>: [`SecondParameterOf`](internal_.md#secondparameterof)<`T`\>
+Ƭ **CallbackReturnTypeOf**\<`T`\>: [`SecondParameterOf`](internal_.md#secondparameterof)\<`T`\>
 
 Infers the return type from a callback-style API and leaves null and undefined in
 
@@ -437,7 +437,7 @@ Infers the return type from a callback-style API and leaves null and undefined i
 
 #### Defined in
 
-[types-dev/index.d.ts:395](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L395)
+[types-dev/index.d.ts:395](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L395)
 
 ___
 
@@ -493,17 +493,17 @@ ___
 
 ### Channel
 
-Ƭ **Channel**: \`script.js.${"common" \| "global"}\` \| \`${string}.${number}.info\`
+Ƭ **Channel**: \`script.js.$\{"common" \| "global"}\` \| \`$\{string}.$\{number}.info\`
 
 #### Defined in
 
-[types-dev/objects.d.ts:71](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L71)
+[types-dev/objects.d.ts:71](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L71)
 
 ___
 
 ### CheckFileCallback
 
-Ƭ **CheckFileCallback**: (`checkFailed`: `boolean`, `options?`: [`CallOptions`](../interfaces/internal_.CallOptions.md), `fileOptions?`: { `notExists`: `boolean`  }) => `void`
+Ƭ **CheckFileCallback**: (`checkFailed`: `boolean`, `options?`: [`CallOptions`](../interfaces/internal_.CallOptions.md), `fileOptions?`: \{ `notExists`: `boolean`  }) => `void`
 
 #### Type declaration
 
@@ -530,7 +530,7 @@ ___
 
 ### CheckFileRightsCallback
 
-Ƭ **CheckFileRightsCallback**: (`err`: `Error` \| ``null`` \| `undefined`, `options`: `Record`<`string`, `any`\>, `opt?`: `any`) => `void`
+Ƭ **CheckFileRightsCallback**: (`err`: `Error` \| ``null`` \| `undefined`, `options`: `Record`\<`string`, `any`\>, `opt?`: `any`) => `void`
 
 #### Type declaration
 
@@ -541,7 +541,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `err` | `Error` \| ``null`` \| `undefined` |
-| `options` | `Record`<`string`, `any`\> |
+| `options` | `Record`\<`string`, `any`\> |
 | `opt?` | `any` |
 
 ##### Returns
@@ -574,7 +574,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:220](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L220)
+[adapter/src/lib/_Types.ts:220](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L220)
 
 ___
 
@@ -599,7 +599,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:200](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L200)
+[adapter/src/lib/_Types.ts:200](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L200)
 
 ___
 
@@ -609,7 +609,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:173](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L173)
+[adapter/src/lib/_Types.ts:173](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L173)
 
 ___
 
@@ -634,7 +634,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:460](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L460)
+[types-dev/index.d.ts:460](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L460)
 
 ___
 
@@ -659,7 +659,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:471](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L471)
+[types-dev/index.d.ts:471](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L471)
 
 ___
 
@@ -669,7 +669,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:61](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L61)
+[adapter/src/lib/_Types.ts:61](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L61)
 
 ___
 
@@ -679,7 +679,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:234](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L234)
+[adapter/src/lib/_Types.ts:234](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L234)
 
 ___
 
@@ -696,7 +696,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:229](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L229)
+[adapter/src/lib/_Types.ts:229](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L229)
 
 ___
 
@@ -710,7 +710,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:230](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L230)
+[adapter/src/lib/_Types.ts:230](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L230)
 
 ___
 
@@ -720,17 +720,17 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:154](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L154)
+[types-dev/objects.d.ts:154](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L154)
 
 ___
 
 ### Config
 
-Ƭ **Config**: \`system.${"certificates" \| "config" \| "repositories"}\`
+Ƭ **Config**: \`system.$\{"certificates" \| "config" \| "repositories"}\`
 
 #### Defined in
 
-[types-dev/objects.d.ts:89](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L89)
+[types-dev/objects.d.ts:89](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L89)
 
 ___
 
@@ -755,17 +755,17 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:412](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L412)
+[types-dev/index.d.ts:412](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L412)
 
 ___
 
 ### Design
 
-Ƭ **Design**: \`\_design/${string}\`
+Ƭ **Design**: \`\_design/$\{string}\`
 
 #### Defined in
 
-[types-dev/objects.d.ts:91](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L91)
+[types-dev/objects.d.ts:91](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L91)
 
 ___
 
@@ -783,17 +783,17 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:331](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L331)
+[types-dev/index.d.ts:331](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L331)
 
 ___
 
 ### Enum
 
-Ƭ **Enum**: \`enum.${string}\`
+Ƭ **Enum**: \`enum.$\{string}\`
 
 #### Defined in
 
-[types-dev/objects.d.ts:77](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L77)
+[types-dev/objects.d.ts:77](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L77)
 
 ___
 
@@ -803,7 +803,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:260](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L260)
+[types-dev/index.d.ts:260](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L260)
 
 ___
 
@@ -829,7 +829,7 @@ Special variant of ErrorCallback for methods where Node.js returns an ErrnoExcep
 
 #### Defined in
 
-[types-dev/index.d.ts:334](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L334)
+[types-dev/index.d.ts:334](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L334)
 
 ___
 
@@ -853,7 +853,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:332](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L332)
+[types-dev/index.d.ts:332](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L332)
 
 ___
 
@@ -877,13 +877,13 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:329](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L329)
+[types-dev/index.d.ts:329](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L329)
 
 ___
 
 ### ExtendObjectCallback
 
-Ƭ **ExtendObjectCallback**: (`err?`: `Error` \| ``null``, `result?`: { `id`: `string` ; `value`: [`Object`](internal_.md#object)  }, `id?`: `string`) => `void`
+Ƭ **ExtendObjectCallback**: (`err?`: `Error` \| ``null``, `result?`: \{ `id`: `string` ; `value`: [`Object`](internal_.md#object)  }, `id?`: `string`) => `void`
 
 #### Type declaration
 
@@ -905,7 +905,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:499](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L499)
+[types-dev/index.d.ts:499](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L499)
 
 ___
 
@@ -931,7 +931,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:326](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L326)
+[types-dev/index.d.ts:326](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L326)
 
 ___
 
@@ -957,13 +957,13 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:370](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L370)
+[types-dev/index.d.ts:370](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L370)
 
 ___
 
 ### GenericCallback
 
-Ƭ **GenericCallback**<`T`\>: (`err?`: `Error` \| ``null``, `result?`: `T`) => `void`
+Ƭ **GenericCallback**\<`T`\>: (`err?`: `Error` \| ``null``, `result?`: `T`) => `void`
 
 #### Type parameters
 
@@ -988,7 +988,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:336](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L336)
+[types-dev/index.d.ts:336](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L336)
 
 ___
 
@@ -1013,17 +1013,17 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:403](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L403)
+[types-dev/index.d.ts:403](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L403)
 
 ___
 
 ### GetBinaryStatePromise
 
-Ƭ **GetBinaryStatePromise**: `Promise`<[`CallbackReturnTypeOf`](internal_.md#callbackreturntypeof)<[`GetBinaryStateCallback`](internal_.md#getbinarystatecallback)\>\>
+Ƭ **GetBinaryStatePromise**: `Promise`\<[`CallbackReturnTypeOf`](internal_.md#callbackreturntypeof)\<[`GetBinaryStateCallback`](internal_.md#getbinarystatecallback)\>\>
 
 #### Defined in
 
-[types-dev/index.d.ts:404](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L404)
+[types-dev/index.d.ts:404](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L404)
 
 ___
 
@@ -1049,7 +1049,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:254](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L254)
+[adapter/src/lib/_Types.ts:254](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L254)
 
 ___
 
@@ -1059,7 +1059,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:260](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L260)
+[adapter/src/lib/_Types.ts:260](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L260)
 
 ___
 
@@ -1084,13 +1084,13 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:273](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L273)
+[adapter/src/lib/_Types.ts:273](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L273)
 
 ___
 
 ### GetEnumCallback
 
-Ƭ **GetEnumCallback**: (`err?`: `Error` \| ``null``, `enums?`: `Record`<`string`, [`EnumObject`](../interfaces/internal_.EnumObject.md)\>, `requestedEnum?`: `string`) => `void`
+Ƭ **GetEnumCallback**: (`err?`: `Error` \| ``null``, `enums?`: `Record`\<`string`, [`EnumObject`](../interfaces/internal_.EnumObject.md)\>, `requestedEnum?`: `string`) => `void`
 
 #### Type declaration
 
@@ -1101,7 +1101,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `err?` | `Error` \| ``null`` |
-| `enums?` | `Record`<`string`, [`EnumObject`](../interfaces/internal_.EnumObject.md)\> |
+| `enums?` | `Record`\<`string`, [`EnumObject`](../interfaces/internal_.EnumObject.md)\> |
 | `requestedEnum?` | `string` |
 
 ##### Returns
@@ -1110,13 +1110,13 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:350](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L350)
+[types-dev/index.d.ts:350](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L350)
 
 ___
 
 ### GetEnumsCallback
 
-Ƭ **GetEnumsCallback**: (`err?`: `Error` \| ``null``, `result?`: { `[groupName: string]`: `Record`<`string`, [`EnumObject`](../interfaces/internal_.EnumObject.md)\>;  }) => `void`
+Ƭ **GetEnumsCallback**: (`err?`: `Error` \| ``null``, `result?`: \{ `[groupName: string]`: `Record`\<`string`, [`EnumObject`](../interfaces/internal_.EnumObject.md)\>;  }) => `void`
 
 #### Type declaration
 
@@ -1135,17 +1135,17 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:351](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L351)
+[types-dev/index.d.ts:351](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L351)
 
 ___
 
 ### GetEnumsPromise
 
-Ƭ **GetEnumsPromise**: `Promise`<[`NonNullCallbackReturnTypeOf`](internal_.md#nonnullcallbackreturntypeof)<[`GetEnumsCallback`](internal_.md#getenumscallback)\>\>
+Ƭ **GetEnumsPromise**: `Promise`\<[`NonNullCallbackReturnTypeOf`](internal_.md#nonnullcallbackreturntypeof)\<[`GetEnumsCallback`](internal_.md#getenumscallback)\>\>
 
 #### Defined in
 
-[types-dev/index.d.ts:357](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L357)
+[types-dev/index.d.ts:357](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L357)
 
 ___
 
@@ -1172,17 +1172,17 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:415](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L415)
+[types-dev/index.d.ts:415](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L415)
 
 ___
 
 ### GetHistoryResult
 
-Ƭ **GetHistoryResult**: [`State`](../interfaces/internal_.State.md) & { `id?`: `string`  }[]
+Ƭ **GetHistoryResult**: [`State`](../interfaces/internal_.State.md) & \{ `id?`: `string`  }[]
 
 #### Defined in
 
-[types-dev/index.d.ts:414](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L414)
+[types-dev/index.d.ts:414](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L414)
 
 ___
 
@@ -1207,13 +1207,13 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:473](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L473)
+[types-dev/index.d.ts:473](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L473)
 
 ___
 
 ### GetObjectCallback
 
-Ƭ **GetObjectCallback**<`T`\>: (`err?`: `Error` \| ``null``, `obj?`: [`ObjectIdToObjectType`](internal_.md#objectidtoobjecttype)<`T`\> \| ``null``) => `void`
+Ƭ **GetObjectCallback**\<`T`\>: (`err?`: `Error` \| ``null``, `obj?`: [`ObjectIdToObjectType`](internal_.md#objectidtoobjecttype)\<`T`\> \| ``null``) => `void`
 
 #### Type parameters
 
@@ -1230,7 +1230,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `err?` | `Error` \| ``null`` |
-| `obj?` | [`ObjectIdToObjectType`](internal_.md#objectidtoobjecttype)<`T`\> \| ``null`` |
+| `obj?` | [`ObjectIdToObjectType`](internal_.md#objectidtoobjecttype)\<`T`\> \| ``null`` |
 
 ##### Returns
 
@@ -1238,13 +1238,13 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:344](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L344)
+[types-dev/index.d.ts:344](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L344)
 
 ___
 
 ### GetObjectListCallback
 
-Ƭ **GetObjectListCallback**<`T`\>: (`err?`: `Error` \| ``null``, `result?`: { `rows`: [`GetObjectListItem`](../interfaces/internal_.GetObjectListItem.md)<`T`\>[]  }) => `void`
+Ƭ **GetObjectListCallback**\<`T`\>: (`err?`: `Error` \| ``null``, `result?`: \{ `rows`: [`GetObjectListItem`](../interfaces/internal_.GetObjectListItem.md)\<`T`\>[]  }) => `void`
 
 #### Type parameters
 
@@ -1262,7 +1262,7 @@ ___
 | :------ | :------ |
 | `err?` | `Error` \| ``null`` |
 | `result?` | `Object` |
-| `result.rows` | [`GetObjectListItem`](../interfaces/internal_.GetObjectListItem.md)<`T`\>[] |
+| `result.rows` | [`GetObjectListItem`](../interfaces/internal_.GetObjectListItem.md)\<`T`\>[] |
 
 ##### Returns
 
@@ -1270,23 +1270,23 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:493](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L493)
+[types-dev/index.d.ts:493](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L493)
 
 ___
 
 ### GetObjectListPromise
 
-Ƭ **GetObjectListPromise**: `Promise`<[`NonNullCallbackReturnTypeOf`](internal_.md#nonnullcallbackreturntypeof)<[`GetObjectListCallback`](internal_.md#getobjectlistcallback)<[`Object`](internal_.md#object)\>\>\>
+Ƭ **GetObjectListPromise**: `Promise`\<[`NonNullCallbackReturnTypeOf`](internal_.md#nonnullcallbackreturntypeof)\<[`GetObjectListCallback`](internal_.md#getobjectlistcallback)\<[`Object`](internal_.md#object)\>\>\>
 
 #### Defined in
 
-[types-dev/index.d.ts:497](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L497)
+[types-dev/index.d.ts:497](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L497)
 
 ___
 
 ### GetObjectPromise
 
-Ƭ **GetObjectPromise**<`T`\>: `Promise`<[`CallbackReturnTypeOf`](internal_.md#callbackreturntypeof)<[`GetObjectCallback`](internal_.md#getobjectcallback)<`T`\>\>\>
+Ƭ **GetObjectPromise**\<`T`\>: `Promise`\<[`CallbackReturnTypeOf`](internal_.md#callbackreturntypeof)\<[`GetObjectCallback`](internal_.md#getobjectcallback)\<`T`\>\>\>
 
 #### Type parameters
 
@@ -1296,13 +1296,13 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:348](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L348)
+[types-dev/index.d.ts:348](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L348)
 
 ___
 
 ### GetObjectViewCallback
 
-Ƭ **GetObjectViewCallback**<`T`\>: (`err?`: `Error` \| ``null``, `result?`: { `rows`: [`GetObjectViewItem`](../interfaces/internal_.GetObjectViewItem.md)<`T`\>[]  }) => `void`
+Ƭ **GetObjectViewCallback**\<`T`\>: (`err?`: `Error` \| ``null``, `result?`: \{ `rows`: [`GetObjectViewItem`](../interfaces/internal_.GetObjectViewItem.md)\<`T`\>[]  }) => `void`
 
 #### Type parameters
 
@@ -1320,7 +1320,7 @@ ___
 | :------ | :------ |
 | `err?` | `Error` \| ``null`` |
 | `result?` | `Object` |
-| `result.rows` | [`GetObjectViewItem`](../interfaces/internal_.GetObjectViewItem.md)<`T`\>[] |
+| `result.rows` | [`GetObjectViewItem`](../interfaces/internal_.GetObjectViewItem.md)\<`T`\>[] |
 
 ##### Returns
 
@@ -1328,13 +1328,13 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:481](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L481)
+[types-dev/index.d.ts:481](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L481)
 
 ___
 
 ### GetObjectViewPromise
 
-Ƭ **GetObjectViewPromise**<`T`\>: `Promise`<[`NonNullCallbackReturnTypeOf`](internal_.md#nonnullcallbackreturntypeof)<[`GetObjectViewCallback`](internal_.md#getobjectviewcallback)<`T`\>\>\>
+Ƭ **GetObjectViewPromise**\<`T`\>: `Promise`\<[`NonNullCallbackReturnTypeOf`](internal_.md#nonnullcallbackreturntypeof)\<[`GetObjectViewCallback`](internal_.md#getobjectviewcallback)\<`T`\>\>\>
 
 #### Type parameters
 
@@ -1344,13 +1344,13 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:485](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L485)
+[types-dev/index.d.ts:485](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L485)
 
 ___
 
 ### GetObjectsCallback
 
-Ƭ **GetObjectsCallback**: (`err?`: `Error` \| ``null``, `objects?`: `Record`<`string`, [`Object`](internal_.md#object)\>) => `void`
+Ƭ **GetObjectsCallback**: (`err?`: `Error` \| ``null``, `objects?`: `Record`\<`string`, [`Object`](internal_.md#object)\>) => `void`
 
 #### Type declaration
 
@@ -1361,7 +1361,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `err?` | `Error` \| ``null`` |
-| `objects?` | `Record`<`string`, [`Object`](internal_.md#object)\> |
+| `objects?` | `Record`\<`string`, [`Object`](internal_.md#object)\> |
 
 ##### Returns
 
@@ -1369,13 +1369,13 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:359](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L359)
+[types-dev/index.d.ts:359](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L359)
 
 ___
 
 ### GetObjectsCallback3
 
-Ƭ **GetObjectsCallback3**<`T`\>: (`err?`: `Error` \| ``null``, `result?`: `T`[]) => `void`
+Ƭ **GetObjectsCallback3**\<`T`\>: (`err?`: `Error` \| ``null``, `result?`: `T`[]) => `void`
 
 #### Type parameters
 
@@ -1400,13 +1400,13 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:380](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L380)
+[types-dev/index.d.ts:380](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L380)
 
 ___
 
 ### GetObjectsCallbackTyped
 
-Ƭ **GetObjectsCallbackTyped**<`T`\>: (`err?`: `Error` \| ``null``, `objects?`: `Record`<`string`, [`AnyObject`](internal_.md#anyobject) & { `type`: `T`  }\>) => `void`
+Ƭ **GetObjectsCallbackTyped**\<`T`\>: (`err?`: `Error` \| ``null``, `objects?`: `Record`\<`string`, [`AnyObject`](internal_.md#anyobject) & \{ `type`: `T`  }\>) => `void`
 
 #### Type parameters
 
@@ -1423,7 +1423,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `err?` | `Error` \| ``null`` |
-| `objects?` | `Record`<`string`, [`AnyObject`](internal_.md#anyobject) & { `type`: `T`  }\> |
+| `objects?` | `Record`\<`string`, [`AnyObject`](internal_.md#anyobject) & \{ `type`: `T`  }\> |
 
 ##### Returns
 
@@ -1431,23 +1431,23 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:362](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L362)
+[types-dev/index.d.ts:362](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L362)
 
 ___
 
 ### GetObjectsPromise
 
-Ƭ **GetObjectsPromise**: `Promise`<[`NonNullCallbackReturnTypeOf`](internal_.md#nonnullcallbackreturntypeof)<[`GetObjectsCallback`](internal_.md#getobjectscallback)\>\>
+Ƭ **GetObjectsPromise**: `Promise`\<[`NonNullCallbackReturnTypeOf`](internal_.md#nonnullcallbackreturntypeof)\<[`GetObjectsCallback`](internal_.md#getobjectscallback)\>\>
 
 #### Defined in
 
-[types-dev/index.d.ts:360](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L360)
+[types-dev/index.d.ts:360](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L360)
 
 ___
 
 ### GetObjectsPromiseTyped
 
-Ƭ **GetObjectsPromiseTyped**<`T`\>: `Promise`<[`NonNullCallbackReturnTypeOf`](internal_.md#nonnullcallbackreturntypeof)<[`GetObjectsCallbackTyped`](internal_.md#getobjectscallbacktyped)<`T`\>\>\>
+Ƭ **GetObjectsPromiseTyped**\<`T`\>: `Promise`\<[`NonNullCallbackReturnTypeOf`](internal_.md#nonnullcallbackreturntypeof)\<[`GetObjectsCallbackTyped`](internal_.md#getobjectscallbacktyped)\<`T`\>\>\>
 
 #### Type parameters
 
@@ -1457,7 +1457,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:366](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L366)
+[types-dev/index.d.ts:366](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L366)
 
 ___
 
@@ -1481,7 +1481,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:505](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L505)
+[types-dev/index.d.ts:505](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L505)
 
 ___
 
@@ -1506,23 +1506,23 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:397](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L397)
+[types-dev/index.d.ts:397](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L397)
 
 ___
 
 ### GetStatePromise
 
-Ƭ **GetStatePromise**: `Promise`<[`CallbackReturnTypeOf`](internal_.md#callbackreturntypeof)<[`GetStateCallback`](internal_.md#getstatecallback)\>\>
+Ƭ **GetStatePromise**: `Promise`\<[`CallbackReturnTypeOf`](internal_.md#callbackreturntypeof)\<[`GetStateCallback`](internal_.md#getstatecallback)\>\>
 
 #### Defined in
 
-[types-dev/index.d.ts:398](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L398)
+[types-dev/index.d.ts:398](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L398)
 
 ___
 
 ### GetStatesCallback
 
-Ƭ **GetStatesCallback**: (`err?`: `Error` \| ``null``, `states?`: `Record`<`string`, [`State`](../interfaces/internal_.State.md)\>) => `void`
+Ƭ **GetStatesCallback**: (`err?`: `Error` \| ``null``, `states?`: `Record`\<`string`, [`State`](../interfaces/internal_.State.md)\>) => `void`
 
 #### Type declaration
 
@@ -1533,7 +1533,7 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `err?` | `Error` \| ``null`` |
-| `states?` | `Record`<`string`, [`State`](../interfaces/internal_.State.md)\> |
+| `states?` | `Record`\<`string`, [`State`](../interfaces/internal_.State.md)\> |
 
 ##### Returns
 
@@ -1541,17 +1541,17 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:400](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L400)
+[types-dev/index.d.ts:400](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L400)
 
 ___
 
 ### GetStatesPromise
 
-Ƭ **GetStatesPromise**: `Promise`<[`NonNullCallbackReturnTypeOf`](internal_.md#nonnullcallbackreturntypeof)<[`GetStatesCallback`](internal_.md#getstatescallback)\>\>
+Ƭ **GetStatesPromise**: `Promise`\<[`NonNullCallbackReturnTypeOf`](internal_.md#nonnullcallbackreturntypeof)\<[`GetStatesCallback`](internal_.md#getstatescallback)\>\>
 
 #### Defined in
 
-[types-dev/index.d.ts:401](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L401)
+[types-dev/index.d.ts:401](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L401)
 
 ___
 
@@ -1593,27 +1593,27 @@ ___
 
 ### Group
 
-Ƭ **Group**: \`system.group.${string}\`
+Ƭ **Group**: \`system.group.$\{string}\`
 
 #### Defined in
 
-[types-dev/objects.d.ts:83](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L83)
+[types-dev/objects.d.ts:83](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L83)
 
 ___
 
 ### Host
 
-Ƭ **Host**: \`system.host.${string}\`
+Ƭ **Host**: \`system.host.$\{string}\`
 
 #### Defined in
 
-[types-dev/objects.d.ts:87](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L87)
+[types-dev/objects.d.ts:87](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L87)
 
 ___
 
 ### InferGetObjectViewItemType
 
-Ƭ **InferGetObjectViewItemType**<`Design`, `View`\>: `Design` extends ``"system"`` ? `View` extends ``"host"`` ? [`HostObject`](../interfaces/internal_.HostObject.md) : `View` extends ``"adapter"`` ? [`AdapterObject`](../interfaces/internal_.AdapterObject.md) : `View` extends ``"instance"`` ? [`InstanceObject`](../interfaces/internal_.InstanceObject.md) : `View` extends ``"meta"`` ? [`MetaObject`](../interfaces/internal_.MetaObject.md) : `View` extends ``"device"`` ? [`DeviceObject`](../interfaces/internal_.DeviceObject.md) : `View` extends ``"channel"`` ? [`ChannelObject`](../interfaces/internal_.ChannelObject.md) : `View` extends ``"state"`` ? [`StateObject`](../interfaces/internal_.StateObject.md) : `View` extends ``"folder"`` ? [`FolderObject`](../interfaces/internal_.FolderObject.md) : `View` extends ``"enum"`` ? [`EnumObject`](../interfaces/internal_.EnumObject.md) : `View` extends ``"script"`` ? [`ScriptObject`](../interfaces/internal_.ScriptObject.md) : `View` extends ``"group"`` ? [`GroupObject`](../interfaces/internal_.GroupObject.md) : `View` extends ``"user"`` ? [`UserObject`](../interfaces/internal_.UserObject.md) : `View` extends ``"chart"`` ? [`ChartObject`](../interfaces/internal_.ChartObject.md) : `View` extends ``"schedule"`` ? [`ScheduleObject`](../interfaces/internal_.ScheduleObject.md) : `View` extends ``"config"`` ? [`OtherObject`](../interfaces/internal_.OtherObject.md) & { `type`: ``"config"``  } : `View` extends ``"custom"`` ? `NonNullable`<[`StateObject`](../interfaces/internal_.StateObject.md)[``"common"``][``"custom"``]\> : [`Object`](internal_.md#object) : `any`
+Ƭ **InferGetObjectViewItemType**\<`Design`, `View`\>: `Design` extends ``"system"`` ? `View` extends ``"host"`` ? [`HostObject`](../interfaces/internal_.HostObject.md) : `View` extends ``"adapter"`` ? [`AdapterObject`](../interfaces/internal_.AdapterObject.md) : `View` extends ``"instance"`` ? [`InstanceObject`](../interfaces/internal_.InstanceObject.md) : `View` extends ``"meta"`` ? [`MetaObject`](../interfaces/internal_.MetaObject.md) : `View` extends ``"device"`` ? [`DeviceObject`](../interfaces/internal_.DeviceObject.md) : `View` extends ``"channel"`` ? [`ChannelObject`](../interfaces/internal_.ChannelObject.md) : `View` extends ``"state"`` ? [`StateObject`](../interfaces/internal_.StateObject.md) : `View` extends ``"folder"`` ? [`FolderObject`](../interfaces/internal_.FolderObject.md) : `View` extends ``"enum"`` ? [`EnumObject`](../interfaces/internal_.EnumObject.md) : `View` extends ``"script"`` ? [`ScriptObject`](../interfaces/internal_.ScriptObject.md) : `View` extends ``"group"`` ? [`GroupObject`](../interfaces/internal_.GroupObject.md) : `View` extends ``"user"`` ? [`UserObject`](../interfaces/internal_.UserObject.md) : `View` extends ``"chart"`` ? [`ChartObject`](../interfaces/internal_.ChartObject.md) : `View` extends ``"schedule"`` ? [`ScheduleObject`](../interfaces/internal_.ScheduleObject.md) : `View` extends ``"config"`` ? [`OtherObject`](../interfaces/internal_.OtherObject.md) & \{ `type`: ``"config"``  } : `View` extends ``"custom"`` ? `NonNullable`\<[`StateObject`](../interfaces/internal_.StateObject.md)[``"common"``][``"custom"``]\> : [`Object`](internal_.md#object) : `any`
 
 #### Type parameters
 
@@ -1624,17 +1624,17 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:942](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L942)
+[types-dev/objects.d.ts:942](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L942)
 
 ___
 
 ### Instance
 
-Ƭ **Instance**: \`system.adapter.${string}.${number}\`
+Ƭ **Instance**: \`system.adapter.$\{string}.$\{number}\`
 
 #### Defined in
 
-[types-dev/objects.d.ts:79](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L79)
+[types-dev/objects.d.ts:79](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L79)
 
 ___
 
@@ -1644,13 +1644,13 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:315](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L315)
+[types-dev/objects.d.ts:315](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L315)
 
 ___
 
 ### InternalLogger
 
-Ƭ **InternalLogger**: `Omit`<[`Logger`](../interfaces/internal_.Logger.md), ``"level"``\>
+Ƭ **InternalLogger**: `Omit`\<[`Logger`](../interfaces/internal_.Logger.md), ``"level"``\>
 
 #### Defined in
 
@@ -1660,11 +1660,11 @@ ___
 
 ### Interval
 
-Ƭ **Interval**: `number` & { `__ioBrokerBrand`: ``"Interval"``  }
+Ƭ **Interval**: `number` & \{ `__ioBrokerBrand`: ``"Interval"``  }
 
 #### Defined in
 
-[types-dev/index.d.ts:508](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L508)
+[types-dev/index.d.ts:508](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L508)
 
 ___
 
@@ -1674,7 +1674,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:148](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L148)
+[types-dev/objects.d.ts:148](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L148)
 
 ___
 
@@ -1684,17 +1684,17 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:201](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L201)
+[types-dev/index.d.ts:201](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L201)
 
 ___
 
 ### MaybePromise
 
-Ƭ **MaybePromise**: `Promise`<`void`\> \| `void`
+Ƭ **MaybePromise**: `Promise`\<`void`\> \| `void`
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L175)
+[adapter/src/lib/_Types.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L175)
 
 ___
 
@@ -1720,17 +1720,17 @@ Due to backward compatibility first param can be result or error
 
 #### Defined in
 
-[types-dev/index.d.ts:339](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L339)
+[types-dev/index.d.ts:339](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L339)
 
 ___
 
 ### MessageHandler
 
-Ƭ **MessageHandler**: (`obj`: [`Message`](../interfaces/internal_.Message.md)) => `void` \| `Promise`<`void`\>
+Ƭ **MessageHandler**: (`obj`: [`Message`](../interfaces/internal_.Message.md)) => `void` \| `Promise`\<`void`\>
 
 #### Type declaration
 
-▸ (`obj`): `void` \| `Promise`<`void`\>
+▸ (`obj`): `void` \| `Promise`\<`void`\>
 
 ##### Parameters
 
@@ -1740,11 +1740,11 @@ ___
 
 ##### Returns
 
-`void` \| `Promise`<`void`\>
+`void` \| `Promise`\<`void`\>
 
 #### Defined in
 
-[types-dev/index.d.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L327)
+[types-dev/index.d.ts:327](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L327)
 
 ___
 
@@ -1754,33 +1754,33 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:60](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L60)
+[adapter/src/lib/_Types.ts:60](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L60)
 
 ___
 
 ### Meta
 
-Ƭ **Meta**: \`${string}.${number}\` \| \`${string}.${"meta" \| "admin"}\` \| \`${string}.meta.${string}\` \| \`${string}.${number}.meta.${string}\`
+Ƭ **Meta**: \`$\{string}.$\{number}\` \| \`$\{string}.$\{"meta" \| "admin"}\` \| \`$\{string}.meta.$\{string}\` \| \`$\{string}.$\{number}.meta.$\{string}\`
 
 #### Defined in
 
-[types-dev/objects.d.ts:60](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L60)
+[types-dev/objects.d.ts:60](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L60)
 
 ___
 
 ### Misc
 
-Ƭ **Misc**: \`system.host.${string}.${string}\` \| \`0\_userdata.0.${string}\`
+Ƭ **Misc**: \`system.host.$\{string}.$\{string}\` \| \`0\_userdata.0.$\{string}\`
 
 #### Defined in
 
-[types-dev/objects.d.ts:68](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L68)
+[types-dev/objects.d.ts:68](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L68)
 
 ___
 
 ### NonNullCallbackReturnTypeOf
 
-Ƭ **NonNullCallbackReturnTypeOf**<`T`\>: `Exclude`<[`SecondParameterOf`](internal_.md#secondparameterof)<`T`\>, ``null`` \| `undefined`\>
+Ƭ **NonNullCallbackReturnTypeOf**\<`T`\>: `Exclude`\<[`SecondParameterOf`](internal_.md#secondparameterof)\<`T`\>, ``null`` \| `undefined`\>
 
 Infers the return type from a callback-style API and strips out null and undefined
 
@@ -1792,27 +1792,27 @@ Infers the return type from a callback-style API and strips out null and undefin
 
 #### Defined in
 
-[types-dev/index.d.ts:390](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L390)
+[types-dev/index.d.ts:390](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L390)
 
 ___
 
 ### Object
 
-Ƭ **Object**: [`AnyObject`](internal_.md#anyobject) & { `common`: `Record`<`string`, `any`\> ; `native`: `Record`<`string`, `any`\>  }
+Ƭ **Object**: [`AnyObject`](internal_.md#anyobject) & \{ `common`: `Record`\<`string`, `any`\> ; `native`: `Record`\<`string`, `any`\>  }
 
 #### Defined in
 
-[types-dev/objects.d.ts:905](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L905)
+[types-dev/objects.d.ts:905](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L905)
 
 ___
 
 ### ObjectChangeHandler
 
-Ƭ **ObjectChangeHandler**: (`id`: `string`, `obj`: [`Object`](internal_.md#object) \| ``null`` \| `undefined`) => `void` \| `Promise`<`void`\>
+Ƭ **ObjectChangeHandler**: (`id`: `string`, `obj`: [`Object`](internal_.md#object) \| ``null`` \| `undefined`) => `void` \| `Promise`\<`void`\>
 
 #### Type declaration
 
-▸ (`id`, `obj`): `void` \| `Promise`<`void`\>
+▸ (`id`, `obj`): `void` \| `Promise`\<`void`\>
 
 ##### Parameters
 
@@ -1823,17 +1823,17 @@ ___
 
 ##### Returns
 
-`void` \| `Promise`<`void`\>
+`void` \| `Promise`\<`void`\>
 
 #### Defined in
 
-[types-dev/index.d.ts:324](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L324)
+[types-dev/index.d.ts:324](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L324)
 
 ___
 
 ### ObjectIdToObjectType
 
-Ƭ **ObjectIdToObjectType**<`T`, `Read`\>: `T` extends [`State`](internal_.md#state) ? [`StateObject`](../interfaces/internal_.StateObject.md) : `T` extends [`Instance`](internal_.md#instance) ? [`InstanceObject`](../interfaces/internal_.InstanceObject.md) : `T` extends [`Adapter`](internal_.md#adapter) ? [`AdapterObject`](../interfaces/internal_.AdapterObject.md) : `T` extends [`Channel`](internal_.md#channel) ? [`ChannelObject`](../interfaces/internal_.ChannelObject.md) : `T` extends [`Meta`](internal_.md#meta) ? [`MetaObject`](../interfaces/internal_.MetaObject.md) : `T` extends [`Misc`](internal_.md#misc) ? [`AdapterScopedObject`](internal_.md#adapterscopedobject) : `T` extends [`ScriptOrChannel`](internal_.md#scriptorchannel) ? [`ScriptObject`](../interfaces/internal_.ScriptObject.md) \| [`ChannelObject`](../interfaces/internal_.ChannelObject.md) : `T` extends [`Enum`](internal_.md#enum) ? [`EnumObject`](../interfaces/internal_.EnumObject.md) : `T` extends [`Group`](internal_.md#group) ? [`GroupObject`](../interfaces/internal_.GroupObject.md) : `T` extends [`User`](internal_.md#user) ? [`UserObject`](../interfaces/internal_.UserObject.md) : `T` extends [`Host`](internal_.md#host) ? [`HostObject`](../interfaces/internal_.HostObject.md) : `T` extends [`Design`](internal_.md#design) ? [`DesignObject`](../interfaces/internal_.DesignObject.md) : `T` extends [`Config`](internal_.md#config) ? [`OtherObject`](../interfaces/internal_.OtherObject.md) & { `type`: ``"config"``  } : `T` extends [`AdapterScoped`](internal_.md#adapterscoped) ? [`AdapterScopedObject`](internal_.md#adapterscopedobject) : `Read` extends ``"read"`` ? [`Object`](internal_.md#object) : [`AnyObject`](internal_.md#anyobject)
+Ƭ **ObjectIdToObjectType**\<`T`, `Read`\>: `T` extends [`State`](internal_.md#state) ? [`StateObject`](../interfaces/internal_.StateObject.md) : `T` extends [`Instance`](internal_.md#instance) ? [`InstanceObject`](../interfaces/internal_.InstanceObject.md) : `T` extends [`Adapter`](internal_.md#adapter) ? [`AdapterObject`](../interfaces/internal_.AdapterObject.md) : `T` extends [`Channel`](internal_.md#channel) ? [`ChannelObject`](../interfaces/internal_.ChannelObject.md) : `T` extends [`Meta`](internal_.md#meta) ? [`MetaObject`](../interfaces/internal_.MetaObject.md) : `T` extends [`Misc`](internal_.md#misc) ? [`AdapterScopedObject`](internal_.md#adapterscopedobject) : `T` extends [`ScriptOrChannel`](internal_.md#scriptorchannel) ? [`ScriptObject`](../interfaces/internal_.ScriptObject.md) \| [`ChannelObject`](../interfaces/internal_.ChannelObject.md) : `T` extends [`Enum`](internal_.md#enum) ? [`EnumObject`](../interfaces/internal_.EnumObject.md) : `T` extends [`Group`](internal_.md#group) ? [`GroupObject`](../interfaces/internal_.GroupObject.md) : `T` extends [`User`](internal_.md#user) ? [`UserObject`](../interfaces/internal_.UserObject.md) : `T` extends [`Host`](internal_.md#host) ? [`HostObject`](../interfaces/internal_.HostObject.md) : `T` extends [`Design`](internal_.md#design) ? [`DesignObject`](../interfaces/internal_.DesignObject.md) : `T` extends [`Config`](internal_.md#config) ? [`OtherObject`](../interfaces/internal_.OtherObject.md) & \{ `type`: ``"config"``  } : `T` extends [`AdapterScoped`](internal_.md#adapterscoped) ? [`AdapterScopedObject`](internal_.md#adapterscopedobject) : `Read` extends ``"read"`` ? [`Object`](internal_.md#object) : [`AnyObject`](internal_.md#anyobject)
 
 #### Type parameters
 
@@ -1844,7 +1844,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:113](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L113)
+[types-dev/objects.d.ts:113](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L113)
 
 ___
 
@@ -1856,7 +1856,7 @@ Defines the existing object types in ioBroker
 
 #### Defined in
 
-[types-dev/objects.d.ts:38](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L38)
+[types-dev/objects.d.ts:38](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L38)
 
 ___
 
@@ -1866,7 +1866,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:5](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/adapter/validator.ts#L5)
+[adapter/src/lib/adapter/validator.ts:5](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/adapter/validator.ts#L5)
 
 ___
 
@@ -1876,13 +1876,13 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:746](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L746)
+[types-dev/objects.d.ts:746](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L746)
 
 ___
 
 ### PartialObjectWorker
 
-Ƭ **PartialObjectWorker**<`T`\>: `T` extends [`AnyObject`](internal_.md#anyobject) ? [`AnyPartialObject`](internal_.md#anypartialobject) & { `type?`: `T`[``"type"``]  } : `never`
+Ƭ **PartialObjectWorker**\<`T`\>: `T` extends [`AnyObject`](internal_.md#anyobject) ? [`AnyPartialObject`](internal_.md#anypartialobject) & \{ `type?`: `T`[``"type"``]  } : `never`
 
 #### Type parameters
 
@@ -1892,7 +1892,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:918](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L918)
+[types-dev/objects.d.ts:918](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L918)
 
 ___
 
@@ -1902,7 +1902,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:122](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L122)
+[adapter/src/lib/_Types.ts:122](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L122)
 
 ___
 
@@ -1912,17 +1912,17 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:6](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/adapter/validator.ts#L6)
+[adapter/src/lib/adapter/validator.ts:6](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/adapter/validator.ts#L6)
 
 ___
 
 ### Plugin
 
-Ƭ **Plugin**: `Record`<`string`, `any`\>
+Ƭ **Plugin**: `Record`\<`string`, `any`\>
 
 #### Defined in
 
-[types-dev/index.d.ts:262](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L262)
+[types-dev/index.d.ts:262](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L262)
 
 ___
 
@@ -1947,17 +1947,17 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:437](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L437)
+[types-dev/index.d.ts:437](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L437)
 
 ___
 
 ### ReadDirPromise
 
-Ƭ **ReadDirPromise**: `Promise`<[`ReadDirResult`](../interfaces/internal_.ReadDirResult.md)[]\>
+Ƭ **ReadDirPromise**: `Promise`\<[`ReadDirResult`](../interfaces/internal_.ReadDirResult.md)[]\>
 
 #### Defined in
 
-[types-dev/index.d.ts:438](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L438)
+[types-dev/index.d.ts:438](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L438)
 
 ___
 
@@ -1983,35 +1983,35 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:440](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L440)
+[types-dev/index.d.ts:440](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L440)
 
 ___
 
 ### ReadFilePromise
 
-Ƭ **ReadFilePromise**: `Promise`<{ `file`: `string` \| `Buffer` ; `mimeType?`: `string`  }\>
+Ƭ **ReadFilePromise**: `Promise`\<\{ `file`: `string` \| `Buffer` ; `mimeType?`: `string`  }\>
 
 #### Defined in
 
-[types-dev/index.d.ts:441](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L441)
+[types-dev/index.d.ts:441](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L441)
 
 ___
 
 ### ReadyHandler
 
-Ƭ **ReadyHandler**: () => `void` \| `Promise`<`void`\>
+Ƭ **ReadyHandler**: () => `void` \| `Promise`\<`void`\>
 
 #### Type declaration
 
-▸ (): `void` \| `Promise`<`void`\>
+▸ (): `void` \| `Promise`\<`void`\>
 
 ##### Returns
 
-`void` \| `Promise`<`void`\>
+`void` \| `Promise`\<`void`\>
 
 #### Defined in
 
-[types-dev/index.d.ts:323](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L323)
+[types-dev/index.d.ts:323](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L323)
 
 ___
 
@@ -2036,23 +2036,23 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:469](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L469)
+[types-dev/index.d.ts:469](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L469)
 
 ___
 
 ### ScriptOrChannel
 
-Ƭ **ScriptOrChannel**: \`script.js.${string}\`
+Ƭ **ScriptOrChannel**: \`script.js.$\{string}\`
 
 #### Defined in
 
-[types-dev/objects.d.ts:73](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L73)
+[types-dev/objects.d.ts:73](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L73)
 
 ___
 
 ### SecondParameterOf
 
-Ƭ **SecondParameterOf**<`T`\>: `T` extends (`arg0`: `any`, `arg1`: infer R, ...`args`: `any`[]) => `any` ? `R` : `never`
+Ƭ **SecondParameterOf**\<`T`\>: `T` extends (`arg0`: `any`, `arg1`: infer R, ...`args`: `any`[]) => `any` ? `R` : `never`
 
 #### Type parameters
 
@@ -2062,17 +2062,17 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:382](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L382)
+[types-dev/index.d.ts:382](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L382)
 
 ___
 
 ### SendToAllClientOptions
 
-Ƭ **SendToAllClientOptions**: `Omit`<[`SendToClientOptions`](../interfaces/internal_.SendToClientOptions.md), ``"clientId"``\>
+Ƭ **SendToAllClientOptions**: `Omit`\<[`SendToClientOptions`](../interfaces/internal_.SendToClientOptions.md), ``"clientId"``\>
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:35](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L35)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:35](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L35)
 
 ___
 
@@ -2082,13 +2082,13 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:89](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L89)
+[types-dev/index.d.ts:89](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L89)
 
 ___
 
 ### SetObjectCallback
 
-Ƭ **SetObjectCallback**: (`err?`: `Error` \| ``null``, `obj?`: { `id`: `string`  }) => `void`
+Ƭ **SetObjectCallback**: (`err?`: `Error` \| ``null``, `obj?`: \{ `id`: `string`  }) => `void`
 
 #### Type declaration
 
@@ -2108,17 +2108,17 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:341](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L341)
+[types-dev/index.d.ts:341](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L341)
 
 ___
 
 ### SetObjectPromise
 
-Ƭ **SetObjectPromise**: `Promise`<[`NonNullCallbackReturnTypeOf`](internal_.md#nonnullcallbackreturntypeof)<[`SetObjectCallback`](internal_.md#setobjectcallback)\>\>
+Ƭ **SetObjectPromise**: `Promise`\<[`NonNullCallbackReturnTypeOf`](internal_.md#nonnullcallbackreturntypeof)\<[`SetObjectCallback`](internal_.md#setobjectcallback)\>\>
 
 #### Defined in
 
-[types-dev/index.d.ts:342](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L342)
+[types-dev/index.d.ts:342](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L342)
 
 ___
 
@@ -2143,7 +2143,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:406](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L406)
+[types-dev/index.d.ts:406](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L406)
 
 ___
 
@@ -2169,33 +2169,33 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:409](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L409)
+[types-dev/index.d.ts:409](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L409)
 
 ___
 
 ### SetStateChangedPromise
 
-Ƭ **SetStateChangedPromise**: `Promise`<[`NonNullCallbackReturnTypeOf`](internal_.md#nonnullcallbackreturntypeof)<[`SetStateChangedCallback`](internal_.md#setstatechangedcallback)\>\>
+Ƭ **SetStateChangedPromise**: `Promise`\<[`NonNullCallbackReturnTypeOf`](internal_.md#nonnullcallbackreturntypeof)\<[`SetStateChangedCallback`](internal_.md#setstatechangedcallback)\>\>
 
 #### Defined in
 
-[types-dev/index.d.ts:410](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L410)
+[types-dev/index.d.ts:410](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L410)
 
 ___
 
 ### SetStatePromise
 
-Ƭ **SetStatePromise**: `Promise`<[`NonNullCallbackReturnTypeOf`](internal_.md#nonnullcallbackreturntypeof)<[`SetStateCallback`](internal_.md#setstatecallback)\>\>
+Ƭ **SetStatePromise**: `Promise`\<[`NonNullCallbackReturnTypeOf`](internal_.md#nonnullcallbackreturntypeof)\<[`SetStateCallback`](internal_.md#setstatecallback)\>\>
 
 #### Defined in
 
-[types-dev/index.d.ts:407](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L407)
+[types-dev/index.d.ts:407](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L407)
 
 ___
 
 ### SettableObjectWorker
 
-Ƭ **SettableObjectWorker**<`T`\>: `T` extends [`AnyObject`](internal_.md#anyobject) ? `Omit`<`T`, ``"_id"`` \| ``"acl"``\> & { `_id?`: `T`[``"_id"``] ; `acl?`: `T`[``"acl"``]  } : `never`
+Ƭ **SettableObjectWorker**\<`T`\>: `T` extends [`AnyObject`](internal_.md#anyobject) ? `Omit`\<`T`, ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `T`[``"_id"``] ; `acl?`: `T`[``"acl"``]  } : `never`
 
 #### Type parameters
 
@@ -2205,37 +2205,37 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:911](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L911)
+[types-dev/objects.d.ts:911](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L911)
 
 ___
 
 ### SettableState
 
-Ƭ **SettableState**: [`AtLeastOne`](internal_.md#atleastone)<[`State`](../interfaces/internal_.State.md)\>
+Ƭ **SettableState**: [`AtLeastOne`](internal_.md#atleastone)\<[`State`](../interfaces/internal_.State.md)\>
 
 #### Defined in
 
-[types-dev/index.d.ts:81](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L81)
+[types-dev/index.d.ts:81](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L81)
 
 ___
 
 ### State
 
-Ƭ **State**: \`system.adapter.${string}.${number}.${string}\`
+Ƭ **State**: \`system.adapter.$\{string}.$\{number}.$\{string}\`
 
 #### Defined in
 
-[types-dev/objects.d.ts:75](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L75)
+[types-dev/objects.d.ts:75](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L75)
 
 ___
 
 ### StateChangeHandler
 
-Ƭ **StateChangeHandler**: (`id`: `string`, `obj`: [`State`](../interfaces/internal_.State.md) \| ``null`` \| `undefined`) => `void` \| `Promise`<`void`\>
+Ƭ **StateChangeHandler**: (`id`: `string`, `obj`: [`State`](../interfaces/internal_.State.md) \| ``null`` \| `undefined`) => `void` \| `Promise`\<`void`\>
 
 #### Type declaration
 
-▸ (`id`, `obj`): `void` \| `Promise`<`void`\>
+▸ (`id`, `obj`): `void` \| `Promise`\<`void`\>
 
 ##### Parameters
 
@@ -2246,11 +2246,11 @@ ___
 
 ##### Returns
 
-`void` \| `Promise`<`void`\>
+`void` \| `Promise`\<`void`\>
 
 #### Defined in
 
-[types-dev/index.d.ts:325](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L325)
+[types-dev/index.d.ts:325](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L325)
 
 ___
 
@@ -2260,7 +2260,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:50](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L50)
+[types-dev/index.d.ts:50](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L50)
 
 ___
 
@@ -2272,17 +2272,17 @@ For objects, we require the English language to be present
 
 #### Defined in
 
-[types-dev/objects.d.ts:152](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L152)
+[types-dev/objects.d.ts:152](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L152)
 
 ___
 
 ### Timeout
 
-Ƭ **Timeout**: `number` & { `__ioBrokerBrand`: ``"Timeout"``  }
+Ƭ **Timeout**: `number` & \{ `__ioBrokerBrand`: ``"Timeout"``  }
 
 #### Defined in
 
-[types-dev/index.d.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L507)
+[types-dev/index.d.ts:507](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L507)
 
 ___
 
@@ -2306,27 +2306,27 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:280](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L280)
+[adapter/src/lib/_Types.ts:280](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L280)
 
 ___
 
 ### Translated
 
-Ƭ **Translated**: { `en`: `string`  } & { [lang in Languages]?: string }
+Ƭ **Translated**: \{ `en`: `string`  } & \{ [lang in Languages]?: string }
 
 #### Defined in
 
-[types-dev/objects.d.ts:149](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L149)
+[types-dev/objects.d.ts:149](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L149)
 
 ___
 
 ### UnloadHandler
 
-Ƭ **UnloadHandler**: (`callback`: [`EmptyCallback`](internal_.md#emptycallback)) => `void` \| `Promise`<`void`\>
+Ƭ **UnloadHandler**: (`callback`: [`EmptyCallback`](internal_.md#emptycallback)) => `void` \| `Promise`\<`void`\>
 
 #### Type declaration
 
-▸ (`callback`): `void` \| `Promise`<`void`\>
+▸ (`callback`): `void` \| `Promise`\<`void`\>
 
 ##### Parameters
 
@@ -2336,21 +2336,21 @@ ___
 
 ##### Returns
 
-`void` \| `Promise`<`void`\>
+`void` \| `Promise`\<`void`\>
 
 #### Defined in
 
-[types-dev/index.d.ts:328](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L328)
+[types-dev/index.d.ts:328](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/index.d.ts#L328)
 
 ___
 
 ### User
 
-Ƭ **User**: \`system.user.${string}\`
+Ƭ **User**: \`system.user.$\{string}\`
 
 #### Defined in
 
-[types-dev/objects.d.ts:85](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L85)
+[types-dev/objects.d.ts:85](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L85)
 
 ___
 
@@ -2381,21 +2381,21 @@ ___
 
 ### UserInterfaceClientRemoveMessage
 
-Ƭ **UserInterfaceClientRemoveMessage**: `Omit`<[`Message`](../interfaces/internal_.Message.md), ``"message"`` \| ``"command"``\> & { `command`: ``"clientUnsubscribe"`` ; `message`: { `reason`: [`MessageUnsubscribeReason`](internal_.md#messageunsubscribereason) ; `type`: `string`[]  }  } \| `Omit`<[`Message`](../interfaces/internal_.Message.md), ``"message"`` \| ``"command"``\> & { `command`: ``"clientSubscribeError"`` ; `message`: { `reason`: `undefined` ; `type`: `string`[]  }  }
+Ƭ **UserInterfaceClientRemoveMessage**: `Omit`\<[`Message`](../interfaces/internal_.Message.md), ``"message"`` \| ``"command"``\> & \{ `command`: ``"clientUnsubscribe"`` ; `message`: \{ `reason`: [`MessageUnsubscribeReason`](internal_.md#messageunsubscribereason) ; `type`: `string`[]  }  } \| `Omit`\<[`Message`](../interfaces/internal_.Message.md), ``"message"`` \| ``"command"``\> & \{ `command`: ``"clientSubscribeError"`` ; `message`: \{ `reason`: `undefined` ; `type`: `string`[]  }  }
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:106](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L106)
+[adapter/src/lib/_Types.ts:106](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L106)
 
 ___
 
 ### UserInterfaceClientSubscribeHandler
 
-Ƭ **UserInterfaceClientSubscribeHandler**: (`subscribeInfo`: [`UserInterfaceSubscribeInfo`](../interfaces/internal_.UserInterfaceSubscribeInfo.md)) => [`UserInterfaceClientSubscribeReturnType`](../interfaces/internal_.UserInterfaceClientSubscribeReturnType.md) \| `Promise`<[`UserInterfaceClientSubscribeReturnType`](../interfaces/internal_.UserInterfaceClientSubscribeReturnType.md)\>
+Ƭ **UserInterfaceClientSubscribeHandler**: (`subscribeInfo`: [`UserInterfaceSubscribeInfo`](../interfaces/internal_.UserInterfaceSubscribeInfo.md)) => [`UserInterfaceClientSubscribeReturnType`](../interfaces/internal_.UserInterfaceClientSubscribeReturnType.md) \| `Promise`\<[`UserInterfaceClientSubscribeReturnType`](../interfaces/internal_.UserInterfaceClientSubscribeReturnType.md)\>
 
 #### Type declaration
 
-▸ (`subscribeInfo`): [`UserInterfaceClientSubscribeReturnType`](../interfaces/internal_.UserInterfaceClientSubscribeReturnType.md) \| `Promise`<[`UserInterfaceClientSubscribeReturnType`](../interfaces/internal_.UserInterfaceClientSubscribeReturnType.md)\>
+▸ (`subscribeInfo`): [`UserInterfaceClientSubscribeReturnType`](../interfaces/internal_.UserInterfaceClientSubscribeReturnType.md) \| `Promise`\<[`UserInterfaceClientSubscribeReturnType`](../interfaces/internal_.UserInterfaceClientSubscribeReturnType.md)\>
 
 ##### Parameters
 
@@ -2405,21 +2405,21 @@ ___
 
 ##### Returns
 
-[`UserInterfaceClientSubscribeReturnType`](../interfaces/internal_.UserInterfaceClientSubscribeReturnType.md) \| `Promise`<[`UserInterfaceClientSubscribeReturnType`](../interfaces/internal_.UserInterfaceClientSubscribeReturnType.md)\>
+[`UserInterfaceClientSubscribeReturnType`](../interfaces/internal_.UserInterfaceClientSubscribeReturnType.md) \| `Promise`\<[`UserInterfaceClientSubscribeReturnType`](../interfaces/internal_.UserInterfaceClientSubscribeReturnType.md)\>
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:71](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L71)
+[adapter/src/lib/_Types.ts:71](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L71)
 
 ___
 
 ### UserInterfaceClientUnsubscribeHandler
 
-Ƭ **UserInterfaceClientUnsubscribeHandler**: (`unsubscribeInfo`: [`UserInterfaceUnsubscribeInfo`](internal_.md#userinterfaceunsubscribeinfo)) => `void` \| `Promise`<`void`\>
+Ƭ **UserInterfaceClientUnsubscribeHandler**: (`unsubscribeInfo`: [`UserInterfaceUnsubscribeInfo`](internal_.md#userinterfaceunsubscribeinfo)) => `void` \| `Promise`\<`void`\>
 
 #### Type declaration
 
-▸ (`unsubscribeInfo`): `void` \| `Promise`<`void`\>
+▸ (`unsubscribeInfo`): `void` \| `Promise`\<`void`\>
 
 ##### Parameters
 
@@ -2429,11 +2429,11 @@ ___
 
 ##### Returns
 
-`void` \| `Promise`<`void`\>
+`void` \| `Promise`\<`void`\>
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:102](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L102)
+[adapter/src/lib/_Types.ts:102](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L102)
 
 ___
 
@@ -2443,17 +2443,17 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:62](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L62)
+[adapter/src/lib/_Types.ts:62](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L62)
 
 ___
 
 ### UserInterfaceUnsubscribeInfo
 
-Ƭ **UserInterfaceUnsubscribeInfo**: [`UserInterfaceUnsubscribeInfoBaseObject`](internal_.md#userinterfaceunsubscribeinfobaseobject) & { `message?`: `undefined` ; `reason`: `Exclude`<[`UserInterfaceClientUnsubscribeReason`](internal_.md#userinterfaceclientunsubscribereason), [`ClientUnsubscribeReason`](internal_.md#clientunsubscribereason)\>  } \| { `message`: [`Message`](../interfaces/internal_.Message.md) ; `reason`: [`ClientUnsubscribeReason`](internal_.md#clientunsubscribereason)  }
+Ƭ **UserInterfaceUnsubscribeInfo**: [`UserInterfaceUnsubscribeInfoBaseObject`](internal_.md#userinterfaceunsubscribeinfobaseobject) & \{ `message?`: `undefined` ; `reason`: `Exclude`\<[`UserInterfaceClientUnsubscribeReason`](internal_.md#userinterfaceclientunsubscribereason), [`ClientUnsubscribeReason`](internal_.md#clientunsubscribereason)\>  } \| \{ `message`: [`Message`](../interfaces/internal_.Message.md) ; `reason`: [`ClientUnsubscribeReason`](internal_.md#clientunsubscribereason)  }
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:87](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L87)
+[adapter/src/lib/_Types.ts:87](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L87)
 
 ___
 
@@ -2469,14 +2469,14 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:82](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L82)
+[adapter/src/lib/_Types.ts:82](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/adapter/src/lib/_Types.ts#L82)
 
 ___
 
 ### WelcomeScreenEntry
 
-Ƭ **WelcomeScreenEntry**: `string` \| { `color`: `string` ; `img`: `string` ; `link`: `string` ; `name`: `string`  }
+Ƭ **WelcomeScreenEntry**: `string` \| \{ `color`: `string` ; `img`: `string` ; `link`: `string` ; `name`: `string`  }
 
 #### Defined in
 
-[types-dev/objects.d.ts:456](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L456)
+[types-dev/objects.d.ts:456](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L456)

@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / CallOptions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / CallOptions
 
 # Interface: CallOptions
 
-[<internal>](../modules/internal_.md).CallOptions
+[\<internal\>](../modules/internal_.md).CallOptions
 
 ## Hierarchy
 
@@ -59,7 +59,7 @@ ___
 
 ### owner
 
-• `Optional` **owner**: \`system.user.${string}\`
+• `Optional` **owner**: \`system.user.$\{string}\`
 
 #### Defined in
 
@@ -79,7 +79,7 @@ ___
 
 ### user
 
-• `Optional` **user**: \`system.user.${string}\`
+• `Optional` **user**: \`system.user.$\{string}\`
 
 #### Defined in
 
