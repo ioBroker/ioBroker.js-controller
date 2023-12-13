@@ -93,7 +93,7 @@ Valid values for the policy are `none`, `patch`, `minor` and `major`. These rela
 **It is strongly recommended to not configure `major` upgrades to be performed automatically, as these do often contain breaking changes and need manual 
 intervention by the user.**
 
-A successful auto-upgrade will generate a notification in the ioBroker notification system (see [Notification System](#notification-system)).
+A successful as well as a failed auto-upgrade will generate a notification in the ioBroker notification system (see [Notification System](#notification-system)).
 
 ### Command Line Interface
 **Feature status:** stable

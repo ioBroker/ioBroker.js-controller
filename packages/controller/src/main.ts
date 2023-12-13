@@ -6139,13 +6139,22 @@ async function autoUpgradeAdapters(): Promise<void> {
             return;
         }
 
-        const upgradedAdapters = await autoUpgradeManager.upgradeAdapters();
+        const { upgradedAdapters, failedAdapters } = await autoUpgradeManager.upgradeAdapters();
 
         if (upgradedAdapters.length) {
             await notificationHandler.addMessage(
                 'system',
                 'automaticAdapterUpgradeSuccessful',
                 upgradedAdapters.map(entry => `${entry.name}: ${entry.oldVersion} -> ${entry.newVersion}`).join('\n'),
+                `system.host.${hostname}`
+            );
+        }
+
+        if (failedAdapters.length) {
+            await notificationHandler.addMessage(
+                'system',
+                'automaticAdapterUpgradeFailed',
+                failedAdapters.map(entry => `${entry.name}: ${entry.oldVersion} -> ${entry.newVersion}`).join('\n'),
                 `system.host.${hostname}`
             );
         }
