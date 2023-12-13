@@ -1,5 +1,5 @@
 import * as CLI from './messages.js';
-import { CLICommand, CLICommandOptions } from './cliCommand.js';
+import { CLICommand, type CLICommandOptions } from './cliCommand.js';
 import { tools } from '@iobroker/js-controller-common';
 import fs from 'fs-extra';
 

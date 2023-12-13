@@ -148,8 +148,7 @@ export function dbConnect(
                 }
                 if (dbTools.statesDbHasServer(config.states.type)) {
                     // Just open in memory DB itself
-                    // eslint-disable-next-line @typescript-eslint/no-var-requires
-                    States = require(`@iobroker/db-states-${config.states.type}`).Server;
+                    States = (await import(`@iobroker/db-states-${config.states.type}`)).Server;
 
                     states = new States!({
                         connection: config.states,

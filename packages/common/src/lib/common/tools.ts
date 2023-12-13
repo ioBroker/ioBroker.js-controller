@@ -4,10 +4,11 @@ import semver from 'semver';
 import os from 'os';
 import forge from 'node-forge';
 import deepClone from 'deep-clone';
-import { ChildProcessPromise, exec as cpExecAsync } from 'promisify-child-process';
+import { type ChildProcessPromise, exec as cpExecAsync } from 'promisify-child-process';
 import { createInterface } from 'readline';
 import { PassThrough } from 'stream';
-import { CommandResult, detectPackageManager, InstallOptions, PackageManager, packageManagers } from '@alcalzone/pak';
+import type { CommandResult, InstallOptions, PackageManager } from '@alcalzone/pak';
+import { detectPackageManager, packageManagers } from '@alcalzone/pak';
 import { EXIT_CODES } from './exitCodes';
 import zlib from 'zlib';
 import { password } from './password';
@@ -23,6 +24,7 @@ import { maybeCallbackWithError } from './maybeCallback';
 const extend = require('node.extend');
 import { setDefaultResultOrder } from 'dns';
 import { applyAliasAutoScaling, applyAliasConvenienceConversion, applyAliasTransformer } from './aliasProcessing';
+import type * as DiskUsage from 'diskusage';
 
 type DockerInformation =
     | {
@@ -97,7 +99,7 @@ export enum ERRORS {
 
 events.EventEmitter.prototype.setMaxListeners(100);
 let npmVersion: string;
-let diskusage: typeof import('diskusage');
+let diskusage: typeof DiskUsage;
 
 const randomID = Math.round(Math.random() * 10_000_000_000_000); // Used for creation of User-Agent
 const VENDOR_FILE = '/etc/iob-vendor.json';

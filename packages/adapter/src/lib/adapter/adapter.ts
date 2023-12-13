@@ -39,7 +39,7 @@ import {
     ACCESS_USER_READ,
     NO_PROTECT_ADAPTERS,
     STATE_QUALITY,
-    SupportedFeature
+    type SupportedFeature
 } from './constants';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import type {

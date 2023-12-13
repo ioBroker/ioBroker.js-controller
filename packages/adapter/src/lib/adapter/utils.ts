@@ -1,5 +1,5 @@
 import { isObject, isControllerUiUpgradeSupported, encrypt, decrypt } from '@iobroker/js-controller-common/tools';
-import { SUPPORTED_FEATURES, SupportedFeature } from './constants';
+import { SUPPORTED_FEATURES, type SupportedFeature } from './constants';
 
 interface EncryptArrayOptions {
     /** The objects whose values should be en/decrypted */

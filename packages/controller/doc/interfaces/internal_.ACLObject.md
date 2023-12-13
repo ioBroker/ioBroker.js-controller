@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / ACLObject
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / ACLObject
 
 # Interface: ACLObject
 
-[<internal>](../modules/internal_.md).ACLObject
+[\<internal\>](../modules/internal_.md).ACLObject
 
 ## Table of contents
 

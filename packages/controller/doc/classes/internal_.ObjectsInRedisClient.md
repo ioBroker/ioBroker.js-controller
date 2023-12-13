@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / ObjectsInRedisClient
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / ObjectsInRedisClient
 
 # Class: ObjectsInRedisClient
 
-[<internal>](../modules/internal_.md).ObjectsInRedisClient
+[\<internal\>](../modules/internal_.md).ObjectsInRedisClient
 
 ## Table of contents
 
@@ -103,13 +103,17 @@
 
 ### constructor
 
-• **new ObjectsInRedisClient**(`settings`)
+• **new ObjectsInRedisClient**(`settings`): [`ObjectsInRedisClient`](internal_.ObjectsInRedisClient.md)
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `settings` | [`ObjectsSettings`](../interfaces/internal_.ObjectsSettings.md) |
+
+#### Returns
+
+[`ObjectsInRedisClient`](internal_.ObjectsInRedisClient.md)
 
 #### Defined in
 
@@ -119,13 +123,13 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:68
 
 ### activateSets
 
-▸ **activateSets**(): `Promise`<`void`\>
+▸ **activateSets**(): `Promise`\<`void`\>
 
 Activates the usage of sets
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -155,7 +159,7 @@ ___
 
 ### checkFile
 
-▸ **checkFile**(`id`, `name`, `options`, `flag`, `callback?`): `Promise`<`undefined` \| `void` \| [`CallOptions`](../interfaces/internal_.CallOptions.md)\>
+▸ **checkFile**(`id`, `name`, `options`, `flag`, `callback?`): `Promise`\<`undefined` \| `void` \| [`CallOptions`](../interfaces/internal_.CallOptions.md)\>
 
 #### Parameters
 
@@ -169,7 +173,7 @@ ___
 
 #### Returns
 
-`Promise`<`undefined` \| `void` \| [`CallOptions`](../interfaces/internal_.CallOptions.md)\>
+`Promise`\<`undefined` \| `void` \| [`CallOptions`](../interfaces/internal_.CallOptions.md)\>
 
 #### Defined in
 
@@ -226,7 +230,7 @@ ___
 
 ### chmodFileAsync
 
-▸ **chmodFileAsync**(`id`, `name`, `options`): `Promise`<`undefined` \| [`ChownFileResult`](../interfaces/internal_.ChownFileResult.md)[]\>
+▸ **chmodFileAsync**(`id`, `name`, `options`): `Promise`\<`undefined` \| [`ChownFileResult`](../interfaces/internal_.ChownFileResult.md)[]\>
 
 #### Parameters
 
@@ -238,7 +242,7 @@ ___
 
 #### Returns
 
-`Promise`<`undefined` \| [`ChownFileResult`](../interfaces/internal_.ChownFileResult.md)[]\>
+`Promise`\<`undefined` \| [`ChownFileResult`](../interfaces/internal_.ChownFileResult.md)[]\>
 
 #### Defined in
 
@@ -248,7 +252,7 @@ ___
 
 ### chmodObject
 
-▸ **chmodObject**(`pattern`, `options`, `callback?`): `void` \| `Promise`<`void`\>
+▸ **chmodObject**(`pattern`, `options`, `callback?`): `void` \| `Promise`\<`void`\>
 
 #### Parameters
 
@@ -260,7 +264,7 @@ ___
 
 #### Returns
 
-`void` \| `Promise`<`void`\>
+`void` \| `Promise`\<`void`\>
 
 #### Defined in
 
@@ -270,7 +274,7 @@ ___
 
 ### chmodObjectAsync
 
-▸ **chmodObjectAsync**(`pattern`, `options`): `Promise`<`undefined` \| [`Object`](../modules/internal_.md#object)[]\>
+▸ **chmodObjectAsync**(`pattern`, `options`): `Promise`\<`undefined` \| [`Object`](../modules/internal_.md#object)[]\>
 
 #### Parameters
 
@@ -281,7 +285,7 @@ ___
 
 #### Returns
 
-`Promise`<`undefined` \| [`Object`](../modules/internal_.md#object)[]\>
+`Promise`\<`undefined` \| [`Object`](../modules/internal_.md#object)[]\>
 
 #### Defined in
 
@@ -314,7 +318,7 @@ ___
 
 ### chownFileAsync
 
-▸ **chownFileAsync**(`id`, `name`, `options`): `Promise`<`undefined` \| [`ChownFileResult`](../interfaces/internal_.ChownFileResult.md)[]\>
+▸ **chownFileAsync**(`id`, `name`, `options`): `Promise`\<`undefined` \| [`ChownFileResult`](../interfaces/internal_.ChownFileResult.md)[]\>
 
 #### Parameters
 
@@ -326,7 +330,7 @@ ___
 
 #### Returns
 
-`Promise`<`undefined` \| [`ChownFileResult`](../interfaces/internal_.ChownFileResult.md)[]\>
+`Promise`\<`undefined` \| [`ChownFileResult`](../interfaces/internal_.ChownFileResult.md)[]\>
 
 #### Defined in
 
@@ -336,7 +340,7 @@ ___
 
 ### chownObject
 
-▸ **chownObject**(`pattern`, `options`, `callback?`): `void` \| `Promise`<`void`\>
+▸ **chownObject**(`pattern`, `options`, `callback?`): `void` \| `Promise`\<`void`\>
 
 #### Parameters
 
@@ -348,7 +352,7 @@ ___
 
 #### Returns
 
-`void` \| `Promise`<`void`\>
+`void` \| `Promise`\<`void`\>
 
 #### Defined in
 
@@ -358,7 +362,7 @@ ___
 
 ### chownObjectAsync
 
-▸ **chownObjectAsync**(`pattern`, `options`): `Promise`<`undefined` \| [`Object`](../modules/internal_.md#object)[]\>
+▸ **chownObjectAsync**(`pattern`, `options`): `Promise`\<`undefined` \| [`Object`](../modules/internal_.md#object)[]\>
 
 #### Parameters
 
@@ -369,7 +373,7 @@ ___
 
 #### Returns
 
-`Promise`<`undefined` \| [`Object`](../modules/internal_.md#object)[]\>
+`Promise`\<`undefined` \| [`Object`](../modules/internal_.md#object)[]\>
 
 #### Defined in
 
@@ -393,13 +397,13 @@ ___
 
 ### deactivateSets
 
-▸ **deactivateSets**(): `Promise`<`void`\>
+▸ **deactivateSets**(): `Promise`\<`void`\>
 
 Deactivates the usage of sets
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -432,7 +436,7 @@ ___
 
 ### delFileAsync
 
-▸ **delFileAsync**(`id`, `name`, `options`): `Promise`<`void`\>
+▸ **delFileAsync**(`id`, `name`, `options`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -444,7 +448,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -489,7 +493,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:221
 
 db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:222
 
-▸ **delObject**(`id`, `options?`): `Promise`<`void`\>
+▸ **delObject**(`id`, `options?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -500,7 +504,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:222
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -510,7 +514,7 @@ ___
 
 ### delObjectAsync
 
-▸ **delObjectAsync**(`id`, `options?`): `Promise`<`void`\>
+▸ **delObjectAsync**(`id`, `options?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -521,7 +525,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -531,11 +535,11 @@ ___
 
 ### destroy
 
-▸ **destroy**(): `Promise`<`void`\>
+▸ **destroy**(): `Promise`\<`void`\>
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -566,7 +570,7 @@ ___
 
 ### destroyDBAsync
 
-▸ **destroyDBAsync**(`options?`): `Promise`<`void`\>
+▸ **destroyDBAsync**(`options?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -576,7 +580,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -625,7 +629,7 @@ ___
 
 ### enableFileCacheAsync
 
-▸ **enableFileCacheAsync**(`enabled`, `options?`): `Promise`<`boolean`\>
+▸ **enableFileCacheAsync**(`enabled`, `options?`): `Promise`\<`boolean`\>
 
 #### Parameters
 
@@ -636,7 +640,7 @@ ___
 
 #### Returns
 
-`Promise`<`boolean`\>
+`Promise`\<`boolean`\>
 
 #### Defined in
 
@@ -646,7 +650,7 @@ ___
 
 ### extendObject
 
-▸ **extendObject**<`T`\>(`id`, `obj`, `options?`): `Promise`<`undefined` \| { `id`: `string` ; `value`: [`Object`](../modules/internal_.md#object)  }\>
+▸ **extendObject**\<`T`\>(`id`, `obj`, `options?`): `Promise`\<`undefined` \| \{ `id`: `string` ; `value`: [`Object`](../modules/internal_.md#object)  }\>
 
 #### Type parameters
 
@@ -659,18 +663,18 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `id` | `T` |
-| `obj` | [`PartialObjectWorker`](../modules/internal_.md#partialobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"write"``\>\> |
+| `obj` | [`PartialObjectWorker`](../modules/internal_.md#partialobjectworker)\<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)\<`T`, ``"write"``\>\> |
 | `options?` | ``null`` \| [`ExtendObjectOptions`](../interfaces/internal_.ExtendObjectOptions.md) |
 
 #### Returns
 
-`Promise`<`undefined` \| { `id`: `string` ; `value`: [`Object`](../modules/internal_.md#object)  }\>
+`Promise`\<`undefined` \| \{ `id`: `string` ; `value`: [`Object`](../modules/internal_.md#object)  }\>
 
 #### Defined in
 
 db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:242
 
-▸ **extendObject**<`T`\>(`id`, `obj`, `options?`, `callback?`): `void` \| `Promise`<`undefined` \| { `id`: `string` ; `value`: [`Object`](../modules/internal_.md#object)  }\>
+▸ **extendObject**\<`T`\>(`id`, `obj`, `options?`, `callback?`): `void` \| `Promise`\<`undefined` \| \{ `id`: `string` ; `value`: [`Object`](../modules/internal_.md#object)  }\>
 
 #### Type parameters
 
@@ -683,13 +687,13 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:242
 | Name | Type |
 | :------ | :------ |
 | `id` | `T` |
-| `obj` | [`PartialObjectWorker`](../modules/internal_.md#partialobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"write"``\>\> |
+| `obj` | [`PartialObjectWorker`](../modules/internal_.md#partialobjectworker)\<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)\<`T`, ``"write"``\>\> |
 | `options?` | ``null`` \| [`ExtendObjectOptions`](../interfaces/internal_.ExtendObjectOptions.md) |
 | `callback?` | [`ExtendObjectCallback`](../modules/internal_.md#extendobjectcallback) |
 
 #### Returns
 
-`void` \| `Promise`<`undefined` \| { `id`: `string` ; `value`: [`Object`](../modules/internal_.md#object)  }\>
+`void` \| `Promise`\<`undefined` \| \{ `id`: `string` ; `value`: [`Object`](../modules/internal_.md#object)  }\>
 
 #### Defined in
 
@@ -699,19 +703,19 @@ ___
 
 ### extendObjectAsync
 
-▸ **extendObjectAsync**(`id`, `obj`, `options?`): `Promise`<`undefined` \| { `id`: `string` ; `value`: [`Object`](../modules/internal_.md#object)  }\>
+▸ **extendObjectAsync**(`id`, `obj`, `options?`): `Promise`\<`undefined` \| \{ `id`: `string` ; `value`: [`Object`](../modules/internal_.md#object)  }\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `obj` | `Partial`<[`AnyObject`](../modules/internal_.md#anyobject)\> |
+| `obj` | `Partial`\<[`AnyObject`](../modules/internal_.md#anyobject)\> |
 | `options?` | [`ExtendObjectOptions`](../interfaces/internal_.ExtendObjectOptions.md) |
 
 #### Returns
 
-`Promise`<`undefined` \| { `id`: `string` ; `value`: [`Object`](../modules/internal_.md#object)  }\>
+`Promise`\<`undefined` \| \{ `id`: `string` ; `value`: [`Object`](../modules/internal_.md#object)  }\>
 
 #### Defined in
 
@@ -721,7 +725,7 @@ ___
 
 ### extendPrimaryHostLock
 
-▸ **extendPrimaryHostLock**(`ms`): `Promise`<`number`\>
+▸ **extendPrimaryHostLock**(`ms`): `Promise`\<`number`\>
 
 Extend the primary host lock time
 Value will expire after ms milliseconds
@@ -734,7 +738,7 @@ Value will expire after ms milliseconds
 
 #### Returns
 
-`Promise`<`number`\>
+`Promise`\<`number`\>
 
 1 if extended else 0
 
@@ -746,7 +750,7 @@ ___
 
 ### fileExists
 
-▸ **fileExists**(`id`, `name`, `options?`): `Promise`<`boolean`\>
+▸ **fileExists**(`id`, `name`, `options?`): `Promise`\<`boolean`\>
 
 Check if given file exists
 
@@ -760,7 +764,7 @@ Check if given file exists
 
 #### Returns
 
-`Promise`<`boolean`\>
+`Promise`\<`boolean`\>
 
 #### Defined in
 
@@ -807,7 +811,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:253
 
 db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:254
 
-▸ **findObject**(`idOrName`, `type?`, `options?`): `Promise`<`undefined` \| `string`\>
+▸ **findObject**(`idOrName`, `type?`, `options?`): `Promise`\<`undefined` \| `string`\>
 
 #### Parameters
 
@@ -819,7 +823,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:254
 
 #### Returns
 
-`Promise`<`undefined` \| `string`\>
+`Promise`\<`undefined` \| `string`\>
 
 #### Defined in
 
@@ -887,7 +891,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:202
 
 db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:203
 
-▸ **getKeys**(`pattern`, `options?`, `callback?`, `dontModify?`): `Promise`<`undefined` \| `string`[]\>
+▸ **getKeys**(`pattern`, `options?`, `callback?`, `dontModify?`): `Promise`\<`undefined` \| `string`[]\>
 
 #### Parameters
 
@@ -900,7 +904,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:203
 
 #### Returns
 
-`Promise`<`undefined` \| `string`[]\>
+`Promise`\<`undefined` \| `string`[]\>
 
 #### Defined in
 
@@ -910,7 +914,7 @@ ___
 
 ### getKeysAsync
 
-▸ **getKeysAsync**(`id`, `options?`): `Promise`<`undefined` \| `string`[]\>
+▸ **getKeysAsync**(`id`, `options?`): `Promise`\<`undefined` \| `string`[]\>
 
 #### Parameters
 
@@ -921,7 +925,7 @@ ___
 
 #### Returns
 
-`Promise`<`undefined` \| `string`[]\>
+`Promise`\<`undefined` \| `string`[]\>
 
 #### Defined in
 
@@ -931,7 +935,7 @@ ___
 
 ### getMeta
 
-▸ **getMeta**(`id`): `Promise`<``null`` \| `string`\>
+▸ **getMeta**(`id`): `Promise`\<``null`` \| `string`\>
 
 Get value from meta namespace
 
@@ -943,7 +947,7 @@ Get value from meta namespace
 
 #### Returns
 
-`Promise`<``null`` \| `string`\>
+`Promise`\<``null`` \| `string`\>
 
 #### Defined in
 
@@ -953,7 +957,7 @@ ___
 
 ### getObject
 
-▸ **getObject**<`T`\>(`id`, `options`, `callback`): `void`
+▸ **getObject**\<`T`\>(`id`, `options`, `callback`): `void`
 
 #### Type parameters
 
@@ -966,8 +970,8 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `id` | `T` |
-| `options` | `undefined` \| ``null`` \| `Record`<`string`, `any`\> |
-| `callback` | [`GetObjectCallback`](../modules/internal_.md#getobjectcallback)<`T`\> |
+| `options` | `undefined` \| ``null`` \| `Record`\<`string`, `any`\> |
+| `callback` | [`GetObjectCallback`](../modules/internal_.md#getobjectcallback)\<`T`\> |
 
 #### Returns
 
@@ -977,7 +981,7 @@ ___
 
 db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:197
 
-▸ **getObject**<`T`\>(`id`, `callback`): `void`
+▸ **getObject**\<`T`\>(`id`, `callback`): `void`
 
 #### Type parameters
 
@@ -990,7 +994,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:197
 | Name | Type |
 | :------ | :------ |
 | `id` | `T` |
-| `callback` | [`GetObjectCallback`](../modules/internal_.md#getobjectcallback)<`T`\> |
+| `callback` | [`GetObjectCallback`](../modules/internal_.md#getobjectcallback)\<`T`\> |
 
 #### Returns
 
@@ -1000,7 +1004,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:197
 
 db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:198
 
-▸ **getObject**<`T`\>(`id`, `options?`): `Promise`<`undefined` \| ``null`` \| [`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"read"``\>\>
+▸ **getObject**\<`T`\>(`id`, `options?`): `Promise`\<`undefined` \| ``null`` \| [`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)\<`T`, ``"read"``\>\>
 
 #### Type parameters
 
@@ -1013,11 +1017,11 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:198
 | Name | Type |
 | :------ | :------ |
 | `id` | `T` |
-| `options?` | ``null`` \| `Record`<`string`, `any`\> |
+| `options?` | ``null`` \| `Record`\<`string`, `any`\> |
 
 #### Returns
 
-`Promise`<`undefined` \| ``null`` \| [`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"read"``\>\>
+`Promise`\<`undefined` \| ``null`` \| [`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)\<`T`, ``"read"``\>\>
 
 #### Defined in
 
@@ -1027,7 +1031,7 @@ ___
 
 ### getObjectAsync
 
-▸ **getObjectAsync**<`T`\>(`id`, `options?`): `Promise`<`undefined` \| ``null`` \| [`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"read"``\>\>
+▸ **getObjectAsync**\<`T`\>(`id`, `options?`): `Promise`\<`undefined` \| ``null`` \| [`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)\<`T`, ``"read"``\>\>
 
 #### Type parameters
 
@@ -1040,11 +1044,11 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `id` | `T` |
-| `options?` | ``null`` \| `Record`<`string`, `any`\> |
+| `options?` | ``null`` \| `Record`\<`string`, `any`\> |
 
 #### Returns
 
-`Promise`<`undefined` \| ``null`` \| [`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"read"``\>\>
+`Promise`\<`undefined` \| ``null`` \| [`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)\<`T`, ``"read"``\>\>
 
 #### Defined in
 
@@ -1094,7 +1098,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:237
 | Name | Type |
 | :------ | :------ |
 | `params` | [`GetObjectViewParams`](../interfaces/internal_.GetObjectViewParams.md) |
-| `callback` | [`GetObjectListCallback`](../modules/internal_.md#getobjectlistcallback)<[`Object`](../modules/internal_.md#object)\> |
+| `callback` | [`GetObjectListCallback`](../modules/internal_.md#getobjectlistcallback)\<[`Object`](../modules/internal_.md#object)\> |
 
 #### Returns
 
@@ -1104,13 +1108,13 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:237
 
 db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:238
 
-▸ **getObjectList**<`T`\>(`params`, `options?`, `callback?`): `T` extends [`GetObjectListCallback`](../modules/internal_.md#getobjectlistcallback)<[`Object`](../modules/internal_.md#object)\> ? `void` : [`GetObjectListPromise`](../modules/internal_.md#getobjectlistpromise)
+▸ **getObjectList**\<`T`\>(`params`, `options?`, `callback?`): `T` extends [`GetObjectListCallback`](../modules/internal_.md#getobjectlistcallback)\<[`Object`](../modules/internal_.md#object)\> ? `void` : [`GetObjectListPromise`](../modules/internal_.md#getobjectlistpromise)
 
 #### Type parameters
 
 | Name | Type |
 | :------ | :------ |
-| `T` | extends [`GetObjectListCallback`](../modules/internal_.md#getobjectlistcallback)<[`Object`](../modules/internal_.md#object)\> |
+| `T` | extends [`GetObjectListCallback`](../modules/internal_.md#getobjectlistcallback)\<[`Object`](../modules/internal_.md#object)\> |
 
 #### Parameters
 
@@ -1122,7 +1126,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:238
 
 #### Returns
 
-`T` extends [`GetObjectListCallback`](../modules/internal_.md#getobjectlistcallback)<[`Object`](../modules/internal_.md#object)\> ? `void` : [`GetObjectListPromise`](../modules/internal_.md#getobjectlistpromise)
+`T` extends [`GetObjectListCallback`](../modules/internal_.md#getobjectlistcallback)\<[`Object`](../modules/internal_.md#object)\> ? `void` : [`GetObjectListPromise`](../modules/internal_.md#getobjectlistpromise)
 
 #### Defined in
 
@@ -1153,7 +1157,7 @@ ___
 
 ### getObjectView
 
-▸ **getObjectView**<`Design`, `Search`\>(`design`, `search`, `params?`, `options?`): [`GetObjectViewPromise`](../modules/internal_.md#getobjectviewpromise)<[`InferGetObjectViewItemType`](../modules/internal_.md#infergetobjectviewitemtype)<`Design`, `Search`\>\>
+▸ **getObjectView**\<`Design`, `Search`\>(`design`, `search`, `params?`, `options?`): [`GetObjectViewPromise`](../modules/internal_.md#getobjectviewpromise)\<[`InferGetObjectViewItemType`](../modules/internal_.md#infergetobjectviewitemtype)\<`Design`, `Search`\>\>
 
 #### Type parameters
 
@@ -1173,13 +1177,13 @@ ___
 
 #### Returns
 
-[`GetObjectViewPromise`](../modules/internal_.md#getobjectviewpromise)<[`InferGetObjectViewItemType`](../modules/internal_.md#infergetobjectviewitemtype)<`Design`, `Search`\>\>
+[`GetObjectViewPromise`](../modules/internal_.md#getobjectviewpromise)\<[`InferGetObjectViewItemType`](../modules/internal_.md#infergetobjectviewitemtype)\<`Design`, `Search`\>\>
 
 #### Defined in
 
 db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:231
 
-▸ **getObjectView**<`Design`, `Search`\>(`design`, `search`, `params`, `options`, `callback`): `void`
+▸ **getObjectView**\<`Design`, `Search`\>(`design`, `search`, `params`, `options`, `callback`): `void`
 
 #### Type parameters
 
@@ -1196,7 +1200,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:231
 | `search` | `Search` |
 | `params` | `undefined` \| [`GetObjectViewParams`](../interfaces/internal_.GetObjectViewParams.md) |
 | `options` | `undefined` \| ``null`` \| [`CallOptions`](../interfaces/internal_.CallOptions.md) |
-| `callback` | [`GetObjectViewCallback`](../modules/internal_.md#getobjectviewcallback)<[`InferGetObjectViewItemType`](../modules/internal_.md#infergetobjectviewitemtype)<`Design`, `Search`\>\> |
+| `callback` | [`GetObjectViewCallback`](../modules/internal_.md#getobjectviewcallback)\<[`InferGetObjectViewItemType`](../modules/internal_.md#infergetobjectviewitemtype)\<`Design`, `Search`\>\> |
 
 #### Returns
 
@@ -1206,7 +1210,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:231
 
 db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:232
 
-▸ **getObjectView**<`Design`, `Search`\>(`design`, `search`, `params`, `callback`): `void`
+▸ **getObjectView**\<`Design`, `Search`\>(`design`, `search`, `params`, `callback`): `void`
 
 #### Type parameters
 
@@ -1222,7 +1226,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:232
 | `design` | `Design` |
 | `search` | `Search` |
 | `params` | [`GetObjectViewParams`](../interfaces/internal_.GetObjectViewParams.md) |
-| `callback` | [`GetObjectViewCallback`](../modules/internal_.md#getobjectviewcallback)<[`InferGetObjectViewItemType`](../modules/internal_.md#infergetobjectviewitemtype)<`Design`, `Search`\>\> |
+| `callback` | [`GetObjectViewCallback`](../modules/internal_.md#getobjectviewcallback)\<[`InferGetObjectViewItemType`](../modules/internal_.md#infergetobjectviewitemtype)\<`Design`, `Search`\>\> |
 
 #### Returns
 
@@ -1236,7 +1240,7 @@ ___
 
 ### getObjectViewAsync
 
-▸ **getObjectViewAsync**<`Design`, `Search`\>(`design`, `search`, `params?`, `options?`): [`GetObjectViewPromise`](../modules/internal_.md#getobjectviewpromise)<[`InferGetObjectViewItemType`](../modules/internal_.md#infergetobjectviewitemtype)<`Design`, `Search`\>\>
+▸ **getObjectViewAsync**\<`Design`, `Search`\>(`design`, `search`, `params?`, `options?`): [`GetObjectViewPromise`](../modules/internal_.md#getobjectviewpromise)\<[`InferGetObjectViewItemType`](../modules/internal_.md#infergetobjectviewitemtype)\<`Design`, `Search`\>\>
 
 #### Type parameters
 
@@ -1256,7 +1260,7 @@ ___
 
 #### Returns
 
-[`GetObjectViewPromise`](../modules/internal_.md#getobjectviewpromise)<[`InferGetObjectViewItemType`](../modules/internal_.md#infergetobjectviewitemtype)<`Design`, `Search`\>\>
+[`GetObjectViewPromise`](../modules/internal_.md#getobjectviewpromise)\<[`InferGetObjectViewItemType`](../modules/internal_.md#infergetobjectviewitemtype)\<`Design`, `Search`\>\>
 
 #### Defined in
 
@@ -1266,7 +1270,7 @@ ___
 
 ### getObjects
 
-▸ **getObjects**(`keys`, `options?`): `Promise`<[`AnyObject`](../modules/internal_.md#anyobject)[]\>
+▸ **getObjects**(`keys`, `options?`): `Promise`\<[`AnyObject`](../modules/internal_.md#anyobject)[]\>
 
 #### Parameters
 
@@ -1277,7 +1281,7 @@ ___
 
 #### Returns
 
-`Promise`<[`AnyObject`](../modules/internal_.md#anyobject)[]\>
+`Promise`\<[`AnyObject`](../modules/internal_.md#anyobject)[]\>
 
 #### Defined in
 
@@ -1323,7 +1327,7 @@ ___
 
 ### getObjectsAsync
 
-▸ **getObjectsAsync**(`keys`, `options?`): `Promise`<[`AnyObject`](../modules/internal_.md#anyobject)[]\>
+▸ **getObjectsAsync**(`keys`, `options?`): `Promise`\<[`AnyObject`](../modules/internal_.md#anyobject)[]\>
 
 #### Parameters
 
@@ -1334,7 +1338,7 @@ ___
 
 #### Returns
 
-`Promise`<[`AnyObject`](../modules/internal_.md#anyobject)[]\>
+`Promise`\<[`AnyObject`](../modules/internal_.md#anyobject)[]\>
 
 #### Defined in
 
@@ -1344,7 +1348,7 @@ ___
 
 ### getObjectsByPattern
 
-▸ **getObjectsByPattern**(`pattern`, `options`): `Promise`<`void` \| [`AnyObject`](../modules/internal_.md#anyobject)[]\>
+▸ **getObjectsByPattern**(`pattern`, `options`): `Promise`\<`void` \| [`AnyObject`](../modules/internal_.md#anyobject)[]\>
 
 #### Parameters
 
@@ -1355,7 +1359,7 @@ ___
 
 #### Returns
 
-`Promise`<`void` \| [`AnyObject`](../modules/internal_.md#anyobject)[]\>
+`Promise`\<`void` \| [`AnyObject`](../modules/internal_.md#anyobject)[]\>
 
 #### Defined in
 
@@ -1383,7 +1387,7 @@ ___
 
 ### getObjectsByPatternAsync
 
-▸ **getObjectsByPatternAsync**(`pattern`, `options`): `Promise`<`void` \| [`AnyObject`](../modules/internal_.md#anyobject)[]\>
+▸ **getObjectsByPatternAsync**(`pattern`, `options`): `Promise`\<`void` \| [`AnyObject`](../modules/internal_.md#anyobject)[]\>
 
 #### Parameters
 
@@ -1394,7 +1398,7 @@ ___
 
 #### Returns
 
-`Promise`<`void` \| [`AnyObject`](../modules/internal_.md#anyobject)[]\>
+`Promise`\<`void` \| [`AnyObject`](../modules/internal_.md#anyobject)[]\>
 
 #### Defined in
 
@@ -1404,13 +1408,13 @@ ___
 
 ### getPrimaryHost
 
-▸ **getPrimaryHost**(): `Promise`<``null`` \| `string`\>
+▸ **getPrimaryHost**(): `Promise`\<``null`` \| `string`\>
 
 Get name of the primary host
 
 #### Returns
 
-`Promise`<``null`` \| `string`\>
+`Promise`\<``null`` \| `string`\>
 
 #### Defined in
 
@@ -1420,13 +1424,13 @@ ___
 
 ### getProtocolVersion
 
-▸ **getProtocolVersion**(): `Promise`<``null`` \| `string`\>
+▸ **getProtocolVersion**(): `Promise`\<``null`` \| `string`\>
 
 Returns the protocol version from DB
 
 #### Returns
 
-`Promise`<``null`` \| `string`\>
+`Promise`\<``null`` \| `string`\>
 
 #### Defined in
 
@@ -1450,18 +1454,18 @@ ___
 
 ### getUserGroup
 
-▸ **getUserGroup**(`user`, `callback`): `void` \| `Promise`<[`GetUserGroupPromiseReturn`](../modules/internal_.md#getusergrouppromisereturn)\>
+▸ **getUserGroup**(`user`, `callback`): `void` \| `Promise`\<[`GetUserGroupPromiseReturn`](../modules/internal_.md#getusergrouppromisereturn)\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
-| `user` | \`system.user.${string}\` |
+| `user` | \`system.user.$\{string}\` |
 | `callback` | [`GetUserGroupCallbackNoError`](../modules/internal_.md#getusergroupcallbacknoerror) |
 
 #### Returns
 
-`void` \| `Promise`<[`GetUserGroupPromiseReturn`](../modules/internal_.md#getusergrouppromisereturn)\>
+`void` \| `Promise`\<[`GetUserGroupPromiseReturn`](../modules/internal_.md#getusergrouppromisereturn)\>
 
 #### Defined in
 
@@ -1480,7 +1484,7 @@ ___
 | `id` | `string` |
 | `attName` | `string` |
 | `ignore` | `any` |
-| `options` | `string` \| `Record`<`string`, `any`\> |
+| `options` | `string` \| `Record`\<`string`, `any`\> |
 | `obj` | `any` |
 | `callback` | (`err?`: ``null`` \| `Error`) => `void` |
 
@@ -1496,13 +1500,13 @@ ___
 
 ### isSystemLocaleSupported
 
-▸ **isSystemLocaleSupported**(): `Promise`<`boolean`\>
+▸ **isSystemLocaleSupported**(): `Promise`\<`boolean`\>
 
 Function to checks if comparisons will work according to the configured Locale
 
 #### Returns
 
-`Promise`<`boolean`\>
+`Promise`\<`boolean`\>
 
 #### Defined in
 
@@ -1512,11 +1516,11 @@ ___
 
 ### loadLuaScripts
 
-▸ **loadLuaScripts**(): `Promise`<`void`\>
+▸ **loadLuaScripts**(): `Promise`\<`void`\>
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -1526,13 +1530,13 @@ ___
 
 ### migrateToSets
 
-▸ **migrateToSets**(): `Promise`<`number`\>
+▸ **migrateToSets**(): `Promise`\<`number`\>
 
 Migrate all objects to sets
 
 #### Returns
 
-`Promise`<`number`\>
+`Promise`\<`number`\>
 
 number of migrated sets
 
@@ -1567,7 +1571,7 @@ ___
 
 ### mkdirAsync
 
-▸ **mkdirAsync**(`id`, `dirName?`, `options?`): `Promise`<`void`\>
+▸ **mkdirAsync**(`id`, `dirName?`, `options?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -1579,7 +1583,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -1609,7 +1613,7 @@ ___
 
 ### objectExists
 
-▸ **objectExists**(`id`, `options?`): `Promise`<`boolean`\>
+▸ **objectExists**(`id`, `options?`): `Promise`\<`boolean`\>
 
 Check if given object exists
 
@@ -1622,7 +1626,7 @@ Check if given object exists
 
 #### Returns
 
-`Promise`<`boolean`\>
+`Promise`\<`boolean`\>
 
 #### Defined in
 
@@ -1718,13 +1722,13 @@ ___
 
 ### releasePrimaryHost
 
-▸ **releasePrimaryHost**(): `Promise`<`void`\>
+▸ **releasePrimaryHost**(): `Promise`\<`void`\>
 
 Ensure we are no longer the primary host
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -1734,7 +1738,7 @@ ___
 
 ### rename
 
-▸ **rename**(`id`, `oldName`, `newName`, `options?`, `callback?`): `void` \| `Promise`<`void`\>
+▸ **rename**(`id`, `oldName`, `newName`, `options?`, `callback?`): `void` \| `Promise`\<`void`\>
 
 #### Parameters
 
@@ -1748,7 +1752,7 @@ ___
 
 #### Returns
 
-`void` \| `Promise`<`void`\>
+`void` \| `Promise`\<`void`\>
 
 #### Defined in
 
@@ -1758,7 +1762,7 @@ ___
 
 ### renameAsync
 
-▸ **renameAsync**(`id`, `oldName`, `newName`, `options`): `Promise`<`void`\>
+▸ **renameAsync**(`id`, `oldName`, `newName`, `options`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -1771,7 +1775,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -1804,7 +1808,7 @@ ___
 
 ### rmAsync
 
-▸ **rmAsync**(`id`, `name`, `options`): `Promise`<`void` \| [`RmResult`](../interfaces/internal_.RmResult.md)[]\>
+▸ **rmAsync**(`id`, `name`, `options`): `Promise`\<`void` \| [`RmResult`](../interfaces/internal_.RmResult.md)[]\>
 
 #### Parameters
 
@@ -1816,7 +1820,7 @@ ___
 
 #### Returns
 
-`Promise`<`void` \| [`RmResult`](../interfaces/internal_.RmResult.md)[]\>
+`Promise`\<`void` \| [`RmResult`](../interfaces/internal_.RmResult.md)[]\>
 
 #### Defined in
 
@@ -1826,7 +1830,7 @@ ___
 
 ### setDefaultAcl
 
-▸ **setDefaultAcl**(`defaultNewAcl`): `Promise`<`void`\>
+▸ **setDefaultAcl**(`defaultNewAcl`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -1836,7 +1840,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -1846,7 +1850,7 @@ ___
 
 ### setExists
 
-▸ **setExists**(`id`): `Promise`<`boolean`\>
+▸ **setExists**(`id`): `Promise`\<`boolean`\>
 
 Checks if a given set exists
 
@@ -1858,7 +1862,7 @@ Checks if a given set exists
 
 #### Returns
 
-`Promise`<`boolean`\>
+`Promise`\<`boolean`\>
 
 #### Defined in
 
@@ -1868,7 +1872,7 @@ ___
 
 ### setObject
 
-▸ **setObject**<`T`\>(`id`, `obj`): `Promise`<`undefined` \| { `id`: `string`  }\>
+▸ **setObject**\<`T`\>(`id`, `obj`): `Promise`\<`undefined` \| \{ `id`: `string`  }\>
 
 #### Type parameters
 
@@ -1881,17 +1885,17 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `id` | `T` |
-| `obj` | [`SettableObjectWorker`](../modules/internal_.md#settableobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"read"``\>\> |
+| `obj` | [`SettableObjectWorker`](../modules/internal_.md#settableobjectworker)\<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)\<`T`, ``"read"``\>\> |
 
 #### Returns
 
-`Promise`<`undefined` \| { `id`: `string`  }\>
+`Promise`\<`undefined` \| \{ `id`: `string`  }\>
 
 #### Defined in
 
 db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:216
 
-▸ **setObject**<`T`\>(`id`, `obj`, `callback?`): `void` \| `Promise`<`undefined` \| { `id`: `string`  }\>
+▸ **setObject**\<`T`\>(`id`, `obj`, `callback?`): `void` \| `Promise`\<`undefined` \| \{ `id`: `string`  }\>
 
 #### Type parameters
 
@@ -1904,18 +1908,18 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:216
 | Name | Type |
 | :------ | :------ |
 | `id` | `T` |
-| `obj` | [`SettableObjectWorker`](../modules/internal_.md#settableobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"read"``\>\> |
+| `obj` | [`SettableObjectWorker`](../modules/internal_.md#settableobjectworker)\<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)\<`T`, ``"read"``\>\> |
 | `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
 
 #### Returns
 
-`void` \| `Promise`<`undefined` \| { `id`: `string`  }\>
+`void` \| `Promise`\<`undefined` \| \{ `id`: `string`  }\>
 
 #### Defined in
 
 db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:217
 
-▸ **setObject**<`T`\>(`id`, `obj`, `options?`, `callback?`): `void` \| `Promise`<`undefined` \| { `id`: `string`  }\>
+▸ **setObject**\<`T`\>(`id`, `obj`, `options?`, `callback?`): `void` \| `Promise`\<`undefined` \| \{ `id`: `string`  }\>
 
 #### Type parameters
 
@@ -1928,13 +1932,13 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:217
 | Name | Type |
 | :------ | :------ |
 | `id` | `T` |
-| `obj` | [`SettableObjectWorker`](../modules/internal_.md#settableobjectworker)<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)<`T`, ``"read"``\>\> |
+| `obj` | [`SettableObjectWorker`](../modules/internal_.md#settableobjectworker)\<[`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)\<`T`, ``"read"``\>\> |
 | `options?` | ``null`` \| [`CallOptions`](../interfaces/internal_.CallOptions.md) |
 | `callback?` | [`SetObjectCallback`](../modules/internal_.md#setobjectcallback) |
 
 #### Returns
 
-`void` \| `Promise`<`undefined` \| { `id`: `string`  }\>
+`void` \| `Promise`\<`undefined` \| \{ `id`: `string`  }\>
 
 #### Defined in
 
@@ -1944,19 +1948,19 @@ ___
 
 ### setObjectAsync
 
-▸ **setObjectAsync**(`id`, `obj`, `options?`): `Promise`<`undefined` \| { `id`: `string`  }\>
+▸ **setObjectAsync**(`id`, `obj`, `options?`): `Promise`\<`undefined` \| \{ `id`: `string`  }\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `obj` | `Omit`<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| `Omit`<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.host.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.adapter.${string}.${number}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.user.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`system.group.${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ChartObject`](../interfaces/internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`ScheduleObject`](../interfaces/internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`<[`DesignObject`](../interfaces/internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & { `_id?`: \`\_design/${string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } |
+| `obj` | `Omit`\<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| `Omit`\<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.host.$\{string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.adapter.$\{string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.adapter.$\{string}.$\{number}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.user.$\{string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.group.$\{string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`ChartObject`](../interfaces/internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`ScheduleObject`](../interfaces/internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`DesignObject`](../interfaces/internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`\_design/$\{string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } |
 | `options?` | ``null`` \| [`CallOptions`](../interfaces/internal_.CallOptions.md) |
 
 #### Returns
 
-`Promise`<`undefined` \| { `id`: `string`  }\>
+`Promise`\<`undefined` \| \{ `id`: `string`  }\>
 
 #### Defined in
 
@@ -1966,7 +1970,7 @@ ___
 
 ### setPrimaryHost
 
-▸ **setPrimaryHost**(`ms`): `Promise`<`number`\>
+▸ **setPrimaryHost**(`ms`): `Promise`\<`number`\>
 
 Sets current host as primary if no primary host active
 Value will expire after ms milliseconds
@@ -1979,7 +1983,7 @@ Value will expire after ms milliseconds
 
 #### Returns
 
-`Promise`<`number`\>
+`Promise`\<`number`\>
 
 1 if lock acquired else 0
 
@@ -1991,7 +1995,7 @@ ___
 
 ### setProtocolVersion
 
-▸ **setProtocolVersion**(`version`): `Promise`<`void`\>
+▸ **setProtocolVersion**(`version`): `Promise`\<`void`\>
 
 Sets the protocol version to the DB
 
@@ -2003,7 +2007,7 @@ Sets the protocol version to the DB
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -2052,7 +2056,7 @@ ___
 
 ### subscribeAsync
 
-▸ **subscribeAsync**(`pattern`, `options?`): `Promise`<`void`\>
+▸ **subscribeAsync**(`pattern`, `options?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -2063,7 +2067,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -2073,13 +2077,13 @@ ___
 
 ### subscribePrimaryHost
 
-▸ **subscribePrimaryHost**(): `Promise`<`void`\>
+▸ **subscribePrimaryHost**(): `Promise`\<`void`\>
 
 Subscribe to expired events to get expiration of primary host
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -2128,7 +2132,7 @@ ___
 
 ### subscribeUserAsync
 
-▸ **subscribeUserAsync**(`pattern`, `options`): `Promise`<`void`\>
+▸ **subscribeUserAsync**(`pattern`, `options`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -2139,7 +2143,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -2149,7 +2153,7 @@ ___
 
 ### subscribeUserFile
 
-▸ **subscribeUserFile**(`id`, `pattern`, `options?`): `Promise`<`void`\>
+▸ **subscribeUserFile**(`id`, `pattern`, `options?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -2161,7 +2165,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -2194,7 +2198,7 @@ ___
 
 ### touchAsync
 
-▸ **touchAsync**(`id`, `name`, `options`): `Promise`<`void`\>
+▸ **touchAsync**(`id`, `name`, `options`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -2206,7 +2210,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -2239,7 +2243,7 @@ ___
 
 ### unlinkAsync
 
-▸ **unlinkAsync**(`id`, `name`, `options?`): `Promise`<`void`\>
+▸ **unlinkAsync**(`id`, `name`, `options?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -2251,7 +2255,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -2300,7 +2304,7 @@ ___
 
 ### unsubscribeAsync
 
-▸ **unsubscribeAsync**(`pattern`, `options`): `Promise`<`void`\>
+▸ **unsubscribeAsync**(`pattern`, `options`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -2311,7 +2315,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -2343,7 +2347,7 @@ ___
 
 ### unsubscribeUserAsync
 
-▸ **unsubscribeUserAsync**(`pattern`, `options`): `Promise`<`void`\>
+▸ **unsubscribeUserAsync**(`pattern`, `options`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -2354,7 +2358,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -2364,7 +2368,7 @@ ___
 
 ### unsubscribeUserFile
 
-▸ **unsubscribeUserFile**(`id`, `pattern`, `options?`): `Promise`<`void`\>
+▸ **unsubscribeUserFile**(`id`, `pattern`, `options?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -2376,7 +2380,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -2386,13 +2390,9 @@ ___
 
 ### validateMetaObject
 
-▸ **validateMetaObject**(`id`): `Promise`<`void`\>
+▸ **validateMetaObject**(`id`): `Promise`\<`void`\>
 
 Checks if given ID is a meta-object, else throws error
-
-**`Throws`**
-
-Error if id is invalid
 
 #### Parameters
 
@@ -2402,7 +2402,11 @@ Error if id is invalid
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
+
+**`Throws`**
+
+Error if id is invalid
 
 #### Defined in
 
@@ -2412,7 +2416,7 @@ ___
 
 ### writeFile
 
-▸ **writeFile**(`id`, `name`, `data`, `callback?`): `Promise`<`void`\>
+▸ **writeFile**(`id`, `name`, `data`, `callback?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -2425,13 +2429,13 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
 db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:110
 
-▸ **writeFile**(`id`, `name`, `data`, `options?`, `callback?`): `Promise`<`void`\>
+▸ **writeFile**(`id`, `name`, `data`, `options?`, `callback?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -2445,7 +2449,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:110
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 
@@ -2455,7 +2459,7 @@ ___
 
 ### writeFileAsync
 
-▸ **writeFileAsync**(`id`, `name`, `data`, `options?`): `Promise`<`void`\>
+▸ **writeFileAsync**(`id`, `name`, `data`, `options?`): `Promise`\<`void`\>
 
 #### Parameters
 
@@ -2468,7 +2472,7 @@ ___
 
 #### Returns
 
-`Promise`<`void`\>
+`Promise`\<`void`\>
 
 #### Defined in
 

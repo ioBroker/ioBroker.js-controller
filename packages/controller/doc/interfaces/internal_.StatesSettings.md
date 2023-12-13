@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / StatesSettings
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / StatesSettings
 
 # Interface: StatesSettings
 
-[<internal>](../modules/internal_.md).StatesSettings
+[\<internal\>](../modules/internal_.md).StatesSettings
 
 ## Table of contents
 
