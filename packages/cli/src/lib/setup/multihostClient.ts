@@ -15,10 +15,10 @@ interface ReceivedMessage {
     slave?: boolean;
     auth?: string;
     salt?: string;
-    /** The states config of iobroker.json  */
-    states?: Record<string, any>;
-    /** The objects config of iobroker.json */
-    objects?: Record<string, any>;
+    /** The states config of ioBroker.json  */
+    states?: ioBroker.StatesDatabaseOptions;
+    /** The objects config of ioBroker.json */
+    objects?: ioBroker.ObjectsDatabaseOptions;
 }
 
 export type BrowseResultEntry = Partial<ReceivedMessage>;
@@ -192,8 +192,8 @@ export class MHClient {
         password: string,
         callback: (
             err: Error | undefined,
-            objectsConfig?: Record<string, any>,
-            statesConfig?: Record<string, any>,
+            objectsConfig?: ioBroker.ObjectsDatabaseOptions,
+            statesConfig?: ioBroker.StatesDatabaseOptions,
             address?: string
         ) => void
     ): void {
