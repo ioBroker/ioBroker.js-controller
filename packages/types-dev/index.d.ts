@@ -2,7 +2,7 @@
 
 import type * as fs from 'fs';
 import './objects';
-import type { IoBJson } from './config';
+import type { IoBJson, DatabaseOptions, ObjectsDatabaseOptions } from './config';
 
 export {}; // avoids exporting AtLeastOne into the global scope
 
@@ -511,5 +511,10 @@ declare global {
          * The ioBroker global config
          */
         type IoBrokerJson = IoBJson;
+
+        /** Objects DB options from ioBroker.json */
+        type ObjectsDatabaseOptions = ObjectsDatabaseOptions;
+        /** States DB options from ioBroker.json */
+        type StatesDatabaseOptions = DatabaseOptions;
     } // end namespace ioBroker
 } // end declare global
