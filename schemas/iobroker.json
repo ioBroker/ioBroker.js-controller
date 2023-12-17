@@ -93,12 +93,16 @@
             },
             "password": {
               "type": "string"
+            },
+            "persist": {
+              "type": "boolean"
             }
           },
           "required": [
             "enabled",
             "secure",
-            "password"
+            "password",
+            "persist"
           ],
           "additionalProperties": false
         },

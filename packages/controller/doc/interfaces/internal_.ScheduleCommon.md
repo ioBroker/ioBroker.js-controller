@@ -30,7 +30,7 @@
 
 #### Defined in
 
-[types-dev/objects.d.ts:288](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L288)
+[types-dev/objects.d.ts:288](https://github.com/ioBroker/ioBroker.js-controller/blob/91a2303a/packages/types-dev/objects.d.ts#L288)
 
 ___
 
@@ -46,7 +46,7 @@ When set to true, this object may not be deleted
 
 #### Defined in
 
-[types-dev/objects.d.ts:161](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L161)
+[types-dev/objects.d.ts:161](https://github.com/ioBroker/ioBroker.js-controller/blob/91a2303a/packages/types-dev/objects.d.ts#L161)
 
 ___
 
@@ -56,7 +56,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:286](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L286)
+[types-dev/objects.d.ts:286](https://github.com/ioBroker/ioBroker.js-controller/blob/91a2303a/packages/types-dev/objects.d.ts#L286)
 
 ___
 
@@ -72,7 +72,7 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 #### Defined in
 
-[types-dev/objects.d.ts:164](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L164)
+[types-dev/objects.d.ts:164](https://github.com/ioBroker/ioBroker.js-controller/blob/91a2303a/packages/types-dev/objects.d.ts#L164)
 
 ___
 
@@ -88,7 +88,7 @@ Icon for this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L169)
+[types-dev/objects.d.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/91a2303a/packages/types-dev/objects.d.ts#L169)
 
 ___
 
@@ -104,7 +104,7 @@ The name of this object as a simple string or an object with translations
 
 #### Defined in
 
-[types-dev/objects.d.ts:158](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L158)
+[types-dev/objects.d.ts:158](https://github.com/ioBroker/ioBroker.js-controller/blob/91a2303a/packages/types-dev/objects.d.ts#L158)
 
 ___
 
@@ -120,4 +120,4 @@ role of the object
 
 #### Defined in
 
-[types-dev/objects.d.ts:171](https://github.com/ioBroker/ioBroker.js-controller/blob/5b429316/packages/types-dev/objects.d.ts#L171)
+[types-dev/objects.d.ts:171](https://github.com/ioBroker/ioBroker.js-controller/blob/91a2303a/packages/types-dev/objects.d.ts#L171)
