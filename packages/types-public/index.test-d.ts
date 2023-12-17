@@ -98,7 +98,11 @@ function objectChangeHandler(id: string, object: ioBroker.Object | null | undefi
                 break;
 
             case 'channel':
-                object.common.desc && object.common.desc.toLowerCase();
+                if (typeof object.common.desc === 'object') {
+                    object.common.desc.en.toLowerCase();
+                } else if (object.common.desc) {
+                    object.common.desc.toLowerCase();
+                }
                 break;
 
             case 'device':
