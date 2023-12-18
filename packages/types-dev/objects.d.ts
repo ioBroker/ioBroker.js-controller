@@ -165,6 +165,9 @@ declare global {
             /** The name of this object as a simple string or an object with translations */
             name: StringOrTranslated;
 
+            /** Description of this object */
+            desc?: StringOrTranslated;
+
             /** When set to true, this object may not be deleted */
             dontDelete?: true;
 
@@ -190,8 +193,6 @@ declare global {
             step?: number;
             /** unit of the value */
             unit?: string;
-            /** description of this state */
-            desc?: StringOrTranslated;
 
             /** if this state is readable */
             read: boolean;
@@ -272,9 +273,6 @@ declare global {
                   });
         }
         interface ChannelCommon extends ObjectCommon {
-            /** description of this channel */
-            desc?: string;
-
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
         }

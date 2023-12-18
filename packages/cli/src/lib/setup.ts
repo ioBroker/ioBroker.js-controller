@@ -2488,11 +2488,11 @@ async function processCommand(
                         null,
                         (err, res) => {
                             if (!err && res?.rows.length) {
-                                for (let i = 0; i < res.rows.length; i++) {
-                                    const parts = res.rows[i]!.id.split('.');
+                                for (const row of res.rows) {
+                                    const parts = row.id.split('.');
                                     // ignore system.host.name.alive and so on
                                     if (parts.length === 3) {
-                                        states.pushMessage(res.rows[i]!.id, {
+                                        states.pushMessage(row.id, {
                                             command: 'checkLogging',
                                             message: null,
                                             from: 'console'
@@ -2641,7 +2641,8 @@ async function processCommand(
                     });
 
                     if (cmd === 's' || cmd === 'status') {
-                        mh.status(() => void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP));
+                        mh.status();
+                        return void callback();
                     } else if (cmd === 'b' || cmd === 'browse') {
                         mh.browse((err: any, list: any) => {
                             if (err) {
@@ -2653,39 +2654,33 @@ async function processCommand(
                             }
                         });
                     } else if (cmd === 'e' || cmd === 'enable') {
-                        mh.enable(true, (err: any) => {
+                        mh.enable(true, async (err: any) => {
                             if (err) {
                                 console.error(err);
                                 return void callback(EXIT_CODES.CANNOT_ENABLE_MULTIHOST);
                             } else {
-                                states.pushMessage(
-                                    `system.host.${tools.getHostName()}`,
-                                    {
-                                        command: 'updateMultihost',
-                                        message: null,
-                                        from: 'setup'
-                                    },
-                                    // @ts-expect-error todo formally we should only call processExit with an exit code
-                                    callback
-                                );
+                                await states.pushMessage(`system.host.${tools.getHostName()}`, {
+                                    command: 'updateMultihost',
+                                    message: null,
+                                    from: 'setup'
+                                });
+
+                                callback();
                             }
                         });
                     } else if (cmd === 'd' || cmd === 'disable') {
-                        mh.enable(false, (err: any) => {
+                        mh.enable(false, async (err: any) => {
                             if (err) {
                                 console.error(err);
                                 return void callback(EXIT_CODES.CANNOT_ENABLE_MULTIHOST);
                             } else {
-                                states.pushMessage(
-                                    `system.host.${tools.getHostName()}`,
-                                    {
-                                        command: 'updateMultihost',
-                                        message: null,
-                                        from: 'setup'
-                                    },
-                                    // @ts-expect-error todo formally we should only call processExit with an exit code
-                                    callback
-                                );
+                                await states.pushMessage(`system.host.${tools.getHostName()}`, {
+                                    command: 'updateMultihost',
+                                    message: null,
+                                    from: 'setup'
+                                });
+
+                                callback();
                             }
                         });
                     } else if (cmd === 'c' || cmd === 'connect') {
