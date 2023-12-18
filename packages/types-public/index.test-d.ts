@@ -772,6 +772,7 @@ const _adapterObject: ioBroker.AdapterObject = {
         materializeTab: false,
         mode: 'daemon',
         name: 'test',
+        automaticUpgrade: 'minor',
         platform: 'Javascript/Node.js',
         supportedMessages: {
             deviceManager: true
@@ -898,10 +899,17 @@ async () => {
 
     const host: ioBroker.HostObject | null | undefined = await adapter.getForeignObjectAsync('system.host.my-hostname');
 
-    let config: (ioBroker.OtherObject & { type: 'config' }) | null | undefined;
-    config = await adapter.getForeignObjectAsync('system.repositories');
-    config = await adapter.getForeignObjectAsync('system.config');
-    config = await adapter.getForeignObjectAsync('system.certificates');
+    const config: (ioBroker.OtherObject & { type: 'config' }) | null | undefined = await adapter.getForeignObjectAsync(
+        'system.certificates'
+    );
+
+    const sysConfig: ioBroker.SystemConfigObject | null | undefined = await adapter.getForeignObjectAsync(
+        'system.config'
+    );
+
+    const systemRepo: ioBroker.RepositoryObject | null | undefined = await adapter.getForeignObjectAsync(
+        'system.repositories'
+    );
 
     let misc:
         | ioBroker.FolderObject

@@ -23,7 +23,7 @@ export interface RepoFlags {
 }
 
 export class Repo {
-    private readonly defaultSystemRepo: ioBroker.OtherObject;
+    private readonly defaultSystemRepo: ioBroker.RepositoryObject;
     private readonly objects: ObjectsRedisClient;
     private readonly states: StatesRedisClient;
     private readonly controllerVersion: string;
@@ -76,8 +76,8 @@ export class Repo {
         repoName: string,
         force: boolean | undefined,
         systemConfig?: ioBroker.OtherObject,
-        systemRepos?: ioBroker.OtherObject
-    ): Promise<null | Record<string, any>> {
+        systemRepos?: ioBroker.RepositoryObject
+    ): Promise<null | ioBroker.RepositoryJson> {
         if (!repoName) {
             const sysConfig = systemConfig || (await this.objects.getObjectAsync('system.config'));
             repoName = sysConfig!.common.activeRepo;
@@ -104,7 +104,7 @@ export class Repo {
             } catch (e) {
                 console.error(`Cannot download repository hash file from "${hashUrl}": ${e.message}`);
             }
-            if (hash && hash.data && oldRepos.native.repositories[repoName].hash === hash.data.hash) {
+            if (hash?.data && oldRepos.native.repositories[repoName].hash === hash.data.hash) {
                 return oldRepos.native.repositories[repoName].json;
             }
         }
@@ -124,7 +124,7 @@ export class Repo {
             try {
                 data = await axios({
                     url: urlOrPath,
-                    timeout: 10000,
+                    timeout: 10_000,
                     headers: { 'User-Agent': agent }
                 });
                 if (data.data) {
@@ -153,7 +153,7 @@ export class Repo {
             oldRepos.native.repositories[repoName].json = data;
             changed = true;
         }
-        if (hash && hash.data) {
+        if (hash?.data) {
             oldRepos.native.repositories[repoName].hash = hash.data.hash;
             changed = true;
         }
@@ -193,23 +193,23 @@ export class Repo {
 
             const allSources = {};
 
-            for (let r = 0; r < repoUrl.length; r++) {
-                const repo = repoUrl[r];
+            for (const url of repoUrl) {
+                const repo = systemRepos.native.repositories[url];
                 // If known repository
-                if (systemRepos.native.repositories[repo]) {
-                    if (typeof systemRepos.native.repositories[repo] === 'string') {
-                        systemRepos.native.repositories[repo] = {
-                            link: systemRepos.native.repositories[repo],
+                if (repo) {
+                    if (typeof repo === 'string') {
+                        systemRepos.native.repositories[url] = {
+                            link: repo,
                             json: null,
                             hash: ''
                         };
                     }
 
-                    const sources = await this.updateRepo(repo, flags.force || flags.f, systemConfig, systemRepos);
+                    const sources = await this.updateRepo(url, flags.force || flags.f, systemConfig, systemRepos);
                     sources && Object.assign(allSources, sources);
                 } else {
                     console.error(
-                        `Error: unknown repository is active - "${repo}". Known: ${Object.keys(
+                        `Error: unknown repository is active - "${url}". Known: ${Object.keys(
                             systemRepos.native.repositories
                         ).join(', ')}`
                     );
@@ -252,7 +252,7 @@ export class Repo {
                 continue;
             }
 
-            if (installed[name] && installed[name].version) {
+            if (installed[name]?.version) {
                 text += `, installed ${installed[name].version}`;
                 try {
                     // tools.upToDate can throw if version is invalid
@@ -334,7 +334,7 @@ export class Repo {
                 );
 
                 const objCfg = await this.objects.getObjectAsync('system.config');
-                if (objCfg && objCfg.common) {
+                if (objCfg?.common) {
                     let activeRepo = objCfg.common.activeRepo;
                     if (typeof activeRepo === 'string') {
                         activeRepo = [activeRepo];
