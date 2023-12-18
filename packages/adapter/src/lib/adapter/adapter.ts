@@ -12008,31 +12008,33 @@ export class AdapterClass extends EventEmitter {
                 }
 
                 if (obj && (obj._id || obj.type === 'meta')) {
-                    if (obj.common) {
-                        if (obj.common.name) {
-                            const commonName = obj.common.name;
-                            // if name has many languages
-                            if (tools.isObject(commonName)) {
-                                for (const [lang, value] of Object.entries(commonName)) {
-                                    commonName[lang as keyof ioBroker.Translated] = value.replace(
-                                        '%INSTANCE%',
-                                        this.instance!.toString()
-                                    );
-                                }
-                            } else {
-                                obj.common.name = commonName.replace('%INSTANCE%', this.instance!.toString());
+                    if (obj.common?.name) {
+                        const commonName = obj.common.name;
+                        // if name has many languages
+                        if (tools.isObject(commonName)) {
+                            for (const [lang, value] of Object.entries(commonName)) {
+                                commonName[lang as ioBroker.Languages] = value.replace(
+                                    '%INSTANCE%',
+                                    this.instance!.toString()
+                                );
                             }
+                        } else {
+                            obj.common.name = commonName.replace('%INSTANCE%', this.instance!.toString());
                         }
+
                         if ('desc' in obj.common) {
                             const commonDesc = obj.common.desc;
 
                             // if description has many languages
                             if (tools.isObject(commonDesc)) {
                                 for (const [lang, value] of Object.entries(commonDesc)) {
-                                    commonDesc[lang] = value.replace('%INSTANCE%', this.instance);
+                                    commonDesc[lang as ioBroker.Languages] = value.replace(
+                                        '%INSTANCE%',
+                                        this.instance!.toString()
+                                    );
                                 }
-                            } else {
-                                obj.common.desc = commonDesc.replace('%INSTANCE%', this.instance);
+                            } else if (commonDesc) {
+                                obj.common.desc = commonDesc.replace('%INSTANCE%', this.instance!.toString());
                             }
                         }
 
