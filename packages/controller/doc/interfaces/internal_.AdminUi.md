@@ -22,7 +22,7 @@ UI type of config page inside admin UI
 
 #### Defined in
 
-[types-dev/objects.d.ts:319](https://github.com/ioBroker/ioBroker.js-controller/blob/91a2303a/packages/types-dev/objects.d.ts#L319)
+[types-dev/objects.d.ts:329](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe17c22/packages/types-dev/objects.d.ts#L329)
 
 ___
 
@@ -34,7 +34,7 @@ UI type of custom tab inside admin UI
 
 #### Defined in
 
-[types-dev/objects.d.ts:321](https://github.com/ioBroker/ioBroker.js-controller/blob/91a2303a/packages/types-dev/objects.d.ts#L321)
+[types-dev/objects.d.ts:331](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe17c22/packages/types-dev/objects.d.ts#L331)
 
 ___
 
@@ -46,4 +46,4 @@ UI type of tab inside admin UI
 
 #### Defined in
 
-[types-dev/objects.d.ts:323](https://github.com/ioBroker/ioBroker.js-controller/blob/91a2303a/packages/types-dev/objects.d.ts#L323)
+[types-dev/objects.d.ts:333](https://github.com/ioBroker/ioBroker.js-controller/blob/3fe17c22/packages/types-dev/objects.d.ts#L333)
