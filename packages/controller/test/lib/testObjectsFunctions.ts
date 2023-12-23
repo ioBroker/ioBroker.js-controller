@@ -1,8 +1,4 @@
 import type { TestContext } from '../_Types';
-import chai from 'chai';
-import chaiAsPromised from 'chai-as-promised';
-
-chai.use(chaiAsPromised);
 
 /**
  * Contains tests interacting with DB via adapter.ts

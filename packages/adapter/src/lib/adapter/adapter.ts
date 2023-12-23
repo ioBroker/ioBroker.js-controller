@@ -131,7 +131,10 @@ export interface AdapterClass {
     /** Only emitted for compact instances */
     on(event: 'exit', listener: (exitCode: number, reason: string) => Promise<void> | void): this;
     on(event: 'log', listener: (info: any) => Promise<void> | void): this;
-    /** Extend an object and create it if it might not exist */
+    /**
+     * Extend an object and create it if it might not exist
+     * @deprecated use `adapter.extendObject` without callback instead
+     */
     extendObjectAsync(
         id: string,
         objPart: ioBroker.PartialObject,
@@ -416,17 +419,20 @@ export interface AdapterClass {
 
     /**
      * Writes a value into the states DB.
+     * @deprecated use `adapter.setState` without callback instead
      */
     setStateAsync(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack?: boolean
     ): ioBroker.SetStatePromise;
+    /** @deprecated use `adapter.setState` without callback instead */
     setStateAsync(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         options?: unknown
     ): ioBroker.SetStatePromise;
+    /** @deprecated use `adapter.setState` without callback instead */
     setStateAsync(
         id: string,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
@@ -2986,7 +2992,13 @@ export class AdapterClass extends EventEmitter {
     }
 
     // public signatures
+    extendObject(id: string, objPart: ioBroker.PartialObject): ioBroker.SetObjectPromise;
     extendObject(id: string, objPart: ioBroker.PartialObject, callback?: ioBroker.SetObjectCallback): void;
+    extendObject(
+        id: string,
+        objPart: ioBroker.PartialObject,
+        options: ioBroker.ExtendObjectOptions
+    ): ioBroker.SetObjectPromise;
     extendObject(
         id: string,
         objPart: ioBroker.PartialObject,
@@ -3052,7 +3064,7 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    extendObject(id: unknown, obj: unknown, options: unknown, callback?: unknown): any {
+    extendObject(id: unknown, obj: unknown, options?: unknown, callback?: unknown): Promise<any> | void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
