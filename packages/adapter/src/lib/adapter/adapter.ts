@@ -3079,6 +3079,9 @@ export class AdapterClass extends EventEmitter {
             Validator.assertObject(options, 'options');
         }
 
+        if (typeof callback === 'function') {
+            return this._extendObject({ id, obj: obj as ioBroker.SettableObject, options, callback }).catch(callback);
+        }
         return this._extendObject({ id, obj: obj as ioBroker.SettableObject, options, callback });
     }
 
