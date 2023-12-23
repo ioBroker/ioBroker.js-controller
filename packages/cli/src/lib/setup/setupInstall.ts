@@ -121,7 +121,7 @@ export class Install {
      * Enables or disables given instances
      */
     async enableInstances(instances: ioBroker.InstanceObject[], enabled: boolean): Promise<void> {
-        if (instances && instances.length) {
+        if (instances?.length) {
             const ts = Date.now();
             for (const instance of instances) {
                 const updatedObj = {
@@ -829,7 +829,7 @@ export class Install {
             endkey: `system.adapter.${adapter}.\u9999`
         });
         const systemConfig = await this.objects.getObjectAsync('system.config');
-        const defaultLogLevel = systemConfig && systemConfig.common && systemConfig.common.defaultLogLevel;
+        const defaultLogLevel = systemConfig?.common?.defaultLogLevel;
         if (!res) {
             console.error(`host.${hostname} error: view instanceStats`);
             return this.processExit(EXIT_CODES.CANNOT_READ_INSTANCES);
@@ -847,7 +847,7 @@ export class Install {
         // check singletonHost one on host
         if (obj.common.singletonHost) {
             for (const row of res.rows) {
-                if (row.value.common.host === hostname) {
+                if (row.value?.common.host === hostname) {
                     if (ignoreIfExists) {
                         return;
                     }
@@ -1841,14 +1841,14 @@ export class Install {
                 // we need to respect host relative to the instance
                 [scopedHostname] = doc.rows
                     .filter(row => row.id === `system.adapter.${adapter}.${instance}`)
-                    .map(row => row.value.common.host);
+                    .map(row => row.value!.common.host);
             }
 
             // fallback is this host
             scopedHostname = scopedHostname || hostname;
 
             for (const row of doc.rows) {
-                if (!row.value.common) {
+                if (!row.value?.common) {
                     // this object seems to be corrupted so it will not need our adapter
                     continue;
                 }
@@ -1872,7 +1872,7 @@ export class Install {
                     }
                 }
 
-                const globalDeps = tools.parseDependencies(row.value.common.globalDependencies);
+                const globalDeps = tools.parseDependencies(row.value!.common.globalDependencies);
 
                 for (const globalDep of Object.keys(globalDeps)) {
                     if (globalDep === adapter) {
@@ -1881,7 +1881,7 @@ export class Install {
                             if (this._checkDependencyFulfilledForeignHosts(adapter, doc.rows, scopedHostname)) {
                                 break;
                             } else {
-                                return row.value.common.name;
+                                return row.value!.common.name;
                             }
                         } else if (
                             this._checkDependencyFulfilledForeignHosts(adapter, doc.rows, scopedHostname) ||
@@ -1890,7 +1890,7 @@ export class Install {
                             // another instance of our adapter is on another host or on ours, no need to search further
                             break;
                         } else {
-                            return row.value.common.name;
+                            return row.value!.common.name;
                         }
                     }
                 }

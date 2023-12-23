@@ -4415,7 +4415,7 @@ export class ObjectsInRedisClient {
         if (!this.client) {
             throw new Error(ERRORS.ERROR_DB_CLOSED);
         }
-        //params = {startkey, endkey, include_docs}
+
         params = params || {};
         params.startkey = params.startkey || '';
         params.endkey = params.endkey || '\u9999';
