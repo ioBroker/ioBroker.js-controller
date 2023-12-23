@@ -2318,42 +2318,48 @@ export function promisify(
         const args = sliceArgs(arguments);
         // @ts-expect-error we cannot know the type of `this`
         context = context || this;
-        return new Promise<void | Record<string, any> | any[]>((resolve, reject) => {
-            fn.apply(
-                context,
-                args.concat([
-                    function (error: string | Error, result: any) {
-                        if (error) {
-                            return reject(error instanceof Error ? error : new Error(error));
-                        } else {
-                            // decide on how we want to return the callback arguments
-                            switch (arguments.length) {
-                                case 1: // only an error was given
-                                    return resolve(); // Promise<void>
-                                case 2: // a single value (result) was returned
-                                    return resolve(result);
-                                default: {
-                                    // multiple values should be returned
-                                    let ret: Record<string, any> | any[];
-                                    // eslint-disable-next-line prefer-rest-params
-                                    const extraArgs = sliceArgs(arguments, 1);
-                                    if (returnArgNames && returnArgNames.length === extraArgs.length) {
-                                        // we can build an object
-                                        ret = {};
-                                        for (let i = 0; i < returnArgNames.length; i++) {
-                                            ret[returnArgNames[i]] = extraArgs[i];
+        // eslint-disable-next-line no-async-promise-executor
+        return new Promise<void | Record<string, any> | any[]>(async (resolve, reject) => {
+            try {
+                // await this to allow streamlining errors not passed via callback by async methods
+                await fn.apply(
+                    context,
+                    args.concat([
+                        function (error: string | Error, result: any) {
+                            if (error) {
+                                return reject(error instanceof Error ? error : new Error(error));
+                            } else {
+                                // decide on how we want to return the callback arguments
+                                switch (arguments.length) {
+                                    case 1: // only an error was given
+                                        return resolve(); // Promise<void>
+                                    case 2: // a single value (result) was returned
+                                        return resolve(result);
+                                    default: {
+                                        // multiple values should be returned
+                                        let ret: Record<string, any> | any[];
+                                        // eslint-disable-next-line prefer-rest-params
+                                        const extraArgs = sliceArgs(arguments, 1);
+                                        if (returnArgNames && returnArgNames.length === extraArgs.length) {
+                                            // we can build an object
+                                            ret = {};
+                                            for (let i = 0; i < returnArgNames.length; i++) {
+                                                ret[returnArgNames[i]] = extraArgs[i];
+                                            }
+                                        } else {
+                                            // we return the raw array
+                                            ret = extraArgs;
                                         }
-                                    } else {
-                                        // we return the raw array
-                                        ret = extraArgs;
+                                        return resolve(ret);
                                     }
-                                    return resolve(ret);
                                 }
                             }
                         }
-                    }
-                ])
-            );
+                    ])
+                );
+            } catch (e) {
+                reject(e);
+            }
         });
     };
 }
