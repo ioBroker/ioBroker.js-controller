@@ -689,9 +689,9 @@ export class AdapterClass extends EventEmitter {
     /** configured language of system.config, only available if requested via AdapterOptions `useFormatDate` */
     language?: ioBroker.Languages;
     /** longitude configured in system.config, only available if requested via AdapterOptions `useFormatDate`*/
-    longitude?: number;
+    longitude?: string;
     /** latitude configured in system.config, only available if requested via AdapterOptions `useFormatDate`*/
-    latitude?: number;
+    latitude?: string;
     private _defaultObjs?: Record<string, Partial<ioBroker.StateCommon>>;
     private _aliasObjectsSubscribed?: boolean;
     config: ioBroker.AdapterConfig = {};
@@ -11348,8 +11348,7 @@ export class AdapterClass extends EventEmitter {
                 // update language, dateFormat and comma
                 if (
                     id === 'system.config' &&
-                    obj &&
-                    obj.common &&
+                    obj?.common &&
                     (this._options.useFormatDate || this.defaultHistory !== undefined)
                 ) {
                     this.dateFormat = obj.common.dateFormat;

@@ -199,6 +199,16 @@
             }
           }
         },
+        "automaticUpgrade": {
+          "description": "Automatically upgrade the adapter in the configured semver range. Best practice is to leave this as none and let the user opt-in.",
+          "type": "string",
+          "enum": [
+            "none",
+            "patch",
+            "minor",
+            "major"
+          ]
+        },
         "docs": {
           "description": "The structure like {\"en\": \"docs/en/README.md\", \"de\": [\"docs/de/README.md\", \"docs/de/README1.md\"]} that describes the documentation if not in README.md",
           "type": "object",

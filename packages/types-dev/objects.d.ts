@@ -85,8 +85,12 @@ declare global {
             type User = `system.user.${string}`;
             // Guaranteed host objects
             type Host = `system.host.${string}`;
+            // Guaranteed repository object
+            type Repository = 'system.repositories';
             // Guaranteed config objects
-            type Config = `system.${'certificates' | 'config' | 'repositories'}`;
+            type Config = 'system.certificates';
+            // Guaranteed system config objects
+            type SystemConfig = 'system.config';
             // Guaranteed design objects
             type Design = `_design/${string}`;
 
@@ -137,6 +141,10 @@ declare global {
                 ? HostObject
                 : T extends ObjectIDs.Design
                 ? DesignObject
+                : T extends ObjectIDs.Repository
+                ? RepositoryObject
+                : T extends ObjectIDs.SystemConfig
+                ? SystemConfigObject
                 : T extends ObjectIDs.Config
                 ? OtherObject & { type: 'config' }
                 : T extends ObjectIDs.AdapterScoped
@@ -283,6 +291,10 @@ declare global {
         interface ScheduleCommon extends ObjectCommon {
             enabled?: boolean;
             // Make it possible to narrow the object type using the custom property
+            custom?: undefined;
+        }
+
+        interface RepositoryCommon extends ObjectCommon {
             custom?: undefined;
         }
 
@@ -505,6 +517,8 @@ declare global {
                 singleton?: boolean;
             };
             allowInit?: boolean;
+            /** If the adapter should be automatically upgraded and which version ranges are supported */
+            automaticUpgrade?: AutoUpgradePolicy;
             /** Possible values for the instance mode (if more than one is possible) */
             availableModes?: InstanceMode[];
             /** Array which lists all blocked versions. Blocked versions will not be started. Use semver notation to specify the version ranges. The information is always used from the io-package.json in the GitHub repository. */
@@ -640,6 +654,49 @@ declare global {
             custom?: undefined;
         }
 
+        interface SystemConfigCommon extends ObjectCommon {
+            /** Name of all active repositories */
+            activeRepo: string[];
+            /** Current configured language */
+            language: Languages;
+            /** If floating comma is used instead of dot */
+            isFloatComma: boolean;
+            /** Configured longitude */
+            longitude: string;
+            /** Configured latitude */
+            latitude: string;
+            /** Default history instance */
+            defaultHistory: string;
+            /** Which diag data is allowed to be sent */
+            diag: 'none' | 'extended' | 'no-city';
+            /** If license has already been confirmed */
+            licenseConfirmed: boolean;
+            /** System wide default log level */
+            defaultLogLevel?: LogLevel;
+            /** Used date format for formatting */
+            dateFormat: string;
+            /** Default acl for new objects */
+            defaultNewAcl: {
+                object: number;
+                state: number;
+                file: number;
+                owner: ObjectIDs.User;
+                ownerGroup: ObjectIDs.Group;
+            };
+            /** Configured auto upgrade policy */
+            adapterAutoUpgrade?: {
+                /** Configuration for each repository */
+                repositories: {
+                    [repoName: string]: boolean;
+                };
+                /** Default policy, if none has been set explicit for the adapter */
+                defaultPolicy: AutoUpgradePolicy;
+            };
+
+            // Make it possible to narrow the object type using the custom property
+            custom?: undefined;
+        }
+
         interface OtherCommon extends ObjectCommon {
             [propName: string]: any;
 
@@ -752,6 +809,54 @@ declare global {
             common?: Partial<ScheduleCommon>;
         }
 
+        interface PartialRepositoryObject extends Partial<Omit<RepositoryObject, 'common'>> {
+            common?: Partial<RepositoryCommon>;
+        }
+
+        interface RepositoryJsonAdapterContent {
+            /** Adapter name */
+            name: string;
+            /** Newest available version */
+            version: string;
+            /** Other Adapter related properties, not important for this implementation */
+            [other: string]: unknown;
+        }
+
+        interface RepositoryJson {
+            _repoInfo: {
+                /** If it is the official stable repository */
+                stable?: boolean;
+                /** i18n name of the repository */
+                name: Required<ioBroker.Translated>;
+                /** Time of repository update */
+                repoTime: string;
+            };
+            /** Information about each adapter - Record needed for _repoInfo */
+            [adapter: string]: RepositoryJsonAdapterContent | Record<string, any>;
+        }
+
+        interface RepositoryInformation {
+            /** Url to the repository */
+            link: string;
+            json: RepositoryJson | null;
+            hash?: string;
+            time?: string;
+        }
+
+        interface RepositoryObject extends BaseObject {
+            _id: ObjectIDs.Repository;
+            type: 'config';
+            native: {
+                repositories: {
+                    [repoName: string]: RepositoryInformation;
+                };
+                oldRepositories?: {
+                    [repoName: string]: RepositoryInformation;
+                };
+            };
+            common: RepositoryCommon;
+        }
+
         interface InstanceObject extends BaseObject {
             _id: ObjectIDs.Instance;
             type: 'instance';
@@ -837,6 +942,15 @@ declare global {
             common?: Partial<ScriptCommon>;
         }
 
+        interface SystemConfigObject extends BaseObject {
+            type: 'config';
+            common: SystemConfigCommon;
+        }
+
+        interface PartialSystemConfigObject extends Partial<Omit<SystemConfigObject, 'common'>> {
+            common?: Partial<SystemConfigCommon>;
+        }
+
         interface OtherObject extends BaseObject {
             type: 'config' | 'chart';
             common: OtherCommon;
@@ -874,6 +988,7 @@ declare global {
             | ScriptObject
             | ChartObject
             | ScheduleObject
+            | RepositoryObject
             | OtherObject
             | DesignObject;
 
@@ -892,6 +1007,8 @@ declare global {
             | PartialScriptObject
             | PartialChartObject
             | PartialScheduleObject
+            | PartialRepositoryObject
+            | PartialSystemConfigObject
             | PartialOtherObject
             | PartialDesignObject;
 
@@ -934,6 +1051,8 @@ declare global {
         type SettableScheduleObject = SettableObject<ScheduleObject>;
         type SettableChartObject = SettableObject<ChartObject>;
         type SettableDesignObject = SettableObject<DesignObject>;
+        type SettableRepositoryObject = SettableObject<RepositoryObject>;
+        type SettableSystemConfigObject = SettableObject<SystemConfigObject>;
         type SettableOtherObject = SettableObject<OtherObject>;
 
         // Used to infer the return type of GetObjectView
@@ -967,7 +1086,7 @@ declare global {
                 : View extends 'schedule'
                 ? ScheduleObject
                 : View extends 'config'
-                ? OtherObject & { type: 'config' }
+                ? RepositoryObject | SystemConfigObject | (OtherObject & { type: 'config' })
                 : View extends 'custom'
                 ? NonNullable<StateObject['common']['custom']>
                 : ioBroker.Object

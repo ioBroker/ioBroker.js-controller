@@ -31,7 +31,8 @@ import { Upload, PacketManager } from '@iobroker/js-controller-cli';
 import decache from 'decache';
 import cronParser from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
-import { getDefaultNodeArgs, type HostInfo } from '@iobroker/js-controller-common/tools';
+import { AdapterAutoUpgradeManager } from './lib/adapterAutoUpgradeManager';
+import { getDefaultNodeArgs, type HostInfo, type RepositoryFile } from '@iobroker/js-controller-common/tools';
 import type { UpgradeArguments } from './lib/upgradeManager';
 import { AdapterUpgradeManager } from './lib/adapterUpgradeManager';
 
@@ -115,6 +116,7 @@ const controllerVersions: Record<string, string> = {};
 
 let pluginHandler: InstanceType<typeof PluginHandler>;
 let notificationHandler: NotificationHandler;
+let autoUpgradeManager: AdapterAutoUpgradeManager;
 /** array of instances which have requested repo update */
 let requestedRepoUpdates: RepoRequester[] = [];
 
@@ -294,7 +296,8 @@ async function startMultihost(__config?: Record<string, any>): Promise<boolean |
 
         if (_config.multihostService.secure) {
             if (typeof _config.multihostService.password === 'string' && _config.multihostService.password.length) {
-                let obj, errText;
+                let obj: ioBroker.SystemConfigObject | null | undefined;
+                let errText;
                 try {
                     obj = await objects!.getObjectAsync('system.config');
                 } catch (e) {
@@ -632,6 +635,8 @@ async function initializeController(): Promise<void> {
             logger.error(`${hostLogPrefix} Could not add notifications config of this host: ${e.message}`);
         }
     }
+
+    autoUpgradeManager = new AdapterAutoUpgradeManager({ objects, states, logger, logPrefix: hostLogPrefix });
 
     checkSystemLocaleSupported();
 
@@ -1351,7 +1356,6 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
         // we need to show city and country at the beginning, so include it now and delete it later if not allowed.
         const diag: Record<string, any> = {
             uuid: obj.native.uuid,
-            // @ts-expect-error fallback has no lang todo
             language: systemConfig.common.language,
             country: '',
             city: '',
@@ -1405,9 +1409,9 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
             // Read installed versions of all hosts
             for (const row of doc.rows) {
                 diag.hosts.push({
-                    version: row.value.common.installedVersion,
-                    platform: row.value.common.platform,
-                    type: row.value.native.os.platform
+                    version: row.value!.common.installedVersion,
+                    platform: row.value!.common.platform,
+                    type: row.value!.native.os.platform
                 });
             }
         }
@@ -1429,10 +1433,11 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
         if (!err && doc?.rows.length) {
             // Read installed versions of all adapters
             for (const row of doc.rows) {
-                diag.adapters[row.value.common.name] = {
-                    version: row.value.common.version,
-                    platform: row.value.common.platform
+                diag.adapters[row.value!.common.name] = {
+                    version: row.value!.common.version,
+                    platform: row.value!.common.platform
                 };
+
                 if (VIS_ADAPTERS.includes(row.value.common.name as (typeof VIS_ADAPTERS)[number])) {
                     foundVisAdapters.add(row.value.common.name as (typeof VIS_ADAPTERS)[number]);
                 }
@@ -2431,7 +2436,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     return;
                 }
 
-                let systemConfig;
+                let systemConfig: ioBroker.SystemConfigObject | null | undefined;
                 try {
                     systemConfig = await objects!.getObject('system.config');
                 } catch {
@@ -2461,11 +2466,10 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 const globalRepo = {};
 
                 const systemRepos = await objects!.getObjectAsync('system.repositories');
+                let changed = false;
 
                 // Check if repositories exist
                 if (systemRepos?.native?.repositories) {
-                    let changed = false;
-
                     let updateRepo = false;
                     if (tools.isObject(msg.message)) {
                         updateRepo = msg.message.update;
@@ -2479,25 +2483,26 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         active = [active];
                     }
 
-                    for (const repo of active) {
-                        if (systemRepos.native.repositories[repo]) {
-                            if (typeof systemRepos.native.repositories[repo] === 'string') {
-                                systemRepos.native.repositories[repo] = {
-                                    link: systemRepos.native.repositories[repo],
+                    for (const repoUrl of active) {
+                        const repo = systemRepos.native.repositories[repoUrl];
+                        if (repo) {
+                            if (typeof repo === 'string') {
+                                systemRepos.native.repositories[repoUrl] = {
+                                    link: repo,
                                     json: null
                                 };
                                 changed = true;
                             }
 
-                            const currentRepo = systemRepos.native.repositories[repo];
+                            const currentRepo = systemRepos.native.repositories[repoUrl];
 
                             // If repo is not yet loaded
                             if (!currentRepo.json || updateRepo) {
                                 logger.info(
-                                    `${hostLogPrefix} Updating repository "${repo}" under "${currentRepo.link}"`
+                                    `${hostLogPrefix} Updating repository "${repoUrl}" under "${currentRepo.link}"`
                                 );
                                 try {
-                                    let result;
+                                    let result: ioBroker.RepositoryInformation | RepositoryFile;
                                     // prevent the request of repos by multiple admin adapters at start
                                     if (
                                         currentRepo.json &&
@@ -2513,15 +2518,17 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                             updateRepo,
                                             currentRepo.json
                                         );
+
+                                        changed = result.json && result.changed;
                                     }
 
                                     // If repo was really changed
-                                    if (result && result.json && result.changed) {
+                                    if (changed) {
                                         currentRepo.json = result.json;
                                         currentRepo.hash = result.hash || '';
                                         currentRepo.time = new Date().toISOString();
-                                        changed = true;
                                     }
+
                                     // Make sure, that time is stored too to prevent the frequent access to repo server
                                     if (!currentRepo.time) {
                                         currentRepo.time = new Date().toISOString();
@@ -2529,7 +2536,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                     }
                                 } catch (e) {
                                     logger.error(
-                                        `${hostLogPrefix} Error by updating repository "${repo}" under "${systemRepos.native.repositories[repo].link}": ${e.message}`
+                                        `${hostLogPrefix} Error by updating repository "${repoUrl}" under "${systemRepos.native.repositories[repoUrl].link}": ${e.message}`
                                     );
                                 }
                             }
@@ -2538,7 +2545,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                 Object.assign(globalRepo, currentRepo.json);
                             }
                         } else {
-                            logger.warn(`${hostLogPrefix} Requested repository "${repo}" does not exist in config.`);
+                            logger.warn(`${hostLogPrefix} Requested repository "${repoUrl}" does not exist in config.`);
                         }
                     }
 
@@ -2556,10 +2563,15 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 }
 
                 requestedRepoUpdates = [];
+
                 try {
                     await listUpdatableOsPackages();
                 } catch (e) {
                     logger.warn(`${hostLogPrefix} Could not check for new OS updates: ${e.message}`);
+                }
+
+                if (changed) {
+                    await autoUpgradeAdapters();
                 }
             } else {
                 logger.error(
@@ -6115,6 +6127,40 @@ async function startUpgradeManager(options: UpgradeArguments): Promise<void> {
     }
 
     upgradeProcess.unref();
+}
+
+/**
+ * Upgrade all upgradeable adapters with respect to their auto upgrade policy
+ */
+async function autoUpgradeAdapters(): Promise<void> {
+    try {
+        if (!(await autoUpgradeManager.isAutoUpgradeEnabled())) {
+            logger.debug(`${hostLogPrefix} Automatic adapter upgrades are disabled for the current repository`);
+            return;
+        }
+
+        const { upgradedAdapters, failedAdapters } = await autoUpgradeManager.upgradeAdapters();
+
+        if (upgradedAdapters.length) {
+            await notificationHandler.addMessage(
+                'system',
+                'automaticAdapterUpgradeSuccessful',
+                upgradedAdapters.map(entry => `${entry.name}: ${entry.oldVersion} -> ${entry.newVersion}`).join('\n'),
+                `system.host.${hostname}`
+            );
+        }
+
+        if (failedAdapters.length) {
+            await notificationHandler.addMessage(
+                'system',
+                'automaticAdapterUpgradeFailed',
+                failedAdapters.map(entry => `${entry.name}: ${entry.oldVersion} -> ${entry.newVersion}`).join('\n'),
+                `system.host.${hostname}`
+            );
+        }
+    } catch (e) {
+        logger.error(`${hostLogPrefix} An error occurred while processing automatic adapter upgrades: ${e.message}`);
+    }
 }
 
 if (module === require.main) {

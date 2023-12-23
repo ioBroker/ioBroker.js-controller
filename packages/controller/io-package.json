@@ -975,6 +975,70 @@
           "limit": 1
         },
         {
+          "category": "automaticAdapterUpgradeFailed",
+          "name": {
+            "en": "An adapter could not be updated automatically",
+            "de": "Ein Adapter konnte nicht automatisch aktualisiert werden",
+            "ru": "Не удалось автоматически обновить адаптер",
+            "pt": "Não foi possível atualizar automaticamente um adaptador",
+            "nl": "Een adapter kon niet automatisch worden bijgewerkt",
+            "fr": "Un adaptateur n'a pas pu être mis à jour automatiquement",
+            "it": "Non è stato possibile aggiornare automaticamente un adattatore",
+            "es": "No se ha podido actualizar automáticamente un adaptador",
+            "pl": "Adapter nie mógł zostać zaktualizowany automatycznie",
+            "uk": "Адаптер не вдалося оновити автоматично",
+            "zh-cn": "无法自动更新适配器"
+          },
+          "severity": "notify",
+          "description": {
+            "en": "It was not possible to upgrade one or multiple adapters, please check the error log and upgrade the adapter manually.",
+            "de": "Es war nicht möglich, einen oder mehrere Adapter zu aktualisieren. Bitte überprüfen Sie das Fehlerprotokoll und aktualisieren Sie den Adapter manuell.",
+            "ru": "Не удалось обновить один или несколько адаптеров, проверьте журнал ошибок и обновите адаптер вручную.",
+            "pt": "Não foi possível atualizar um ou vários adaptadores. Verifique o registo de erros e actualize o adaptador manualmente.",
+            "nl": "Het was niet mogelijk om één of meerdere adapters te upgraden, controleer het foutenlogboek en upgrade de adapter handmatig.",
+            "fr": "Il n'a pas été possible de mettre à niveau un ou plusieurs adaptateurs, veuillez vérifier le journal des erreurs et mettre à niveau l'adaptateur manuellement.",
+            "it": "Non è stato possibile aggiornare uno o più adattatori; controllare il registro degli errori e aggiornare manualmente l'adattatore.",
+            "es": "No ha sido posible actualizar uno o varios adaptadores. Compruebe el registro de errores y actualice el adaptador manualmente.",
+            "pl": "Nie można było zaktualizować jednego lub wielu adapterów, sprawdź dziennik błędów i zaktualizuj adapter ręcznie.",
+            "uk": "Не вдалося оновити один або декілька адаптерів, будь ласка, перевірте журнал помилок і оновіть адаптер вручну.",
+            "zh-cn": "无法升级一个或多个适配器，请检查错误日志并手动升级适配器。"
+          },
+          "regex": [],
+          "limit": 10
+        },
+        {
+          "category": "automaticAdapterUpgradeSuccessful",
+          "name": {
+            "en": "An adapter has been automatically upgraded",
+            "de": "Ein Adapter wurde automatisch aktualisiert",
+            "ru": "Адаптер был автоматически обновлен",
+            "pt": "Um adaptador foi automaticamente atualizado",
+            "nl": "Een adapter is automatisch geüpgradeerd",
+            "fr": "Un adaptateur a été automatiquement mis à niveau",
+            "it": "Un adattatore è stato automaticamente aggiornato",
+            "es": "Un adaptador ha sido actualizado automáticamente",
+            "pl": "Adaptator został automatycznie ulepszony",
+            "uk": "Перехідник автоматично модернізований",
+            "zh-cn": "适应人员自动升级。"
+          },
+          "severity": "notify",
+          "description": {
+            "en": "Due to the configured automatic upgrade policy, one or multiple adapters have been upgraded to a new version automatically.",
+            "de": "Durch die konfigurierte automatische Upgrade-Richtlinie wurden ein oder mehrere Adapter automatisch auf eine neue Version aktualisiert.",
+            "ru": "В связи с установленной политикой автоматического обновления были обновлены один или несколько адаптеров к новой версии автоматически.",
+            "pt": "Devido à política de atualização automática configurada, um ou vários adaptadores foram atualizados para uma nova versão automaticamente.",
+            "nl": "Gezien het in beslag genomen automatische upgrade beleid, is een of meerdere adapters geüpgradeerd aan een nieuwe versie automatisch.",
+            "fr": "En raison de la politique de mise à niveau automatique configurée, un ou plusieurs adaptateurs ont été mis à niveau automatiquement dans une nouvelle version.",
+            "it": "A causa del criterio di aggiornamento automatico configurato, uno o più adattatori sono stati aggiornati automaticamente a una nuova versione.",
+            "es": "Debido a la política de actualización automática configurada, uno o varios adaptadores han sido actualizados a una nueva versión automáticamente.",
+            "pl": "W związku z automatyczną aktualizacją, jeden lub wiele adapterów zostało automatycznie zmodernizowanych.",
+            "uk": "У зв'язку з налаштованою автоматичною політикою оновлення, одним або декількома адаптерами було оновлено до нової версії автоматично.",
+            "zh-cn": "由于整套自动升级政策,一个或多个适应者已自动升级为新版本。."
+          },
+          "regex": [],
+          "limit": 10
+        },
+        {
           "category": "blockedVersions",
           "name": {
             "en": "Instance was deactivated",
