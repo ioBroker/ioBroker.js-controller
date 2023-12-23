@@ -1,4 +1,8 @@
 import type { TestContext } from '../_Types';
+import chai from 'chai';
+import chaiAsPromised from 'chai-as-promised';
+
+chai.use(chaiAsPromised);
 
 /**
  * Contains tests interacting with DB via adapter.ts
@@ -1359,7 +1363,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         return Promise.resolve();
     });
 
-    // should use def as default state value on extendObject when obj non existing
+    // should use def as default state value on extendObject when obj non-existing
     it(testName + 'Check extendObject state with def', async function () {
         this.timeout(3_000);
         let obj = await context.adapter.extendObjectAsync('testDefaultValExtend', {
@@ -1405,7 +1409,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(state!.ack).to.equal(true);
     });
 
-    // should use def as default state value on extendForeignObject when obj non existing
+    // should use def as default state value on extendForeignObject when obj non-existing
     it(testName + 'Check extendForeignObject state with def', async () => {
         let obj = await context.adapter.extendForeignObjectAsync('foreign.0.testDefaultValExtend', {
             type: 'state',
@@ -1608,6 +1612,24 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         objGet = await context.adapter.getForeignObjectAsync('foreign.0.testExtendPreserve');
         // should still be the string, because preserved
         expect(objGet!.common.name).to.be.equal('CHANGED');
+    });
+
+    // test that real errors of methods promisified via tools.promisify are propagated, can be adapted to a more generic test
+    it(testName + 'Check that crashes of promisified methods are propagated', function () {
+        return expect(
+            context.adapter.extendObjectAsync('testDefaultValExtend', {
+                type: 'state',
+                common: {
+                    type: 'string',
+                    def: 'Run Forrest, Run!'
+                },
+                // @ts-expect-error force crash
+                native: -3
+            })
+        ).to.be.eventually.rejectedWith(
+            `Cannot use 'in' operator to search for 'repositories' in -3`,
+            'Should have thrown'
+        );
     });
 
     it(testName + 'Should check object existence', async () => {
