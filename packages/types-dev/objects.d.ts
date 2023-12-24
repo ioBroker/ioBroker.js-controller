@@ -53,8 +53,7 @@ declare global {
             | 'schedule'
             | 'design';
 
-        // Define the naming schemes for objects so we can provide more specific types for get/setObject
-
+        // Define the naming schemes for objects, so we can provide more specific types for get/setObject
         namespace ObjectIDs {
             // Guaranteed meta objects
             type Meta =
@@ -161,6 +160,17 @@ declare global {
 
         type CommonType = 'number' | 'string' | 'boolean' | 'array' | 'object' | 'mixed' | 'file';
 
+        type SmartNameSettings = string |
+            ({ [lang in Languages]?: string }
+                &
+                {
+                    /** Which kind of device it is */
+                    smartType?: string | null;
+                    /** Which value to set when the ON command is issued */
+                    byOn?: string | null;
+                }
+            );
+
         interface ObjectCommon {
             /** The name of this object as a simple string or an object with translations */
             name: StringOrTranslated;
@@ -260,17 +270,10 @@ declare global {
             mobile?: any;
 
             /**
-             * Settings for IOT adapters and how the state should be named in e.g. Alexa.
+             * Settings for IOT adapters and how the state should be named in e.g., Alexa.
              * The string "ignore" is a special case, causing the state to be ignored.
              */
-            smartName?:
-                | string
-                | ({ [lang in Languages]?: string } & {
-                      /** Which kind of device this is */
-                      smartType?: string | null;
-                      /** Which value to set when the ON command is issued */
-                      byOn?: string | null;
-                  });
+            smartName?: SmartNameSettings;
         }
         interface ChannelCommon extends ObjectCommon {
             // Make it possible to narrow the object type using the custom property
@@ -278,11 +281,11 @@ declare global {
         }
         interface DeviceCommon extends ObjectCommon {
             statusStates?: {
-                /** State which is truthy if device is online */
+                /** State, which is truthy if a device is online */
                 onlineId?: string;
-                /** State which is truthy if device is offline */
+                /** State, which is truthy if a device is offline */
                 offlineId?: string;
-                /** State which is truthy if device is in error state */
+                /** State, which is truthy if a device is in error state */
                 errorId?: string;
             };
             // Make it possible to narrow the object type using the custom property
@@ -434,7 +437,7 @@ declare global {
             members: ObjectIDs.User[]; // system.user.name, ...
             /** The default permissions of this group */
             acl: Omit<PermissionSet, 'user' | 'groups'>;
-            /** A group can be disabled, if missing, group is active */
+            /** A group can be disabled, if missing, a group is active */
             enabled?: boolean;
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
@@ -442,7 +445,7 @@ declare global {
 
         interface ScriptCommon extends ObjectCommon {
             name: string;
-            /** Defines the type of the script, e.g. TypeScript/ts, JavaScript/js or Blockly */
+            /** Defines the type of the script, e.g., TypeScript/ts, JavaScript/js or Blockly */
             engineType: string;
             /** The instance id of the instance which executes this script */
             engine: string;
@@ -549,7 +552,7 @@ declare global {
             getHistory?: boolean;
             /** Filename of the local icon which is shown for installed adapters. Should be located in the `admin` directory */
             icon?: string;
-            /** Source, where this adapter has been installed from, to enable reinstall on e.g. backup restore */
+            /** Source, where this adapter has been installed from, to enable reinstalling on e.g., backup restore */
             installedFrom?: string;
             /** Which version of this adapter is installed */
             installedVersion: string;
@@ -559,7 +562,7 @@ declare global {
             /** @deprecated Use @see localLinks */
             localLink?: string;
             loglevel?: LogLevel;
-            /** Whether this adapter receives logs from other hosts and adapters (e.g. to strore them somewhere) */
+            /** Whether this adapter receives logs from other hosts and adapters (e.g., to strore them somewhere) */
             logTransporter?: boolean;
             /** Path to the start file of the adapter. Should be the same as in `package.json` */
             main?: string;
@@ -634,7 +637,7 @@ declare global {
             /** The available version in the ioBroker repo. */
             version: string;
             visWidgets?: Record<string, VisWidget>;
-            /** If `true`, the adapter will be started if any value is written into `system.adapter.<name>.<instance>.wakeup. Normally the adapter should stop after processing the event. */
+            /** If `true`, the adapter will be started if any value is written into `system.adapter.<name>.<instance>.wakeup. Normally, the adapter should stop after processing the event. */
             wakeup?: boolean;
             /** Include the adapter version in the URL of the web adapter, e.g. `http://ip:port/1.2.3/material` instead of `http://ip:port/material` */
             webByVersion?: boolean;
@@ -737,7 +740,7 @@ declare global {
             /** The user who created or updated this object */
             user?: string;
             ts?: number;
-            /** These properties can only be edited if correct password is provided */
+            /** These properties can only be edited if the correct password is provided */
             nonEdit?: NonEditable;
         }
 
@@ -1015,7 +1018,7 @@ declare global {
         /** All objects that usually appear in an adapter scope */
         type AdapterScopedObject = FolderObject | DeviceObject | ChannelObject | StateObject;
 
-        // For all objects that are exposed to the user we need to tone the strictness down.
+        // For all objects that are exposed to the user, we need to tone the strictness down.
         // Otherwise, every operation on objects becomes a pain to work with
         type Object = AnyObject & {
             common: Record<string, any>;
