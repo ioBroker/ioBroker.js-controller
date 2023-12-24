@@ -160,7 +160,7 @@ declare global {
 
         type CommonType = 'number' | 'string' | 'boolean' | 'array' | 'object' | 'mixed' | 'file';
 
-        type SmartNameSettings = string |
+        type SmartNameSettings = null | string |
             ({ [lang in Languages]?: string }
                 &
                 {
