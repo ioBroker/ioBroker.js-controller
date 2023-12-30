@@ -138,6 +138,9 @@ adapter.setState('state.name', 'value', true);
 adapter.setState('state.name', 'value', (err, id) => {});
 adapter.setState('state.name', { val: 'value', ack: true });
 adapter.setState('state.name', { val: 'value', ack: true }, (_err, _id) => {});
+adapter.setState('state.name', { val: 'value', ack: true, q: adapter.constants.STATE_QUALITY.BAD });
+// @ts-expect-error invalid quality
+adapter.setState('state.name', { val: 'value', ack: true, q: 1234 });
 
 adapter.setStateAsync('state.name', 'value').then(id => id.toLowerCase());
 adapter.setStateAsync('state.name', 'value', true).then(id => id.toLowerCase());

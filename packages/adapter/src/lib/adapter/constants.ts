@@ -1,3 +1,5 @@
+import { satisfies } from 'semver';
+
 /**
  * Constants needed for adapter.js
  */
