@@ -4,8 +4,7 @@
   "compilerOptions": {
     "allowJs": false,
     "checkJs": false,
-    "noEmit": false,
-    "outDir": "build/esm"
+    "noEmit": false
   },
   "references": [
     {

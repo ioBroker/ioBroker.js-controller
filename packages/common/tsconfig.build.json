@@ -4,7 +4,8 @@
   "compilerOptions": {
     "allowJs": false,
     "checkJs": false,
-    "noEmit": false
+    "noEmit": false,
+    "outDir": "build/esm"
   },
   "include": [
     "src/**/*.ts"

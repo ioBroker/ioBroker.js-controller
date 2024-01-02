@@ -2,7 +2,7 @@
   "name": "@iobroker/js-controller-adapter",
   "version": "5.0.18-alpha.0-20231224-13fc9d35",
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "@alcalzone/pak": "^0.8.1",
@@ -46,26 +46,14 @@
   "exports": {
     ".": {
       "import": "./build/esm/index.js",
-      "require": "./build/cjs/index.js"
+      "require": "./build/cjs/index.js",
+      "types": "./build/esm/index.d.ts"
     },
     "./package.json": "./package.json"
   },
   "main": "build/cjs/index.js",
   "module": "build/esm/index.js",
   "types": "build/esm/index.d.ts",
-  "typesVersions": {
-    "*": {
-      "build/esm/index.d.ts": [
-        "build/esm/index.d.ts"
-      ],
-      "build/cjs/index.d.ts": [
-        "build/esm/index.d.ts"
-      ],
-      "*": [
-        "build/esm/*"
-      ]
-    }
-  },
   "license": "MIT",
   "publishConfig": {
     "access": "public"
