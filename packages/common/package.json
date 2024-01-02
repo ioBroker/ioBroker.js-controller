@@ -42,7 +42,7 @@
   },
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "postbuild": "esm2cjs --in build/esm --out build/cjs -l error"
+    "postbuild": "esm2cjs --in build/esm --out build/cjs -l error && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/"
   },
   "main": "build/cjs/index.js",
   "module": "build/esm/index.js",

@@ -40,7 +40,7 @@
   },
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "postbuild": "esm2cjs --in build/esm --out build/cjs -l error && cpy ./cert ../build/esm --cwd=src && cpy ./cert ../build/cjs --cwd=src",
+    "postbuild": "esm2cjs --in build/esm --out build/cjs -l error && cpy ./cert ../build/esm --cwd=src && cpy ./cert ../build/cjs --cwd=src && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/",
     "build:doc": "typedoc --excludeExternals --excludeProtected --excludePrivate --plugin typedoc-plugin-missing-exports --plugin typedoc-plugin-markdown src/lib/adapter/adapter.ts --out ../controller/doc"
   },
   "exports": {
