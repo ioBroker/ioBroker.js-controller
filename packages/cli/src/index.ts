@@ -5,3 +5,4 @@ export { Upload } from './lib/setup/setupUpload';
 export { Upgrade } from './lib/setup/setupUpgrade';
 export { BackupRestore } from './lib/setup/setupBackup';
 export { PacketManager } from './lib/setup/setupPacketManager';
+export * from './lib/_Types';
