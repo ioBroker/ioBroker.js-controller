@@ -326,7 +326,7 @@ export async function isHostRunning(objects: any, states: any): Promise<boolean>
  * Checks if ioBroker is installed in a dev environment
  */
 function _isDevInstallation(): boolean {
-    return fs.pathExistsSync(`${__dirname}/../../../../../packages/controller`);
+    return fs.pathExistsSync(`${getControllerDir()}/../../packages/controller`);
 }
 
 function getAppName(): string {
@@ -831,7 +831,6 @@ export async function getJson(
                     callback(sources, urlOrPath);
                 }
             } else {
-                //if (urlOrPath.indexOf('/example/') === -1) console.log('Json file not found: ' + urlOrPath);
                 if (callback) {
                     callback(null, urlOrPath);
                 }
@@ -895,7 +894,6 @@ export async function getJsonAsync(urlOrPath: string, agent?: string): Promise<R
                 }
                 return sources;
             } else {
-                //if (urlOrPath.indexOf('/example/') === -1) console.log('Json file not found: ' + urlOrPath);
                 return null;
             }
         }
@@ -2178,7 +2176,6 @@ export function getControllerDir(): string {
                 paths: getDefaultRequireResolvePaths(module)
             });
 
-            console.log(possiblePath);
             if (fs.existsSync(possiblePath)) {
                 return path.dirname(possiblePath);
             }
@@ -2191,8 +2188,6 @@ export function getControllerDir(): string {
     let checkPath = path.join(__dirname, '..', '..');
 
     possibilities.unshift('');
-    console.log(checkPath);
-    console.log(possibilities);
 
     while (true) {
         for (const pkg of possibilities) {
