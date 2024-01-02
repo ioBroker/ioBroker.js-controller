@@ -6,4 +6,4 @@
  *
  */
 
-require('./build/main').init();
+require('./build/cjs/main').init();
