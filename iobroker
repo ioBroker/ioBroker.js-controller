@@ -1,2 +1,0 @@
-#!/usr/bin/env node
-require('/home/moritz/workspaces/ioBroker.js-controller/packages/cli/build/cjs/lib/setup').execute();
