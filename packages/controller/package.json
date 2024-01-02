@@ -83,6 +83,7 @@
   },
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
+    "postbuild": "esm2cjs --in build/esm --out build/cjs -l error",
     "preinstall": "node build/lib/preinstallCheck.js",
     "install": "node iobroker.js setup first",
     "start": "node iobroker.js start",
@@ -94,7 +95,16 @@
     "test-redis-socket": "mocha test/redis-socket/ --exit",
     "test-redis-sentinel": "mocha test/redis-sentinel/ --exit"
   },
-  "main": "build/main.js",
+  "main": "build/cjs/main.js",
+  "module": "build/esm/main.js",
+  "types": "build/esm/main.d.ts",
+  "exports": {
+    ".": {
+      "import": "./build/esm/index.js",
+      "require": "./build/cjs/index.js",
+      "types": "./build/esm/main.d.ts"
+    }
+  },
   "license": "MIT",
   "files": [
     "conf/",
