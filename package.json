@@ -19,6 +19,7 @@
     "iobroker.js-controller": "file:packages/controller"
   },
   "devDependencies": {
+    "@alcalzone/esm2cjs": "^1.1.2",
     "@alcalzone/release-script": "~3.5.2",
     "@alcalzone/release-script-plugin-iobroker": "~3.7.0",
     "@alcalzone/release-script-plugin-lerna": "~3.6.0",

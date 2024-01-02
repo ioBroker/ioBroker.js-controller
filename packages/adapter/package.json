@@ -40,19 +40,37 @@
   },
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "postbuild": "cpy ./cert ../build/ --cwd=src",
+    "postbuild": "esm2cjs --in build/esm --out build/cjs -l error && cpy ./cert ../build/esm --cwd=src && cpy ./cert ../build/cjs --cwd=src",
     "build:doc": "typedoc --excludeExternals --excludeProtected --excludePrivate --plugin typedoc-plugin-missing-exports --plugin typedoc-plugin-markdown src/lib/adapter/adapter.ts --out ../controller/doc"
   },
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./build/esm/index.js",
+      "require": "./build/cjs/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "build/cjs/index.js",
+  "module": "build/esm/index.js",
+  "types": "build/esm/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "build/esm/index.d.ts": [
+        "build/esm/index.d.ts"
+      ],
+      "build/cjs/index.d.ts": [
+        "build/esm/index.d.ts"
+      ],
+      "*": [
+        "build/esm/*"
+      ]
+    }
+  },
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
   "files": [
-    "build/cert/",
-    "build/lib/",
-    "build/index.js",
-    "build/index.d.ts"
+    "build/"
   ]
 }
