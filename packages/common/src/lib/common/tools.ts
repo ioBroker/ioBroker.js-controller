@@ -2186,7 +2186,7 @@ export function getControllerDir(): string {
     }
 
     // Also check in the current check dir (along with iobroker.js-controller sub-dirs)
-    let checkPath = path.join(__dirname, '..', '..');
+    let checkPath = path.join(__dirname, '..', '..', '..');
 
     possibilities.unshift('');
 
@@ -2245,7 +2245,7 @@ export function getDefaultDataDir(): string {
         return './data/';
     }
 
-    return path.join('..', '..', `${appNameLowerCase}-data/`);
+    return path.join('..', '..', '..', `${appNameLowerCase}-data/`);
 }
 
 /**
