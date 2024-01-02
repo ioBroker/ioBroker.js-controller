@@ -2177,6 +2177,8 @@ export function getControllerDir(): string {
             const possiblePath = require.resolve(`${pkg}/package.json`, {
                 paths: getDefaultRequireResolvePaths(module)
             });
+
+            console.log(possiblePath);
             if (fs.existsSync(possiblePath)) {
                 return path.dirname(possiblePath);
             }
@@ -2186,9 +2188,11 @@ export function getControllerDir(): string {
     }
 
     // Also check in the current check dir (along with iobroker.js-controller sub-dirs)
-    let checkPath = path.join(__dirname, '..', '..', '..');
+    let checkPath = path.join(__dirname, '..', '..');
 
     possibilities.unshift('');
+    console.log(checkPath);
+    console.log(possibilities);
 
     while (true) {
         for (const pkg of possibilities) {
@@ -2245,7 +2249,7 @@ export function getDefaultDataDir(): string {
         return './data/';
     }
 
-    return path.join('..', '..', '..', `${appNameLowerCase}-data/`);
+    return path.join('..', '..', `${appNameLowerCase}-data/`);
 }
 
 /**

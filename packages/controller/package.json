@@ -103,7 +103,9 @@
       "import": "./build/esm/index.js",
       "require": "./build/cjs/index.js",
       "types": "./build/esm/main.d.ts"
-    }
+    },
+    "./package.json": "./package.json",
+    "./io-package.json": "./io-package.json"
   },
   "license": "MIT",
   "files": [
