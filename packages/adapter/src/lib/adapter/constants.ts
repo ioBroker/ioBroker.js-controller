@@ -61,6 +61,7 @@ const SUPPORTED_FEATURES_INTERNAL = [
     'CONTROLLER_READWRITE_BASE_SETTINGS', // If base settings could be read and written. Since js-controller 3.0
     'CONTROLLER_MULTI_REPO', // Controller supports multiple repositories
     'CONTROLLER_LICENSE_MANAGER', // Controller can read licenses from iobroker.net. Since js-controller 4.0
+    'CONTROLLER_OS_PACKAGE_UPGRADE', // Controller can upgrade OS packages
     'DEL_INSTANCE_CUSTOM', // instances/adapter can be deleted with --custom flag to remove corresponding custom of all objects. Since js-controller 4.0
     'BINARY_STATE_EVENT', // stateChange event could be received for binary states too. Deprecated in js-controller 5.0
     'CUSTOM_FULL_VIEW', // `getObjectView('system', 'custom-full', ...)` will return full objects and not only `common.custom` part. Since `js-controller` 5.0
