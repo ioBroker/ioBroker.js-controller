@@ -10,31 +10,32 @@
  */
 
 import schedule from 'node-schedule';
-import os from 'os';
+import os from 'node:os';
 import fs from 'fs-extra';
-import path from 'path';
-import cp, { spawn, exec } from 'child_process';
+import path from 'node:path';
+import cp, { spawn, exec } from 'node:child_process';
 import semver from 'semver';
-import restart from './lib/restart';
+import restart from '@/lib/restart';
 import { tools as dbTools } from '@iobroker/js-controller-common-db';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
-import { isDeepStrictEqual, inspect } from 'util';
+import { isDeepStrictEqual, inspect } from 'node:util';
 import { tools, EXIT_CODES, logger as toolsLogger } from '@iobroker/js-controller-common';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
 import { PluginHandler } from '@iobroker/plugin-base';
 import { NotificationHandler } from '@iobroker/js-controller-common-db';
-import * as zipFiles from './lib/zipFiles';
+import * as zipFiles from '@/lib/zipFiles';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
-import { Upload, PacketManager } from '@iobroker/js-controller-cli';
+import { Upload, PacketManager, type UpgradePacket } from '@iobroker/js-controller-cli';
 import decache from 'decache';
 import cronParser from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
-import { AdapterAutoUpgradeManager } from './lib/adapterAutoUpgradeManager';
+import { AdapterAutoUpgradeManager } from '@/lib/adapterAutoUpgradeManager';
 import { getDefaultNodeArgs, type HostInfo, type RepositoryFile } from '@iobroker/js-controller-common/tools';
-import type { UpgradeArguments } from './lib/upgradeManager';
-import { AdapterUpgradeManager } from './lib/adapterUpgradeManager';
+import type { UpgradeArguments } from '@/lib/upgradeManager';
+import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager';
+import { setTimeout as wait } from 'node:timers/promises';
 
 type TaskObject = ioBroker.SettableObject & { state?: ioBroker.SettableState };
 type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
@@ -3381,9 +3382,34 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
         }
 
+        case 'upgradeOsPackages': {
+            const { packages, restart } = msg.message;
+
+            try {
+                await upgradeOsPackages(packages);
+                sendTo(msg.from, msg.command, { success: true }, msg.callback);
+            } catch (e) {
+                sendTo(msg.from, msg.command, { error: e.message, success: false }, msg.callback);
+            }
+
+            try {
+                await listUpdatableOsPackages();
+            } catch (e) {
+                logger.warn(`${hostLogPrefix} Could not check for new OS updates after upgrade: ${e.message}`);
+            }
+
+            if (restart) {
+                await wait(200);
+                restart(() => !isStopping && stop(false));
+            }
+            break;
+        }
+
         case 'restartController': {
             msg.callback && sendTo(msg.from, msg.command, '', msg.callback);
-            setTimeout(() => restart(() => !isStopping && stop(false)), 200); // let the answer be sent
+            // let the answer be sent
+            await wait(200);
+            restart(() => !isStopping && stop(false));
             break;
         }
     }
@@ -6088,6 +6114,18 @@ async function listUpdatableOsPackages(): Promise<void> {
     }
 
     await notificationHandler.addMessage('system', 'packageUpdates', packages.join('\n'), `system.host.${hostname}`);
+}
+
+/**
+ * Upgrade given operating system packages
+ *
+ * @param packages package names and version information
+ */
+async function upgradeOsPackages(packages: UpgradePacket[]): Promise<void> {
+    const packManager = new PacketManager();
+    await packManager.ready();
+
+    await packManager.upgrade(packages);
 }
 
 /**

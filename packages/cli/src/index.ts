@@ -4,4 +4,4 @@ export { Vendor } from './lib/setup/setupVendor';
 export { Upload } from './lib/setup/setupUpload';
 export { Upgrade } from './lib/setup/setupUpgrade';
 export { BackupRestore } from './lib/setup/setupBackup';
-export { PacketManager } from './lib/setup/setupPacketManager';
+export { PacketManager, type UpgradePacket } from './lib/setup/setupPacketManager';
