@@ -82,7 +82,7 @@
     "url": "https://github.com/ioBroker/ioBroker.js-controller"
   },
   "scripts": {
-    "build": "tsc -b tsconfig.build.json",
+    "build": "tsc -b tsconfig.build.json && tsc-alias",
     "preinstall": "node build/lib/preinstallCheck.js",
     "install": "node iobroker.js setup first",
     "start": "node iobroker.js start",

@@ -71,6 +71,7 @@
     "sinon-chai": "^3.7.0",
     "ts-json-schema-generator": "~1.2.0",
     "ts-node": "^10.9.1",
+    "tsc-alias": "^1.8.8",
     "typedoc": "^0.25.4",
     "typedoc-plugin-markdown": "^3.17.1",
     "typedoc-plugin-missing-exports": "^2.1.0",
