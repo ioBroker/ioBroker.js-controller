@@ -833,6 +833,8 @@ export class StateRedisClient {
 
     /**
      * Promise-version of setState
+     *
+     * @deprecated use version without `Async` postfix
      */
     setStateAsync(id: string, state: ioBroker.SettableState | ioBroker.StateValue): Promise<string> {
         return new Promise((resolve, reject) => {

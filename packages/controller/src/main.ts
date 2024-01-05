@@ -1143,7 +1143,7 @@ async function changeHost(
  */
 function cleanAutoSubscribe(instance: string, autoInstance: ioBroker.ObjectIDs.Instance, callback: () => void): void {
     inputCount++;
-    states!.getState(`${autoInstance}.subscribes`, (err, state) => {
+    states!.getState(`${autoInstance}.subscribes`, async (err, state) => {
         if (!state || !state.val) {
             return typeof callback === 'function' && setImmediate(() => callback());
         }
@@ -1173,7 +1173,10 @@ function cleanAutoSubscribe(instance: string, autoInstance: ioBroker.ObjectIDs.I
 
         if (modified) {
             outputCount++;
-            states!.setState(`${autoInstance}.subscribes`, subs, () => typeof callback === 'function' && callback());
+            await states!.setState(`${autoInstance}.subscribes`, subs);
+            if (typeof callback === 'function') {
+                callback();
+            }
         } else if (typeof callback === 'function') {
             setImmediate(() => callback());
         }
@@ -1560,7 +1563,7 @@ async function extendObjects(tasks: Record<string, any>[]): Promise<void> {
             await objects!.extendObjectAsync(task._id, task);
             // if extend throws we don't want to set corresponding state
             if (state) {
-                await states!.setStateAsync(task._id, state);
+                await states!.setState(task._id, state);
             }
         } catch {
             // ignore
@@ -3621,7 +3624,7 @@ function cleanErrors(procObj: Process, now: number | null, doOutput?: boolean): 
     }
 }
 
-function startScheduledInstance(callback?: () => void): void {
+async function startScheduledInstance(callback?: () => void): Promise<void> {
     const idsToStart = Object.keys(scheduledInstances);
     if (!idsToStart.length) {
         callback && callback();
@@ -3651,53 +3654,52 @@ function startScheduledInstance(callback?: () => void): void {
             proc.lastStart = Date.now();
             if (!proc.process) {
                 // reset sigKill to 0 if it was set to another value from "once run"
-                states!.setState(`${instance._id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix }, () => {
-                    const args = [instance._id.split('.').pop() || '0', instance.common.loglevel || 'info'];
-                    try {
-                        proc.process = cp.fork(fileNameFull, args, {
-                            execArgv: tools.getDefaultNodeArgs(fileNameFull),
-                            // @ts-expect-error missing from types, but we already tested it is needed
-                            windowsHide: true,
-                            cwd: adapterDir
-                        });
-                    } catch (err) {
-                        logger.error(`${hostLogPrefix} instance ${id} could not be started: ${err.message}`);
-                        delete proc.process;
-                    }
-                    if (proc.process) {
-                        storePids();
-                        logger.info(`${hostLogPrefix} instance ${instance._id} started with pid ${proc.process.pid}`);
+                await states!.setState(`${instance._id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix });
+                const args = [instance._id.split('.').pop() || '0', instance.common.loglevel || 'info'];
+                try {
+                    proc.process = cp.fork(fileNameFull, args, {
+                        execArgv: tools.getDefaultNodeArgs(fileNameFull),
+                        // @ts-expect-error missing from types, but we already tested it is needed
+                        windowsHide: true,
+                        cwd: adapterDir
+                    });
+                } catch (err) {
+                    logger.error(`${hostLogPrefix} instance ${id} could not be started: ${err.message}`);
+                    delete proc.process;
+                }
+                if (proc.process) {
+                    storePids();
+                    logger.info(`${hostLogPrefix} instance ${instance._id} started with pid ${proc.process.pid}`);
 
-                        proc.process.on('exit', (code, signal) => {
-                            outputCount++;
-                            states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
-                            if (signal) {
-                                logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
-                            } else if (code === null) {
-                                logger.error(`${hostLogPrefix} instance ${id} terminated abnormally`);
+                    proc.process.on('exit', (code, signal) => {
+                        outputCount++;
+                        states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
+                        if (signal) {
+                            logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
+                        } else if (code === null) {
+                            logger.error(`${hostLogPrefix} instance ${id} terminated abnormally`);
+                        } else {
+                            const text = `${hostLogPrefix} instance ${id} terminated with code ${code} (${
+                                getErrorText(code) || ''
+                            })`;
+                            if (
+                                !code ||
+                                code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
+                                code === EXIT_CODES.NO_ERROR
+                            ) {
+                                logger.info(text);
                             } else {
-                                const text = `${hostLogPrefix} instance ${id} terminated with code ${code} (${
-                                    getErrorText(code) || ''
-                                })`;
-                                if (
-                                    !code ||
-                                    code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
-                                    code === EXIT_CODES.NO_ERROR
-                                ) {
-                                    logger.info(text);
-                                } else {
-                                    logger.error(text);
-                                }
+                                logger.error(text);
                             }
-                            if (proc?.process) {
-                                delete proc.process;
-                            }
-                            storePids();
-                        });
-                    }
+                        }
+                        if (proc?.process) {
+                            delete proc.process;
+                        }
+                        storePids();
+                    });
+                }
 
-                    processNextScheduledInstance();
-                });
+                processNextScheduledInstance();
                 return;
             } else {
                 !wakeUp &&
@@ -5135,8 +5137,8 @@ function stop(force?: boolean, callback?: () => void): void {
         }
         outputCount++;
         try {
-            await states.setStateAsync(`${hostObjectPrefix}.alive`, { val: false, ack: true, from: hostObjectPrefix });
-            await states.setStateAsync(`${hostObjectPrefix}.pid`, { val: null, ack: true, from: hostObjectPrefix });
+            await states.setState(`${hostObjectPrefix}.alive`, { val: false, ack: true, from: hostObjectPrefix });
+            await states.setState(`${hostObjectPrefix}.pid`, { val: null, ack: true, from: hostObjectPrefix });
         } catch {
             // ignore
         }
@@ -5474,7 +5476,7 @@ export function init(compactGroupId?: number): void {
                     }
 
                     // set current node version
-                    await states!.setStateAsync(`${hostObjectPrefix}.nodeVersion`, {
+                    await states!.setState(`${hostObjectPrefix}.nodeVersion`, {
                         val: nodeVersion,
                         ack: true,
                         from: hostObjectPrefix
