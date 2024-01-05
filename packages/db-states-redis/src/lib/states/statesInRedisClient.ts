@@ -670,6 +670,15 @@ export class StateRedisClient {
         return { type: 'redis', server: false };
     }
 
+    setState(id: string, state: ioBroker.SettableState | ioBroker.StateValue): Promise<string>;
+
+    /** @deprecated migrate to promisified version (without callback) */
+    setState(
+        id: string,
+        state: ioBroker.SettableState | ioBroker.StateValue,
+        callback: (err: Error | null | undefined, id: string) => void
+    ): Promise<void>;
+
     /**
      * @method setState
      * @param id the id of the value. '<this.namespaceRedis>.' will be prepended

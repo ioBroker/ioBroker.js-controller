@@ -60,6 +60,20 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
             },
             native: {}
         });
+
+        objs.push({
+            _id: `${id}.osPackageUpdates`,
+            type: 'state',
+            common: {
+                name: 'Available OS package updates',
+                type: 'array',
+                read: true,
+                write: false,
+                desc: 'The output of the "update" command from the package manager like apt or yum',
+                role: 'state'
+            },
+            native: {}
+        });
     }
 
     objs.push({

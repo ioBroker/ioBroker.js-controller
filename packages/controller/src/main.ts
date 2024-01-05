@@ -5720,6 +5720,7 @@ async function listUpdatableOsPackages(): Promise<void> {
     }
 
     await notificationHandler.addMessage('system', 'packageUpdates', packages.join('\n'), `system.host.${hostname}`);
+    await states!.setState(`${hostObjectPrefix}.osPackageUpdates`, { val: JSON.stringify(packages), ack: true });
 }
 
 /**
