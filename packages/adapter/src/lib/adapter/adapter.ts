@@ -7692,19 +7692,24 @@ export class AdapterClass extends EventEmitter {
 
                 // write target state
                 this.outputCount++;
-                return this.#states.setState(
-                    aliasId,
-                    tools.formatAliasValue({
-                        sourceCommon: obj?.common,
-                        targetCommon: targetObj?.common as any,
-                        state: stateObj as ioBroker.State,
-                        logger: this._logger,
-                        logNamespace: this.namespaceLog,
-                        sourceId: obj?._id,
-                        targetId: targetObj?._id
-                    }),
-                    callback
-                );
+                try {
+                    const res = await this.#states.setState(
+                        aliasId,
+                        tools.formatAliasValue({
+                            sourceCommon: obj?.common,
+                            targetCommon: targetObj?.common as any,
+                            state: stateObj as ioBroker.State,
+                            logger: this._logger,
+                            logNamespace: this.namespaceLog,
+                            sourceId: obj?._id,
+                            targetId: targetObj?._id
+                        })
+                    );
+
+                    return tools.maybeCallbackWithError(callback, null, res);
+                } catch (e) {
+                    return tools.maybeCallbackWithError(callback, e);
+                }
             } else {
                 this._logger.warn(`${this.namespaceLog} ${`Alias ${fixedId} has no target 2`}`);
                 return tools.maybeCallbackWithError(callback, `Alias ${fixedId} has no target`);
@@ -7719,7 +7724,12 @@ export class AdapterClass extends EventEmitter {
             }
 
             this.outputCount++;
-            return this.#states.setState(fixedId, stateObj, callback);
+            try {
+                const res = await this.#states.setState(fixedId, stateObj);
+                return tools.maybeCallbackWithError(callback, null, res);
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
         }
     }
 
