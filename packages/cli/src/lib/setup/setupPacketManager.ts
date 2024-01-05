@@ -280,7 +280,7 @@ export class PacketManager {
                 if (this.manager === 'apt') {
                     upgradeCmd += `=${packet.version}`;
                 } else {
-                    upgradeCmd += `-${packet.version}`;
+                    upgradeCmd = `install ${packet.name}-${packet.version}`;
                 }
             }
 
