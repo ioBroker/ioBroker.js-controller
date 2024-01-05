@@ -36,8 +36,8 @@ import { getDefaultNodeArgs, type HostInfo, type RepositoryFile } from '@iobroke
 import type { UpgradeArguments } from '@/lib/upgradeManager';
 import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager';
 import { setTimeout as wait } from 'node:timers/promises';
+import { getHostObjects } from '@/lib/objects';
 
-type TaskObject = ioBroker.SettableObject & { state?: ioBroker.SettableState };
 type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
 type Dependencies = string[] | Record<string, string>[] | string | Record<string, string>;
 
@@ -201,7 +201,7 @@ function getErrorText(code: number): string {
 /**
  * Get the config directly from fs - never cached
  */
-function getConfig(): Record<string, any> | never {
+function getConfig(): ioBroker.IoBrokerJson | never {
     const configFile = tools.getConfigFileName();
     if (!fs.existsSync(configFile)) {
         if (process.argv.indexOf('start') !== -1) {
@@ -515,7 +515,7 @@ function createStates(onConnect: () => void): void {
                 }
                 let currentLevel = config.log.level;
                 if (
-                    state.val &&
+                    typeof state.val === 'string' &&
                     state.val !== currentLevel &&
                     ['silly', 'debug', 'info', 'warn', 'error'].includes(state.val as string)
                 ) {
@@ -900,9 +900,9 @@ function createObjects(onConnect: () => void): void {
 
 function startAliveInterval(): void {
     config.system = config.system || {};
-    config.system.statisticsInterval = parseInt(config.system.statisticsInterval, 10) || 15000;
+    config.system.statisticsInterval = Math.round(config.system.statisticsInterval) || 15_000;
     config.system.checkDiskInterval =
-        config.system.checkDiskInterval !== 0 ? parseInt(config.system.checkDiskInterval, 10) || 300000 : 0;
+        config.system.checkDiskInterval !== 0 ? Math.round(config.system.checkDiskInterval) || 300_000 : 0;
     if (!compactGroupController) {
         // Provide info to see for each host if compact is enabled or not and be able to use in Admin or such
         states!.setState(`${hostObjectPrefix}.compactModeEnabled`, {
@@ -1674,409 +1674,15 @@ function setMeta(): void {
         }
     });
 
-    const tasks: TaskObject[] = [];
-    let obj: TaskObject;
-
-    if (!compactGroupController) {
-        obj = {
-            _id: `${id}.compactModeEnabled`,
-            type: 'state',
-            common: {
-                name: 'Controller - compact mode enabled',
-                type: 'boolean',
-                read: true,
-                write: false,
-                role: 'indicator'
-            },
-            native: {}
-        };
-        tasks.push(obj);
-
-        obj = {
-            _id: `${id}.compactgroupProcesses`,
-            type: 'state',
-            common: {
-                name: 'Controller - number of compact group controllers',
-                type: 'number',
-                read: true,
-                write: false,
-                min: 0,
-                role: 'value',
-                unit: 'processes'
-            },
-            native: {}
-        };
-        tasks.push(obj);
-
-        obj = {
-            _id: `${id}.nodeVersion`,
-            type: 'state',
-            common: {
-                name: 'Controller - Node.js version',
-                type: 'string',
-                read: true,
-                write: false,
-                desc: 'Node.js version of the host process.',
-                role: 'state'
-            },
-            native: {}
-        };
-        tasks.push(obj);
-    }
-
-    obj = {
-        _id: `${id}.instancesAsProcess`,
-        type: 'state',
-        common: {
-            name: 'Controller - number of instance processes',
-            type: 'number',
-            read: true,
-            write: false,
-            min: 0,
-            role: 'value',
-            unit: 'processes'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.instancesAsCompact`,
-        type: 'state',
-        common: {
-            name: 'Controller - number of instances started in this host process',
-            type: 'number',
-            read: true,
-            write: false,
-            min: 0,
-            role: 'value',
-            unit: 'instances'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.cpu`,
-        type: 'state',
-        common: {
-            name: 'Controller - cpu usage in % of one core',
-            type: 'number',
-            read: true,
-            write: false,
-            min: 0,
-            role: 'value',
-            unit: '% of one core'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.cputime`,
-        type: 'state',
-        common: {
-            name: 'Controller - accumulated cputime in seconds',
-            type: 'number',
-            read: true,
-            write: false,
-            min: 0,
-            role: 'value',
-            unit: 'seconds'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.mem`,
-        type: 'state',
-        common: {
-            type: 'number',
-            role: 'value',
-            name: `${hostname} - memory usage in %`,
-            unit: '%',
-            read: true,
-            write: false,
-            min: 0,
-            max: 100
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.memHeapUsed`,
-        type: 'state',
-        common: {
-            type: 'number',
-            role: 'value',
-            name: 'Controller - heap memory used in MB',
-            read: true,
-            write: false,
-            min: 0,
-            unit: 'MB'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    if (fs.existsSync('/proc/meminfo')) {
-        obj = {
-            _id: `${id}.memAvailable`,
-            type: 'state',
-            common: {
-                type: 'number',
-                role: 'value',
-                name: `${hostname} - available memory from /proc/meminfo in MB`,
-                read: true,
-                write: false,
-                min: 0,
-                unit: 'MB'
-            },
-            native: {}
-        };
-        tasks.push(obj);
-    }
-
-    obj = {
-        _id: `${id}.memHeapTotal`,
-        type: 'state',
-        common: {
-            type: 'number',
-            role: 'value',
-            name: 'Controller - heap memory reserved in MB',
-            read: true,
-            write: false,
-            min: 0,
-            unit: 'MB'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.memRss`,
-        type: 'state',
-        common: {
-            type: 'number',
-            role: 'value',
-            name: 'Controller - resident set size memory in MB',
-            desc: "RSS is the resident set size, the portion of the process's memory held in RAM",
-            read: true,
-            write: false,
-            min: 0,
-            unit: 'MB'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.uptime`,
-        type: 'state',
-        common: {
-            type: 'number',
-            role: 'value',
-            name: 'Controller - uptime in seconds',
-            read: true,
-            write: false,
-            min: 0,
-            unit: 'seconds'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.load`,
-        type: 'state',
-        common: {
-            unit: '',
-            type: 'number',
-            role: 'value',
-            read: true,
-            write: false,
-            name: `${hostname} - load average 1min`
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.alive`,
-        type: 'state',
-        common: {
-            name: `${hostname} - alive status`,
-            read: true,
-            write: false,
-            type: 'boolean',
-            role: 'indicator'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.freemem`,
-        type: 'state',
-        common: {
-            name: `${hostname} - available RAM in MB`,
-            unit: 'MB',
-            read: true,
-            write: false,
-            type: 'number',
-            role: 'value'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.inputCount`,
-        type: 'state',
-        common: {
-            name: 'Controller - input level in events/15 seconds',
-            desc: "State's inputs in 15 seconds",
-            type: 'number',
-            read: true,
-            write: false,
-            role: 'value',
-            unit: 'events/15 seconds'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.outputCount`,
-        type: 'state',
-        common: {
-            name: 'Controller - output level in events/15 seconds',
-            desc: "State's outputs in 15 seconds",
-            type: 'number',
-            read: true,
-            write: false,
-            role: 'value',
-            unit: 'events/15 seconds'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.eventLoopLag`,
-        type: 'state',
-        common: {
-            name: 'Controller - The Node.js event loop lag in ms, averaged over 15 seconds',
-            desc: 'Average Node.js event loop lag in ms',
-            type: 'number',
-            read: true,
-            write: false,
-            role: 'value',
-            unit: 'ms'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.zip`,
-        type: 'folder',
-        common: {
-            name: 'ZIP files',
-            desc: 'Files for download'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.logLevel`,
-        type: 'state',
-        common: {
-            name: 'Controller - Loglevel',
-            type: 'string',
-            read: true,
-            write: true,
-            desc: 'Loglevel of the host process. Will be set on start with defined value but can be overridden during runtime',
-            role: 'state'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.pid`,
-        type: 'state',
-        common: {
-            name: 'Controller - Process ID',
-            type: 'number',
-            read: true,
-            write: false,
-            role: 'value'
-        },
-        native: {},
-        state: {
-            val: process.pid,
-            ack: true
-        }
-    };
-    tasks.push(obj);
-
     config.system.checkDiskInterval =
-        config.system.checkDiskInterval !== 0 ? parseInt(config.system.checkDiskInterval, 10) || 300000 : 0;
+        config.system.checkDiskInterval !== 0 ? Math.round(config.system.checkDiskInterval) || 300_000 : 0;
 
-    if (config.system.checkDiskInterval) {
-        obj = {
-            _id: `${id}.diskSize`,
-            type: 'state',
-            common: {
-                name: `${hostname} - disk total size`,
-                desc: 'Disk size of logical volume where the server is installed in MiB',
-                type: 'number',
-                read: true,
-                write: false,
-                role: 'value',
-                unit: 'MiB'
-            },
-            native: {}
-        };
-        tasks.push(obj);
-
-        obj = {
-            _id: `${id}.diskFree`,
-            type: 'state',
-            common: {
-                name: `${hostname} - disk free size`,
-                desc: 'Free disk size of the logical volume where the server is installed in MiB',
-                type: 'number',
-                read: true,
-                write: false,
-                role: 'value',
-                unit: 'MiB'
-            },
-            native: {}
-        };
-        tasks.push(obj);
-
-        obj = {
-            _id: `${id}.diskWarning`,
-            type: 'state',
-            common: {
-                name: `${hostname} - disk warning level`,
-                desc: 'Show warning in admin if the free disk space is below this value',
-                type: 'number',
-                read: true,
-                write: true,
-                def: 5,
-                role: 'level',
-                unit: '%'
-            },
-            native: {}
-        };
-        tasks.push(obj);
-    }
+    const tasks = getHostObjects({
+        id,
+        hostname,
+        config,
+        isCompactGroupController: compactGroupController
+    });
 
     // delete obsolete states and create new ones
     objects!.getObjectView(
