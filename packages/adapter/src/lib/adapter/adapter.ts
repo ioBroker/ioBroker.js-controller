@@ -1,16 +1,16 @@
-import net from 'net';
+import net from 'node:net';
 import fs from 'fs-extra';
-import os from 'os';
+import os from 'node:os';
 import jwt from 'jsonwebtoken';
-import { EventEmitter } from 'events';
+import { EventEmitter } from 'node:events';
 import { tools, EXIT_CODES, password, logger } from '@iobroker/js-controller-common';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
 import { PluginHandler } from '@iobroker/plugin-base';
 import semver from 'semver';
-import path from 'path';
+import path from 'node:path';
 import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
-import { decryptArray, encryptArray, getSupportedFeatures, isMessageboxSupported } from './utils';
+import { decryptArray, encryptArray, getSupportedFeatures, isMessageboxSupported } from '@/lib/adapter/utils';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
@@ -21,7 +21,7 @@ import type NodeSchedule from 'node-schedule';
 // local version is always the same as controller version, since lerna exact: true is used
 import { version as controllerVersion } from '@iobroker/js-controller-adapter/package.json';
 
-import { Log } from './log';
+import { Log } from '@/lib/adapter/log';
 import { Validator } from './validator';
 
 const { FORBIDDEN_CHARS } = tools;
@@ -40,7 +40,7 @@ import {
     NO_PROTECT_ADAPTERS,
     STATE_QUALITY,
     type SupportedFeature
-} from './constants';
+} from '@/lib/adapter/constants';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import type {
     AdapterOptions,
@@ -110,9 +110,10 @@ import type {
     UserInterfaceClientRemoveMessage,
     SendToUserInterfaceClientOptions,
     AllPropsUnknown,
-    IoPackageInstanceObject
-} from '../_Types';
-import { UserInterfaceMessagingController } from './userInterfaceMessagingController';
+    IoPackageInstanceObject,
+    AliasTargetEntry
+} from '@/lib/_Types';
+import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
 
 tools.ensureDNSOrder();
@@ -4546,7 +4547,7 @@ export class AdapterClass extends EventEmitter {
         const { id, options, callback } = _options;
 
         // If recursive deletion of all underlying objects, including id
-        if (options && options.recursive) {
+        if (options?.recursive) {
             // read object itself
             this.#objects!.getObject(id, options, (err, obj) => {
                 const tasks =
@@ -7612,7 +7613,7 @@ export class AdapterClass extends EventEmitter {
         stateObj.user = options?.user || SYSTEM_ADMIN_USER;
 
         let permCheckRequired = false;
-        if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
+        if (options?.user && options.user !== SYSTEM_ADMIN_USER) {
             permCheckRequired = true;
         }
 
@@ -8228,7 +8229,7 @@ export class AdapterClass extends EventEmitter {
             typeof stateObj.from === 'string' && stateObj.from !== ''
                 ? stateObj.from
                 : `system.adapter.${this.namespace}`;
-        if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
+        if (options?.user && options.user !== SYSTEM_ADMIN_USER) {
             try {
                 await this._checkStates(fixedId, options, 'setState');
             } catch (e) {
@@ -8667,7 +8668,7 @@ export class AdapterClass extends EventEmitter {
 
         id = this.fixForbiddenCharsInId(id);
 
-        if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
+        if (options?.user && options.user !== SYSTEM_ADMIN_USER) {
             try {
                 await this._checkStates(id, options, 'setState');
             } catch (e) {
@@ -8778,7 +8779,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         let permCheckRequired = false;
-        if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
+        if (options?.user && options.user !== SYSTEM_ADMIN_USER) {
             permCheckRequired = true;
         }
 
@@ -9135,7 +9136,7 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, err);
         }
 
-        if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
+        if (options?.user && options.user !== SYSTEM_ADMIN_USER) {
             try {
                 await this._checkStates(id, options, 'delState');
             } catch (e) {
@@ -9519,7 +9520,7 @@ export class AdapterClass extends EventEmitter {
 
     private async _removeAliasSubscribe(
         sourceId: string,
-        aliasObj: number | Record<string, any>,
+        aliasObj: number | AliasTargetEntry,
         callback?: () => void
     ): Promise<void> {
         if (!this.aliases.has(sourceId)) {
@@ -9527,16 +9528,13 @@ export class AdapterClass extends EventEmitter {
         }
 
         // remove from targets array
-        // @ts-expect-error
-        const pos = typeof aliasObj === 'number' ? aliasObj : this.aliases.get(sourceId).targets.indexOf(aliasObj);
+        const pos = typeof aliasObj === 'number' ? aliasObj : this.aliases.get(sourceId)!.targets.indexOf(aliasObj);
 
         if (pos !== -1) {
-            // @ts-expect-error
-            this.aliases.get(sourceId).targets.splice(pos, 1);
+            this.aliases.get(sourceId)!.targets.splice(pos, 1);
 
             // unsubscribe if no more aliases exists
-            // @ts-expect-error
-            if (!this.aliases.get(sourceId).targets.length) {
+            if (!this.aliases.get(sourceId)!.targets.length) {
                 this.aliases.delete(sourceId);
                 await this.#states!.unsubscribe(sourceId);
             }

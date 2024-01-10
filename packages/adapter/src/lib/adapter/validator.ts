@@ -1,5 +1,7 @@
-import { MAX_TIMEOUT, SYSTEM_ADMIN_USER } from './constants';
+import { MAX_TIMEOUT, SYSTEM_ADMIN_USER } from '@/lib/adapter/constants';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import type { Client as StatesClient } from '@iobroker/db-states-redis';
 
 type Callback = (...args: any[]) => void | Promise<void>;
 type OptionalCallback = undefined | Callback;
@@ -12,8 +14,8 @@ export interface ValidateIdOptions {
 }
 
 export class Validator {
-    private readonly objects: any;
-    private readonly states: any;
+    private readonly objects: ObjectsClient;
+    private readonly states: StatesClient;
     private readonly namespaceLog: string;
     private readonly log: any;
     private readonly namespace: string;
@@ -29,8 +31,8 @@ export class Validator {
      * @param namespaceRegExp - the namespace RegExp of the adapter `adapter.0`
      */
     constructor(
-        objects: any,
-        states: any,
+        objects: ObjectsClient,
+        states: StatesClient,
         namespaceLog: string,
         logger: any,
         namespace: string,
@@ -61,7 +63,7 @@ export class Validator {
                 return;
             }
 
-            const obj: any = await this.objects.getObjectAsync(id);
+            const obj = await this.objects.getObjectAsync(id);
             // at first check object existence
             if (!obj) {
                 this.log.warn(
@@ -71,7 +73,7 @@ export class Validator {
             }
 
             // for a state object, we require common.type to exist
-            if (obj.common && obj.common.type) {
+            if (obj.common?.type) {
                 // check if we are allowed to write (read-only can only be written with ack: true)
                 if (!state.ack && obj.common.write === false) {
                     this.log.warn(
