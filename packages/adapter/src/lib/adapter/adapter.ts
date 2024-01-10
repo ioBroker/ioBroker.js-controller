@@ -9187,9 +9187,6 @@ export class AdapterClass extends EventEmitter {
         targetObjs: (ioBroker.StateObject | null)[] | null,
         srcObjs: (ioBroker.StateObject | null)[] | null
     ): Promise<ioBroker.GetStatesPromise> {
-        this.log.warn('targetObjs: ' + JSON.stringify(targetObjs));
-        this.log.warn('srcObjs: ' + JSON.stringify(srcObjs));
-
         const arr = await this.#states!.getStates(keys);
 
         const result: Record<string, Partial<ioBroker.State> | null> = {};
@@ -9354,12 +9351,7 @@ export class AdapterClass extends EventEmitter {
                     return tools.maybeCallbackWithError(callback, e);
                 }
             } else {
-                this.log.warn('here');
-                this.log.warn(JSON.stringify(pattern));
-
                 const res = await this._processStates(pattern, options?._objects);
-
-                this.log.warn(JSON.stringify(res));
                 return tools.maybeCallbackWithError(callback, null, res);
             }
         } else {
