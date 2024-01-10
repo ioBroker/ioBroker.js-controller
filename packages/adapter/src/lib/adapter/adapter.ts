@@ -9389,8 +9389,6 @@ export class AdapterClass extends EventEmitter {
                     options.checked = undefined;
                 }
 
-                this._logger.error(JSON.stringify(res));
-
                 if (!res) {
                     return tools.maybeCallbackWithError(callback, null, {});
                 }
