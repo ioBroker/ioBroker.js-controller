@@ -1,7 +1,5 @@
 import { MAX_TIMEOUT, SYSTEM_ADMIN_USER } from '@/lib/adapter/constants';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
-import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
-import type { Client as StatesClient } from '@iobroker/db-states-redis';
 
 type Callback = (...args: any[]) => void | Promise<void>;
 type OptionalCallback = undefined | Callback;
@@ -14,8 +12,8 @@ export interface ValidateIdOptions {
 }
 
 export class Validator {
-    private readonly objects: ObjectsClient;
-    private readonly states: StatesClient;
+    private readonly objects: any;
+    private readonly states: any;
     private readonly namespaceLog: string;
     private readonly log: any;
     private readonly namespace: string;
@@ -31,8 +29,8 @@ export class Validator {
      * @param namespaceRegExp - the namespace RegExp of the adapter `adapter.0`
      */
     constructor(
-        objects: ObjectsClient,
-        states: StatesClient,
+        objects: any,
+        states: any,
         namespaceLog: string,
         logger: any,
         namespace: string,
