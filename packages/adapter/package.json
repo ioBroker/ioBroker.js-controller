@@ -39,8 +39,8 @@
     "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/adapter"
   },
   "scripts": {
-    "build": "tsc -b tsconfig.build.json && tsc-alias",
-    "postbuild": "cpy ./cert ../build/ --cwd=src",
+    "build": "tsc -b tsconfig.build.json",
+    "postbuild": "cpy ./cert ../build/ --cwd=src && tsc-alias",
     "build:doc": "typedoc --excludeExternals --excludeProtected --excludePrivate --plugin typedoc-plugin-missing-exports --plugin typedoc-plugin-markdown src/lib/adapter/adapter.ts --out ../controller/doc"
   },
   "main": "build/index.js",
