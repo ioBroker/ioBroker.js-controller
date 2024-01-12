@@ -72,7 +72,12 @@ async function calcProject(options: CalculateProjectOptions): Promise<Calculated
  */
 export async function calcProjects(options: CalculateProjectsOptions): Promise<CalculatedProject[]> {
     const { visAdapter, instance, objects } = options;
-    const projects = await objects.readDirAsync(`${visAdapter}.${instance}`, '/');
+    let projects;
+    try {
+        projects = await objects.readDirAsync(`${visAdapter}.${instance}`, '/');
+    } catch (e) {
+        // ignore, as not exists
+    }
     if (!projects?.length) {
         return [{ id: `${visAdapter}.${instance}.datapoints.total`, val: 0 }];
     }
