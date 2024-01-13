@@ -75,7 +75,9 @@ function extractBinding(format) {
                 systemOid = systemOid.substring(0, systemOid.length - 3);
             }
             let operations = null;
-            const isEval = visOid.match(/^[\d\w_]+:\s?[-._/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+$/u) || (!visOid.length && parts.length > 0); // (visOid.indexOf(':') !== -1) && (visOid.indexOf('::') === -1);
+            const isEval =
+                visOid.match(/^[\d\w_]+:\s?[-._/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+$/u) ||
+                (!visOid.length && parts.length > 0); // (visOid.indexOf(':') !== -1) && (visOid.indexOf('::') === -1);
 
             if (isEval) {
                 const xx = visOid.split(':', 2);
@@ -85,11 +87,13 @@ function extractBinding(format) {
                 operations = [];
                 operations.push({
                     op: 'eval',
-                    arg: [{
-                        name: xx[0],
-                        visOid,
-                        systemOid,
-                    }],
+                    arg: [
+                        {
+                            name: xx[0],
+                            visOid,
+                            systemOid
+                        }
+                    ]
                 });
             }
 
@@ -97,7 +101,8 @@ function extractBinding(format) {
                 // eval construction
                 if (isEval) {
                     const trimmed = parts[u].trim();
-                    if (isIdBinding(trimmed)) { // parts[u].indexOf(':') !== -1 && parts[u].indexOf('::') === -1) {
+                    if (isIdBinding(trimmed)) {
+                        // parts[u].indexOf(':') !== -1 && parts[u].indexOf('::') === -1) {
                         const argParts = trimmed.split(':', 2);
                         let _visOid = argParts[1].trim();
                         let _systemOid = _visOid;
@@ -123,7 +128,7 @@ function extractBinding(format) {
                         operations[0].arg.push({
                             name: argParts[0].trim(),
                             visOid: _visOid,
-                            systemOid: _systemOid,
+                            systemOid: _systemOid
                         });
                     } else {
                         parts[u] = parts[u].replace(/::/g, ':');
@@ -140,7 +145,8 @@ function extractBinding(format) {
                     if (parse && parse[1]) {
                         parse[1] = parse[1].trim();
                         // operators requires parameter
-                        if (parse[1] === '*' ||
+                        if (
+                            parse[1] === '*' ||
                             parse[1] === '+' ||
                             parse[1] === '-' ||
                             parse[1] === '/' ||
@@ -182,7 +188,7 @@ function extractBinding(format) {
                         } else if (parse[1] === 'value') {
                             // value formatting
                             operations = operations || [];
-                            let param = (parse[2] === undefined) ? '(2)' : (parse[2] || '');
+                            let param = parse[2] === undefined ? '(2)' : parse[2] || '';
                             param = param.trim();
                             param = param.substring(1, param.length - 1);
                             operations.push({ op: parse[1], arg: param });
@@ -227,7 +233,7 @@ function extractBinding(format) {
                 token: oid[p],
                 operations: operations || undefined,
                 format,
-                isSeconds,
+                isSeconds
             });
         }
     }
@@ -360,7 +366,6 @@ function getUsedObjectIDsInWidget(views, view, wid, linkContext) {
 
     // if widget is in the group => replace groupAttrX values
     if (widget.grouped) {
-
         // widget.groupid = widget.groupid || getWidgetGroup(views, view, wid);
 
         if (!views[view].widgets[widget.groupid]) {
@@ -375,15 +380,15 @@ function getUsedObjectIDsInWidget(views, view, wid, linkContext) {
                 views[view].widgets[gId] = {
                     tpl: '_tplGroup',
                     data: {
-                        members: [wid],
+                        members: [wid]
                     },
                     style: {
                         top: '100px',
                         left: '100px',
                         width: '200px',
-                        height: '200px',
+                        height: '200px'
                     },
-                    widgetSet: null,
+                    widgetSet: null
                 };
             }
         }
@@ -459,7 +464,12 @@ function getUsedObjectIDsInWidget(views, view, wid, linkContext) {
                         }
                     }
                 });
-            } else if (attr !== 'oidTrueValue' && attr !== 'oidFalseValue' && data[attr] && data[attr] !== 'nothing_selected') {
+            } else if (
+                attr !== 'oidTrueValue' &&
+                attr !== 'oidFalseValue' &&
+                data[attr] &&
+                data[attr] !== 'nothing_selected'
+            ) {
                 let isID = attr.match(/oid\d{0,2}$/);
                 if (attr.startsWith('oid')) {
                     isID = true;
@@ -467,7 +477,10 @@ function getUsedObjectIDsInWidget(views, view, wid, linkContext) {
                     isID = true;
                 } else if (linkContext.widgetAttrInfo) {
                     const _attr = attr.replace(/\d{0,2}$/, '');
-                    if (linkContext.widgetAttrInfo[_attr]?.type === 'id' && linkContext.widgetAttrInfo[_attr].noSubscribe !== true) {
+                    if (
+                        linkContext.widgetAttrInfo[_attr]?.type === 'id' &&
+                        linkContext.widgetAttrInfo[_attr].noSubscribe !== true
+                    ) {
                         isID = true;
                     }
                 }
@@ -520,7 +533,7 @@ function getUsedObjectIDsInWidget(views, view, wid, linkContext) {
                         linkContext.signals[sid].push({
                             view,
                             widget: wid,
-                            index: parseInt(attr.substring(12), 10), // 'signals-oid-'.length = 12
+                            index: parseInt(attr.substring(12), 10) // 'signals-oid-'.length = 12
                         });
                     } else if (attr === 'lc-oid') {
                         let lcSid = data[attr];
@@ -616,7 +629,7 @@ function getUsedObjectIDs(views, isByViews) {
         visibility: {},
         bindings: {},
         lastChanges: {},
-        signals: {},
+        signals: {}
     };
 
     if (isByViews) {
@@ -640,7 +653,7 @@ function getUsedObjectIDs(views, isByViews) {
         do {
             changed = false;
             // Check containers
-            // eslint-disable-next-line no-loop-func
+
             Object.keys(views).forEach(view => {
                 if (view === '___settings') {
                     return;
@@ -669,6 +682,4 @@ function getUsedObjectIDs(views, isByViews) {
     return linkContext;
 }
 
-if (module && module.parent) {
-    module.exports.getUsedObjectIDs = getUsedObjectIDs;
-}
+module.exports = { getUsedObjectIDs };
