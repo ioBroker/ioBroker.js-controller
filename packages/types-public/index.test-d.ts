@@ -797,6 +797,14 @@ const _adapterObject: ioBroker.AdapterObject = {
     objects: []
 };
 
+if (typeof _adapterObject.common.license === 'object' && _adapterObject.common.license.type === 'paid') {
+    // for non-free licenses link is non optional
+    _adapterObject.common.license.link.includes('https://');
+} else {
+    // @ts-expect-error
+    _adapterObject.common.license.link.includes('https://');
+}
+
 const _folderObject: ioBroker.FolderObject = {
     _id: '',
     type: 'folder',
