@@ -854,7 +854,7 @@
                 "link": {
                   "description": "Hyperlink, where information about the license can be found. This is required if the license type is different from 'free'.",
                   "type": "string",
-                  "pattern": "^https:\/\/.+$"
+                  "pattern": "^https://.+$"
                 }
               },
               "additionalProperties": false,
@@ -864,7 +864,11 @@
               "if": {
                 "properties": {
                   "type": {
-                    "enum": ["paid", "commercial", "limited"]
+                    "enum": [
+                      "paid",
+                      "commercial",
+                      "limited"
+                    ]
                   }
                 }
               },
