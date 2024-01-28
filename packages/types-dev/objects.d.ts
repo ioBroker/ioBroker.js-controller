@@ -491,6 +491,28 @@ declare global {
             ignoreInVersions: number[];
         }
 
+        type PaidLicenseType = 'paid' | 'commercial' | 'limited';
+
+        interface LicenseInformationFree {
+            /** License of the software */
+            license?: string;
+            /** Use 'paid' for adapters which do not work without a paid license. Use 'commercial' for adapters which require a license for commercial use only. Use 'limited' if some functionalities are not available without a paid license. */
+            type: 'free';
+            /** Hyperlink, where information about the license can be found. This is required if the license type is different from 'free'. */
+            link?: string;
+        }
+
+        interface LicenseInformationWithPayment {
+            /** License of the software */
+            license?: string;
+            /** Use 'paid' for adapters which do not work without a paid license. Use 'commercial' for adapters which require a license for commercial use only. Use 'limited' if some functionalities are not available without a paid license. */
+            type: PaidLicenseType;
+            /** Hyperlink, where information about the license can be found. This is required if the license type is different from 'free'. */
+            link: string;
+        }
+
+        type LicenseInformation = LicenseInformationFree | LicenseInformationWithPayment;
+
         interface AdapterCommon extends ObjectCommon {
             /** Custom attributes to be shown in admin in the object browser */
             adminColumns?: any[];
@@ -637,6 +659,10 @@ declare global {
             /** A list of pages that should be shown on the ioBroker cloud index page */
             welcomeScreenPro?: WelcomeScreenEntry[];
             wwwDontUpload?: boolean;
+            /** @deprecated Use 'common.licenseInformation' instead */
+            license?: string;
+            /** An object representing information with the license details */
+            licenseInformation?: LicenseInformation;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
