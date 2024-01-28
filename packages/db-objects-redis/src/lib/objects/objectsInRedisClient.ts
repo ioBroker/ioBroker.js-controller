@@ -3323,7 +3323,7 @@ export class ObjectsInRedisClient {
             );
         }
 
-        if (options && options.acl) {
+        if (options?.acl) {
             options.acl = null;
         }
         if (typeof callback === 'function') {
