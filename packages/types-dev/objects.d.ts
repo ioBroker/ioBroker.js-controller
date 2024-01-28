@@ -671,8 +671,10 @@ declare global {
             /** A list of pages that should be shown on the ioBroker cloud index page */
             welcomeScreenPro?: WelcomeScreenEntry[];
             wwwDontUpload?: boolean;
-            /** License, can be legacy string with type of software license or an object representing information more license details */
-            license?: string | LicenseInformation;
+            /** @deprecated Use 'common.licenseInformation' instead */
+            license?: string;
+            /** An object representing information with the license details */
+            licenseInformation?: LicenseInformation;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;

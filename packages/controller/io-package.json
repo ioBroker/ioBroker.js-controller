@@ -1,4 +1,5 @@
 {
+  "$schema": "../../schemas/io-package.json",
   "common": {
     "name": "js-controller",
     "version": "5.0.18",
@@ -115,7 +116,10 @@
       "hobbyquaker <hq@ccu.io>",
       "Apollon77 <iobroker@fischer-ka.de>"
     ],
-    "license": "MIT",
+    "licenseInformation": {
+      "license": "MIT",
+      "type": "free"
+    },
     "type": "general",
     "unsafePerm": true,
     "plugins": {

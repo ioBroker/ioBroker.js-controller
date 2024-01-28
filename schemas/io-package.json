@@ -641,7 +641,8 @@
         "titleLang",
         "news",
         "desc",
-        "mode"
+        "mode",
+        "licenseInformation"
       ],
       "additionalProperties": false,
       "description": "Contains all common instance attributes",
@@ -830,60 +831,56 @@
           }
         },
         "license": {
-          "description": "License of the software",
-          "oneOf": [
-            {
+          "description": "DEPRECATED: Use 'common.licenseInformation' instead, move the current 'common.license' attribute to package.json instead!",
+          "$ref": "#/definitions/license"
+        },
+        "licenseInformation": {
+          "type": "object",
+          "properties": {
+            "license": {
               "$ref": "#/definitions/license"
             },
-            {
-              "type": "object",
-              "properties": {
-                "license": {
-                  "$ref": "#/definitions/license"
-                },
-                "type": {
-                  "description": "Use 'paid' for adapters which do not work without a paid license. Use 'commercial' for adapters which require a license for commercial use only. Use 'limited' if some functionalities are not available without a paid license.",
-                  "type": "string",
-                  "enum": [
-                    "free",
-                    "paid",
-                    "commercial",
-                    "limited"
-                  ]
-                },
-                "link": {
-                  "description": "Hyperlink, where information about the license can be found. This is required if the license type is different from 'free'.",
-                  "type": "string",
-                  "pattern": "^https://.+$"
-                }
-              },
-              "additionalProperties": false,
-              "required": [
-                "type"
-              ],
-              "if": {
-                "properties": {
-                  "type": {
-                    "enum": [
-                      "paid",
-                      "commercial",
-                      "limited"
-                    ]
-                  }
-                }
-              },
-              "then": {
-                "properties": {
-                  "test": {
-                    "type": "string"
-                  }
-                },
-                "required": [
-                  "link"
+            "type": {
+              "description": "Use 'paid' for adapters which do not work without a paid license. Use 'commercial' for adapters which require a license for commercial use only. Use 'limited' if some functionalities are not available without a paid license.",
+              "type": "string",
+              "enum": [
+                "free",
+                "paid",
+                "commercial",
+                "limited"
+              ]
+            },
+            "link": {
+              "description": "Hyperlink, where information about the license can be found. This is required if the license type is different from 'free'.",
+              "type": "string",
+              "pattern": "^https://.+$"
+            }
+          },
+          "additionalProperties": false,
+          "required": [
+            "type"
+          ],
+          "if": {
+            "properties": {
+              "type": {
+                "enum": [
+                  "paid",
+                  "commercial",
+                  "limited"
                 ]
               }
             }
-          ]
+          },
+          "then": {
+            "properties": {
+              "test": {
+                "type": "string"
+              }
+            },
+            "required": [
+              "link"
+            ]
+          }
         },
         "type": {
           "description": "Type of the adapter",
