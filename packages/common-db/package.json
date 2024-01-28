@@ -1,6 +1,6 @@
 {
   "name": "@iobroker/js-controller-common-db",
-  "version": "5.0.18-alpha.0-20231224-13fc9d35",
+  "version": "5.0.18-alpha.0-20240126-ae4125d6",
   "engines": {
     "node": ">=12.0.0"
   },
