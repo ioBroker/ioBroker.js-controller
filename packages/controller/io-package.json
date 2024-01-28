@@ -119,6 +119,7 @@
       "license": "MIT",
       "type": "free"
     },
+    "license": "MIT",
     "type": "general",
     "unsafePerm": true,
     "plugins": {
