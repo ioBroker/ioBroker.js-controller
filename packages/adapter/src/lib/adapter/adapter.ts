@@ -1,16 +1,16 @@
-import net from 'net';
+import net from 'node:net';
 import fs from 'fs-extra';
-import os from 'os';
+import os from 'node:os';
 import jwt from 'jsonwebtoken';
-import { EventEmitter } from 'events';
+import { EventEmitter } from 'node:events';
 import { tools, EXIT_CODES, password, logger } from '@iobroker/js-controller-common';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
 import { PluginHandler } from '@iobroker/plugin-base';
 import semver from 'semver';
-import path from 'path';
+import path from 'node:path';
 import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
-import { decryptArray, encryptArray, getSupportedFeatures, isMessageboxSupported } from './utils';
+import { decryptArray, encryptArray, getSupportedFeatures, isMessageboxSupported } from '@/lib/adapter/utils';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
@@ -21,7 +21,7 @@ import type NodeSchedule from 'node-schedule';
 // local version is always the same as controller version, since lerna exact: true is used
 import { version as controllerVersion } from '@iobroker/js-controller-adapter/package.json';
 
-import { Log } from './log';
+import { Log } from '@/lib/adapter/log';
 import { Validator } from './validator';
 
 const { FORBIDDEN_CHARS } = tools;
@@ -110,9 +110,10 @@ import type {
     UserInterfaceClientRemoveMessage,
     SendToUserInterfaceClientOptions,
     AllPropsUnknown,
-    IoPackageInstanceObject
-} from '../_Types';
-import { UserInterfaceMessagingController } from './userInterfaceMessagingController';
+    IoPackageInstanceObject,
+    AliasTargetEntry
+} from '@/lib/_Types';
+import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
 
 tools.ensureDNSOrder();
@@ -815,8 +816,8 @@ export class AdapterClass extends EventEmitter {
             this._options.compactInstance !== undefined
                 ? this._options.compactInstance
                 : this._options.instance !== undefined
-                ? this._options.instance
-                : this._config.instance || 0,
+                  ? this._options.instance
+                  : this._config.instance || 0,
             10
         );
 
@@ -1353,13 +1354,8 @@ export class AdapterClass extends EventEmitter {
 
     private async _getObjectsByArray(
         keys: string[],
-        objects: ioBroker.AnyObject[] | null,
         options?: Record<string, any> | null
     ): Promise<(ioBroker.AnyObject | null)[]> {
-        if (objects) {
-            return objects;
-        }
-
         try {
             const res = await this.#objects!.getObjects(keys, options);
             return res;
@@ -2220,27 +2216,24 @@ export class AdapterClass extends EventEmitter {
 
             // Even if the developer forgets to call the unload callback, we need to stop the process.
             // Therefore, wait a short while and then force the unload procedure
-            setTimeout(
-                () => {
-                    if (this.#states) {
-                        finishUnload();
+            setTimeout(() => {
+                if (this.#states) {
+                    finishUnload();
 
-                        // Give 1 second to write the value
-                        setTimeout(() => {
-                            if (!isPause) {
-                                this._logger.info(`${this.namespaceLog} terminating with timeout`);
-                            }
-                            this.terminate(exitCode);
-                        }, 1_000);
-                    } else {
+                    // Give 1 second to write the value
+                    setTimeout(() => {
                         if (!isPause) {
-                            this._logger.info(`${this.namespaceLog} terminating`);
+                            this._logger.info(`${this.namespaceLog} terminating with timeout`);
                         }
                         this.terminate(exitCode);
+                    }, 1_000);
+                } else {
+                    if (!isPause) {
+                        this._logger.info(`${this.namespaceLog} terminating`);
                     }
-                },
-                this.common?.stopTimeout || 500
-            );
+                    this.terminate(exitCode);
+                }
+            }, this.common?.stopTimeout || 500);
         }
     }
 
@@ -4539,7 +4532,7 @@ export class AdapterClass extends EventEmitter {
         const { id, options, callback } = _options;
 
         // If recursive deletion of all underlying objects, including id
-        if (options && options.recursive) {
+        if (options?.recursive) {
             // read object itself
             this.#objects!.getObject(id, options, (err, obj) => {
                 const tasks =
@@ -6863,8 +6856,8 @@ export class AdapterClass extends EventEmitter {
                 ? this.isFloatComma === undefined
                     ? '.,'
                     : this.isFloatComma
-                    ? '.,'
-                    : ',.'
+                      ? '.,'
+                      : ',.'
                 : _format;
 
         if (typeof value !== 'number') {
@@ -7605,7 +7598,7 @@ export class AdapterClass extends EventEmitter {
         stateObj.user = options?.user || SYSTEM_ADMIN_USER;
 
         let permCheckRequired = false;
-        if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
+        if (options?.user && options.user !== SYSTEM_ADMIN_USER) {
             permCheckRequired = true;
         }
 
@@ -7635,14 +7628,9 @@ export class AdapterClass extends EventEmitter {
 
         if (fixedId.startsWith(ALIAS_STARTS_WITH)) {
             // write alias
-            if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
+            if (obj?.common?.alias?.id) {
                 // id can be string or can have attribute write
-                const aliasId =
-                    // @ts-expect-error fix later on
-                    typeof obj.common.alias.id.write === 'string'
-                        ? // @ts-expect-error fix later on
-                          obj.common.alias.id.write
-                        : obj.common.alias.id;
+                const aliasId = tools.isObject(obj.common.alias.id) ? obj.common.alias.id.write : obj.common.alias.id;
 
                 // validate here because we use objects/states db directly
                 try {
@@ -8053,10 +8041,9 @@ export class AdapterClass extends EventEmitter {
             } catch (e) {
                 err = e;
             }
-            if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
+            if (obj?.common?.alias?.id) {
                 // id can be string or can have attribute write
-                const aliasId =
-                    typeof obj.common.alias.id.write === 'string' ? obj.common.alias.id.write : obj.common.alias.id;
+                const aliasId = tools.isObject(obj.common.alias.id) ? obj.common.alias.id.write : obj.common.alias.id;
                 return this._setStateChangedHelper(aliasId, state);
             } else {
                 this._logger.warn(`${this.namespaceLog} ${err ? err.message : `Alias ${id} has no target 1`}`);
@@ -8227,7 +8214,7 @@ export class AdapterClass extends EventEmitter {
             typeof stateObj.from === 'string' && stateObj.from !== ''
                 ? stateObj.from
                 : `system.adapter.${this.namespace}`;
-        if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
+        if (options?.user && options.user !== SYSTEM_ADMIN_USER) {
             try {
                 await this._checkStates(fixedId, options, 'setState');
             } catch (e) {
@@ -8388,14 +8375,11 @@ export class AdapterClass extends EventEmitter {
 
             if (id.startsWith(ALIAS_STARTS_WITH)) {
                 // write alias
-                if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
+                if (obj?.common?.alias?.id) {
                     // id can be string or can have attribute write
-                    const aliasId =
-                        // @ts-expect-error
-                        typeof obj.common.alias.id.write === 'string'
-                            ? // @ts-expect-error
-                              obj.common.alias.id.write
-                            : obj.common.alias.id;
+                    const aliasId = tools.isObject(obj.common.alias.id)
+                        ? obj.common.alias.id.write
+                        : obj.common.alias.id;
 
                     // validate here because we use objects/states db directly
                     try {
@@ -8464,66 +8448,62 @@ export class AdapterClass extends EventEmitter {
                 }
 
                 // read alias id
-                this.#objects.getObject(id, options, (err, obj) => {
-                    // @ts-expect-error
-                    if (obj?.common?.alias?.id) {
-                        // alias id can be a string or can have id.write
-                        // @ts-expect-error
-                        const aliasId = tools.isObject(obj.common.alias.id)
-                            ? // @ts-expect-error
-                              obj.common.alias.id.write
-                            : // @ts-expect-error
-                              obj.common.alias.id;
+                const obj = (await this.#objects.getObjectAsync(id, options)) as ioBroker.StateObject;
 
-                        // validate here because we use objects/states db directly
-                        try {
-                            this._utils.validateId(aliasId, true, null);
-                        } catch (e) {
-                            this._logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
-                            return tools.maybeCallbackWithError(
-                                callback,
-                                `Error validating alias id of ${id}: ${e.message}`
-                            );
-                        }
+                if (obj?.common?.alias?.id) {
+                    // alias id can be a string or can have id.write
+                    const aliasId = tools.isObject(obj.common.alias.id)
+                        ? obj.common.alias.id.write
+                        : obj.common.alias.id;
 
-                        if (!this.#objects) {
-                            // if objects is no longer existing, we do not need to unsubscribe
+                    // validate here because we use objects/states db directly
+                    try {
+                        this._utils.validateId(aliasId, true, null);
+                    } catch (e) {
+                        this._logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
+                        return tools.maybeCallbackWithError(
+                            callback,
+                            `Error validating alias id of ${id}: ${e.message}`
+                        );
+                    }
+
+                    if (!this.#objects) {
+                        // if objects is no longer existing, we do not need to unsubscribe
+                        this._logger.info(
+                            `${this.namespaceLog} setForeignState not processed because Objects database not connected`
+                        );
+                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                    }
+
+                    // read object for formatting
+                    this.#objects.getObject(aliasId, options, (err, targetObj) => {
+                        if (!this.#states) {
+                            // if states is no longer existing, we do not need to unsubscribe
                             this._logger.info(
-                                `${this.namespaceLog} setForeignState not processed because Objects database not connected`
+                                `${this.namespaceLog} setForeignState not processed because States database not connected`
                             );
                             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                         }
 
-                        // read object for formatting
-                        this.#objects.getObject(aliasId, options, (err, targetObj) => {
-                            if (!this.#states) {
-                                // if states is no longer existing, we do not need to unsubscribe
-                                this._logger.info(
-                                    `${this.namespaceLog} setForeignState not processed because States database not connected`
-                                );
-                                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                            }
-
-                            this.outputCount++;
-                            this.#states.setState(
-                                aliasId,
-                                tools.formatAliasValue({
-                                    sourceCommon: obj.common as ioBroker.StateCommon,
-                                    targetCommon: targetObj?.common as ioBroker.StateCommon | undefined,
-                                    state,
-                                    logger: this._logger,
-                                    logNamespace: this.namespaceLog,
-                                    sourceId: obj._id,
-                                    targetId: targetObj?._id
-                                }),
-                                callback
-                            );
-                        });
-                    } else {
-                        this._logger.warn(`${this.namespaceLog} ${err ? err.message : `Alias ${id} has no target 5`}`);
-                        return tools.maybeCallbackWithError(callback, err ? err.message : `Alias ${id} has no target`);
-                    }
-                });
+                        this.outputCount++;
+                        this.#states.setState(
+                            aliasId,
+                            tools.formatAliasValue({
+                                sourceCommon: obj.common as ioBroker.StateCommon,
+                                targetCommon: targetObj?.common as ioBroker.StateCommon | undefined,
+                                state,
+                                logger: this._logger,
+                                logNamespace: this.namespaceLog,
+                                sourceId: obj._id,
+                                targetId: targetObj?._id
+                            }),
+                            callback
+                        );
+                    });
+                } else {
+                    this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 5`);
+                    return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
+                }
             } else {
                 if (this.performStrictObjectChecks) {
                     if (!this.#objects) {
@@ -8673,7 +8653,7 @@ export class AdapterClass extends EventEmitter {
 
         id = this.fixForbiddenCharsInId(id);
 
-        if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
+        if (options?.user && options.user !== SYSTEM_ADMIN_USER) {
             try {
                 await this._checkStates(id, options, 'setState');
             } catch (e) {
@@ -8784,7 +8764,7 @@ export class AdapterClass extends EventEmitter {
         }
 
         let permCheckRequired = false;
-        if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
+        if (options?.user && options.user !== SYSTEM_ADMIN_USER) {
             permCheckRequired = true;
         }
 
@@ -8801,14 +8781,9 @@ export class AdapterClass extends EventEmitter {
 
         if (id.startsWith(ALIAS_STARTS_WITH)) {
             // TODO: optimize alias GET performance
-            if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
+            if (obj?.common?.alias?.id) {
                 // id can be string or can have attribute id.read
-                const aliasId =
-                    // @ts-expect-error
-                    typeof obj.common.alias.id.read === 'string'
-                        ? // @ts-expect-error
-                          obj.common.alias.id.read
-                        : obj.common.alias.id;
+                const aliasId = tools.isObject(obj.common.alias.id) ? obj.common.alias.id.read : obj.common.alias.id;
 
                 // validate here because we use objects/states db directly
                 try {
@@ -9146,7 +9121,7 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, err);
         }
 
-        if (options && options.user && options.user !== SYSTEM_ADMIN_USER) {
+        if (options?.user && options.user !== SYSTEM_ADMIN_USER) {
             try {
                 await this._checkStates(id, options, 'delState');
             } catch (e) {
@@ -9238,49 +9213,52 @@ export class AdapterClass extends EventEmitter {
      * @param keys all ids of the getStates call
      * @param targetObjs the target objects (e.g. alias objects or the actual objects)
      */
-    private async _processStates(
-        keys: string[],
-        targetObjs: (ioBroker.StateObject | null)[]
-    ): ioBroker.GetStatesPromise {
-        let aliasFound;
-        const aIds = keys.map(id => {
+    private async _processStates(keys: string[], targetObjs: ioBroker.StateObject[]): ioBroker.GetStatesPromise {
+        const aliasIndexes: number[] = [];
+        const aliasIds: string[] = [];
+        /** Target objects with null placeholders for non-alias keys */
+        const fullTargetObjs: (ioBroker.StateObject | null)[] = [];
+
+        keys.forEach((id, idx) => {
             if (id.startsWith(ALIAS_STARTS_WITH)) {
-                aliasFound = true;
-                return id;
-            } else {
-                return null;
+                aliasIndexes.push(idx);
+                aliasIds.push(id);
             }
         });
 
         // if any ID from aliases found
-        if (aliasFound) {
+        if (aliasIds.length) {
             // make a copy of original array
             keys = [...keys];
 
-            // read aliases objects
-            // @ts-expect-error aIds array can also contain null values, but probably the code can work with that, so adapt methods types?
-            targetObjs = (await this._getObjectsByArray(aIds, targetObjs)) as ioBroker.StateObject[];
-            const srcIds: string[] = [];
+            if (!targetObjs) {
+                // read aliases objects to get information of source objects
+                targetObjs = (await this._getObjectsByArray(aliasIds)) as ioBroker.StateObject[];
+            }
+
             // replace aliases ID with targets
-            targetObjs.forEach((obj, i) => {
+            for (let i = 0; i < keys.length; i++) {
+                if (!aliasIndexes.includes(i)) {
+                    fullTargetObjs.push(null);
+                    continue;
+                }
+
+                const obj = targetObjs[i];
+                fullTargetObjs[i] = targetObjs[i];
+
                 if (obj?.common?.alias) {
                     // alias id can be string or can have attribute read (this is used by getStates -> so read is important)
-                    const aliasId =
-                        // @ts-expect-error
-                        obj.common.alias.id && typeof obj.common.alias.id.read === 'string'
-                            ? // @ts-expect-error
-                              obj.common.alias.id.read
+                    keys[i] =
+                        tools.isObject(obj.common.alias.id) && 'read' in obj.common.alias.id
+                            ? obj.common.alias.id.read
                             : obj.common.alias.id;
-
-                    keys[i] = aliasId || null;
-                    srcIds[i] = keys[i];
                 }
-            });
+            }
 
             // srcObjs and targetObjs could be merged
-            const srcObjs = await this._getObjectsByArray(srcIds, null, this._options);
-            // @ts-expect-error fix later
-            return this._processStatesSecondary(keys, targetObjs, srcObjs);
+            const srcObjs = (await this._getObjectsByArray(keys, this._options)) as (ioBroker.StateObject | null)[];
+
+            return this._processStatesSecondary(keys, fullTargetObjs, srcObjs);
         } else {
             return this._processStatesSecondary(keys, null, null);
         }
@@ -9448,12 +9426,9 @@ export class AdapterClass extends EventEmitter {
             }
 
             // id can be string or can have attribute read
-            const sourceId =
-                // @ts-expect-error
-                typeof aliasObj.common.alias.id.read === 'string'
-                    ? // @ts-expect-error
-                      aliasObj.common.alias.id.read
-                    : aliasObj.common.alias.id;
+            const sourceId = tools.isObject(aliasObj.common.alias.id)
+                ? aliasObj.common.alias.id.read
+                : aliasObj.common.alias.id;
 
             // validate here because we use objects/states db directly
             try {
@@ -9530,7 +9505,7 @@ export class AdapterClass extends EventEmitter {
 
     private async _removeAliasSubscribe(
         sourceId: string,
-        aliasObj: number | Record<string, any>,
+        aliasObj: number | AliasTargetEntry,
         callback?: () => void
     ): Promise<void> {
         if (!this.aliases.has(sourceId)) {
@@ -9538,16 +9513,13 @@ export class AdapterClass extends EventEmitter {
         }
 
         // remove from targets array
-        // @ts-expect-error
-        const pos = typeof aliasObj === 'number' ? aliasObj : this.aliases.get(sourceId).targets.indexOf(aliasObj);
+        const pos = typeof aliasObj === 'number' ? aliasObj : this.aliases.get(sourceId)!.targets.indexOf(aliasObj);
 
         if (pos !== -1) {
-            // @ts-expect-error
-            this.aliases.get(sourceId).targets.splice(pos, 1);
+            this.aliases.get(sourceId)!.targets.splice(pos, 1);
 
             // unsubscribe if no more aliases exists
-            // @ts-expect-error
-            if (!this.aliases.get(sourceId).targets.length) {
+            if (!this.aliases.get(sourceId)!.targets.length) {
                 this.aliases.delete(sourceId);
                 await this.#states!.unsubscribe(sourceId);
             }
@@ -9682,7 +9654,7 @@ export class AdapterClass extends EventEmitter {
                     this.#objects.subscribe(`${ALIAS_STARTS_WITH}*`);
                 }
 
-                const aliasObjs = await this._getObjectsByArray(aliasesIds, null, options);
+                const aliasObjs = await this._getObjectsByArray(aliasesIds, options);
 
                 for (const aliasObj of aliasObjs) {
                     if (aliasObj) {
@@ -11193,8 +11165,8 @@ export class AdapterClass extends EventEmitter {
                                   targetId: target.id
                               })
                             : null;
-                        // @ts-expect-error
-                        const targetId = target.id.read === 'string' ? target.id.read : target.id;
+
+                        const targetId = target.id;
 
                         if (!this._stopInProgress && (aState || !state)) {
                             if (typeof this._options.stateChange === 'function') {
@@ -11361,7 +11333,7 @@ export class AdapterClass extends EventEmitter {
                             isNewAlias = false;
 
                             // new sourceId or same
-                            if (obj && obj.common && obj.common.alias && obj.common.alias.id) {
+                            if (obj?.common?.alias?.id) {
                                 // check if id.read or id
                                 const newSourceId =
                                     typeof obj.common.alias.id.read === 'string'
@@ -11812,8 +11784,8 @@ export class AdapterClass extends EventEmitter {
                     this.version = this.pack?.version
                         ? this.pack.version
                         : this.ioPack?.common
-                        ? this.ioPack.common.version
-                        : 'unknown';
+                          ? this.ioPack.common.version
+                          : 'unknown';
                     // display if it's a non-official version - only if installedFrom is explicitly given and differs it's not npm
                     const isNpmVersion =
                         !this.ioPack ||

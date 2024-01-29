@@ -7,8 +7,7 @@
  *
  */
 
-import { Writable, WritableOptions } from 'stream';
-import path from 'path';
+import path from 'node:path';
 import deepClone from 'deep-clone';
 import { tools } from '@iobroker/db-base';
 import * as CONSTS from './constants';
@@ -20,7 +19,6 @@ export const REG_CHECK_ID = CONSTS.REG_CHECK_ID;
 
 const USER_STARTS_WITH = CONSTS.USER_STARTS_WITH;
 const GROUP_STARTS_WITH = CONSTS.GROUP_STARTS_WITH;
-const memStore: Record<string, Buffer> = {};
 
 export interface FileMimeInformation {
     /** the mime type, of the file */
@@ -124,69 +122,6 @@ export function getMimeType(ext: string, isTextData: boolean): FileMimeInformati
     } else {
         return { mimeType: isTextData ? 'text/plain' : 'application/octet-stream', isBinary: !isTextData };
     }
-}
-
-/**
- * Writable memory stream
- */
-export class WMStrm extends Writable {
-    private readonly key: string;
-
-    constructor(key: string, options: WritableOptions) {
-        super(options); // init super
-        this.key = key; // save key
-        memStore[key] = Buffer.alloc(0); // empty
-    }
-
-    _write(chunk: string | Buffer, enc: BufferEncoding, cb: () => void): void {
-        if (chunk) {
-            // our memory store stores things in buffers
-            const buffer = Buffer.isBuffer(chunk)
-                ? chunk // already is Buffer use it
-                : Buffer.from(chunk, enc); // string, convert
-
-            // concatenate to the buffer already there
-            if (!memStore[this.key]) {
-                memStore[this.key] = Buffer.alloc(0);
-                console.log(`memstore for ${this.key} is null`);
-            }
-            memStore[this.key] = Buffer.concat([memStore[this.key], buffer]);
-        }
-        if (!cb) {
-            throw new Error('Callback is empty');
-        }
-        cb();
-    }
-}
-
-export function insert(
-    objects: any,
-    id: string,
-    attName: string,
-    _ignore: any,
-    options: Record<string, any> | string,
-    _obj: any,
-    callback: (err?: Error | null) => void
-): WMStrm {
-    if (typeof options === 'string') {
-        options = { mimeType: options };
-    }
-
-    // return pipe for write into redis
-    const strm = new WMStrm(`${id}/${attName}`, {});
-    strm.on('finish', () => {
-        let error: null | string = null;
-        if (!memStore[`${id}/${attName}`]) {
-            error = `File ${id} / ${attName} is empty`;
-        }
-        objects.writeFile(id, attName, memStore[`${id}/${attName}`] || '', options, () => {
-            if (memStore[`${id}/${attName}`] !== undefined) {
-                delete memStore[`${id}/${attName}`];
-            }
-            return tools.maybeCallbackWithError(callback, error);
-        });
-    });
-    return strm;
 }
 
 export function checkFile(

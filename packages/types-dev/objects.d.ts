@@ -115,35 +115,35 @@ declare global {
             T extends ObjectIDs.State
                 ? StateObject
                 : // Instance and Adapter must come before meta or `system.adapter.admin` will resolve to MetaObject
-                T extends ObjectIDs.Instance
-                ? InstanceObject
-                : T extends ObjectIDs.Adapter
-                ? AdapterObject
-                : T extends ObjectIDs.Channel
-                ? ChannelObject
-                : T extends ObjectIDs.Meta
-                ? MetaObject
-                : T extends ObjectIDs.Misc
-                ? AdapterScopedObject
-                : T extends ObjectIDs.ScriptOrChannel
-                ? ScriptObject | ChannelObject
-                : T extends ObjectIDs.Enum
-                ? EnumObject
-                : T extends ObjectIDs.Group
-                ? GroupObject
-                : T extends ObjectIDs.User
-                ? UserObject
-                : T extends ObjectIDs.Host
-                ? HostObject
-                : T extends ObjectIDs.Design
-                ? DesignObject
-                : T extends ObjectIDs.Config
-                ? OtherObject & { type: 'config' }
-                : T extends ObjectIDs.AdapterScoped
-                ? AdapterScopedObject
-                : Read extends 'read'
-                ? ioBroker.Object
-                : AnyObject;
+                  T extends ObjectIDs.Instance
+                  ? InstanceObject
+                  : T extends ObjectIDs.Adapter
+                    ? AdapterObject
+                    : T extends ObjectIDs.Channel
+                      ? ChannelObject
+                      : T extends ObjectIDs.Meta
+                        ? MetaObject
+                        : T extends ObjectIDs.Misc
+                          ? AdapterScopedObject
+                          : T extends ObjectIDs.ScriptOrChannel
+                            ? ScriptObject | ChannelObject
+                            : T extends ObjectIDs.Enum
+                              ? EnumObject
+                              : T extends ObjectIDs.Group
+                                ? GroupObject
+                                : T extends ObjectIDs.User
+                                  ? UserObject
+                                  : T extends ObjectIDs.Host
+                                    ? HostObject
+                                    : T extends ObjectIDs.Design
+                                      ? DesignObject
+                                      : T extends ObjectIDs.Config
+                                        ? OtherObject & { type: 'config' }
+                                        : T extends ObjectIDs.AdapterScoped
+                                          ? AdapterScopedObject
+                                          : Read extends 'read'
+                                            ? ioBroker.Object
+                                            : AnyObject;
 
         type Languages = 'en' | 'de' | 'ru' | 'pt' | 'nl' | 'fr' | 'it' | 'es' | 'pl' | 'uk' | 'zh-cn';
         type Translated = { en: string } & { [lang in Languages]?: string };
@@ -491,6 +491,28 @@ declare global {
             ignoreInVersions: number[];
         }
 
+        type PaidLicenseType = 'paid' | 'commercial' | 'limited';
+
+        interface LicenseInformationFree {
+            /** License of the software */
+            license?: string;
+            /** Use 'paid' for adapters which do not work without a paid license. Use 'commercial' for adapters which require a license for commercial use only. Use 'limited' if some functionalities are not available without a paid license. */
+            type: 'free';
+            /** Hyperlink, where information about the license can be found. This is required if the license type is different from 'free'. */
+            link?: string;
+        }
+
+        interface LicenseInformationWithPayment {
+            /** License of the software */
+            license?: string;
+            /** Use 'paid' for adapters which do not work without a paid license. Use 'commercial' for adapters which require a license for commercial use only. Use 'limited' if some functionalities are not available without a paid license. */
+            type: PaidLicenseType;
+            /** Hyperlink, where information about the license can be found. This is required if the license type is different from 'free'. */
+            link: string;
+        }
+
+        type LicenseInformation = LicenseInformationFree | LicenseInformationWithPayment;
+
         interface AdapterCommon extends ObjectCommon {
             /** Custom attributes to be shown in admin in the object browser */
             adminColumns?: any[];
@@ -637,6 +659,10 @@ declare global {
             /** A list of pages that should be shown on the ioBroker cloud index page */
             welcomeScreenPro?: WelcomeScreenEntry[];
             wwwDontUpload?: boolean;
+            /** @deprecated Use 'common.licenseInformation' instead */
+            license?: string;
+            /** An object representing information with the license details */
+            licenseInformation?: LicenseInformation;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
@@ -943,36 +969,36 @@ declare global {
             ? View extends 'host'
                 ? HostObject
                 : View extends 'adapter'
-                ? AdapterObject
-                : View extends 'instance'
-                ? InstanceObject
-                : View extends 'meta'
-                ? MetaObject
-                : View extends 'device'
-                ? DeviceObject
-                : View extends 'channel'
-                ? ChannelObject
-                : View extends 'state'
-                ? StateObject
-                : View extends 'folder'
-                ? FolderObject
-                : View extends 'enum'
-                ? EnumObject
-                : View extends 'script'
-                ? ScriptObject
-                : View extends 'group'
-                ? GroupObject
-                : View extends 'user'
-                ? UserObject
-                : View extends 'chart'
-                ? ChartObject
-                : View extends 'schedule'
-                ? ScheduleObject
-                : View extends 'config'
-                ? OtherObject & { type: 'config' }
-                : View extends 'custom'
-                ? NonNullable<StateObject['common']['custom']>
-                : ioBroker.Object
+                  ? AdapterObject
+                  : View extends 'instance'
+                    ? InstanceObject
+                    : View extends 'meta'
+                      ? MetaObject
+                      : View extends 'device'
+                        ? DeviceObject
+                        : View extends 'channel'
+                          ? ChannelObject
+                          : View extends 'state'
+                            ? StateObject
+                            : View extends 'folder'
+                              ? FolderObject
+                              : View extends 'enum'
+                                ? EnumObject
+                                : View extends 'script'
+                                  ? ScriptObject
+                                  : View extends 'group'
+                                    ? GroupObject
+                                    : View extends 'user'
+                                      ? UserObject
+                                      : View extends 'chart'
+                                        ? ChartObject
+                                        : View extends 'schedule'
+                                          ? ScheduleObject
+                                          : View extends 'config'
+                                            ? OtherObject & { type: 'config' }
+                                            : View extends 'custom'
+                                              ? NonNullable<StateObject['common']['custom']>
+                                              : ioBroker.Object
             : any;
     }
 }

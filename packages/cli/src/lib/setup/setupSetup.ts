@@ -895,8 +895,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             const defaultSentinelName = originalConfig.states.sentinelName
                 ? originalConfig.states.sentinelName
                 : oSentinelName && oPort === sPort
-                ? oSentinelName
-                : 'mymaster';
+                  ? oSentinelName
+                  : 'mymaster';
             sSentinelName = rl.question(`States Redis Sentinel Master Name [${defaultSentinelName}]: `, {
                 defaultInput: defaultSentinelName
             });

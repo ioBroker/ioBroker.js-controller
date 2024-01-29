@@ -943,8 +943,8 @@ function scanDirectory(dirName: string, list: Record<string, AdapterInformation>
                         license: ioPackage.common.license
                             ? ioPackage.common.license
                             : package_.licenses && package_.licenses.length
-                            ? package_.licenses[0].type
-                            : '',
+                              ? package_.licenses[0].type
+                              : '',
                         licenseUrl: package_.licenses && package_.licenses.length ? package_.licenses[0].url : ''
                     };
                 }
@@ -1045,8 +1045,8 @@ export function getInstalledInfo(hostRunningVersion?: string): Record<string, Ad
             license: ioPackage.common.license
                 ? ioPackage.common.license
                 : package_.licenses && package_.licenses.length
-                ? package_.licenses[0].type
-                : '',
+                  ? package_.licenses[0].type
+                  : '',
             licenseUrl: package_.licenses && package_.licenses.length ? package_.licenses[0].url : ''
         };
     }
