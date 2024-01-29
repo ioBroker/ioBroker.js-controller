@@ -862,13 +862,11 @@ const _userObject: ioBroker.UserObject = {
 
 // Ensure that getForeignObject tries to resolve a specific object type
 async () => {
-    const inst: ioBroker.InstanceObject | null | undefined = await adapter.getForeignObjectAsync(
-        'system.adapter.admin.0'
-    );
+    const inst: ioBroker.InstanceObject | null | undefined =
+        await adapter.getForeignObjectAsync('system.adapter.admin.0');
 
-    const adptr: ioBroker.AdapterObject | null | undefined = await adapter.getForeignObjectAsync(
-        'system.adapter.admin'
-    );
+    const adptr: ioBroker.AdapterObject | null | undefined =
+        await adapter.getForeignObjectAsync('system.adapter.admin');
 
     let meta: ioBroker.MetaObject | null | undefined;
     meta = await adapter.getForeignObjectAsync('admin.0');
@@ -894,9 +892,8 @@ async () => {
     enm = await adapter.getForeignObjectAsync('enum.functions');
     enm = await adapter.getForeignObjectAsync('enum.functions.light');
 
-    const group: ioBroker.GroupObject | null | undefined = await adapter.getForeignObjectAsync(
-        'system.group.admin.faz'
-    );
+    const group: ioBroker.GroupObject | null | undefined =
+        await adapter.getForeignObjectAsync('system.group.admin.faz');
 
     const user: ioBroker.UserObject | null | undefined = await adapter.getForeignObjectAsync('system.user.admin.faz');
 

@@ -12,59 +12,55 @@ type MaybeCbErrReturnType<
     TCb extends MaybeCbErrCallback<any> | null | undefined,
     TErr extends Error | string | null | undefined,
     TArgs extends any[]
-> = TCb extends MaybeCbErrCallback<any>
-    ? void
-    : // If there is an error given, the promise will never resolve
-    TErr extends Error | string
-    ? Promise<never>
-    : // Infer the return type from the arguments
-      Promise<
-          [] extends TArgs
-              ? void // if ([] === T) void
-              : [any] extends TArgs
-              ? TArgs[0] // else if (T has one element) => take first element
-              : TArgs // else return T entirely
-      >;
+> =
+    TCb extends MaybeCbErrCallback<any>
+        ? void
+        : // If there is an error given, the promise will never resolve
+          TErr extends Error | string
+          ? Promise<never>
+          : // Infer the return type from the arguments
+            Promise<
+                [] extends TArgs
+                    ? void // if ([] === T) void
+                    : [any] extends TArgs
+                      ? TArgs[0] // else if (T has one element) => take first element
+                      : TArgs // else return T entirely
+            >;
 
 // Helper type to infer the callback arguments for the maybeCallbackWithError function
 // If a callback is given, they must match its arguments. Otherwise, they are inferred and default to any[]
 type MaybeCbErrCallbackParameters<
     CB extends MaybeCbErrCallback<any> | null | undefined,
     TErr extends Error | string | null | undefined
-> = Exclude<CB, undefined | null> extends MaybeCbErrCallback<infer U>
-    ? // If the error argument is given,
-      TErr extends Error | string
-        ? //  don't require arguments, but allow passing them
-          U | []
-        : // Otherwise, require the correct args
-          U
-    : any[];
+> =
+    Exclude<CB, undefined | null> extends MaybeCbErrCallback<infer U>
+        ? // If the error argument is given,
+          TErr extends Error | string
+            ? //  don't require arguments, but allow passing them
+              U | []
+            : // Otherwise, require the correct args
+              U
+        : any[];
 
 // Helper type to infer the callback arguments for the maybeCallback function
 // If a callback is given, they must match its arguments. Otherwise, they are inferred and default to any[]
-type MaybeCbCallbackParameters<CB extends MaybeCbCallback<any> | null | undefined> = Exclude<
-    CB,
-    undefined | null
-> extends MaybeCbCallback<infer U>
-    ? U
-    : any[];
+type MaybeCbCallbackParameters<CB extends MaybeCbCallback<any> | null | undefined> =
+    Exclude<CB, undefined | null> extends MaybeCbCallback<infer U> ? U : any[];
 
 // Helper type to infer the return type of the maybeCallback function
 // If the callback is given, the return type is void
 // otherwise, the return type is a Promise whose resolved value type depends on the given arguments
-type MaybeCbReturnType<
-    TCb extends MaybeCbErrCallback<any> | null | undefined,
-    TArgs extends any[]
-> = TCb extends MaybeCbCallback<any>
-    ? void
-    : // Infer the return type from the arguments
-      Promise<
-          [] extends TArgs
-              ? void // if ([] === T) void
-              : [any] extends TArgs
-              ? TArgs[0] // else if (T has one element) => take first element
-              : TArgs // else return T entirely
-      >;
+type MaybeCbReturnType<TCb extends MaybeCbErrCallback<any> | null | undefined, TArgs extends any[]> =
+    TCb extends MaybeCbCallback<any>
+        ? void
+        : // Infer the return type from the arguments
+          Promise<
+              [] extends TArgs
+                  ? void // if ([] === T) void
+                  : [any] extends TArgs
+                    ? TArgs[0] // else if (T has one element) => take first element
+                    : TArgs // else return T entirely
+          >;
 
 // Helper type to lower the inference priority of an argument
 type NoInfer<T> = T & { [K in keyof T]: T[K] };

@@ -4526,8 +4526,8 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                         code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP
                                             ? 1_000
                                             : proc.config.common.restartSchedule || restartTimerExisting
-                                            ? 1_000
-                                            : 30_000,
+                                              ? 1_000
+                                              : 30_000,
                                         id
                                     );
                                     // 156 is special code that adapter wants itself to be restarted immediately
@@ -4927,8 +4927,8 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                                     code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP
                                                         ? 1_000
                                                         : procs[id].config.common.restartSchedule
-                                                        ? 1_000
-                                                        : 30_000,
+                                                          ? 1_000
+                                                          : 30_000,
                                                     id
                                                 );
                                             });

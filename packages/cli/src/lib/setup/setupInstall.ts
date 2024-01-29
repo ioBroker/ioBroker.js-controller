@@ -894,8 +894,8 @@ export class Install {
             options.enabled === true || options.enabled === false
                 ? options.enabled
                 : instanceObj.common.enabled === true || instanceObj.common.enabled === false
-                ? instanceObj.common.enabled
-                : false;
+                  ? instanceObj.common.enabled
+                  : false;
 
         // @ts-expect-error we now convert the adapter object to an instance object
         instanceObj.common.host = options.host;
