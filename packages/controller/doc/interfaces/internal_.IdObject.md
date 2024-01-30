@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / IdObject
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / IdObject
 
 # Interface: IdObject
 
-[<internal>](../modules/internal_.md).IdObject
+[\<internal\>](../modules/internal_.md).IdObject
 
 ## Table of contents
 
@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[types-dev/index.d.ts:85](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L85)
+[types-dev/index.d.ts:85](https://github.com/ioBroker/ioBroker.js-controller/blob/70007768/packages/types-dev/index.d.ts#L85)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:84](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L84)
+[types-dev/index.d.ts:84](https://github.com/ioBroker/ioBroker.js-controller/blob/70007768/packages/types-dev/index.d.ts#L84)
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:86](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L86)
+[types-dev/index.d.ts:86](https://github.com/ioBroker/ioBroker.js-controller/blob/70007768/packages/types-dev/index.d.ts#L86)

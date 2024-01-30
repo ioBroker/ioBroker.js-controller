@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / InternalGetEnumOptions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / InternalGetEnumOptions
 
 # Interface: InternalGetEnumOptions
 
-[<internal>](../modules/internal_.md).InternalGetEnumOptions
+[\<internal\>](../modules/internal_.md).InternalGetEnumOptions
 
 ## Table of contents
 
@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:334](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L334)
+[adapter/src/lib/_Types.ts:334](https://github.com/ioBroker/ioBroker.js-controller/blob/70007768/packages/adapter/src/lib/_Types.ts#L334)
 
 ___
 
@@ -30,14 +30,14 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:336](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L336)
+[adapter/src/lib/_Types.ts:336](https://github.com/ioBroker/ioBroker.js-controller/blob/70007768/packages/adapter/src/lib/_Types.ts#L336)
 
 ___
 
 ### options
 
-• `Optional` **options**: ``null`` \| `Record`<`string`, `any`\>
+• `Optional` **options**: ``null`` \| `Record`\<`string`, `any`\>
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:335](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L335)
+[adapter/src/lib/_Types.ts:335](https://github.com/ioBroker/ioBroker.js-controller/blob/70007768/packages/adapter/src/lib/_Types.ts#L335)

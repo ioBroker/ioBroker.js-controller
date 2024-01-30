@@ -1,19 +1,14 @@
 {
-  "version": "5.0.18-alpha.0-20231201-5b321f38",
-  "command": {
-    "run": {
-      "stream": true
+    "version": "5.0.18",
+    "command": {
+        "run": {
+            "stream": true
+        },
+        "version": {
+            "allowBranch": ["master", "*.x"],
+            "ignoreChanges": ["*.md"],
+            "exact": true
+        }
     },
-    "version": {
-      "allowBranch": [
-        "master",
-        "*.x"
-      ],
-      "ignoreChanges": [
-        "*.md"
-      ],
-      "exact": true
-    }
-  },
-  "$schema": "node_modules/lerna/schemas/lerna-schema.json"
+    "$schema": "node_modules/lerna/schemas/lerna-schema.json"
 }

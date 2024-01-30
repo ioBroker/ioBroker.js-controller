@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / GetObjectListItem
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / GetObjectListItem
 
-# Interface: GetObjectListItem<T\>
+# Interface: GetObjectListItem\<T\>
 
-[<internal>](../modules/internal_.md).GetObjectListItem
+[\<internal\>](../modules/internal_.md).GetObjectListItem
 
 ## Type parameters
 
@@ -12,7 +12,7 @@
 
 ## Hierarchy
 
-- [`GetObjectViewItem`](internal_.GetObjectViewItem.md)<`T`\>
+- [`GetObjectViewItem`](internal_.GetObjectViewItem.md)\<`T`\>
 
   ↳ **`GetObjectListItem`**
 
@@ -34,7 +34,7 @@ The same as @link{value}
 
 #### Defined in
 
-[types-dev/index.d.ts:491](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L491)
+[types-dev/index.d.ts:491](https://github.com/ioBroker/ioBroker.js-controller/blob/70007768/packages/types-dev/index.d.ts#L491)
 
 ___
 
@@ -50,7 +50,7 @@ The ID of this object
 
 #### Defined in
 
-[types-dev/index.d.ts:477](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L477)
+[types-dev/index.d.ts:477](https://github.com/ioBroker/ioBroker.js-controller/blob/70007768/packages/types-dev/index.d.ts#L477)
 
 ___
 
@@ -66,4 +66,4 @@ A copy of the object
 
 #### Defined in
 
-[types-dev/index.d.ts:489](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L489)
+[types-dev/index.d.ts:489](https://github.com/ioBroker/ioBroker.js-controller/blob/70007768/packages/types-dev/index.d.ts#L489)

@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / WriteFileOptions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / WriteFileOptions
 
 # Interface: WriteFileOptions
 
-[<internal>](../modules/internal_.md).WriteFileOptions
+[\<internal\>](../modules/internal_.md).WriteFileOptions
 
 ## Hierarchy
 
@@ -78,7 +78,7 @@ ___
 
 ### owner
 
-• `Optional` **owner**: \`system.user.${string}\`
+• `Optional` **owner**: \`system.user.$\{string}\`
 
 #### Inherited from
 
@@ -106,7 +106,7 @@ ___
 
 ### user
 
-• `Optional` **user**: \`system.user.${string}\`
+• `Optional` **user**: \`system.user.$\{string}\`
 
 #### Inherited from
 

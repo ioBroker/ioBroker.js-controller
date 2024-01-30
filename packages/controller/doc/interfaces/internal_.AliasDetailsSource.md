@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / AliasDetailsSource
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / AliasDetailsSource
 
 # Interface: AliasDetailsSource
 
-[<internal>](../modules/internal_.md).AliasDetailsSource
+[\<internal\>](../modules/internal_.md).AliasDetailsSource
 
 ## Table of contents
 
@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:143](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L143)
+[adapter/src/lib/_Types.ts:143](https://github.com/ioBroker/ioBroker.js-controller/blob/70007768/packages/adapter/src/lib/_Types.ts#L143)
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:142](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L142)
+[adapter/src/lib/_Types.ts:142](https://github.com/ioBroker/ioBroker.js-controller/blob/70007768/packages/adapter/src/lib/_Types.ts#L142)
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:144](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L144)
+[adapter/src/lib/_Types.ts:144](https://github.com/ioBroker/ioBroker.js-controller/blob/70007768/packages/adapter/src/lib/_Types.ts#L144)
 
 ___
 
@@ -51,4 +51,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:145](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L145)
+[adapter/src/lib/_Types.ts:145](https://github.com/ioBroker/ioBroker.js-controller/blob/70007768/packages/adapter/src/lib/_Types.ts#L145)

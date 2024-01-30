@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / DbStatus
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / DbStatus
 
 # Interface: DbStatus
 
-[<internal>](../modules/internal_.md).DbStatus
+[\<internal\>](../modules/internal_.md).DbStatus
 
 ## Table of contents
 
