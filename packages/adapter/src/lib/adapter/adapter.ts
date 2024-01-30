@@ -9249,6 +9249,9 @@ export class AdapterClass extends EventEmitter {
             if (!targetObjs) {
                 // read aliases objects to get information of source objects
                 targetObjs = (await this._getObjectsByArray(aliasIds)) as ioBroker.StateObject[];
+            } else {
+                // we are only interested in keeping alias target objects
+                targetObjs = targetObjs.filter((_val, idx) => aliasIndexes.includes(idx));
             }
 
             // replace alias ids with targets
@@ -9267,7 +9270,7 @@ export class AdapterClass extends EventEmitter {
             }
 
             // srcObjs and targetObjs could be merged
-            const srcObjs = (await this._getObjectsByArray(keys, this._options)) as (ioBroker.StateObject | null)[];
+            const srcObjs = (await this._getObjectsByArray(keys)) as (ioBroker.StateObject | null)[];
 
             return this._processStatesSecondary(keys, fullTargetObjs, srcObjs);
         } else {
