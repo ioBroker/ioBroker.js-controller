@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__ - Jana
+## 5.0.19 (2024-01-30) - Jana
 * (foxriver76) fixed issue on `getStates` with aliases
 
 ## 5.0.18 (2024-01-30) - Jana
