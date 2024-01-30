@@ -262,7 +262,7 @@ export interface AdapterClass {
     /** Read all states of this adapter which match the given pattern */
     getStatesAsync(pattern: string, options?: unknown): ioBroker.GetStatesPromise;
     /** Read all states (which might not belong to this adapter) which match the given pattern */
-    getForeignStatesAsync(pattern: string, options?: unknown): ioBroker.GetStatesPromise;
+    getForeignStatesAsync(pattern: Pattern, options?: unknown): ioBroker.GetStatesPromise;
     /** Subscribe to changes of states (which might not belong to this adapter) */
     subscribeForeignStatesAsync(pattern: string | string[], options?: unknown): Promise<void>;
     /** Subscribe from changes of states (which might not belong to this adapter) */
@@ -9217,7 +9217,7 @@ export class AdapterClass extends EventEmitter {
         const aliasIndexes: number[] = [];
         const aliasIds: string[] = [];
         /** Target objects with null placeholders for non-alias keys */
-        const fullTargetObjs: (ioBroker.StateObject | null)[] = [];
+        const fullTargetObjs: (ioBroker.StateObject | null)[] = new Array(keys.length).fill(null);
 
         keys.forEach((id, idx) => {
             if (id.startsWith(ALIAS_STARTS_WITH)) {
@@ -9234,21 +9234,20 @@ export class AdapterClass extends EventEmitter {
             if (!targetObjs) {
                 // read aliases objects to get information of source objects
                 targetObjs = (await this._getObjectsByArray(aliasIds)) as ioBroker.StateObject[];
+            } else {
+                // we are only interested in keeping alias target objects
+                targetObjs = targetObjs.filter((_val, idx) => aliasIndexes.includes(idx));
             }
 
-            // replace aliases ID with targets
-            for (let i = 0; i < keys.length; i++) {
-                if (!aliasIndexes.includes(i)) {
-                    fullTargetObjs.push(null);
-                    continue;
-                }
-
+            // replace alias ids with targets
+            for (let i = 0; i < aliasIds.length; i++) {
                 const obj = targetObjs[i];
-                fullTargetObjs[i] = targetObjs[i];
+                const aliasIdx = aliasIndexes[i];
+                fullTargetObjs[aliasIdx] = obj;
 
                 if (obj?.common?.alias) {
                     // alias id can be string or can have attribute read (this is used by getStates -> so read is important)
-                    keys[i] =
+                    keys[aliasIdx] =
                         tools.isObject(obj.common.alias.id) && 'read' in obj.common.alias.id
                             ? obj.common.alias.id.read
                             : obj.common.alias.id;
@@ -9256,7 +9255,7 @@ export class AdapterClass extends EventEmitter {
             }
 
             // srcObjs and targetObjs could be merged
-            const srcObjs = (await this._getObjectsByArray(keys, this._options)) as (ioBroker.StateObject | null)[];
+            const srcObjs = (await this._getObjectsByArray(keys)) as (ioBroker.StateObject | null)[];
 
             return this._processStatesSecondary(keys, fullTargetObjs, srcObjs);
         } else {
