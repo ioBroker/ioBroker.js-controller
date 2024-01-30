@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / InternalGetObjectsOptions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / InternalGetObjectsOptions
 
 # Interface: InternalGetObjectsOptions
 
-[<internal>](../modules/internal_.md).InternalGetObjectsOptions
+[\<internal\>](../modules/internal_.md).InternalGetObjectsOptions
 
 ## Table of contents
 
@@ -18,11 +18,11 @@
 
 ### callback
 
-• `Optional` **callback**: [`GetObjectsCallbackTyped`](../modules/internal_.md#getobjectscallbacktyped)<`any`\>
+• `Optional` **callback**: [`GetObjectsCallbackTyped`](../modules/internal_.md#getobjectscallbacktyped)\<`any`\>
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:312](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L312)
+[adapter/src/lib/_Types.ts:312](https://github.com/ioBroker/ioBroker.js-controller/blob/70007768/packages/adapter/src/lib/_Types.ts#L312)
 
 ___
 
@@ -32,17 +32,17 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:310](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L310)
+[adapter/src/lib/_Types.ts:310](https://github.com/ioBroker/ioBroker.js-controller/blob/70007768/packages/adapter/src/lib/_Types.ts#L310)
 
 ___
 
 ### options
 
-• `Optional` **options**: ``null`` \| `Record`<`string`, `any`\>
+• `Optional` **options**: ``null`` \| `Record`\<`string`, `any`\>
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:311](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L311)
+[adapter/src/lib/_Types.ts:311](https://github.com/ioBroker/ioBroker.js-controller/blob/70007768/packages/adapter/src/lib/_Types.ts#L311)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:308](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L308)
+[adapter/src/lib/_Types.ts:308](https://github.com/ioBroker/ioBroker.js-controller/blob/70007768/packages/adapter/src/lib/_Types.ts#L308)
 
 ___
 
@@ -62,4 +62,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:309](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L309)
+[adapter/src/lib/_Types.ts:309](https://github.com/ioBroker/ioBroker.js-controller/blob/70007768/packages/adapter/src/lib/_Types.ts#L309)

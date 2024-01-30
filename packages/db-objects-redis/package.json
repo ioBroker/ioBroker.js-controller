@@ -1,45 +1,45 @@
 {
-  "name": "@iobroker/db-objects-redis",
-  "version": "5.0.18-alpha.0-20231201-5b321f38",
-  "engines": {
-    "node": ">=16.4.0"
-  },
-  "dependencies": {
-    "@iobroker/db-base": "file:../db-base",
-    "deep-clone": "^3.0.3",
-    "ioredis": "^4.28.2",
-    "mime-types": "^2.1.35",
-    "node.extend": "^2.0.2",
-    "semver": "^7.5.2"
-  },
-  "keywords": [
-    "ioBroker",
-    "redis",
-    "redundancy"
-  ],
-  "author": "bluefox <dogafox@gmail.com>",
-  "contributors": [
-    "bluefox <dogafox@gmail.com>",
-    "Apollon77 <iobroker@fischer-ka.de>",
-    "foxriver76 <moritz.heusinger@gmail.com>"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/db-objects-redis"
-  },
-  "scripts": {
-    "build": "tsc -b tsconfig.build.json",
-    "postbuild": "cpy ./lib/objects/**/*.lua ./build/lib/objects/ --cwd=src"
-  },
-  "main": "build/index.js",
-  "license": "Apache 2.0",
-  "publishConfig": {
-    "access": "public"
-  },
-  "types": "build/index.d.ts",
-  "files": [
-    "build/lib/",
-    "build/index.js",
-    "build/index.d.ts"
-  ]
+    "name": "@iobroker/db-objects-redis",
+    "version": "5.0.18",
+    "engines": {
+        "node": ">=16.4.0"
+    },
+    "dependencies": {
+        "@iobroker/db-base": "file:../db-base",
+        "deep-clone": "^3.0.3",
+        "ioredis": "^4.28.2",
+        "mime-types": "^2.1.35",
+        "node.extend": "^2.0.2",
+        "semver": "^7.5.2"
+    },
+    "keywords": [
+        "ioBroker",
+        "redis",
+        "redundancy"
+    ],
+    "author": "bluefox <dogafox@gmail.com>",
+    "contributors": [
+        "bluefox <dogafox@gmail.com>",
+        "Apollon77 <iobroker@fischer-ka.de>",
+        "foxriver76 <moritz.heusinger@gmail.com>"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/db-objects-redis"
+    },
+    "scripts": {
+        "build": "tsc -b tsconfig.build.json",
+        "postbuild": "cpy ./lib/objects/**/*.lua ./build/lib/objects/ --cwd=src"
+    },
+    "main": "build/index.js",
+    "license": "Apache 2.0",
+    "publishConfig": {
+        "access": "public"
+    },
+    "types": "build/index.d.ts",
+    "files": [
+        "build/lib/",
+        "build/index.js",
+        "build/index.d.ts"
+    ]
 }

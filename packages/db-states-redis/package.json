@@ -1,40 +1,40 @@
 {
-  "name": "@iobroker/db-states-redis",
-  "version": "5.0.18-alpha.0-20231201-5b321f38",
-  "engines": {
-    "node": ">=12.0.0"
-  },
-  "dependencies": {
-    "@iobroker/db-base": "file:../db-base",
-    "ioredis": "^4.28.2"
-  },
-  "keywords": [
-    "ioBroker",
-    "redis",
-    "redundancy"
-  ],
-  "author": "bluefox <dogafox@gmail.com>",
-  "contributors": [
-    "bluefox <dogafox@gmail.com>",
-    "Apollon77 <iobroker@fischer-ka.de>",
-    "foxriver76 <moritz.heusinger@gmail.com>"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/db-states-redis"
-  },
-  "scripts": {
-    "build": "tsc -b tsconfig.build.json"
-  },
-  "main": "build/index.js",
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
-  "types": "build/index.d.ts",
-  "files": [
-    "build/lib/",
-    "build/index.js",
-    "build/index.d.ts"
-  ]
+    "name": "@iobroker/db-states-redis",
+    "version": "5.0.18",
+    "engines": {
+        "node": ">=12.0.0"
+    },
+    "dependencies": {
+        "@iobroker/db-base": "file:../db-base",
+        "ioredis": "^4.28.2"
+    },
+    "keywords": [
+        "ioBroker",
+        "redis",
+        "redundancy"
+    ],
+    "author": "bluefox <dogafox@gmail.com>",
+    "contributors": [
+        "bluefox <dogafox@gmail.com>",
+        "Apollon77 <iobroker@fischer-ka.de>",
+        "foxriver76 <moritz.heusinger@gmail.com>"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/db-states-redis"
+    },
+    "scripts": {
+        "build": "tsc -b tsconfig.build.json"
+    },
+    "main": "build/index.js",
+    "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
+    "types": "build/index.d.ts",
+    "files": [
+        "build/lib/",
+        "build/index.js",
+        "build/index.d.ts"
+    ]
 }

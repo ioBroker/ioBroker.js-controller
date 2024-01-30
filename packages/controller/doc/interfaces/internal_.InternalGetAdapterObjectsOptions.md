@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / InternalGetAdapterObjectsOptions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / InternalGetAdapterObjectsOptions
 
 # Interface: InternalGetAdapterObjectsOptions
 
-[<internal>](../modules/internal_.md).InternalGetAdapterObjectsOptions
+[\<internal\>](../modules/internal_.md).InternalGetAdapterObjectsOptions
 
 ## Table of contents
 
@@ -14,7 +14,7 @@
 
 ### callback
 
-• `Optional` **callback**: (`objects`: `Record`<`string`, [`AdapterScopedObject`](../modules/internal_.md#adapterscopedobject)\>) => `void`
+• `Optional` **callback**: (`objects`: `Record`\<`string`, [`AdapterScopedObject`](../modules/internal_.md#adapterscopedobject)\>) => `void`
 
 #### Type declaration
 
@@ -24,7 +24,7 @@
 
 | Name | Type |
 | :------ | :------ |
-| `objects` | `Record`<`string`, [`AdapterScopedObject`](../modules/internal_.md#adapterscopedobject)\> |
+| `objects` | `Record`\<`string`, [`AdapterScopedObject`](../modules/internal_.md#adapterscopedobject)\> |
 
 ##### Returns
 
@@ -32,4 +32,4 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:322](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L322)
+[adapter/src/lib/_Types.ts:322](https://github.com/ioBroker/ioBroker.js-controller/blob/70007768/packages/adapter/src/lib/_Types.ts#L322)

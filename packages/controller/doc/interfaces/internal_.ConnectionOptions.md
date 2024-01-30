@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / ConnectionOptions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / ConnectionOptions
 
 # Interface: ConnectionOptions
 
-[<internal>](../modules/internal_.md).ConnectionOptions
+[\<internal\>](../modules/internal_.md).ConnectionOptions
 
 ## Hierarchy
 
@@ -82,7 +82,7 @@ ___
 
 ### options
 
-• **options**: `Record`<`string`, `any`\>
+• **options**: `Record`\<`string`, `any`\>
 
 #### Defined in
 

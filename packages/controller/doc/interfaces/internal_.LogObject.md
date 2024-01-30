@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / LogObject
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / LogObject
 
 # Interface: LogObject
 
-[<internal>](../modules/internal_.md).LogObject
+[\<internal\>](../modules/internal_.md).LogObject
 
 ## Table of contents
 
