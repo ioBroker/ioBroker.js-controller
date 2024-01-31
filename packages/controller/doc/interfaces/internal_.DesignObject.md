@@ -39,7 +39,7 @@ Omit.\_id
 
 #### Defined in
 
-[types-dev/objects.d.ts:992](https://github.com/ioBroker/ioBroker.js-controller/blob/1906f86c/packages/types-dev/objects.d.ts#L992)
+[types-dev/objects.d.ts:992](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L992)
 
 ___
 
@@ -53,7 +53,7 @@ Omit.acl
 
 #### Defined in
 
-[types-dev/objects.d.ts:761](https://github.com/ioBroker/ioBroker.js-controller/blob/1906f86c/packages/types-dev/objects.d.ts#L761)
+[types-dev/objects.d.ts:761](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L761)
 
 ___
 
@@ -63,7 +63,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:994](https://github.com/ioBroker/ioBroker.js-controller/blob/1906f86c/packages/types-dev/objects.d.ts#L994)
+[types-dev/objects.d.ts:994](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L994)
 
 ___
 
@@ -77,7 +77,7 @@ Omit.enums
 
 #### Defined in
 
-[types-dev/objects.d.ts:760](https://github.com/ioBroker/ioBroker.js-controller/blob/1906f86c/packages/types-dev/objects.d.ts#L760)
+[types-dev/objects.d.ts:760](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L760)
 
 ___
 
@@ -91,7 +91,7 @@ Omit.from
 
 #### Defined in
 
-[types-dev/objects.d.ts:762](https://github.com/ioBroker/ioBroker.js-controller/blob/1906f86c/packages/types-dev/objects.d.ts#L762)
+[types-dev/objects.d.ts:762](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L762)
 
 ___
 
@@ -101,7 +101,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:993](https://github.com/ioBroker/ioBroker.js-controller/blob/1906f86c/packages/types-dev/objects.d.ts#L993)
+[types-dev/objects.d.ts:993](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L993)
 
 ___
 
@@ -115,7 +115,7 @@ Omit.native
 
 #### Defined in
 
-[types-dev/objects.d.ts:758](https://github.com/ioBroker/ioBroker.js-controller/blob/1906f86c/packages/types-dev/objects.d.ts#L758)
+[types-dev/objects.d.ts:758](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L758)
 
 ___
 
@@ -131,7 +131,7 @@ Omit.nonEdit
 
 #### Defined in
 
-[types-dev/objects.d.ts:767](https://github.com/ioBroker/ioBroker.js-controller/blob/1906f86c/packages/types-dev/objects.d.ts#L767)
+[types-dev/objects.d.ts:767](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L767)
 
 ___
 
@@ -145,7 +145,7 @@ Omit.ts
 
 #### Defined in
 
-[types-dev/objects.d.ts:765](https://github.com/ioBroker/ioBroker.js-controller/blob/1906f86c/packages/types-dev/objects.d.ts#L765)
+[types-dev/objects.d.ts:765](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L765)
 
 ___
 
@@ -159,7 +159,7 @@ Omit.type
 
 #### Defined in
 
-[types-dev/objects.d.ts:991](https://github.com/ioBroker/ioBroker.js-controller/blob/1906f86c/packages/types-dev/objects.d.ts#L991)
+[types-dev/objects.d.ts:991](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L991)
 
 ___
 
@@ -175,7 +175,7 @@ Omit.user
 
 #### Defined in
 
-[types-dev/objects.d.ts:764](https://github.com/ioBroker/ioBroker.js-controller/blob/1906f86c/packages/types-dev/objects.d.ts#L764)
+[types-dev/objects.d.ts:764](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L764)
 
 ___
 
@@ -185,4 +185,4 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:995](https://github.com/ioBroker/ioBroker.js-controller/blob/1906f86c/packages/types-dev/objects.d.ts#L995)
+[types-dev/objects.d.ts:995](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L995)

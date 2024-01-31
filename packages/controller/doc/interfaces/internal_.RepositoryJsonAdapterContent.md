@@ -27,7 +27,7 @@ Adapter name
 
 #### Defined in
 
-[types-dev/objects.d.ts:844](https://github.com/ioBroker/ioBroker.js-controller/blob/1906f86c/packages/types-dev/objects.d.ts#L844)
+[types-dev/objects.d.ts:844](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L844)
 
 ___
 
@@ -39,4 +39,4 @@ Newest available version
 
 #### Defined in
 
-[types-dev/objects.d.ts:846](https://github.com/ioBroker/ioBroker.js-controller/blob/1906f86c/packages/types-dev/objects.d.ts#L846)
+[types-dev/objects.d.ts:846](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L846)
