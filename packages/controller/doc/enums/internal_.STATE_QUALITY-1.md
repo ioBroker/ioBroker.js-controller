@@ -36,7 +36,7 @@ General problem
 
 #### Defined in
 
-[types-dev/index.d.ts:21](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/index.d.ts#L21)
+[types-dev/index.d.ts:21](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/index.d.ts#L21)
 
 ___
 
@@ -48,7 +48,7 @@ The instance cannot establish a connection
 
 #### Defined in
 
-[types-dev/index.d.ts:23](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/index.d.ts#L23)
+[types-dev/index.d.ts:23](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/index.d.ts#L23)
 
 ___
 
@@ -60,7 +60,7 @@ The device has reported an error
 
 #### Defined in
 
-[types-dev/index.d.ts:45](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/index.d.ts#L45)
+[types-dev/index.d.ts:45](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/index.d.ts#L45)
 
 ___
 
@@ -72,7 +72,7 @@ The device is not connected
 
 #### Defined in
 
-[types-dev/index.d.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/index.d.ts#L41)
+[types-dev/index.d.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/index.d.ts#L41)
 
 ___
 
@@ -84,7 +84,7 @@ General problem by device
 
 #### Defined in
 
-[types-dev/index.d.ts:35](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/index.d.ts#L35)
+[types-dev/index.d.ts:35](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/index.d.ts#L35)
 
 ___
 
@@ -96,7 +96,7 @@ General problem by instance
 
 #### Defined in
 
-[types-dev/index.d.ts:33](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/index.d.ts#L33)
+[types-dev/index.d.ts:33](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/index.d.ts#L33)
 
 ___
 
@@ -108,7 +108,7 @@ General problem by sensor
 
 #### Defined in
 
-[types-dev/index.d.ts:37](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/index.d.ts#L37)
+[types-dev/index.d.ts:37](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/index.d.ts#L37)
 
 ___
 
@@ -120,7 +120,7 @@ The default value for a state
 
 #### Defined in
 
-[types-dev/index.d.ts:19](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/index.d.ts#L19)
+[types-dev/index.d.ts:19](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/index.d.ts#L19)
 
 ___
 
@@ -132,7 +132,7 @@ The instance is not connected
 
 #### Defined in
 
-[types-dev/index.d.ts:39](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/index.d.ts#L39)
+[types-dev/index.d.ts:39](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/index.d.ts#L39)
 
 ___
 
@@ -144,7 +144,7 @@ The sensor has reported an error
 
 #### Defined in
 
-[types-dev/index.d.ts:47](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/index.d.ts#L47)
+[types-dev/index.d.ts:47](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/index.d.ts#L47)
 
 ___
 
@@ -156,7 +156,7 @@ The sensor is not connected
 
 #### Defined in
 
-[types-dev/index.d.ts:43](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/index.d.ts#L43)
+[types-dev/index.d.ts:43](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/index.d.ts#L43)
 
 ___
 
@@ -168,7 +168,7 @@ Substitute value from instance or device
 
 #### Defined in
 
-[types-dev/index.d.ts:29](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/index.d.ts#L29)
+[types-dev/index.d.ts:29](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/index.d.ts#L29)
 
 ___
 
@@ -180,7 +180,7 @@ Substitute value from controller, do not set this in adapters
 
 #### Defined in
 
-[types-dev/index.d.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/index.d.ts#L25)
+[types-dev/index.d.ts:25](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/index.d.ts#L25)
 
 ___
 
@@ -192,7 +192,7 @@ Quality for default values
 
 #### Defined in
 
-[types-dev/index.d.ts:27](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/index.d.ts#L27)
+[types-dev/index.d.ts:27](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/index.d.ts#L27)
 
 ___
 
@@ -204,4 +204,4 @@ Substitute value from a sensor
 
 #### Defined in
 
-[types-dev/index.d.ts:31](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/index.d.ts#L31)
+[types-dev/index.d.ts:31](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/index.d.ts#L31)

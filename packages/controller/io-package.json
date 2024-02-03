@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "js-controller",
-    "version": "5.0.18",
+    "version": "5.0.20",
     "platform": "Javascript/Node.js",
     "controller": true,
     "mode": "daemon",
@@ -115,6 +115,10 @@
       "hobbyquaker <hq@ccu.io>",
       "Apollon77 <iobroker@fischer-ka.de>"
     ],
+    "licenseInformation": {
+      "license": "MIT",
+      "type": "free"
+    },
     "license": "MIT",
     "type": "general",
     "unsafePerm": true,
