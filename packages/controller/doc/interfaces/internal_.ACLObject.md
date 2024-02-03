@@ -22,7 +22,7 @@
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsUtils.d.ts:28
+db-objects-redis/build/lib/objects/objectsUtils.d.ts:25
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsUtils.d.ts:26
+db-objects-redis/build/lib/objects/objectsUtils.d.ts:23
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsUtils.d.ts:24
+db-objects-redis/build/lib/objects/objectsUtils.d.ts:21
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsUtils.d.ts:25
+db-objects-redis/build/lib/objects/objectsUtils.d.ts:22
 
 ___
 
@@ -62,4 +62,4 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsUtils.d.ts:27
+db-objects-redis/build/lib/objects/objectsUtils.d.ts:24
