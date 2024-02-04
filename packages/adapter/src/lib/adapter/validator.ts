@@ -1,4 +1,4 @@
-import { MAX_TIMEOUT, SYSTEM_ADMIN_USER } from './constants';
+import { MAX_TIMEOUT, SYSTEM_ADMIN_USER } from '@/lib/adapter/constants';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 
 type Callback = (...args: any[]) => void | Promise<void>;
@@ -61,7 +61,7 @@ export class Validator {
                 return;
             }
 
-            const obj: any = await this.objects.getObjectAsync(id);
+            const obj = await this.objects.getObjectAsync(id);
             // at first check object existence
             if (!obj) {
                 this.log.warn(
@@ -71,7 +71,7 @@ export class Validator {
             }
 
             // for a state object, we require common.type to exist
-            if (obj.common && obj.common.type) {
+            if (obj.common?.type) {
                 // check if we are allowed to write (read-only can only be written with ack: true)
                 if (!state.ack && obj.common.write === false) {
                     this.log.warn(

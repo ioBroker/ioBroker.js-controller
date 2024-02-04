@@ -15,13 +15,7 @@ import path from 'path';
 import crypto from 'crypto';
 import { isDeepStrictEqual } from 'util';
 import deepClone from 'deep-clone';
-import type {
-    ACLObject,
-    FileObject,
-    CheckFileRightsCallback,
-    GetUserGroupPromiseReturn,
-    WMStrm
-} from './objectsUtils.js';
+import type { ACLObject, FileObject, CheckFileRightsCallback, GetUserGroupPromiseReturn } from './objectsUtils.js';
 import * as utils from './objectsUtils.js';
 import semver from 'semver';
 import * as CONSTS from './constants';
@@ -1026,17 +1020,6 @@ export class ObjectsInRedisClient {
             }
             return tools.maybeCallback(callback, user, userGroups, userAcl);
         });
-    }
-
-    insert(
-        id: string,
-        attName: string,
-        ignore: any,
-        options: string | Record<string, any>,
-        obj: any,
-        callback: (err?: Error | null) => void
-    ): WMStrm {
-        return utils.insert(this, id, attName, ignore, options, obj, callback);
     }
 
     private async _writeFile(
@@ -3340,7 +3323,7 @@ export class ObjectsInRedisClient {
             );
         }
 
-        if (options && options.acl) {
+        if (options?.acl) {
             options.acl = null;
         }
         if (typeof callback === 'function') {

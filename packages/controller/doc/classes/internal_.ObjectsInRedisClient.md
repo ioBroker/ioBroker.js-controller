@@ -58,7 +58,6 @@
 - [getProtocolVersion](internal_.ObjectsInRedisClient.md#getprotocolversion)
 - [getStatus](internal_.ObjectsInRedisClient.md#getstatus)
 - [getUserGroup](internal_.ObjectsInRedisClient.md#getusergroup)
-- [insert](internal_.ObjectsInRedisClient.md#insert)
 - [isSystemLocaleSupported](internal_.ObjectsInRedisClient.md#issystemlocalesupported)
 - [loadLuaScripts](internal_.ObjectsInRedisClient.md#loadluascripts)
 - [migrateToSets](internal_.ObjectsInRedisClient.md#migratetosets)
@@ -133,7 +132,7 @@ Activates the usage of sets
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:320
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:319
 
 ___
 
@@ -153,7 +152,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:256
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:255
 
 ___
 
@@ -224,7 +223,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:165
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:164
 
 ___
 
@@ -246,7 +245,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:166
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:165
 
 ___
 
@@ -268,7 +267,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:194
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:193
 
 ___
 
@@ -289,7 +288,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:195
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:194
 
 ___
 
@@ -312,7 +311,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:154
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:153
 
 ___
 
@@ -334,7 +333,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:155
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:154
 
 ___
 
@@ -356,7 +355,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:191
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:190
 
 ___
 
@@ -377,7 +376,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:192
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:191
 
 ___
 
@@ -407,7 +406,7 @@ Deactivates the usage of sets
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:324
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:323
 
 ___
 
@@ -430,7 +429,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:134
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:133
 
 ___
 
@@ -452,7 +451,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:135
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:134
 
 ___
 
@@ -473,7 +472,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:221
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:220
 
 ▸ **delObject**(`id`, `options`, `callback`): `void`
 
@@ -491,7 +490,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:221
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:222
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:221
 
 ▸ **delObject**(`id`, `options?`): `Promise`\<`void`\>
 
@@ -508,7 +507,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:222
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:223
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:222
 
 ___
 
@@ -529,7 +528,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:224
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:223
 
 ___
 
@@ -543,7 +542,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:261
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:260
 
 ___
 
@@ -564,7 +563,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:259
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:258
 
 ___
 
@@ -584,7 +583,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:260
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:259
 
 ___
 
@@ -605,7 +604,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:167
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:166
 
 ▸ **enableFileCache**(`enabled`, `options?`, `callback?`): `void`
 
@@ -623,7 +622,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:167
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:168
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:167
 
 ___
 
@@ -644,7 +643,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:169
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:168
 
 ___
 
@@ -672,7 +671,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:242
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:241
 
 ▸ **extendObject**\<`T`\>(`id`, `obj`, `options?`, `callback?`): `void` \| `Promise`\<`undefined` \| \{ `id`: `string` ; `value`: [`Object`](../modules/internal_.md#object)  }\>
 
@@ -697,7 +696,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:242
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:243
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:242
 
 ___
 
@@ -719,7 +718,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:244
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:243
 
 ___
 
@@ -744,7 +743,7 @@ Value will expire after ms milliseconds
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:291
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:290
 
 ___
 
@@ -768,7 +767,7 @@ Check if given file exists
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:130
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:129
 
 ___
 
@@ -791,7 +790,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:253
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:252
 
 ▸ **findObject**(`idOrName`, `type`, `callback`): `void`
 
@@ -809,7 +808,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:253
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:254
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:253
 
 ▸ **findObject**(`idOrName`, `type?`, `options?`): `Promise`\<`undefined` \| `string`\>
 
@@ -827,7 +826,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:254
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:255
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:254
 
 ___
 
@@ -872,7 +871,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:202
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:201
 
 ▸ **getKeys**(`pattern`, `callback`): `void`
 
@@ -889,7 +888,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:202
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:203
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:202
 
 ▸ **getKeys**(`pattern`, `options?`, `callback?`, `dontModify?`): `Promise`\<`undefined` \| `string`[]\>
 
@@ -908,7 +907,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:203
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:204
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:203
 
 ___
 
@@ -929,7 +928,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:205
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:204
 
 ___
 
@@ -951,7 +950,7 @@ Get value from meta namespace
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:330
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:329
 
 ___
 
@@ -979,7 +978,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:197
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:196
 
 ▸ **getObject**\<`T`\>(`id`, `callback`): `void`
 
@@ -1002,7 +1001,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:197
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:198
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:197
 
 ▸ **getObject**\<`T`\>(`id`, `options?`): `Promise`\<`undefined` \| ``null`` \| [`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)\<`T`, ``"read"``\>\>
 
@@ -1025,7 +1024,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:198
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:199
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:198
 
 ___
 
@@ -1052,7 +1051,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:200
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:199
 
 ___
 
@@ -1072,7 +1071,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:236
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:235
 
 ▸ **getObjectList**(`params`, `options?`): [`GetObjectListPromise`](../modules/internal_.md#getobjectlistpromise)
 
@@ -1089,7 +1088,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:236
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:237
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:236
 
 ▸ **getObjectList**(`params`, `callback`): `void`
 
@@ -1106,7 +1105,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:237
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:238
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:237
 
 ▸ **getObjectList**\<`T`\>(`params`, `options?`, `callback?`): `T` extends [`GetObjectListCallback`](../modules/internal_.md#getobjectlistcallback)\<[`Object`](../modules/internal_.md#object)\> ? `void` : [`GetObjectListPromise`](../modules/internal_.md#getobjectlistpromise)
 
@@ -1130,7 +1129,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:238
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:239
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:238
 
 ___
 
@@ -1151,7 +1150,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:240
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:239
 
 ___
 
@@ -1181,7 +1180,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:231
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:230
 
 ▸ **getObjectView**\<`Design`, `Search`\>(`design`, `search`, `params`, `options`, `callback`): `void`
 
@@ -1208,7 +1207,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:231
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:232
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:231
 
 ▸ **getObjectView**\<`Design`, `Search`\>(`design`, `search`, `params`, `callback`): `void`
 
@@ -1234,7 +1233,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:232
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:233
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:232
 
 ___
 
@@ -1264,7 +1263,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:234
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:233
 
 ___
 
@@ -1285,7 +1284,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:207
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:206
 
 ▸ **getObjects**(`keys`, `callback`): `void`
 
@@ -1302,7 +1301,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:207
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:208
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:207
 
 ▸ **getObjects**(`keys`, `options`, `callback`, `dontModify?`): `void`
 
@@ -1321,7 +1320,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:208
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:209
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:208
 
 ___
 
@@ -1342,7 +1341,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:210
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:209
 
 ___
 
@@ -1363,7 +1362,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:212
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:211
 
 ▸ **getObjectsByPattern**(`pattern`, `options`, `callback`): `void`
 
@@ -1381,7 +1380,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:212
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:213
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:212
 
 ___
 
@@ -1402,7 +1401,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:214
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:213
 
 ___
 
@@ -1418,7 +1417,7 @@ Get name of the primary host
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:303
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:302
 
 ___
 
@@ -1434,7 +1433,7 @@ Returns the protocol version from DB
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:283
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:282
 
 ___
 
@@ -1473,31 +1472,6 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:107
 
 ___
 
-### insert
-
-▸ **insert**(`id`, `attName`, `ignore`, `options`, `obj`, `callback`): [`WMStrm`](internal_.WMStrm.md)
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `id` | `string` |
-| `attName` | `string` |
-| `ignore` | `any` |
-| `options` | `string` \| `Record`\<`string`, `any`\> |
-| `obj` | `any` |
-| `callback` | (`err?`: ``null`` \| `Error`) => `void` |
-
-#### Returns
-
-[`WMStrm`](internal_.WMStrm.md)
-
-#### Defined in
-
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:108
-
-___
-
 ### isSystemLocaleSupported
 
 ▸ **isSystemLocaleSupported**(): `Promise`\<`boolean`\>
@@ -1510,7 +1484,7 @@ Function to checks if comparisons will work according to the configured Locale
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:228
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:227
 
 ___
 
@@ -1524,7 +1498,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:262
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:261
 
 ___
 
@@ -1542,7 +1516,7 @@ number of migrated sets
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:279
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:278
 
 ___
 
@@ -1565,7 +1539,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:150
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:149
 
 ___
 
@@ -1587,7 +1561,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:151
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:150
 
 ___
 
@@ -1630,7 +1604,7 @@ Check if given object exists
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:122
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:121
 
 ___
 
@@ -1653,7 +1627,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:137
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:136
 
 ___
 
@@ -1675,7 +1649,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:138
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:137
 
 ___
 
@@ -1697,7 +1671,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:114
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:113
 
 ▸ **readFile**(`id`, `name`, `options`, `callback`): `void`
 
@@ -1716,7 +1690,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:114
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:115
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:114
 
 ___
 
@@ -1732,7 +1706,7 @@ Ensure we are no longer the primary host
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:307
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:306
 
 ___
 
@@ -1756,7 +1730,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:141
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:140
 
 ___
 
@@ -1779,7 +1753,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:142
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:141
 
 ___
 
@@ -1802,7 +1776,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:148
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:147
 
 ___
 
@@ -1824,7 +1798,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:149
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:148
 
 ___
 
@@ -1866,7 +1840,7 @@ Checks if a given set exists
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:274
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:273
 
 ___
 
@@ -1893,7 +1867,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:216
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:215
 
 ▸ **setObject**\<`T`\>(`id`, `obj`, `callback?`): `void` \| `Promise`\<`undefined` \| \{ `id`: `string`  }\>
 
@@ -1917,7 +1891,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:216
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:217
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:216
 
 ▸ **setObject**\<`T`\>(`id`, `obj`, `options?`, `callback?`): `void` \| `Promise`\<`undefined` \| \{ `id`: `string`  }\>
 
@@ -1942,7 +1916,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:217
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:218
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:217
 
 ___
 
@@ -1964,7 +1938,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:219
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:218
 
 ___
 
@@ -1989,7 +1963,7 @@ Value will expire after ms milliseconds
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:299
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:298
 
 ___
 
@@ -2011,7 +1985,7 @@ Sets the protocol version to the DB
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:312
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:311
 
 ___
 
@@ -2032,7 +2006,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:176
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:175
 
 ▸ **subscribe**(`pattern`, `options?`, `callback?`): `void`
 
@@ -2050,7 +2024,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:176
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:177
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:176
 
 ___
 
@@ -2071,7 +2045,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:178
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:177
 
 ___
 
@@ -2087,7 +2061,7 @@ Subscribe to expired events to get expiration of primary host
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:316
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:315
 
 ___
 
@@ -2108,7 +2082,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:179
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:178
 
 ▸ **subscribeUser**(`pattern`, `options?`, `callback?`): `void`
 
@@ -2126,7 +2100,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:179
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:180
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:179
 
 ___
 
@@ -2147,7 +2121,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:181
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:180
 
 ___
 
@@ -2169,7 +2143,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:172
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:171
 
 ___
 
@@ -2192,7 +2166,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:144
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:143
 
 ___
 
@@ -2214,7 +2188,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:145
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:144
 
 ___
 
@@ -2237,7 +2211,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:132
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:131
 
 ___
 
@@ -2259,7 +2233,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:133
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:132
 
 ___
 
@@ -2280,7 +2254,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:184
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:183
 
 ▸ **unsubscribe**(`pattern`, `options?`, `callback?`): `void`
 
@@ -2298,7 +2272,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:184
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:185
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:184
 
 ___
 
@@ -2319,7 +2293,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:186
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:185
 
 ___
 
@@ -2341,7 +2315,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:187
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:186
 
 ___
 
@@ -2362,7 +2336,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:188
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:187
 
 ___
 
@@ -2384,7 +2358,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:173
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:172
 
 ___
 
@@ -2433,7 +2407,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:110
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:109
 
 ▸ **writeFile**(`id`, `name`, `data`, `options?`, `callback?`): `Promise`\<`void`\>
 
@@ -2453,7 +2427,7 @@ db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:110
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:111
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:110
 
 ___
 
@@ -2476,4 +2450,4 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:112
+db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:111
