@@ -213,79 +213,103 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         );
     }).timeout(3_000);
 
-    it(testName + 'Read alias states', done => {
-        context.adapter.setForeignObject(
-            gid + '1',
-            {
-                common: {
-                    name: 'forAlias1',
-                    type: 'number',
-                    role: 'level',
-                    read: true,
-                    write: true
-                },
-                native: {},
-                type: 'state',
-                acl: {
-                    state: 1638,
-                    object: 1536, // 0600
-                    owner: 'system.user.userC',
-                    ownerGroup: 'system.group.user1'
-                }
+    it(testName + 'Read alias states', async () => {
+        const nonAliasId1 = `${gid}nonAlias1`;
+        const nonAliasId2 = `${gid}nonAlias2`;
+        // create some non-alias data to check that it works with mixed ids
+        await context.adapter.setForeignObjectAsync(nonAliasId1, {
+            type: 'state',
+            common: {
+                name: 'noAlias1',
+                type: 'number',
+                role: 'level',
+                read: true,
+                write: true
             },
-            err => {
-                expect(err).to.be.not.ok;
-                context.adapter.setForeignState(gid + '1', 5, true, err => {
-                    expect(err).to.be.not.ok;
+            native: {}
+        });
 
-                    // create alias
-                    context.adapter.setForeignObject(
-                        gAliasID + '1',
-                        {
-                            common: {
-                                name: 'Test Alias1',
-                                type: 'number',
-                                role: 'state',
-                                min: -10,
-                                max: 10,
-                                alias: {
-                                    id: gid + '1'
-                                },
-                                read: true,
-                                write: true
-                            },
-                            native: {},
-                            type: 'state',
-                            acl: {
-                                state: 1638,
-                                object: 1638, // 0666
-                                owner: 'system.user.userC',
-                                ownerGroup: 'system.group.user1'
-                            }
-                        },
-                        err => {
-                            expect(err).to.be.not.ok;
-                            context.adapter.getForeignStates(gAliasID + '1', (err, states) => {
-                                // No scaling because no % and no min, max in source object
-                                expect(states![gAliasID + '1'].val).to.be.equal(5);
-                                expect(states![gAliasID + '1'].ack).to.be.true;
+        // create some non-alias data to check that it works with mixed ids
+        await context.adapter.setForeignObjectAsync(nonAliasId2, {
+            type: 'state',
+            common: {
+                name: 'noAlias2',
+                type: 'number',
+                role: 'level',
+                read: true,
+                write: true
+            },
+            native: {}
+        });
 
-                                // original array should not be changed
-                                const ids = [gAliasID + '1'];
-                                context.adapter.getForeignStates(ids, (err, states) => {
-                                    // It must be scaled from -100, 2, 100
-                                    // to                     -10, 0.2, 10
-                                    expect(ids[0]).to.be.equal(gAliasID + '1');
-                                    expect(states![gAliasID + '1'].val).to.be.equal(5);
-                                    expect(states![gAliasID + '1'].ack).to.be.true;
-                                    done();
-                                });
-                            });
-                        }
-                    );
-                });
+        await context.adapter.setForeignObjectAsync(gid + '1', {
+            common: {
+                name: 'forAlias1',
+                type: 'number',
+                role: 'level',
+                read: true,
+                write: true
+            },
+            native: {},
+            type: 'state',
+            acl: {
+                state: 1638,
+                object: 1536, // 0600
+                owner: 'system.user.userC',
+                ownerGroup: 'system.group.user1'
             }
-        );
+        });
+
+        await context.adapter.setForeignStateAsync(gid + '1', 5, true);
+        await context.adapter.setForeignStateAsync(nonAliasId1, 3, true);
+        await context.adapter.setForeignStateAsync(nonAliasId2, 2, true);
+
+        // create alias
+        await context.adapter.setForeignObjectAsync(gAliasID + '1', {
+            common: {
+                name: 'Test Alias1',
+                type: 'number',
+                role: 'state',
+                min: -10,
+                max: 10,
+                alias: {
+                    id: gid + '1'
+                },
+                read: true,
+                write: true
+            },
+            native: {},
+            type: 'state',
+            acl: {
+                state: 1638,
+                object: 1638, // 0666
+                owner: 'system.user.userC',
+                ownerGroup: 'system.group.user1'
+            }
+        });
+
+        let states = await context.adapter.getForeignStatesAsync(gAliasID + '1');
+        // No scaling because no % and no min, max in source object
+        expect(states![gAliasID + '1'].val).to.be.equal(5);
+        expect(states![gAliasID + '1'].ack).to.be.true;
+
+        // original array should not be changed
+        const ids = [nonAliasId1, gAliasID + '1', nonAliasId2];
+
+        states = await context.adapter.getForeignStatesAsync(ids);
+        expect(ids[0]).to.be.equal(nonAliasId1);
+        expect(states![nonAliasId1].val).to.be.equal(3);
+        expect(states![nonAliasId1].ack).to.be.true;
+
+        // It must be scaled from -100, 2, 100
+        // to                     -10, 0.2, 10
+        expect(ids[1]).to.be.equal(gAliasID + '1');
+        expect(states![gAliasID + '1'].val).to.be.equal(5);
+        expect(states![gAliasID + '1'].ack).to.be.true;
+
+        expect(ids[2]).to.be.equal(nonAliasId2);
+        expect(states![nonAliasId2].val).to.be.equal(2);
+        expect(states![nonAliasId2].ack).to.be.true;
     }).timeout(3_000);
 
     it(testName + 'Write alias state', done => {
