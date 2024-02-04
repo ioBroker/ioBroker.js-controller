@@ -11312,10 +11312,10 @@ export class AdapterClass extends EventEmitter {
                 }
 
                 // If desired, that adapter must be terminated
-                if (id === `system.adapter.${this.namespace}` && obj && obj.common && obj.common.enabled === false) {
+                if (id === `system.adapter.${this.namespace}` && obj?.common?.enabled === false) {
                     this._logger.info(`${this.namespaceLog} Adapter is disabled => stop`);
                     this._stop();
-                    setTimeout(() => this.terminate(EXIT_CODES.NO_ERROR), 4000);
+                    setTimeout(() => this.terminate(EXIT_CODES.NO_ERROR), 4_000);
                     return;
                 }
 
