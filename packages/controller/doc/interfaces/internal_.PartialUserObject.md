@@ -37,7 +37,7 @@ Partial.\_id
 
 #### Defined in
 
-[types-dev/objects.d.ts:946](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L946)
+[types-dev/objects.d.ts:963](https://github.com/ioBroker/ioBroker.js-controller/blob/49d93c99/packages/types-dev/objects.d.ts#L963)
 
 ___
 
@@ -51,7 +51,7 @@ Partial.acl
 
 #### Defined in
 
-[types-dev/objects.d.ts:761](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L761)
+[types-dev/objects.d.ts:768](https://github.com/ioBroker/ioBroker.js-controller/blob/49d93c99/packages/types-dev/objects.d.ts#L768)
 
 ___
 
@@ -61,7 +61,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:951](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L951)
+[types-dev/objects.d.ts:969](https://github.com/ioBroker/ioBroker.js-controller/blob/49d93c99/packages/types-dev/objects.d.ts#L969)
 
 ___
 
@@ -75,7 +75,7 @@ Partial.enums
 
 #### Defined in
 
-[types-dev/objects.d.ts:760](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L760)
+[types-dev/objects.d.ts:767](https://github.com/ioBroker/ioBroker.js-controller/blob/49d93c99/packages/types-dev/objects.d.ts#L767)
 
 ___
 
@@ -89,7 +89,7 @@ Partial.from
 
 #### Defined in
 
-[types-dev/objects.d.ts:762](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L762)
+[types-dev/objects.d.ts:769](https://github.com/ioBroker/ioBroker.js-controller/blob/49d93c99/packages/types-dev/objects.d.ts#L769)
 
 ___
 
@@ -103,7 +103,7 @@ Partial.native
 
 #### Defined in
 
-[types-dev/objects.d.ts:758](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L758)
+[types-dev/objects.d.ts:765](https://github.com/ioBroker/ioBroker.js-controller/blob/49d93c99/packages/types-dev/objects.d.ts#L765)
 
 ___
 
@@ -111,7 +111,7 @@ ___
 
 • `Optional` **nonEdit**: [`NonEditable`](internal_.NonEditable.md)
 
-These properties can only be edited if correct password is provided
+These properties can only be edited if the correct password is provided
 
 #### Inherited from
 
@@ -119,7 +119,7 @@ Partial.nonEdit
 
 #### Defined in
 
-[types-dev/objects.d.ts:767](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L767)
+[types-dev/objects.d.ts:774](https://github.com/ioBroker/ioBroker.js-controller/blob/49d93c99/packages/types-dev/objects.d.ts#L774)
 
 ___
 
@@ -133,7 +133,7 @@ Partial.ts
 
 #### Defined in
 
-[types-dev/objects.d.ts:765](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L765)
+[types-dev/objects.d.ts:772](https://github.com/ioBroker/ioBroker.js-controller/blob/49d93c99/packages/types-dev/objects.d.ts#L772)
 
 ___
 
@@ -147,7 +147,7 @@ Partial.type
 
 #### Defined in
 
-[types-dev/objects.d.ts:947](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L947)
+[types-dev/objects.d.ts:964](https://github.com/ioBroker/ioBroker.js-controller/blob/49d93c99/packages/types-dev/objects.d.ts#L964)
 
 ___
 
@@ -163,4 +163,4 @@ Partial.user
 
 #### Defined in
 
-[types-dev/objects.d.ts:764](https://github.com/ioBroker/ioBroker.js-controller/blob/ea40ee4f/packages/types-dev/objects.d.ts#L764)
+[types-dev/objects.d.ts:771](https://github.com/ioBroker/ioBroker.js-controller/blob/49d93c99/packages/types-dev/objects.d.ts#L771)
