@@ -872,11 +872,6 @@
             }
           },
           "then": {
-            "properties": {
-              "test": {
-                "type": "string"
-              }
-            },
             "required": [
               "link"
             ]
