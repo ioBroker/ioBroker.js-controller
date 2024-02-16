@@ -901,7 +901,12 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
         let response = [];
         if (namespace === this.namespaceObj || namespace === this.namespaceObjects) {
-            response = this._getKeys(id).map(val => this.namespaceObj + val);
+            try {
+                response = this._getKeys(id).map(val => this.namespaceObj + val);
+            } catch (e) {
+                return void handler.sendError(responseId, e);
+            }
+
             // if scan, we send the cursor as first argument
             if (namespace !== this.namespaceObjects) {
                 // When it was not the full DB namespace send out response
@@ -925,9 +930,9 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                             }
                         ];
                     }
-                } catch (err) {
-                    if (!err.message.endsWith(utils.ERRORS.ERROR_NOT_FOUND)) {
-                        return void handler.sendError(responseId, new Error(`ERROR readDir id=${id}: ${err.message}`));
+                } catch (e) {
+                    if (!e.message.endsWith(utils.ERRORS.ERROR_NOT_FOUND)) {
+                        return void handler.sendError(responseId, new Error(`ERROR readDir id=${id}: ${e.message}`));
                     }
                     res = [];
                 }
