@@ -59,7 +59,7 @@ Description of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:170](https://github.com/ioBroker/ioBroker.js-controller/blob/49d93c99/packages/types-dev/objects.d.ts#L170)
+[types-dev/objects.d.ts:170](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L170)
 
 ___
 
@@ -71,7 +71,7 @@ When set to true, this object may not be deleted
 
 #### Defined in
 
-[types-dev/objects.d.ts:173](https://github.com/ioBroker/ioBroker.js-controller/blob/49d93c99/packages/types-dev/objects.d.ts#L173)
+[types-dev/objects.d.ts:173](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L173)
 
 ___
 
@@ -83,7 +83,7 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 #### Defined in
 
-[types-dev/objects.d.ts:176](https://github.com/ioBroker/ioBroker.js-controller/blob/49d93c99/packages/types-dev/objects.d.ts#L176)
+[types-dev/objects.d.ts:176](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L176)
 
 ___
 
@@ -95,7 +95,7 @@ Icon for this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/49d93c99/packages/types-dev/objects.d.ts#L181)
+[types-dev/objects.d.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L181)
 
 ___
 
@@ -107,7 +107,7 @@ The name of this object as a simple string or an object with translations
 
 #### Defined in
 
-[types-dev/objects.d.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/49d93c99/packages/types-dev/objects.d.ts#L167)
+[types-dev/objects.d.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L167)
 
 ___
 
@@ -119,4 +119,4 @@ role of the object
 
 #### Defined in
 
-[types-dev/objects.d.ts:183](https://github.com/ioBroker/ioBroker.js-controller/blob/49d93c99/packages/types-dev/objects.d.ts#L183)
+[types-dev/objects.d.ts:183](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L183)
