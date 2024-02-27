@@ -22,6 +22,7 @@ import deepClone from 'deep-clone';
 import * as pluginInfos from './pluginInfos';
 import rl from 'readline-sync';
 import os from 'os';
+import { FORBIDDEN_CHARS } from '@iobroker/js-controller-common/tools';
 
 const COLOR_RED = '\x1b[31m';
 const COLOR_YELLOW = '\x1b[33m';
@@ -37,7 +38,7 @@ export interface CLISetupOptions {
 }
 
 export class Setup {
-    private readonly options: CLISetupOptions;
+    private readonly KNOWN_GARBAGE_OBJECT_IDS = ['null', 'undefined'];
     private readonly processExit: ProcessExitCallback;
     private states: StatesRedisClient | undefined;
     private objects: ObjectsRedisClient | undefined;
@@ -46,7 +47,6 @@ export class Setup {
     private readonly restartController: RestartController;
 
     constructor(options: CLISetupOptions) {
-        this.options = options;
         this.processExit = options.processExit;
         this.params = options.params;
         this.cleanDatabase = options.cleanDatabase;
@@ -155,12 +155,7 @@ export class Setup {
             throw new Error('Objects not set up, call setupObjects first');
         }
 
-        // clean up invalid user group assignments (non-existing user in a group)
-        try {
-            await this._cleanupInvalidGroupAssignments();
-        } catch (e) {
-            console.error(`Cannot clean up invalid user group assignments: ${e.message}`);
-        }
+        await this._cleanupInstallation();
 
         // special methods which are only there on objects server
         // TODO this check will lead to objects being never in the following code
@@ -182,8 +177,8 @@ export class Setup {
                     console.log('Successfully created "meta.user" directory');
                 }
             }
-        } catch (err) {
-            console.warn(`Could not create directory "meta.user": ${err.message}`);
+        } catch (e) {
+            console.warn(`Could not create directory "meta.user": ${e.message}`);
         }
 
         try {
@@ -202,8 +197,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             }
             await this.informAboutPlugins(systemConfig);
             return void callback();
-        } catch (err) {
-            console.error(`Error on file directory sync: ${err.message}`);
+        } catch (e) {
+            console.error(`Error on file directory sync: ${e.message}`);
             await this.informAboutPlugins(systemConfig);
             return void callback();
         }
@@ -1025,6 +1020,109 @@ Please DO NOT copy files manually into ioBroker storage directories!`
     }
 
     /**
+     * Perform multiple cleanup operations, to clean up inconsistent states due to past bugs or edge case errors
+     */
+    private async _cleanupInstallation(): Promise<void> {
+        console.log('Clean up invalid group assignments ...');
+        try {
+            await this._cleanupInvalidGroupAssignments();
+        } catch (e) {
+            console.error(`Cannot clean up invalid user group assignments: ${e.message}`);
+        }
+
+        console.log('Clean up garbage objects ...');
+        try {
+            await this._cleanupGarbageObjects();
+        } catch (e) {
+            console.error(`Cannot clean up garbage objects: ${e.message}`);
+        }
+
+        console.log('Clean up leftover adapters ...');
+        try {
+            await this._cleanupLeftoverAdapters();
+        } catch (e) {
+            console.error(`Cannot clean up leftover adapters: ${e.message}`);
+        }
+
+        console.log('Clean up objects and states with forbidden characters ...');
+        try {
+            await this._cleanupForbiddenIds();
+        } catch (e) {
+            console.error(`Cannot clean up objects and states with forbidden IDs: ${e.message}`);
+        }
+    }
+
+    /**
+     * Cleanup adapter objects from already removed adapters, which are still there due to errors or past bugs
+     */
+    private async _cleanupLeftoverAdapters(): Promise<void> {
+        if (!this.objects) {
+            throw new Error('Objects not set up, call setupObjects first');
+        }
+
+        const adaptersView = await this.objects.getObjectViewAsync('system', 'adapter');
+
+        for (const row of adaptersView.rows) {
+            const adapter = row.value;
+
+            // TODO: we somehow need information on which host an adapter is installed
+        }
+    }
+
+    /**
+     * Cleanup all states and objects which contain forbidden chars in their id
+     */
+    private async _cleanupForbiddenIds(): Promise<void> {
+        if (!this.objects) {
+            throw new Error('Objects not set up, call setupObjects first');
+        }
+
+        if (!this.states) {
+            throw new Error('States not set up, call setupObjects first');
+        }
+
+        const objIds = await this.objects.getKeys('*');
+
+        if (objIds) {
+            for (const id of objIds) {
+                if (FORBIDDEN_CHARS.test(id)) {
+                    await this.objects.delObject(id);
+                    console.log(`Deleted object "${id}" because it contains forbidden characters`);
+                }
+            }
+        }
+
+        const stateIds = await this.states.getKeys('*');
+
+        if (stateIds) {
+            for (const id of stateIds) {
+                if (FORBIDDEN_CHARS.test(id)) {
+                    await this.states.delState(id);
+                    console.log(`Deleted state "${id}" because it contains forbidden characters`);
+                }
+            }
+        }
+    }
+
+    /**
+     * Cleanup objects which are known to be created on accident in the past by adapters or controller
+     */
+    private async _cleanupGarbageObjects(): Promise<void> {
+        if (!this.objects) {
+            throw new Error('Objects not set up, call setupObjects first');
+        }
+
+        for (const garbageId of this.KNOWN_GARBAGE_OBJECT_IDS) {
+            const isExisting = await this.objects.objectExists(garbageId);
+
+            if (isExisting) {
+                await this.objects.delObject(garbageId);
+                console.log(`Successfully removed garbage object "${garbageId}"`);
+            }
+        }
+    }
+
+    /**
      * Removes non-existing users from groups
      */
     private async _cleanupInvalidGroupAssignments(): Promise<void> {
@@ -1209,8 +1307,8 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                         fs.mkdirSync(path.join(CONTROLLER_DIR, 'log'));
                     }
                 }
-            } catch (err) {
-                console.log(`Non-critical error: ${err.message}`);
+            } catch (e) {
+                console.log(`Non-critical error: ${e.message}`);
             }
         } else if (ignoreIfExist) {
             // it is a setup first run and config exists yet
@@ -1222,8 +1320,8 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                     config.dataDir = tools.getDefaultDataDir();
                     fs.writeJSONSync(configFileName, config, { spaces: 2 });
                 }
-            } catch (err) {
-                console.warn(`Cannot check config file: ${err.message}`);
+            } catch (e) {
+                console.warn(`Cannot check config file: ${e.message}`);
             }
 
             this.setupObjects(() => callback && callback(), true);
