@@ -23,6 +23,7 @@ import * as pluginInfos from './pluginInfos';
 import rl from 'readline-sync';
 import os from 'os';
 import { FORBIDDEN_CHARS } from '@iobroker/js-controller-common/tools';
+import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
 
 const COLOR_RED = '\x1b[31m';
 const COLOR_YELLOW = '\x1b[33m';
@@ -1060,7 +1061,10 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             throw new Error('Objects not set up, call setupObjects first');
         }
 
-        const adaptersView = await this.objects.getObjectViewAsync('system', 'adapter');
+        const adaptersView = await this.objects.getObjectViewAsync('system', 'adapter', {
+            startkey: SYSTEM_ADAPTER_PREFIX,
+            endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
+        });
 
         for (const row of adaptersView.rows) {
             const adapter = row.value;
