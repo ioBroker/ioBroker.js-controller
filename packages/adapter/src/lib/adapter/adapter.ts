@@ -10481,12 +10481,17 @@ export class AdapterClass extends EventEmitter {
                                 ) {
                                     // check the current adapter major version
                                     if (version !== 0 && version !== 1) {
-                                        return;
+                                        // exception if vis-1 has UUID, so it is valid for vis-2
+                                        const exception = decoded.name === 'iobroker.vis' && version === 2 && decoded.uuid;
+
+                                        if (!exception) {
+                                            return;
+                                        }
                                     }
                                 } else if (decoded.version && decoded.version !== version) {
-                                    // Licenses for adapter versions >=2 need to match to the adapter major version
+                                    // Licenses for adapter versions >=2 need to match to the adapter major version,
                                     // which means that a new major version requires new licenses if it would be "included"
-                                    // in last purchase
+                                    //  in the last purchase
 
                                     // decoded.version could be only '<2' or direct version, like "2", "3" and so on
                                     return;
