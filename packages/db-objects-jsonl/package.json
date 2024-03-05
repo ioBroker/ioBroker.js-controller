@@ -1,11 +1,11 @@
 {
   "name": "@iobroker/db-objects-jsonl",
-  "version": "5.0.18-alpha.0-20231224-13fc9d35",
+  "version": "5.0.20-alpha.0-20240226-9b2b813d",
   "engines": {
     "node": ">=12.0.0"
   },
   "dependencies": {
-    "@alcalzone/jsonl-db": "~3.1.0",
+    "@alcalzone/jsonl-db": "~3.1.1",
     "@iobroker/db-base": "file:../db-base",
     "@iobroker/db-objects-file": "file:../db-objects-file",
     "@iobroker/db-objects-redis": "file:../db-objects-redis",

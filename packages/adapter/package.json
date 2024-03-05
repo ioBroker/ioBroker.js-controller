@@ -1,6 +1,6 @@
 {
   "name": "@iobroker/js-controller-adapter",
-  "version": "5.0.18-alpha.0-20231224-13fc9d35",
+  "version": "5.0.20-alpha.0-20240226-9b2b813d",
   "engines": {
     "node": ">=12.0.0"
   },
@@ -39,7 +39,7 @@
     "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/adapter"
   },
   "scripts": {
-    "build": "tsc -b tsconfig.build.json",
+    "build": "tsc -b tsconfig.build.json && tsc-alias",
     "postbuild": "cpy ./cert ../build/ --cwd=src",
     "build:doc": "typedoc --excludeExternals --excludeProtected --excludePrivate --plugin typedoc-plugin-missing-exports --plugin typedoc-plugin-markdown src/lib/adapter/adapter.ts --out ../controller/doc"
   },
