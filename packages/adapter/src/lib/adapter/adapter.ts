@@ -10482,7 +10482,8 @@ export class AdapterClass extends EventEmitter {
                                     // check the current adapter major version
                                     if (version !== 0 && version !== 1) {
                                         // exception if vis-1 has UUID, so it is valid for vis-2
-                                        const exception = decoded.name === 'iobroker.vis' && version === 2 && decoded.uuid;
+                                        const exception =
+                                            decoded.name === 'iobroker.vis' && version === 2 && decoded.uuid;
 
                                         if (!exception) {
                                             return;
