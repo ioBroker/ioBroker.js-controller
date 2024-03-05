@@ -3701,13 +3701,25 @@ async function checkVersions(id: string, deps?: Dependencies, globalDeps?: Depen
         }
     });
 
-    // this ensures we have a real object with correct structure
+    // this ensures we have a real object with the correct structure
     deps = tools.parseDependencies(deps);
     globalDeps = tools.parseDependencies(globalDeps);
+    const listDeps = Object.keys(deps);
+    const listGlobDeps = Object.keys(globalDeps);
+
+    // almost all vis-1 widgets are compatible with vis-2
+    if (
+        (listDeps.includes('vis') || listGlobDeps.includes('vis')) &&
+        !listDeps.includes('vis-2') &&
+        !listGlobDeps.includes('vis-2')
+    ) {
+        globalDeps['vis-2'] = '*';
+        listGlobDeps.push('vis-2');
+    }
 
     // check local dependencies: required adapter must be installed on the same host
     try {
-        for (const dep of Object.keys(deps)) {
+        for (const dep of listDeps) {
             checkVersion(dep, deps[dep], instances);
         }
     } catch (e) {
@@ -3717,7 +3729,7 @@ async function checkVersions(id: string, deps?: Dependencies, globalDeps?: Depen
 
     // check global dependencies: required adapter must be NOT installed on the same host
     try {
-        for (const gDep of Object.keys(globalDeps)) {
+        for (const gDep of listGlobDeps) {
             checkVersion(gDep, globalDeps[gDep], globInstances);
         }
     } catch (e) {

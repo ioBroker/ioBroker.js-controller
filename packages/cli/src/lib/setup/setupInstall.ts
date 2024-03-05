@@ -508,6 +508,13 @@ export class Install {
         // combine both dependencies
         const allDeps = { ...deps, ...globalDeps };
 
+        // Almost all vis-1 widgets are compatible with vis-2
+        const list = Object.keys(allDeps);
+        if (list.includes('vis') && !list.includes('vis-2')) {
+            allDeps['vis-2'] = '*';
+            globalDeps['vis-2'] = '*';
+        }
+
         // Get all installed adapters
         const objs = await this.objects.getObjectViewAsync('system', 'instance', {
             startkey: 'system.adapter.',
@@ -520,7 +527,7 @@ export class Install {
 
                 if (dName === 'js-controller') {
                     const version = allDeps[dName];
-                    // Check only if version not *, else we dont have to read io-pack unnecessarily
+                    // Check only if version not *, else we don't have to read io-pack unnecessarily
                     if (version !== '*') {
                         const packJson = fs.readJSONSync(`${tools.getControllerDir()}/package.json`);
                         if (!semver.satisfies(packJson.version, version, { includePrerelease: true })) {
@@ -539,24 +546,21 @@ export class Install {
                 if (!isFound) {
                     let gInstances: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[] = [];
                     let locInstances: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[] = [];
-                    // if global dep get all instances of adapter
+                    // if global deps, then get all instances of adapter
                     if (globalDeps[dName] !== undefined) {
-                        gInstances = objs.rows.filter(obj => obj.value.common && obj.value.common.name === dName);
+                        gInstances = objs.rows.filter(obj => obj.value.common?.name === dName);
                     }
                     if (deps[dName] !== undefined) {
-                        // local dep get all instances on same host
+                        // local deps, then get all instances on the same host
                         locInstances = objs.rows.filter(
-                            obj =>
-                                obj.value.common &&
-                                obj.value.common.name === dName &&
-                                obj.value.common.host === hostname
+                            obj => obj.value.common?.name === dName && obj.value.common.host === hostname
                         );
                         if (locInstances.length === 0) {
                             console.error(`host.${hostname} Required dependency "${dName}" not found on this host.`);
                         }
                     }
 
-                    // we check, that all existing instances match - respect different versions for local and global deps
+                    // we check that all existing instances match - respect different versions for local and global deps
                     for (const instance of locInstances) {
                         const instanceVersion = instance.value.common.version;
                         if (
