@@ -3,7 +3,7 @@ import path from 'path';
 import { tools } from '@iobroker/js-controller-common';
 import { tools as dbTools } from '@iobroker/js-controller-common-db';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import { MHClient, BrowseResultEntry } from './multihostClient';
+import { MHClient, type BrowseResultEntry } from './multihostClient';
 import readline from 'readline';
 import prompt from 'prompt';
 
@@ -32,7 +32,7 @@ export class Multihost {
     /**
      * Retrive config (iobroker.json content)
      */
-    getConfig(): Record<string, any> {
+    getConfig(): ioBroker.IoBrokerJson {
         let config;
         // read actual configuration
         try {
@@ -92,9 +92,8 @@ export class Multihost {
      *
      * @param config iob config
      * @param changed if config has changed
-     * @param callback
      */
-    private showMHState(config: Record<string, any>, changed: boolean, callback: () => void): void {
+    private showMHState(config: ioBroker.IoBrokerJson, changed: boolean): void {
         if (config.multihostService.enabled) {
             let warningShown = false;
             if (dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host, true)) {
@@ -144,7 +143,6 @@ export class Multihost {
         );
         console.log(`Objects:                    ${config.objects.type} on ${config.objects.host}`);
         console.log(`States:                     ${config.states.type} on ${config.states.host}`);
-        callback();
     }
 
     /**
@@ -217,7 +215,7 @@ export class Multihost {
                 prompt.start();
 
                 prompt.get(schema, (err, password) => {
-                    if (password && password.password) {
+                    if (password?.password) {
                         if (password.password !== password.passwordRepeat) {
                             callback(new Error('Secret phrases are not equal!'));
                         } else {
@@ -226,7 +224,8 @@ export class Multihost {
                                     obj!.native.secret,
                                     password.password as string
                                 );
-                                this.showMHState(config, changed, callback);
+                                this.showMHState(config, changed);
+                                callback();
                             });
                         }
                     } else {
@@ -234,21 +233,22 @@ export class Multihost {
                     }
                 });
             } else {
-                this.showMHState(config, changed, callback);
+                this.showMHState(config, changed);
+                callback();
             }
         } else {
-            this.showMHState(config, changed, callback);
+            this.showMHState(config, changed);
+            callback();
         }
     }
 
     /**
      * Show the MH status
-     * @param callback
      */
-    status(callback: () => void): void {
+    status(): void {
         const config = this.getConfig();
         config.multihostService = config.multihostService || { enabled: false, secure: true };
-        this.showMHState(config, false, callback);
+        this.showMHState(config, false);
     }
 
     /**
@@ -314,11 +314,11 @@ export class Multihost {
                 } else {
                     if (tools.isListenAllAddress(config.states.host)) {
                         // TODO: why we set the remote IP only when the local config allows full connectivity?
-                        config.states.host = ipHost;
+                        config.states.host = ipHost ?? '';
                     }
                     if (tools.isListenAllAddress(config.objects.host)) {
                         // TODO: why we set the remote IP only when the local config allows full connectivity?
-                        config.objects.host = ipHost;
+                        config.objects.host = ipHost ?? '';
                     }
 
                     fs.writeFileSync(this.configName, JSON.stringify(config, null, 2));

@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / InternalUpdateConfigOptions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / InternalUpdateConfigOptions
 
 # Interface: InternalUpdateConfigOptions
 
-[<internal>](../modules/internal_.md).InternalUpdateConfigOptions
+[\<internal\>](../modules/internal_.md).InternalUpdateConfigOptions
 
 ## Table of contents
 
@@ -14,8 +14,8 @@
 
 ### newConfig
 
-• **newConfig**: `Record`<`string`, `any`\>
+• **newConfig**: `Record`\<`string`, `any`\>
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:270](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L270)
+[adapter/src/lib/_Types.ts:270](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/_Types.ts#L270)

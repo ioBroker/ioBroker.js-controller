@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / NotificationScopes
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / NotificationScopes
 
 # Interface: NotificationScopes
 
-[<internal>](../modules/internal_.md).NotificationScopes
+[\<internal\>](../modules/internal_.md).NotificationScopes
 
 Predefined notification scopes and their categories
 
@@ -20,4 +20,4 @@ Predefined notification scopes and their categories
 
 #### Defined in
 
-[types-dev/index.d.ts:309](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L309)
+[types-dev/index.d.ts:309](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/index.d.ts#L309)

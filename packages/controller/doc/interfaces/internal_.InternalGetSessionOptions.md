@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / InternalGetSessionOptions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / InternalGetSessionOptions
 
 # Interface: InternalGetSessionOptions
 
-[<internal>](../modules/internal_.md).InternalGetSessionOptions
+[\<internal\>](../modules/internal_.md).InternalGetSessionOptions
 
 ## Table of contents
 
@@ -19,7 +19,7 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:186](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L186)
+[adapter/src/lib/_Types.ts:186](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/_Types.ts#L186)
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:185](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L185)
+[adapter/src/lib/_Types.ts:185](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/_Types.ts#L185)

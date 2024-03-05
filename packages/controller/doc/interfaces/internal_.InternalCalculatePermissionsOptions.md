@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / InternalCalculatePermissionsOptions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / InternalCalculatePermissionsOptions
 
 # Interface: InternalCalculatePermissionsOptions
 
-[<internal>](../modules/internal_.md).InternalCalculatePermissionsOptions
+[\<internal\>](../modules/internal_.md).InternalCalculatePermissionsOptions
 
 ## Table of contents
 
@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L251)
+[adapter/src/lib/_Types.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/_Types.ts#L251)
 
 ___
 
@@ -31,17 +31,17 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:249](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L249)
+[adapter/src/lib/_Types.ts:249](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/_Types.ts#L249)
 
 ___
 
 ### options
 
-• `Optional` **options**: ``null`` \| `Record`<`string`, `any`\>
+• `Optional` **options**: ``null`` \| `Record`\<`string`, `any`\>
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:250](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L250)
+[adapter/src/lib/_Types.ts:250](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/_Types.ts#L250)
 
 ___
 
@@ -51,4 +51,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:248](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L248)
+[adapter/src/lib/_Types.ts:248](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/_Types.ts#L248)

@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / InternalGetObjectOptions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / InternalGetObjectOptions
 
 # Interface: InternalGetObjectOptions
 
-[<internal>](../modules/internal_.md).InternalGetObjectOptions
+[\<internal\>](../modules/internal_.md).InternalGetObjectOptions
 
 ## Table of contents
 
@@ -16,11 +16,11 @@
 
 ### callback
 
-• `Optional` **callback**: [`GetObjectCallback`](../modules/internal_.md#getobjectcallback)<`any`\>
+• `Optional` **callback**: [`GetObjectCallback`](../modules/internal_.md#getobjectcallback)\<`any`\>
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:298](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L298)
+[adapter/src/lib/_Types.ts:298](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/_Types.ts#L298)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:296](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L296)
+[adapter/src/lib/_Types.ts:296](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/_Types.ts#L296)
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:297](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L297)
+[adapter/src/lib/_Types.ts:297](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/_Types.ts#L297)

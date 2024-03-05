@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / DelObjectOptions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / DelObjectOptions
 
 # Interface: DelObjectOptions
 
-[<internal>](../modules/internal_.md).DelObjectOptions
+[\<internal\>](../modules/internal_.md).DelObjectOptions
 
 ## Indexable
 
@@ -24,4 +24,4 @@ Whether all child objects should be deleted aswell
 
 #### Defined in
 
-[types-dev/index.d.ts:291](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L291)
+[types-dev/index.d.ts:291](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/index.d.ts#L291)

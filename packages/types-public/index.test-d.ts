@@ -98,7 +98,11 @@ function objectChangeHandler(id: string, object: ioBroker.Object | null | undefi
                 break;
 
             case 'channel':
-                object.common.desc && object.common.desc.toLowerCase();
+                if (typeof object.common.desc === 'object') {
+                    object.common.desc.en.toLowerCase();
+                } else if (object.common.desc) {
+                    object.common.desc.toLowerCase();
+                }
                 break;
 
             case 'device':
@@ -679,7 +683,7 @@ adapter.getObjectAsync('id').then(obj => {
 });
 
 declare let state: ioBroker.StateObject;
-if (typeof state.common.smartName === 'object') {
+if (typeof state.common.smartName === 'object' && state.common.smartName !== null) {
     state.common.smartName.de && state.common.smartName.de.toUpperCase();
     state.common.smartName.byOn && state.common.smartName.byOn.toUpperCase();
 }
@@ -768,6 +772,7 @@ const _adapterObject: ioBroker.AdapterObject = {
         materializeTab: false,
         mode: 'daemon',
         name: 'test',
+        automaticUpgrade: 'minor',
         platform: 'Javascript/Node.js',
         supportedMessages: {
             deviceManager: true
@@ -791,6 +796,14 @@ const _adapterObject: ioBroker.AdapterObject = {
     instanceObjects: [],
     objects: []
 };
+
+if (_adapterObject.common.licenseInformation && _adapterObject.common.licenseInformation.type === 'paid') {
+    // for non-free licenses link is non optional
+    _adapterObject.common.licenseInformation.link.includes('https://');
+} else {
+    // @ts-expect-error link is optional on free license
+    _adapterObject.common.licenseInformation.link.includes('https://');
+}
 
 const _folderObject: ioBroker.FolderObject = {
     _id: '',
@@ -894,10 +907,17 @@ async () => {
 
     const host: ioBroker.HostObject | null | undefined = await adapter.getForeignObjectAsync('system.host.my-hostname');
 
-    let config: (ioBroker.OtherObject & { type: 'config' }) | null | undefined;
-    config = await adapter.getForeignObjectAsync('system.repositories');
-    config = await adapter.getForeignObjectAsync('system.config');
-    config = await adapter.getForeignObjectAsync('system.certificates');
+    const config: (ioBroker.OtherObject & { type: 'config' }) | null | undefined = await adapter.getForeignObjectAsync(
+        'system.certificates'
+    );
+
+    const sysConfig: ioBroker.SystemConfigObject | null | undefined = await adapter.getForeignObjectAsync(
+        'system.config'
+    );
+
+    const systemRepo: ioBroker.RepositoryObject | null | undefined = await adapter.getForeignObjectAsync(
+        'system.repositories'
+    );
 
     let misc:
         | ioBroker.FolderObject

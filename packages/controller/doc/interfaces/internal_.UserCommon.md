@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / UserCommon
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / UserCommon
 
 # Interface: UserCommon
 
-[<internal>](../modules/internal_.md).UserCommon
+[\<internal\>](../modules/internal_.md).UserCommon
 
 ## Hierarchy
 
@@ -16,6 +16,7 @@
 
 - [color](internal_.UserCommon.md#color)
 - [custom](internal_.UserCommon.md#custom)
+- [desc](internal_.UserCommon.md#desc)
 - [dontDelete](internal_.UserCommon.md#dontdelete)
 - [enabled](internal_.UserCommon.md#enabled)
 - [expert](internal_.UserCommon.md#expert)
@@ -34,7 +35,7 @@ User color for Admin adapter
 
 #### Defined in
 
-[types-dev/objects.d.ts:414](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L414)
+[types-dev/objects.d.ts:431](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L431)
 
 ___
 
@@ -44,7 +45,23 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:417](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L417)
+[types-dev/objects.d.ts:434](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L434)
+
+___
+
+### desc
+
+• `Optional` **desc**: [`StringOrTranslated`](../modules/internal_.md#stringortranslated)
+
+Description of this object
+
+#### Inherited from
+
+[ObjectCommon](internal_.ObjectCommon.md).[desc](internal_.ObjectCommon.md#desc)
+
+#### Defined in
+
+[types-dev/objects.d.ts:170](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L170)
 
 ___
 
@@ -60,7 +77,7 @@ When set to true, this object may not be deleted
 
 #### Defined in
 
-[types-dev/objects.d.ts:161](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L161)
+[types-dev/objects.d.ts:173](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L173)
 
 ___
 
@@ -72,7 +89,7 @@ Whether this user is enabled
 
 #### Defined in
 
-[types-dev/objects.d.ts:412](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L412)
+[types-dev/objects.d.ts:429](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L429)
 
 ___
 
@@ -88,7 +105,7 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 #### Defined in
 
-[types-dev/objects.d.ts:164](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L164)
+[types-dev/objects.d.ts:176](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L176)
 
 ___
 
@@ -104,7 +121,7 @@ Icon for this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L169)
+[types-dev/objects.d.ts:181](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L181)
 
 ___
 
@@ -120,7 +137,7 @@ The username
 
 #### Defined in
 
-[types-dev/objects.d.ts:408](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L408)
+[types-dev/objects.d.ts:425](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L425)
 
 ___
 
@@ -132,7 +149,7 @@ The hashed password
 
 #### Defined in
 
-[types-dev/objects.d.ts:410](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L410)
+[types-dev/objects.d.ts:427](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L427)
 
 ___
 
@@ -148,4 +165,4 @@ role of the object
 
 #### Defined in
 
-[types-dev/objects.d.ts:171](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L171)
+[types-dev/objects.d.ts:183](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L183)

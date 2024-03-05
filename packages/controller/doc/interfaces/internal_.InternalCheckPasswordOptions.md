@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / InternalCheckPasswordOptions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / InternalCheckPasswordOptions
 
 # Interface: InternalCheckPasswordOptions
 
-[<internal>](../modules/internal_.md).InternalCheckPasswordOptions
+[\<internal\>](../modules/internal_.md).InternalCheckPasswordOptions
 
 ## Table of contents
 
@@ -21,17 +21,17 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:206](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L206)
+[adapter/src/lib/_Types.ts:206](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/_Types.ts#L206)
 
 ___
 
 ### options
 
-• `Optional` **options**: ``null`` \| `Record`<`string`, `any`\>
+• `Optional` **options**: ``null`` \| `Record`\<`string`, `any`\>
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:205](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L205)
+[adapter/src/lib/_Types.ts:205](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/_Types.ts#L205)
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:204](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L204)
+[adapter/src/lib/_Types.ts:204](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/_Types.ts#L204)
 
 ___
 
@@ -51,4 +51,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:203](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L203)
+[adapter/src/lib/_Types.ts:203](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/_Types.ts#L203)

@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / GetUserGroupsOptions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / GetUserGroupsOptions
 
 # Interface: GetUserGroupsOptions
 
-[<internal>](../modules/internal_.md).GetUserGroupsOptions
+[\<internal\>](../modules/internal_.md).GetUserGroupsOptions
 
 ## Indexable
 
@@ -18,8 +18,8 @@
 
 ### user
 
-• **user**: \`system.user.${string}\`
+• **user**: \`system.user.$\{string}\`
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L169)
+[adapter/src/lib/_Types.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/_Types.ts#L169)

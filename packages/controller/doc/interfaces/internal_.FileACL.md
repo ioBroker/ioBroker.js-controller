@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / FileACL
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / FileACL
 
 # Interface: FileACL
 
-[<internal>](../modules/internal_.md).FileACL
+[\<internal\>](../modules/internal_.md).FileACL
 
 Defines access rights for a single file
 
@@ -30,7 +30,7 @@ Full name of the user who owns this file, e.g. "system.user.admin"
 
 #### Defined in
 
-[types-dev/objects.d.ts:8](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L8)
+[types-dev/objects.d.ts:8](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L8)
 
 ___
 
@@ -42,7 +42,7 @@ Full name of the group who owns this file, e.g. "system.group.administrator"
 
 #### Defined in
 
-[types-dev/objects.d.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L10)
+[types-dev/objects.d.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L10)
 
 ___
 
@@ -54,4 +54,4 @@ Linux-type permissions defining access to this file
 
 #### Defined in
 
-[types-dev/objects.d.ts:12](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L12)
+[types-dev/objects.d.ts:12](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L12)

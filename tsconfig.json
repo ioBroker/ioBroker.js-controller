@@ -1,5 +1,5 @@
 {
-  "extends": "@tsconfig/node12/tsconfig.json",
+  "extends": "@tsconfig/node18/tsconfig.json",
   "compilerOptions": {
     // Pass js files through to the build dir
     // but don't complain about errors
@@ -13,11 +13,9 @@
     "inlineSourceMap": false, // Alternatively inline the source maps
     // Don't emit anything by default. This will be turned on in the subprojects
     "noEmit": true,
-    // Avoid unnecessary runtime imports
-    "importsNotUsedAsValues": "error",
     // Avoid TS errors in external dependencies
     "skipLibCheck": true,
-    // Enable syntax help for importes JSON files
+    // Enable syntax help for importing JSON files
     "resolveJsonModule": true,
     "useUnknownInCatchVariables": false,
     "typeRoots": [

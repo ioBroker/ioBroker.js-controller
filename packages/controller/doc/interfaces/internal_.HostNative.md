@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / HostNative
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / HostNative
 
 # Interface: HostNative
 
-[<internal>](../modules/internal_.md).HostNative
+[\<internal\>](../modules/internal_.md).HostNative
 
 ## Table of contents
 
@@ -23,12 +23,12 @@
 | Name | Type |
 | :------ | :------ |
 | `cpus` | `CpuInfo`[] |
-| `networkInterfaces` | `Dict`<`NetworkInterfaceInfo`[]\> |
+| `networkInterfaces` | `Dict`\<`NetworkInterfaceInfo`[]\> |
 | `totalmem` | `number` |
 
 #### Defined in
 
-[types-dev/objects.d.ts:399](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L399)
+[types-dev/objects.d.ts:416](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L416)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:390](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L390)
+[types-dev/objects.d.ts:407](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L407)
 
 ___
 
@@ -62,10 +62,10 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `env` | `Record`<`string`, `string`\> |
+| `env` | `Record`\<`string`, `string`\> |
 | `title` | `string` |
 | `versions` | `ProcessVersions` |
 
 #### Defined in
 
-[types-dev/objects.d.ts:385](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/objects.d.ts#L385)
+[types-dev/objects.d.ts:402](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/objects.d.ts#L402)

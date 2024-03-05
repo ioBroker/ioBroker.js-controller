@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / InternalGetChannelsOfOptions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / InternalGetChannelsOfOptions
 
 # Interface: InternalGetChannelsOfOptions
 
-[<internal>](../modules/internal_.md).InternalGetChannelsOfOptions
+[\<internal\>](../modules/internal_.md).InternalGetChannelsOfOptions
 
 ## Table of contents
 
@@ -16,21 +16,21 @@
 
 ### callback
 
-• `Optional` **callback**: [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)<[`ChannelObject`](internal_.ChannelObject.md)\>
+• `Optional` **callback**: [`GetObjectsCallback3`](../modules/internal_.md#getobjectscallback3)\<[`ChannelObject`](internal_.ChannelObject.md)\>
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:317](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L317)
+[adapter/src/lib/_Types.ts:317](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/_Types.ts#L317)
 
 ___
 
 ### options
 
-• `Optional` **options**: ``null`` \| `Record`<`string`, `any`\>
+• `Optional` **options**: ``null`` \| `Record`\<`string`, `any`\>
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:318](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L318)
+[adapter/src/lib/_Types.ts:318](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/_Types.ts#L318)
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L316)
+[adapter/src/lib/_Types.ts:316](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/_Types.ts#L316)

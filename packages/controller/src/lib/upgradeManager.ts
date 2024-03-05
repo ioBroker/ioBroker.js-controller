@@ -1,4 +1,4 @@
-import { ChildProcessPromise, exec as execAsync } from 'promisify-child-process';
+import { type ChildProcessPromise, exec as execAsync } from 'promisify-child-process';
 import { tools, logger } from '@iobroker/js-controller-common';
 import { valid } from 'semver';
 import { dbConnectAsync } from '@iobroker/js-controller-cli';
@@ -233,10 +233,9 @@ class UpgradeManager {
     /**
      * This function is called when the webserver receives a message
      *
-     * @param req received message
      * @param res server response
      */
-    webServerCallback(req: http.IncomingMessage, res: http.ServerResponse): void {
+    webServerCallback(res: http.ServerResponse): void {
         res.writeHead(200, {
             'Access-Control-Allow-Origin': '*'
         });
@@ -257,8 +256,8 @@ class UpgradeManager {
     startInsecureWebServer(params: InsecureWebServerParameters): void {
         const { port } = params;
 
-        this.server = http.createServer((req, res) => {
-            this.webServerCallback(req, res);
+        this.server = http.createServer((_req, res) => {
+            this.webServerCallback(res);
         });
 
         this.monitorSockets(this.server);
@@ -276,8 +275,8 @@ class UpgradeManager {
     startSecureWebServer(params: SecureWebServerParameters): void {
         const { port, certPublic, certPrivate } = params;
 
-        this.server = https.createServer({ key: certPrivate, cert: certPublic }, (req, res) => {
-            this.webServerCallback(req, res);
+        this.server = https.createServer({ key: certPrivate, cert: certPublic }, (_req, res) => {
+            this.webServerCallback(res);
         });
 
         this.monitorSockets(this.server);

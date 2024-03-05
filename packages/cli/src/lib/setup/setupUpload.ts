@@ -16,7 +16,7 @@ import mime from 'mime-types';
 import { join } from 'path';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import type { InternalLogger } from '@iobroker/js-controller-common/build/lib/common/tools';
+import type { InternalLogger } from '@iobroker/js-controller-common/tools';
 
 const hostname = tools.getHostName();
 
@@ -392,7 +392,6 @@ export class Upload {
         isAdmin: boolean,
         files: string[],
         id: string,
-        rev: any,
         logger: Logger | typeof console
     ): Promise<string> {
         const uploadID = `system.adapter.${adapter}.upload`;
@@ -442,18 +441,8 @@ export class Upload {
             }
 
             try {
-                await new Promise<void>((resolve, reject) => {
-                    const stream = fs.createReadStream(file);
-                    stream.on('error', e => reject(e));
-                    stream.pipe(
-                        this.objects.insert(id, attName, null, mimeType || {}, { rev }, err => {
-                            if (err) {
-                                console.log(err);
-                            }
-                            resolve();
-                        })
-                    );
-                });
+                const content = await fs.readFile(file);
+                await this.objects.writeFileAsync(id, attName, content, { mimeType: mimeType || undefined });
             } catch (e) {
                 console.error(`Error: Cannot upload ${file}: ${e.message}`);
             }
@@ -627,11 +616,9 @@ export class Upload {
             if (!isAdmin) {
                 await this.checkRestartOther(adapter);
                 await new Promise<void>(resolve => setTimeout(() => resolve(), 25));
-                // @ts-expect-error TODO rev is not required and should not exist on an object?
-                await this.upload(adapter, isAdmin, files, id, result?.rev, logger);
+                await this.upload(adapter, isAdmin, files, id, logger);
             } else {
-                // @ts-expect-error TODO rev is not required and should not exist on an object?
-                await this.upload(adapter, isAdmin, files, id, result?.rev, logger);
+                await this.upload(adapter, isAdmin, files, id, logger);
             }
         }
         return adapter;
@@ -642,7 +629,7 @@ export class Upload {
             for (const [attr, attrData] of Object.entries(additional)) {
                 if (target[attr] === undefined) {
                     target[attr] = attrData;
-                } else if (typeof attrData === 'object' && !(attrData instanceof Array)) {
+                } else if (tools.isObject(attrData)) {
                     try {
                         target[attr] = target[attr] || {};
                     } catch {
@@ -726,7 +713,7 @@ export class Upload {
 
         if (res) {
             for (const row of res.rows) {
-                if (row.value.common.host === hostname) {
+                if (row.value?.common.host === hostname) {
                     const _obj = await this.objects.getObjectAsync(row.id);
                     const newObject = deepClone(_obj) as ioBroker.InstanceObject;
 

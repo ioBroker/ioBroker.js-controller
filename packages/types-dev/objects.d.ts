@@ -1,4 +1,4 @@
-import * as os from 'os';
+import type * as os from 'os';
 
 declare global {
     namespace ioBroker {
@@ -11,6 +11,7 @@ declare global {
             /** Linux-type permissions defining access to this file */
             permissions: number;
         }
+
         /** Defines access rights for a single file, applied to a user or group */
         interface EvaluatedFileACL extends FileACL {
             /** Whether the user may read the file */
@@ -28,6 +29,7 @@ declare global {
             /** Linux-type permissions defining access to this object */
             object: number;
         }
+
         /** Defines access rights for a single state object */
         interface StateACL extends ObjectACL {
             /** Linux-type permissions defining access to this state */
@@ -53,8 +55,7 @@ declare global {
             | 'schedule'
             | 'design';
 
-        // Define the naming schemes for objects so we can provide more specific types for get/setObject
-
+        // Define the naming schemes for objects, so we can provide more specific types for get/setObject
         namespace ObjectIDs {
             // Guaranteed meta objects
             type Meta =
@@ -85,8 +86,12 @@ declare global {
             type User = `system.user.${string}`;
             // Guaranteed host objects
             type Host = `system.host.${string}`;
+            // Guaranteed repository object
+            type Repository = 'system.repositories';
             // Guaranteed config objects
-            type Config = `system.${'certificates' | 'config' | 'repositories'}`;
+            type Config = 'system.certificates';
+            // Guaranteed system config objects
+            type SystemConfig = 'system.config';
             // Guaranteed design objects
             type Design = `_design/${string}`;
 
@@ -137,6 +142,10 @@ declare global {
                 ? HostObject
                 : T extends ObjectIDs.Design
                 ? DesignObject
+                : T extends ObjectIDs.Repository
+                ? RepositoryObject
+                : T extends ObjectIDs.SystemConfig
+                ? SystemConfigObject
                 : T extends ObjectIDs.Config
                 ? OtherObject & { type: 'config' }
                 : T extends ObjectIDs.AdapterScoped
@@ -156,6 +165,9 @@ declare global {
         interface ObjectCommon {
             /** The name of this object as a simple string or an object with translations */
             name: StringOrTranslated;
+
+            /** Description of this object */
+            desc?: StringOrTranslated;
 
             /** When set to true, this object may not be deleted */
             dontDelete?: true;
@@ -182,8 +194,6 @@ declare global {
             step?: number;
             /** unit of the value */
             unit?: string;
-            /** description of this state */
-            desc?: StringOrTranslated;
 
             /** if this state is readable */
             read: boolean;
@@ -251,40 +261,46 @@ declare global {
             mobile?: any;
 
             /**
-             * Settings for IOT adapters and how the state should be named in e.g. Alexa.
+             * Settings for IOT adapters and how the state should be named in e.g., Alexa.
              * The string "ignore" is a special case, causing the state to be ignored.
+             * A value of `null` means, that the device should be removed by the IOT adapters
              */
             smartName?:
+                | null
                 | string
                 | ({ [lang in Languages]?: string } & {
-                      /** Which kind of device this is */
+                      /** Which kind of device it is */
                       smartType?: string | null;
                       /** Which value to set when the ON command is issued */
                       byOn?: string | null;
                   });
         }
-        interface ChannelCommon extends ObjectCommon {
-            /** description of this channel */
-            desc?: string;
 
+        interface ChannelCommon extends ObjectCommon {
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
         }
+
         interface DeviceCommon extends ObjectCommon {
             statusStates?: {
-                /** State which is truthy if device is online */
+                /** State, which is truthy if a device is online */
                 onlineId?: string;
-                /** State which is truthy if device is offline */
+                /** State, which is truthy if a device is offline */
                 offlineId?: string;
-                /** State which is truthy if device is in error state */
+                /** State, which is truthy if a device is in error state */
                 errorId?: string;
             };
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
         }
+
         interface ScheduleCommon extends ObjectCommon {
             enabled?: boolean;
             // Make it possible to narrow the object type using the custom property
+            custom?: undefined;
+        }
+
+        interface RepositoryCommon extends ObjectCommon {
             custom?: undefined;
         }
 
@@ -294,6 +310,7 @@ declare global {
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
         }
+
         interface EnumCommon extends ObjectCommon {
             /** The IDs of the enum members */
             members?: string[];
@@ -424,7 +441,7 @@ declare global {
             members: ObjectIDs.User[]; // system.user.name, ...
             /** The default permissions of this group */
             acl: Omit<PermissionSet, 'user' | 'groups'>;
-            /** A group can be disabled, if missing, group is active */
+            /** A group can be disabled, if missing, a group is active */
             enabled?: boolean;
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
@@ -432,7 +449,7 @@ declare global {
 
         interface ScriptCommon extends ObjectCommon {
             name: string;
-            /** Defines the type of the script, e.g. TypeScript/ts, JavaScript/js or Blockly */
+            /** Defines the type of the script, e.g., TypeScript/ts, JavaScript/js or Blockly */
             engineType: string;
             /** The instance id of the instance which executes this script */
             engine: string;
@@ -491,6 +508,28 @@ declare global {
             ignoreInVersions: number[];
         }
 
+        type PaidLicenseType = 'paid' | 'commercial' | 'limited';
+
+        interface LicenseInformationFree {
+            /** License of the software */
+            license?: string;
+            /** Use 'paid' for adapters which do not work without a paid license. Use 'commercial' for adapters which require a license for commercial use only. Use 'limited' if some functionalities are not available without a paid license. */
+            type: 'free';
+            /** Hyperlink, where information about the license can be found. This is required if the license type is different from 'free'. */
+            link?: string;
+        }
+
+        interface LicenseInformationWithPayment {
+            /** License of the software */
+            license?: string;
+            /** Use 'paid' for adapters which do not work without a paid license. Use 'commercial' for adapters which require a license for commercial use only. Use 'limited' if some functionalities are not available without a paid license. */
+            type: PaidLicenseType;
+            /** Hyperlink, where information about the license can be found. This is required if the license type is different from 'free'. */
+            link: string;
+        }
+
+        type LicenseInformation = LicenseInformationFree | LicenseInformationWithPayment;
+
         interface AdapterCommon extends ObjectCommon {
             /** Custom attributes to be shown in admin in the object browser */
             adminColumns?: any[];
@@ -507,6 +546,8 @@ declare global {
                 singleton?: boolean;
             };
             allowInit?: boolean;
+            /** If the adapter should be automatically upgraded and which version ranges are supported */
+            automaticUpgrade?: AutoUpgradePolicy;
             /** Possible values for the instance mode (if more than one is possible) */
             availableModes?: InstanceMode[];
             /** Array which lists all blocked versions. Blocked versions will not be started. Use semver notation to specify the version ranges. The information is always used from the io-package.json in the GitHub repository. */
@@ -537,7 +578,7 @@ declare global {
             getHistory?: boolean;
             /** Filename of the local icon which is shown for installed adapters. Should be located in the `admin` directory */
             icon?: string;
-            /** Source, where this adapter has been installed from, to enable reinstall on e.g. backup restore */
+            /** Source, where this adapter has been installed from, to enable reinstalling on e.g., backup restore */
             installedFrom?: string;
             /** Which version of this adapter is installed */
             installedVersion: string;
@@ -547,7 +588,7 @@ declare global {
             /** @deprecated Use @see localLinks */
             localLink?: string;
             loglevel?: LogLevel;
-            /** Whether this adapter receives logs from other hosts and adapters (e.g. to strore them somewhere) */
+            /** Whether this adapter receives logs from other hosts and adapters (e.g., to strore them somewhere) */
             logTransporter?: boolean;
             /** Path to the start file of the adapter. Should be the same as in `package.json` */
             main?: string;
@@ -622,7 +663,7 @@ declare global {
             /** The available version in the ioBroker repo. */
             version: string;
             visWidgets?: Record<string, VisWidget>;
-            /** If `true`, the adapter will be started if any value is written into `system.adapter.<name>.<instance>.wakeup. Normally the adapter should stop after processing the event. */
+            /** If `true`, the adapter will be started if any value is written into `system.adapter.<name>.<instance>.wakeup. Normally, the adapter should stop after processing the event. */
             wakeup?: boolean;
             /** Include the adapter version in the URL of the web adapter, e.g. `http://ip:port/1.2.3/material` instead of `http://ip:port/material` */
             webByVersion?: boolean;
@@ -637,6 +678,53 @@ declare global {
             /** A list of pages that should be shown on the ioBroker cloud index page */
             welcomeScreenPro?: WelcomeScreenEntry[];
             wwwDontUpload?: boolean;
+            /** @deprecated Use 'common.licenseInformation' instead */
+            license?: string;
+            /** An object representing information with the license details */
+            licenseInformation?: LicenseInformation;
+
+            // Make it possible to narrow the object type using the custom property
+            custom?: undefined;
+        }
+
+        interface SystemConfigCommon extends ObjectCommon {
+            /** Name of all active repositories */
+            activeRepo: string[];
+            /** Current configured language */
+            language: Languages;
+            /** If floating comma is used instead of dot */
+            isFloatComma: boolean;
+            /** Configured longitude */
+            longitude: string;
+            /** Configured latitude */
+            latitude: string;
+            /** Default history instance */
+            defaultHistory: string;
+            /** Which diag data is allowed to be sent */
+            diag: 'none' | 'extended' | 'no-city';
+            /** If license has already been confirmed */
+            licenseConfirmed: boolean;
+            /** System wide default log level */
+            defaultLogLevel?: LogLevel;
+            /** Used date format for formatting */
+            dateFormat: string;
+            /** Default acl for new objects */
+            defaultNewAcl: {
+                object: number;
+                state: number;
+                file: number;
+                owner: ObjectIDs.User;
+                ownerGroup: ObjectIDs.Group;
+            };
+            /** Configured auto upgrade policy */
+            adapterAutoUpgrade?: {
+                /** Configuration for each repository */
+                repositories: {
+                    [repoName: string]: boolean;
+                };
+                /** Default policy, if none has been set explicit for the adapter */
+                defaultPolicy: AutoUpgradePolicy;
+            };
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
@@ -682,7 +770,7 @@ declare global {
             /** The user who created or updated this object */
             user?: string;
             ts?: number;
-            /** These properties can only be edited if correct password is provided */
+            /** These properties can only be edited if the correct password is provided */
             nonEdit?: NonEditable;
         }
 
@@ -701,6 +789,7 @@ declare global {
             type: 'channel';
             common: ChannelCommon;
         }
+
         interface PartialChannelObject extends Partial<Omit<ChannelObject, 'common'>> {
             common?: Partial<ChannelCommon>;
         }
@@ -709,6 +798,7 @@ declare global {
             type: 'device';
             common: DeviceCommon;
         }
+
         interface PartialDeviceObject extends Partial<Omit<DeviceObject, 'common'>> {
             common?: Partial<DeviceCommon>;
         }
@@ -718,6 +808,7 @@ declare global {
             // Nothing is set in stone here, so start with allowing every property
             common: OtherCommon;
         }
+
         interface PartialFolderObject extends Partial<Omit<FolderObject, 'common'>> {
             common?: Partial<OtherCommon>;
         }
@@ -726,6 +817,7 @@ declare global {
             type: 'enum';
             common: EnumCommon;
         }
+
         interface PartialEnumObject extends Partial<Omit<EnumObject, 'common'>> {
             common?: Partial<EnumCommon>;
         }
@@ -734,6 +826,7 @@ declare global {
             type: 'meta';
             common: MetaCommon;
         }
+
         interface PartialMetaObject extends Partial<Omit<MetaObject, 'common'>> {
             common?: Partial<MetaCommon>;
         }
@@ -754,6 +847,56 @@ declare global {
             common?: Partial<ScheduleCommon>;
         }
 
+        interface PartialRepositoryObject extends Partial<Omit<RepositoryObject, 'common'>> {
+            common?: Partial<RepositoryCommon>;
+        }
+
+        interface RepositoryJsonAdapterContent {
+            /** Adapter name */
+            name: string;
+            /** Newest available version */
+            version: string;
+
+            /** Other Adapter related properties, not important for this implementation */
+            [other: string]: unknown;
+        }
+
+        interface RepositoryJson {
+            _repoInfo: {
+                /** If it is the official stable repository */
+                stable?: boolean;
+                /** i18n name of the repository */
+                name: Required<ioBroker.Translated>;
+                /** Time of repository update */
+                repoTime: string;
+            };
+
+            /** Information about each adapter - Record needed for _repoInfo */
+            [adapter: string]: RepositoryJsonAdapterContent | Record<string, any>;
+        }
+
+        interface RepositoryInformation {
+            /** Url to the repository */
+            link: string;
+            json: RepositoryJson | null;
+            hash?: string;
+            time?: string;
+        }
+
+        interface RepositoryObject extends BaseObject {
+            _id: ObjectIDs.Repository;
+            type: 'config';
+            native: {
+                repositories: {
+                    [repoName: string]: RepositoryInformation;
+                };
+                oldRepositories?: {
+                    [repoName: string]: RepositoryInformation;
+                };
+            };
+            common: RepositoryCommon;
+        }
+
         interface InstanceObject extends BaseObject {
             _id: ObjectIDs.Instance;
             type: 'instance';
@@ -769,6 +912,7 @@ declare global {
             /** Objects created for the adapter, anywhere in the global namespace */
             objects: ioBroker.AnyObject[];
         }
+
         interface PartialInstanceObject extends Partial<Omit<InstanceObject, 'common'>> {
             common?: Partial<InstanceCommon>;
         }
@@ -798,6 +942,7 @@ declare global {
             /** Objects created for the adapter, anywhere in the global namespace */
             objects: ioBroker.AnyObject[];
         }
+
         interface PartialAdapterObject extends Partial<Omit<AdapterObject, 'common'>> {
             common?: Partial<AdapterCommon>;
         }
@@ -808,6 +953,7 @@ declare global {
             common: HostCommon;
             native: HostNative;
         }
+
         interface PartialHostObject extends Partial<Omit<HostObject, 'common' | 'native'>> {
             common?: Partial<HostCommon>;
             native?: Partial<HostNative>;
@@ -818,6 +964,7 @@ declare global {
             type: 'user';
             common: UserCommon;
         }
+
         interface PartialUserObject extends Partial<Omit<UserObject, 'common'>> {
             common?: Partial<UserCommon>;
         }
@@ -827,6 +974,7 @@ declare global {
             type: 'group';
             common: GroupCommon;
         }
+
         interface PartialGroupObject extends Partial<Omit<GroupObject, 'common'>> {
             common?: Partial<GroupCommon>;
         }
@@ -835,8 +983,18 @@ declare global {
             type: 'script';
             common: ScriptCommon;
         }
+
         interface PartialScriptObject extends Partial<Omit<ScriptObject, 'common'>> {
             common?: Partial<ScriptCommon>;
+        }
+
+        interface SystemConfigObject extends BaseObject {
+            type: 'config';
+            common: SystemConfigCommon;
+        }
+
+        interface PartialSystemConfigObject extends Partial<Omit<SystemConfigObject, 'common'>> {
+            common?: Partial<SystemConfigCommon>;
         }
 
         interface OtherObject extends BaseObject {
@@ -876,6 +1034,7 @@ declare global {
             | ScriptObject
             | ChartObject
             | ScheduleObject
+            | RepositoryObject
             | OtherObject
             | DesignObject;
 
@@ -894,13 +1053,15 @@ declare global {
             | PartialScriptObject
             | PartialChartObject
             | PartialScheduleObject
+            | PartialRepositoryObject
+            | PartialSystemConfigObject
             | PartialOtherObject
             | PartialDesignObject;
 
         /** All objects that usually appear in an adapter scope */
         type AdapterScopedObject = FolderObject | DeviceObject | ChannelObject | StateObject;
 
-        // For all objects that are exposed to the user we need to tone the strictness down.
+        // For all objects that are exposed to the user, we need to tone the strictness down.
         // Otherwise, every operation on objects becomes a pain to work with
         type Object = AnyObject & {
             common: Record<string, any>;
@@ -936,6 +1097,8 @@ declare global {
         type SettableScheduleObject = SettableObject<ScheduleObject>;
         type SettableChartObject = SettableObject<ChartObject>;
         type SettableDesignObject = SettableObject<DesignObject>;
+        type SettableRepositoryObject = SettableObject<RepositoryObject>;
+        type SettableSystemConfigObject = SettableObject<SystemConfigObject>;
         type SettableOtherObject = SettableObject<OtherObject>;
 
         // Used to infer the return type of GetObjectView
@@ -969,7 +1132,12 @@ declare global {
                 : View extends 'schedule'
                 ? ScheduleObject
                 : View extends 'config'
-                ? OtherObject & { type: 'config' }
+                ?
+                      | RepositoryObject
+                      | SystemConfigObject
+                      | (OtherObject & {
+                            type: 'config';
+                        })
                 : View extends 'custom'
                 ? NonNullable<StateObject['common']['custom']>
                 : ioBroker.Object

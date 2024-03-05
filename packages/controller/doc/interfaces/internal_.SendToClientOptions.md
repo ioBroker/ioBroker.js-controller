@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / SendToClientOptions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / SendToClientOptions
 
 # Interface: SendToClientOptions
 
-[<internal>](../modules/internal_.md).SendToClientOptions
+[\<internal\>](../modules/internal_.md).SendToClientOptions
 
 ## Table of contents
 
@@ -22,7 +22,7 @@ ID of the client to send the message to, will send to all if omitted
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:28](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L28)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:28](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L28)
 
 ___
 
@@ -34,7 +34,7 @@ Data to send to the client
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:30](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L30)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:30](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L30)
 
 ___
 
@@ -46,4 +46,4 @@ The states db
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:32](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L32)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:32](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L32)

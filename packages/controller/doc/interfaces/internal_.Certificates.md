@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / Certificates
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / Certificates
 
 # Interface: Certificates
 
-[<internal>](../modules/internal_.md).Certificates
+[\<internal\>](../modules/internal_.md).Certificates
 
 ## Table of contents
 
@@ -22,7 +22,7 @@ chained CA certificates
 
 #### Defined in
 
-[types-dev/index.d.ts:224](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L224)
+[types-dev/index.d.ts:224](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/index.d.ts#L224)
 
 ___
 
@@ -34,7 +34,7 @@ public certificate
 
 #### Defined in
 
-[types-dev/index.d.ts:222](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L222)
+[types-dev/index.d.ts:222](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/index.d.ts#L222)
 
 ___
 
@@ -46,4 +46,4 @@ private key file
 
 #### Defined in
 
-[types-dev/index.d.ts:220](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/types-dev/index.d.ts#L220)
+[types-dev/index.d.ts:220](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/types-dev/index.d.ts#L220)

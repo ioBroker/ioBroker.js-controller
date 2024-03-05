@@ -46,7 +46,7 @@ interface JsonlOptions {
     };
 }
 
-interface DatabaseOptions {
+export interface DatabaseOptions {
     /** Possible values: 'file' - [port 9001], 'jsonl' - [port 9001], 'redis' - [port 6379 or 26379 for sentinel]. */
     type: 'jsonl' | 'file' | 'redis';
     '// type': string;
@@ -66,7 +66,7 @@ interface DatabaseOptions {
     jsonlOptions: JsonlOptions;
 }
 
-interface ObjectsDatabaseOptions extends DatabaseOptions {
+export interface ObjectsDatabaseOptions extends DatabaseOptions {
     noFileCache: boolean;
     maxQueue: number;
 }
@@ -105,6 +105,7 @@ export interface IoBJson {
         enabled: boolean;
         secure: boolean;
         password: string;
+        persist: boolean;
     };
     objects: ObjectsDatabaseOptions;
     states: DatabaseOptions;

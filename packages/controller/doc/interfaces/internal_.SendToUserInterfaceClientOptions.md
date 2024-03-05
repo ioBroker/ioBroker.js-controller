@@ -1,8 +1,8 @@
-[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [<internal\>](../modules/internal_.md) / SendToUserInterfaceClientOptions
+[@iobroker/js-controller-adapter](../README.md) / [Exports](../modules.md) / [\<internal\>](../modules/internal_.md) / SendToUserInterfaceClientOptions
 
 # Interface: SendToUserInterfaceClientOptions
 
-[<internal>](../modules/internal_.md).SendToUserInterfaceClientOptions
+[\<internal\>](../modules/internal_.md).SendToUserInterfaceClientOptions
 
 ## Table of contents
 
@@ -21,7 +21,7 @@ id of the UI client, if not given send to all active clients
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:240](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L240)
+[adapter/src/lib/_Types.ts:240](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/_Types.ts#L240)
 
 ___
 
@@ -33,4 +33,4 @@ data to send to the client
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:242](https://github.com/ioBroker/ioBroker.js-controller/blob/5b321f38/packages/adapter/src/lib/_Types.ts#L242)
+[adapter/src/lib/_Types.ts:242](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/_Types.ts#L242)

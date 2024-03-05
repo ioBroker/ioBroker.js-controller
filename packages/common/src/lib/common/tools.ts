@@ -4,10 +4,11 @@ import semver from 'semver';
 import os from 'os';
 import forge from 'node-forge';
 import deepClone from 'deep-clone';
-import { ChildProcessPromise, exec as cpExecAsync } from 'promisify-child-process';
+import { type ChildProcessPromise, exec as cpExecAsync } from 'promisify-child-process';
 import { createInterface } from 'readline';
 import { PassThrough } from 'stream';
-import { CommandResult, detectPackageManager, InstallOptions, PackageManager, packageManagers } from '@alcalzone/pak';
+import type { CommandResult, InstallOptions, PackageManager } from '@alcalzone/pak';
+import { detectPackageManager, packageManagers } from '@alcalzone/pak';
 import { EXIT_CODES } from './exitCodes';
 import zlib from 'zlib';
 import { password } from './password';
@@ -23,6 +24,7 @@ import { maybeCallbackWithError } from './maybeCallback';
 const extend = require('node.extend');
 import { setDefaultResultOrder } from 'dns';
 import { applyAliasAutoScaling, applyAliasConvenienceConversion, applyAliasTransformer } from './aliasProcessing';
+import type * as DiskUsage from 'diskusage';
 
 type DockerInformation =
     | {
@@ -97,7 +99,7 @@ export enum ERRORS {
 
 events.EventEmitter.prototype.setMaxListeners(100);
 let npmVersion: string;
-let diskusage: typeof import('diskusage');
+let diskusage: typeof DiskUsage;
 
 const randomID = Math.round(Math.random() * 10_000_000_000_000); // Used for creation of User-Agent
 const VENDOR_FILE = '/etc/iob-vendor.json';
@@ -1431,7 +1433,7 @@ export function getRepositoryFile(
 }
 
 export interface RepositoryFile {
-    json: Record<string, any>;
+    json: ioBroker.RepositoryJson;
     changed: boolean;
     hash: string;
 }
@@ -1442,14 +1444,14 @@ export interface RepositoryFile {
  * @param url URL starting with http:// or https:// or local file link
  * @param hash actual hash
  * @param force Force repository update despite on hash
- * @param _actualRepo Actual repository
+ * @param _actualRepo Actual repository JSON content
  *
  */
 export async function getRepositoryFileAsync(
     url: string,
     hash?: string,
     force?: boolean,
-    _actualRepo?: RepositoryFile
+    _actualRepo?: ioBroker.RepositoryJson | null
 ): Promise<RepositoryFile> {
     let _hash;
     let data;
@@ -1461,7 +1463,7 @@ export async function getRepositoryFileAsync(
             // ignore missing hash file
         }
 
-        if (_actualRepo && !force && hash && _hash && _hash.data && _hash.data.hash === hash) {
+        if (_actualRepo && !force && hash && _hash?.data && _hash.data.hash === hash) {
             data = _actualRepo;
         } else {
             const agent = `${appName}, RND: ${randomID}, Node:${process.version}, V:${
@@ -1493,7 +1495,7 @@ export async function getRepositoryFileAsync(
 
     return {
         json: data,
-        changed: _hash && _hash.data ? hash !== _hash.data.hash : true,
+        changed: _hash?.data ? hash !== _hash.data.hash : true,
         hash: _hash && _hash.data ? _hash.data.hash : ''
     };
 }
@@ -2316,42 +2318,48 @@ export function promisify(
         const args = sliceArgs(arguments);
         // @ts-expect-error we cannot know the type of `this`
         context = context || this;
-        return new Promise<void | Record<string, any> | any[]>((resolve, reject) => {
-            fn.apply(
-                context,
-                args.concat([
-                    function (error: string | Error, result: any) {
-                        if (error) {
-                            return reject(error instanceof Error ? error : new Error(error));
-                        } else {
-                            // decide on how we want to return the callback arguments
-                            switch (arguments.length) {
-                                case 1: // only an error was given
-                                    return resolve(); // Promise<void>
-                                case 2: // a single value (result) was returned
-                                    return resolve(result);
-                                default: {
-                                    // multiple values should be returned
-                                    let ret: Record<string, any> | any[];
-                                    // eslint-disable-next-line prefer-rest-params
-                                    const extraArgs = sliceArgs(arguments, 1);
-                                    if (returnArgNames && returnArgNames.length === extraArgs.length) {
-                                        // we can build an object
-                                        ret = {};
-                                        for (let i = 0; i < returnArgNames.length; i++) {
-                                            ret[returnArgNames[i]] = extraArgs[i];
+        // eslint-disable-next-line no-async-promise-executor
+        return new Promise<void | Record<string, any> | any[]>(async (resolve, reject) => {
+            try {
+                // await this to allow streamlining errors not passed via callback by async methods
+                await fn.apply(
+                    context,
+                    args.concat([
+                        function (error: string | Error, result: any) {
+                            if (error) {
+                                return reject(error instanceof Error ? error : new Error(error));
+                            } else {
+                                // decide on how we want to return the callback arguments
+                                switch (arguments.length) {
+                                    case 1: // only an error was given
+                                        return resolve(); // Promise<void>
+                                    case 2: // a single value (result) was returned
+                                        return resolve(result);
+                                    default: {
+                                        // multiple values should be returned
+                                        let ret: Record<string, any> | any[];
+                                        // eslint-disable-next-line prefer-rest-params
+                                        const extraArgs = sliceArgs(arguments, 1);
+                                        if (returnArgNames && returnArgNames.length === extraArgs.length) {
+                                            // we can build an object
+                                            ret = {};
+                                            for (let i = 0; i < returnArgNames.length; i++) {
+                                                ret[returnArgNames[i]] = extraArgs[i];
+                                            }
+                                        } else {
+                                            // we return the raw array
+                                            ret = extraArgs;
                                         }
-                                    } else {
-                                        // we return the raw array
-                                        ret = extraArgs;
+                                        return resolve(ret);
                                     }
-                                    return resolve(ret);
                                 }
                             }
                         }
-                    }
-                ])
-            );
+                    ])
+                );
+            } catch (e) {
+                reject(e);
+            }
         });
     };
 }
