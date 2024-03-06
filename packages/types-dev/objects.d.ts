@@ -515,7 +515,10 @@ declare global {
             license?: string;
             /** Use 'paid' for adapters which do not work without a paid license. Use 'commercial' for adapters which require a license for commercial use only. Use 'limited' if some functionalities are not available without a paid license. */
             type: 'free';
-            /** Hyperlink, where information about the license can be found. This is required if the license type is different from 'free'. */
+            /**
+             * Hyperlink, where information about the license can be found. For non-free licenses the linked page should contain information about free features (if applicable), time of validity, link to shop and seller information.
+             * This is required if the license type is different from 'free'. For 'free' licenses an optional link to the license file can be placed here.
+             */
             link?: string;
         }
 
@@ -524,7 +527,10 @@ declare global {
             license?: string;
             /** Use 'paid' for adapters which do not work without a paid license. Use 'commercial' for adapters which require a license for commercial use only. Use 'limited' if some functionalities are not available without a paid license. */
             type: PaidLicenseType;
-            /** Hyperlink, where information about the license can be found. This is required if the license type is different from 'free'. */
+            /**
+             * Hyperlink, where information about the license can be found. For non-free licenses the linked page should contain information about free features (if applicable), time of validity, link to shop and seller information.
+             * This is required if the license type is different from 'free'. For 'free' licenses an optional link to the license file can be placed here.
+             */
             link: string;
         }
 

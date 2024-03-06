@@ -890,7 +890,7 @@
               ]
             },
             "link": {
-              "description": "Hyperlink, where information about the license can be found. This is required if the license type is different from 'free'.",
+              "description": "Hyperlink, where information about the license can be found. For non-free licenses the linked page should contain information about free features (if applicable), time of validity, link to shop and seller information. This is required if the license type is different from 'free'. For 'free' licenses an optional link to the license file can be placed here.",
               "type": "string",
               "pattern": "^https://.+$"
             }
