@@ -174,6 +174,8 @@ declare global {
 
             /** When set to true, this object is only visible when expert mode is turned on in admin */
             expert?: true;
+            /** Color attribute used in UI */
+            color?: string;
 
             // Icon and role aren't defined in SCHEMA.md,
             // but they are being used by some adapters
@@ -306,7 +308,6 @@ declare global {
 
         interface ChartCommon extends ObjectCommon {
             enabled?: boolean;
-            color?: string;
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
         }
@@ -314,8 +315,6 @@ declare global {
         interface EnumCommon extends ObjectCommon {
             /** The IDs of the enum members */
             members?: string[];
-            /** Color attribute used in UI */
-            color?: string;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
@@ -392,8 +391,6 @@ declare global {
             type: 'js-controller';
             platform: 'Javascript/Node.js';
 
-            color?: string;
-
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
         }
@@ -427,8 +424,6 @@ declare global {
             password: string;
             /** Whether this user is enabled */
             enabled: boolean;
-            /** User color for Admin adapter */
-            color?: string;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
