@@ -1,6 +1,6 @@
 {
   "name": "@iobroker/db-objects-file",
-  "version": "5.0.20-alpha.0-20240226-9b2b813d",
+  "version": "5.0.20-alpha.0-20240307-f0c31e77",
   "engines": {
     "node": ">=12.0.0"
   },
