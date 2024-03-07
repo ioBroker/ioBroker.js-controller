@@ -754,7 +754,8 @@ adapter.FORBIDDEN_CHARS = /_/;
             read: true,
             write: false,
             type: 'boolean',
-            role: 'indicator'
+            role: 'indicator',
+            color: 'yellow'
         },
         native: config
     });
