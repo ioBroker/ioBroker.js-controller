@@ -525,6 +525,27 @@ declare global {
 
         type LicenseInformation = LicenseInformationFree | LicenseInformationWithPayment;
 
+        interface Message {
+            /** Multi-language title of the message */
+            title: {
+                [lang: string]: string;
+            };
+            /** Multi-language content of the message */
+            text: {
+                [lang: string]: string;
+            };
+            /** Multi-language label of the link */
+            linkText?: {
+                [lang: string]: string;
+            };
+            /** URL for link */
+            link?: string;
+            /** Button, that should be shown. OK is by default visible */
+            buttons?: ('agree' | 'cancel' | 'ok')[];
+            /** Message level. Default: 'warn */
+            level?: 'warn' | 'error' | 'info';
+        }
+
         interface AdapterCommon extends ObjectCommon {
             /** Custom attributes to be shown in admin in the object browser */
             adminColumns?: any[];
@@ -677,6 +698,8 @@ declare global {
             license?: string;
             /** An object representing information with the license details */
             licenseInformation?: LicenseInformation;
+            /** Messages, that will be shown (if rule is OK) by upgrade or installation */
+            messages?: Message[];
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
