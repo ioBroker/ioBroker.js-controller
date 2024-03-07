@@ -525,6 +525,26 @@ declare global {
 
         type LicenseInformation = LicenseInformationFree | LicenseInformationWithPayment;
 
+        interface MessageRule {
+            /** The message title */
+            title: ioBroker.Translated;
+            /** The message content */
+            text: ioBroker.Translated;
+            /** Optional link */
+            link?: string;
+            /** Text of the link */
+            linkText?: ioBroker.Translated;
+            /** The severity level of the message */
+            level: 'warn' | 'error' | 'info';
+            /** The buttons which should be shown on the message dialog */
+            buttons?: ('agree' | 'cancel' | 'ok')[];
+            /** The condition which needs to be met to display the message */
+            condition: {
+                operand: 'and' | 'or';
+                rules: string[];
+            };
+        }
+
         interface AdapterCommon extends ObjectCommon {
             /** Custom attributes to be shown in admin in the object browser */
             adminColumns?: any[];
@@ -677,6 +697,8 @@ declare global {
             license?: string;
             /** An object representing information with the license details */
             licenseInformation?: LicenseInformation;
+            /** Messages, that will be shown (if condition evaluates to true) by upgrade or installation */
+            messages?: MessageRule[];
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
