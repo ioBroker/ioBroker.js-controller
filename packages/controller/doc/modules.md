@@ -26,4 +26,4 @@ Polyfill to allow calling without `new`
 
 #### Defined in
 
-[adapter/src/lib/adapter/adapter.ts:12246](https://github.com/ioBroker/ioBroker.js-controller/blob/9b2b813d/packages/adapter/src/lib/adapter/adapter.ts#L12246)
+[adapter/src/lib/adapter/adapter.ts:12246](https://github.com/ioBroker/ioBroker.js-controller/blob/f0c31e77/packages/adapter/src/lib/adapter/adapter.ts#L12246)
