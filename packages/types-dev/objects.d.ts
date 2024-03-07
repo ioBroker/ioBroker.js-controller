@@ -526,18 +526,19 @@ declare global {
         type LicenseInformation = LicenseInformationFree | LicenseInformationWithPayment;
 
         interface MessageRule {
-            title: {
-                [lang: string]: string;
-            };
-            text: {
-                [lang: string]: string;
-            };
+            /** The message title */
+            title: ioBroker.Translated;
+            /** The message content */
+            text: ioBroker.Translated;
+            /** Optional link */
             link?: string;
-            linkText?: {
-                [lang: string]: string;
-            };
+            /** Text of the link */
+            linkText?: ioBroker.Translated;
+            /** The severity level of the message */
             level: 'warn' | 'error' | 'info';
+            /** The buttons which should be shown on the message dialog */
             buttons?: ('agree' | 'cancel' | 'ok')[];
+            /** The condition which needs to be met to display the message */
             condition: {
                 operand: 'and' | 'or';
                 rules: string[];
@@ -696,7 +697,7 @@ declare global {
             license?: string;
             /** An object representing information with the license details */
             licenseInformation?: LicenseInformation;
-            /** Messages, that will be shown (if rule is OK) by upgrade or installation */
+            /** Messages, that will be shown (if condition evaluates to true) by upgrade or installation */
             messages?: MessageRule[];
 
             // Make it possible to narrow the object type using the custom property
