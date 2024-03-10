@@ -111,7 +111,8 @@ import type {
     SendToUserInterfaceClientOptions,
     AllPropsUnknown,
     IoPackageInstanceObject,
-    AliasTargetEntry
+    AliasTargetEntry,
+    SuitableLicense
 } from '@/lib/_Types';
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
@@ -10430,8 +10431,8 @@ export class AdapterClass extends EventEmitter {
      * @param adapterName Return licenses for specific adapter
      * @returns list of suitable licenses
      */
-    async getSuitableLicenses(all?: boolean, adapterName?: string): Promise<any> {
-        const licenses: Record<string, any>[] = [];
+    async getSuitableLicenses(all?: boolean, adapterName?: string): Promise<SuitableLicense[]> {
+        const licenses: SuitableLicense[] = [];
         try {
             const obj = await this.getForeignObjectAsync('system.licenses');
             const uuidObj = await this.getForeignObjectAsync('system.meta.uuid');
@@ -10457,7 +10458,7 @@ export class AdapterClass extends EventEmitter {
 
                 const version = semver.major(adapterObj?.common?.version || this.pack!.version);
 
-                obj.native.licenses.forEach((license: Record<string, any>) => {
+                for (const license of obj.native.licenses as Omit<SuitableLicense, 'decoded'>[]) {
                     try {
                         const decoded: any = jwt.verify(license.json, cert);
                         if (
@@ -10471,7 +10472,6 @@ export class AdapterClass extends EventEmitter {
                                 (all || !license.usedBy || license.usedBy === this.namespace)
                             ) {
                                 // Licenses for version ranges 0.x and 1.x are handled identically and are valid for both version ranges.
-                                //
                                 // If license is for adapter with version 0 or 1
                                 if (
                                     decoded.version === '&lt;2' ||
@@ -10486,7 +10486,7 @@ export class AdapterClass extends EventEmitter {
                                             decoded.name === 'iobroker.vis' && version === 2 && decoded.uuid;
 
                                         if (!exception) {
-                                            return;
+                                            continue;
                                         }
                                     }
                                 } else if (decoded.version && decoded.version !== version) {
@@ -10495,11 +10495,11 @@ export class AdapterClass extends EventEmitter {
                                     //  in the last purchase
 
                                     // decoded.version could be only '<2' or direct version, like "2", "3" and so on
-                                    return;
+                                    continue;
                                 }
                                 if (decoded.uuid && decoded.uuid !== uuid) {
                                     // License is not for this server
-                                    return;
+                                    continue;
                                 }
 
                                 // remove free license if commercial license found
@@ -10509,8 +10509,8 @@ export class AdapterClass extends EventEmitter {
                                         licenses.splice(pos, 1);
                                     }
                                 }
-                                license.decoded = decoded;
-                                licenses.push(license);
+
+                                licenses.push({ ...license, decoded });
                             }
                         }
                     } catch (err) {
@@ -10518,13 +10518,12 @@ export class AdapterClass extends EventEmitter {
                             `${this.namespaceLog} Cannot decode license "${license.name}": ${err.message}`
                         );
                     }
-                });
+                }
             }
         } catch {
             // ignore
         }
 
-        // @ts-expect-error
         licenses.sort((a, b) => {
             const aInvoice = a.decoded.invoice !== 'free';
             const bInvoice = b.decoded.invoice !== 'free';
@@ -10535,6 +10534,8 @@ export class AdapterClass extends EventEmitter {
             } else if (bInvoice) {
                 return 1;
             }
+
+            return 0;
         });
 
         return licenses;

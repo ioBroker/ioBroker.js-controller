@@ -61,6 +61,27 @@ type MessageUnsubscribeReason = 'client' | 'disconnect';
 export type ClientUnsubscribeReason = MessageUnsubscribeReason | 'clientSubscribeError';
 type UserInterfaceClientUnsubscribeReason = ClientUnsubscribeReason | 'timeout';
 
+export interface SuitableLicense {
+    /** Name of the license */
+    name: string;
+    /** The actual license */
+    json: string;
+    /** If it is a free license or not */
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    invoice: 'free' | (string & {});
+    /** The adapter instance which uses this license */
+    usedBy?: string;
+    decoded: {
+        /** Version for which this license is valid */
+        version: string;
+        /** License is only valid for given UUID */
+        uuid?: string;
+        /** If it is a free license or not */
+        // eslint-disable-next-line @typescript-eslint/ban-types
+        invoice: 'free' | (string & {});
+    };
+}
+
 export interface UserInterfaceSubscribeInfo {
     /** The client id, which can be used to send information to clients */
     clientId: string;
