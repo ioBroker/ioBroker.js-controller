@@ -1048,7 +1048,6 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         await this.objects.setObject(adaptersId, {
             type: 'folder',
             common: {
-                // TODO translate
                 name: {
                     en: 'Installed adapters',
                     de: 'Installierte Adapter',
