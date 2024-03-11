@@ -1043,15 +1043,37 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             return;
         }
 
+        console.log(`Creating adapter objects for host "${hostname}"`);
+
         await this.objects.setObject(adaptersId, {
             type: 'folder',
             common: {
                 // TODO translate
                 name: {
-                    en: 'Installed adapters'
+                    en: 'Installed adapters',
+                    de: 'Installierte Adapter',
+                    ru: 'Установленные адаптеры',
+                    pt: 'Adaptadores instalados',
+                    nl: 'Geïnstalleerde adapters',
+                    fr: 'Adaptateurs installés',
+                    it: 'Adattatori installati',
+                    es: 'Adaptadores instalados',
+                    pl: 'Zainstalowane adaptery',
+                    uk: 'Встановлені адаптери',
+                    'zh-cn': '已安装的适配器'
                 },
                 desc: {
-                    en: 'Installed adapters on this host'
+                    en: 'Installed adapters on this host',
+                    de: 'Installierte Adapter auf diesem Host',
+                    ru: 'Установленные адаптеры на этом хосте',
+                    pt: 'Adaptadores instalados neste anfitrião',
+                    nl: 'Geïnstalleerde adapters op deze host',
+                    fr: 'Adaptateurs installés sur cet hôte',
+                    it: 'Adattatori installati su questo host',
+                    es: 'Adaptadores instalados en este host',
+                    pl: 'Zainstalowane karty na tym hoście',
+                    uk: 'Встановлені адаптери на цьому хості',
+                    'zh-cn': '该主机上已安装的适配器'
                 }
             },
             native: {}
