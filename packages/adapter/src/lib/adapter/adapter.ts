@@ -10515,7 +10515,7 @@ export class AdapterClass extends EventEmitter {
                         }
                     } catch (err) {
                         this._logger.error(
-                            `${this.namespaceLog} Cannot decode license "${license.name}": ${err.message}`
+                            `${this.namespaceLog} Cannot decode license "${license.product}": ${err.message}`
                         );
                     }
                 }
