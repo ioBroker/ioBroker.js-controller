@@ -139,7 +139,7 @@ export class Setup {
     }
 
     /**
-     * Called after io-package objects are created
+     * Called after io-package objects are created (hence object view functionalities are now available)
      *
      * @param systemConfig
      * @param callback
@@ -157,6 +157,7 @@ export class Setup {
             throw new Error('Objects not set up, call setupObjects first');
         }
 
+        await this._ensureAdaptersPerHostObject();
         await this._cleanupInstallation();
 
         // special methods which are only there on objects server
@@ -224,11 +225,11 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 obj.from = `system.host.${tools.getHostName()}.cli`;
                 obj.ts = Date.now();
                 await this.objects.setObjectAsync(obj._id, obj);
-                console.log(`object ${obj._id} ${!existingObj ? 'created' : 'updated'}`);
+                console.log(`object "${obj._id}" ${!existingObj ? 'created' : 'updated'}`);
                 setTimeout(this.dbSetup, 25, iopkg, ignoreExisting, callback);
             } else {
                 if (!ignoreExisting) {
-                    console.log(`object ${obj._id} already exists`);
+                    console.log(`object "${obj._id}" already exists`);
                 }
                 setTimeout(this.dbSetup, 25, iopkg, ignoreExisting, callback);
             }
@@ -307,7 +308,6 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         const iopkg = fs.readJsonSync(path.join(CONTROLLER_DIR, 'io-package.json'));
 
         await this._maybeMigrateSets();
-        await this._ensureAdaptersPerHostObject();
 
         if (checkCertificateOnly) {
             let certObj;
