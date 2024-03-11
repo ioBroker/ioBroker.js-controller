@@ -23,7 +23,7 @@ import * as pluginInfos from './pluginInfos';
 import rl from 'readline-sync';
 import os from 'os';
 import { FORBIDDEN_CHARS } from '@iobroker/js-controller-common/tools';
-import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
+import { SYSTEM_ADAPTER_PREFIX, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common/constants';
 
 const COLOR_RED = '\x1b[31m';
 const COLOR_YELLOW = '\x1b[33m';
@@ -1061,15 +1061,41 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             throw new Error('Objects not set up, call setupObjects first');
         }
 
+        const hostsView = await this.objects.getObjectViewAsync('system', 'host', {
+            startkey: SYSTEM_HOST_PREFIX,
+            endkey: `${SYSTEM_HOST_PREFIX}\u9999`
+        });
+
+        const hostIds = hostsView.rows.map(row => row.id);
+
+        for (const hostId of hostIds) {
+            const hasAdapters = await this.objects.objectExists(`${hostId}.adapters`);
+
+            if (!hasAdapters) {
+                console.log(
+                    `Skipping cleanup leftover adapters, because host "${hostId}" is not yet migrated to a supporting controller version`
+                );
+                return;
+            }
+        }
+
+        const adaptersViewPerHost = await this.objects.getObjectViewAsync('system', 'adapter', {
+            startkey: SYSTEM_HOST_PREFIX,
+            endkey: `${SYSTEM_HOST_PREFIX}\u9999`
+        });
+
+        const installedAdapterNames = adaptersViewPerHost.rows.map(row => row.value.common.name);
+
         const adaptersView = await this.objects.getObjectViewAsync('system', 'adapter', {
             startkey: SYSTEM_ADAPTER_PREFIX,
             endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
         });
 
         for (const row of adaptersView.rows) {
-            const adapter = row.value;
-
-            // TODO: we somehow need information on which host an adapter is installed
+            if (!installedAdapterNames.includes(row.value.common.name)) {
+                await this.objects.delObject(row.id);
+                console.log(`Cleaned up leftover adapter object "${row.id}"`);
+            }
         }
     }
 
