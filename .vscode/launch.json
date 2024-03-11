@@ -1,0 +1,39 @@
+{
+	"configurations": [
+		{
+			"name": "Debug with dev-server",
+			"port": 9229,
+			"request": "attach",
+			"skipFiles": [
+				"<node_internals>/**"
+			],
+			"type": "node",
+			"sourceMaps": true,
+			"enableTurboSourcemaps": true,
+			"autoAttachChildProcesses": true,
+			"resolveSourceMapLocations": [
+				"${workspaceFolder}/packages/**",
+				// We need to look for source maps in .dev-server
+				"${workspaceFolder}/.dev-server/**",
+				// and the node_modules/@iobroker directories, which are symlinked to the packages/ subdirs
+				"${workspaceFolder}/node_modules/@iobroker/**",
+				// Do not look multiple levels deep though
+				"!${workspaceFolder}/node_modules/@iobroker/**/node_modules/**",
+			],
+			"sourceMapPathOverrides": {
+				"~/adapter/*": "${workspaceFolder}/packages/adapter/src/*",
+				"~/cli/*": "${workspaceFolder}/packages/cli/src/*",
+				"~/common-db/*": "${workspaceFolder}/packages/common-db/src/*",
+				"~/common/*": "${workspaceFolder}/packages/common/src/*",
+				"~/controller/*": "${workspaceFolder}/packages/controller/src/*",
+				"~/db-base/*": "${workspaceFolder}/packages/db-base/src/*",
+				"~/db-objects-file/*": "${workspaceFolder}/packages/db-objects-file/src/*",
+				"~/db-objects-jsonl/*": "${workspaceFolder}/packages/db-objects-jsonl/src/*",
+				"~/db-objects-redis/*": "${workspaceFolder}/packages/db-objects-redis/src/*",
+				"~/db-states-file/*": "${workspaceFolder}/packages/db-states-file/src/*",
+				"~/db-states-jsonl/*": "${workspaceFolder}/packages/db-states-jsonl/src/*",
+				"~/db-states-redis/*": "${workspaceFolder}/packages/db-states-redis/src/*",
+			}
+		}
+	]
+}

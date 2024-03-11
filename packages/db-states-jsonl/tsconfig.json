@@ -3,7 +3,9 @@
   "compilerOptions": {
     "outDir": "build",
     "rootDir": "src",
-    "noEmit": false
+    "noEmit": false,
+    // This is needed to make sourcemaps work for debugging
+    "sourceRoot": "~/db-states-jsonl/"
   },
   "references": [
     {

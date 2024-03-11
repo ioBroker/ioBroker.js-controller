@@ -2,7 +2,9 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "build",
-    "rootDir": "src"
+    "rootDir": "src",
+    // This is needed to make sourcemaps work for debugging
+    "sourceRoot": "~/db-objects-redis/"
   },
   "references": [
     {
