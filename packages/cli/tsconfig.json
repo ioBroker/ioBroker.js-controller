@@ -2,7 +2,12 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "build",
-    "rootDir": "src"
+    "rootDir": "src",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
   },
   "references": [
     {
@@ -10,7 +15,7 @@
     },
     {
       "path": "../common-db/tsconfig.json"
-    },
+    }
   ],
   "include": [
     "src/**/*.ts",

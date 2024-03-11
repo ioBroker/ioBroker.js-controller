@@ -33,7 +33,7 @@
     "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/cli"
   },
   "scripts": {
-    "build": "tsc -b tsconfig.build.json"
+    "build": "tsc -b tsconfig.build.json && tsc-alias"
   },
   "main": "build/index.js",
   "types": "build/index.d.ts",

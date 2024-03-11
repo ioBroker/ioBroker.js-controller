@@ -7,7 +7,7 @@
  *
  */
 
-import type { CleanDatabaseHandler, IoPackage, ProcessExitCallback, RestartController } from '../_Types';
+import type { CleanDatabaseHandler, IoPackage, ProcessExitCallback, RestartController } from '@/lib/_Types';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
@@ -15,15 +15,16 @@ import fs from 'fs-extra';
 import path from 'path';
 import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
 import { tools as dbTools } from '@iobroker/js-controller-common-db';
-import { resetDbConnect, dbConnectAsync } from './dbConnection';
-import { BackupRestore } from './setupBackup';
+import { resetDbConnect, dbConnectAsync } from '@/lib/setup/dbConnection';
+import { BackupRestore } from '@/lib/setup/setupBackup';
 import crypto from 'crypto';
 import deepClone from 'deep-clone';
-import * as pluginInfos from './pluginInfos';
+import * as pluginInfos from '@/lib/setup/pluginInfos';
 import rl from 'readline-sync';
 import os from 'os';
 import { FORBIDDEN_CHARS } from '@iobroker/js-controller-common/tools';
 import { SYSTEM_ADAPTER_PREFIX, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common/constants';
+import { Upload } from '@/lib/setup/setupUpload';
 
 const COLOR_RED = '\x1b[31m';
 const COLOR_YELLOW = '\x1b[33m';
@@ -1029,6 +1030,10 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             throw new Error('Objects not set up, call setupObjects first');
         }
 
+        if (!this.states) {
+            throw new Error('States not set up, call setupObjects first');
+        }
+
         const hostname = tools.getHostName();
         const adaptersId = `system.host.${hostname}.adapters`;
 
@@ -1052,7 +1057,24 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             native: {}
         });
 
-        // TODO: create object for each installed adapter
+        const adaptersView = await this.objects.getObjectViewAsync('system', 'adapter', {
+            startkey: SYSTEM_ADAPTER_PREFIX,
+            endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
+        });
+
+        const rootPackJson = await fs.readJSON(path.join(tools.getRootDir(), 'package.json'));
+
+        const setupUpload = new Upload({ objects: this.objects, states: this.states });
+
+        for (const row of adaptersView.rows) {
+            const { name } = row.value.common;
+
+            if (!rootPackJson.dependencies[`iobroker.${name}`]) {
+                continue;
+            }
+
+            await setupUpload.upgradeAdapterObjects(name);
+        }
     }
 
     /**
