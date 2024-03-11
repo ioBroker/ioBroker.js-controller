@@ -306,6 +306,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         const iopkg = fs.readJsonSync(path.join(CONTROLLER_DIR, 'io-package.json'));
 
         await this._maybeMigrateSets();
+        await this._ensureAdaptersPerHostObject();
 
         if (checkCertificateOnly) {
             let certObj;
@@ -1018,6 +1019,40 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         } catch (e) {
             console.warn(`Could not migrate objects to corresponding sets: ${e.message}`);
         }
+    }
+
+    /**
+     * Create the adapters object per host if not yet existing
+     */
+    private async _ensureAdaptersPerHostObject(): Promise<void> {
+        if (!this.objects) {
+            throw new Error('Objects not set up, call setupObjects first');
+        }
+
+        const hostname = tools.getHostName();
+        const adaptersId = `system.host.${hostname}.adapters`;
+
+        const adaptersExist = await this.objects.objectExists(adaptersId);
+
+        if (adaptersExist) {
+            return;
+        }
+
+        await this.objects.setObject(adaptersId, {
+            type: 'folder',
+            common: {
+                // TODO translate
+                name: {
+                    en: 'Installed adapters'
+                },
+                desc: {
+                    en: 'Installed adapters on this host'
+                }
+            },
+            native: {}
+        });
+
+        // TODO: create object for each installed adapter
     }
 
     /**
