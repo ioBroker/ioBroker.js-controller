@@ -2,8 +2,7 @@ import type { TestContext } from '../_Types';
 
 export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
     const testName = `${context.name} ${context.adapterShortName} files: `;
-    const namespace = 'testObject.0';
-    const testId = `${namespace}.testFilesObj`;
+    const testId = `testFilesObject.0`;
 
     // setBinaryState
     it(testName + 'setForeignBinaryState', async () => {
@@ -267,29 +266,40 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
     it(testName + 'should create and read file with callback', done => {
         const objects = context.objects;
-        objects.setObject(testId, { type: 'meta', native: {} } as ioBroker.SettableMetaObject, err => {
-            expect(err).to.be.not.ok;
-            objects.writeFile(testId, 'myFile/abc.txt', 'dataInFile', err => {
-                err && console.error(`Got ${JSON.stringify(objects.getStatus())}: ${err.stack}`);
+        objects.setObject(
+            testId,
+            {
+                type: 'meta',
+                common: {
+                    name: 'Meta',
+                    type: 'meta.user'
+                },
+                native: {}
+            },
+            err => {
                 expect(err).to.be.not.ok;
-
-                objects.readFile(testId, 'myFile/abc.txt', null, (err, data, mimeType) => {
+                objects.writeFile(testId, 'myFile/abc.txt', 'dataInFile', err => {
+                    err && console.error(`Got ${JSON.stringify(objects.getStatus())}: ${err.stack}`);
                     expect(err).to.be.not.ok;
-                    expect(data).to.be.equal('dataInFile');
-                    expect(mimeType).to.be.equal('text/plain');
-                    objects.rm(testId, 'myFile/*', null, (err, files) => {
+
+                    objects.readFile(testId, 'myFile/abc.txt', null, (err, data, mimeType) => {
                         expect(err).to.be.not.ok;
-                        const file = files!.find(f => f.file === 'abc.txt');
-                        expect(file!.file).to.be.equal('abc.txt');
-                        expect(file!.path).to.be.equal('myFile');
-                        objects.readFile(testId, 'myFile/abc.txt', null, (err, _data, _mimeType) => {
-                            expect(err!.message).to.be.equal('Not exists');
-                            done();
+                        expect(data).to.be.equal('dataInFile');
+                        expect(mimeType).to.be.equal('text/plain');
+                        objects.rm(testId, 'myFile/*', null, (err, files) => {
+                            expect(err).to.be.not.ok;
+                            const file = files!.find(f => f.file === 'abc.txt');
+                            expect(file!.file).to.be.equal('abc.txt');
+                            expect(file!.path).to.be.equal('myFile');
+                            objects.readFile(testId, 'myFile/abc.txt', null, (err, _data, _mimeType) => {
+                                expect(err!.message).to.be.equal('Not exists');
+                                done();
+                            });
                         });
                     });
                 });
-            });
-        });
+            }
+        );
     });
 
     it(testName + 'should create and read file async', async () => {
@@ -298,7 +308,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         const fullFileName = `${fileDir}/${fileName}`;
 
         const objects = context.objects;
-        await objects.setObject(testId, { type: 'meta', native: {} } as ioBroker.SettableMetaObject);
+        await objects.setObject(testId, {
+            type: 'meta',
+            common: { name: 'test', type: 'meta.user' },
+            native: {}
+        });
 
         await objects.writeFile(testId, fullFileName, 'dataInFile');
 
