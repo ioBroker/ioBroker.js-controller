@@ -1,6 +1,7 @@
 import { EXIT_CODES } from '@iobroker/js-controller-common';
 import { tools } from '@iobroker/js-controller-common';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import { IoBrokerError } from './customError';
 
 interface GetRepositoryOptions {
     /** The objects DB client */
@@ -65,23 +66,20 @@ export async function getRepository(options: GetRepositoryOptions): Promise<Reco
     }
 
     if (!anyFound) {
+        let message: string;
         if (repoArr.length) {
-            console.error(
-                `ERROR: No repositories defined matching "${repoArr.join(' | ')}". Please use one of ${Object.keys(
-                    systemRepos.native.repositories
-                )
-                    .map(repo => `"${repo}"`)
-                    .join(', ')}.`
-            );
+            message = `ERROR: No repositories defined matching "${repoArr.join(
+                ' | '
+            )}". Please use one of ${Object.keys(systemRepos.native.repositories)
+                .map(repo => `"${repo}"`)
+                .join(', ')}.`;
         } else {
-            console.error(
-                `ERROR: No repositories defined. Please define one repository as active: "iob repo set <${Object.keys(
-                    systemRepos.native.repositories
-                ).join(' | ')}>"`
-            );
+            message = `ERROR: No repositories defined. Please define one repository as active: "iob repo set <${Object.keys(
+                systemRepos.native.repositories
+            ).join(' | ')}>"`;
         }
-        // @ts-expect-error todo throw code or description?
-        throw new Error(EXIT_CODES.INVALID_REPO);
+
+        throw new IoBrokerError({ message, code: EXIT_CODES.INVALID_REPO });
     } else {
         return allSources;
     }

@@ -1226,9 +1226,9 @@ async function processCommand(
                             params.y || params.yes
                         );
                         return void callback();
-                    } catch (err) {
-                        console.error(`Cannot upgrade: ${err.message}`);
-                        return void callback(EXIT_CODES.INVALID_REPO);
+                    } catch (e) {
+                        console.error(`Cannot upgrade: ${e.message}`);
+                        return void callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.INVALID_REPO);
                     }
                 }
             });

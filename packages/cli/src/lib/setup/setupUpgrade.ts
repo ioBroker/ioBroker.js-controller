@@ -11,6 +11,7 @@ import { getRepository } from './utils';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { ProcessExitCallback } from '../_Types';
+import { IoBrokerError } from './customError';
 
 const debug = Debug('iobroker:cli');
 
@@ -295,7 +296,8 @@ export class Upgrade {
             try {
                 sources = await getRepository({ repoName: repoUrlOrObject, objects: this.objects });
             } catch (e) {
-                return this.processExit(e);
+                console.error(e.message);
+                return this.processExit(e instanceof IoBrokerError ? e.code : e);
             }
         } else {
             sources = repoUrlOrObject;
@@ -633,8 +635,9 @@ export class Upgrade {
                     return console.warn(`Cannot get repository under "${repoUrlOrObject}"`);
                 }
                 sources = result;
-            } catch (err) {
-                return this.processExit(err);
+            } catch (e) {
+                console.error(e.message);
+                return this.processExit(e instanceof IoBrokerError ? e.code : e);
             }
         } else {
             sources = repoUrlOrObject;
