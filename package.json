@@ -70,11 +70,11 @@
     "sinon": "^15.0.0",
     "sinon-chai": "^3.7.0",
     "ts-json-schema-generator": "~1.2.0",
-    "ts-node": "^10.9.1",
+    "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.8",
-    "typedoc": "^0.25.4",
+    "typedoc": "^0.25.12",
     "typedoc-plugin-markdown": "^3.17.1",
-    "typedoc-plugin-missing-exports": "^2.1.0",
+    "typedoc-plugin-missing-exports": "^2.2.0",
     "typescript": "~5.4.2"
   },
   "scripts": {
