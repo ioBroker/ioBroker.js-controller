@@ -3077,7 +3077,6 @@ export class ObjectsInRedisClient {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
                 } else {
-                    // @ts-expect-error the callback is there else we would have returned
                     return this._getObject(id, options, callback);
                 }
             });
@@ -3474,9 +3473,7 @@ export class ObjectsInRedisClient {
                         delete obj.common.custom;
                     }
 
-                    if (!oldObj.common.custom) {
-                        // do nothing
-                    } else if ((!obj.common || !obj.common.custom) && oldObj.common.custom) {
+                    if ((!obj.common || !obj.common.custom) && oldObj.common.custom && obj.type === 'state') {
                         obj.common = obj.common || {};
                         obj.common.custom = oldObj.common.custom;
                     } else if (obj.common?.custom && oldObj.common.custom) {
