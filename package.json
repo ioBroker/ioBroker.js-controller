@@ -75,7 +75,7 @@
     "typedoc": "^0.25.4",
     "typedoc-plugin-markdown": "^3.17.1",
     "typedoc-plugin-missing-exports": "^2.1.0",
-    "typescript": "~5.0.4"
+    "typescript": "~5.1.6"
   },
   "scripts": {
     "clean": "rimraf packages/*/build packages/*/*.tsbuildinfo",
