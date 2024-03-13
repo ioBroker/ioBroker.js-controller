@@ -10717,14 +10717,43 @@ export class AdapterClass extends EventEmitter {
      * Initialize the logging logic
      */
     private async _initLogging(): Promise<void> {
-        // temporary log buffer
-        let messages: null | any[] = [];
-        // Read current state of all log subscriber
-
         if (!this.#states) {
             // if adapterState was destroyed, we can not continue
             return;
         }
+
+        // temporary log buffer
+        let messages: null | any[] = [];
+
+        // If some message from logger
+        // find our notifier transport
+        // @ts-expect-error
+        const ts = this._logger.transports.find(t => t.name === 'NT');
+        // @ts-expect-error
+        ts.on('logged', info => {
+            info.from = this.namespace;
+            // emit to itself
+            if (this._options.logTransporter && this.logRequired && !this._stopInProgress) {
+                this.emit('log', info);
+            }
+
+            if (!this.logList.size) {
+                // if log buffer still active
+                if (messages && !this._options.logTransporter) {
+                    messages.push(info);
+
+                    // do not let messages grow without limit
+                    if (messages.length > this._config.states.maxQueue) {
+                        messages.splice(0, messages.length - this._config.states.maxQueue);
+                    }
+                }
+            } else if (this.#states?.pushLog) {
+                // Send to all adapter, that required logs
+                for (const instanceId of this.logList) {
+                    this.#states.pushLog(instanceId, info);
+                }
+            }
+        });
 
         const keys = await this.#states.getKeys(`${SYSTEM_ADAPTER_PREFIX}*.logging`);
         if (keys?.length) {
@@ -10776,26 +10805,6 @@ export class AdapterClass extends EventEmitter {
                 this.logList.delete(id);
             }
         };
-
-        // If some message from logger
-        // find our notifier transport
-        // @ts-expect-error
-        const ts = this._logger.transports.find(t => t.name === 'NT');
-        // @ts-expect-error
-        ts.on('logged', info => {
-            info.from = this.namespace;
-            // emit to itself
-            if (this._options.logTransporter && this.logRequired && !this._stopInProgress) {
-                this.emit('log', info);
-            }
-
-            if (this.logList.size && this.#states?.pushLog) {
-                // Send to all adapter, that required logs
-                for (const instanceId of this.logList) {
-                    this.#states.pushLog(instanceId, info);
-                }
-            }
-        });
 
         this._options.logTransporter = this._options.logTransporter || this.ioPack.common.logTransporter;
 
