@@ -4039,7 +4039,9 @@ function startScheduledInstance(callback?: () => void): void {
 
                 if (proc.process) {
                     storePids();
-                    logger.info(`${hostLogPrefix} instance ${instance._id} started with pid ${proc.process.pid}`);
+                    const { pid } = proc.process;
+
+                    logger.info(`${hostLogPrefix} instance ${instance._id} started with pid ${pid}`);
 
                     proc.process.on('exit', (code, signal) => {
                         outputCount++;
@@ -4049,8 +4051,9 @@ function startScheduledInstance(callback?: () => void): void {
                         } else if (code === null) {
                             logger.error(`${hostLogPrefix} instance ${id} terminated abnormally`);
                         } else {
-                            const text = `${hostLogPrefix} instance ${id} having pid ${proc.process
-                                ?.pid} terminated with code ${code} (${getErrorText(code) || ''})`;
+                            const text = `${hostLogPrefix} instance ${id} having pid ${pid} terminated with code ${code} (${
+                                getErrorText(code) || ''
+                            })`;
                             if (
                                 !code ||
                                 code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
