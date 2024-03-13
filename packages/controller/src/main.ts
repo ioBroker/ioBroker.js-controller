@@ -4487,7 +4487,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                 connected &&
                                 !isStopping &&
                                 proc?.config?.common.enabled &&
-                                (mode !== 'extension' || !proc.config.native.webInstance) &&
+                                !proc.config.native.webInstance &&
                                 mode !== 'once'
                             ) {
                                 if (code === EXIT_CODES.UNCAUGHT_EXCEPTION) {
@@ -5089,7 +5089,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             break;
 
         default:
-            logger.error(`${hostLogPrefix} ${instance._id} invalid mode`);
+            logger.error(`${hostLogPrefix} ${instance._id} has the invalid mode "${mode}"`);
     }
 }
 
