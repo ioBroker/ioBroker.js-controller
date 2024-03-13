@@ -15,6 +15,7 @@
 ### Properties
 
 - [acl](internal_.GroupCommon.md#acl)
+- [color](internal_.GroupCommon.md#color)
 - [custom](internal_.GroupCommon.md#custom)
 - [desc](internal_.GroupCommon.md#desc)
 - [dontDelete](internal_.GroupCommon.md#dontdelete)
@@ -35,7 +36,23 @@ The default permissions of this group
 
 #### Defined in
 
-[types-dev/objects.d.ts:436](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/objects.d.ts#L436)
+[types-dev/objects.d.ts:438](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/objects.d.ts#L438)
+
+___
+
+### color
+
+• `Optional` **color**: `string`
+
+Color attribute used in UI
+
+#### Inherited from
+
+[ObjectCommon](internal_.ObjectCommon.md).[color](internal_.ObjectCommon.md#color)
+
+#### Defined in
+
+[types-dev/objects.d.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/objects.d.ts#L178)
 
 ___
 
@@ -45,7 +62,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:440](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/objects.d.ts#L440)
+[types-dev/objects.d.ts:442](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/objects.d.ts#L442)
 
 ___
 
@@ -61,7 +78,7 @@ Description of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/objects.d.ts#L169)
+[types-dev/objects.d.ts:170](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/objects.d.ts#L170)
 
 ___
 
@@ -77,7 +94,7 @@ When set to true, this object may not be deleted
 
 #### Defined in
 
-[types-dev/objects.d.ts:172](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/objects.d.ts#L172)
+[types-dev/objects.d.ts:173](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/objects.d.ts#L173)
 
 ___
 
@@ -85,11 +102,11 @@ ___
 
 • `Optional` **enabled**: `boolean`
 
-A group can be disabled, if missing, group is active
+A group can be disabled, if missing, a group is active
 
 #### Defined in
 
-[types-dev/objects.d.ts:438](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/objects.d.ts#L438)
+[types-dev/objects.d.ts:440](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/objects.d.ts#L440)
 
 ___
 
@@ -105,7 +122,7 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 #### Defined in
 
-[types-dev/objects.d.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/objects.d.ts#L175)
+[types-dev/objects.d.ts:176](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/objects.d.ts#L176)
 
 ___
 
@@ -121,7 +138,7 @@ Icon for this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:180](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/objects.d.ts#L180)
+[types-dev/objects.d.ts:183](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/objects.d.ts#L183)
 
 ___
 
@@ -133,7 +150,7 @@ The users of this group
 
 #### Defined in
 
-[types-dev/objects.d.ts:434](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/objects.d.ts#L434)
+[types-dev/objects.d.ts:436](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/objects.d.ts#L436)
 
 ___
 
@@ -149,7 +166,7 @@ The name of this group
 
 #### Defined in
 
-[types-dev/objects.d.ts:432](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/objects.d.ts#L432)
+[types-dev/objects.d.ts:434](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/objects.d.ts#L434)
 
 ___
 
@@ -165,4 +182,4 @@ role of the object
 
 #### Defined in
 
-[types-dev/objects.d.ts:182](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/objects.d.ts#L182)
+[types-dev/objects.d.ts:185](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/objects.d.ts#L185)

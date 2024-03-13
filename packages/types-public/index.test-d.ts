@@ -683,7 +683,7 @@ adapter.getObjectAsync('id').then(obj => {
 });
 
 declare let state: ioBroker.StateObject;
-if (typeof state.common.smartName === 'object') {
+if (typeof state.common.smartName === 'object' && state.common.smartName !== null) {
     state.common.smartName.de && state.common.smartName.de.toUpperCase();
     state.common.smartName.byOn && state.common.smartName.byOn.toUpperCase();
 }
@@ -754,7 +754,8 @@ adapter.FORBIDDEN_CHARS = /_/;
             read: true,
             write: false,
             type: 'boolean',
-            role: 'indicator'
+            role: 'indicator',
+            color: 'yellow'
         },
         native: config
     });
@@ -796,6 +797,14 @@ const _adapterObject: ioBroker.AdapterObject = {
     instanceObjects: [],
     objects: []
 };
+
+if (_adapterObject.common.licenseInformation && _adapterObject.common.licenseInformation.type === 'paid') {
+    // for non-free licenses link is non optional
+    _adapterObject.common.licenseInformation.link.includes('https://');
+} else {
+    // @ts-expect-error link is optional on free license
+    _adapterObject.common.licenseInformation.link.includes('https://');
+}
 
 const _folderObject: ioBroker.FolderObject = {
     _id: '',

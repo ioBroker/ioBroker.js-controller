@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { getUsedObjectIDs } = require('../www/js/visUtils');
+const { getUsedObjectIDs } = require('./visUtils');
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 
 interface CalculatedProject {
@@ -73,6 +73,7 @@ async function calcProject(options: CalculateProjectOptions): Promise<Calculated
 export async function calcProjects(options: CalculateProjectsOptions): Promise<CalculatedProject[]> {
     const { visAdapter, instance, objects } = options;
     const projects = await objects.readDirAsync(`${visAdapter}.${instance}`, '/');
+
     if (!projects?.length) {
         return [{ id: `${visAdapter}.${instance}.datapoints.total`, val: 0 }];
     }

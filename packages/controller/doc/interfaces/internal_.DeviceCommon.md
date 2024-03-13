@@ -14,6 +14,7 @@
 
 ### Properties
 
+- [color](internal_.DeviceCommon.md#color)
 - [custom](internal_.DeviceCommon.md#custom)
 - [desc](internal_.DeviceCommon.md#desc)
 - [dontDelete](internal_.DeviceCommon.md#dontdelete)
@@ -25,13 +26,29 @@
 
 ## Properties
 
+### color
+
+• `Optional` **color**: `string`
+
+Color attribute used in UI
+
+#### Inherited from
+
+[ObjectCommon](internal_.ObjectCommon.md).[color](internal_.ObjectCommon.md#color)
+
+#### Defined in
+
+[types-dev/objects.d.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/objects.d.ts#L178)
+
+___
+
 ### custom
 
 • `Optional` **custom**: `undefined`
 
 #### Defined in
 
-[types-dev/objects.d.ts:289](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/objects.d.ts#L289)
+[types-dev/objects.d.ts:296](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/objects.d.ts#L296)
 
 ___
 
@@ -47,7 +64,7 @@ Description of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:169](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/objects.d.ts#L169)
+[types-dev/objects.d.ts:170](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/objects.d.ts#L170)
 
 ___
 
@@ -63,7 +80,7 @@ When set to true, this object may not be deleted
 
 #### Defined in
 
-[types-dev/objects.d.ts:172](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/objects.d.ts#L172)
+[types-dev/objects.d.ts:173](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/objects.d.ts#L173)
 
 ___
 
@@ -79,7 +96,7 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 #### Defined in
 
-[types-dev/objects.d.ts:175](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/objects.d.ts#L175)
+[types-dev/objects.d.ts:176](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/objects.d.ts#L176)
 
 ___
 
@@ -95,7 +112,7 @@ Icon for this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:180](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/objects.d.ts#L180)
+[types-dev/objects.d.ts:183](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/objects.d.ts#L183)
 
 ___
 
@@ -111,7 +128,7 @@ The name of this object as a simple string or an object with translations
 
 #### Defined in
 
-[types-dev/objects.d.ts:166](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/objects.d.ts#L166)
+[types-dev/objects.d.ts:167](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/objects.d.ts#L167)
 
 ___
 
@@ -127,7 +144,7 @@ role of the object
 
 #### Defined in
 
-[types-dev/objects.d.ts:182](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/objects.d.ts#L182)
+[types-dev/objects.d.ts:185](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/objects.d.ts#L185)
 
 ___
 
@@ -139,10 +156,10 @@ ___
 
 | Name | Type | Description |
 | :------ | :------ | :------ |
-| `errorId?` | `string` | State which is truthy if device is in error state |
-| `offlineId?` | `string` | State which is truthy if device is offline |
-| `onlineId?` | `string` | State which is truthy if device is online |
+| `errorId?` | `string` | State, which is truthy if a device is in error state |
+| `offlineId?` | `string` | State, which is truthy if a device is offline |
+| `onlineId?` | `string` | State, which is truthy if a device is online |
 
 #### Defined in
 
-[types-dev/objects.d.ts:280](https://github.com/ioBroker/ioBroker.js-controller/blob/13fc9d35/packages/types-dev/objects.d.ts#L280)
+[types-dev/objects.d.ts:287](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/objects.d.ts#L287)
