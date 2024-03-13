@@ -11679,8 +11679,6 @@ export class AdapterClass extends EventEmitter {
 
                     if (
                         // @ts-expect-error
-                        adapterConfig.common.mode === 'subscribe' ||
-                        // @ts-expect-error
                         adapterConfig.common.mode === 'schedule' ||
                         // @ts-expect-error
                         adapterConfig.common.mode === 'once'
@@ -11977,8 +11975,7 @@ export class AdapterClass extends EventEmitter {
         let objs: (IoPackageInstanceObject & { state?: unknown })[];
 
         if (instanceObj?.common && !('onlyWWW' in instanceObj.common) && instanceObj.common.mode !== 'once') {
-            // @ts-expect-error
-            objs = tools.getInstanceIndicatorObjects(this.namespace, instanceObj.common.wakeup);
+            objs = tools.getInstanceIndicatorObjects(this.namespace);
         } else {
             objs = [];
         }
