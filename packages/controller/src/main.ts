@@ -4077,7 +4077,9 @@ function startScheduledInstance(callback?: () => void): void {
             skipped = true;
         }
     } else {
-        logger.warn(`${hostLogPrefix} instance ${instance._id} does not started, because just executed`);
+        logger.warn(
+            `${hostLogPrefix} instance ${instance._id} not started, because start has already been initialized less than 2 seconds ago`
+        );
         skipped = true;
     }
 
