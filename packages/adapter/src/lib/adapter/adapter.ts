@@ -10742,13 +10742,8 @@ export class AdapterClass extends EventEmitter {
                         continue;
                     }
                     const id = keys[i].substring(0, keys[i].length - '.logging'.length);
-                    if (
-                        typeof objPart === 'string' &&
-                        // @ts-expect-error recheck this but getStates should not return string code-wise
-                        (objPart.includes('"val":true') || objPart.includes('"val":"true"'))
-                    ) {
-                        this.logRedirect!(true, id);
-                    } else if (typeof objPart === 'object' && (objPart.val === true || objPart.val === 'true')) {
+
+                    if (typeof objPart === 'object' && (objPart.val === true || objPart.val === 'true')) {
                         this.logRedirect!(true, id);
                     }
                 }
@@ -10794,17 +10789,7 @@ export class AdapterClass extends EventEmitter {
                 this.emit('log', info);
             }
 
-            if (!this.logList.size) {
-                // if log buffer still active
-                if (messages && !this._options.logTransporter) {
-                    messages.push(info);
-
-                    // do not let messages grow without limit
-                    if (messages.length > this._config.states.maxQueue) {
-                        messages.splice(0, messages.length - this._config.states.maxQueue);
-                    }
-                }
-            } else if (this.#states?.pushLog) {
+            if (this.logList.size && this.#states?.pushLog) {
                 // Send to all adapter, that required logs
                 for (const instanceId of this.logList) {
                     this.#states.pushLog(instanceId, info);
