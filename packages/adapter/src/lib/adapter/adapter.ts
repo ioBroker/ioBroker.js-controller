@@ -11987,7 +11987,8 @@ export class AdapterClass extends EventEmitter {
             for (const instObj of instanceObj.instanceObjects) {
                 const obj: IoPackageInstanceObject & { state?: unknown } = instObj;
 
-                if (!obj || typeof obj._id !== 'string' || (!obj._id && obj.type !== 'meta')) {
+                // the object comes from non-checked io-package, so treat the id as unknown
+                if (!obj || typeof (obj._id as unknown) !== 'string' || (!obj._id && obj.type !== 'meta')) {
                     this._logger.error(
                         `${this.namespaceLog} ${this.namespace} invalid instance object: ${JSON.stringify(obj)}`
                     );
