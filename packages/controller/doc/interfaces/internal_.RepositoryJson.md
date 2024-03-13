@@ -32,4 +32,4 @@ Information about each adapter - Record needed for _repoInfo
 
 #### Defined in
 
-[types-dev/objects.d.ts:860](https://github.com/ioBroker/ioBroker.js-controller/blob/f0c31e77/packages/types-dev/objects.d.ts#L860)
+[types-dev/objects.d.ts:882](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/objects.d.ts#L882)
