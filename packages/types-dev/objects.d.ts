@@ -366,12 +366,14 @@ declare global {
             installedFrom?: string;
             /** Arguments passed to the adapter process, this disables compact mode */
             nodeProcessParams?: string[];
-            /** If adapter can consume log messages, like admin, javascript or logparser */
+            /** If adapter can consume log messages, like admin, javascript or log parser */
             logTransporter?: boolean;
             /** Type of the admin UI */
             adminUI?: AdminUi;
             /** Optional memory limit for this instance */
             memoryLimitMB?: number;
+            /** if sentry is disabled */
+            disableDataReporting?: boolean;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
