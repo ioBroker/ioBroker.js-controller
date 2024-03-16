@@ -218,7 +218,6 @@ export function dbConnect(
                 }
             }
 
-            // @ts-expect-error todo: fix it
             await wait((params.timeout || 10_000) + config.objects.connectTimeout);
 
             // Failsafe
