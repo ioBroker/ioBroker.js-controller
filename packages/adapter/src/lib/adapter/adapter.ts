@@ -2873,17 +2873,14 @@ export class AdapterClass extends EventEmitter {
         try {
             tools.validateGeneralObjectProperties(obj, false);
         } catch (e) {
-            // todo: in the future we will not create this object
             this._logger.warn(`${this.namespaceLog} Object ${id} is invalid: ${e.message}`);
-            this._logger.warn(
-                `${this.namespaceLog} This object will not be created in future versions. Please report this to the developer.`
-            );
+            return tools.maybeCallbackWithError(callback, e);
         }
 
         try {
             this._utils.validateId(id, true, options);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
         }
 
         try {
@@ -3100,17 +3097,14 @@ export class AdapterClass extends EventEmitter {
         try {
             tools.validateGeneralObjectProperties(options.obj, true);
         } catch (e) {
-            // todo: in the future we will not create this object
             this._logger.warn(`${this.namespaceLog} Object ${options.id} is invalid: ${e.message}`);
-            this._logger.warn(
-                `${this.namespaceLog} This object will not be created in future versions. Please report this to the developer.`
-            );
+            return tools.maybeCallbackWithError(options.callback, e);
         }
 
         try {
             this._utils.validateId(options.id, false, null);
-        } catch (err) {
-            return tools.maybeCallbackWithError(options.callback, err);
+        } catch (e) {
+            return tools.maybeCallbackWithError(options.callback, e);
         }
 
         options.id = this._utils.fixId(options.id, false);
@@ -12083,11 +12077,8 @@ export class AdapterClass extends EventEmitter {
         try {
             tools.validateGeneralObjectProperties(task, true);
         } catch (e) {
-            // todo: in the future we will not create this object
-            this._logger.warn(`${this.namespaceLog} Object ${task._id} is invalid: ${e.message}`);
-            this._logger.warn(
-                `${this.namespaceLog} This object will not be created in future versions. Please report this to the developer.`
-            );
+            this._logger.error(`${this.namespaceLog} Object ${task._id} is invalid: ${e.message}`);
+            return tools.maybeCallbackWithError(callback, e);
         }
 
         if (!this.#objects) {

@@ -1011,12 +1011,9 @@ export class Install {
         for (const obj of objs) {
             try {
                 tools.validateGeneralObjectProperties(obj);
-            } catch (err) {
-                // todo: in the future we will not create this object
-                console.warn(`host.${hostname} Object ${obj._id} is invalid: ${err.message}`);
-                console.warn(
-                    `host.${hostname} This object will not be created in future versions. Please report this to the developer.`
-                );
+            } catch (e) {
+                console.warn(`host.${hostname} Object ${obj._id} is invalid: ${e.message}`);
+                continue;
             }
 
             obj.from = `system.host.${tools.getHostName()}.cli`;
