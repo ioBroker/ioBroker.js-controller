@@ -5,7 +5,7 @@ let states = null;
 const textName = 'Redis ';
 
 import fs from 'fs';
-import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
+import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const tests = require('./lib/testObjects');
 

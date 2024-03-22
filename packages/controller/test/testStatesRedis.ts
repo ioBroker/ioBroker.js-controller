@@ -1,8 +1,8 @@
 import { expect } from 'chai';
 import { startController, stopController } from './lib/setup4controller';
 import fs from 'fs';
-import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
-import type { StateRedisClient } from '@iobroker/db-states-redis/build/lib/states/statesInRedisClient';
+import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
+import type { Client as StateRedisClient } from '@iobroker/db-states-redis';
 let objects: ObjectsInRedisClient | null = null;
 let states: StateRedisClient | null = null;
 let onStatesChanged: ioBroker.StateChangeHandler | null = null;
