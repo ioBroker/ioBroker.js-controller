@@ -1144,14 +1144,14 @@ function cleanAutoSubscribe(instance: string, autoInstance: ioBroker.ObjectIDs.I
     inputCount++;
     states!.getState(`${autoInstance}.subscribes`, async (err, state) => {
         if (!state || !state.val) {
-            return typeof callback === 'function' && setImmediate(() => callback());
+            return setImmediate(() => callback());
         }
         let subs;
         try {
             subs = JSON.parse(state.val as string);
         } catch {
             logger.error(`${hostLogPrefix} Cannot parse subscribes: ${state.val}`);
-            return typeof callback === 'function' && setImmediate(() => callback());
+            return setImmediate(() => callback());
         }
         let modified = false;
         // look for all subscribes from this instance
@@ -1173,12 +1173,9 @@ function cleanAutoSubscribe(instance: string, autoInstance: ioBroker.ObjectIDs.I
         if (modified) {
             outputCount++;
             await states!.setState(`${autoInstance}.subscribes`, subs);
-            if (typeof callback === 'function') {
-                callback();
-            }
-        } else if (typeof callback === 'function') {
-            setImmediate(() => callback());
         }
+
+        setImmediate(() => callback());
     });
 }
 
