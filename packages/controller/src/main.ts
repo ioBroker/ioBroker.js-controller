@@ -4008,76 +4008,81 @@ function startScheduledInstance(callback?: () => void): void {
 
     const proc = procs[id];
 
-    if (proc) {
-        const instance = proc.config;
+    if (!proc) {
+        logger.error(`${hostLogPrefix} scheduleJob: Task deleted (${id})`);
+        skipped = true;
+        processNextScheduledInstance();
+        return;
+    }
 
-        // After sleep of PC all scheduled runs come together. There is no need to run it X times in one second. Just the last.
-        if (!proc.lastStart || Date.now() - proc.lastStart >= 2_000) {
-            // Remember the last run
-            proc.lastStart = Date.now();
-            if (!proc.process) {
-                // reset sigKill to 0 if it was set to another value from "once run"
-                states!.setState(`${instance._id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix }, () => {
-                    const args = [instance._id.split('.').pop() || '0', instance.common.loglevel || 'info'];
-                    try {
-                        proc.process = cp.fork(fileNameFull, args, {
-                            execArgv: tools.getDefaultNodeArgs(fileNameFull),
-                            // @ts-expect-error missing from types, but we already tested it is needed
-                            windowsHide: true,
-                            cwd: adapterDir
-                        });
-                    } catch (err) {
-                        logger.error(`${hostLogPrefix} instance ${id} could not be started: ${err.message}`);
-                        delete proc.process;
-                    }
-                    if (proc.process) {
-                        storePids();
-                        logger.info(`${hostLogPrefix} instance ${instance._id} started with pid ${proc.process.pid}`);
+    const instance = proc.config;
 
-                        proc.process.on('exit', (code, signal) => {
-                            outputCount++;
-                            states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
-                            if (signal) {
-                                logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
-                            } else if (code === null) {
-                                logger.error(`${hostLogPrefix} instance ${id} terminated abnormally`);
+    // After sleep of PC all scheduled runs come together. There is no need to run it X times in one second. Just the last.
+    if (!proc.lastStart || Date.now() - proc.lastStart >= 2_000) {
+        // Remember the last run
+        proc.lastStart = Date.now();
+        if (!proc.process) {
+            // reset sigKill to 0 if it was set to another value from "once run"
+            states!.setState(`${instance._id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix }, () => {
+                const args = [instance._id.split('.').pop() || '0', instance.common.loglevel || 'info'];
+                try {
+                    proc.process = cp.fork(fileNameFull, args, {
+                        execArgv: tools.getDefaultNodeArgs(fileNameFull),
+                        // @ts-expect-error missing from types, but we already tested it is needed
+                        windowsHide: true,
+                        cwd: adapterDir
+                    });
+                } catch (e) {
+                    logger.error(`${hostLogPrefix} instance ${id} could not be started: ${e.message}`);
+                    delete proc.process;
+                }
+
+                if (proc.process) {
+                    storePids();
+                    const { pid } = proc.process;
+
+                    logger.info(`${hostLogPrefix} instance ${instance._id} started with pid ${pid}`);
+
+                    proc.process.on('exit', (code, signal) => {
+                        outputCount++;
+                        states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
+                        if (signal) {
+                            logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
+                        } else if (code === null) {
+                            logger.error(`${hostLogPrefix} instance ${id} terminated abnormally`);
+                        } else {
+                            const text = `${hostLogPrefix} instance ${id} having pid ${pid} terminated with code ${code} (${
+                                getErrorText(code) || ''
+                            })`;
+                            if (
+                                !code ||
+                                code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
+                                code === EXIT_CODES.NO_ERROR
+                            ) {
+                                logger.info(text);
                             } else {
-                                const text = `${hostLogPrefix} instance ${id} terminated with code ${code} (${
-                                    getErrorText(code) || ''
-                                })`;
-                                if (
-                                    !code ||
-                                    code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
-                                    code === EXIT_CODES.NO_ERROR
-                                ) {
-                                    logger.info(text);
-                                } else {
-                                    logger.error(text);
-                                }
+                                logger.error(text);
                             }
-                            if (proc?.process) {
-                                delete proc.process;
-                            }
-                            storePids();
-                        });
-                    }
+                        }
+                        if (proc.process) {
+                            delete proc.process;
+                        }
+                        storePids();
+                    });
+                }
 
-                    processNextScheduledInstance();
-                });
-                return;
-            } else {
-                !wakeUp &&
-                    logger.warn(
-                        `${hostLogPrefix} instance ${instance._id} already running with pid ${proc.process.pid}`
-                    );
-                skipped = true;
-            }
+                processNextScheduledInstance();
+            });
+            return;
         } else {
-            logger.warn(`${hostLogPrefix} instance ${instance._id} does not started, because just executed`);
+            !wakeUp &&
+                logger.warn(`${hostLogPrefix} instance ${instance._id} already running with pid ${proc.process.pid}`);
             skipped = true;
         }
     } else {
-        logger.error(`${hostLogPrefix} scheduleJob: Task deleted (${id})`);
+        logger.warn(
+            `${hostLogPrefix} instance ${instance._id} not started, because start has already been initialized less than 2 seconds ago`
+        );
         skipped = true;
     }
 
