@@ -2,10 +2,10 @@ import { type ChildProcessPromise, exec as execAsync } from 'promisify-child-pro
 import { tools, logger } from '@iobroker/js-controller-common';
 import { valid } from 'semver';
 import { dbConnectAsync } from '@iobroker/js-controller-cli';
-import http from 'http';
-import https from 'https';
+import http from 'node:http';
+import https from 'node:https';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
-import { setTimeout as wait } from 'timers/promises';
+import { setTimeout as wait } from 'node:timers/promises';
 import type { Logger } from 'winston';
 import fs from 'fs-extra';
 import type { Socket } from 'node:net';

@@ -3,7 +3,12 @@
   "compilerOptions": {
     "outDir": "build/esm",
     "rootDir": "src",
-    "module": "NodeNext"
+    "module": "NodeNext",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
   },
   "references": [
     {
@@ -35,7 +40,7 @@
     },
     {
       "path": "../common-db/tsconfig.json"
-    },
+    }
   ],
   "include": [
     "src/**/*.ts",

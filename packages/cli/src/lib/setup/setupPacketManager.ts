@@ -21,6 +21,13 @@ interface PacketManagerOptions {
     logger?: Logger;
 }
 
+export interface UpgradePacket {
+    /** Name of the packet which should be upgraded */
+    name: string;
+    /** Optional version */
+    version?: string;
+}
+
 export class PacketManager {
     private manager: Manager;
     private readonly logger: Logger;
@@ -252,6 +259,33 @@ export class PacketManager {
             }
         }
         return failed;
+    }
+
+    /**
+     * Upgrade given OS packets to given version or newest available version
+     *
+     * @param packets the packet names and version information
+     */
+    async upgrade(packets: UpgradePacket[]): Promise<void> {
+        await this.ready();
+
+        if (!this.manager) {
+            return;
+        }
+
+        for (const packet of packets) {
+            let upgradeCmd = `upgrade ${packet.name}`;
+
+            if (packet.version) {
+                if (this.manager === 'apt') {
+                    upgradeCmd += `=${packet.version}`;
+                } else {
+                    upgradeCmd = `install ${packet.name}-${packet.version}`;
+                }
+            }
+
+            await execAsync(`${(this.sudo ? 'sudo ' : '') + this.manager} ${upgradeCmd}`);
+        }
     }
 
     /**
