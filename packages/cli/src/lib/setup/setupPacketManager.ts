@@ -262,7 +262,7 @@ export class PacketManager {
     }
 
     /**
-     * Upgrade given packets to given version or newest available version
+     * Upgrade given OS packets to given version or newest available version
      *
      * @param packets the packet names and version information
      */
