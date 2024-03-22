@@ -22,6 +22,7 @@ import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { ProcessExitCallback } from '../_Types';
 import type { CommandResult } from '@alcalzone/pak';
+import { IoBrokerError } from './customError';
 
 const hostname = tools.getHostName();
 const osPlatform = process.platform;
@@ -164,8 +165,9 @@ export class Install {
         if (!repoUrl || !tools.isObject(repoUrl)) {
             try {
                 sources = await getRepository({ repoName: repoUrl, objects: this.objects });
-            } catch (err) {
-                return this.processExit(err);
+            } catch (e) {
+                console.error(e.message);
+                return this.processExit(e instanceof IoBrokerError ? e.code : e);
             }
         } else {
             sources = repoUrl;
