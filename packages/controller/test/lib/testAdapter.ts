@@ -6,6 +6,7 @@ import { startController, stopController, appName, rootDir } from './setup4contr
 import deepClone from 'deep-clone';
 import type { TestContext } from '../_Types';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import { Adapter } from '@iobroker/js-controller-adapter';
 
 const expect = chai.expect;
 
@@ -68,9 +69,7 @@ function testAdapter(options: Record<string, any>): void {
         objectsConfig
     };
 
-    async function startAdapter(): Promise<void> {
-        const { Adapter } = await import('@iobroker/js-controller-adapter');
-
+    function startAdapter(): Promise<void> {
         return new Promise(resolve => {
             context.adapter = new Adapter({
                 config: {
