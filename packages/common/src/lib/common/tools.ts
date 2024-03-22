@@ -2821,6 +2821,10 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
         throw new Error(`obj.type has an invalid type! Expected "string", received "${typeof obj.type}"`);
     }
 
+    if (obj.native !== undefined && !isObject(obj.native)) {
+        throw new Error(`obj.native has an invalid type! Expected a "real object", received "${typeof obj.native}"`);
+    }
+
     const allowedObjectTypes: ioBroker.ObjectType[] = [
         'state',
         'channel',
