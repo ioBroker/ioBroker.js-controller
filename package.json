@@ -27,7 +27,7 @@
     "@alcalzone/release-script-plugin-manual-review": "~3.5.9",
     "@iobroker/types": "file:packages/types-public",
     "@iobroker/types-dev": "file:packages/types-dev",
-    "@microsoft/api-extractor": "^7.42.3",
+    "@microsoft/api-extractor": "^7.43.0",
     "@tsconfig/node18": "^18.2.2",
     "@types/chai": "^4.3.3",
     "@types/chai-as-promised": "^7.1.5",
