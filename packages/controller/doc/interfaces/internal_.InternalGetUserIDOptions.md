@@ -18,4 +18,4 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:210](https://github.com/ioBroker/ioBroker.js-controller/blob/559f7b7a/packages/adapter/src/lib/_Types.ts#L210)
+[adapter/src/lib/_Types.ts:210](https://github.com/ioBroker/ioBroker.js-controller/blob/74044f09/packages/adapter/src/lib/_Types.ts#L210)

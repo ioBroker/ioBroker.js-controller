@@ -1,6 +1,6 @@
 {
   "name": "@iobroker/db-objects-redis",
-  "version": "5.0.20-alpha.0-20240314-559f7b7a",
+  "version": "5.0.20-alpha.0-20240323-74044f09",
   "engines": {
     "node": ">=16.4.0"
   },
@@ -40,7 +40,8 @@
       "require": "./build/cjs/index.js",
       "types": "./build/esm/index.d.ts"
     }
-  },  "license": "Apache 2.0",
+  },
+  "license": "Apache 2.0",
   "publishConfig": {
     "access": "public"
   },
