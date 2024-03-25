@@ -7,20 +7,21 @@ import Debug from 'debug';
 import { tools as dbTools } from '@iobroker/js-controller-common-db';
 import path from 'path';
 import yargs from 'yargs';
-import * as CLITools from './cli/cliTools';
-import { CLIHost } from './cli/cliHost';
-import { CLIStates } from './cli/cliStates';
-import { CLIDebug } from './cli/cliDebug';
-import { CLICert } from './cli/cliCert';
-import { CLIObjects } from './cli/cliObjects';
-import { CLICompact } from './cli/cliCompact';
-import { CLILogs } from './cli/cliLogs';
+import * as CLITools from '@/lib/cli/cliTools';
+import { CLIHost } from '@/lib/cli/cliHost';
+import { CLIStates } from '@/lib/cli/cliStates';
+import { CLIDebug } from '@/lib/cli/cliDebug';
+import { CLICert } from '@/lib/cli/cliCert';
+import { CLIObjects } from '@/lib/cli/cliObjects';
+import { CLICompact } from '@/lib/cli/cliCompact';
+import { CLILogs } from '@/lib/cli/cliLogs';
 import { CLIMessage } from '@/lib/cli/cliMessage';
+import { CLIPlugin } from '@/lib/cli/cliPlugin';
 import { error as CLIError } from './cli/messages';
-import type { CLICommandContext, CLICommandOptions } from './cli/cliCommand';
-import { getRepository } from './setup/utils';
-import { dbConnect, dbConnectAsync, exitApplicationSave } from './setup/dbConnection';
-import { IoBrokerError } from './setup/customError';
+import type { CLICommandContext, CLICommandOptions } from '@/lib/cli/cliCommand';
+import { getRepository } from '@/lib/setup/utils';
+import { dbConnect, dbConnectAsync, exitApplicationSave } from '@/lib/setup/dbConnection';
+import { IoBrokerError } from '@/lib/setup/customError';
 
 tools.ensureDNSOrder();
 
@@ -29,8 +30,7 @@ tools.ensureDNSOrder();
  */
 const cli = {
     command: {
-        process: require('./cli/cliProcess.js'),
-        plugin: require('./cli/cliPlugin.js')
+        process: require('./cli/cliProcess.js')
     }
 } as const;
 
@@ -2738,7 +2738,7 @@ async function processCommand(
         }
 
         case 'plugin': {
-            const pluginCommand = new cli.command.plugin(commandOptions);
+            const pluginCommand = new CLIPlugin(commandOptions);
             pluginCommand.execute(args);
             break;
         }

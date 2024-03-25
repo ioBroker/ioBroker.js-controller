@@ -17,7 +17,7 @@ export interface DbConnectAsyncReturn {
     isOffline?: boolean;
     objectsDBType: string;
     /** the iobroker.json config file */
-    config?: Record<string, any>;
+    config?: ioBroker.IoBrokerJson;
 }
 
 export type DbConnectAsync = (onlyCheck: boolean, params?: Record<string, any>) => Promise<DbConnectAsyncReturn>;
