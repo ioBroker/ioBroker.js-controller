@@ -2991,21 +2991,6 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
     }
 }
 
-// restart given instances sequentially
-async function restartInstances(instances: ioBroker.ObjectIDs.Instance[], cb?: () => void): Promise<void> {
-    if (!instances || !instances.length) {
-        cb && cb();
-    } else {
-        const id = instances.shift()!;
-        logger.info(
-            `${hostLogPrefix} instance "${id}" restarted because the "let's encrypt" certificates were updated`
-        );
-        await stopInstance(id, false);
-        startInstance(id);
-        setTimeout(() => restartInstances(instances, cb), 3_000);
-    }
-}
-
 async function getInstances(): Promise<void> {
     const instances = await tools.getInstancesOrderedByStartPrio(objects, logger, hostLogPrefix);
 
