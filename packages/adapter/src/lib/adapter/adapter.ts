@@ -3012,14 +3012,14 @@ export class AdapterClass extends EventEmitter {
      * You can change or extend some object. E.g. existing object is:
      * ```js
      * {
-     * common: {
-     * name: 'Adapter name',
-     * desc: 'Description'
-     * },
-     * type: 'state',
-     * native: {
-     * unused: 'text'
-     * }
+     *   common: {
+     *     name: 'Adapter name',
+     *     desc: 'Description'
+     *   },
+     *   type: 'state',
+     *   native: {
+     *     unused: 'text'
+     *  }
      * }
      * ```
      *
@@ -3027,28 +3027,27 @@ export class AdapterClass extends EventEmitter {
      *
      * ```js
      * {
-     * common: {
-     * desc: 'New description',
-     * min: 0,
-     * max: 100
-     * },
-     * native: {
-     * unused: null
-     * }
+     *   common: {
+     *     desc: 'New description',
+     *     min: 0,
+     *     max: 100
+     *   },
+     *   native: {
+     *     unused: null
+     *   }
      * }
      * ```
      *
      * We will get as output:
      * ```js
      * {
-     * common: {
-     * desc: 'New description',
-     * min: 0,
-     * max: 100
-     * },
-     * type: 'state',
-     * native: {
-     * }
+     *   common: {
+     *     desc: 'New description',
+     *     min: 0,
+     *     max: 100
+     *   },
+     *   type: 'state',
+     *   native: {}
      * }
      * ```
      *
@@ -4102,27 +4101,27 @@ export class AdapterClass extends EventEmitter {
      *
      * ```js
      * adapter.getForeignObjects('hm-rega.0.*', 'state', ['rooms', 'functions'], function (err, objs) {
-     * if (err) adapter.log.error('Cannot get object: ' + err);
-     * // objs look like:
-     * // {
-     * //    "hm-rega.0.ABC0000.1.STATE": {
-     * //        common: {...},
-     * //        native: {},
-     * //        type: 'state',
-     * //        enums: {
-     * //           'enums.rooms.livingroom': 'Living room',
-     * //           'enums.functions.light': 'Light'
-     * //       }
-     * //    },
-     * //    "hm-rega.0.ABC0000.2.STATE": {
-     * //        common: {...},
-     * //        native: {},
-     * //        type: 'state',
-     * //        enums: {
-     * //           'enums.rooms.sleepingroom': 'Sleeping room',
-     * //           'enums.functions.window': 'Windows'
-     * //       }
-     * //    }
+     *   if (err) adapter.log.error('Cannot get object: ' + err);
+     *   // objs look like:
+     *   // {
+     *   //    "hm-rega.0.ABC0000.1.STATE": {
+     *   //        common: {...},
+     *   //        native: {},
+     *   //        type: 'state',
+     *   //        enums: {
+     *   //           'enums.rooms.livingroom': 'Living room',
+     *   //           'enums.functions.light': 'Light'
+     *   //       }
+     *   //    },
+     *   //    "hm-rega.0.ABC0000.2.STATE": {
+     *   //        common: {...},
+     *   //        native: {},
+     *   //        type: 'state',
+     *   //        enums: {
+     *   //           'enums.rooms.sleepingroom': 'Sleeping room',
+     *   //           'enums.functions.window': 'Windows'
+     *   //       }
+     *   //    }
      * }
      * ```
      *
