@@ -12243,4 +12243,4 @@ export const Adapter = new Proxy(AdapterClass, {
         // @ts-expect-error fix later on if necessary
         return new target(...argArray);
     }
-}) as unknown as AdapterClass;
+}) as typeof AdapterClass;
