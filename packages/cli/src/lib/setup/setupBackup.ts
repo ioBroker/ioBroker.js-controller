@@ -78,8 +78,6 @@ export class BackupRestore {
     private readonly HOSTNAME_PLACEHOLDER_REPLACE = '$$$$__hostname__$$$$';
     /** Regex to replace all occurrences of the HOSTNAME_PLACEHOLDER */
     private readonly HOSTNAME_PLACEHOLDER_REGEX = /\$\$__hostname__\$\$/g;
-    /** Vis adapters have special files which need to be copied during backup */
-    private readonly VIS_ADAPTERS = ['vis', 'vis-2'] as const;
 
     constructor(options: CLIBackupRestoreOptions) {
         options = options || {};
@@ -419,20 +417,6 @@ export class BackupRestore {
                         }
                     }
                 }
-            }
-        }
-
-        for (const visAdapter of this.VIS_ADAPTERS) {
-            try {
-                const data = await this.objects.readFile(visAdapter, 'css/vis-common-user.css');
-                if (data) {
-                    const dir = path.join(this.tmpDir, 'backup', 'files', visAdapter, 'css');
-                    fs.ensureDirSync(dir);
-
-                    fs.writeFileSync(path.join(dir, 'vis-common-user.css'), data.file);
-                }
-            } catch {
-                // do not process 'css/vis-common-user.css'
             }
         }
 
