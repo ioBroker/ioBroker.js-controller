@@ -37,11 +37,11 @@ interface Logger extends InternalLogger {
 export class Upload {
     private readonly states: StatesRedisClient;
     private readonly objects: ObjectsRedisClient;
-    private readonly regApp: RegExp;
-    private callbackId: number;
+    private readonly regApp = new RegExp('/' + tools.appName.replace(/\./g, '\\.') + '\\.', 'i');
+    private callbackId = 1;
     private readonly sendToHostFromCliAsync: (...args: any[]) => Promise<any>;
     private callbacks: Record<string, any> = {};
-    private lastProgressUpdate: number;
+    private lastProgressUpdate = Date.now();
 
     constructor(_options: CLIUploadOptions) {
         const options = _options || {};
@@ -55,10 +55,7 @@ export class Upload {
 
         this.states = options.states;
         this.objects = options.objects;
-        this.callbackId = 1;
-        this.regApp = new RegExp('/' + tools.appName.replace(/\./g, '\\.') + '\\.', 'i');
         this.sendToHostFromCliAsync = tools.promisifyNoError(this.sendToHostFromCli);
-        this.lastProgressUpdate = Date.now();
     }
 
     async checkHostsIfAlive(hosts: string[]): Promise<string[]> {
@@ -297,20 +294,20 @@ export class Upload {
                     console.error(`Empty response from URL "${source}"`);
                     throw new Error(`Empty response from URL "${source}"`);
                 }
-            } catch (err) {
+            } catch (e) {
                 let result;
-                if (err.response) {
+                if (e.response) {
                     // The request was made and the server responded with a status code
                     // that falls out of the range of 2xx
-                    result = err.response.data || err.response.status;
-                } else if (err.request) {
+                    result = e.response.data || e.response.status;
+                } else if (e.request) {
                     // The request was made but no response was received
                     // `err.request` is an instance of XMLHttpRequest in the browser and an instance of
                     // http.ClientRequest in node.js
-                    result = err.request;
+                    result = e.request;
                 } else {
                     // Something happened in setting up the request that triggered an Error
-                    result = err.message;
+                    result = e.message;
                 }
                 console.error(`Cannot get URL "${source}": ${result}`);
                 throw new Error(result);
@@ -318,9 +315,9 @@ export class Upload {
         } else {
             try {
                 await this.objects.writeFileAsync(adapter, target, fs.readFileSync(source));
-            } catch (err) {
-                console.error(`Cannot read file "${source}": ${err.message}`);
-                throw err;
+            } catch (e) {
+                console.error(`Cannot read file "${source}": ${e.message}`);
+                throw e;
             }
         }
 
@@ -332,8 +329,8 @@ export class Upload {
             for (const file of files) {
                 try {
                     await this.objects.unlinkAsync(file.adapter, file.path);
-                } catch (err) {
-                    logger.error(`Cannot delete file "${file.path}": ${err}`);
+                } catch (e) {
+                    logger.error(`Cannot delete file "${file.path}": ${e}`);
                 }
             }
         }
@@ -378,8 +375,8 @@ export class Upload {
                         }
 
                         _dirs = _dirs.concat(result.dirs);
-                    } catch (err) {
-                        logger.warn(`Cannot delete folder "${adapter}${newPath}/": ${err.message}`);
+                    } catch (e) {
+                        logger.warn(`Cannot delete folder "${adapter}${newPath}/": ${e.message}`);
                     }
                 } else if (!_files.find(e => e.path === newPath)) {
                     _files.push({ adapter, path: newPath });
@@ -476,8 +473,8 @@ export class Upload {
                     }
                 });
             }
-        } catch (err) {
-            console.error(err);
+        } catch (e) {
+            console.error(e);
         }
 
         return results;
@@ -520,9 +517,9 @@ export class Upload {
         let cfg;
         try {
             cfg = await fs.readJSON(`${adapterDir}/io-package.json`);
-        } catch (err) {
+        } catch (e) {
             // file not parsable or does not exist
-            console.error(`Could not read io-package.json: ${err.message}`);
+            console.error(`Could not read io-package.json: ${e.message}`);
         }
 
         if (!fs.existsSync(dir)) {
@@ -783,8 +780,8 @@ export class Upload {
 
                 try {
                     await this.objects.setObjectAsync(obj._id, obj);
-                } catch (err) {
-                    logger.error(`Cannot update object: ${err}`);
+                } catch (e) {
+                    logger.error(`Cannot update object: ${e}`);
                 }
             }
         }
@@ -802,10 +799,8 @@ export class Upload {
     async upgradeAdapterObjects(
         name: string,
         ioPack?: ioBroker.AdapterObject,
-        _logger?: Logger | typeof console
+        logger: Logger | typeof console = console
     ): Promise<string> {
-        const logger = _logger || console;
-
         const adapterDir = tools.getAdapterDir(name);
         let ioPackFile;
         try {
@@ -866,8 +861,11 @@ export class Upload {
 
             try {
                 await this.objects.setObjectAsync(`system.adapter.${name}`, obj);
-            } catch (err) {
-                logger.error(`Cannot set system.adapter.${name}: ${err.message}`);
+                await this.objects.setObjectAsync(`system.host.${hostname}.adapters.${name}`, obj);
+            } catch (e) {
+                logger.error(
+                    `Cannot set "system.adapter.${name}" and "system.host.${hostname}.adapters.${name}": ${e.message}`
+                );
             }
 
             await this._upgradeAdapterObjectsHelper(name, ioPack, hostname, logger);

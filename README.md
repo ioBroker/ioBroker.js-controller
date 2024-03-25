@@ -80,7 +80,7 @@ The admin adapter is installed automatically and starts a web-server that hosts 
 If port 8081 is occupied, you can install a second Admin UI on an alternate port and change the port for the first admin UI. To do so, run `iobroker add admin --enabled --port 8090` and go to the `http://<iobroker-ip>:8090/`. Of course you can change port 8090 to a different one.
 
 ### Automatic adapter upgrade
-**Feature status:** New in 5.1.0
+**Feature status:** New in 6.0.0
 
 Whenever the repository changes, the controller will perform an automatic upgrade of the adapters, w.r.t. the auto-upgrade policy.
 The policy can be configured system-wide and per adapter. Whenever there is no policy on adapter-level the system-wide policy is used as a fallback.
@@ -175,6 +175,22 @@ interface ServerResponse {
     success?: boolean;
 }
 ```
+
+### Per host `adapter` objects
+**Feature status:** New in 6.0.0
+
+Previous to js-controller 6.0.0 all adapter objects were only created as `system.adapter.<adapterName>`. This had the downside, that 
+it was not possible to determine if an adapter is installed on a specific host on database level. Furthermore, in multihost environments
+the content of `system.adapter.<adapterName>` was filled with the last uploaded version of this adapter. Thus having different versions of an adapter
+on different hosts lead to an inconsistent object. 
+
+Up from controller 6.0.0 the objects of type `adapter` are additionally created under `system.host.<hostName>.adapter.<adapterName>`.
+If you need to interact with objects of type `adapter`, please use them from there. For now the objects are additionally created under 
+their previous `system.adapter.<adapterName>` structure to ensure backward compatibility.
+
+Furthermore, instances and their states will not move to another structure and will stay at `system.adapter.<adapterName>.<instanceNumber>`. 
+Note, that instances are unique across the whole system and are thus not affected by the described problem. Also objects of `type` instance have a `common.host` attribute
+to find the corresponding host.
 
 ### Operating system package management
 **Feature status:** New in 5.1.0

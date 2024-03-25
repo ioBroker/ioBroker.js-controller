@@ -51,18 +51,19 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
         };
         super(settings);
 
+        this.META_ID = '**META**';
         this.logs = {};
         this.session = {};
-        this.globalMessageId = Math.round(Math.random() * 100000000);
-        this.globalLogId = Math.round(Math.random() * 100000000);
+        this.globalMessageId = Math.round(Math.random() * 100_000_000);
+        this.globalLogId = Math.round(Math.random() * 100_000_000);
 
         this.stateExpires = {};
         this.sessionExpires = {};
-        this.ONE_DAY_IN_SECS = 24 * 60 * 60 * 1000;
+        this.ONE_DAY_IN_SECS = 24 * 60 * 60 * 1_000;
         this.writeFileInterval =
             this.settings.connection && typeof this.settings.connection.writeFileInterval === 'number'
                 ? parseInt(this.settings.connection.writeFileInterval)
-                : 30000;
+                : 30_000;
         if (settings.jsonlDB) {
             this.log.silly(`${this.namespace} States DB uses file write interval of ${this.writeFileInterval} ms`);
         }
@@ -149,10 +150,10 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
     }
 
     _ensureMetaDict() {
-        let meta = this.dataset['**META**'];
+        let meta = this.dataset[this.META_ID];
         if (!meta) {
             meta = {};
-            this.dataset['**META**'] = meta;
+            this.dataset[this.META_ID] = meta;
         }
         return meta;
     }
@@ -178,7 +179,7 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
         const meta = this._ensureMetaDict();
         meta[id] = value;
         // Make sure the object gets re-written, especially when using an external DB
-        this.dataset['**META**'] = meta;
+        this.dataset[this.META_ID] = meta;
 
         setImmediate(() => {
             // publish event in states
@@ -250,7 +251,7 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
     // needed by Server
     _getKeys(pattern) {
         const r = new RegExp(tools.pattern2RegEx(pattern));
-        return Object.keys(this.dataset).filter(id => r.test(id));
+        return Object.keys(this.dataset).filter(id => r.test(id) && id !== this.META_ID);
     }
 
     // needed by Server
