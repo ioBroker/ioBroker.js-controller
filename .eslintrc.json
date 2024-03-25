@@ -5,7 +5,8 @@
   },
   "extends": [
     "eslint:recommended",
-    "plugin:prettier/recommended"
+    "plugin:prettier/recommended",
+    "plugin:jsdoc/recommended-typescript"
   ],
   "plugins": [],
   "ignorePatterns": [
@@ -14,6 +15,8 @@
   ],
   "reportUnusedDisableDirectives": true,
   "rules": {
+    "jsdoc/require-returns": 0,
+    "jsdoc/tag-lines": ["error", "never", {"startLines": 1}],
     "curly": "error",
     "brace-style": "error",
     "arrow-parens": [
