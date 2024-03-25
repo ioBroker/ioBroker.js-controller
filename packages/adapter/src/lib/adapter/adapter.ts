@@ -5735,9 +5735,9 @@ export class AdapterClass extends EventEmitter {
     ): void;
 
     /**
-     * Deletes channel and udnerlying structure
+     * Deletes channel and underlying structure
      *
-     * @alais deleteChannel
+     * @alias deleteChannel
      * @param parentDevice is the part of ID like: adapter.instance.<deviceName>
      * @param channelName is the part of ID like: adapter.instance.<deviceName>.<channelName>
      * @param options optional user context
@@ -7070,7 +7070,6 @@ export class AdapterClass extends EventEmitter {
      * @param instanceName name of the instance where the message must be sent to. E.g. "pushover.0" or "system.adapter.pushover.0".
      * @param command command name, like "send", "browse", "list". Command is depend on target adapter implementation.
      * @param message object that will be given as argument for request
-     * @param options optional options to define a timeout. This allows to get an error callback if no answer received in time (only if target is specific instance)
      * @param callback optional return result
      *        ```js
      *            function (result) {
@@ -7078,6 +7077,7 @@ export class AdapterClass extends EventEmitter {
      *              if (!result) adapter.log.error('No response received');
      *            }
      *        ```
+     * @param options optional options to define a timeout. This allows to get an error callback if no answer received in time (only if target is specific instance)
      */
     sendTo(instanceName: unknown, command: unknown, message: unknown, callback?: unknown, options?: unknown): any {
         if (typeof message === 'function' && typeof callback === 'undefined') {
