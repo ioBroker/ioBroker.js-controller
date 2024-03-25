@@ -5,8 +5,7 @@
   },
   "extends": [
     "eslint:recommended",
-    "plugin:prettier/recommended",
-    "plugin:jsdoc/recommended-typescript"
+    "plugin:prettier/recommended"
   ],
   "plugins": [],
   "ignorePatterns": [
@@ -16,7 +15,7 @@
   "reportUnusedDisableDirectives": true,
   "rules": {
     "jsdoc/require-returns": 0,
-    "jsdoc/tag-lines": ["error", "never", {"startLines": 1}],
+    "jsdoc/tag-lines": ["error", "never", { "startLines": 1 }],
     "jsdoc/no-blank-blocks": ["error", { "enableFixer":true }],
     "curly": "error",
     "brace-style": "error",
@@ -94,7 +93,8 @@
         "**/*.tsx"
       ],
       "extends": [
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended",
+        "plugin:jsdoc/recommended-typescript"
       ],
       "rules": {
         "@typescript-eslint/no-parameter-properties": "off",
