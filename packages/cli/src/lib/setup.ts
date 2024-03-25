@@ -17,6 +17,7 @@ import { CLICompact } from '@/lib/cli/cliCompact';
 import { CLILogs } from '@/lib/cli/cliLogs';
 import { CLIMessage } from '@/lib/cli/cliMessage';
 import { CLIPlugin } from '@/lib/cli/cliPlugin';
+import { CLIProcess } from '@/lib/cli/cliProcess';
 import { error as CLIError } from './cli/messages';
 import type { CLICommandContext, CLICommandOptions } from '@/lib/cli/cliCommand';
 import { getRepository } from '@/lib/setup/utils';
@@ -24,15 +25,6 @@ import { dbConnect, dbConnectAsync, exitApplicationSave } from '@/lib/setup/dbCo
 import { IoBrokerError } from '@/lib/setup/customError';
 
 tools.ensureDNSOrder();
-
-/**
- * Polyfill until everything ported to TS
- */
-const cli = {
-    command: {
-        process: require('./cli/cliProcess.js')
-    }
-} as const;
 
 const debug = Debug('iobroker:cli');
 
@@ -531,7 +523,7 @@ async function processCommand(
     switch (command) {
         case 'start':
         case 'stop': {
-            const procCommand = new cli.command.process(commandOptions);
+            const procCommand = new CLIProcess(commandOptions);
             procCommand[command](args);
             break;
         }
@@ -544,14 +536,14 @@ async function processCommand(
 
         case 'status':
         case 'isrun': {
-            const procCommand = new cli.command.process(commandOptions);
+            const procCommand = new CLIProcess(commandOptions);
             procCommand.status(args);
             break;
         }
 
         case 'r':
         case 'restart': {
-            const procCommand = new cli.command.process(commandOptions);
+            const procCommand = new CLIProcess(commandOptions);
             procCommand.restart(args);
             break;
         }

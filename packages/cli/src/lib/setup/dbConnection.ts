@@ -56,7 +56,7 @@ export function dbConnect(
 
     params = params || {};
 
-    const config = fs.readJSONSync(tools.getConfigFileName());
+    const config: ioBroker.IoBrokerJson = fs.readJSONSync(tools.getConfigFileName());
 
     if (objects && states) {
         return void callback({ objects, states, isOffline: false, objectsDBType: config.objects.type, config });
