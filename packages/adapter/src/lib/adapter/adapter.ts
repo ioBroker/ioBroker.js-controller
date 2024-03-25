@@ -10723,77 +10723,17 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private _initLogging(callback: () => void): void {
-        // temporary log buffer
-        let messages: null | any[] = [];
-        // Read current state of all log subscriber
-
+    /**
+     * Initialize the logging logic
+     */
+    private async _initLogging(): Promise<void> {
         if (!this.#states) {
             // if adapterState was destroyed, we can not continue
             return;
         }
 
-        this.#states.getKeys(`${SYSTEM_ADAPTER_PREFIX}*.logging`, (err, keys) => {
-            if (keys?.length) {
-                if (!this.#states) {
-                    // if adapterState was destroyed, we can not continue
-                    return;
-                }
-
-                this.#states.getStates(keys, (err, obj) => {
-                    if (obj) {
-                        for (let i = 0; i < keys.length; i++) {
-                            const objPart = obj[i];
-                            // We can JSON.parse, but index is 16x faster
-                            if (!objPart) {
-                                continue;
-                            }
-                            const id = keys[i].substring(0, keys[i].length - '.logging'.length);
-                            if (
-                                typeof objPart === 'string' &&
-                                // @ts-expect-error recheck this but getStates should not return string code-wise
-                                (objPart.includes('"val":true') || objPart.includes('"val":"true"'))
-                            ) {
-                                this.logRedirect!(true, id);
-                            } else if (
-                                typeof objPart === 'object' &&
-                                (objPart.val === true || objPart.val === 'true')
-                            ) {
-                                this.logRedirect!(true, id);
-                            }
-                        }
-                        if (this.logList.size && messages?.length && this.#states) {
-                            for (const message of messages) {
-                                for (const instanceId of this.logList) {
-                                    this.#states.pushLog(instanceId, message);
-                                }
-                            }
-                        }
-                    }
-                    // clear log buffer
-                    messages = null;
-                });
-            } else {
-                // disable log buffer
-                messages = null;
-            }
-            return tools.maybeCallback(callback);
-        });
-
-        this.logRedirect = (isActive, id): void => {
-            // ignore itself
-            if (id === `system.adapter.${this.namespace}`) {
-                return;
-            }
-
-            if (isActive) {
-                if (!this.logList.has(id)) {
-                    this.logList.add(id);
-                }
-            } else {
-                this.logList.delete(id);
-            }
-        };
+        // temporary log buffer
+        let messages: null | any[] = [];
 
         // If some message from logger
         // find our notifier transport
@@ -10824,6 +10764,57 @@ export class AdapterClass extends EventEmitter {
                 }
             }
         });
+
+        const keys = await this.#states.getKeys(`${SYSTEM_ADAPTER_PREFIX}*.logging`);
+        if (keys?.length) {
+            if (!this.#states) {
+                // if adapterState was destroyed, we can not continue
+                return;
+            }
+
+            const obj = await this.#states.getStates(keys);
+            if (obj) {
+                for (let i = 0; i < keys.length; i++) {
+                    const objPart = obj[i];
+                    // We can JSON.parse, but index is 16x faster
+                    if (!objPart) {
+                        continue;
+                    }
+                    const id = keys[i].substring(0, keys[i].length - '.logging'.length);
+
+                    if (typeof objPart === 'object' && (objPart.val === true || objPart.val === 'true')) {
+                        this.logRedirect!(true, id);
+                    }
+                }
+                if (this.logList.size && messages?.length && this.#states) {
+                    for (const message of messages) {
+                        for (const instanceId of this.logList) {
+                            this.#states.pushLog(instanceId, message);
+                        }
+                    }
+                }
+            }
+            // clear log buffer
+            messages = null;
+        } else {
+            // disable log buffer
+            messages = null;
+        }
+
+        this.logRedirect = (isActive, id): void => {
+            // ignore itself
+            if (id === `system.adapter.${this.namespace}`) {
+                return;
+            }
+
+            if (isActive) {
+                if (!this.logList.has(id)) {
+                    this.logList.add(id);
+                }
+            } else {
+                this.logList.delete(id);
+            }
+        };
 
         this._options.logTransporter = this._options.logTransporter || this.ioPack.common.logTransporter;
 
@@ -11510,397 +11501,389 @@ export class AdapterClass extends EventEmitter {
     /**
      * Called if states and objects successfully initialized
      */
-    private _prepareInitAdapter(): void {
+    private async _prepareInitAdapter(): Promise<void> {
         if (this.terminated || !this.#objects || !this.#states) {
             return;
         }
 
         if (this._options.instance !== undefined) {
-            this._initAdapter(this._options);
+            return this._initAdapter(this._options);
         } else {
-            this.#states.getState(`system.adapter.${this.namespace}.alive`, (err, resAlive) => {
-                this.#states!.getState(`system.adapter.${this.namespace}.sigKill`, (err, killRes) => {
-                    if (killRes?.val !== undefined) {
-                        killRes.val = parseInt(killRes.val as any, 10);
-                    }
-                    if (
-                        !this._config.isInstall &&
-                        this.startedInCompactMode &&
-                        killRes &&
-                        !killRes.ack &&
-                        killRes.val === -1
-                    ) {
-                        this._logger.error(
-                            `${this.namespaceLog} ${this.namespace} needs to be stopped because not correctly started in compact mode`
-                        );
-                        this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
-                    } else if (
-                        !this._config.forceIfDisabled &&
-                        !this._config.isInstall &&
-                        !this.startedInCompactMode &&
-                        killRes &&
-                        killRes.from &&
-                        killRes.from.startsWith('system.host.') &&
-                        killRes.ack &&
-                        !isNaN(killRes.val as any) &&
-                        killRes.val !== process.pid
-                    ) {
-                        this._logger.error(
-                            `${this.namespaceLog} ${this.namespace} invalid process id scenario ${killRes.val} vs. own ID ${process.pid}. Stopping`
-                        );
-                        this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
-                    } else if (
-                        !this._config.isInstall &&
-                        resAlive &&
-                        resAlive.val === true &&
-                        resAlive.ack &&
-                        !this._config.forceIfDisabled
-                    ) {
-                        this._logger.error(`${this.namespaceLog} ${this.namespace} already running`);
-                        this.terminate(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
-                    } else {
-                        this.#objects!.getObject(`system.adapter.${this.namespace}`, (err, res) => {
-                            // TODO: ts infers AdapterObject instead of InstanceObject
-                            if ((err || !res) && !this._config.isInstall) {
-                                this._logger.error(`${this.namespaceLog} ${this.namespace} invalid config`);
-                                this.terminate(EXIT_CODES.INVALID_ADAPTER_CONFIG);
-                            } else {
-                                this._initAdapter(res);
-                            }
-                        });
-                    }
-                });
-            });
+            const resAlive = await this.#states.getState(`system.adapter.${this.namespace}.alive`);
+            const killRes = await this.#states.getState(`system.adapter.${this.namespace}.sigKill`);
+
+            if (killRes?.val !== undefined) {
+                killRes.val = parseInt(killRes.val as any, 10);
+            }
+            if (!this._config.isInstall && this.startedInCompactMode && killRes && !killRes.ack && killRes.val === -1) {
+                this._logger.error(
+                    `${this.namespaceLog} ${this.namespace} needs to be stopped because not correctly started in compact mode`
+                );
+                this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+            } else if (
+                !this._config.forceIfDisabled &&
+                !this._config.isInstall &&
+                !this.startedInCompactMode &&
+                killRes &&
+                killRes.from?.startsWith('system.host.') &&
+                killRes.ack &&
+                !isNaN(killRes.val as any) &&
+                killRes.val !== process.pid
+            ) {
+                this._logger.error(
+                    `${this.namespaceLog} ${this.namespace} invalid process id scenario ${killRes.val} vs. own ID ${process.pid}. Stopping`
+                );
+                this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+            } else if (
+                !this._config.isInstall &&
+                resAlive &&
+                resAlive.val === true &&
+                resAlive.ack &&
+                !this._config.forceIfDisabled
+            ) {
+                this._logger.error(`${this.namespaceLog} ${this.namespace} already running`);
+                this.terminate(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
+            } else {
+                let res: ioBroker.InstanceObject | null | undefined;
+                try {
+                    res = await this.#objects.getObject(`system.adapter.${this.namespace}`);
+                } catch (e) {
+                    this._logger.error(
+                        `${this.namespaceLog} ${this.namespace} Could not get instance object: ${e.message}`
+                    );
+                }
+
+                if (!res && !this._config.isInstall) {
+                    this._logger.error(`${this.namespaceLog} ${this.namespace} invalid config`);
+                    this.terminate(EXIT_CODES.INVALID_ADAPTER_CONFIG);
+                } else {
+                    return this._initAdapter(res);
+                }
+            }
         }
     }
 
-    private _initAdapter(adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null): void {
-        this._initLogging(() => {
-            if (!this.pluginHandler) {
+    /**
+     * Initialize the adapter
+     * @param adapterConfig the AdapterOptions or the InstanceObject, is null/undefined if it is install process
+     */
+    private async _initAdapter(adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null): Promise<void> {
+        await this._initLogging();
+
+        if (!this.pluginHandler) {
+            return;
+        }
+        this.pluginHandler.setDatabaseForPlugins(this.#objects, this.#states);
+        this.pluginHandler.initPlugins(adapterConfig || {}, async () => {
+            if (!this.#states || !this.#objects || this.terminated) {
+                // if adapterState was destroyed,we should not continue
                 return;
             }
-            this.pluginHandler.setDatabaseForPlugins(this.#objects, this.#states);
-            this.pluginHandler.initPlugins(adapterConfig || {}, async () => {
-                if (!this.#states || !this.#objects || this.terminated) {
-                    // if adapterState was destroyed,we should not continue
-                    return;
-                }
 
-                this.#states.subscribe(`system.adapter.${this.namespace}.plugins.*`);
-                if (this._options.instance === undefined) {
-                    if (!adapterConfig || !('common' in adapterConfig) || !adapterConfig.common.enabled) {
-                        if (adapterConfig && 'common' in adapterConfig && adapterConfig.common.enabled !== undefined) {
-                            !this._config.isInstall && this._logger.error(`${this.namespaceLog} adapter disabled`);
-                        } else {
-                            !this._config.isInstall &&
-                                this._logger.error(`${this.namespaceLog} no config found for adapter`);
-                        }
+            this.#states.subscribe(`system.adapter.${this.namespace}.plugins.*`);
+            if (this._options.instance === undefined) {
+                if (!adapterConfig || !('common' in adapterConfig) || !adapterConfig.common.enabled) {
+                    if (adapterConfig && 'common' in adapterConfig && adapterConfig.common.enabled !== undefined) {
+                        !this._config.isInstall && this._logger.error(`${this.namespaceLog} adapter disabled`);
+                    } else {
+                        !this._config.isInstall &&
+                            this._logger.error(`${this.namespaceLog} no config found for adapter`);
+                    }
 
-                        if (!this._config.isInstall && (!process.argv || !this._config.forceIfDisabled)) {
-                            const id = `system.adapter.${this.namespace}`;
-                            this.outputCount += 2;
-                            this.#states.setState(`${id}.alive`, { val: true, ack: true, expire: 30, from: id });
-                            let done = false;
-                            this.#states.setState(
-                                `${id}.connected`,
-                                {
-                                    val: true,
-                                    ack: true,
-                                    expire: 30,
-                                    from: id
-                                },
-                                () => {
-                                    if (!done) {
-                                        done = true;
-                                        this.terminate(EXIT_CODES.NO_ADAPTER_CONFIG_FOUND);
-                                    }
-                                }
-                            );
-                            setTimeout(() => {
+                    if (!this._config.isInstall && (!process.argv || !this._config.forceIfDisabled)) {
+                        const id = `system.adapter.${this.namespace}`;
+                        this.outputCount += 2;
+                        this.#states.setState(`${id}.alive`, { val: true, ack: true, expire: 30, from: id });
+                        let done = false;
+                        this.#states.setState(
+                            `${id}.connected`,
+                            {
+                                val: true,
+                                ack: true,
+                                expire: 30,
+                                from: id
+                            },
+                            () => {
                                 if (!done) {
                                     done = true;
                                     this.terminate(EXIT_CODES.NO_ADAPTER_CONFIG_FOUND);
                                 }
-                            }, 1_000);
-                            return;
-                        }
-                    }
-
-                    if (!this._config.isInstall && (!adapterConfig || !('_id' in adapterConfig))) {
-                        this._logger.error(`${this.namespaceLog} invalid config: no _id found`);
-                        this.terminate(EXIT_CODES.INVALID_ADAPTER_ID);
+                            }
+                        );
+                        setTimeout(() => {
+                            if (!done) {
+                                done = true;
+                                this.terminate(EXIT_CODES.NO_ADAPTER_CONFIG_FOUND);
+                            }
+                        }, 1_000);
                         return;
                     }
-
-                    let name;
-                    let instance;
-
-                    if (!this._config.isInstall) {
-                        // @ts-expect-error
-                        const tmp = adapterConfig._id.match(/^system\.adapter\.([a-zA-Z0-9-_]+)\.([0-9]+)$/);
-                        if (!tmp) {
-                            this._logger.error(`${this.namespaceLog} invalid config`);
-                            this.terminate(EXIT_CODES.INVALID_ADAPTER_ID);
-                            return;
-                        }
-                        name = tmp[1];
-                        instance = parseInt(tmp[2]) || 0;
-                    } else {
-                        name = this.name;
-                        instance = 0;
-                        adapterConfig = adapterConfig || {
-                            // @ts-expect-error protectedNative exists on instance objects
-                            common: { mode: 'once', name: name, protectedNative: [] },
-                            native: {}
-                        };
-                    }
-
-                    // @ts-expect-error
-                    if (adapterConfig.common.loglevel && !this.overwriteLogLevel) {
-                        // set configured in DB log level
-                        for (const trans of Object.values(this._logger.transports)) {
-                            // set the loglevel on transport only if no loglevel was pinned in log config
-                            // @ts-expect-error it is our own modification
-                            if (!trans._defaultConfigLoglevel) {
-                                // @ts-expect-error
-                                trans.level = adapterConfig.common.loglevel;
-                            }
-                        }
-                        // @ts-expect-error
-                        this._config.log.level = adapterConfig.common.loglevel;
-                    }
-
-                    // @ts-expect-error
-                    this.name = adapterConfig.common.name;
-                    this.instance = instance;
-                    this.namespace = `${name}.${instance}`;
-                    this.namespaceLog =
-                        this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
-                    if (!this.startedInCompactMode) {
-                        process.title = `io.${this.namespace}`;
-                    }
-
-                    // @ts-expect-error
-                    this.config = adapterConfig.native;
-                    // @ts-expect-error
-                    this.host = adapterConfig.common.host;
-                    // @ts-expect-error
-                    this.common = adapterConfig.common;
-
-                    if (
-                        // @ts-expect-error
-                        adapterConfig.common.mode === 'subscribe' ||
-                        // @ts-expect-error
-                        adapterConfig.common.mode === 'schedule' ||
-                        // @ts-expect-error
-                        adapterConfig.common.mode === 'once'
-                    ) {
-                        this.stop = () => this._stop(true);
-                    } else if (this.startedInCompactMode) {
-                        this.stop = () => this._stop(false);
-                        this.kill = this.stop;
-                    } else {
-                        this.stop = () => this._stop(false);
-                    }
-
-                    // Monitor logging state
-                    this.#states.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.logging`);
-
-                    if (
-                        typeof this._options.message === 'function' &&
-                        // @ts-expect-error, we should infer correctly that this is an InstanceObject in this case
-                        !isMessageboxSupported(adapterConfig.common)
-                    ) {
-                        this._logger.error(
-                            `${this.namespaceLog} : message handler implemented, but messagebox not enabled. Define common.messagebox in io-package.json for adapter or delete message handler.`
-                        );
-                        // @ts-expect-error we should infer adapterConfig correctly
-                    } else if (isMessageboxSupported(adapterConfig.common)) {
-                        this.mboxSubscribed = true;
-                        this.#states.subscribeMessage(`system.adapter.${this.namespace}`);
-                    }
-                } else {
-                    // @ts-expect-error
-                    this.name = adapterConfig.name || this.name;
-                    // @ts-expect-error
-                    this.instance = adapterConfig.instance || 0;
-                    this.namespace = `${this.name}.${this.instance!}`;
-                    this.namespaceLog =
-                        this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
-                    // @ts-expect-error
-                    this.config = adapterConfig.native || {};
-                    // @ts-expect-error
-                    this.common = adapterConfig.common || {};
-                    this.host = this.common?.host || tools.getHostName() || os.hostname();
                 }
 
-                this.adapterConfig = adapterConfig;
-
-                this._utils = new Validator(
-                    this.#objects,
-                    this.#states,
-                    this.namespaceLog,
-                    this._logger,
-                    this.namespace,
-                    this._namespaceRegExp
-                );
-
-                this.log = new Log(this.namespaceLog, this._config.log.level, this._logger);
-
-                await this._createInstancesObjects(adapterConfig as ioBroker.InstanceObject);
-
-                // auto oObjects
-                if (this._options.objects) {
-                    this.oObjects = await this.getAdapterObjectsAsync();
-                    await this.subscribeObjectsAsync('*');
-                }
-
-                // initialize the system secret
-                await this.getSystemSecret();
-
-                // Decrypt all attributes of encryptedNative
-                const promises = [];
-                // @ts-expect-error
-                if (Array.isArray(adapterConfig.encryptedNative)) {
-                    // @ts-expect-error
-                    for (const attr of adapterConfig.encryptedNative) {
-                        // we can only decrypt strings
-                        // @ts-expect-error
-                        if (typeof this.config[attr] === 'string') {
-                            promises.push(
-                                this.getEncryptedConfig(attr)
-                                    // @ts-expect-error
-                                    .then(decryptedValue => (this.config[attr] = decryptedValue))
-                                    .catch(e =>
-                                        this._logger.error(
-                                            `${this.namespaceLog} Can not decrypt attribute ${attr}: ${e.message}`
-                                        )
-                                    )
-                            );
-                        }
-                    }
-                } else {
-                    // remove encrypted native from supported features, otherwise this can cause issues, if no adapter upload done with js-c v3+ yet
-                    const idx = this.SUPPORTED_FEATURES.indexOf('ADAPTER_AUTO_DECRYPT_NATIVE');
-                    if (idx !== -1) {
-                        this.SUPPORTED_FEATURES.splice(idx, 1);
-                    }
-                }
-
-                // Wait till all attributes decrypted
-                await Promise.all(promises);
-
-                if (!this.#states) {
-                    // if this.adapterStates was destroyed, we should not continue
+                if (!this._config.isInstall && (!adapterConfig || !('_id' in adapterConfig))) {
+                    this._logger.error(`${this.namespaceLog} invalid config: no _id found`);
+                    this.terminate(EXIT_CODES.INVALID_ADAPTER_ID);
                     return;
                 }
 
-                this.outputCount++;
-                // set current loglevel
-                this.#states.setState(`system.adapter.${this.namespace}.logLevel`, {
-                    val: this._config.log.level,
-                    ack: true,
-                    from: `system.adapter.${this.namespace}`
-                });
+                let name;
+                let instance;
 
-                if (this._options.instance === undefined) {
-                    this.version = this.pack?.version
-                        ? this.pack.version
-                        : this.ioPack?.common
-                        ? this.ioPack.common.version
-                        : 'unknown';
-                    // display if it's a non-official version - only if installedFrom is explicitly given and differs it's not npm
-                    const isNpmVersion =
-                        !this.ioPack ||
-                        !this.ioPack.common ||
-                        typeof this.ioPack.common.installedFrom !== 'string' ||
-                        this.ioPack.common.installedFrom.startsWith(`${tools.appName.toLowerCase()}.${this.name}`);
+                if (!this._config.isInstall) {
+                    // @ts-expect-error
+                    const tmp = adapterConfig._id.match(/^system\.adapter\.([a-zA-Z0-9-_]+)\.([0-9]+)$/);
+                    if (!tmp) {
+                        this._logger.error(`${this.namespaceLog} invalid config`);
+                        this.terminate(EXIT_CODES.INVALID_ADAPTER_ID);
+                        return;
+                    }
+                    name = tmp[1];
+                    instance = parseInt(tmp[2]) || 0;
+                } else {
+                    name = this.name;
+                    instance = 0;
+                    adapterConfig = adapterConfig || {
+                        // @ts-expect-error protectedNative exists on instance objects
+                        common: { mode: 'once', name: name, protectedNative: [] },
+                        native: {}
+                    };
+                }
 
-                    this._logger.info(
-                        `${this.namespaceLog} starting. Version ${this.version} ${
-                            !isNpmVersion ? `(non-npm: ${this.ioPack.common.installedFrom}) ` : ''
-                        }in ${this.adapterDir}, node: ${process.version}, js-controller: ${controllerVersion}`
+                // @ts-expect-error
+                if (adapterConfig.common.loglevel && !this.overwriteLogLevel) {
+                    // set configured in DB log level
+                    for (const trans of Object.values(this._logger.transports)) {
+                        // set the loglevel on transport only if no loglevel was pinned in log config
+                        // @ts-expect-error it is our own modification
+                        if (!trans._defaultConfigLoglevel) {
+                            // @ts-expect-error
+                            trans.level = adapterConfig.common.loglevel;
+                        }
+                    }
+                    // @ts-expect-error
+                    this._config.log.level = adapterConfig.common.loglevel;
+                }
+
+                // @ts-expect-error
+                this.name = adapterConfig.common.name;
+                this.instance = instance;
+                this.namespace = `${name}.${instance}`;
+                this.namespaceLog = this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
+                if (!this.startedInCompactMode) {
+                    process.title = `io.${this.namespace}`;
+                }
+
+                // @ts-expect-error
+                this.config = adapterConfig.native;
+                // @ts-expect-error
+                this.host = adapterConfig.common.host;
+                // @ts-expect-error
+                this.common = adapterConfig.common;
+
+                if (
+                    // @ts-expect-error
+                    adapterConfig.common.mode === 'schedule' ||
+                    // @ts-expect-error
+                    adapterConfig.common.mode === 'once'
+                ) {
+                    this.stop = () => this._stop(true);
+                } else if (this.startedInCompactMode) {
+                    this.stop = () => this._stop(false);
+                    this.kill = this.stop;
+                } else {
+                    this.stop = () => this._stop(false);
+                }
+
+                // Monitor logging state
+                this.#states.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.logging`);
+
+                if (
+                    typeof this._options.message === 'function' &&
+                    // @ts-expect-error, we should infer correctly that this is an InstanceObject in this case
+                    !isMessageboxSupported(adapterConfig.common)
+                ) {
+                    this._logger.error(
+                        `${this.namespaceLog} : message handler implemented, but messagebox not enabled. Define common.messagebox in io-package.json for adapter or delete message handler.`
                     );
-                    this._config.system = this._config.system || {};
-                    this._config.system.statisticsInterval =
-                        parseInt(this._config.system.statisticsInterval, 10) || 15_000;
-                    if (!this._config.isInstall) {
-                        this._reportInterval = setInterval(
-                            () => this._reportStatus(),
-                            this._config.system.statisticsInterval
+                    // @ts-expect-error we should infer adapterConfig correctly
+                } else if (isMessageboxSupported(adapterConfig.common)) {
+                    this.mboxSubscribed = true;
+                    this.#states.subscribeMessage(`system.adapter.${this.namespace}`);
+                }
+            } else {
+                // @ts-expect-error
+                this.name = adapterConfig.name || this.name;
+                // @ts-expect-error
+                this.instance = adapterConfig.instance || 0;
+                this.namespace = `${this.name}.${this.instance!}`;
+                this.namespaceLog = this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
+                // @ts-expect-error
+                this.config = adapterConfig.native || {};
+                // @ts-expect-error
+                this.common = adapterConfig.common || {};
+                this.host = this.common?.host || tools.getHostName() || os.hostname();
+            }
+
+            this.adapterConfig = adapterConfig;
+
+            this._utils = new Validator(
+                this.#objects,
+                this.#states,
+                this.namespaceLog,
+                this._logger,
+                this.namespace,
+                this._namespaceRegExp
+            );
+
+            this.log = new Log(this.namespaceLog, this._config.log.level, this._logger);
+
+            await this._createInstancesObjects(adapterConfig as ioBroker.InstanceObject);
+
+            // auto oObjects
+            if (this._options.objects) {
+                this.oObjects = await this.getAdapterObjectsAsync();
+                await this.subscribeObjectsAsync('*');
+            }
+
+            // initialize the system secret
+            await this.getSystemSecret();
+
+            // Decrypt all attributes of encryptedNative
+            const promises = [];
+            // @ts-expect-error
+            if (Array.isArray(adapterConfig.encryptedNative)) {
+                // @ts-expect-error
+                for (const attr of adapterConfig.encryptedNative) {
+                    // we can only decrypt strings
+                    // @ts-expect-error
+                    if (typeof this.config[attr] === 'string') {
+                        promises.push(
+                            this.getEncryptedConfig(attr)
+                                // @ts-expect-error
+                                .then(decryptedValue => (this.config[attr] = decryptedValue))
+                                .catch(e =>
+                                    this._logger.error(
+                                        `${this.namespaceLog} Can not decrypt attribute ${attr}: ${e.message}`
+                                    )
+                                )
                         );
-                        this._reportStatus();
-                        const id = `system.adapter.${this.namespace}`;
-                        this.#states.setState(`${id}.compactMode`, {
-                            ack: true,
-                            from: id,
-                            val: !!this.startedInCompactMode
-                        });
-
-                        this.outputCount++;
-
-                        if (this.startedInCompactMode) {
-                            this.#states.setState(`${id}.cpu`, { ack: true, from: id, val: 0 });
-                            this.#states.setState(`${id}.cputime`, { ack: true, from: id, val: 0 });
-                            this.#states.setState(`${id}.memRss`, { val: 0, ack: true, from: id });
-                            this.#states.setState(`${id}.memHeapTotal`, { val: 0, ack: true, from: id });
-                            this.#states.setState(`${id}.memHeapUsed`, { val: 0, ack: true, from: id });
-                            this.#states.setState(`${id}.eventLoopLag`, { val: 0, ack: true, from: id });
-                            this.outputCount += 6;
-                        } else {
-                            tools.measureEventLoopLag(1_000, lag => {
-                                if (lag) {
-                                    this.eventLoopLags.push(lag);
-                                }
-                            });
-                        }
                     }
                 }
-
-                if (adapterConfig && 'common' in adapterConfig && adapterConfig.common.restartSchedule) {
-                    try {
-                        this._schedule = await import('node-schedule');
-                    } catch {
-                        this._logger.error(
-                            `${this.namespaceLog} Cannot load node-schedule. Scheduled restart is disabled`
-                        );
-                    }
-                    if (this._schedule) {
-                        this._logger.debug(
-                            `${this.namespaceLog} Schedule restart: ${adapterConfig.common.restartSchedule}`
-                        );
-                        this._restartScheduleJob = this._schedule.scheduleJob(
-                            adapterConfig.common.restartSchedule,
-                            () => {
-                                this._logger.info(`${this.namespaceLog} Scheduled restart.`);
-                                this._stop(false, true);
-                            }
-                        );
-                    }
+            } else {
+                // remove encrypted native from supported features, otherwise this can cause issues, if no adapter upload done with js-c v3+ yet
+                const idx = this.SUPPORTED_FEATURES.indexOf('ADAPTER_AUTO_DECRYPT_NATIVE');
+                if (idx !== -1) {
+                    this.SUPPORTED_FEATURES.splice(idx, 1);
                 }
+            }
 
-                // auto oStates
-                if (this._options.states) {
-                    this.getStates('*', null, (err, _states) => {
-                        if (this._stopInProgress) {
-                            return;
-                        }
+            // Wait till all attributes decrypted
+            await Promise.all(promises);
 
-                        this.oStates = _states;
-                        this.subscribeStates('*');
+            if (!this.#states) {
+                // if this.adapterStates was destroyed, we should not continue
+                return;
+            }
 
-                        if (this._firstConnection) {
-                            this._firstConnection = false;
-                            this._callReadyHandler();
-                        }
-
-                        this.adapterReady = true;
-                    });
-                } else if (!this._stopInProgress) {
-                    this._callReadyHandler();
-                    this.adapterReady = true;
-                }
+            this.outputCount++;
+            // set current loglevel
+            this.#states.setState(`system.adapter.${this.namespace}.logLevel`, {
+                val: this._config.log.level,
+                ack: true,
+                from: `system.adapter.${this.namespace}`
             });
+
+            if (this._options.instance === undefined) {
+                this.version = this.pack?.version
+                    ? this.pack.version
+                    : this.ioPack?.common
+                    ? this.ioPack.common.version
+                    : 'unknown';
+                // display if it's a non-official version - only if installedFrom is explicitly given and differs it's not npm
+                const isNpmVersion =
+                    !this.ioPack ||
+                    !this.ioPack.common ||
+                    typeof this.ioPack.common.installedFrom !== 'string' ||
+                    this.ioPack.common.installedFrom.startsWith(`${tools.appName.toLowerCase()}.${this.name}`);
+
+                this._logger.info(
+                    `${this.namespaceLog} starting. Version ${this.version} ${
+                        !isNpmVersion ? `(non-npm: ${this.ioPack.common.installedFrom}) ` : ''
+                    }in ${this.adapterDir}, node: ${process.version}, js-controller: ${controllerVersion}`
+                );
+                this._config.system = this._config.system || {};
+                this._config.system.statisticsInterval = parseInt(this._config.system.statisticsInterval, 10) || 15_000;
+                if (!this._config.isInstall) {
+                    this._reportInterval = setInterval(
+                        () => this._reportStatus(),
+                        this._config.system.statisticsInterval
+                    );
+                    this._reportStatus();
+                    const id = `system.adapter.${this.namespace}`;
+                    this.#states.setState(`${id}.compactMode`, {
+                        ack: true,
+                        from: id,
+                        val: !!this.startedInCompactMode
+                    });
+
+                    this.outputCount++;
+
+                    if (this.startedInCompactMode) {
+                        this.#states.setState(`${id}.cpu`, { ack: true, from: id, val: 0 });
+                        this.#states.setState(`${id}.cputime`, { ack: true, from: id, val: 0 });
+                        this.#states.setState(`${id}.memRss`, { val: 0, ack: true, from: id });
+                        this.#states.setState(`${id}.memHeapTotal`, { val: 0, ack: true, from: id });
+                        this.#states.setState(`${id}.memHeapUsed`, { val: 0, ack: true, from: id });
+                        this.#states.setState(`${id}.eventLoopLag`, { val: 0, ack: true, from: id });
+                        this.outputCount += 6;
+                    } else {
+                        tools.measureEventLoopLag(1_000, lag => {
+                            if (lag) {
+                                this.eventLoopLags.push(lag);
+                            }
+                        });
+                    }
+                }
+            }
+
+            if (adapterConfig && 'common' in adapterConfig && adapterConfig.common.restartSchedule) {
+                try {
+                    this._schedule = await import('node-schedule');
+                } catch {
+                    this._logger.error(`${this.namespaceLog} Cannot load node-schedule. Scheduled restart is disabled`);
+                }
+                if (this._schedule) {
+                    this._logger.debug(
+                        `${this.namespaceLog} Schedule restart: ${adapterConfig.common.restartSchedule}`
+                    );
+                    this._restartScheduleJob = this._schedule.scheduleJob(adapterConfig.common.restartSchedule, () => {
+                        this._logger.info(`${this.namespaceLog} Scheduled restart.`);
+                        this._stop(false, true);
+                    });
+                }
+            }
+
+            // auto oStates
+            if (this._options.states) {
+                this.getStates('*', null, (err, _states) => {
+                    if (this._stopInProgress) {
+                        return;
+                    }
+
+                    this.oStates = _states;
+                    this.subscribeStates('*');
+
+                    if (this._firstConnection) {
+                        this._firstConnection = false;
+                        this._callReadyHandler();
+                    }
+
+                    this.adapterReady = true;
+                });
+            } else if (!this._stopInProgress) {
+                this._callReadyHandler();
+                this.adapterReady = true;
+            }
         });
     }
 
@@ -11987,8 +11970,7 @@ export class AdapterClass extends EventEmitter {
         let objs: (IoPackageInstanceObject & { state?: unknown })[];
 
         if (instanceObj?.common && !('onlyWWW' in instanceObj.common) && instanceObj.common.mode !== 'once') {
-            // @ts-expect-error
-            objs = tools.getInstanceIndicatorObjects(this.namespace, instanceObj.common.wakeup);
+            objs = tools.getInstanceIndicatorObjects(this.namespace);
         } else {
             objs = [];
         }

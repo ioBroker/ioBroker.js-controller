@@ -777,11 +777,7 @@ function createObjects(onConnect: () => void): void {
                         hostAdapter[id] = hostAdapter[id] || {};
                         hostAdapter[id].config = obj;
                     }
-                    if (
-                        proc.process ||
-                        proc.config.common.mode === 'schedule' ||
-                        proc.config.common.mode === 'subscribe'
-                    ) {
+                    if (proc.process || proc.config.common.mode === 'schedule') {
                         proc.restartExpected = true;
                         await stopInstance(id, false);
                         if (!procs[id]) {
@@ -3752,10 +3748,6 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         mode = 'daemon';
     }
 
-    if (instance.common.wakeup) {
-        // TODO
-    }
-
     // Check if all required adapters installed and have a valid version
     if (instance.common.dependencies || instance.common.globalDependencies) {
         try {
@@ -3910,28 +3902,6 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             );
         } catch (e) {
             logger.warn(`${hostLogPrefix} Could not add OOM notification: ${e.message}`);
-        }
-    }
-
-    if (instance.common.subscribe || instance.common.wakeup) {
-        proc.subscribe = instance.common.subscribe || `${instance._id}.wakeup`;
-        const parts = instance._id.split('.');
-        const instanceId = parts[parts.length - 1];
-        proc.subscribe = proc.subscribe!.replace('<INSTANCE>', instanceId);
-
-        if (subscribe[proc.subscribe]) {
-            if (!subscribe[proc.subscribe].includes(id)) {
-                subscribe[proc.subscribe].push(id);
-            }
-        } else {
-            subscribe[proc.subscribe] = [id];
-
-            // Subscribe on changes
-            if (proc.subscribe.startsWith('messagebox.')) {
-                states!.subscribeMessage(proc.subscribe.substring('messagebox.'.length));
-            } else {
-                states!.subscribe(proc.subscribe);
-            }
         }
     }
 
@@ -4721,7 +4691,6 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             break;
         }
         case 'extension':
-        case 'subscribe':
             break;
 
         default:
@@ -4946,41 +4915,6 @@ async function stopInstance(id: string, force: boolean): Promise<void> {
                     delete scheduledInstances[id];
                 }
                 logger.info(`${hostLogPrefix} stopInstance canceled schedule ${instance._id}`);
-            }
-            break;
-
-        case 'subscribe':
-            if (proc.subscribe) {
-                // Remove this id from subscribed on this message
-                if (subscribe[proc.subscribe] && subscribe[proc.subscribe].includes(id as any)) {
-                    subscribe[proc.subscribe].splice(subscribe[proc.subscribe].indexOf(id as any), 1);
-
-                    // If no one subscribed
-                    if (!subscribe[proc.subscribe].length) {
-                        // Delete item
-                        delete subscribe[proc.subscribe];
-
-                        // Unsubscribe
-                        if (proc.subscribe.startsWith('messagebox.')) {
-                            states!.unsubscribeMessage(proc.subscribe.substring('messagebox.'.length));
-                        } else {
-                            states!.unsubscribe(proc.subscribe);
-                        }
-                    }
-                }
-            }
-
-            if (!proc.process) {
-                return;
-            } else {
-                logger.info(`${hostLogPrefix} stopInstance ${instance._id} killing pid ${proc.process.pid}`);
-                proc.stopping = true;
-                try {
-                    proc.process.kill('SIGKILL'); // call stop directly in adapter.js
-                } catch (e) {
-                    logger.error(`${hostLogPrefix} Cannot stop ${id}: ${JSON.stringify(e)}`);
-                }
-                delete proc.process;
             }
             break;
 
