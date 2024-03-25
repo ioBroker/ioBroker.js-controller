@@ -2934,28 +2934,6 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             }
             break;
 
-        case 'certsUpdated': {
-            // TODO: check if still used by adapters as LE has been removed with controller v6
-            // restart all instances that depends on lets encrypt, except the issuer
-            const instances: ioBroker.ObjectIDs.Instance[] = [];
-            for (const [id, proc] of Object.entries(procs)) {
-                if (
-                    proc.config?.common?.enabled && // if enabled
-                    proc.config.common.mode === 'daemon' && // if constantly running
-                    proc.config.native?.leEnabled && // if using letsencrypt
-                    !proc.config.native.leUpdate && // if not updating certs itself
-                    (!msg.message || msg.message.instance !== id)
-                ) {
-                    // and it not the issuer
-                    // restart this instance, because letsencrypt updated
-                    instances.push(id as ioBroker.ObjectIDs.Instance);
-                }
-            }
-
-            restartInstances(instances);
-            break;
-        }
-
         // read licenses from iobroker.net
         case 'updateLicenses': {
             try {
