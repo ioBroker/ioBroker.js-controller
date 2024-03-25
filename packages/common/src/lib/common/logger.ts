@@ -427,8 +427,8 @@ export function logger(
     /**
      * @param isEnabled
      * @param daysCount
-     * @ts-expect-error why do we override/add method to foreign instance? TODO
      */
+    // @ts-expect-error why do we override/add method to foreign instance? TODO
     log.activateDateChecker = function (isEnabled, daysCount) {
         /** @ts-expect-error we use undocumented stuff here TODO */
         if (!isEnabled && this._fileChecker) {

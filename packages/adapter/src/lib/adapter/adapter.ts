@@ -11566,6 +11566,7 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Initialize the adapter
+     *
      * @param adapterConfig the AdapterOptions or the InstanceObject, is null/undefined if it is install process
      */
     private async _initAdapter(adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null): Promise<void> {
