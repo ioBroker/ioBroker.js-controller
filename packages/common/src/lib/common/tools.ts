@@ -3332,11 +3332,11 @@ export function removePreservedProperties(
  * Returns the array of system.adapter.<namespace>.* objects which are created for every instance
  *
  * @param namespace - adapter namespace + id, e.g., hm-rpc.0
- * @param createWakeup - indicator to create a wakeup object too
  */
-export function getInstanceIndicatorObjects(namespace: string, createWakeup: boolean): ioBroker.StateObject[] {
+export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateObject[] {
     const id = `system.adapter.${namespace}`;
-    const objs: ioBroker.StateObject[] = [
+
+    return [
         {
             _id: `${id}.alive`,
             type: 'state',
@@ -3521,23 +3521,6 @@ export function getInstanceIndicatorObjects(namespace: string, createWakeup: boo
             native: {}
         }
     ];
-
-    if (createWakeup) {
-        objs.push({
-            _id: `${id}.wakeup`,
-            type: 'state',
-            common: {
-                name: `${namespace}.wakeup`,
-                read: true,
-                write: true,
-                type: 'boolean',
-                role: 'adapter.wakeup'
-            },
-            native: {}
-        });
-    }
-
-    return objs;
 }
 
 export type InternalLogger = Omit<ioBroker.Logger, 'level'>;
