@@ -87,15 +87,12 @@ export function getInstanceName(instanceObjID: string): string {
  * @param adapter (optional) The adapter whose instances should be enumerated
  * @returns An array of instance objects
  */
-export async function enumInstances(
-    objects: ObjectsClient,
-    adapter?: string
-): Promise<(ioBroker.InferGetObjectViewItemType<'system', 'instance'> | null)[]> {
+export async function enumInstances(objects: ObjectsClient, adapter?: string): Promise<ioBroker.InstanceObject[]> {
     // if no adapter given all instances should be returned
     const startkey = `system.adapter.${adapter ? `${adapter}.` : ''}`;
     const data = await enumObjects(objects, 'instance', startkey);
     // because of startkey logic not only receive objects with the dot at the end, so filter them!
-    return data.filter(it => it && it._id.startsWith(startkey));
+    return data.filter(it => it && it._id.startsWith(startkey)) as ioBroker.InstanceObject[];
 }
 
 /**

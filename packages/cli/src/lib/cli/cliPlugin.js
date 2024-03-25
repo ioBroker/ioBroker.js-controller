@@ -285,9 +285,7 @@ function pluginEnabled(pluginName, adapter, systemConfig, iobrokerJson) {
         const ioPackPath = adapter ? path.join(tools.getAdapterDir(adapter), 'io-package.json') : controllerIoPackPath;
         const ioPack = JSON.parse(fs.readFileSync(ioPackPath, 'utf8'));
         if (
-            ioPack &&
-            ioPack.common &&
-            ioPack.common.plugins &&
+            ioPack?.common?.plugins &&
             pluginName in ioPack.common.plugins &&
             ioPack.common.plugins[pluginName].enabled === false
         ) {
@@ -299,8 +297,7 @@ function pluginEnabled(pluginName, adapter, systemConfig, iobrokerJson) {
 
     // 3. check if the plugin is disabled in iobroker.json
     if (
-        iobrokerJson &&
-        iobrokerJson.plugins &&
+        iobrokerJson?.plugins &&
         pluginName in iobrokerJson.plugins &&
         iobrokerJson.plugins[pluginName].enabled === false
     ) {

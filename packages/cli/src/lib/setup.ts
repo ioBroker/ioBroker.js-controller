@@ -15,6 +15,7 @@ import { CLICert } from './cli/cliCert';
 import { CLIObjects } from './cli/cliObjects';
 import { CLICompact } from './cli/cliCompact';
 import { CLILogs } from './cli/cliLogs';
+import { CLIMessage } from '@/lib/cli/cliMessage';
 import { error as CLIError } from './cli/messages';
 import type { CLICommandContext, CLICommandOptions } from './cli/cliCommand';
 import { getRepository } from './setup/utils';
@@ -29,7 +30,6 @@ tools.ensureDNSOrder();
 const cli = {
     command: {
         process: require('./cli/cliProcess.js'),
-        message: require('./cli/cliMessage.js'),
         plugin: require('./cli/cliPlugin.js')
     }
 } as const;
@@ -1167,7 +1167,7 @@ async function processCommand(
 
         case 'msg':
         case 'message': {
-            const messageCommand = new cli.command.message(commandOptions);
+            const messageCommand = new CLIMessage(commandOptions);
             messageCommand.execute(args);
             break;
         }
