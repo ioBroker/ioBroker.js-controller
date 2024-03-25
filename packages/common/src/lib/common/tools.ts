@@ -132,7 +132,6 @@ export const FORBIDDEN_CHARS = /[^._\-/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+/gu;
  * @param newObj destination object
  * @param originalObj optional object for read __no_change__ values
  * @param isNonEdit optional indicator if copy is in nonEdit part
- *
  */
 export function copyAttributes(
     oldObj: Record<string, any>,
@@ -177,7 +176,6 @@ export function copyAttributes(
  *
  * @param oldObject source object
  * @param newObject destination object
- *
  */
 export function checkNonEditable(
     oldObject: ioBroker.SettableObject | null,
@@ -284,7 +282,7 @@ export function decryptPhrase(password: string, data: any, callback: (decrypted?
  * Checks if multiple host objects exists, without using object views
  *
  * @param objects the objects db
- * @return true if only one host object exists
+ * @returns true if only one host object exists
  */
 export async function isSingleHost(objects: any): Promise<boolean> {
     const res: { rows: ioBroker.GetObjectListItem<ioBroker.HostObject>[] } = await objects.getObjectList({
@@ -300,7 +298,7 @@ export async function isSingleHost(objects: any): Promise<boolean> {
  *
  * @param objects the objects db
  * @param states the states db
- * @return true if one or more hosts running else false
+ * @returns true if one or more hosts running else false
  */
 export async function isHostRunning(objects: any, states: any): Promise<boolean> {
     // do it without an object view for now, TODO: can be reverted if no one downgrades to < 4 (redis-sets)
@@ -598,7 +596,7 @@ function updateUuid(newUuid: string, _objects: any, callback: (uuid?: string) =>
  * Generates a new uuid if non-existing
  *
  * @param objects - objects DB
- * @return uuid if successfully created/updated
+ * @returns uuid if successfully created/updated
  */
 export async function createUuid(objects: any): Promise<void | string> {
     const promiseCheckPassword = new Promise<void>(resolve =>
@@ -841,6 +839,7 @@ export async function getJson(
 
 /**
  * Return content of the json file. Download it or read directly
+ *
  * @param urlOrPath URL where the json file could be found
  * @param agent optional agent identifier like "Windows Chrome 12.56"
  * @returns json object
@@ -974,7 +973,7 @@ interface Multilingual {
 export interface AdapterInformation {
     /** this flag is only true for the js-controller */
     controller: boolean;
-    /** adapter version **/
+    /** adapter version */
     version: string;
     /** path to icon of the adapter */
     icon: string;
@@ -1004,6 +1003,7 @@ export interface AdapterInformation {
 
 /**
  * Get a list of all installed adapters and controller version on this host
+ *
  * @param hostRunningVersion Version of the running js-controller, will be included in the returned information if provided
  * @returns object containing information about installed host
  */
@@ -1060,6 +1060,7 @@ export function getInstalledInfo(hostRunningVersion?: string): Record<string, Ad
 
 /**
  * Reads an adapter's npm version
+ *
  * @param adapter The adapter to read the npm version from. Null for the root ioBroker packet
  * @param callback
  */
@@ -1321,7 +1322,6 @@ async function _checkRepositoryFileHash(
  * @param urlOrPath URL starting with http:// or https:// or local file link
  * @param additionalInfo destination object
  * @param callback function (err, sources, actualHash) { }
- *
  */
 export function getRepositoryFile(
     urlOrPath: string,
@@ -1443,7 +1443,6 @@ export interface RepositoryFile {
  * @param hash actual hash
  * @param force Force repository update despite on hash
  * @param _actualRepo Actual repository JSON content
- *
  */
 export async function getRepositoryFileAsync(
     url: string,
@@ -1538,7 +1537,6 @@ export function getAdapterDir(adapter: string): string | null {
 
     const possibilities = [`${appName.toLowerCase()}.${adapter}/package.json`, `${appName}.${adapter}/package.json`];
 
-    /** @type {string} */
     let adapterPath;
     for (const possibility of possibilities) {
         // special case to not read adapters from js-controller/node_module/adapter and check first in parent directory
@@ -1658,8 +1656,9 @@ export interface InstallNodeModuleOptions {
 }
 
 /**
- * @private
+ *
  * Figure out which package manager is in charge, but with a fallback to npm.
+ *
  * @param cwd Which directory to work in. If none is given, this defaults to ioBroker's root directory.
  */
 async function detectPackageManagerWithFallback(cwd?: string): Promise<PackageManager> {
@@ -1690,6 +1689,7 @@ async function detectPackageManagerWithFallback(cwd?: string): Promise<PackageMa
 
 /**
  * Installs a node module using npm or a similar package manager
+ *
  * @param npmUrl Which node module to install
  * @param options Options for the installation
  */
@@ -1732,6 +1732,7 @@ export interface UninstallNodeModuleOptions {
 
 /**
  * Uninstalls a node module using npm or a similar package manager
+ *
  * @param packageName Which node module to uninstall
  * @param options Options for the installation
  */
@@ -1772,6 +1773,7 @@ export interface RebuildNodeModulesOptions {
 /**
  * Rebuilds all native node_modules that are dependencies of the project in the current working directory / project root.
  * If `options.cwd` is given, the directory must contain a lockfile.
+ *
  * @param options Options for the rebuild
  */
 export async function rebuildNodeModules(options: RebuildNodeModulesOptions = {}): Promise<CommandResult> {
@@ -1924,7 +1926,7 @@ export interface CertificateInfo {
  * Returns information about a certificate
  *
  * @param cert
- * @return certificate information object
+ * @returns certificate information object
  */
 export function getCertificateInfo(cert: string): null | CertificateInfo {
     let info: CertificateInfo | null = null;
@@ -2164,6 +2166,7 @@ export async function getHostInfo(objects: any): Promise<HostInfo> {
 
 /**
  * Finds the controller root directory
+ *
  * @returns absolute path to controller dir without ending slash
  */
 export function getControllerDir(): string {
@@ -2285,6 +2288,7 @@ export function getConfigFileName(): string {
 
 /**
  * Puts all values from an `arguments` object into an array, starting at the given index
+ *
  * @param argsObj An `arguments` object as passed to a function
  * @param startIndex The optional index to start taking the arguments from
  */
@@ -2301,6 +2305,7 @@ function sliceArgs(argsObj: IArguments, startIndex = 0): any[] {
 
 /**
  * Promisifies a function which returns an error as the first argument in its callback
+ *
  * @param fn The function to promisify
  * @param context (optional) The context (value of `this` to bind the function to)
  * @param returnArgNames (optional) If the callback contains multiple arguments,
@@ -2365,6 +2370,7 @@ export function promisify(
 
 /**
  * Promisifies a function which does not provide an error as the first argument in its callback
+ *
  * @param fn The function to promisify
  * @param context (optional) The context (value of `this` to bind the function to)
  * @param returnArgNames (optional) If the callback contains multiple arguments,
@@ -2468,6 +2474,7 @@ export function setQualityForInstance(objects: any, states: any, namespace: stri
 
 /**
  * Converts ioB pattern into regex.
+ *
  * @param pattern - Regex string to use it in new RegExp(pattern)
  */
 export function pattern2RegEx(pattern: string): string {
@@ -2488,6 +2495,7 @@ export function pattern2RegEx(pattern: string): string {
 /**
  * Checks if a pattern is valid
  *
+ * @param pattern
  * @pattern pattern to check for validity
  */
 export function isValidPattern(pattern: string): boolean {
@@ -2498,7 +2506,8 @@ export function isValidPattern(pattern: string): boolean {
 
 /**
  * Generates a stack trace that can be added to log outputs to trace their source
- * @param [wrapperName = 'captureStackTrace'] The wrapper function after which the stack trace should begin
+ *
+ * @param [wrapperName] The wrapper function after which the stack trace should begin
  */
 function captureStackTrace(wrapperName: string): string {
     if (typeof wrapperName !== 'string') {
@@ -2525,6 +2534,7 @@ function captureStackTrace(wrapperName: string): string {
 
 /**
  * Appends the stack trace generated by `captureStackTrace` to the given string
+ *
  * @param str - The string to append the stack trace to
  */
 export function appendStackTrace(str: string): string {
@@ -2540,6 +2550,7 @@ export function appendStackTrace(str: string): string {
 
 /**
  * Encrypt the password/value with given key
+ *
  * @param key - Secret key
  * @param value - value to encrypt
  */
@@ -2553,6 +2564,7 @@ function encryptLegacy(key: string, value: string): string {
 
 /**
  * Decrypt the password/value with given key
+ *
  * @param key - Secret key
  * @param value - value to decrypt
  */
@@ -2608,6 +2620,7 @@ export function decrypt(key: string, value: string): string {
 
 /**
  * Tests whether the given variable is a real object and not an Array
+ *
  * @param it The variable to test
  * @returns true if it is Record<string, any>
  */
@@ -2622,6 +2635,7 @@ export function isObject(it: any): it is Record<string, any> {
 
 /**
  * Tests whether the given variable is really an Array
+ *
  * @param it The variable to test
  */
 export function isArray(it: any): it is any[] {
@@ -2630,6 +2644,7 @@ export function isArray(it: any): it is any[] {
 
 /**
  * Measure the Node.js event loop lag and repeatedly call the provided callback function with the updated results
+ *
  * @param ms The number of milliseconds for monitoring
  * @param cb Callback function to call for each new value
  */
@@ -2742,7 +2757,6 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
  * @param id the object id which will be deleted from enums
  * @param allEnums objects with all enums to use - if not provided all enums will be queried
  * @returns Promise All objects are tried to be updated - reject will happen as soon as one fails with the error of the first fail
- *
  */
 export async function removeIdFromAllEnums(objects: any, id: string, allEnums?: Record<string, any>): Promise<void> {
     if (!allEnums) {
@@ -3096,6 +3110,7 @@ export async function getInstances<TWithObjects extends boolean>(
 /**
  * Executes a command asynchronously. On success, the promise resolves with stdout and stderr.
  * On error, the promise rejects with the exit code or signal, as well as stdout and stderr.
+ *
  * @param command The command to execute
  * @param execOptions The options for child_process.exec
  * @returns child process promise
@@ -3113,6 +3128,7 @@ export function execAsync(command: string, execOptions?: ExecOptions): ChildProc
 
 /**
  * Takes input from one stream and writes it to another as soon as a complete line was read.
+ *
  * @param input The stream to read from
  * @param output The stream to write into
  */
@@ -3180,6 +3196,7 @@ export async function resolveAdapterMainFile(adapter: string): Promise<string> {
 
 /**
  * Returns the default nodeArgs required to execute the main file, e.g., transpile hooks for TypeScript
+ *
  * @param mainFile
  * @returns default node args for cli
  */
@@ -3198,6 +3215,7 @@ export function getDefaultNodeArgs(mainFile: string): string[] {
 
 /**
  * Returns the default paths used to resolve modules using `require.resolve()`
+ *
  * @param callerModule The module that wants to resolve another module
  */
 export function getDefaultRequireResolvePaths(callerModule: NodeModule): string[] {
@@ -3217,6 +3235,7 @@ const shortGithubUrlRegex = /^(?<user>[^/]+)\/(?<repo>[^#]+)(?:#(?<commit>.+))?$
 
 /**
  * Tests if the given URL matches the format <githubname>/<githubrepo>[#<commit-ish>]
+ *
  * @param url The URL to parse
  */
 export function isShortGithubUrl(url: string): boolean {
@@ -3231,6 +3250,7 @@ export interface ParsedGithubUrl {
 
 /**
  * Tries to parse a URL in the format <githubname>/<githubrepo>[#<commit-ish>] into its separate parts
+ *
  * @param url The URL to parse
  */
 export function parseShortGithubUrl(url: string): ParsedGithubUrl | null {
@@ -3251,6 +3271,7 @@ const githubPathnameRegex =
 
 /**
  * Tests if the given pathname matches the format /<githubname>/<githubrepo>[.git][/<tarball|tree|archive>/<commit-ish>[.zip|.gz]]
+ *
  * @param pathname The pathname part of a GitHub URL
  */
 export function isGithubPathname(pathname: string): boolean {
@@ -3259,6 +3280,7 @@ export function isGithubPathname(pathname: string): boolean {
 
 /**
  * Tries to a GitHub pathname format /<githubname>/<githubrepo>[.git][/<tarball|tree|archive>/<commit-ish>[.zip|.gz|.tar.gz]] into its separate parts
+ *
  * @param pathname The pathname part of a GitHub URL
  */
 export function parseGithubPathname(pathname: string): ParsedGithubUrl | null {
@@ -3275,6 +3297,7 @@ export function parseGithubPathname(pathname: string): ParsedGithubUrl | null {
 
 /**
  * Removes properties which are given by preserve
+ *
  * @param preserve - object which has true entries (or array of selected attributes) for all attributes that should be removed from currObj
  * @param oldObj - old object
  * @param newObj - new object
@@ -3610,6 +3633,7 @@ export async function getInstancesOrderedByStartPrio(
 
 /**
  * Set capabilities of the given executable on Linux systems
+ *
  * @param execPath - path to the executable for node you can determine it via process.execPath
  * @param capabilities - capabilities to set, e.g. ['cap_net_admin', 'cap_net_bind_service']
  * @param modeEffective - add effective mode
@@ -3678,6 +3702,7 @@ export async function setExecutableCapabilities(
 
 /**
  * Requests the licenses from ioBroker.net
+ *
  * @param login Login for ioBroker.net
  * @param password Decoded password for ioBroker.net
  * @returns array of all licenses stored on iobroker.net
@@ -3715,6 +3740,7 @@ async function _readLicenses(login: string, password: string): Promise<any[]> {
 /**
  * Reads the licenses from iobroker.net
  * Reads the licenses from iobroker.net and if no login/password provided stores it in `system.licenses`
+ *
  * @param objects Object store instance
  * @param login Login for ioBroker.net
  * @param password Decoded password for ioBroker.net
@@ -3805,6 +3831,7 @@ export interface GZipFileOptions {
 }
 /**
  * Compresses an input file using GZip and writes it somewhere else
+ *
  * @param inputFilename The filename of the input file that should be gzipped
  * @param outputFilename The filename of the output file where the gzipped content should be written to
  * @param options Options for the compression
@@ -3877,6 +3904,7 @@ export function validateDataDir(dataDir: string): DataDirValidation {
 
 /**
  * If an array is passed it will be stringified, else the parameter is returned
+ *
  * @param maybeArr parameter which will be stringified if it is an array
  */
 export function maybeArrayToString<T>(maybeArr: T): T extends any[] ? string : T {
@@ -3912,6 +3940,7 @@ function getDNSResolutionOrder(): DNSOrder {
 
 /**
  * Checks if given ip address is matching ipv4 or ipv6 localhost
+ *
  * @param ip ipv4 or ipv6 address
  */
 export function isLocalAddress(ip: string): boolean {
@@ -3922,6 +3951,7 @@ export function isLocalAddress(ip: string): boolean {
 
 /**
  * Checks if given ip address is matching ipv4 or ipv6 "listen all" address
+ *
  * @param ip ipv4 or ipv6 address
  */
 export function isListenAllAddress(ip: string): boolean {

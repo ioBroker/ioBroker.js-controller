@@ -81,6 +81,7 @@ export class PacketManager {
 
     /**
      * Tests if the given command can be executed
+     *
      * @param cmd The command to test
      * @returns True if the execution was successful, false otherwise
      */
@@ -189,6 +190,7 @@ export class PacketManager {
 
     /**
      * Checks which packages are installed and returns them
+     *
      * @param packets The packets to test
      */
     async checkInstalled(packets: string[] | string): Promise<string[]> {
@@ -202,6 +204,7 @@ export class PacketManager {
 
     /**
      * Installs a single packet using the configured manager and returns the stdout if there was any
+     *
      * @param packet The packet to install
      */
     private async _installPacket(packet: string): Promise<void> {
@@ -241,6 +244,7 @@ export class PacketManager {
 
     /**
      * Installs multiple packets. The returned Promise contains the list of failed packets
+     *
      * @param packets
      */
     private async _installPackets(packets: string[]): Promise<string[]> {
@@ -290,6 +294,7 @@ export class PacketManager {
 
     /**
      * Installs all given packets
+     *
      * @param packets
      */
     async install(packets: string[] | string): Promise<void> {

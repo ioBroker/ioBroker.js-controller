@@ -142,6 +142,7 @@ export class Upgrade {
 
     /**
      * Checks that local and global deps are fulfilled else rejects promise
+     *
      * @param deps local dependencies - required on this host
      * @param globalDeps global dependencies - required on one of the hosts
      */
@@ -384,6 +385,7 @@ export class Upgrade {
 
         /**
          * We show changelog (news) and ask user if he really wants to upgrade but only if fd is associated with a tty, returns true if upgrade desired
+         *
          * @param installedVersion - installed version of adapter
          * @param targetVersion - target version of adapter
          * @param adapterName - name of the adapter

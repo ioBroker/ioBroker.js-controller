@@ -828,7 +828,7 @@ export class ObjectsInRedisClient {
     /**
      * Checks if given ID is a meta-object, else throws error
      *
-     * @param {string} id to check
+     * @param id to check
      * @throws Error if id is invalid
      */
     async validateMetaObject(id: string): Promise<void> {
@@ -4733,6 +4733,7 @@ export class ObjectsInRedisClient {
 
     /**
      * Returns the object id if found
+     *
      * @param idOrName
      * @param type
      * @param options
@@ -5052,6 +5053,7 @@ export class ObjectsInRedisClient {
 
     /**
      * Checks if a given set exists
+     *
      * @param id - id of the set
      */
     async setExists(id: string): Promise<boolean> {
@@ -5065,7 +5067,8 @@ export class ObjectsInRedisClient {
 
     /**
      * Migrate all objects to sets
-     * @return number of migrated sets
+     *
+     * @returns number of migrated sets
      */
     async migrateToSets(): Promise<number> {
         if (!this.useSets) {
@@ -5129,7 +5132,7 @@ export class ObjectsInRedisClient {
      * Value will expire after ms milliseconds
      *
      * @param ms - ms until value expires
-     * @return 1 if extended else 0
+     * @returns 1 if extended else 0
      */
     extendPrimaryHostLock(ms: number): Promise<number> {
         if (!this.client) {
@@ -5156,7 +5159,7 @@ export class ObjectsInRedisClient {
      * Value will expire after ms milliseconds
      *
      * @param ms - ms until value expires
-     * @return 1 if lock acquired else 0
+     * @returns 1 if lock acquired else 0
      */
     setPrimaryHost(ms: number): Promise<number> {
         if (!this.client) {
@@ -5219,6 +5222,7 @@ export class ObjectsInRedisClient {
 
     /**
      * Sets the protocol version to the DB
+     *
      * @param version - protocol version
      */
     async setProtocolVersion(version: number | string): Promise<void> {

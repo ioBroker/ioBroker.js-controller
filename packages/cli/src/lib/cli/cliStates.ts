@@ -19,6 +19,7 @@ export class CLIStates extends CLICommand {
 
     /**
      * Executes a command
+     *
      * @param args
      */
     execute(args: any[]): void {
@@ -113,9 +114,10 @@ export class CLIStates extends CLICommand {
 
     /**
      * Checks if state is a binary state
+     *
      * @param id id of the state
-     * @param {object} objects the objects db
-     * @param {ioBroker.OtherObject?} _obj cached object
+     * @param objects the objects db
+     * @param _obj cached object
      */
     private async _isBinary(id: string, objects: ObjectsClient, _obj?: ioBroker.AnyObject | null): Promise<boolean> {
         const obj = _obj || (await objects.getObjectAsync(id));
@@ -165,6 +167,7 @@ export class CLIStates extends CLICommand {
 
     /**
      * Returns the value of a state
+     *
      * @param args
      * @param resultTransform
      */
@@ -378,6 +381,7 @@ export class CLIStates extends CLICommand {
 
     /**
      * Deletes a state
+     *
      * @param args
      */
     delete(args: any[]): void {

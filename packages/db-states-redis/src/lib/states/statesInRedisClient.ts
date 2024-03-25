@@ -19,6 +19,9 @@ type JSONDecoderValue = Record<string, any>;
 
 /**
  * Decodes a JSON with buffer value
+ *
+ * @param key
+ * @param value
  */
 function bufferJsonDecoder(key: string, value: JSONDecoderValue): Buffer | JSONDecoderValue {
     if (tools.isObject(value) && value.type === 'Buffer' && value.data && Array.isArray(value.data)) {
@@ -120,7 +123,6 @@ export class StateRedisClient {
     /**
      * Checks if we are allowed to start and sets the protocol version accordingly
      *
-     * @private
      */
     async _determineProtocolVersion(): Promise<void> {
         if (!this.client) {
@@ -680,7 +682,6 @@ export class StateRedisClient {
     ): Promise<void>;
 
     /**
-     * @method setState
      * @param id the id of the value. '<this.namespaceRedis>.' will be prepended
      * @param state
      *
@@ -702,7 +703,6 @@ export class StateRedisClient {
      *
      *      <li><b>lc</b>   a unix timestamp indicating the last change of the actual value. this should be undefined
      *                      when calling setState, it will be set by the setValue method itself.</li></ul>
-     *
      * @param callback will be called when redis confirmed reception of the command
      */
     async setState(
@@ -834,6 +834,8 @@ export class StateRedisClient {
     /**
      * Promise-version of setState
      *
+     * @param id
+     * @param state
      * @deprecated use version without `Async` postfix
      */
     setStateAsync(id: string, state: ioBroker.SettableState | ioBroker.StateValue): Promise<string> {
@@ -863,8 +865,6 @@ export class StateRedisClient {
     }
 
     /**
-     * @method getState
-     *
      * @param id
      * @param callback
      */
@@ -902,6 +902,8 @@ export class StateRedisClient {
 
     /**
      * Promise-version of getState
+     *
+     * @param id
      */
     getStateAsync(id: string): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetStateCallback> | void> {
         return this.getState(id);
@@ -954,11 +956,8 @@ export class StateRedisClient {
     }
 
     /**
-     * @method _destroyDBHelper
-     *
      * @param keys - array of keys which will be deleted from db
      * @param callback function to be executed after keys have been deleted
-     * @private
      */
     async _destroyDBHelper(keys: string[], callback?: ioBroker.ErrorCallback): Promise<void> {
         if (!keys || !keys.length) {
@@ -981,7 +980,6 @@ export class StateRedisClient {
     }
 
     /**
-     * @method destroyDB
      * @param callback cb function to be executed after DB has been destroyed
      */
     async destroyDB(callback?: ioBroker.ErrorCallback): Promise<void> {
@@ -1085,11 +1083,9 @@ export class StateRedisClient {
     async subscribe(pattern: string, asUser: boolean, callback?: ioBroker.ErrorCallback): Promise<void>;
 
     /**
-     * @method subscribe
-     *
      * @param pattern
      * @param asUser - if true it will be subscribed as user
-     * @param {function(Error|undefined):void} callback callback function (optional)
+     * @param callback callback function (optional)
      */
     async subscribe(
         pattern: string,
@@ -1130,10 +1126,8 @@ export class StateRedisClient {
     }
 
     /**
-     * @method subscribeUser
-     *
      * @param pattern
-     * @param {function(Error|undefined):void} callback callback function (optional)
+     * @param callback callback function (optional)
      */
     subscribeUser(pattern: string, callback?: ioBroker.ErrorCallback): Promise<void> {
         return this.subscribe(pattern, true, callback);
@@ -1143,6 +1137,7 @@ export class StateRedisClient {
     async unsubscribe(pattern: string, callback?: ioBroker.ErrorCallback): Promise<void>;
     /**
      * Unsubscribe pattern
+     *
      * @param pattern
      * @param asUser - if true it will be unsubscribed as user
      * @param callback
@@ -1186,8 +1181,6 @@ export class StateRedisClient {
     }
 
     /**
-     * @method unsubscribeUser
-     *
      * @param pattern
      * @param callback callback function (optional)
      */
@@ -1490,6 +1483,7 @@ export class StateRedisClient {
 
     /**
      * Sets the protocol version to the DB
+     *
      * @param version - protocol version
      */
     async setProtocolVersion(version: number): Promise<void> {

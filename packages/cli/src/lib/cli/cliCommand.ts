@@ -53,6 +53,7 @@ export class CLICommand {
     /**
      * Ensures that an argument was passed in the options.
      * Throws otherwise
+     *
      * @param arg
      */
     requireOption(arg: keyof CLICommandOptions): void {

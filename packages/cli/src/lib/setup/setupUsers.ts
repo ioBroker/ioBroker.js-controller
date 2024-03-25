@@ -397,6 +397,7 @@ export class Users {
 
     /**
      * Enable user
+     *
      * @param username name of the user which will be activated
      * @param enable true if it should be enabled else false
      * @param callback

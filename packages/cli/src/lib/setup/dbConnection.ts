@@ -26,6 +26,10 @@ export function dbConnect(params: Record<string, any>, callback: DbConnectCallba
 export function dbConnect(onlyCheck: boolean, params: Record<string, any>, callback: DbConnectCallback): void;
 /**
  * Connects to the DB or tests the connection.
+ *
+ * @param onlyCheck
+ * @param params
+ * @param callback
  */
 export function dbConnect(
     onlyCheck: boolean | Record<string, any> | DbConnectCallback,
@@ -316,6 +320,7 @@ export function dbConnect(
 
 /**
  * Connects to the DB or tests the connection.
+ *
  * @param onlyCheck if only connection check should be performed
  * @param params options used by dbConnect
  */

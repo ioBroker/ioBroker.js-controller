@@ -47,6 +47,7 @@ export class VisDebug {
 
     /**
      * Activates vis debug for given widget
+     *
      * @param widgetset widget to activate vis debug for
      */
     async enableDebug(widgetset: string): Promise<void> {

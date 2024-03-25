@@ -1,3 +1,7 @@
+/**
+ *
+ * @param host
+ */
 export function getDefaultPort(host: string): number {
     return host.includes(',') ? 26379 : 6379;
 }
