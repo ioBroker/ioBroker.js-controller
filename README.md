@@ -565,7 +565,6 @@ ioBroker supports multiple Adapter modes. These are:
 * `deamon`:    The adapter is started and runs all the time. If the process gets killed, it will be restarted automatically. This adapter type is mainly used for all situations where communications or actions are done continuously. These adapters also support a restart schedule where the controller restarts the instances. The adapter needs RAM and some CPU resources also when doing nothing.
 * `schedule`:  The adapter is started based on a defined schedule (e.g., once per hour, once a day, all 10 minutes ...), then is doing its work and is stopping itself when finished. The adapter is only using RAM and CPU when needed.
 * `once`:      The adapter ist started only once after it's object got modified. No restarting happens after the adapter stops.
-* `subscribe`: The adapter is started when a defined state ID gets set to true, and stopped when set to false
 * `none`:      The adapter is officially not having any process, but could be a webExtension (so iis included by a web instance on the same host or is only running client side and so offering www files)
 
 #### Start adapter instances as normal processes

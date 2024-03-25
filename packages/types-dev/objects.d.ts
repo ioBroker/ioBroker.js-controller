@@ -328,7 +328,7 @@ declare global {
             custom?: undefined;
         }
 
-        type InstanceMode = 'none' | 'daemon' | 'subscribe' | 'schedule' | 'once' | 'extension';
+        type InstanceMode = 'none' | 'daemon' | 'schedule' | 'once' | 'extension';
 
         interface AdminUi {
             /** UI type of config page inside admin UI */
@@ -668,7 +668,6 @@ declare global {
             /** Overrides the default timeout that ioBroker will wait before force-stopping the adapter */
             stopTimeout?: number;
             subscribable?: boolean;
-            subscribe?: any; // ?
             /** If `true`, this adapter provides custom per-state settings. Requires a `custom_m.html` file in the `admin` directory. */
             supportCustoms?: boolean;
             /** @deprecated Use @see supportedMessages up from controller v5 */
@@ -684,8 +683,6 @@ declare global {
             /** The available version in the ioBroker repo. */
             version: string;
             visWidgets?: Record<string, VisWidget>;
-            /** If `true`, the adapter will be started if any value is written into `system.adapter.<name>.<instance>.wakeup. Normally, the adapter should stop after processing the event. */
-            wakeup?: boolean;
             /** Include the adapter version in the URL of the web adapter, e.g. `http://ip:port/1.2.3/material` instead of `http://ip:port/material` */
             webByVersion?: boolean;
             /** Whether the web server in this adapter can be extended with plugin/extensions */

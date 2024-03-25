@@ -907,6 +907,18 @@ export class StateRedisClient {
         return this.getState(id);
     }
 
+    getStates(keys: string[], callback?: undefined, dontModify?: boolean): Promise<(ioBroker.State | null)[]>;
+    getStates(
+        keys: string[],
+        callback: (err: Error | undefined | null, states?: (ioBroker.State | null)[]) => void,
+        dontModify?: boolean
+    ): Promise<void>;
+    getStates(
+        keys: string[],
+        callback: (err: Error | undefined | null, states?: (ioBroker.State | null)[]) => void,
+        dontModify?: boolean
+    ): Promise<void>;
+
     async getStates(
         keys: string[],
         callback?: (err: Error | undefined | null, states?: (ioBroker.State | null)[]) => void,
@@ -1052,6 +1064,13 @@ export class StateRedisClient {
             return tools.maybeCallbackWithRedisError(callback, e, id);
         }
     }
+
+    getKeys(
+        pattern: string,
+        callback?: undefined,
+        dontModify?: boolean
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetKeysCallback>>;
+    getKeys(pattern: string, callback: ioBroker.GetKeysCallback, dontModify?: boolean): Promise<void>;
 
     async getKeys(
         pattern: string,
