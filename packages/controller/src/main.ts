@@ -419,9 +419,6 @@ function logRedirect(isActive: boolean, id: string, reason: string): void {
     }
 }
 
-/**
- *
- */
 function handleDisconnect(): void {
     if (!connected || restartTimeout || isStopping) {
         return;
@@ -630,9 +627,6 @@ function createStates(onConnect: () => void): void {
     });
 }
 
-/**
- *
- */
 async function initializeController(): Promise<void> {
     if (!states || !objects || connected) {
         return;
@@ -926,9 +920,6 @@ function createObjects(onConnect: () => void): void {
     });
 }
 
-/**
- *
- */
 function startAliveInterval(): void {
     config.system = config.system || {};
     config.system.statisticsInterval = Math.round(config.system.statisticsInterval) || 15_000;
@@ -994,9 +985,6 @@ async function checkPrimaryHost(): Promise<void> {
     }
 }
 
-/**
- *
- */
 function reportStatus(): void {
     if (!states) {
         return;
@@ -1622,9 +1610,6 @@ async function extendObjects(tasks: Record<string, any>[]): Promise<void> {
     }
 }
 
-/**
- *
- */
 function setMeta(): void {
     const id = hostObjectPrefix;
 
@@ -1846,9 +1831,6 @@ function setMeta(): void {
 }
 
 // Subscribe on message queue
-/**
- *
- */
 function initMessageQueue(): void {
     states!.subscribeMessage(hostObjectPrefix);
 }
@@ -1964,9 +1946,6 @@ async function deleteAllZipPackages(): Promise<void> {
     await _deleteAllZipPackages(list!);
 }
 
-/**
- *
- */
 async function startAdapterUpload(): Promise<void> {
     if (!uploadTasks.length) {
         return;
@@ -3109,9 +3088,6 @@ async function restartInstances(instances: ioBroker.ObjectIDs.Instance[], cb?: (
     }
 }
 
-/**
- *
- */
 async function getInstances(): Promise<void> {
     const instances = await tools.getInstancesOrderedByStartPrio(objects, logger, hostLogPrefix);
 
@@ -3263,9 +3239,6 @@ function checkAndAddInstance(instance: ioBroker.InstanceObject, ipArr: string[])
     return true;
 }
 
-/**
- *
- */
 function initInstances(): void {
     let seconds = 0;
     const interval = (config.system && config.system.instanceStartInterval) || 2_000;
@@ -3475,9 +3448,6 @@ function storePids(): void {
     }
 }
 
-/**
- *
- */
 function installAdapters(): void {
     if (!installQueue.length) {
         return;
@@ -5098,9 +5068,6 @@ function stopInstances(forceStop: boolean, callback?: ((wasForced?: boolean) => 
     let maxTimeout: NodeJS.Timeout | null | undefined;
     let waitTimeout: NodeJS.Timeout | null | undefined;
 
-    /**
-     *
-     */
     function waitForInstances(): void {
         waitTimeout = null;
         if (!allInstancesStopped) {

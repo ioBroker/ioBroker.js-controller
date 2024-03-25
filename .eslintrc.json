@@ -17,6 +17,7 @@
   "rules": {
     "jsdoc/require-returns": 0,
     "jsdoc/tag-lines": ["error", "never", {"startLines": 1}],
+    "jsdoc/no-blank-blocks": ["error", { "enableFixer":true }],
     "curly": "error",
     "brace-style": "error",
     "arrow-parens": [
