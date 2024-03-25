@@ -715,12 +715,13 @@ function createObjects(onConnect: () => void): void {
             );
             // give the main controller a bit longer, so that adapter and compact processes can exit before
         },
-        change: async (id, _obj) => {
-            if (!started || !id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) {
+        change: async (_id, _obj) => {
+            if (!started || !_id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) {
                 return;
             }
 
             const obj = _obj as ioBroker.InstanceObject | null;
+            const id = _id as ioBroker.ObjectIDs.Instance;
 
             try {
                 logger.debug(`${hostLogPrefix} object change ${id} (from: ${obj ? obj.from : null})`);
@@ -794,7 +795,6 @@ function createObjects(onConnect: () => void): void {
                                     clearTimeout(proc.restartTimer);
                                 }
                                 const restartTimeout = (proc.config.common.stopTimeout || 500) + 2_500;
-                                // @ts-expect-error tell ts it is an instance id
                                 proc.restartTimer = setTimeout(_id => startInstance(_id), restartTimeout, id);
                             }
                         } else {
@@ -832,7 +832,6 @@ function createObjects(onConnect: () => void): void {
                                 proc.config.common.enabled &&
                                 (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance)
                             ) {
-                                // @ts-expect-error ts not able to infer instance id here
                                 startInstance(id);
                             }
                         } else {
@@ -870,7 +869,6 @@ function createObjects(onConnect: () => void): void {
                     ) {
                         // We should give a slight delay to allow a potentially former existing process on another host to exit
                         const restartTimeout = (proc.config.common.stopTimeout || 500) + 2_500;
-                        // @ts-expect-error tell ts it is an instance id
                         proc.restartTimer = setTimeout(_id => startInstance(_id), restartTimeout, id);
                     }
                 }
@@ -2937,9 +2935,10 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
 
         case 'certsUpdated': {
+            // TODO: check if still used by adapters as LE has been removed with controller v6
             // restart all instances that depends on lets encrypt, except the issuer
-            const instances: string[] = [];
-            Object.entries(procs).forEach(([id, proc]) => {
+            const instances: ioBroker.ObjectIDs.Instance[] = [];
+            for (const [id, proc] of Object.entries(procs)) {
                 if (
                     proc.config?.common?.enabled && // if enabled
                     proc.config.common.mode === 'daemon' && // if constantly running
@@ -2949,13 +2948,11 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 ) {
                     // and it not the issuer
                     // restart this instance, because letsencrypt updated
-                    instances.push(id);
+                    instances.push(id as ioBroker.ObjectIDs.Instance);
                 }
-            });
+            }
 
-            // @ts-expect-error ts not knows that these are instance ids
             restartInstances(instances);
-
             break;
         }
 

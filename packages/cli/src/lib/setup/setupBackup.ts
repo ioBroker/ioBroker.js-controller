@@ -219,18 +219,6 @@ export class BackupRestore {
      * @param name - backup name
      */
     private _packBackup(name: string): Promise<string> {
-        // 2021_10_25 BF (TODO): store letsencrypt files too
-        const letsEncrypt = `${this.configDir}/letsencrypt`;
-        if (fs.existsSync(letsEncrypt)) {
-            try {
-                this.copyFolderRecursiveSync(letsEncrypt, `${this.tmpDir}/backup`);
-            } catch (e) {
-                console.error(`host.${this.hostname} Could not backup "${letsEncrypt}" directory: ${e.message}`);
-                this.removeTempBackupDir();
-                throw new IoBrokerError({ message: e.message, code: EXIT_CODES.CANNOT_COPY_DIR });
-            }
-        }
-
         return new Promise((resolve, reject) => {
             const f = fs.createWriteStream(name);
             f.on('finish', () => {
