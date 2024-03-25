@@ -21,6 +21,7 @@ export function getObjectFrom(): `system.host.${string}.cli` {
 /**
  * Removes <tools.appName> from the start of the adapter name if it is there
  * E.g. iobroker.admin -> admin
+ *
  * @param name The adapter name to normalize
  */
 export function normalizeAdapterName(name: string): string {
@@ -32,6 +33,7 @@ export function normalizeAdapterName(name: string): string {
 
 /**
  * Ensures that the given string is a valid adapter identifier (<adaptername>) WITHOUT instance number
+ *
  * @param name The name which is supposed to be an adapter identifier
  */
 export function validateAdapterIdentifier(name: string): boolean {
@@ -41,6 +43,7 @@ export function validateAdapterIdentifier(name: string): boolean {
 /**
  * Ensures that the given string contains a valid identifier for
  * an adapter (without instance number) or instance (with instance number)
+ *
  * @param name
  */
 export function validateAdapterOrInstanceIdentifier(name: string): boolean {
@@ -50,6 +53,7 @@ export function validateAdapterOrInstanceIdentifier(name: string): boolean {
 /**
  * Ensures that the given string contains a valid identifier for
  * an adapter (without instance number) or instance (with instance number)
+ *
  * @param name
  */
 export function splitAdapterOrInstanceIdentifierWithVersion(
@@ -69,6 +73,7 @@ export function splitAdapterOrInstanceIdentifierWithVersion(
 
 /**
  * Extracts the instance name from an object ID
+ *
  * @param instanceObjID The ID of the instance object
  */
 export function getInstanceName(instanceObjID: string): string {
@@ -77,6 +82,7 @@ export function getInstanceName(instanceObjID: string): string {
 
 /**
  * Enumerates the instances of an adapter or all of them
+ *
  * @param objects The objects DB to use
  * @param adapter (optional) The adapter whose instances should be enumerated
  * @returns An array of instance objects
@@ -94,6 +100,7 @@ export async function enumInstances(
 
 /**
  * Enumerates all known hosts
+ *
  * @param objects The objects DB to use
  * @returns An array of host objects
  */
@@ -105,6 +112,7 @@ export function enumHosts(
 
 /**
  * Enumerates all objects of a given type
+ *
  * @param objects The objects DB to use
  * @param type The type of the objects to enumerate
  * @param startkey The prefix of the objects

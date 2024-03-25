@@ -424,7 +424,11 @@ export function logger(
 
     // This cannot be deleted, because file rotate works with the size of files and not with the time
     // TODO research and open new issue in winston-daily-rotate-file repo
-    /** @ts-expect-error why do we override/add method to foreign instance? TODO */
+    /**
+     * @param isEnabled
+     * @param daysCount
+     */
+    // @ts-expect-error why do we override/add method to foreign instance? TODO
     log.activateDateChecker = function (isEnabled, daysCount) {
         /** @ts-expect-error we use undocumented stuff here TODO */
         if (!isEnabled && this._fileChecker) {

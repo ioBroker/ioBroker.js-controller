@@ -119,6 +119,9 @@ export class Install {
 
     /**
      * Enables or disables given instances
+     *
+     * @param instances
+     * @param enabled
      */
     async enableInstances(instances: ioBroker.InstanceObject[], enabled: boolean): Promise<void> {
         if (instances?.length) {
@@ -277,6 +280,10 @@ export class Install {
 
     /**
      * Install npm module from url
+     *
+     * @param npmUrl
+     * @param options
+     * @param debug
      */
     private async _npmInstallWithCheck(
         npmUrl: string,
@@ -335,6 +342,7 @@ export class Install {
 
     /**
      * Extract the adapterName e.g. `hm-rpc` from url
+     *
      * @param npmUrl url of the npm packet
      */
     private getAdapterNameFromUrl(npmUrl: string): string {
@@ -664,6 +672,10 @@ export class Install {
 
     /**
      * Installs given adapter
+     *
+     * @param adapter
+     * @param repoUrl
+     * @param _installCount
      */
     async installAdapter(adapter: string, repoUrl?: string, _installCount?: number): Promise<string | void> {
         _installCount = _installCount || 0;
@@ -784,6 +796,9 @@ export class Install {
 
     /**
      * Create adapter instance
+     *
+     * @param adapter
+     * @param options
      */
     async createInstance(adapter: string, options?: CreateInstanceOptions): Promise<void> {
         let ignoreIfExists = false;
@@ -1047,6 +1062,11 @@ export class Install {
 
     /**
      * Enumerate all instances of an adapter
+     *
+     * @param knownObjIDs
+     * @param notDeleted
+     * @param adapter
+     * @param instance
      */
     private async _enumerateAdapterInstances(
         knownObjIDs: string[],
@@ -1111,6 +1131,10 @@ export class Install {
 
     /**
      * Enumerate all meta objects of an adapter
+     *
+     * @param knownObjIDs
+     * @param adapter
+     * @param metaFilesToDelete
      */
     async _enumerateAdapterMeta(knownObjIDs: string[], adapter: string, metaFilesToDelete: string[]): Promise<void> {
         try {
@@ -1218,6 +1242,7 @@ export class Install {
 
     /**
      * Enumerates the channels of an adapter (or instance)
+     *
      * @param knownObjIDs The already known object ids
      * @param adapter The adapter to enumerate the channels for
      * @param instance The instance to enumerate the channels for (optional)
@@ -1256,6 +1281,7 @@ export class Install {
 
     /**
      * Enumerates the states of an adapter (or instance)
+     *
      * @param knownObjIDs The already known object ids
      * @param adapter The adapter to enumerate the states for
      * @param instance The instance to enumerate the states for (optional)
@@ -1321,6 +1347,7 @@ export class Install {
 
     /**
      * Enumerates the docs of an adapter (or instance)
+     *
      * @param knownObjIDs The already known object ids
      * @param adapter The adapter to enumerate the states for
      * @param instance The instance to enumerate the states for (optional)
@@ -1360,6 +1387,10 @@ export class Install {
 
     /**
      * Enumerate all state IDs of an adapter (or instance)
+     *
+     * @param knownStateIDs
+     * @param adapter
+     * @param instance
      */
     async _enumerateAdapterStates(knownStateIDs: string[], adapter: string, instance?: number): Promise<void> {
         for (const pattern of [
@@ -1389,6 +1420,9 @@ export class Install {
 
     /**
      * delete WWW pages, objects and meta files
+     *
+     * @param adapter
+     * @param metaFilesToDelete
      */
     private async _deleteAdapterFiles(adapter: string, metaFilesToDelete: string[]): Promise<void> {
         // special files, which are not meta (vis widgets), combined with meta object ids
@@ -1488,6 +1522,8 @@ export class Install {
 
     /**
      * Deltes given adapter from filesystem and removes all instances
+     *
+     * @param adapter
      */
     async deleteAdapter(adapter: string): Promise<EXIT_CODES> {
         const knownObjectIDs: string[] = [];
@@ -1676,6 +1712,9 @@ export class Install {
 
     /**
      * Installs an adapter from given url
+     *
+     * @param url
+     * @param name
      */
     async installAdapterFromUrl(url: string, name: string): Promise<void> {
         // If the user provided an URL, try to parse it into known ways to represent a Github URL
@@ -1822,7 +1861,7 @@ export class Install {
      *
      * @param adapter adapter name
      * @param instance instance, like 1
-     * @return if dependent exists returns adapter name
+     * @returns if dependent exists returns adapter name
      */
     private async _hasDependentInstances(adapter: string, instance?: number): Promise<void | string> {
         try {
@@ -1903,7 +1942,7 @@ export class Install {
      * @param adapter adapter name
      * @param instancesRows all instances objects view rows
      * @param scopedHostname hostname which should be assumed as local
-     * @return true if an instance is present on other host
+     * @returns true if an instance is present on other host
      */
     private _checkDependencyFulfilledForeignHosts(
         adapter: string,
@@ -1926,7 +1965,7 @@ export class Install {
      * @param instance instance number like 1
      * @param instancesRows all instances objects view rows
      * @param scopedHostname hostname which should be assumed as local
-     * @return true if another instance is present on this host
+     * @returns true if another instance is present on this host
      */
     private _checkDependencyFulfilledThisHost(
         adapter: string,
@@ -1950,6 +1989,8 @@ export class Install {
 
     /**
      * Get all instances of an adapter which are on the current host
+     *
+     * @param adapter
      */
     private async _getInstancesOfAdapter(adapter: string): Promise<ioBroker.InstanceObject[]> {
         const instances = [];

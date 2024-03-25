@@ -498,6 +498,7 @@ function initYargs(): yargs.Argv {
 
 /**
  * Show yargs help, if processCommand is used as import, yargs won't be initialized
+ *
  * @param _yargs - yargs instance
  */
 function showHelp(_yargs?: yargs.Argv): void {

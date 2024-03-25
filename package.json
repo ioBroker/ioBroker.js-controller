@@ -58,6 +58,7 @@
     "cpy-cli": "^4.2.0",
     "eslint": "^8.56.0",
     "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-jsdoc": "^48.2.1",
     "eslint-plugin-prettier": "^5.1.3",
     "fs-extra": "^11.1.0",
     "get-spdx-license-ids": "^2.1.0",

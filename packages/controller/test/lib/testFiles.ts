@@ -125,7 +125,6 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         // now we write a binary state
         await context.adapter.setBinaryStateAsync(objId, Buffer.from('1234'));
-        /** @type Buffer */
         const state = await context.adapter.getBinaryStateAsync(objId);
         expect(state!.toString('utf-8')).to.be.equal('1234');
     });

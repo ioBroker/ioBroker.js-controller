@@ -892,6 +892,7 @@ export class BackupRestore {
 
     /**
      * Validates the given backup.json and all json files in the backup, calls processExit afterwards
+     *
      * @param _name - index or name of the backup
      */
     validateBackup(_name: string | number): Promise<void> | undefined {
@@ -1018,6 +1019,7 @@ export class BackupRestore {
 
     /**
      * Checks a directory for json files and validates them, steps down recursive in subdirectories
+     *
      * @param path - path to the directory
      * @param verbose - if logging should be verbose
      */

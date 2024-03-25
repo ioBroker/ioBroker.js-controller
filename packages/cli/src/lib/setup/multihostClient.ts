@@ -71,6 +71,7 @@ export class MHClient {
 
     /**
      * Starts the MH server
+     *
      * @param isBroadcast if server should receive broadcast
      * @param timeout timeout after which MH server will be closed
      * @param onReady ready handler
@@ -183,6 +184,7 @@ export class MHClient {
 
     /**
      * Connect to server
+     *
      * @param ip ip address of server
      * @param password password for authentication
      * @param callback
