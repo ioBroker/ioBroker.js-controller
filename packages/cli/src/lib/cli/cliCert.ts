@@ -11,6 +11,7 @@ export class CLICert extends CLICommand {
 
     /**
      * Executes a command
+     *
      * @param args
      */
     execute(args: any[]): void | Promise<void> {

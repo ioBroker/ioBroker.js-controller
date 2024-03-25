@@ -74,6 +74,7 @@ export class Multihost {
 
     /**
      * Start MH browsing
+     *
      * @param callback
      */
     browse(callback: (err?: Error | undefined, list?: BrowseResultEntry[]) => void): void {
@@ -253,6 +254,7 @@ export class Multihost {
 
     /**
      * Read password from cli
+     *
      * @param callback
      */
     readPassword(callback: (password: string) => void): void {

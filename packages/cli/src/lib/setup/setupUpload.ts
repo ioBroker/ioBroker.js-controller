@@ -259,6 +259,9 @@ export class Upload {
 
     /**
      * Uploads a file
+     *
+     * @param source
+     * @param target
      */
     async uploadFile(source: string, target: string): Promise<string> {
         target = target.replace(/\\/g, '/');
@@ -479,6 +482,12 @@ export class Upload {
 
     /**
      * Upload given adapter
+     *
+     * @param adapter
+     * @param isAdmin
+     * @param forceUpload
+     * @param subTree
+     * @param _logger
      */
     async uploadAdapter(
         adapter: string,
@@ -782,6 +791,10 @@ export class Upload {
 
     /**
      * Create object from io-package json
+     *
+     * @param name
+     * @param ioPack
+     * @param _logger
      */
     async upgradeAdapterObjects(
         name: string,

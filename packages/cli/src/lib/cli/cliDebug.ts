@@ -36,6 +36,7 @@ export class CLIDebug extends CLICommand {
 
     /**
      * Executes a command
+     *
      * @param args
      */
     async execute(args: any[]): Promise<void> {

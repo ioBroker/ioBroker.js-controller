@@ -134,6 +134,7 @@ export interface AdapterClass {
     on(event: 'log', listener: (info: any) => Promise<void> | void): this;
     /**
      * Extend an object and create it if it might not exist
+     *
      * @deprecated use `adapter.extendObject` without callback instead
      */
     extendObjectAsync(
@@ -300,7 +301,8 @@ export interface AdapterClass {
      * @deprecated Please use `readFile` instead of binary states
      */
     getBinaryStateAsync(id: string, options?: unknown): ioBroker.GetBinaryStatePromise;
-    /** Deletes a binary state from the states DB. The ID will not be prefixed with the adapter namespace.
+    /**
+     * Deletes a binary state from the states DB. The ID will not be prefixed with the adapter namespace.
      *
      * @deprecated Please use `delFile` instead of binary states
      */
@@ -420,6 +422,7 @@ export interface AdapterClass {
 
     /**
      * Writes a value into the states DB.
+     *
      * @deprecated use `adapter.setState` without callback instead
      */
     setStateAsync(
@@ -1209,7 +1212,6 @@ export class AdapterClass extends EventEmitter {
         /**
          * Async version of setBinaryState
          *
-         *
          * @param id of state
          * @param binary data
          * @param options optional
@@ -1236,7 +1238,6 @@ export class AdapterClass extends EventEmitter {
          *
          * @param id
          * @param options
-         *
          */
         this.delForeignBinaryStateAsync = tools.promisify(this.delForeignBinaryState, this);
 
@@ -1257,6 +1258,7 @@ export class AdapterClass extends EventEmitter {
     decrypt(value: string): string;
     /**
      * Decrypt the password/value with given key
+     *
      * @param secretVal to use for decrypt (or value if only one parameter is given)
      * @param  [value] value to decrypt (if secret is provided)
      */
@@ -1278,6 +1280,7 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Encrypt the password/value with given key
+     *
      * @param secretVal to use for encrypting (or value if only one parameter is given)
      * @param [value] value to encrypt (if secret is provided)
      */
@@ -1555,7 +1558,6 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * validates user and password
-     *
      *
      * @param user user name as text
      * @param pw password as text
@@ -2249,6 +2251,7 @@ export class AdapterClass extends EventEmitter {
     /**
      * Reads the file certificate from a given path and adds a file watcher to restart adapter on cert changes
      * if a cert is passed it is returned as it is
+     *
      * @param cert
      */
     private _readFileCertificate(cert: string): string {
@@ -2503,9 +2506,9 @@ export class AdapterClass extends EventEmitter {
      * Reads the encrypted parameter from config.
      *
      * It returns promise if no callback is provided.
+     *
      * @param attribute - attribute name in native configuration part
      * @param [callback] - optional callback
-     *
      */
     getEncryptedConfig(attribute: unknown, callback: unknown): Promise<string | void> {
         Validator.assertString(attribute, 'attribute');
@@ -2854,6 +2857,7 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Helper method for `set[Foreign]Object[NotExists]` that also sets the default value if one is configured
+     *
      * @param id of the object
      * @param obj The object to set
      * @param [options]
@@ -3007,47 +3011,45 @@ export class AdapterClass extends EventEmitter {
      *
      * You can change or extend some object. E.g. existing object is:
      * ```js
-     *     {
-     *          common: {
-     *              name: 'Adapter name',
-     *              desc: 'Description'
-     *          },
-     *          type: 'state',
-     *          native: {
-     *              unused: 'text'
-     *          }
-     *     }
+     * {
+     *   common: {
+     *     name: 'Adapter name',
+     *     desc: 'Description'
+     *   },
+     *   type: 'state',
+     *   native: {
+     *     unused: 'text'
+     *  }
+     * }
      * ```
      *
      * If following object will be passed as argument
      *
      * ```js
-     *     {
-     *          common: {
-     *              desc: 'New description',
-     *              min: 0,
-     *              max: 100
-     *          },
-     *          native: {
-     *              unused: null
-     *          }
-     *     }
+     * {
+     *   common: {
+     *     desc: 'New description',
+     *     min: 0,
+     *     max: 100
+     *   },
+     *   native: {
+     *     unused: null
+     *   }
+     * }
      * ```
      *
      * We will get as output:
      * ```js
-     *     {
-     *          common: {
-     *              desc: 'New description',
-     *              min: 0,
-     *              max: 100
-     *          },
-     *          type: 'state',
-     *          native: {
-     *          }
-     *     }
+     * {
+     *   common: {
+     *     desc: 'New description',
+     *     min: 0,
+     *     max: 100
+     *   },
+     *   type: 'state',
+     *   native: {}
+     * }
      * ```
-     *
      *
      * @param id object ID, that must be extended
      * @param obj part that must be extended
@@ -3787,7 +3789,6 @@ export class AdapterClass extends EventEmitter {
      * It is required, that ID consists namespace in startkey and endkey. E.g. `{startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '.\u9999'}`
      * to get all objects of the instance.
      *
-     *
      * @param params
      * @param options
      * @param callback
@@ -4098,33 +4099,32 @@ export class AdapterClass extends EventEmitter {
      *
      * Get all objects in the system of specified type. E.g.:
      *
-     *        ```js
-     *            adapter.getForeignObjects('hm-rega.0.*', 'state', ['rooms', 'functions'], function (err, objs) {
-     *              if (err) adapter.log.error('Cannot get object: ' + err);
-     *              // objs look like:
-     *              // {
-     *              //    "hm-rega.0.ABC0000.1.STATE": {
-     *              //        common: {...},
-     *              //        native: {},
-     *              //        type: 'state',
-     *              //        enums: {
-     *              //           'enums.rooms.livingroom': 'Living room',
-     *              //           'enums.functions.light': 'Light'
-     *              //       }
-     *              //    },
-     *              //    "hm-rega.0.ABC0000.2.STATE": {
-     *              //        common: {...},
-     *              //        native: {},
-     *              //        type: 'state',
-     *              //        enums: {
-     *              //           'enums.rooms.sleepingroom': 'Sleeping room',
-     *              //           'enums.functions.window': 'Windows'
-     *              //       }
-     *              //    }
-     *            }
-     *        ```
+     * ```js
+     * adapter.getForeignObjects('hm-rega.0.*', 'state', ['rooms', 'functions'], function (err, objs) {
+     *   if (err) adapter.log.error('Cannot get object: ' + err);
+     *   // objs look like:
+     *   // {
+     *   //    "hm-rega.0.ABC0000.1.STATE": {
+     *   //        common: {...},
+     *   //        native: {},
+     *   //        type: 'state',
+     *   //        enums: {
+     *   //           'enums.rooms.livingroom': 'Living room',
+     *   //           'enums.functions.light': 'Light'
+     *   //       }
+     *   //    },
+     *   //    "hm-rega.0.ABC0000.2.STATE": {
+     *   //        common: {...},
+     *   //        native: {},
+     *   //        type: 'state',
+     *   //        enums: {
+     *   //           'enums.rooms.sleepingroom': 'Sleeping room',
+     *   //           'enums.functions.window': 'Windows'
+     *   //       }
+     *   //    }
+     * }
+     * ```
      *
-
      * @param pattern object ID/wildcards
      * @param type type of object: 'state', 'channel' or 'device'. Default - 'state'
      * @param enums object ID, that must be overwritten or created.
@@ -4773,6 +4773,7 @@ export class AdapterClass extends EventEmitter {
     /**
      * Subscribe for the changes of files in specific instance.
      * This is async function!
+     *
      * @param id adapter ID like 'vis-2.0' or 'vis-2.admin'
      * @param pattern pattern like 'channel.*' or '*' (all files) - without namespaces. You can use array of patterns
      * @param options optional user context
@@ -4800,6 +4801,7 @@ export class AdapterClass extends EventEmitter {
     /**
      * Unsubscribe for the changes of files on specific instance.
      * This is async function!
+     *
      * @param id adapter ID like 'vis-2.0' or 'vis-2.admin'
      * @param pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
      * @param options optional user context
@@ -5733,9 +5735,9 @@ export class AdapterClass extends EventEmitter {
     ): void;
 
     /**
-     * Deletes channel and udnerlying structure
-     * @alais deleteChannel
+     * Deletes channel and underlying structure
      *
+     * @alias deleteChannel
      * @param parentDevice is the part of ID like: adapter.instance.<deviceName>
      * @param channelName is the part of ID like: adapter.instance.<deviceName>.<channelName>
      * @param options optional user context
@@ -7068,7 +7070,6 @@ export class AdapterClass extends EventEmitter {
      * @param instanceName name of the instance where the message must be sent to. E.g. "pushover.0" or "system.adapter.pushover.0".
      * @param command command name, like "send", "browse", "list". Command is depend on target adapter implementation.
      * @param message object that will be given as argument for request
-     * @param options optional options to define a timeout. This allows to get an error callback if no answer received in time (only if target is specific instance)
      * @param callback optional return result
      *        ```js
      *            function (result) {
@@ -7076,6 +7077,7 @@ export class AdapterClass extends EventEmitter {
      *              if (!result) adapter.log.error('No response received');
      *            }
      *        ```
+     * @param options optional options to define a timeout. This allows to get an error callback if no answer received in time (only if target is specific instance)
      */
     sendTo(instanceName: unknown, command: unknown, message: unknown, callback?: unknown, options?: unknown): any {
         if (typeof message === 'function' && typeof callback === 'undefined') {
@@ -7110,6 +7112,11 @@ export class AdapterClass extends EventEmitter {
     /**
      * Async version of sendTo
      * As we have a special case (first arg can be error or result, we need to promisify manually)
+     *
+     * @param instanceName
+     * @param command
+     * @param message
+     * @param options
      */
     sendToAsync(instanceName: unknown, command: unknown, message?: unknown, options?: unknown): any {
         return new Promise((resolve, reject) => {
@@ -9024,7 +9031,7 @@ export class AdapterClass extends EventEmitter {
      * Convert ID to `{device: D, channel: C, state: S}`
      *
      * @param id short or long string of ID like "stateID" or "adapterName.0.stateID".
-     * @return parsed ID as an object
+     * @returns parsed ID as an object
      */
     idToDCS(id: unknown): {
         device: string;
@@ -9805,6 +9812,7 @@ export class AdapterClass extends EventEmitter {
      *
      * @param pattern string in form 'adapter.0.*'. Must be the same as subscribe.
      * @param options]optional argument to describe the user context
+     * @param options
      * @param callback return result
      * ```js
      * function (err) {}
@@ -10016,12 +10024,10 @@ export class AdapterClass extends EventEmitter {
     /**
      * Write binary block into redis, e.g. image
      *
-     *
      * @param id of state
      * @param binary data
      * @param options optional
      * @param callback
-     *
      * @deprecated Please use `writeFile` instead of binary states
      */
     setForeignBinaryState(id: unknown, binary: unknown, options: unknown, callback?: unknown): any {
@@ -10167,12 +10173,10 @@ export class AdapterClass extends EventEmitter {
     /**
      * Same as setForeignBinaryState but prefixes the own namespace to the id
      *
-     *
      * @param id of state
      * @param binary data
      * @param options optional
      * @param callback
-     *
      * @deprecated Please use `writeFile` instead of binary states
      */
     setBinaryState(id: any, binary: any, options: any, callback?: any): void {
@@ -10190,7 +10194,6 @@ export class AdapterClass extends EventEmitter {
      * @param id The state ID
      * @param options optional
      * @param callback
-     *
      * @deprecated Please use `readFile` instead of binary states
      */
     getForeignBinaryState(id: unknown, options: unknown, callback?: unknown): any {
@@ -10276,7 +10279,6 @@ export class AdapterClass extends EventEmitter {
      * @param id The state ID
      * @param options optional
      * @param callback
-     *
      * @depreacted Please use `readFile` instead of binary states
      */
     getBinaryState(id: any, options: any, callback?: any): any {
@@ -10291,11 +10293,9 @@ export class AdapterClass extends EventEmitter {
     /**
      * Deletes binary state
      *
-     *
      * @param id
      * @param options
      * @param callback
-     *
      * @deprecated Please use `delFile` instead of binary states
      */
     delForeignBinaryState(id: unknown, options: unknown, callback?: unknown): any {
@@ -10360,7 +10360,6 @@ export class AdapterClass extends EventEmitter {
      * @param id
      * @param options
      * @param callback
-     *
      * @deprecated Please use `delFile` instead of binary states
      */
     delBinaryState(id: any, options: any, callback?: any): any {
@@ -10436,6 +10435,7 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * This method returns the list of license that can be used by this adapter
+     *
      * @param all if return the licenses, that used by other instances (true) or only for this instance (false)
      * @param adapterName Return licenses for specific adapter
      * @returns list of suitable licenses
@@ -11565,6 +11565,7 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Initialize the adapter
+     *
      * @param adapterConfig the AdapterOptions or the InstanceObject, is null/undefined if it is install process
      */
     private async _initAdapter(adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null): Promise<void> {
@@ -12235,11 +12236,10 @@ export class AdapterClass extends EventEmitter {
 
 /**
  * Polyfill to allow calling without `new`
- * @type {AdapterClass}
  */
 export const Adapter = new Proxy(AdapterClass, {
     apply(target, thisArg, argArray) {
         // @ts-expect-error fix later on if necessary
         return new target(...argArray);
     }
-});
+}) as typeof AdapterClass;

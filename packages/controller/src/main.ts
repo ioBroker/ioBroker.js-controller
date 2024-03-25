@@ -194,6 +194,10 @@ const uploadTasks: UploadTask[] = [];
 
 const config = getConfig();
 
+/**
+ *
+ * @param code
+ */
 function getErrorText(code: number): string {
     return EXIT_CODES[code];
 }
@@ -230,6 +234,11 @@ function getConfig(): ioBroker.IoBrokerJson | never {
     }
 }
 
+/**
+ *
+ * @param _config
+ * @param secret
+ */
 function _startMultihost(_config: Record<string, any>, secret: string | false): void {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
     const MHService = require('./lib/multihostServer.js');
@@ -390,6 +399,12 @@ function startUpdateIPs(): void {
 }
 
 // subscribe or unsubscribe loggers
+/**
+ *
+ * @param isActive
+ * @param id
+ * @param reason
+ */
 function logRedirect(isActive: boolean, id: string, reason: string): void {
     console.log(`================================== > LOG REDIRECT ${id} => ${isActive} [${reason}]`);
     if (isActive) {
@@ -431,6 +446,10 @@ function handleDisconnect(): void {
     }
 }
 
+/**
+ *
+ * @param onConnect
+ */
 function createStates(onConnect: () => void): void {
     states = new States({
         namespace: hostLogPrefix,
@@ -668,6 +687,10 @@ async function initializeController(): Promise<void> {
 }
 
 // create "objects" object
+/**
+ *
+ * @param onConnect
+ */
 function createObjects(onConnect: () => void): void {
     objects = new Objects({
         namespace: hostLogPrefix,
@@ -1103,6 +1126,12 @@ function reportStatus(): void {
     }
 }
 
+/**
+ *
+ * @param objs
+ * @param oldHostname
+ * @param newHostname
+ */
 async function changeHost(
     objs: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[],
     oldHostname: string,
@@ -1175,6 +1204,11 @@ function cleanAutoSubscribe(instance: string, autoInstance: ioBroker.ObjectIDs.I
     });
 }
 
+/**
+ *
+ * @param instanceID
+ * @param callback
+ */
 function cleanAutoSubscribes(instanceID: ioBroker.ObjectIDs.Instance, callback: () => void): void {
     const instance = instanceID.substring(15); // get name.0
 
@@ -1200,6 +1234,10 @@ function cleanAutoSubscribes(instanceID: ioBroker.ObjectIDs.Instance, callback: 
     );
 }
 
+/**
+ *
+ * @param objs
+ */
 async function delObjects(objs: ioBroker.GetObjectViewItem<ioBroker.AnyObject>[]): Promise<void> {
     for (const row of objs) {
         if (row?.id) {
@@ -1488,6 +1526,10 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
 }
 
 // check if some IPv4 address found. If not try in 30 seconds one more time (max 10 times)
+/**
+ *
+ * @param ipList
+ */
 function setIPs(ipList?: string[]): void {
     if (isStopping) {
         return;
@@ -1542,6 +1584,7 @@ function setIPs(ipList?: string[]): void {
 
 /**
  * Extends objects, optionally you can provide a state at each task (does not throw)
+ *
  * @param tasks
  */
 async function extendObjects(tasks: Record<string, any>[]): Promise<void> {
@@ -1847,6 +1890,10 @@ async function sendTo(
     }
 }
 
+/**
+ *
+ * @param hostId
+ */
 async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host): Promise<Record<string, any> | null | undefined> {
     const state = await states!.getState(`${hostId}.alive`);
     if (state?.val) {
@@ -1873,6 +1920,7 @@ async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host): Promise<Reco
 
 /**
  Helper function that serialize deletion of states
+
  @param list array with states
  */
 async function _deleteAllZipPackages(list: string[]): Promise<void> {
@@ -3017,6 +3065,11 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 }
 
 // restart given instances sequentially
+/**
+ *
+ * @param instances
+ * @param cb
+ */
 async function restartInstances(instances: ioBroker.ObjectIDs.Instance[], cb?: () => void): Promise<void> {
     if (!instances || !instances.length) {
         cb && cb();
@@ -3101,6 +3154,7 @@ async function getInstances(): Promise<void> {
 
 /**
  * Checks if an instance is relevant for this host to be considered or not
+ *
  * @param instance Object of the instance
  * @param _ipArr IP-Array from this host
  * @returns true if instance needs to be handled by this host else false
@@ -3129,6 +3183,7 @@ function instanceRelevantForThisController(instance: ioBroker.InstanceObject, _i
 
 /**
  * Check if an instance is handled by this host process and initialize internal data structures
+ *
  * @param instance instance object
  * @param ipArr IP-Array from this host
  * @returns true if instance needs to be handled by this host (true) or not
@@ -3575,6 +3630,12 @@ function installAdapters(): void {
     }
 }
 
+/**
+ *
+ * @param procObj
+ * @param now
+ * @param doOutput
+ */
 function cleanErrors(procObj: Process, now: number | null, doOutput?: boolean): void {
     if (!procObj || !procObj.errors || !procObj.errors.length || procObj.startedAsCompactGroup) {
         return;
@@ -3615,6 +3676,10 @@ function cleanErrors(procObj: Process, now: number | null, doOutput?: boolean): 
     }
 }
 
+/**
+ *
+ * @param callback
+ */
 async function startScheduledInstance(callback?: () => void): Promise<void> {
     const idsToStart = Object.keys(scheduledInstances);
     if (!idsToStart.length) {
@@ -3718,6 +3783,7 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
 
 /**
  * Start given instance
+ *
  * @param id - id of instance, like 'system.adapter.hm-rpc.0'
  * @param wakeUp
  */
@@ -4454,6 +4520,11 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                         delete compactProcs[currentCompactGroup].process;
                                     }
 
+                                    /**
+                                     *
+                                     * @param instances
+                                     * @param callback
+                                     */
                                     function markCompactInstancesAsStopped(
                                         instances: ioBroker.ObjectIDs.Instance[],
                                         callback: () => void
@@ -4922,6 +4993,11 @@ async function stopInstance(id: string, force: boolean): Promise<void> {
     }
 }
 
+/**
+ *
+ * @param forceStop
+ * @param callback
+ */
 function stopInstances(forceStop: boolean, callback?: ((wasForced?: boolean) => void) | null): void {
     let maxTimeout: NodeJS.Timeout | null | undefined;
     let waitTimeout: NodeJS.Timeout | null | undefined;

@@ -104,7 +104,7 @@ interface SubscriptionClient {
 /**
  * The parent of the class structure, which provides basic JSON storage
  * and general subscription and publish functionality
- **/
+ */
 export class InMemoryFileDB {
     private settings: FileDbSettings;
     private readonly change: ChangeFunction | undefined;

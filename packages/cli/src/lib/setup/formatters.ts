@@ -1,5 +1,6 @@
 /**
  * Format number in seconds to time text
+ *
  * @param seconds
  */
 export function formatSeconds(seconds: number): string {
@@ -32,6 +33,7 @@ export function formatSeconds(seconds: number): string {
 
 /**
  * Format bytes to MB or GB
+ *
  * @param bytes
  */
 export function formatRam(bytes: number): string {
@@ -50,6 +52,7 @@ export function formatRam(bytes: number): string {
 
 /**
  * Format speed
+ *
  * @param mhz
  */
 export function formatSpeed(mhz: number): string {
@@ -58,6 +61,7 @@ export function formatSpeed(mhz: number): string {
 
 /**
  * Format bytes to human readable form
+ *
  * @param bytes
  */
 export function formatBytes(bytes: number): string {
