@@ -10,33 +10,34 @@
  */
 
 import schedule from 'node-schedule';
-import os from 'os';
+import os from 'node:os';
 import fs from 'fs-extra';
-import path from 'path';
-import cp, { spawn, exec } from 'child_process';
+import path from 'node:path';
+import cp, { spawn, exec } from 'node:child_process';
 import semver from 'semver';
-import restart from './lib/restart';
+import restart from '@/lib/restart';
 import { tools as dbTools } from '@iobroker/js-controller-common-db';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
-import { isDeepStrictEqual, inspect } from 'util';
+import { isDeepStrictEqual, inspect } from 'node:util';
 import { tools, EXIT_CODES, logger as toolsLogger } from '@iobroker/js-controller-common';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
 import { PluginHandler } from '@iobroker/plugin-base';
 import { NotificationHandler } from '@iobroker/js-controller-common-db';
-import * as zipFiles from './lib/zipFiles';
+import * as zipFiles from '@/lib/zipFiles';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
-import { Upload, PacketManager } from '@iobroker/js-controller-cli';
+import { Upload, PacketManager, type UpgradePacket } from '@iobroker/js-controller-cli';
 import decache from 'decache';
 import cronParser from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
-import { AdapterAutoUpgradeManager } from './lib/adapterAutoUpgradeManager';
+import { AdapterAutoUpgradeManager } from '@/lib/adapterAutoUpgradeManager';
 import { getDefaultNodeArgs, type HostInfo, type RepositoryFile } from '@iobroker/js-controller-common/tools';
-import type { UpgradeArguments } from './lib/upgradeManager';
-import { AdapterUpgradeManager } from './lib/adapterUpgradeManager';
+import type { UpgradeArguments } from '@/lib/upgradeManager';
+import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager';
+import { setTimeout as wait } from 'node:timers/promises';
+import { getHostObjects } from '@/lib/objects';
 
-type TaskObject = ioBroker.SettableObject & { state?: ioBroker.SettableState };
 type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
 type Dependencies = string[] | Record<string, string>[] | string | Record<string, string>;
 
@@ -200,7 +201,7 @@ function getErrorText(code: number): string {
 /**
  * Get the config directly from fs - never cached
  */
-function getConfig(): Record<string, any> | never {
+function getConfig(): ioBroker.IoBrokerJson | never {
     const configFile = tools.getConfigFileName();
     if (!fs.existsSync(configFile)) {
         if (process.argv.indexOf('start') !== -1) {
@@ -514,7 +515,7 @@ function createStates(onConnect: () => void): void {
                 }
                 let currentLevel = config.log.level;
                 if (
-                    state.val &&
+                    typeof state.val === 'string' &&
                     state.val !== currentLevel &&
                     ['silly', 'debug', 'info', 'warn', 'error'].includes(state.val as string)
                 ) {
@@ -894,9 +895,9 @@ function createObjects(onConnect: () => void): void {
 
 function startAliveInterval(): void {
     config.system = config.system || {};
-    config.system.statisticsInterval = parseInt(config.system.statisticsInterval, 10) || 15000;
+    config.system.statisticsInterval = Math.round(config.system.statisticsInterval) || 15_000;
     config.system.checkDiskInterval =
-        config.system.checkDiskInterval !== 0 ? parseInt(config.system.checkDiskInterval, 10) || 300000 : 0;
+        config.system.checkDiskInterval !== 0 ? Math.round(config.system.checkDiskInterval) || 300_000 : 0;
     if (!compactGroupController) {
         // Provide info to see for each host if compact is enabled or not and be able to use in Admin or such
         states!.setState(`${hostObjectPrefix}.compactModeEnabled`, {
@@ -1137,16 +1138,16 @@ async function changeHost(
  */
 function cleanAutoSubscribe(instance: string, autoInstance: ioBroker.ObjectIDs.Instance, callback: () => void): void {
     inputCount++;
-    states!.getState(`${autoInstance}.subscribes`, (err, state) => {
+    states!.getState(`${autoInstance}.subscribes`, async (err, state) => {
         if (!state || !state.val) {
-            return typeof callback === 'function' && setImmediate(() => callback());
+            return setImmediate(() => callback());
         }
         let subs;
         try {
             subs = JSON.parse(state.val as string);
         } catch {
             logger.error(`${hostLogPrefix} Cannot parse subscribes: ${state.val}`);
-            return typeof callback === 'function' && setImmediate(() => callback());
+            return setImmediate(() => callback());
         }
         let modified = false;
         // look for all subscribes from this instance
@@ -1167,10 +1168,10 @@ function cleanAutoSubscribe(instance: string, autoInstance: ioBroker.ObjectIDs.I
 
         if (modified) {
             outputCount++;
-            states!.setState(`${autoInstance}.subscribes`, subs, () => typeof callback === 'function' && callback());
-        } else if (typeof callback === 'function') {
-            setImmediate(() => callback());
+            await states!.setState(`${autoInstance}.subscribes`, subs);
         }
+
+        setImmediate(() => callback());
     });
 }
 
@@ -1554,7 +1555,7 @@ async function extendObjects(tasks: Record<string, any>[]): Promise<void> {
             await objects!.extendObjectAsync(task._id, task);
             // if extend throws we don't want to set corresponding state
             if (state) {
-                await states!.setStateAsync(task._id, state);
+                await states!.setState(task._id, state);
             }
         } catch {
             // ignore
@@ -1668,409 +1669,15 @@ function setMeta(): void {
         }
     });
 
-    const tasks: TaskObject[] = [];
-    let obj: TaskObject;
-
-    if (!compactGroupController) {
-        obj = {
-            _id: `${id}.compactModeEnabled`,
-            type: 'state',
-            common: {
-                name: 'Controller - compact mode enabled',
-                type: 'boolean',
-                read: true,
-                write: false,
-                role: 'indicator'
-            },
-            native: {}
-        };
-        tasks.push(obj);
-
-        obj = {
-            _id: `${id}.compactgroupProcesses`,
-            type: 'state',
-            common: {
-                name: 'Controller - number of compact group controllers',
-                type: 'number',
-                read: true,
-                write: false,
-                min: 0,
-                role: 'value',
-                unit: 'processes'
-            },
-            native: {}
-        };
-        tasks.push(obj);
-
-        obj = {
-            _id: `${id}.nodeVersion`,
-            type: 'state',
-            common: {
-                name: 'Controller - Node.js version',
-                type: 'string',
-                read: true,
-                write: false,
-                desc: 'Node.js version of the host process.',
-                role: 'state'
-            },
-            native: {}
-        };
-        tasks.push(obj);
-    }
-
-    obj = {
-        _id: `${id}.instancesAsProcess`,
-        type: 'state',
-        common: {
-            name: 'Controller - number of instance processes',
-            type: 'number',
-            read: true,
-            write: false,
-            min: 0,
-            role: 'value',
-            unit: 'processes'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.instancesAsCompact`,
-        type: 'state',
-        common: {
-            name: 'Controller - number of instances started in this host process',
-            type: 'number',
-            read: true,
-            write: false,
-            min: 0,
-            role: 'value',
-            unit: 'instances'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.cpu`,
-        type: 'state',
-        common: {
-            name: 'Controller - cpu usage in % of one core',
-            type: 'number',
-            read: true,
-            write: false,
-            min: 0,
-            role: 'value',
-            unit: '% of one core'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.cputime`,
-        type: 'state',
-        common: {
-            name: 'Controller - accumulated cputime in seconds',
-            type: 'number',
-            read: true,
-            write: false,
-            min: 0,
-            role: 'value',
-            unit: 'seconds'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.mem`,
-        type: 'state',
-        common: {
-            type: 'number',
-            role: 'value',
-            name: `${hostname} - memory usage in %`,
-            unit: '%',
-            read: true,
-            write: false,
-            min: 0,
-            max: 100
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.memHeapUsed`,
-        type: 'state',
-        common: {
-            type: 'number',
-            role: 'value',
-            name: 'Controller - heap memory used in MB',
-            read: true,
-            write: false,
-            min: 0,
-            unit: 'MB'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    if (fs.existsSync('/proc/meminfo')) {
-        obj = {
-            _id: `${id}.memAvailable`,
-            type: 'state',
-            common: {
-                type: 'number',
-                role: 'value',
-                name: `${hostname} - available memory from /proc/meminfo in MB`,
-                read: true,
-                write: false,
-                min: 0,
-                unit: 'MB'
-            },
-            native: {}
-        };
-        tasks.push(obj);
-    }
-
-    obj = {
-        _id: `${id}.memHeapTotal`,
-        type: 'state',
-        common: {
-            type: 'number',
-            role: 'value',
-            name: 'Controller - heap memory reserved in MB',
-            read: true,
-            write: false,
-            min: 0,
-            unit: 'MB'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.memRss`,
-        type: 'state',
-        common: {
-            type: 'number',
-            role: 'value',
-            name: 'Controller - resident set size memory in MB',
-            desc: "RSS is the resident set size, the portion of the process's memory held in RAM",
-            read: true,
-            write: false,
-            min: 0,
-            unit: 'MB'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.uptime`,
-        type: 'state',
-        common: {
-            type: 'number',
-            role: 'value',
-            name: 'Controller - uptime in seconds',
-            read: true,
-            write: false,
-            min: 0,
-            unit: 'seconds'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.load`,
-        type: 'state',
-        common: {
-            unit: '',
-            type: 'number',
-            role: 'value',
-            read: true,
-            write: false,
-            name: `${hostname} - load average 1min`
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.alive`,
-        type: 'state',
-        common: {
-            name: `${hostname} - alive status`,
-            read: true,
-            write: false,
-            type: 'boolean',
-            role: 'indicator'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.freemem`,
-        type: 'state',
-        common: {
-            name: `${hostname} - available RAM in MB`,
-            unit: 'MB',
-            read: true,
-            write: false,
-            type: 'number',
-            role: 'value'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.inputCount`,
-        type: 'state',
-        common: {
-            name: 'Controller - input level in events/15 seconds',
-            desc: "State's inputs in 15 seconds",
-            type: 'number',
-            read: true,
-            write: false,
-            role: 'value',
-            unit: 'events/15 seconds'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.outputCount`,
-        type: 'state',
-        common: {
-            name: 'Controller - output level in events/15 seconds',
-            desc: "State's outputs in 15 seconds",
-            type: 'number',
-            read: true,
-            write: false,
-            role: 'value',
-            unit: 'events/15 seconds'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.eventLoopLag`,
-        type: 'state',
-        common: {
-            name: 'Controller - The Node.js event loop lag in ms, averaged over 15 seconds',
-            desc: 'Average Node.js event loop lag in ms',
-            type: 'number',
-            read: true,
-            write: false,
-            role: 'value',
-            unit: 'ms'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.zip`,
-        type: 'folder',
-        common: {
-            name: 'ZIP files',
-            desc: 'Files for download'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.logLevel`,
-        type: 'state',
-        common: {
-            name: 'Controller - Loglevel',
-            type: 'string',
-            read: true,
-            write: true,
-            desc: 'Loglevel of the host process. Will be set on start with defined value but can be overridden during runtime',
-            role: 'state'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.pid`,
-        type: 'state',
-        common: {
-            name: 'Controller - Process ID',
-            type: 'number',
-            read: true,
-            write: false,
-            role: 'value'
-        },
-        native: {},
-        state: {
-            val: process.pid,
-            ack: true
-        }
-    };
-    tasks.push(obj);
-
     config.system.checkDiskInterval =
-        config.system.checkDiskInterval !== 0 ? parseInt(config.system.checkDiskInterval, 10) || 300000 : 0;
+        config.system.checkDiskInterval !== 0 ? Math.round(config.system.checkDiskInterval) || 300_000 : 0;
 
-    if (config.system.checkDiskInterval) {
-        obj = {
-            _id: `${id}.diskSize`,
-            type: 'state',
-            common: {
-                name: `${hostname} - disk total size`,
-                desc: 'Disk size of logical volume where the server is installed in MiB',
-                type: 'number',
-                read: true,
-                write: false,
-                role: 'value',
-                unit: 'MiB'
-            },
-            native: {}
-        };
-        tasks.push(obj);
-
-        obj = {
-            _id: `${id}.diskFree`,
-            type: 'state',
-            common: {
-                name: `${hostname} - disk free size`,
-                desc: 'Free disk size of the logical volume where the server is installed in MiB',
-                type: 'number',
-                read: true,
-                write: false,
-                role: 'value',
-                unit: 'MiB'
-            },
-            native: {}
-        };
-        tasks.push(obj);
-
-        obj = {
-            _id: `${id}.diskWarning`,
-            type: 'state',
-            common: {
-                name: `${hostname} - disk warning level`,
-                desc: 'Show warning in admin if the free disk space is below this value',
-                type: 'number',
-                read: true,
-                write: true,
-                def: 5,
-                role: 'level',
-                unit: '%'
-            },
-            native: {}
-        };
-        tasks.push(obj);
-    }
+    const tasks = getHostObjects({
+        id,
+        hostname,
+        config,
+        isCompactGroupController: compactGroupController
+    });
 
     // delete obsolete states and create new ones
     objects!.getObjectView(
@@ -3376,9 +2983,34 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
         }
 
+        case 'upgradeOsPackages': {
+            const { packages, restart } = msg.message;
+
+            try {
+                await upgradeOsPackages(packages);
+                sendTo(msg.from, msg.command, { success: true }, msg.callback);
+            } catch (e) {
+                sendTo(msg.from, msg.command, { error: e.message, success: false }, msg.callback);
+            }
+
+            try {
+                await listUpdatableOsPackages();
+            } catch (e) {
+                logger.warn(`${hostLogPrefix} Could not check for new OS updates after upgrade: ${e.message}`);
+            }
+
+            if (restart) {
+                await wait(200);
+                restart(() => !isStopping && stop(false));
+            }
+            break;
+        }
+
         case 'restartController': {
             msg.callback && sendTo(msg.from, msg.command, '', msg.callback);
-            setTimeout(() => restart(() => !isStopping && stop(false)), 200); // let the answer be sent
+            // let the answer be sent
+            await wait(200);
+            restart(() => !isStopping && stop(false));
             break;
         }
     }
@@ -3983,7 +3615,7 @@ function cleanErrors(procObj: Process, now: number | null, doOutput?: boolean): 
     }
 }
 
-function startScheduledInstance(callback?: () => void): void {
+async function startScheduledInstance(callback?: () => void): Promise<void> {
     const idsToStart = Object.keys(scheduledInstances);
     if (!idsToStart.length) {
         callback && callback();
@@ -4004,76 +3636,80 @@ function startScheduledInstance(callback?: () => void): void {
 
     const proc = procs[id];
 
-    if (proc) {
-        const instance = proc.config;
+    if (!proc) {
+        logger.error(`${hostLogPrefix} scheduleJob: Task deleted (${id})`);
+        skipped = true;
+        processNextScheduledInstance();
+        return;
+    }
 
-        // After sleep of PC all scheduled runs come together. There is no need to run it X times in one second. Just the last.
-        if (!proc.lastStart || Date.now() - proc.lastStart >= 2_000) {
-            // Remember the last run
-            proc.lastStart = Date.now();
-            if (!proc.process) {
-                // reset sigKill to 0 if it was set to another value from "once run"
-                states!.setState(`${instance._id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix }, () => {
-                    const args = [instance._id.split('.').pop() || '0', instance.common.loglevel || 'info'];
-                    try {
-                        proc.process = cp.fork(fileNameFull, args, {
-                            execArgv: tools.getDefaultNodeArgs(fileNameFull),
-                            // @ts-expect-error missing from types, but we already tested it is needed
-                            windowsHide: true,
-                            cwd: adapterDir
-                        });
-                    } catch (err) {
-                        logger.error(`${hostLogPrefix} instance ${id} could not be started: ${err.message}`);
+    const instance = proc.config;
+
+    // After sleep of PC all scheduled runs come together. There is no need to run it X times in one second. Just the last.
+    if (!proc.lastStart || Date.now() - proc.lastStart >= 2_000) {
+        // Remember the last run
+        proc.lastStart = Date.now();
+        if (!proc.process) {
+            // reset sigKill to 0 if it was set to another value from "once run"
+            await states!.setState(`${instance._id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix });
+            const args = [instance._id.split('.').pop() || '0', instance.common.loglevel || 'info'];
+            try {
+                proc.process = cp.fork(fileNameFull, args, {
+                    execArgv: tools.getDefaultNodeArgs(fileNameFull),
+                    // @ts-expect-error missing from types, but we already tested it is needed
+                    windowsHide: true,
+                    cwd: adapterDir
+                });
+            } catch (err) {
+                logger.error(`${hostLogPrefix} instance ${id} could not be started: ${err.message}`);
+                delete proc.process;
+            }
+            if (proc.process) {
+                storePids();
+                const { pid } = proc.process;
+
+                logger.info(`${hostLogPrefix} instance ${instance._id} started with pid ${proc.process.pid}`);
+
+                proc.process.on('exit', (code, signal) => {
+                    outputCount++;
+                    states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
+                    if (signal) {
+                        logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
+                    } else if (code === null) {
+                        logger.error(`${hostLogPrefix} instance ${id} terminated abnormally`);
+                    } else {
+                        const text = `${hostLogPrefix} instance ${id} having pid ${pid} terminated with code ${code} (${
+                            getErrorText(code) || ''
+                        })`;
+                        if (
+                            !code ||
+                            code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
+                            code === EXIT_CODES.NO_ERROR
+                        ) {
+                            logger.info(text);
+                        } else {
+                            logger.error(text);
+                        }
+                    }
+
+                    if (proc.process) {
                         delete proc.process;
                     }
-                    if (proc.process) {
-                        storePids();
-                        logger.info(`${hostLogPrefix} instance ${instance._id} started with pid ${proc.process.pid}`);
-
-                        proc.process.on('exit', (code, signal) => {
-                            outputCount++;
-                            states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
-                            if (signal) {
-                                logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
-                            } else if (code === null) {
-                                logger.error(`${hostLogPrefix} instance ${id} terminated abnormally`);
-                            } else {
-                                const text = `${hostLogPrefix} instance ${id} terminated with code ${code} (${
-                                    getErrorText(code) || ''
-                                })`;
-                                if (
-                                    !code ||
-                                    code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
-                                    code === EXIT_CODES.NO_ERROR
-                                ) {
-                                    logger.info(text);
-                                } else {
-                                    logger.error(text);
-                                }
-                            }
-                            if (proc?.process) {
-                                delete proc.process;
-                            }
-                            storePids();
-                        });
-                    }
-
-                    processNextScheduledInstance();
+                    storePids();
                 });
-                return;
-            } else {
-                !wakeUp &&
-                    logger.warn(
-                        `${hostLogPrefix} instance ${instance._id} already running with pid ${proc.process.pid}`
-                    );
-                skipped = true;
             }
+
+            processNextScheduledInstance();
+            return;
         } else {
-            logger.warn(`${hostLogPrefix} instance ${instance._id} does not started, because just executed`);
+            !wakeUp &&
+                logger.warn(`${hostLogPrefix} instance ${instance._id} already running with pid ${proc.process.pid}`);
             skipped = true;
         }
     } else {
-        logger.error(`${hostLogPrefix} scheduleJob: Task deleted (${id})`);
+        logger.warn(
+            `${hostLogPrefix} instance ${instance._id} not started, because start has already been initialized less than 2 seconds ago`
+        );
         skipped = true;
     }
 
@@ -5426,8 +5062,8 @@ function stop(force?: boolean, callback?: () => void): void {
         }
         outputCount++;
         try {
-            await states.setStateAsync(`${hostObjectPrefix}.alive`, { val: false, ack: true, from: hostObjectPrefix });
-            await states.setStateAsync(`${hostObjectPrefix}.pid`, { val: null, ack: true, from: hostObjectPrefix });
+            await states.setState(`${hostObjectPrefix}.alive`, { val: false, ack: true, from: hostObjectPrefix });
+            await states.setState(`${hostObjectPrefix}.pid`, { val: null, ack: true, from: hostObjectPrefix });
         } catch {
             // ignore
         }
@@ -5765,7 +5401,7 @@ export function init(compactGroupId?: number): void {
                     }
 
                     // set current node version
-                    await states!.setStateAsync(`${hostObjectPrefix}.nodeVersion`, {
+                    await states!.setState(`${hostObjectPrefix}.nodeVersion`, {
                         val: nodeVersion,
                         ack: true,
                         from: hostObjectPrefix
@@ -6011,6 +5647,19 @@ async function listUpdatableOsPackages(): Promise<void> {
     }
 
     await notificationHandler.addMessage('system', 'packageUpdates', packages.join('\n'), `system.host.${hostname}`);
+    await states!.setState(`${hostObjectPrefix}.osPackageUpdates`, { val: JSON.stringify(packages), ack: true });
+}
+
+/**
+ * Upgrade given operating system packages
+ *
+ * @param packages package names and version information
+ */
+async function upgradeOsPackages(packages: UpgradePacket[]): Promise<void> {
+    const packManager = new PacketManager();
+    await packManager.ready();
+
+    await packManager.upgrade(packages);
 }
 
 /**

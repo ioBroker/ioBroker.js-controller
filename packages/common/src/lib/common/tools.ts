@@ -326,7 +326,7 @@ export async function isHostRunning(objects: any, states: any): Promise<boolean>
  * Checks if ioBroker is installed in a dev environment
  */
 function _isDevInstallation(): boolean {
-    return fs.pathExistsSync(`${__dirname}/../../../../../packages/controller`);
+    return fs.pathExistsSync(`${getControllerDir()}/../../packages/controller`);
 }
 
 function getAppName(): string {
@@ -831,7 +831,6 @@ export async function getJson(
                     callback(sources, urlOrPath);
                 }
             } else {
-                //if (urlOrPath.indexOf('/example/') === -1) console.log('Json file not found: ' + urlOrPath);
                 if (callback) {
                     callback(null, urlOrPath);
                 }
@@ -895,7 +894,6 @@ export async function getJsonAsync(urlOrPath: string, agent?: string): Promise<R
                 }
                 return sources;
             } else {
-                //if (urlOrPath.indexOf('/example/') === -1) console.log('Json file not found: ' + urlOrPath);
                 return null;
             }
         }
@@ -2177,6 +2175,7 @@ export function getControllerDir(): string {
             const possiblePath = require.resolve(`${pkg}/package.json`, {
                 paths: getDefaultRequireResolvePaths(module)
             });
+
             if (fs.existsSync(possiblePath)) {
                 return path.dirname(possiblePath);
             }
@@ -2819,6 +2818,10 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
 
     if (obj.type !== undefined && typeof obj.type !== 'string') {
         throw new Error(`obj.type has an invalid type! Expected "string", received "${typeof obj.type}"`);
+    }
+
+    if (obj.native !== undefined && !isObject(obj.native)) {
+        throw new Error(`obj.native has an invalid type! Expected a "real object", received "${typeof obj.native}"`);
     }
 
     const allowedObjectTypes: ioBroker.ObjectType[] = [

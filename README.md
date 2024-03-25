@@ -176,6 +176,32 @@ interface ServerResponse {
 }
 ```
 
+### Operating system package management
+**Feature status:** New in 5.1.0
+
+**Feature Flag for detection:** `CONTROLLER_OS_PACKAGE_UPGRADE`
+
+The controller can upgrade OS packages on Linux via `yum` and `apt`.
+To upgrade a package, you have to send a message to the controller with the following this example:
+
+```ts
+sendToHostAsync('system.host.test', 'upgradeOsPackages', {
+    packages: [{
+      // the package name
+      name: 'google-chrome-stable',
+      // the optional version
+      version: '120.0.6099.199-1' 
+    }],
+    // if the controller should be restarted afterwards
+    restart: true,
+});
+```
+
+Note, that specifying a `version` is optional. The answer by the controller has the property `success` which is `true`, if the upgrade was successful for all packages.
+If a package fails, the response will have a value of `false` for `success` and an additional property `error` which contains the error message as a string.
+
+Currently only upgrading of packages is supported. If you need a specific OS dependency for your adapter, you can specify it inside `io-package.json` with the field `osDependencies`.
+
 ### Hostname
 **Feature status:** stable
 

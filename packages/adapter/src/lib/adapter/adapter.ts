@@ -7683,19 +7683,24 @@ export class AdapterClass extends EventEmitter {
 
                 // write target state
                 this.outputCount++;
-                return this.#states.setState(
-                    aliasId,
-                    tools.formatAliasValue({
-                        sourceCommon: obj?.common,
-                        targetCommon: targetObj?.common as any,
-                        state: stateObj as ioBroker.State,
-                        logger: this._logger,
-                        logNamespace: this.namespaceLog,
-                        sourceId: obj?._id,
-                        targetId: targetObj?._id
-                    }),
-                    callback
-                );
+                try {
+                    const res = await this.#states.setState(
+                        aliasId,
+                        tools.formatAliasValue({
+                            sourceCommon: obj?.common,
+                            targetCommon: targetObj?.common as any,
+                            state: stateObj as ioBroker.State,
+                            logger: this._logger,
+                            logNamespace: this.namespaceLog,
+                            sourceId: obj?._id,
+                            targetId: targetObj?._id
+                        })
+                    );
+
+                    return tools.maybeCallbackWithError(callback, null, res);
+                } catch (e) {
+                    return tools.maybeCallbackWithError(callback, e);
+                }
             } else {
                 this._logger.warn(`${this.namespaceLog} ${`Alias ${fixedId} has no target 2`}`);
                 return tools.maybeCallbackWithError(callback, `Alias ${fixedId} has no target`);
@@ -7710,7 +7715,12 @@ export class AdapterClass extends EventEmitter {
             }
 
             this.outputCount++;
-            return this.#states.setState(fixedId, stateObj, callback);
+            try {
+                const res = await this.#states.setState(fixedId, stateObj);
+                return tools.maybeCallbackWithError(callback, null, res);
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
         }
     }
 
@@ -11969,63 +11979,65 @@ export class AdapterClass extends EventEmitter {
             for (const instObj of instanceObj.instanceObjects) {
                 const obj: IoPackageInstanceObject & { state?: unknown } = instObj;
 
+                // the object comes from non-checked io-package, so treat the id as unknown
+                if (!obj || typeof (obj._id as unknown) !== 'string' || (!obj._id && obj.type !== 'meta')) {
+                    this._logger.error(
+                        `${this.namespaceLog} ${this.namespace} invalid instance object: ${JSON.stringify(obj)}`
+                    );
+                    continue;
+                }
+
                 if (!obj._id.startsWith(this.namespace)) {
                     // instanceObjects are normally defined without namespace prefix
                     obj._id = obj._id === '' ? this.namespace : `${this.namespace}.${obj._id}`;
                 }
 
-                if (obj && (obj._id || obj.type === 'meta')) {
-                    if (obj.common?.name) {
-                        const commonName = obj.common.name;
-                        // if name has many languages
-                        if (tools.isObject(commonName)) {
-                            for (const [lang, value] of Object.entries(commonName)) {
-                                commonName[lang as ioBroker.Languages] = value.replace(
+                if (obj.common?.name) {
+                    const commonName = obj.common.name;
+                    // if name has many languages
+                    if (tools.isObject(commonName)) {
+                        for (const [lang, value] of Object.entries(commonName)) {
+                            commonName[lang as ioBroker.Languages] = value.replace(
+                                '%INSTANCE%',
+                                this.instance!.toString()
+                            );
+                        }
+                    } else {
+                        obj.common.name = commonName.replace('%INSTANCE%', this.instance!.toString());
+                    }
+
+                    if ('desc' in obj.common) {
+                        const commonDesc = obj.common.desc;
+
+                        // if description has many languages
+                        if (tools.isObject(commonDesc)) {
+                            for (const [lang, value] of Object.entries(commonDesc)) {
+                                commonDesc[lang as ioBroker.Languages] = value.replace(
                                     '%INSTANCE%',
                                     this.instance!.toString()
                                 );
                             }
-                        } else {
-                            obj.common.name = commonName.replace('%INSTANCE%', this.instance!.toString());
-                        }
-
-                        if ('desc' in obj.common) {
-                            const commonDesc = obj.common.desc;
-
-                            // if description has many languages
-                            if (tools.isObject(commonDesc)) {
-                                for (const [lang, value] of Object.entries(commonDesc)) {
-                                    commonDesc[lang as ioBroker.Languages] = value.replace(
-                                        '%INSTANCE%',
-                                        this.instance!.toString()
-                                    );
-                                }
-                            } else if (commonDesc) {
-                                obj.common.desc = commonDesc.replace('%INSTANCE%', this.instance!.toString());
-                            }
-                        }
-
-                        if (obj.type === 'state' && obj.common.def !== undefined) {
-                            // default value given - if obj non-existing we have to set it
-                            try {
-                                const checkObj = await this.#objects!.objectExists(obj._id);
-                                if (!checkObj) {
-                                    obj.state = obj.common.def;
-                                }
-                            } catch (e) {
-                                this._logger.warn(
-                                    `${this.namespaceLog} Did not add default (${obj.common.def}) value on creation of ${obj._id}: ${e.message}`
-                                );
-                            }
+                        } else if (commonDesc) {
+                            obj.common.desc = commonDesc.replace('%INSTANCE%', this.instance!.toString());
                         }
                     }
 
-                    objs.push(obj);
-                } else {
-                    this._logger.error(
-                        `${this.namespaceLog} ${this.namespace} invalid instance object: ${JSON.stringify(obj)}`
-                    );
+                    if (obj.type === 'state' && obj.common.def !== undefined) {
+                        // default value given - if obj non-existing we have to set it
+                        try {
+                            const checkObj = await this.#objects!.objectExists(obj._id);
+                            if (!checkObj) {
+                                obj.state = obj.common.def;
+                            }
+                        } catch (e) {
+                            this._logger.warn(
+                                `${this.namespaceLog} Did not add default (${obj.common.def}) value on creation of ${obj._id}: ${e.message}`
+                            );
+                        }
+                    }
                 }
+
+                objs.push(obj);
             }
         }
 

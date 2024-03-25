@@ -1,7 +1,7 @@
-import { spawn } from 'child_process';
-import os from 'os';
+import { spawn } from 'node:child_process';
+import os from 'node:os';
 import { getRootDir } from '@iobroker/js-controller-common/tools';
-import path from 'path';
+import path from 'node:path';
 
 /**
  * Restarts the js-controller

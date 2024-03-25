@@ -1,6 +1,6 @@
 {
   "name": "iobroker.js-controller",
-  "version": "5.0.20-alpha.0-20240308-3bbff415",
+  "version": "5.0.20-alpha.0-20240323-74044f09",
   "engines": {
     "node": ">=16.4.0"
   },
@@ -82,8 +82,9 @@
     "url": "https://github.com/ioBroker/ioBroker.js-controller"
   },
   "scripts": {
-    "build": "tsc -b tsconfig.build.json",
-    "preinstall": "node build/lib/preinstallCheck.js",
+    "build": "tsc -b tsconfig.build.json && tsc-alias",
+    "postbuild": "esm2cjs --in build/esm --out build/cjs -l error && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/",
+    "preinstall": "node build/cjs/lib/preinstallCheck.js",
     "install": "node iobroker.js setup first",
     "start": "node iobroker.js start",
     "stop": "node iobroker.js stop",
@@ -94,7 +95,18 @@
     "test-redis-socket": "mocha test/redis-socket/ --exit",
     "test-redis-sentinel": "mocha test/redis-sentinel/ --exit"
   },
-  "main": "build/main.js",
+  "main": "build/cjs/main.js",
+  "module": "build/esm/main.js",
+  "types": "build/esm/main.d.ts",
+  "exports": {
+    ".": {
+      "import": "./build/esm/index.js",
+      "require": "./build/cjs/index.js",
+      "types": "./build/esm/main.d.ts"
+    },
+    "./package.json": "./package.json",
+    "./io-package.json": "./io-package.json"
+  },
   "license": "MIT",
   "files": [
     "conf/",
