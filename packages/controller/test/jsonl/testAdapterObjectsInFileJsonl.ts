@@ -1,7 +1,7 @@
 import { expect } from 'chai';
 
 import { startController, stopController } from '../lib/setup4controller';
-import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
+import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 
 let objects = null;
 let states = null;

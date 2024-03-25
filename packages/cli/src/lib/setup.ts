@@ -155,7 +155,11 @@ function initYargs(): yargs.Argv {
                 type: 'string'
             }
         })
-        .command('url <url> [<name>]', 'Install adapter from specified url, e.g. GitHub', {})
+        .command(
+            'url <url> [<name>]',
+            'Install adapter from specified url, e.g. GitHub, if a package name is provided instead of an url, it will be installed from npm',
+            {}
+        )
         .command(['del <adapter>', 'delete <adapter>'], 'Remove adapter and all instances from this host', {
             custom: {
                 describe: 'Remove adapter custom attribute from all objects',
@@ -1222,9 +1226,9 @@ async function processCommand(
                             params.y || params.yes
                         );
                         return void callback();
-                    } catch (err) {
-                        console.error(`Cannot upgrade: ${err.message}`);
-                        return void callback(EXIT_CODES.INVALID_REPO);
+                    } catch (e) {
+                        console.error(`Cannot upgrade: ${e.message}`);
+                        return void callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.INVALID_REPO);
                     }
                 }
             });

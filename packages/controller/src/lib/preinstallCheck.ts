@@ -3,8 +3,8 @@
  * not installed yet, so the version checks get a bit messy
  */
 
-import path from 'path';
-import child_process from 'child_process';
+import path from 'node:path';
+import child_process from 'node:child_process';
 
 const RECOMMENDED_NPM_VERSION = 8;
 /** Time to wait for npm version determination */

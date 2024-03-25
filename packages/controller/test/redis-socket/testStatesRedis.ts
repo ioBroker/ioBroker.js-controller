@@ -2,8 +2,8 @@ import fs from 'fs';
 import path from 'path';
 import { expect } from 'chai';
 import { startController, stopController } from '../lib/setup4controller';
-import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
-import type { StateRedisClient } from '@iobroker/db-states-redis/build/lib/states/statesInRedisClient';
+import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
+import type { Client as StateRedisClient } from '@iobroker/db-states-redis';
 
 const dataDir = path.join(__dirname, '..', '..', 'tmp', 'data');
 let objects: ObjectsInRedisClient | null = null;

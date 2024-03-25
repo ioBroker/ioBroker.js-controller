@@ -1,12 +1,11 @@
 import { tools } from '@iobroker/js-controller-common';
-import http from 'http';
-import https from 'https';
+import http from 'node:http';
+import https from 'node:https';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
-import { setTimeout as wait } from 'timers/promises';
+import { setTimeout as wait } from 'node:timers/promises';
 import type { Logger } from 'winston';
-import { Upgrade } from '@iobroker/js-controller-cli';
-import type { ProcessExitCallback } from '@iobroker/js-controller-cli/build/lib/_Types';
+import { Upgrade, type ProcessExitCallback } from '@iobroker/js-controller-cli';
 import type { Socket } from 'node:net';
 import type { Duplex } from 'node:stream';
 
