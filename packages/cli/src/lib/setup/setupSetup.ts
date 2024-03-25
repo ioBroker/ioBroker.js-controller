@@ -7,7 +7,7 @@
  *
  */
 
-import type { CleanDatabaseHandler, IoPackage, ProcessExitCallback, RestartController } from '../_Types';
+import type { CleanDatabaseHandler, IoPackage, ProcessExitCallback, RestartController } from '@/lib/_Types';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
@@ -15,13 +15,16 @@ import fs from 'fs-extra';
 import path from 'path';
 import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
 import { tools as dbTools } from '@iobroker/js-controller-common-db';
-import { resetDbConnect, dbConnectAsync } from './dbConnection';
-import { BackupRestore } from './setupBackup';
+import { resetDbConnect, dbConnectAsync } from '@/lib/setup/dbConnection';
+import { BackupRestore } from '@/lib/setup/setupBackup';
 import crypto from 'crypto';
 import deepClone from 'deep-clone';
-import * as pluginInfos from './pluginInfos';
+import * as pluginInfos from '@/lib/setup/pluginInfos';
 import rl from 'readline-sync';
 import os from 'os';
+import { FORBIDDEN_CHARS } from '@iobroker/js-controller-common/tools';
+import { SYSTEM_ADAPTER_PREFIX, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common/constants';
+import { Upload } from '@/lib/setup/setupUpload';
 
 const COLOR_RED = '\x1b[31m';
 const COLOR_YELLOW = '\x1b[33m';
@@ -37,7 +40,7 @@ export interface CLISetupOptions {
 }
 
 export class Setup {
-    private readonly options: CLISetupOptions;
+    private readonly KNOWN_GARBAGE_OBJECT_IDS = ['null', 'undefined'];
     private readonly processExit: ProcessExitCallback;
     private states: StatesRedisClient | undefined;
     private objects: ObjectsRedisClient | undefined;
@@ -46,7 +49,6 @@ export class Setup {
     private readonly restartController: RestartController;
 
     constructor(options: CLISetupOptions) {
-        this.options = options;
         this.processExit = options.processExit;
         this.params = options.params;
         this.cleanDatabase = options.cleanDatabase;
@@ -137,7 +139,7 @@ export class Setup {
     }
 
     /**
-     * Called after io-package objects are created
+     * Called after io-package objects are created (hence object view functionalities are now available)
      *
      * @param systemConfig
      * @param callback
@@ -155,12 +157,8 @@ export class Setup {
             throw new Error('Objects not set up, call setupObjects first');
         }
 
-        // clean up invalid user group assignments (non-existing user in a group)
-        try {
-            await this._cleanupInvalidGroupAssignments();
-        } catch (e) {
-            console.error(`Cannot clean up invalid user group assignments: ${e.message}`);
-        }
+        await this._ensureAdaptersPerHostObject();
+        await this._cleanupInstallation();
 
         // special methods which are only there on objects server
         // TODO this check will lead to objects being never in the following code
@@ -182,8 +180,8 @@ export class Setup {
                     console.log('Successfully created "meta.user" directory');
                 }
             }
-        } catch (err) {
-            console.warn(`Could not create directory "meta.user": ${err.message}`);
+        } catch (e) {
+            console.warn(`Could not create directory "meta.user": ${e.message}`);
         }
 
         try {
@@ -202,8 +200,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             }
             await this.informAboutPlugins(systemConfig);
             return void callback();
-        } catch (err) {
-            console.error(`Error on file directory sync: ${err.message}`);
+        } catch (e) {
+            console.error(`Error on file directory sync: ${e.message}`);
             await this.informAboutPlugins(systemConfig);
             return void callback();
         }
@@ -227,11 +225,11 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 obj.from = `system.host.${tools.getHostName()}.cli`;
                 obj.ts = Date.now();
                 await this.objects.setObjectAsync(obj._id, obj);
-                console.log(`object ${obj._id} ${!existingObj ? 'created' : 'updated'}`);
+                console.log(`object "${obj._id}" ${!existingObj ? 'created' : 'updated'}`);
                 setTimeout(this.dbSetup, 25, iopkg, ignoreExisting, callback);
             } else {
                 if (!ignoreExisting) {
-                    console.log(`object ${obj._id} already exists`);
+                    console.log(`object "${obj._id}" already exists`);
                 }
                 setTimeout(this.dbSetup, 25, iopkg, ignoreExisting, callback);
             }
@@ -1025,6 +1023,214 @@ Please DO NOT copy files manually into ioBroker storage directories!`
     }
 
     /**
+     * Create the adapters object per host if not yet existing
+     */
+    private async _ensureAdaptersPerHostObject(): Promise<void> {
+        if (!this.objects) {
+            throw new Error('Objects not set up, call setupObjects first');
+        }
+
+        if (!this.states) {
+            throw new Error('States not set up, call setupObjects first');
+        }
+
+        const hostname = tools.getHostName();
+        const adaptersId = `system.host.${hostname}.adapters`;
+
+        const adaptersExist = await this.objects.objectExists(adaptersId);
+
+        if (adaptersExist) {
+            return;
+        }
+
+        console.log(`Creating adapter objects for host "${hostname}"`);
+
+        await this.objects.setObject(adaptersId, {
+            type: 'folder',
+            common: {
+                name: {
+                    en: 'Installed adapters',
+                    de: 'Installierte Adapter',
+                    ru: 'Установленные адаптеры',
+                    pt: 'Adaptadores instalados',
+                    nl: 'Geïnstalleerde adapters',
+                    fr: 'Adaptateurs installés',
+                    it: 'Adattatori installati',
+                    es: 'Adaptadores instalados',
+                    pl: 'Zainstalowane adaptery',
+                    uk: 'Встановлені адаптери',
+                    'zh-cn': '已安装的适配器'
+                },
+                desc: {
+                    en: 'Installed adapters on this host',
+                    de: 'Installierte Adapter auf diesem Host',
+                    ru: 'Установленные адаптеры на этом хосте',
+                    pt: 'Adaptadores instalados neste anfitrião',
+                    nl: 'Geïnstalleerde adapters op deze host',
+                    fr: 'Adaptateurs installés sur cet hôte',
+                    it: 'Adattatori installati su questo host',
+                    es: 'Adaptadores instalados en este host',
+                    pl: 'Zainstalowane karty na tym hoście',
+                    uk: 'Встановлені адаптери на цьому хості',
+                    'zh-cn': '该主机上已安装的适配器'
+                }
+            },
+            native: {}
+        });
+
+        const adaptersView = await this.objects.getObjectViewAsync('system', 'adapter', {
+            startkey: SYSTEM_ADAPTER_PREFIX,
+            endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
+        });
+
+        const rootPackJson = await fs.readJSON(path.join(tools.getRootDir(), 'package.json'));
+
+        const setupUpload = new Upload({ objects: this.objects, states: this.states });
+
+        for (const row of adaptersView.rows) {
+            const { name } = row.value.common;
+
+            if (!rootPackJson.dependencies[`iobroker.${name}`]) {
+                continue;
+            }
+
+            await setupUpload.upgradeAdapterObjects(name);
+        }
+    }
+
+    /**
+     * Perform multiple cleanup operations, to clean up inconsistent states due to past bugs or edge case errors
+     */
+    private async _cleanupInstallation(): Promise<void> {
+        console.log('Clean up invalid group assignments ...');
+        try {
+            await this._cleanupInvalidGroupAssignments();
+        } catch (e) {
+            console.error(`Cannot clean up invalid user group assignments: ${e.message}`);
+        }
+
+        console.log('Clean up garbage objects ...');
+        try {
+            await this._cleanupGarbageObjects();
+        } catch (e) {
+            console.error(`Cannot clean up garbage objects: ${e.message}`);
+        }
+
+        console.log('Clean up leftover adapters ...');
+        try {
+            await this._cleanupLeftoverAdapters();
+        } catch (e) {
+            console.error(`Cannot clean up leftover adapters: ${e.message}`);
+        }
+
+        console.log('Clean up objects and states with forbidden characters ...');
+        try {
+            await this._cleanupForbiddenIds();
+        } catch (e) {
+            console.error(`Cannot clean up objects and states with forbidden IDs: ${e.message}`);
+        }
+    }
+
+    /**
+     * Cleanup adapter objects from already removed adapters, which are still there due to errors or past bugs
+     */
+    private async _cleanupLeftoverAdapters(): Promise<void> {
+        if (!this.objects) {
+            throw new Error('Objects not set up, call setupObjects first');
+        }
+
+        const hostsView = await this.objects.getObjectViewAsync('system', 'host', {
+            startkey: SYSTEM_HOST_PREFIX,
+            endkey: `${SYSTEM_HOST_PREFIX}\u9999`
+        });
+
+        const hostIds = hostsView.rows.map(row => row.id);
+
+        for (const hostId of hostIds) {
+            const hasAdapters = await this.objects.objectExists(`${hostId}.adapters`);
+
+            if (!hasAdapters) {
+                console.log(
+                    `Skipping cleanup leftover adapters, because host "${hostId}" is not yet migrated to a supporting controller version`
+                );
+                return;
+            }
+        }
+
+        const adaptersViewPerHost = await this.objects.getObjectViewAsync('system', 'adapter', {
+            startkey: SYSTEM_HOST_PREFIX,
+            endkey: `${SYSTEM_HOST_PREFIX}\u9999`
+        });
+
+        const installedAdapterNames = adaptersViewPerHost.rows.map(row => row.value.common.name);
+
+        const adaptersView = await this.objects.getObjectViewAsync('system', 'adapter', {
+            startkey: SYSTEM_ADAPTER_PREFIX,
+            endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
+        });
+
+        for (const row of adaptersView.rows) {
+            if (!installedAdapterNames.includes(row.value.common.name)) {
+                await this.objects.delObject(row.id);
+                console.log(`Cleaned up leftover adapter object "${row.id}"`);
+            }
+        }
+    }
+
+    /**
+     * Cleanup all states and objects which contain forbidden chars in their id
+     */
+    private async _cleanupForbiddenIds(): Promise<void> {
+        if (!this.objects) {
+            throw new Error('Objects not set up, call setupObjects first');
+        }
+
+        if (!this.states) {
+            throw new Error('States not set up, call setupObjects first');
+        }
+
+        const objIds = await this.objects.getKeys('*');
+
+        if (objIds) {
+            for (const id of objIds) {
+                if (FORBIDDEN_CHARS.test(id)) {
+                    await this.objects.delObject(id);
+                    console.log(`Deleted object "${id}" because it contains forbidden characters`);
+                }
+            }
+        }
+
+        const stateIds = await this.states.getKeys('*');
+
+        if (stateIds) {
+            for (const id of stateIds) {
+                if (FORBIDDEN_CHARS.test(id)) {
+                    await this.states.delState(id);
+                    console.log(`Deleted state "${id}" because it contains forbidden characters`);
+                }
+            }
+        }
+    }
+
+    /**
+     * Cleanup objects which are known to be created on accident in the past by adapters or controller
+     */
+    private async _cleanupGarbageObjects(): Promise<void> {
+        if (!this.objects) {
+            throw new Error('Objects not set up, call setupObjects first');
+        }
+
+        for (const garbageId of this.KNOWN_GARBAGE_OBJECT_IDS) {
+            const isExisting = await this.objects.objectExists(garbageId);
+
+            if (isExisting) {
+                await this.objects.delObject(garbageId);
+                console.log(`Successfully removed garbage object "${garbageId}"`);
+            }
+        }
+    }
+
+    /**
      * Removes non-existing users from groups
      */
     private async _cleanupInvalidGroupAssignments(): Promise<void> {
@@ -1209,8 +1415,8 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                         fs.mkdirSync(path.join(CONTROLLER_DIR, 'log'));
                     }
                 }
-            } catch (err) {
-                console.log(`Non-critical error: ${err.message}`);
+            } catch (e) {
+                console.log(`Non-critical error: ${e.message}`);
             }
         } else if (ignoreIfExist) {
             // it is a setup first run and config exists yet
@@ -1222,8 +1428,8 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                     config.dataDir = tools.getDefaultDataDir();
                     fs.writeJSONSync(configFileName, config, { spaces: 2 });
                 }
-            } catch (err) {
-                console.warn(`Cannot check config file: ${err.message}`);
+            } catch (e) {
+                console.warn(`Cannot check config file: ${e.message}`);
             }
 
             this.setupObjects(() => callback && callback(), true);

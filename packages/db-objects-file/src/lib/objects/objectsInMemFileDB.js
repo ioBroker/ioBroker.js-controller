@@ -848,7 +848,7 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
     // needed by server
     _getKeys(pattern) {
         const r = new RegExp(tools.pattern2RegEx(pattern));
-        const result = Object.keys(this.dataset).filter(id => r.test(id));
+        const result = Object.keys(this.dataset).filter(id => r.test(id) && id !== this.META_ID);
         result.sort();
         return result;
     }
