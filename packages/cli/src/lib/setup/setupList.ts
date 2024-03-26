@@ -39,7 +39,7 @@ interface CLIListOptions {
     processExit: (exitCode?: number) => void;
 }
 
-type ListType =
+export type ListType =
     | 'objects'
     | 'o'
     | 'states'

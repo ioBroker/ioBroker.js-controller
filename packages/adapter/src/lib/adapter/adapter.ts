@@ -1304,6 +1304,7 @@ export class AdapterClass extends EventEmitter {
      * Import a node module which has been installed via `installNodeModule`
      *
      * @param moduleName name of the node module
+     * @returns the required node module
      */
     importNodeModule(moduleName: unknown): unknown {
         Validator.assertString(moduleName, 'moduleName');
