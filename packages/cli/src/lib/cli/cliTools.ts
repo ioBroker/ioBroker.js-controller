@@ -44,7 +44,7 @@ export function validateAdapterIdentifier(name: string): boolean {
  * Ensures that the given string contains a valid identifier for
  * an adapter (without instance number) or instance (with instance number)
  *
- * @param name
+ * @param name the adapter name or instance
  */
 export function validateAdapterOrInstanceIdentifier(name: string): boolean {
     return /^[a-z0-9\-_]+(\.\d+)?$/.test(name);
@@ -54,7 +54,7 @@ export function validateAdapterOrInstanceIdentifier(name: string): boolean {
  * Ensures that the given string contains a valid identifier for
  * an adapter (without instance number) or instance (with instance number)
  *
- * @param name
+ * @param name the adapter name or instance
  */
 export function splitAdapterOrInstanceIdentifierWithVersion(
     name: string
@@ -92,7 +92,7 @@ export async function enumInstances(objects: ObjectsClient, adapter?: string): P
     const startkey = `system.adapter.${adapter ? `${adapter}.` : ''}`;
     const data = await enumObjects(objects, 'instance', startkey);
     // because of startkey logic not only receive objects with the dot at the end, so filter them!
-    return data.filter(it => it && it._id.startsWith(startkey)) as ioBroker.InstanceObject[];
+    return data.filter((it): it is ioBroker.InstanceObject => !!(it && it._id.startsWith(startkey)));
 }
 
 /**
