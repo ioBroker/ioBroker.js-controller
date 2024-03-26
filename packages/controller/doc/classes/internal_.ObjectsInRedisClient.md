@@ -132,7 +132,7 @@ Activates the usage of sets
 
 #### Defined in
 
-db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:319
+db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:323
 
 ___
 
@@ -152,7 +152,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:255
+db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:256
 
 ___
 
@@ -406,7 +406,7 @@ Deactivates the usage of sets
 
 #### Defined in
 
-db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:323
+db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:327
 
 ___
 
@@ -542,7 +542,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:260
+db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:261
 
 ___
 
@@ -563,7 +563,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:258
+db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:259
 
 ___
 
@@ -583,7 +583,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:259
+db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:260
 
 ___
 
@@ -743,7 +743,7 @@ Value will expire after ms milliseconds
 
 #### Defined in
 
-db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:290
+db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:293
 
 ___
 
@@ -790,7 +790,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:252
+db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:253
 
 ▸ **findObject**(`idOrName`, `type`, `callback`): `void`
 
@@ -808,7 +808,7 @@ db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:252
 
 #### Defined in
 
-db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:253
+db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:254
 
 ▸ **findObject**(`idOrName`, `type?`, `options?`): `Promise`\<`undefined` \| `string`\>
 
@@ -826,7 +826,7 @@ db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:253
 
 #### Defined in
 
-db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:254
+db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:255
 
 ___
 
@@ -950,7 +950,7 @@ Get value from meta namespace
 
 #### Defined in
 
-db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:329
+db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:333
 
 ___
 
@@ -1417,7 +1417,7 @@ Get name of the primary host
 
 #### Defined in
 
-db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:302
+db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:305
 
 ___
 
@@ -1433,7 +1433,7 @@ Returns the protocol version from DB
 
 #### Defined in
 
-db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:282
+db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:285
 
 ___
 
@@ -1498,7 +1498,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:261
+db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:262
 
 ___
 
@@ -1516,7 +1516,7 @@ number of migrated sets
 
 #### Defined in
 
-db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:278
+db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:281
 
 ___
 
@@ -1706,7 +1706,7 @@ Ensure we are no longer the primary host
 
 #### Defined in
 
-db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:306
+db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:309
 
 ___
 
@@ -1840,7 +1840,7 @@ Checks if a given set exists
 
 #### Defined in
 
-db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:273
+db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:275
 
 ___
 
@@ -1963,7 +1963,7 @@ Value will expire after ms milliseconds
 
 #### Defined in
 
-db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:298
+db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:301
 
 ___
 
@@ -1985,7 +1985,7 @@ Sets the protocol version to the DB
 
 #### Defined in
 
-db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:311
+db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:315
 
 ___
 
@@ -2061,7 +2061,7 @@ Subscribe to expired events to get expiration of primary host
 
 #### Defined in
 
-db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:315
+db-objects-redis/build/cjs/lib/objects/objectsInRedisClient.d.ts:319
 
 ___
 
