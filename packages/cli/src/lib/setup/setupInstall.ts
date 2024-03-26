@@ -1208,7 +1208,7 @@ export class Install {
      * @param instance The instance to enumerate the devices for (optional)
      */
     private async _enumerateAdapterDevices(knownObjIDs: string[], adapter: string, instance?: number): Promise<void> {
-        const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
+        const adapterRegex = new RegExp(`^${adapter}${instance !== undefined ? `\\.${instance}` : ''}\\.`);
 
         try {
             const doc = await this.objects.getObjectViewAsync('system', 'device', {
@@ -1248,7 +1248,7 @@ export class Install {
      * @param instance The instance to enumerate the channels for (optional)
      */
     private async _enumerateAdapterChannels(knownObjIDs: string[], adapter: string, instance?: number): Promise<void> {
-        const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
+        const adapterRegex = new RegExp(`^${adapter}${instance !== undefined ? `\\.${instance}` : ''}\\.`);
         try {
             const doc = await this.objects.getObjectViewAsync('system', 'channel', {
                 startkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}`,
@@ -1267,7 +1267,7 @@ export class Install {
                 if (newObjs.length > 0) {
                     console.log(
                         `host.${hostname} Counted ${newObjs.length} channels of ${adapter}${
-                            instance ? `.${instance}` : ''
+                            instance !== undefined ? `.${instance}` : ''
                         }`
                     );
                 }
@@ -1287,8 +1287,10 @@ export class Install {
      * @param instance The instance to enumerate the states for (optional)
      */
     async _enumerateAdapterStateObjects(knownObjIDs: string[], adapter: string, instance?: number): Promise<void> {
-        const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
-        const sysAdapterRegex = new RegExp(`^system\\.adapter\\.${adapter}${instance ? `\\.${instance}` : ''}\\.`);
+        const adapterRegex = new RegExp(`^${adapter}${instance !== undefined ? `\\.${instance}` : ''}\\.`);
+        const sysAdapterRegex = new RegExp(
+            `^system\\.adapter\\.${adapter}${instance !== undefined ? `\\.${instance}` : ''}\\.`
+        );
 
         try {
             let doc = await this.objects.getObjectViewAsync('system', 'state', {
@@ -1309,7 +1311,7 @@ export class Install {
                 if (newObjs.length > 0) {
                     console.log(
                         `host.${hostname} Counted ${newObjs.length} states of ${adapter}${
-                            instance ? `.${instance}` : ''
+                            instance !== undefined ? `.${instance}` : ''
                         }`
                     );
                 }
@@ -1333,7 +1335,7 @@ export class Install {
                 if (newObjs.length > 0) {
                     console.log(
                         `host.${hostname} Counted ${newObjs.length} states of system.adapter.${adapter}${
-                            instance ? `.${instance}` : ''
+                            instance !== undefined ? `.${instance}` : ''
                         }`
                     );
                 }
@@ -1353,8 +1355,10 @@ export class Install {
      * @param instance The instance to enumerate the states for (optional)
      */
     private async _enumerateAdapterDocs(knownObjIDs: string[], adapter: string, instance?: number): Promise<void> {
-        const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
-        const sysAdapterRegex = new RegExp(`^system\\.adapter\\.${adapter}${instance ? `\\.${instance}` : ''}\\.`);
+        const adapterRegex = new RegExp(`^${adapter}${instance !== undefined ? `\\.${instance}` : ''}\\.`);
+        const sysAdapterRegex = new RegExp(
+            `^system\\.adapter\\.${adapter}${instance !== undefined ? `\\.${instance}` : ''}\\.`
+        );
 
         if (instance === undefined) {
             knownObjIDs.push(`system.host.${hostname}.adapters.${adapter}`);
@@ -1373,7 +1377,7 @@ export class Install {
                 if (newObjs.length > 0) {
                     console.log(
                         `host.${hostname} Counted ${newObjs.length} objects of ${adapter}${
-                            instance ? `.${instance}` : ''
+                            instance !== undefined ? `.${instance}` : ''
                         }`
                     );
                 }
@@ -1394,11 +1398,11 @@ export class Install {
      */
     async _enumerateAdapterStates(knownStateIDs: string[], adapter: string, instance?: number): Promise<void> {
         for (const pattern of [
-            `io.${adapter}.${instance ? instance + '.' : ''}*`,
-            `messagebox.${adapter}.${instance ? instance + '.' : ''}*`,
-            `log.${adapter}.${instance ? instance + '.' : ''}*`,
-            `${adapter}.${instance ? instance + '.' : ''}*`,
-            `system.adapter.${adapter}.${instance ? instance + '.' : ''}*`
+            `io.${adapter}.${instance !== undefined ? instance + '.' : ''}*`,
+            `messagebox.${adapter}.${instance !== undefined ? instance + '.' : ''}*`,
+            `log.${adapter}.${instance !== undefined ? instance + '.' : ''}*`,
+            `${adapter}.${instance !== undefined ? instance + '.' : ''}*`,
+            `system.adapter.${adapter}.${instance !== undefined ? instance + '.' : ''}*`
         ]) {
             try {
                 const ids = await this.states.getKeys(pattern);
