@@ -1309,6 +1309,7 @@ export class AdapterClass extends EventEmitter {
         Validator.assertString(moduleName, 'moduleName');
 
         const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
+        // TODO: if https://github.com/microsoft/TypeScript/issues/54022 ever gets resolved, we should improve the return type
         return require(internalModuleName);
     }
 
