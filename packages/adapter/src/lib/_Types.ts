@@ -1,3 +1,5 @@
+import type { EXIT_CODES } from '@iobroker/js-controller-common';
+
 export interface AdapterOptions {
     subscribesChange?: (subs: Record<string, { regex: RegExp }>) => void;
     /** If the adapter collects logs from all adapters (experts only). Default: false */
@@ -511,6 +513,22 @@ export interface InternalDeleteStateFromEnumOptions {
     stateName: string;
     options?: Record<string, any> | null;
     callback?: ioBroker.ErrorCallback;
+}
+
+export interface StopParameters {
+    /** Specify an optional exit code */
+    exitCode?: EXIT_CODES;
+    /** Specify an optional reason for stoppage */
+    reason?: string;
+}
+
+export interface InternalStopParameters extends StopParameters {
+    /** If mode is schedule or once */
+    isPause?: boolean;
+    /** If it has a restart schedule running */
+    isScheduled?: boolean;
+    /** If alive state should be updated, if undefined defaults to true */
+    updateAliveState?: boolean;
 }
 
 /**
