@@ -669,7 +669,7 @@ export class Upload {
 
             for (const [attr, attrData] of Object.entries(additional)) {
                 // preserve these attributes, except, they were undefined before and preserve titleLang if current titleLang is of type string (changed by user)
-                if (preserveAttributes.includes(attr) || (attr === 'titleLang' && typeof attrData === 'string')) {
+                if (preserveAttributes.includes(attr) || (attr === 'titleLang' && typeof target[attr] === 'string')) {
                     if (target[attr] === undefined) {
                         target[attr] = attrData;
                     }
@@ -795,6 +795,7 @@ export class Upload {
      * @param name
      * @param ioPack
      * @param _logger
+     * @param logger
      */
     async upgradeAdapterObjects(
         name: string,
