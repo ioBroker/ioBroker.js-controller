@@ -1,5 +1,3 @@
-import type { EXIT_CODES } from '@iobroker/js-controller-common';
-
 export interface AdapterOptions {
     subscribesChange?: (subs: Record<string, { regex: RegExp }>) => void;
     /** If the adapter collects logs from all adapters (experts only). Default: false */
@@ -517,7 +515,7 @@ export interface InternalDeleteStateFromEnumOptions {
 
 export interface StopParameters {
     /** Specify an optional exit code */
-    exitCode?: EXIT_CODES;
+    exitCode?: number;
     /** Specify an optional reason for stoppage */
     reason?: string;
 }
