@@ -270,14 +270,7 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
             const { id, namespace } = this._normalizeId(data[0]);
             if (namespace === this.namespaceStates) {
                 try {
-                    let state;
-                    try {
-                        state = JSON.parse(data[1].toString('utf-8'));
-                    } catch {
-                        // No JSON, so handle as binary data and set as Buffer
-                        this._setBinaryState(id, data[1]);
-                        return void handler.sendString(responseId, 'OK');
-                    }
+                    const state = JSON.parse(data[1].toString('utf-8'));
                     this._setStateDirect(id, state);
                     handler.sendString(responseId, 'OK');
                 } catch (err) {
@@ -299,13 +292,8 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
             const { id, namespace } = this._normalizeId(data[0]);
             if (namespace === this.namespaceStates) {
                 try {
-                    let state;
-                    try {
-                        state = JSON.parse(data[2].toString('utf-8'));
-                    } catch {
-                        // No JSON, so handle as binary data and set as Buffer
-                        state = data[2];
-                    }
+                    const state = JSON.parse(data[2].toString('utf-8'));
+
                     const expire = parseInt(data[1].toString('utf-8'), 10);
                     if (isNaN(expire)) {
                         return void handler.sendError(

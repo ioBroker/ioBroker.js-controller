@@ -1102,6 +1102,13 @@ Please DO NOT copy files manually into ioBroker storage directories!`
      * Perform multiple cleanup operations, to clean up inconsistent states due to past bugs or edge case errors
      */
     private async _cleanupInstallation(): Promise<void> {
+        console.log('Clean up binary states ...');
+        try {
+            await this._cleanupBinaryStates();
+        } catch (e) {
+            console.error(`Cannot clean up binary states: ${e.message}`);
+        }
+
         console.log('Clean up invalid group assignments ...');
         try {
             await this._cleanupInvalidGroupAssignments();
@@ -1228,6 +1235,14 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 console.log(`Successfully removed garbage object "${garbageId}"`);
             }
         }
+    }
+
+    /**
+     * Removes all binary state related objects and states
+     */
+    private async _cleanupBinaryStates(): Promise<void> {
+        // TODO
+        await Promise.resolve();
     }
 
     /**

@@ -27,7 +27,6 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     // createState
     // deleteDevice
 
-    // setBinaryState
     it(testName + 'requireLog should activate corresponding state', async () => {
         // default should be false or non-existent
         let state = await context.states.getState(`system.adapter.${context.adapter.namespace}.logging`);

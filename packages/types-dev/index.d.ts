@@ -400,9 +400,6 @@ declare global {
         type GetStatesCallback = (err?: Error | null, states?: Record<string, State>) => void;
         type GetStatesPromise = Promise<NonNullCallbackReturnTypeOf<GetStatesCallback>>;
 
-        type GetBinaryStateCallback = (err?: Error | null, state?: Buffer) => void;
-        type GetBinaryStatePromise = Promise<CallbackReturnTypeOf<GetBinaryStateCallback>>;
-
         type SetStateCallback = (err?: Error | null, id?: string) => void;
         type SetStatePromise = Promise<NonNullCallbackReturnTypeOf<SetStateCallback>>;
 

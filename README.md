@@ -1162,9 +1162,6 @@ Following adapter methods support maintenance mode:
 
 - adapter.getForeignState
 - adapter.delForeignState
-- adapter.setBinaryState
-- adapter.getBinaryState
-- adapter.delBinaryState
 ```
 
 *** Do not use this mode for any other purposes except sanitizing/cleaning/repairing of existing DBs (Object and States)***
