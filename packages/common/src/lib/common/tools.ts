@@ -2887,7 +2887,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
 
         if (obj.type === 'state') {
             // if an object type indicates a state, check that `common.type` matches
-            const allowedStateTypes = ['number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'];
+            const allowedStateTypes = ['number', 'string', 'boolean', 'array', 'object', 'mixed', 'json'];
             if (!allowedStateTypes.includes(obj.common.type)) {
                 throw new Error(
                     `obj.common.type has an invalid value (${
@@ -2933,11 +2933,6 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
 
             // ensure, that default value has correct type
             if (obj.common.def !== undefined && obj.common.def !== null) {
-                if (obj.common.type === 'file') {
-                    // defaults are set via setState but would need setBinaryState
-                    throw new Error('Default value is not supported for type "file"');
-                }
-
                 // else do what strictObjectChecks does for val
                 if (
                     !(
@@ -2945,13 +2940,12 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
                         (obj.common.type !== 'object' && obj.common.type === typeof obj.common.def) ||
                         (obj.common.type === 'array' && typeof obj.common.def === 'string') ||
                         (obj.common.type === 'json' && typeof obj.common.def === 'string') ||
-                        (obj.common.type === 'file' && typeof obj.common.def === 'string') ||
                         (obj.common.type === 'object' && typeof obj.common.def === 'string')
                     )
                 ) {
-                    // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json';
+                    // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'json';
                     // 'array', 'object', 'json' need to be string
-                    if (['object', 'json', 'file', 'array'].includes(obj.common.type)) {
+                    if (['object', 'json', 'array'].includes(obj.common.type)) {
                         throw new Error(
                             `Default value has to be stringified but received type "${typeof obj.common.def}"`
                         );

@@ -1918,30 +1918,6 @@ async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host): Promise<Reco
     }
 }
 
-/**
- Helper function that serialize deletion of states
-
- @param list array with states
- */
-async function _deleteAllZipPackages(list: string[]): Promise<void> {
-    for (const id of list) {
-        try {
-            await states!.delBinaryState(id);
-        } catch {
-            //ignore
-        }
-    }
-}
-
-/**
- * This function deletes all ZIP packages that were not downloaded.
- * ZIP Package is a temporary file that should be deleted straight after it is downloaded and if it still exists, so clear it
- */
-async function deleteAllZipPackages(): Promise<void> {
-    const list = await states!.getKeys(`${hostObjectPrefix}.zip.*`);
-    await _deleteAllZipPackages(list!);
-}
-
 async function startAdapterUpload(): Promise<void> {
     if (!uploadTasks.length) {
         return;
@@ -2682,24 +2658,14 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                             msg.callback
                         );
                     } else {
-                        logger.warn(
-                            `${hostLogPrefix} Saving in binary state "${hostObjectPrefix}.zip.${msg.message.link}" is deprecated. ` +
-                                'Please add the "fileStorageNamespace" attribute to request (with e.g. "admin.0" value)' +
-                                ` to save ZIP in file as "zip/${msg.message.link}"`
+                        sendTo(
+                            msg.from,
+                            msg.command,
+                            {
+                                error: `Missing attribute "fileStorageNamespace" use e.g. "admin.0" to save ZIP in file as "zip/${msg.message.link}"`
+                            },
+                            msg.callback
                         );
-
-                        states!.setBinaryState(`${hostObjectPrefix}.zip.${msg.message.link}`, buff, err => {
-                            if (err) {
-                                sendTo(msg.from, msg.command, { error: err.message }, msg.callback);
-                            } else {
-                                sendTo(
-                                    msg.from,
-                                    msg.command,
-                                    `${hostObjectPrefix}.zip.${msg.message.link}`,
-                                    msg.callback
-                                );
-                            }
-                        });
                     }
                 } else {
                     sendTo(msg.from, msg.command, { data: base64 }, msg.callback);

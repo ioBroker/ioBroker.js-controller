@@ -261,13 +261,6 @@ function initYargs(): yargs.Argv {
                         type: 'boolean'
                     }
                 })
-                .command('getBinary <id>', 'Get binary state, specified by id', {
-                    encoding: {
-                        describe: 'Encoding for the binary state, like utf-8, ascii, hex, base64, binary',
-                        type: 'string',
-                        default: 'binary'
-                    }
-                })
                 .command('getValue <id>', 'Get state value, specified by id', {})
                 .command('set <id> <value> [<ack>]', 'Set state, specified by id', {})
                 .command('del <id>', 'Delete state, specified by id', {})
