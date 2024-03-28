@@ -22,7 +22,7 @@ import type NodeSchedule from 'node-schedule';
 import { version as controllerVersion } from '@iobroker/js-controller-adapter/package.json';
 
 import { Log } from '@/lib/adapter/log';
-import { Validator } from '@/lib/adapter/validator';
+import { Validator } from './validator';
 
 const { FORBIDDEN_CHARS } = tools;
 import {
