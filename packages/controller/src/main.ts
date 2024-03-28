@@ -599,10 +599,7 @@ function createStates(onConnect: () => void): void {
                 clearTimeout(statesDisconnectTimeout);
                 statesDisconnectTimeout = null;
             }
-            // logs and cleanups are only handled by the main controller process
-            if (!compactGroupController) {
-                deleteAllZipPackages();
-            }
+
             initMessageQueue();
             startAliveInterval();
 
