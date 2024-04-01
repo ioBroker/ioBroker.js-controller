@@ -84,3 +84,24 @@ export async function getRepository(options: GetRepositoryOptions): Promise<Reco
         return allSources;
     }
 }
+
+interface IsIgnoredVersionOptions {
+    /** The adapter name to check the version for */
+    adapterName: string;
+    /** The version which will be checked */
+    version: string;
+    /** The objects DB instance */
+    objects: ObjectsClient;
+}
+
+/**
+ * Get info if a specific version should be ignored of this adapter
+ *
+ * @param options name and target version of the adapter
+ */
+export async function isVersionIgnored(options: IsIgnoredVersionOptions): Promise<boolean> {
+    const { adapterName, version, objects } = options;
+    const obj = await objects.getObjectAsync(`system.host.${tools.getHostName()}.adapter.${adapterName}`);
+
+    return obj?.common.ignoreVersion === version;
+}

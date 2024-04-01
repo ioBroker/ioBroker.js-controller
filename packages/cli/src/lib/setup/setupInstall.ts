@@ -14,15 +14,15 @@ import semver from 'semver';
 import child_process from 'child_process';
 import axios from 'axios';
 import { URL } from 'url';
-import { Upload } from './setupUpload';
-import { PacketManager } from './setupPacketManager';
-import { getRepository } from './utils';
+import { Upload } from '@/lib/setup/setupUpload';
+import { PacketManager } from '@/lib/setup/setupPacketManager';
+import { getRepository } from '@/lib/setup/utils';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import type { ProcessExitCallback } from '../_Types';
+import type { ProcessExitCallback } from '@/lib/_Types';
+import { IoBrokerError } from '@/lib/setup/customError';
 import type { CommandResult } from '@alcalzone/pak';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
-import { IoBrokerError } from './customError';
 
 const hostname = tools.getHostName();
 const osPlatform = process.platform;
@@ -154,7 +154,7 @@ export class Install {
         packetName: string,
         options?: CLIDownloadPacketOptions,
         stoppedList?: ioBroker.InstanceObject[]
-    ): Promise<DownloadPacketReturnObject | void> {
+    ): Promise<DownloadPacketReturnObject> {
         let url;
         if (!options || typeof options !== 'object') {
             options = {};
@@ -164,12 +164,7 @@ export class Install {
         let sources: Record<string, any>;
 
         if (!repoUrl || !tools.isObject(repoUrl)) {
-            try {
-                sources = await getRepository({ repoName: repoUrl, objects: this.objects });
-            } catch (e) {
-                console.error(e.message);
-                return this.processExit(e instanceof IoBrokerError ? e.code : e);
-            }
+            sources = await getRepository({ repoName: repoUrl, objects: this.objects });
         } else {
             sources = repoUrl;
         }
@@ -275,7 +270,10 @@ export class Install {
         console.error(
             `host.${hostname} Unknown packetName ${packetName}. Please install packages from outside the repository using npm!`
         );
-        return this.processExit(EXIT_CODES.UNKNOWN_PACKET_NAME);
+        throw new IoBrokerError({
+            code: EXIT_CODES.UNKNOWN_PACKET_NAME,
+            message: `Unknown packetName ${packetName}. Please install packages from outside the repository using npm!`
+        });
     }
 
     /**
@@ -694,7 +692,6 @@ export class Install {
             }
             _installCount++;
 
-            // @ts-expect-error TODO needs adaption
             const { stoppedList } = await this.downloadPacket(repoUrl, fullName);
             await this.installAdapter(adapter, repoUrl, _installCount);
             await this.enableInstances(stoppedList, true); // even if unlikely make sure to reenable disabled instances
