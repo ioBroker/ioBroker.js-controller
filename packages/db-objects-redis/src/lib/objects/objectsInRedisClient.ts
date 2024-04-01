@@ -3083,6 +3083,12 @@ export class ObjectsInRedisClient {
         }
     }
 
+    /**
+     *
+     * @param id
+     * @param options
+     * @deprecated use `getObject` without callback instead
+     */
     getObjectAsync<T extends string>(
         id: T,
         options?: Record<string, any> | null
@@ -3674,6 +3680,13 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     *
+     * @param id
+     * @param obj
+     * @param options
+     * @deprecated use `setObject` without callback instead
+     */
     setObjectAsync(
         id: string,
         obj: ioBroker.SettableObject,

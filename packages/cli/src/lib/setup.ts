@@ -17,7 +17,7 @@ import { CLICompact } from './cli/cliCompact';
 import { CLILogs } from './cli/cliLogs';
 import { error as CLIError } from './cli/messages';
 import type { CLICommandContext, CLICommandOptions } from './cli/cliCommand';
-import { getRepository } from './setup/utils';
+import { getRepository, ignoreVersion, recognizeVersion } from './setup/utils';
 import { dbConnect, dbConnectAsync, exitApplicationSave } from './setup/dbConnection';
 import { IoBrokerError } from './setup/customError';
 
@@ -490,7 +490,17 @@ function initYargs(): yargs.Argv {
                 );
         })
         .command('vendor <passphrase> [<vendor.json>]', 'Update the vendor information using given passphrase')
-        .command(['version [<adapter>]', 'v [<adapter>]'], 'Show version of js-controller or specified adapter')
+        .command(['version [<adapter>]', 'v [<adapter>]'], 'Show version of js-controller or specified adapter', {
+            ignore: {
+                describe:
+                    'Ignore specific version of this adapter. The adapter will not be upgradeable to this specific version.',
+                type: 'string'
+            },
+            recognize: {
+                describe: 'No longer ignore specific versions of this adapter.',
+                type: 'boolean'
+            }
+        })
         .wrap(null);
 
     return _yargs;
@@ -515,7 +525,7 @@ function showHelp(_yargs?: yargs.Argv): void {
  * @param command - command to execute
  * @param args - arguments passed to yargs
  * @param params - object with parsed params by yargs, e. g. --force is params.force
- * @param callback
+ * @param callback - callback to be called with the exit code
  */
 async function processCommand(
     command: string | number,
@@ -922,7 +932,6 @@ async function processCommand(
 
                 if (!adapterDir || !fs.existsSync(adapterDir)) {
                     try {
-                        // @ts-expect-error todo check or handle null return value
                         const { stoppedList } = await install.downloadPacket(repoUrl, installName);
                         await install.installAdapter(installName, repoUrl);
                         await install.enableInstances(stoppedList, true); // even if unlikely make sure to re-enable disabled instances
@@ -930,9 +939,9 @@ async function processCommand(
                             await install.createInstance(name, params);
                         }
                         return void callback();
-                    } catch (err) {
-                        console.error(`adapter "${name}" cannot be installed: ${err.message}`);
-                        return void callback(EXIT_CODES.UNKNOWN_ERROR);
+                    } catch (e) {
+                        console.error(`adapter "${name}" cannot be installed: ${e.message}`);
+                        return void callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.UNKNOWN_ERROR);
                     }
                 } else if (command !== 'install' && command !== 'i') {
                     try {
@@ -2448,7 +2457,7 @@ async function processCommand(
                         console.error(`Error: ${err.message}`);
                         return void callback(EXIT_CODES.CANNOT_GET_UUID);
                     }
-                    if (obj && obj.native) {
+                    if (obj?.native) {
                         console.log(obj.native.uuid);
                         return void callback();
                     } else {
@@ -2462,18 +2471,46 @@ async function processCommand(
 
         case 'v':
         case 'version': {
-            const adapter = args[0];
-            let pckg;
+            const adapter = params.adapter;
+
+            if (params.ignore) {
+                try {
+                    const { objects } = await dbConnectAsync(false, params);
+                    await ignoreVersion({ adapterName: adapter, version: params.ignore, objects });
+                } catch (e) {
+                    console.error(e.message);
+                    callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.UNKNOWN_ERROR);
+                    return;
+                }
+                console.log(`Successfully ignored version "${params.ignore}" of adapter "${params.adapter}"!`);
+                callback();
+                return;
+            }
+
+            if (params.recognize) {
+                try {
+                    const { objects } = await dbConnectAsync(false, params);
+                    await recognizeVersion({ adapterName: adapter, objects });
+                } catch (e) {
+                    console.error(e.message);
+                    callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.UNKNOWN_ERROR);
+                }
+                console.log(`Successfully recognized all versions of adapter "${params.adapter}" again!`);
+                callback();
+                return;
+            }
+
+            let packJson;
             if (adapter) {
                 try {
-                    pckg = require(`${tools.appName.toLowerCase()}.${adapter}/package.json`);
+                    packJson = require(`${tools.appName.toLowerCase()}.${adapter}/package.json`);
                 } catch {
-                    pckg = { version: `"${adapter}" not found` };
+                    packJson = { version: `"${adapter}" not found` };
                 }
             } else {
-                pckg = require(`@iobroker/js-controller-common/package.json`);
+                packJson = require(`@iobroker/js-controller-common/package.json`);
             }
-            console.log(pckg.version);
+            console.log(packJson.version);
 
             return void callback();
         }
@@ -2801,6 +2838,11 @@ const OBJECTS_THAT_CANNOT_BE_DELETED = [
     'system.user.admin'
 ];
 
+/**
+ * Deletes given objects from the database
+ *
+ * @param ids ids to delete from database
+ */
 async function delObjects(ids: string[]): Promise<void> {
     const { objects } = await dbConnectAsync(false);
 
@@ -2817,6 +2859,9 @@ async function delObjects(ids: string[]): Promise<void> {
     }
 }
 
+/**
+ * Deletes all states from the database
+ */
 async function delStates(): Promise<number> {
     const { states } = await dbConnectAsync(false);
 

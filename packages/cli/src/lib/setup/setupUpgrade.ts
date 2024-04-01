@@ -542,7 +542,7 @@ export class Upgrade {
 
                 if (isIgnored) {
                     console.log(
-                        `No upgrade of "${adapter}" desired, because version "${targetVersion}" is configured to be ignored by the user`
+                        `No upgrade of "${adapter}" desired, because version "${targetVersion}" is configured to be ignored by the user. Run "${tools.appNameLowerCase} version ${adapter} --recognize" to allow this upgrade!`
                     );
                     return;
                 }
@@ -604,7 +604,7 @@ export class Upgrade {
 
                 if (isIgnored) {
                     console.log(
-                        `No upgrade of "${adapter}" desired, because version "${targetVersion}" is configured to be ignored by the user`
+                        `No upgrade of "${adapter}" desired, because version "${targetVersion}" is configured to be ignored by the user. Run "${tools.appNameLowerCase} version ${adapter} --recognize" to allow this upgrade!`
                     );
                     return;
                 }
