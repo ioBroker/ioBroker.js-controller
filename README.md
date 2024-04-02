@@ -192,6 +192,16 @@ Furthermore, instances and their states will not move to another structure and w
 Note, that instances are unique across the whole system and are thus not affected by the described problem. Also objects of `type` instance have a `common.host` attribute
 to find the corresponding host.
 
+### Ignoring specific adapter version
+**Feature status:** New in 6.0.0
+
+If you know, that a specific version of an adapter is not suitable for you, you may want to ignore this update to avoid accidentally installing it. 
+You can do so by using the cli command `iobroker version <adapter> --ignore <version>` and to recognize all updates again use `iobroker version <adapter> --recognize`.
+If a version of an adapter is ignored, you will not be able to update to this specific version.
+
+Internally this will set `common.ignoreVersion` to the specified version on the `system.host.<hostName>.adapter.<adapterName>` object. Note, that only one version can be ignored at a time.
+The version to ignore should thus usually be set to the newest available version of the active repository.
+
 ### Operating system package management
 **Feature status:** New in 5.1.0
 
