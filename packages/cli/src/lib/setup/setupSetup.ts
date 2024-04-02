@@ -141,8 +141,8 @@ export class Setup {
     /**
      * Called after io-package objects are created (hence object view functionalities are now available)
      *
-     * @param systemConfig
-     * @param callback
+     * @param systemConfig the system config object
+     * @param callback callback function
      */
     async setupReady(
         systemConfig: ioBroker.SystemConfigObject | undefined | null,
@@ -157,7 +157,12 @@ export class Setup {
             throw new Error('Objects not set up, call setupObjects first');
         }
 
-        await this._ensureAdaptersPerHostObject();
+        try {
+            await this._ensureAdaptersPerHostObject();
+        } catch (e) {
+            console.error(`Could not ensure that adapters object for this host exists: ${e.message}`);
+        }
+
         await this._cleanupInstallation();
 
         // special methods which are only there on objects server
@@ -298,8 +303,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
     /**
      * Creates objects and does object related cleanup
      *
-     * @param callback
-     * @param checkCertificateOnly
+     * @param callback callback function
+     * @param checkCertificateOnly if only certificate check is desired
      */
     async setupObjects(callback: () => void, checkCertificateOnly?: boolean): Promise<void> {
         const { states: _states, objects: _objects } = await dbConnectAsync(false, this.params);
@@ -1102,6 +1107,13 @@ Please DO NOT copy files manually into ioBroker storage directories!`
      * Perform multiple cleanup operations, to clean up inconsistent states due to past bugs or edge case errors
      */
     private async _cleanupInstallation(): Promise<void> {
+        console.log('Clean up binary states ...');
+        try {
+            await this._cleanupBinaryStates();
+        } catch (e) {
+            console.error(`Cannot clean up binary states: ${e.message}`);
+        }
+
         console.log('Clean up invalid group assignments ...');
         try {
             await this._cleanupInvalidGroupAssignments();
@@ -1226,6 +1238,51 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             if (isExisting) {
                 await this.objects.delObject(garbageId);
                 console.log(`Successfully removed garbage object "${garbageId}"`);
+            }
+        }
+    }
+
+    /**
+     * Removes all binary state related objects and states
+     */
+    private async _cleanupBinaryStates(): Promise<void> {
+        if (!this.objects) {
+            throw new Error('Objects not set up, call setupObjects first');
+        }
+
+        if (!this.states) {
+            throw new Error('States not set up, call setupObjects first');
+        }
+
+        const hostsView = await this.objects.getObjectViewAsync('system', 'host', {
+            startkey: SYSTEM_HOST_PREFIX,
+            endkey: `${SYSTEM_HOST_PREFIX}\u9999`
+        });
+
+        const hostIds = hostsView.rows.map(row => row.id);
+
+        for (const hostId of hostIds) {
+            const zipId = `${hostId}.zip`;
+            const zipFolderExists = await this.objects.objectExists(zipId);
+
+            if (!zipFolderExists) {
+                continue;
+            }
+
+            await this.objects.delObject(zipId);
+            console.log(`Deleted object "${zipId}" during binary state clean up`);
+        }
+
+        const statesView = await this.objects.getObjectViewAsync('system', 'state', {
+            startkey: '',
+            endkey: '\u9999'
+        });
+
+        for (const row of statesView.rows) {
+            if ((row.value.common.type as ioBroker.CommonType | 'file') === 'file') {
+                await this.objects.delObject(row.id);
+                await this.states.delState(row.id);
+                console.log(`Deleted object "${row.id}" during binary state clean up`);
             }
         }
     }

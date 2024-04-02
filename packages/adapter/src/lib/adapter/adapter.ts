@@ -60,7 +60,6 @@ import type {
     InternalCheckPasswordOptions,
     InternalCreateDeviceOptions,
     InternalCreateStateOptions,
-    InternalDelBinaryStateOptions,
     InternalDeleteChannelFromEnumOptions,
     InternalDeleteChannelOptions,
     InternalDeleteDeviceOptions,
@@ -71,7 +70,6 @@ import type {
     InternalDestroySessionOptions,
     InternalFormatDateOptions,
     InternalGetAdapterObjectsOptions,
-    InternalGetBinaryStateOption,
     InternalGetCertificatesOptions,
     InternalGetChannelsOfOptions,
     InternalGetDevicesOptions,
@@ -90,7 +88,6 @@ import type {
     InternalGetUserIDOptions,
     InternalSendToHostOptions,
     InternalSendToOptions,
-    InternalSetBinaryStateOptions,
     InternalSetObjectOptions,
     InternalSetPasswordOptions,
     InternalSetSessionOptions,
@@ -275,46 +272,6 @@ export interface AdapterClass {
     subscribeStatesAsync(pattern: Pattern, options?: unknown): Promise<void>;
     /** Subscribe from changes of states in this instance */
     unsubscribeStatesAsync(pattern: Pattern, options?: unknown): Promise<void>;
-    /**
-     * Writes a binary state into Redis. The ID will not be prefixed with the adapter namespace.
-     *
-     * @deprecated Please use `writeFile` instead of binary states
-     */
-    setForeignBinaryStateAsync(id: string, binary: Buffer, options?: unknown): ioBroker.SetStatePromise;
-
-    /**
-     * Despite the naming convention, this method doesn't prepend the adapter namespace. Use setForeignBinaryStateAsync instead.
-     * Writes a binary state into Redis
-     *
-     * @deprecated Please use `writeFile` instead of binary states
-     */
-    setBinaryStateAsync(id: string, binary: Buffer, options?: unknown): ioBroker.SetStatePromise;
-
-    /**
-     * @deprecated Please use `readFile` instead of binary states
-     */
-    getForeignBinaryStateAsync(id: string, options?: unknown): ioBroker.GetBinaryStatePromise;
-    /**
-     * Despite the naming convention, this method doesn't prepend the adapter namespace. Use getForeignBinaryStateAsync instead.
-     * Reads a binary state from Redis
-     *
-     * @deprecated Please use `readFile` instead of binary states
-     */
-    getBinaryStateAsync(id: string, options?: unknown): ioBroker.GetBinaryStatePromise;
-    /**
-     * Deletes a binary state from the states DB. The ID will not be prefixed with the adapter namespace.
-     *
-     * @deprecated Please use `delFile` instead of binary states
-     */
-    delForeignBinaryStateAsync(id: string, options?: unknown): Promise<void>;
-
-    /**
-     * Despite the naming convention, this method doesn't prepend the adapter namespace. Use delForeignBinaryStateAsync instead.
-     * Deletes a binary state from the states DB
-     *
-     * @deprecated Please use `delFile` instead of binary states
-     */
-    delBinaryStateAsync(id: string, options?: unknown): Promise<void>;
     /**
      * Helper function that looks for first free TCP port starting with the given one.
      */
@@ -1199,55 +1156,6 @@ export class AdapterClass extends EventEmitter {
          * Promise-version of `Adapter.unsubscribeStates`
          */
         this.unsubscribeStatesAsync = tools.promisify(this.unsubscribeStates, this);
-
-        /**
-         * Promise-version of `Adapter.setBinaryState`
-         *
-         * @param id of state
-         * @param binary data
-         * @param options optional
-         */
-        this.setForeignBinaryStateAsync = tools.promisify(this.setForeignBinaryState, this);
-
-        /**
-         * Async version of setBinaryState
-         *
-         * @param id of state
-         * @param binary data
-         * @param options optional
-         */
-        this.setBinaryStateAsync = tools.promisify(this.setBinaryState, this);
-
-        /**
-         * Promise-version of `Adapter.getBinaryState`
-         *
-         *
-         */
-        this.getForeignBinaryStateAsync = tools.promisify(this.getForeignBinaryState, this);
-
-        /**
-         * Promisified version of getBinaryState
-         *
-         * @param id The state ID
-         * @param options optional
-         */
-        this.getBinaryStateAsync = tools.promisify(this.getBinaryState, this);
-
-        /**
-         * Promise-version of `Adapter.delForeignBinaryState`
-         *
-         * @param id
-         * @param options
-         */
-        this.delForeignBinaryStateAsync = tools.promisify(this.delForeignBinaryState, this);
-
-        /**
-         * Promise-version of `Adapter.delBinaryState`
-         *
-         * @param id
-         * @param options
-         */
-        this.delBinaryStateAsync = tools.promisify(this.delBinaryState, this);
 
         this.setExecutableCapabilities = tools.setExecutableCapabilities;
         this._init();
@@ -2860,8 +2768,8 @@ export class AdapterClass extends EventEmitter {
      *
      * @param id of the object
      * @param obj The object to set
-     * @param [options]
-     * @param [callback]
+     * @param options optional user context
+     * @param callback optional callback
      */
     private async _setObjectWithDefaultValue(
         id: string,
@@ -4583,11 +4491,7 @@ export class AdapterClass extends EventEmitter {
                     }
                     if (obj.type === 'state') {
                         try {
-                            if ('binary' in obj) {
-                                await this.delBinaryStateAsync(id, options);
-                            } else {
-                                await this.delForeignStateAsync(id, options);
-                            }
+                            await this.delForeignStateAsync(id, options);
                         } catch {
                             // Ignore
                         }
@@ -10016,357 +9920,6 @@ export class AdapterClass extends EventEmitter {
             options,
             callback
         });
-    }
-
-    setForeignBinaryState(id: string, binary: Buffer, callback: ioBroker.SetStateCallback): void;
-    setForeignBinaryState(id: string, binary: Buffer, options: unknown, callback: ioBroker.SetStateCallback): void;
-
-    /**
-     * Write binary block into redis, e.g. image
-     *
-     * @param id of state
-     * @param binary data
-     * @param options optional
-     * @param callback
-     * @deprecated Please use `writeFile` instead of binary states
-     */
-    setForeignBinaryState(id: unknown, binary: unknown, options: unknown, callback?: unknown): any {
-        this._logger.info(
-            `${
-                this.namespaceLog
-            } Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files (${
-                id as string
-            })`
-        );
-
-        if (typeof options === 'function') {
-            callback = options;
-            options = {};
-        }
-
-        Validator.assertString(id, 'id');
-        Validator.assertOptionalCallback(callback, 'callback');
-        Validator.assertBuffer(binary, 'binary');
-        if (options !== null && options !== undefined) {
-            Validator.assertObject(options, 'options');
-        }
-
-        return this._setForeignBinaryState({ id, binary, options, callback });
-    }
-
-    private async _setForeignBinaryState(_options: InternalSetBinaryStateOptions): Promise<void> {
-        const { id, binary, callback } = _options;
-        let { options } = _options;
-
-        try {
-            this._utils.validateId(id, true, options);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
-        }
-
-        if (this.performStrictObjectChecks) {
-            // obj needs to exist and has to be of type "file" - custom check for binary state
-            try {
-                if (!this.#objects) {
-                    this._logger.info(
-                        `${this.namespaceLog} setBinaryState not processed because Objects database not connected`
-                    );
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                const obj = await this.#objects.getObjectAsync(id);
-
-                // at first check object existence
-                if (!obj) {
-                    this._logger.warn(
-                        `${this.namespaceLog} Binary state "${id}" has no existing object, this might lead to an error in future versions`
-                    );
-                    return;
-                }
-
-                // for a state object we require common.type to exist
-                if (obj.common && obj.common.type) {
-                    if (obj.common.type !== 'file') {
-                        this._logger.info(
-                            `${this.namespaceLog} Binary state object has to be type "file" but is "${obj.common.type}"`
-                        );
-                    }
-                }
-            } catch (e) {
-                this._logger.warn(
-                    `${this.namespaceLog} Could not perform strict object check of binary state ${id}: ${e.message}`
-                );
-            }
-        }
-
-        if (!this.#states) {
-            // if states is no longer existing, we do not need to unsubscribe
-            this._logger.info(
-                `${this.namespaceLog} setBinaryState not processed because States database not connected`
-            );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        // we need at least user or group for checkStates - if no given assume admin
-        if (!options || !options.user) {
-            options = options || {};
-            options.user = SYSTEM_ADMIN_USER;
-        }
-
-        if (options.user !== SYSTEM_ADMIN_USER) {
-            // always read according object to set the binary flag
-            let obj;
-            try {
-                obj = (await this._checkStates(id, options, 'setState')).objs[0];
-            } catch (e) {
-                return tools.maybeCallbackWithError(callback, e);
-            }
-
-            if (obj && !('binary' in obj)) {
-                // @ts-expect-error probably need to adjust types
-                obj.binary = true;
-
-                if (!this.#objects) {
-                    this._logger.info(
-                        `${this.namespaceLog} setBinaryState not processed because Objects database not connected`
-                    );
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                this.#objects.setObject(id, obj, err => {
-                    if (err) {
-                        return tools.maybeCallbackWithError(callback, err);
-                    } else {
-                        if (!this.#states) {
-                            // if states is no longer existing, we do not need to unsubscribe
-                            this._logger.info(
-                                `${this.namespaceLog} setBinaryState not processed because States database not connected`
-                            );
-                            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                        }
-
-                        this.outputCount++;
-                        this.#states.setBinaryState(id, binary, callback);
-                    }
-                });
-            } else {
-                if (!this.#states) {
-                    // if states is no longer existing, we do not need to unsubscribe
-                    this._logger.info(
-                        `${this.namespaceLog} setBinaryState not processed because States database not connected`
-                    );
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                this.outputCount++;
-                this.#states.setBinaryState(id, binary, callback);
-            }
-        } else {
-            this.outputCount++;
-            this.#states.setBinaryState(id, binary, callback);
-        }
-    }
-
-    setBinaryState(id: string, binary: Buffer, callback: ioBroker.SetStateCallback): void;
-    setBinaryState(id: string, binary: Buffer, options: unknown, callback: ioBroker.SetStateCallback): void;
-
-    /**
-     * Same as setForeignBinaryState but prefixes the own namespace to the id
-     *
-     * @param id of state
-     * @param binary data
-     * @param options optional
-     * @param callback
-     * @deprecated Please use `writeFile` instead of binary states
-     */
-    setBinaryState(id: any, binary: any, options: any, callback?: any): void {
-        // we just keep any types here, because setForeign method will validate
-        id = this._utils.fixId(id, false);
-        return this.setForeignBinaryState(id, binary, options, callback);
-    }
-
-    getForeignBinaryState(id: string, callback: ioBroker.GetBinaryStateCallback): void;
-    getForeignBinaryState(id: string, options: unknown, callback: ioBroker.GetBinaryStateCallback): void;
-
-    /**
-     * Read a binary block from redis, e.g. an image
-     *
-     * @param id The state ID
-     * @param options optional
-     * @param callback
-     * @deprecated Please use `readFile` instead of binary states
-     */
-    getForeignBinaryState(id: unknown, options: unknown, callback?: unknown): any {
-        this._logger.info(
-            `${
-                this.namespaceLog
-            } Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files (${
-                id as string
-            })`
-        );
-
-        if (typeof options === 'function') {
-            callback = options;
-            options = {};
-        }
-
-        Validator.assertString(id, 'id');
-        Validator.assertOptionalCallback(callback, 'callback');
-        if (options !== null && options !== undefined) {
-            Validator.assertObject(options, 'options');
-        }
-
-        return this._getForeignBinaryState({ id, options: options || {}, callback });
-    }
-
-    private async _getForeignBinaryState(_options: InternalGetBinaryStateOption): Promise<void> {
-        const { id, options, callback } = _options;
-
-        if (!this.#states) {
-            // if states is no longer existing, we do not need to unsubscribe
-            this._logger.info(
-                `${this.namespaceLog} getBinaryState not processed because States database not connected`
-            );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        try {
-            this._utils.validateId(id, true, options);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
-        }
-
-        // we need at least user or group for checkStates - if no given assume admin
-        if (!options.user) {
-            options.user = SYSTEM_ADMIN_USER;
-        }
-        // always read according object to set the binary flag
-        let obj: ioBroker.StateObject;
-
-        try {
-            obj = (await this._checkStates(id, options, 'getState')).objs[0];
-        } catch (e) {
-            return tools.maybeCallbackWithError(callback, e);
-        }
-
-        this.#states!.getBinaryState(id, (err, data) => {
-            if (!err && data && obj && !('binary' in obj)) {
-                // @ts-expect-error type adjustment needed?
-                obj.binary = true;
-                this.#objects!.setObject(id, obj, err => {
-                    if (err) {
-                        return tools.maybeCallbackWithError(callback, err);
-                    } else {
-                        return tools.maybeCallbackWithError(callback, null, data);
-                    }
-                });
-            } else {
-                // if no buffer, and state marked as not binary
-                if (!err && !data && obj && !('binary' in obj)) {
-                    return tools.maybeCallbackWithError(callback, 'State is not binary');
-                } else {
-                    return tools.maybeCallbackWithError(callback, err, data);
-                }
-            }
-        });
-    }
-    getBinaryState(id: string, callback: ioBroker.GetBinaryStateCallback): void;
-    getBinaryState(id: string, options: unknown, callback: ioBroker.GetBinaryStateCallback): void;
-
-    /**
-     * Same as getForeignBinaryState but prefixes the own namespace to the id
-     *
-     * @param id The state ID
-     * @param options optional
-     * @param callback
-     * @depreacted Please use `readFile` instead of binary states
-     */
-    getBinaryState(id: any, options: any, callback?: any): any {
-        // we use any types here, because validation takes place in foreign method
-        id = this._utils.fixId(id);
-        return this.getForeignBinaryState(id, options, callback);
-    }
-
-    delForeignBinaryState(id: string, callback?: ioBroker.ErrorCallback): void;
-    delForeignBinaryState(id: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
-
-    /**
-     * Deletes binary state
-     *
-     * @param id
-     * @param options
-     * @param callback
-     * @deprecated Please use `delFile` instead of binary states
-     */
-    delForeignBinaryState(id: unknown, options: unknown, callback?: unknown): any {
-        this._logger.info(
-            `${
-                this.namespaceLog
-            } Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files (${
-                id as string
-            })`
-        );
-
-        if (typeof options === 'function') {
-            callback = options;
-            options = {};
-        }
-
-        Validator.assertString(id, 'id');
-        Validator.assertOptionalCallback(callback, 'callback');
-        if (options !== null && options !== undefined) {
-            Validator.assertObject(options, 'options');
-        }
-
-        return this._delForeignBinaryState({ id, options: options || {}, callback });
-    }
-
-    private async _delForeignBinaryState(_options: InternalDelBinaryStateOptions): Promise<void> {
-        const { id, options, callback } = _options;
-
-        if (!this.#states) {
-            // if states is no longer existing, we do not need to unsubscribe
-            this._logger.info(
-                `${this.namespaceLog} delBinaryState not processed because States database not connected`
-            );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        try {
-            this._utils.validateId(id, true, options);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
-        }
-
-        if (options.user && options.user !== SYSTEM_ADMIN_USER) {
-            try {
-                await this._checkStates(id, options, 'delState');
-            } catch (e) {
-                return tools.maybeCallbackWithError(callback, e);
-            }
-
-            this.#states!.delBinaryState(id, callback);
-        } else {
-            this.#states.delBinaryState(id, callback);
-        }
-    }
-
-    delBinaryState(id: string, callback?: ioBroker.ErrorCallback): void;
-    delBinaryState(id: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
-
-    /**
-     * Deletes binary state but prefixes the own namespace to the id
-     *
-     * @param id
-     * @param options
-     * @param callback
-     * @deprecated Please use `delFile` instead of binary states
-     */
-    delBinaryState(id: any, options: any, callback?: any): any {
-        // we use any types here, because validation takes place in foreign method
-        // TODO: call fixId as soon as adapters are migrated to setForeignBinaryState
-        // id = this._utils.fixId(id, false);
-        return this.delForeignBinaryState(id, options, callback);
     }
 
     getPluginInstance(name: string): ioBroker.Plugin | null;

@@ -82,18 +82,12 @@ export class Validator {
 
                 if (state.val !== null) {
                     // now check if a type is correct, null is always allowed
-                    if (obj.common.type === 'file') {
-                        // file has to be set with setBinaryState
-                        this.log.warn(
-                            `${this.namespaceLog} State to set for "${id}" has to be written with setBinaryState/Async, because its object is of type "file"`
-                        );
-                    } else if (
+                    if (
                         !(
                             (obj.common.type === 'mixed' && typeof state.val !== 'object') ||
                             (obj.common.type !== 'object' && obj.common.type === typeof state.val) ||
                             (obj.common.type === 'array' && typeof state.val === 'string') ||
                             (obj.common.type === 'json' && typeof state.val === 'string') ||
-                            (obj.common.type === 'file' && typeof state.val === 'string') ||
                             (obj.common.type === 'object' && typeof state.val === 'string')
                         )
                     ) {
