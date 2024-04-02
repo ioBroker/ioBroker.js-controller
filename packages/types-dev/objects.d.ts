@@ -599,6 +599,8 @@ declare global {
             getHistory?: boolean;
             /** Filename of the local icon which is shown for installed adapters. Should be located in the `admin` directory */
             icon?: string;
+            /** The adapter will be executed once additionally after installation and the `install` event will be emitted during this run. This allows for executing one time installation code. */
+            install?: boolean;
             /** Source, where this adapter has been installed from, to enable reinstalling on e.g., backup restore */
             installedFrom?: string;
             /** Which version of this adapter is installed */

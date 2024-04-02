@@ -218,6 +218,23 @@ If a package fails, the response will have a value of `false` for `success` and 
 
 Currently only upgrading of packages is supported. If you need a specific OS dependency for your adapter, you can specify it inside `io-package.json` with the field `osDependencies`.
 
+### Custom install logic
+**Feature status:** New in 5.0.0
+
+If an adapter needs to execute custom install logic, one possibility is to use the `scripts` attribute of `package.json`. 
+However, often adapters already want to interact with the ioBroker databases during the installation logic.
+
+Hence, you can set `ioPackage.common.install` flag to true, to indicate that the js-controller should perform an installation run with your adapter.
+During the installation run, the `install` instead of the `ready` event will be emitted. 
+Alternatively, you can also pass an `install` function to the constructor the same way as for `ready`.
+
+```typescript
+this.on('install', () => {
+    this.log.info('Performing installation logic ...')
+    // Perform your installation logic
+});
+```
+
 ### Hostname
 **Feature status:** stable
 
