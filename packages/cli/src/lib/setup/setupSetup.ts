@@ -22,7 +22,7 @@ import deepClone from 'deep-clone';
 import * as pluginInfos from '@/lib/setup/pluginInfos';
 import rl from 'readline-sync';
 import os from 'os';
-import { FORBIDDEN_CHARS } from '@iobroker/js-controller-common/tools';
+import { FORBIDDEN_CHARS, getHostObject } from '@iobroker/js-controller-common/tools';
 import { SYSTEM_ADAPTER_PREFIX, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common/constants';
 import { Upload } from '@/lib/setup/setupUpload';
 
@@ -37,6 +37,15 @@ export interface CLISetupOptions {
     processExit: ProcessExitCallback;
     params: Record<string, any>;
     restartController: RestartController;
+}
+
+export interface SetupCommandOptions {
+    /** Callback called afterward */
+    callback: (isCreated?: boolean) => void;
+    /** Used for setup first run, does setup process even though config file already exists */
+    ignoreIfExist: boolean;
+    /** If redis should be setup */
+    useRedis: boolean;
 }
 
 export class Setup {
@@ -141,8 +150,8 @@ export class Setup {
     /**
      * Called after io-package objects are created (hence object view functionalities are now available)
      *
-     * @param systemConfig
-     * @param callback
+     * @param systemConfig the system config object
+     * @param callback callback function
      */
     async setupReady(
         systemConfig: ioBroker.SystemConfigObject | undefined | null,
@@ -157,6 +166,11 @@ export class Setup {
             throw new Error('Objects not set up, call setupObjects first');
         }
 
+        try {
+            await this._ensureHostObject();
+        } catch (e) {
+            console.error(`Could not ensure host object exists: ${e.message}`);
+        }
         await this._ensureAdaptersPerHostObject();
         await this._cleanupInstallation();
 
@@ -298,8 +312,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
     /**
      * Creates objects and does object related cleanup
      *
-     * @param callback
-     * @param checkCertificateOnly
+     * @param callback callback called afterward
+     * @param checkCertificateOnly if only certificate check is required
      */
     async setupObjects(callback: () => void, checkCertificateOnly?: boolean): Promise<void> {
         const { states: _states, objects: _objects } = await dbConnectAsync(false, this.params);
@@ -1023,6 +1037,25 @@ Please DO NOT copy files manually into ioBroker storage directories!`
     }
 
     /**
+     * Ensure that host object exists
+     */
+    private async _ensureHostObject(): Promise<void> {
+        if (!this.objects) {
+            throw new Error('Objects not set up, call setupObjects first');
+        }
+
+        const hostname = tools.getHostName();
+
+        const id = `system.host.${hostname}`;
+        const objExists = await this.objects.objectExists(id);
+
+        if (!objExists) {
+            await this.objects.setObject(id, getHostObject());
+            console.log(`Created host object "${id}"`);
+        }
+    }
+
+    /**
      * Create the adapters object per host if not yet existing
      */
     private async _ensureAdaptersPerHostObject(): Promise<void> {
@@ -1272,7 +1305,14 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         }
     }
 
-    setup(callback: (isCreated?: boolean) => void, ignoreIfExist: boolean, useRedis: boolean): void {
+    /**
+     * Setup the installation with config file, host object, scripts etc
+     *
+     * @param options setup options
+     */
+    setup(options: SetupCommandOptions): void {
+        const { ignoreIfExist, useRedis, callback } = options;
+
         let config;
         let isCreated = false;
         const platform = os.platform();

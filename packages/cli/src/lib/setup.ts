@@ -606,8 +606,8 @@ async function processCommand(
             isRedis = params.redis || isRedis;
             isFirst = params.first || isFirst;
 
-            setup.setup(
-                async () => {
+            setup.setup({
+                callback: async () => {
                     const { states, objects } = await dbConnectAsync(false, params);
                     if (isFirst) {
                         // Creates all instances that are needed on a fresh installation
@@ -776,9 +776,9 @@ async function processCommand(
 
                     return void callback();
                 },
-                isFirst,
-                isRedis
-            );
+                ignoreIfExist: isFirst,
+                useRedis: isRedis
+            });
             break;
         }
 

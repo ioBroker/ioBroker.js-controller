@@ -32,7 +32,12 @@ import decache from 'decache';
 import cronParser from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import { AdapterAutoUpgradeManager } from '@/lib/adapterAutoUpgradeManager';
-import { getDefaultNodeArgs, type HostInfo, type RepositoryFile } from '@iobroker/js-controller-common/tools';
+import {
+    getDefaultNodeArgs,
+    getHostObject,
+    type HostInfo,
+    type RepositoryFile
+} from '@iobroker/js-controller-common/tools';
 import type { UpgradeArguments } from '@/lib/upgradeManager';
 import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager';
 import { setTimeout as wait } from 'node:timers/promises';
@@ -144,7 +149,7 @@ let callbackId = 1;
 const callbacks: Record<string, { time: number; cb: (message: ioBroker.MessagePayload) => void }> = {};
 const hostname = tools.getHostName();
 const controllerDir = tools.getControllerDir();
-let hostObjectPrefix = `system.host.${hostname}`;
+let hostObjectPrefix: ioBroker.ObjectIDs.Host = `system.host.${hostname}`;
 let hostLogPrefix = `host.${hostname}`;
 const compactGroupObjectPrefix = '.compactgroup';
 const logList: string[] = [];
@@ -1606,111 +1611,54 @@ async function extendObjects(tasks: Record<string, any>[]): Promise<void> {
     }
 }
 
-function setMeta(): void {
+/**
+ * Create the host meta data like host objects and states
+ */
+async function setMeta(): Promise<void> {
     const id = hostObjectPrefix;
 
-    objects!.getObject(id, (err, oldObj) => {
-        let newObj: ioBroker.HostObject | ioBroker.FolderObject;
-        if (compactGroupController) {
-            newObj = {
-                _id: id,
-                type: 'folder',
-                common: {
-                    name: hostname + compactGroupObjectPrefix + compactGroup,
-                    cmd:
-                        process.argv[0] +
-                        ' ' +
-                        `${process.execArgv.join(' ')} `.replace(/--inspect-brk=\d+ /, '') +
-                        process.argv.slice(1).join(' '),
-                    hostname: hostname,
-                    address: tools.findIPs()
-                },
-                native: {}
-            };
-        } else {
-            // @ts-expect-error todo fix later
-            newObj = {
-                _id: id,
-                type: 'host',
-                common: {
-                    name: hostname,
-                    title:
-                        oldObj && oldObj.common && oldObj.common.title ? oldObj.common.title : ioPackage.common.title,
-                    installedVersion: version,
-                    platform: ioPackage.common.platform,
-                    cmd:
-                        process.argv[0] +
-                        ' ' +
-                        `${process.execArgv.join(' ')} `.replace(/--inspect-brk=\d+ /, '') +
-                        process.argv.slice(1).join(' '),
-                    hostname: hostname,
-                    address: tools.findIPs(),
-                    type: ioPackage.common.name
-                },
-                native: {
-                    process: {
-                        title: process.title,
-                        versions: process.versions,
-                        env: process.env
-                    },
-                    os: {
-                        hostname: hostname,
-                        type: os.type(),
-                        platform: os.platform(),
-                        arch: os.arch(),
-                        release: os.release(),
-                        endianness: os.endianness(),
-                        tmpdir: os.tmpdir()
-                    },
-                    hardware: {
-                        cpus: os.cpus(),
-                        totalmem: os.totalmem(),
-                        networkInterfaces: {}
-                    }
-                }
-            };
+    const oldObj = await objects!.getObject(id);
+    let newObj: ioBroker.HostObject | ioBroker.FolderObject;
+    if (compactGroupController) {
+        newObj = {
+            _id: id,
+            type: 'folder',
+            common: {
+                name: hostname + compactGroupObjectPrefix + compactGroup,
+                cmd: `${process.argv[0]} ${`${process.execArgv.join(' ')} `.replace(
+                    /--inspect-brk=\d+ /,
+                    ''
+                )}${process.argv.slice(1).join(' ')}`,
+                hostname: hostname,
+                address: tools.findIPs()
+            },
+            native: {}
+        };
+    } else {
+        newObj = getHostObject(oldObj);
+    }
 
-            if (oldObj?.common?.icon) {
-                newObj.common.icon = oldObj.common.icon;
-            }
-            if (oldObj?.common?.color) {
-                newObj.common.color = oldObj.common.color;
-            }
-            // remove dynamic information
-            if (newObj.native?.hardware?.cpus) {
-                for (const cpu of newObj.native.hardware.cpus) {
-                    if (cpu.times) {
-                        delete cpu.times;
-                    }
-                }
-            }
-            if (oldObj?.native.hardware?.networkInterfaces) {
-                newObj.native.hardware.networkInterfaces = oldObj.native.hardware.networkInterfaces;
-            }
-        }
+    if (oldObj) {
+        // @ts-expect-error todo: can be removed?
+        delete oldObj.cmd;
+        delete oldObj.from;
+        delete oldObj.ts;
+        delete oldObj.acl;
+    }
 
-        if (oldObj) {
-            // @ts-expect-error todo: can be removed?
-            delete oldObj.cmd;
-            delete oldObj.from;
-            delete oldObj.ts;
-            delete oldObj.acl;
-        }
-
-        if (!oldObj || !isDeepStrictEqual(newObj, oldObj)) {
-            newObj.from = hostObjectPrefix;
-            newObj.ts = Date.now();
-            objects!.setObject(id, newObj, err => {
-                if (err) {
-                    logger.error(`${hostLogPrefix} Cannot write host object: ${err.message}`);
-                } else {
-                    setIPs(newObj.common.address);
-                }
-            });
-        } else {
+    if (!oldObj || !isDeepStrictEqual(newObj, oldObj)) {
+        newObj.from = hostObjectPrefix;
+        newObj.ts = Date.now();
+        try {
+            // @ts-expect-error TODO: for compact controller we are setting a folder object to a system.host.XY id
+            await objects!.setObject(id, newObj);
             setIPs(newObj.common.address);
+        } catch (e) {
+            logger.error(`${hostLogPrefix} Cannot write host object: ${e.message}`);
         }
-    });
+    } else {
+        setIPs(newObj.common.address);
+    }
 
     config.system.checkDiskInterval =
         config.system.checkDiskInterval !== 0 ? Math.round(config.system.checkDiskInterval) || 300_000 : 0;
