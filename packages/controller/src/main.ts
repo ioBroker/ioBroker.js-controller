@@ -1106,7 +1106,7 @@ async function reportStatus(): Promise<void> {
                     await notificationHandler.addMessage(
                         'system',
                         'diskSpaceIssues',
-                        `Your system has only ${percentageFree} % of disk space left.`,
+                        `Your system has only ${percentageFree.toFixed(2)} % of disk space left.`,
                         `system.host.${hostname}`
                     );
                 }
