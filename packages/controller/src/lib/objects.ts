@@ -383,7 +383,7 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
             type: 'state',
             common: {
                 name: `${hostname} - disk warning level`,
-                desc: 'Show warning in admin if the free disk space is below this value',
+                desc: 'Generate a warning if the free disk space is below this value',
                 type: 'number',
                 read: true,
                 write: true,

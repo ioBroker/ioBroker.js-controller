@@ -37,6 +37,7 @@ import type { UpgradeArguments } from '@/lib/upgradeManager';
 import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager';
 import { setTimeout as wait } from 'node:timers/promises';
 import { getHostObjects } from '@/lib/objects';
+import { getDiskWarningLevel } from '@/lib/utils';
 
 type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
 type Dependencies = string[] | Record<string, string>[] | string | Record<string, string>;
@@ -456,7 +457,12 @@ function createStates(onConnect: () => void): void {
         connection: config.states,
         logger: logger,
         hostname: hostname,
-        change: (id, stateOrMessage) => {
+        change: async (id, stateOrMessage) => {
+            if (!states || !objects) {
+                logger.error(`${hostLogPrefix} Could not handle state change of "${id}", because not connected`);
+                return;
+            }
+
             inputCount++;
             if (!id) {
                 return logger.error(`${hostLogPrefix} change event with no ID: ${JSON.stringify(stateOrMessage)}`);
@@ -490,29 +496,32 @@ function createStates(onConnect: () => void): void {
                 // If this system.adapter.NAME.0.alive, only main controller is handling this
                 if (state && !state.ack) {
                     const enabled = state.val;
-                    objects!.getObject(id.substring(0, id.length - 6 /*'.alive'.length*/), (err, obj) => {
-                        if (err) {
-                            logger.error(`${hostLogPrefix} Cannot read object: ${err.message}`);
-                        }
-                        if (obj?.common) {
-                            // IF adapter enabled => disable it
-                            if ((obj.common.enabled && !enabled) || (!obj.common.enabled && enabled)) {
-                                obj.common.enabled = !!enabled;
-                                logger.info(
-                                    `${hostLogPrefix} instance "${obj._id}" ${
-                                        obj.common.enabled ? 'enabled' : 'disabled'
-                                    } via .alive`
-                                );
-                                obj.from = hostObjectPrefix;
-                                obj.ts = Date.now();
-                                objects!.setObject(
-                                    obj._id,
-                                    obj,
-                                    err => err && logger.error(`${hostLogPrefix} Cannot set object: ${err.message}`)
-                                );
+                    let obj: ioBroker.Object | null | undefined;
+
+                    try {
+                        obj = await objects.getObject(id.substring(0, id.length - 6 /*'.alive'.length*/));
+                    } catch (e) {
+                        logger.error(`${hostLogPrefix} Cannot read object: ${e.message}`);
+                    }
+
+                    if (obj?.common) {
+                        // IF adapter enabled => disable it
+                        if ((obj.common.enabled && !enabled) || (!obj.common.enabled && enabled)) {
+                            obj.common.enabled = !!enabled;
+                            logger.info(
+                                `${hostLogPrefix} instance "${obj._id}" ${
+                                    obj.common.enabled ? 'enabled' : 'disabled'
+                                } via .alive`
+                            );
+                            obj.from = hostObjectPrefix;
+                            obj.ts = Date.now();
+                            try {
+                                await objects.setObject(obj._id, obj);
+                            } catch (e) {
+                                logger.error(`${hostLogPrefix} Cannot set object: ${e.message}`);
                             }
                         }
-                    });
+                    }
                 }
             } else if (subscribe[id]) {
                 const state = stateOrMessage as ioBroker.State;
@@ -553,7 +562,7 @@ function createStates(onConnect: () => void): void {
                 } else if (state.val && state.val !== currentLevel) {
                     logger.info(`${hostLogPrefix} Got invalid loglevel "${state.val}", ignoring`);
                 }
-                states!.setState(`${hostObjectPrefix}.logLevel`, {
+                await states.setState(`${hostObjectPrefix}.logLevel`, {
                     val: currentLevel,
                     ack: true,
                     from: hostObjectPrefix
@@ -592,6 +601,14 @@ function createStates(onConnect: () => void): void {
                         }
                     }
                 }
+            } else if (
+                id === `${hostObjectPrefix}.diskWarning` &&
+                stateOrMessage &&
+                'ack' in stateOrMessage &&
+                !stateOrMessage.ack
+            ) {
+                const warningLevel = getDiskWarningLevel(stateOrMessage);
+                await states.setState(id, { val: warningLevel, ack: true });
             }
         },
         connected: () => {
@@ -5380,11 +5397,9 @@ export function init(compactGroupId?: number): void {
         // get the current host versions
         try {
             const hostView = await objects!.getObjectViewAsync('system', 'host');
-            if (hostView?.rows) {
-                for (const row of hostView.rows) {
-                    if (row.value?.common?.installedVersion) {
-                        controllerVersions[row.id] = row.value.common.installedVersion;
-                    }
+            for (const row of hostView.rows) {
+                if (row.value?.common?.installedVersion) {
+                    controllerVersions[row.id] = row.value.common.installedVersion;
                 }
             }
         } catch {
@@ -5393,35 +5408,36 @@ export function init(compactGroupId?: number): void {
 
         // create the states object
         createStates(async () => {
-            // Subscribe for connection state of all instances
-            // Disabled in 1.5.x
-            // states.subscribe('*.info.connection');
+            if (!states || !objects) {
+                throw new Error(`States or objects have not been initialized yet`);
+            }
 
             if (connectTimeout) {
                 clearTimeout(connectTimeout);
                 connectTimeout = null;
             }
             // Subscribe for all logging objects
-            states!.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.logging`);
+            states.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.logging`);
 
-            // Subscribe for all logging objects
-            states!.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.alive`);
+            // Subscribe for all alive states
+            states.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.alive`);
+            states.subscribe(`${hostObjectPrefix}.diskWarning`);
 
             // set current Loglevel and subscribe for changes
-            states!.setState(`${hostObjectPrefix}.logLevel`, {
+            states.setState(`${hostObjectPrefix}.logLevel`, {
                 val: config.log.level,
                 ack: true,
                 from: hostObjectPrefix
             });
-            states!.subscribe(`${hostObjectPrefix}.logLevel`);
+            states.subscribe(`${hostObjectPrefix}.logLevel`);
 
             if (!compactGroupController) {
                 try {
                     const nodeVersion = process.version.replace(/^v/, '');
-                    const prevNodeVersionState = await states!.getStateAsync(`${hostObjectPrefix}.nodeVersion`);
+                    const prevNodeVersionState = await states.getStateAsync(`${hostObjectPrefix}.nodeVersion`);
 
                     if (!prevNodeVersionState || prevNodeVersionState.val !== nodeVersion) {
-                        // detected a change in the nodejs version (or state non existing - upgrade from below v4)
+                        // detected a change in the nodejs version (or state non-existing - upgrade from below v4)
                         logger.info(
                             `${hostLogPrefix} Node.js version has changed from ${
                                 prevNodeVersionState ? prevNodeVersionState.val : 'unknown'
@@ -5440,7 +5456,7 @@ export function init(compactGroupId?: number): void {
                     }
 
                     // set current node version
-                    await states!.setState(`${hostObjectPrefix}.nodeVersion`, {
+                    await states.setState(`${hostObjectPrefix}.nodeVersion`, {
                         val: nodeVersion,
                         ack: true,
                         from: hostObjectPrefix
@@ -5456,7 +5472,7 @@ export function init(compactGroupId?: number): void {
 
             try {
                 // Read the current state of all log subscribers
-                keys = (await states!.getKeys(`${SYSTEM_ADAPTER_PREFIX}*.logging`))!;
+                keys = (await states.getKeys(`${SYSTEM_ADAPTER_PREFIX}*.logging`))!;
             } catch {
                 // ignore
             }
@@ -5466,29 +5482,29 @@ export function init(compactGroupId?: number): void {
                 let objs: ioBroker.AnyObject[];
 
                 try {
-                    objs = await objects!.getObjects(oKeys);
+                    objs = await objects.getObjects(oKeys);
                 } catch {
                     return;
                 }
 
-                const toDelete = keys!.filter((id, i) => !objs[i]);
+                const toDelete = keys.filter((id, i) => !objs[i]);
                 keys = keys!.filter((id, i) => objs[i]);
 
                 let statesArr: (ioBroker.State | null)[] | undefined;
 
                 try {
-                    statesArr = (await states!.getStates(keys))!;
+                    statesArr = (await states.getStates(keys))!;
                 } catch {
                     // ignore
                 }
 
                 if (statesArr) {
-                    for (let i = 0; i < keys!.length; i++) {
+                    for (let i = 0; i < keys.length; i++) {
                         const state = statesArr[i];
                         if (state?.val === true) {
                             logRedirect(
                                 true,
-                                keys![i].substring(0, keys![i].length - '.logging'.length).replace(/^io\./, ''),
+                                keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''),
                                 'starting'
                             );
                         }
