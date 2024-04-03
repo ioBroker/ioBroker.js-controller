@@ -1,4 +1,5 @@
 import fs from 'fs-extra';
+import { DEFAULT_DISK_WARNING_LEVEL } from '@/lib/utils';
 
 interface GetHostOptions {
     /** The host base id */
@@ -387,7 +388,7 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
                 type: 'number',
                 read: true,
                 write: true,
-                def: 5,
+                def: DEFAULT_DISK_WARNING_LEVEL,
                 role: 'level',
                 unit: '%'
             },

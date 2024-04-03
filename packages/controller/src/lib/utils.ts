@@ -12,3 +12,6 @@ export function getDiskWarningLevel(state: ioBroker.State): number {
 
     return warningLevel;
 }
+
+/** Default value for disk warning level */
+export const DEFAULT_DISK_WARNING_LEVEL = 5;
