@@ -725,8 +725,8 @@ and the alias could use the same value calculated as kWh.
 Some devices have separate states for semantically one state. One to read the current status from and one to write to, to
 control the device. You can combine these states into one alias by using a separate alias id to write to and another to read from.
 
-~As of now (js-controller 2.0.0 release) there are no front-ends to configure the aliases.~
-You can use Admin interface on the "Objects" tab to create aliases. Just open the context menu on the state, for which you want to create an alias, and select "Create Alias".
+We recommend to use the `devices` adapter to manage aliases. 
+Alternatively, you can use Admin interface on the "Objects" tab to create aliases. Just open the context menu on the state, for which you want to create an alias, and select "Create Alias".
 
 To create an alias object simple create a new object with an own name in the `alias.0` namespace and add the alias definition in the common section (here for an alias with the id `"alias.0.aliasName"`):
 
@@ -797,6 +797,8 @@ iobroker object set alias.0.aliasName common.alias.id=state.id.of.target
 iobroker object set alias.0.aliasName common.alias.read="read-func"
 iobroker object set alias.0.aliasName common.alias.write="write-func"
 ```
+
+> **_NOTE:_** The permissions of the source object are ignored and only the permissions set on the alias object itself are relevant for database operations. 
 
 Additional information about aliases could be found [here](https://www.iobroker.net/#en/documentation/dev/aliases.md).
 
