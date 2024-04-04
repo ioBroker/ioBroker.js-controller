@@ -8421,7 +8421,7 @@ export class AdapterClass extends EventEmitter {
                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                     }
 
-                    // read object for formatting - we ignore permissions on the source object and thus get it as admin user
+                    // read object for formatting - we ignore permissions on the target object and thus get it as admin user
                     const targetObj = await this.#objects.getObject(targetId, {
                         ...options,
                         user: SYSTEM_ADMIN_USER
