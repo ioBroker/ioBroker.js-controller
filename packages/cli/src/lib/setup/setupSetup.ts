@@ -14,7 +14,12 @@ import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import fs from 'fs-extra';
 import path from 'path';
 import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
-import { tools as dbTools } from '@iobroker/js-controller-common-db';
+import {
+    statesDbHasServer,
+    objectsDbHasServer,
+    isLocalStatesDbServer,
+    isLocalObjectsDbServer
+} from '@iobroker/js-controller-common-db';
 import { resetDbConnect, dbConnectAsync } from '@/lib/setup/dbConnection';
 import { BackupRestore } from '@/lib/setup/setupBackup';
 import crypto from 'crypto';
@@ -392,15 +397,15 @@ Please DO NOT copy files manually into ioBroker storage directories!`
      */
     async migrateObjects(newConfig: ioBroker.IoBrokerJson, oldConfig: ioBroker.IoBrokerJson): Promise<EXIT_CODES> {
         // allow migration if one of the db types changed or host changed of redis
-        const oldStatesHasServer = dbTools.statesDbHasServer(oldConfig.states.type);
-        const oldObjectsHasServer = dbTools.statesDbHasServer(oldConfig.objects.type);
-        const newStatesHasServer = dbTools.statesDbHasServer(newConfig.states.type);
-        const newObjectsHasServer = dbTools.statesDbHasServer(newConfig.objects.type);
+        const oldStatesHasServer = statesDbHasServer(oldConfig.states.type);
+        const oldObjectsHasServer = statesDbHasServer(oldConfig.objects.type);
+        const newStatesHasServer = statesDbHasServer(newConfig.states.type);
+        const newObjectsHasServer = statesDbHasServer(newConfig.objects.type);
 
-        const oldStatesLocalServer = dbTools.isLocalStatesDbServer(oldConfig.states.type, oldConfig.states.host);
-        const oldObjectsLocalServer = dbTools.isLocalObjectsDbServer(oldConfig.objects.type, oldConfig.objects.host);
-        const newStatesLocalServer = dbTools.isLocalStatesDbServer(newConfig.states.type, newConfig.states.host);
-        const newObjectsLocalServer = dbTools.isLocalObjectsDbServer(newConfig.objects.type, newConfig.objects.host);
+        const oldStatesLocalServer = isLocalStatesDbServer(oldConfig.states.type, oldConfig.states.host);
+        const oldObjectsLocalServer = isLocalObjectsDbServer(oldConfig.objects.type, oldConfig.objects.host);
+        const newStatesLocalServer = isLocalStatesDbServer(newConfig.states.type, newConfig.states.host);
+        const newObjectsLocalServer = isLocalObjectsDbServer(newConfig.objects.type, newConfig.objects.host);
 
         if (
             oldConfig &&
@@ -684,10 +689,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 }`
             );
         }
-        if (
-            dbTools.objectsDbHasServer(originalConfig.objects.type) ||
-            dbTools.statesDbHasServer(originalConfig.states.type)
-        ) {
+        if (objectsDbHasServer(originalConfig.objects.type) || statesDbHasServer(originalConfig.states.type)) {
             console.log(`- Data Directory: ${tools.getDefaultDataDir()}`);
         }
         if (originalConfig && originalConfig.system && originalConfig.system.hostname) {
@@ -885,7 +887,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             stype === originalConfig.states.type && sHost === originalConfig.states.host
                 ? originalConfig.states.port
                 : sp;
-        if (stype === otype && !dbTools.statesDbHasServer(stype) && sHost === oHost) {
+        if (stype === otype && !statesDbHasServer(stype) && sHost === oHost) {
             defaultStatesPort = oPort;
         }
         const userStatePort = rl.question(
@@ -936,7 +938,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         let dir;
         let hname;
 
-        if (dbTools.isLocalStatesDbServer(stype, sHost) || dbTools.isLocalObjectsDbServer(otype, oHost)) {
+        if (isLocalStatesDbServer(stype, sHost) || isLocalObjectsDbServer(otype, oHost)) {
             let validDataDir = false;
 
             while (!validDataDir) {

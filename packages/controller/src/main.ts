@@ -16,7 +16,7 @@ import path from 'node:path';
 import cp, { spawn, exec } from 'node:child_process';
 import semver from 'semver';
 import restart from '@/lib/restart';
-import { tools as dbTools } from '@iobroker/js-controller-common-db';
+import { tools as dbTools, isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common-db';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual, inspect } from 'node:util';
@@ -294,15 +294,12 @@ async function startMultihost(__config?: Record<string, any>): Promise<boolean |
             }
         }
 
-        if (!_config.objects.host || dbTools.isLocalObjectsDbServer(_config.objects.type, _config.objects.host, true)) {
+        if (!_config.objects.host || isLocalObjectsDbServer(_config.objects.type, _config.objects.host, true)) {
             logger.warn(
                 `${hostLogPrefix} Multihost Master on this system is not possible, because IP address for objects is ${_config.objects.host}. Please allow remote connections to the server by adjusting the IP.`
             );
             return false;
-        } else if (
-            !_config.states.host ||
-            dbTools.isLocalObjectsDbServer(_config.states.type, _config.states.host, true)
-        ) {
+        } else if (!_config.states.host || isLocalObjectsDbServer(_config.states.type, _config.states.host, true)) {
             logger.warn(
                 `${hostLogPrefix} Multihost Master on this system is not possible, because IP address for states is ${_config.states.host}. Please allow remote connections to the server by adjusting the IP.`
             );
@@ -3756,7 +3753,7 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
  * @param wakeUp
  */
 async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): Promise<void> {
-    if (isStopping || !connected) {
+    if (isStopping || !connected || !objects) {
         return;
     }
 
@@ -3793,9 +3790,10 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         }
     }
 
-    const isBlocked = await isAdapterVersionBlocked({
+    const isBlocked = await dbTools.isAdapterVersionBlocked({
         version: instance.common.version,
-        adapterName: instance.common.name
+        adapterName: instance.common.name,
+        objects
     });
 
     if (isBlocked) {
@@ -5202,7 +5200,7 @@ export function init(compactGroupId?: number): void {
 
     // Get "objects" object
     // If "file" and on the local machine
-    if (dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host) && !compactGroupController) {
+    if (isLocalObjectsDbServer(config.objects.type, config.objects.host) && !compactGroupController) {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         Objects = require(`@iobroker/db-objects-${config.objects.type}`).Server;
     } else {
@@ -5211,7 +5209,7 @@ export function init(compactGroupId?: number): void {
     }
 
     // Get "states" object
-    if (dbTools.isLocalStatesDbServer(config.states.type, config.states.host) && !compactGroupController) {
+    if (isLocalStatesDbServer(config.states.type, config.states.host) && !compactGroupController) {
         // eslint-disable-next-line @typescript-eslint/no-var-requires
         States = require(`@iobroker/db-states-${config.states.type}`).Server;
     } else {
@@ -5789,49 +5787,6 @@ async function autoUpgradeAdapters(): Promise<void> {
     } catch (e) {
         logger.error(`${hostLogPrefix} An error occurred while processing automatic adapter upgrades: ${e.message}`);
     }
-}
-
-interface AdapterVersionBlockedOptions {
-    /** The version of the adapter instance */
-    version: string;
-    /** Name of the adapter */
-    adapterName: string;
-}
-
-/**
- * Check if version of a specific adapter is blocked
- *
- * @param options adapter version and name information
- */
-async function isAdapterVersionBlocked(options: AdapterVersionBlockedOptions): Promise<boolean> {
-    if (!objects) {
-        throw new Error('Objects database not connected');
-    }
-
-    const { version, adapterName } = options;
-
-    const systemRepoObj = await objects.getObject(SYSTEM_REPOSITORIES_ID);
-    const systemConfigObj = await objects.getObject(SYSTEM_CONFIG_ID);
-
-    if (!systemConfigObj || !systemRepoObj) {
-        return false;
-    }
-
-    const repo = systemRepoObj.native.repositories[systemConfigObj.common.activeRepo[0]];
-
-    const blockedVersions = repo.json?.[adapterName]?.blockedVersions;
-
-    if (!blockedVersions) {
-        return false;
-    }
-
-    for (const blockedVersion of blockedVersions) {
-        if (semver.satisfies(version, blockedVersion, { includePrerelease: true })) {
-            return true;
-        }
-    }
-
-    return false;
 }
 
 if (module === require.main) {

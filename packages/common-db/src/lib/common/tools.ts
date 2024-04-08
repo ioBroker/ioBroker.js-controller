@@ -1,87 +1,44 @@
-import { tools } from '@iobroker/js-controller-common';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import { SYSTEM_CONFIG_ID, SYSTEM_REPOSITORIES_ID } from '@iobroker/js-controller-common/constants';
+import semver from 'semver';
 
-/**
- * Allows to find out if a given states dbType offers a server or not
- *
- * @param dbType database type
- * @returns true if a server class is available
- */
-export function statesDbHasServer(dbType: string): boolean {
-    try {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        return !!require(`@iobroker/db-states-${dbType}`).Server;
-    } catch {
-        throw new Error(`Installation error or unknown states database type: ${dbType}`);
-    }
+interface AdapterVersionBlockedOptions {
+    /** The version of the adapter instance */
+    version: string;
+    /** Name of the adapter */
+    adapterName: string;
+    /** The objects client */
+    objects: ObjectsClient;
 }
 
 /**
- * Allows to find out if a given objects dbType offers a server which runs on this host and listens (locally or globally/by IP)
+ * Check if version of a specific adapter is blocked
  *
- * @param dbType database type
- * @param host configured db host - multihost (array) will always return false
- * @param checkIfLocalOnly if true the method checks if the server listens to local connections only; else also external connection options are checked
- * @returns true if a server listens on this host (locally or globally/by IP)
+ * @param options adapter version and name information
  */
-export function isLocalObjectsDbServer(
-    dbType: string,
-    host: string | string[],
-    checkIfLocalOnly: boolean = false
-): boolean {
-    if (!objectsDbHasServer(dbType)) {
-        return false; // if no server it can not be a local server
-    }
+export async function isAdapterVersionBlocked(options: AdapterVersionBlockedOptions): Promise<boolean> {
+    const { version, adapterName, objects } = options;
 
-    if (Array.isArray(host)) {
+    const systemRepoObj = await objects.getObject(SYSTEM_REPOSITORIES_ID);
+    const systemConfigObj = await objects.getObject(SYSTEM_CONFIG_ID);
+
+    if (!systemConfigObj || !systemRepoObj) {
         return false;
     }
 
-    let result = host === 'localhost' || tools.isLocalAddress(host); // reachable locally only
-    if (!checkIfLocalOnly) {
-        const ownIps = tools.findIPs();
-        result = result || tools.isListenAllAddress(host) || ownIps.includes(host);
-    }
+    const repo = systemRepoObj.native.repositories[systemConfigObj.common.activeRepo[0]];
 
-    return result;
-}
+    const blockedVersions = repo.json?.[adapterName]?.blockedVersions;
 
-/**
- * Allows to find out if a given states dbType offers a server which runs on this host and listens (locally or globally/by IP)
- *
- * @param dbType database type
- * @param host configured db host - multihost (array) will always return false
- * @param checkIfLocalOnly if true the method checks if the server listens to local connections only; else also external connection options are checked
- * @returns true if a server listens on this host (locally or globally/by IP)
- */
-export function isLocalStatesDbServer(dbType: string, host: string | string[], checkIfLocalOnly = false): boolean {
-    if (!statesDbHasServer(dbType)) {
-        return false; // if no server it can not be a local server
-    }
-
-    if (Array.isArray(host)) {
+    if (!blockedVersions) {
         return false;
     }
 
-    let result = host === 'localhost' || tools.isLocalAddress(host); // reachable locally only
-    if (!checkIfLocalOnly && !Array.isArray(host)) {
-        const ownIps = tools.findIPs();
-        result = result || tools.isListenAllAddress(host) || ownIps.includes(host);
+    for (const blockedVersion of blockedVersions) {
+        if (semver.satisfies(version, blockedVersion, { includePrerelease: true })) {
+            return true;
+        }
     }
 
-    return result;
-}
-
-/**
- * Allows to find out if a given objects dbType offers a server or not
- *
- * @param dbType database type
- * @returns true if a server class is available
- */
-export function objectsDbHasServer(dbType: string): boolean {
-    try {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        return !!require(`@iobroker/db-objects-${dbType}`).Server;
-    } catch {
-        throw new Error(`Installation error or unknown objects database type: ${dbType}`);
-    }
+    return false;
 }

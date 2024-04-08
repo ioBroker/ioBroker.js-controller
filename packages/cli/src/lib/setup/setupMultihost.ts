@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import { tools } from '@iobroker/js-controller-common';
-import { tools as dbTools } from '@iobroker/js-controller-common-db';
+import { isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common-db';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import { MHClient, type BrowseResultEntry } from './multihostClient';
 import readline from 'readline';
@@ -97,7 +97,7 @@ export class Multihost {
     private showMHState(config: ioBroker.IoBrokerJson, changed: boolean): void {
         if (config.multihostService.enabled) {
             let warningShown = false;
-            if (dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host, true)) {
+            if (isLocalObjectsDbServer(config.objects.type, config.objects.host, true)) {
                 console.log('Changing objects server to accept connections on all IP addresses.');
                 config.objects.host = tools.getListenAllAddress();
                 changed = true;
@@ -112,7 +112,7 @@ export class Multihost {
                     `Please check the binding of the configured ${config.objects.type} server to allow remote connections.`
                 );
             }
-            if (dbTools.isLocalStatesDbServer(config.states.type, config.states.host, true)) {
+            if (isLocalStatesDbServer(config.states.type, config.states.host, true)) {
                 console.log('Changing states server to accept connections on all IP addresses.');
                 config.states.host = tools.getListenAllAddress();
                 changed = true;
@@ -305,8 +305,8 @@ export class Multihost {
                 config.objects = oObjects;
                 config.states = oStates;
                 if (
-                    dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host, true) ||
-                    dbTools.isLocalStatesDbServer(config.states.type, config.states.host, true)
+                    isLocalObjectsDbServer(config.objects.type, config.objects.host, true) ||
+                    isLocalStatesDbServer(config.states.type, config.states.host, true)
                 ) {
                     callback(
                         new Error(

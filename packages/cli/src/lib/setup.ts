@@ -4,7 +4,7 @@ import { EXIT_CODES } from '@iobroker/js-controller-common';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual } from 'util';
 import Debug from 'debug';
-import { tools as dbTools } from '@iobroker/js-controller-common-db';
+import { objectsDbHasServer, isLocalStatesDbServer, isLocalObjectsDbServer } from '@iobroker/js-controller-common-db';
 import path from 'path';
 import yargs from 'yargs';
 import * as CLITools from './cli/cliTools';
@@ -709,7 +709,7 @@ async function processCommand(
                         if (config.states.type === 'file') {
                             config.states.type = 'jsonl';
 
-                            if (dbTools.isLocalStatesDbServer('file', config.states.host)) {
+                            if (isLocalStatesDbServer('file', config.states.host)) {
                                 // silent config change on secondaries
                                 console.log('States DB type migrated from "file" to "jsonl"');
                                 migrated += 'States';
@@ -718,7 +718,7 @@ async function processCommand(
 
                         if (config.objects.type === 'file') {
                             config.objects.type = 'jsonl';
-                            if (dbTools.isLocalObjectsDbServer('file', config.objects.host)) {
+                            if (isLocalObjectsDbServer('file', config.objects.host)) {
                                 // silent config change on secondaries
                                 console.log('Objects DB type migrated from "file" to "jsonl"');
                                 migrated += migrated ? ' and Objects' : 'Objects';
@@ -2473,7 +2473,7 @@ async function processCommand(
 
         case 'checklog': {
             dbConnect(params, ({ objects, states, isOffline, objectsDBType }) => {
-                if (isOffline && dbTools.objectsDbHasServer(objectsDBType)) {
+                if (isOffline && objectsDbHasServer(objectsDBType)) {
                     console.log(`${tools.appName} is not running`);
                     return void callback(EXIT_CODES.CONTROLLER_NOT_RUNNING);
                 } else {

@@ -1,6 +1,11 @@
 import type { DbConnectAsyncReturn, DbConnectCallback } from '../_Types';
 import fs from 'fs-extra';
-import { getObjectsConstructor, getStatesConstructor, tools as dbTools } from '@iobroker/js-controller-common-db';
+import {
+    getObjectsConstructor,
+    getStatesConstructor,
+    objectsDbHasServer,
+    statesDbHasServer
+} from '@iobroker/js-controller-common-db';
 import { EXIT_CODES } from '@iobroker/js-controller-common';
 import { tools } from '@iobroker/js-controller-common';
 import { setTimeout as wait } from 'node:timers/promises';
@@ -88,7 +93,7 @@ export function dbConnect(
                     await objects.destroy();
                     objects = null;
                 }
-                if (dbTools.objectsDbHasServer(config.objects.type)) {
+                if (objectsDbHasServer(config.objects.type)) {
                     // Just open in memory DB itself
                     Objects = (await import(`@iobroker/db-objects-${config.objects.type}`)).Server;
                     objects = new Objects!({
@@ -150,7 +155,7 @@ export function dbConnect(
                     await states.destroy();
                     states = null;
                 }
-                if (dbTools.statesDbHasServer(config.states.type)) {
+                if (statesDbHasServer(config.states.type)) {
                     // Just open in memory DB itself
                     States = (await import(`@iobroker/db-states-${config.states.type}`)).Server;
 
