@@ -21,7 +21,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/db-states-redis"
+    "url": "https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/db-states-redis"
   },
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
