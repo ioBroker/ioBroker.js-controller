@@ -876,6 +876,8 @@ declare global {
             name: string;
             /** Newest available version */
             version: string;
+            /** Array of blocked versions, each entry represents a semver range */
+            blockedVersions: string[];
 
             /** Other Adapter related properties, not important for this implementation */
             [other: string]: unknown;
@@ -891,8 +893,8 @@ declare global {
                 repoTime: string;
             };
 
-            /** Information about each adapter - Record needed for _repoInfo */
-            [adapter: string]: RepositoryJsonAdapterContent | Record<string, any>;
+            /** Information about each adapter */
+            [adapter: string]: RepositoryJsonAdapterContent;
         }
 
         interface RepositoryInformation {

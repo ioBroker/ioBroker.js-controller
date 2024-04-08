@@ -21,7 +21,11 @@ import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual, inspect } from 'node:util';
 import { tools, EXIT_CODES, logger as toolsLogger } from '@iobroker/js-controller-common';
-import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
+import {
+    SYSTEM_ADAPTER_PREFIX,
+    SYSTEM_CONFIG_ID,
+    SYSTEM_REPOSITORIES_ID
+} from '@iobroker/js-controller-common/constants';
 import { PluginHandler } from '@iobroker/plugin-base';
 import { NotificationHandler } from '@iobroker/js-controller-common-db';
 import * as zipFiles from '@/lib/zipFiles';
@@ -195,8 +199,9 @@ const uploadTasks: UploadTask[] = [];
 const config = getConfig();
 
 /**
+ * Get the error text from an exit code
  *
- * @param code
+ * @param code exit code
  */
 function getErrorText(code: number): string {
     return EXIT_CODES[code];
@@ -309,7 +314,7 @@ async function startMultihost(__config?: Record<string, any>): Promise<boolean |
                 let obj: ioBroker.SystemConfigObject | null | undefined;
                 let errText;
                 try {
-                    obj = await objects!.getObjectAsync('system.config');
+                    obj = await objects!.getObjectAsync(SYSTEM_CONFIG_ID);
                 } catch (e) {
                     // will log error below
                     errText = e.message;
@@ -1345,7 +1350,7 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
         let err;
 
         try {
-            systemConfig = await objects!.getObjectAsync('system.config');
+            systemConfig = await objects!.getObjectAsync(SYSTEM_CONFIG_ID);
         } catch (e) {
             err = e;
         }
@@ -2061,7 +2066,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                 let systemConfig: ioBroker.SystemConfigObject | null | undefined;
                 try {
-                    systemConfig = await objects!.getObject('system.config');
+                    systemConfig = await objects!.getObject(SYSTEM_CONFIG_ID);
                 } catch {
                     // ignore
                 }
@@ -2088,7 +2093,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                 const globalRepo = {};
 
-                const systemRepos = await objects!.getObjectAsync('system.repositories');
+                const systemRepos = await objects!.getObjectAsync(SYSTEM_REPOSITORIES_ID);
                 let changed = false;
 
                 // Check if repositories exist
@@ -2174,7 +2179,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                     if (changed) {
                         try {
-                            await objects!.setObjectAsync('system.repositories', systemRepos);
+                            await objects!.setObjectAsync(SYSTEM_REPOSITORIES_ID, systemRepos);
                         } catch (e) {
                             logger.warn(`${hostLogPrefix} Repository object could not be updated: ${e.message}`);
                         }
@@ -3786,6 +3791,18 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             // Do not start this instance
             return;
         }
+    }
+
+    const isBlocked = await isAdapterVersionBlocked({
+        version: instance.common.version,
+        adapterName: instance.common.name
+    });
+
+    if (isBlocked) {
+        logger.error(
+            `${hostLogPrefix} Do not start instance "${id}", because the version "${instance.common.version}" has been blocked by the developer`
+        );
+        return;
     }
 
     const adapterDir = tools.getAdapterDir(name);
@@ -5772,6 +5789,49 @@ async function autoUpgradeAdapters(): Promise<void> {
     } catch (e) {
         logger.error(`${hostLogPrefix} An error occurred while processing automatic adapter upgrades: ${e.message}`);
     }
+}
+
+interface AdapterVersionBlockedOptions {
+    /** The version of the adapter instance */
+    version: string;
+    /** Name of the adapter */
+    adapterName: string;
+}
+
+/**
+ * Check if version of a specific adapter is blocked
+ *
+ * @param options adapter version and name information
+ */
+async function isAdapterVersionBlocked(options: AdapterVersionBlockedOptions): Promise<boolean> {
+    if (!objects) {
+        throw new Error('Objects database not connected');
+    }
+
+    const { version, adapterName } = options;
+
+    const systemRepoObj = await objects.getObject(SYSTEM_REPOSITORIES_ID);
+    const systemConfigObj = await objects.getObject(SYSTEM_CONFIG_ID);
+
+    if (!systemConfigObj || !systemRepoObj) {
+        return false;
+    }
+
+    const repo = systemRepoObj.native.repositories[systemConfigObj.common.activeRepo[0]];
+
+    const blockedVersions = repo.json?.[adapterName]?.blockedVersions;
+
+    if (!blockedVersions) {
+        return false;
+    }
+
+    for (const blockedVersion of blockedVersions) {
+        if (semver.satisfies(version, blockedVersion, { includePrerelease: true })) {
+            return true;
+        }
+    }
+
+    return false;
 }
 
 if (module === require.main) {
