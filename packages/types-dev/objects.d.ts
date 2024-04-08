@@ -883,18 +883,20 @@ declare global {
             [other: string]: unknown;
         }
 
+        interface RepoInfo {
+            /** If it is the official stable repository */
+            stable?: boolean;
+            /** i18n name of the repository */
+            name: Required<ioBroker.Translated>;
+            /** Time of repository update */
+            repoTime: string;
+        }
+
         interface RepositoryJson {
-            _repoInfo: {
-                /** If it is the official stable repository */
-                stable?: boolean;
-                /** i18n name of the repository */
-                name: Required<ioBroker.Translated>;
-                /** Time of repository update */
-                repoTime: string;
-            };
+            _repoInfo: RepoInfo;
 
             /** Information about each adapter */
-            [adapter: string]: RepositoryJsonAdapterContent;
+            [adapter: string]: RepositoryJsonAdapterContent | RepoInfo;
         }
 
         interface RepositoryInformation {

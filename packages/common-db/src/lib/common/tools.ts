@@ -28,13 +28,13 @@ export async function isAdapterVersionBlocked(options: AdapterVersionBlockedOpti
 
     const repo = systemRepoObj.native.repositories[systemConfigObj.common.activeRepo[0]];
 
-    const blockedVersions = repo.json?.[adapterName]?.blockedVersions;
+    const adapterEntry = repo.json?.[adapterName];
 
-    if (!blockedVersions) {
+    if (!adapterEntry || !('blockedVersions' in adapterEntry)) {
         return false;
     }
 
-    for (const blockedVersion of blockedVersions) {
+    for (const blockedVersion of adapterEntry.blockedVersions) {
         if (semver.satisfies(version, blockedVersion, { includePrerelease: true })) {
             return true;
         }
