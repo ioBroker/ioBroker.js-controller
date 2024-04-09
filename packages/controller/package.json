@@ -1,6 +1,6 @@
 {
   "name": "iobroker.js-controller",
-  "version": "5.0.20-alpha.0-20240402-818c4029",
+  "version": "5.0.20-alpha.0-20240409-d68ed299",
   "engines": {
     "node": ">=16.4.0"
   },
