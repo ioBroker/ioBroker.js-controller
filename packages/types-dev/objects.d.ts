@@ -275,7 +275,7 @@ declare global {
                       /** Which kind of device it is */
                       smartType?: string | null;
                       /** Which value to set when the ON command is issued */
-                      byOn?: string | null;
+                      byON?: string | null;
                   });
         }
 
