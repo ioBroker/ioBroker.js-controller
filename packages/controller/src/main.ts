@@ -2198,6 +2198,8 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 if (changed) {
                     await autoUpgradeAdapters();
                 }
+
+                await checkRebootRequired();
             } else {
                 logger.error(
                     `${hostLogPrefix} Invalid request ${
@@ -5753,6 +5755,35 @@ async function startUpgradeManager(options: UpgradeArguments): Promise<void> {
     }
 
     upgradeProcess.unref();
+}
+
+/**
+ * Checks if a system reboot is required and generates a notification if this is the case
+ */
+async function checkRebootRequired(): Promise<void> {
+    /** This file exists on most linux systems if a reboot is required */
+    const rebootRequiredPath = '/var/run/reboot-required';
+    /** This file contains a list of packages which require the reboot, separated by newline */
+    const packagesListPath = '/var/run/reboot-required.pkgs';
+
+    const rebootRequired = await fs.pathExists(rebootRequiredPath);
+
+    if (!rebootRequired) {
+        return;
+    }
+
+    let message = 'At least one package update requires a system reboot';
+
+    try {
+        const content = await fs.readFile(packagesListPath, { encoding: 'utf-8' });
+        message = `The following package updates require a restart of the system: ${content.split('\n').join(', ')}`;
+    } catch (e) {
+        if (e.code !== 'ENOENT') {
+            logger.error(`${hostLogPrefix} Could not read file "${packagesListPath}": ${e.message}`);
+        }
+    }
+
+    await notificationHandler.addMessage('system', 'systemRebootRequired', message, `system.host.${hostname}`);
 }
 
 /**
