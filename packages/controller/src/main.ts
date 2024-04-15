@@ -1464,9 +1464,10 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
         if (!err && doc?.rows.length) {
             // Read installed versions of all adapters
             for (const row of doc.rows) {
-                diag.adapters[row.value!.common.name] = {
-                    version: row.value!.common.version,
-                    platform: row.value!.common.platform
+                diag.adapters[row.value.common.name] = {
+                    version: row.value.common.version,
+                    platform: row.value.common.platform,
+                    installedFrom: row.value.common.installedFrom
                 };
 
                 if (VIS_ADAPTERS.includes(row.value.common.name as (typeof VIS_ADAPTERS)[number])) {
