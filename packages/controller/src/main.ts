@@ -5785,7 +5785,9 @@ async function autoUpgradeAdapters(): Promise<void> {
     }
 }
 
-if (module === require.main) {
-    // for direct calls
-    init();
+if (import.meta.url.startsWith('file:')) {
+    const modulePath = url.fileURLToPath(import.meta.url);
+    if (process.argv[1] === modulePath) {
+        init();
+    }
 }

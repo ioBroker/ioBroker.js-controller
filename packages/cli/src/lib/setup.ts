@@ -22,6 +22,8 @@ import { dbConnect, dbConnectAsync, exitApplicationSave } from '@/lib/setup/dbCo
 import { IoBrokerError } from '@/lib/setup/customError.js';
 import * as url from 'url';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
 
 tools.ensureDNSOrder();
 
@@ -38,7 +40,6 @@ const cli = {
 
 const debug = Debug('iobroker:cli');
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 require('events').EventEmitter.prototype._maxListeners = 100;
 process.setMaxListeners(0);
 

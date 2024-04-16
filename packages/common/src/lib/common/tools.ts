@@ -29,7 +29,7 @@ import {
     applyAliasTransformer
 } from '@/lib/common/aliasProcessing.js';
 import type * as DiskUsage from 'diskusage';
-import * as url from 'url';
+import * as url from 'node:url';
 import { createRequire } from 'node:module';
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
@@ -336,7 +336,13 @@ function _isDevInstallation(): boolean {
     return fs.pathExistsSync(`${getControllerDir()}/../../packages/controller`);
 }
 
-function getAppName(): string {
+/** In dev installations with uppercase B to match GitHub repo name - try to get rid of it in the long run */
+type AppName = 'iobroker' | 'ioBroker';
+
+/**
+ * Get the app name either for prod or for dev installation
+ */
+function getAppName(): AppName {
     if (_isDevInstallation()) {
         // dev install - GitHub folder is uppercase
         return 'ioBroker';
@@ -345,8 +351,8 @@ function getAppName(): string {
     return 'iobroker';
 }
 
+export const appNameLowerCase = 'iobroker';
 export const appName = getAppName();
-export const appNameLowerCase = appName.toLowerCase();
 
 export function findIPs(): string[] {
     if (!lastCalculationOfIps || Date.now() - lastCalculationOfIps > 10000) {
@@ -2186,13 +2192,10 @@ export function getControllerDir(): string {
                 paths: getDefaultRequireResolvePaths(module)
             });
 
-            console.log(possiblePath);
-
             if (fs.existsSync(possiblePath)) {
                 return path.dirname(possiblePath);
             }
-        } catch (e) {
-            console.log(e);
+        } catch {
             /* not found */
         }
     }
@@ -2206,12 +2209,11 @@ export function getControllerDir(): string {
         for (const pkg of possibilities) {
             try {
                 const possiblePath = path.join(checkPath, pkg);
-                console.log(path.join(possiblePath, `${appNameLowerCase}.js`));
+
                 if (fs.existsSync(path.join(possiblePath, `${appNameLowerCase}.js`))) {
                     return possiblePath;
                 }
-            } catch (e) {
-                console.log(e);
+            } catch {
                 // not found, continue with next possibility
             }
         }
