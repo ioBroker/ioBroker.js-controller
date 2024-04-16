@@ -9,9 +9,9 @@ import { createInterface } from 'readline';
 import { PassThrough } from 'stream';
 import type { CommandResult, InstallOptions, PackageManager } from '@alcalzone/pak';
 import { detectPackageManager, packageManagers } from '@alcalzone/pak';
-import { EXIT_CODES } from './exitCodes';
+import { EXIT_CODES } from '@/lib/common/exitCodes.js';
 import zlib from 'zlib';
-import { password } from './password';
+import { password } from '@/lib/common/password.js';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
 import crypto from 'crypto';
@@ -19,11 +19,15 @@ import type { ExecOptions } from 'child_process';
 import { exec } from 'child_process';
 import { URLSearchParams } from 'url';
 import events from 'events';
-import { maybeCallbackWithError } from './maybeCallback';
+import { maybeCallbackWithError } from '@/lib/common/maybeCallback.js';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
 import { setDefaultResultOrder } from 'dns';
-import { applyAliasAutoScaling, applyAliasConvenienceConversion, applyAliasTransformer } from './aliasProcessing';
+import {
+    applyAliasAutoScaling,
+    applyAliasConvenienceConversion,
+    applyAliasTransformer
+} from '@/lib/common/aliasProcessing.js';
 import type * as DiskUsage from 'diskusage';
 
 type DockerInformation =
@@ -3144,6 +3148,22 @@ export function pipeLinewise(input: NodeJS.ReadableStream, output: NodeJS.Writab
 }
 
 /**
+ * Checks if an adapter is an ESM module or CJS
+ *
+ * @param adapter name of the adapter like hm-rpc
+ */
+export async function isAdapterEsmModule(adapter: string): Promise<boolean> {
+    const adapterDir = getAdapterDir(adapter);
+    if (!adapterDir) {
+        throw new Error(`Could not find adapter dir of ${adapter}`);
+    }
+
+    const packJson = await fs.readJSON(path.join(adapterDir, 'package.json'), { encoding: 'utf-8' });
+
+    return packJson.type === 'module';
+}
+
+/**
  * Find the adapter main file as full path
  *
  * @param adapter - adapter name of the adapter, e.g., hm-rpc
@@ -3973,4 +3993,4 @@ export async function isIoBrokerInstalledAsSystemd(): Promise<boolean> {
     }
 }
 
-export * from './maybeCallback';
+export * from '@/lib/common/maybeCallback.js';
