@@ -11,7 +11,6 @@ import fs from 'fs-extra';
 import type { Socket } from 'node:net';
 import type { Duplex } from 'node:stream';
 import url from 'node:url';
-import restart from '@/lib/restart.js';
 
 export interface UpgradeArguments {
     /** Version of controller to upgrade too */
