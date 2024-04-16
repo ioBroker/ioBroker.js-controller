@@ -15,7 +15,7 @@ import fs from 'fs-extra';
 import path from 'node:path';
 import cp, { spawn, exec } from 'node:child_process';
 import semver from 'semver';
-import restart from '@/lib/restart';
+import restart from '@/lib/restart.js';
 import { tools as dbTools } from '@iobroker/js-controller-common-db';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
@@ -24,19 +24,24 @@ import { tools, EXIT_CODES, logger as toolsLogger } from '@iobroker/js-controlle
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
 import { PluginHandler } from '@iobroker/plugin-base';
 import { NotificationHandler } from '@iobroker/js-controller-common-db';
-import * as zipFiles from '@/lib/zipFiles';
+import * as zipFiles from '@/lib/zipFiles.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { Upload, PacketManager, type UpgradePacket } from '@iobroker/js-controller-cli';
 import decache from 'decache';
 import cronParser from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
-import { AdapterAutoUpgradeManager } from '@/lib/adapterAutoUpgradeManager';
-import { getDefaultNodeArgs, type HostInfo, type RepositoryFile } from '@iobroker/js-controller-common/tools';
-import type { UpgradeArguments } from '@/lib/upgradeManager';
-import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager';
+import { AdapterAutoUpgradeManager } from '@/lib/adapterAutoUpgradeManager.js';
+import {
+    getDefaultNodeArgs,
+    type HostInfo,
+    isAdapterEsmModule,
+    type RepositoryFile
+} from '@iobroker/js-controller-common/tools';
+import type { UpgradeArguments } from '@/lib/upgradeManager.js';
+import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
 import { setTimeout as wait } from 'node:timers/promises';
-import { getHostObjects } from '@/lib/objects';
+import { getHostObjects } from '@/lib/objects.js';
 
 type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
 type Dependencies = string[] | Record<string, string>[] | string | Record<string, string>;
@@ -4346,10 +4351,14 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                     require('@alcalzone/esbuild-register');
                                 }
 
+                                logger.warn(hostLogPrefix + ' ' + (await isAdapterEsmModule(name)));
+                                const module = (await isAdapterEsmModule(name))
+                                    ? await import(adapterMainFile)
+                                    : require(adapterMainFile);
+
                                 proc.process = {
                                     // @ts-expect-error TODO type compact processes too
-                                    // eslint-disable-next-line @typescript-eslint/no-var-requires
-                                    logic: require(adapterMainFile)({
+                                    logic: module({
                                         logLevel,
                                         compactInstance: _instance,
                                         compact: true
@@ -5777,7 +5786,4 @@ async function autoUpgradeAdapters(): Promise<void> {
 if (module === require.main) {
     // for direct calls
     init();
-} else {
-    // normally used for legacy compatibility and compact group support
-    module.exports.init = init;
 }

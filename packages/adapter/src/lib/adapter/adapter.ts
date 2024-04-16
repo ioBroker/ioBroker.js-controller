@@ -675,7 +675,6 @@ export class AdapterClass extends EventEmitter {
      */
     requireLog?: (isActive: boolean, options?: Partial<GetUserGroupsOptions>) => Promise<void> | void;
     private logOffTimer?: NodeJS.Timeout | null;
-    private logRedirect?: (isActive: boolean, id: string) => void;
     private logRequired?: boolean;
     private patterns?: Record<string, { regex: string }>;
     private statesConnectedTime?: number;
@@ -10097,6 +10096,27 @@ export class AdapterClass extends EventEmitter {
         return licenses;
     }
 
+    /**
+     * Add given id to log redirect list
+     *
+     * @param isActive if id should be added or removed
+     * @param id the id to add
+     */
+    private logRedirect(isActive: boolean, id: string): void {
+        // ignore itself
+        if (id === `system.adapter.${this.namespace}`) {
+            return;
+        }
+
+        if (isActive) {
+            if (!this.logList.has(id)) {
+                this.logList.add(id);
+            }
+        } else {
+            this.logList.delete(id);
+        }
+    }
+
     private _reportStatus(): void {
         if (!this.#states) {
             return;
@@ -10336,7 +10356,7 @@ export class AdapterClass extends EventEmitter {
                     const id = keys[i].substring(0, keys[i].length - '.logging'.length);
 
                     if (typeof objPart === 'object' && (objPart.val === true || objPart.val === 'true')) {
-                        this.logRedirect!(true, id);
+                        this.logRedirect(true, id);
                     }
                 }
                 if (this.logList.size && messages?.length && this.#states) {
@@ -10353,21 +10373,6 @@ export class AdapterClass extends EventEmitter {
             // disable log buffer
             messages = null;
         }
-
-        this.logRedirect = (isActive, id): void => {
-            // ignore itself
-            if (id === `system.adapter.${this.namespace}`) {
-                return;
-            }
-
-            if (isActive) {
-                if (!this.logList.has(id)) {
-                    this.logList.add(id);
-                }
-            } else {
-                this.logList.delete(id);
-            }
-        };
 
         this._options.logTransporter = this._options.logTransporter || this.ioPack.common.logTransporter;
 

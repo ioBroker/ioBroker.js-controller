@@ -3,7 +3,7 @@ import DailyRotateFile from 'winston-daily-rotate-file';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import * as tools from './tools';
+import * as tools from '@/lib/common/tools.js';
 import Transport from 'winston-transport';
 import { LEVEL } from 'triple-beam';
 import deepClone from 'deep-clone';
