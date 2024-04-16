@@ -1,15 +1,15 @@
-import * as fs from 'fs-extra';
+import { readJSONSync } from 'fs-extra/esm';
 import { tools } from '@iobroker/js-controller-common';
 
-export function getStatesConstructor(): any {
-    const config = fs.readJSONSync(tools.getConfigFileName());
+export async function getStatesConstructor(): Promise<any> {
+    const config = readJSONSync(tools.getConfigFileName());
     if (!config.states) {
         config.states = { type: 'jsonl' };
     }
 
     try {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        return require(`@iobroker/db-states-${config.states.type}`).Client;
+        const Client = (await import(`@iobroker/db-states-${config.states.type}`)).Client;
+        return Client;
     } catch {
         console.error(`Installation broken or unknown states type: ${config.states.type} configured.`);
         process.exit(101);

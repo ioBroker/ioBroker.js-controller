@@ -1,28 +1,28 @@
 import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 import semver from 'semver';
-import os from 'os';
+import os from 'node:os';
 import forge from 'node-forge';
 import deepClone from 'deep-clone';
 import { type ChildProcessPromise, exec as cpExecAsync } from 'promisify-child-process';
-import { createInterface } from 'readline';
-import { PassThrough } from 'stream';
+import { createInterface } from 'node:readline';
+import { PassThrough } from 'node:stream';
 import type { CommandResult, InstallOptions, PackageManager } from '@alcalzone/pak';
 import { detectPackageManager, packageManagers } from '@alcalzone/pak';
 import { EXIT_CODES } from '@/lib/common/exitCodes.js';
-import zlib from 'zlib';
+import zlib from 'node:zlib';
 import { password } from '@/lib/common/password.js';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
-import crypto from 'crypto';
-import type { ExecOptions } from 'child_process';
-import { exec } from 'child_process';
-import { URLSearchParams } from 'url';
-import events from 'events';
+import crypto from 'node:crypto';
+import type { ExecOptions } from 'node:child_process';
+import { exec } from 'node:child_process';
+import { URLSearchParams } from 'node:url';
+import events from 'node:events';
 import { maybeCallbackWithError } from '@/lib/common/maybeCallback.js';
 // @ts-expect-error has no types
 import extend from 'node.extend';
-import { setDefaultResultOrder } from 'dns';
+import { setDefaultResultOrder } from 'node:dns';
 import {
     applyAliasAutoScaling,
     applyAliasConvenienceConversion,
@@ -32,8 +32,10 @@ import type * as DiskUsage from 'diskusage';
 import * as url from 'node:url';
 import { createRequire } from 'node:module';
 
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
-const require = createRequire(import.meta.url);
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __dirname);
 
 type DockerInformation =
     | {
@@ -382,9 +384,9 @@ function findPath(path: string, url: string): string {
             return (path + url).replace(/\/\//g, '/').replace('http:/', 'http://').replace('https:/', 'https://');
         } else {
             if (url[0] === '/') {
-                return `${__dirname}/..${url}`;
+                return `${thisDir}/..${url}`;
             } else {
-                return `${__dirname}/../${path}${url}`;
+                return `${thisDir}/../${path}${url}`;
             }
         }
     }
@@ -715,7 +717,7 @@ export async function getFile(urlOrPath: string, fileName: string, callback: (fi
         urlOrPath.substring(0, 'http://'.length) === 'http://' ||
         urlOrPath.substring(0, 'https://'.length) === 'https://'
     ) {
-        const tmpFile = `${__dirname}/../tmp/${fileName || `${Math.floor(Math.random() * 0xffffffe)}.zip`}`;
+        const tmpFile = `${thisDir}/../tmp/${fileName || `${Math.floor(Math.random() * 0xffffffe)}.zip`}`;
 
         try {
             // Add some information to user-agent, like chrome, IE and Firefox do
@@ -739,10 +741,10 @@ export async function getFile(urlOrPath: string, fileName: string, callback: (fi
         try {
             if (fs.existsSync(urlOrPath)) {
                 callback && callback(urlOrPath);
-            } else if (fs.existsSync(`${__dirname}/../${urlOrPath}`)) {
-                callback && callback(`${__dirname}/../${urlOrPath}`);
-            } else if (fs.existsSync(`${__dirname}/../tmp/${urlOrPath}`)) {
-                callback && callback(`${__dirname}/../tmp/${urlOrPath}`);
+            } else if (fs.existsSync(`${thisDir}/../${urlOrPath}`)) {
+                callback && callback(`${thisDir}/../${urlOrPath}`);
+            } else if (fs.existsSync(`${thisDir}/../tmp/${urlOrPath}`)) {
+                callback && callback(`${thisDir}/../tmp/${urlOrPath}`);
             } else {
                 console.log(`File not found: ${urlOrPath}`);
                 process.exit(EXIT_CODES.FILE_NOT_FOUND);
@@ -817,11 +819,11 @@ export async function getJson(
                 if (callback) {
                     callback(sources, urlOrPath);
                 }
-            } else if (fs.existsSync(`${__dirname}/../${urlOrPath}`)) {
+            } else if (fs.existsSync(`${thisDir}/../${urlOrPath}`)) {
                 try {
-                    sources = fs.readJSONSync(`${__dirname}/../${urlOrPath}`);
+                    sources = fs.readJSONSync(`${thisDir}/../${urlOrPath}`);
                 } catch (e) {
-                    console.log(`Cannot parse json file from ${__dirname}/../${urlOrPath}. Error: ${e.message}`);
+                    console.log(`Cannot parse json file from ${thisDir}/../${urlOrPath}. Error: ${e.message}`);
                     if (callback) {
                         callback(null, urlOrPath);
                     }
@@ -830,11 +832,11 @@ export async function getJson(
                 if (callback) {
                     callback(sources, urlOrPath);
                 }
-            } else if (fs.existsSync(`${__dirname}/../tmp/${urlOrPath}`)) {
+            } else if (fs.existsSync(`${thisDir}/../tmp/${urlOrPath}`)) {
                 try {
-                    sources = fs.readJSONSync(`${__dirname}/../tmp/${urlOrPath}`);
+                    sources = fs.readJSONSync(`${thisDir}/../tmp/${urlOrPath}`);
                 } catch (e) {
-                    console.log(`Cannot parse json file from ${__dirname}/../tmp/${urlOrPath}. Error: ${e.message}`);
+                    console.log(`Cannot parse json file from ${thisDir}/../tmp/${urlOrPath}. Error: ${e.message}`);
                     if (callback) {
                         callback(null, urlOrPath);
                     }
@@ -891,19 +893,19 @@ export async function getJsonAsync(urlOrPath: string, agent?: string): Promise<R
                     return null;
                 }
                 return sources;
-            } else if (fs.existsSync(__dirname + '/../' + urlOrPath)) {
+            } else if (fs.existsSync(thisDir + '/../' + urlOrPath)) {
                 try {
-                    sources = fs.readJSONSync(`${__dirname}/../${urlOrPath}`);
+                    sources = fs.readJSONSync(`${thisDir}/../${urlOrPath}`);
                 } catch (e) {
-                    console.warn(`Cannot parse json file from ${__dirname}/../${urlOrPath}. Error: ${e.message}`);
+                    console.warn(`Cannot parse json file from ${thisDir}/../${urlOrPath}. Error: ${e.message}`);
                     return null;
                 }
                 return sources;
-            } else if (fs.existsSync(`${__dirname}/../tmp/${urlOrPath}`)) {
+            } else if (fs.existsSync(`${thisDir}/../tmp/${urlOrPath}`)) {
                 try {
-                    sources = fs.readJSONSync(`${__dirname}/../tmp/${urlOrPath}`);
+                    sources = fs.readJSONSync(`${thisDir}/../tmp/${urlOrPath}`);
                 } catch (e) {
-                    console.log(`Cannot parse json file from ${__dirname}/../tmp/${urlOrPath}. Error: ${e.message}`);
+                    console.log(`Cannot parse json file from ${thisDir}/../tmp/${urlOrPath}. Error: ${e.message}`);
                     return null;
                 }
                 return sources;
@@ -963,9 +965,7 @@ function scanDirectory(dirName: string, list: Record<string, AdapterInformation>
                     };
                 }
             } catch (e) {
-                console.log(
-                    `Cannot read or parse ${__dirname}/../node_modules/${dirs[i]}/io-package.json: ${e.message}`
-                );
+                console.log(`Cannot read or parse ${thisDir}/../node_modules/${dirs[i]}/io-package.json: ${e.message}`);
             }
         }
     }
@@ -1609,7 +1609,7 @@ export function getHostName(): string {
  *        </code></pre>
  */
 function getSystemNpmVersion(callback?: (err?: Error, version?: string | null) => void): void {
-    const { exec } = require('child_process');
+    const { exec } = require('node:child_process');
 
     // remove local node_modules\.bin dir from a path
     // or we potentially get a wrong npm version
@@ -1683,7 +1683,7 @@ async function detectPackageManagerWithFallback(cwd?: string): Promise<PackageMa
                   { cwd }
                 : // Otherwise, try to find the ioBroker root dir
                   {
-                      cwd: (isDevServerInstallation() && require.main?.path) || __dirname,
+                      cwd: (isDevServerInstallation() && require.main?.path) || thisDir,
                       setCwdToPackageRoot: true
                   }
         );
@@ -1834,7 +1834,7 @@ export function getDiskInfo(
     platform = platform || os.platform();
     if (diskusage) {
         try {
-            const path = platform === 'win32' ? __dirname.substring(0, 2) : '/';
+            const path = platform === 'win32' ? thisDir.substring(0, 2) : '/';
             const info = diskusage.checkSync(path);
             return callback && callback(null, { 'Disk size': info.total, 'Disk free': info.free });
         } catch (err) {
@@ -1849,7 +1849,7 @@ export function getDiskInfo(
                 // D:
                 // Y:       116649795584  148368257024
                 // Z:       116649795584  148368257024
-                const disk = __dirname.substring(0, 2).toUpperCase();
+                const disk = thisDir.substring(0, 2).toUpperCase();
 
                 exec(
                     'wmic logicaldisk get size,freespace,caption',
@@ -2201,7 +2201,7 @@ export function getControllerDir(): string {
     }
 
     // Also check in the current check dir (along with iobroker.js-controller sub-dirs)
-    let checkPath = path.join(__dirname, '..', '..');
+    let checkPath = path.join(thisDir, '..', '..');
 
     possibilities.unshift('');
 

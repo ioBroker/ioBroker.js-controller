@@ -1,5 +1,5 @@
-import * as path from 'path';
-import fs from 'fs';
+import * as path from 'node:path';
+import fs from 'node:fs';
 import { Extractor, ExtractorConfig, type ExtractorResult } from '@microsoft/api-extractor';
 
 const apiExtractorJsonPath: string = path.join(__dirname, 'api-extractor.json');

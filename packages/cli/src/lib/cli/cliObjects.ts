@@ -561,7 +561,7 @@ export class CLIObjects extends CLICommand {
 
                 // if no auto confirmation, ask user
                 if (!this.options.f && this.options.y && !this.options.yes) {
-                    const rl = (await import('readline')).createInterface({
+                    const rl = (await import('node:readline')).createInterface({
                         input: process.stdin,
                         output: process.stdout
                     });

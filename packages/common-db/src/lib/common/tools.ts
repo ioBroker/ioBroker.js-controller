@@ -1,4 +1,7 @@
 import { tools } from '@iobroker/js-controller-common';
+import { createRequire } from 'node:module';
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __dirname);
 
 /**
  * Allows to find out if a given states dbType offers a server or not
@@ -8,7 +11,6 @@ import { tools } from '@iobroker/js-controller-common';
  */
 export function statesDbHasServer(dbType: string): boolean {
     try {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
         return !!require(`@iobroker/db-states-${dbType}`).Server;
     } catch {
         throw new Error(`Installation error or unknown states database type: ${dbType}`);
@@ -79,9 +81,9 @@ export function isLocalStatesDbServer(dbType: string, host: string | string[], c
  */
 export function objectsDbHasServer(dbType: string): boolean {
     try {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
         return !!require(`@iobroker/db-objects-${dbType}`).Server;
-    } catch {
+    } catch (e) {
+        console.error(e);
         throw new Error(`Installation error or unknown objects database type: ${dbType}`);
     }
 }

@@ -1,5 +1,5 @@
 import * as tjs from 'ts-json-schema-generator';
-import path from 'path';
+import path from 'node:path';
 import fs from 'fs-extra';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires

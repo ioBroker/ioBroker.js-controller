@@ -2,10 +2,10 @@ import fs from 'fs-extra';
 import { tools } from '@iobroker/js-controller-common';
 import { EXIT_CODES } from '@iobroker/js-controller-common';
 import deepClone from 'deep-clone';
-import { isDeepStrictEqual } from 'util';
+import { isDeepStrictEqual } from 'node:util';
 import Debug from 'debug';
 import { tools as dbTools } from '@iobroker/js-controller-common-db';
-import path from 'path';
+import path from 'node:path';
 import yargs from 'yargs/yargs';
 import * as CLITools from '@/lib/cli/cliTools.js';
 import { CLIHost } from '@/lib/cli/cliHost.js';
@@ -15,32 +15,24 @@ import { CLICert } from '@/lib/cli/cliCert.js';
 import { CLIObjects } from '@/lib/cli/cliObjects.js';
 import { CLICompact } from '@/lib/cli/cliCompact.js';
 import { CLILogs } from '@/lib/cli/cliLogs.js';
+import { CLIProcess } from '@/lib/cli/cliProcess.js';
+import { CLIMessage } from '@/lib/cli/cliMessage.js';
+import { CLIPlugin } from '@/lib/cli/cliPlugin.js';
 import { error as CLIError } from '@/lib/cli/messages.js';
 import type { CLICommandContext, CLICommandOptions } from '@/lib/cli/cliCommand.js';
 import { getRepository } from '@/lib/setup/utils.js';
 import { dbConnect, dbConnectAsync, exitApplicationSave } from '@/lib/setup/dbConnection.js';
 import { IoBrokerError } from '@/lib/setup/customError.js';
-import * as url from 'url';
+import * as url from 'node:url';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
 tools.ensureDNSOrder();
 
-/**
- * Polyfill until everything ported to TS
- */
-const cli = {
-    command: {
-        process: require('./cli/cliProcess.js'),
-        message: require('./cli/cliMessage.js'),
-        plugin: require('./cli/cliPlugin.js')
-    }
-} as const;
-
 const debug = Debug('iobroker:cli');
 
-require('events').EventEmitter.prototype._maxListeners = 100;
+require('node:events').EventEmitter.prototype._maxListeners = 100;
 process.setMaxListeners(0);
 
 let _yargs: ReturnType<typeof yargs>;
@@ -526,7 +518,7 @@ async function processCommand(
     switch (command) {
         case 'start':
         case 'stop': {
-            const procCommand = new cli.command.process(commandOptions);
+            const procCommand = new CLIProcess(commandOptions);
             procCommand[command](args);
             break;
         }
@@ -539,14 +531,14 @@ async function processCommand(
 
         case 'status':
         case 'isrun': {
-            const procCommand = new cli.command.process(commandOptions);
+            const procCommand = new CLIProcess(commandOptions);
             procCommand.status(args);
             break;
         }
 
         case 'r':
         case 'restart': {
-            const procCommand = new cli.command.process(commandOptions);
+            const procCommand = new CLIProcess(commandOptions);
             procCommand.restart(args);
             break;
         }
@@ -1124,7 +1116,7 @@ async function processCommand(
             break;
         }
         case 'unsetup': {
-            const rl = (await import('readline')).createInterface({
+            const rl = (await import('node:readline')).createInterface({
                 input: process.stdin,
                 output: process.stdout
             });
@@ -1162,7 +1154,7 @@ async function processCommand(
 
         case 'msg':
         case 'message': {
-            const messageCommand = new cli.command.message(commandOptions);
+            const messageCommand = new CLIMessage(commandOptions);
             messageCommand.execute(args);
             break;
         }
@@ -2733,7 +2725,7 @@ async function processCommand(
         }
 
         case 'plugin': {
-            const pluginCommand = new cli.command.plugin(commandOptions);
+            const pluginCommand = new CLIPlugin(commandOptions);
             pluginCommand.execute(args);
             break;
         }
@@ -2907,7 +2899,7 @@ function unsetup(params: Record<string, any>, callback: ExitCodeCb): void {
  */
 async function restartController(): Promise<void> {
     console.log('Starting node restart.js');
-    const { spawn } = await import('child_process');
+    const { spawn } = await import('node:child_process');
 
     const child = spawn('node', [`${__dirname}/restart.js`], {
         detached: true,

@@ -42,8 +42,10 @@ import type { UpgradeArguments } from '@/lib/upgradeManager.js';
 import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
 import { setTimeout as wait } from 'node:timers/promises';
 import { getHostObjects } from '@/lib/objects.js';
-import * as url from 'url';
+import * as url from 'node:url';
+import { createRequire } from 'node:module';
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+const require = createRequire(import.meta.url || 'file://' + __dirname);
 
 type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
 type Dependencies = string[] | Record<string, string>[] | string | Record<string, string>;
@@ -247,7 +249,6 @@ function getConfig(): ioBroker.IoBrokerJson | never {
  * @param secret
  */
 function _startMultihost(_config: Record<string, any>, secret: string | false): void {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const MHService = require('./lib/multihostServer.js');
     const cpus = os.cpus();
     mhService = new MHService(
@@ -5164,7 +5165,7 @@ function stop(force?: boolean, callback?: () => void): void {
  *
  * @param compactGroupId the id of the compact group
  */
-export function init(compactGroupId?: number): void {
+export async function init(compactGroupId?: number): Promise<void> {
     if (compactGroupId) {
         compactGroupController = true;
         compactGroup = compactGroupId;
@@ -5197,20 +5198,16 @@ export function init(compactGroupId?: number): void {
     // Get "objects" object
     // If "file" and on the local machine
     if (dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host) && !compactGroupController) {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
         Objects = require(`@iobroker/db-objects-${config.objects.type}`).Server;
     } else {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        Objects = require('@iobroker/js-controller-common-db').getObjectsConstructor();
+        Objects = await require('@iobroker/js-controller-common-db').getObjectsConstructor();
     }
 
     // Get "states" object
     if (dbTools.isLocalStatesDbServer(config.states.type, config.states.host) && !compactGroupController) {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
         States = require(`@iobroker/db-states-${config.states.type}`).Server;
     } else {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        States = require('@iobroker/js-controller-common-db').getStatesConstructor();
+        States = await require('@iobroker/js-controller-common-db').getStatesConstructor();
     }
 
     // Detect if outputs to console are forced. By default, they are disabled and redirected to log file

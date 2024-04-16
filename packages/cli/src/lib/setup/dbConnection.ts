@@ -6,7 +6,7 @@ import { tools } from '@iobroker/js-controller-common';
 import { setTimeout as wait } from 'node:timers/promises';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
-import path from 'path';
+import path from 'node:path';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import { PluginHandler } from '@iobroker/plugin-base';
 
@@ -31,11 +31,11 @@ export function dbConnect(onlyCheck: boolean, params: Record<string, any>, callb
  * @param params
  * @param callback
  */
-export function dbConnect(
+export async function dbConnect(
     onlyCheck: boolean | Record<string, any> | DbConnectCallback,
     params?: DbConnectParams | DbConnectCallback,
     callback?: DbConnectCallback
-): void {
+): Promise<void> {
     if (typeof onlyCheck === 'object') {
         callback = params as DbConnectCallback;
         params = onlyCheck;
@@ -56,7 +56,7 @@ export function dbConnect(
 
     params = params || {};
 
-    const config = fs.readJSONSync(tools.getConfigFileName());
+    const config: ioBroker.IoBrokerJson = fs.readJSONSync(tools.getConfigFileName());
 
     if (objects && states) {
         return void callback({ objects, states, isOffline: false, objectsDBType: config.objects.type, config });
@@ -69,8 +69,8 @@ export function dbConnect(
     config.states.connectTimeout = Math.max(config.states.connectTimeout || 0, 5_000);
     config.objects.connectTimeout = Math.max(config.objects.connectTimeout || 0, 5_000);
 
-    Objects = getObjectsConstructor(); // Objects DB Client object
-    States = getStatesConstructor(); // States DB Client object
+    Objects = await getObjectsConstructor(); // Objects DB Client object
+    States = await getStatesConstructor(); // States DB Client object
 
     let isObjectConnected = false;
     let isStatesConnected = false;

@@ -2,7 +2,7 @@ import * as CLI from './messages.js';
 import { CLICommand, type CLICommandOptions } from './cliCommand.js';
 import * as CLITools from './cliTools.js';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
-import { fork } from 'child_process';
+import { fork } from 'node:child_process';
 
 /** Command ioBroker debug ... */
 export class CLIDebug extends CLICommand {

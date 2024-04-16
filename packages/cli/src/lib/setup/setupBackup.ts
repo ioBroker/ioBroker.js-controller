@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
-import path from 'path';
+import path from 'node:path';
 import { Upload } from './setupUpload.js';
 import { exec as execAsync } from 'promisify-child-process';
 import tar from 'tar';
@@ -887,8 +887,7 @@ export class BackupRestore {
      * Validates the backup.json and all json files inside the backup after (in temporary directory), here we only abort if backup.json is corrupted
      */
     private _validateBackupAfterCreation(): void {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const backupJSON = require(`${this.tmpDir}/backup/backup.json`);
+        const backupJSON = fs.readJSONSync(`${this.tmpDir}/backup/backup.json`);
         if (!backupJSON.objects || !backupJSON.objects.length) {
             throw new Error('Backup does not contain valid objects');
         }
@@ -991,7 +990,7 @@ export class BackupRestore {
                     console.log(`host.${this.hostname} Starting validation ...`);
                     let backupJSON;
                     try {
-                        backupJSON = require(`${this.tmpDir}/backup/backup.json`);
+                        backupJSON = fs.readJSONSync(`${this.tmpDir}/backup/backup.json`);
                     } catch (err) {
                         console.error(
                             `host.${this.hostname} Backup corrupted. Backup ${name} does not contain a valid backup.json file: ${err.message}`
@@ -1048,7 +1047,7 @@ export class BackupRestore {
                     this._checkDirectory(filePath, verbose);
                 } else if (file.endsWith('.json')) {
                     try {
-                        require(filePath);
+                        fs.readJSONSync(filePath);
                         if (verbose) {
                             console.log(`host.${this.hostname} ${file} OK`);
                         }
@@ -1138,7 +1137,7 @@ export class BackupRestore {
                 cwd: this.tmpDir
             },
             undefined,
-            err => {
+            async err => {
                 if (err) {
                     console.error(`host.${this.hostname} Cannot extract from file "${name}": ${err.message}`);
                     return void this.processExit(9);
@@ -1150,14 +1149,15 @@ export class BackupRestore {
                     return void this.processExit(9);
                 }
                 // Stop controller
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                const daemon = require('daemonize2').setup({
+                // @ts-expect-error not a ts module
+                const daemon = (await import('daemonize2')).setup({
                     main: path.join(controllerDir, 'controller.js'),
                     name: `${tools.appName} controller`,
                     pidfile: path.join(controllerDir, `${tools.appName}.pid`),
                     cwd: controllerDir,
                     stopTimeout: 1_000
                 });
+
                 daemon.on('error', async () => {
                     const exitCode = await this._restoreAfterStop({
                         restartOnFinish: false,

@@ -9,11 +9,11 @@
 
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 import semver from 'semver';
-import child_process from 'child_process';
+import child_process from 'node:child_process';
 import axios from 'axios';
-import { URL } from 'url';
+import { URL } from 'node:url';
 import { Upload } from './setupUpload.js';
 import { PacketManager } from './setupPacketManager.js';
 import { getRepository } from './utils.js';

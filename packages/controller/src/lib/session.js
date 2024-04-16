@@ -1,6 +1,5 @@
-'use strict';
 /** @type any */
-module.exports = function (session, defaultTtl) {
+export default function (session, defaultTtl) {
     const Store = session.Store;
     defaultTtl = defaultTtl || 3600;
 
@@ -77,4 +76,4 @@ module.exports = function (session, defaultTtl) {
     };
 
     return AdapterStore;
-};
+}

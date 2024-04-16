@@ -7,17 +7,10 @@
  *
  */
 
-/** @module statesInMemory */
+import { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
+import StatesInMemServer from './statesInMemServerRedis.js';
 
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node: true */
-'use strict';
-
-const StatesInRedisClient = require('@iobroker/db-states-redis').Client;
-const StatesInMemServer = require('./statesInMemServerRedis');
-
-class StatesInMemoryServerClass extends StatesInRedisClient {
+export default class StatesInMemoryServerClass extends StatesInRedisClient {
     constructor(settings) {
         settings.autoConnect = false; // delay Client connection to when we need it
         super(settings);
@@ -43,5 +36,3 @@ class StatesInMemoryServerClass extends StatesInRedisClient {
         return this.statesServer.getStatus(); // return Status as Server
     }
 }
-
-module.exports = StatesInMemoryServerClass;
