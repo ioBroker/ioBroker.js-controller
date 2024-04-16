@@ -7,7 +7,7 @@
  *
  */
 
-import type { CleanDatabaseHandler, IoPackage, ProcessExitCallback, RestartController } from '@/lib/_Types';
+import type { CleanDatabaseHandler, IoPackage, ProcessExitCallback, RestartController } from '@/lib/_Types.js';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
@@ -15,22 +15,24 @@ import fs from 'fs-extra';
 import path from 'path';
 import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
 import { tools as dbTools } from '@iobroker/js-controller-common-db';
-import { resetDbConnect, dbConnectAsync } from '@/lib/setup/dbConnection';
-import { BackupRestore } from '@/lib/setup/setupBackup';
+import { resetDbConnect, dbConnectAsync } from '@/lib/setup/dbConnection.js';
+import { BackupRestore } from '@/lib/setup/setupBackup.js';
 import crypto from 'crypto';
 import deepClone from 'deep-clone';
-import * as pluginInfos from '@/lib/setup/pluginInfos';
+import * as pluginInfos from '@/lib/setup/pluginInfos.js';
 import rl from 'readline-sync';
 import os from 'os';
 import { FORBIDDEN_CHARS } from '@iobroker/js-controller-common/tools';
 import { SYSTEM_ADAPTER_PREFIX, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common/constants';
-import { Upload } from '@/lib/setup/setupUpload';
+import { Upload } from '@/lib/setup/setupUpload.js';
 
 const COLOR_RED = '\x1b[31m';
 const COLOR_YELLOW = '\x1b[33m';
 const COLOR_RESET = '\x1b[0m';
 const COLOR_GREEN = '\x1b[32m';
 const CONTROLLER_DIR = tools.getControllerDir();
+import * as url from 'url';
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 export interface CLISetupOptions {
     cleanDatabase: CleanDatabaseHandler;

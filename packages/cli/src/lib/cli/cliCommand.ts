@@ -1,4 +1,4 @@
-import type { DbConnectCallback } from '../_Types';
+import type { DbConnectCallback } from '../_Types.js';
 
 export interface CLICommandContext {
     /** Invoke this before doing anything in the database */

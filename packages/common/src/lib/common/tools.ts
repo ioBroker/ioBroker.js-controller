@@ -20,8 +20,8 @@ import { exec } from 'child_process';
 import { URLSearchParams } from 'url';
 import events from 'events';
 import { maybeCallbackWithError } from '@/lib/common/maybeCallback.js';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const extend = require('node.extend');
+// @ts-expect-error has no types
+import extend from 'node.extend';
 import { setDefaultResultOrder } from 'dns';
 import {
     applyAliasAutoScaling,
@@ -29,6 +29,11 @@ import {
     applyAliasTransformer
 } from '@/lib/common/aliasProcessing.js';
 import type * as DiskUsage from 'diskusage';
+import * as url from 'url';
+import { createRequire } from 'node:module';
+
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+const require = createRequire(import.meta.url);
 
 type DockerInformation =
     | {
@@ -488,7 +493,7 @@ function uuid(givenMac: string | null, callback: (uuid: string) => void): void {
     const _isDocker = isDocker();
 
     // return constant UUID for all CI environments to keep the statistics clean
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+
     if (require('ci-info').isCI) {
         return callback('55travis-pipe-line-cior-githubaction');
     }
@@ -1468,7 +1473,6 @@ export async function getRepositoryFileAsync(
             data = _actualRepo;
         } else {
             const agent = `${appName}, RND: ${randomID}, Node:${process.version}, V:${
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
                 require('@iobroker/js-controller-common/package.json').version
             }`;
             try {
@@ -1599,7 +1603,6 @@ export function getHostName(): string {
  *        </code></pre>
  */
 function getSystemNpmVersion(callback?: (err?: Error, version?: string | null) => void): void {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const { exec } = require('child_process');
 
     // remove local node_modules\.bin dir from a path
@@ -2183,10 +2186,13 @@ export function getControllerDir(): string {
                 paths: getDefaultRequireResolvePaths(module)
             });
 
+            console.log(possiblePath);
+
             if (fs.existsSync(possiblePath)) {
                 return path.dirname(possiblePath);
             }
-        } catch {
+        } catch (e) {
+            console.log(e);
             /* not found */
         }
     }
@@ -2200,10 +2206,12 @@ export function getControllerDir(): string {
         for (const pkg of possibilities) {
             try {
                 const possiblePath = path.join(checkPath, pkg);
+                console.log(path.join(possiblePath, `${appNameLowerCase}.js`));
                 if (fs.existsSync(path.join(possiblePath, `${appNameLowerCase}.js`))) {
                     return possiblePath;
                 }
-            } catch {
+            } catch (e) {
+                console.log(e);
                 // not found, continue with next possibility
             }
         }

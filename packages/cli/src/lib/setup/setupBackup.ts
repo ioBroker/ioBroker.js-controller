@@ -1,14 +1,14 @@
 import fs from 'fs-extra';
 import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
 import path from 'path';
-import { Upload } from './setupUpload';
+import { Upload } from './setupUpload.js';
 import { exec as execAsync } from 'promisify-child-process';
 import tar from 'tar';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import type { CleanDatabaseHandler, ProcessExitCallback, RestartController } from '../_Types';
-import { dbConnectAsync, resetDbConnect } from './dbConnection';
-import { IoBrokerError } from './customError';
+import type { CleanDatabaseHandler, ProcessExitCallback, RestartController } from '../_Types.js';
+import { dbConnectAsync, resetDbConnect } from './dbConnection.js';
+import { IoBrokerError } from './customError.js';
 
 export interface CLIBackupRestoreOptions {
     dbMigration?: boolean;

@@ -10,7 +10,7 @@ import { PluginHandler } from '@iobroker/plugin-base';
 import semver from 'semver';
 import path from 'node:path';
 import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
-import { decryptArray, encryptArray, getSupportedFeatures, isMessageboxSupported } from '@/lib/adapter/utils';
+import { decryptArray, encryptArray, getSupportedFeatures, isMessageboxSupported } from '@/lib/adapter/utils.js';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const extend = require('node.extend');
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
@@ -21,8 +21,8 @@ import type NodeSchedule from 'node-schedule';
 // local version is always the same as controller version, since lerna exact: true is used
 import { version as controllerVersion } from '@iobroker/js-controller-adapter/package.json';
 
-import { Log } from '@/lib/adapter/log';
-import { Validator } from './validator';
+import { Log } from '@/lib/adapter/log.js';
+import { Validator } from './validator.js';
 
 const { FORBIDDEN_CHARS } = tools;
 import {
@@ -40,7 +40,7 @@ import {
     NO_PROTECT_ADAPTERS,
     STATE_QUALITY,
     type SupportedFeature
-} from '@/lib/adapter/constants';
+} from '@/lib/adapter/constants.js';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import type {
     AdapterOptions,
@@ -109,10 +109,12 @@ import type {
     AllPropsUnknown,
     IoPackageInstanceObject,
     AliasTargetEntry
-} from '@/lib/_Types';
-import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController';
+} from '@/lib/_Types.js';
+import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
 
+import * as url from 'url';
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 tools.ensureDNSOrder();
 
 /**

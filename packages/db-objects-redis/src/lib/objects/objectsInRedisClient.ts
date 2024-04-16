@@ -15,10 +15,15 @@ import path from 'path';
 import crypto from 'crypto';
 import { isDeepStrictEqual } from 'util';
 import deepClone from 'deep-clone';
-import type { ACLObject, FileObject, CheckFileRightsCallback, GetUserGroupPromiseReturn } from './objectsUtils.js';
-import * as utils from './objectsUtils.js';
+import type {
+    ACLObject,
+    FileObject,
+    CheckFileRightsCallback,
+    GetUserGroupPromiseReturn
+} from '@/lib/objects/objectsUtils.js';
+import * as utils from '@/lib/objects/objectsUtils.js';
 import semver from 'semver';
-import * as CONSTS from './constants';
+import * as CONSTS from '@/lib/objects/constants.js';
 import type { InternalLogger } from '@iobroker/js-controller-common/tools';
 import type { ConnectionOptions, DbStatus } from '@iobroker/db-base/inMemFileDB';
 

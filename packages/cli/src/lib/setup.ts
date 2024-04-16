@@ -6,20 +6,22 @@ import { isDeepStrictEqual } from 'util';
 import Debug from 'debug';
 import { tools as dbTools } from '@iobroker/js-controller-common-db';
 import path from 'path';
-import yargs from 'yargs';
-import * as CLITools from './cli/cliTools';
-import { CLIHost } from './cli/cliHost';
-import { CLIStates } from './cli/cliStates';
-import { CLIDebug } from './cli/cliDebug';
-import { CLICert } from './cli/cliCert';
-import { CLIObjects } from './cli/cliObjects';
-import { CLICompact } from './cli/cliCompact';
-import { CLILogs } from './cli/cliLogs';
-import { error as CLIError } from './cli/messages';
-import type { CLICommandContext, CLICommandOptions } from './cli/cliCommand';
-import { getRepository } from './setup/utils';
-import { dbConnect, dbConnectAsync, exitApplicationSave } from './setup/dbConnection';
-import { IoBrokerError } from './setup/customError';
+import yargs from 'yargs/yargs';
+import * as CLITools from '@/lib/cli/cliTools.js';
+import { CLIHost } from '@/lib/cli/cliHost.js';
+import { CLIStates } from '@/lib/cli/cliStates.js';
+import { CLIDebug } from '@/lib/cli/cliDebug.js';
+import { CLICert } from '@/lib/cli/cliCert.js';
+import { CLIObjects } from '@/lib/cli/cliObjects.js';
+import { CLICompact } from '@/lib/cli/cliCompact.js';
+import { CLILogs } from '@/lib/cli/cliLogs.js';
+import { error as CLIError } from '@/lib/cli/messages.js';
+import type { CLICommandContext, CLICommandOptions } from '@/lib/cli/cliCommand.js';
+import { getRepository } from '@/lib/setup/utils.js';
+import { dbConnect, dbConnectAsync, exitApplicationSave } from '@/lib/setup/dbConnection.js';
+import { IoBrokerError } from '@/lib/setup/customError.js';
+import * as url from 'url';
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 tools.ensureDNSOrder();
 
@@ -40,7 +42,7 @@ const debug = Debug('iobroker:cli');
 require('events').EventEmitter.prototype._maxListeners = 100;
 process.setMaxListeners(0);
 
-let _yargs: yargs.Argv;
+let _yargs: ReturnType<typeof yargs>;
 
 type ExitCodeCb = (exitCode?: number) => void;
 
@@ -50,8 +52,11 @@ interface InternalRebuildOptions {
     debug: boolean;
 }
 
-function initYargs(): yargs.Argv {
-    _yargs = yargs
+/**
+ * Initialize Yargs to parse commands correctly and be able to output correct help
+ */
+function initYargs(): ReturnType<typeof yargs> {
+    _yargs = yargs(process.argv.slice(2))
         .scriptName(tools.appName)
         .locale('en') // otherwise it could be mixed, because our implementations are in english
         .version(false) // disable yargs own version handling, because we have our own depending on passed instances
@@ -491,14 +496,10 @@ function initYargs(): yargs.Argv {
 
 /**
  * Show yargs help, if processCommand is used as import, yargs won't be initialized
- *
- * @param _yargs - yargs instance
  */
-function showHelp(_yargs?: yargs.Argv): void {
+function showHelp(): void {
     if (_yargs) {
         _yargs.showHelp();
-    } else {
-        yargs.showHelp();
     }
 }
 

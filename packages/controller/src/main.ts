@@ -42,6 +42,8 @@ import type { UpgradeArguments } from '@/lib/upgradeManager.js';
 import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
 import { setTimeout as wait } from 'node:timers/promises';
 import { getHostObjects } from '@/lib/objects.js';
+import * as url from 'url';
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
 type Dependencies = string[] | Record<string, string>[] | string | Record<string, string>;
@@ -4343,6 +4345,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
                         if (adapterMainFile!) {
                             try {
+                                // @ts-expect-error commonjs module TODO: validate
                                 decache(adapterMainFile);
 
                                 // Prior to requiring the main file, make sure that the esbuild require hook was loaded
@@ -4351,7 +4354,6 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                     require('@alcalzone/esbuild-register');
                                 }
 
-                                logger.warn(hostLogPrefix + ' ' + (await isAdapterEsmModule(name)));
                                 const module = (await isAdapterEsmModule(name))
                                     ? await import(adapterMainFile)
                                     : require(adapterMainFile);

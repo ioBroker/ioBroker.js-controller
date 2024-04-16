@@ -3,7 +3,7 @@ import path from 'path';
 import { tools } from '@iobroker/js-controller-common';
 import { tools as dbTools } from '@iobroker/js-controller-common-db';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import { MHClient, type BrowseResultEntry } from './multihostClient';
+import { MHClient, type BrowseResultEntry } from './multihostClient.js';
 import readline from 'readline';
 import prompt from 'prompt';
 

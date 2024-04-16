@@ -9,6 +9,8 @@ import { LEVEL } from 'triple-beam';
 import deepClone from 'deep-clone';
 import type { Syslog } from 'winston-syslog';
 import type { SeqTransport } from '@datalust/winston-seq';
+import * as url from 'url';
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 const hostname = tools.getHostName();
 

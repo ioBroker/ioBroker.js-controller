@@ -1,6 +1,6 @@
-import * as CLI from './messages';
-import { CLICommand, type CLICommandOptions } from './cliCommand';
-import { enumHosts, enumObjects, getObjectFrom, enumInstances } from './cliTools';
+import * as CLI from './messages.js';
+import { CLICommand, type CLICommandOptions } from './cliCommand.js';
+import { enumHosts, enumObjects, getObjectFrom, enumInstances } from './cliTools.js';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import os from 'os';

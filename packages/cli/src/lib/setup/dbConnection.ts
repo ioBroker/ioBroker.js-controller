@@ -1,4 +1,4 @@
-import type { DbConnectAsyncReturn, DbConnectCallback } from '../_Types';
+import type { DbConnectAsyncReturn, DbConnectCallback } from '../_Types.js';
 import fs from 'fs-extra';
 import { getObjectsConstructor, getStatesConstructor, tools as dbTools } from '@iobroker/js-controller-common-db';
 import { EXIT_CODES } from '@iobroker/js-controller-common';

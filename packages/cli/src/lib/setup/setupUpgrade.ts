@@ -2,16 +2,16 @@ import Debug from 'debug';
 import * as fs from 'fs-extra';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import semver from 'semver';
-import { Upload } from './setupUpload';
-import { Install } from './setupInstall';
+import { Upload } from './setupUpload.js';
+import { Install } from './setupInstall.js';
 import rl from 'readline-sync';
 import tty from 'tty';
 import path from 'path';
-import { getRepository } from './utils';
+import { getRepository } from './utils.js';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
-import type { ProcessExitCallback } from '../_Types';
-import { IoBrokerError } from './customError';
+import type { ProcessExitCallback } from '../_Types.js';
+import { IoBrokerError } from './customError.js';
 
 const debug = Debug('iobroker:cli');
 

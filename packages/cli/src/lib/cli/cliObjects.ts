@@ -1,7 +1,7 @@
-import { CLICommand, type CLICommandOptions } from './cliCommand';
+import { CLICommand, type CLICommandOptions } from './cliCommand.js';
 
 import * as CLI from './messages.js';
-import { formatValue } from './cliTools';
+import { formatValue } from './cliTools.js';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
