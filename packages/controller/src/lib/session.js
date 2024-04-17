@@ -1,4 +1,3 @@
-// @ts-expect-error port this to ts
 export default function createAdapterStore(session, defaultTtl = 3600) {
     const Store = session.Store;
 
