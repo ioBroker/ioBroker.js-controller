@@ -88,7 +88,10 @@ export async function dbConnect(
                     await objects.destroy();
                     objects = null;
                 }
-                if (dbTools.objectsDbHasServer(config.objects.type)) {
+
+                const hasObjectsServer = await dbTools.objectsDbHasServer(config.objects.type);
+
+                if (hasObjectsServer) {
                     // Just open in memory DB itself
                     Objects = (await import(`@iobroker/db-objects-${config.objects.type}`)).Server;
                     objects = new Objects!({
@@ -150,7 +153,10 @@ export async function dbConnect(
                     await states.destroy();
                     states = null;
                 }
-                if (dbTools.statesDbHasServer(config.states.type)) {
+
+                const hasStatesServer = await dbTools.statesDbHasServer(config.states.type);
+
+                if (hasStatesServer) {
                     // Just open in memory DB itself
                     States = (await import(`@iobroker/db-states-${config.states.type}`)).Server;
 

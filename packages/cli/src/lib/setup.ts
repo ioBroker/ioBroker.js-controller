@@ -700,7 +700,11 @@ async function processCommand(
                         if (config.states.type === 'file') {
                             config.states.type = 'jsonl';
 
-                            if (dbTools.isLocalStatesDbServer('file', config.states.host)) {
+                            const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(
+                                'file',
+                                config.states.host
+                            );
+                            if (hasLocalStatesServer) {
                                 // silent config change on secondaries
                                 console.log('States DB type migrated from "file" to "jsonl"');
                                 migrated += 'States';
@@ -709,7 +713,12 @@ async function processCommand(
 
                         if (config.objects.type === 'file') {
                             config.objects.type = 'jsonl';
-                            if (dbTools.isLocalObjectsDbServer('file', config.objects.host)) {
+
+                            const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(
+                                'file',
+                                config.objects.host
+                            );
+                            if (hasLocalObjectsServer) {
                                 // silent config change on secondaries
                                 console.log('Objects DB type migrated from "file" to "jsonl"');
                                 migrated += migrated ? ' and Objects' : 'Objects';
@@ -2463,8 +2472,9 @@ async function processCommand(
         }
 
         case 'checklog': {
-            dbConnect(params, ({ objects, states, isOffline, objectsDBType }) => {
-                if (isOffline && dbTools.objectsDbHasServer(objectsDBType)) {
+            dbConnect(params, async ({ objects, states, isOffline, objectsDBType }) => {
+                const hasLocalObjectsServer = await dbTools.objectsDbHasServer(objectsDBType);
+                if (isOffline && hasLocalObjectsServer) {
                     console.log(`${tools.appName} is not running`);
                     return void callback(EXIT_CODES.CONTROLLER_NOT_RUNNING);
                 } else {

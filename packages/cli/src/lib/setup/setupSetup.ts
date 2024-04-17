@@ -399,15 +399,21 @@ Please DO NOT copy files manually into ioBroker storage directories!`
      */
     async migrateObjects(newConfig: ioBroker.IoBrokerJson, oldConfig: ioBroker.IoBrokerJson): Promise<EXIT_CODES> {
         // allow migration if one of the db types changed or host changed of redis
-        const oldStatesHasServer = dbTools.statesDbHasServer(oldConfig.states.type);
-        const oldObjectsHasServer = dbTools.statesDbHasServer(oldConfig.objects.type);
-        const newStatesHasServer = dbTools.statesDbHasServer(newConfig.states.type);
-        const newObjectsHasServer = dbTools.statesDbHasServer(newConfig.objects.type);
+        const oldStatesHasServer = await dbTools.statesDbHasServer(oldConfig.states.type);
+        const oldObjectsHasServer = await dbTools.statesDbHasServer(oldConfig.objects.type);
+        const newStatesHasServer = await dbTools.statesDbHasServer(newConfig.states.type);
+        const newObjectsHasServer = await dbTools.statesDbHasServer(newConfig.objects.type);
 
-        const oldStatesLocalServer = dbTools.isLocalStatesDbServer(oldConfig.states.type, oldConfig.states.host);
-        const oldObjectsLocalServer = dbTools.isLocalObjectsDbServer(oldConfig.objects.type, oldConfig.objects.host);
-        const newStatesLocalServer = dbTools.isLocalStatesDbServer(newConfig.states.type, newConfig.states.host);
-        const newObjectsLocalServer = dbTools.isLocalObjectsDbServer(newConfig.objects.type, newConfig.objects.host);
+        const oldStatesLocalServer = await dbTools.isLocalStatesDbServer(oldConfig.states.type, oldConfig.states.host);
+        const oldObjectsLocalServer = await dbTools.isLocalObjectsDbServer(
+            oldConfig.objects.type,
+            oldConfig.objects.host
+        );
+        const newStatesLocalServer = await dbTools.isLocalStatesDbServer(newConfig.states.type, newConfig.states.host);
+        const newObjectsLocalServer = await dbTools.isLocalObjectsDbServer(
+            newConfig.objects.type,
+            newConfig.objects.host
+        );
 
         if (
             oldConfig &&
@@ -691,10 +697,11 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 }`
             );
         }
-        if (
-            dbTools.objectsDbHasServer(originalConfig.objects.type) ||
-            dbTools.statesDbHasServer(originalConfig.states.type)
-        ) {
+
+        const hasObjectsServer = await dbTools.objectsDbHasServer(originalConfig.objects.type);
+        const hasStatesServer = await dbTools.statesDbHasServer(originalConfig.states.type);
+
+        if (hasObjectsServer || hasStatesServer) {
             console.log(`- Data Directory: ${tools.getDefaultDataDir()}`);
         }
         if (originalConfig && originalConfig.system && originalConfig.system.hostname) {
@@ -937,7 +944,10 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         let dir;
         let hname;
 
-        if (dbTools.isLocalStatesDbServer(stype, sHost) || dbTools.isLocalObjectsDbServer(otype, oHost)) {
+        const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(otype, oHost);
+        const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(stype, sHost);
+
+        if (hasLocalStatesServer || hasLocalObjectsServer) {
             let validDataDir = false;
 
             while (!validDataDir) {
