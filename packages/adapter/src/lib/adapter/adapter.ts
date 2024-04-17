@@ -19,7 +19,9 @@ import type Winston from 'winston';
 import type NodeSchedule from 'node-schedule';
 
 // local version is always the same as controller version, since lerna exact: true is used
-import { version as controllerVersion } from '@iobroker/js-controller-adapter/package.json';
+import packJson from '@iobroker/js-controller-adapter/package.json' assert { type: 'json' };
+
+const controllerVersion = packJson.version;
 
 import { Log } from '@/lib/adapter/log.js';
 import { Validator } from './validator.js';

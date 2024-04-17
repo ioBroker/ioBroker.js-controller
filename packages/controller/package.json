@@ -78,7 +78,7 @@
   "scripts": {
     "build": "tsc -b tsconfig.build.json && tsc-alias",
     "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/",
-    "preinstall": "node build/cjs/lib/preinstallCheck.js",
+    "preinstall": "node build/esm/lib/preinstallCheck.js",
     "install": "node iobroker.js setup first",
     "start": "node iobroker.js start",
     "stop": "node iobroker.js stop",
