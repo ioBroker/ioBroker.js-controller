@@ -52,6 +52,7 @@ describe(textName + 'Test Objects Redis', function () {
 
         objects = _objects;
         states = _states;
+        // @ts-expect-error fix later
         context.objects = _objects;
         expect(objects).to.be.ok;
         expect(states).to.be.ok;

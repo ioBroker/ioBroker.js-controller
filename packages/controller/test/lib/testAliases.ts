@@ -1,4 +1,4 @@
-import type { TestContext } from '../_Types';
+import type { TestContext } from '../_Types.js';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 
 async function prepareGroupsAndUsers(objects: ObjectsInRedisClient): Promise<void> {
