@@ -1,12 +1,10 @@
 import * as tjs from 'ts-json-schema-generator';
 import path from 'node:path';
 import fs from 'fs-extra';
+import axios from 'axios';
 
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = __dirname;
-
-// @ts-expect-error no ts module
-import getSpdxLicenseIds from 'get-spdx-license-ids';
 
 /**
  * Update contents io iobroker.json schema
@@ -34,6 +32,31 @@ async function updateLicenseArray(): Promise<void> {
     const ioPackSchema = fs.readJSONSync(path.join(thisDir, 'io-package.json'));
     ioPackSchema.definitions.license.enum = licenses;
     fs.writeJSONSync(path.join(thisDir, 'io-package.json'), ioPackSchema, { spaces: 2 });
+}
+
+interface LicenseEntry {
+    /** If license is deprecated */
+    isDeprecatedLicenseId: boolean;
+    /** License ID */
+    licenseId: string;
+    /** Other unimportant properties */
+    [other: string]: unknown;
+}
+
+/**
+ * Get all valid and non deprecated spdx licenses
+ */
+async function getSpdxLicenseIds(): Promise<string[]> {
+    const url = 'https://spdx.org/licenses/licenses.json';
+
+    const res = await axios.get(url);
+
+    const { licenses } = res.data as { licenses: LicenseEntry[] };
+
+    // filter out deprecated and invalid licenses
+    return licenses
+        .filter(licenseEntry => !licenseEntry.licenseId.endsWith('+') && !licenseEntry.isDeprecatedLicenseId)
+        .map(licenseEntry => licenseEntry.licenseId);
 }
 
 updateIobJSON();
