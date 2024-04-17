@@ -17,6 +17,7 @@ import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type Winston from 'winston';
 import type NodeSchedule from 'node-schedule';
+import yargs from 'yargs/yargs';
 
 // local version is always the same as controller version, since lerna exact: true is used
 import packJson from '@iobroker/js-controller-adapter/package.json' assert { type: 'json' };
@@ -728,46 +729,71 @@ export class AdapterClass extends EventEmitter {
         this._config = this._options.config || this._config;
         this.startedInCompactMode = !!this._options.compact;
 
-        // possible arguments
-        // 0,1,.. - instance
-        // info, debug, warn, error - log level
-        // --force
-        // --logs
-        // --silent
-        // --install
-        // --debug = --force + --logs
-        if (process.argv) {
-            for (const argument of process.argv) {
-                if (
-                    argument === 'info' ||
-                    argument === 'debug' ||
-                    argument === 'error' ||
-                    argument === 'warn' ||
-                    argument === 'silly'
-                ) {
-                    this._config.log.level = argument;
-                    this.overwriteLogLevel = true;
-                } else if (argument === '--silent') {
-                    this._config.isInstall = true;
-                } else if (argument === '--install') {
-                    this._config.isInstall = true;
-                } else if (argument === '--logs') {
-                    this._config.consoleOutput = true;
-                } else if (argument === '--force') {
-                    this._config.forceIfDisabled = true;
-                } else if (argument === '--debug') {
-                    this._config.forceIfDisabled = true;
-                    this._config.consoleOutput = true;
-                    if (this._config.log.level !== 'silly') {
-                        this._config.log.level = 'debug';
-                        this.overwriteLogLevel = true;
-                    }
-                } else if (argument === '--console') {
-                    this._config.consoleOutput = true;
-                } else if (parseInt(argument, 10).toString() === argument) {
-                    this._config.instance = parseInt(argument, 10);
+        const parsedArgs = yargs(process.argv.slice(2))
+            .options({
+                loglevel: {
+                    describe: 'Define adapter log level',
+                    type: 'string'
+                },
+                silent: {
+                    describe: 'If is install run',
+                    type: 'boolean'
+                },
+                install: {
+                    describe: 'If is install run',
+                    type: 'boolean'
+                },
+                logs: {
+                    describe: 'If console output desired',
+                    type: 'boolean'
+                },
+                console: {
+                    describe: 'If console output desired',
+                    type: 'boolean'
+                },
+                force: {
+                    describe: 'If force start even if disabled',
+                    type: 'boolean'
+                },
+                debug: {
+                    describe: 'Same as --force combined with --console',
+                    type: 'boolean'
+                },
+                instance: {
+                    describe: 'Instance id, e.g. 0',
+                    type: 'string'
                 }
+            })
+            .parseSync();
+
+        if (parsedArgs.loglevel && ['info', 'debug', 'error', 'warn', 'silly'].includes(parsedArgs.loglevel)) {
+            this._config.log.level = parsedArgs.loglevel;
+            this.overwriteLogLevel = true;
+        }
+
+        if (parsedArgs.silent || parsedArgs.install) {
+            this._config.isInstall = true;
+        }
+
+        if (parsedArgs.logs || parsedArgs.console) {
+            this._config.consoleOutput = true;
+        }
+
+        if (parsedArgs.force) {
+            this._config.forceIfDisabled = true;
+        }
+
+        if (parsedArgs.debug) {
+            this._config.forceIfDisabled = true;
+            this._config.consoleOutput = true;
+            if (this._config.log.level !== 'silly') {
+                this._config.log.level = 'debug';
+                this.overwriteLogLevel = true;
             }
+        }
+
+        if (parsedArgs.instance && parseInt(parsedArgs.instance, 10).toString() === parsedArgs.instance) {
+            this._config.instance = parseInt(parsedArgs.instance, 10);
         }
 
         this._config.log.level = this._config.log.level || 'info';
@@ -11713,7 +11739,7 @@ export class AdapterClass extends EventEmitter {
                 }
 
                 this.inited = true;
-                this._initStates(this._prepareInitAdapter.bind(this));
+                this._initStates(() => this._prepareInitAdapter());
             });
         };
 

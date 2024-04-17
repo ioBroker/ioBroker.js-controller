@@ -108,7 +108,7 @@ describe('States-Redis: Test states in Redis', function () {
             }
         };
 
-        states!.setStateAsync(testID, 2);
+        states!.setState(testID, 2);
     }).timeout(10_000);
 
     // todo: write more tests
