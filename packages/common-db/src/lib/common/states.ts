@@ -10,7 +10,8 @@ export async function getStatesConstructor(): Promise<any> {
     try {
         const Client = (await import(`@iobroker/db-states-${config.states.type}`)).Client;
         return Client;
-    } catch {
+    } catch (e) {
+        console.error(e.stack);
         console.error(`Installation broken or unknown states type: ${config.states.type} configured.`);
         process.exit(101);
     }

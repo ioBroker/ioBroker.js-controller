@@ -11,8 +11,8 @@ export async function getObjectsConstructor(): Promise<any> {
         const Client = (await import(`@iobroker/db-objects-${config.objects.type}`)).Client;
         return Client;
     } catch (e) {
-        console.error(e);
-        console.error(`Installation broken or unknown objects type: ${config.objects.type} configured.`);
+        console.error(e.stack);
+        console.error(`Installation broken or unknown objects type: ${config.objects.type} configured`);
         process.exit(101);
     }
 }
