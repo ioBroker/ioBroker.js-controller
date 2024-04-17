@@ -1560,9 +1560,7 @@ export function getAdapterDir(adapter: string): string | null {
             adapterPath = path.join(getControllerDir(), 'node_modules', possibility);
         } else {
             try {
-                adapterPath = require.resolve(possibility, {
-                    paths: getDefaultRequireResolvePaths(module)
-                });
+                adapterPath = require.resolve(possibility);
             } catch {
                 // not found
             }
@@ -2188,9 +2186,7 @@ export function getControllerDir(): string {
         try {
             // package.json is guaranteed to be in the module root folder
             // so once that is resolved, take the dirname and we're done
-            const possiblePath = require.resolve(`${pkg}/package.json`, {
-                paths: getDefaultRequireResolvePaths(module)
-            });
+            const possiblePath = require.resolve(`${pkg}/package.json`);
 
             if (fs.existsSync(possiblePath)) {
                 return path.dirname(possiblePath);

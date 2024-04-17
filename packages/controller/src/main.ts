@@ -44,7 +44,9 @@ import { setTimeout as wait } from 'node:timers/promises';
 import { getHostObjects } from '@/lib/objects.js';
 import * as url from 'node:url';
 import { createRequire } from 'node:module';
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
+// eslint-disable-next-line unicorn/prefer-module
 const require = createRequire(import.meta.url || 'file://' + __dirname);
 
 type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
@@ -2003,7 +2005,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
 
         case 'cmdExec': {
-            const mainFile = path.join(__dirname, '..', `${tools.appName.toLowerCase()}.js`);
+            const mainFile = path.join(thisDir, '..', `${tools.appName.toLowerCase()}.js`);
             const args = [...getDefaultNodeArgs(mainFile), mainFile];
             if (!msg.message.data || typeof msg.message.data !== 'string') {
                 logger.warn(
@@ -3459,7 +3461,7 @@ function installAdapters(): void {
             );
         }
 
-        const mainFile = path.join(__dirname, '..', `${tools.appName.toLowerCase()}.js`);
+        const mainFile = path.join(thisDir, '..', `${tools.appName.toLowerCase()}.js`);
         const installArgs = [];
         const installOptions = { windowsHide: true };
         if (!task.rebuild && task.installedFrom && proc.downloadRetry < 3) {
@@ -3566,7 +3568,7 @@ function installAdapters(): void {
             });
             child.on('error', err => {
                 logger.error(
-                    `${hostLogPrefix} Cannot execute "${__dirname}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${
+                    `${hostLogPrefix} Cannot execute "${thisDir}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${
                         err.message
                     }`
                 );
@@ -3577,7 +3579,7 @@ function installAdapters(): void {
             });
         } catch (err) {
             logger.error(
-                `${hostLogPrefix} Cannot execute "${__dirname}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${err}`
+                `${hostLogPrefix} Cannot execute "${thisDir}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${err}`
             );
             setTimeout(() => {
                 installQueue.shift();
@@ -4432,7 +4434,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
                             try {
                                 compactProc.process = cp.fork(
-                                    path.join(__dirname, 'compactgroupController.js'),
+                                    path.join(thisDir, 'compactgroupController.js'),
                                     compactControllerArgs,
                                     {
                                         execArgv,

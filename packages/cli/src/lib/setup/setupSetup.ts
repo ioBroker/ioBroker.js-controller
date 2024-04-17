@@ -25,14 +25,19 @@ import os from 'node:os';
 import { FORBIDDEN_CHARS } from '@iobroker/js-controller-common/tools';
 import { SYSTEM_ADAPTER_PREFIX, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common/constants';
 import { Upload } from '@/lib/setup/setupUpload.js';
+import { createRequire } from 'node:module';
+import * as url from 'node:url';
+
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
+
+const require = createRequire(import.meta.url || 'file://' + thisDir);
 
 const COLOR_RED = '\x1b[31m';
 const COLOR_YELLOW = '\x1b[33m';
 const COLOR_RESET = '\x1b[0m';
 const COLOR_GREEN = '\x1b[32m';
 const CONTROLLER_DIR = tools.getControllerDir();
-import * as url from 'node:url';
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
 export interface CLISetupOptions {
     cleanDatabase: CleanDatabaseHandler;
@@ -715,10 +720,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
         let getDefaultObjectsPort;
         try {
-            const path = require.resolve(`@iobroker/db-objects-${otype}`, {
-                paths: tools.getDefaultRequireResolvePaths(module)
-            });
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            const path = require.resolve(`@iobroker/db-objects-${otype}`);
+
             getDefaultObjectsPort = require(path).getDefaultPort;
         } catch {
             console.log(`${COLOR_RED}Unknown objects type: ${otype}${COLOR_RESET}`);
@@ -811,9 +814,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
         let defaultStatesType = currentStatesType;
         try {
-            require.resolve(`@iobroker/db-states-${otype}`, {
-                paths: tools.getDefaultRequireResolvePaths(module)
-            });
+            require.resolve(`@iobroker/db-states-${otype}`);
             defaultStatesType = otype; // if states db is also available with same type we use as default
         } catch {
             // ignore, unchanged
@@ -837,10 +838,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
         let getDefaultStatesPort;
         try {
-            const path = require.resolve(`@iobroker/db-states-${stype}`, {
-                paths: tools.getDefaultRequireResolvePaths(module)
-            });
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            const path = require.resolve(`@iobroker/db-states-${stype}`);
+
             getDefaultStatesPort = require(path).getDefaultPort;
         } catch {
             console.log(`${COLOR_RED}Unknown states type: ${stype}${COLOR_RESET}`);
@@ -1360,7 +1359,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             // copy scripts to root directory
             if (fs.existsSync(path.join(CONTROLLER_DIR, '..', '..', 'node_modules'))) {
                 const startFile = `#!/usr/bin/env node
-require('${path.normalize(__dirname + '/..')}/setup').execute();`;
+require('${path.normalize(thisDir + '/..')}/setup').execute();`;
 
                 try {
                     if (fs.existsSync(path.join(CONTROLLER_DIR, 'killall.sh'))) {
@@ -1455,7 +1454,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
             try {
                 // Create
                 if (
-                    __dirname
+                    thisDir
                         .toLowerCase()
                         .replace(/\\/g, '/')
                         .includes(`node_modules/${tools.appName.toLowerCase()}.js-controller`)

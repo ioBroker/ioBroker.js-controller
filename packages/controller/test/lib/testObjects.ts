@@ -1,4 +1,4 @@
-import type { TestContext } from '../_Types';
+import type { TestContext } from '../_Types.js';
 
 /**
  * Contains tests directly interacting with DB

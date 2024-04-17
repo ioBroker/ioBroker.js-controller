@@ -611,10 +611,7 @@ async function processCommand(
                         for (const instance of initialInstances) {
                             try {
                                 const adapterInstalled = !!require.resolve(
-                                    `${tools.appName.toLowerCase()}.${instance}`,
-                                    {
-                                        paths: tools.getDefaultRequireResolvePaths(module)
-                                    }
+                                    `${tools.appName.toLowerCase()}.${instance}`
                                 );
 
                                 if (adapterInstalled) {

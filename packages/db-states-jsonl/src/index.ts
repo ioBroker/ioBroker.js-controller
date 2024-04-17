@@ -1,5 +1,8 @@
-export const Client = (await import('@iobroker/db-states-redis')).Client;
-export const Server = await import('./lib/states/statesInMemServerClass.js');
+import { Client as StatesClient } from '@iobroker/db-states-redis';
+import StatesServer from './lib/states/statesInMemServerClass.js';
+
+export const Client = StatesClient;
+export const Server = StatesServer;
 
 /**
  * Get the default port of the objects db

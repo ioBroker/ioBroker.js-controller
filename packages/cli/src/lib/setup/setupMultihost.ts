@@ -1,10 +1,10 @@
 import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 import { tools } from '@iobroker/js-controller-common';
 import { tools as dbTools } from '@iobroker/js-controller-common-db';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import { MHClient, type BrowseResultEntry } from './multihostClient.js';
-import readline from 'readline';
+import readline from 'node:readline';
 import prompt from 'prompt';
 
 interface MHParams {

@@ -10,21 +10,26 @@ import deepClone from 'deep-clone';
 import type { Syslog } from 'winston-syslog';
 import type { SeqTransport } from '@datalust/winston-seq';
 import * as url from 'node:url';
+import { createRequire } from 'node:module';
+
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
+
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __dirname);
 
 const hostname = tools.getHostName();
 
 let SysLog: typeof Syslog | undefined;
 try {
-    SysLog = (await import('winston-syslog')).Syslog;
+    SysLog = require('winston-syslog').Syslog;
 } catch {
     //console.log('No syslog support');
 }
 
 let Seq: typeof SeqTransport | undefined;
 try {
-    Seq = (await import('@datalust/winston-seq')).SeqTransport;
+    Seq = require('@datalust/winston-seq').SeqTransport;
 } catch {
     //console.log('No seq support');
 }

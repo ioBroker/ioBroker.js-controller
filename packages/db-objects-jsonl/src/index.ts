@@ -1,5 +1,8 @@
-export const Client = (await import('@iobroker/db-objects-redis')).Client;
-export const Server = await import('./lib/objects/objectsInMemServerClass.js');
+import { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import ObjectsServer from './lib/objects/objectsInMemServerClass.js';
+
+export const Client = ObjectsClient;
+export const Server = ObjectsServer;
 
 /**
  * Get the default port of the objects db

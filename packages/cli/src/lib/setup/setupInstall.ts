@@ -23,6 +23,13 @@ import type { ProcessExitCallback } from '../_Types.js';
 import type { CommandResult } from '@alcalzone/pak';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
 import { IoBrokerError } from './customError.js';
+import { createRequire } from 'node:module';
+import * as url from 'node:url';
+
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
+
+const require = createRequire(import.meta.url || 'file://' + thisDir);
 
 const hostname = tools.getHostName();
 const osPlatform = process.platform;
@@ -1536,9 +1543,7 @@ export class Install {
             try {
                 // find the adapter's io-package.json
                 const adapterNpm = `${tools.appName.toLowerCase()}.${adapter}`;
-                const ioPackPath = require.resolve(`${adapterNpm}/io-package.json`, {
-                    paths: tools.getDefaultRequireResolvePaths(module)
-                });
+                const ioPackPath = require.resolve(`${adapterNpm}/io-package.json`);
                 const ioPack = await fs.readJSON(ioPackPath);
 
                 if (!ioPack.common || !ioPack.common.nondeletable) {
