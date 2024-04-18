@@ -29,7 +29,7 @@ import type { ConnectionOptions, DbStatus } from '@iobroker/db-base/inMemFileDB'
 
 import * as url from 'node:url';
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 
 const ERRORS = CONSTS.ERRORS;
 

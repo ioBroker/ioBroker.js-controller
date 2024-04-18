@@ -14,7 +14,7 @@ const PORT = 50005;
 const MULTICAST_ADDR = '239.255.255.250';
 
 /** @class */
-export default function MHServer(hostname, logger, config, info, ips, secret) {
+export function MHServer(hostname, logger, config, info, ips, secret) {
     const count = 0;
     const buffer = {};
     const lastFrame = {};

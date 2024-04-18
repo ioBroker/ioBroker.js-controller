@@ -1,7 +1,8 @@
 import fs from 'fs-extra';
 import { tools } from '@iobroker/js-controller-common';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 
-export async function getObjectsConstructor(): Promise<any> {
+export async function getObjectsConstructor(): Promise<typeof ObjectsClient> {
     const config = fs.readJSONSync(tools.getConfigFileName());
     if (!config.objects) {
         config.objects = { type: 'jsonl' };

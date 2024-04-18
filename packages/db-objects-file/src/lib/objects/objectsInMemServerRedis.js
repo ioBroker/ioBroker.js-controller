@@ -16,7 +16,7 @@ import { tools } from '@iobroker/db-base';
 import { getLocalAddress } from '@iobroker/js-controller-common/tools';
 
 import { RedisHandler } from '@iobroker/db-base';
-import ObjectsInMemoryFileDB from './objectsInMemFileDB.js';
+import { ObjectsInMemoryFileDB } from './objectsInMemFileDB.js';
 
 // settings = {
 //    change:    function (id, state) {},

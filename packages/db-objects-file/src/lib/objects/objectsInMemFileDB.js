@@ -18,7 +18,7 @@ import deepClone from 'deep-clone';
  * This class inherits InMemoryFileDB class and adds all relevant logic for objects
  * including the available methods for use by js-controller directly
  **/
-export default class ObjectsInMemoryFileDB extends InMemoryFileDB {
+export class ObjectsInMemoryFileDB extends InMemoryFileDB {
     constructor(settings) {
         settings = settings || {};
         settings.fileDB = settings.fileDB || {

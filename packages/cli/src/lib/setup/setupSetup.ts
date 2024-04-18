@@ -29,9 +29,9 @@ import { createRequire } from 'node:module';
 import * as url from 'node:url';
 
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
-
-const require = createRequire(import.meta.url || 'file://' + thisDir);
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __filename);
 
 const COLOR_RED = '\x1b[31m';
 const COLOR_YELLOW = '\x1b[33m';
@@ -893,7 +893,10 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             stype === originalConfig.states.type && sHost === originalConfig.states.host
                 ? originalConfig.states.port
                 : sp;
-        if (stype === otype && !dbTools.statesDbHasServer(stype) && sHost === oHost) {
+
+        const statesHasServer = await dbTools.statesDbHasServer(stype);
+
+        if (stype === otype && !statesHasServer && sHost === oHost) {
             defaultStatesPort = oPort;
         }
         const userStatePort = rl.question(

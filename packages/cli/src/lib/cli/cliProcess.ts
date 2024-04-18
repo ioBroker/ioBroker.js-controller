@@ -221,10 +221,17 @@ export class CLIProcess extends CLICommand {
                 const alive = hostAlive ? (hostAlive.val as boolean) : false;
                 CLI.success.controllerStatus(alive);
                 console.log();
-                if (
-                    !dbTools.isLocalStatesDbServer(config.states.type, config.states.host) &&
-                    !dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host)
-                ) {
+
+                const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(
+                    config.states.type,
+                    config.states.host
+                );
+                const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(
+                    config.objects.type,
+                    config.objects.host
+                );
+
+                if (!hasLocalStatesServer && !hasLocalObjectsServer) {
                     CLI.success.systemStatus(!isOffline);
                 }
 

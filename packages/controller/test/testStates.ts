@@ -10,7 +10,7 @@ let states: StateRedisClient | null = null;
 let onStatesChanged: ioBroker.StateChangeHandler | null = null;
 import * as url from 'node:url';
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 const dataDir = path.join(thisDir, '..', 'tmp', 'data');
 
 function cleanDbs(): void {
