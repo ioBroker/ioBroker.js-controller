@@ -105,7 +105,7 @@ function normalizeJsonlOptions(conf = {}) {
  * This class inherits InMemoryFileDB class and adds all relevant logic for states
  * including the available methods for use by js-controller directly
  **/
-export default class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
+export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
     constructor(settings) {
         settings = settings || {};
         // Not really used

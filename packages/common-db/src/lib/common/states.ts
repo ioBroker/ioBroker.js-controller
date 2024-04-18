@@ -1,7 +1,8 @@
 import fs from 'fs-extra';
 import { tools } from '@iobroker/js-controller-common';
+import type { Client as StatesClient } from '@iobroker/db-states-redis';
 
-export async function getStatesConstructor(): Promise<any> {
+export async function getStatesConstructor(): Promise<typeof StatesClient> {
     const config = fs.readJSONSync(tools.getConfigFileName());
     if (!config.states) {
         config.states = { type: 'jsonl' };

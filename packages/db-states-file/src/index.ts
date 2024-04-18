@@ -1,8 +1,7 @@
-import InMemoryFileDB from './lib/states/statesInMemFileDB.js';
+export { StatesInMemoryFileDB } from './lib/states/statesInMemFileDB.js';
 import { Client as StatesClient } from '@iobroker/db-states-redis';
 import StatesServer from './lib/states/statesInMemServerClass.js';
 
-export const StatesInMemoryFileDB = InMemoryFileDB;
 export const Client = StatesClient;
 export const Server = StatesServer;
 

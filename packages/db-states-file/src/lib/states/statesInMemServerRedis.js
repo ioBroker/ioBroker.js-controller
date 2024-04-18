@@ -11,7 +11,7 @@ import net from 'node:net';
 import { inspect } from 'node:util';
 
 import { RedisHandler } from '@iobroker/db-base';
-import StatesInMemoryFileDB from './statesInMemFileDB.js';
+import { StatesInMemoryFileDB } from './statesInMemFileDB.js';
 import { getLocalAddress } from '@iobroker/js-controller-common/tools';
 
 // settings = {

@@ -23,7 +23,7 @@ import { isDeepStrictEqual, inspect } from 'node:util';
 import { tools, EXIT_CODES, logger as toolsLogger } from '@iobroker/js-controller-common';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
 import { PluginHandler } from '@iobroker/plugin-base';
-import { NotificationHandler } from '@iobroker/js-controller-common-db';
+import { NotificationHandler, getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
 import * as zipFiles from '@/lib/zipFiles.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
@@ -250,10 +250,10 @@ function getConfig(): ioBroker.IoBrokerJson | never {
  * @param _config
  * @param secret
  */
-function _startMultihost(_config: Record<string, any>, secret: string | false): void {
-    const MHService = require('./lib/multihostServer.js');
+async function _startMultihost(_config: Record<string, any>, secret: string | false): Promise<void> {
+    const MHService = await import('./lib/multihostServer.js');
     const cpus = os.cpus();
-    mhService = new MHService(
+    mhService = new MHService.MHServer(
         hostname,
         logger,
         _config,
@@ -5209,17 +5209,17 @@ export async function init(compactGroupId?: number): Promise<void> {
     // If "file" and on the local machine
     const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host);
     if (hasLocalObjectsServer && !compactGroupController) {
-        Objects = require(`@iobroker/db-objects-${config.objects.type}`).Server;
+        Objects = (await import(`@iobroker/db-objects-${config.objects.type}`)).Server;
     } else {
-        Objects = await require('@iobroker/js-controller-common-db').getObjectsConstructor();
+        Objects = await getObjectsConstructor();
     }
 
     const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(config.states.type, config.states.host);
     // Get "states" object
     if (hasLocalStatesServer && !compactGroupController) {
-        States = require(`@iobroker/db-states-${config.states.type}`).Server;
+        States = (await import(`@iobroker/db-states-${config.states.type}`)).Server;
     } else {
-        States = await require('@iobroker/js-controller-common-db').getStatesConstructor();
+        States = await getStatesConstructor();
     }
 
     // Detect if outputs to console are forced. By default, they are disabled and redirected to log file
