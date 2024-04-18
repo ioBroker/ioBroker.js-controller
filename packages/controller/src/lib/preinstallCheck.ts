@@ -3,8 +3,8 @@
  * not installed yet, so the version checks get a bit messy
  */
 
-import path from 'path';
-import child_process from 'child_process';
+import path from 'node:path';
+import child_process from 'node:child_process';
 
 const RECOMMENDED_NPM_VERSION = 8;
 /** Time to wait for npm version determination */
@@ -100,6 +100,7 @@ checkNpmVersion()
 
 /**
  * Parses a version string
+ *
  * @param version The version string to parse
  */
 function parseVersion(version: string): VersionObject {
@@ -118,6 +119,7 @@ function parseVersion(version: string): VersionObject {
 
 /**
  * Checks if v1 > v2
+ *
  * @param v1
  * @param v2
  */
@@ -146,6 +148,7 @@ function gt(v1: VersionObject | string, v2: VersionObject | string): boolean {
 
 /**
  * Checks if v1 < v2
+ *
  * @param v1
  * @param v2
  */
@@ -174,6 +177,7 @@ function lt(v1: VersionObject | string, v2: VersionObject | string): boolean {
 
 /**
  * Checks if v1 == v2
+ *
  * @param v1
  * @param v2
  */
@@ -196,6 +200,7 @@ function eq(v1: VersionObject | string, v2: VersionObject | string): boolean {
 
 /**
  * Checks if v1 >= v2
+ *
  * @param v1
  * @param v2
  */

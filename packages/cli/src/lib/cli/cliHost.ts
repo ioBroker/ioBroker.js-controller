@@ -1,9 +1,9 @@
-import * as CLI from './messages';
-import { CLICommand, type CLICommandOptions } from './cliCommand';
-import { enumHosts, enumObjects, getObjectFrom, enumInstances } from './cliTools';
+import * as CLI from './messages.js';
+import { CLICommand, type CLICommandOptions } from './cliCommand.js';
+import { enumHosts, enumObjects, getObjectFrom, enumInstances } from './cliTools.js';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
-import os from 'os';
+import os from 'node:os';
 import fs from 'fs-extra';
 
 /** Command iobroker host ... */
@@ -14,6 +14,7 @@ export class CLIHost extends CLICommand {
 
     /**
      * Executes a command
+     *
      * @param args
      */
     execute(args: any[]): void {
@@ -34,6 +35,7 @@ export class CLIHost extends CLICommand {
 
     /**
      * When in single-host mode, changes the hostname of the host and all instances to the current one
+     *
      * @param _args
      */
     self(_args: any[]): void {
@@ -42,6 +44,7 @@ export class CLIHost extends CLICommand {
 
     /**
      * Changes the current host's hostname to the given one
+     *
      * @param args
      */
     set(args: any[]): void {
@@ -58,6 +61,7 @@ export class CLIHost extends CLICommand {
 
     /**
      * Removes the host with the given name
+     *
      * @param args
      */
     remove(args: any[]): void {
@@ -133,6 +137,7 @@ export class CLIHost extends CLICommand {
 
     /**
      * Renames the host with the given name to the current one (opposite of `set()`)
+     *
      * @param args
      */
     rename(args: any[]): void {
@@ -150,6 +155,7 @@ export class CLIHost extends CLICommand {
 
     /**
      * Renames the host with the hostname `oldHostname` to the hostname `newHostname`
+     *
      * @param oldHostname The hostname to rename from or `undefined` to rename all hosts (single-host mode only!)
      * @param newHostname The hostname to rename to
      */
@@ -288,6 +294,7 @@ export class CLIHost extends CLICommand {
 
 /**
  * Changes the host an instance is running on
+ *
  * @param objects The objects DB to use
  * @param instance The instance object
  * @param newHostname The new hostname the instance should be running on

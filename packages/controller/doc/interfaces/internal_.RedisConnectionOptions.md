@@ -37,7 +37,7 @@
 
 #### Defined in
 
-db-base/build/lib/inMemFileDB.d.ts:20
+db-base/build/esm/lib/inMemFileDB.d.ts:20
 
 ___
 
@@ -53,7 +53,7 @@ relative path to the data dir
 
 #### Defined in
 
-db-base/build/lib/inMemFileDB.d.ts:22
+db-base/build/esm/lib/inMemFileDB.d.ts:22
 
 ___
 
@@ -67,7 +67,7 @@ ___
 
 #### Defined in
 
-db-base/build/lib/inMemFileDB.d.ts:19
+db-base/build/esm/lib/inMemFileDB.d.ts:19
 
 ___
 
@@ -83,7 +83,7 @@ array on sentinel
 
 #### Defined in
 
-db-base/build/lib/inMemFileDB.d.ts:14
+db-base/build/esm/lib/inMemFileDB.d.ts:14
 
 ___
 
@@ -97,7 +97,7 @@ ___
 
 #### Defined in
 
-db-base/build/lib/inMemFileDB.d.ts:18
+db-base/build/esm/lib/inMemFileDB.d.ts:18
 
 ___
 
@@ -111,7 +111,7 @@ ___
 
 #### Defined in
 
-db-base/build/lib/inMemFileDB.d.ts:17
+db-base/build/esm/lib/inMemFileDB.d.ts:17
 
 ___
 
@@ -125,7 +125,7 @@ ___
 
 #### Defined in
 
-db-base/build/lib/inMemFileDB.d.ts:11
+db-base/build/esm/lib/inMemFileDB.d.ts:11
 
 ___
 
@@ -141,7 +141,7 @@ array on sentinel
 
 #### Defined in
 
-db-base/build/lib/inMemFileDB.d.ts:16
+db-base/build/esm/lib/inMemFileDB.d.ts:16
 
 ___
 
@@ -151,7 +151,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:8
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:8
 
 ___
 
@@ -165,4 +165,4 @@ ___
 
 #### Defined in
 
-db-base/build/lib/inMemFileDB.d.ts:12
+db-base/build/esm/lib/inMemFileDB.d.ts:12

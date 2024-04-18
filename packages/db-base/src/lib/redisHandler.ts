@@ -1,8 +1,8 @@
-import type { Socket } from 'net';
+import type { Socket } from 'node:net';
 // @ts-expect-error no types
 import Resp from 'respjs';
-import { EventEmitter } from 'events';
-import { QUEUED_STR_BUF, OK_STR_BUF } from './constants';
+import { EventEmitter } from 'node:events';
+import { QUEUED_STR_BUF, OK_STR_BUF } from './constants.js';
 import type { InternalLogger } from '@iobroker/js-controller-common/tools';
 
 type NestedArray<T> = T[] | NestedArray<T>[];
@@ -14,7 +14,7 @@ interface RedisHandlerOptions {
     logScope?: string;
     // if data should be handled as buffer
     handleAsBuffers: boolean;
-    // additonal debug information
+    // additional debug information
     enhancedLogging?: boolean;
 }
 
@@ -71,6 +71,7 @@ export class RedisHandler extends EventEmitter {
 
     /**
      * Initialize and register all data handlers to send out events on new commands
+     *
      * @param socket Network Socket/Connection
      * @param options options objects, currently mainly for logger
      */
@@ -140,8 +141,8 @@ export class RedisHandler extends EventEmitter {
 
     /**
      * Handle one incoming command, assign responseId and emit event to be handled
+     *
      * @param data Array RESP data
-     * @private
      */
     _handleCommand(data: any[]): void {
         let command = data.splice(0, 1)[0];
@@ -215,9 +216,9 @@ export class RedisHandler extends EventEmitter {
     /**
      * Check if the response to a certain command can be send out directly or
      * if it needs to wait till earlier responses are ready
+     *
      * @param responseId ID of the response
      * @param data Buffer to send out
-     * @private
      */
     _sendQueued(responseId: ResponseId, data: Buffer): void {
         let idx = 0;
@@ -267,8 +268,8 @@ export class RedisHandler extends EventEmitter {
 
     /**
      * Really write out a response to the network connection
+     *
      * @param data Buffer to send out
-     * @private
      */
     _write(data: Buffer): void {
         this.socket.write(data);
@@ -276,6 +277,7 @@ export class RedisHandler extends EventEmitter {
 
     /**
      * Guard to make sure a response is valid to be sent out
+     *
      * @param responseId ID of the response
      * @param data Buffer to send out
      */
@@ -309,6 +311,7 @@ export class RedisHandler extends EventEmitter {
 
     /**
      * Return if socket/handler active or closed
+     *
      * @returns is Handler/Connection active (not closed)
      */
     isActive(): boolean {
@@ -317,6 +320,7 @@ export class RedisHandler extends EventEmitter {
 
     /**
      * Encode RESP's Null value to RESP buffer and send out
+     *
      * @param responseId ID of the response
      */
     sendNull(responseId: ResponseId): void {
@@ -332,6 +336,7 @@ export class RedisHandler extends EventEmitter {
 
     /**
      * Encode RESP's Null Array value to RESP buffer and send out
+     *
      * @param responseId ID of the response
      */
     sendNullArray(responseId: ResponseId): void {
@@ -347,6 +352,7 @@ export class RedisHandler extends EventEmitter {
 
     /**
      * Encode string to RESP buffer and send out
+     *
      * @param responseId ID od the response
      * @param str String to encode
      */
@@ -363,6 +369,7 @@ export class RedisHandler extends EventEmitter {
 
     /**
      * Encode error object to RESP buffer and send out
+     *
      * @param responseId ID of the response
      * @param error Error object with error details to send out
      */
@@ -381,6 +388,7 @@ export class RedisHandler extends EventEmitter {
 
     /**
      * Encode integer to RESP buffer and send out
+     *
      * @param responseId ID of the response
      * @param num Integer to send out
      */
@@ -397,6 +405,7 @@ export class RedisHandler extends EventEmitter {
 
     /**
      * Encode RESP's bulk string to RESP buffer and send out
+     *
      * @param responseId ID of the response
      * @param str String to send out
      */
@@ -413,6 +422,7 @@ export class RedisHandler extends EventEmitter {
 
     /**
      * Encode RESP's bulk buffer to RESP buffer.
+     *
      * @param responseId ID of the response
      * @param buf Buffer to send out
      */
@@ -429,6 +439,7 @@ export class RedisHandler extends EventEmitter {
 
     /**
      * Encode an Array depending on the type of the elements
+     *
      * @param arr Array to encode
      * @returns Array with Buffers with encoded values
      */
@@ -453,6 +464,7 @@ export class RedisHandler extends EventEmitter {
 
     /**
      * Encode a array values to buffers and send out
+     *
      * @param responseId ID of the response
      * @param arr Array to send out
      */
@@ -470,7 +482,6 @@ export class RedisHandler extends EventEmitter {
     /**
      * Handles a 'multi' command
      *
-     * @private
      */
     _handleMulti(): void {
         this.activeMultiCalls.unshift({
@@ -484,8 +495,7 @@ export class RedisHandler extends EventEmitter {
     /**
      * Handles an 'exec' command
      *
-     * @param {number} responseId ID of the response
-     * @private
+     * @param responseId ID of the response
      */
     _handleExec(responseId: ResponseId): void {
         if (!this.activeMultiCalls[0]) {
@@ -505,9 +515,8 @@ export class RedisHandler extends EventEmitter {
 
     /**
      * Builds up the exec response and sends it
-     * @param multiObj the multi object to send out
      *
-     * @private
+     * @param multiObj the multi object to send out
      */
     _sendExecResponse(multiObj: FullMultiCallElement): void {
         // collect all 'QUEUED' answers
@@ -525,7 +534,6 @@ export class RedisHandler extends EventEmitter {
      * @param responseId ID of the response
      * @param index index of the multi call
      * @param buf buffer to include in response
-     * @private
      */
     _handleMultiResponse(responseId: ResponseId, index: number, buf: Buffer): void {
         this.activeMultiCalls[index].responseMap.set(responseId, buf);

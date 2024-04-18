@@ -1,8 +1,9 @@
 {
   "name": "@iobroker/js-controller-adapter",
-  "version": "5.0.20-alpha.0-20240314-559f7b7a",
+  "type": "module",
+  "version": "5.0.20-alpha.0-20240418-165fc4c8",
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "@alcalzone/pak": "^0.8.1",
@@ -23,7 +24,8 @@
     "node.extend": "^2.0.2",
     "pidusage": "^3.0.2",
     "readline": "^1.3.0",
-    "semver": "^7.5.2"
+    "semver": "^7.5.2",
+    "yargs": "^17.7.2"
   },
   "keywords": [
     "ioBroker"
@@ -36,23 +38,29 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/adapter"
+    "url": "https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/adapter"
   },
   "scripts": {
     "build": "tsc -b tsconfig.build.json && tsc-alias",
-    "postbuild": "cpy ./cert ../build/ --cwd=src",
+    "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./cert ../build/esm --cwd=src && cpy ./cert ../build/cjs --cwd=src && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/",
     "build:doc": "typedoc --excludeExternals --excludeProtected --excludePrivate --plugin typedoc-plugin-missing-exports --plugin typedoc-plugin-markdown src/lib/adapter/adapter.ts --out ../controller/doc"
   },
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./build/esm/index.js",
+      "require": "./build/cjs/index.js",
+      "types": "./build/esm/index.d.ts"
+    },
+    "./package.json": "./package.json"
+  },
+  "main": "build/cjs/index.js",
+  "module": "build/esm/index.js",
+  "types": "build/esm/index.d.ts",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
   "files": [
-    "build/cert/",
-    "build/lib/",
-    "build/index.js",
-    "build/index.d.ts"
+    "build/"
   ]
 }

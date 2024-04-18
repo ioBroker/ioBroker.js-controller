@@ -5,22 +5,31 @@
  * Written by bluefox <dogafox@gmail.com>, 2014-2022
  *
  */
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const extend = require('node.extend');
+// @ts-expect-error no ts module
+import extend from 'node.extend';
 import type IORedis from 'ioredis';
 import Redis from 'ioredis';
 import { tools } from '@iobroker/db-base';
-import fs from 'fs';
-import path from 'path';
-import crypto from 'crypto';
-import { isDeepStrictEqual } from 'util';
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import { isDeepStrictEqual } from 'node:util';
 import deepClone from 'deep-clone';
-import type { ACLObject, FileObject, CheckFileRightsCallback, GetUserGroupPromiseReturn } from './objectsUtils.js';
-import * as utils from './objectsUtils.js';
+import type {
+    ACLObject,
+    FileObject,
+    CheckFileRightsCallback,
+    GetUserGroupPromiseReturn
+} from '@/lib/objects/objectsUtils.js';
+import * as utils from '@/lib/objects/objectsUtils.js';
 import semver from 'semver';
-import * as CONSTS from './constants';
+import * as CONSTS from '@/lib/objects/constants.js';
 import type { InternalLogger } from '@iobroker/js-controller-common/tools';
 import type { ConnectionOptions, DbStatus } from '@iobroker/db-base/inMemFileDB';
+
+import * as url from 'node:url';
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
 
 const ERRORS = CONSTS.ERRORS;
 
@@ -828,7 +837,7 @@ export class ObjectsInRedisClient {
     /**
      * Checks if given ID is a meta-object, else throws error
      *
-     * @param {string} id to check
+     * @param id to check
      * @throws Error if id is invalid
      */
     async validateMetaObject(id: string): Promise<void> {
@@ -4733,6 +4742,7 @@ export class ObjectsInRedisClient {
 
     /**
      * Returns the object id if found
+     *
      * @param idOrName
      * @param type
      * @param options
@@ -4967,7 +4977,7 @@ export class ObjectsInRedisClient {
             luaDirName = 'lua-v3';
         }
 
-        const luaPath = path.join(__dirname, luaDirName);
+        const luaPath = path.join(thisDir, luaDirName);
         const scripts: Script[] = fs.readdirSync(luaPath).map(name => {
             const shasum = crypto.createHash('sha1');
             const script = fs.readFileSync(path.join(luaPath, name));
@@ -5052,6 +5062,7 @@ export class ObjectsInRedisClient {
 
     /**
      * Checks if a given set exists
+     *
      * @param id - id of the set
      */
     async setExists(id: string): Promise<boolean> {
@@ -5065,7 +5076,8 @@ export class ObjectsInRedisClient {
 
     /**
      * Migrate all objects to sets
-     * @return number of migrated sets
+     *
+     * @returns number of migrated sets
      */
     async migrateToSets(): Promise<number> {
         if (!this.useSets) {
@@ -5129,7 +5141,7 @@ export class ObjectsInRedisClient {
      * Value will expire after ms milliseconds
      *
      * @param ms - ms until value expires
-     * @return 1 if extended else 0
+     * @returns 1 if extended else 0
      */
     extendPrimaryHostLock(ms: number): Promise<number> {
         if (!this.client) {
@@ -5156,7 +5168,7 @@ export class ObjectsInRedisClient {
      * Value will expire after ms milliseconds
      *
      * @param ms - ms until value expires
-     * @return 1 if lock acquired else 0
+     * @returns 1 if lock acquired else 0
      */
     setPrimaryHost(ms: number): Promise<number> {
         if (!this.client) {
@@ -5219,6 +5231,7 @@ export class ObjectsInRedisClient {
 
     /**
      * Sets the protocol version to the DB
+     *
      * @param version - protocol version
      */
     async setProtocolVersion(version: number | string): Promise<void> {

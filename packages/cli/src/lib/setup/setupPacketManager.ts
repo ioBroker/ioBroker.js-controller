@@ -21,6 +21,13 @@ interface PacketManagerOptions {
     logger?: Logger;
 }
 
+export interface UpgradePacket {
+    /** Name of the packet which should be upgraded */
+    name: string;
+    /** Optional version */
+    version?: string;
+}
+
 export class PacketManager {
     private manager: Manager;
     private readonly logger: Logger;
@@ -74,6 +81,7 @@ export class PacketManager {
 
     /**
      * Tests if the given command can be executed
+     *
      * @param cmd The command to test
      * @returns True if the execution was successful, false otherwise
      */
@@ -182,6 +190,7 @@ export class PacketManager {
 
     /**
      * Checks which packages are installed and returns them
+     *
      * @param packets The packets to test
      */
     async checkInstalled(packets: string[] | string): Promise<string[]> {
@@ -195,6 +204,7 @@ export class PacketManager {
 
     /**
      * Installs a single packet using the configured manager and returns the stdout if there was any
+     *
      * @param packet The packet to install
      */
     private async _installPacket(packet: string): Promise<void> {
@@ -234,6 +244,7 @@ export class PacketManager {
 
     /**
      * Installs multiple packets. The returned Promise contains the list of failed packets
+     *
      * @param packets
      */
     private async _installPackets(packets: string[]): Promise<string[]> {
@@ -255,7 +266,35 @@ export class PacketManager {
     }
 
     /**
+     * Upgrade given OS packets to given version or newest available version
+     *
+     * @param packets the packet names and version information
+     */
+    async upgrade(packets: UpgradePacket[]): Promise<void> {
+        await this.ready();
+
+        if (!this.manager) {
+            return;
+        }
+
+        for (const packet of packets) {
+            let upgradeCmd = `upgrade ${packet.name}`;
+
+            if (packet.version) {
+                if (this.manager === 'apt') {
+                    upgradeCmd += `=${packet.version}`;
+                } else {
+                    upgradeCmd = `install ${packet.name}-${packet.version}`;
+                }
+            }
+
+            await execAsync(`${(this.sudo ? 'sudo ' : '') + this.manager} ${upgradeCmd}`);
+        }
+    }
+
+    /**
      * Installs all given packets
+     *
      * @param packets
      */
     async install(packets: string[] | string): Promise<void> {

@@ -9,20 +9,27 @@
 
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 import semver from 'semver';
-import child_process from 'child_process';
+import child_process from 'node:child_process';
 import axios from 'axios';
-import deepClone from 'deep-clone';
-import { URL } from 'url';
-import { Upload } from './setupUpload';
-import { PacketManager } from './setupPacketManager';
-import { getRepository } from './utils';
+import { URL } from 'node:url';
+import { Upload } from './setupUpload.js';
+import { PacketManager } from './setupPacketManager.js';
+import { getRepository } from './utils.js';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import type { ProcessExitCallback } from '../_Types';
+import type { ProcessExitCallback } from '../_Types.js';
 import type { CommandResult } from '@alcalzone/pak';
-import { IoBrokerError } from './customError';
+import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
+import { IoBrokerError } from './customError.js';
+import { createRequire } from 'node:module';
+import * as url from 'node:url';
+
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
+
+const require = createRequire(import.meta.url || 'file://' + thisDir);
 
 const hostname = tools.getHostName();
 const osPlatform = process.platform;
@@ -77,8 +84,7 @@ export interface CLIDownloadPacketOptions {
 interface CreateInstanceOptions {
     instance?: number;
     ignoreIfExists?: boolean;
-    // TODO we really need those strings?
-    enabled?: boolean | 'true' | 'false';
+    enabled?: boolean;
     host?: string;
     port?: number;
 }
@@ -120,6 +126,9 @@ export class Install {
 
     /**
      * Enables or disables given instances
+     *
+     * @param instances
+     * @param enabled
      */
     async enableInstances(instances: ioBroker.InstanceObject[], enabled: boolean): Promise<void> {
         if (instances?.length) {
@@ -129,7 +138,7 @@ export class Install {
                     common: {
                         enabled
                     },
-                    from: `system.host.${tools.getHostName()}.cli`,
+                    from: `system.host.${hostname}.cli`,
                     ts
                 };
                 console.log(`host.${hostname} Adapter "${instance._id}" is ${enabled ? 'started' : 'stopped.'}`);
@@ -144,8 +153,7 @@ export class Install {
      *
      * @param repoUrl
      * @param packetName
-     * @param options, { stopDb: true } - will stop the db before upgrade ONLY use it for controller upgrade -
-     * db is gone afterwards, does not work with stoppedList
+     * @param options options.stopDb will stop the db before upgrade ONLY use it for controller upgrade - db is gone afterwards, does not work with stoppedList
      * @param stoppedList
      */
     async downloadPacket(
@@ -279,6 +287,10 @@ export class Install {
 
     /**
      * Install npm module from url
+     *
+     * @param npmUrl
+     * @param options
+     * @param debug
      */
     private async _npmInstallWithCheck(
         npmUrl: string,
@@ -337,6 +349,7 @@ export class Install {
 
     /**
      * Extract the adapterName e.g. `hm-rpc` from url
+     *
      * @param npmUrl url of the npm packet
      */
     private getAdapterNameFromUrl(npmUrl: string): string {
@@ -512,8 +525,8 @@ export class Install {
 
         // Get all installed adapters
         const objs = await this.objects.getObjectViewAsync('system', 'instance', {
-            startkey: 'system.adapter.',
-            endkey: 'system.adapter.\u9999'
+            startkey: SYSTEM_ADAPTER_PREFIX,
+            endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
         });
 
         if (objs.rows.length) {
@@ -611,8 +624,8 @@ export class Install {
             }
             try {
                 adapterConf = await fs.readJSON(path.join(adapterDir, 'io-package.json'));
-            } catch (err) {
-                const message = `error reading io-package.json: ${err.message}`;
+            } catch (e) {
+                const message = `error reading io-package.json: ${e.message}`;
                 console.error(`host.${hostname} ${message}`, adapter);
                 throw new Error(message);
             }
@@ -621,7 +634,7 @@ export class Install {
         }
 
         let objs;
-        if (adapterConf.objects && adapterConf.objects.length > 0) {
+        if (adapterConf.objects && adapterConf.objects?.length > 0) {
             objs = adapterConf.objects;
         } else {
             objs = [];
@@ -646,10 +659,10 @@ export class Install {
             native: adapterConf.native
         });
 
-        if (objs && objs.length) {
+        if (objs?.length) {
             for (let i = 0; i < objs.length; i++) {
                 const obj = objs[i];
-                obj.from = `system.host.${tools.getHostName()}.cli`;
+                obj.from = `system.host.${hostname}.cli`;
                 obj.ts = Date.now();
 
                 try {
@@ -666,6 +679,10 @@ export class Install {
 
     /**
      * Installs given adapter
+     *
+     * @param adapter
+     * @param repoUrl
+     * @param _installCount
      */
     async installAdapter(adapter: string, repoUrl?: string, _installCount?: number): Promise<string | void> {
         _installCount = _installCount || 0;
@@ -786,18 +803,14 @@ export class Install {
 
     /**
      * Create adapter instance
+     *
+     * @param adapter
+     * @param options
      */
     async createInstance(adapter: string, options?: CreateInstanceOptions): Promise<void> {
         let ignoreIfExists = false;
         options = options || {};
-        options.host = options.host || tools.getHostName();
-
-        if (options.enabled === 'true') {
-            options.enabled = true;
-        }
-        if (options.enabled === 'false') {
-            options.enabled = false;
-        }
+        options.host = options.host || hostname;
 
         if (options.ignoreIfExists !== undefined) {
             ignoreIfExists = !!options.ignoreIfExists;
@@ -827,8 +840,8 @@ export class Install {
         await this.upload.uploadAdapter(adapter, false, false);
 
         const res = await this.objects.getObjectViewAsync('system', 'instance', {
-            startkey: `system.adapter.${adapter}.`,
-            endkey: `system.adapter.${adapter}.\u9999`
+            startkey: `${SYSTEM_ADAPTER_PREFIX}${adapter}.`,
+            endkey: `${SYSTEM_ADAPTER_PREFIX}${adapter}.\u9999`
         });
         const systemConfig = await this.objects.getObjectAsync('system.config');
         const defaultLogLevel = systemConfig?.common?.defaultLogLevel;
@@ -883,11 +896,14 @@ export class Install {
             }
         }
 
-        const instanceObj = deepClone(obj);
+        // We are now converting the adapter object to an instance object
+        const instanceObj: ioBroker.InstanceObject = {
+            ...obj,
+            common: { ...obj.common, host: options.host },
+            type: 'instance',
+            _id: `system.adapter.${adapter}.${instance}`
+        };
 
-        instanceObj._id = `system.adapter.${adapter}.${instance}`;
-        // @ts-expect-error we now convert the adapter object to an instance object
-        instanceObj.type = 'instance';
         if (instanceObj.common.news) {
             delete instanceObj.common.news; // remove this information as it could be big, but it will be taken from repo
         }
@@ -898,9 +914,6 @@ export class Install {
                 : instanceObj.common.enabled === true || instanceObj.common.enabled === false
                 ? instanceObj.common.enabled
                 : false;
-
-        // @ts-expect-error we now convert the adapter object to an instance object
-        instanceObj.common.host = options.host;
 
         if (options.port) {
             instanceObj.native = instanceObj.native || {};
@@ -921,7 +934,7 @@ export class Install {
 
         let objs: ioBroker.StateObject[];
         if (!instanceObj.common.onlyWWW && instanceObj.common.mode !== 'once') {
-            objs = tools.getInstanceIndicatorObjects(`${adapter}.${instance}`, !!instanceObj.common.wakeup);
+            objs = tools.getInstanceIndicatorObjects(`${adapter}.${instance}`);
         } else {
             objs = [];
         }
@@ -1018,7 +1031,7 @@ export class Install {
                 continue;
             }
 
-            obj.from = `system.host.${tools.getHostName()}.cli`;
+            obj.from = `system.host.${hostname}.cli`;
             obj.ts = Date.now();
             try {
                 await this.objects.setObjectAsync(obj._id, obj);
@@ -1031,7 +1044,7 @@ export class Install {
         // sets the default states if any given
         for (const [id, defState] of defStates) {
             defState.ack = true;
-            defState.from = `system.host.${tools.getHostName()}.cli`;
+            defState.from = `system.host.${hostname}.cli`;
             try {
                 await this.states.setStateAsync(id, defState);
                 console.log(`host.${hostname} Set default value of ${id}: ${defState.val}`);
@@ -1040,7 +1053,7 @@ export class Install {
             }
         }
 
-        instanceObj.from = `system.host.${tools.getHostName()}.cli`;
+        instanceObj.from = `system.host.${hostname}.cli`;
         instanceObj.ts = Date.now();
 
         try {
@@ -1053,6 +1066,11 @@ export class Install {
 
     /**
      * Enumerate all instances of an adapter
+     *
+     * @param knownObjIDs
+     * @param notDeleted
+     * @param adapter
+     * @param instance
      */
     private async _enumerateAdapterInstances(
         knownObjIDs: string[],
@@ -1117,6 +1135,10 @@ export class Install {
 
     /**
      * Enumerate all meta objects of an adapter
+     *
+     * @param knownObjIDs
+     * @param adapter
+     * @param metaFilesToDelete
      */
     async _enumerateAdapterMeta(knownObjIDs: string[], adapter: string, metaFilesToDelete: string[]): Promise<void> {
         try {
@@ -1164,7 +1186,7 @@ export class Install {
                         `host.${hostname} Adapter ${adapter} cannot be deleted completely, because it is marked non-deletable.`
                     );
                     obj.common.installedVersion = '';
-                    obj.from = `system.host.${tools.getHostName()}.cli`;
+                    obj.from = `system.host.${hostname}.cli`;
                     obj.ts = Date.now();
                     await this.objects.setObjectAsync(obj._id, obj);
 
@@ -1224,6 +1246,7 @@ export class Install {
 
     /**
      * Enumerates the channels of an adapter (or instance)
+     *
      * @param knownObjIDs The already known object ids
      * @param adapter The adapter to enumerate the channels for
      * @param instance The instance to enumerate the channels for (optional)
@@ -1262,6 +1285,7 @@ export class Install {
 
     /**
      * Enumerates the states of an adapter (or instance)
+     *
      * @param knownObjIDs The already known object ids
      * @param adapter The adapter to enumerate the states for
      * @param instance The instance to enumerate the states for (optional)
@@ -1327,6 +1351,7 @@ export class Install {
 
     /**
      * Enumerates the docs of an adapter (or instance)
+     *
      * @param knownObjIDs The already known object ids
      * @param adapter The adapter to enumerate the states for
      * @param instance The instance to enumerate the states for (optional)
@@ -1335,12 +1360,15 @@ export class Install {
         const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
         const sysAdapterRegex = new RegExp(`^system\\.adapter\\.${adapter}${instance ? `\\.${instance}` : ''}\\.`);
 
+        if (instance === undefined) {
+            knownObjIDs.push(`system.host.${hostname}.adapters.${adapter}`);
+        }
+
         try {
             const doc = await this.objects.getObjectListAsync({ include_docs: true });
             if (doc.rows.length) {
                 // add non-duplicates to the list
                 const newObjs = doc.rows
-                    .filter(row => row && row.value && row.value._id)
                     .map(row => row.value._id)
                     .filter(id => adapterRegex.test(id) || sysAdapterRegex.test(id))
                     .filter(id => !knownObjIDs.includes(id));
@@ -1363,6 +1391,10 @@ export class Install {
 
     /**
      * Enumerate all state IDs of an adapter (or instance)
+     *
+     * @param knownStateIDs
+     * @param adapter
+     * @param instance
      */
     async _enumerateAdapterStates(knownStateIDs: string[], adapter: string, instance?: number): Promise<void> {
         for (const pattern of [
@@ -1392,6 +1424,9 @@ export class Install {
 
     /**
      * delete WWW pages, objects and meta files
+     *
+     * @param adapter
+     * @param metaFilesToDelete
      */
     private async _deleteAdapterFiles(adapter: string, metaFilesToDelete: string[]): Promise<void> {
         // special files, which are not meta (vis widgets), combined with meta object ids
@@ -1430,7 +1465,7 @@ export class Install {
     }
 
     private async _deleteAdapterStates(stateIDs: string[]): Promise<void> {
-        if (stateIDs.length > 1000) {
+        if (stateIDs.length > 1_000) {
             console.log(`host.${hostname} Deleting ${stateIDs.length} state(s). Be patient...`);
         } else if (stateIDs.length) {
             console.log(`host.${hostname} Deleting ${stateIDs.length} state(s).`);
@@ -1444,17 +1479,17 @@ export class Install {
             // try to delete the current state
             try {
                 await this.states.delState(stateIDs.pop()!);
-            } catch (err) {
+            } catch (e) {
                 // yep that works!
-                err !== tools.ERRORS.ERROR_NOT_FOUND &&
-                    err.message !== tools.ERRORS.ERROR_NOT_FOUND &&
-                    console.error(`host.${hostname} Cannot delete states: ${err.message}`);
+                e !== tools.ERRORS.ERROR_NOT_FOUND &&
+                    e.message !== tools.ERRORS.ERROR_NOT_FOUND &&
+                    console.error(`host.${hostname} Cannot delete states: ${e.message}`);
             }
         }
     }
 
     private async _deleteAdapterObjects(objIDs: string[]): Promise<void> {
-        if (objIDs.length > 1000) {
+        if (objIDs.length > 1_000) {
             console.log(`host.${hostname} Deleting ${objIDs.length} object(s). Be patient...`);
         } else if (objIDs.length) {
             console.log(`host.${hostname} Deleting ${objIDs.length} object(s).`);
@@ -1491,6 +1526,8 @@ export class Install {
 
     /**
      * Deltes given adapter from filesystem and removes all instances
+     *
+     * @param adapter
      */
     async deleteAdapter(adapter: string): Promise<EXIT_CODES> {
         const knownObjectIDs: string[] = [];
@@ -1503,9 +1540,7 @@ export class Install {
             try {
                 // find the adapter's io-package.json
                 const adapterNpm = `${tools.appName.toLowerCase()}.${adapter}`;
-                const ioPackPath = require.resolve(`${adapterNpm}/io-package.json`, {
-                    paths: tools.getDefaultRequireResolvePaths(module)
-                });
+                const ioPackPath = require.resolve(`${adapterNpm}/io-package.json`);
                 const ioPack = await fs.readJSON(ioPackPath);
 
                 if (!ioPack.common || !ioPack.common.nondeletable) {
@@ -1513,7 +1548,7 @@ export class Install {
                     // after uninstalling we have to restart the defined adapters
                     if (ioPack.common.restartAdapters) {
                         if (!Array.isArray(ioPack.common.restartAdapters)) {
-                            // its not an array, now it can only be a single adapter as string
+                            // it's not an array, now it can only be a single adapter as string
                             if (typeof ioPack.common.restartAdapters !== 'string') {
                                 return;
                             }
@@ -1521,21 +1556,21 @@ export class Install {
                         }
                         if (ioPack.common.restartAdapters.length && ioPack.common.restartAdapters[0]) {
                             const instances = await tools.getAllInstances(ioPack.common.restartAdapters, this.objects);
-                            if (instances && instances.length) {
+                            if (instances?.length) {
                                 for (const instance of instances) {
                                     const obj = await this.objects.getObjectAsync(instance);
                                     // if instance is enabled
-                                    if (obj && obj.common && obj.common.enabled) {
+                                    if (obj?.common?.enabled) {
                                         try {
                                             obj.common.enabled = false; // disable instance
-                                            obj.from = `system.host.${tools.getHostName()}.cli`;
+                                            obj.from = `system.host.${hostname}.cli`;
                                             obj.ts = Date.now();
 
                                             await this.objects.setObjectAsync(obj._id, obj);
 
                                             obj.common.enabled = true; // enable instance
 
-                                            obj.from = `system.host.${tools.getHostName()}.cli`;
+                                            obj.from = `system.host.${hostname}.cli`;
                                             obj.ts = Date.now();
 
                                             await this.objects.setObjectAsync(obj._id, obj);
@@ -1549,8 +1584,8 @@ export class Install {
                         }
                     }
                 }
-            } catch (err) {
-                console.error(`Error deleting adapter ${adapter} from disk: ${err.message}`);
+            } catch (e) {
+                console.error(`Error deleting adapter ${adapter} from disk: ${e.message}`);
                 console.error(`You might have to delete it yourself!`);
             }
         };
@@ -1599,8 +1634,8 @@ export class Install {
 
                 await _uninstallNpm();
             }
-        } catch (err) {
-            console.error(`There was an error uninstalling ${adapter} on ${hostname}: ${err.message}`);
+        } catch (e) {
+            console.error(`There was an error uninstalling ${adapter} on ${hostname}: ${e.message}`);
         }
 
         return resultCode;
@@ -1632,6 +1667,7 @@ export class Install {
         await this._enumerateAdapterStateObjects(knownObjectIDs, adapter, instance);
         await this._enumerateAdapterStates(knownStateIDs, adapter, instance);
         await this._enumerateAdapterDocs(knownObjectIDs, adapter, instance);
+
         await this._deleteAdapterObjects(knownObjectIDs);
         await this._deleteAdapterStates(knownStateIDs);
         if (this.params.custom) {
@@ -1678,6 +1714,9 @@ export class Install {
 
     /**
      * Installs an adapter from given url
+     *
+     * @param url
+     * @param name
      */
     async installAdapterFromUrl(url: string, name: string): Promise<void> {
         // If the user provided an URL, try to parse it into known ways to represent a Github URL
@@ -1824,7 +1863,7 @@ export class Install {
      *
      * @param adapter adapter name
      * @param instance instance, like 1
-     * @return if dependent exists returns adapter name
+     * @returns if dependent exists returns adapter name
      */
     private async _hasDependentInstances(adapter: string, instance?: number): Promise<void | string> {
         try {
@@ -1905,7 +1944,7 @@ export class Install {
      * @param adapter adapter name
      * @param instancesRows all instances objects view rows
      * @param scopedHostname hostname which should be assumed as local
-     * @return true if an instance is present on other host
+     * @returns true if an instance is present on other host
      */
     private _checkDependencyFulfilledForeignHosts(
         adapter: string,
@@ -1928,7 +1967,7 @@ export class Install {
      * @param instance instance number like 1
      * @param instancesRows all instances objects view rows
      * @param scopedHostname hostname which should be assumed as local
-     * @return true if another instance is present on this host
+     * @returns true if another instance is present on this host
      */
     private _checkDependencyFulfilledThisHost(
         adapter: string,
@@ -1952,6 +1991,8 @@ export class Install {
 
     /**
      * Get all instances of an adapter which are on the current host
+     *
+     * @param adapter
      */
     private async _getInstancesOfAdapter(adapter: string): Promise<ioBroker.InstanceObject[]> {
         const instances = [];

@@ -1,6 +1,6 @@
-import dgram from 'dgram';
+import dgram from 'node:dgram';
 import { tools } from '@iobroker/js-controller-common';
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 
 const PORT = 50005;
 const MULTICAST_ADDR = '239.255.255.250';
@@ -71,6 +71,7 @@ export class MHClient {
 
     /**
      * Starts the MH server
+     *
      * @param isBroadcast if server should receive broadcast
      * @param timeout timeout after which MH server will be closed
      * @param onReady ready handler
@@ -183,6 +184,7 @@ export class MHClient {
 
     /**
      * Connect to server
+     *
      * @param ip ip address of server
      * @param password password for authentication
      * @param callback

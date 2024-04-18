@@ -7,17 +7,10 @@
  *
  */
 
-/** @module statesInMemory */
+import { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
+import ObjectsInMemServer from './objectsInMemServerRedis.js';
 
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node: true */
-'use strict';
-
-const ObjectsInRedisClient = require('@iobroker/db-objects-redis').Client;
-const ObjectsInMemServer = require('./objectsInMemServerRedis');
-
-class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
+export default class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
     constructor(settings) {
         settings.autoConnect = false; // delay Client connection to when we need it
         super(settings);
@@ -51,4 +44,3 @@ class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
         return this.objectsServer.dirExists(id, name);
     }
 }
-module.exports = ObjectsInMemoryServerClass;

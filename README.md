@@ -80,7 +80,7 @@ The admin adapter is installed automatically and starts a web-server that hosts 
 If port 8081 is occupied, you can install a second Admin UI on an alternate port and change the port for the first admin UI. To do so, run `iobroker add admin --enabled --port 8090` and go to the `http://<iobroker-ip>:8090/`. Of course you can change port 8090 to a different one.
 
 ### Automatic adapter upgrade
-**Feature status:** New in 5.1.0
+**Feature status:** New in 6.0.0
 
 Whenever the repository changes, the controller will perform an automatic upgrade of the adapters, w.r.t. the auto-upgrade policy.
 The policy can be configured system-wide and per adapter. Whenever there is no policy on adapter-level the system-wide policy is used as a fallback.
@@ -175,6 +175,48 @@ interface ServerResponse {
     success?: boolean;
 }
 ```
+
+### Per host `adapter` objects
+**Feature status:** New in 6.0.0
+
+Previous to js-controller 6.0.0 all adapter objects were only created as `system.adapter.<adapterName>`. This had the downside, that 
+it was not possible to determine if an adapter is installed on a specific host on database level. Furthermore, in multihost environments
+the content of `system.adapter.<adapterName>` was filled with the last uploaded version of this adapter. Thus having different versions of an adapter
+on different hosts lead to an inconsistent object. 
+
+Up from controller 6.0.0 the objects of type `adapter` are additionally created under `system.host.<hostName>.adapter.<adapterName>`.
+If you need to interact with objects of type `adapter`, please use them from there. For now the objects are additionally created under 
+their previous `system.adapter.<adapterName>` structure to ensure backward compatibility.
+
+Furthermore, instances and their states will not move to another structure and will stay at `system.adapter.<adapterName>.<instanceNumber>`. 
+Note, that instances are unique across the whole system and are thus not affected by the described problem. Also objects of `type` instance have a `common.host` attribute
+to find the corresponding host.
+
+### Operating system package management
+**Feature status:** New in 5.1.0
+
+**Feature Flag for detection:** `CONTROLLER_OS_PACKAGE_UPGRADE`
+
+The controller can upgrade OS packages on Linux via `yum` and `apt`.
+To upgrade a package, you have to send a message to the controller with the following this example:
+
+```ts
+sendToHostAsync('system.host.test', 'upgradeOsPackages', {
+    packages: [{
+      // the package name
+      name: 'google-chrome-stable',
+      // the optional version
+      version: '120.0.6099.199-1' 
+    }],
+    // if the controller should be restarted afterwards
+    restart: true,
+});
+```
+
+Note, that specifying a `version` is optional. The answer by the controller has the property `success` which is `true`, if the upgrade was successful for all packages.
+If a package fails, the response will have a value of `false` for `success` and an additional property `error` which contains the error message as a string.
+
+Currently only upgrading of packages is supported. If you need a specific OS dependency for your adapter, you can specify it inside `io-package.json` with the field `osDependencies`.
 
 ### Hostname
 **Feature status:** stable
@@ -334,8 +376,9 @@ The js-controller defines in its io-package the system scope together with all d
 ```
 
 #### How to define own scopes?
-Each adapter can define its own "scopes" for own notifications with its own categories which then will be available in the system. 
-Please contact the core development group if you plan to add an own scope so that scope names can be checked to stay unique.
+Each adapter can define its own "scopes" for own notifications with its own categories which then will be available in the system.
+You can use the name of your adapter as a scope, e.g. `hm-rpc` to avoid conflicts with other scopes.
+If you plan on using a general purpose scope, please contact the core development group so that scope names can be checked to stay unique.
 The same applies if you see the need to enhance the system scope by additional categories. 
 Let's discuss the requirements that they can also be added officially into upcoming js-controller versions.
 
@@ -523,7 +566,6 @@ ioBroker supports multiple Adapter modes. These are:
 * `deamon`:    The adapter is started and runs all the time. If the process gets killed, it will be restarted automatically. This adapter type is mainly used for all situations where communications or actions are done continuously. These adapters also support a restart schedule where the controller restarts the instances. The adapter needs RAM and some CPU resources also when doing nothing.
 * `schedule`:  The adapter is started based on a defined schedule (e.g., once per hour, once a day, all 10 minutes ...), then is doing its work and is stopping itself when finished. The adapter is only using RAM and CPU when needed.
 * `once`:      The adapter ist started only once after it's object got modified. No restarting happens after the adapter stops.
-* `subscribe`: The adapter is started when a defined state ID gets set to true, and stopped when set to false
 * `none`:      The adapter is officially not having any process, but could be a webExtension (so iis included by a web instance on the same host or is only running client side and so offering www files)
 
 #### Start adapter instances as normal processes
@@ -1121,9 +1163,6 @@ Following adapter methods support maintenance mode:
 
 - adapter.getForeignState
 - adapter.delForeignState
-- adapter.setBinaryState
-- adapter.getBinaryState
-- adapter.delBinaryState
 ```
 
 *** Do not use this mode for any other purposes except sanitizing/cleaning/repairing of existing DBs (Object and States)***

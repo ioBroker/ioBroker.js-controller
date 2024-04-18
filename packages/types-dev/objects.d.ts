@@ -1,4 +1,4 @@
-import type * as os from 'os';
+import type * as os from 'node:os';
 
 declare global {
     namespace ioBroker {
@@ -160,7 +160,7 @@ declare global {
         /** For objects, we require the English language to be present */
         type StringOrTranslated = string | Translated;
 
-        type CommonType = 'number' | 'string' | 'boolean' | 'array' | 'object' | 'mixed' | 'file';
+        type CommonType = 'number' | 'string' | 'boolean' | 'array' | 'object' | 'mixed';
 
         interface ObjectCommon {
             /** The name of this object as a simple string or an object with translations */
@@ -328,7 +328,7 @@ declare global {
             custom?: undefined;
         }
 
-        type InstanceMode = 'none' | 'daemon' | 'subscribe' | 'schedule' | 'once' | 'extension';
+        type InstanceMode = 'none' | 'daemon' | 'schedule' | 'once' | 'extension';
 
         interface AdminUi {
             /** UI type of config page inside admin UI */
@@ -510,7 +510,10 @@ declare global {
             license?: string;
             /** Use 'paid' for adapters which do not work without a paid license. Use 'commercial' for adapters which require a license for commercial use only. Use 'limited' if some functionalities are not available without a paid license. */
             type: 'free';
-            /** Hyperlink, where information about the license can be found. This is required if the license type is different from 'free'. */
+            /**
+             * Hyperlink, where information about the license can be found. For non-free licenses the linked page should contain information about free features (if applicable), time of validity, link to shop and seller information.
+             * This is required if the license type is different from 'free'. For 'free' licenses an optional link to the license file can be placed here.
+             */
             link?: string;
         }
 
@@ -519,7 +522,10 @@ declare global {
             license?: string;
             /** Use 'paid' for adapters which do not work without a paid license. Use 'commercial' for adapters which require a license for commercial use only. Use 'limited' if some functionalities are not available without a paid license. */
             type: PaidLicenseType;
-            /** Hyperlink, where information about the license can be found. This is required if the license type is different from 'free'. */
+            /**
+             * Hyperlink, where information about the license can be found. For non-free licenses the linked page should contain information about free features (if applicable), time of validity, link to shop and seller information.
+             * This is required if the license type is different from 'free'. For 'free' licenses an optional link to the license file can be placed here.
+             */
             link: string;
         }
 
@@ -662,7 +668,6 @@ declare global {
             /** Overrides the default timeout that ioBroker will wait before force-stopping the adapter */
             stopTimeout?: number;
             subscribable?: boolean;
-            subscribe?: any; // ?
             /** If `true`, this adapter provides custom per-state settings. Requires a `custom_m.html` file in the `admin` directory. */
             supportCustoms?: boolean;
             /** @deprecated Use @see supportedMessages up from controller v5 */
@@ -678,8 +683,6 @@ declare global {
             /** The available version in the ioBroker repo. */
             version: string;
             visWidgets?: Record<string, VisWidget>;
-            /** If `true`, the adapter will be started if any value is written into `system.adapter.<name>.<instance>.wakeup. Normally, the adapter should stop after processing the event. */
-            wakeup?: boolean;
             /** Include the adapter version in the URL of the web adapter, e.g. `http://ip:port/1.2.3/material` instead of `http://ip:port/material` */
             webByVersion?: boolean;
             /** Whether the web server in this adapter can be extended with plugin/extensions */
