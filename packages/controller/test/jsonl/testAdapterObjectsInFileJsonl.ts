@@ -5,7 +5,7 @@ import { register } from './../lib/testObjects.js';
 import type { TestContext } from '../_Types.js';
 import * as url from 'node:url';
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 
 let objects = null;
 let states = null;

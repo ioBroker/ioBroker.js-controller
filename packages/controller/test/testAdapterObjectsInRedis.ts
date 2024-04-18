@@ -10,7 +10,7 @@ import { register } from './lib/testObjects.js';
 import * as url from 'node:url';
 import type { TestContext } from './_Types.js';
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 
 const context: TestContext = {
     // @ts-expect-error will be filled in time

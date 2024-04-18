@@ -25,9 +25,10 @@ import { dbConnect, dbConnectAsync, exitApplicationSave } from '@/lib/setup/dbCo
 import { IoBrokerError } from '@/lib/setup/customError.js';
 import * as url from 'node:url';
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 import { createRequire } from 'node:module';
-const require = createRequire(import.meta.url || 'file://' + thisDir);
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __filename);
 
 tools.ensureDNSOrder();
 
