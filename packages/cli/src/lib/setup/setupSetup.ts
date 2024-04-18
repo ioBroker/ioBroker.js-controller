@@ -893,7 +893,10 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             stype === originalConfig.states.type && sHost === originalConfig.states.host
                 ? originalConfig.states.port
                 : sp;
-        if (stype === otype && !dbTools.statesDbHasServer(stype) && sHost === oHost) {
+
+        const statesHasServer = await dbTools.statesDbHasServer(stype);
+
+        if (stype === otype && !statesHasServer && sHost === oHost) {
             defaultStatesPort = oPort;
         }
         const userStatePort = rl.question(

@@ -24,7 +24,6 @@ import type { CommandResult } from '@alcalzone/pak';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
 import { IoBrokerError } from './customError.js';
 import { createRequire } from 'node:module';
-import * as url from 'node:url';
 
 // eslint-disable-next-line unicorn/prefer-module
 const require = createRequire(import.meta.url || 'file://' + __filename);
