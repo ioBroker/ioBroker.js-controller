@@ -1,9 +1,11 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-export const StatesInMemoryFileDB = require('./lib/states/statesInMemFileDB');
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-export const Client = require('@iobroker/db-states-redis').Client;
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-export const Server = require('./lib/states/statesInMemServerClass.js');
+import InMemoryFileDB from './lib/states/statesInMemFileDB.js';
+import { Client as StatesClient } from '@iobroker/db-states-redis';
+import StatesServer from './lib/states/statesInMemServerClass.js';
+
+export const StatesInMemoryFileDB = InMemoryFileDB;
+export const Client = StatesClient;
+export const Server = StatesServer;
+
 /**
  * Get the default port of the objects db
  */

@@ -1,7 +1,7 @@
 /* eslint-disable require-await */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
-import { maybeCallback, maybeCallbackWithError, maybeCallbackWithRedisError } from './maybeCallback';
+import { maybeCallback, maybeCallbackWithError, maybeCallbackWithRedisError } from '@/lib/common/maybeCallback.js';
 
 // ============================================================
 // maybeCallbackWithError => Callback

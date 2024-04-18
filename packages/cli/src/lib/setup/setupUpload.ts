@@ -10,10 +10,10 @@
 import * as fs from 'fs-extra';
 import { tools } from '@iobroker/js-controller-common';
 import deepClone from 'deep-clone';
-import { isDeepStrictEqual } from 'util';
+import { isDeepStrictEqual } from 'node:util';
 import axios from 'axios';
 import mime from 'mime-types';
-import { join } from 'path';
+import { join } from 'node:path';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { InternalLogger } from '@iobroker/js-controller-common/tools';
@@ -794,7 +794,7 @@ export class Upload {
      *
      * @param name
      * @param ioPack
-     * @param _logger
+     * @param logger
      */
     async upgradeAdapterObjects(
         name: string,

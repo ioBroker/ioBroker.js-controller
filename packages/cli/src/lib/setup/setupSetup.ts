@@ -7,24 +7,31 @@
  *
  */
 
-import type { CleanDatabaseHandler, IoPackage, ProcessExitCallback, RestartController } from '@/lib/_Types';
+import type { CleanDatabaseHandler, IoPackage, ProcessExitCallback, RestartController } from '@/lib/_Types.js';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
 import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
 import { tools as dbTools } from '@iobroker/js-controller-common-db';
-import { resetDbConnect, dbConnectAsync } from '@/lib/setup/dbConnection';
-import { BackupRestore } from '@/lib/setup/setupBackup';
-import crypto from 'crypto';
+import { resetDbConnect, dbConnectAsync } from '@/lib/setup/dbConnection.js';
+import { BackupRestore } from '@/lib/setup/setupBackup.js';
+import crypto from 'node:crypto';
 import deepClone from 'deep-clone';
-import * as pluginInfos from '@/lib/setup/pluginInfos';
+import * as pluginInfos from '@/lib/setup/pluginInfos.js';
 import rl from 'readline-sync';
-import os from 'os';
+import os from 'node:os';
 import { FORBIDDEN_CHARS } from '@iobroker/js-controller-common/tools';
 import { SYSTEM_ADAPTER_PREFIX, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common/constants';
-import { Upload } from '@/lib/setup/setupUpload';
+import { Upload } from '@/lib/setup/setupUpload.js';
+import { createRequire } from 'node:module';
+import * as url from 'node:url';
+
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
+
+const require = createRequire(import.meta.url || 'file://' + thisDir);
 
 const COLOR_RED = '\x1b[31m';
 const COLOR_YELLOW = '\x1b[33m';
@@ -392,15 +399,21 @@ Please DO NOT copy files manually into ioBroker storage directories!`
      */
     async migrateObjects(newConfig: ioBroker.IoBrokerJson, oldConfig: ioBroker.IoBrokerJson): Promise<EXIT_CODES> {
         // allow migration if one of the db types changed or host changed of redis
-        const oldStatesHasServer = dbTools.statesDbHasServer(oldConfig.states.type);
-        const oldObjectsHasServer = dbTools.statesDbHasServer(oldConfig.objects.type);
-        const newStatesHasServer = dbTools.statesDbHasServer(newConfig.states.type);
-        const newObjectsHasServer = dbTools.statesDbHasServer(newConfig.objects.type);
+        const oldStatesHasServer = await dbTools.statesDbHasServer(oldConfig.states.type);
+        const oldObjectsHasServer = await dbTools.statesDbHasServer(oldConfig.objects.type);
+        const newStatesHasServer = await dbTools.statesDbHasServer(newConfig.states.type);
+        const newObjectsHasServer = await dbTools.statesDbHasServer(newConfig.objects.type);
 
-        const oldStatesLocalServer = dbTools.isLocalStatesDbServer(oldConfig.states.type, oldConfig.states.host);
-        const oldObjectsLocalServer = dbTools.isLocalObjectsDbServer(oldConfig.objects.type, oldConfig.objects.host);
-        const newStatesLocalServer = dbTools.isLocalStatesDbServer(newConfig.states.type, newConfig.states.host);
-        const newObjectsLocalServer = dbTools.isLocalObjectsDbServer(newConfig.objects.type, newConfig.objects.host);
+        const oldStatesLocalServer = await dbTools.isLocalStatesDbServer(oldConfig.states.type, oldConfig.states.host);
+        const oldObjectsLocalServer = await dbTools.isLocalObjectsDbServer(
+            oldConfig.objects.type,
+            oldConfig.objects.host
+        );
+        const newStatesLocalServer = await dbTools.isLocalStatesDbServer(newConfig.states.type, newConfig.states.host);
+        const newObjectsLocalServer = await dbTools.isLocalObjectsDbServer(
+            newConfig.objects.type,
+            newConfig.objects.host
+        );
 
         if (
             oldConfig &&
@@ -684,10 +697,11 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 }`
             );
         }
-        if (
-            dbTools.objectsDbHasServer(originalConfig.objects.type) ||
-            dbTools.statesDbHasServer(originalConfig.states.type)
-        ) {
+
+        const hasObjectsServer = await dbTools.objectsDbHasServer(originalConfig.objects.type);
+        const hasStatesServer = await dbTools.statesDbHasServer(originalConfig.states.type);
+
+        if (hasObjectsServer || hasStatesServer) {
             console.log(`- Data Directory: ${tools.getDefaultDataDir()}`);
         }
         if (originalConfig && originalConfig.system && originalConfig.system.hostname) {
@@ -713,10 +727,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
         let getDefaultObjectsPort;
         try {
-            const path = require.resolve(`@iobroker/db-objects-${otype}`, {
-                paths: tools.getDefaultRequireResolvePaths(module)
-            });
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            const path = require.resolve(`@iobroker/db-objects-${otype}`);
+
             getDefaultObjectsPort = require(path).getDefaultPort;
         } catch {
             console.log(`${COLOR_RED}Unknown objects type: ${otype}${COLOR_RESET}`);
@@ -809,9 +821,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
         let defaultStatesType = currentStatesType;
         try {
-            require.resolve(`@iobroker/db-states-${otype}`, {
-                paths: tools.getDefaultRequireResolvePaths(module)
-            });
+            require.resolve(`@iobroker/db-states-${otype}`);
             defaultStatesType = otype; // if states db is also available with same type we use as default
         } catch {
             // ignore, unchanged
@@ -835,10 +845,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
         let getDefaultStatesPort;
         try {
-            const path = require.resolve(`@iobroker/db-states-${stype}`, {
-                paths: tools.getDefaultRequireResolvePaths(module)
-            });
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            const path = require.resolve(`@iobroker/db-states-${stype}`);
+
             getDefaultStatesPort = require(path).getDefaultPort;
         } catch {
             console.log(`${COLOR_RED}Unknown states type: ${stype}${COLOR_RESET}`);
@@ -936,7 +944,10 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         let dir;
         let hname;
 
-        if (dbTools.isLocalStatesDbServer(stype, sHost) || dbTools.isLocalObjectsDbServer(otype, oHost)) {
+        const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(otype, oHost);
+        const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(stype, sHost);
+
+        if (hasLocalStatesServer || hasLocalObjectsServer) {
             let validDataDir = false;
 
             while (!validDataDir) {
@@ -1358,7 +1369,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             // copy scripts to root directory
             if (fs.existsSync(path.join(CONTROLLER_DIR, '..', '..', 'node_modules'))) {
                 const startFile = `#!/usr/bin/env node
-require('${path.normalize(__dirname + '/..')}/setup').execute();`;
+require('${path.normalize(thisDir + '/..')}/setup').execute();`;
 
                 try {
                     if (fs.existsSync(path.join(CONTROLLER_DIR, 'killall.sh'))) {
@@ -1453,7 +1464,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
             try {
                 // Create
                 if (
-                    __dirname
+                    thisDir
                         .toLowerCase()
                         .replace(/\\/g, '/')
                         .includes(`node_modules/${tools.appName.toLowerCase()}.js-controller`)

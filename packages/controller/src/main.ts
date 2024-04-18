@@ -15,7 +15,7 @@ import fs from 'fs-extra';
 import path from 'node:path';
 import cp, { spawn, exec } from 'node:child_process';
 import semver from 'semver';
-import restart from '@/lib/restart';
+import restart from '@/lib/restart.js';
 import { tools as dbTools } from '@iobroker/js-controller-common-db';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
@@ -24,19 +24,30 @@ import { tools, EXIT_CODES, logger as toolsLogger } from '@iobroker/js-controlle
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
 import { PluginHandler } from '@iobroker/plugin-base';
 import { NotificationHandler } from '@iobroker/js-controller-common-db';
-import * as zipFiles from '@/lib/zipFiles';
+import * as zipFiles from '@/lib/zipFiles.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { Upload, PacketManager, type UpgradePacket } from '@iobroker/js-controller-cli';
 import decache from 'decache';
 import cronParser from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
-import { AdapterAutoUpgradeManager } from '@/lib/adapterAutoUpgradeManager';
-import { getDefaultNodeArgs, type HostInfo, type RepositoryFile } from '@iobroker/js-controller-common/tools';
-import type { UpgradeArguments } from '@/lib/upgradeManager';
-import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager';
+import { AdapterAutoUpgradeManager } from '@/lib/adapterAutoUpgradeManager.js';
+import {
+    getDefaultNodeArgs,
+    type HostInfo,
+    isAdapterEsmModule,
+    type RepositoryFile
+} from '@iobroker/js-controller-common/tools';
+import type { UpgradeArguments } from '@/lib/upgradeManager.js';
+import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
 import { setTimeout as wait } from 'node:timers/promises';
-import { getHostObjects } from '@/lib/objects';
+import { getHostObjects } from '@/lib/objects.js';
+import * as url from 'node:url';
+import { createRequire } from 'node:module';
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __dirname);
 
 type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
 type Dependencies = string[] | Record<string, string>[] | string | Record<string, string>;
@@ -240,7 +251,6 @@ function getConfig(): ioBroker.IoBrokerJson | never {
  * @param secret
  */
 function _startMultihost(_config: Record<string, any>, secret: string | false): void {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     const MHService = require('./lib/multihostServer.js');
     const cpus = os.cpus();
     mhService = new MHService(
@@ -289,15 +299,23 @@ async function startMultihost(__config?: Record<string, any>): Promise<boolean |
             }
         }
 
-        if (!_config.objects.host || dbTools.isLocalObjectsDbServer(_config.objects.type, _config.objects.host, true)) {
+        const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(
+            _config.objects.type,
+            _config.objects.host,
+            true
+        );
+        const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(
+            _config.states.type,
+            _config.states.host,
+            true
+        );
+
+        if (!_config.objects.host || hasLocalObjectsServer) {
             logger.warn(
                 `${hostLogPrefix} Multihost Master on this system is not possible, because IP address for objects is ${_config.objects.host}. Please allow remote connections to the server by adjusting the IP.`
             );
             return false;
-        } else if (
-            !_config.states.host ||
-            dbTools.isLocalObjectsDbServer(_config.states.type, _config.states.host, true)
-        ) {
+        } else if (!_config.states.host || hasLocalStatesServer) {
             logger.warn(
                 `${hostLogPrefix} Multihost Master on this system is not possible, because IP address for states is ${_config.states.host}. Please allow remote connections to the server by adjusting the IP.`
             );
@@ -1995,7 +2013,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
 
         case 'cmdExec': {
-            const mainFile = path.join(__dirname, '..', `${tools.appName.toLowerCase()}.js`);
+            const mainFile = path.join(thisDir, '..', `${tools.appName.toLowerCase()}.js`);
             const args = [...getDefaultNodeArgs(mainFile), mainFile];
             if (!msg.message.data || typeof msg.message.data !== 'string') {
                 logger.warn(
@@ -3451,7 +3469,7 @@ function installAdapters(): void {
             );
         }
 
-        const mainFile = path.join(__dirname, '..', `${tools.appName.toLowerCase()}.js`);
+        const mainFile = path.join(thisDir, '..', `${tools.appName.toLowerCase()}.js`);
         const installArgs = [];
         const installOptions = { windowsHide: true };
         if (!task.rebuild && task.installedFrom && proc.downloadRetry < 3) {
@@ -3558,7 +3576,7 @@ function installAdapters(): void {
             });
             child.on('error', err => {
                 logger.error(
-                    `${hostLogPrefix} Cannot execute "${__dirname}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${
+                    `${hostLogPrefix} Cannot execute "${thisDir}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${
                         err.message
                     }`
                 );
@@ -3569,7 +3587,7 @@ function installAdapters(): void {
             });
         } catch (err) {
             logger.error(
-                `${hostLogPrefix} Cannot execute "${__dirname}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${err}`
+                `${hostLogPrefix} Cannot execute "${thisDir}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${err}`
             );
             setTimeout(() => {
                 installQueue.shift();
@@ -4338,6 +4356,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
                         if (adapterMainFile!) {
                             try {
+                                // @ts-expect-error commonjs module TODO: validate
                                 decache(adapterMainFile);
 
                                 // Prior to requiring the main file, make sure that the esbuild require hook was loaded
@@ -4346,10 +4365,13 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                     require('@alcalzone/esbuild-register');
                                 }
 
+                                const module = (await isAdapterEsmModule(name))
+                                    ? await import(adapterMainFile)
+                                    : require(adapterMainFile);
+
                                 proc.process = {
                                     // @ts-expect-error TODO type compact processes too
-                                    // eslint-disable-next-line @typescript-eslint/no-var-requires
-                                    logic: require(adapterMainFile)({
+                                    logic: module({
                                         logLevel,
                                         compactInstance: _instance,
                                         compact: true
@@ -4420,7 +4442,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
                             try {
                                 compactProc.process = cp.fork(
-                                    path.join(__dirname, 'compactgroupController.js'),
+                                    path.join(thisDir, 'compactgroupController.js'),
                                     compactControllerArgs,
                                     {
                                         execArgv,
@@ -5153,7 +5175,7 @@ function stop(force?: boolean, callback?: () => void): void {
  *
  * @param compactGroupId the id of the compact group
  */
-export function init(compactGroupId?: number): void {
+export async function init(compactGroupId?: number): Promise<void> {
     if (compactGroupId) {
         compactGroupController = true;
         compactGroup = compactGroupId;
@@ -5185,21 +5207,19 @@ export function init(compactGroupId?: number): void {
 
     // Get "objects" object
     // If "file" and on the local machine
-    if (dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host) && !compactGroupController) {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host);
+    if (hasLocalObjectsServer && !compactGroupController) {
         Objects = require(`@iobroker/db-objects-${config.objects.type}`).Server;
     } else {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        Objects = require('@iobroker/js-controller-common-db').getObjectsConstructor();
+        Objects = await require('@iobroker/js-controller-common-db').getObjectsConstructor();
     }
 
+    const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(config.states.type, config.states.host);
     // Get "states" object
-    if (dbTools.isLocalStatesDbServer(config.states.type, config.states.host) && !compactGroupController) {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
+    if (hasLocalStatesServer && !compactGroupController) {
         States = require(`@iobroker/db-states-${config.states.type}`).Server;
     } else {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        States = require('@iobroker/js-controller-common-db').getStatesConstructor();
+        States = await require('@iobroker/js-controller-common-db').getStatesConstructor();
     }
 
     // Detect if outputs to console are forced. By default, they are disabled and redirected to log file
@@ -5774,10 +5794,8 @@ async function autoUpgradeAdapters(): Promise<void> {
     }
 }
 
-if (module === require.main) {
-    // for direct calls
+// eslint-disable-next-line unicorn/prefer-module
+const modulePath = url.fileURLToPath(import.meta.url || 'file://' + __filename);
+if (process.argv[1] === modulePath) {
     init();
-} else {
-    // normally used for legacy compatibility and compact group support
-    module.exports.init = init;
 }

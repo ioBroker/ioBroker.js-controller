@@ -1,6 +1,6 @@
 // Beware, below be TypeScript dragons!
 
-import { ERRORS } from './tools';
+import { ERRORS } from '@/lib/common/tools.js';
 
 type MaybeCbCallback<T extends any[]> = (...args: T) => void;
 type MaybeCbErrCallback<T extends any[]> = (error: Error | null | undefined, ...args: T) => void;

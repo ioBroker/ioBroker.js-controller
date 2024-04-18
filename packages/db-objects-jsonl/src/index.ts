@@ -1,7 +1,8 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-export const Client = require('@iobroker/db-objects-redis').Client;
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-export const Server = require('./lib/objects/objectsInMemServerClass.js');
+import { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import ObjectsServer from './lib/objects/objectsInMemServerClass.js';
+
+export const Client = ObjectsClient;
+export const Server = ObjectsServer;
 
 /**
  * Get the default port of the objects db

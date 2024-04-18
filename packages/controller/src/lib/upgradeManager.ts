@@ -10,6 +10,7 @@ import type { Logger } from 'winston';
 import fs from 'fs-extra';
 import type { Socket } from 'node:net';
 import type { Duplex } from 'node:stream';
+import url from 'node:url';
 
 export interface UpgradeArguments {
     /** Version of controller to upgrade too */
@@ -408,14 +409,6 @@ async function main(): Promise<void> {
 }
 
 /**
- * This file always needs to be executed in a process different from js-controller
- * else it will be canceled when the file itself stops the controller
- */
-if (require.main === module) {
-    main();
-}
-
-/**
  * Stream unhandled errors to the log files
  *
  * @param upgradeManager the instance of Upgrade Manager
@@ -428,4 +421,14 @@ function registerErrorHandlers(upgradeManager: UpgradeManager): void {
     process.on('unhandledRejection', rej => {
         upgradeManager.log(`Unhandled rejection: ${rej instanceof Error ? rej.stack : JSON.stringify(rej)}`, true);
     });
+}
+
+/**
+ * This file always needs to be executed in a process different from js-controller
+ * else it will be canceled when the file itself stops the controller
+ */
+// eslint-disable-next-line unicorn/prefer-module
+const modulePath = url.fileURLToPath(import.meta.url || 'file://' + __filename);
+if (process.argv[1] === modulePath) {
+    main();
 }
