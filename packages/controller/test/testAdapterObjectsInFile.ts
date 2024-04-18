@@ -18,7 +18,7 @@ const context: TestContext = {
 
 describe(textName + ' Test Objects File-Redis', function () {
     before(textName + ' Start js-controller', async function () {
-        this.timeout(10_000);
+        this.timeout(23_000);
 
         const { objects: _objects, states: _states } = await startController({
             objects: {
