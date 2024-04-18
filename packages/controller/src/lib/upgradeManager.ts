@@ -427,9 +427,8 @@ function registerErrorHandlers(upgradeManager: UpgradeManager): void {
  * This file always needs to be executed in a process different from js-controller
  * else it will be canceled when the file itself stops the controller
  */
-if (import.meta.url.startsWith('file:')) {
-    const modulePath = url.fileURLToPath(import.meta.url);
-    if (process.argv[1] === modulePath) {
-        main();
-    }
+// eslint-disable-next-line unicorn/prefer-module
+const modulePath = url.fileURLToPath(import.meta.url || 'file://' + __filename);
+if (process.argv[1] === modulePath) {
+    main();
 }

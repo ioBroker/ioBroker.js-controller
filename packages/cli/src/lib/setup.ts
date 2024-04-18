@@ -24,9 +24,10 @@ import { getRepository } from '@/lib/setup/utils.js';
 import { dbConnect, dbConnectAsync, exitApplicationSave } from '@/lib/setup/dbConnection.js';
 import { IoBrokerError } from '@/lib/setup/customError.js';
 import * as url from 'node:url';
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
 import { createRequire } from 'node:module';
-const require = createRequire(import.meta.url);
+const require = createRequire(import.meta.url || 'file://' + thisDir);
 
 tools.ensureDNSOrder();
 
@@ -2908,7 +2909,7 @@ async function restartController(): Promise<void> {
     console.log('Starting node restart.js');
     const { spawn } = await import('node:child_process');
 
-    const child = spawn('node', [`${__dirname}/restart.js`], {
+    const child = spawn('node', [`${thisDir}/restart.js`], {
         detached: true,
         stdio: ['ignore', 'ignore', 'ignore'],
         windowsHide: true

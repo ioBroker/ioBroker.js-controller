@@ -1,8 +1,8 @@
-import { readJSONSync } from 'fs-extra/esm';
+import fs from 'fs-extra';
 import { tools } from '@iobroker/js-controller-common';
 
 export async function getObjectsConstructor(): Promise<any> {
-    const config = readJSONSync(tools.getConfigFileName());
+    const config = fs.readJSONSync(tools.getConfigFileName());
     if (!config.objects) {
         config.objects = { type: 'jsonl' };
     }

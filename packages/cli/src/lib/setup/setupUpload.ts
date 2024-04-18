@@ -794,7 +794,6 @@ export class Upload {
      *
      * @param name
      * @param ioPack
-     * @param _logger
      * @param logger
      */
     async upgradeAdapterObjects(
