@@ -43,7 +43,7 @@ import { ObjectsInMemoryFileDB } from './objectsInMemFileDB.js';
  * This class inherits statesInMemoryFileDB class and adds redis communication layer
  * to access the methods via redis protocol
  **/
-export default class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
+export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
     /**
      * Constructor
      * @param settings State and InMem-DB settings

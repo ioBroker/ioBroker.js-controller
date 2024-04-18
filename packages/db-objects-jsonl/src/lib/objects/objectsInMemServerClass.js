@@ -8,9 +8,9 @@
  */
 
 import { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
-import ObjectsInMemServer from './objectsInMemServerRedis.js';
+import { ObjectsInMemoryServer } from './objectsInMemServerRedis.js';
 
-export default class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
+export class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
     constructor(settings) {
         settings.autoConnect = false; // delay Client connection to when we need it
         super(settings);
@@ -24,7 +24,7 @@ export default class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
                 this.connectDb(); // now that server is connected also connect client
             }
         };
-        this.objectsServer = new ObjectsInMemServer(serverSettings);
+        this.objectsServer = new ObjectsInMemoryServer(serverSettings);
     }
 
     async destroy() {
