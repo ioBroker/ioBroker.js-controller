@@ -7,6 +7,16 @@ import deepClone from 'deep-clone';
 import type { TestContext } from '../_Types.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import { Adapter } from '@iobroker/js-controller-adapter';
+import { register as testAdapterHelpers } from './testAdapterHelpers.js';
+import { register as testEnums } from './testEnums.js';
+import { register as testFiles } from './testFiles.js';
+import { register as testHelperStates } from './testHelperStates.js';
+import { register as testMessages } from './testMessages.js';
+import { register as testObjectsFunctions } from './testObjectsFunctions.js';
+import { register as testObjectsACL } from './testObjectsACL.js';
+import { register as testStates } from './testStates.js';
+import { register as testAliases } from './testAliases.js';
+import { register as testConsole } from './testConsole.js';
 
 import * as url from 'node:url';
 // eslint-disable-next-line unicorn/prefer-module
@@ -33,22 +43,22 @@ before(() => {
     chai.use(chaiAsPromised);
 });
 
-export default async function testAdapter(options: Record<string, any>): Promise<void> {
+export default function testAdapter(options: Record<string, any>): void {
     const statesConfig = options.statesConfig;
     const objectsConfig = options.objectsConfig;
     options.name = options.name || 'Test';
 
     const tests = [
-        await import('./testAdapterHelpers.js'),
-        await import('./testEnums.js'),
-        await import('./testFiles.js'),
-        await import('./testHelperStates.js'),
-        await import('./testMessages.js'),
-        await import('./testObjectsFunctions.js'),
-        await import('./testObjectsACL.js'),
-        await import('./testStates.js'),
-        await import('./testAliases.js'),
-        await import('./testConsole.js')
+        testAdapterHelpers,
+        testEnums,
+        testFiles,
+        testHelperStates,
+        testMessages,
+        testObjectsFunctions,
+        testObjectsACL,
+        testStates,
+        testAliases,
+        testConsole
     ];
 
     const context: TestContext = {
@@ -300,7 +310,7 @@ export default async function testAdapter(options: Record<string, any>): Promise
         );
 
         for (const test of tests) {
-            test.register(it, expect, context);
+            test(it, expect, context);
         }
 
         after(`${options.name} ${context.adapterShortName} adapter: Stop js-controller`, async function () {
