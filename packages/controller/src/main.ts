@@ -45,7 +45,7 @@ import { getHostObjects } from '@/lib/objects.js';
 import * as url from 'node:url';
 import { createRequire } from 'node:module';
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 // eslint-disable-next-line unicorn/prefer-module
 const require = createRequire(import.meta.url || 'file://' + __dirname);
 
