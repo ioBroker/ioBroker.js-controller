@@ -8,9 +8,9 @@
  */
 
 import { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
-import StatesInMemServer from './statesInMemServerRedis.js';
+import { StatesInMemoryServer } from './statesInMemServerRedis.js';
 
-export default class StatesInMemoryServerClass extends StatesInRedisClient {
+export class StatesInMemoryServerClass extends StatesInRedisClient {
     constructor(settings) {
         settings.autoConnect = false; // delay Client connection to when we need it
         super(settings);
@@ -24,7 +24,7 @@ export default class StatesInMemoryServerClass extends StatesInRedisClient {
                 this.connectDb(); // now that server is connected also connect client
             }
         };
-        this.statesServer = new StatesInMemServer(serverSettings);
+        this.statesServer = new StatesInMemoryServer(serverSettings);
     }
 
     async destroy() {

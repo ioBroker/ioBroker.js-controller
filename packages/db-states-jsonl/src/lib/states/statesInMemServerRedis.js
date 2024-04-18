@@ -39,7 +39,7 @@ import { getLocalAddress } from '@iobroker/js-controller-common/tools';
  * This class inherits statesInMemoryFileDB class and adds socket.io communication layer
  * to access the methods via socket.io
  */
-export default class StatesInMemoryServer extends StatesInMemoryJsonlDB {
+export class StatesInMemoryServer extends StatesInMemoryJsonlDB {
     /**
      * Constructor
      *
