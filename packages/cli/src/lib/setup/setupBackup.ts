@@ -78,8 +78,6 @@ export class BackupRestore {
     private readonly HOSTNAME_PLACEHOLDER_REPLACE = '$$$$__hostname__$$$$';
     /** Regex to replace all occurrences of the HOSTNAME_PLACEHOLDER */
     private readonly HOSTNAME_PLACEHOLDER_REGEX = /\$\$__hostname__\$\$/g;
-    /** Vis adapters have special files which need to be copied during backup */
-    private readonly VIS_ADAPTERS = ['vis', 'vis-2'] as const;
 
     constructor(options: CLIBackupRestoreOptions) {
         options = options || {};
@@ -219,18 +217,6 @@ export class BackupRestore {
      * @param name - backup name
      */
     private _packBackup(name: string): Promise<string> {
-        // 2021_10_25 BF (TODO): store letsencrypt files too
-        const letsEncrypt = `${this.configDir}/letsencrypt`;
-        if (fs.existsSync(letsEncrypt)) {
-            try {
-                this.copyFolderRecursiveSync(letsEncrypt, `${this.tmpDir}/backup`);
-            } catch (e) {
-                console.error(`host.${this.hostname} Could not backup "${letsEncrypt}" directory: ${e.message}`);
-                this.removeTempBackupDir();
-                throw new IoBrokerError({ message: e.message, code: EXIT_CODES.CANNOT_COPY_DIR });
-            }
-        }
-
         return new Promise((resolve, reject) => {
             const f = fs.createWriteStream(name);
             f.on('finish', () => {
@@ -431,20 +417,6 @@ export class BackupRestore {
                         }
                     }
                 }
-            }
-        }
-
-        for (const visAdapter of this.VIS_ADAPTERS) {
-            try {
-                const data = await this.objects.readFile(visAdapter, 'css/vis-common-user.css');
-                if (data) {
-                    const dir = path.join(this.tmpDir, 'backup', 'files', visAdapter, 'css');
-                    fs.ensureDirSync(dir);
-
-                    fs.writeFileSync(path.join(dir, 'vis-common-user.css'), data.file);
-                }
-            } catch {
-                // do not process 'css/vis-common-user.css'
             }
         }
 
