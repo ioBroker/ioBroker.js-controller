@@ -9,20 +9,24 @@
 
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 import semver from 'semver';
-import child_process from 'child_process';
+import child_process from 'node:child_process';
 import axios from 'axios';
-import { URL } from 'url';
-import { Upload } from './setupUpload';
-import { PacketManager } from './setupPacketManager';
-import { getRepository } from './utils';
+import { URL } from 'node:url';
+import { Upload } from './setupUpload.js';
+import { PacketManager } from './setupPacketManager.js';
+import { getRepository } from './utils.js';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import type { ProcessExitCallback } from '../_Types';
+import type { ProcessExitCallback } from '../_Types.js';
 import type { CommandResult } from '@alcalzone/pak';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
-import { IoBrokerError } from './customError';
+import { IoBrokerError } from './customError.js';
+import { createRequire } from 'node:module';
+
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __filename);
 
 const hostname = tools.getHostName();
 const osPlatform = process.platform;
@@ -1536,9 +1540,7 @@ export class Install {
             try {
                 // find the adapter's io-package.json
                 const adapterNpm = `${tools.appName.toLowerCase()}.${adapter}`;
-                const ioPackPath = require.resolve(`${adapterNpm}/io-package.json`, {
-                    paths: tools.getDefaultRequireResolvePaths(module)
-                });
+                const ioPackPath = require.resolve(`${adapterNpm}/io-package.json`);
                 const ioPack = await fs.readJSON(ioPackPath);
 
                 if (!ioPack.common || !ioPack.common.nondeletable) {
