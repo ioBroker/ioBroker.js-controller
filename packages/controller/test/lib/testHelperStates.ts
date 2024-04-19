@@ -1,4 +1,4 @@
-import type { TestContext } from '../_Types';
+import type { TestContext } from '../_Types.js';
 
 export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
     const testName = `${context.name} ${context.adapterShortName} state helpers: `;
@@ -27,7 +27,6 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     // createState
     // deleteDevice
 
-    // setBinaryState
     it(testName + 'requireLog should activate corresponding state', async () => {
         // default should be false or non-existent
         let state = await context.states.getState(`system.adapter.${context.adapter.namespace}.logging`);

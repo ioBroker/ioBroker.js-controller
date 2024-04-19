@@ -1,4 +1,4 @@
-import type * as os from 'os';
+import type * as os from 'node:os';
 
 declare global {
     namespace ioBroker {
@@ -160,7 +160,7 @@ declare global {
         /** For objects, we require the English language to be present */
         type StringOrTranslated = string | Translated;
 
-        type CommonType = 'number' | 'string' | 'boolean' | 'array' | 'object' | 'mixed' | 'file';
+        type CommonType = 'number' | 'string' | 'boolean' | 'array' | 'object' | 'mixed';
 
         interface ObjectCommon {
             /** The name of this object as a simple string or an object with translations */

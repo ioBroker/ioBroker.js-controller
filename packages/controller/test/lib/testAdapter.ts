@@ -1,12 +1,26 @@
 import chai from 'chai';
 import chaiAsPromised from 'chai-as-promised';
 import fs from 'fs-extra';
-import path from 'path';
-import { startController, stopController, appName, rootDir } from './setup4controller';
+import path from 'node:path';
+import { startController, stopController, appName, rootDir } from './setup4controller.js';
 import deepClone from 'deep-clone';
-import type { TestContext } from '../_Types';
+import type { TestContext } from '../_Types.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import { Adapter } from '@iobroker/js-controller-adapter';
+import { register as testAdapterHelpers } from './testAdapterHelpers.js';
+import { register as testEnums } from './testEnums.js';
+import { register as testFiles } from './testFiles.js';
+import { register as testHelperStates } from './testHelperStates.js';
+import { register as testMessages } from './testMessages.js';
+import { register as testObjectsFunctions } from './testObjectsFunctions.js';
+import { register as testObjectsACL } from './testObjectsACL.js';
+import { register as testStates } from './testStates.js';
+import { register as testAliases } from './testAliases.js';
+import { register as testConsole } from './testConsole.js';
+
+import * as url from 'node:url';
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 
 const expect = chai.expect;
 
@@ -29,22 +43,22 @@ before(() => {
     chai.use(chaiAsPromised);
 });
 
-function testAdapter(options: Record<string, any>): void {
+export default function testAdapter(options: Record<string, any>): void {
     const statesConfig = options.statesConfig;
     const objectsConfig = options.objectsConfig;
     options.name = options.name || 'Test';
 
     const tests = [
-        require('./testAdapterHelpers'),
-        require('./testEnums'),
-        require('./testFiles'),
-        require('./testHelperStates'),
-        require('./testMessages'),
-        require('./testObjectsFunctions'),
-        require('./testObjectsACL'),
-        require('./testStates'),
-        require('./testAliases'),
-        require('./testConsole')
+        testAdapterHelpers,
+        testEnums,
+        testFiles,
+        testHelperStates,
+        testMessages,
+        testObjectsFunctions,
+        testObjectsACL,
+        testStates,
+        testAliases,
+        testConsole
     ];
 
     const context: TestContext = {
@@ -78,7 +92,7 @@ function testAdapter(options: Record<string, any>): void {
                     objects: objectsConfig,
                     consoleOutput: true
                 },
-                dirname: __dirname + '/',
+                dirname: thisDir + '/',
                 name: context.adapterShortName,
                 objectChange: (id, obj) => {
                     context.onAdapterObjectChanged && context.onAdapterObjectChanged(id, obj);
@@ -161,10 +175,10 @@ function testAdapter(options: Record<string, any>): void {
             fs.mkdirSync(objectsConfig.dataDir);
         }
         if (objectsConfig.dataDir) {
-            fs.writeFileSync(objectsConfig.dataDir + '/objects.json', fs.readFileSync(__dirname + '/objects.json'));
+            fs.writeFileSync(objectsConfig.dataDir + '/objects.json', fs.readFileSync(thisDir + '/objects.json'));
         }
         if (statesConfig.dataDir) {
-            fs.writeFileSync(statesConfig.dataDir + '/states.json', fs.readFileSync(__dirname + '/states.json'));
+            fs.writeFileSync(statesConfig.dataDir + '/states.json', fs.readFileSync(thisDir + '/states.json'));
         }
     }
 
@@ -200,7 +214,7 @@ function testAdapter(options: Record<string, any>): void {
             expect(context.states).to.be.ok;
 
             if (objectsConfig.type !== 'file') {
-                const objs = fs.readJSONSync(path.join(__dirname, 'objects.json'));
+                const objs = fs.readJSONSync(path.join(thisDir, 'objects.json'));
                 await addObjects(_objects!, objs);
                 await startAdapter();
             } else {
@@ -296,7 +310,7 @@ function testAdapter(options: Record<string, any>): void {
         );
 
         for (const test of tests) {
-            test.register(it, expect, context);
+            test(it, expect, context);
         }
 
         after(`${options.name} ${context.adapterShortName} adapter: Stop js-controller`, async function () {
@@ -335,4 +349,3 @@ function testAdapter(options: Record<string, any>): void {
         });
     });
 }
-module.exports = testAdapter;
