@@ -2,7 +2,7 @@ import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import { tools } from '@iobroker/js-controller-common';
 import fs from 'fs-extra';
 import deepClone from 'deep-clone';
-import { isDeepStrictEqual } from 'util';
+import { isDeepStrictEqual } from 'node:util';
 
 export interface CLIVendorOptions {
     objects: ObjectsRedisClient;

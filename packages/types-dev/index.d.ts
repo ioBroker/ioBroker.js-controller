@@ -1,6 +1,6 @@
 // Types which are safe to share within this repository AND publicly
 
-import type * as fs from 'fs';
+import type * as fs from 'node:fs';
 import './objects';
 import type { IoBJson, DatabaseOptions, ObjectsDatabaseOptions as ObjectsDbOptions } from './config';
 
