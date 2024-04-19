@@ -277,7 +277,7 @@ export class Install {
         }
 
         console.error(
-            `host.${hostname} Unknown packetName ${packetName}. Please install packages from outside the repository using npm!`
+            `host.${hostname} Unknown packetName ${packetName}. Please install packages from outside the repository using "${tools.appNameLowerCase} url <url-or-package>"!`
         );
         return this.processExit(EXIT_CODES.UNKNOWN_PACKET_NAME);
     }
