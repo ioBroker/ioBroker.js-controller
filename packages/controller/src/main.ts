@@ -4321,7 +4321,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                 }
 
                                 const module = (await isAdapterEsmModule(name))
-                                    ? await import(adapterMainFile)
+                                    ? await import(`${adapterMainFile}?update=${Date.now()}`)
                                     : require(adapterMainFile);
 
                                 proc.process = {
