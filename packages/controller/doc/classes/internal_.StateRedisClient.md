@@ -16,13 +16,13 @@
 
 ### Methods
 
+- [\_destroyDBHelper](internal_.StateRedisClient.md#_destroydbhelper)
+- [\_determineProtocolVersion](internal_.StateRedisClient.md#_determineprotocolversion)
 - [connectDb](internal_.StateRedisClient.md#connectdb)
-- [delBinaryState](internal_.StateRedisClient.md#delbinarystate)
 - [delState](internal_.StateRedisClient.md#delstate)
 - [destroy](internal_.StateRedisClient.md#destroy)
 - [destroyDB](internal_.StateRedisClient.md#destroydb)
 - [destroySession](internal_.StateRedisClient.md#destroysession)
-- [getBinaryState](internal_.StateRedisClient.md#getbinarystate)
 - [getKeys](internal_.StateRedisClient.md#getkeys)
 - [getProtocolVersion](internal_.StateRedisClient.md#getprotocolversion)
 - [getSession](internal_.StateRedisClient.md#getsession)
@@ -32,7 +32,6 @@
 - [getStatus](internal_.StateRedisClient.md#getstatus)
 - [pushLog](internal_.StateRedisClient.md#pushlog)
 - [pushMessage](internal_.StateRedisClient.md#pushmessage)
-- [setBinaryState](internal_.StateRedisClient.md#setbinarystate)
 - [setProtocolVersion](internal_.StateRedisClient.md#setprotocolversion)
 - [setRawState](internal_.StateRedisClient.md#setrawstate)
 - [setSession](internal_.StateRedisClient.md#setsession)
@@ -65,7 +64,7 @@
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:65
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:64
 
 ## Properties
 
@@ -75,9 +74,46 @@ db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:65
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:46
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:45
 
 ## Methods
+
+### \_destroyDBHelper
+
+▸ **_destroyDBHelper**(`keys`, `callback?`): `Promise`\<`void`\>
+
+#### Parameters
+
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `keys` | `string`[] | array of keys which will be deleted from db |
+| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) | function to be executed after keys have been deleted |
+
+#### Returns
+
+`Promise`\<`void`\>
+
+#### Defined in
+
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:102
+
+___
+
+### \_determineProtocolVersion
+
+▸ **_determineProtocolVersion**(): `Promise`\<`void`\>
+
+Checks if we are allowed to start and sets the protocol version accordingly
+
+#### Returns
+
+`Promise`\<`void`\>
+
+#### Defined in
+
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:69
+
+___
 
 ### connectDb
 
@@ -89,28 +125,7 @@ db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:46
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:72
-
-___
-
-### delBinaryState
-
-▸ **delBinaryState**(`id`, `callback?`): `Promise`\<`string` \| `void`\>
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `id` | `string` |
-| `callback?` | (`err`: `undefined` \| ``null`` \| `Error`, `id?`: `string`) => `void` |
-
-#### Returns
-
-`Promise`\<`string` \| `void`\>
-
-#### Defined in
-
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:141
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:70
 
 ___
 
@@ -131,7 +146,7 @@ ___
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:110
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:108
 
 ___
 
@@ -145,7 +160,7 @@ ___
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:109
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:107
 
 ___
 
@@ -163,13 +178,9 @@ ___
 
 `Promise`\<`void`\>
 
-**`Method`**
-
-destroyDB
-
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:108
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:106
 
 ___
 
@@ -190,50 +201,47 @@ ___
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:138
-
-___
-
-### getBinaryState
-
-▸ **getBinaryState**(`id`, `callback`): `Promise`\<`void` \| `Buffer`\>
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `id` | `string` |
-| `callback` | (`err`: `undefined` \| ``null`` \| `Error`, `state?`: `Buffer`) => `void` |
-
-#### Returns
-
-`Promise`\<`void` \| `Buffer`\>
-
-#### Defined in
-
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:140
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:133
 
 ___
 
 ### getKeys
 
-▸ **getKeys**(`pattern`, `callback?`, `dontModify?`): `Promise`\<`undefined` \| `void` \| `string`[]\>
+▸ **getKeys**(`pattern`, `callback?`, `dontModify?`): `Promise`\<`undefined` \| `string`[]\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `pattern` | `string` |
-| `callback?` | [`GetKeysCallback`](../modules/internal_.md#getkeyscallback) |
+| `callback?` | `undefined` |
 | `dontModify?` | `boolean` |
 
 #### Returns
 
-`Promise`\<`undefined` \| `void` \| `string`[]\>
+`Promise`\<`undefined` \| `string`[]\>
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:111
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:109
+
+▸ **getKeys**(`pattern`, `callback`, `dontModify?`): `Promise`\<`void`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `pattern` | `string` |
+| `callback` | [`GetKeysCallback`](../modules/internal_.md#getkeyscallback) |
+| `dontModify?` | `boolean` |
+
+#### Returns
+
+`Promise`\<`void`\>
+
+#### Defined in
+
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:110
 
 ___
 
@@ -249,7 +257,7 @@ Returns the protocol version from DB
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:146
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:138
 
 ___
 
@@ -270,7 +278,7 @@ ___
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:136
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:131
 
 ___
 
@@ -289,13 +297,9 @@ ___
 
 `Promise`\<`undefined` \| ``null`` \| `void` \| [`State`](../interfaces/internal_.State.md)\>
 
-**`Method`**
-
-getState
-
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:90
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:88
 
 ___
 
@@ -317,29 +321,65 @@ Promise-version of getState
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:94
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:94
 
 ___
 
 ### getStates
 
-▸ **getStates**(`keys`, `callback?`, `dontModify?`): `Promise`\<`void` \| (``null`` \| [`State`](../interfaces/internal_.State.md))[]\>
+▸ **getStates**(`keys`, `callback?`, `dontModify?`): `Promise`\<(``null`` \| [`State`](../interfaces/internal_.State.md))[]\>
 
 #### Parameters
 
 | Name | Type |
 | :------ | :------ |
 | `keys` | `string`[] |
-| `callback?` | (`err`: `undefined` \| ``null`` \| `Error`, `states?`: (``null`` \| [`State`](../interfaces/internal_.State.md))[]) => `void` |
+| `callback?` | `undefined` |
 | `dontModify?` | `boolean` |
 
 #### Returns
 
-`Promise`\<`void` \| (``null`` \| [`State`](../interfaces/internal_.State.md))[]\>
+`Promise`\<(``null`` \| [`State`](../interfaces/internal_.State.md))[]\>
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:95
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:95
+
+▸ **getStates**(`keys`, `callback`, `dontModify?`): `Promise`\<`void`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `keys` | `string`[] |
+| `callback` | (`err`: `undefined` \| ``null`` \| `Error`, `states?`: (``null`` \| [`State`](../interfaces/internal_.State.md))[]) => `void` |
+| `dontModify?` | `boolean` |
+
+#### Returns
+
+`Promise`\<`void`\>
+
+#### Defined in
+
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:96
+
+▸ **getStates**(`keys`, `callback`, `dontModify?`): `Promise`\<`void`\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `keys` | `string`[] |
+| `callback` | (`err`: `undefined` \| ``null`` \| `Error`, `states?`: (``null`` \| [`State`](../interfaces/internal_.State.md))[]) => `void` |
+| `dontModify?` | `boolean` |
+
+#### Returns
+
+`Promise`\<`void`\>
+
+#### Defined in
+
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:97
 
 ___
 
@@ -353,7 +393,7 @@ ___
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:73
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:71
 
 ___
 
@@ -375,7 +415,7 @@ ___
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:133
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:128
 
 ___
 
@@ -396,29 +436,7 @@ ___
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:130
-
-___
-
-### setBinaryState
-
-▸ **setBinaryState**(`id`, `data`, `callback?`): `Promise`\<`void`\>
-
-#### Parameters
-
-| Name | Type |
-| :------ | :------ |
-| `id` | `string` |
-| `data` | `Buffer` |
-| `callback?` | [`ErrorCallback`](../modules/internal_.md#errorcallback) |
-
-#### Returns
-
-`Promise`\<`void`\>
-
-#### Defined in
-
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:139
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:125
 
 ___
 
@@ -440,7 +458,7 @@ Sets the protocol version to the DB
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:151
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:144
 
 ___
 
@@ -461,7 +479,7 @@ ___
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:83
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:83
 
 ___
 
@@ -484,7 +502,7 @@ ___
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:137
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:132
 
 ___
 
@@ -505,7 +523,7 @@ ___
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:74
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:72
 
 ▸ **setState**(`id`, `state`, `callback`): `Promise`\<`void`\>
 
@@ -527,7 +545,7 @@ migrate to promisified version (without callback)
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:76
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:74
 
 ___
 
@@ -554,7 +572,7 @@ use version without `Async` postfix
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:82
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:82
 
 ___
 
@@ -575,7 +593,7 @@ ___
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:112
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:111
 
 ▸ **subscribe**(`pattern`, `asUser`, `callback?`): `Promise`\<`void`\>
 
@@ -593,7 +611,7 @@ db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:112
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:113
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:112
 
 ___
 
@@ -614,7 +632,7 @@ ___
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:134
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:129
 
 ___
 
@@ -635,7 +653,7 @@ ___
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:131
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:126
 
 ___
 
@@ -654,13 +672,9 @@ ___
 
 `Promise`\<`void`\>
 
-**`Method`**
-
-subscribeUser
-
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:120
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:117
 
 ___
 
@@ -682,7 +696,7 @@ ___
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:121
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:118
 
 ▸ **unsubscribe**(`pattern`, `callback?`): `Promise`\<`void`\>
 
@@ -699,7 +713,7 @@ db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:121
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:122
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:119
 
 ___
 
@@ -720,7 +734,7 @@ ___
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:135
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:130
 
 ___
 
@@ -741,7 +755,7 @@ ___
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:132
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:127
 
 ___
 
@@ -760,10 +774,6 @@ ___
 
 `Promise`\<`void`\>
 
-**`Method`**
-
-unsubscribeUser
-
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:129
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:124

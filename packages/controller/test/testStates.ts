@@ -1,13 +1,17 @@
 import { expect } from 'chai';
 
-import { startController, stopController } from './lib/setup4controller';
-import fs from 'fs';
+import { startController, stopController } from './lib/setup4controller.js';
+import fs from 'node:fs';
+import path from 'node:path';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type { Client as StateRedisClient } from '@iobroker/db-states-redis';
 let objects: ObjectsInRedisClient | null = null;
 let states: StateRedisClient | null = null;
 let onStatesChanged: ioBroker.StateChangeHandler | null = null;
-const dataDir = __dirname + '/../tmp/data';
+import * as url from 'node:url';
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+const dataDir = path.join(thisDir, '..', 'tmp', 'data');
 
 function cleanDbs(): void {
     if (fs.existsSync(dataDir + '/objects.json')) {

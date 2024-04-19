@@ -19,7 +19,7 @@ jobs:
 
     strategy:
       matrix:
-        node: [16.x] # This should be LTS
+        node: [18.x] # This should be LTS
 
     steps:
       - name: Checkout code

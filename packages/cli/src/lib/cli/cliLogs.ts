@@ -1,9 +1,12 @@
-import { CLICommand, type CLICommandOptions } from './cliCommand';
+import { CLICommand, type CLICommandOptions } from './cliCommand.js';
 import { tools, logger as toolsLogger } from '@iobroker/js-controller-common';
 import chokidar from 'chokidar';
 import fs from 'fs-extra';
-import os from 'os';
+import os from 'node:os';
 import es from 'event-stream';
+import { createRequire } from 'node:module';
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __filename);
 
 const { getConfigFileName } = tools;
 

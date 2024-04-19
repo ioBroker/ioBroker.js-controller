@@ -22,7 +22,7 @@ const errorMessages = Object.freeze({
     invalidJSONValue: () => `The given value is not valid JSON.`,
 
     unknownCommand: (prefix: string, command: string) => `Unknown command "${prefix} ${command}"!`,
-    requiredArgumentMissing: (argName: string, exampleCommand: string) =>
+    requiredArgumentMissing: (argName: string, exampleCommand?: string) =>
         `The required argument "${argName}" is missing!` + (exampleCommand ? ` Example: "${exampleCommand}"` : ''),
 
     noInstancesFound: (adapter: string) => `Cannot find any instances of "${adapter}"!`,
