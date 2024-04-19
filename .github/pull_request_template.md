@@ -1,14 +1,5 @@
----
-name: Bugfix or Feature
-about: This PR fixes a bug or This PR introduces a new feature
-title: '[fix]: or [feature]:'
-labels: ''
-assignees: ''
-
----
-
 <!--
-    Please adjust the PR title and delete the non-matching content below
+    Please adjust the PR title with prefix '[fix]:' or [feature]:' and delete the non-matching content below
 -->
 
 ### For Bugfixes:
@@ -33,6 +24,7 @@ assignees: ''
 -->
 
 ### For Features:
+
 **Link the feature issue which is closed by this PR**
 <!--
 If the PR closes an issue add a `closes #issue-no`. If no issue exists yet, please create an issue first to discuss with the core team if this feature is desirable.
