@@ -7,7 +7,7 @@
  *
  */
 
-import * as fs from 'fs-extra';
+import fs from 'fs-extra';
 import { tools } from '@iobroker/js-controller-common';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual } from 'node:util';

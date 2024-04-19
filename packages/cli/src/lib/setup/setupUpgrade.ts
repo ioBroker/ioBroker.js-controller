@@ -1,5 +1,5 @@
 import Debug from 'debug';
-import * as fs from 'fs-extra';
+import fs from 'fs-extra';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import semver from 'semver';
 import { Upload } from './setupUpload.js';
