@@ -1,6 +1,6 @@
 import type { TestContext } from '../_Types';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
-import { PERMISSIONS } from './permissions';
+import { PERMISSIONS } from './permissions.js';
 
 async function prepareGroupsAndUsers(objects: ObjectsInRedisClient): Promise<void> {
     await objects.setObject('system.group.userC', {
