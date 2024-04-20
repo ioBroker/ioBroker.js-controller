@@ -1,4 +1,4 @@
-import { MAX_TIMEOUT, SYSTEM_ADMIN_USER } from '@/lib/adapter/constants';
+import { MAX_TIMEOUT, SYSTEM_ADMIN_USER } from '@/lib/adapter/constants.js';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 
 type Callback = (...args: any[]) => void | Promise<void>;

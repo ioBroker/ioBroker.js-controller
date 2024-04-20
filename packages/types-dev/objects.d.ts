@@ -1,4 +1,4 @@
-import type * as os from 'os';
+import type * as os from 'node:os';
 
 declare global {
     namespace ioBroker {
