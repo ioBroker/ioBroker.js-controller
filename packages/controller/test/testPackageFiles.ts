@@ -1,14 +1,18 @@
 import { expect } from 'chai';
-import fs from 'fs';
+import fs from 'node:fs';
+
+import * as url from 'node:url';
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 
 describe('Test package.json and io-package.json', () => {
     it('Test package files', done => {
         console.log();
 
-        const fileContentIOPackage = fs.readFileSync(__dirname + '/../io-package.json', 'utf8');
+        const fileContentIOPackage = fs.readFileSync(thisDir + '/../io-package.json', 'utf8');
         const ioPackage = JSON.parse(fileContentIOPackage);
 
-        const fileContentNPMPackage = fs.readFileSync(__dirname + '/../package.json', 'utf8');
+        const fileContentNPMPackage = fs.readFileSync(thisDir + '/../package.json', 'utf8');
         const npmPackage = JSON.parse(fileContentNPMPackage);
 
         expect(ioPackage).to.be.an('object');
@@ -60,7 +64,7 @@ describe('Test package.json and io-package.json', () => {
             console.log();
         }
         expect(
-            fs.existsSync(__dirname + '/../README.md'),
+            fs.existsSync(thisDir + '/../README.md'),
             'ERROR: README.md needs to exist! Please create one with description, detail information and changelog. English is mandatory.'
         ).to.be.true;
         if (!ioPackage.common.titleLang || typeof ioPackage.common.titleLang !== 'object') {
@@ -82,22 +86,22 @@ describe('Test package.json and io-package.json', () => {
         if (!ioPackage.common.controller && !ioPackage.common.onlyWWW && !ioPackage.common.noConfig) {
             if (
                 !ioPackage.common.materialize ||
-                !fs.existsSync(__dirname + '/../admin/index_m.html') ||
-                !fs.existsSync(__dirname + '/../gulpfile.js')
+                !fs.existsSync(thisDir + '/../admin/index_m.html') ||
+                !fs.existsSync(thisDir + '/../gulpfile.js')
             ) {
                 console.log('WARNING: Admin3 support is missing! Please add it');
                 console.log();
             }
             if (ioPackage.common.materialize) {
                 expect(
-                    fs.existsSync(__dirname + '/../admin/index_m.html'),
+                    fs.existsSync(thisDir + '/../admin/index_m.html'),
                     'Admin3 support is enabled in io-package.json, but index_m.html is missing!'
                 ).to.be.true;
             }
         }
 
-        const licenseFileExists = fs.existsSync(__dirname + '/../LICENSE');
-        const fileContentReadme = fs.readFileSync(__dirname + '/../README.md', 'utf8');
+        const licenseFileExists = fs.existsSync(thisDir + '/../LICENSE');
+        const fileContentReadme = fs.readFileSync(thisDir + '/../README.md', 'utf8');
         if (fileContentReadme.indexOf('## Changelog') === -1) {
             console.log('Warning: The README.md should have a section ## Changelog');
             console.log();

@@ -10,19 +10,22 @@ import { PluginHandler } from '@iobroker/plugin-base';
 import semver from 'semver';
 import path from 'node:path';
 import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
-import { decryptArray, encryptArray, getSupportedFeatures, isMessageboxSupported } from '@/lib/adapter/utils';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const extend = require('node.extend');
+import { decryptArray, encryptArray, getSupportedFeatures, isMessageboxSupported } from '@/lib/adapter/utils.js';
+// @ts-expect-error no ts file
+import extend from 'node.extend';
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type Winston from 'winston';
 import type NodeSchedule from 'node-schedule';
+import yargs from 'yargs/yargs';
 
 // local version is always the same as controller version, since lerna exact: true is used
-import { version as controllerVersion } from '@iobroker/js-controller-adapter/package.json';
+import packJson from '@iobroker/js-controller-adapter/package.json' assert { type: 'json' };
 
-import { Log } from '@/lib/adapter/log';
-import { Validator } from './validator';
+const controllerVersion = packJson.version;
+
+import { Log } from '@/lib/adapter/log.js';
+import { Validator } from './validator.js';
 
 const { FORBIDDEN_CHARS } = tools;
 import {
@@ -40,7 +43,7 @@ import {
     NO_PROTECT_ADAPTERS,
     STATE_QUALITY,
     type SupportedFeature
-} from '@/lib/adapter/constants';
+} from '@/lib/adapter/constants.js';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import type {
     AdapterOptions,
@@ -109,10 +112,13 @@ import type {
     AllPropsUnknown,
     IoPackageInstanceObject,
     AliasTargetEntry
-} from '@/lib/_Types';
-import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController';
+} from '@/lib/_Types.js';
+import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
 
+import * as url from 'node:url';
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 tools.ensureDNSOrder();
 
 /**
@@ -675,7 +681,6 @@ export class AdapterClass extends EventEmitter {
      */
     requireLog?: (isActive: boolean, options?: Partial<GetUserGroupsOptions>) => Promise<void> | void;
     private logOffTimer?: NodeJS.Timeout | null;
-    private logRedirect?: (isActive: boolean, id: string) => void;
     private logRequired?: boolean;
     private patterns?: Record<string, { regex: string }>;
     private statesConnectedTime?: number;
@@ -724,46 +729,71 @@ export class AdapterClass extends EventEmitter {
         this._config = this._options.config || this._config;
         this.startedInCompactMode = !!this._options.compact;
 
-        // possible arguments
-        // 0,1,.. - instance
-        // info, debug, warn, error - log level
-        // --force
-        // --logs
-        // --silent
-        // --install
-        // --debug = --force + --logs
-        if (process.argv) {
-            for (const argument of process.argv) {
-                if (
-                    argument === 'info' ||
-                    argument === 'debug' ||
-                    argument === 'error' ||
-                    argument === 'warn' ||
-                    argument === 'silly'
-                ) {
-                    this._config.log.level = argument;
-                    this.overwriteLogLevel = true;
-                } else if (argument === '--silent') {
-                    this._config.isInstall = true;
-                } else if (argument === '--install') {
-                    this._config.isInstall = true;
-                } else if (argument === '--logs') {
-                    this._config.consoleOutput = true;
-                } else if (argument === '--force') {
-                    this._config.forceIfDisabled = true;
-                } else if (argument === '--debug') {
-                    this._config.forceIfDisabled = true;
-                    this._config.consoleOutput = true;
-                    if (this._config.log.level !== 'silly') {
-                        this._config.log.level = 'debug';
-                        this.overwriteLogLevel = true;
-                    }
-                } else if (argument === '--console') {
-                    this._config.consoleOutput = true;
-                } else if (parseInt(argument, 10).toString() === argument) {
-                    this._config.instance = parseInt(argument, 10);
+        const parsedArgs = yargs(process.argv.slice(2))
+            .options({
+                loglevel: {
+                    describe: 'Define adapter log level',
+                    type: 'string'
+                },
+                silent: {
+                    describe: 'If is install run',
+                    type: 'boolean'
+                },
+                install: {
+                    describe: 'If is install run',
+                    type: 'boolean'
+                },
+                logs: {
+                    describe: 'If console output desired',
+                    type: 'boolean'
+                },
+                console: {
+                    describe: 'If console output desired',
+                    type: 'boolean'
+                },
+                force: {
+                    describe: 'If force start even if disabled',
+                    type: 'boolean'
+                },
+                debug: {
+                    describe: 'Same as --force combined with --console',
+                    type: 'boolean'
+                },
+                instance: {
+                    describe: 'Instance id, e.g. 0',
+                    type: 'string'
                 }
+            })
+            .parseSync();
+
+        if (parsedArgs.loglevel && ['info', 'debug', 'error', 'warn', 'silly'].includes(parsedArgs.loglevel)) {
+            this._config.log.level = parsedArgs.loglevel;
+            this.overwriteLogLevel = true;
+        }
+
+        if (parsedArgs.silent || parsedArgs.install) {
+            this._config.isInstall = true;
+        }
+
+        if (parsedArgs.logs || parsedArgs.console) {
+            this._config.consoleOutput = true;
+        }
+
+        if (parsedArgs.force) {
+            this._config.forceIfDisabled = true;
+        }
+
+        if (parsedArgs.debug) {
+            this._config.forceIfDisabled = true;
+            this._config.consoleOutput = true;
+            if (this._config.log.level !== 'silly') {
+                this._config.log.level = 'debug';
+                this.overwriteLogLevel = true;
             }
+        }
+
+        if (parsedArgs.instance && parseInt(parsedArgs.instance, 10).toString() === parsedArgs.instance) {
+            this._config.instance = parseInt(parsedArgs.instance, 10);
         }
 
         this._config.log.level = this._config.log.level || 'info';
@@ -10018,7 +10048,7 @@ export class AdapterClass extends EventEmitter {
 
             if (obj?.native?.licenses?.length) {
                 const now = Date.now();
-                const cert = fs.readFileSync(path.join(__dirname, '..', '..', 'cert', 'cloudCert.crt'));
+                const cert = fs.readFileSync(path.join(thisDir, '..', '..', 'cert', 'cloudCert.crt'));
                 let adapterObj: ioBroker.AdapterObject | null | undefined;
                 if (adapterName) {
                     try {
@@ -10105,6 +10135,27 @@ export class AdapterClass extends EventEmitter {
         });
 
         return licenses;
+    }
+
+    /**
+     * Add given id to log redirect list
+     *
+     * @param isActive if id should be added or removed
+     * @param id the id to add
+     */
+    private logRedirect(isActive: boolean, id: string): void {
+        // ignore itself
+        if (id === `system.adapter.${this.namespace}`) {
+            return;
+        }
+
+        if (isActive) {
+            if (!this.logList.has(id)) {
+                this.logList.add(id);
+            }
+        } else {
+            this.logList.delete(id);
+        }
     }
 
     private _reportStatus(): void {
@@ -10346,7 +10397,7 @@ export class AdapterClass extends EventEmitter {
                     const id = keys[i].substring(0, keys[i].length - '.logging'.length);
 
                     if (typeof objPart === 'object' && (objPart.val === true || objPart.val === 'true')) {
-                        this.logRedirect!(true, id);
+                        this.logRedirect(true, id);
                     }
                 }
                 if (this.logList.size && messages?.length && this.#states) {
@@ -10363,21 +10414,6 @@ export class AdapterClass extends EventEmitter {
             // disable log buffer
             messages = null;
         }
-
-        this.logRedirect = (isActive, id): void => {
-            // ignore itself
-            if (id === `system.adapter.${this.namespace}`) {
-                return;
-            }
-
-            if (isActive) {
-                if (!this.logList.has(id)) {
-                    this.logList.add(id);
-                }
-            } else {
-                this.logList.delete(id);
-            }
-        };
 
         this._options.logTransporter = this._options.logTransporter || this.ioPack.common.logTransporter;
 
@@ -10714,7 +10750,7 @@ export class AdapterClass extends EventEmitter {
                                 this.pluginHandler.instanciatePlugin(
                                     pluginName,
                                     this.pluginHandler.getPluginConfig(pluginName) || {},
-                                    __dirname
+                                    thisDir
                                 );
                                 this.pluginHandler.setDatabaseForPlugin(pluginName, this.#objects, this.#states);
                                 this.pluginHandler.initPlugin(pluginName, this.adapterConfig || {});
@@ -11713,7 +11749,7 @@ export class AdapterClass extends EventEmitter {
                 }
 
                 this.inited = true;
-                this._initStates(this._prepareInitAdapter.bind(this));
+                this._initStates(() => this._prepareInitAdapter());
             });
         };
 
@@ -11740,7 +11776,7 @@ export class AdapterClass extends EventEmitter {
                 throw new Error(`Unknown states type: ${this._config.states.type}: ${err.message}`);
             }
         } else {
-            this.States = getStatesConstructor();
+            this.States = await getStatesConstructor();
         }
 
         if (this._config.objects && this._config.objects.type) {
@@ -11750,7 +11786,7 @@ export class AdapterClass extends EventEmitter {
                 throw new Error(`Unknown objects type: ${this._config.objects.type}: ${err.message}`);
             }
         } else {
-            this.Objects = getObjectsConstructor();
+            this.Objects = await getObjectsConstructor();
         }
 
         const ifaces = os.networkInterfaces();
@@ -11788,7 +11824,7 @@ export class AdapterClass extends EventEmitter {
 
         this.pluginHandler = new PluginHandler(pluginSettings);
         try {
-            this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, __dirname]); // first resolve from adapter directory, else from js-controller
+            this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, thisDir]); // first resolve from adapter directory, else from js-controller
         } catch (e) {
             this._logger.error(`Could not add plugins: ${e.message}`);
         }
