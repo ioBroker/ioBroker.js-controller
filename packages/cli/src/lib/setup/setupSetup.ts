@@ -325,14 +325,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
     /**
      * Creates objects and does object related cleanup
      *
-     * <<<<<<< HEAD
-     *
-     * @param callback callback called afterward
-     * @param checkCertificateOnly if only certificate check is required
-=======
      * @param callback callback function
      * @param checkCertificateOnly if only certificate check is desired
->>>>>>> 773de582637df5a24b64195f382b3ce9273c2245
      */
     async setupObjects(callback: () => void, checkCertificateOnly?: boolean): Promise<void> {
         const { states: _states, objects: _objects } = await dbConnectAsync(false, this.params);
