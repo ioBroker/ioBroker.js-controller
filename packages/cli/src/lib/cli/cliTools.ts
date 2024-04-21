@@ -101,9 +101,7 @@ export async function enumInstances(objects: ObjectsClient, adapter?: string): P
  * @param objects The objects DB to use
  * @returns An array of host objects
  */
-export function enumHosts(
-    objects: ObjectsClient
-): Promise<(ioBroker.InferGetObjectViewItemType<'system', 'host'> | null)[]> {
+export function enumHosts(objects: ObjectsClient): Promise<ioBroker.InferGetObjectViewItemType<'system', 'host'>[]> {
     return enumObjects(objects, 'host', 'system.host.');
 }
 
@@ -118,7 +116,7 @@ export function enumObjects<T extends string>(
     objects: ObjectsClient,
     type: T,
     startkey: string
-): Promise<(ioBroker.InferGetObjectViewItemType<'system', T> | null)[]> {
+): Promise<ioBroker.InferGetObjectViewItemType<'system', T>[]> {
     return new Promise((resolve, reject) => {
         const endkey = `${startkey}\u9999`;
         objects.getObjectView('system', type, { startkey, endkey }, null, (err, res) => {
@@ -126,8 +124,8 @@ export function enumObjects<T extends string>(
                 return reject(err);
             }
 
-            let ret: (ioBroker.InferGetObjectViewItemType<'system', T> | null)[] = [];
-            if (res && res.rows) {
+            let ret: ioBroker.InferGetObjectViewItemType<'system', T>[] = [];
+            if (res?.rows) {
                 ret = res.rows.map(row => row.value);
             }
             resolve(ret);
