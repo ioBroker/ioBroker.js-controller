@@ -7,7 +7,9 @@
     "eslint:recommended",
     "plugin:prettier/recommended"
   ],
-  "plugins": [],
+  "plugins": [
+    "unicorn"
+  ],
   "ignorePatterns": [
     "**/doc",
     "**/build"
@@ -72,10 +74,13 @@
     "no-trailing-spaces": "error",
     "prettier/prettier": "error",
     "no-nested-ternary": "off",
-    "no-unneeded-ternary": "error"
+    "no-unneeded-ternary": "error",
+    "unicorn/prefer-module": "error",
+    "unicorn/prefer-node-protocol": "error"
   },
   "parserOptions": {
-    "ecmaVersion": 2021
+    "sourceType": "module",
+    "ecmaVersion": 2022
   },
   "overrides": [
     {
@@ -87,12 +92,18 @@
       },
       "files": [
         "**/*.ts",
+        "**/*.cts",
+        "**/*.mts",
         "**/*.tsx"
       ],
       "extends": [
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended",
+        "plugin:jsdoc/recommended-typescript"
       ],
       "rules": {
+        "jsdoc/require-returns": 0,
+        "jsdoc/tag-lines": ["error", "never", { "startLines": 1 }],
+        "jsdoc/no-blank-blocks": ["error", { "enableFixer": true }],
         "@typescript-eslint/no-parameter-properties": "off",
         "@typescript-eslint/no-explicit-any": "off",
         "@typescript-eslint/no-use-before-define": [

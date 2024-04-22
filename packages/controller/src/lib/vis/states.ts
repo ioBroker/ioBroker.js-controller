@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { getUsedObjectIDs } = require('./visUtils');
+import { getUsedObjectIDs } from './visUtils.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 
 interface CalculatedProject {

@@ -10,33 +10,46 @@
  */
 
 import schedule from 'node-schedule';
-import os from 'os';
+import os from 'node:os';
 import fs from 'fs-extra';
-import path from 'path';
-import cp, { spawn, exec } from 'child_process';
+import path from 'node:path';
+import cp, { spawn, exec } from 'node:child_process';
 import semver from 'semver';
-import restart from './lib/restart';
+import restart from '@/lib/restart.js';
 import { tools as dbTools } from '@iobroker/js-controller-common-db';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
-import { isDeepStrictEqual, inspect } from 'util';
+import { isDeepStrictEqual, inspect } from 'node:util';
 import { tools, EXIT_CODES, logger as toolsLogger } from '@iobroker/js-controller-common';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
 import { PluginHandler } from '@iobroker/plugin-base';
-import { NotificationHandler } from '@iobroker/js-controller-common-db';
-import * as zipFiles from './lib/zipFiles';
+import { NotificationHandler, getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
+import * as zipFiles from '@/lib/zipFiles.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
-import { Upload, PacketManager } from '@iobroker/js-controller-cli';
+import { Upload, PacketManager, type UpgradePacket } from '@iobroker/js-controller-cli';
 import decache from 'decache';
 import cronParser from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
-import { AdapterAutoUpgradeManager } from './lib/adapterAutoUpgradeManager';
-import { getDefaultNodeArgs, type HostInfo, type RepositoryFile } from '@iobroker/js-controller-common/tools';
-import type { UpgradeArguments } from './lib/upgradeManager';
-import { AdapterUpgradeManager } from './lib/adapterUpgradeManager';
+import { AdapterAutoUpgradeManager } from '@/lib/adapterAutoUpgradeManager.js';
+import {
+    getHostObject,
+    getDefaultNodeArgs,
+    type HostInfo,
+    isAdapterEsmModule,
+    type RepositoryFile
+} from '@iobroker/js-controller-common/tools';
+import type { UpgradeArguments } from '@/lib/upgradeManager.js';
+import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
+import { setTimeout as wait } from 'node:timers/promises';
+import { getHostObjects } from '@/lib/objects.js';
+import * as url from 'node:url';
+import { createRequire } from 'node:module';
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __filename);
 
-type TaskObject = ioBroker.SettableObject & { state?: ioBroker.SettableState };
 type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
 type Dependencies = string[] | Record<string, string>[] | string | Record<string, string>;
 
@@ -143,7 +156,7 @@ let callbackId = 1;
 const callbacks: Record<string, { time: number; cb: (message: ioBroker.MessagePayload) => void }> = {};
 const hostname = tools.getHostName();
 const controllerDir = tools.getControllerDir();
-let hostObjectPrefix = `system.host.${hostname}`;
+let hostObjectPrefix: ioBroker.ObjectIDs.Host = `system.host.${hostname}`;
 let hostLogPrefix = `host.${hostname}`;
 const compactGroupObjectPrefix = '.compactgroup';
 const logList: string[] = [];
@@ -193,6 +206,10 @@ const uploadTasks: UploadTask[] = [];
 
 const config = getConfig();
 
+/**
+ *
+ * @param code
+ */
 function getErrorText(code: number): string {
     return EXIT_CODES[code];
 }
@@ -200,7 +217,7 @@ function getErrorText(code: number): string {
 /**
  * Get the config directly from fs - never cached
  */
-function getConfig(): Record<string, any> | never {
+function getConfig(): ioBroker.IoBrokerJson | never {
     const configFile = tools.getConfigFileName();
     if (!fs.existsSync(configFile)) {
         if (process.argv.indexOf('start') !== -1) {
@@ -229,11 +246,15 @@ function getConfig(): Record<string, any> | never {
     }
 }
 
-function _startMultihost(_config: Record<string, any>, secret: string | false): void {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const MHService = require('./lib/multihostServer.js');
+/**
+ *
+ * @param _config
+ * @param secret
+ */
+async function _startMultihost(_config: Record<string, any>, secret: string | false): Promise<void> {
+    const MHService = await import('./lib/multihostServer.js');
     const cpus = os.cpus();
-    mhService = new MHService(
+    mhService = new MHService.MHServer(
         hostname,
         logger,
         _config,
@@ -279,15 +300,23 @@ async function startMultihost(__config?: Record<string, any>): Promise<boolean |
             }
         }
 
-        if (!_config.objects.host || dbTools.isLocalObjectsDbServer(_config.objects.type, _config.objects.host, true)) {
+        const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(
+            _config.objects.type,
+            _config.objects.host,
+            true
+        );
+        const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(
+            _config.states.type,
+            _config.states.host,
+            true
+        );
+
+        if (!_config.objects.host || hasLocalObjectsServer) {
             logger.warn(
                 `${hostLogPrefix} Multihost Master on this system is not possible, because IP address for objects is ${_config.objects.host}. Please allow remote connections to the server by adjusting the IP.`
             );
             return false;
-        } else if (
-            !_config.states.host ||
-            dbTools.isLocalObjectsDbServer(_config.states.type, _config.states.host, true)
-        ) {
+        } else if (!_config.states.host || hasLocalStatesServer) {
             logger.warn(
                 `${hostLogPrefix} Multihost Master on this system is not possible, because IP address for states is ${_config.states.host}. Please allow remote connections to the server by adjusting the IP.`
             );
@@ -389,6 +418,12 @@ function startUpdateIPs(): void {
 }
 
 // subscribe or unsubscribe loggers
+/**
+ *
+ * @param isActive
+ * @param id
+ * @param reason
+ */
 function logRedirect(isActive: boolean, id: string, reason: string): void {
     console.log(`================================== > LOG REDIRECT ${id} => ${isActive} [${reason}]`);
     if (isActive) {
@@ -430,6 +465,10 @@ function handleDisconnect(): void {
     }
 }
 
+/**
+ *
+ * @param onConnect
+ */
 function createStates(onConnect: () => void): void {
     states = new States({
         namespace: hostLogPrefix,
@@ -514,7 +553,7 @@ function createStates(onConnect: () => void): void {
                 }
                 let currentLevel = config.log.level;
                 if (
-                    state.val &&
+                    typeof state.val === 'string' &&
                     state.val !== currentLevel &&
                     ['silly', 'debug', 'info', 'warn', 'error'].includes(state.val as string)
                 ) {
@@ -579,10 +618,7 @@ function createStates(onConnect: () => void): void {
                 clearTimeout(statesDisconnectTimeout);
                 statesDisconnectTimeout = null;
             }
-            // logs and cleanups are only handled by the main controller process
-            if (!compactGroupController) {
-                deleteAllZipPackages();
-            }
+
             initMessageQueue();
             startAliveInterval();
 
@@ -667,6 +703,10 @@ async function initializeController(): Promise<void> {
 }
 
 // create "objects" object
+/**
+ *
+ * @param onConnect
+ */
 function createObjects(onConnect: () => void): void {
     objects = new Objects({
         namespace: hostLogPrefix,
@@ -714,12 +754,13 @@ function createObjects(onConnect: () => void): void {
             );
             // give the main controller a bit longer, so that adapter and compact processes can exit before
         },
-        change: async (id, _obj) => {
-            if (!started || !id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) {
+        change: async (_id, _obj) => {
+            if (!started || !_id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) {
                 return;
             }
 
             const obj = _obj as ioBroker.InstanceObject | null;
+            const id = _id as ioBroker.ObjectIDs.Instance;
 
             try {
                 logger.debug(`${hostLogPrefix} object change ${id} (from: ${obj ? obj.from : null})`);
@@ -776,11 +817,7 @@ function createObjects(onConnect: () => void): void {
                         hostAdapter[id] = hostAdapter[id] || {};
                         hostAdapter[id].config = obj;
                     }
-                    if (
-                        proc.process ||
-                        proc.config.common.mode === 'schedule' ||
-                        proc.config.common.mode === 'subscribe'
-                    ) {
+                    if (proc.process || proc.config.common.mode === 'schedule') {
                         proc.restartExpected = true;
                         await stopInstance(id, false);
                         if (!procs[id]) {
@@ -797,7 +834,6 @@ function createObjects(onConnect: () => void): void {
                                     clearTimeout(proc.restartTimer);
                                 }
                                 const restartTimeout = (proc.config.common.stopTimeout || 500) + 2_500;
-                                // @ts-expect-error tell ts it is an instance id
                                 proc.restartTimer = setTimeout(_id => startInstance(_id), restartTimeout, id);
                             }
                         } else {
@@ -835,7 +871,6 @@ function createObjects(onConnect: () => void): void {
                                 proc.config.common.enabled &&
                                 (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance)
                             ) {
-                                // @ts-expect-error ts not able to infer instance id here
                                 startInstance(id);
                             }
                         } else {
@@ -873,7 +908,6 @@ function createObjects(onConnect: () => void): void {
                     ) {
                         // We should give a slight delay to allow a potentially former existing process on another host to exit
                         const restartTimeout = (proc.config.common.stopTimeout || 500) + 2_500;
-                        // @ts-expect-error tell ts it is an instance id
                         proc.restartTimer = setTimeout(_id => startInstance(_id), restartTimeout, id);
                     }
                 }
@@ -898,9 +932,9 @@ function createObjects(onConnect: () => void): void {
 
 function startAliveInterval(): void {
     config.system = config.system || {};
-    config.system.statisticsInterval = parseInt(config.system.statisticsInterval, 10) || 15000;
+    config.system.statisticsInterval = Math.round(config.system.statisticsInterval) || 15_000;
     config.system.checkDiskInterval =
-        config.system.checkDiskInterval !== 0 ? parseInt(config.system.checkDiskInterval, 10) || 300000 : 0;
+        config.system.checkDiskInterval !== 0 ? Math.round(config.system.checkDiskInterval) || 300_000 : 0;
     if (!compactGroupController) {
         // Provide info to see for each host if compact is enabled or not and be able to use in Admin or such
         states!.setState(`${hostObjectPrefix}.compactModeEnabled`, {
@@ -1106,6 +1140,12 @@ function reportStatus(): void {
     }
 }
 
+/**
+ *
+ * @param objs
+ * @param oldHostname
+ * @param newHostname
+ */
 async function changeHost(
     objs: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[],
     oldHostname: string,
@@ -1141,16 +1181,16 @@ async function changeHost(
  */
 function cleanAutoSubscribe(instance: string, autoInstance: ioBroker.ObjectIDs.Instance, callback: () => void): void {
     inputCount++;
-    states!.getState(`${autoInstance}.subscribes`, (err, state) => {
+    states!.getState(`${autoInstance}.subscribes`, async (err, state) => {
         if (!state || !state.val) {
-            return typeof callback === 'function' && setImmediate(() => callback());
+            return setImmediate(() => callback());
         }
         let subs;
         try {
             subs = JSON.parse(state.val as string);
         } catch {
             logger.error(`${hostLogPrefix} Cannot parse subscribes: ${state.val}`);
-            return typeof callback === 'function' && setImmediate(() => callback());
+            return setImmediate(() => callback());
         }
         let modified = false;
         // look for all subscribes from this instance
@@ -1171,13 +1211,18 @@ function cleanAutoSubscribe(instance: string, autoInstance: ioBroker.ObjectIDs.I
 
         if (modified) {
             outputCount++;
-            states!.setState(`${autoInstance}.subscribes`, subs, () => typeof callback === 'function' && callback());
-        } else if (typeof callback === 'function') {
-            setImmediate(() => callback());
+            await states!.setState(`${autoInstance}.subscribes`, subs);
         }
+
+        setImmediate(() => callback());
     });
 }
 
+/**
+ *
+ * @param instanceID
+ * @param callback
+ */
 function cleanAutoSubscribes(instanceID: ioBroker.ObjectIDs.Instance, callback: () => void): void {
     const instance = instanceID.substring(15); // get name.0
 
@@ -1203,6 +1248,10 @@ function cleanAutoSubscribes(instanceID: ioBroker.ObjectIDs.Instance, callback: 
     );
 }
 
+/**
+ *
+ * @param objs
+ */
 async function delObjects(objs: ioBroker.GetObjectViewItem<ioBroker.AnyObject>[]): Promise<void> {
     for (const row of objs) {
         if (row?.id) {
@@ -1491,6 +1540,10 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
 }
 
 // check if some IPv4 address found. If not try in 30 seconds one more time (max 10 times)
+/**
+ *
+ * @param ipList
+ */
 function setIPs(ipList?: string[]): void {
     if (isStopping) {
         return;
@@ -1545,6 +1598,7 @@ function setIPs(ipList?: string[]): void {
 
 /**
  * Extends objects, optionally you can provide a state at each task (does not throw)
+ *
  * @param tasks
  */
 async function extendObjects(tasks: Record<string, any>[]): Promise<void> {
@@ -1558,7 +1612,7 @@ async function extendObjects(tasks: Record<string, any>[]): Promise<void> {
             await objects!.extendObjectAsync(task._id, task);
             // if extend throws we don't want to set corresponding state
             if (state) {
-                await states!.setStateAsync(task._id, state);
+                await states!.setState(task._id, state);
             }
         } catch {
             // ignore
@@ -1566,515 +1620,64 @@ async function extendObjects(tasks: Record<string, any>[]): Promise<void> {
     }
 }
 
-function setMeta(): void {
+/**
+ * Create the host meta data like host objects and states
+ */
+async function setMeta(): Promise<void> {
     const id = hostObjectPrefix;
 
-    objects!.getObject(id, (err, oldObj) => {
-        let newObj: ioBroker.HostObject | ioBroker.FolderObject;
-        if (compactGroupController) {
-            newObj = {
-                _id: id,
-                type: 'folder',
-                common: {
-                    name: hostname + compactGroupObjectPrefix + compactGroup,
-                    cmd:
-                        process.argv[0] +
-                        ' ' +
-                        `${process.execArgv.join(' ')} `.replace(/--inspect-brk=\d+ /, '') +
-                        process.argv.slice(1).join(' '),
-                    hostname: hostname,
-                    address: tools.findIPs()
-                },
-                native: {}
-            };
-        } else {
-            // @ts-expect-error todo fix later
-            newObj = {
-                _id: id,
-                type: 'host',
-                common: {
-                    name: hostname,
-                    title:
-                        oldObj && oldObj.common && oldObj.common.title ? oldObj.common.title : ioPackage.common.title,
-                    installedVersion: version,
-                    platform: ioPackage.common.platform,
-                    cmd:
-                        process.argv[0] +
-                        ' ' +
-                        `${process.execArgv.join(' ')} `.replace(/--inspect-brk=\d+ /, '') +
-                        process.argv.slice(1).join(' '),
-                    hostname: hostname,
-                    address: tools.findIPs(),
-                    type: ioPackage.common.name
-                },
-                native: {
-                    process: {
-                        title: process.title,
-                        versions: process.versions,
-                        env: process.env
-                    },
-                    os: {
-                        hostname: hostname,
-                        type: os.type(),
-                        platform: os.platform(),
-                        arch: os.arch(),
-                        release: os.release(),
-                        endianness: os.endianness(),
-                        tmpdir: os.tmpdir()
-                    },
-                    hardware: {
-                        cpus: os.cpus(),
-                        totalmem: os.totalmem(),
-                        networkInterfaces: {}
-                    }
-                }
-            };
+    const oldObj = await objects!.getObject(id);
+    let newObj: ioBroker.HostObject | ioBroker.FolderObject;
+    if (compactGroupController) {
+        newObj = {
+            _id: id,
+            type: 'folder',
+            common: {
+                name: hostname + compactGroupObjectPrefix + compactGroup,
+                cmd: `${process.argv[0]} ${`${process.execArgv.join(' ')} `.replace(
+                    /--inspect-brk=\d+ /,
+                    ''
+                )}${process.argv.slice(1).join(' ')}`,
+                hostname: hostname,
+                address: tools.findIPs()
+            },
+            native: {}
+        };
+    } else {
+        newObj = getHostObject(oldObj);
+    }
 
-            if (oldObj?.common?.icon) {
-                newObj.common.icon = oldObj.common.icon;
-            }
-            if (oldObj?.common?.color) {
-                newObj.common.color = oldObj.common.color;
-            }
-            // remove dynamic information
-            if (newObj.native?.hardware?.cpus) {
-                for (const cpu of newObj.native.hardware.cpus) {
-                    if (cpu.times) {
-                        delete cpu.times;
-                    }
-                }
-            }
-            if (oldObj?.native.hardware?.networkInterfaces) {
-                newObj.native.hardware.networkInterfaces = oldObj.native.hardware.networkInterfaces;
-            }
-        }
+    if (oldObj) {
+        // @ts-expect-error todo: can be removed?
+        delete oldObj.cmd;
+        delete oldObj.from;
+        delete oldObj.ts;
+        delete oldObj.acl;
+    }
 
-        if (oldObj) {
-            // @ts-expect-error todo: can be removed?
-            delete oldObj.cmd;
-            delete oldObj.from;
-            delete oldObj.ts;
-            delete oldObj.acl;
-        }
-
-        if (!oldObj || !isDeepStrictEqual(newObj, oldObj)) {
-            newObj.from = hostObjectPrefix;
-            newObj.ts = Date.now();
-            objects!.setObject(id, newObj, err => {
-                if (err) {
-                    logger.error(`${hostLogPrefix} Cannot write host object: ${err.message}`);
-                } else {
-                    setIPs(newObj.common.address);
-                }
-            });
-        } else {
+    if (!oldObj || !isDeepStrictEqual(newObj, oldObj)) {
+        newObj.from = hostObjectPrefix;
+        newObj.ts = Date.now();
+        try {
+            // @ts-expect-error TODO: for compact controller we are setting a folder object to a system.host.XY id
+            await objects!.setObject(id, newObj);
             setIPs(newObj.common.address);
+        } catch (e) {
+            logger.error(`${hostLogPrefix} Cannot write host object: ${e.message}`);
         }
-    });
-
-    const tasks: TaskObject[] = [];
-    let obj: TaskObject;
-
-    if (!compactGroupController) {
-        obj = {
-            _id: `${id}.compactModeEnabled`,
-            type: 'state',
-            common: {
-                name: 'Controller - compact mode enabled',
-                type: 'boolean',
-                read: true,
-                write: false,
-                role: 'indicator'
-            },
-            native: {}
-        };
-        tasks.push(obj);
-
-        obj = {
-            _id: `${id}.compactgroupProcesses`,
-            type: 'state',
-            common: {
-                name: 'Controller - number of compact group controllers',
-                type: 'number',
-                read: true,
-                write: false,
-                min: 0,
-                role: 'value',
-                unit: 'processes'
-            },
-            native: {}
-        };
-        tasks.push(obj);
-
-        obj = {
-            _id: `${id}.nodeVersion`,
-            type: 'state',
-            common: {
-                name: 'Controller - Node.js version',
-                type: 'string',
-                read: true,
-                write: false,
-                desc: 'Node.js version of the host process.',
-                role: 'state'
-            },
-            native: {}
-        };
-        tasks.push(obj);
+    } else {
+        setIPs(newObj.common.address);
     }
-
-    obj = {
-        _id: `${id}.instancesAsProcess`,
-        type: 'state',
-        common: {
-            name: 'Controller - number of instance processes',
-            type: 'number',
-            read: true,
-            write: false,
-            min: 0,
-            role: 'value',
-            unit: 'processes'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.instancesAsCompact`,
-        type: 'state',
-        common: {
-            name: 'Controller - number of instances started in this host process',
-            type: 'number',
-            read: true,
-            write: false,
-            min: 0,
-            role: 'value',
-            unit: 'instances'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.cpu`,
-        type: 'state',
-        common: {
-            name: 'Controller - cpu usage in % of one core',
-            type: 'number',
-            read: true,
-            write: false,
-            min: 0,
-            role: 'value',
-            unit: '% of one core'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.cputime`,
-        type: 'state',
-        common: {
-            name: 'Controller - accumulated cputime in seconds',
-            type: 'number',
-            read: true,
-            write: false,
-            min: 0,
-            role: 'value',
-            unit: 'seconds'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.mem`,
-        type: 'state',
-        common: {
-            type: 'number',
-            role: 'value',
-            name: `${hostname} - memory usage in %`,
-            unit: '%',
-            read: true,
-            write: false,
-            min: 0,
-            max: 100
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.memHeapUsed`,
-        type: 'state',
-        common: {
-            type: 'number',
-            role: 'value',
-            name: 'Controller - heap memory used in MB',
-            read: true,
-            write: false,
-            min: 0,
-            unit: 'MB'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    if (fs.existsSync('/proc/meminfo')) {
-        obj = {
-            _id: `${id}.memAvailable`,
-            type: 'state',
-            common: {
-                type: 'number',
-                role: 'value',
-                name: `${hostname} - available memory from /proc/meminfo in MB`,
-                read: true,
-                write: false,
-                min: 0,
-                unit: 'MB'
-            },
-            native: {}
-        };
-        tasks.push(obj);
-    }
-
-    obj = {
-        _id: `${id}.memHeapTotal`,
-        type: 'state',
-        common: {
-            type: 'number',
-            role: 'value',
-            name: 'Controller - heap memory reserved in MB',
-            read: true,
-            write: false,
-            min: 0,
-            unit: 'MB'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.memRss`,
-        type: 'state',
-        common: {
-            type: 'number',
-            role: 'value',
-            name: 'Controller - resident set size memory in MB',
-            desc: "RSS is the resident set size, the portion of the process's memory held in RAM",
-            read: true,
-            write: false,
-            min: 0,
-            unit: 'MB'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.uptime`,
-        type: 'state',
-        common: {
-            type: 'number',
-            role: 'value',
-            name: 'Controller - uptime in seconds',
-            read: true,
-            write: false,
-            min: 0,
-            unit: 'seconds'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.load`,
-        type: 'state',
-        common: {
-            unit: '',
-            type: 'number',
-            role: 'value',
-            read: true,
-            write: false,
-            name: `${hostname} - load average 1min`
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.alive`,
-        type: 'state',
-        common: {
-            name: `${hostname} - alive status`,
-            read: true,
-            write: false,
-            type: 'boolean',
-            role: 'indicator'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.freemem`,
-        type: 'state',
-        common: {
-            name: `${hostname} - available RAM in MB`,
-            unit: 'MB',
-            read: true,
-            write: false,
-            type: 'number',
-            role: 'value'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.inputCount`,
-        type: 'state',
-        common: {
-            name: 'Controller - input level in events/15 seconds',
-            desc: "State's inputs in 15 seconds",
-            type: 'number',
-            read: true,
-            write: false,
-            role: 'value',
-            unit: 'events/15 seconds'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.outputCount`,
-        type: 'state',
-        common: {
-            name: 'Controller - output level in events/15 seconds',
-            desc: "State's outputs in 15 seconds",
-            type: 'number',
-            read: true,
-            write: false,
-            role: 'value',
-            unit: 'events/15 seconds'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.eventLoopLag`,
-        type: 'state',
-        common: {
-            name: 'Controller - The Node.js event loop lag in ms, averaged over 15 seconds',
-            desc: 'Average Node.js event loop lag in ms',
-            type: 'number',
-            read: true,
-            write: false,
-            role: 'value',
-            unit: 'ms'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.zip`,
-        type: 'folder',
-        common: {
-            name: 'ZIP files',
-            desc: 'Files for download'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.logLevel`,
-        type: 'state',
-        common: {
-            name: 'Controller - Loglevel',
-            type: 'string',
-            read: true,
-            write: true,
-            desc: 'Loglevel of the host process. Will be set on start with defined value but can be overridden during runtime',
-            role: 'state'
-        },
-        native: {}
-    };
-    tasks.push(obj);
-
-    obj = {
-        _id: `${id}.pid`,
-        type: 'state',
-        common: {
-            name: 'Controller - Process ID',
-            type: 'number',
-            read: true,
-            write: false,
-            role: 'value'
-        },
-        native: {},
-        state: {
-            val: process.pid,
-            ack: true
-        }
-    };
-    tasks.push(obj);
 
     config.system.checkDiskInterval =
-        config.system.checkDiskInterval !== 0 ? parseInt(config.system.checkDiskInterval, 10) || 300000 : 0;
+        config.system.checkDiskInterval !== 0 ? Math.round(config.system.checkDiskInterval) || 300_000 : 0;
 
-    if (config.system.checkDiskInterval) {
-        obj = {
-            _id: `${id}.diskSize`,
-            type: 'state',
-            common: {
-                name: `${hostname} - disk total size`,
-                desc: 'Disk size of logical volume where the server is installed in MiB',
-                type: 'number',
-                read: true,
-                write: false,
-                role: 'value',
-                unit: 'MiB'
-            },
-            native: {}
-        };
-        tasks.push(obj);
-
-        obj = {
-            _id: `${id}.diskFree`,
-            type: 'state',
-            common: {
-                name: `${hostname} - disk free size`,
-                desc: 'Free disk size of the logical volume where the server is installed in MiB',
-                type: 'number',
-                read: true,
-                write: false,
-                role: 'value',
-                unit: 'MiB'
-            },
-            native: {}
-        };
-        tasks.push(obj);
-
-        obj = {
-            _id: `${id}.diskWarning`,
-            type: 'state',
-            common: {
-                name: `${hostname} - disk warning level`,
-                desc: 'Show warning in admin if the free disk space is below this value',
-                type: 'number',
-                read: true,
-                write: true,
-                def: 5,
-                role: 'level',
-                unit: '%'
-            },
-            native: {}
-        };
-        tasks.push(obj);
-    }
+    const tasks = getHostObjects({
+        id,
+        hostname,
+        config,
+        isCompactGroupController: compactGroupController
+    });
 
     // delete obsolete states and create new ones
     objects!.getObjectView(
@@ -2244,6 +1847,10 @@ async function sendTo(
     }
 }
 
+/**
+ *
+ * @param hostId
+ */
 async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host): Promise<Record<string, any> | null | undefined> {
     const state = await states!.getState(`${hostId}.alive`);
     if (state?.val) {
@@ -2266,29 +1873,6 @@ async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host): Promise<Reco
         logger.warn(`${hostLogPrefix} "${hostId}" is offline`);
         return null;
     }
-}
-
-/**
- Helper function that serialize deletion of states
- @param list array with states
- */
-async function _deleteAllZipPackages(list: string[]): Promise<void> {
-    for (const id of list) {
-        try {
-            await states!.delBinaryState(id);
-        } catch {
-            //ignore
-        }
-    }
-}
-
-/**
- * This function deletes all ZIP packages that were not downloaded.
- * ZIP Package is a temporary file that should be deleted straight after it is downloaded and if it still exists, so clear it
- */
-async function deleteAllZipPackages(): Promise<void> {
-    const list = await states!.getKeys(`${hostObjectPrefix}.zip.*`);
-    await _deleteAllZipPackages(list!);
 }
 
 async function startAdapterUpload(): Promise<void> {
@@ -2371,7 +1955,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
 
         case 'cmdExec': {
-            const mainFile = path.join(__dirname, '..', `${tools.appName.toLowerCase()}.js`);
+            const mainFile = path.join(thisDir, '..', `${tools.appName.toLowerCase()}.js`);
             const args = [...getDefaultNodeArgs(mainFile), mainFile];
             if (!msg.message.data || typeof msg.message.data !== 'string') {
                 logger.warn(
@@ -2718,7 +2302,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 const lines = msg.message || 200;
                 let text = '';
                 // @ts-expect-error types not know this one
-                let logFile_ = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
+                let logFile_ = logger.getFileName();
 
                 if (!fs.existsSync(logFile_)) {
                     logFile_ = `${controllerDir}/../../log/${tools.appName}.log`;
@@ -3031,24 +2615,14 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                             msg.callback
                         );
                     } else {
-                        logger.warn(
-                            `${hostLogPrefix} Saving in binary state "${hostObjectPrefix}.zip.${msg.message.link}" is deprecated. ` +
-                                'Please add the "fileStorageNamespace" attribute to request (with e.g. "admin.0" value)' +
-                                ` to save ZIP in file as "zip/${msg.message.link}"`
+                        sendTo(
+                            msg.from,
+                            msg.command,
+                            {
+                                error: `Missing attribute "fileStorageNamespace" use e.g. "admin.0" to save ZIP in file as "zip/${msg.message.link}"`
+                            },
+                            msg.callback
                         );
-
-                        states!.setBinaryState(`${hostObjectPrefix}.zip.${msg.message.link}`, buff, err => {
-                            if (err) {
-                                sendTo(msg.from, msg.command, { error: err.message }, msg.callback);
-                            } else {
-                                sendTo(
-                                    msg.from,
-                                    msg.command,
-                                    `${hostObjectPrefix}.zip.${msg.message.link}`,
-                                    msg.callback
-                                );
-                            }
-                        });
                     }
                 } else {
                     sendTo(msg.from, msg.command, { data: base64 }, msg.callback);
@@ -3333,29 +2907,6 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             }
             break;
 
-        case 'certsUpdated': {
-            // restart all instances that depends on lets encrypt, except the issuer
-            const instances: string[] = [];
-            Object.entries(procs).forEach(([id, proc]) => {
-                if (
-                    proc.config?.common?.enabled && // if enabled
-                    proc.config.common.mode === 'daemon' && // if constantly running
-                    proc.config.native?.leEnabled && // if using letsencrypt
-                    !proc.config.native.leUpdate && // if not updating certs itself
-                    (!msg.message || msg.message.instance !== id)
-                ) {
-                    // and it not the issuer
-                    // restart this instance, because letsencrypt updated
-                    instances.push(id);
-                }
-            });
-
-            // @ts-expect-error ts not knows that these are instance ids
-            restartInstances(instances);
-
-            break;
-        }
-
         // read licenses from iobroker.net
         case 'updateLicenses': {
             try {
@@ -3380,26 +2931,36 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
         }
 
-        case 'restartController': {
-            msg.callback && sendTo(msg.from, msg.command, '', msg.callback);
-            setTimeout(() => restart(() => !isStopping && stop(false)), 200); // let the answer be sent
+        case 'upgradeOsPackages': {
+            const { packages, restart } = msg.message;
+
+            try {
+                await upgradeOsPackages(packages);
+                sendTo(msg.from, msg.command, { success: true }, msg.callback);
+            } catch (e) {
+                sendTo(msg.from, msg.command, { error: e.message, success: false }, msg.callback);
+            }
+
+            try {
+                await listUpdatableOsPackages();
+            } catch (e) {
+                logger.warn(`${hostLogPrefix} Could not check for new OS updates after upgrade: ${e.message}`);
+            }
+
+            if (restart) {
+                await wait(200);
+                restart(() => !isStopping && stop(false));
+            }
             break;
         }
-    }
-}
 
-// restart given instances sequentially
-async function restartInstances(instances: ioBroker.ObjectIDs.Instance[], cb?: () => void): Promise<void> {
-    if (!instances || !instances.length) {
-        cb && cb();
-    } else {
-        const id = instances.shift()!;
-        logger.info(
-            `${hostLogPrefix} instance "${id}" restarted because the "let's encrypt" certificates were updated`
-        );
-        await stopInstance(id, false);
-        startInstance(id);
-        setTimeout(() => restartInstances(instances, cb), 3_000);
+        case 'restartController': {
+            msg.callback && sendTo(msg.from, msg.command, '', msg.callback);
+            // let the answer be sent
+            await wait(200);
+            restart(() => !isStopping && stop(false));
+            break;
+        }
     }
 }
 
@@ -3473,6 +3034,7 @@ async function getInstances(): Promise<void> {
 
 /**
  * Checks if an instance is relevant for this host to be considered or not
+ *
  * @param instance Object of the instance
  * @param _ipArr IP-Array from this host
  * @returns true if instance needs to be handled by this host else false
@@ -3501,6 +3063,7 @@ function instanceRelevantForThisController(instance: ioBroker.InstanceObject, _i
 
 /**
  * Check if an instance is handled by this host process and initialize internal data structures
+ *
  * @param instance instance object
  * @param ipArr IP-Array from this host
  * @returns true if instance needs to be handled by this host (true) or not
@@ -3805,7 +3368,7 @@ function installAdapters(): void {
             );
         }
 
-        const mainFile = path.join(__dirname, '..', `${tools.appName.toLowerCase()}.js`);
+        const mainFile = path.join(thisDir, '..', `${tools.appName.toLowerCase()}.js`);
         const installArgs = [];
         const installOptions = { windowsHide: true };
         if (!task.rebuild && task.installedFrom && proc.downloadRetry < 3) {
@@ -3912,7 +3475,7 @@ function installAdapters(): void {
             });
             child.on('error', err => {
                 logger.error(
-                    `${hostLogPrefix} Cannot execute "${__dirname}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${
+                    `${hostLogPrefix} Cannot execute "${thisDir}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${
                         err.message
                     }`
                 );
@@ -3923,7 +3486,7 @@ function installAdapters(): void {
             });
         } catch (err) {
             logger.error(
-                `${hostLogPrefix} Cannot execute "${__dirname}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${err}`
+                `${hostLogPrefix} Cannot execute "${thisDir}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${err}`
             );
             setTimeout(() => {
                 installQueue.shift();
@@ -3947,6 +3510,12 @@ function installAdapters(): void {
     }
 }
 
+/**
+ *
+ * @param procObj
+ * @param now
+ * @param doOutput
+ */
 function cleanErrors(procObj: Process, now: number | null, doOutput?: boolean): void {
     if (!procObj || !procObj.errors || !procObj.errors.length || procObj.startedAsCompactGroup) {
         return;
@@ -3987,7 +3556,11 @@ function cleanErrors(procObj: Process, now: number | null, doOutput?: boolean): 
     }
 }
 
-function startScheduledInstance(callback?: () => void): void {
+/**
+ *
+ * @param callback
+ */
+async function startScheduledInstance(callback?: () => void): Promise<void> {
     const idsToStart = Object.keys(scheduledInstances);
     if (!idsToStart.length) {
         callback && callback();
@@ -4008,76 +3581,80 @@ function startScheduledInstance(callback?: () => void): void {
 
     const proc = procs[id];
 
-    if (proc) {
-        const instance = proc.config;
+    if (!proc) {
+        logger.error(`${hostLogPrefix} scheduleJob: Task deleted (${id})`);
+        skipped = true;
+        processNextScheduledInstance();
+        return;
+    }
 
-        // After sleep of PC all scheduled runs come together. There is no need to run it X times in one second. Just the last.
-        if (!proc.lastStart || Date.now() - proc.lastStart >= 2_000) {
-            // Remember the last run
-            proc.lastStart = Date.now();
-            if (!proc.process) {
-                // reset sigKill to 0 if it was set to another value from "once run"
-                states!.setState(`${instance._id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix }, () => {
-                    const args = [instance._id.split('.').pop() || '0', instance.common.loglevel || 'info'];
-                    try {
-                        proc.process = cp.fork(fileNameFull, args, {
-                            execArgv: tools.getDefaultNodeArgs(fileNameFull),
-                            // @ts-expect-error missing from types, but we already tested it is needed
-                            windowsHide: true,
-                            cwd: adapterDir
-                        });
-                    } catch (err) {
-                        logger.error(`${hostLogPrefix} instance ${id} could not be started: ${err.message}`);
+    const instance = proc.config;
+
+    // After sleep of PC all scheduled runs come together. There is no need to run it X times in one second. Just the last.
+    if (!proc.lastStart || Date.now() - proc.lastStart >= 2_000) {
+        // Remember the last run
+        proc.lastStart = Date.now();
+        if (!proc.process) {
+            // reset sigKill to 0 if it was set to another value from "once run"
+            await states!.setState(`${instance._id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix });
+            const args = [instance._id.split('.').pop() || '0', instance.common.loglevel || 'info'];
+            try {
+                proc.process = cp.fork(fileNameFull, args, {
+                    execArgv: tools.getDefaultNodeArgs(fileNameFull),
+                    // @ts-expect-error missing from types, but we already tested it is needed
+                    windowsHide: true,
+                    cwd: adapterDir
+                });
+            } catch (err) {
+                logger.error(`${hostLogPrefix} instance ${id} could not be started: ${err.message}`);
+                delete proc.process;
+            }
+            if (proc.process) {
+                storePids();
+                const { pid } = proc.process;
+
+                logger.info(`${hostLogPrefix} instance ${instance._id} started with pid ${proc.process.pid}`);
+
+                proc.process.on('exit', (code, signal) => {
+                    outputCount++;
+                    states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
+                    if (signal) {
+                        logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
+                    } else if (code === null) {
+                        logger.error(`${hostLogPrefix} instance ${id} terminated abnormally`);
+                    } else {
+                        const text = `${hostLogPrefix} instance ${id} having pid ${pid} terminated with code ${code} (${
+                            getErrorText(code) || ''
+                        })`;
+                        if (
+                            !code ||
+                            code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
+                            code === EXIT_CODES.NO_ERROR
+                        ) {
+                            logger.info(text);
+                        } else {
+                            logger.error(text);
+                        }
+                    }
+
+                    if (proc.process) {
                         delete proc.process;
                     }
-                    if (proc.process) {
-                        storePids();
-                        logger.info(`${hostLogPrefix} instance ${instance._id} started with pid ${proc.process.pid}`);
-
-                        proc.process.on('exit', (code, signal) => {
-                            outputCount++;
-                            states!.setState(`${id}.alive`, { val: false, ack: true, from: hostObjectPrefix });
-                            if (signal) {
-                                logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
-                            } else if (code === null) {
-                                logger.error(`${hostLogPrefix} instance ${id} terminated abnormally`);
-                            } else {
-                                const text = `${hostLogPrefix} instance ${id} terminated with code ${code} (${
-                                    getErrorText(code) || ''
-                                })`;
-                                if (
-                                    !code ||
-                                    code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION ||
-                                    code === EXIT_CODES.NO_ERROR
-                                ) {
-                                    logger.info(text);
-                                } else {
-                                    logger.error(text);
-                                }
-                            }
-                            if (proc?.process) {
-                                delete proc.process;
-                            }
-                            storePids();
-                        });
-                    }
-
-                    processNextScheduledInstance();
+                    storePids();
                 });
-                return;
-            } else {
-                !wakeUp &&
-                    logger.warn(
-                        `${hostLogPrefix} instance ${instance._id} already running with pid ${proc.process.pid}`
-                    );
-                skipped = true;
             }
+
+            processNextScheduledInstance();
+            return;
         } else {
-            logger.warn(`${hostLogPrefix} instance ${instance._id} does not started, because just executed`);
+            !wakeUp &&
+                logger.warn(`${hostLogPrefix} instance ${instance._id} already running with pid ${proc.process.pid}`);
             skipped = true;
         }
     } else {
-        logger.error(`${hostLogPrefix} scheduleJob: Task deleted (${id})`);
+        logger.warn(
+            `${hostLogPrefix} instance ${instance._id} not started, because start has already been initialized less than 2 seconds ago`
+        );
         skipped = true;
     }
 
@@ -4086,6 +3663,7 @@ function startScheduledInstance(callback?: () => void): void {
 
 /**
  * Start given instance
+ *
  * @param id - id of instance, like 'system.adapter.hm-rpc.0'
  * @param wakeUp
  */
@@ -4114,10 +3692,6 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
     if (wakeUp) {
         mode = 'daemon';
-    }
-
-    if (instance.common.wakeup) {
-        // TODO
     }
 
     // Check if all required adapters installed and have a valid version
@@ -4274,28 +3848,6 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             );
         } catch (e) {
             logger.warn(`${hostLogPrefix} Could not add OOM notification: ${e.message}`);
-        }
-    }
-
-    if (instance.common.subscribe || instance.common.wakeup) {
-        proc.subscribe = instance.common.subscribe || `${instance._id}.wakeup`;
-        const parts = instance._id.split('.');
-        const instanceId = parts[parts.length - 1];
-        proc.subscribe = proc.subscribe!.replace('<INSTANCE>', instanceId);
-
-        if (subscribe[proc.subscribe]) {
-            if (!subscribe[proc.subscribe].includes(id)) {
-                subscribe[proc.subscribe].push(id);
-            }
-        } else {
-            subscribe[proc.subscribe] = [id];
-
-            // Subscribe on changes
-            if (proc.subscribe.startsWith('messagebox.')) {
-                states!.subscribeMessage(proc.subscribe.substring('messagebox.'.length));
-            } else {
-                states!.subscribe(proc.subscribe);
-            }
         }
     }
 
@@ -4703,6 +4255,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
                         if (adapterMainFile!) {
                             try {
+                                // @ts-expect-error commonjs module TODO: validate
                                 decache(adapterMainFile);
 
                                 // Prior to requiring the main file, make sure that the esbuild require hook was loaded
@@ -4711,10 +4264,13 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                     require('@alcalzone/esbuild-register');
                                 }
 
+                                const module = (await isAdapterEsmModule(name))
+                                    ? (await import(`${adapterMainFile}?update=${Date.now()}`)).default
+                                    : require(adapterMainFile);
+
                                 proc.process = {
                                     // @ts-expect-error TODO type compact processes too
-                                    // eslint-disable-next-line @typescript-eslint/no-var-requires
-                                    logic: require(adapterMainFile)({
+                                    logic: module({
                                         logLevel,
                                         compactInstance: _instance,
                                         compact: true
@@ -4785,7 +4341,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
                             try {
                                 compactProc.process = cp.fork(
-                                    path.join(__dirname, 'compactgroupController.js'),
+                                    path.join(thisDir, 'compactgroupController.js'),
                                     compactControllerArgs,
                                     {
                                         execArgv,
@@ -4848,6 +4404,11 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                         delete compactProcs[currentCompactGroup].process;
                                     }
 
+                                    /**
+                                     *
+                                     * @param instances
+                                     * @param callback
+                                     */
                                     function markCompactInstancesAsStopped(
                                         instances: ioBroker.ObjectIDs.Instance[],
                                         callback: () => void
@@ -5085,7 +4646,6 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             break;
         }
         case 'extension':
-        case 'subscribe':
             break;
 
         default:
@@ -5313,45 +4873,15 @@ async function stopInstance(id: string, force: boolean): Promise<void> {
             }
             break;
 
-        case 'subscribe':
-            if (proc.subscribe) {
-                // Remove this id from subscribed on this message
-                if (subscribe[proc.subscribe] && subscribe[proc.subscribe].includes(id as any)) {
-                    subscribe[proc.subscribe].splice(subscribe[proc.subscribe].indexOf(id as any), 1);
-
-                    // If no one subscribed
-                    if (!subscribe[proc.subscribe].length) {
-                        // Delete item
-                        delete subscribe[proc.subscribe];
-
-                        // Unsubscribe
-                        if (proc.subscribe.startsWith('messagebox.')) {
-                            states!.unsubscribeMessage(proc.subscribe.substring('messagebox.'.length));
-                        } else {
-                            states!.unsubscribe(proc.subscribe);
-                        }
-                    }
-                }
-            }
-
-            if (!proc.process) {
-                return;
-            } else {
-                logger.info(`${hostLogPrefix} stopInstance ${instance._id} killing pid ${proc.process.pid}`);
-                proc.stopping = true;
-                try {
-                    proc.process.kill('SIGKILL'); // call stop directly in adapter.js
-                } catch (e) {
-                    logger.error(`${hostLogPrefix} Cannot stop ${id}: ${JSON.stringify(e)}`);
-                }
-                delete proc.process;
-            }
-            break;
-
         default:
     }
 }
 
+/**
+ *
+ * @param forceStop
+ * @param callback
+ */
 function stopInstances(forceStop: boolean, callback?: ((wasForced?: boolean) => void) | null): void {
     let maxTimeout: NodeJS.Timeout | null | undefined;
     let waitTimeout: NodeJS.Timeout | null | undefined;
@@ -5492,8 +5022,8 @@ function stop(force?: boolean, callback?: () => void): void {
         }
         outputCount++;
         try {
-            await states.setStateAsync(`${hostObjectPrefix}.alive`, { val: false, ack: true, from: hostObjectPrefix });
-            await states.setStateAsync(`${hostObjectPrefix}.pid`, { val: null, ack: true, from: hostObjectPrefix });
+            await states.setState(`${hostObjectPrefix}.alive`, { val: false, ack: true, from: hostObjectPrefix });
+            await states.setState(`${hostObjectPrefix}.pid`, { val: null, ack: true, from: hostObjectPrefix });
         } catch {
             // ignore
         }
@@ -5544,7 +5074,7 @@ function stop(force?: boolean, callback?: () => void): void {
  *
  * @param compactGroupId the id of the compact group
  */
-export function init(compactGroupId?: number): void {
+export async function init(compactGroupId?: number): Promise<void> {
     if (compactGroupId) {
         compactGroupController = true;
         compactGroup = compactGroupId;
@@ -5576,21 +5106,19 @@ export function init(compactGroupId?: number): void {
 
     // Get "objects" object
     // If "file" and on the local machine
-    if (dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host) && !compactGroupController) {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        Objects = require(`@iobroker/db-objects-${config.objects.type}`).Server;
+    const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host);
+    if (hasLocalObjectsServer && !compactGroupController) {
+        Objects = (await import(`@iobroker/db-objects-${config.objects.type}`)).Server;
     } else {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        Objects = require('@iobroker/js-controller-common-db').getObjectsConstructor();
+        Objects = await getObjectsConstructor();
     }
 
+    const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(config.states.type, config.states.host);
     // Get "states" object
-    if (dbTools.isLocalStatesDbServer(config.states.type, config.states.host) && !compactGroupController) {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        States = require(`@iobroker/db-states-${config.states.type}`).Server;
+    if (hasLocalStatesServer && !compactGroupController) {
+        States = (await import(`@iobroker/db-states-${config.states.type}`)).Server;
     } else {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        States = require('@iobroker/js-controller-common-db').getStatesConstructor();
+        States = await getStatesConstructor();
     }
 
     // Detect if outputs to console are forced. By default, they are disabled and redirected to log file
@@ -5831,7 +5359,7 @@ export function init(compactGroupId?: number): void {
                     }
 
                     // set current node version
-                    await states!.setStateAsync(`${hostObjectPrefix}.nodeVersion`, {
+                    await states!.setState(`${hostObjectPrefix}.nodeVersion`, {
                         val: nodeVersion,
                         ack: true,
                         from: hostObjectPrefix
@@ -6077,6 +5605,19 @@ async function listUpdatableOsPackages(): Promise<void> {
     }
 
     await notificationHandler.addMessage('system', 'packageUpdates', packages.join('\n'), `system.host.${hostname}`);
+    await states!.setState(`${hostObjectPrefix}.osPackageUpdates`, { val: JSON.stringify(packages), ack: true });
+}
+
+/**
+ * Upgrade given operating system packages
+ *
+ * @param packages package names and version information
+ */
+async function upgradeOsPackages(packages: UpgradePacket[]): Promise<void> {
+    const packManager = new PacketManager();
+    await packManager.ready();
+
+    await packManager.upgrade(packages);
 }
 
 /**
@@ -6152,10 +5693,8 @@ async function autoUpgradeAdapters(): Promise<void> {
     }
 }
 
-if (module === require.main) {
-    // for direct calls
+// eslint-disable-next-line unicorn/prefer-module
+const modulePath = url.fileURLToPath(import.meta.url || 'file://' + __filename);
+if (process.argv[1] === modulePath) {
     init();
-} else {
-    // normally used for legacy compatibility and compact group support
-    module.exports.init = init;
 }

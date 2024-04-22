@@ -1,7 +1,11 @@
-import type { TestContext } from '../_Types';
+import type { TestContext } from '../_Types.js';
 
 /**
  * Contains tests interacting with DB via adapter.ts
+ *
+ * @param it
+ * @param expect
+ * @param context
  */
 export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
     const testName = `${context.name} ${context.adapterShortName} adapter: `;

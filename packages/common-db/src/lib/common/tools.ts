@@ -2,13 +2,14 @@ import { tools } from '@iobroker/js-controller-common';
 
 /**
  * Allows to find out if a given states dbType offers a server or not
+ *
  * @param dbType database type
  * @returns true if a server class is available
  */
-export function statesDbHasServer(dbType: string): boolean {
+export async function statesDbHasServer(dbType: string): Promise<boolean> {
     try {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        return !!require(`@iobroker/db-states-${dbType}`).Server;
+        const states = await import(`@iobroker/db-states-${dbType}`);
+        return !!states.Server;
     } catch {
         throw new Error(`Installation error or unknown states database type: ${dbType}`);
     }
@@ -16,17 +17,19 @@ export function statesDbHasServer(dbType: string): boolean {
 
 /**
  * Allows to find out if a given objects dbType offers a server which runs on this host and listens (locally or globally/by IP)
+ *
  * @param dbType database type
  * @param host configured db host - multihost (array) will always return false
  * @param checkIfLocalOnly if true the method checks if the server listens to local connections only; else also external connection options are checked
  * @returns true if a server listens on this host (locally or globally/by IP)
  */
-export function isLocalObjectsDbServer(
+export async function isLocalObjectsDbServer(
     dbType: string,
     host: string | string[],
     checkIfLocalOnly: boolean = false
-): boolean {
-    if (!objectsDbHasServer(dbType)) {
+): Promise<boolean> {
+    const hasServer = await objectsDbHasServer(dbType);
+    if (!hasServer) {
         return false; // if no server it can not be a local server
     }
 
@@ -45,13 +48,19 @@ export function isLocalObjectsDbServer(
 
 /**
  * Allows to find out if a given states dbType offers a server which runs on this host and listens (locally or globally/by IP)
+ *
  * @param dbType database type
  * @param host configured db host - multihost (array) will always return false
  * @param checkIfLocalOnly if true the method checks if the server listens to local connections only; else also external connection options are checked
  * @returns true if a server listens on this host (locally or globally/by IP)
  */
-export function isLocalStatesDbServer(dbType: string, host: string | string[], checkIfLocalOnly = false): boolean {
-    if (!statesDbHasServer(dbType)) {
+export async function isLocalStatesDbServer(
+    dbType: string,
+    host: string | string[],
+    checkIfLocalOnly = false
+): Promise<boolean> {
+    const hasServer = await statesDbHasServer(dbType);
+    if (!hasServer) {
         return false; // if no server it can not be a local server
     }
 
@@ -70,14 +79,16 @@ export function isLocalStatesDbServer(dbType: string, host: string | string[], c
 
 /**
  * Allows to find out if a given objects dbType offers a server or not
+ *
  * @param dbType database type
  * @returns true if a server class is available
  */
-export function objectsDbHasServer(dbType: string): boolean {
+export async function objectsDbHasServer(dbType: string): Promise<boolean> {
     try {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        return !!require(`@iobroker/db-objects-${dbType}`).Server;
-    } catch {
+        const objects = await import(`@iobroker/db-objects-${dbType}`);
+        return !!objects.Server;
+    } catch (e) {
+        console.error(e);
         throw new Error(`Installation error or unknown objects database type: ${dbType}`);
     }
 }

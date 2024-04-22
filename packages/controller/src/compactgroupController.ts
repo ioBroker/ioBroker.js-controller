@@ -5,7 +5,7 @@
  *      MIT License
  *
  */
-import { init } from './main';
+import { init } from '@/main.js';
 
 const compactGroup = parseInt(process.argv[2], 10);
 if (isNaN(compactGroup) || compactGroup < 1) {

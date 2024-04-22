@@ -1,6 +1,7 @@
 import { EXIT_CODES } from '@iobroker/js-controller-common';
 import { tools } from '@iobroker/js-controller-common';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import { IoBrokerError } from './customError.js';
 
 interface GetRepositoryOptions {
     /** The objects DB client */
@@ -18,13 +19,13 @@ export async function getRepository(options: GetRepositoryOptions): Promise<Reco
     const { objects } = options;
     const { repoName } = options;
 
-    let repoNameorArray: string | string[] | undefined = repoName;
+    let repoNameOrArray: string | string[] | undefined = repoName;
     if (!repoName || repoName === 'auto') {
         const systemConfig = await objects!.getObjectAsync('system.config');
-        repoNameorArray = systemConfig!.common.activeRepo;
+        repoNameOrArray = systemConfig!.common.activeRepo;
     }
 
-    const repoArr = !Array.isArray(repoNameorArray) ? [repoNameorArray!] : repoNameorArray;
+    const repoArr = !Array.isArray(repoNameOrArray) ? [repoNameOrArray!] : repoNameOrArray;
 
     const systemRepos = (await objects!.getObjectAsync('system.repositories'))!;
 
@@ -65,13 +66,20 @@ export async function getRepository(options: GetRepositoryOptions): Promise<Reco
     }
 
     if (!anyFound) {
-        console.error(
-            `ERROR: No repositories defined. Please define one repository as active:  "iob repo set <${Object.keys(
+        let message: string;
+        if (repoArr.length) {
+            message = `ERROR: No repositories defined matching "${repoArr.join(
+                ' | '
+            )}". Please use one of ${Object.keys(systemRepos.native.repositories)
+                .map(repo => `"${repo}"`)
+                .join(', ')}.`;
+        } else {
+            message = `ERROR: No repositories defined. Please define one repository as active: "iob repo set <${Object.keys(
                 systemRepos.native.repositories
-            ).join(' | ')}>`
-        );
-        // @ts-expect-error todo throw code or description?
-        throw new Error(EXIT_CODES.INVALID_REPO);
+            ).join(' | ')}>"`;
+        }
+
+        throw new IoBrokerError({ message, code: EXIT_CODES.INVALID_REPO });
     } else {
         return allSources;
     }

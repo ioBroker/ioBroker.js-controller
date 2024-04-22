@@ -138,6 +138,9 @@ adapter.setState('state.name', 'value', true);
 adapter.setState('state.name', 'value', (err, id) => {});
 adapter.setState('state.name', { val: 'value', ack: true });
 adapter.setState('state.name', { val: 'value', ack: true }, (_err, _id) => {});
+adapter.setState('state.name', { val: 'value', ack: true, q: adapter.constants.STATE_QUALITY.BAD });
+// @ts-expect-error invalid quality
+adapter.setState('state.name', { val: 'value', ack: true, q: 1234 });
 
 adapter.setStateAsync('state.name', 'value').then(id => id.toLowerCase());
 adapter.setStateAsync('state.name', 'value', true).then(id => id.toLowerCase());
@@ -177,10 +180,6 @@ adapter.getState('state.id', (err, state) => state && state.from.toLowerCase());
 adapter.getStateAsync('state.id').then(state => state && state.from.toLowerCase());
 adapter.getForeignState('state.id', (err, state) => state && state.from.toLowerCase());
 adapter.getForeignStateAsync('state.id').then(state => state && state.from.toLowerCase());
-adapter.getBinaryState('state.id', (err, state) => state && state.writeUInt16BE(0, 0));
-adapter.getBinaryStateAsync('state.id').then(state => state && state.writeUInt16BE(0, 0));
-adapter.getForeignBinaryState('state.id', (err, state) => state && state.writeUInt16BE(0, 0));
-adapter.getForeignBinaryStateAsync('state.id').then(state => state && state.writeUInt16BE(0, 0));
 
 adapter.setObject('obj.id', { type: 'device', common: { name: 'foo' }, native: {} });
 adapter.setObject('obj.id', { type: 'device', common: { name: 'foo' }, native: {} }, (_err, _id) => {});
@@ -595,10 +594,6 @@ adapter.setStateChanged('id', null);
 adapter.setForeignStateChanged('id', null);
 adapter.setStateChangedAsync('id', null);
 adapter.setForeignStateChangedAsync('id', null);
-adapter.delBinaryState('id');
-adapter.delBinaryStateAsync('id').then(() => null);
-adapter.delForeignBinaryState('id');
-adapter.delForeignBinaryStateAsync('id').then(() => null);
 
 // Objects and arrays are not valid state values
 // @ts-expect-error

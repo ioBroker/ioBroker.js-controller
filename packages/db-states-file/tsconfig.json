@@ -1,9 +1,10 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "build",
+    "outDir": "build/esm",
+    "module": "NodeNext",
     "rootDir": "src",
-    "noEmit": false
+    "noEmit": false,
   },
   "references": [
     {
@@ -14,7 +15,8 @@
     }
   ],
   "include": [
-    "src/**/*.ts"
+    "src/**/*.ts",
+    "src/**/*.js"
   ],
   "exclude": [
     "build/**",

@@ -1,4 +1,4 @@
-import type { DbConnectCallback } from '../_Types';
+import type { DbConnectCallback } from '../_Types.js';
 
 export interface CLICommandContext {
     /** Invoke this before doing anything in the database */
@@ -37,9 +37,10 @@ export interface CLICommandParams {
 export type CLICommandOptions = CLICommandContext & CLICommandParams;
 
 /** The base class for any CLI command */
-export class CLICommand {
-    protected readonly options: CLICommandOptions;
-    constructor(options: CLICommandOptions) {
+export class CLICommand<TCommandOptions extends CLICommandOptions = CLICommandOptions> {
+    protected readonly options: TCommandOptions;
+
+    constructor(options: TCommandOptions) {
         if (options === null || options === undefined) {
             throw new Error(`No options given`);
         }
@@ -53,6 +54,7 @@ export class CLICommand {
     /**
      * Ensures that an argument was passed in the options.
      * Throws otherwise
+     *
      * @param arg
      */
     requireOption(arg: keyof CLICommandOptions): void {

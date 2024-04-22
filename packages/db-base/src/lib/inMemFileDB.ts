@@ -8,10 +8,10 @@
  */
 
 import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 import { tools } from '@iobroker/js-controller-common';
 import type { InternalLogger } from '@iobroker/js-controller-common/tools';
-import { createGzip } from 'zlib';
+import { createGzip } from 'node:zlib';
 
 // settings = {
 //    change:    function (id, state) {},
@@ -104,7 +104,7 @@ interface SubscriptionClient {
 /**
  * The parent of the class structure, which provides basic JSON storage
  * and general subscription and publish functionality
- **/
+ */
 export class InMemoryFileDB {
     private settings: FileDbSettings;
     private readonly change: ChangeFunction | undefined;

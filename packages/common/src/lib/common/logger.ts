@@ -1,20 +1,27 @@
 import winston from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
-import fs from 'fs';
-import path from 'path';
-import os from 'os';
-import * as tools from './tools';
+import fs from 'node:fs';
+import path from 'node:path';
+import os from 'node:os';
+import * as tools from '@/lib/common/tools.js';
 import Transport from 'winston-transport';
 import { LEVEL } from 'triple-beam';
 import deepClone from 'deep-clone';
 import type { Syslog } from 'winston-syslog';
 import type { SeqTransport } from '@datalust/winston-seq';
+import * as url from 'node:url';
+import { createRequire } from 'node:module';
+
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __filename);
 
 const hostname = tools.getHostName();
 
 let SysLog: typeof Syslog | undefined;
 try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     SysLog = require('winston-syslog').Syslog;
 } catch {
     //console.log('No syslog support');
@@ -22,7 +29,6 @@ try {
 
 let Seq: typeof SeqTransport | undefined;
 try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     Seq = require('@datalust/winston-seq').SeqTransport;
 } catch {
     //console.log('No seq support');
@@ -154,7 +160,7 @@ export function logger(
     files = files || [];
 
     // indicator which is used to determine the log dir for developing, where it should be inside the repository
-    const isNpm = !__dirname
+    const isNpm = !thisDir
         .replace(/\\/g, '/')
         .toLowerCase()
         .includes(`${tools.appName.toLowerCase()}.js-controller/packages/`);
@@ -186,9 +192,7 @@ export function logger(
         if (userOptions.transport) {
             let fName = 0;
             const isWindows = os.platform().startsWith('win');
-            Object.keys(userOptions.transport).forEach(f => {
-                const transport = userOptions.transport[f];
-
+            for (const transport of Object.values(userOptions.transport)) {
                 transport._defaultConfigLoglevel = transport.level; // remember Loglevel if set
                 transport.level = transport.level || level;
 
@@ -251,6 +255,11 @@ export function logger(
 
                     try {
                         const _log = new DailyRotateFile(transport);
+
+                        _log.on('error', err => {
+                            console.error(`Error on log file rotation: ${err.message}`);
+                        });
+
                         options.transports.push(_log);
                     } catch (e) {
                         if (e.code === 'EACCES') {
@@ -262,7 +271,7 @@ export function logger(
                 } else if (transport.type === 'syslog' && transport.enabled !== false) {
                     if (!IoSysLog) {
                         console.error('Syslog configured, but not installed! Ignore');
-                        return;
+                        continue;
                     }
                     // host: The host running syslogd, defaults to localhost.
                     // port: The port on the host that syslog is running on, defaults to syslogd's default port.
@@ -287,8 +296,8 @@ export function logger(
                     }
                     try {
                         options.transports.push(new IoSysLog(transport));
-                    } catch (err) {
-                        console.log(`Cannot activate Syslog: ${err.message}`);
+                    } catch (e) {
+                        console.error(`Cannot activate Syslog: ${e.message}`);
                     }
                 } else if (transport.type === 'http' && transport.enabled !== false) {
                     // host: (Default: localhost) Remote host of the HTTP logging endpoint
@@ -302,8 +311,8 @@ export function logger(
 
                     try {
                         options.transports.push(new winston.transports.Http(transport));
-                    } catch (err) {
-                        console.log(`Cannot activate HTTP: ${err.message}`);
+                    } catch (e) {
+                        console.error(`Cannot activate HTTP: ${e.message}`);
                     }
                 } else if (transport.type === 'stream' && transport.enabled !== false) {
                     // stream: any Node.js stream. If an objectMode stream is provided then the entire info object will be written. Otherwise info[MESSAGE] will be written.
@@ -318,18 +327,18 @@ export function logger(
                         if (typeof transport.stream === 'string') {
                             transport.stream = fs.createWriteStream(transport.stream);
                             transport.stream.on('error', (err: Error) => {
-                                console.log(`Error in Stream: ${err.message}`);
+                                console.error(`Error in Stream: ${err.message}`);
                             });
                         }
 
                         options.transports.push(new winston.transports.Stream(transport));
-                    } catch (err) {
-                        console.log(`Cannot activate Stream: ${err.message}`);
+                    } catch (e) {
+                        console.error(`Cannot activate Stream: ${e.message}`);
                     }
                 } else if (transport.type === 'seq' && transport.enabled !== false) {
                     if (!IoSeq) {
                         console.error('Seq configured, but not installed! Ignore');
-                        return;
+                        continue;
                     }
                     // serverUrl?:       string;
                     // apiKey?:          string;
@@ -345,21 +354,21 @@ export function logger(
                             };
                             const seqLogger = new IoSeq(transport);
                             options.transports.push(seqLogger);
-                        } catch (err) {
-                            console.log(`Cannot activate SEQ: ${err.message}`);
+                        } catch (e) {
+                            console.error(`Cannot activate SEQ: ${e.message}`);
                         }
                     } else {
-                        console.log('Cannot activate SEQ: No serverUrl specified');
+                        console.error('Cannot activate SEQ: No serverUrl specified');
                     }
                 }
-            });
+            }
         }
     } else {
         for (let i = 0; i < files.length; i++) {
             const opt = {
                 name: i ? `dailyRotateFile${i}` : tools.appName,
                 filename: path.normalize(
-                    isNpm ? `${__dirname}/../../../log/${files[i]}` : `${__dirname}/../log/${files[i]}`
+                    isNpm ? `${thisDir}/../../../log/${files[i]}` : `${thisDir}/../log/${files[i]}`
                 ),
                 extension: '.log',
                 datePattern: 'YYYY-MM-DD',
@@ -421,7 +430,11 @@ export function logger(
 
     // This cannot be deleted, because file rotate works with the size of files and not with the time
     // TODO research and open new issue in winston-daily-rotate-file repo
-    /** @ts-expect-error why do we override/add method to foreign instance? TODO */
+    /**
+     * @param isEnabled
+     * @param daysCount
+     */
+    // @ts-expect-error why do we override/add method to foreign instance? TODO
     log.activateDateChecker = function (isEnabled, daysCount) {
         /** @ts-expect-error we use undocumented stuff here TODO */
         if (!isEnabled && this._fileChecker) {
@@ -454,8 +467,8 @@ export function logger(
                         try {
                             /** @ts-expect-error we use undocumented stuff here TODO */
                             files = fs.readdirSync(transport.dirname);
-                        } catch (err) {
-                            console.log(`host.${hostname} Cannot read log directory: ${err}`);
+                        } catch (e) {
+                            console.error(`host.${hostname} Cannot read log directory: ${e.message}`);
                             return;
                         }
                         const forXdays = new Date();
