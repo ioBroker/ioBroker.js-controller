@@ -1,4 +1,4 @@
-import type * as os from 'os';
+import type * as os from 'node:os';
 
 declare global {
     namespace ioBroker {
@@ -400,7 +400,7 @@ declare global {
             process: {
                 title: string;
                 versions: NodeJS.ProcessVersions;
-                env: Record<string, string>;
+                env: NodeJS.ProcessEnv;
             };
             os: {
                 hostname: string;
@@ -412,7 +412,9 @@ declare global {
                 tmpdir: ReturnType<(typeof os)['tmpdir']>;
             };
             hardware: {
-                cpus: ReturnType<(typeof os)['cpus']>;
+                /** Return value of os.cpu but property `times` could be removed from every entry */
+                cpus: (Omit<ReturnType<(typeof os)['cpus']>[number], 'times'> &
+                    Partial<Pick<ReturnType<(typeof os)['cpus']>[number], 'times'>>)[];
                 totalmem: ReturnType<(typeof os)['totalmem']>;
                 networkInterfaces: ReturnType<(typeof os)['networkInterfaces']>;
             };

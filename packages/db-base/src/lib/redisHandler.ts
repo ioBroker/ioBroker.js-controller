@@ -1,8 +1,8 @@
-import type { Socket } from 'net';
+import type { Socket } from 'node:net';
 // @ts-expect-error no types
 import Resp from 'respjs';
-import { EventEmitter } from 'events';
-import { QUEUED_STR_BUF, OK_STR_BUF } from './constants';
+import { EventEmitter } from 'node:events';
+import { QUEUED_STR_BUF, OK_STR_BUF } from './constants.js';
 import type { InternalLogger } from '@iobroker/js-controller-common/tools';
 
 type NestedArray<T> = T[] | NestedArray<T>[];
@@ -14,7 +14,7 @@ interface RedisHandlerOptions {
     logScope?: string;
     // if data should be handled as buffer
     handleAsBuffers: boolean;
-    // additonal debug information
+    // additional debug information
     enhancedLogging?: boolean;
 }
 

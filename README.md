@@ -376,8 +376,9 @@ The js-controller defines in its io-package the system scope together with all d
 ```
 
 #### How to define own scopes?
-Each adapter can define its own "scopes" for own notifications with its own categories which then will be available in the system. 
-Please contact the core development group if you plan to add an own scope so that scope names can be checked to stay unique.
+Each adapter can define its own "scopes" for own notifications with its own categories which then will be available in the system.
+You can use the name of your adapter as a scope, e.g. `hm-rpc` to avoid conflicts with other scopes.
+If you plan on using a general purpose scope, please contact the core development group so that scope names can be checked to stay unique.
 The same applies if you see the need to enhance the system scope by additional categories. 
 Let's discuss the requirements that they can also be added officially into upcoming js-controller versions.
 
@@ -725,8 +726,8 @@ and the alias could use the same value calculated as kWh.
 Some devices have separate states for semantically one state. One to read the current status from and one to write to, to
 control the device. You can combine these states into one alias by using a separate alias id to write to and another to read from.
 
-~As of now (js-controller 2.0.0 release) there are no front-ends to configure the aliases.~
-You can use Admin interface on the "Objects" tab to create aliases. Just open the context menu on the state, for which you want to create an alias, and select "Create Alias".
+We recommend to use the `devices` adapter to manage aliases. 
+Alternatively, you can use Admin interface on the "Objects" tab to create aliases. Just open the context menu on the state, for which you want to create an alias, and select "Create Alias".
 
 To create an alias object simple create a new object with an own name in the `alias.0` namespace and add the alias definition in the common section (here for an alias with the id `"alias.0.aliasName"`):
 
@@ -797,6 +798,8 @@ iobroker object set alias.0.aliasName common.alias.id=state.id.of.target
 iobroker object set alias.0.aliasName common.alias.read="read-func"
 iobroker object set alias.0.aliasName common.alias.write="write-func"
 ```
+
+> **_NOTE:_** The permissions of the source object are ignored and only the permissions set on the alias object itself are relevant for database operations. 
 
 Additional information about aliases could be found [here](https://www.iobroker.net/#en/documentation/dev/aliases.md).
 
