@@ -21,8 +21,8 @@ import crypto from 'node:crypto';
 import deepClone from 'deep-clone';
 import * as pluginInfos from '@/lib/setup/pluginInfos.js';
 import rl from 'readline-sync';
+import { FORBIDDEN_CHARS, getHostObject } from '@iobroker/js-controller-common/tools';
 import os from 'node:os';
-import { FORBIDDEN_CHARS } from '@iobroker/js-controller-common/tools';
 import { SYSTEM_ADAPTER_PREFIX, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common/constants';
 import { Upload } from '@/lib/setup/setupUpload.js';
 import { createRequire } from 'node:module';
@@ -44,6 +44,15 @@ export interface CLISetupOptions {
     processExit: ProcessExitCallback;
     params: Record<string, any>;
     restartController: RestartController;
+}
+
+export interface SetupCommandOptions {
+    /** Callback called afterward */
+    callback: (isCreated?: boolean) => void;
+    /** Used for setup first run, does setup process even though config file already exists */
+    ignoreIfExist: boolean;
+    /** If redis should be setup */
+    useRedis: boolean;
 }
 
 export class Setup {
@@ -162,6 +171,12 @@ export class Setup {
 
         if (!this.objects) {
             throw new Error('Objects not set up, call setupObjects first');
+        }
+
+        try {
+            await this._ensureHostObject();
+        } catch (e) {
+            console.error(`Could not ensure host object exists: ${e.message}`);
         }
 
         try {
@@ -1042,6 +1057,25 @@ Please DO NOT copy files manually into ioBroker storage directories!`
     }
 
     /**
+     * Ensure that host object exists
+     */
+    private async _ensureHostObject(): Promise<void> {
+        if (!this.objects) {
+            throw new Error('Objects not set up, call setupObjects first');
+        }
+
+        const hostname = tools.getHostName();
+
+        const id = `system.host.${hostname}`;
+        const objExists = await this.objects.objectExists(id);
+
+        if (!objExists) {
+            await this.objects.setObject(id, getHostObject());
+            console.log(`Created host object "${id}"`);
+        }
+    }
+
+    /**
      * Create the adapters object per host if not yet existing
      */
     private async _ensureAdaptersPerHostObject(): Promise<void> {
@@ -1343,7 +1377,14 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         }
     }
 
-    setup(callback: (isCreated?: boolean) => void, ignoreIfExist: boolean, useRedis: boolean): void {
+    /**
+     * Setup the installation with config file, host object, scripts etc
+     *
+     * @param options setup options
+     */
+    setup(options: SetupCommandOptions): void {
+        const { ignoreIfExist, useRedis, callback } = options;
+
         let config;
         let isCreated = false;
         const platform = os.platform();

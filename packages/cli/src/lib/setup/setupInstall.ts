@@ -277,7 +277,7 @@ export class Install {
         }
 
         console.error(
-            `host.${hostname} Unknown packetName ${packetName}. Please install packages from outside the repository using npm!`
+            `host.${hostname} Unknown packetName ${packetName}. Please install packages from outside the repository using "${tools.appNameLowerCase} url <url-or-package>"!`
         );
         return this.processExit(EXIT_CODES.UNKNOWN_PACKET_NAME);
     }
@@ -732,8 +732,8 @@ export class Install {
         let engineVersion;
         try {
             // read directly from disk and not via require to allow "on the fly" updates of adapters.
-            const p = fs.readJSONSync(path.join(adapterDir, 'package.json'), 'utf8');
-            engineVersion = p && p.engines && p.engines.node;
+            const packJson = fs.readJSONSync(path.join(adapterDir, 'package.json'), 'utf8');
+            engineVersion = packJson?.engines?.node;
         } catch {
             console.error(`host.${hostname}: Cannot read and parse "${adapterDir}/package.json"`);
         }
@@ -774,7 +774,7 @@ export class Install {
         }
     }
 
-    async callInstallOfAdapter(adapter: string, config: Record<string, any>): Promise<string | void> {
+    async callInstallOfAdapter(adapter: string, config: ioBroker.AdapterObject): Promise<string | void> {
         if (config.common.install) {
             // Install node modules
             let cmd = 'node ';
@@ -801,8 +801,8 @@ export class Install {
     /**
      * Create adapter instance
      *
-     * @param adapter
-     * @param options
+     * @param adapter name of the adapter
+     * @param options additional options
      */
     async createInstance(adapter: string, options?: CreateInstanceOptions): Promise<void> {
         let ignoreIfExists = false;

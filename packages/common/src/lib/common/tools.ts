@@ -254,8 +254,8 @@ export function checkNonEditable(
 /**
  * Checks if a version is up-to-date, throws error on invalid version strings
  *
- * @param repoVersion
- * @param installedVersion
+ * @param repoVersion version in repository
+ * @param installedVersion the current installed version
  */
 export function upToDate(repoVersion: string, installedVersion: string): boolean {
     // Check if the installed version is at least the repo version
@@ -3997,6 +3997,74 @@ export async function isIoBrokerInstalledAsSystemd(): Promise<boolean> {
     } catch {
         return false;
     }
+}
+
+/**
+ * Get a new host object
+ *
+ * @param oldObj the previous host object
+ */
+export function getHostObject(oldObj?: ioBroker.HostObject | null): ioBroker.HostObject {
+    const hostname = getHostName();
+    const ioPackage = fs.readJSONSync(path.join(getControllerDir(), 'io-package.json'));
+
+    const newObj: ioBroker.HostObject = {
+        _id: `system.host.${hostname}`,
+        type: 'host',
+        common: {
+            name: hostname,
+            title: oldObj?.common?.title || ioPackage.common.title,
+            installedVersion: ioPackage.common.version,
+            platform: ioPackage.common.platform,
+            cmd: `${process.argv[0]} ${`${process.execArgv.join(' ')} `.replace(/--inspect-brk=\d+ /, '')}${process.argv
+                .slice(1)
+                .join(' ')}`,
+            hostname,
+            address: findIPs(),
+            type: ioPackage.common.name
+        },
+        native: {
+            process: {
+                title: process.title,
+                versions: process.versions,
+                env: process.env
+            },
+            os: {
+                hostname: hostname,
+                type: os.type(),
+                platform: os.platform(),
+                arch: os.arch(),
+                release: os.release(),
+                endianness: os.endianness(),
+                tmpdir: os.tmpdir()
+            },
+            hardware: {
+                cpus: os.cpus(),
+                totalmem: os.totalmem(),
+                networkInterfaces: {}
+            }
+        }
+    };
+
+    if (oldObj?.common?.icon) {
+        newObj.common.icon = oldObj.common.icon;
+    }
+    if (oldObj?.common?.color) {
+        newObj.common.color = oldObj.common.color;
+    }
+    // remove dynamic information
+    if (newObj.native?.hardware?.cpus) {
+        for (const cpu of newObj.native.hardware.cpus) {
+            if (cpu.times) {
+                delete cpu.times;
+            }
+        }
+    }
+    if (oldObj?.native.hardware?.networkInterfaces) {
+        newObj.native.hardware.networkInterfaces = oldObj.native.hardware.networkInterfaces;
+    }
+
+    return newObj;
 }
 
 export * from '@/lib/common/maybeCallback.js';

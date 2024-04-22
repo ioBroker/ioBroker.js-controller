@@ -116,6 +116,12 @@ interface Script {
     loaded?: boolean;
 }
 
+interface Options {
+    /** The user id for database operations */
+    user?: string;
+    [other: string]: unknown;
+}
+
 type CheckFileCallback = (checkFailed: boolean, options?: CallOptions, fileOptions?: { notExists: boolean }) => void;
 
 export class ObjectsInRedisClient {
@@ -3053,21 +3059,19 @@ export class ObjectsInRedisClient {
     // cb version with options
     getObject<T extends string>(
         id: T,
-        options: Record<string, any> | undefined | null,
+        options: Options | undefined | null,
         callback: ioBroker.GetObjectCallback<T>
     ): void;
+    // Promise version
+    getObject<T extends string>(id: T, options?: Options | null): ioBroker.GetObjectPromise<T>;
     // no options but cb
     getObject<T extends string>(id: T, callback: ioBroker.GetObjectCallback<T>): void;
-    // Promise version
-    getObject<T extends string>(
-        id: T,
-        options?: Record<string, any> | null
-    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectCallback<T>>>;
+
     getObject<T extends string>(
         id: T,
         options?: any,
         callback?: ioBroker.GetObjectCallback<T>
-    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectCallback<T>>> {
+    ): void | ioBroker.GetObjectPromise<T> {
         if (typeof options === 'function') {
             callback = options;
             options = null;

@@ -8277,6 +8277,13 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
+        if (!this.#objects) {
+            this._logger.info(
+                `${this.namespaceLog} setForeignState not processed because Objects database not connected`
+            );
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
         try {
             this._utils.validateId(id, true, null);
         } catch (err) {
@@ -8359,9 +8366,12 @@ export class AdapterClass extends EventEmitter {
                     }
 
                     let targetObj;
-                    // check the rights
+                    // we ignore permissions on the target object and thus get it as admin user
                     try {
-                        targetObj = (await this._checkStates(aliasId, options, 'setState')).objs[0];
+                        targetObj = await this.#objects.getObject(aliasId, {
+                            ...options,
+                            user: SYSTEM_ADMIN_USER
+                        });
                     } catch (e) {
                         return tools.maybeCallbackWithError(callback, e);
                     }
@@ -8418,13 +8428,13 @@ export class AdapterClass extends EventEmitter {
 
                 if (obj?.common?.alias?.id) {
                     // alias id can be a string or can have id.write
-                    const aliasId = tools.isObject(obj.common.alias.id)
+                    const targetId = tools.isObject(obj.common.alias.id)
                         ? obj.common.alias.id.write
                         : obj.common.alias.id;
 
                     // validate here because we use objects/states db directly
                     try {
-                        this._utils.validateId(aliasId, true, null);
+                        this._utils.validateId(targetId, true, null);
                     } catch (e) {
                         this._logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
                         return tools.maybeCallbackWithError(
@@ -8441,31 +8451,34 @@ export class AdapterClass extends EventEmitter {
                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                     }
 
-                    // read object for formatting
-                    this.#objects.getObject(aliasId, options, (err, targetObj) => {
-                        if (!this.#states) {
-                            // if states is no longer existing, we do not need to unsubscribe
-                            this._logger.info(
-                                `${this.namespaceLog} setForeignState not processed because States database not connected`
-                            );
-                            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                        }
-
-                        this.outputCount++;
-                        this.#states.setState(
-                            aliasId,
-                            tools.formatAliasValue({
-                                sourceCommon: obj.common as ioBroker.StateCommon,
-                                targetCommon: targetObj?.common as ioBroker.StateCommon | undefined,
-                                state,
-                                logger: this._logger,
-                                logNamespace: this.namespaceLog,
-                                sourceId: obj._id,
-                                targetId: targetObj?._id
-                            }),
-                            callback
-                        );
+                    // read object for formatting - we ignore permissions on the target object and thus get it as admin user
+                    const targetObj = await this.#objects.getObject(targetId, {
+                        ...options,
+                        user: SYSTEM_ADMIN_USER
                     });
+
+                    if (!this.#states) {
+                        // if states is no longer existing, we do not need to unsubscribe
+                        this._logger.info(
+                            `${this.namespaceLog} setForeignState not processed because States database not connected`
+                        );
+                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                    }
+
+                    this.outputCount++;
+                    this.#states.setState(
+                        targetId,
+                        tools.formatAliasValue({
+                            sourceCommon: obj.common as ioBroker.StateCommon,
+                            targetCommon: targetObj?.common as ioBroker.StateCommon | undefined,
+                            state,
+                            logger: this._logger,
+                            logNamespace: this.namespaceLog,
+                            sourceId: obj._id,
+                            targetId: targetObj?._id
+                        }),
+                        callback
+                    );
                 } else {
                     this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 5`);
                     return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
@@ -8725,8 +8738,8 @@ export class AdapterClass extends EventEmitter {
 
         try {
             this._utils.validateId(id, true, options);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
         }
 
         let permCheckRequired = false;
@@ -8762,14 +8775,11 @@ export class AdapterClass extends EventEmitter {
                 if (aliasId) {
                     let sourceObj;
                     try {
-                        if (permCheckRequired) {
-                            sourceObj = (await this._checkStates(aliasId, options || {}, 'getState')).objs[0];
-                        } else {
-                            sourceObj = (await this.#objects.getObject(aliasId, options)) as
-                                | ioBroker.StateObject
-                                | null
-                                | undefined;
-                        }
+                        // we ignore permissions on the source object and thus get it as admin user
+                        sourceObj = (await this.#objects.getObject(aliasId, {
+                            ...options,
+                            user: SYSTEM_ADMIN_USER
+                        })) as ioBroker.StateObject | null | undefined;
                     } catch (e) {
                         return tools.maybeCallbackWithError(callback, e);
                     }
@@ -8780,8 +8790,7 @@ export class AdapterClass extends EventEmitter {
                     } else {
                         this.inputCount++;
                         try {
-                            // @ts-expect-error void return possible fix it
-                            state = await this.#states!.getState(aliasId);
+                            state = await this.#states.getState(aliasId);
                         } catch (e) {
                             return tools.maybeCallbackWithError(callback, e);
                         }
@@ -8809,7 +8818,7 @@ export class AdapterClass extends EventEmitter {
             if (this.oStates && this.oStates[id]) {
                 return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
             } else {
-                return this.#states!.getState(id, callback);
+                return this.#states.getState(id, callback);
             }
         }
     }
@@ -9377,7 +9386,7 @@ export class AdapterClass extends EventEmitter {
         pattern: string,
         callback?: ioBroker.ErrorCallback
     ): Promise<void> {
-        if (aliasObj && aliasObj.common && aliasObj.common.alias && aliasObj.common.alias.id) {
+        if (aliasObj?.common?.alias?.id) {
             if (aliasObj.type !== 'state') {
                 this._logger.warn(
                     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -9430,7 +9439,8 @@ export class AdapterClass extends EventEmitter {
                 let sourceObj;
                 try {
                     await this.#states!.subscribe(sourceId);
-                    sourceObj = await this.#objects!.getObject(sourceId, this._options);
+                    // we ignore permissions on the source object and thus get it as admin user
+                    sourceObj = await this.#objects!.getObject(sourceId, { user: SYSTEM_ADMIN_USER });
                 } catch (e) {
                     return tools.maybeCallbackWithError(callback, e);
                 }
