@@ -553,9 +553,19 @@ declare global {
             };
         }
 
+        interface CustomAdminColumn {
+            path: string;
+            name?: ioBroker.StringOrTranslated;
+            objTypes?: ObjectType | ObjectType[];
+            width?: number;
+            edit?: boolean;
+            type?: CommonType;
+            align?: 'left' | 'center' | 'right';
+        }
+
         interface AdapterCommon extends ObjectCommon {
             /** Custom attributes to be shown in admin in the object browser */
-            adminColumns?: any[];
+            adminColumns?: string | (string | CustomAdminColumn)[];
             /** Settings for custom Admin Tabs */
             adminTab?: {
                 name?: string;
