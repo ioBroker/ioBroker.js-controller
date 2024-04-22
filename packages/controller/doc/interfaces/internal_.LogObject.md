@@ -23,7 +23,7 @@ id of the source instance
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:16
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:15
 
 ___
 
@@ -35,7 +35,7 @@ actual content
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:22
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:21
 
 ___
 
@@ -47,7 +47,7 @@ log level
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:18
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:17
 
 ___
 
@@ -59,4 +59,4 @@ timestamp
 
 #### Defined in
 
-db-states-redis/build/cjs/lib/states/statesInRedisClient.d.ts:20
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:19
