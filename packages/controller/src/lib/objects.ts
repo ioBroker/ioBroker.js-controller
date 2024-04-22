@@ -1,5 +1,5 @@
 import fs from 'fs-extra';
-import { DEFAULT_DISK_WARNING_LEVEL } from '@/lib/utils';
+import { DEFAULT_DISK_WARNING_LEVEL } from '@/lib/utils.js';
 
 interface GetHostOptions {
     /** The host base id */
