@@ -224,7 +224,7 @@ Currently only upgrading of packages is supported. If you need a specific OS dep
 If an adapter needs to execute custom install logic, one possibility is to use the `scripts` attribute of `package.json`. 
 However, often adapters already want to interact with the ioBroker databases during the installation logic.
 
-Hence, you can set `ioPackage.common.install` flag to true, to indicate that the js-controller should perform an installation run with your adapter.
+Hence, you can set `ioPackage.common.install` flag to true, to indicate that the js-controller should perform an installation run with your adapter after the npm installation is successfully done.
 During the installation run, the `install` instead of the `ready` event will be emitted. 
 Alternatively, you can also pass an `install` function to the constructor the same way as for `ready`.
 
