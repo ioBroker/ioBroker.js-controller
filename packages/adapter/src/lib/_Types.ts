@@ -499,3 +499,13 @@ export interface InternalDeleteStateFromEnumOptions {
  * Only use it like `this.config as InternalAdapterConfig`
  */
 export type InternalAdapterConfig = Record<string, unknown>;
+
+export interface InstallNodeModuleOptions {
+    /** Version of node module */
+    version: string;
+}
+
+export interface InternalInstallNodeModuleOptions extends InstallNodeModuleOptions {
+    /** Name of the npm module */
+    moduleName: string;
+}

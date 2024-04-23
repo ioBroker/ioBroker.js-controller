@@ -1,4 +1,10 @@
-import { isObject, isControllerUiUpgradeSupported, encrypt, decrypt } from '@iobroker/js-controller-common/tools';
+import {
+    isObject,
+    isControllerUiUpgradeSupported,
+    encrypt,
+    decrypt,
+    appNameLowerCase
+} from '@iobroker/js-controller-common/tools';
 import { SUPPORTED_FEATURES, type SupportedFeature } from '@/lib/adapter/constants.js';
 
 interface EncryptArrayOptions {
@@ -8,6 +14,13 @@ interface EncryptArrayOptions {
     keys: string[];
     /** Secret to use for en/decryption */
     secret: string;
+}
+
+interface GetScopedPackageIdentifierOptions {
+    /** Name of the node module */
+    moduleName: string;
+    /** Adapter namespace */
+    namespace: string;
 }
 
 /**
@@ -68,4 +81,20 @@ export function decryptArray(options: EncryptArrayOptions): void {
             obj[attr] = decrypt(secret, val);
         }
     }
+}
+
+/**
+ * Transform a npm moduleName to the adapter scoped name, like `axios` to `@iobroker-javascript.0/axios`
+ *
+ * @param options name of the node module and namespace information
+ */
+export function getAdapterScopedPackageIdentifier(options: GetScopedPackageIdentifierOptions): string {
+    const { moduleName, namespace } = options;
+
+    let internalModuleName = moduleName;
+    if (internalModuleName.startsWith('@')) {
+        internalModuleName = internalModuleName.substring(1).replace(/\//g, '-');
+    }
+
+    return `@${appNameLowerCase}-${namespace}/${internalModuleName}`;
 }
