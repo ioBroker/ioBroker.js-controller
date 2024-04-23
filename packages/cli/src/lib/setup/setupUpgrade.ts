@@ -546,7 +546,7 @@ export class Upgrade {
                 try {
                     if (!semver.diff(installedVersion, targetVersion)) {
                         console.log(`Uninstall npm packet "${npmPacketName}" for a clean re-installation`);
-                        await tools.uninstallNodeModule(npmPacketName, { debug: false });
+                        await tools.uninstallNodeModule(npmPacketName, { debug: process.argv.includes('--debug') });
                     }
                 } catch (e) {
                     console.warn(`Could not uninstall npm packet "${npmPacketName}": ${e.message}`);
