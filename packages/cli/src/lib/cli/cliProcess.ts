@@ -1,22 +1,26 @@
-'use strict';
-const fs = require('fs');
-const path = require('path');
-const CLI = require('./messages.js');
-const { CLICommand } = require('./cliCommand.js');
-const { tools } = require('@iobroker/js-controller-common');
-const dbTools = require('@iobroker/js-controller-common-db').tools;
-const deepClone = require('deep-clone');
-const { EXIT_CODES } = require('@iobroker/js-controller-common');
+import type { CLICommandOptions } from '@/lib/cli/cliCommand.js';
 
-const { getObjectFrom, getInstanceName, normalizeAdapterName, enumInstances } = require('./cliTools.js');
+import fs from 'fs-extra';
+import path from 'node:path';
+import * as CLI from '@/lib/cli/messages.js';
+import { CLICommand } from '@/lib/cli/cliCommand.js';
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
+import { tools as dbTools } from '@iobroker/js-controller-common-db';
+import deepClone from 'deep-clone';
+import { getObjectFrom, getInstanceName, normalizeAdapterName, enumInstances } from '@/lib/cli/cliTools.js';
+import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import type { Client as StatesClient } from '@iobroker/db-states-redis';
+import os from 'node:os';
+import { spawn } from 'node:child_process';
+// @ts-expect-error has no types but probably no longer needed as start/stop commands are no longer handled from this code
+import daemonize2 from 'daemonize2';
 
 // The root of this project. Change this when moving code to another directory
 const rootDir = tools.getControllerDir();
 const killAllScriptPath = path.join(rootDir, 'killall.sh');
 
-module.exports = class CLIProcess extends CLICommand {
-    /** @param {import('./cliCommand').CLICommandOptions} options */
-    constructor(options) {
+export class CLIProcess extends CLICommand {
+    constructor(options: CLICommandOptions) {
         super(options);
     }
 
@@ -25,9 +29,10 @@ module.exports = class CLIProcess extends CLICommand {
 
     /**
      * Starts one or more adapters or the js-controller
-     * @param {any[]} args
+     *
+     * @param args parsed cli arguments
      */
-    start(args) {
+    start(args: any[]): void {
         const adapterName = normalizeAdapterName(args[0]);
         if (!adapterName) {
             this.startJSController();
@@ -42,9 +47,10 @@ module.exports = class CLIProcess extends CLICommand {
 
     /**
      * Restarts one or more instances or the js-controller
-     * @param {any[]} args
+     *
+     * @param args parsed cli arguments
      */
-    restart(args) {
+    restart(args: any[]): void {
         const adapterName = normalizeAdapterName(args[0]);
         if (!adapterName) {
             this.restartJSController();
@@ -57,9 +63,10 @@ module.exports = class CLIProcess extends CLICommand {
 
     /**
      * Stops one or more adapters or the js-controller
-     * @param {any[]} args
+     *
+     * @param args parsed cli arguments
      */
-    stop(args) {
+    stop(args: any[]): void {
         const adapterName = normalizeAdapterName(args[0]);
         if (adapterName === undefined) {
             this.stopJSController();
@@ -74,9 +81,10 @@ module.exports = class CLIProcess extends CLICommand {
 
     /**
      * Starts or stops all adapters
-     * @param {boolean} enabled
+     *
+     * @param enabled if adapters should be started or stopped
      */
-    setAllAdaptersEnabled(enabled) {
+    setAllAdaptersEnabled(enabled: boolean): void {
         const { callback, dbConnect } = this.options;
         dbConnect(async params => {
             const { objects } = params;
@@ -95,11 +103,12 @@ module.exports = class CLIProcess extends CLICommand {
     /**
      * Starts or stops a single or all instances of adapter.
      * If there are multiple instances all will be started/stopped/restarted
-     * @param {string} adapter The adapter to start
-     * @param {boolean} enabled
-     * @param {boolean} [restartIfRunning=false] Whether running instances should be restarted
+     *
+     * @param adapter The adapter to start
+     * @param enabled If adapter should be started or stopped
+     * @param [restartIfRunning] Whether running instances should be restarted
      */
-    setAdapterEnabled(adapter, enabled, restartIfRunning) {
+    setAdapterEnabled(adapter: string, enabled: boolean, restartIfRunning?: boolean): void {
         const { callback, dbConnect } = this.options;
         dbConnect(async params => {
             const { objects } = params;
@@ -124,50 +133,53 @@ module.exports = class CLIProcess extends CLICommand {
 
     /**
      * Starts or stops a specific adapter instance
-     * @param {string} instance The instance to start, e.g. "adaptername.0"
-     * @param {boolean} enabled
-     * @param {boolean} [restartIfRunning=false] Whether running instances should be restarted
+     *
+     * @param instance The instance to start, e.g. "adaptername.0"
+     * @param enabled If the instance should be started or stopped
+     * @param [restartIfRunning] Whether running instances should be restarted
      */
-    setAdapterInstanceEnabled(instance, enabled, restartIfRunning) {
+    setAdapterInstanceEnabled(instance: string, enabled: boolean, restartIfRunning?: boolean): void {
         const { callback, dbConnect } = this.options;
-        dbConnect(params => {
+        dbConnect(async params => {
             const { objects } = params;
 
-            objects.getObject(`system.adapter.${instance}`, async (err, obj) => {
-                if (err || !obj || obj.type !== 'instance') {
-                    CLI.error.invalidInstance(instance);
-                    return void callback();
-                }
+            const obj = (await objects.getObject(`system.adapter.${instance}`)) as
+                | ioBroker.InstanceObject
+                | ioBroker.AdapterObject;
 
-                try {
-                    await setInstanceEnabled(objects, obj, enabled, restartIfRunning);
-                    return void callback();
-                } catch (e) {
-                    CLI.error.unknown(e.message);
-                    return void callback(EXIT_CODES.UNKNOWN_ERROR);
-                }
-            });
+            if (!obj || obj.type !== 'instance') {
+                CLI.error.invalidInstance(instance);
+                return void callback();
+            }
+
+            try {
+                await setInstanceEnabled(objects, obj, enabled, restartIfRunning);
+                return void callback();
+            } catch (e) {
+                CLI.error.unknown(e.message);
+                return void callback(EXIT_CODES.UNKNOWN_ERROR);
+            }
         });
     }
 
     /** Starts the JS controller */
-    startJSController() {
+    startJSController(): void {
         const daemon = setupDaemonize();
         daemon.start();
     }
 
     /** Stops the JS controller */
-    stopJSController() {
+    stopJSController(): void {
         const { callback } = this.options;
         const daemon = setupDaemonize();
         // On non-Windows OSes start KILLALL script
         // to make sure nothing keeps running
-        if (!require('os').platform().startsWith('win')) {
+        if (!os.platform().startsWith('win')) {
             daemon.on('stopped', () => {
                 let data = '';
                 if (fs.existsSync(killAllScriptPath)) {
                     fs.chmodSync(killAllScriptPath, '777');
-                    const child = require('child_process').spawn(killAllScriptPath, [], { windowsHide: true });
+                    const child = spawn(killAllScriptPath, [], { windowsHide: true });
                     child.stdout.on('data', _data => (data += _data.toString().replace(/\n/g, '')));
                     child.stderr.on('data', _data => (data += _data.toString().replace(/\n/g, '')));
                     child.on('exit', exitCode => {
@@ -183,7 +195,7 @@ module.exports = class CLIProcess extends CLICommand {
     }
 
     /** Restarts the JS controller */
-    restartJSController() {
+    restartJSController(): void {
         const daemon = setupDaemonize();
         daemon.on('stopped', () => daemon.start()).on('notrunning', () => daemon.start());
         daemon.stop();
@@ -191,9 +203,10 @@ module.exports = class CLIProcess extends CLICommand {
 
     /**
      * Checks if ioBroker is running or not
-     * @param {any[]} args
+     *
+     * @param args parsed cli arguments
      */
-    status(args) {
+    status(args: any[]): void {
         const { callback, dbConnect } = this.options;
         const adapterName = normalizeAdapterName(args[0]);
         const showEntireConfig = adapterName === 'all';
@@ -203,28 +216,35 @@ module.exports = class CLIProcess extends CLICommand {
 
             if (!adapterName || showEntireConfig) {
                 // we want host info or/and whole config
-                states.getState(`system.host.${tools.getHostName()}.alive`, async (err, hostAlive) => {
-                    const alive = hostAlive ? hostAlive.val : false;
-                    CLI.success.controllerStatus(alive);
-                    console.log();
-                    if (
-                        !dbTools.isLocalStatesDbServer(config.states.type, config.states.host) &&
-                        !dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host)
-                    ) {
-                        CLI.success.systemStatus(!isOffline);
-                    }
+                const hostAlive = await states.getState(`system.host.${tools.getHostName()}.alive`);
 
+                const alive = hostAlive ? (hostAlive.val as boolean) : false;
+                CLI.success.controllerStatus(alive);
+                console.log();
+
+                const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(
+                    config.states.type,
+                    config.states.host
+                );
+                const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(
+                    config.objects.type,
+                    config.objects.host
+                );
+
+                if (!hasLocalStatesServer && !hasLocalObjectsServer) {
+                    CLI.success.systemStatus(!isOffline);
+                }
+
+                console.log();
+                if (showEntireConfig) {
+                    await showAllInstancesStatus(states, objects);
                     console.log();
-                    if (showEntireConfig) {
-                        await showAllInstancesStatus(states, objects);
-                        console.log();
-                        showConfig(config);
-                    } else {
-                        console.log(`Objects type: ${config.objects.type}`);
-                        console.log(`States  type: ${config.states.type}`);
-                    }
-                    return void callback(isOffline ? EXIT_CODES.CONTROLLER_NOT_RUNNING : undefined);
-                });
+                    showConfig(config);
+                } else {
+                    console.log(`Objects type: ${config.objects.type}`);
+                    console.log(`States  type: ${config.states.type}`);
+                }
+                return void callback(isOffline ? EXIT_CODES.CONTROLLER_NOT_RUNNING : undefined);
             } else {
                 // we want to know the status of an adapter
                 if (/\.\d+$/.test(adapterName)) {
@@ -252,15 +272,15 @@ module.exports = class CLIProcess extends CLICommand {
             }
         });
     }
-};
+}
 
 /**
  * Outputs the status of all existing adapter instances
- * @param {object} states The States DB
- * @param {object} objects The Objects DB
- * @returns {Promise<void>}
+ *
+ * @param states The States DB
+ * @param objects The Objects DB
  */
-async function showAllInstancesStatus(states, objects) {
+async function showAllInstancesStatus(states: StatesClient, objects: ObjectsClient): Promise<void> {
     const allInstances = await enumInstances(objects);
     for (const instance of allInstances) {
         const instanceId = instance._id.split('.').pop();
@@ -271,11 +291,12 @@ async function showAllInstancesStatus(states, objects) {
 
 /**
  * Outputs the status of an adapter instance
- * @param {object} states the states object
- * @param {string} adapterInstance <adapteName>.<instanceId>
- * @returns {Promise<void>}
+ *
+ * @param states the states object
+ * @param adapterInstance <adapteName>.<instanceId>
+ * @returns
  */
-function showInstanceStatus(states, adapterInstance) {
+function showInstanceStatus(states: StatesClient, adapterInstance: string): Promise<void> {
     return new Promise(resolve => {
         states.getState(`system.adapter.${adapterInstance}.alive`, (err, state) => {
             if (state && state.val === true) {
@@ -288,8 +309,13 @@ function showInstanceStatus(states, adapterInstance) {
     });
 }
 
-/** Prints the config file to the console */
-function showConfig(config, root) {
+/**
+ * Prints the config file to the console
+ *
+ * @param config
+ * @param root
+ */
+function showConfig(config: Record<string, any>, root?: string[]): void {
     if (!tools.isObject(config)) {
         return;
     }
@@ -304,20 +330,25 @@ function showConfig(config, root) {
             nextRoot.push(attr);
             showConfig(config[attr], nextRoot);
         } else {
-            console.log(`${prefix}${(prefix ? '/' : '') + attr}: ` + config[attr]);
+            console.log(`${prefix}${(prefix ? '/' : '') + attr}: ${config[attr]}`);
         }
     }
 }
 
 /**
  * Sets the enabled state of an instance to the given value
- * @param {any} objects The objects DB
- * @param {any} instanceObj The instance object to change
- * @param {boolean} enabled Whether the instance should be enabled or not
- * @param {boolean} [force=false] Whether the object should be updated always
- * @returns {Promise<void>}
+ *
+ * @param objects The objects DB
+ * @param instanceObj The instance object to change
+ * @param enabled Whether the instance should be enabled or not
+ * @param [force] Whether the object should be updated always
  */
-function setInstanceEnabled(objects, instanceObj, enabled, force) {
+function setInstanceEnabled(
+    objects: ObjectsClient,
+    instanceObj: ioBroker.InstanceObject,
+    enabled: boolean,
+    force?: boolean
+): Promise<void> {
     return new Promise(resolve => {
         if (!!force || instanceObj.common.enabled !== enabled) {
             instanceObj.common.enabled = enabled;
@@ -338,12 +369,12 @@ function setInstanceEnabled(objects, instanceObj, enabled, force) {
     });
 }
 
-function setupDaemonize() {
+function setupDaemonize(): typeof daemonize2 {
     let memoryLimitMB = 0;
     try {
-        const config = require(tools.getConfigFileName());
-        if (config && config.system && config.system.memoryLimitMB) {
-            memoryLimitMB = parseInt(config.system.memoryLimitMB, 10);
+        const config: ioBroker.IoBrokerJson = fs.readJSONSync(tools.getConfigFileName(), { encoding: 'utf-8' });
+        if (config?.system?.memoryLimitMB) {
+            memoryLimitMB = Math.round(config.system.memoryLimitMB);
         }
     } catch {
         console.warn('Cannot read memoryLimitMB');
@@ -351,18 +382,18 @@ function setupDaemonize() {
             `May be config file does not exist.\nPlease call "${tools.appName} setup first" to initialize the settings.`
         );
     }
-    const startObj = {
+    const startObj: Record<string, unknown> = {
         main: path.join(rootDir, 'controller.js'),
         name: `${tools.appName} controller`,
         pidfile: path.join(rootDir, `${tools.appName}.pid`),
         cwd: rootDir,
-        stopTimeout: 6000
+        stopTimeout: 6_000
     };
     if (memoryLimitMB) {
         startObj.args = `--max-old-space-size=${memoryLimitMB}`;
     }
 
-    const daemon = require('daemonize2').setup(startObj);
-    daemon.on('error', error => CLI.error.unknown(error));
+    const daemon = daemonize2.setup(startObj);
+    daemon.on('error', (error: string) => CLI.error.unknown(error));
     return daemon;
 }

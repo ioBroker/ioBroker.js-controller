@@ -1,22 +1,21 @@
-'use strict';
-const CLI = require('./messages.js');
-const { CLICommand } = require('./cliCommand.js');
-const { enumInstances } = require('./cliTools');
+import * as CLI from './messages.js';
+import { CLICommand, type CLICommandOptions } from './cliCommand.js';
+import { enumInstances } from './cliTools.js';
+import type { Client as StatesClient } from '@iobroker/db-states-redis';
 
-/** Command iobroker object ... */
-module.exports = class CLIMessage extends CLICommand {
-    /** @param {import('./cliCommand').CLICommandOptions} options */
-    constructor(options) {
+export class CLIMessage extends CLICommand {
+    /** @param options The CLI Message options */
+    constructor(options: CLICommandOptions) {
         super(options);
     }
 
     /**
      * Executes a command
-     * @param {any[]} args
+     *
+     * @param args parsed arguments
      */
-    execute(args) {
+    execute(args: any[]): void {
         const { callback, dbConnect, showHelp } = this.options;
-        /** @type {[string, string, any?]} */
         let [adapter, command, message] = args;
         if (adapter === null || adapter === undefined) {
             CLI.error.requiredArgumentMissing('adapter');
@@ -49,7 +48,6 @@ module.exports = class CLIMessage extends CLICommand {
                     adapter = adapter.substring(0, pos);
                 }
                 let messageTargets = [];
-                /** @type {string[]} */
                 if (instance === null) {
                     // This message wasn't meant for a specific instance,
                     const adapterInstances = await enumInstances(objects, adapter);
@@ -72,16 +70,15 @@ module.exports = class CLIMessage extends CLICommand {
             }
         });
     }
-};
+}
 
 /**
- * @param {any} states The States DB
- * @param {string} targetId The instance or adapter to send the message to
- * @param {string} command The command to send
- * @param {any} message The message to send
- * @returns {Promise<void>}
+ * @param states The States DB
+ * @param targetId The instance or adapter to send the message to
+ * @param command The command to send
+ * @param message The message to send
  */
-async function sendMessage(states, targetId, command, message) {
+async function sendMessage(states: StatesClient, targetId: string, command: string, message: string): Promise<void> {
     await states.pushMessage(targetId, { command, message, from: 'cli' });
     CLI.success.messageSent(targetId, command, message);
 }

@@ -1,7 +1,5 @@
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-export const Client = require('@iobroker/db-states-redis').Client;
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-export const Server = require('./lib/states/statesInMemServerClass.js');
+export { Client } from '@iobroker/db-states-redis';
+export { StatesInMemoryServerClass as Server } from './lib/states/statesInMemServerClass.js';
 
 /**
  * Get the default port of the objects db

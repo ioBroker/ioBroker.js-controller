@@ -1,7 +1,7 @@
 {
   "name": "@iobroker/types-dev",
   "private": true,
-  "version": "5.0.20-alpha.0-20240326-1f96ea5e",
+  "version": "5.0.20-alpha.0-20240423-4020943e",
   "engines": {
     "node": ">=12.0.0"
   },
@@ -14,7 +14,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/types-shared"
+    "url": "https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/types-dev"
   },
   "main": "",
   "types": "index.d.ts",

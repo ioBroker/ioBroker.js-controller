@@ -1,6 +1,6 @@
 // Types which are safe to share within this repository AND publicly
 
-import type * as fs from 'fs';
+import type * as fs from 'node:fs';
 import './objects';
 import type { IoBJson, DatabaseOptions, ObjectsDatabaseOptions as ObjectsDbOptions } from './config';
 
@@ -399,9 +399,6 @@ declare global {
 
         type GetStatesCallback = (err?: Error | null, states?: Record<string, State>) => void;
         type GetStatesPromise = Promise<NonNullCallbackReturnTypeOf<GetStatesCallback>>;
-
-        type GetBinaryStateCallback = (err?: Error | null, state?: Buffer) => void;
-        type GetBinaryStatePromise = Promise<CallbackReturnTypeOf<GetBinaryStateCallback>>;
 
         type SetStateCallback = (err?: Error | null, id?: string) => void;
         type SetStatePromise = Promise<NonNullCallbackReturnTypeOf<SetStateCallback>>;

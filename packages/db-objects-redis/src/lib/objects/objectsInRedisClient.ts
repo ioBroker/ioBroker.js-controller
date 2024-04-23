@@ -5,22 +5,31 @@
  * Written by bluefox <dogafox@gmail.com>, 2014-2022
  *
  */
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const extend = require('node.extend');
+// @ts-expect-error no ts module
+import extend from 'node.extend';
 import type IORedis from 'ioredis';
 import Redis from 'ioredis';
 import { tools } from '@iobroker/db-base';
-import fs from 'fs';
-import path from 'path';
-import crypto from 'crypto';
-import { isDeepStrictEqual } from 'util';
+import fs from 'node:fs';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import { isDeepStrictEqual } from 'node:util';
 import deepClone from 'deep-clone';
-import type { ACLObject, FileObject, CheckFileRightsCallback, GetUserGroupPromiseReturn } from './objectsUtils.js';
-import * as utils from './objectsUtils.js';
+import type {
+    ACLObject,
+    FileObject,
+    CheckFileRightsCallback,
+    GetUserGroupPromiseReturn
+} from '@/lib/objects/objectsUtils.js';
+import * as utils from '@/lib/objects/objectsUtils.js';
 import semver from 'semver';
-import * as CONSTS from './constants';
+import * as CONSTS from '@/lib/objects/constants.js';
 import type { InternalLogger } from '@iobroker/js-controller-common/tools';
 import type { ConnectionOptions, DbStatus } from '@iobroker/db-base/inMemFileDB';
+
+import * as url from 'node:url';
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 
 const ERRORS = CONSTS.ERRORS;
 
@@ -105,6 +114,12 @@ interface Script {
     hash: string;
     text: Buffer;
     loaded?: boolean;
+}
+
+interface Options {
+    /** The user id for database operations */
+    user?: string;
+    [other: string]: unknown;
 }
 
 type CheckFileCallback = (checkFailed: boolean, options?: CallOptions, fileOptions?: { notExists: boolean }) => void;
@@ -3044,21 +3059,19 @@ export class ObjectsInRedisClient {
     // cb version with options
     getObject<T extends string>(
         id: T,
-        options: Record<string, any> | undefined | null,
+        options: Options | undefined | null,
         callback: ioBroker.GetObjectCallback<T>
     ): void;
+    // Promise version
+    getObject<T extends string>(id: T, options?: Options | null): ioBroker.GetObjectPromise<T>;
     // no options but cb
     getObject<T extends string>(id: T, callback: ioBroker.GetObjectCallback<T>): void;
-    // Promise version
-    getObject<T extends string>(
-        id: T,
-        options?: Record<string, any> | null
-    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectCallback<T>>>;
+
     getObject<T extends string>(
         id: T,
         options?: any,
         callback?: ioBroker.GetObjectCallback<T>
-    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectCallback<T>>> {
+    ): void | ioBroker.GetObjectPromise<T> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -4968,7 +4981,7 @@ export class ObjectsInRedisClient {
             luaDirName = 'lua-v3';
         }
 
-        const luaPath = path.join(__dirname, luaDirName);
+        const luaPath = path.join(thisDir, luaDirName);
         const scripts: Script[] = fs.readdirSync(luaPath).map(name => {
             const shasum = crypto.createHash('sha1');
             const script = fs.readFileSync(path.join(luaPath, name));

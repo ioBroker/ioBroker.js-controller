@@ -1,17 +1,17 @@
 import Debug from 'debug';
-import * as fs from 'fs-extra';
+import fs from 'fs-extra';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import semver from 'semver';
-import { Upload } from './setupUpload';
-import { Install } from './setupInstall';
+import { Upload } from './setupUpload.js';
+import { Install } from './setupInstall.js';
 import rl from 'readline-sync';
-import tty from 'tty';
-import path from 'path';
-import { getRepository } from './utils';
+import tty from 'node:tty';
+import path from 'node:path';
+import { getRepository } from './utils.js';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
-import type { ProcessExitCallback } from '../_Types';
-import { IoBrokerError } from './customError';
+import type { ProcessExitCallback } from '../_Types.js';
+import { IoBrokerError } from './customError.js';
 
 const debug = Debug('iobroker:cli');
 
@@ -537,10 +537,21 @@ export class Upgrade {
                     if (!showUpgradeDialog(installedVersion, targetVersion, adapter)) {
                         return console.log(`No upgrade of "${adapter}" desired.`);
                     }
-                } catch (err) {
-                    console.log(`Can not check version information to display upgrade infos: ${err.message}`);
+                } catch (e) {
+                    console.log(`Can not check version information to display upgrade infos: ${e.message}`);
                 }
                 console.log(`Update ${adapter} from @${installedVersion} to @${targetVersion}`);
+                const npmPacketName = `${tools.appNameLowerCase}.${adapter}`;
+
+                try {
+                    if (!semver.diff(installedVersion, targetVersion)) {
+                        console.log(`Uninstall npm packet "${npmPacketName}" for a clean re-installation`);
+                        await tools.uninstallNodeModule(npmPacketName, { debug: process.argv.includes('--debug') });
+                    }
+                } catch (e) {
+                    console.warn(`Could not uninstall npm packet "${npmPacketName}": ${e.message}`);
+                }
+
                 // Get the adapter from website
                 // @ts-expect-error it could also call processExit internally, but we want change it in future anyway
                 const { packetName, stoppedList } = await this.install.downloadPacket(
@@ -601,8 +612,8 @@ export class Upgrade {
                     if (!showUpgradeDialog(installedVersion, version, adapter)) {
                         return console.log(`No upgrade of "${adapter}" desired.`);
                     }
-                } catch (err) {
-                    console.log(`Can not check version information to display upgrade infos: ${err.message}`);
+                } catch (e) {
+                    console.log(`Can not check version information to display upgrade infos: ${e.message}`);
                 }
                 console.warn(`Unable to get version for "${adapter}". Update anyway.`);
                 console.log(`Update ${adapter} from @${installedVersion} to @${version}`);
@@ -690,17 +701,14 @@ export class Upgrade {
                     `Cannot read version. Write "${tools.appName} upgrade self --force" to upgrade controller anyway.`
                 );
             }
-            let version = ioPack && ioPack.common ? ioPack.common.version : '';
+            let version = ioPack?.common ? ioPack.common.version : '';
             if (version) {
                 version = `@${version}`;
             }
 
             if (
-                (ioPack && ioPack.common && ioPack.common.version === installed.common.version) ||
-                (!forceDowngrade &&
-                    ioPack &&
-                    ioPack.common &&
-                    tools.upToDate(ioPack.common.version, installed.common.version))
+                (ioPack?.common && ioPack.common.version === installed.common.version) ||
+                (!forceDowngrade && ioPack?.common && tools.upToDate(ioPack.common.version, installed.common.version))
             ) {
                 console.log(
                     `Host    "${this.hostname}"${
@@ -710,7 +718,7 @@ export class Upgrade {
             } else if (controllerRunning) {
                 console.warn(`Controller is running. Please stop ioBroker first.`);
             } else {
-                const name = ioPack && ioPack.common && ioPack.common.name ? ioPack.common.name : controllerName;
+                const name = ioPack?.common?.name ? ioPack.common.name : controllerName;
                 console.log(`Update ${name} from @${installed.common.version} to ${version}`);
                 // Get the controller from web site
                 await this.install.downloadPacket(sources, name + version, { stopDb: true });

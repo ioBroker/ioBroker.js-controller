@@ -4,7 +4,12 @@
     "outDir": "build/esm",
     "module": "NodeNext",
     "rootDir": "src",
-    "noEmit": false
+    "noEmit": false,
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
   },
   "references": [
     {

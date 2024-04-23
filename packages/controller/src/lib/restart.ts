@@ -2,6 +2,7 @@ import { spawn } from 'node:child_process';
 import os from 'node:os';
 import { getRootDir } from '@iobroker/js-controller-common/tools';
 import path from 'node:path';
+import url from 'node:url';
 
 /**
  * Restarts the js-controller
@@ -34,6 +35,8 @@ export default function restart(callback?: () => void): void {
     }
 }
 
-if (require.main === module) {
+// eslint-disable-next-line unicorn/prefer-module
+const modulePath = url.fileURLToPath(import.meta.url || 'file://' + __filename);
+if (process.argv[1] === modulePath) {
     restart();
 }

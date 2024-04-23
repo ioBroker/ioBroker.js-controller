@@ -1,1 +1,1 @@
-require('@iobroker/js-controller-cli').execute();
+import('@iobroker/js-controller-cli').then(res => res.execute());

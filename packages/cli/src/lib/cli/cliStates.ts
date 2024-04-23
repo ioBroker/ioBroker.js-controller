@@ -1,15 +1,13 @@
 import { tools } from '@iobroker/js-controller-common';
 import { CLICommand, type CLICommandOptions } from './cliCommand.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const CLI = require('./messages.js');
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { formatValue } = require('./cliTools');
+import * as CLI from '@/lib/cli/messages.js';
+import { formatValue } from '@/lib/cli/cliTools.js';
 import * as rl from 'readline-sync';
 
 const ALIAS_STARTS_WITH = 'alias.';
 
-type ResultTransform = (input: any) => any;
+type ResultTransform = (input: ioBroker.State) => string;
 
 /** Command iobroker state ... */
 export class CLIStates extends CLICommand {
@@ -20,7 +18,7 @@ export class CLIStates extends CLICommand {
     /**
      * Executes a command
      *
-     * @param args
+     * @param args parsed cli args
      */
     execute(args: any[]): void {
         const { callback, pretty, showHelp } = this.options;
@@ -45,9 +43,6 @@ export class CLIStates extends CLICommand {
             case 'getvalue':
                 resultTransform = obj => (obj ? formatValue(obj.val, pretty) : 'null');
                 return this.get_(args, resultTransform);
-            case 'getBinary':
-            case 'getbinary':
-                return this._getBinary(args);
             case 'set':
                 return this.set_(args);
             case 'chmod':
@@ -126,50 +121,10 @@ export class CLIStates extends CLICommand {
     }
 
     /**
-     * Get and show binary state
-     *
-     * @param args
-     */
-    private _getBinary(args: any[]): void {
-        const { callback, dbConnect } = this.options;
-        const id = args[1];
-
-        console.warn(
-            `Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files (${id})`
-        );
-
-        dbConnect(async params => {
-            const { states } = params;
-
-            try {
-                // @ts-expect-error #1917
-                const state = await states.getBinaryState(id);
-
-                if (!state) {
-                    CLI.error.stateNotFound(id);
-                    return void callback(1);
-                }
-
-                if (Buffer.isBuffer(state)) {
-                    // console.log would append new lines which will mess up the result
-                    process.stdout.write(state, this.options.encoding);
-                    return void callback(0);
-                } else {
-                    CLI.error.stateNotBinary(id);
-                    return void callback(1);
-                }
-            } catch (e) {
-                CLI.error.unknown(e);
-                return void callback(1);
-            }
-        });
-    }
-
-    /**
      * Returns the value of a state
      *
-     * @param args
-     * @param resultTransform
+     * @param args parsed cli arguments
+     * @param resultTransform transform function for result
      */
     get_(args: any[], resultTransform: ResultTransform): void {
         const { callback, dbConnect } = this.options;
@@ -191,7 +146,7 @@ export class CLIStates extends CLICommand {
                             typeof targetObj.common.alias.id.read === 'string'
                                 ? targetObj.common.alias.id.read
                                 : targetObj.common.alias.id;
-                        objects.getObject(aliasId, async (err, sourceObj) => {
+                        objects.getObject(aliasId, async (_err, sourceObj) => {
                             // read target
                             try {
                                 if (await this._isBinary(aliasId, objects, targetObj)) {
@@ -220,7 +175,7 @@ export class CLIStates extends CLICommand {
                             return void callback(0);
                         });
                     } else {
-                        CLI.error.unknown(err || `Alias ${id} has no target`);
+                        CLI.error.unknown(err?.message || `Alias ${id} has no target`);
                         return void callback(1); // ?
                     }
                 });
@@ -245,7 +200,9 @@ export class CLIStates extends CLICommand {
     }
 
     /**
-     * @param args
+     * Set state in database
+     *
+     * @param args parsed cli arguments
      */
     set_(args: any[]): void {
         const { callback, dbConnect, showHelp } = this.options;
@@ -268,7 +225,7 @@ export class CLIStates extends CLICommand {
             const newVal = ack === undefined ? { val, ack: false } : { val, ack: !!ack };
 
             if (id.startsWith(ALIAS_STARTS_WITH)) {
-                objects.getObject(id, async (err, obj) => {
+                objects.getObject(id, async (_err, obj) => {
                     if (await this._isBinary(id, objects, obj)) {
                         CLI.error.stateBinarySetUnsupported(id);
                         return void callback(1);
@@ -282,7 +239,7 @@ export class CLIStates extends CLICommand {
 
                         objects.getObject(aliasId, (err, targetObj) => {
                             if (err) {
-                                CLI.error.unknown(err);
+                                CLI.error.unknown(err.message);
                                 return void callback(1); // access error
                             }
                             if (!obj && !force) {
@@ -290,7 +247,7 @@ export class CLIStates extends CLICommand {
                                 return void callback(1); // object not exists
                             }
 
-                            if (obj && obj.common && obj.common.type) {
+                            if (obj?.common?.type) {
                                 if (obj.common.type === 'string') {
                                     newVal.val = newVal.val.toString();
                                 } else if (obj.common.type === 'number') {
@@ -319,7 +276,7 @@ export class CLIStates extends CLICommand {
                                 }),
                                 err => {
                                     if (err) {
-                                        CLI.error.unknown(err);
+                                        CLI.error.unknown(err.message);
                                         return void callback(1); // ?
                                     } else {
                                         CLI.success.stateUpdated(id, val, !!ack);
@@ -336,7 +293,7 @@ export class CLIStates extends CLICommand {
             } else {
                 objects.getObject(id, async (err, obj) => {
                     if (err) {
-                        CLI.error.unknown(err);
+                        CLI.error.unknown(err.message);
                         return void callback(1); // access error
                     }
 
@@ -367,7 +324,7 @@ export class CLIStates extends CLICommand {
 
                     states.setState(id, newVal, err => {
                         if (err) {
-                            CLI.error.unknown(err);
+                            CLI.error.unknown(err.message);
                             return void callback(1); // ?
                         } else {
                             CLI.success.stateUpdated(id, val, !!ack);
@@ -382,7 +339,7 @@ export class CLIStates extends CLICommand {
     /**
      * Deletes a state
      *
-     * @param args
+     * @param args parsed cli arguments
      */
     delete(args: any[]): void {
         const { callback, dbConnect } = this.options;
@@ -397,7 +354,7 @@ export class CLIStates extends CLICommand {
 
             states.delState(id, err => {
                 if (err) {
-                    CLI.error.stateNotFound(id, err);
+                    CLI.error.stateNotFound(id, err.message);
                     return void callback(3);
                 } else {
                     CLI.success.stateDeleted(id);

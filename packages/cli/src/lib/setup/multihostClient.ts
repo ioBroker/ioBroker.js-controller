@@ -1,6 +1,6 @@
-import dgram from 'dgram';
+import dgram from 'node:dgram';
 import { tools } from '@iobroker/js-controller-common';
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 
 const PORT = 50005;
 const MULTICAST_ADDR = '239.255.255.250';

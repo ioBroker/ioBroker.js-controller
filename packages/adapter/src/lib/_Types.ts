@@ -384,13 +384,6 @@ export interface InternalSubscribeOptions {
     callback?: ioBroker.ErrorCallback;
 }
 
-export interface InternalSetBinaryStateOptions {
-    id: string;
-    options?: Record<string, any> | null;
-    binary: Buffer;
-    callback?: ioBroker.SetStateCallback;
-}
-
 export interface InternalAddChannelToEnumOptions {
     enumName: string;
     addTo: string;
@@ -441,18 +434,6 @@ export interface InternalGetStatesOptions {
     pattern: Pattern;
     options: Record<string, any>;
     callback: ioBroker.GetStatesCallback;
-}
-
-export interface InternalGetBinaryStateOption {
-    id: string;
-    options: Record<string, any>;
-    callback?: ioBroker.GetBinaryStateCallback;
-}
-
-export interface InternalDelBinaryStateOptions {
-    id: string;
-    options: Record<string, any>;
-    callback?: ioBroker.ErrorCallback;
 }
 
 export interface InternalDeleteDeviceOptions {
@@ -534,3 +515,13 @@ export interface InternalStopParameters extends StopParameters {
  * Only use it like `this.config as InternalAdapterConfig`
  */
 export type InternalAdapterConfig = Record<string, unknown>;
+
+export interface InstallNodeModuleOptions {
+    /** Version of node module */
+    version: string;
+}
+
+export interface InternalInstallNodeModuleOptions extends InstallNodeModuleOptions {
+    /** Name of the npm module */
+    moduleName: string;
+}

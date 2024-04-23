@@ -317,16 +317,6 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
     });
 
     objs.push({
-        _id: `${id}.zip`,
-        type: 'folder',
-        common: {
-            name: 'ZIP files',
-            desc: 'Files for download'
-        },
-        native: {}
-    });
-
-    objs.push({
         _id: `${id}.logLevel`,
         type: 'state',
         common: {
