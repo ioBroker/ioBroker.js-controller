@@ -1236,7 +1236,7 @@ export class AdapterClass extends EventEmitter {
         return tools.uninstallNodeModule(internalModuleName);
     }
 
-    importNodeModule(moduleName: string): unknown;
+    importNodeModule(moduleName: string): Promise<unknown>;
 
     /**
      * Import a node module which has been installed via `installNodeModule`
@@ -1244,12 +1244,12 @@ export class AdapterClass extends EventEmitter {
      * @param moduleName name of the node module
      * @returns the required node module
      */
-    importNodeModule(moduleName: unknown): unknown {
+    importNodeModule(moduleName: unknown): Promise<unknown> {
         Validator.assertString(moduleName, 'moduleName');
 
         const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
         // TODO: if https://github.com/microsoft/TypeScript/issues/54022 ever gets resolved, we should improve the return type
-        return require(internalModuleName);
+        return import(internalModuleName);
     }
 
     // overload with real types
