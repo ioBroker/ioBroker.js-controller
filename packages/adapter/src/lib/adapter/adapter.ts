@@ -10,19 +10,22 @@ import { PluginHandler } from '@iobroker/plugin-base';
 import semver from 'semver';
 import path from 'node:path';
 import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
-import { decryptArray, encryptArray, getSupportedFeatures, isMessageboxSupported } from '@/lib/adapter/utils';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const extend = require('node.extend');
+import { decryptArray, encryptArray, getSupportedFeatures, isMessageboxSupported } from '@/lib/adapter/utils.js';
+// @ts-expect-error no ts file
+import extend from 'node.extend';
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type Winston from 'winston';
 import type NodeSchedule from 'node-schedule';
+import yargs from 'yargs/yargs';
 
 // local version is always the same as controller version, since lerna exact: true is used
-import { version as controllerVersion } from '@iobroker/js-controller-adapter/package.json';
+import packJson from '@iobroker/js-controller-adapter/package.json' assert { type: 'json' };
 
-import { Log } from '@/lib/adapter/log';
-import { Validator } from './validator';
+const controllerVersion = packJson.version;
+
+import { Log } from '@/lib/adapter/log.js';
+import { Validator } from './validator.js';
 
 const { FORBIDDEN_CHARS } = tools;
 import {
@@ -40,7 +43,7 @@ import {
     NO_PROTECT_ADAPTERS,
     STATE_QUALITY,
     type SupportedFeature
-} from '@/lib/adapter/constants';
+} from '@/lib/adapter/constants.js';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import type {
     AdapterOptions,
@@ -109,10 +112,13 @@ import type {
     AllPropsUnknown,
     IoPackageInstanceObject,
     AliasTargetEntry
-} from '@/lib/_Types';
-import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController';
+} from '@/lib/_Types.js';
+import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
 
+import * as url from 'node:url';
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 tools.ensureDNSOrder();
 
 /**
@@ -723,46 +729,71 @@ export class AdapterClass extends EventEmitter {
         this._config = this._options.config || this._config;
         this.startedInCompactMode = !!this._options.compact;
 
-        // possible arguments
-        // 0,1,.. - instance
-        // info, debug, warn, error - log level
-        // --force
-        // --logs
-        // --silent
-        // --install
-        // --debug = --force + --logs
-        if (process.argv) {
-            for (const argument of process.argv) {
-                if (
-                    argument === 'info' ||
-                    argument === 'debug' ||
-                    argument === 'error' ||
-                    argument === 'warn' ||
-                    argument === 'silly'
-                ) {
-                    this._config.log.level = argument;
-                    this.overwriteLogLevel = true;
-                } else if (argument === '--silent') {
-                    this._config.isInstall = true;
-                } else if (argument === '--install') {
-                    this._config.isInstall = true;
-                } else if (argument === '--logs') {
-                    this._config.consoleOutput = true;
-                } else if (argument === '--force') {
-                    this._config.forceIfDisabled = true;
-                } else if (argument === '--debug') {
-                    this._config.forceIfDisabled = true;
-                    this._config.consoleOutput = true;
-                    if (this._config.log.level !== 'silly') {
-                        this._config.log.level = 'debug';
-                        this.overwriteLogLevel = true;
-                    }
-                } else if (argument === '--console') {
-                    this._config.consoleOutput = true;
-                } else if (parseInt(argument, 10).toString() === argument) {
-                    this._config.instance = parseInt(argument, 10);
+        const parsedArgs = yargs(process.argv.slice(2))
+            .options({
+                loglevel: {
+                    describe: 'Define adapter log level',
+                    type: 'string'
+                },
+                silent: {
+                    describe: 'If is install run',
+                    type: 'boolean'
+                },
+                install: {
+                    describe: 'If is install run',
+                    type: 'boolean'
+                },
+                logs: {
+                    describe: 'If console output desired',
+                    type: 'boolean'
+                },
+                console: {
+                    describe: 'If console output desired',
+                    type: 'boolean'
+                },
+                force: {
+                    describe: 'If force start even if disabled',
+                    type: 'boolean'
+                },
+                debug: {
+                    describe: 'Same as --force combined with --console',
+                    type: 'boolean'
+                },
+                instance: {
+                    describe: 'Instance id, e.g. 0',
+                    type: 'string'
                 }
+            })
+            .parseSync();
+
+        if (parsedArgs.loglevel && ['info', 'debug', 'error', 'warn', 'silly'].includes(parsedArgs.loglevel)) {
+            this._config.log.level = parsedArgs.loglevel;
+            this.overwriteLogLevel = true;
+        }
+
+        if (parsedArgs.silent || parsedArgs.install) {
+            this._config.isInstall = true;
+        }
+
+        if (parsedArgs.logs || parsedArgs.console) {
+            this._config.consoleOutput = true;
+        }
+
+        if (parsedArgs.force) {
+            this._config.forceIfDisabled = true;
+        }
+
+        if (parsedArgs.debug) {
+            this._config.forceIfDisabled = true;
+            this._config.consoleOutput = true;
+            if (this._config.log.level !== 'silly') {
+                this._config.log.level = 'debug';
+                this.overwriteLogLevel = true;
             }
+        }
+
+        if (parsedArgs.instance && parseInt(parsedArgs.instance, 10).toString() === parsedArgs.instance) {
+            this._config.instance = parseInt(parsedArgs.instance, 10);
         }
 
         this._config.log.level = this._config.log.level || 'info';
@@ -8246,6 +8277,13 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
+        if (!this.#objects) {
+            this._logger.info(
+                `${this.namespaceLog} setForeignState not processed because Objects database not connected`
+            );
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
         try {
             this._utils.validateId(id, true, null);
         } catch (err) {
@@ -8328,9 +8366,12 @@ export class AdapterClass extends EventEmitter {
                     }
 
                     let targetObj;
-                    // check the rights
+                    // we ignore permissions on the target object and thus get it as admin user
                     try {
-                        targetObj = (await this._checkStates(aliasId, options, 'setState')).objs[0];
+                        targetObj = await this.#objects.getObject(aliasId, {
+                            ...options,
+                            user: SYSTEM_ADMIN_USER
+                        });
                     } catch (e) {
                         return tools.maybeCallbackWithError(callback, e);
                     }
@@ -8387,13 +8428,13 @@ export class AdapterClass extends EventEmitter {
 
                 if (obj?.common?.alias?.id) {
                     // alias id can be a string or can have id.write
-                    const aliasId = tools.isObject(obj.common.alias.id)
+                    const targetId = tools.isObject(obj.common.alias.id)
                         ? obj.common.alias.id.write
                         : obj.common.alias.id;
 
                     // validate here because we use objects/states db directly
                     try {
-                        this._utils.validateId(aliasId, true, null);
+                        this._utils.validateId(targetId, true, null);
                     } catch (e) {
                         this._logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
                         return tools.maybeCallbackWithError(
@@ -8410,31 +8451,34 @@ export class AdapterClass extends EventEmitter {
                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                     }
 
-                    // read object for formatting
-                    this.#objects.getObject(aliasId, options, (err, targetObj) => {
-                        if (!this.#states) {
-                            // if states is no longer existing, we do not need to unsubscribe
-                            this._logger.info(
-                                `${this.namespaceLog} setForeignState not processed because States database not connected`
-                            );
-                            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                        }
-
-                        this.outputCount++;
-                        this.#states.setState(
-                            aliasId,
-                            tools.formatAliasValue({
-                                sourceCommon: obj.common as ioBroker.StateCommon,
-                                targetCommon: targetObj?.common as ioBroker.StateCommon | undefined,
-                                state,
-                                logger: this._logger,
-                                logNamespace: this.namespaceLog,
-                                sourceId: obj._id,
-                                targetId: targetObj?._id
-                            }),
-                            callback
-                        );
+                    // read object for formatting - we ignore permissions on the target object and thus get it as admin user
+                    const targetObj = await this.#objects.getObject(targetId, {
+                        ...options,
+                        user: SYSTEM_ADMIN_USER
                     });
+
+                    if (!this.#states) {
+                        // if states is no longer existing, we do not need to unsubscribe
+                        this._logger.info(
+                            `${this.namespaceLog} setForeignState not processed because States database not connected`
+                        );
+                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                    }
+
+                    this.outputCount++;
+                    this.#states.setState(
+                        targetId,
+                        tools.formatAliasValue({
+                            sourceCommon: obj.common as ioBroker.StateCommon,
+                            targetCommon: targetObj?.common as ioBroker.StateCommon | undefined,
+                            state,
+                            logger: this._logger,
+                            logNamespace: this.namespaceLog,
+                            sourceId: obj._id,
+                            targetId: targetObj?._id
+                        }),
+                        callback
+                    );
                 } else {
                     this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 5`);
                     return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
@@ -8694,8 +8738,8 @@ export class AdapterClass extends EventEmitter {
 
         try {
             this._utils.validateId(id, true, options);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
         }
 
         let permCheckRequired = false;
@@ -8731,14 +8775,11 @@ export class AdapterClass extends EventEmitter {
                 if (aliasId) {
                     let sourceObj;
                     try {
-                        if (permCheckRequired) {
-                            sourceObj = (await this._checkStates(aliasId, options || {}, 'getState')).objs[0];
-                        } else {
-                            sourceObj = (await this.#objects.getObject(aliasId, options)) as
-                                | ioBroker.StateObject
-                                | null
-                                | undefined;
-                        }
+                        // we ignore permissions on the source object and thus get it as admin user
+                        sourceObj = (await this.#objects.getObject(aliasId, {
+                            ...options,
+                            user: SYSTEM_ADMIN_USER
+                        })) as ioBroker.StateObject | null | undefined;
                     } catch (e) {
                         return tools.maybeCallbackWithError(callback, e);
                     }
@@ -8749,8 +8790,7 @@ export class AdapterClass extends EventEmitter {
                     } else {
                         this.inputCount++;
                         try {
-                            // @ts-expect-error void return possible fix it
-                            state = await this.#states!.getState(aliasId);
+                            state = await this.#states.getState(aliasId);
                         } catch (e) {
                             return tools.maybeCallbackWithError(callback, e);
                         }
@@ -8778,7 +8818,7 @@ export class AdapterClass extends EventEmitter {
             if (this.oStates && this.oStates[id]) {
                 return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
             } else {
-                return this.#states!.getState(id, callback);
+                return this.#states.getState(id, callback);
             }
         }
     }
@@ -9346,7 +9386,7 @@ export class AdapterClass extends EventEmitter {
         pattern: string,
         callback?: ioBroker.ErrorCallback
     ): Promise<void> {
-        if (aliasObj && aliasObj.common && aliasObj.common.alias && aliasObj.common.alias.id) {
+        if (aliasObj?.common?.alias?.id) {
             if (aliasObj.type !== 'state') {
                 this._logger.warn(
                     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -9399,7 +9439,8 @@ export class AdapterClass extends EventEmitter {
                 let sourceObj;
                 try {
                     await this.#states!.subscribe(sourceId);
-                    sourceObj = await this.#objects!.getObject(sourceId, this._options);
+                    // we ignore permissions on the source object and thus get it as admin user
+                    sourceObj = await this.#objects!.getObject(sourceId, { user: SYSTEM_ADMIN_USER });
                 } catch (e) {
                     return tools.maybeCallbackWithError(callback, e);
                 }
@@ -10007,7 +10048,7 @@ export class AdapterClass extends EventEmitter {
 
             if (obj?.native?.licenses?.length) {
                 const now = Date.now();
-                const cert = fs.readFileSync(path.join(__dirname, '..', '..', 'cert', 'cloudCert.crt'));
+                const cert = fs.readFileSync(path.join(thisDir, '..', '..', 'cert', 'cloudCert.crt'));
                 let adapterObj: ioBroker.AdapterObject | null | undefined;
                 if (adapterName) {
                     try {
@@ -10709,7 +10750,7 @@ export class AdapterClass extends EventEmitter {
                                 this.pluginHandler.instanciatePlugin(
                                     pluginName,
                                     this.pluginHandler.getPluginConfig(pluginName) || {},
-                                    __dirname
+                                    thisDir
                                 );
                                 this.pluginHandler.setDatabaseForPlugin(pluginName, this.#objects, this.#states);
                                 this.pluginHandler.initPlugin(pluginName, this.adapterConfig || {});
@@ -11708,7 +11749,7 @@ export class AdapterClass extends EventEmitter {
                 }
 
                 this.inited = true;
-                this._initStates(this._prepareInitAdapter.bind(this));
+                this._initStates(() => this._prepareInitAdapter());
             });
         };
 
@@ -11735,7 +11776,7 @@ export class AdapterClass extends EventEmitter {
                 throw new Error(`Unknown states type: ${this._config.states.type}: ${err.message}`);
             }
         } else {
-            this.States = getStatesConstructor();
+            this.States = await getStatesConstructor();
         }
 
         if (this._config.objects && this._config.objects.type) {
@@ -11745,7 +11786,7 @@ export class AdapterClass extends EventEmitter {
                 throw new Error(`Unknown objects type: ${this._config.objects.type}: ${err.message}`);
             }
         } else {
-            this.Objects = getObjectsConstructor();
+            this.Objects = await getObjectsConstructor();
         }
 
         const ifaces = os.networkInterfaces();
@@ -11783,7 +11824,7 @@ export class AdapterClass extends EventEmitter {
 
         this.pluginHandler = new PluginHandler(pluginSettings);
         try {
-            this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, __dirname]); // first resolve from adapter directory, else from js-controller
+            this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, thisDir]); // first resolve from adapter directory, else from js-controller
         } catch (e) {
             this._logger.error(`Could not add plugins: ${e.message}`);
         }

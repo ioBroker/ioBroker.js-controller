@@ -7,19 +7,12 @@
  *
  */
 
-/** @module StatesInMemoryFileDB */
-
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node: true */
-'use strict';
-
-const { StatesInMemoryFileDB } = require('@iobroker/db-states-file');
-const { JsonlDB } = require('@alcalzone/jsonl-db');
-const path = require('path');
-const fs = require('fs');
-const os = require('os');
-const { tools } = require('@iobroker/js-controller-common');
+import { StatesInMemoryFileDB } from '@iobroker/db-states-file';
+import { JsonlDB } from '@alcalzone/jsonl-db';
+import path from 'node:path';
+import fs from 'node:fs';
+import os from 'node:os';
+import { tools } from '@iobroker/js-controller-common';
 
 // settings = {
 //    change:    function (id, state) {},
@@ -112,7 +105,7 @@ function normalizeJsonlOptions(conf = {}) {
  * This class inherits InMemoryFileDB class and adds all relevant logic for states
  * including the available methods for use by js-controller directly
  **/
-class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
+export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
     constructor(settings) {
         settings = settings || {};
         // Not really used
@@ -300,5 +293,3 @@ class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
         }
     }
 }
-
-module.exports = StatesInMemoryJsonlDB;

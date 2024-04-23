@@ -19,7 +19,7 @@
 
 #### Defined in
 
-db-base/build/cjs/lib/inMemFileDB.d.ts:27
+db-base/build/esm/lib/inMemFileDB.d.ts:27
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 #### Defined in
 
-db-base/build/cjs/lib/inMemFileDB.d.ts:26
+db-base/build/esm/lib/inMemFileDB.d.ts:26

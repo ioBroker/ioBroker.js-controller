@@ -3,7 +3,7 @@ import axios from 'axios';
 import fs from 'fs-extra';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
-import path from 'path';
+import path from 'node:path';
 
 export interface CLIRepoOptions {
     objects: ObjectsRedisClient;

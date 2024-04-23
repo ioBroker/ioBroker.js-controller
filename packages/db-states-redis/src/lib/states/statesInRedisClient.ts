@@ -10,7 +10,7 @@
 
 import Redis from 'ioredis';
 import { tools } from '@iobroker/db-base';
-import { isDeepStrictEqual } from 'util';
+import { isDeepStrictEqual } from 'node:util';
 import type { InternalLogger } from '@iobroker/js-controller-common/tools';
 import type IORedis from 'ioredis';
 import type { DbStatus, ConnectionOptions } from '@iobroker/db-base/inMemFileDB';
@@ -864,9 +864,17 @@ export class StateRedisClient {
         return id;
     }
 
+    getState(id: string): ioBroker.GetStatePromise;
+    getState(
+        id: string,
+        callback?: (err: Error | null | undefined, state?: ioBroker.State | null) => void
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetStateCallback> | void>;
+
     /**
-     * @param id
-     * @param callback
+     * Get state from database
+     *
+     * @param id id of the state
+     * @param callback optional callback, leave out and use promise return type
      */
     async getState(
         id: string,
