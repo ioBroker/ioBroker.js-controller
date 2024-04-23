@@ -494,6 +494,22 @@ export interface InternalDeleteStateFromEnumOptions {
     callback?: ioBroker.ErrorCallback;
 }
 
+export interface StopParameters {
+    /** Specify an optional exit code */
+    exitCode?: number;
+    /** Specify an optional reason for stoppage */
+    reason?: string;
+}
+
+export interface InternalStopParameters extends StopParameters {
+    /** If mode is schedule or once */
+    isPause?: boolean;
+    /** If it has a restart schedule running */
+    isScheduled?: boolean;
+    /** If alive state should be updated, if undefined defaults to true */
+    updateAliveState?: boolean;
+}
+
 /**
  * The internal adapter config type should only be used to access config properties which are set by the adapter developers.
  * Only use it like `this.config as InternalAdapterConfig`
