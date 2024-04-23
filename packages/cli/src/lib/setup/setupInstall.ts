@@ -13,16 +13,20 @@ import path from 'node:path';
 import semver from 'semver';
 import child_process from 'node:child_process';
 import axios from 'axios';
-import { URL } from 'url';
-import { Upload } from '@/lib/setup/setupUpload';
-import { PacketManager } from '@/lib/setup/setupPacketManager';
-import { getRepository } from '@/lib/setup/utils';
+import { URL } from 'node:url';
+import { Upload } from './setupUpload.js';
+import { PacketManager } from './setupPacketManager.js';
+import { getRepository } from './utils.js';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import type { ProcessExitCallback } from '@/lib/_Types';
+import type { ProcessExitCallback } from '../_Types.js';
 import type { CommandResult } from '@alcalzone/pak';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
-import { IoBrokerError } from '@/lib/setup/customError';
+import { IoBrokerError } from './customError.js';
+import { createRequire } from 'node:module';
+
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __filename);
 
 const hostname = tools.getHostName();
 const osPlatform = process.platform;
@@ -273,7 +277,7 @@ export class Install {
         }
 
         console.error(
-            `host.${hostname} Unknown packetName ${packetName}. Please install packages from outside the repository using npm!`
+            `host.${hostname} Unknown packetName ${packetName}. Please install packages from outside the repository using "${tools.appNameLowerCase} url <url-or-package>"!`
         );
         return this.processExit(EXIT_CODES.UNKNOWN_PACKET_NAME);
     }
@@ -728,8 +732,8 @@ export class Install {
         let engineVersion;
         try {
             // read directly from disk and not via require to allow "on the fly" updates of adapters.
-            const p = fs.readJSONSync(path.join(adapterDir, 'package.json'), 'utf8');
-            engineVersion = p && p.engines && p.engines.node;
+            const packJson = fs.readJSONSync(path.join(adapterDir, 'package.json'), 'utf8');
+            engineVersion = packJson?.engines?.node;
         } catch {
             console.error(`host.${hostname}: Cannot read and parse "${adapterDir}/package.json"`);
         }
@@ -770,7 +774,7 @@ export class Install {
         }
     }
 
-    async callInstallOfAdapter(adapter: string, config: Record<string, any>): Promise<string | void> {
+    async callInstallOfAdapter(adapter: string, config: ioBroker.AdapterObject): Promise<string | void> {
         if (config.common.install) {
             // Install node modules
             let cmd = 'node ';
@@ -1540,9 +1544,7 @@ export class Install {
             try {
                 // find the adapter's io-package.json
                 const adapterNpm = `${tools.appName.toLowerCase()}.${adapter}`;
-                const ioPackPath = require.resolve(`${adapterNpm}/io-package.json`, {
-                    paths: tools.getDefaultRequireResolvePaths(module)
-                });
+                const ioPackPath = require.resolve(`${adapterNpm}/io-package.json`);
                 const ioPack = await fs.readJSON(ioPackPath);
 
                 if (!ioPack.common || !ioPack.common.nondeletable) {

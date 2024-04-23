@@ -5,7 +5,7 @@ import {
     decrypt,
     appNameLowerCase
 } from '@iobroker/js-controller-common/tools';
-import { SUPPORTED_FEATURES, type SupportedFeature } from './constants';
+import { SUPPORTED_FEATURES, type SupportedFeature } from '@/lib/adapter/constants.js';
 
 interface EncryptArrayOptions {
     /** The objects whose values should be en/decrypted */

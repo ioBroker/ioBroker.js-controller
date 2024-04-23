@@ -2,46 +2,45 @@ import fs from 'fs-extra';
 import { tools } from '@iobroker/js-controller-common';
 import { EXIT_CODES } from '@iobroker/js-controller-common';
 import deepClone from 'deep-clone';
-import { isDeepStrictEqual } from 'util';
+import { isDeepStrictEqual } from 'node:util';
 import Debug from 'debug';
 import { tools as dbTools } from '@iobroker/js-controller-common-db';
-import path from 'path';
-import yargs from 'yargs';
-import * as CLITools from '@/lib/cli/cliTools';
-import { CLIHost } from '@/lib/cli/cliHost';
-import { CLIStates } from '@/lib/cli/cliStates';
-import { CLIDebug } from '@/lib/cli/cliDebug';
-import { CLICert } from '@/lib/cli/cliCert';
-import { CLIObjects } from '@/lib/cli/cliObjects';
-import { CLICompact } from '@/lib/cli/cliCompact';
-import { CLILogs } from '@/lib/cli/cliLogs';
-import { error as CLIError } from '@/lib/cli/messages';
-import type { CLICommandContext, CLICommandOptions } from '@/lib/cli/cliCommand';
-import { getRepository } from '@/lib/setup/utils';
-import { dbConnect, dbConnectAsync, exitApplicationSave } from '@/lib/setup/dbConnection';
-import { IoBrokerError } from '@/lib/setup/customError';
-import type { ListType } from '@/lib/setup/setupList';
+import path from 'node:path';
+import yargs from 'yargs/yargs';
+import * as CLITools from '@/lib/cli/cliTools.js';
+import { CLIHost } from '@/lib/cli/cliHost.js';
+import { CLIStates } from '@/lib/cli/cliStates.js';
+import { CLIDebug } from '@/lib/cli/cliDebug.js';
+import { CLICert } from '@/lib/cli/cliCert.js';
+import { CLIObjects } from '@/lib/cli/cliObjects.js';
+import { CLICompact } from '@/lib/cli/cliCompact.js';
+import { CLILogs } from '@/lib/cli/cliLogs.js';
+import { CLIProcess } from '@/lib/cli/cliProcess.js';
+import { CLIMessage } from '@/lib/cli/cliMessage.js';
+import { CLIPlugin } from '@/lib/cli/cliPlugin.js';
+import { error as CLIError } from '@/lib/cli/messages.js';
+import type { CLICommandContext, CLICommandOptions } from '@/lib/cli/cliCommand.js';
+import { getRepository } from '@/lib/setup/utils.js';
+import { dbConnect, dbConnectAsync, exitApplicationSave } from '@/lib/setup/dbConnection.js';
+import { IoBrokerError } from '@/lib/setup/customError.js';
+import type { ListType } from '@/lib/setup/setupList.js';
+import * as url from 'node:url';
 import * as events from 'node:events';
 
-tools.ensureDNSOrder();
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+import { createRequire } from 'node:module';
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __filename);
 
-/**
- * Polyfill until everything ported to TS
- */
-const cli = {
-    command: {
-        process: require('./cli/cliProcess.js'),
-        message: require('./cli/cliMessage.js'),
-        plugin: require('./cli/cliPlugin.js')
-    }
-} as const;
+tools.ensureDNSOrder();
 
 const debug = Debug('iobroker:cli');
 
 events.EventEmitter.setMaxListeners(100);
 process.setMaxListeners(0);
 
-let _yargs: yargs.Argv;
+let _yargs: ReturnType<typeof yargs>;
 
 type ExitCodeCb = (exitCode?: number) => void;
 
@@ -51,8 +50,11 @@ interface InternalRebuildOptions {
     debug: boolean;
 }
 
-function initYargs(): yargs.Argv {
-    _yargs = yargs
+/**
+ * Initialize Yargs to parse commands correctly and be able to output correct help
+ */
+function initYargs(): ReturnType<typeof yargs> {
+    _yargs = yargs(process.argv.slice(2))
         .scriptName(tools.appName)
         .locale('en') // otherwise it could be mixed, because our implementations are in english
         .version(false) // disable yargs own version handling, because we have our own depending on passed instances
@@ -260,13 +262,6 @@ function initYargs(): yargs.Argv {
                     pretty: {
                         describe: 'Prettify output',
                         type: 'boolean'
-                    }
-                })
-                .command('getBinary <id>', 'Get binary state, specified by id', {
-                    encoding: {
-                        describe: 'Encoding for the binary state, like utf-8, ascii, hex, base64, binary',
-                        type: 'string',
-                        default: 'binary'
                     }
                 })
                 .command('getValue <id>', 'Get state value, specified by id', {})
@@ -499,14 +494,10 @@ function initYargs(): yargs.Argv {
 
 /**
  * Show yargs help, if processCommand is used as import, yargs won't be initialized
- *
- * @param _yargs - yargs instance
  */
-function showHelp(_yargs?: yargs.Argv): void {
+function showHelp(): void {
     if (_yargs) {
         _yargs.showHelp();
-    } else {
-        yargs.showHelp();
     }
 }
 
@@ -532,7 +523,7 @@ async function processCommand(
     switch (command) {
         case 'start':
         case 'stop': {
-            const procCommand = new cli.command.process(commandOptions);
+            const procCommand = new CLIProcess(commandOptions);
             procCommand[command](args);
             break;
         }
@@ -545,14 +536,14 @@ async function processCommand(
 
         case 'status':
         case 'isrun': {
-            const procCommand = new cli.command.process(commandOptions);
+            const procCommand = new CLIProcess(commandOptions);
             procCommand.status(args);
             break;
         }
 
         case 'r':
         case 'restart': {
-            const procCommand = new cli.command.process(commandOptions);
+            const procCommand = new CLIProcess(commandOptions);
             procCommand.restart(args);
             break;
         }
@@ -607,8 +598,8 @@ async function processCommand(
             isRedis = params.redis || isRedis;
             isFirst = params.first || isFirst;
 
-            setup.setup(
-                async () => {
+            setup.setup({
+                callback: async () => {
                     const { states, objects } = await dbConnectAsync(false, params);
                     if (isFirst) {
                         // Creates all instances that are needed on a fresh installation
@@ -625,10 +616,7 @@ async function processCommand(
                         for (const instance of initialInstances) {
                             try {
                                 const adapterInstalled = !!require.resolve(
-                                    `${tools.appName.toLowerCase()}.${instance}`,
-                                    {
-                                        paths: tools.getDefaultRequireResolvePaths(module)
-                                    }
+                                    `${tools.appName.toLowerCase()}.${instance}`
                                 );
 
                                 if (adapterInstalled) {
@@ -717,7 +705,11 @@ async function processCommand(
                         if (config.states.type === 'file') {
                             config.states.type = 'jsonl';
 
-                            if (dbTools.isLocalStatesDbServer('file', config.states.host)) {
+                            const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(
+                                'file',
+                                config.states.host
+                            );
+                            if (hasLocalStatesServer) {
                                 // silent config change on secondaries
                                 console.log('States DB type migrated from "file" to "jsonl"');
                                 migrated += 'States';
@@ -726,7 +718,12 @@ async function processCommand(
 
                         if (config.objects.type === 'file') {
                             config.objects.type = 'jsonl';
-                            if (dbTools.isLocalObjectsDbServer('file', config.objects.host)) {
+
+                            const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(
+                                'file',
+                                config.objects.host
+                            );
+                            if (hasLocalObjectsServer) {
                                 // silent config change on secondaries
                                 console.log('Objects DB type migrated from "file" to "jsonl"');
                                 migrated += migrated ? ' and Objects' : 'Objects';
@@ -777,9 +774,9 @@ async function processCommand(
 
                     return void callback();
                 },
-                isFirst,
-                isRedis
-            );
+                ignoreIfExist: isFirst,
+                useRedis: isRedis
+            });
             break;
         }
 
@@ -1122,7 +1119,7 @@ async function processCommand(
             break;
         }
         case 'unsetup': {
-            const rl = (await import('readline')).createInterface({
+            const rl = (await import('node:readline')).createInterface({
                 input: process.stdin,
                 output: process.stdout
             });
@@ -1160,7 +1157,7 @@ async function processCommand(
 
         case 'msg':
         case 'message': {
-            const messageCommand = new cli.command.message(commandOptions);
+            const messageCommand = new CLIMessage(commandOptions);
             messageCommand.execute(args);
             break;
         }
@@ -2472,8 +2469,9 @@ async function processCommand(
         }
 
         case 'checklog': {
-            dbConnect(params, ({ objects, states, isOffline, objectsDBType }) => {
-                if (isOffline && dbTools.objectsDbHasServer(objectsDBType)) {
+            dbConnect(params, async ({ objects, states, isOffline, objectsDBType }) => {
+                const hasLocalObjectsServer = await dbTools.objectsDbHasServer(objectsDBType);
+                if (isOffline && hasLocalObjectsServer) {
                     console.log(`${tools.appName} is not running`);
                     return void callback(EXIT_CODES.CONTROLLER_NOT_RUNNING);
                 } else {
@@ -2731,7 +2729,7 @@ async function processCommand(
         }
 
         case 'plugin': {
-            const pluginCommand = new cli.command.plugin(commandOptions);
+            const pluginCommand = new CLIPlugin(commandOptions);
             pluginCommand.execute(args);
             break;
         }
@@ -2905,9 +2903,9 @@ function unsetup(params: Record<string, any>, callback: ExitCodeCb): void {
  */
 async function restartController(): Promise<void> {
     console.log('Starting node restart.js');
-    const { spawn } = await import('child_process');
+    const { spawn } = await import('node:child_process');
 
-    const child = spawn('node', [`${__dirname}/restart.js`], {
+    const child = spawn('node', [`${thisDir}/restart.js`], {
         detached: true,
         stdio: ['ignore', 'ignore', 'ignore'],
         windowsHide: true
