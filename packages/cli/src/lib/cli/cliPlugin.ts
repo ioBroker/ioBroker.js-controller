@@ -1,25 +1,36 @@
-'use strict';
-const CLI = require('./messages.js');
-const { CLICommand } = require('./cliCommand.js');
-const { getObjectFrom } = require('./cliTools');
-const { tools } = require('@iobroker/js-controller-common');
-const fs = require('fs');
-const path = require('path');
+import * as CLI from './messages.js';
+import { type CLICommandOptions, CLICommand } from './cliCommand.js';
+import { getObjectFrom } from './cliTools.js';
+import { tools } from '@iobroker/js-controller-common';
+import fs from 'fs-extra';
+import path from 'node:path';
+import { createRequire } from 'node:module';
+
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __filename);
 
 const controllerIoPackPath = require.resolve('iobroker.js-controller/io-package.json');
 
+interface CLIPluginOptions extends CLICommandOptions {
+    /** If plugin is scoped on adapter */
+    adapter?: string;
+    /** If plugin is scoped on instance */
+    instance?: string;
+}
+
 /** Command iobroker plugin <enable/disable/status> <pluginname> [--host this/hostname] ... */
-module.exports = class CLIPlugin extends CLICommand {
-    /** @param {CLICommandOptions} options */
-    constructor(options) {
+export class CLIPlugin extends CLICommand<CLIPluginOptions> {
+    /** @param options the cli command options */
+    constructor(options: CLIPluginOptions) {
         super(options);
     }
 
     /**
      * Executes a command
-     * @param {any[]} args
+     *
+     * @param args parsed cli args
      */
-    execute(args) {
+    execute(args: any[]): void {
         const { callback, showHelp } = this.options;
         const command = args[0];
 
@@ -41,25 +52,23 @@ module.exports = class CLIPlugin extends CLICommand {
 
     /**
      * Enables or disables the given plugin
-     * @param {any[]} args
-     * @param {boolean} enabled
+     *
+     * @param args the parsed CLI args
+     * @param enabled if plugin should be enabled
      */
-    set(args, enabled) {
+    set(args: any[], enabled: boolean): void {
         const { callback, dbConnect } = this.options;
-        /** @type {string} */
-        const pluginName = args[1];
+        const pluginName: string = args[1];
         if (!pluginName) {
             CLI.error.requiredArgumentMissing('pluginName', 'plugin enable <pluginname>');
             return void callback(34);
         }
 
-        /** @type {string | undefined} */
-        let hostname;
-        /** @type {string | undefined} */
-        let instance;
+        let hostname: string;
+        let instance: string;
 
         if (this.options.adapter || this.options.instance) {
-            instance = this.options.adapter || this.options.instance;
+            instance = (this.options.adapter || this.options.instance) as string;
             // default to instance 0
             if (!/\.\d+$/.test(instance)) {
                 instance += '.0';
@@ -77,7 +86,7 @@ module.exports = class CLIPlugin extends CLICommand {
 
             try {
                 // Check if the host or instance exists
-                /** @type {string} */ let objectNamespace;
+                let objectNamespace: string;
                 if (hostname) {
                     objectNamespace = `system.host.${hostname}`;
                     const hostObject = await objects.getObject(objectNamespace);
@@ -154,24 +163,22 @@ module.exports = class CLIPlugin extends CLICommand {
 
     /**
      * Prints the status of the given plugin
-     * @param {any[]} args
+     *
+     * @param args the parsed CLI arguments
      */
-    status(args) {
+    status(args: any[]): void {
         const { callback, dbConnect } = this.options;
-        /** @type {string} */
         const pluginName = args[1];
         if (!pluginName) {
             CLI.error.requiredArgumentMissing('pluginName', 'plugin status <pluginname>');
             return void callback(34);
         }
 
-        /** @type {string | undefined} */
-        let hostname;
-        /** @type {string | undefined} */
-        let instance;
+        let hostname: string;
+        let instance: string;
 
         if (this.options.adapter || this.options.instance) {
-            instance = this.options.adapter || this.options.instance;
+            instance = (this.options.adapter || this.options.instance) as string;
             // default to instance 0
             if (!/\.\d+$/.test(instance)) {
                 instance += '.0';
@@ -189,7 +196,7 @@ module.exports = class CLIPlugin extends CLICommand {
 
             try {
                 // Check if the host or instance exists
-                /** @type {string} */ let objectNamespace;
+                let objectNamespace: string;
                 if (hostname) {
                     objectNamespace = `system.host.${hostname}`;
                     const hostObject = await objects.getObject(objectNamespace);
@@ -216,7 +223,7 @@ module.exports = class CLIPlugin extends CLICommand {
 
                 // Read the state
                 try {
-                    const { val } = await states.getStateAsync(pluginEnabledId);
+                    const val = (await states.getStateAsync(pluginEnabledId))?.val;
 
                     if (typeof val === 'boolean') {
                         CLI.success.pluginStatus(pluginName, hostname, instance, val);
@@ -241,21 +248,21 @@ module.exports = class CLIPlugin extends CLICommand {
             }
         });
     }
-};
+}
 
 /**
  * Checks if a plugin exists and can be configured
- * @param {string} pluginName
- * @param {Record<string, any>} iobrokerJson The contents of iobroker.json
- * @param {string} [adapter] (optional) - If passed, the adapter configuration will be searched for defined plugins instead of js-controller
+ *
+ * @param pluginName
+ * @param iobrokerJson The contents of iobroker.json
+ * @param [adapter] (optional) - If passed, the adapter configuration will be searched for defined plugins instead of js-controller
  */
-function pluginExists(pluginName, iobrokerJson, adapter) {
+function pluginExists(pluginName: string, iobrokerJson?: ioBroker.IoBrokerJson, adapter?: string): boolean {
     // 1. check if the plugin is defined in io-package.json
-    // TODO: replace this with fs-extra methods #799
     try {
-        const ioPackPath = adapter ? path.join(tools.getAdapterDir(adapter), 'io-package.json') : controllerIoPackPath;
-        const ioPack = JSON.parse(fs.readFileSync(ioPackPath, 'utf8'));
-        if (ioPack && ioPack.common && ioPack.common.plugins && pluginName in ioPack.common.plugins) {
+        const ioPackPath = adapter ? path.join(tools.getAdapterDir(adapter)!, 'io-package.json') : controllerIoPackPath;
+        const ioPack = fs.readJSONSync(ioPackPath, { encoding: 'utf8' });
+        if (ioPack?.common?.plugins && pluginName in ioPack.common.plugins) {
             return true;
         }
     } catch {
@@ -263,31 +270,34 @@ function pluginExists(pluginName, iobrokerJson, adapter) {
     }
 
     // 2. check if the plugin is defined in iobroker.json
-    return iobrokerJson && iobrokerJson.plugins && pluginName in iobrokerJson.plugins;
+    return !!(iobrokerJson?.plugins && pluginName in iobrokerJson.plugins);
 }
 
 /**
  * Checks if a plugin exists and can be configured
- * @param {string} pluginName
- * @param {string | undefined} adapter If defined, the adapter configuration will be searched for defined plugins instead of js-controller
- * @param {Record<string, any>} systemConfig The system.config object
- * @param {Record<string, any>} iobrokerJson The contents of iobroker.json
+ *
+ * @param pluginName name of the plugin, e.g. `sentry`
+ * @param adapter If defined, the adapter configuration will be searched for defined plugins instead of js-controller
+ * @param systemConfig The system.config object
+ * @param iobrokerJson The contents of iobroker.json
  */
-function pluginEnabled(pluginName, adapter, systemConfig, iobrokerJson) {
+function pluginEnabled(
+    pluginName: string,
+    adapter?: string,
+    systemConfig?: ioBroker.SystemConfigObject | null,
+    iobrokerJson?: ioBroker.IoBrokerJson
+): boolean {
     // 1. check if diagnostics are disabled in ioBroker
-    if (systemConfig && systemConfig.common && systemConfig.common.diag === 'none') {
+    if (systemConfig?.common?.diag === 'none') {
         return false;
     }
 
     // 2. check if the plugin is disabled in io-package.json
-    // TODO: replace this with fs-extra methods #799
     try {
-        const ioPackPath = adapter ? path.join(tools.getAdapterDir(adapter), 'io-package.json') : controllerIoPackPath;
-        const ioPack = JSON.parse(fs.readFileSync(ioPackPath, 'utf8'));
+        const ioPackPath = adapter ? path.join(tools.getAdapterDir(adapter)!, 'io-package.json') : controllerIoPackPath;
+        const ioPack = fs.readJSONSync(ioPackPath, { encoding: 'utf8' });
         if (
-            ioPack &&
-            ioPack.common &&
-            ioPack.common.plugins &&
+            ioPack?.common?.plugins &&
             pluginName in ioPack.common.plugins &&
             ioPack.common.plugins[pluginName].enabled === false
         ) {
@@ -299,8 +309,7 @@ function pluginEnabled(pluginName, adapter, systemConfig, iobrokerJson) {
 
     // 3. check if the plugin is disabled in iobroker.json
     if (
-        iobrokerJson &&
-        iobrokerJson.plugins &&
+        iobrokerJson?.plugins &&
         pluginName in iobrokerJson.plugins &&
         iobrokerJson.plugins[pluginName].enabled === false
     ) {

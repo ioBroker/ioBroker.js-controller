@@ -1,14 +1,14 @@
 import fs from 'fs-extra';
 import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
-import path from 'path';
-import { Upload } from './setupUpload';
+import path from 'node:path';
+import { Upload } from './setupUpload.js';
 import { exec as execAsync } from 'promisify-child-process';
 import tar from 'tar';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import type { CleanDatabaseHandler, ProcessExitCallback, RestartController } from '../_Types';
-import { dbConnectAsync, resetDbConnect } from './dbConnection';
-import { IoBrokerError } from './customError';
+import type { CleanDatabaseHandler, ProcessExitCallback, RestartController } from '../_Types.js';
+import { dbConnectAsync, resetDbConnect } from './dbConnection.js';
+import { IoBrokerError } from './customError.js';
 
 export interface CLIBackupRestoreOptions {
     dbMigration?: boolean;
@@ -78,8 +78,6 @@ export class BackupRestore {
     private readonly HOSTNAME_PLACEHOLDER_REPLACE = '$$$$__hostname__$$$$';
     /** Regex to replace all occurrences of the HOSTNAME_PLACEHOLDER */
     private readonly HOSTNAME_PLACEHOLDER_REGEX = /\$\$__hostname__\$\$/g;
-    /** Vis adapters have special files which need to be copied during backup */
-    private readonly VIS_ADAPTERS = ['vis', 'vis-2'] as const;
 
     constructor(options: CLIBackupRestoreOptions) {
         options = options || {};
@@ -219,18 +217,6 @@ export class BackupRestore {
      * @param name - backup name
      */
     private _packBackup(name: string): Promise<string> {
-        // 2021_10_25 BF (TODO): store letsencrypt files too
-        const letsEncrypt = `${this.configDir}/letsencrypt`;
-        if (fs.existsSync(letsEncrypt)) {
-            try {
-                this.copyFolderRecursiveSync(letsEncrypt, `${this.tmpDir}/backup`);
-            } catch (e) {
-                console.error(`host.${this.hostname} Could not backup "${letsEncrypt}" directory: ${e.message}`);
-                this.removeTempBackupDir();
-                throw new IoBrokerError({ message: e.message, code: EXIT_CODES.CANNOT_COPY_DIR });
-            }
-        }
-
         return new Promise((resolve, reject) => {
             const f = fs.createWriteStream(name);
             f.on('finish', () => {
@@ -431,20 +417,6 @@ export class BackupRestore {
                         }
                     }
                 }
-            }
-        }
-
-        for (const visAdapter of this.VIS_ADAPTERS) {
-            try {
-                const data = await this.objects.readFile(visAdapter, 'css/vis-common-user.css');
-                if (data) {
-                    const dir = path.join(this.tmpDir, 'backup', 'files', visAdapter, 'css');
-                    fs.ensureDirSync(dir);
-
-                    fs.writeFileSync(path.join(dir, 'vis-common-user.css'), data.file);
-                }
-            } catch {
-                // do not process 'css/vis-common-user.css'
             }
         }
 
@@ -887,8 +859,7 @@ export class BackupRestore {
      * Validates the backup.json and all json files inside the backup after (in temporary directory), here we only abort if backup.json is corrupted
      */
     private _validateBackupAfterCreation(): void {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        const backupJSON = require(`${this.tmpDir}/backup/backup.json`);
+        const backupJSON = fs.readJSONSync(`${this.tmpDir}/backup/backup.json`);
         if (!backupJSON.objects || !backupJSON.objects.length) {
             throw new Error('Backup does not contain valid objects');
         }
@@ -991,7 +962,7 @@ export class BackupRestore {
                     console.log(`host.${this.hostname} Starting validation ...`);
                     let backupJSON;
                     try {
-                        backupJSON = require(`${this.tmpDir}/backup/backup.json`);
+                        backupJSON = fs.readJSONSync(`${this.tmpDir}/backup/backup.json`);
                     } catch (err) {
                         console.error(
                             `host.${this.hostname} Backup corrupted. Backup ${name} does not contain a valid backup.json file: ${err.message}`
@@ -1048,7 +1019,7 @@ export class BackupRestore {
                     this._checkDirectory(filePath, verbose);
                 } else if (file.endsWith('.json')) {
                     try {
-                        require(filePath);
+                        fs.readJSONSync(filePath);
                         if (verbose) {
                             console.log(`host.${this.hostname} ${file} OK`);
                         }
@@ -1138,7 +1109,7 @@ export class BackupRestore {
                 cwd: this.tmpDir
             },
             undefined,
-            err => {
+            async err => {
                 if (err) {
                     console.error(`host.${this.hostname} Cannot extract from file "${name}": ${err.message}`);
                     return void this.processExit(9);
@@ -1150,14 +1121,15 @@ export class BackupRestore {
                     return void this.processExit(9);
                 }
                 // Stop controller
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                const daemon = require('daemonize2').setup({
+                // @ts-expect-error not a ts module
+                const daemon = (await import('daemonize2')).setup({
                     main: path.join(controllerDir, 'controller.js'),
                     name: `${tools.appName} controller`,
                     pidfile: path.join(controllerDir, `${tools.appName}.pid`),
                     cwd: controllerDir,
                     stopTimeout: 1_000
                 });
+
                 daemon.on('error', async () => {
                     const exitCode = await this._restoreAfterStop({
                         restartOnFinish: false,

@@ -10,10 +10,10 @@
 import path from 'node:path';
 import deepClone from 'deep-clone';
 import { tools } from '@iobroker/db-base';
-import * as CONSTS from './constants';
+import * as CONSTS from '@/lib/objects/constants.js';
 import mime from 'mime-types';
 
-export * as CONSTS from './constants';
+export * as CONSTS from '@/lib/objects/constants.js';
 export const ERRORS = CONSTS.ERRORS;
 export const REG_CHECK_ID = CONSTS.REG_CHECK_ID;
 

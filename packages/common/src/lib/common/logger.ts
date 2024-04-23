@@ -1,20 +1,27 @@
 import winston from 'winston';
 import DailyRotateFile from 'winston-daily-rotate-file';
-import fs from 'fs';
-import path from 'path';
-import os from 'os';
-import * as tools from './tools';
+import fs from 'node:fs';
+import path from 'node:path';
+import os from 'node:os';
+import * as tools from '@/lib/common/tools.js';
 import Transport from 'winston-transport';
 import { LEVEL } from 'triple-beam';
 import deepClone from 'deep-clone';
 import type { Syslog } from 'winston-syslog';
 import type { SeqTransport } from '@datalust/winston-seq';
+import * as url from 'node:url';
+import { createRequire } from 'node:module';
+
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __filename);
 
 const hostname = tools.getHostName();
 
 let SysLog: typeof Syslog | undefined;
 try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     SysLog = require('winston-syslog').Syslog;
 } catch {
     //console.log('No syslog support');
@@ -22,7 +29,6 @@ try {
 
 let Seq: typeof SeqTransport | undefined;
 try {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
     Seq = require('@datalust/winston-seq').SeqTransport;
 } catch {
     //console.log('No seq support');
@@ -154,7 +160,7 @@ export function logger(
     files = files || [];
 
     // indicator which is used to determine the log dir for developing, where it should be inside the repository
-    const isNpm = !__dirname
+    const isNpm = !thisDir
         .replace(/\\/g, '/')
         .toLowerCase()
         .includes(`${tools.appName.toLowerCase()}.js-controller/packages/`);
@@ -362,7 +368,7 @@ export function logger(
             const opt = {
                 name: i ? `dailyRotateFile${i}` : tools.appName,
                 filename: path.normalize(
-                    isNpm ? `${__dirname}/../../../log/${files[i]}` : `${__dirname}/../log/${files[i]}`
+                    isNpm ? `${thisDir}/../../../log/${files[i]}` : `${thisDir}/../log/${files[i]}`
                 ),
                 extension: '.log',
                 datePattern: 'YYYY-MM-DD',
