@@ -1215,7 +1215,7 @@ export class AdapterClass extends EventEmitter {
         return this._installNodeModule({ ...options, moduleName });
     }
 
-    _installNodeModule(options: InternalInstallNodeModuleOptions): Promise<CommandResult> {
+    private _installNodeModule(options: InternalInstallNodeModuleOptions): Promise<CommandResult> {
         const { moduleName, version } = options;
 
         const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
