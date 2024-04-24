@@ -200,6 +200,44 @@ interface ServerResponse {
 }
 ```
 
+### Managing node modules
+**Feature status:** New in 6.0.0
+
+In the past, adapters which needed additional user-defined node modules directly interacted with `npm` to install them. 
+With the ongoing development of `npm` it turned out to be problematically as additional packages get removed during other `npm` operations.
+
+Hence, the controller now provides convenience methods to manage additional node modules.
+
+To install a node module, execute:
+
+```typescript
+const result = await adapter.installNodeModule('axios', { version: '1.0.0' });
+
+if (result.success) {
+    // successfully installed
+}
+```
+
+To use the installed node module, you can import it:
+
+```typescript
+const module = await adapter.importNodeModule('axios');
+// now we can call axios specific methods
+const result = await module.get('https://www.iobroker.net/');
+```
+
+> **_NOTE:_** Always use the provided adapter method to import the module, importing the module directly with `import` or `require` statements will not work!
+
+To remove a no longer needed module:
+
+```typescript
+const result = await adapter.uninstallNodeModule('axios');
+
+if (result.success) {
+    // successfully uninstalled
+}
+```
+
 ### Per host `adapter` objects
 **Feature status:** New in 6.0.0
 
@@ -217,7 +255,7 @@ Note, that instances are unique across the whole system and are thus not affecte
 to find the corresponding host.
 
 ### Operating system package management
-**Feature status:** New in 5.1.0
+**Feature status:** New in 6.0.0
 
 **Feature Flag for detection:** `CONTROLLER_OS_PACKAGE_UPGRADE`
 
@@ -875,7 +913,7 @@ For the objects and states databases, special additional logging of the redis pr
 ```
 
 When not configured differently, the file databases are persisted every 15s (15000ms) after data are changed. The interval in ms can be changed by configuration in iobroker.json starting js-controller 3.0.
-**Note:** If you do that be aware that you may lose data when the js-controller crashes unexpectedly!
+> **_NOTE:_** If you do that be aware that you may lose data when the js-controller crashes unexpectedly!
 
 ```
 "objects": {

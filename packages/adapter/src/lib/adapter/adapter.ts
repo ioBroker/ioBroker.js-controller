@@ -10,7 +10,13 @@ import { PluginHandler } from '@iobroker/plugin-base';
 import semver from 'semver';
 import path from 'node:path';
 import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
-import { decryptArray, encryptArray, getSupportedFeatures, isMessageboxSupported } from '@/lib/adapter/utils.js';
+import {
+    decryptArray,
+    encryptArray,
+    getSupportedFeatures,
+    isMessageboxSupported,
+    getAdapterScopedPackageIdentifier
+} from '@/lib/adapter/utils.js';
 // @ts-expect-error no ts file
 import extend from 'node.extend';
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
@@ -111,10 +117,15 @@ import type {
     SendToUserInterfaceClientOptions,
     AllPropsUnknown,
     IoPackageInstanceObject,
-    AliasTargetEntry
+    AliasTargetEntry,
+    InstallNodeModuleOptions,
+    InternalInstallNodeModuleOptions,
+    StopParameters,
+    InternalStopParameters
 } from '@/lib/_Types.js';
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
+import type { CommandResult } from '@alcalzone/pak';
 
 import * as url from 'node:url';
 // eslint-disable-next-line unicorn/prefer-module
@@ -666,7 +677,7 @@ export class AdapterClass extends EventEmitter {
     common?: ioBroker.InstanceCommon;
     private mboxSubscribed?: boolean;
     /** Stop the adapter */
-    stop?: () => Promise<void>;
+    stop?: (params?: StopParameters) => Promise<void>;
     version?: string;
     /** Stop the adapter only defined in compact, not for external usage */
     protected kill?: () => Promise<void>;
@@ -1189,6 +1200,58 @@ export class AdapterClass extends EventEmitter {
 
         this.setExecutableCapabilities = tools.setExecutableCapabilities;
         this._init();
+    }
+
+    installNodeModule(moduleName: string, options: InstallNodeModuleOptions): Promise<CommandResult>;
+
+    /**
+     * Install specified npm module
+     *
+     * @param moduleName name of the node module
+     * @param options version information
+     */
+    installNodeModule(moduleName: unknown, options: unknown): Promise<CommandResult> {
+        Validator.assertString(moduleName, 'moduleName');
+        Validator.assertObject<InstallNodeModuleOptions>(options, 'options');
+
+        return this._installNodeModule({ ...options, moduleName });
+    }
+
+    private _installNodeModule(options: InternalInstallNodeModuleOptions): Promise<CommandResult> {
+        const { moduleName, version } = options;
+
+        const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
+        return tools.installNodeModule(`${internalModuleName}@npm:${moduleName}@${version}`);
+    }
+
+    uninstallNodeModule(moduleName: string): Promise<CommandResult>;
+
+    /**
+     * Uninstall specified npm module
+     *
+     * @param moduleName name of the node module
+     */
+    uninstallNodeModule(moduleName: unknown): Promise<CommandResult> {
+        Validator.assertString(moduleName, 'moduleName');
+
+        const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
+        return tools.uninstallNodeModule(internalModuleName);
+    }
+
+    importNodeModule(moduleName: string): Promise<unknown>;
+
+    /**
+     * Import a node module which has been installed via `installNodeModule`
+     *
+     * @param moduleName name of the node module
+     * @returns the required node module
+     */
+    importNodeModule(moduleName: unknown): Promise<unknown> {
+        Validator.assertString(moduleName, 'moduleName');
+
+        const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
+        // TODO: if https://github.com/microsoft/TypeScript/issues/54022 ever gets resolved, we should improve the return type
+        return import(internalModuleName);
     }
 
     // overload with real types
@@ -2074,12 +2137,15 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private async _stop(
-        isPause?: boolean,
-        isScheduled?: boolean,
-        exitCode?: number,
-        updateAliveState?: boolean
-    ): Promise<void> {
+    /**
+     * Stop an instance gracefully
+     *
+     * @param options information about the stoppage
+     */
+    private async _stop(options: InternalStopParameters = {}): Promise<void> {
+        const { isPause, isScheduled, reason } = options;
+        let { exitCode, updateAliveState } = options;
+
         exitCode = exitCode || (isScheduled ? EXIT_CODES.START_IMMEDIATELY_AFTER_STOP : 0);
         if (updateAliveState === undefined) {
             updateAliveState = true;
@@ -2092,7 +2158,7 @@ export class AdapterClass extends EventEmitter {
             this._reportInterval = null;
             const id = `system.adapter.${this.namespace}`;
 
-            const finishUnload = (): void => {
+            const finishUnload = async (): Promise<void> => {
                 if (this._timers.size) {
                     this._timers.forEach(timer => clearTimeout(timer));
                     this._timers.clear();
@@ -2115,19 +2181,18 @@ export class AdapterClass extends EventEmitter {
 
                 if (this.#states && updateAliveState) {
                     this.outputCount++;
-                    this.#states.setState(`${id}.alive`, { val: false, ack: true, from: id }, () => {
-                        if (!isPause) {
-                            this._logger.info(`${this.namespaceLog} terminating`);
-                        }
+                    await this.#states.setState(`${id}.alive`, { val: false, ack: true, from: id });
+                    if (!isPause) {
+                        this._logger.info(`${this.namespaceLog} terminating`);
+                    }
 
-                        // To this moment, the class could be destroyed
-                        this.terminate(exitCode);
-                    });
+                    // To this moment, the class could be destroyed
+                    this.terminate(reason, exitCode);
                 } else {
                     if (!isPause) {
                         this._logger.info(`${this.namespaceLog} terminating`);
                     }
-                    this.terminate(exitCode);
+                    this.terminate(reason, exitCode);
                 }
             };
 
@@ -2190,7 +2255,7 @@ export class AdapterClass extends EventEmitter {
      * Reads the file certificate from a given path and adds a file watcher to restart adapter on cert changes
      * if a cert is passed it is returned as it is
      *
-     * @param cert
+     * @param cert cert or path to cert
      */
     private _readFileCertificate(cert: string): string {
         if (typeof cert === 'string') {
@@ -2204,7 +2269,7 @@ export class AdapterClass extends EventEmitter {
                         this._logger.warn(
                             `${this.namespaceLog} New certificate "${filename}" detected. Restart adapter`
                         );
-                        setTimeout(() => this._stop(false, true), 2000);
+                        setTimeout(() => this._stop({ isPause: false, isScheduled: true }), 2_000);
                     });
                 }
             } catch (e) {
@@ -2798,8 +2863,13 @@ export class AdapterClass extends EventEmitter {
      *
      * @param id of the object
      * @param obj The object to set
+<<<<<<< HEAD
+     * @param [options] additional options
+     * @param [callback] optional callback function
+=======
      * @param options optional user context
      * @param callback optional callback
+>>>>>>> 0e706f4213e588a7efda7be7732e25c7157e0b2c
      */
     private async _setObjectWithDefaultValue(
         id: string,
@@ -3618,7 +3688,7 @@ export class AdapterClass extends EventEmitter {
      * @param design name of the design
      * @param search name of the view
      * @param params object containing startkey: first id to include in result; endkey: last id to include in result
-     * @param options
+     * @param options additional objects, e.g. for permissions
      * @param callback return result
      *      ```js
      *          function (err, doc) {
@@ -3727,9 +3797,9 @@ export class AdapterClass extends EventEmitter {
      * It is required, that ID consists namespace in startkey and endkey. E.g. `{startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '.\u9999'}`
      * to get all objects of the instance.
      *
-     * @param params
-     * @param options
-     * @param callback
+     * @param params startkey and endkey information
+     * @param options additional options, e.g. for permissions
+     * @param callback optional callback
      *      ```js
      *          function (err, res) {
      *              if (res && res.rows) {
@@ -7047,10 +7117,10 @@ export class AdapterClass extends EventEmitter {
      * Async version of sendTo
      * As we have a special case (first arg can be error or result, we need to promisify manually)
      *
-     * @param instanceName
-     * @param command
-     * @param message
-     * @param options
+     * @param instanceName name of the instance
+     * @param command command to send
+     * @param message message to send
+     * @param options additional options, e.g. for permissions
      */
     sendToAsync(instanceName: unknown, command: unknown, message?: unknown, options?: unknown): any {
         return new Promise((resolve, reject) => {
@@ -9755,8 +9825,7 @@ export class AdapterClass extends EventEmitter {
      * ```
      *
      * @param pattern string in form 'adapter.0.*'. Must be the same as subscribe.
-     * @param options]optional argument to describe the user context
-     * @param options
+     * @param options optional argument to describe the user context
      * @param callback return result
      * ```js
      * function (err) {}
@@ -9905,7 +9974,7 @@ export class AdapterClass extends EventEmitter {
      *
      * @param pattern string in form 'adapter.0.*' or like this. Only string allowed
      * @param options optional argument to describe the user context
-     * @param callback
+     * @param callback optional callback
      */
     subscribeStates(pattern: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
@@ -9941,7 +10010,7 @@ export class AdapterClass extends EventEmitter {
      *
      * @param pattern string in form 'adapter.0.*'. Must be the same as subscribe.
      * @param options optional argument to describe the user context
-     * @param callback
+     * @param callback optional callback
      */
     unsubscribeStates(pattern: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
@@ -10603,7 +10672,12 @@ export class AdapterClass extends EventEmitter {
                         }
                         // by deletion of state, stop this instance
                         if (sigKillVal !== process.pid && !this._config.forceIfDisabled) {
-                            this._stop(false, false, EXIT_CODES.ADAPTER_REQUESTED_TERMINATION, false);
+                            this._stop({
+                                isPause: false,
+                                isScheduled: false,
+                                exitCode: EXIT_CODES.ADAPTER_REQUESTED_TERMINATION,
+                                updateAliveState: false
+                            });
                             setTimeout(() => this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION), 4000);
                         }
                     }
@@ -11286,12 +11360,12 @@ export class AdapterClass extends EventEmitter {
                     // @ts-expect-error
                     adapterConfig.common.mode === 'once'
                 ) {
-                    this.stop = () => this._stop(true);
+                    this.stop = params => this._stop({ ...params, isPause: true });
                 } else if (this.startedInCompactMode) {
-                    this.stop = () => this._stop(false);
+                    this.stop = params => this._stop({ ...params, isPause: false });
                     this.kill = this.stop;
                 } else {
-                    this.stop = () => this._stop(false);
+                    this.stop = params => this._stop({ ...params, isPause: false });
                 }
 
                 // Monitor logging state
@@ -11458,7 +11532,7 @@ export class AdapterClass extends EventEmitter {
                     );
                     this._restartScheduleJob = this._schedule.scheduleJob(adapterConfig.common.restartSchedule, () => {
                         this._logger.info(`${this.namespaceLog} Scheduled restart.`);
-                        this._stop(false, true);
+                        this._stop({ isPause: false, isScheduled: true });
                     });
                 }
             }
@@ -11559,7 +11633,12 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            this._stop(false, false, EXIT_CODES.UNCAUGHT_EXCEPTION, false);
+            this._stop({
+                isPause: false,
+                isScheduled: false,
+                exitCode: EXIT_CODES.UNCAUGHT_EXCEPTION,
+                updateAliveState: false
+            });
             setTimeout(() => this.terminate(EXIT_CODES.UNCAUGHT_EXCEPTION), 1_000);
         } catch (err) {
             this._logger.error(`${this.namespaceLog} exception by stop: ${err ? err.message : err}`);

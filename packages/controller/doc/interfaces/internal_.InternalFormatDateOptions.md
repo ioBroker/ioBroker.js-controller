@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:133](https://github.com/ioBroker/ioBroker.js-controller/blob/732ebe66/packages/adapter/src/lib/_Types.ts#L133)
+[adapter/src/lib/_Types.ts:133](https://github.com/ioBroker/ioBroker.js-controller/blob/e4f9cfa5/packages/adapter/src/lib/_Types.ts#L133)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:131](https://github.com/ioBroker/ioBroker.js-controller/blob/732ebe66/packages/adapter/src/lib/_Types.ts#L131)
+[adapter/src/lib/_Types.ts:131](https://github.com/ioBroker/ioBroker.js-controller/blob/e4f9cfa5/packages/adapter/src/lib/_Types.ts#L131)
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:132](https://github.com/ioBroker/ioBroker.js-controller/blob/732ebe66/packages/adapter/src/lib/_Types.ts#L132)
+[adapter/src/lib/_Types.ts:132](https://github.com/ioBroker/ioBroker.js-controller/blob/e4f9cfa5/packages/adapter/src/lib/_Types.ts#L132)
