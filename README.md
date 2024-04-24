@@ -71,6 +71,30 @@ or
 The main configuration is stored in `iobroker-data/iobroker.json`. Normally, there is no need to edit this file because the ioBroker CLI commands can control most of the settings.
 
 ## Feature Overview
+- [Admin UI](#admin-ui)
+- [Automatic adapter upgrade](#automatic-adapter-upgrade)
+- [Command Line Interface](#command-line-interface)
+- [Adapter Upgrade with Webserver](#adapter-upgrade-with-webserver)
+- [Controller UI Upgrade](#controller-ui-upgrade)
+- [Per host adapter objects](#per-host-adapter-objects)
+- [Operating system package management](#operating-system-package-management)
+- [Hostname](#hostname)
+- [Adapter process memory limitation](#adapter-process-memory-limitation)
+- [Directly executing TypeScript adapters](#directly-executing-typescript-adapters)
+- [Statistics](#statistics)
+- [Error Reporting via ioBroker Sentry](#error-reporting-via-iobroker-sentry)
+- [Notification System](#notification-system)
+- [Disk space warnings](#disk-space-warnings)
+- [Controlling and monitoring of adapter processes](#controlling-and-monitoring-of-adapter-processes)
+- [Multihost](#multihost)
+- [TIERS: Start instances in an ordered manner](#tiers-start-instances-in-an-ordered-manner)
+- [Custom Node.js process arguments](#custom-nodejs-process-arguments)
+- [IPv6 DNS resolution support](#ipv6-dns-resolution-support)
+- [Object and State Aliases](#object-and-state-aliases)
+- [State and objects databases and files](#state-and-objects-databases-and-files)
+- [Certificate Handling](#certificate-handling)
+- [js-controller Host Messages](#js-controller-host-messages)
+- [Adapter Development](#adapter-development)
 
 ### Admin UI
 **Feature status:** stable
@@ -349,7 +373,7 @@ All of this helps me to provide an error-free smart home system that basically n
 If you want to disable the error reporting, you can do this by setting the state "system.host.NAME.plugins.sentry.enabled" to false. You should see a log message stating that sentry was disabled. After disabling the plugin no crashes from your system are reported and so cannot be fixed without reporting them by yourself manually!
 
 ### Notification System
-**Feature status:** Technology preview since js-controller 3.2.0
+**Feature status:** Stable since js-controller 5.0.0
 
 The notification system in ioBroker allows setting, detecting and storing notifications per Host and allows querying the details.
 
@@ -470,6 +494,12 @@ The message needs to take the following parameters in the message object:
 * instanceFilter - instance of notifications
 
 All three are optional and can be a string or null/undefined if ommited.
+
+### Disk space warnings
+**Feature status:** New in 6.0.0
+
+The js-controller will generate a notification of in the scope `system` and the category `diskSpaceIssues` on warning level, if your free disk space falls under a specified threshold. 
+By default, this threshold is 5 % of disk space. Via the state `system.host.<hostname>.diskWarning` you can override this level to any level between `0` and `100`. 
 
 ### Logging
 #### Log levels
@@ -994,8 +1024,6 @@ With such a setup, ioBroker will connect to one of these sentinel processes to g
 
 ##### Using Password for Redis Databases
 **Feature status:** Stable
-
-
 
 ### Certificate Handling
 ... CLI
