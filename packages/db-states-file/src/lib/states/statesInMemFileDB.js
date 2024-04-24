@@ -7,15 +7,8 @@
  *
  */
 
-/** @module StatesInMemoryFileDB */
-
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node: true */
-'use strict';
-
-const { InMemoryFileDB } = require('@iobroker/db-base');
-const tools = require('@iobroker/db-base').tools;
+import { InMemoryFileDB } from '@iobroker/db-base';
+import { tools } from '@iobroker/db-base';
 
 // settings = {
 //    change:    function (id, state) {},
@@ -42,7 +35,7 @@ const tools = require('@iobroker/db-base').tools;
  * This class inherits InMemoryFileDB class and adds all relevant logic for states
  * including the available methods for use by js-controller directly
  **/
-class StatesInMemoryFileDB extends InMemoryFileDB {
+export class StatesInMemoryFileDB extends InMemoryFileDB {
     constructor(settings) {
         settings = settings || {};
         settings.fileDB = settings.fileDB || {
@@ -213,14 +206,6 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
                 this.log.silly(`${this.namespace} memory publish ${id} ${JSON.stringify(obj)}`);
                 this.publishAll('state', id, obj);
             });
-        } else if ((obj || obj === 0) && typeof obj !== 'object') {
-            // it is binary state
-            setImmediate(() => {
-                const event = { val: null, binary: true, size: obj.length, ack: true };
-                // publish event in states
-                this.log.silly(`${this.namespace} memory publish ${id} ${JSON.stringify(event)}`);
-                this.publishAll('state', id, event);
-            });
         }
 
         if (!this.stateTimer) {
@@ -237,10 +222,8 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
 
         const state = this.dataset[id];
         if (state) {
-            const isBinary = Buffer.isBuffer(state);
             delete this.dataset[id];
-
-            !isBinary && setImmediate(() => this.publishAll('state', id, null));
+            setImmediate(() => this.publishAll('state', id, null));
         }
 
         if (!this.stateTimer) {
@@ -340,28 +323,4 @@ class StatesInMemoryFileDB extends InMemoryFileDB {
             delete this.session[id];
         }
     }
-
-    // needed by Server
-    _setBinaryState(id, data) {
-        if (!Buffer.isBuffer(data)) {
-            data = Buffer.from(data);
-        }
-        this.dataset[id] = data;
-
-        // If data === undefined, the state was just created and not filled with value
-        if (data !== undefined) {
-            setImmediate(() => {
-                const event = { val: null, binary: true, size: data.byteLength, ack: true };
-                // publish event in states
-                this.log.silly(`${this.namespace} memory publish ${id} ${JSON.stringify(event)}`);
-                this.publishAll('state', id, event);
-            });
-        }
-
-        if (!this.stateTimer) {
-            this.stateTimer = setTimeout(() => this.saveState(), this.writeFileInterval);
-        }
-    }
 }
-
-module.exports = StatesInMemoryFileDB;

@@ -1,8 +1,10 @@
-import * as path from 'path';
-import fs from 'fs';
+import * as path from 'node:path';
+import fs from 'node:fs';
 import { Extractor, ExtractorConfig, type ExtractorResult } from '@microsoft/api-extractor';
 
-const apiExtractorJsonPath: string = path.join(__dirname, 'api-extractor.json');
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = __dirname;
+const apiExtractorJsonPath: string = path.join(thisDir, 'api-extractor.json');
 
 // Load and parse the api-extractor.json file
 const extractorConfig: ExtractorConfig = ExtractorConfig.loadFileAndPrepare(apiExtractorJsonPath);
@@ -27,9 +29,9 @@ if (extractorResult.succeeded) {
     fs.writeFileSync(outputPath, content);
 
     // Copy outputs from types-dev to here
-    fs.copyFileSync(path.join(__dirname, '../types-dev/objects.d.ts'), path.join(__dirname, 'build/objects.d.ts'));
-    fs.copyFileSync(path.join(__dirname, '../types-dev/index.d.ts'), path.join(__dirname, 'build/shared.d.ts'));
-    fs.copyFileSync(path.join(__dirname, '../types-dev/config.d.ts'), path.join(__dirname, 'build/config.d.ts'));
+    fs.copyFileSync(path.join(thisDir, '../types-dev/objects.d.ts'), path.join(thisDir, 'build/objects.d.ts'));
+    fs.copyFileSync(path.join(thisDir, '../types-dev/index.d.ts'), path.join(thisDir, 'build/shared.d.ts'));
+    fs.copyFileSync(path.join(thisDir, '../types-dev/config.d.ts'), path.join(thisDir, 'build/config.d.ts'));
 
     // Ensure that the generated types don't contain any references to @iobroker/*
     if (content.includes('@iobroker/')) {

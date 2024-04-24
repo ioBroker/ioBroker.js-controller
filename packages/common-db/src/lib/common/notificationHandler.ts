@@ -6,7 +6,7 @@
 
 import fs from 'fs-extra';
 import { tools } from '@iobroker/js-controller-common';
-import path from 'path';
+import path from 'node:path';
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type Winston from 'winston';

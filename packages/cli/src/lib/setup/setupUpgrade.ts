@@ -1,17 +1,17 @@
 import Debug from 'debug';
-import * as fs from 'fs-extra';
+import fs from 'fs-extra';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import semver from 'semver';
-import { Upload } from '@/lib/setup/setupUpload';
-import { Install } from '@/lib/setup/setupInstall';
+import { Upload } from '@/lib/setup/setupUpload.js';
+import { Install } from '@/lib/setup/setupInstall.js';
 import rl from 'readline-sync';
-import tty from 'tty';
-import path from 'path';
-import { getRepository, isVersionIgnored } from '@/lib/setup/utils';
+import tty from 'node:tty';
+import path from 'node:path';
+import { getRepository, isVersionIgnored } from '@/lib/setup/utils.js';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
-import type { ProcessExitCallback } from '@/lib/_Types';
-import { IoBrokerError } from '@/lib/setup/customError';
+import type { ProcessExitCallback } from '@/lib/_Types.js';
+import { IoBrokerError } from '@/lib/setup/customError.js';
 
 const debug = Debug('iobroker:cli');
 
@@ -556,6 +556,17 @@ export class Upgrade {
                     console.log(`Can not check version information to display upgrade infos: ${e.message}`);
                 }
                 console.log(`Update ${adapter} from @${installedVersion} to @${targetVersion}`);
+                const npmPacketName = `${tools.appNameLowerCase}.${adapter}`;
+
+                try {
+                    if (!semver.diff(installedVersion, targetVersion)) {
+                        console.log(`Uninstall npm packet "${npmPacketName}" for a clean re-installation`);
+                        await tools.uninstallNodeModule(npmPacketName, { debug: process.argv.includes('--debug') });
+                    }
+                } catch (e) {
+                    console.warn(`Could not uninstall npm packet "${npmPacketName}": ${e.message}`);
+                }
+
                 // Get the adapter from website
                 const { packetName, stoppedList } = await this.install.downloadPacket(
                     sources,

@@ -9,20 +9,24 @@
 
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 import semver from 'semver';
-import child_process from 'child_process';
+import child_process from 'node:child_process';
 import axios from 'axios';
-import { URL } from 'url';
-import { Upload } from '@/lib/setup/setupUpload';
-import { PacketManager } from '@/lib/setup/setupPacketManager';
-import { getRepository } from '@/lib/setup/utils';
+import { URL } from 'node:url';
+import { Upload } from '@/lib/setup/setupUpload.js';
+import { PacketManager } from '@/lib/setup/setupPacketManager.js';
+import { getRepository } from '@/lib/setup/utils.js';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import type { ProcessExitCallback } from '@/lib/_Types';
-import { IoBrokerError } from '@/lib/setup/customError';
+import type { ProcessExitCallback } from '@/lib/_Types.js';
+import { IoBrokerError } from '@/lib/setup/customError.js';
 import type { CommandResult } from '@alcalzone/pak';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
+import { createRequire } from 'node:module';
+
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __filename);
 
 const hostname = tools.getHostName();
 const osPlatform = process.platform;
@@ -120,8 +124,8 @@ export class Install {
     /**
      * Enables or disables given instances
      *
-     * @param instances
-     * @param enabled
+     * @param instances all instance objects
+     * @param enabled if enable or disable
      */
     async enableInstances(instances: ioBroker.InstanceObject[], enabled: boolean): Promise<void> {
         if (instances?.length) {
@@ -268,7 +272,7 @@ export class Install {
         }
 
         console.error(
-            `host.${hostname} Unknown packetName ${packetName}. Please install packages from outside the repository using npm!`
+            `host.${hostname} Unknown packetName ${packetName}. Please install packages from outside the repository using "${tools.appNameLowerCase} url <url-or-package>"!`
         );
         throw new IoBrokerError({
             code: EXIT_CODES.UNKNOWN_PACKET_NAME,
@@ -281,7 +285,7 @@ export class Install {
      *
      * @param npmUrl
      * @param options
-     * @param debug
+     * @param debug if debug output should be printed
      */
     private async _npmInstallWithCheck(
         npmUrl: string,
@@ -671,7 +675,7 @@ export class Install {
     /**
      * Installs given adapter
      *
-     * @param adapter
+     * @param adapter The adapter name
      * @param repoUrl
      * @param _installCount
      */
@@ -725,8 +729,8 @@ export class Install {
         let engineVersion;
         try {
             // read directly from disk and not via require to allow "on the fly" updates of adapters.
-            const p = fs.readJSONSync(path.join(adapterDir, 'package.json'), 'utf8');
-            engineVersion = p && p.engines && p.engines.node;
+            const packJson = fs.readJSONSync(path.join(adapterDir, 'package.json'), 'utf8');
+            engineVersion = packJson?.engines?.node;
         } catch {
             console.error(`host.${hostname}: Cannot read and parse "${adapterDir}/package.json"`);
         }
@@ -767,7 +771,7 @@ export class Install {
         }
     }
 
-    async callInstallOfAdapter(adapter: string, config: Record<string, any>): Promise<string | void> {
+    async callInstallOfAdapter(adapter: string, config: ioBroker.AdapterObject): Promise<string | void> {
         if (config.common.install) {
             // Install node modules
             let cmd = 'node ';
@@ -794,8 +798,8 @@ export class Install {
     /**
      * Create adapter instance
      *
-     * @param adapter
-     * @param options
+     * @param adapter The adapter name
+     * @param options Additional instance creation options
      */
     async createInstance(adapter: string, options?: CreateInstanceOptions): Promise<void> {
         let ignoreIfExists = false;
@@ -1205,7 +1209,7 @@ export class Install {
      * @param instance The instance to enumerate the devices for (optional)
      */
     private async _enumerateAdapterDevices(knownObjIDs: string[], adapter: string, instance?: number): Promise<void> {
-        const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
+        const adapterRegex = new RegExp(`^${adapter}${instance !== undefined ? `\\.${instance}` : ''}\\.`);
 
         try {
             const doc = await this.objects.getObjectViewAsync('system', 'device', {
@@ -1245,7 +1249,7 @@ export class Install {
      * @param instance The instance to enumerate the channels for (optional)
      */
     private async _enumerateAdapterChannels(knownObjIDs: string[], adapter: string, instance?: number): Promise<void> {
-        const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
+        const adapterRegex = new RegExp(`^${adapter}${instance !== undefined ? `\\.${instance}` : ''}\\.`);
         try {
             const doc = await this.objects.getObjectViewAsync('system', 'channel', {
                 startkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}`,
@@ -1264,7 +1268,7 @@ export class Install {
                 if (newObjs.length > 0) {
                     console.log(
                         `host.${hostname} Counted ${newObjs.length} channels of ${adapter}${
-                            instance ? `.${instance}` : ''
+                            instance !== undefined ? `.${instance}` : ''
                         }`
                     );
                 }
@@ -1284,8 +1288,10 @@ export class Install {
      * @param instance The instance to enumerate the states for (optional)
      */
     async _enumerateAdapterStateObjects(knownObjIDs: string[], adapter: string, instance?: number): Promise<void> {
-        const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
-        const sysAdapterRegex = new RegExp(`^system\\.adapter\\.${adapter}${instance ? `\\.${instance}` : ''}\\.`);
+        const adapterRegex = new RegExp(`^${adapter}${instance !== undefined ? `\\.${instance}` : ''}\\.`);
+        const sysAdapterRegex = new RegExp(
+            `^system\\.adapter\\.${adapter}${instance !== undefined ? `\\.${instance}` : ''}\\.`
+        );
 
         try {
             let doc = await this.objects.getObjectViewAsync('system', 'state', {
@@ -1306,7 +1312,7 @@ export class Install {
                 if (newObjs.length > 0) {
                     console.log(
                         `host.${hostname} Counted ${newObjs.length} states of ${adapter}${
-                            instance ? `.${instance}` : ''
+                            instance !== undefined ? `.${instance}` : ''
                         }`
                     );
                 }
@@ -1330,7 +1336,7 @@ export class Install {
                 if (newObjs.length > 0) {
                     console.log(
                         `host.${hostname} Counted ${newObjs.length} states of system.adapter.${adapter}${
-                            instance ? `.${instance}` : ''
+                            instance !== undefined ? `.${instance}` : ''
                         }`
                     );
                 }
@@ -1350,8 +1356,10 @@ export class Install {
      * @param instance The instance to enumerate the states for (optional)
      */
     private async _enumerateAdapterDocs(knownObjIDs: string[], adapter: string, instance?: number): Promise<void> {
-        const adapterRegex = new RegExp(`^${adapter}${instance ? `\\.${instance}` : ''}\\.`);
-        const sysAdapterRegex = new RegExp(`^system\\.adapter\\.${adapter}${instance ? `\\.${instance}` : ''}\\.`);
+        const adapterRegex = new RegExp(`^${adapter}${instance !== undefined ? `\\.${instance}` : ''}\\.`);
+        const sysAdapterRegex = new RegExp(
+            `^system\\.adapter\\.${adapter}${instance !== undefined ? `\\.${instance}` : ''}\\.`
+        );
 
         if (instance === undefined) {
             knownObjIDs.push(`system.host.${hostname}.adapters.${adapter}`);
@@ -1370,7 +1378,7 @@ export class Install {
                 if (newObjs.length > 0) {
                     console.log(
                         `host.${hostname} Counted ${newObjs.length} objects of ${adapter}${
-                            instance ? `.${instance}` : ''
+                            instance !== undefined ? `.${instance}` : ''
                         }`
                     );
                 }
@@ -1391,11 +1399,11 @@ export class Install {
      */
     async _enumerateAdapterStates(knownStateIDs: string[], adapter: string, instance?: number): Promise<void> {
         for (const pattern of [
-            `io.${adapter}.${instance ? instance + '.' : ''}*`,
-            `messagebox.${adapter}.${instance ? instance + '.' : ''}*`,
-            `log.${adapter}.${instance ? instance + '.' : ''}*`,
-            `${adapter}.${instance ? instance + '.' : ''}*`,
-            `system.adapter.${adapter}.${instance ? instance + '.' : ''}*`
+            `io.${adapter}.${instance !== undefined ? instance + '.' : ''}*`,
+            `messagebox.${adapter}.${instance !== undefined ? instance + '.' : ''}*`,
+            `log.${adapter}.${instance !== undefined ? instance + '.' : ''}*`,
+            `${adapter}.${instance !== undefined ? instance + '.' : ''}*`,
+            `system.adapter.${adapter}.${instance !== undefined ? instance + '.' : ''}*`
         ]) {
             try {
                 const ids = await this.states.getKeys(pattern);
@@ -1518,9 +1526,9 @@ export class Install {
     }
 
     /**
-     * Deltes given adapter from filesystem and removes all instances
+     * Deletes given adapter from filesystem and removes all instances
      *
-     * @param adapter
+     * @param adapter adapter name
      */
     async deleteAdapter(adapter: string): Promise<EXIT_CODES> {
         const knownObjectIDs: string[] = [];
@@ -1533,9 +1541,7 @@ export class Install {
             try {
                 // find the adapter's io-package.json
                 const adapterNpm = `${tools.appName.toLowerCase()}.${adapter}`;
-                const ioPackPath = require.resolve(`${adapterNpm}/io-package.json`, {
-                    paths: tools.getDefaultRequireResolvePaths(module)
-                });
+                const ioPackPath = require.resolve(`${adapterNpm}/io-package.json`);
                 const ioPack = await fs.readJSON(ioPackPath);
 
                 if (!ioPack.common || !ioPack.common.nondeletable) {
@@ -1640,7 +1646,7 @@ export class Install {
      * Deletes given instance of an adapter
      *
      * @param adapter adapter name like hm-rpc
-     * @param instance e.g. 1
+     * @param instance e.g. 1, if undefined deletes all instances
      */
     async deleteInstance(adapter: string, instance?: number): Promise<void | EXIT_CODES.CANNOT_DELETE_DEPENDENCY> {
         const knownObjectIDs: string[] = [];
@@ -1656,6 +1662,8 @@ export class Install {
             return EXIT_CODES.CANNOT_DELETE_DEPENDENCY;
         }
 
+        await this._removeInstancesInstalledNodeModules(adapter, instance);
+
         await this._enumerateAdapterInstances(knownObjectIDs, [], adapter, instance);
         await this._enumerateAdapterDevices(knownObjectIDs, adapter, instance);
         await this._enumerateAdapterChannels(knownObjectIDs, adapter, instance);
@@ -1669,7 +1677,27 @@ export class Install {
             // delete instance from custom
             await this._removeCustomFromObjects([`${adapter}.${instance}`]);
         }
-        // TODO delete meta objects - I think a recursive deletion of all child object would be less effort.
+    }
+
+    /**
+     * Remove all node modules which has been installed by this instance
+     *
+     * @param adapter adapter name like hm-rpc
+     * @param instance e.g. 1, if undefined deletes all instances
+     */
+    private async _removeInstancesInstalledNodeModules(adapter: string, instance?: number): Promise<void> {
+        const packJson = fs.readJSONSync(path.join(tools.getRootDir(), 'package.json'));
+        const regex = new RegExp(
+            `^@${tools.appNameLowerCase}-${adapter}.${instance !== undefined ? instance : '\\d+'}\\/.*`,
+            'g'
+        );
+
+        for (const packageName of Object.keys(packJson.dependencies)) {
+            if (regex.test(packageName)) {
+                console.log(`host.${hostname} Removing package ${packageName}`);
+                await this._npmUninstall(packageName, true);
+            }
+        }
     }
 
     /**
@@ -1710,8 +1738,8 @@ export class Install {
     /**
      * Installs an adapter from given url
      *
-     * @param url
-     * @param name
+     * @param url url to install adapter from
+     * @param name package name
      */
     async installAdapterFromUrl(url: string, name: string): Promise<void> {
         // If the user provided an URL, try to parse it into known ways to represent a Github URL
@@ -1868,7 +1896,7 @@ export class Install {
                 endkey: 'system.adapter.\u9999'
             });
 
-            let scopedHostname;
+            let scopedHostname: string | undefined;
 
             if (instance) {
                 // we need to respect host relative to the instance
@@ -1890,7 +1918,7 @@ export class Install {
 
                 for (const localDep of Object.keys(localDeps)) {
                     if (row.value.common.host === scopedHostname && localDep === adapter) {
-                        if (!instance) {
+                        if (instance === undefined) {
                             // this adapter needs us locally and all instances should be deleted
                             return `${row.value.common.name}.${row.id.split('.').pop()}`;
                         } else {
@@ -1909,7 +1937,7 @@ export class Install {
 
                 for (const globalDep of Object.keys(globalDeps)) {
                     if (globalDep === adapter) {
-                        if (!instance) {
+                        if (instance === undefined) {
                             // all instances on this host should be removed so check if there are some on other hosts
                             if (this._checkDependencyFulfilledForeignHosts(adapter, doc.rows, scopedHostname)) {
                                 break;
@@ -1987,7 +2015,7 @@ export class Install {
     /**
      * Get all instances of an adapter which are on the current host
      *
-     * @param adapter
+     * @param adapter adapter name
      */
     private async _getInstancesOfAdapter(adapter: string): Promise<ioBroker.InstanceObject[]> {
         const instances = [];

@@ -1,8 +1,8 @@
 import { EXIT_CODES } from '@iobroker/js-controller-common';
 import { tools } from '@iobroker/js-controller-common';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
-import { IoBrokerError } from './customError';
 import semver from 'semver';
+import { IoBrokerError } from '@/lib/setup/customError.js';
 
 interface GetRepositoryOptions {
     /** The objects DB client */

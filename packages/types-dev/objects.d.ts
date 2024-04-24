@@ -1,4 +1,4 @@
-import type * as os from 'os';
+import type * as os from 'node:os';
 
 declare global {
     namespace ioBroker {
@@ -160,7 +160,7 @@ declare global {
         /** For objects, we require the English language to be present */
         type StringOrTranslated = string | Translated;
 
-        type CommonType = 'number' | 'string' | 'boolean' | 'array' | 'object' | 'mixed' | 'file';
+        type CommonType = 'number' | 'string' | 'boolean' | 'array' | 'object' | 'mixed';
 
         interface ObjectCommon {
             /** The name of this object as a simple string or an object with translations */
@@ -399,7 +399,7 @@ declare global {
             process: {
                 title: string;
                 versions: NodeJS.ProcessVersions;
-                env: Record<string, string>;
+                env: NodeJS.ProcessEnv;
             };
             os: {
                 hostname: string;
@@ -411,7 +411,9 @@ declare global {
                 tmpdir: ReturnType<(typeof os)['tmpdir']>;
             };
             hardware: {
-                cpus: ReturnType<(typeof os)['cpus']>;
+                /** Return value of os.cpu but property `times` could be removed from every entry */
+                cpus: (Omit<ReturnType<(typeof os)['cpus']>[number], 'times'> &
+                    Partial<Pick<ReturnType<(typeof os)['cpus']>[number], 'times'>>)[];
                 totalmem: ReturnType<(typeof os)['totalmem']>;
                 networkInterfaces: ReturnType<(typeof os)['networkInterfaces']>;
             };
@@ -551,9 +553,19 @@ declare global {
             };
         }
 
+        interface CustomAdminColumn {
+            path: string;
+            name?: ioBroker.StringOrTranslated;
+            objTypes?: ObjectType | ObjectType[];
+            width?: number;
+            edit?: boolean;
+            type?: CommonType;
+            align?: 'left' | 'center' | 'right';
+        }
+
         interface AdapterCommon extends ObjectCommon {
             /** Custom attributes to be shown in admin in the object browser */
-            adminColumns?: any[];
+            adminColumns?: string | (string | CustomAdminColumn)[];
             /** Settings for custom Admin Tabs */
             adminTab?: {
                 name?: string;
@@ -599,6 +611,8 @@ declare global {
             getHistory?: boolean;
             /** Filename of the local icon which is shown for installed adapters. Should be located in the `admin` directory */
             icon?: string;
+            /** The adapter will be executed once additionally after installation and the `install` event will be emitted during this run. This allows for executing one time installation code. */
+            install?: boolean;
             /** Source, where this adapter has been installed from, to enable reinstalling on e.g., backup restore */
             installedFrom?: string;
             /** Which version of this adapter is installed */
