@@ -197,10 +197,12 @@ to find the corresponding host.
 
 If you know, that a specific version of an adapter is not suitable for you, you may want to ignore this update to avoid accidentally installing it. 
 You can do so by using the cli command `iobroker version <adapter> --ignore <version>` and to recognize all updates again use `iobroker version <adapter> --recognize`.
-If a version of an adapter is ignored, you will not be able to update to this specific version.
+If a version of an adapter is ignored, you will not be able to update to this specific version on this ioBroker host. 
+If you use a multihost environment you might need to execute the commands once per host.
 
-Internally this will set `common.ignoreVersion` to the specified version on the `system.host.<hostName>.adapter.<adapterName>` object. Note, that only one version can be ignored at a time.
-The version to ignore should thus usually be set to the newest available version of the active repository.
+Internally this will set `common.ignoreVersion` to the specified version on the `system.host.<hostName>.adapter.<adapterName>` object.
+The version to be ignored can be specified via a semver range. So an absolute version is fine if you only want to ignore one specific update, e.g. `1.5.1`.
+Another example, if you want to ignore all updates in the `1.5.x` range, you can specify `~1.5.0`.
 
 ### Operating system package management
 **Feature status:** New in 5.1.0

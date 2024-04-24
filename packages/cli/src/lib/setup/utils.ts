@@ -2,6 +2,7 @@ import { EXIT_CODES } from '@iobroker/js-controller-common';
 import { tools } from '@iobroker/js-controller-common';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import { IoBrokerError } from './customError';
+import semver from 'semver';
 
 interface GetRepositoryOptions {
     /** The objects DB client */
@@ -106,7 +107,11 @@ export async function isVersionIgnored(options: IgnoreVersionOptions): Promise<b
     const { adapterName, version, objects } = options;
     const obj = await objects.getObject(`system.host.${tools.getHostName()}.adapter.${adapterName}`);
 
-    return obj?.common.ignoreVersion === version;
+    if (obj?.common.ignoreVersion === undefined) {
+        return false;
+    }
+
+    return semver.satisfies(version, obj?.common.ignoreVersion);
 }
 
 /**
