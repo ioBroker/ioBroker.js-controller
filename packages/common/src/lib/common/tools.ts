@@ -1854,7 +1854,7 @@ export async function getDiskInfo(): Promise<GetDiskInfoResponse | null> {
                 }
             }
         } else {
-            const { stdout } = await execAsync('df -k /');
+            const { stdout } = await execAsync(`df -k ${getRootDir()}`);
             //, stderr) {
             // Filesystem            1K-blocks    Used Available Use% Mounted on
             // /dev/mapper/vg00-lv01 162544556 9966192 145767152   7% /
