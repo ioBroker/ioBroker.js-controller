@@ -1088,7 +1088,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         }
 
         const hostname = tools.getHostName();
-        const adaptersId = `system.host.${hostname}.adapters`;
+        const adaptersId = `system.host.${hostname}.adapter`;
 
         const adaptersExist = await this.objects.objectExists(adaptersId);
 
@@ -1207,7 +1207,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         const hostIds = hostsView.rows.map(row => row.id);
 
         for (const hostId of hostIds) {
-            const hasAdapters = await this.objects.objectExists(`${hostId}.adapters`);
+            const hasAdapters = await this.objects.objectExists(`${hostId}.adapter`);
 
             if (!hasAdapters) {
                 console.log(

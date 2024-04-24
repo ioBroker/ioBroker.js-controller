@@ -860,7 +860,7 @@ export class Upload {
 
             try {
                 await this.objects.setObjectAsync(`system.adapter.${name}`, obj);
-                await this.objects.setObjectAsync(`system.host.${hostname}.adapters.${name}`, obj);
+                await this.objects.setObjectAsync(`system.host.${hostname}.adapter.${name}`, obj);
             } catch (e) {
                 logger.error(
                     `Cannot set "system.adapter.${name}" and "system.host.${hostname}.adapters.${name}": ${e.message}`
