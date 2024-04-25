@@ -1,8 +1,14 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
-    "outDir": "build",
-    "rootDir": "src"
+    "outDir": "build/esm",
+    "rootDir": "src",
+    "module": "NodeNext",
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    }
   },
   "references": [
     {
@@ -10,7 +16,7 @@
     },
     {
       "path": "../common-db/tsconfig.json"
-    },
+    }
   ],
   "include": [
     "src/**/*.ts",

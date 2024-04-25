@@ -1,135 +1,8 @@
-import type { TestContext } from '../_Types';
+import type { TestContext } from '../_Types.js';
 
 export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
     const testName = `${context.name} ${context.adapterShortName} files: `;
-    const namespace = 'testObject.0';
-    const testId = `${namespace}.testFilesObj`;
-
-    // setBinaryState
-    it(testName + 'setForeignBinaryState', async () => {
-        const objId = `${context.adapter.namespace}.testSetForeignBinaryState`;
-        // create an object of type file first
-        await context.adapter.setForeignObjectAsync(objId, {
-            type: 'state',
-            common: {
-                role: 'state',
-                name: objId,
-                read: true,
-                write: true,
-                type: 'file'
-            },
-            native: {}
-        });
-
-        // now we write a binary state
-        await context.adapter.setForeignBinaryStateAsync(objId, Buffer.from('1234'));
-    });
-
-    it(testName + 'setBinaryState', async () => {
-        const objId = `${context.adapter.namespace}.testSetBinaryState`;
-
-        const receivedPromise = new Promise<void>(resolve => {
-            context.onAdapterStateChanged = (id, state) => {
-                if (id === objId) {
-                    if (typeof state !== 'object') {
-                        throw new Error(`Expected object, but got ${typeof state}`);
-                    }
-                    // @ts-expect-error binary states will be removed soon
-                    if (!state?.binary) {
-                        throw new Error(`Binary flag does not set`);
-                    }
-                    if (state.val !== null) {
-                        throw new Error(`Value is not null`);
-                    }
-                    expect(state.ack).to.be.true;
-                    resolve();
-                }
-            };
-        });
-
-        // create an object of type file first
-        await context.adapter.setForeignObjectAsync(objId, {
-            type: 'state',
-            common: {
-                role: 'state',
-                name: objId,
-                read: true,
-                write: true,
-                type: 'file'
-            },
-            native: {}
-        });
-
-        await context.adapter.subscribeForeignStatesAsync(objId);
-
-        context.adapter.setBinaryStateAsync(objId, Buffer.from('1234'));
-        await receivedPromise;
-
-        await context.adapter.unsubscribeForeignStatesAsync(objId);
-    });
-
-    it(testName + 'delBinaryState', async () => {
-        const objId = `${context.adapter.namespace}.testSetBinaryState`;
-
-        const receivedPromise = new Promise<void>(resolve => {
-            context.onAdapterStateChanged = (id, state) => {
-                if (id === objId) {
-                    expect(state).to.be.equal(null);
-                    resolve();
-                }
-            };
-        });
-
-        await context.adapter.subscribeForeignStatesAsync(objId);
-
-        context.adapter.delBinaryStateAsync(objId);
-        await receivedPromise;
-
-        await context.adapter.unsubscribeForeignStatesAsync(objId);
-    });
-
-    it(testName + 'getForeignBinaryState', async () => {
-        const objId = `${context.adapter.namespace}.testGetForeignBinaryState`;
-        // create an object of type file first
-        await context.adapter.setForeignObjectAsync(objId, {
-            type: 'state',
-            common: {
-                role: 'state',
-                name: objId,
-                read: true,
-                write: true,
-                type: 'file'
-            },
-            native: {}
-        });
-
-        // now we write a binary state
-        await context.adapter.setForeignBinaryStateAsync(objId, Buffer.from('1234'));
-        const state = await context.adapter.getForeignBinaryStateAsync(objId);
-        expect(state!.toString('utf-8')).to.be.equal('1234');
-    });
-
-    it(testName + 'getBinaryState', async () => {
-        const objId = `${context.adapter.namespace}.testGetBinaryState`;
-        // create an object of type file first
-        await context.adapter.setForeignObjectAsync(objId, {
-            type: 'state',
-            common: {
-                role: 'state',
-                name: objId,
-                read: true,
-                write: true,
-                type: 'file'
-            },
-            native: {}
-        });
-
-        // now we write a binary state
-        await context.adapter.setBinaryStateAsync(objId, Buffer.from('1234'));
-        /** @type Buffer */
-        const state = await context.adapter.getBinaryStateAsync(objId);
-        expect(state!.toString('utf-8')).to.be.equal('1234');
-    });
+    const testId = `testFilesObject.0`;
 
     it(testName + 'writeFile with binary content and subscription', async () => {
         const objId = `vis.0`;
@@ -267,29 +140,40 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
     it(testName + 'should create and read file with callback', done => {
         const objects = context.objects;
-        objects.setObject(testId, { type: 'meta', native: {} } as ioBroker.SettableMetaObject, err => {
-            expect(err).to.be.not.ok;
-            objects.writeFile(testId, 'myFile/abc.txt', 'dataInFile', err => {
-                err && console.error(`Got ${JSON.stringify(objects.getStatus())}: ${err.stack}`);
+        objects.setObject(
+            testId,
+            {
+                type: 'meta',
+                common: {
+                    name: 'Meta',
+                    type: 'meta.user'
+                },
+                native: {}
+            },
+            err => {
                 expect(err).to.be.not.ok;
-
-                objects.readFile(testId, 'myFile/abc.txt', null, (err, data, mimeType) => {
+                objects.writeFile(testId, 'myFile/abc.txt', 'dataInFile', err => {
+                    err && console.error(`Got ${JSON.stringify(objects.getStatus())}: ${err.stack}`);
                     expect(err).to.be.not.ok;
-                    expect(data).to.be.equal('dataInFile');
-                    expect(mimeType).to.be.equal('text/plain');
-                    objects.rm(testId, 'myFile/*', null, (err, files) => {
+
+                    objects.readFile(testId, 'myFile/abc.txt', null, (err, data, mimeType) => {
                         expect(err).to.be.not.ok;
-                        const file = files!.find(f => f.file === 'abc.txt');
-                        expect(file!.file).to.be.equal('abc.txt');
-                        expect(file!.path).to.be.equal('myFile');
-                        objects.readFile(testId, 'myFile/abc.txt', null, (err, _data, _mimeType) => {
-                            expect(err!.message).to.be.equal('Not exists');
-                            done();
+                        expect(data).to.be.equal('dataInFile');
+                        expect(mimeType).to.be.equal('text/plain');
+                        objects.rm(testId, 'myFile/*', null, (err, files) => {
+                            expect(err).to.be.not.ok;
+                            const file = files!.find(f => f.file === 'abc.txt');
+                            expect(file!.file).to.be.equal('abc.txt');
+                            expect(file!.path).to.be.equal('myFile');
+                            objects.readFile(testId, 'myFile/abc.txt', null, (err, _data, _mimeType) => {
+                                expect(err!.message).to.be.equal('Not exists');
+                                done();
+                            });
                         });
                     });
                 });
-            });
-        });
+            }
+        );
     });
 
     it(testName + 'should create and read file async', async () => {
@@ -298,7 +182,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         const fullFileName = `${fileDir}/${fileName}`;
 
         const objects = context.objects;
-        await objects.setObject(testId, { type: 'meta', native: {} } as ioBroker.SettableMetaObject);
+        await objects.setObject(testId, {
+            type: 'meta',
+            common: { name: 'test', type: 'meta.user' },
+            native: {}
+        });
 
         await objects.writeFile(testId, fullFileName, 'dataInFile');
 
@@ -447,5 +335,3 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 }
-
-module.exports.register = register;

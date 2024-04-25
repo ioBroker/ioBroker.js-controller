@@ -1,4 +1,5 @@
-import type { TestContext } from '../_Types';
+import type { TestContext } from '../_Types.js';
+import { Validator } from '@iobroker/js-controller-adapter';
 
 import { spy } from 'sinon';
 import * as chai from 'chai';
@@ -212,9 +213,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // Validator.fixId
-    it(context.name + ' ' + context.adapterShortName + ' adapter utils: check fixId', async () => {
-        const { Validator } = await import('@iobroker/js-controller-adapter');
-
+    it(context.name + ' ' + context.adapterShortName + ' adapter utils: check fixId', () => {
         const utils = new Validator(
             context.objects,
             context.states,

@@ -1,8 +1,9 @@
 {
   "name": "@iobroker/js-controller-common",
-  "version": "5.0.20-alpha.0-20240308-3bbff415",
+  "type": "module",
+  "version": "5.0.20-alpha.0-20240425-20b08f31",
   "engines": {
-    "node": ">=12.0.0"
+    "node": ">=18.0.0"
   },
   "optionalDependencies": {
     "@datalust/winston-seq": "^1.0.0",
@@ -11,7 +12,7 @@
   },
   "dependencies": {
     "@alcalzone/pak": "^0.8.1",
-    "axios": "^1.6.0",
+    "axios": "^1.6.3",
     "ci-info": "^3.8.0",
     "deep-clone": "^3.0.3",
     "event-stream": "^4.0.1",
@@ -24,7 +25,7 @@
     "semver": "^7.5.2",
     "triple-beam": "^1.3.0",
     "winston": "^3.7.2",
-    "winston-daily-rotate-file": "^4.7.1",
+    "winston-daily-rotate-file": "^5.0.0",
     "winston-transport": "^4.5.0"
   },
   "keywords": [
@@ -38,36 +39,38 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/common"
+    "url": "https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/common"
   },
   "scripts": {
-    "build": "tsc -b tsconfig.build.json"
+    "build": "tsc -b tsconfig.build.json && tsc-alias",
+    "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/"
   },
-  "main": "build/index.js",
-  "types": "build/index.d.ts",
-  "typesVersions": {
-    "*": {
-      "tools": [
-        "build/lib/common/tools"
-      ],
-      "constants": [
-        "build/lib/common/constants"
-      ]
-    }
-  },
+  "main": "build/cjs/index.js",
+  "module": "build/esm/index.js",
+  "types": "build/esm/index.d.ts",
   "license": "MIT",
   "publishConfig": {
     "access": "public"
   },
   "exports": {
-    ".": "./build/index.js",
+    ".": {
+      "import": "./build/esm/index.js",
+      "require": "./build/cjs/index.js",
+      "types": "./build/esm/index.d.ts"
+    },
     "./package.json": "./package.json",
-    "./tools": "./build/lib/common/tools.js",
-    "./constants": "./build/lib/common/constants.js"
+    "./tools": {
+      "import": "./build/esm/lib/common/tools.js",
+      "require": "./build/cjs/lib/common/tools.js",
+      "types": "./build/esm/lib/common/tools.d.ts"
+    },
+    "./constants": {
+      "import": "./build/esm/lib/common/constants.js",
+      "require": "./build/cjs/lib/common/constants.js",
+      "types": "./build/esm/lib/common/constants.d.ts"
+    }
   },
   "files": [
-    "build/lib/",
-    "build/index.js",
-    "build/index.d.ts"
+    "build/"
   ]
 }

@@ -1,30 +1,41 @@
 import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 import semver from 'semver';
-import os from 'os';
+import os from 'node:os';
 import forge from 'node-forge';
 import deepClone from 'deep-clone';
 import { type ChildProcessPromise, exec as cpExecAsync } from 'promisify-child-process';
-import { createInterface } from 'readline';
-import { PassThrough } from 'stream';
+import { createInterface } from 'node:readline';
+import { PassThrough } from 'node:stream';
 import type { CommandResult, InstallOptions, PackageManager } from '@alcalzone/pak';
 import { detectPackageManager, packageManagers } from '@alcalzone/pak';
-import { EXIT_CODES } from './exitCodes';
-import zlib from 'zlib';
-import { password } from './password';
+import { EXIT_CODES } from '@/lib/common/exitCodes.js';
+import zlib from 'node:zlib';
+import { password } from '@/lib/common/password.js';
 import jwt from 'jsonwebtoken';
 import axios from 'axios';
-import crypto from 'crypto';
-import type { ExecOptions } from 'child_process';
-import { exec } from 'child_process';
-import { URLSearchParams } from 'url';
-import events from 'events';
-import { maybeCallbackWithError } from './maybeCallback';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const extend = require('node.extend');
-import { setDefaultResultOrder } from 'dns';
-import { applyAliasAutoScaling, applyAliasConvenienceConversion, applyAliasTransformer } from './aliasProcessing';
+import crypto from 'node:crypto';
+import type { ExecOptions } from 'node:child_process';
+import { exec } from 'node:child_process';
+import { URLSearchParams } from 'node:url';
+import events from 'node:events';
+import { maybeCallbackWithError } from '@/lib/common/maybeCallback.js';
+// @ts-expect-error has no types
+import extend from 'node.extend';
+import { setDefaultResultOrder } from 'node:dns';
+import {
+    applyAliasAutoScaling,
+    applyAliasConvenienceConversion,
+    applyAliasTransformer
+} from '@/lib/common/aliasProcessing.js';
 import type * as DiskUsage from 'diskusage';
+import * as url from 'node:url';
+import { createRequire } from 'node:module';
+
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __filename);
 
 type DockerInformation =
     | {
@@ -132,7 +143,6 @@ export const FORBIDDEN_CHARS = /[^._\-/ :!#$%&()+=@^{}|~\p{Ll}\p{Lu}\p{Nd}]+/gu;
  * @param newObj destination object
  * @param originalObj optional object for read __no_change__ values
  * @param isNonEdit optional indicator if copy is in nonEdit part
- *
  */
 export function copyAttributes(
     oldObj: Record<string, any>,
@@ -177,7 +187,6 @@ export function copyAttributes(
  *
  * @param oldObject source object
  * @param newObject destination object
- *
  */
 export function checkNonEditable(
     oldObject: ioBroker.SettableObject | null,
@@ -245,8 +254,8 @@ export function checkNonEditable(
 /**
  * Checks if a version is up-to-date, throws error on invalid version strings
  *
- * @param repoVersion
- * @param installedVersion
+ * @param repoVersion version in repository
+ * @param installedVersion the current installed version
  */
 export function upToDate(repoVersion: string, installedVersion: string): boolean {
     // Check if the installed version is at least the repo version
@@ -284,7 +293,7 @@ export function decryptPhrase(password: string, data: any, callback: (decrypted?
  * Checks if multiple host objects exists, without using object views
  *
  * @param objects the objects db
- * @return true if only one host object exists
+ * @returns true if only one host object exists
  */
 export async function isSingleHost(objects: any): Promise<boolean> {
     const res: { rows: ioBroker.GetObjectListItem<ioBroker.HostObject>[] } = await objects.getObjectList({
@@ -300,7 +309,7 @@ export async function isSingleHost(objects: any): Promise<boolean> {
  *
  * @param objects the objects db
  * @param states the states db
- * @return true if one or more hosts running else false
+ * @returns true if one or more hosts running else false
  */
 export async function isHostRunning(objects: any, states: any): Promise<boolean> {
     // do it without an object view for now, TODO: can be reverted if no one downgrades to < 4 (redis-sets)
@@ -326,10 +335,16 @@ export async function isHostRunning(objects: any, states: any): Promise<boolean>
  * Checks if ioBroker is installed in a dev environment
  */
 function _isDevInstallation(): boolean {
-    return fs.pathExistsSync(`${__dirname}/../../../../../packages/controller`);
+    return fs.pathExistsSync(`${getControllerDir()}/../../packages/controller`);
 }
 
-function getAppName(): string {
+/** In dev installations with uppercase B to match GitHub repo name - try to get rid of it in the long run */
+type AppName = 'iobroker' | 'ioBroker';
+
+/**
+ * Get the app name either for prod or for dev installation
+ */
+function getAppName(): AppName {
     if (_isDevInstallation()) {
         // dev install - GitHub folder is uppercase
         return 'ioBroker';
@@ -338,8 +353,8 @@ function getAppName(): string {
     return 'iobroker';
 }
 
+export const appNameLowerCase = 'iobroker';
 export const appName = getAppName();
-export const appNameLowerCase = appName.toLowerCase();
 
 export function findIPs(): string[] {
     if (!lastCalculationOfIps || Date.now() - lastCalculationOfIps > 10000) {
@@ -369,9 +384,9 @@ function findPath(path: string, url: string): string {
             return (path + url).replace(/\/\//g, '/').replace('http:/', 'http://').replace('https:/', 'https://');
         } else {
             if (url[0] === '/') {
-                return `${__dirname}/..${url}`;
+                return `${thisDir}/..${url}`;
             } else {
-                return `${__dirname}/../${path}${url}`;
+                return `${thisDir}/../${path}${url}`;
             }
         }
     }
@@ -486,7 +501,7 @@ function uuid(givenMac: string | null, callback: (uuid: string) => void): void {
     const _isDocker = isDocker();
 
     // return constant UUID for all CI environments to keep the statistics clean
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
+
     if (require('ci-info').isCI) {
         return callback('55travis-pipe-line-cior-githubaction');
     }
@@ -598,7 +613,7 @@ function updateUuid(newUuid: string, _objects: any, callback: (uuid?: string) =>
  * Generates a new uuid if non-existing
  *
  * @param objects - objects DB
- * @return uuid if successfully created/updated
+ * @returns uuid if successfully created/updated
  */
 export async function createUuid(objects: any): Promise<void | string> {
     const promiseCheckPassword = new Promise<void>(resolve =>
@@ -702,7 +717,7 @@ export async function getFile(urlOrPath: string, fileName: string, callback: (fi
         urlOrPath.substring(0, 'http://'.length) === 'http://' ||
         urlOrPath.substring(0, 'https://'.length) === 'https://'
     ) {
-        const tmpFile = `${__dirname}/../tmp/${fileName || `${Math.floor(Math.random() * 0xffffffe)}.zip`}`;
+        const tmpFile = `${thisDir}/../tmp/${fileName || `${Math.floor(Math.random() * 0xffffffe)}.zip`}`;
 
         try {
             // Add some information to user-agent, like chrome, IE and Firefox do
@@ -726,10 +741,10 @@ export async function getFile(urlOrPath: string, fileName: string, callback: (fi
         try {
             if (fs.existsSync(urlOrPath)) {
                 callback && callback(urlOrPath);
-            } else if (fs.existsSync(`${__dirname}/../${urlOrPath}`)) {
-                callback && callback(`${__dirname}/../${urlOrPath}`);
-            } else if (fs.existsSync(`${__dirname}/../tmp/${urlOrPath}`)) {
-                callback && callback(`${__dirname}/../tmp/${urlOrPath}`);
+            } else if (fs.existsSync(`${thisDir}/../${urlOrPath}`)) {
+                callback && callback(`${thisDir}/../${urlOrPath}`);
+            } else if (fs.existsSync(`${thisDir}/../tmp/${urlOrPath}`)) {
+                callback && callback(`${thisDir}/../tmp/${urlOrPath}`);
             } else {
                 console.log(`File not found: ${urlOrPath}`);
                 process.exit(EXIT_CODES.FILE_NOT_FOUND);
@@ -804,11 +819,11 @@ export async function getJson(
                 if (callback) {
                     callback(sources, urlOrPath);
                 }
-            } else if (fs.existsSync(`${__dirname}/../${urlOrPath}`)) {
+            } else if (fs.existsSync(`${thisDir}/../${urlOrPath}`)) {
                 try {
-                    sources = fs.readJSONSync(`${__dirname}/../${urlOrPath}`);
+                    sources = fs.readJSONSync(`${thisDir}/../${urlOrPath}`);
                 } catch (e) {
-                    console.log(`Cannot parse json file from ${__dirname}/../${urlOrPath}. Error: ${e.message}`);
+                    console.log(`Cannot parse json file from ${thisDir}/../${urlOrPath}. Error: ${e.message}`);
                     if (callback) {
                         callback(null, urlOrPath);
                     }
@@ -817,11 +832,11 @@ export async function getJson(
                 if (callback) {
                     callback(sources, urlOrPath);
                 }
-            } else if (fs.existsSync(`${__dirname}/../tmp/${urlOrPath}`)) {
+            } else if (fs.existsSync(`${thisDir}/../tmp/${urlOrPath}`)) {
                 try {
-                    sources = fs.readJSONSync(`${__dirname}/../tmp/${urlOrPath}`);
+                    sources = fs.readJSONSync(`${thisDir}/../tmp/${urlOrPath}`);
                 } catch (e) {
-                    console.log(`Cannot parse json file from ${__dirname}/../tmp/${urlOrPath}. Error: ${e.message}`);
+                    console.log(`Cannot parse json file from ${thisDir}/../tmp/${urlOrPath}. Error: ${e.message}`);
                     if (callback) {
                         callback(null, urlOrPath);
                     }
@@ -831,7 +846,6 @@ export async function getJson(
                     callback(sources, urlOrPath);
                 }
             } else {
-                //if (urlOrPath.indexOf('/example/') === -1) console.log('Json file not found: ' + urlOrPath);
                 if (callback) {
                     callback(null, urlOrPath);
                 }
@@ -842,6 +856,7 @@ export async function getJson(
 
 /**
  * Return content of the json file. Download it or read directly
+ *
  * @param urlOrPath URL where the json file could be found
  * @param agent optional agent identifier like "Windows Chrome 12.56"
  * @returns json object
@@ -878,24 +893,23 @@ export async function getJsonAsync(urlOrPath: string, agent?: string): Promise<R
                     return null;
                 }
                 return sources;
-            } else if (fs.existsSync(__dirname + '/../' + urlOrPath)) {
+            } else if (fs.existsSync(thisDir + '/../' + urlOrPath)) {
                 try {
-                    sources = fs.readJSONSync(`${__dirname}/../${urlOrPath}`);
+                    sources = fs.readJSONSync(`${thisDir}/../${urlOrPath}`);
                 } catch (e) {
-                    console.warn(`Cannot parse json file from ${__dirname}/../${urlOrPath}. Error: ${e.message}`);
+                    console.warn(`Cannot parse json file from ${thisDir}/../${urlOrPath}. Error: ${e.message}`);
                     return null;
                 }
                 return sources;
-            } else if (fs.existsSync(`${__dirname}/../tmp/${urlOrPath}`)) {
+            } else if (fs.existsSync(`${thisDir}/../tmp/${urlOrPath}`)) {
                 try {
-                    sources = fs.readJSONSync(`${__dirname}/../tmp/${urlOrPath}`);
+                    sources = fs.readJSONSync(`${thisDir}/../tmp/${urlOrPath}`);
                 } catch (e) {
-                    console.log(`Cannot parse json file from ${__dirname}/../tmp/${urlOrPath}. Error: ${e.message}`);
+                    console.log(`Cannot parse json file from ${thisDir}/../tmp/${urlOrPath}. Error: ${e.message}`);
                     return null;
                 }
                 return sources;
             } else {
-                //if (urlOrPath.indexOf('/example/') === -1) console.log('Json file not found: ' + urlOrPath);
                 return null;
             }
         }
@@ -951,9 +965,7 @@ function scanDirectory(dirName: string, list: Record<string, AdapterInformation>
                     };
                 }
             } catch (e) {
-                console.log(
-                    `Cannot read or parse ${__dirname}/../node_modules/${dirs[i]}/io-package.json: ${e.message}`
-                );
+                console.log(`Cannot read or parse ${thisDir}/../node_modules/${dirs[i]}/io-package.json: ${e.message}`);
             }
         }
     }
@@ -976,7 +988,7 @@ interface Multilingual {
 export interface AdapterInformation {
     /** this flag is only true for the js-controller */
     controller: boolean;
-    /** adapter version **/
+    /** adapter version */
     version: string;
     /** path to icon of the adapter */
     icon: string;
@@ -1006,6 +1018,7 @@ export interface AdapterInformation {
 
 /**
  * Get a list of all installed adapters and controller version on this host
+ *
  * @param hostRunningVersion Version of the running js-controller, will be included in the returned information if provided
  * @returns object containing information about installed host
  */
@@ -1062,6 +1075,7 @@ export function getInstalledInfo(hostRunningVersion?: string): Record<string, Ad
 
 /**
  * Reads an adapter's npm version
+ *
  * @param adapter The adapter to read the npm version from. Null for the root ioBroker packet
  * @param callback
  */
@@ -1323,7 +1337,6 @@ async function _checkRepositoryFileHash(
  * @param urlOrPath URL starting with http:// or https:// or local file link
  * @param additionalInfo destination object
  * @param callback function (err, sources, actualHash) { }
- *
  */
 export function getRepositoryFile(
     urlOrPath: string,
@@ -1445,7 +1458,6 @@ export interface RepositoryFile {
  * @param hash actual hash
  * @param force Force repository update despite on hash
  * @param _actualRepo Actual repository JSON content
- *
  */
 export async function getRepositoryFileAsync(
     url: string,
@@ -1467,7 +1479,6 @@ export async function getRepositoryFileAsync(
             data = _actualRepo;
         } else {
             const agent = `${appName}, RND: ${randomID}, Node:${process.version}, V:${
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
                 require('@iobroker/js-controller-common/package.json').version
             }`;
             try {
@@ -1540,7 +1551,6 @@ export function getAdapterDir(adapter: string): string | null {
 
     const possibilities = [`${appName.toLowerCase()}.${adapter}/package.json`, `${appName}.${adapter}/package.json`];
 
-    /** @type {string} */
     let adapterPath;
     for (const possibility of possibilities) {
         // special case to not read adapters from js-controller/node_module/adapter and check first in parent directory
@@ -1550,9 +1560,7 @@ export function getAdapterDir(adapter: string): string | null {
             adapterPath = path.join(getControllerDir(), 'node_modules', possibility);
         } else {
             try {
-                adapterPath = require.resolve(possibility, {
-                    paths: getDefaultRequireResolvePaths(module)
-                });
+                adapterPath = require.resolve(possibility);
             } catch {
                 // not found
             }
@@ -1599,8 +1607,7 @@ export function getHostName(): string {
  *        </code></pre>
  */
 function getSystemNpmVersion(callback?: (err?: Error, version?: string | null) => void): void {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const { exec } = require('child_process');
+    const { exec } = require('node:child_process');
 
     // remove local node_modules\.bin dir from a path
     // or we potentially get a wrong npm version
@@ -1660,8 +1667,9 @@ export interface InstallNodeModuleOptions {
 }
 
 /**
- * @private
+ *
  * Figure out which package manager is in charge, but with a fallback to npm.
+ *
  * @param cwd Which directory to work in. If none is given, this defaults to ioBroker's root directory.
  */
 async function detectPackageManagerWithFallback(cwd?: string): Promise<PackageManager> {
@@ -1673,7 +1681,7 @@ async function detectPackageManagerWithFallback(cwd?: string): Promise<PackageMa
                   { cwd }
                 : // Otherwise, try to find the ioBroker root dir
                   {
-                      cwd: (isDevServerInstallation() && require.main?.path) || __dirname,
+                      cwd: (isDevServerInstallation() && require.main?.path) || thisDir,
                       setCwdToPackageRoot: true
                   }
         );
@@ -1692,6 +1700,7 @@ async function detectPackageManagerWithFallback(cwd?: string): Promise<PackageMa
 
 /**
  * Installs a node module using npm or a similar package manager
+ *
  * @param npmUrl Which node module to install
  * @param options Options for the installation
  */
@@ -1734,6 +1743,7 @@ export interface UninstallNodeModuleOptions {
 
 /**
  * Uninstalls a node module using npm or a similar package manager
+ *
  * @param packageName Which node module to uninstall
  * @param options Options for the installation
  */
@@ -1774,6 +1784,7 @@ export interface RebuildNodeModulesOptions {
 /**
  * Rebuilds all native node_modules that are dependencies of the project in the current working directory / project root.
  * If `options.cwd` is given, the directory must contain a lockfile.
+ *
  * @param options Options for the rebuild
  */
 export async function rebuildNodeModules(options: RebuildNodeModulesOptions = {}): Promise<CommandResult> {
@@ -1805,96 +1816,64 @@ export interface GetDiskInfoResponse {
 
 /**
  * Read disk free space
- *
- * @param platform result of os.platform() (win32 => Windows, darwin => OSX)
- * @param callback return result
- *        <pre><code>
- *            function (err, infos) {
- *              adapter.log.debug('Disks sizes is: ' + info['Disk size'] + ' - ' + info['Disk free']);
- *            }
- *        </code></pre>
  */
-export function getDiskInfo(
-    platform: NodeJS.Platform,
-    callback: (err?: Error | null, infos?: null | GetDiskInfoResponse) => void
-): void {
-    platform = platform || os.platform();
+export async function getDiskInfo(): Promise<GetDiskInfoResponse | null> {
+    const platform = process.platform;
     if (diskusage) {
         try {
-            const path = platform === 'win32' ? __dirname.substring(0, 2) : '/';
+            const path = platform === 'win32' ? thisDir.substring(0, 2) : '/';
             const info = diskusage.checkSync(path);
-            return callback && callback(null, { 'Disk size': info.total, 'Disk free': info.free });
-        } catch (err) {
-            console.log(err);
+            return { 'Disk size': info.total, 'Disk free': info.free };
+        } catch (e) {
+            console.log(e.message);
         }
     } else {
-        try {
-            if (platform === 'win32') {
-                // Caption  FreeSpace     Size
-                // A:
-                // C:       66993807360   214640357376
-                // D:
-                // Y:       116649795584  148368257024
-                // Z:       116649795584  148368257024
-                const disk = __dirname.substring(0, 2).toUpperCase();
+        if (platform === 'win32') {
+            // Caption  FreeSpace     Size
+            // A:
+            // C:       66993807360   214640357376
+            // D:
+            // Y:       116649795584  148368257024
+            // Z:       116649795584  148368257024
+            const disk = thisDir.substring(0, 2).toUpperCase();
 
-                exec(
-                    'wmic logicaldisk get size,freespace,caption',
-                    {
-                        encoding: 'utf8',
-                        windowsHide: true
-                    },
-                    (error, stdout) => {
-                        //, stderr) {
-                        if (stdout) {
-                            const lines = stdout.split('\n');
-                            const line = lines.find(line => {
-                                const parts = line.split(/\s+/);
-                                return parts[0].toUpperCase() === disk;
-                            });
-                            if (line) {
-                                const parts = line.split(/\s+/);
-                                return (
-                                    callback &&
-                                    callback(error, {
-                                        'Disk size': parseInt(parts[2]),
-                                        'Disk free': parseInt(parts[1])
-                                    })
-                                );
-                            }
-                        }
-                        callback && callback(error, null);
-                    }
-                );
-            } else {
-                exec('df -k /', { encoding: 'utf8', windowsHide: true }, (error, stdout) => {
-                    //, stderr) {
-                    // Filesystem            1K-blocks    Used Available Use% Mounted on
-                    // /dev/mapper/vg00-lv01 162544556 9966192 145767152   7% /
-                    try {
-                        if (stdout) {
-                            const parts = stdout.split('\n')[1].split(/\s+/);
-                            return (
-                                callback &&
-                                callback(error, {
-                                    'Disk size': parseInt(parts[1]) * 1024,
-                                    'Disk free': parseInt(parts[3]) * 1024
-                                })
-                            );
-                        }
-                    } catch {
-                        // continue regardless of error
-                    }
-                    callback && callback(error, null);
+            const { stdout } = await execAsync('wmic logicaldisk get size,freespace,caption');
+
+            if (typeof stdout === 'string') {
+                const lines = stdout.split('\n');
+                const line = lines.find(line => {
+                    const parts = line.split(/\s+/);
+                    return parts[0].toUpperCase() === disk;
                 });
+                if (line) {
+                    const parts = line.split(/\s+/);
+                    return {
+                        'Disk size': parseInt(parts[2]),
+                        'Disk free': parseInt(parts[1])
+                    };
+                }
             }
-        } catch (e) {
-            callback && callback(e, null);
+        } else {
+            const { stdout } = await execAsync(`df -k ${getRootDir()}`);
+            //, stderr) {
+            // Filesystem            1K-blocks    Used Available Use% Mounted on
+            // /dev/mapper/vg00-lv01 162544556 9966192 145767152   7% /
+            try {
+                if (typeof stdout === 'string') {
+                    const parts = stdout.split('\n')[1].split(/\s+/);
+                    return {
+                        'Disk size': parseInt(parts[1]) * 1024,
+                        'Disk free': parseInt(parts[3]) * 1024
+                    };
+                }
+            } catch {
+                // continue regardless of error
+            }
         }
     }
-}
 
-const getDiskInfoAsync = promisify(getDiskInfo);
+    return null;
+}
 
 export interface CertificateInfo {
     certificateFilename: string | null;
@@ -1926,7 +1905,7 @@ export interface CertificateInfo {
  * Returns information about a certificate
  *
  * @param cert
- * @return certificate information object
+ * @returns certificate information object
  */
 export function getCertificateInfo(cert: string): null | CertificateInfo {
     let info: CertificateInfo | null = null;
@@ -2153,7 +2132,7 @@ export async function getHostInfo(objects: any): Promise<HostInfo> {
     }
 
     try {
-        const info = await getDiskInfoAsync(data.Platform);
+        const info = await getDiskInfo();
         if (info) {
             Object.assign(data, info);
         }
@@ -2166,6 +2145,7 @@ export async function getHostInfo(objects: any): Promise<HostInfo> {
 
 /**
  * Finds the controller root directory
+ *
  * @returns absolute path to controller dir without ending slash
  */
 export function getControllerDir(): string {
@@ -2174,9 +2154,8 @@ export function getControllerDir(): string {
         try {
             // package.json is guaranteed to be in the module root folder
             // so once that is resolved, take the dirname and we're done
-            const possiblePath = require.resolve(`${pkg}/package.json`, {
-                paths: getDefaultRequireResolvePaths(module)
-            });
+            const possiblePath = require.resolve(`${pkg}/package.json`);
+
             if (fs.existsSync(possiblePath)) {
                 return path.dirname(possiblePath);
             }
@@ -2186,7 +2165,7 @@ export function getControllerDir(): string {
     }
 
     // Also check in the current check dir (along with iobroker.js-controller sub-dirs)
-    let checkPath = path.join(__dirname, '..', '..');
+    let checkPath = path.join(thisDir, '..', '..');
 
     possibilities.unshift('');
 
@@ -2194,6 +2173,7 @@ export function getControllerDir(): string {
         for (const pkg of possibilities) {
             try {
                 const possiblePath = path.join(checkPath, pkg);
+
                 if (fs.existsSync(path.join(possiblePath, `${appNameLowerCase}.js`))) {
                     return possiblePath;
                 }
@@ -2286,6 +2266,7 @@ export function getConfigFileName(): string {
 
 /**
  * Puts all values from an `arguments` object into an array, starting at the given index
+ *
  * @param argsObj An `arguments` object as passed to a function
  * @param startIndex The optional index to start taking the arguments from
  */
@@ -2302,6 +2283,7 @@ function sliceArgs(argsObj: IArguments, startIndex = 0): any[] {
 
 /**
  * Promisifies a function which returns an error as the first argument in its callback
+ *
  * @param fn The function to promisify
  * @param context (optional) The context (value of `this` to bind the function to)
  * @param returnArgNames (optional) If the callback contains multiple arguments,
@@ -2366,6 +2348,7 @@ export function promisify(
 
 /**
  * Promisifies a function which does not provide an error as the first argument in its callback
+ *
  * @param fn The function to promisify
  * @param context (optional) The context (value of `this` to bind the function to)
  * @param returnArgNames (optional) If the callback contains multiple arguments,
@@ -2469,6 +2452,7 @@ export function setQualityForInstance(objects: any, states: any, namespace: stri
 
 /**
  * Converts ioB pattern into regex.
+ *
  * @param pattern - Regex string to use it in new RegExp(pattern)
  */
 export function pattern2RegEx(pattern: string): string {
@@ -2489,6 +2473,7 @@ export function pattern2RegEx(pattern: string): string {
 /**
  * Checks if a pattern is valid
  *
+ * @param pattern
  * @pattern pattern to check for validity
  */
 export function isValidPattern(pattern: string): boolean {
@@ -2499,7 +2484,8 @@ export function isValidPattern(pattern: string): boolean {
 
 /**
  * Generates a stack trace that can be added to log outputs to trace their source
- * @param [wrapperName = 'captureStackTrace'] The wrapper function after which the stack trace should begin
+ *
+ * @param [wrapperName] The wrapper function after which the stack trace should begin
  */
 function captureStackTrace(wrapperName: string): string {
     if (typeof wrapperName !== 'string') {
@@ -2526,6 +2512,7 @@ function captureStackTrace(wrapperName: string): string {
 
 /**
  * Appends the stack trace generated by `captureStackTrace` to the given string
+ *
  * @param str - The string to append the stack trace to
  */
 export function appendStackTrace(str: string): string {
@@ -2541,6 +2528,7 @@ export function appendStackTrace(str: string): string {
 
 /**
  * Encrypt the password/value with given key
+ *
  * @param key - Secret key
  * @param value - value to encrypt
  */
@@ -2554,6 +2542,7 @@ function encryptLegacy(key: string, value: string): string {
 
 /**
  * Decrypt the password/value with given key
+ *
  * @param key - Secret key
  * @param value - value to decrypt
  */
@@ -2609,6 +2598,7 @@ export function decrypt(key: string, value: string): string {
 
 /**
  * Tests whether the given variable is a real object and not an Array
+ *
  * @param it The variable to test
  * @returns true if it is Record<string, any>
  */
@@ -2623,6 +2613,7 @@ export function isObject(it: any): it is Record<string, any> {
 
 /**
  * Tests whether the given variable is really an Array
+ *
  * @param it The variable to test
  */
 export function isArray(it: any): it is any[] {
@@ -2631,6 +2622,7 @@ export function isArray(it: any): it is any[] {
 
 /**
  * Measure the Node.js event loop lag and repeatedly call the provided callback function with the updated results
+ *
  * @param ms The number of milliseconds for monitoring
  * @param cb Callback function to call for each new value
  */
@@ -2743,7 +2735,6 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
  * @param id the object id which will be deleted from enums
  * @param allEnums objects with all enums to use - if not provided all enums will be queried
  * @returns Promise All objects are tried to be updated - reject will happen as soon as one fails with the error of the first fail
- *
  */
 export async function removeIdFromAllEnums(objects: any, id: string, allEnums?: Record<string, any>): Promise<void> {
     if (!allEnums) {
@@ -2821,6 +2812,10 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
         throw new Error(`obj.type has an invalid type! Expected "string", received "${typeof obj.type}"`);
     }
 
+    if (obj.native !== undefined && !isObject(obj.native)) {
+        throw new Error(`obj.native has an invalid type! Expected a "real object", received "${typeof obj.native}"`);
+    }
+
     const allowedObjectTypes: ioBroker.ObjectType[] = [
         'state',
         'channel',
@@ -2870,7 +2865,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
 
         if (obj.type === 'state') {
             // if an object type indicates a state, check that `common.type` matches
-            const allowedStateTypes = ['number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json'];
+            const allowedStateTypes = ['number', 'string', 'boolean', 'array', 'object', 'mixed', 'json'];
             if (!allowedStateTypes.includes(obj.common.type)) {
                 throw new Error(
                     `obj.common.type has an invalid value (${
@@ -2916,11 +2911,6 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
 
             // ensure, that default value has correct type
             if (obj.common.def !== undefined && obj.common.def !== null) {
-                if (obj.common.type === 'file') {
-                    // defaults are set via setState but would need setBinaryState
-                    throw new Error('Default value is not supported for type "file"');
-                }
-
                 // else do what strictObjectChecks does for val
                 if (
                     !(
@@ -2928,13 +2918,12 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
                         (obj.common.type !== 'object' && obj.common.type === typeof obj.common.def) ||
                         (obj.common.type === 'array' && typeof obj.common.def === 'string') ||
                         (obj.common.type === 'json' && typeof obj.common.def === 'string') ||
-                        (obj.common.type === 'file' && typeof obj.common.def === 'string') ||
                         (obj.common.type === 'object' && typeof obj.common.def === 'string')
                     )
                 ) {
-                    // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'file', 'json';
+                    // types can be 'number', 'string', 'boolean', 'array', 'object', 'mixed', 'json';
                     // 'array', 'object', 'json' need to be string
-                    if (['object', 'json', 'file', 'array'].includes(obj.common.type)) {
+                    if (['object', 'json', 'array'].includes(obj.common.type)) {
                         throw new Error(
                             `Default value has to be stringified but received type "${typeof obj.common.def}"`
                         );
@@ -3093,6 +3082,7 @@ export async function getInstances<TWithObjects extends boolean>(
 /**
  * Executes a command asynchronously. On success, the promise resolves with stdout and stderr.
  * On error, the promise rejects with the exit code or signal, as well as stdout and stderr.
+ *
  * @param command The command to execute
  * @param execOptions The options for child_process.exec
  * @returns child process promise
@@ -3110,6 +3100,7 @@ export function execAsync(command: string, execOptions?: ExecOptions): ChildProc
 
 /**
  * Takes input from one stream and writes it to another as soon as a complete line was read.
+ *
  * @param input The stream to read from
  * @param output The stream to write into
  */
@@ -3128,6 +3119,22 @@ export function pipeLinewise(input: NodeJS.ReadableStream, output: NodeJS.Writab
     rl.on('error', () => {
         /** Ignore Errors */
     });
+}
+
+/**
+ * Checks if an adapter is an ESM module or CJS
+ *
+ * @param adapter name of the adapter like hm-rpc
+ */
+export async function isAdapterEsmModule(adapter: string): Promise<boolean> {
+    const adapterDir = getAdapterDir(adapter);
+    if (!adapterDir) {
+        throw new Error(`Could not find adapter dir of ${adapter}`);
+    }
+
+    const packJson = await fs.readJSON(path.join(adapterDir, 'package.json'), { encoding: 'utf-8' });
+
+    return packJson.type === 'module';
 }
 
 /**
@@ -3177,6 +3184,7 @@ export async function resolveAdapterMainFile(adapter: string): Promise<string> {
 
 /**
  * Returns the default nodeArgs required to execute the main file, e.g., transpile hooks for TypeScript
+ *
  * @param mainFile
  * @returns default node args for cli
  */
@@ -3195,6 +3203,7 @@ export function getDefaultNodeArgs(mainFile: string): string[] {
 
 /**
  * Returns the default paths used to resolve modules using `require.resolve()`
+ *
  * @param callerModule The module that wants to resolve another module
  */
 export function getDefaultRequireResolvePaths(callerModule: NodeModule): string[] {
@@ -3214,6 +3223,7 @@ const shortGithubUrlRegex = /^(?<user>[^/]+)\/(?<repo>[^#]+)(?:#(?<commit>.+))?$
 
 /**
  * Tests if the given URL matches the format <githubname>/<githubrepo>[#<commit-ish>]
+ *
  * @param url The URL to parse
  */
 export function isShortGithubUrl(url: string): boolean {
@@ -3228,6 +3238,7 @@ export interface ParsedGithubUrl {
 
 /**
  * Tries to parse a URL in the format <githubname>/<githubrepo>[#<commit-ish>] into its separate parts
+ *
  * @param url The URL to parse
  */
 export function parseShortGithubUrl(url: string): ParsedGithubUrl | null {
@@ -3248,6 +3259,7 @@ const githubPathnameRegex =
 
 /**
  * Tests if the given pathname matches the format /<githubname>/<githubrepo>[.git][/<tarball|tree|archive>/<commit-ish>[.zip|.gz]]
+ *
  * @param pathname The pathname part of a GitHub URL
  */
 export function isGithubPathname(pathname: string): boolean {
@@ -3256,6 +3268,7 @@ export function isGithubPathname(pathname: string): boolean {
 
 /**
  * Tries to a GitHub pathname format /<githubname>/<githubrepo>[.git][/<tarball|tree|archive>/<commit-ish>[.zip|.gz|.tar.gz]] into its separate parts
+ *
  * @param pathname The pathname part of a GitHub URL
  */
 export function parseGithubPathname(pathname: string): ParsedGithubUrl | null {
@@ -3272,6 +3285,7 @@ export function parseGithubPathname(pathname: string): ParsedGithubUrl | null {
 
 /**
  * Removes properties which are given by preserve
+ *
  * @param preserve - object which has true entries (or array of selected attributes) for all attributes that should be removed from currObj
  * @param oldObj - old object
  * @param newObj - new object
@@ -3306,11 +3320,11 @@ export function removePreservedProperties(
  * Returns the array of system.adapter.<namespace>.* objects which are created for every instance
  *
  * @param namespace - adapter namespace + id, e.g., hm-rpc.0
- * @param createWakeup - indicator to create a wakeup object too
  */
-export function getInstanceIndicatorObjects(namespace: string, createWakeup: boolean): ioBroker.StateObject[] {
+export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateObject[] {
     const id = `system.adapter.${namespace}`;
-    const objs: ioBroker.StateObject[] = [
+
+    return [
         {
             _id: `${id}.alive`,
             type: 'state',
@@ -3495,23 +3509,6 @@ export function getInstanceIndicatorObjects(namespace: string, createWakeup: boo
             native: {}
         }
     ];
-
-    if (createWakeup) {
-        objs.push({
-            _id: `${id}.wakeup`,
-            type: 'state',
-            common: {
-                name: `${namespace}.wakeup`,
-                read: true,
-                write: true,
-                type: 'boolean',
-                role: 'adapter.wakeup'
-            },
-            native: {}
-        });
-    }
-
-    return objs;
 }
 
 export type InternalLogger = Omit<ioBroker.Logger, 'level'>;
@@ -3607,6 +3604,7 @@ export async function getInstancesOrderedByStartPrio(
 
 /**
  * Set capabilities of the given executable on Linux systems
+ *
  * @param execPath - path to the executable for node you can determine it via process.execPath
  * @param capabilities - capabilities to set, e.g. ['cap_net_admin', 'cap_net_bind_service']
  * @param modeEffective - add effective mode
@@ -3675,6 +3673,7 @@ export async function setExecutableCapabilities(
 
 /**
  * Requests the licenses from ioBroker.net
+ *
  * @param login Login for ioBroker.net
  * @param password Decoded password for ioBroker.net
  * @returns array of all licenses stored on iobroker.net
@@ -3712,6 +3711,7 @@ async function _readLicenses(login: string, password: string): Promise<any[]> {
 /**
  * Reads the licenses from iobroker.net
  * Reads the licenses from iobroker.net and if no login/password provided stores it in `system.licenses`
+ *
  * @param objects Object store instance
  * @param login Login for ioBroker.net
  * @param password Decoded password for ioBroker.net
@@ -3802,6 +3802,7 @@ export interface GZipFileOptions {
 }
 /**
  * Compresses an input file using GZip and writes it somewhere else
+ *
  * @param inputFilename The filename of the input file that should be gzipped
  * @param outputFilename The filename of the output file where the gzipped content should be written to
  * @param options Options for the compression
@@ -3874,6 +3875,7 @@ export function validateDataDir(dataDir: string): DataDirValidation {
 
 /**
  * If an array is passed it will be stringified, else the parameter is returned
+ *
  * @param maybeArr parameter which will be stringified if it is an array
  */
 export function maybeArrayToString<T>(maybeArr: T): T extends any[] ? string : T {
@@ -3909,6 +3911,7 @@ function getDNSResolutionOrder(): DNSOrder {
 
 /**
  * Checks if given ip address is matching ipv4 or ipv6 localhost
+ *
  * @param ip ipv4 or ipv6 address
  */
 export function isLocalAddress(ip: string): boolean {
@@ -3919,6 +3922,7 @@ export function isLocalAddress(ip: string): boolean {
 
 /**
  * Checks if given ip address is matching ipv4 or ipv6 "listen all" address
+ *
  * @param ip ipv4 or ipv6 address
  */
 export function isListenAllAddress(ip: string): boolean {
@@ -3963,4 +3967,72 @@ export async function isIoBrokerInstalledAsSystemd(): Promise<boolean> {
     }
 }
 
-export * from './maybeCallback';
+/**
+ * Get a new host object
+ *
+ * @param oldObj the previous host object
+ */
+export function getHostObject(oldObj?: ioBroker.HostObject | null): ioBroker.HostObject {
+    const hostname = getHostName();
+    const ioPackage = fs.readJSONSync(path.join(getControllerDir(), 'io-package.json'));
+
+    const newObj: ioBroker.HostObject = {
+        _id: `system.host.${hostname}`,
+        type: 'host',
+        common: {
+            name: hostname,
+            title: oldObj?.common?.title || ioPackage.common.title,
+            installedVersion: ioPackage.common.version,
+            platform: ioPackage.common.platform,
+            cmd: `${process.argv[0]} ${`${process.execArgv.join(' ')} `.replace(/--inspect-brk=\d+ /, '')}${process.argv
+                .slice(1)
+                .join(' ')}`,
+            hostname,
+            address: findIPs(),
+            type: ioPackage.common.name
+        },
+        native: {
+            process: {
+                title: process.title,
+                versions: process.versions,
+                env: process.env
+            },
+            os: {
+                hostname: hostname,
+                type: os.type(),
+                platform: os.platform(),
+                arch: os.arch(),
+                release: os.release(),
+                endianness: os.endianness(),
+                tmpdir: os.tmpdir()
+            },
+            hardware: {
+                cpus: os.cpus(),
+                totalmem: os.totalmem(),
+                networkInterfaces: {}
+            }
+        }
+    };
+
+    if (oldObj?.common?.icon) {
+        newObj.common.icon = oldObj.common.icon;
+    }
+    if (oldObj?.common?.color) {
+        newObj.common.color = oldObj.common.color;
+    }
+    // remove dynamic information
+    if (newObj.native?.hardware?.cpus) {
+        for (const cpu of newObj.native.hardware.cpus) {
+            if (cpu.times) {
+                delete cpu.times;
+            }
+        }
+    }
+    if (oldObj?.native.hardware?.networkInterfaces) {
+        newObj.native.hardware.networkInterfaces = oldObj.native.hardware.networkInterfaces;
+    }
+
+    return newObj;
+}
+
+export * from '@/lib/common/maybeCallback.js';

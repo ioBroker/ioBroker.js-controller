@@ -10,7 +10,7 @@
 
 import Redis from 'ioredis';
 import { tools } from '@iobroker/db-base';
-import { isDeepStrictEqual } from 'util';
+import { isDeepStrictEqual } from 'node:util';
 import type { InternalLogger } from '@iobroker/js-controller-common/tools';
 import type IORedis from 'ioredis';
 import type { DbStatus, ConnectionOptions } from '@iobroker/db-base/inMemFileDB';
@@ -19,6 +19,9 @@ type JSONDecoderValue = Record<string, any>;
 
 /**
  * Decodes a JSON with buffer value
+ *
+ * @param key
+ * @param value
  */
 function bufferJsonDecoder(key: string, value: JSONDecoderValue): Buffer | JSONDecoderValue {
     if (tools.isObject(value) && value.type === 'Buffer' && value.data && Array.isArray(value.data)) {
@@ -120,7 +123,6 @@ export class StateRedisClient {
     /**
      * Checks if we are allowed to start and sets the protocol version accordingly
      *
-     * @private
      */
     async _determineProtocolVersion(): Promise<void> {
         if (!this.client) {
@@ -670,8 +672,16 @@ export class StateRedisClient {
         return { type: 'redis', server: false };
     }
 
+    setState(id: string, state: ioBroker.SettableState | ioBroker.StateValue): Promise<string>;
+
+    /** @deprecated migrate to promisified version (without callback) */
+    setState(
+        id: string,
+        state: ioBroker.SettableState | ioBroker.StateValue,
+        callback: (err: Error | null | undefined, id: string) => void
+    ): Promise<void>;
+
     /**
-     * @method setState
      * @param id the id of the value. '<this.namespaceRedis>.' will be prepended
      * @param state
      *
@@ -693,7 +703,6 @@ export class StateRedisClient {
      *
      *      <li><b>lc</b>   a unix timestamp indicating the last change of the actual value. this should be undefined
      *                      when calling setState, it will be set by the setValue method itself.</li></ul>
-     *
      * @param callback will be called when redis confirmed reception of the command
      */
     async setState(
@@ -824,6 +833,10 @@ export class StateRedisClient {
 
     /**
      * Promise-version of setState
+     *
+     * @param id
+     * @param state
+     * @deprecated use version without `Async` postfix
      */
     setStateAsync(id: string, state: ioBroker.SettableState | ioBroker.StateValue): Promise<string> {
         return new Promise((resolve, reject) => {
@@ -851,11 +864,17 @@ export class StateRedisClient {
         return id;
     }
 
+    getState(id: string): ioBroker.GetStatePromise;
+    getState(
+        id: string,
+        callback?: (err: Error | null | undefined, state?: ioBroker.State | null) => void
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetStateCallback> | void>;
+
     /**
-     * @method getState
+     * Get state from database
      *
-     * @param id
-     * @param callback
+     * @param id id of the state
+     * @param callback optional callback, leave out and use promise return type
      */
     async getState(
         id: string,
@@ -891,10 +910,24 @@ export class StateRedisClient {
 
     /**
      * Promise-version of getState
+     *
+     * @param id
      */
     getStateAsync(id: string): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetStateCallback> | void> {
         return this.getState(id);
     }
+
+    getStates(keys: string[], callback?: undefined, dontModify?: boolean): Promise<(ioBroker.State | null)[]>;
+    getStates(
+        keys: string[],
+        callback: (err: Error | undefined | null, states?: (ioBroker.State | null)[]) => void,
+        dontModify?: boolean
+    ): Promise<void>;
+    getStates(
+        keys: string[],
+        callback: (err: Error | undefined | null, states?: (ioBroker.State | null)[]) => void,
+        dontModify?: boolean
+    ): Promise<void>;
 
     async getStates(
         keys: string[],
@@ -943,11 +976,8 @@ export class StateRedisClient {
     }
 
     /**
-     * @method _destroyDBHelper
-     *
      * @param keys - array of keys which will be deleted from db
      * @param callback function to be executed after keys have been deleted
-     * @private
      */
     async _destroyDBHelper(keys: string[], callback?: ioBroker.ErrorCallback): Promise<void> {
         if (!keys || !keys.length) {
@@ -970,7 +1000,6 @@ export class StateRedisClient {
     }
 
     /**
-     * @method destroyDB
      * @param callback cb function to be executed after DB has been destroyed
      */
     async destroyDB(callback?: ioBroker.ErrorCallback): Promise<void> {
@@ -1042,6 +1071,13 @@ export class StateRedisClient {
         }
     }
 
+    getKeys(
+        pattern: string,
+        callback?: undefined,
+        dontModify?: boolean
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetKeysCallback>>;
+    getKeys(pattern: string, callback: ioBroker.GetKeysCallback, dontModify?: boolean): Promise<void>;
+
     async getKeys(
         pattern: string,
         callback?: ioBroker.GetKeysCallback,
@@ -1074,11 +1110,9 @@ export class StateRedisClient {
     async subscribe(pattern: string, asUser: boolean, callback?: ioBroker.ErrorCallback): Promise<void>;
 
     /**
-     * @method subscribe
-     *
      * @param pattern
      * @param asUser - if true it will be subscribed as user
-     * @param {function(Error|undefined):void} callback callback function (optional)
+     * @param callback callback function (optional)
      */
     async subscribe(
         pattern: string,
@@ -1119,10 +1153,8 @@ export class StateRedisClient {
     }
 
     /**
-     * @method subscribeUser
-     *
      * @param pattern
-     * @param {function(Error|undefined):void} callback callback function (optional)
+     * @param callback callback function (optional)
      */
     subscribeUser(pattern: string, callback?: ioBroker.ErrorCallback): Promise<void> {
         return this.subscribe(pattern, true, callback);
@@ -1132,6 +1164,7 @@ export class StateRedisClient {
     async unsubscribe(pattern: string, callback?: ioBroker.ErrorCallback): Promise<void>;
     /**
      * Unsubscribe pattern
+     *
      * @param pattern
      * @param asUser - if true it will be unsubscribed as user
      * @param callback
@@ -1175,8 +1208,6 @@ export class StateRedisClient {
     }
 
     /**
-     * @method unsubscribeUser
-     *
      * @param pattern
      * @param callback callback function (optional)
      */
@@ -1397,74 +1428,6 @@ export class StateRedisClient {
         }
     }
 
-    async setBinaryState(id: string, data: Buffer, callback?: ioBroker.ErrorCallback): Promise<void> {
-        if (!id || typeof id !== 'string') {
-            return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
-        }
-
-        if (!this.client) {
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        if (!Buffer.isBuffer(data)) {
-            data = Buffer.from(data);
-        }
-
-        try {
-            await this.client.set(this.namespaceRedis + id, data);
-            // for back compatibility send normal state, but with the flag "binary"
-            await this.client.publish(
-                this.namespaceRedis + id,
-                JSON.stringify({ val: null, binary: true, size: data.byteLength, ack: true })
-            );
-            return tools.maybeCallback(callback);
-        } catch (e) {
-            return tools.maybeCallbackWithRedisError(callback, e);
-        }
-    }
-
-    async getBinaryState(
-        id: string,
-        callback: (err: Error | undefined | null, state?: Buffer) => void
-    ): Promise<Buffer | void> {
-        if (!id || typeof id !== 'string') {
-            return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
-        }
-
-        if (!this.client) {
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        let data;
-        try {
-            data = await this.client.getBuffer(this.namespaceRedis + id);
-            return tools.maybeCallbackWithError(callback, null, data);
-        } catch (e) {
-            return tools.maybeCallbackWithRedisError(callback, e);
-        }
-    }
-
-    async delBinaryState(
-        id: string,
-        callback?: (err: Error | undefined | null, id?: string) => void
-    ): Promise<string | void> {
-        if (!id || typeof id !== 'string') {
-            return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
-        }
-
-        if (!this.client) {
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        try {
-            await this.client.del(this.namespaceRedis + id);
-            await this.client.publish(this.namespaceRedis + id, JSON.stringify(null));
-            return tools.maybeCallbackWithError(callback, null, id);
-        } catch (e) {
-            return tools.maybeCallbackWithRedisError(callback, e, id);
-        }
-    }
-
     /**
      * Returns the protocol version from DB
      *
@@ -1479,6 +1442,7 @@ export class StateRedisClient {
 
     /**
      * Sets the protocol version to the DB
+     *
      * @param version - protocol version
      */
     async setProtocolVersion(version: number): Promise<void> {

@@ -10,19 +10,28 @@ import { PluginHandler } from '@iobroker/plugin-base';
 import semver from 'semver';
 import path from 'node:path';
 import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
-import { decryptArray, encryptArray, getSupportedFeatures, isMessageboxSupported } from '@/lib/adapter/utils';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const extend = require('node.extend');
+import {
+    decryptArray,
+    encryptArray,
+    getSupportedFeatures,
+    isMessageboxSupported,
+    getAdapterScopedPackageIdentifier
+} from '@/lib/adapter/utils.js';
+// @ts-expect-error no ts file
+import extend from 'node.extend';
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type Winston from 'winston';
 import type NodeSchedule from 'node-schedule';
+import yargs from 'yargs/yargs';
 
 // local version is always the same as controller version, since lerna exact: true is used
-import { version as controllerVersion } from '@iobroker/js-controller-adapter/package.json';
+import packJson from '@iobroker/js-controller-adapter/package.json' assert { type: 'json' };
 
-import { Log } from '@/lib/adapter/log';
-import { Validator } from './validator';
+const controllerVersion = packJson.version;
+
+import { Log } from '@/lib/adapter/log.js';
+import { Validator } from './validator.js';
 
 const { FORBIDDEN_CHARS } = tools;
 import {
@@ -40,7 +49,7 @@ import {
     NO_PROTECT_ADAPTERS,
     STATE_QUALITY,
     type SupportedFeature
-} from '@/lib/adapter/constants';
+} from '@/lib/adapter/constants.js';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import type {
     AdapterOptions,
@@ -60,7 +69,6 @@ import type {
     InternalCheckPasswordOptions,
     InternalCreateDeviceOptions,
     InternalCreateStateOptions,
-    InternalDelBinaryStateOptions,
     InternalDeleteChannelFromEnumOptions,
     InternalDeleteChannelOptions,
     InternalDeleteDeviceOptions,
@@ -71,7 +79,6 @@ import type {
     InternalDestroySessionOptions,
     InternalFormatDateOptions,
     InternalGetAdapterObjectsOptions,
-    InternalGetBinaryStateOption,
     InternalGetCertificatesOptions,
     InternalGetChannelsOfOptions,
     InternalGetDevicesOptions,
@@ -90,7 +97,6 @@ import type {
     InternalGetUserIDOptions,
     InternalSendToHostOptions,
     InternalSendToOptions,
-    InternalSetBinaryStateOptions,
     InternalSetObjectOptions,
     InternalSetPasswordOptions,
     InternalSetSessionOptions,
@@ -112,11 +118,19 @@ import type {
     AllPropsUnknown,
     IoPackageInstanceObject,
     AliasTargetEntry,
-    SuitableLicense
-} from '@/lib/_Types';
-import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController';
+    SuitableLicense,
+    InstallNodeModuleOptions,
+    InternalInstallNodeModuleOptions,
+    StopParameters,
+    InternalStopParameters
+} from '@/lib/_Types.js';
+import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
+import type { CommandResult } from '@alcalzone/pak';
 
+import * as url from 'node:url';
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 tools.ensureDNSOrder();
 
 /**
@@ -135,6 +149,7 @@ export interface AdapterClass {
     on(event: 'log', listener: (info: any) => Promise<void> | void): this;
     /**
      * Extend an object and create it if it might not exist
+     *
      * @deprecated use `adapter.extendObject` without callback instead
      */
     extendObjectAsync(
@@ -276,45 +291,6 @@ export interface AdapterClass {
     /** Subscribe from changes of states in this instance */
     unsubscribeStatesAsync(pattern: Pattern, options?: unknown): Promise<void>;
     /**
-     * Writes a binary state into Redis. The ID will not be prefixed with the adapter namespace.
-     *
-     * @deprecated Please use `writeFile` instead of binary states
-     */
-    setForeignBinaryStateAsync(id: string, binary: Buffer, options?: unknown): ioBroker.SetStatePromise;
-
-    /**
-     * Despite the naming convention, this method doesn't prepend the adapter namespace. Use setForeignBinaryStateAsync instead.
-     * Writes a binary state into Redis
-     *
-     * @deprecated Please use `writeFile` instead of binary states
-     */
-    setBinaryStateAsync(id: string, binary: Buffer, options?: unknown): ioBroker.SetStatePromise;
-
-    /**
-     * @deprecated Please use `readFile` instead of binary states
-     */
-    getForeignBinaryStateAsync(id: string, options?: unknown): ioBroker.GetBinaryStatePromise;
-    /**
-     * Despite the naming convention, this method doesn't prepend the adapter namespace. Use getForeignBinaryStateAsync instead.
-     * Reads a binary state from Redis
-     *
-     * @deprecated Please use `readFile` instead of binary states
-     */
-    getBinaryStateAsync(id: string, options?: unknown): ioBroker.GetBinaryStatePromise;
-    /** Deletes a binary state from the states DB. The ID will not be prefixed with the adapter namespace.
-     *
-     * @deprecated Please use `delFile` instead of binary states
-     */
-    delForeignBinaryStateAsync(id: string, options?: unknown): Promise<void>;
-
-    /**
-     * Despite the naming convention, this method doesn't prepend the adapter namespace. Use delForeignBinaryStateAsync instead.
-     * Deletes a binary state from the states DB
-     *
-     * @deprecated Please use `delFile` instead of binary states
-     */
-    delBinaryStateAsync(id: string, options?: unknown): Promise<void>;
-    /**
      * Helper function that looks for first free TCP port starting with the given one.
      */
     getPortAsync(port: number): Promise<number>;
@@ -421,6 +397,7 @@ export interface AdapterClass {
 
     /**
      * Writes a value into the states DB.
+     *
      * @deprecated use `adapter.setState` without callback instead
      */
     setStateAsync(
@@ -701,7 +678,7 @@ export class AdapterClass extends EventEmitter {
     common?: ioBroker.InstanceCommon;
     private mboxSubscribed?: boolean;
     /** Stop the adapter */
-    stop?: () => Promise<void>;
+    stop?: (params?: StopParameters) => Promise<void>;
     version?: string;
     /** Stop the adapter only defined in compact, not for external usage */
     protected kill?: () => Promise<void>;
@@ -716,7 +693,6 @@ export class AdapterClass extends EventEmitter {
      */
     requireLog?: (isActive: boolean, options?: Partial<GetUserGroupsOptions>) => Promise<void> | void;
     private logOffTimer?: NodeJS.Timeout | null;
-    private logRedirect?: (isActive: boolean, id: string) => void;
     private logRequired?: boolean;
     private patterns?: Record<string, { regex: string }>;
     private statesConnectedTime?: number;
@@ -765,46 +741,71 @@ export class AdapterClass extends EventEmitter {
         this._config = this._options.config || this._config;
         this.startedInCompactMode = !!this._options.compact;
 
-        // possible arguments
-        // 0,1,.. - instance
-        // info, debug, warn, error - log level
-        // --force
-        // --logs
-        // --silent
-        // --install
-        // --debug = --force + --logs
-        if (process.argv) {
-            for (const argument of process.argv) {
-                if (
-                    argument === 'info' ||
-                    argument === 'debug' ||
-                    argument === 'error' ||
-                    argument === 'warn' ||
-                    argument === 'silly'
-                ) {
-                    this._config.log.level = argument;
-                    this.overwriteLogLevel = true;
-                } else if (argument === '--silent') {
-                    this._config.isInstall = true;
-                } else if (argument === '--install') {
-                    this._config.isInstall = true;
-                } else if (argument === '--logs') {
-                    this._config.consoleOutput = true;
-                } else if (argument === '--force') {
-                    this._config.forceIfDisabled = true;
-                } else if (argument === '--debug') {
-                    this._config.forceIfDisabled = true;
-                    this._config.consoleOutput = true;
-                    if (this._config.log.level !== 'silly') {
-                        this._config.log.level = 'debug';
-                        this.overwriteLogLevel = true;
-                    }
-                } else if (argument === '--console') {
-                    this._config.consoleOutput = true;
-                } else if (parseInt(argument, 10).toString() === argument) {
-                    this._config.instance = parseInt(argument, 10);
+        const parsedArgs = yargs(process.argv.slice(2))
+            .options({
+                loglevel: {
+                    describe: 'Define adapter log level',
+                    type: 'string'
+                },
+                silent: {
+                    describe: 'If is install run',
+                    type: 'boolean'
+                },
+                install: {
+                    describe: 'If is install run',
+                    type: 'boolean'
+                },
+                logs: {
+                    describe: 'If console output desired',
+                    type: 'boolean'
+                },
+                console: {
+                    describe: 'If console output desired',
+                    type: 'boolean'
+                },
+                force: {
+                    describe: 'If force start even if disabled',
+                    type: 'boolean'
+                },
+                debug: {
+                    describe: 'Same as --force combined with --console',
+                    type: 'boolean'
+                },
+                instance: {
+                    describe: 'Instance id, e.g. 0',
+                    type: 'string'
                 }
+            })
+            .parseSync();
+
+        if (parsedArgs.loglevel && ['info', 'debug', 'error', 'warn', 'silly'].includes(parsedArgs.loglevel)) {
+            this._config.log.level = parsedArgs.loglevel;
+            this.overwriteLogLevel = true;
+        }
+
+        if (parsedArgs.silent || parsedArgs.install) {
+            this._config.isInstall = true;
+        }
+
+        if (parsedArgs.logs || parsedArgs.console) {
+            this._config.consoleOutput = true;
+        }
+
+        if (parsedArgs.force) {
+            this._config.forceIfDisabled = true;
+        }
+
+        if (parsedArgs.debug) {
+            this._config.forceIfDisabled = true;
+            this._config.consoleOutput = true;
+            if (this._config.log.level !== 'silly') {
+                this._config.log.level = 'debug';
+                this.overwriteLogLevel = true;
             }
+        }
+
+        if (parsedArgs.instance && parseInt(parsedArgs.instance, 10).toString() === parsedArgs.instance) {
+            this._config.instance = parseInt(parsedArgs.instance, 10);
         }
 
         this._config.log.level = this._config.log.level || 'info';
@@ -1198,59 +1199,60 @@ export class AdapterClass extends EventEmitter {
          */
         this.unsubscribeStatesAsync = tools.promisify(this.unsubscribeStates, this);
 
-        /**
-         * Promise-version of `Adapter.setBinaryState`
-         *
-         * @param id of state
-         * @param binary data
-         * @param options optional
-         */
-        this.setForeignBinaryStateAsync = tools.promisify(this.setForeignBinaryState, this);
-
-        /**
-         * Async version of setBinaryState
-         *
-         *
-         * @param id of state
-         * @param binary data
-         * @param options optional
-         */
-        this.setBinaryStateAsync = tools.promisify(this.setBinaryState, this);
-
-        /**
-         * Promise-version of `Adapter.getBinaryState`
-         *
-         *
-         */
-        this.getForeignBinaryStateAsync = tools.promisify(this.getForeignBinaryState, this);
-
-        /**
-         * Promisified version of getBinaryState
-         *
-         * @param id The state ID
-         * @param options optional
-         */
-        this.getBinaryStateAsync = tools.promisify(this.getBinaryState, this);
-
-        /**
-         * Promise-version of `Adapter.delForeignBinaryState`
-         *
-         * @param id
-         * @param options
-         *
-         */
-        this.delForeignBinaryStateAsync = tools.promisify(this.delForeignBinaryState, this);
-
-        /**
-         * Promise-version of `Adapter.delBinaryState`
-         *
-         * @param id
-         * @param options
-         */
-        this.delBinaryStateAsync = tools.promisify(this.delBinaryState, this);
-
         this.setExecutableCapabilities = tools.setExecutableCapabilities;
         this._init();
+    }
+
+    installNodeModule(moduleName: string, options: InstallNodeModuleOptions): Promise<CommandResult>;
+
+    /**
+     * Install specified npm module
+     *
+     * @param moduleName name of the node module
+     * @param options version information
+     */
+    installNodeModule(moduleName: unknown, options: unknown): Promise<CommandResult> {
+        Validator.assertString(moduleName, 'moduleName');
+        Validator.assertObject<InstallNodeModuleOptions>(options, 'options');
+
+        return this._installNodeModule({ ...options, moduleName });
+    }
+
+    private _installNodeModule(options: InternalInstallNodeModuleOptions): Promise<CommandResult> {
+        const { moduleName, version } = options;
+
+        const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
+        return tools.installNodeModule(`${internalModuleName}@npm:${moduleName}@${version}`);
+    }
+
+    uninstallNodeModule(moduleName: string): Promise<CommandResult>;
+
+    /**
+     * Uninstall specified npm module
+     *
+     * @param moduleName name of the node module
+     */
+    uninstallNodeModule(moduleName: unknown): Promise<CommandResult> {
+        Validator.assertString(moduleName, 'moduleName');
+
+        const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
+        return tools.uninstallNodeModule(internalModuleName);
+    }
+
+    importNodeModule(moduleName: string): Promise<unknown>;
+
+    /**
+     * Import a node module which has been installed via `installNodeModule`
+     *
+     * @param moduleName name of the node module
+     * @returns the required node module
+     */
+    importNodeModule(moduleName: unknown): Promise<unknown> {
+        Validator.assertString(moduleName, 'moduleName');
+
+        const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
+        // TODO: if https://github.com/microsoft/TypeScript/issues/54022 ever gets resolved, we should improve the return type
+        return import(internalModuleName);
     }
 
     // overload with real types
@@ -1258,6 +1260,7 @@ export class AdapterClass extends EventEmitter {
     decrypt(value: string): string;
     /**
      * Decrypt the password/value with given key
+     *
      * @param secretVal to use for decrypt (or value if only one parameter is given)
      * @param  [value] value to decrypt (if secret is provided)
      */
@@ -1279,6 +1282,7 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Encrypt the password/value with given key
+     *
      * @param secretVal to use for encrypting (or value if only one parameter is given)
      * @param [value] value to encrypt (if secret is provided)
      */
@@ -1556,7 +1560,6 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * validates user and password
-     *
      *
      * @param user user name as text
      * @param pw password as text
@@ -2135,12 +2138,15 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private async _stop(
-        isPause?: boolean,
-        isScheduled?: boolean,
-        exitCode?: number,
-        updateAliveState?: boolean
-    ): Promise<void> {
+    /**
+     * Stop an instance gracefully
+     *
+     * @param options information about the stoppage
+     */
+    private async _stop(options: InternalStopParameters = {}): Promise<void> {
+        const { isPause, isScheduled, reason } = options;
+        let { exitCode, updateAliveState } = options;
+
         exitCode = exitCode || (isScheduled ? EXIT_CODES.START_IMMEDIATELY_AFTER_STOP : 0);
         if (updateAliveState === undefined) {
             updateAliveState = true;
@@ -2153,7 +2159,7 @@ export class AdapterClass extends EventEmitter {
             this._reportInterval = null;
             const id = `system.adapter.${this.namespace}`;
 
-            const finishUnload = (): void => {
+            const finishUnload = async (): Promise<void> => {
                 if (this._timers.size) {
                     this._timers.forEach(timer => clearTimeout(timer));
                     this._timers.clear();
@@ -2176,19 +2182,18 @@ export class AdapterClass extends EventEmitter {
 
                 if (this.#states && updateAliveState) {
                     this.outputCount++;
-                    this.#states.setState(`${id}.alive`, { val: false, ack: true, from: id }, () => {
-                        if (!isPause) {
-                            this._logger.info(`${this.namespaceLog} terminating`);
-                        }
+                    await this.#states.setState(`${id}.alive`, { val: false, ack: true, from: id });
+                    if (!isPause) {
+                        this._logger.info(`${this.namespaceLog} terminating`);
+                    }
 
-                        // To this moment, the class could be destroyed
-                        this.terminate(exitCode);
-                    });
+                    // To this moment, the class could be destroyed
+                    this.terminate(reason, exitCode);
                 } else {
                     if (!isPause) {
                         this._logger.info(`${this.namespaceLog} terminating`);
                     }
-                    this.terminate(exitCode);
+                    this.terminate(reason, exitCode);
                 }
             };
 
@@ -2250,7 +2255,8 @@ export class AdapterClass extends EventEmitter {
     /**
      * Reads the file certificate from a given path and adds a file watcher to restart adapter on cert changes
      * if a cert is passed it is returned as it is
-     * @param cert
+     *
+     * @param cert cert or path to cert
      */
     private _readFileCertificate(cert: string): string {
         if (typeof cert === 'string') {
@@ -2264,7 +2270,7 @@ export class AdapterClass extends EventEmitter {
                         this._logger.warn(
                             `${this.namespaceLog} New certificate "${filename}" detected. Restart adapter`
                         );
-                        setTimeout(() => this._stop(false, true), 2000);
+                        setTimeout(() => this._stop({ isPause: false, isScheduled: true }), 2_000);
                     });
                 }
             } catch (e) {
@@ -2504,9 +2510,9 @@ export class AdapterClass extends EventEmitter {
      * Reads the encrypted parameter from config.
      *
      * It returns promise if no callback is provided.
+     *
      * @param attribute - attribute name in native configuration part
      * @param [callback] - optional callback
-     *
      */
     getEncryptedConfig(attribute: unknown, callback: unknown): Promise<string | void> {
         Validator.assertString(attribute, 'attribute');
@@ -2855,10 +2861,11 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Helper method for `set[Foreign]Object[NotExists]` that also sets the default value if one is configured
+     *
      * @param id of the object
      * @param obj The object to set
-     * @param [options]
-     * @param [callback]
+     * @param options optional user context
+     * @param callback optional callback
      */
     private async _setObjectWithDefaultValue(
         id: string,
@@ -3008,47 +3015,45 @@ export class AdapterClass extends EventEmitter {
      *
      * You can change or extend some object. E.g. existing object is:
      * ```js
-     *     {
-     *          common: {
-     *              name: 'Adapter name',
-     *              desc: 'Description'
-     *          },
-     *          type: 'state',
-     *          native: {
-     *              unused: 'text'
-     *          }
-     *     }
+     * {
+     *   common: {
+     *     name: 'Adapter name',
+     *     desc: 'Description'
+     *   },
+     *   type: 'state',
+     *   native: {
+     *     unused: 'text'
+     *  }
+     * }
      * ```
      *
      * If following object will be passed as argument
      *
      * ```js
-     *     {
-     *          common: {
-     *              desc: 'New description',
-     *              min: 0,
-     *              max: 100
-     *          },
-     *          native: {
-     *              unused: null
-     *          }
-     *     }
+     * {
+     *   common: {
+     *     desc: 'New description',
+     *     min: 0,
+     *     max: 100
+     *   },
+     *   native: {
+     *     unused: null
+     *   }
+     * }
      * ```
      *
      * We will get as output:
      * ```js
-     *     {
-     *          common: {
-     *              desc: 'New description',
-     *              min: 0,
-     *              max: 100
-     *          },
-     *          type: 'state',
-     *          native: {
-     *          }
-     *     }
+     * {
+     *   common: {
+     *     desc: 'New description',
+     *     min: 0,
+     *     max: 100
+     *   },
+     *   type: 'state',
+     *   native: {}
+     * }
      * ```
-     *
      *
      * @param id object ID, that must be extended
      * @param obj part that must be extended
@@ -3679,7 +3684,7 @@ export class AdapterClass extends EventEmitter {
      * @param design name of the design
      * @param search name of the view
      * @param params object containing startkey: first id to include in result; endkey: last id to include in result
-     * @param options
+     * @param options additional objects, e.g. for permissions
      * @param callback return result
      *      ```js
      *          function (err, doc) {
@@ -3788,10 +3793,9 @@ export class AdapterClass extends EventEmitter {
      * It is required, that ID consists namespace in startkey and endkey. E.g. `{startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '.\u9999'}`
      * to get all objects of the instance.
      *
-     *
-     * @param params
-     * @param options
-     * @param callback
+     * @param params startkey and endkey information
+     * @param options additional options, e.g. for permissions
+     * @param callback optional callback
      *      ```js
      *          function (err, res) {
      *              if (res && res.rows) {
@@ -4099,33 +4103,32 @@ export class AdapterClass extends EventEmitter {
      *
      * Get all objects in the system of specified type. E.g.:
      *
-     *        ```js
-     *            adapter.getForeignObjects('hm-rega.0.*', 'state', ['rooms', 'functions'], function (err, objs) {
-     *              if (err) adapter.log.error('Cannot get object: ' + err);
-     *              // objs look like:
-     *              // {
-     *              //    "hm-rega.0.ABC0000.1.STATE": {
-     *              //        common: {...},
-     *              //        native: {},
-     *              //        type: 'state',
-     *              //        enums: {
-     *              //           'enums.rooms.livingroom': 'Living room',
-     *              //           'enums.functions.light': 'Light'
-     *              //       }
-     *              //    },
-     *              //    "hm-rega.0.ABC0000.2.STATE": {
-     *              //        common: {...},
-     *              //        native: {},
-     *              //        type: 'state',
-     *              //        enums: {
-     *              //           'enums.rooms.sleepingroom': 'Sleeping room',
-     *              //           'enums.functions.window': 'Windows'
-     *              //       }
-     *              //    }
-     *            }
-     *        ```
+     * ```js
+     * adapter.getForeignObjects('hm-rega.0.*', 'state', ['rooms', 'functions'], function (err, objs) {
+     *   if (err) adapter.log.error('Cannot get object: ' + err);
+     *   // objs look like:
+     *   // {
+     *   //    "hm-rega.0.ABC0000.1.STATE": {
+     *   //        common: {...},
+     *   //        native: {},
+     *   //        type: 'state',
+     *   //        enums: {
+     *   //           'enums.rooms.livingroom': 'Living room',
+     *   //           'enums.functions.light': 'Light'
+     *   //       }
+     *   //    },
+     *   //    "hm-rega.0.ABC0000.2.STATE": {
+     *   //        common: {...},
+     *   //        native: {},
+     *   //        type: 'state',
+     *   //        enums: {
+     *   //           'enums.rooms.sleepingroom': 'Sleeping room',
+     *   //           'enums.functions.window': 'Windows'
+     *   //       }
+     *   //    }
+     * }
+     * ```
      *
-
      * @param pattern object ID/wildcards
      * @param type type of object: 'state', 'channel' or 'device'. Default - 'state'
      * @param enums object ID, that must be overwritten or created.
@@ -4584,11 +4587,7 @@ export class AdapterClass extends EventEmitter {
                     }
                     if (obj.type === 'state') {
                         try {
-                            if ('binary' in obj) {
-                                await this.delBinaryStateAsync(id, options);
-                            } else {
-                                await this.delForeignStateAsync(id, options);
-                            }
+                            await this.delForeignStateAsync(id, options);
                         } catch {
                             // Ignore
                         }
@@ -4774,6 +4773,7 @@ export class AdapterClass extends EventEmitter {
     /**
      * Subscribe for the changes of files in specific instance.
      * This is async function!
+     *
      * @param id adapter ID like 'vis-2.0' or 'vis-2.admin'
      * @param pattern pattern like 'channel.*' or '*' (all files) - without namespaces. You can use array of patterns
      * @param options optional user context
@@ -4801,6 +4801,7 @@ export class AdapterClass extends EventEmitter {
     /**
      * Unsubscribe for the changes of files on specific instance.
      * This is async function!
+     *
      * @param id adapter ID like 'vis-2.0' or 'vis-2.admin'
      * @param pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
      * @param options optional user context
@@ -5734,9 +5735,9 @@ export class AdapterClass extends EventEmitter {
     ): void;
 
     /**
-     * Deletes channel and udnerlying structure
-     * @alais deleteChannel
+     * Deletes channel and underlying structure
      *
+     * @alias deleteChannel
      * @param parentDevice is the part of ID like: adapter.instance.<deviceName>
      * @param channelName is the part of ID like: adapter.instance.<deviceName>.<channelName>
      * @param options optional user context
@@ -7069,7 +7070,6 @@ export class AdapterClass extends EventEmitter {
      * @param instanceName name of the instance where the message must be sent to. E.g. "pushover.0" or "system.adapter.pushover.0".
      * @param command command name, like "send", "browse", "list". Command is depend on target adapter implementation.
      * @param message object that will be given as argument for request
-     * @param options optional options to define a timeout. This allows to get an error callback if no answer received in time (only if target is specific instance)
      * @param callback optional return result
      *        ```js
      *            function (result) {
@@ -7077,6 +7077,7 @@ export class AdapterClass extends EventEmitter {
      *              if (!result) adapter.log.error('No response received');
      *            }
      *        ```
+     * @param options optional options to define a timeout. This allows to get an error callback if no answer received in time (only if target is specific instance)
      */
     sendTo(instanceName: unknown, command: unknown, message: unknown, callback?: unknown, options?: unknown): any {
         if (typeof message === 'function' && typeof callback === 'undefined') {
@@ -7111,6 +7112,11 @@ export class AdapterClass extends EventEmitter {
     /**
      * Async version of sendTo
      * As we have a special case (first arg can be error or result, we need to promisify manually)
+     *
+     * @param instanceName name of the instance
+     * @param command command to send
+     * @param message message to send
+     * @param options additional options, e.g. for permissions
      */
     sendToAsync(instanceName: unknown, command: unknown, message?: unknown, options?: unknown): any {
         return new Promise((resolve, reject) => {
@@ -7684,19 +7690,24 @@ export class AdapterClass extends EventEmitter {
 
                 // write target state
                 this.outputCount++;
-                return this.#states.setState(
-                    aliasId,
-                    tools.formatAliasValue({
-                        sourceCommon: obj?.common,
-                        targetCommon: targetObj?.common as any,
-                        state: stateObj as ioBroker.State,
-                        logger: this._logger,
-                        logNamespace: this.namespaceLog,
-                        sourceId: obj?._id,
-                        targetId: targetObj?._id
-                    }),
-                    callback
-                );
+                try {
+                    const res = await this.#states.setState(
+                        aliasId,
+                        tools.formatAliasValue({
+                            sourceCommon: obj?.common,
+                            targetCommon: targetObj?.common as any,
+                            state: stateObj as ioBroker.State,
+                            logger: this._logger,
+                            logNamespace: this.namespaceLog,
+                            sourceId: obj?._id,
+                            targetId: targetObj?._id
+                        })
+                    );
+
+                    return tools.maybeCallbackWithError(callback, null, res);
+                } catch (e) {
+                    return tools.maybeCallbackWithError(callback, e);
+                }
             } else {
                 this._logger.warn(`${this.namespaceLog} ${`Alias ${fixedId} has no target 2`}`);
                 return tools.maybeCallbackWithError(callback, `Alias ${fixedId} has no target`);
@@ -7711,7 +7722,12 @@ export class AdapterClass extends EventEmitter {
             }
 
             this.outputCount++;
-            return this.#states.setState(fixedId, stateObj, callback);
+            try {
+                const res = await this.#states.setState(fixedId, stateObj);
+                return tools.maybeCallbackWithError(callback, null, res);
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
+            }
         }
     }
 
@@ -8327,6 +8343,13 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
+        if (!this.#objects) {
+            this._logger.info(
+                `${this.namespaceLog} setForeignState not processed because Objects database not connected`
+            );
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
         try {
             this._utils.validateId(id, true, null);
         } catch (err) {
@@ -8409,9 +8432,12 @@ export class AdapterClass extends EventEmitter {
                     }
 
                     let targetObj;
-                    // check the rights
+                    // we ignore permissions on the target object and thus get it as admin user
                     try {
-                        targetObj = (await this._checkStates(aliasId, options, 'setState')).objs[0];
+                        targetObj = await this.#objects.getObject(aliasId, {
+                            ...options,
+                            user: SYSTEM_ADMIN_USER
+                        });
                     } catch (e) {
                         return tools.maybeCallbackWithError(callback, e);
                     }
@@ -8468,13 +8494,13 @@ export class AdapterClass extends EventEmitter {
 
                 if (obj?.common?.alias?.id) {
                     // alias id can be a string or can have id.write
-                    const aliasId = tools.isObject(obj.common.alias.id)
+                    const targetId = tools.isObject(obj.common.alias.id)
                         ? obj.common.alias.id.write
                         : obj.common.alias.id;
 
                     // validate here because we use objects/states db directly
                     try {
-                        this._utils.validateId(aliasId, true, null);
+                        this._utils.validateId(targetId, true, null);
                     } catch (e) {
                         this._logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
                         return tools.maybeCallbackWithError(
@@ -8491,31 +8517,34 @@ export class AdapterClass extends EventEmitter {
                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                     }
 
-                    // read object for formatting
-                    this.#objects.getObject(aliasId, options, (err, targetObj) => {
-                        if (!this.#states) {
-                            // if states is no longer existing, we do not need to unsubscribe
-                            this._logger.info(
-                                `${this.namespaceLog} setForeignState not processed because States database not connected`
-                            );
-                            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                        }
-
-                        this.outputCount++;
-                        this.#states.setState(
-                            aliasId,
-                            tools.formatAliasValue({
-                                sourceCommon: obj.common as ioBroker.StateCommon,
-                                targetCommon: targetObj?.common as ioBroker.StateCommon | undefined,
-                                state,
-                                logger: this._logger,
-                                logNamespace: this.namespaceLog,
-                                sourceId: obj._id,
-                                targetId: targetObj?._id
-                            }),
-                            callback
-                        );
+                    // read object for formatting - we ignore permissions on the target object and thus get it as admin user
+                    const targetObj = await this.#objects.getObject(targetId, {
+                        ...options,
+                        user: SYSTEM_ADMIN_USER
                     });
+
+                    if (!this.#states) {
+                        // if states is no longer existing, we do not need to unsubscribe
+                        this._logger.info(
+                            `${this.namespaceLog} setForeignState not processed because States database not connected`
+                        );
+                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                    }
+
+                    this.outputCount++;
+                    this.#states.setState(
+                        targetId,
+                        tools.formatAliasValue({
+                            sourceCommon: obj.common as ioBroker.StateCommon,
+                            targetCommon: targetObj?.common as ioBroker.StateCommon | undefined,
+                            state,
+                            logger: this._logger,
+                            logNamespace: this.namespaceLog,
+                            sourceId: obj._id,
+                            targetId: targetObj?._id
+                        }),
+                        callback
+                    );
                 } else {
                     this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 5`);
                     return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
@@ -8775,8 +8804,8 @@ export class AdapterClass extends EventEmitter {
 
         try {
             this._utils.validateId(id, true, options);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
         }
 
         let permCheckRequired = false;
@@ -8812,14 +8841,11 @@ export class AdapterClass extends EventEmitter {
                 if (aliasId) {
                     let sourceObj;
                     try {
-                        if (permCheckRequired) {
-                            sourceObj = (await this._checkStates(aliasId, options || {}, 'getState')).objs[0];
-                        } else {
-                            sourceObj = (await this.#objects.getObject(aliasId, options)) as
-                                | ioBroker.StateObject
-                                | null
-                                | undefined;
-                        }
+                        // we ignore permissions on the source object and thus get it as admin user
+                        sourceObj = (await this.#objects.getObject(aliasId, {
+                            ...options,
+                            user: SYSTEM_ADMIN_USER
+                        })) as ioBroker.StateObject | null | undefined;
                     } catch (e) {
                         return tools.maybeCallbackWithError(callback, e);
                     }
@@ -8830,8 +8856,7 @@ export class AdapterClass extends EventEmitter {
                     } else {
                         this.inputCount++;
                         try {
-                            // @ts-expect-error void return possible fix it
-                            state = await this.#states!.getState(aliasId);
+                            state = await this.#states.getState(aliasId);
                         } catch (e) {
                             return tools.maybeCallbackWithError(callback, e);
                         }
@@ -8859,7 +8884,7 @@ export class AdapterClass extends EventEmitter {
             if (this.oStates && this.oStates[id]) {
                 return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
             } else {
-                return this.#states!.getState(id, callback);
+                return this.#states.getState(id, callback);
             }
         }
     }
@@ -9015,7 +9040,7 @@ export class AdapterClass extends EventEmitter {
      * Convert ID to `{device: D, channel: C, state: S}`
      *
      * @param id short or long string of ID like "stateID" or "adapterName.0.stateID".
-     * @return parsed ID as an object
+     * @returns parsed ID as an object
      */
     idToDCS(id: unknown): {
         device: string;
@@ -9427,7 +9452,7 @@ export class AdapterClass extends EventEmitter {
         pattern: string,
         callback?: ioBroker.ErrorCallback
     ): Promise<void> {
-        if (aliasObj && aliasObj.common && aliasObj.common.alias && aliasObj.common.alias.id) {
+        if (aliasObj?.common?.alias?.id) {
             if (aliasObj.type !== 'state') {
                 this._logger.warn(
                     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -9480,7 +9505,8 @@ export class AdapterClass extends EventEmitter {
                 let sourceObj;
                 try {
                     await this.#states!.subscribe(sourceId);
-                    sourceObj = await this.#objects!.getObject(sourceId, this._options);
+                    // we ignore permissions on the source object and thus get it as admin user
+                    sourceObj = await this.#objects!.getObject(sourceId, { user: SYSTEM_ADMIN_USER });
                 } catch (e) {
                     return tools.maybeCallbackWithError(callback, e);
                 }
@@ -9795,7 +9821,7 @@ export class AdapterClass extends EventEmitter {
      * ```
      *
      * @param pattern string in form 'adapter.0.*'. Must be the same as subscribe.
-     * @param options]optional argument to describe the user context
+     * @param options optional argument to describe the user context
      * @param callback return result
      * ```js
      * function (err) {}
@@ -9944,7 +9970,7 @@ export class AdapterClass extends EventEmitter {
      *
      * @param pattern string in form 'adapter.0.*' or like this. Only string allowed
      * @param options optional argument to describe the user context
-     * @param callback
+     * @param callback optional callback
      */
     subscribeStates(pattern: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
@@ -9980,7 +10006,7 @@ export class AdapterClass extends EventEmitter {
      *
      * @param pattern string in form 'adapter.0.*'. Must be the same as subscribe.
      * @param options optional argument to describe the user context
-     * @param callback
+     * @param callback optional callback
      */
     unsubscribeStates(pattern: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
@@ -9999,366 +10025,6 @@ export class AdapterClass extends EventEmitter {
             options,
             callback
         });
-    }
-
-    setForeignBinaryState(id: string, binary: Buffer, callback: ioBroker.SetStateCallback): void;
-    setForeignBinaryState(id: string, binary: Buffer, options: unknown, callback: ioBroker.SetStateCallback): void;
-
-    /**
-     * Write binary block into redis, e.g. image
-     *
-     *
-     * @param id of state
-     * @param binary data
-     * @param options optional
-     * @param callback
-     *
-     * @deprecated Please use `writeFile` instead of binary states
-     */
-    setForeignBinaryState(id: unknown, binary: unknown, options: unknown, callback?: unknown): any {
-        this._logger.info(
-            `${
-                this.namespaceLog
-            } Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files (${
-                id as string
-            })`
-        );
-
-        if (typeof options === 'function') {
-            callback = options;
-            options = {};
-        }
-
-        Validator.assertString(id, 'id');
-        Validator.assertOptionalCallback(callback, 'callback');
-        Validator.assertBuffer(binary, 'binary');
-        if (options !== null && options !== undefined) {
-            Validator.assertObject(options, 'options');
-        }
-
-        return this._setForeignBinaryState({ id, binary, options, callback });
-    }
-
-    private async _setForeignBinaryState(_options: InternalSetBinaryStateOptions): Promise<void> {
-        const { id, binary, callback } = _options;
-        let { options } = _options;
-
-        try {
-            this._utils.validateId(id, true, options);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
-        }
-
-        if (this.performStrictObjectChecks) {
-            // obj needs to exist and has to be of type "file" - custom check for binary state
-            try {
-                if (!this.#objects) {
-                    this._logger.info(
-                        `${this.namespaceLog} setBinaryState not processed because Objects database not connected`
-                    );
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                const obj = await this.#objects.getObjectAsync(id);
-
-                // at first check object existence
-                if (!obj) {
-                    this._logger.warn(
-                        `${this.namespaceLog} Binary state "${id}" has no existing object, this might lead to an error in future versions`
-                    );
-                    return;
-                }
-
-                // for a state object we require common.type to exist
-                if (obj.common && obj.common.type) {
-                    if (obj.common.type !== 'file') {
-                        this._logger.info(
-                            `${this.namespaceLog} Binary state object has to be type "file" but is "${obj.common.type}"`
-                        );
-                    }
-                }
-            } catch (e) {
-                this._logger.warn(
-                    `${this.namespaceLog} Could not perform strict object check of binary state ${id}: ${e.message}`
-                );
-            }
-        }
-
-        if (!this.#states) {
-            // if states is no longer existing, we do not need to unsubscribe
-            this._logger.info(
-                `${this.namespaceLog} setBinaryState not processed because States database not connected`
-            );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        // we need at least user or group for checkStates - if no given assume admin
-        if (!options || !options.user) {
-            options = options || {};
-            options.user = SYSTEM_ADMIN_USER;
-        }
-
-        if (options.user !== SYSTEM_ADMIN_USER) {
-            // always read according object to set the binary flag
-            let obj;
-            try {
-                obj = (await this._checkStates(id, options, 'setState')).objs[0];
-            } catch (e) {
-                return tools.maybeCallbackWithError(callback, e);
-            }
-
-            if (obj && !('binary' in obj)) {
-                // @ts-expect-error probably need to adjust types
-                obj.binary = true;
-
-                if (!this.#objects) {
-                    this._logger.info(
-                        `${this.namespaceLog} setBinaryState not processed because Objects database not connected`
-                    );
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                this.#objects.setObject(id, obj, err => {
-                    if (err) {
-                        return tools.maybeCallbackWithError(callback, err);
-                    } else {
-                        if (!this.#states) {
-                            // if states is no longer existing, we do not need to unsubscribe
-                            this._logger.info(
-                                `${this.namespaceLog} setBinaryState not processed because States database not connected`
-                            );
-                            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                        }
-
-                        this.outputCount++;
-                        this.#states.setBinaryState(id, binary, callback);
-                    }
-                });
-            } else {
-                if (!this.#states) {
-                    // if states is no longer existing, we do not need to unsubscribe
-                    this._logger.info(
-                        `${this.namespaceLog} setBinaryState not processed because States database not connected`
-                    );
-                    return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                this.outputCount++;
-                this.#states.setBinaryState(id, binary, callback);
-            }
-        } else {
-            this.outputCount++;
-            this.#states.setBinaryState(id, binary, callback);
-        }
-    }
-
-    setBinaryState(id: string, binary: Buffer, callback: ioBroker.SetStateCallback): void;
-    setBinaryState(id: string, binary: Buffer, options: unknown, callback: ioBroker.SetStateCallback): void;
-
-    /**
-     * Same as setForeignBinaryState but prefixes the own namespace to the id
-     *
-     *
-     * @param id of state
-     * @param binary data
-     * @param options optional
-     * @param callback
-     *
-     * @deprecated Please use `writeFile` instead of binary states
-     */
-    setBinaryState(id: any, binary: any, options: any, callback?: any): void {
-        // we just keep any types here, because setForeign method will validate
-        id = this._utils.fixId(id, false);
-        return this.setForeignBinaryState(id, binary, options, callback);
-    }
-
-    getForeignBinaryState(id: string, callback: ioBroker.GetBinaryStateCallback): void;
-    getForeignBinaryState(id: string, options: unknown, callback: ioBroker.GetBinaryStateCallback): void;
-
-    /**
-     * Read a binary block from redis, e.g. an image
-     *
-     * @param id The state ID
-     * @param options optional
-     * @param callback
-     *
-     * @deprecated Please use `readFile` instead of binary states
-     */
-    getForeignBinaryState(id: unknown, options: unknown, callback?: unknown): any {
-        this._logger.info(
-            `${
-                this.namespaceLog
-            } Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files (${
-                id as string
-            })`
-        );
-
-        if (typeof options === 'function') {
-            callback = options;
-            options = {};
-        }
-
-        Validator.assertString(id, 'id');
-        Validator.assertOptionalCallback(callback, 'callback');
-        if (options !== null && options !== undefined) {
-            Validator.assertObject(options, 'options');
-        }
-
-        return this._getForeignBinaryState({ id, options: options || {}, callback });
-    }
-
-    private async _getForeignBinaryState(_options: InternalGetBinaryStateOption): Promise<void> {
-        const { id, options, callback } = _options;
-
-        if (!this.#states) {
-            // if states is no longer existing, we do not need to unsubscribe
-            this._logger.info(
-                `${this.namespaceLog} getBinaryState not processed because States database not connected`
-            );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        try {
-            this._utils.validateId(id, true, options);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
-        }
-
-        // we need at least user or group for checkStates - if no given assume admin
-        if (!options.user) {
-            options.user = SYSTEM_ADMIN_USER;
-        }
-        // always read according object to set the binary flag
-        let obj: ioBroker.StateObject;
-
-        try {
-            obj = (await this._checkStates(id, options, 'getState')).objs[0];
-        } catch (e) {
-            return tools.maybeCallbackWithError(callback, e);
-        }
-
-        this.#states!.getBinaryState(id, (err, data) => {
-            if (!err && data && obj && !('binary' in obj)) {
-                // @ts-expect-error type adjustment needed?
-                obj.binary = true;
-                this.#objects!.setObject(id, obj, err => {
-                    if (err) {
-                        return tools.maybeCallbackWithError(callback, err);
-                    } else {
-                        return tools.maybeCallbackWithError(callback, null, data);
-                    }
-                });
-            } else {
-                // if no buffer, and state marked as not binary
-                if (!err && !data && obj && !('binary' in obj)) {
-                    return tools.maybeCallbackWithError(callback, 'State is not binary');
-                } else {
-                    return tools.maybeCallbackWithError(callback, err, data);
-                }
-            }
-        });
-    }
-    getBinaryState(id: string, callback: ioBroker.GetBinaryStateCallback): void;
-    getBinaryState(id: string, options: unknown, callback: ioBroker.GetBinaryStateCallback): void;
-
-    /**
-     * Same as getForeignBinaryState but prefixes the own namespace to the id
-     *
-     * @param id The state ID
-     * @param options optional
-     * @param callback
-     *
-     * @depreacted Please use `readFile` instead of binary states
-     */
-    getBinaryState(id: any, options: any, callback?: any): any {
-        // we use any types here, because validation takes place in foreign method
-        id = this._utils.fixId(id);
-        return this.getForeignBinaryState(id, options, callback);
-    }
-
-    delForeignBinaryState(id: string, callback?: ioBroker.ErrorCallback): void;
-    delForeignBinaryState(id: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
-
-    /**
-     * Deletes binary state
-     *
-     *
-     * @param id
-     * @param options
-     * @param callback
-     *
-     * @deprecated Please use `delFile` instead of binary states
-     */
-    delForeignBinaryState(id: unknown, options: unknown, callback?: unknown): any {
-        this._logger.info(
-            `${
-                this.namespaceLog
-            } Information for Developer: Binary States are deprecated and will be removed in js-controller 5.1, please migrate to Files (${
-                id as string
-            })`
-        );
-
-        if (typeof options === 'function') {
-            callback = options;
-            options = {};
-        }
-
-        Validator.assertString(id, 'id');
-        Validator.assertOptionalCallback(callback, 'callback');
-        if (options !== null && options !== undefined) {
-            Validator.assertObject(options, 'options');
-        }
-
-        return this._delForeignBinaryState({ id, options: options || {}, callback });
-    }
-
-    private async _delForeignBinaryState(_options: InternalDelBinaryStateOptions): Promise<void> {
-        const { id, options, callback } = _options;
-
-        if (!this.#states) {
-            // if states is no longer existing, we do not need to unsubscribe
-            this._logger.info(
-                `${this.namespaceLog} delBinaryState not processed because States database not connected`
-            );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        try {
-            this._utils.validateId(id, true, options);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
-        }
-
-        if (options.user && options.user !== SYSTEM_ADMIN_USER) {
-            try {
-                await this._checkStates(id, options, 'delState');
-            } catch (e) {
-                return tools.maybeCallbackWithError(callback, e);
-            }
-
-            this.#states!.delBinaryState(id, callback);
-        } else {
-            this.#states.delBinaryState(id, callback);
-        }
-    }
-
-    delBinaryState(id: string, callback?: ioBroker.ErrorCallback): void;
-    delBinaryState(id: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
-
-    /**
-     * Deletes binary state but prefixes the own namespace to the id
-     *
-     * @param id
-     * @param options
-     * @param callback
-     *
-     * @deprecated Please use `delFile` instead of binary states
-     */
-    delBinaryState(id: any, options: any, callback?: any): any {
-        // we use any types here, because validation takes place in foreign method
-        // TODO: call fixId as soon as adapters are migrated to setForeignBinaryState
-        // id = this._utils.fixId(id, false);
-        return this.delForeignBinaryState(id, options, callback);
     }
 
     getPluginInstance(name: string): ioBroker.Plugin | null;
@@ -10427,6 +10093,7 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * This method returns the list of license that can be used by this adapter
+     *
      * @param all if return the licenses, that used by other instances (true) or only for this instance (false)
      * @param adapterName Return licenses for specific adapter
      * @returns list of suitable licenses
@@ -10446,7 +10113,7 @@ export class AdapterClass extends EventEmitter {
 
             if (obj?.native?.licenses?.length) {
                 const now = Date.now();
-                const cert = fs.readFileSync(path.join(__dirname, '..', '..', 'cert', 'cloudCert.crt'));
+                const cert = fs.readFileSync(path.join(thisDir, '..', '..', 'cert', 'cloudCert.crt'));
                 let adapterObj: ioBroker.AdapterObject | null | undefined;
                 if (adapterName) {
                     try {
@@ -10539,6 +10206,27 @@ export class AdapterClass extends EventEmitter {
         });
 
         return licenses;
+    }
+
+    /**
+     * Add given id to log redirect list
+     *
+     * @param isActive if id should be added or removed
+     * @param id the id to add
+     */
+    private logRedirect(isActive: boolean, id: string): void {
+        // ignore itself
+        if (id === `system.adapter.${this.namespace}`) {
+            return;
+        }
+
+        if (isActive) {
+            if (!this.logList.has(id)) {
+                this.logList.add(id);
+            }
+        } else {
+            this.logList.delete(id);
+        }
     }
 
     private _reportStatus(): void {
@@ -10720,77 +10408,17 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private _initLogging(callback: () => void): void {
-        // temporary log buffer
-        let messages: null | any[] = [];
-        // Read current state of all log subscriber
-
+    /**
+     * Initialize the logging logic
+     */
+    private async _initLogging(): Promise<void> {
         if (!this.#states) {
             // if adapterState was destroyed, we can not continue
             return;
         }
 
-        this.#states.getKeys(`${SYSTEM_ADAPTER_PREFIX}*.logging`, (err, keys) => {
-            if (keys?.length) {
-                if (!this.#states) {
-                    // if adapterState was destroyed, we can not continue
-                    return;
-                }
-
-                this.#states.getStates(keys, (err, obj) => {
-                    if (obj) {
-                        for (let i = 0; i < keys.length; i++) {
-                            const objPart = obj[i];
-                            // We can JSON.parse, but index is 16x faster
-                            if (!objPart) {
-                                continue;
-                            }
-                            const id = keys[i].substring(0, keys[i].length - '.logging'.length);
-                            if (
-                                typeof objPart === 'string' &&
-                                // @ts-expect-error recheck this but getStates should not return string code-wise
-                                (objPart.includes('"val":true') || objPart.includes('"val":"true"'))
-                            ) {
-                                this.logRedirect!(true, id);
-                            } else if (
-                                typeof objPart === 'object' &&
-                                (objPart.val === true || objPart.val === 'true')
-                            ) {
-                                this.logRedirect!(true, id);
-                            }
-                        }
-                        if (this.logList.size && messages?.length && this.#states) {
-                            for (const message of messages) {
-                                for (const instanceId of this.logList) {
-                                    this.#states.pushLog(instanceId, message);
-                                }
-                            }
-                        }
-                    }
-                    // clear log buffer
-                    messages = null;
-                });
-            } else {
-                // disable log buffer
-                messages = null;
-            }
-            return tools.maybeCallback(callback);
-        });
-
-        this.logRedirect = (isActive, id): void => {
-            // ignore itself
-            if (id === `system.adapter.${this.namespace}`) {
-                return;
-            }
-
-            if (isActive) {
-                if (!this.logList.has(id)) {
-                    this.logList.add(id);
-                }
-            } else {
-                this.logList.delete(id);
-            }
-        };
+        // temporary log buffer
+        let messages: null | any[] = [];
 
         // If some message from logger
         // find our notifier transport
@@ -10821,6 +10449,42 @@ export class AdapterClass extends EventEmitter {
                 }
             }
         });
+
+        const keys = await this.#states.getKeys(`${SYSTEM_ADAPTER_PREFIX}*.logging`);
+        if (keys?.length) {
+            if (!this.#states) {
+                // if adapterState was destroyed, we can not continue
+                return;
+            }
+
+            const obj = await this.#states.getStates(keys);
+            if (obj) {
+                for (let i = 0; i < keys.length; i++) {
+                    const objPart = obj[i];
+                    // We can JSON.parse, but index is 16x faster
+                    if (!objPart) {
+                        continue;
+                    }
+                    const id = keys[i].substring(0, keys[i].length - '.logging'.length);
+
+                    if (typeof objPart === 'object' && (objPart.val === true || objPart.val === 'true')) {
+                        this.logRedirect(true, id);
+                    }
+                }
+                if (this.logList.size && messages?.length && this.#states) {
+                    for (const message of messages) {
+                        for (const instanceId of this.logList) {
+                            this.#states.pushLog(instanceId, message);
+                        }
+                    }
+                }
+            }
+            // clear log buffer
+            messages = null;
+        } else {
+            // disable log buffer
+            messages = null;
+        }
 
         this._options.logTransporter = this._options.logTransporter || this.ioPack.common.logTransporter;
 
@@ -11010,7 +10674,12 @@ export class AdapterClass extends EventEmitter {
                         }
                         // by deletion of state, stop this instance
                         if (sigKillVal !== process.pid && !this._config.forceIfDisabled) {
-                            this._stop(false, false, EXIT_CODES.ADAPTER_REQUESTED_TERMINATION, false);
+                            this._stop({
+                                isPause: false,
+                                isScheduled: false,
+                                exitCode: EXIT_CODES.ADAPTER_REQUESTED_TERMINATION,
+                                updateAliveState: false
+                            });
                             setTimeout(() => this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION), 4000);
                         }
                     }
@@ -11157,7 +10826,7 @@ export class AdapterClass extends EventEmitter {
                                 this.pluginHandler.instanciatePlugin(
                                     pluginName,
                                     this.pluginHandler.getPluginConfig(pluginName) || {},
-                                    __dirname
+                                    thisDir
                                 );
                                 this.pluginHandler.setDatabaseForPlugin(pluginName, this.#objects, this.#states);
                                 this.pluginHandler.initPlugin(pluginName, this.adapterConfig || {});
@@ -11507,397 +11176,390 @@ export class AdapterClass extends EventEmitter {
     /**
      * Called if states and objects successfully initialized
      */
-    private _prepareInitAdapter(): void {
+    private async _prepareInitAdapter(): Promise<void> {
         if (this.terminated || !this.#objects || !this.#states) {
             return;
         }
 
         if (this._options.instance !== undefined) {
-            this._initAdapter(this._options);
+            return this._initAdapter(this._options);
         } else {
-            this.#states.getState(`system.adapter.${this.namespace}.alive`, (err, resAlive) => {
-                this.#states!.getState(`system.adapter.${this.namespace}.sigKill`, (err, killRes) => {
-                    if (killRes?.val !== undefined) {
-                        killRes.val = parseInt(killRes.val as any, 10);
-                    }
-                    if (
-                        !this._config.isInstall &&
-                        this.startedInCompactMode &&
-                        killRes &&
-                        !killRes.ack &&
-                        killRes.val === -1
-                    ) {
-                        this._logger.error(
-                            `${this.namespaceLog} ${this.namespace} needs to be stopped because not correctly started in compact mode`
-                        );
-                        this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
-                    } else if (
-                        !this._config.forceIfDisabled &&
-                        !this._config.isInstall &&
-                        !this.startedInCompactMode &&
-                        killRes &&
-                        killRes.from &&
-                        killRes.from.startsWith('system.host.') &&
-                        killRes.ack &&
-                        !isNaN(killRes.val as any) &&
-                        killRes.val !== process.pid
-                    ) {
-                        this._logger.error(
-                            `${this.namespaceLog} ${this.namespace} invalid process id scenario ${killRes.val} vs. own ID ${process.pid}. Stopping`
-                        );
-                        this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
-                    } else if (
-                        !this._config.isInstall &&
-                        resAlive &&
-                        resAlive.val === true &&
-                        resAlive.ack &&
-                        !this._config.forceIfDisabled
-                    ) {
-                        this._logger.error(`${this.namespaceLog} ${this.namespace} already running`);
-                        this.terminate(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
-                    } else {
-                        this.#objects!.getObject(`system.adapter.${this.namespace}`, (err, res) => {
-                            // TODO: ts infers AdapterObject instead of InstanceObject
-                            if ((err || !res) && !this._config.isInstall) {
-                                this._logger.error(`${this.namespaceLog} ${this.namespace} invalid config`);
-                                this.terminate(EXIT_CODES.INVALID_ADAPTER_CONFIG);
-                            } else {
-                                this._initAdapter(res);
-                            }
-                        });
-                    }
-                });
-            });
+            const resAlive = await this.#states.getState(`system.adapter.${this.namespace}.alive`);
+            const killRes = await this.#states.getState(`system.adapter.${this.namespace}.sigKill`);
+
+            if (killRes?.val !== undefined) {
+                killRes.val = parseInt(killRes.val as any, 10);
+            }
+            if (!this._config.isInstall && this.startedInCompactMode && killRes && !killRes.ack && killRes.val === -1) {
+                this._logger.error(
+                    `${this.namespaceLog} ${this.namespace} needs to be stopped because not correctly started in compact mode`
+                );
+                this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+            } else if (
+                !this._config.forceIfDisabled &&
+                !this._config.isInstall &&
+                !this.startedInCompactMode &&
+                killRes &&
+                killRes.from?.startsWith('system.host.') &&
+                killRes.ack &&
+                !isNaN(killRes.val as any) &&
+                killRes.val !== process.pid
+            ) {
+                this._logger.error(
+                    `${this.namespaceLog} ${this.namespace} invalid process id scenario ${killRes.val} vs. own ID ${process.pid}. Stopping`
+                );
+                this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+            } else if (
+                !this._config.isInstall &&
+                resAlive &&
+                resAlive.val === true &&
+                resAlive.ack &&
+                !this._config.forceIfDisabled
+            ) {
+                this._logger.error(`${this.namespaceLog} ${this.namespace} already running`);
+                this.terminate(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
+            } else {
+                let res: ioBroker.InstanceObject | null | undefined;
+                try {
+                    res = await this.#objects.getObject(`system.adapter.${this.namespace}`);
+                } catch (e) {
+                    this._logger.error(
+                        `${this.namespaceLog} ${this.namespace} Could not get instance object: ${e.message}`
+                    );
+                }
+
+                if (!res && !this._config.isInstall) {
+                    this._logger.error(`${this.namespaceLog} ${this.namespace} invalid config`);
+                    this.terminate(EXIT_CODES.INVALID_ADAPTER_CONFIG);
+                } else {
+                    return this._initAdapter(res);
+                }
+            }
         }
     }
 
-    private _initAdapter(adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null): void {
-        this._initLogging(() => {
-            if (!this.pluginHandler) {
+    /**
+     * Initialize the adapter
+     *
+     * @param adapterConfig the AdapterOptions or the InstanceObject, is null/undefined if it is install process
+     */
+    private async _initAdapter(adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null): Promise<void> {
+        await this._initLogging();
+
+        if (!this.pluginHandler) {
+            return;
+        }
+        this.pluginHandler.setDatabaseForPlugins(this.#objects, this.#states);
+        this.pluginHandler.initPlugins(adapterConfig || {}, async () => {
+            if (!this.#states || !this.#objects || this.terminated) {
+                // if adapterState was destroyed,we should not continue
                 return;
             }
-            this.pluginHandler.setDatabaseForPlugins(this.#objects, this.#states);
-            this.pluginHandler.initPlugins(adapterConfig || {}, async () => {
-                if (!this.#states || !this.#objects || this.terminated) {
-                    // if adapterState was destroyed,we should not continue
-                    return;
-                }
 
-                this.#states.subscribe(`system.adapter.${this.namespace}.plugins.*`);
-                if (this._options.instance === undefined) {
-                    if (!adapterConfig || !('common' in adapterConfig) || !adapterConfig.common.enabled) {
-                        if (adapterConfig && 'common' in adapterConfig && adapterConfig.common.enabled !== undefined) {
-                            !this._config.isInstall && this._logger.error(`${this.namespaceLog} adapter disabled`);
-                        } else {
-                            !this._config.isInstall &&
-                                this._logger.error(`${this.namespaceLog} no config found for adapter`);
-                        }
+            this.#states.subscribe(`system.adapter.${this.namespace}.plugins.*`);
+            if (this._options.instance === undefined) {
+                if (!adapterConfig || !('common' in adapterConfig) || !adapterConfig.common.enabled) {
+                    if (adapterConfig && 'common' in adapterConfig && adapterConfig.common.enabled !== undefined) {
+                        !this._config.isInstall && this._logger.error(`${this.namespaceLog} adapter disabled`);
+                    } else {
+                        !this._config.isInstall &&
+                            this._logger.error(`${this.namespaceLog} no config found for adapter`);
+                    }
 
-                        if (!this._config.isInstall && (!process.argv || !this._config.forceIfDisabled)) {
-                            const id = `system.adapter.${this.namespace}`;
-                            this.outputCount += 2;
-                            this.#states.setState(`${id}.alive`, { val: true, ack: true, expire: 30, from: id });
-                            let done = false;
-                            this.#states.setState(
-                                `${id}.connected`,
-                                {
-                                    val: true,
-                                    ack: true,
-                                    expire: 30,
-                                    from: id
-                                },
-                                () => {
-                                    if (!done) {
-                                        done = true;
-                                        this.terminate(EXIT_CODES.NO_ADAPTER_CONFIG_FOUND);
-                                    }
-                                }
-                            );
-                            setTimeout(() => {
+                    if (!this._config.isInstall && (!process.argv || !this._config.forceIfDisabled)) {
+                        const id = `system.adapter.${this.namespace}`;
+                        this.outputCount += 2;
+                        this.#states.setState(`${id}.alive`, { val: true, ack: true, expire: 30, from: id });
+                        let done = false;
+                        this.#states.setState(
+                            `${id}.connected`,
+                            {
+                                val: true,
+                                ack: true,
+                                expire: 30,
+                                from: id
+                            },
+                            () => {
                                 if (!done) {
                                     done = true;
                                     this.terminate(EXIT_CODES.NO_ADAPTER_CONFIG_FOUND);
                                 }
-                            }, 1_000);
-                            return;
-                        }
-                    }
-
-                    if (!this._config.isInstall && (!adapterConfig || !('_id' in adapterConfig))) {
-                        this._logger.error(`${this.namespaceLog} invalid config: no _id found`);
-                        this.terminate(EXIT_CODES.INVALID_ADAPTER_ID);
+                            }
+                        );
+                        setTimeout(() => {
+                            if (!done) {
+                                done = true;
+                                this.terminate(EXIT_CODES.NO_ADAPTER_CONFIG_FOUND);
+                            }
+                        }, 1_000);
                         return;
                     }
-
-                    let name;
-                    let instance;
-
-                    if (!this._config.isInstall) {
-                        // @ts-expect-error
-                        const tmp = adapterConfig._id.match(/^system\.adapter\.([a-zA-Z0-9-_]+)\.([0-9]+)$/);
-                        if (!tmp) {
-                            this._logger.error(`${this.namespaceLog} invalid config`);
-                            this.terminate(EXIT_CODES.INVALID_ADAPTER_ID);
-                            return;
-                        }
-                        name = tmp[1];
-                        instance = parseInt(tmp[2]) || 0;
-                    } else {
-                        name = this.name;
-                        instance = 0;
-                        adapterConfig = adapterConfig || {
-                            // @ts-expect-error protectedNative exists on instance objects
-                            common: { mode: 'once', name: name, protectedNative: [] },
-                            native: {}
-                        };
-                    }
-
-                    // @ts-expect-error
-                    if (adapterConfig.common.loglevel && !this.overwriteLogLevel) {
-                        // set configured in DB log level
-                        for (const trans of Object.values(this._logger.transports)) {
-                            // set the loglevel on transport only if no loglevel was pinned in log config
-                            // @ts-expect-error it is our own modification
-                            if (!trans._defaultConfigLoglevel) {
-                                // @ts-expect-error
-                                trans.level = adapterConfig.common.loglevel;
-                            }
-                        }
-                        // @ts-expect-error
-                        this._config.log.level = adapterConfig.common.loglevel;
-                    }
-
-                    // @ts-expect-error
-                    this.name = adapterConfig.common.name;
-                    this.instance = instance;
-                    this.namespace = `${name}.${instance}`;
-                    this.namespaceLog =
-                        this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
-                    if (!this.startedInCompactMode) {
-                        process.title = `io.${this.namespace}`;
-                    }
-
-                    // @ts-expect-error
-                    this.config = adapterConfig.native;
-                    // @ts-expect-error
-                    this.host = adapterConfig.common.host;
-                    // @ts-expect-error
-                    this.common = adapterConfig.common;
-
-                    if (
-                        // @ts-expect-error
-                        adapterConfig.common.mode === 'subscribe' ||
-                        // @ts-expect-error
-                        adapterConfig.common.mode === 'schedule' ||
-                        // @ts-expect-error
-                        adapterConfig.common.mode === 'once'
-                    ) {
-                        this.stop = () => this._stop(true);
-                    } else if (this.startedInCompactMode) {
-                        this.stop = () => this._stop(false);
-                        this.kill = this.stop;
-                    } else {
-                        this.stop = () => this._stop(false);
-                    }
-
-                    // Monitor logging state
-                    this.#states.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.logging`);
-
-                    if (
-                        typeof this._options.message === 'function' &&
-                        // @ts-expect-error, we should infer correctly that this is an InstanceObject in this case
-                        !isMessageboxSupported(adapterConfig.common)
-                    ) {
-                        this._logger.error(
-                            `${this.namespaceLog} : message handler implemented, but messagebox not enabled. Define common.messagebox in io-package.json for adapter or delete message handler.`
-                        );
-                        // @ts-expect-error we should infer adapterConfig correctly
-                    } else if (isMessageboxSupported(adapterConfig.common)) {
-                        this.mboxSubscribed = true;
-                        this.#states.subscribeMessage(`system.adapter.${this.namespace}`);
-                    }
-                } else {
-                    // @ts-expect-error
-                    this.name = adapterConfig.name || this.name;
-                    // @ts-expect-error
-                    this.instance = adapterConfig.instance || 0;
-                    this.namespace = `${this.name}.${this.instance!}`;
-                    this.namespaceLog =
-                        this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
-                    // @ts-expect-error
-                    this.config = adapterConfig.native || {};
-                    // @ts-expect-error
-                    this.common = adapterConfig.common || {};
-                    this.host = this.common?.host || tools.getHostName() || os.hostname();
                 }
 
-                this.adapterConfig = adapterConfig;
-
-                this._utils = new Validator(
-                    this.#objects,
-                    this.#states,
-                    this.namespaceLog,
-                    this._logger,
-                    this.namespace,
-                    this._namespaceRegExp
-                );
-
-                this.log = new Log(this.namespaceLog, this._config.log.level, this._logger);
-
-                await this._createInstancesObjects(adapterConfig as ioBroker.InstanceObject);
-
-                // auto oObjects
-                if (this._options.objects) {
-                    this.oObjects = await this.getAdapterObjectsAsync();
-                    await this.subscribeObjectsAsync('*');
-                }
-
-                // initialize the system secret
-                await this.getSystemSecret();
-
-                // Decrypt all attributes of encryptedNative
-                const promises = [];
-                // @ts-expect-error
-                if (Array.isArray(adapterConfig.encryptedNative)) {
-                    // @ts-expect-error
-                    for (const attr of adapterConfig.encryptedNative) {
-                        // we can only decrypt strings
-                        // @ts-expect-error
-                        if (typeof this.config[attr] === 'string') {
-                            promises.push(
-                                this.getEncryptedConfig(attr)
-                                    // @ts-expect-error
-                                    .then(decryptedValue => (this.config[attr] = decryptedValue))
-                                    .catch(e =>
-                                        this._logger.error(
-                                            `${this.namespaceLog} Can not decrypt attribute ${attr}: ${e.message}`
-                                        )
-                                    )
-                            );
-                        }
-                    }
-                } else {
-                    // remove encrypted native from supported features, otherwise this can cause issues, if no adapter upload done with js-c v3+ yet
-                    const idx = this.SUPPORTED_FEATURES.indexOf('ADAPTER_AUTO_DECRYPT_NATIVE');
-                    if (idx !== -1) {
-                        this.SUPPORTED_FEATURES.splice(idx, 1);
-                    }
-                }
-
-                // Wait till all attributes decrypted
-                await Promise.all(promises);
-
-                if (!this.#states) {
-                    // if this.adapterStates was destroyed, we should not continue
+                if (!this._config.isInstall && (!adapterConfig || !('_id' in adapterConfig))) {
+                    this._logger.error(`${this.namespaceLog} invalid config: no _id found`);
+                    this.terminate(EXIT_CODES.INVALID_ADAPTER_ID);
                     return;
                 }
 
-                this.outputCount++;
-                // set current loglevel
-                this.#states.setState(`system.adapter.${this.namespace}.logLevel`, {
-                    val: this._config.log.level,
-                    ack: true,
-                    from: `system.adapter.${this.namespace}`
-                });
+                let name;
+                let instance;
 
-                if (this._options.instance === undefined) {
-                    this.version = this.pack?.version
-                        ? this.pack.version
-                        : this.ioPack?.common
-                        ? this.ioPack.common.version
-                        : 'unknown';
-                    // display if it's a non-official version - only if installedFrom is explicitly given and differs it's not npm
-                    const isNpmVersion =
-                        !this.ioPack ||
-                        !this.ioPack.common ||
-                        typeof this.ioPack.common.installedFrom !== 'string' ||
-                        this.ioPack.common.installedFrom.startsWith(`${tools.appName.toLowerCase()}.${this.name}`);
+                if (!this._config.isInstall) {
+                    // @ts-expect-error
+                    const tmp = adapterConfig._id.match(/^system\.adapter\.([a-zA-Z0-9-_]+)\.([0-9]+)$/);
+                    if (!tmp) {
+                        this._logger.error(`${this.namespaceLog} invalid config`);
+                        this.terminate(EXIT_CODES.INVALID_ADAPTER_ID);
+                        return;
+                    }
+                    name = tmp[1];
+                    instance = parseInt(tmp[2]) || 0;
+                } else {
+                    name = this.name;
+                    instance = 0;
+                    adapterConfig = adapterConfig || {
+                        // @ts-expect-error protectedNative exists on instance objects
+                        common: { mode: 'once', name: name, protectedNative: [] },
+                        native: {}
+                    };
+                }
 
-                    this._logger.info(
-                        `${this.namespaceLog} starting. Version ${this.version} ${
-                            !isNpmVersion ? `(non-npm: ${this.ioPack.common.installedFrom}) ` : ''
-                        }in ${this.adapterDir}, node: ${process.version}, js-controller: ${controllerVersion}`
+                // @ts-expect-error
+                if (adapterConfig.common.loglevel && !this.overwriteLogLevel) {
+                    // set configured in DB log level
+                    for (const trans of Object.values(this._logger.transports)) {
+                        // set the loglevel on transport only if no loglevel was pinned in log config
+                        // @ts-expect-error it is our own modification
+                        if (!trans._defaultConfigLoglevel) {
+                            // @ts-expect-error
+                            trans.level = adapterConfig.common.loglevel;
+                        }
+                    }
+                    // @ts-expect-error
+                    this._config.log.level = adapterConfig.common.loglevel;
+                }
+
+                // @ts-expect-error
+                this.name = adapterConfig.common.name;
+                this.instance = instance;
+                this.namespace = `${name}.${instance}`;
+                this.namespaceLog = this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
+                if (!this.startedInCompactMode) {
+                    process.title = `io.${this.namespace}`;
+                }
+
+                // @ts-expect-error
+                this.config = adapterConfig.native;
+                // @ts-expect-error
+                this.host = adapterConfig.common.host;
+                // @ts-expect-error
+                this.common = adapterConfig.common;
+
+                if (
+                    // @ts-expect-error
+                    adapterConfig.common.mode === 'schedule' ||
+                    // @ts-expect-error
+                    adapterConfig.common.mode === 'once'
+                ) {
+                    this.stop = params => this._stop({ ...params, isPause: true });
+                } else if (this.startedInCompactMode) {
+                    this.stop = params => this._stop({ ...params, isPause: false });
+                    this.kill = this.stop;
+                } else {
+                    this.stop = params => this._stop({ ...params, isPause: false });
+                }
+
+                // Monitor logging state
+                this.#states.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.logging`);
+
+                if (
+                    typeof this._options.message === 'function' &&
+                    // @ts-expect-error, we should infer correctly that this is an InstanceObject in this case
+                    !isMessageboxSupported(adapterConfig.common)
+                ) {
+                    this._logger.error(
+                        `${this.namespaceLog} : message handler implemented, but messagebox not enabled. Define common.messagebox in io-package.json for adapter or delete message handler.`
                     );
-                    this._config.system = this._config.system || {};
-                    this._config.system.statisticsInterval =
-                        parseInt(this._config.system.statisticsInterval, 10) || 15_000;
-                    if (!this._config.isInstall) {
-                        this._reportInterval = setInterval(
-                            () => this._reportStatus(),
-                            this._config.system.statisticsInterval
+                    // @ts-expect-error we should infer adapterConfig correctly
+                } else if (isMessageboxSupported(adapterConfig.common)) {
+                    this.mboxSubscribed = true;
+                    this.#states.subscribeMessage(`system.adapter.${this.namespace}`);
+                }
+            } else {
+                // @ts-expect-error
+                this.name = adapterConfig.name || this.name;
+                // @ts-expect-error
+                this.instance = adapterConfig.instance || 0;
+                this.namespace = `${this.name}.${this.instance!}`;
+                this.namespaceLog = this.namespace + (this.startedInCompactMode ? ' (COMPACT)' : ` (${process.pid})`);
+                // @ts-expect-error
+                this.config = adapterConfig.native || {};
+                // @ts-expect-error
+                this.common = adapterConfig.common || {};
+                this.host = this.common?.host || tools.getHostName() || os.hostname();
+            }
+
+            this.adapterConfig = adapterConfig;
+
+            this._utils = new Validator(
+                this.#objects,
+                this.#states,
+                this.namespaceLog,
+                this._logger,
+                this.namespace,
+                this._namespaceRegExp
+            );
+
+            this.log = new Log(this.namespaceLog, this._config.log.level, this._logger);
+
+            await this._createInstancesObjects(adapterConfig as ioBroker.InstanceObject);
+
+            // auto oObjects
+            if (this._options.objects) {
+                this.oObjects = await this.getAdapterObjectsAsync();
+                await this.subscribeObjectsAsync('*');
+            }
+
+            // initialize the system secret
+            await this.getSystemSecret();
+
+            // Decrypt all attributes of encryptedNative
+            const promises = [];
+            // @ts-expect-error
+            if (Array.isArray(adapterConfig.encryptedNative)) {
+                // @ts-expect-error
+                for (const attr of adapterConfig.encryptedNative) {
+                    // we can only decrypt strings
+                    // @ts-expect-error
+                    if (typeof this.config[attr] === 'string') {
+                        promises.push(
+                            this.getEncryptedConfig(attr)
+                                // @ts-expect-error
+                                .then(decryptedValue => (this.config[attr] = decryptedValue))
+                                .catch(e =>
+                                    this._logger.error(
+                                        `${this.namespaceLog} Can not decrypt attribute ${attr}: ${e.message}`
+                                    )
+                                )
                         );
-                        this._reportStatus();
-                        const id = `system.adapter.${this.namespace}`;
-                        this.#states.setState(`${id}.compactMode`, {
-                            ack: true,
-                            from: id,
-                            val: !!this.startedInCompactMode
-                        });
-
-                        this.outputCount++;
-
-                        if (this.startedInCompactMode) {
-                            this.#states.setState(`${id}.cpu`, { ack: true, from: id, val: 0 });
-                            this.#states.setState(`${id}.cputime`, { ack: true, from: id, val: 0 });
-                            this.#states.setState(`${id}.memRss`, { val: 0, ack: true, from: id });
-                            this.#states.setState(`${id}.memHeapTotal`, { val: 0, ack: true, from: id });
-                            this.#states.setState(`${id}.memHeapUsed`, { val: 0, ack: true, from: id });
-                            this.#states.setState(`${id}.eventLoopLag`, { val: 0, ack: true, from: id });
-                            this.outputCount += 6;
-                        } else {
-                            tools.measureEventLoopLag(1_000, lag => {
-                                if (lag) {
-                                    this.eventLoopLags.push(lag);
-                                }
-                            });
-                        }
                     }
                 }
-
-                if (adapterConfig && 'common' in adapterConfig && adapterConfig.common.restartSchedule) {
-                    try {
-                        this._schedule = await import('node-schedule');
-                    } catch {
-                        this._logger.error(
-                            `${this.namespaceLog} Cannot load node-schedule. Scheduled restart is disabled`
-                        );
-                    }
-                    if (this._schedule) {
-                        this._logger.debug(
-                            `${this.namespaceLog} Schedule restart: ${adapterConfig.common.restartSchedule}`
-                        );
-                        this._restartScheduleJob = this._schedule.scheduleJob(
-                            adapterConfig.common.restartSchedule,
-                            () => {
-                                this._logger.info(`${this.namespaceLog} Scheduled restart.`);
-                                this._stop(false, true);
-                            }
-                        );
-                    }
+            } else {
+                // remove encrypted native from supported features, otherwise this can cause issues, if no adapter upload done with js-c v3+ yet
+                const idx = this.SUPPORTED_FEATURES.indexOf('ADAPTER_AUTO_DECRYPT_NATIVE');
+                if (idx !== -1) {
+                    this.SUPPORTED_FEATURES.splice(idx, 1);
                 }
+            }
 
-                // auto oStates
-                if (this._options.states) {
-                    this.getStates('*', null, (err, _states) => {
-                        if (this._stopInProgress) {
-                            return;
-                        }
+            // Wait till all attributes decrypted
+            await Promise.all(promises);
 
-                        this.oStates = _states;
-                        this.subscribeStates('*');
+            if (!this.#states) {
+                // if this.adapterStates was destroyed, we should not continue
+                return;
+            }
 
-                        if (this._firstConnection) {
-                            this._firstConnection = false;
-                            this._callReadyHandler();
-                        }
-
-                        this.adapterReady = true;
-                    });
-                } else if (!this._stopInProgress) {
-                    this._callReadyHandler();
-                    this.adapterReady = true;
-                }
+            this.outputCount++;
+            // set current loglevel
+            this.#states.setState(`system.adapter.${this.namespace}.logLevel`, {
+                val: this._config.log.level,
+                ack: true,
+                from: `system.adapter.${this.namespace}`
             });
+
+            if (this._options.instance === undefined) {
+                this.version = this.pack?.version
+                    ? this.pack.version
+                    : this.ioPack?.common
+                    ? this.ioPack.common.version
+                    : 'unknown';
+                // display if it's a non-official version - only if installedFrom is explicitly given and differs it's not npm
+                const isNpmVersion =
+                    !this.ioPack ||
+                    !this.ioPack.common ||
+                    typeof this.ioPack.common.installedFrom !== 'string' ||
+                    this.ioPack.common.installedFrom.startsWith(`${tools.appName.toLowerCase()}.${this.name}`);
+
+                this._logger.info(
+                    `${this.namespaceLog} starting. Version ${this.version} ${
+                        !isNpmVersion ? `(non-npm: ${this.ioPack.common.installedFrom}) ` : ''
+                    }in ${this.adapterDir}, node: ${process.version}, js-controller: ${controllerVersion}`
+                );
+                this._config.system = this._config.system || {};
+                this._config.system.statisticsInterval = parseInt(this._config.system.statisticsInterval, 10) || 15_000;
+                if (!this._config.isInstall) {
+                    this._reportInterval = setInterval(
+                        () => this._reportStatus(),
+                        this._config.system.statisticsInterval
+                    );
+                    this._reportStatus();
+                    const id = `system.adapter.${this.namespace}`;
+                    this.#states.setState(`${id}.compactMode`, {
+                        ack: true,
+                        from: id,
+                        val: !!this.startedInCompactMode
+                    });
+
+                    this.outputCount++;
+
+                    if (this.startedInCompactMode) {
+                        this.#states.setState(`${id}.cpu`, { ack: true, from: id, val: 0 });
+                        this.#states.setState(`${id}.cputime`, { ack: true, from: id, val: 0 });
+                        this.#states.setState(`${id}.memRss`, { val: 0, ack: true, from: id });
+                        this.#states.setState(`${id}.memHeapTotal`, { val: 0, ack: true, from: id });
+                        this.#states.setState(`${id}.memHeapUsed`, { val: 0, ack: true, from: id });
+                        this.#states.setState(`${id}.eventLoopLag`, { val: 0, ack: true, from: id });
+                        this.outputCount += 6;
+                    } else {
+                        tools.measureEventLoopLag(1_000, lag => {
+                            if (lag) {
+                                this.eventLoopLags.push(lag);
+                            }
+                        });
+                    }
+                }
+            }
+
+            if (adapterConfig && 'common' in adapterConfig && adapterConfig.common.restartSchedule) {
+                try {
+                    this._schedule = await import('node-schedule');
+                } catch {
+                    this._logger.error(`${this.namespaceLog} Cannot load node-schedule. Scheduled restart is disabled`);
+                }
+                if (this._schedule) {
+                    this._logger.debug(
+                        `${this.namespaceLog} Schedule restart: ${adapterConfig.common.restartSchedule}`
+                    );
+                    this._restartScheduleJob = this._schedule.scheduleJob(adapterConfig.common.restartSchedule, () => {
+                        this._logger.info(`${this.namespaceLog} Scheduled restart.`);
+                        this._stop({ isPause: false, isScheduled: true });
+                    });
+                }
+            }
+
+            // auto oStates
+            if (this._options.states) {
+                this.getStates('*', null, (err, _states) => {
+                    if (this._stopInProgress) {
+                        return;
+                    }
+
+                    this.oStates = _states;
+                    this.subscribeStates('*');
+
+                    if (this._firstConnection) {
+                        this._firstConnection = false;
+                        this._callReadyHandler();
+                    }
+
+                    this.adapterReady = true;
+                });
+            } else if (!this._stopInProgress) {
+                this._callReadyHandler();
+                this.adapterReady = true;
+            }
         });
     }
 
@@ -11973,7 +11635,12 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            this._stop(false, false, EXIT_CODES.UNCAUGHT_EXCEPTION, false);
+            this._stop({
+                isPause: false,
+                isScheduled: false,
+                exitCode: EXIT_CODES.UNCAUGHT_EXCEPTION,
+                updateAliveState: false
+            });
             setTimeout(() => this.terminate(EXIT_CODES.UNCAUGHT_EXCEPTION), 1_000);
         } catch (err) {
             this._logger.error(`${this.namespaceLog} exception by stop: ${err ? err.message : err}`);
@@ -11984,8 +11651,7 @@ export class AdapterClass extends EventEmitter {
         let objs: (IoPackageInstanceObject & { state?: unknown })[];
 
         if (instanceObj?.common && !('onlyWWW' in instanceObj.common) && instanceObj.common.mode !== 'once') {
-            // @ts-expect-error
-            objs = tools.getInstanceIndicatorObjects(this.namespace, instanceObj.common.wakeup);
+            objs = tools.getInstanceIndicatorObjects(this.namespace);
         } else {
             objs = [];
         }
@@ -11994,63 +11660,65 @@ export class AdapterClass extends EventEmitter {
             for (const instObj of instanceObj.instanceObjects) {
                 const obj: IoPackageInstanceObject & { state?: unknown } = instObj;
 
+                // the object comes from non-checked io-package, so treat the id as unknown
+                if (!obj || typeof (obj._id as unknown) !== 'string' || (!obj._id && obj.type !== 'meta')) {
+                    this._logger.error(
+                        `${this.namespaceLog} ${this.namespace} invalid instance object: ${JSON.stringify(obj)}`
+                    );
+                    continue;
+                }
+
                 if (!obj._id.startsWith(this.namespace)) {
                     // instanceObjects are normally defined without namespace prefix
                     obj._id = obj._id === '' ? this.namespace : `${this.namespace}.${obj._id}`;
                 }
 
-                if (obj && (obj._id || obj.type === 'meta')) {
-                    if (obj.common?.name) {
-                        const commonName = obj.common.name;
-                        // if name has many languages
-                        if (tools.isObject(commonName)) {
-                            for (const [lang, value] of Object.entries(commonName)) {
-                                commonName[lang as ioBroker.Languages] = value.replace(
+                if (obj.common?.name) {
+                    const commonName = obj.common.name;
+                    // if name has many languages
+                    if (tools.isObject(commonName)) {
+                        for (const [lang, value] of Object.entries(commonName)) {
+                            commonName[lang as ioBroker.Languages] = value.replace(
+                                '%INSTANCE%',
+                                this.instance!.toString()
+                            );
+                        }
+                    } else {
+                        obj.common.name = commonName.replace('%INSTANCE%', this.instance!.toString());
+                    }
+
+                    if ('desc' in obj.common) {
+                        const commonDesc = obj.common.desc;
+
+                        // if description has many languages
+                        if (tools.isObject(commonDesc)) {
+                            for (const [lang, value] of Object.entries(commonDesc)) {
+                                commonDesc[lang as ioBroker.Languages] = value.replace(
                                     '%INSTANCE%',
                                     this.instance!.toString()
                                 );
                             }
-                        } else {
-                            obj.common.name = commonName.replace('%INSTANCE%', this.instance!.toString());
-                        }
-
-                        if ('desc' in obj.common) {
-                            const commonDesc = obj.common.desc;
-
-                            // if description has many languages
-                            if (tools.isObject(commonDesc)) {
-                                for (const [lang, value] of Object.entries(commonDesc)) {
-                                    commonDesc[lang as ioBroker.Languages] = value.replace(
-                                        '%INSTANCE%',
-                                        this.instance!.toString()
-                                    );
-                                }
-                            } else if (commonDesc) {
-                                obj.common.desc = commonDesc.replace('%INSTANCE%', this.instance!.toString());
-                            }
-                        }
-
-                        if (obj.type === 'state' && obj.common.def !== undefined) {
-                            // default value given - if obj non-existing we have to set it
-                            try {
-                                const checkObj = await this.#objects!.objectExists(obj._id);
-                                if (!checkObj) {
-                                    obj.state = obj.common.def;
-                                }
-                            } catch (e) {
-                                this._logger.warn(
-                                    `${this.namespaceLog} Did not add default (${obj.common.def}) value on creation of ${obj._id}: ${e.message}`
-                                );
-                            }
+                        } else if (commonDesc) {
+                            obj.common.desc = commonDesc.replace('%INSTANCE%', this.instance!.toString());
                         }
                     }
 
-                    objs.push(obj);
-                } else {
-                    this._logger.error(
-                        `${this.namespaceLog} ${this.namespace} invalid instance object: ${JSON.stringify(obj)}`
-                    );
+                    if (obj.type === 'state' && obj.common.def !== undefined) {
+                        // default value given - if obj non-existing we have to set it
+                        try {
+                            const checkObj = await this.#objects!.objectExists(obj._id);
+                            if (!checkObj) {
+                                obj.state = obj.common.def;
+                            }
+                        } catch (e) {
+                            this._logger.warn(
+                                `${this.namespaceLog} Did not add default (${obj.common.def}) value on creation of ${obj._id}: ${e.message}`
+                            );
+                        }
+                    }
                 }
+
+                objs.push(obj);
             }
         }
 
@@ -12162,7 +11830,7 @@ export class AdapterClass extends EventEmitter {
                 }
 
                 this.inited = true;
-                this._initStates(this._prepareInitAdapter.bind(this));
+                this._initStates(() => this._prepareInitAdapter());
             });
         };
 
@@ -12189,7 +11857,7 @@ export class AdapterClass extends EventEmitter {
                 throw new Error(`Unknown states type: ${this._config.states.type}: ${err.message}`);
             }
         } else {
-            this.States = getStatesConstructor();
+            this.States = await getStatesConstructor();
         }
 
         if (this._config.objects && this._config.objects.type) {
@@ -12199,7 +11867,7 @@ export class AdapterClass extends EventEmitter {
                 throw new Error(`Unknown objects type: ${this._config.objects.type}: ${err.message}`);
             }
         } else {
-            this.Objects = getObjectsConstructor();
+            this.Objects = await getObjectsConstructor();
         }
 
         const ifaces = os.networkInterfaces();
@@ -12237,7 +11905,7 @@ export class AdapterClass extends EventEmitter {
 
         this.pluginHandler = new PluginHandler(pluginSettings);
         try {
-            this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, __dirname]); // first resolve from adapter directory, else from js-controller
+            this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, thisDir]); // first resolve from adapter directory, else from js-controller
         } catch (e) {
             this._logger.error(`Could not add plugins: ${e.message}`);
         }
@@ -12248,11 +11916,10 @@ export class AdapterClass extends EventEmitter {
 
 /**
  * Polyfill to allow calling without `new`
- * @type {AdapterClass}
  */
 export const Adapter = new Proxy(AdapterClass, {
     apply(target, thisArg, argArray) {
         // @ts-expect-error fix later on if necessary
         return new target(...argArray);
     }
-});
+}) as typeof AdapterClass;

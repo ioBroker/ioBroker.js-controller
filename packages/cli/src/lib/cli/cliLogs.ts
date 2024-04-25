@@ -1,9 +1,12 @@
-import { CLICommand, type CLICommandOptions } from './cliCommand';
+import { CLICommand, type CLICommandOptions } from './cliCommand.js';
 import { tools, logger as toolsLogger } from '@iobroker/js-controller-common';
 import chokidar from 'chokidar';
 import fs from 'fs-extra';
-import os from 'os';
+import os from 'node:os';
 import es from 'event-stream';
+import { createRequire } from 'node:module';
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __filename);
 
 const { getConfigFileName } = tools;
 
@@ -77,6 +80,7 @@ export class CLILogs extends CLICommand {
 
     /**
      * Called by chokidar when watched files change
+     *
      * @param options some options
      * @param event The type of change
      * @param path Which path has changed
@@ -101,6 +105,7 @@ export class CLILogs extends CLICommand {
 
     /**
      * If the log file belongs to today
+     *
      * @param path The log file path
      */
     isTodaysLogfile(path: string): boolean {
@@ -110,6 +115,7 @@ export class CLILogs extends CLICommand {
 
     /**
      * Streams a portion of a file to the console
+     *
      * @param path The file to stream
      * @param start The offset in bytes where to start
      * @param options some options

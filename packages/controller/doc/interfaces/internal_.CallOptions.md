@@ -33,7 +33,7 @@
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:33
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:33
 
 ___
 
@@ -43,7 +43,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:29
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:29
 
 ___
 
@@ -53,7 +53,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:28
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:28
 
 ___
 
@@ -63,7 +63,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:31
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:31
 
 ___
 
@@ -73,7 +73,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:32
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:32
 
 ___
 
@@ -83,4 +83,4 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/lib/objects/objectsInRedisClient.d.ts:30
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:30

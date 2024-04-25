@@ -1,4 +1,4 @@
-import { MAX_TIMEOUT, SYSTEM_ADMIN_USER } from '@/lib/adapter/constants';
+import { MAX_TIMEOUT, SYSTEM_ADMIN_USER } from '@/lib/adapter/constants.js';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 
 type Callback = (...args: any[]) => void | Promise<void>;
@@ -21,6 +21,7 @@ export class Validator {
 
     /**
      * Validator for internal adapter.js usage
+     *
      * @param objects - Objects DB
      * @param states - States DB
      * @param namespaceLog - Log prefix
@@ -81,18 +82,12 @@ export class Validator {
 
                 if (state.val !== null) {
                     // now check if a type is correct, null is always allowed
-                    if (obj.common.type === 'file') {
-                        // file has to be set with setBinaryState
-                        this.log.warn(
-                            `${this.namespaceLog} State to set for "${id}" has to be written with setBinaryState/Async, because its object is of type "file"`
-                        );
-                    } else if (
+                    if (
                         !(
                             (obj.common.type === 'mixed' && typeof state.val !== 'object') ||
                             (obj.common.type !== 'object' && obj.common.type === typeof state.val) ||
                             (obj.common.type === 'array' && typeof state.val === 'string') ||
                             (obj.common.type === 'json' && typeof state.val === 'string') ||
-                            (obj.common.type === 'file' && typeof state.val === 'string') ||
                             (obj.common.type === 'object' && typeof state.val === 'string')
                         )
                     ) {
@@ -224,7 +219,7 @@ export class Validator {
      * Look up the error description for an error code
      *
      * @param code error code
-     * @return error description
+     * @returns error description
      */
     static getErrorText(code: number): string {
         code = code || 0;
@@ -233,6 +228,7 @@ export class Validator {
 
     /**
      * Throws if a type is not matching the expected type
+     *
      * @param value value to check a type of
      * @param name name of the parameter for logging
      */
@@ -246,6 +242,7 @@ export class Validator {
 
     /**
      * Throws if a type is not a pattern
+     *
      * @param value value to check a type of
      * @param name name of the parameter for logging
      */
@@ -267,6 +264,7 @@ export class Validator {
 
     /**
      * Throws if a type is not matching the expected type
+     *
      * @param value value to check a type of
      * @param name name of the parameter for logging
      */
@@ -280,6 +278,7 @@ export class Validator {
 
     /**
      * Throws if a type is not matching the expected type
+     *
      * @param value value to check a type of
      * @param name name of the parameter for logging
      */
@@ -293,10 +292,14 @@ export class Validator {
 
     /**
      * Throws if a type is not matching the expected type
+     *
      * @param value value to check a type of
      * @param name name of the parameter for logging
      */
-    static assertObject(value: unknown, name: string): asserts value is Record<string, any> {
+    static assertObject<T extends Record<string, any> = Record<string, any>>(
+        value: unknown,
+        name: string
+    ): asserts value is T {
         if (!tools.isObject(value)) {
             throw new Error(`Parameter "${name}" needs to be a real object but type "${typeof value}" has been passed`);
         }
@@ -304,6 +307,7 @@ export class Validator {
 
     /**
      * Throws if a type is not an optional callback
+     *
      * @param value value to check a type of
      * @param name name of the parameter for logging
      */
@@ -315,6 +319,7 @@ export class Validator {
 
     /**
      * Throws if a type is not an optional callback
+     *
      * @param value value to check a type of
      * @param name name of the parameter for logging
      */
@@ -328,6 +333,7 @@ export class Validator {
 
     /**
      * Throws if a type is not an optional callback
+     *
      * @param value value to check a type of
      * @param name name of the parameter for logging
      */
@@ -374,6 +380,7 @@ export class Validator {
 
     /**
      * Validates the object-type argument that is passed to setState
+     *
      * @param obj object to validate
      */
     validateSetStateObjectArgument(obj: Record<string, any>): void {

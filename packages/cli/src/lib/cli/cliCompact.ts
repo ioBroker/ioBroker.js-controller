@@ -12,6 +12,7 @@ export class CLICompact extends CLICommand {
     }
     /**
      * Executes a command
+     *
      * @param args
      */
     execute(args: any[]): void {

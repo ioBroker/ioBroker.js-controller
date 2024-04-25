@@ -18,15 +18,6 @@
     // Enable syntax help for importing JSON files
     "resolveJsonModule": true,
     "useUnknownInCatchVariables": false,
-    "typeRoots": [
-      "node_modules/@types",
-      "packages"
-    ],
-    "types": [
-      "@iobroker/types-dev",
-      "node",
-      "mocha"
-    ],
     "pretty": true
   },
   "include": [

@@ -450,13 +450,6 @@ export interface InternalSubscribeOptions {
     callback?: ioBroker.ErrorCallback;
 }
 
-export interface InternalSetBinaryStateOptions {
-    id: string;
-    options?: Record<string, any> | null;
-    binary: Buffer;
-    callback?: ioBroker.SetStateCallback;
-}
-
 export interface InternalAddChannelToEnumOptions {
     enumName: string;
     addTo: string;
@@ -507,18 +500,6 @@ export interface InternalGetStatesOptions {
     pattern: Pattern;
     options: Record<string, any>;
     callback: ioBroker.GetStatesCallback;
-}
-
-export interface InternalGetBinaryStateOption {
-    id: string;
-    options: Record<string, any>;
-    callback?: ioBroker.GetBinaryStateCallback;
-}
-
-export interface InternalDelBinaryStateOptions {
-    id: string;
-    options: Record<string, any>;
-    callback?: ioBroker.ErrorCallback;
 }
 
 export interface InternalDeleteDeviceOptions {
@@ -579,8 +560,34 @@ export interface InternalDeleteStateFromEnumOptions {
     callback?: ioBroker.ErrorCallback;
 }
 
+export interface StopParameters {
+    /** Specify an optional exit code */
+    exitCode?: number;
+    /** Specify an optional reason for stoppage */
+    reason?: string;
+}
+
+export interface InternalStopParameters extends StopParameters {
+    /** If mode is schedule or once */
+    isPause?: boolean;
+    /** If it has a restart schedule running */
+    isScheduled?: boolean;
+    /** If alive state should be updated, if undefined defaults to true */
+    updateAliveState?: boolean;
+}
+
 /**
  * The internal adapter config type should only be used to access config properties which are set by the adapter developers.
  * Only use it like `this.config as InternalAdapterConfig`
  */
 export type InternalAdapterConfig = Record<string, unknown>;
+
+export interface InstallNodeModuleOptions {
+    /** Version of node module */
+    version: string;
+}
+
+export interface InternalInstallNodeModuleOptions extends InstallNodeModuleOptions {
+    /** Name of the npm module */
+    moduleName: string;
+}

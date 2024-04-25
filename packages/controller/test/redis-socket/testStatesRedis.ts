@@ -1,11 +1,14 @@
-import fs from 'fs';
-import path from 'path';
+import fs from 'node:fs';
+import path from 'node:path';
 import { expect } from 'chai';
-import { startController, stopController } from '../lib/setup4controller';
-import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
-import type { StateRedisClient } from '@iobroker/db-states-redis/build/lib/states/statesInRedisClient';
+import { startController, stopController } from '../lib/setup4controller.js';
+import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
+import type { Client as StateRedisClient } from '@iobroker/db-states-redis';
+import * as url from 'node:url';
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 
-const dataDir = path.join(__dirname, '..', '..', 'tmp', 'data');
+const dataDir = path.join(thisDir, '..', '..', 'tmp', 'data');
 let objects: ObjectsInRedisClient | null = null;
 let states: StateRedisClient | null = null;
 let onStatesChanged: ioBroker.StateChangeHandler | null = null;

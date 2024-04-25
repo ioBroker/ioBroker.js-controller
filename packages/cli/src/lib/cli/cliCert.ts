@@ -1,6 +1,6 @@
 import { CLICommand, type CLICommandOptions } from './cliCommand.js';
-import { CLIObjects } from './cliObjects';
-import * as messages from './messages';
+import { CLIObjects } from './cliObjects.js';
+import * as messages from './messages.js';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 
 /** Command ioBroker cert ... */
@@ -11,6 +11,7 @@ export class CLICert extends CLICommand {
 
     /**
      * Executes a command
+     *
      * @param args
      */
     execute(args: any[]): void | Promise<void> {

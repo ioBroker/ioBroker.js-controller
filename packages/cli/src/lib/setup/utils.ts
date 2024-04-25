@@ -1,6 +1,8 @@
 import { EXIT_CODES } from '@iobroker/js-controller-common';
 import { tools } from '@iobroker/js-controller-common';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import semver from 'semver';
+import { IoBrokerError } from '@/lib/setup/customError.js';
 
 interface GetRepositoryOptions {
     /** The objects DB client */
@@ -18,13 +20,13 @@ export async function getRepository(options: GetRepositoryOptions): Promise<Reco
     const { objects } = options;
     const { repoName } = options;
 
-    let repoNameorArray: string | string[] | undefined = repoName;
+    let repoNameOrArray: string | string[] | undefined = repoName;
     if (!repoName || repoName === 'auto') {
         const systemConfig = await objects!.getObjectAsync('system.config');
-        repoNameorArray = systemConfig!.common.activeRepo;
+        repoNameOrArray = systemConfig!.common.activeRepo;
     }
 
-    const repoArr = !Array.isArray(repoNameorArray) ? [repoNameorArray!] : repoNameorArray;
+    const repoArr = !Array.isArray(repoNameOrArray) ? [repoNameOrArray!] : repoNameOrArray;
 
     const systemRepos = (await objects!.getObjectAsync('system.repositories'))!;
 
@@ -65,14 +67,87 @@ export async function getRepository(options: GetRepositoryOptions): Promise<Reco
     }
 
     if (!anyFound) {
-        console.error(
-            `ERROR: No repositories defined. Please define one repository as active:  "iob repo set <${Object.keys(
+        let message: string;
+        if (repoArr.length) {
+            message = `ERROR: No repositories defined matching "${repoArr.join(
+                ' | '
+            )}". Please use one of ${Object.keys(systemRepos.native.repositories)
+                .map(repo => `"${repo}"`)
+                .join(', ')}.`;
+        } else {
+            message = `ERROR: No repositories defined. Please define one repository as active: "iob repo set <${Object.keys(
                 systemRepos.native.repositories
-            ).join(' | ')}>`
-        );
-        // @ts-expect-error todo throw code or description?
-        throw new Error(EXIT_CODES.INVALID_REPO);
+            ).join(' | ')}>"`;
+        }
+
+        throw new IoBrokerError({ message, code: EXIT_CODES.INVALID_REPO });
     } else {
         return allSources;
     }
+}
+
+interface VersionOptions {
+    /** The adapter name to check the version for */
+    adapterName: string;
+    /** The objects DB instance */
+    objects: ObjectsClient;
+}
+
+interface IgnoreVersionOptions extends VersionOptions {
+    /** The version which will be checked */
+    version: string;
+}
+
+/**
+ * Get info if a specific version should be ignored of this adapter
+ *
+ * @param options name and target version of the adapter
+ */
+export async function isVersionIgnored(options: IgnoreVersionOptions): Promise<boolean> {
+    const { adapterName, version, objects } = options;
+    const obj = await objects.getObject(`system.host.${tools.getHostName()}.adapter.${adapterName}`);
+
+    if (obj?.common.ignoreVersion === undefined) {
+        return false;
+    }
+
+    return semver.satisfies(version, obj?.common.ignoreVersion);
+}
+
+/**
+ * Ignore a specific version of an adapter
+ *
+ * @param options name and target version of the adapter
+ */
+export async function ignoreVersion(options: IgnoreVersionOptions): Promise<void> {
+    const { adapterName, version, objects } = options;
+    const id = `system.host.${tools.getHostName()}.adapter.${adapterName}`;
+    const obj = await objects.getObject(id);
+
+    if (!obj) {
+        throw new IoBrokerError({ code: EXIT_CODES.CANNOT_SET_OBJECT, message: `Object "${id}" does not exist` });
+    }
+
+    obj.common.ignoreVersion = version;
+
+    await objects.setObject(id, obj);
+}
+
+/**
+ * Recognize all updates of adapter again
+ *
+ * @param options name of the adapter
+ */
+export async function recognizeVersion(options: VersionOptions): Promise<void> {
+    const { adapterName, objects } = options;
+    const id = `system.host.${tools.getHostName()}.adapter.${adapterName}`;
+    const obj = await objects.getObject(id);
+
+    if (!obj) {
+        throw new IoBrokerError({ code: EXIT_CODES.CANNOT_SET_OBJECT, message: `Object "${id}" does not exist` });
+    }
+
+    delete obj.common.ignoreVersion;
+
+    await objects.setObject(id, obj);
 }

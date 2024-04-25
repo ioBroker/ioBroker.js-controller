@@ -890,7 +890,7 @@
               ]
             },
             "link": {
-              "description": "Hyperlink, where information about the license can be found. This is required if the license type is different from 'free'.",
+              "description": "Hyperlink, where information about the license can be found. For non-free licenses the linked page should contain information about free features (if applicable), time of validity, link to shop and seller information. This is required if the license type is different from 'free'. For 'free' licenses an optional link to the license file can be placed here.",
               "type": "string",
               "pattern": "^https://.+$"
             }
@@ -949,6 +949,10 @@
             "visualization-widgets",
             "weather"
           ]
+        },
+        "install": {
+          "description": "The adapter will be executed once additionally after installation and the `install` event will be emitted during this run. This allows for executing one time installation code.",
+          "type": "boolean"
         },
         "unsafePerm": {
           "description": "if the package must be installed with \"npm --unsafe-perm\" parameter",
@@ -1061,7 +1065,6 @@
             "enum": [
               "none",
               "daemon",
-              "subscribe",
               "schedule",
               "once",
               "extension"
@@ -1213,7 +1216,6 @@
           "enum": [
             "none",
             "daemon",
-            "subscribe",
             "schedule",
             "once",
             "extension"
@@ -1336,10 +1338,6 @@
           "description": "Variables of this adapter must be subscribed with sendTo to enable updates",
           "type": "boolean"
         },
-        "subscribe": {
-          "description": "Name of variable, that is subscribed automatically",
-          "type": "string"
-        },
         "supportCustoms": {
           "description": "If the adapter support settings for every state. It has to have custom.html file in admin. Sample can be found in ioBroker.history",
           "type": "boolean"
@@ -1416,10 +1414,6 @@
               }
             }
           }
-        },
-        "wakeup": {
-          "description": "Adapter will be started if some value is written into system.adapter.NAME.x.wakeup. Normally the adapter should stop after processing of event.",
-          "type": "boolean"
         },
         "webByVersion": {
           "description": "Show version as prefix in web adapter (usually - ip:port/material, webByVersion - ip:port/1.2.3/material)",

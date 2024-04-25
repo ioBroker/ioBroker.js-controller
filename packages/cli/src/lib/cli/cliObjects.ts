@@ -1,7 +1,7 @@
-import { CLICommand, type CLICommandOptions } from './cliCommand';
+import { CLICommand, type CLICommandOptions } from './cliCommand.js';
 
 import * as CLI from './messages.js';
-import { formatValue } from './cliTools';
+import { formatValue } from './cliTools.js';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
@@ -19,6 +19,7 @@ export class CLIObjects extends CLICommand {
 
     /**
      * Executes a command
+     *
      * @param args
      */
     execute(args: any[]): void {
@@ -157,6 +158,7 @@ export class CLIObjects extends CLICommand {
 
     /**
      * Changes access rights for all objects matching the pattern
+     *
      * @param args
      */
     chmod(args: any[]): void {
@@ -200,11 +202,11 @@ export class CLIObjects extends CLICommand {
 
     /**
      * Changes owner for all objects matching the pattern
+     *
      * @param args
      */
     chown(args: any[]): void {
         const { callback, dbConnect } = this.options;
-        /** @type {[string, string, any]} */
         let [user, group, pattern] = args.slice(1);
 
         if (!pattern) {
@@ -242,6 +244,7 @@ export class CLIObjects extends CLICommand {
 
     /**
      * Lists all objects matching a pattern and their access rights
+     *
      * @param args
      */
     list(args: any[]): void {
@@ -268,11 +271,11 @@ export class CLIObjects extends CLICommand {
 
     /**
      * Retrieves an object or its property from the DB and prints it
+     *
      * @param args
      */
     get(args: any[]): void {
         const { callback, pretty, dbConnect } = this.options;
-        /** @type {[string, string]} */
         const [id, propPath] = args.slice(1);
         if (!id) {
             CLI.error.requiredArgumentMissing('id', 'object get id [propertypath]');
@@ -308,6 +311,7 @@ export class CLIObjects extends CLICommand {
 
     /**
      * Updates an object or its property with the given value
+     *
      * @param args
      */
     set(args: any[]): void {
@@ -421,6 +425,7 @@ export class CLIObjects extends CLICommand {
 
     /**
      * Extends an object with the given value
+     *
      * @param args
      */
     extend(args: any[]): void {
@@ -457,6 +462,7 @@ export class CLIObjects extends CLICommand {
 
     /**
      * Collects all object for specific path
+     *
      * @param objects class
      * @param params parameters for getObjectView
      */
@@ -494,6 +500,7 @@ export class CLIObjects extends CLICommand {
 
     /**
      * Delete all object from list sequentially
+     *
      * @param objects class
      * @param ids IDs
      * @param callback
@@ -525,6 +532,7 @@ export class CLIObjects extends CLICommand {
 
     /**
      * Deletes an object
+     *
      * @param args
      */
     delete(args: any[]): void {
@@ -553,7 +561,7 @@ export class CLIObjects extends CLICommand {
 
                 // if no auto confirmation, ask user
                 if (!this.options.f && this.options.y && !this.options.yes) {
-                    const rl = (await import('readline')).createInterface({
+                    const rl = (await import('node:readline')).createInterface({
                         input: process.stdin,
                         output: process.stdout
                     });
@@ -599,6 +607,7 @@ export class CLIObjects extends CLICommand {
 
     /**
      * Prints a list of objects and its access properties
+     *
      * @param objects objects db
      * @param states states db
      * @param err An error (if one occurred)
@@ -632,6 +641,7 @@ export class CLIObjects extends CLICommand {
 
 /**
  * Reverses a string
+ *
  * @param str The string to reverse
  */
 function reverseString(str: string): string {
@@ -640,6 +650,7 @@ function reverseString(str: string): string {
 
 /**
  * Normalizes a property path for use in deepSelectProperty and deepSetProperty
+ *
  * @param path The property path to normalize
  */
 function normalizePropertyPath(path: string): string {
@@ -657,6 +668,7 @@ function normalizePropertyPath(path: string): string {
 /**
  * Selects a property of an object or its sub-objects and returns it if it exists. E.g.
  * `deepSelectProperty(obj, "common.asdf.qwer")` => `obj.common.asdf.qwer`
+ *
  * @param object The object to select a property from
  * @param path The property path to search for
  */
@@ -685,6 +697,7 @@ function deepSelectProperty(object: ioBroker.AnyObject, path: string): any {
 
 /**
  * Changes a property of an object or its sub-objects if it exists. Opposite of `deepSelectProperty`.
+ *
  * @param object The object to replace a property in
  * @param path The property path to search for
  * @param value
@@ -715,6 +728,7 @@ function deepSetProperty(object: ioBroker.AnyObject, path: string, value: any): 
 
 /**
  * Tries to parse a CLI argument that could be used to set an object
+ *
  * @param arg The CLI argument containing the value to be set
  */
 function parseCLIValue(arg: string): any {
@@ -729,6 +743,7 @@ function parseCLIValue(arg: string): any {
 
 /**
  * Tries to parse a CLI argument of the form [propPath=]value.
+ *
  * @param arg The CLI argument containing an optional prop path and a JSON value
  */
 function parsePropPathAndAssignment(arg: string): ParsedPropPathAndAssignment | undefined {

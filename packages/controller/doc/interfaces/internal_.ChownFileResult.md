@@ -28,7 +28,7 @@ Access rights
 
 #### Defined in
 
-[types-dev/index.d.ts:454](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/index.d.ts#L454)
+[types-dev/index.d.ts:451](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L451)
 
 ___
 
@@ -40,7 +40,7 @@ Date of creation
 
 #### Defined in
 
-[types-dev/index.d.ts:458](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/index.d.ts#L458)
+[types-dev/index.d.ts:455](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L455)
 
 ___
 
@@ -52,7 +52,7 @@ Name of the file or directory
 
 #### Defined in
 
-[types-dev/index.d.ts:448](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/index.d.ts#L448)
+[types-dev/index.d.ts:445](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L445)
 
 ___
 
@@ -64,7 +64,7 @@ Whether this is a directory or a file
 
 #### Defined in
 
-[types-dev/index.d.ts:452](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/index.d.ts#L452)
+[types-dev/index.d.ts:449](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L449)
 
 ___
 
@@ -76,7 +76,7 @@ Date of last modification
 
 #### Defined in
 
-[types-dev/index.d.ts:456](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/index.d.ts#L456)
+[types-dev/index.d.ts:453](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L453)
 
 ___
 
@@ -88,7 +88,7 @@ The parent directory of the processed file or directory
 
 #### Defined in
 
-[types-dev/index.d.ts:446](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/index.d.ts#L446)
+[types-dev/index.d.ts:443](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L443)
 
 ___
 
@@ -100,4 +100,4 @@ File system stats
 
 #### Defined in
 
-[types-dev/index.d.ts:450](https://github.com/ioBroker/ioBroker.js-controller/blob/3bbff415/packages/types-dev/index.d.ts#L450)
+[types-dev/index.d.ts:447](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L447)

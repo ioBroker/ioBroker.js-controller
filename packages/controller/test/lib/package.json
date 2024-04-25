@@ -1,5 +1,6 @@
 {
   "name": "iobroker.test",
+  "type": "module",
   "version": "0.1.0",
   "description": "Test adapter",
   "author": {

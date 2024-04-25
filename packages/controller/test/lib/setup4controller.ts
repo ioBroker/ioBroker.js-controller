@@ -1,21 +1,20 @@
 import fs from 'fs-extra';
-import path from 'path';
-import type { ObjectsInRedisClient } from '@iobroker/db-objects-redis/build/lib/objects/objectsInRedisClient';
-import type { StateRedisClient } from '@iobroker/db-states-redis/build/lib/states/statesInRedisClient';
+import path from 'node:path';
+import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
+import type { Client as StateRedisClient } from '@iobroker/db-states-redis';
+import * as url from 'node:url';
+import { appNameLowerCase } from '@iobroker/js-controller-common/tools';
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 
-export const rootDir = path.normalize(`${__dirname}/../../`);
+export const rootDir = path.normalize(`${thisDir}/../../`);
 
 interface StartControllerReturnObject {
     states: StateRedisClient | null;
     objects: ObjectsInRedisClient | null;
 }
 
-function getAppName(): string {
-    const parts = __dirname.replace(/\\/g, '/').split('/');
-    return parts[parts.length - 5].split('.')[0];
-}
-
-export const appName = getAppName().toLowerCase();
+export const appName = appNameLowerCase;
 
 let objects: ObjectsInRedisClient | null;
 let states: StateRedisClient | null;
@@ -23,7 +22,7 @@ let states: StateRedisClient | null;
 // ensure the temp dir is empty, because content of data/files etc is created and checked for existence in some tests
 fs.emptyDirSync(`${rootDir}tmp`);
 
-export function startController(options: Record<string, any>): Promise<StartControllerReturnObject> {
+export async function startController(options: Record<string, any>): Promise<StartControllerReturnObject> {
     if (!options) {
         options = {};
     }
@@ -43,6 +42,42 @@ export function startController(options: Record<string, any>): Promise<StartCont
     iobrokerJSON.states.port = options.states.port === undefined ? 19000 : options.states.port;
     iobrokerJSON.states.host = options.states.host || '127.0.0.1';
     fs.writeJSONSync(path.join(rootDir, 'data', appName + '.json'), iobrokerJSON, { spaces: 2 });
+
+    let Objects;
+
+    if (options.objects) {
+        if (!options.objects.type || options.objects.type === 'file') {
+            console.log('Used class for Objects: Objects Server');
+            Objects = (await import('@iobroker/db-objects-file')).Server;
+        } else if (options.objects.type === 'redis') {
+            console.log('Used class for Objects: Objects Redis Client');
+            Objects = (await import('@iobroker/db-objects-redis')).Client;
+        } else {
+            console.log(`Used custom class for Objects (assume Server available): Objects ${options.objects.type}`);
+            Objects = (await import(`@iobroker/db-objects-${options.objects.type}`)).Server;
+        }
+    } else {
+        console.log('Used class for Objects: Objects Server');
+        Objects = (await import('@iobroker/db-objects-file')).Server;
+    }
+
+    let States;
+    // Just open in memory DB itself
+    if (options.states) {
+        if (!options.states.type || options.states.type === 'file') {
+            console.log('Used class for States: States Server');
+            States = (await import('@iobroker/db-states-file')).Server;
+        } else if (options.states.type === 'redis') {
+            console.log('Used class for States: States Redis Client');
+            States = (await import('@iobroker/db-states-redis')).Client;
+        } else {
+            console.log(`Used custom class for States (assume Server available): States ${options.states.type}`);
+            States = (await import(`@iobroker/db-states-${options.states.type}`)).Server;
+        }
+    } else {
+        console.log('Used class for States: States Server');
+        States = (await import('@iobroker/db-states-file')).Server;
+    }
 
     return new Promise(resolve => {
         const settingsObjects = {
@@ -82,51 +117,7 @@ export function startController(options: Record<string, any>): Promise<StartCont
             change: options.objects.onChange || null
         };
 
-        let Objects;
-
-        if (options.objects) {
-            if (!options.objects.type || options.objects.type === 'file') {
-                console.log('Used class for Objects: Objects Server');
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                Objects = require('@iobroker/db-objects-file').Server;
-            } else if (options.objects.type === 'redis') {
-                console.log('Used class for Objects: Objects Redis Client');
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                Objects = require('@iobroker/db-objects-redis').Client;
-            } else {
-                console.log(`Used custom class for Objects (assume Server available): Objects ${options.objects.type}`);
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                Objects = require(`@iobroker/db-objects-${options.objects.type}`).Server;
-            }
-        } else {
-            console.log('Used class for Objects: Objects Server');
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
-            Objects = require('@iobroker/db-objects-file').Server;
-        }
-
         objects = new Objects(settingsObjects);
-
-        let States;
-        // Just open in memory DB itself
-        if (options.states) {
-            if (!options.states.type || options.states.type === 'file') {
-                console.log('Used class for States: States Server');
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                States = require('@iobroker/db-states-file').Server;
-            } else if (options.states.type === 'redis') {
-                console.log('Used class for States: States Redis Client');
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                States = require('@iobroker/db-states-redis').Client;
-            } else {
-                console.log(`Used custom class for States (assume Server available): States ${options.states.type}`);
-                // eslint-disable-next-line @typescript-eslint/no-var-requires
-                States = require(`@iobroker/db-states-${options.states.type}`).Server;
-            }
-        } else {
-            console.log('Used class for States: States Server');
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
-            States = require('@iobroker/db-states-file').Server;
-        }
 
         const settingsStates = {
             connection: {

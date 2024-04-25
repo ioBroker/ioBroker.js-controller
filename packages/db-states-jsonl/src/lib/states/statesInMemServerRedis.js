@@ -7,18 +7,12 @@
  *
  */
 
-/** @module statesInMemory */
+import net from 'node:net';
+import { inspect } from 'node:util';
 
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node: true */
-'use strict';
-const net = require('net');
-const { inspect } = require('util');
-
-const { RedisHandler } = require('@iobroker/db-base');
-const StatesInMemoryJsonlDB = require('./statesInMemJsonlDB');
-const { getLocalAddress } = require('@iobroker/js-controller-common/tools');
+import { RedisHandler } from '@iobroker/db-base';
+import { StatesInMemoryJsonlDB } from './statesInMemJsonlDB.js';
+import { getLocalAddress } from '@iobroker/js-controller-common/tools';
 
 // settings = {
 //    change:    function (id, state) {},
@@ -44,10 +38,11 @@ const { getLocalAddress } = require('@iobroker/js-controller-common/tools');
 /**
  * This class inherits statesInMemoryFileDB class and adds socket.io communication layer
  * to access the methods via socket.io
- **/
-class StatesInMemoryServer extends StatesInMemoryJsonlDB {
+ */
+export class StatesInMemoryServer extends StatesInMemoryJsonlDB {
     /**
      * Constructor
+     *
      * @param settings State and InMem-DB settings
      */
     constructor(settings) {
@@ -90,10 +85,10 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
 
     /**
      * Separate Namespace from ID and return both
+     *
      * @param idWithNamespace ID or Array of IDs containing a redis namespace and the real ID
-     * @returns {{namespace: (string), id: string}} Object with namespace and the
+     * @returns Object with namespace and the
      *                                                      ID/Array of IDs without the namespace
-     * @private
      */
     _normalizeId(idWithNamespace) {
         let ns = this.namespaceStates;
@@ -121,11 +116,12 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
 
     /**
      * Publish a subscribed value to one of the redis connections in redis format
+     *
      * @param client Instance of RedisHandler
      * @param type Type of subscribed key
      * @param id Subscribed ID
      * @param obj Object to publish
-     * @returns {number} Publish counter 0 or 1 depending if send out or not
+     * @returns Publish counter 0 or 1 depending if send out or not
      */
     publishToClients(client, type, id, obj) {
         if (!client._subscribe || !client._subscribe[type]) {
@@ -163,8 +159,8 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
 
     /**
      * Register all event listeners for Handler and implement the relevant logic
+     *
      * @param handler RedisHandler instance
-     * @private
      */
     _socketEvents(handler) {
         let connectionName = null;
@@ -270,14 +266,7 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
             const { id, namespace } = this._normalizeId(data[0]);
             if (namespace === this.namespaceStates) {
                 try {
-                    let state;
-                    try {
-                        state = JSON.parse(data[1].toString('utf-8'));
-                    } catch {
-                        // No JSON, so handle as binary data and set as Buffer
-                        this._setBinaryState(id, data[1]);
-                        return void handler.sendString(responseId, 'OK');
-                    }
+                    const state = JSON.parse(data[1].toString('utf-8'));
                     this._setStateDirect(id, state);
                     handler.sendString(responseId, 'OK');
                 } catch (err) {
@@ -299,13 +288,8 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
             const { id, namespace } = this._normalizeId(data[0]);
             if (namespace === this.namespaceStates) {
                 try {
-                    let state;
-                    try {
-                        state = JSON.parse(data[2].toString('utf-8'));
-                    } catch {
-                        // No JSON, so handle as binary data and set as Buffer
-                        state = data[2];
-                    }
+                    const state = JSON.parse(data[2].toString('utf-8'));
+
                     const expire = parseInt(data[1].toString('utf-8'), 10);
                     if (isNaN(expire)) {
                         return void handler.sendError(
@@ -475,7 +459,8 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
 
     /**
      * Return connected RedisHandlers/Connections
-     * @returns {{}|*}
+     *
+     * @returns
      */
     getClients() {
         return this.serverConnections;
@@ -508,8 +493,8 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
 
     /**
      * Initialize RedisHandler for a new network connection
+     *
      * @param socket Network socket
-     * @private
      */
     _initSocket(socket) {
         this.settings.connection.enhancedLogging &&
@@ -535,9 +520,9 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
 
     /**
      * Initialize Redis Server
+     *
      * @param settings Settings object
-     * @private
-     * @return {Promise<void>}
+     * @returns
      */
     _initRedisServer(settings) {
         return new Promise((resolve, reject) => {
@@ -566,5 +551,3 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
         });
     }
 }
-
-module.exports = StatesInMemoryServer;

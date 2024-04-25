@@ -1,6 +1,6 @@
 // Types which are safe to share within this repository AND publicly
 
-import type * as fs from 'fs';
+import type * as fs from 'node:fs';
 import './objects';
 import type { IoBJson, DatabaseOptions, ObjectsDatabaseOptions as ObjectsDbOptions } from './config';
 
@@ -14,37 +14,37 @@ type AtLeastOne<T, Req = { [K in keyof T]-?: T[K] }, Opt = { [K in keyof T]+?: T
 declare global {
     namespace ioBroker {
         /** Two-way mapping for state quality ("q" attribute of a state) */
-        enum STATE_QUALITY {
+        interface STATE_QUALITY {
             /** The default value for a state */
-            GOOD = 0x00,
+            GOOD: 0x00;
             /** General problem */
-            BAD = 0x01,
+            BAD: 0x01;
             /** The instance cannot establish a connection */
-            CONNECTION_PROBLEM = 0x02,
+            CONNECTION_PROBLEM: 0x02;
             /** Substitute value from controller, do not set this in adapters */
-            SUBSTITUTE_FROM_CONTROLLER = 0x10,
+            SUBSTITUTE_FROM_CONTROLLER: 0x10;
             /** Quality for default values */
-            SUBSTITUTE_INITIAL_VALUE = 0x20,
+            SUBSTITUTE_INITIAL_VALUE: 0x20;
             /** Substitute value from instance or device */
-            SUBSTITUTE_DEVICE_INSTANCE_VALUE = 0x40,
+            SUBSTITUTE_DEVICE_INSTANCE_VALUE: 0x40;
             /** Substitute value from a sensor */
-            SUBSTITUTE_SENSOR_VALUE = 0x80,
+            SUBSTITUTE_SENSOR_VALUE: 0x80;
             /** General problem by instance */
-            GENERAL_INSTANCE_PROBLEM = 0x11,
+            GENERAL_INSTANCE_PROBLEM: 0x11;
             /** General problem by device */
-            GENERAL_DEVICE_PROBLEM = 0x41,
+            GENERAL_DEVICE_PROBLEM: 0x41;
             /** General problem by sensor */
-            GENERAL_SENSOR_PROBLEM = 0x81,
+            GENERAL_SENSOR_PROBLEM: 0x81;
             /** The instance is not connected */
-            INSTANCE_NOT_CONNECTED = 0x12,
+            INSTANCE_NOT_CONNECTED: 0x12;
             /** The device is not connected */
-            DEVICE_NOT_CONNECTED = 0x42,
+            DEVICE_NOT_CONNECTED: 0x42;
             /** The sensor is not connected */
-            SENSOR_NOT_CONNECTED = 0x82,
+            SENSOR_NOT_CONNECTED: 0x82;
             /** The device has reported an error */
-            DEVICE_ERROR_REPORT = 0x44,
+            DEVICE_ERROR_REPORT: 0x44;
             /** The sensor has reported an error */
-            SENSOR_ERROR_REPORT = 0x84
+            SENSOR_ERROR_REPORT: 0x84;
         }
 
         type StateValue = string | number | boolean | null;
@@ -72,7 +72,7 @@ declare global {
             expire?: number;
 
             /** Optional quality of the state value */
-            q?: STATE_QUALITY;
+            q?: STATE_QUALITY[keyof STATE_QUALITY];
 
             /** Optional comment */
             c?: string;
@@ -399,9 +399,6 @@ declare global {
 
         type GetStatesCallback = (err?: Error | null, states?: Record<string, State>) => void;
         type GetStatesPromise = Promise<NonNullCallbackReturnTypeOf<GetStatesCallback>>;
-
-        type GetBinaryStateCallback = (err?: Error | null, state?: Buffer) => void;
-        type GetBinaryStatePromise = Promise<CallbackReturnTypeOf<GetBinaryStateCallback>>;
 
         type SetStateCallback = (err?: Error | null, id?: string) => void;
         type SetStatePromise = Promise<NonNullCallbackReturnTypeOf<SetStateCallback>>;

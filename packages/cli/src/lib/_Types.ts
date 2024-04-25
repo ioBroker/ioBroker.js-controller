@@ -16,8 +16,8 @@ export interface DbConnectAsyncReturn {
     states: StatesRedisClient;
     isOffline?: boolean;
     objectsDBType: string;
-    /** the iobroker.json config file */
-    config?: Record<string, any>;
+    /** The iobroker.json config file */
+    config: ioBroker.IoBrokerJson;
 }
 
 export type DbConnectAsync = (onlyCheck: boolean, params?: Record<string, any>) => Promise<DbConnectAsyncReturn>;

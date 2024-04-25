@@ -1,7 +1,9 @@
-import path from 'path';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const testAdapter = require('./lib/testAdapter');
-const dataDir = path.join(__dirname, '..', 'tmp', 'data');
+import path from 'node:path';
+import * as url from 'node:url';
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+import testAdapter from './lib/testAdapter.js';
+const dataDir = path.join(thisDir, '..', 'tmp', 'data');
 
 const statesConfig = {
     options: {

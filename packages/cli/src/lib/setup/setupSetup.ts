@@ -7,21 +7,31 @@
  *
  */
 
-import type { CleanDatabaseHandler, IoPackage, ProcessExitCallback, RestartController } from '../_Types';
+import type { CleanDatabaseHandler, IoPackage, ProcessExitCallback, RestartController } from '@/lib/_Types.js';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 
 import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
 import { tools as dbTools } from '@iobroker/js-controller-common-db';
-import { resetDbConnect, dbConnectAsync } from './dbConnection';
-import { BackupRestore } from './setupBackup';
-import crypto from 'crypto';
+import { resetDbConnect, dbConnectAsync } from '@/lib/setup/dbConnection.js';
+import { BackupRestore } from '@/lib/setup/setupBackup.js';
+import crypto from 'node:crypto';
 import deepClone from 'deep-clone';
-import * as pluginInfos from './pluginInfos';
+import * as pluginInfos from '@/lib/setup/pluginInfos.js';
 import rl from 'readline-sync';
-import os from 'os';
+import { FORBIDDEN_CHARS, getHostObject } from '@iobroker/js-controller-common/tools';
+import os from 'node:os';
+import { SYSTEM_ADAPTER_PREFIX, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common/constants';
+import { Upload } from '@/lib/setup/setupUpload.js';
+import { createRequire } from 'node:module';
+import * as url from 'node:url';
+
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __filename);
 
 const COLOR_RED = '\x1b[31m';
 const COLOR_YELLOW = '\x1b[33m';
@@ -36,8 +46,17 @@ export interface CLISetupOptions {
     restartController: RestartController;
 }
 
+export interface SetupCommandOptions {
+    /** Callback called afterward */
+    callback: (isCreated?: boolean) => void;
+    /** Used for setup first run, does setup process even though config file already exists */
+    ignoreIfExist: boolean;
+    /** If redis should be setup */
+    useRedis: boolean;
+}
+
 export class Setup {
-    private readonly options: CLISetupOptions;
+    private readonly KNOWN_GARBAGE_OBJECT_IDS = ['null', 'undefined'];
     private readonly processExit: ProcessExitCallback;
     private states: StatesRedisClient | undefined;
     private objects: ObjectsRedisClient | undefined;
@@ -46,7 +65,6 @@ export class Setup {
     private readonly restartController: RestartController;
 
     constructor(options: CLISetupOptions) {
-        this.options = options;
         this.processExit = options.processExit;
         this.params = options.params;
         this.cleanDatabase = options.cleanDatabase;
@@ -137,10 +155,10 @@ export class Setup {
     }
 
     /**
-     * Called after io-package objects are created
+     * Called after io-package objects are created (hence object view functionalities are now available)
      *
-     * @param systemConfig
-     * @param callback
+     * @param systemConfig the system config object
+     * @param callback callback function
      */
     async setupReady(
         systemConfig: ioBroker.SystemConfigObject | undefined | null,
@@ -155,12 +173,19 @@ export class Setup {
             throw new Error('Objects not set up, call setupObjects first');
         }
 
-        // clean up invalid user group assignments (non-existing user in a group)
         try {
-            await this._cleanupInvalidGroupAssignments();
+            await this._ensureHostObject();
         } catch (e) {
-            console.error(`Cannot clean up invalid user group assignments: ${e.message}`);
+            console.error(`Could not ensure host object exists: ${e.message}`);
         }
+
+        try {
+            await this._ensureAdaptersPerHostObject();
+        } catch (e) {
+            console.error(`Could not ensure that adapters object for this host exists: ${e.message}`);
+        }
+
+        await this._cleanupInstallation();
 
         // special methods which are only there on objects server
         // TODO this check will lead to objects being never in the following code
@@ -182,8 +207,8 @@ export class Setup {
                     console.log('Successfully created "meta.user" directory');
                 }
             }
-        } catch (err) {
-            console.warn(`Could not create directory "meta.user": ${err.message}`);
+        } catch (e) {
+            console.warn(`Could not create directory "meta.user": ${e.message}`);
         }
 
         try {
@@ -202,8 +227,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             }
             await this.informAboutPlugins(systemConfig);
             return void callback();
-        } catch (err) {
-            console.error(`Error on file directory sync: ${err.message}`);
+        } catch (e) {
+            console.error(`Error on file directory sync: ${e.message}`);
             await this.informAboutPlugins(systemConfig);
             return void callback();
         }
@@ -227,11 +252,11 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 obj.from = `system.host.${tools.getHostName()}.cli`;
                 obj.ts = Date.now();
                 await this.objects.setObjectAsync(obj._id, obj);
-                console.log(`object ${obj._id} ${!existingObj ? 'created' : 'updated'}`);
+                console.log(`object "${obj._id}" ${!existingObj ? 'created' : 'updated'}`);
                 setTimeout(this.dbSetup, 25, iopkg, ignoreExisting, callback);
             } else {
                 if (!ignoreExisting) {
-                    console.log(`object ${obj._id} already exists`);
+                    console.log(`object "${obj._id}" already exists`);
                 }
                 setTimeout(this.dbSetup, 25, iopkg, ignoreExisting, callback);
             }
@@ -300,8 +325,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
     /**
      * Creates objects and does object related cleanup
      *
-     * @param callback
-     * @param checkCertificateOnly
+     * @param callback callback function
+     * @param checkCertificateOnly if only certificate check is desired
      */
     async setupObjects(callback: () => void, checkCertificateOnly?: boolean): Promise<void> {
         const { states: _states, objects: _objects } = await dbConnectAsync(false, this.params);
@@ -389,15 +414,21 @@ Please DO NOT copy files manually into ioBroker storage directories!`
      */
     async migrateObjects(newConfig: ioBroker.IoBrokerJson, oldConfig: ioBroker.IoBrokerJson): Promise<EXIT_CODES> {
         // allow migration if one of the db types changed or host changed of redis
-        const oldStatesHasServer = dbTools.statesDbHasServer(oldConfig.states.type);
-        const oldObjectsHasServer = dbTools.statesDbHasServer(oldConfig.objects.type);
-        const newStatesHasServer = dbTools.statesDbHasServer(newConfig.states.type);
-        const newObjectsHasServer = dbTools.statesDbHasServer(newConfig.objects.type);
+        const oldStatesHasServer = await dbTools.statesDbHasServer(oldConfig.states.type);
+        const oldObjectsHasServer = await dbTools.statesDbHasServer(oldConfig.objects.type);
+        const newStatesHasServer = await dbTools.statesDbHasServer(newConfig.states.type);
+        const newObjectsHasServer = await dbTools.statesDbHasServer(newConfig.objects.type);
 
-        const oldStatesLocalServer = dbTools.isLocalStatesDbServer(oldConfig.states.type, oldConfig.states.host);
-        const oldObjectsLocalServer = dbTools.isLocalObjectsDbServer(oldConfig.objects.type, oldConfig.objects.host);
-        const newStatesLocalServer = dbTools.isLocalStatesDbServer(newConfig.states.type, newConfig.states.host);
-        const newObjectsLocalServer = dbTools.isLocalObjectsDbServer(newConfig.objects.type, newConfig.objects.host);
+        const oldStatesLocalServer = await dbTools.isLocalStatesDbServer(oldConfig.states.type, oldConfig.states.host);
+        const oldObjectsLocalServer = await dbTools.isLocalObjectsDbServer(
+            oldConfig.objects.type,
+            oldConfig.objects.host
+        );
+        const newStatesLocalServer = await dbTools.isLocalStatesDbServer(newConfig.states.type, newConfig.states.host);
+        const newObjectsLocalServer = await dbTools.isLocalObjectsDbServer(
+            newConfig.objects.type,
+            newConfig.objects.host
+        );
 
         if (
             oldConfig &&
@@ -681,10 +712,11 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 }`
             );
         }
-        if (
-            dbTools.objectsDbHasServer(originalConfig.objects.type) ||
-            dbTools.statesDbHasServer(originalConfig.states.type)
-        ) {
+
+        const hasObjectsServer = await dbTools.objectsDbHasServer(originalConfig.objects.type);
+        const hasStatesServer = await dbTools.statesDbHasServer(originalConfig.states.type);
+
+        if (hasObjectsServer || hasStatesServer) {
             console.log(`- Data Directory: ${tools.getDefaultDataDir()}`);
         }
         if (originalConfig && originalConfig.system && originalConfig.system.hostname) {
@@ -710,10 +742,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
         let getDefaultObjectsPort;
         try {
-            const path = require.resolve(`@iobroker/db-objects-${otype}`, {
-                paths: tools.getDefaultRequireResolvePaths(module)
-            });
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            const path = require.resolve(`@iobroker/db-objects-${otype}`);
+
             getDefaultObjectsPort = require(path).getDefaultPort;
         } catch {
             console.log(`${COLOR_RED}Unknown objects type: ${otype}${COLOR_RESET}`);
@@ -806,9 +836,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
         let defaultStatesType = currentStatesType;
         try {
-            require.resolve(`@iobroker/db-states-${otype}`, {
-                paths: tools.getDefaultRequireResolvePaths(module)
-            });
+            require.resolve(`@iobroker/db-states-${otype}`);
             defaultStatesType = otype; // if states db is also available with same type we use as default
         } catch {
             // ignore, unchanged
@@ -832,10 +860,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
         let getDefaultStatesPort;
         try {
-            const path = require.resolve(`@iobroker/db-states-${stype}`, {
-                paths: tools.getDefaultRequireResolvePaths(module)
-            });
-            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            const path = require.resolve(`@iobroker/db-states-${stype}`);
+
             getDefaultStatesPort = require(path).getDefaultPort;
         } catch {
             console.log(`${COLOR_RED}Unknown states type: ${stype}${COLOR_RESET}`);
@@ -882,7 +908,10 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             stype === originalConfig.states.type && sHost === originalConfig.states.host
                 ? originalConfig.states.port
                 : sp;
-        if (stype === otype && !dbTools.statesDbHasServer(stype) && sHost === oHost) {
+
+        const statesHasServer = await dbTools.statesDbHasServer(stype);
+
+        if (stype === otype && !statesHasServer && sHost === oHost) {
             defaultStatesPort = oPort;
         }
         const userStatePort = rl.question(
@@ -933,7 +962,10 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         let dir;
         let hname;
 
-        if (dbTools.isLocalStatesDbServer(stype, sHost) || dbTools.isLocalObjectsDbServer(otype, oHost)) {
+        const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(otype, oHost);
+        const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(stype, sHost);
+
+        if (hasLocalStatesServer || hasLocalObjectsServer) {
             let validDataDir = false;
 
             while (!validDataDir) {
@@ -1025,6 +1057,285 @@ Please DO NOT copy files manually into ioBroker storage directories!`
     }
 
     /**
+     * Ensure that host object exists
+     */
+    private async _ensureHostObject(): Promise<void> {
+        if (!this.objects) {
+            throw new Error('Objects not set up, call setupObjects first');
+        }
+
+        const hostname = tools.getHostName();
+
+        const id = `system.host.${hostname}`;
+        const objExists = await this.objects.objectExists(id);
+
+        if (!objExists) {
+            await this.objects.setObject(id, getHostObject());
+            console.log(`Created host object "${id}"`);
+        }
+    }
+
+    /**
+     * Create the adapters object per host if not yet existing
+     */
+    private async _ensureAdaptersPerHostObject(): Promise<void> {
+        if (!this.objects) {
+            throw new Error('Objects not set up, call setupObjects first');
+        }
+
+        if (!this.states) {
+            throw new Error('States not set up, call setupObjects first');
+        }
+
+        const hostname = tools.getHostName();
+        const adaptersId = `system.host.${hostname}.adapter`;
+
+        const adaptersExist = await this.objects.objectExists(adaptersId);
+
+        if (adaptersExist) {
+            return;
+        }
+
+        console.log(`Creating adapter objects for host "${hostname}"`);
+
+        await this.objects.setObject(adaptersId, {
+            type: 'folder',
+            common: {
+                name: {
+                    en: 'Installed adapters',
+                    de: 'Installierte Adapter',
+                    ru: 'Установленные адаптеры',
+                    pt: 'Adaptadores instalados',
+                    nl: 'Geïnstalleerde adapters',
+                    fr: 'Adaptateurs installés',
+                    it: 'Adattatori installati',
+                    es: 'Adaptadores instalados',
+                    pl: 'Zainstalowane adaptery',
+                    uk: 'Встановлені адаптери',
+                    'zh-cn': '已安装的适配器'
+                },
+                desc: {
+                    en: 'Installed adapters on this host',
+                    de: 'Installierte Adapter auf diesem Host',
+                    ru: 'Установленные адаптеры на этом хосте',
+                    pt: 'Adaptadores instalados neste anfitrião',
+                    nl: 'Geïnstalleerde adapters op deze host',
+                    fr: 'Adaptateurs installés sur cet hôte',
+                    it: 'Adattatori installati su questo host',
+                    es: 'Adaptadores instalados en este host',
+                    pl: 'Zainstalowane karty na tym hoście',
+                    uk: 'Встановлені адаптери на цьому хості',
+                    'zh-cn': '该主机上已安装的适配器'
+                }
+            },
+            native: {}
+        });
+
+        const adaptersView = await this.objects.getObjectViewAsync('system', 'adapter', {
+            startkey: SYSTEM_ADAPTER_PREFIX,
+            endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
+        });
+
+        const rootPackJson = await fs.readJSON(path.join(tools.getRootDir(), 'package.json'));
+
+        const setupUpload = new Upload({ objects: this.objects, states: this.states });
+
+        for (const row of adaptersView.rows) {
+            const { name } = row.value.common;
+
+            if (!rootPackJson.dependencies[`iobroker.${name}`]) {
+                continue;
+            }
+
+            await setupUpload.upgradeAdapterObjects(name);
+        }
+    }
+
+    /**
+     * Perform multiple cleanup operations, to clean up inconsistent states due to past bugs or edge case errors
+     */
+    private async _cleanupInstallation(): Promise<void> {
+        console.log('Clean up binary states ...');
+        try {
+            await this._cleanupBinaryStates();
+        } catch (e) {
+            console.error(`Cannot clean up binary states: ${e.message}`);
+        }
+
+        console.log('Clean up invalid group assignments ...');
+        try {
+            await this._cleanupInvalidGroupAssignments();
+        } catch (e) {
+            console.error(`Cannot clean up invalid user group assignments: ${e.message}`);
+        }
+
+        console.log('Clean up garbage objects ...');
+        try {
+            await this._cleanupGarbageObjects();
+        } catch (e) {
+            console.error(`Cannot clean up garbage objects: ${e.message}`);
+        }
+
+        console.log('Clean up leftover adapters ...');
+        try {
+            await this._cleanupLeftoverAdapters();
+        } catch (e) {
+            console.error(`Cannot clean up leftover adapters: ${e.message}`);
+        }
+
+        console.log('Clean up objects and states with forbidden characters ...');
+        try {
+            await this._cleanupForbiddenIds();
+        } catch (e) {
+            console.error(`Cannot clean up objects and states with forbidden IDs: ${e.message}`);
+        }
+    }
+
+    /**
+     * Cleanup adapter objects from already removed adapters, which are still there due to errors or past bugs
+     */
+    private async _cleanupLeftoverAdapters(): Promise<void> {
+        if (!this.objects) {
+            throw new Error('Objects not set up, call setupObjects first');
+        }
+
+        const hostsView = await this.objects.getObjectViewAsync('system', 'host', {
+            startkey: SYSTEM_HOST_PREFIX,
+            endkey: `${SYSTEM_HOST_PREFIX}\u9999`
+        });
+
+        const hostIds = hostsView.rows.map(row => row.id);
+
+        for (const hostId of hostIds) {
+            const hasAdapters = await this.objects.objectExists(`${hostId}.adapter`);
+
+            if (!hasAdapters) {
+                console.log(
+                    `Skipping cleanup leftover adapters, because host "${hostId}" is not yet migrated to a supporting controller version`
+                );
+                return;
+            }
+        }
+
+        const adaptersViewPerHost = await this.objects.getObjectViewAsync('system', 'adapter', {
+            startkey: SYSTEM_HOST_PREFIX,
+            endkey: `${SYSTEM_HOST_PREFIX}\u9999`
+        });
+
+        const installedAdapterNames = adaptersViewPerHost.rows.map(row => row.value.common.name);
+
+        const adaptersView = await this.objects.getObjectViewAsync('system', 'adapter', {
+            startkey: SYSTEM_ADAPTER_PREFIX,
+            endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
+        });
+
+        for (const row of adaptersView.rows) {
+            if (!installedAdapterNames.includes(row.value.common.name)) {
+                await this.objects.delObject(row.id);
+                console.log(`Cleaned up leftover adapter object "${row.id}"`);
+            }
+        }
+    }
+
+    /**
+     * Cleanup all states and objects which contain forbidden chars in their id
+     */
+    private async _cleanupForbiddenIds(): Promise<void> {
+        if (!this.objects) {
+            throw new Error('Objects not set up, call setupObjects first');
+        }
+
+        if (!this.states) {
+            throw new Error('States not set up, call setupObjects first');
+        }
+
+        const objIds = await this.objects.getKeys('*');
+
+        if (objIds) {
+            for (const id of objIds) {
+                if (FORBIDDEN_CHARS.test(id)) {
+                    await this.objects.delObject(id);
+                    console.log(`Deleted object "${id}" because it contains forbidden characters`);
+                }
+            }
+        }
+
+        const stateIds = await this.states.getKeys('*');
+
+        if (stateIds) {
+            for (const id of stateIds) {
+                if (FORBIDDEN_CHARS.test(id)) {
+                    await this.states.delState(id);
+                    console.log(`Deleted state "${id}" because it contains forbidden characters`);
+                }
+            }
+        }
+    }
+
+    /**
+     * Cleanup objects which are known to be created on accident in the past by adapters or controller
+     */
+    private async _cleanupGarbageObjects(): Promise<void> {
+        if (!this.objects) {
+            throw new Error('Objects not set up, call setupObjects first');
+        }
+
+        for (const garbageId of this.KNOWN_GARBAGE_OBJECT_IDS) {
+            const isExisting = await this.objects.objectExists(garbageId);
+
+            if (isExisting) {
+                await this.objects.delObject(garbageId);
+                console.log(`Successfully removed garbage object "${garbageId}"`);
+            }
+        }
+    }
+
+    /**
+     * Removes all binary state related objects and states
+     */
+    private async _cleanupBinaryStates(): Promise<void> {
+        if (!this.objects) {
+            throw new Error('Objects not set up, call setupObjects first');
+        }
+
+        if (!this.states) {
+            throw new Error('States not set up, call setupObjects first');
+        }
+
+        const hostsView = await this.objects.getObjectViewAsync('system', 'host', {
+            startkey: SYSTEM_HOST_PREFIX,
+            endkey: `${SYSTEM_HOST_PREFIX}\u9999`
+        });
+
+        const hostIds = hostsView.rows.map(row => row.id);
+
+        for (const hostId of hostIds) {
+            const zipId = `${hostId}.zip`;
+            const zipFolderExists = await this.objects.objectExists(zipId);
+
+            if (!zipFolderExists) {
+                continue;
+            }
+
+            await this.objects.delObject(zipId);
+            console.log(`Deleted object "${zipId}" during binary state clean up`);
+        }
+
+        const statesView = await this.objects.getObjectViewAsync('system', 'state', {
+            startkey: '',
+            endkey: '\u9999'
+        });
+
+        for (const row of statesView.rows) {
+            if ((row.value.common.type as ioBroker.CommonType | 'file') === 'file') {
+                await this.objects.delObject(row.id);
+                await this.states.delState(row.id);
+                console.log(`Deleted object "${row.id}" during binary state clean up`);
+            }
+        }
+    }
+
+    /**
      * Removes non-existing users from groups
      */
     private async _cleanupInvalidGroupAssignments(): Promise<void> {
@@ -1066,7 +1377,14 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         }
     }
 
-    setup(callback: (isCreated?: boolean) => void, ignoreIfExist: boolean, useRedis: boolean): void {
+    /**
+     * Setup the installation with config file, host object, scripts etc
+     *
+     * @param options setup options
+     */
+    setup(options: SetupCommandOptions): void {
+        const { ignoreIfExist, useRedis, callback } = options;
+
         let config;
         let isCreated = false;
         const platform = os.platform();
@@ -1095,7 +1413,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             // copy scripts to root directory
             if (fs.existsSync(path.join(CONTROLLER_DIR, '..', '..', 'node_modules'))) {
                 const startFile = `#!/usr/bin/env node
-require('${path.normalize(__dirname + '/..')}/setup').execute();`;
+require('${path.normalize(thisDir + '/..')}/setup').execute();`;
 
                 try {
                     if (fs.existsSync(path.join(CONTROLLER_DIR, 'killall.sh'))) {
@@ -1190,7 +1508,7 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
             try {
                 // Create
                 if (
-                    __dirname
+                    thisDir
                         .toLowerCase()
                         .replace(/\\/g, '/')
                         .includes(`node_modules/${tools.appName.toLowerCase()}.js-controller`)
@@ -1209,8 +1527,8 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                         fs.mkdirSync(path.join(CONTROLLER_DIR, 'log'));
                     }
                 }
-            } catch (err) {
-                console.log(`Non-critical error: ${err.message}`);
+            } catch (e) {
+                console.log(`Non-critical error: ${e.message}`);
             }
         } else if (ignoreIfExist) {
             // it is a setup first run and config exists yet
@@ -1222,8 +1540,8 @@ require('${path.normalize(__dirname + '/..')}/setup').execute();`;
                     config.dataDir = tools.getDefaultDataDir();
                     fs.writeJSONSync(configFileName, config, { spaces: 2 });
                 }
-            } catch (err) {
-                console.warn(`Cannot check config file: ${err.message}`);
+            } catch (e) {
+                console.warn(`Cannot check config file: ${e.message}`);
             }
 
             this.setupObjects(() => callback && callback(), true);
