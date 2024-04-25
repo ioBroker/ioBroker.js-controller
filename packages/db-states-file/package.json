@@ -1,6 +1,7 @@
 {
   "name": "@iobroker/db-states-file",
-  "version": "5.0.20-alpha.0-20240409-d68ed299",
+  "type": "module",
+  "version": "5.0.20-alpha.0-20240425-20b08f31",
   "engines": {
     "node": ">=12.0.0"
   },
@@ -25,7 +26,7 @@
   },
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "postbuild": "esm2cjs --in build/esm --out build/cjs -l error && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/"
+    "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/"
   },
   "main": "build/cjs/index.js",
   "module": "build/esm/index.js",

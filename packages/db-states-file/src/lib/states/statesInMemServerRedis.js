@@ -7,18 +7,12 @@
  *
  */
 
-/** @module statesInMemory */
+import net from 'node:net';
+import { inspect } from 'node:util';
 
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node: true */
-'use strict';
-const net = require('net');
-const { inspect } = require('util');
-
-const { RedisHandler } = require('@iobroker/db-base');
-const StatesInMemoryFileDB = require('./statesInMemFileDB');
-const { getLocalAddress } = require('@iobroker/js-controller-common/tools');
+import { RedisHandler } from '@iobroker/db-base';
+import { StatesInMemoryFileDB } from './statesInMemFileDB.js';
+import { getLocalAddress } from '@iobroker/js-controller-common/tools';
 
 // settings = {
 //    change:    function (id, state) {},
@@ -45,7 +39,7 @@ const { getLocalAddress } = require('@iobroker/js-controller-common/tools');
  * This class inherits statesInMemoryFileDB class and adds socket.io communication layer
  * to access the methods via socket.io
  **/
-class StatesInMemoryServer extends StatesInMemoryFileDB {
+export class StatesInMemoryServer extends StatesInMemoryFileDB {
     /**
      * Constructor
      * @param settings State and InMem-DB settings
@@ -554,5 +548,3 @@ class StatesInMemoryServer extends StatesInMemoryFileDB {
         });
     }
 }
-
-module.exports = StatesInMemoryServer;

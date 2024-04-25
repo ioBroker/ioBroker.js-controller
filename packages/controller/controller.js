@@ -6,4 +6,4 @@
  *
  */
 
-require('./build/cjs/main').init();
+import('./build/esm/main.js').then(res => res.init());

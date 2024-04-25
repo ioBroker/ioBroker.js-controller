@@ -1,11 +1,11 @@
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
-import type { AdapterClass } from './adapter';
+import type { AdapterClass } from '@/lib/adapter/adapter.js';
 import type {
     UserInterfaceClientRemoveMessage,
     UserInterfaceClientSubscribeHandler,
     UserInterfaceClientSubscribeReturnType,
     UserInterfaceClientUnsubscribeHandler
-} from '../_Types';
+} from '@/lib/_Types.js';
 
 export interface HeartbeatTimer {
     /** The actual timer */
