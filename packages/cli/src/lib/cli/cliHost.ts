@@ -1,9 +1,9 @@
-import * as CLI from './messages';
-import { CLICommand, type CLICommandOptions } from './cliCommand';
-import { enumHosts, enumObjects, getObjectFrom, enumInstances } from './cliTools';
+import * as CLI from './messages.js';
+import { CLICommand, type CLICommandOptions } from './cliCommand.js';
+import { enumHosts, enumObjects, getObjectFrom, enumInstances } from './cliTools.js';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
-import os from 'os';
+import os from 'node:os';
 import fs from 'fs-extra';
 
 /** Command iobroker host ... */
@@ -111,10 +111,10 @@ export class CLIHost extends CLICommand {
                 for (const state of hostStates) {
                     // Therefore delete the old one because we will recreate it under a new name
                     try {
-                        await objects.delObjectAsync(state!._id);
-                        CLI.success.stateDeleted(state!._id);
+                        await objects.delObjectAsync(state._id);
+                        CLI.success.stateDeleted(state._id);
                     } catch (err) {
-                        CLI.error.cannotDeleteObject(state!._id, err.message);
+                        CLI.error.cannotDeleteObject(state._id, err.message);
                     }
                 }
 
@@ -204,7 +204,7 @@ export class CLIHost extends CLICommand {
                 // Rename the host(s)
                 for (const host of hosts) {
                     // Remember the current hostname of this object because we need it later
-                    const prevHostname = host!.common.hostname;
+                    const prevHostname = host.common.hostname;
 
                     // Rename only the hostname we're supposed to rename!
                     if (oldHostname && prevHostname !== oldHostname) {
@@ -214,20 +214,20 @@ export class CLIHost extends CLICommand {
                     // Rename the host object
                     // Therefore delete the old one because we will recreate it under a new name
                     try {
-                        await objects.delObjectAsync(host!._id);
+                        await objects.delObjectAsync(host._id);
                     } catch (err) {
-                        CLI.error.cannotDeleteObject(host!._id, err.message);
+                        CLI.error.cannotDeleteObject(host._id, err.message);
                         continue;
                     }
 
                     // Now update the object
-                    Object.assign(host!, {
+                    Object.assign(host, {
                         _id: `system.host.${newHostname}`,
                         from: getObjectFrom(),
                         ts: Date.now()
                     });
-                    Object.assign(host!.common, {
-                        name: host!._id,
+                    Object.assign(host.common, {
+                        name: host._id,
                         hostname: newHostname,
                         address: [],
                         cmd: '',
@@ -235,9 +235,9 @@ export class CLIHost extends CLICommand {
                     });
                     // And save it
                     try {
-                        await objects.setObjectAsync(host!._id, host!);
+                        await objects.setObjectAsync(host._id, host);
                     } catch (err) {
-                        CLI.error.cannotChangeObject(host!._id, err.message);
+                        CLI.error.cannotChangeObject(host._id, err.message);
                         continue;
                     }
 
@@ -247,24 +247,24 @@ export class CLIHost extends CLICommand {
                     for (const object of [...hostStateObjects, ...hostFolders]) {
                         // Therefore delete the old one because we will recreate it under a new name
                         try {
-                            await objects.delObjectAsync(object!._id);
+                            await objects.delObjectAsync(object._id);
                         } catch (err) {
-                            CLI.error.cannotDeleteObject(object!._id, err.message);
+                            CLI.error.cannotDeleteObject(object._id, err.message);
                             continue;
                         }
 
                         // Now update the object
-                        Object.assign(object!, {
-                            _id: object!._id.replace(`system.host.${prevHostname}`, `system.host.${newHostname}`),
+                        Object.assign(object, {
+                            _id: object._id.replace(`system.host.${prevHostname}`, `system.host.${newHostname}`),
                             from: getObjectFrom(),
                             ts: Date.now()
                         });
 
                         // And save it
                         try {
-                            await objects.setObjectAsync(object!._id, object!);
+                            await objects.setObjectAsync(object._id, object!);
                         } catch (err) {
-                            CLI.error.cannotChangeObject(object!._id, err.message);
+                            CLI.error.cannotChangeObject(object._id, err.message);
                         }
                     }
 
@@ -274,11 +274,11 @@ export class CLIHost extends CLICommand {
                 // Also rename all instances
                 const instances = await enumInstances(objects);
                 const instancesToRename =
-                    oldHostname === undefined ? instances : instances.filter(i => i?.common.host === oldHostname);
+                    oldHostname === undefined ? instances : instances.filter(i => i.common.host === oldHostname);
                 if (instancesToRename.length > 0) {
                     for (const instance of instancesToRename) {
                         // Update each instance object
-                        await changeInstanceHost(objects, instance!, newHostname);
+                        await changeInstanceHost(objects, instance, newHostname);
                     }
                 } else {
                     CLI.warn.noInstancesFoundOnHost(oldHostname);

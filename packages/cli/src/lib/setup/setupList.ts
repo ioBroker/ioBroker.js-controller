@@ -8,7 +8,7 @@
  */
 
 import { EXIT_CODES } from '@iobroker/js-controller-common';
-import * as fs from 'fs-extra';
+import fs from 'fs-extra';
 import { tools } from '@iobroker/js-controller-common';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
@@ -39,7 +39,7 @@ interface CLIListOptions {
     processExit: (exitCode?: number) => void;
 }
 
-type ListType =
+export type ListType =
     | 'objects'
     | 'o'
     | 'states'

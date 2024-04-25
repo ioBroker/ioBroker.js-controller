@@ -29,7 +29,7 @@
  *
  */
 
-import crypto from 'crypto';
+import crypto from 'node:crypto';
 
 export interface PasswordReturnValue {
     complexity: (password: string, callback: (isComplex: boolean) => void) => boolean;

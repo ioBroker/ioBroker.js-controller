@@ -1,15 +1,9 @@
 {
   "name": "iobroker.js-controller",
-  "version": "5.0.20-alpha.0-20240402-818c4029",
+  "type": "module",
+  "version": "5.0.20-alpha.0-20240425-20b08f31",
   "engines": {
-    "node": ">=16.4.0"
-  },
-  "optionalDependencies": {
-    "greenlock": "^4.0.4",
-    "greenlock-express": "^4.0.3",
-    "le-acme-core": "^2.1.4",
-    "le-challenge-fs": "^2.0.9",
-    "le-sni-auto": "^2.1.9"
+    "node": ">=18.0.0"
   },
   "bin": {
     "iobroker": "./iobroker.js"
@@ -27,8 +21,8 @@
     "@iobroker/js-controller-common": "file:../common",
     "@iobroker/js-controller-common-db": "file:../common-db",
     "@iobroker/plugin-base": "~1.2.1",
-    "@iobroker/plugin-sentry": "~1.2.0",
-    "axios": "^1.6.0",
+    "@iobroker/plugin-sentry": "~1.2.1",
+    "axios": "^1.6.3",
     "cron-parser": "^4.9.0",
     "daemonize2": "^0.4.2",
     "debug": "^4.3.4",
@@ -83,8 +77,8 @@
   },
   "scripts": {
     "build": "tsc -b tsconfig.build.json && tsc-alias",
-    "postbuild": "esm2cjs --in build/esm --out build/cjs -l error && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/",
-    "preinstall": "node build/cjs/lib/preinstallCheck.js",
+    "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/",
+    "preinstall": "node build/esm/lib/preinstallCheck.js",
     "install": "node iobroker.js setup first",
     "start": "node iobroker.js start",
     "stop": "node iobroker.js stop",

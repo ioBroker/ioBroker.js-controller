@@ -30,7 +30,7 @@
 
 #### Defined in
 
-[types-dev/index.d.ts:280](https://github.com/ioBroker/ioBroker.js-controller/blob/818c4029/packages/types-dev/index.d.ts#L280)
+[types-dev/index.d.ts:280](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L280)
 
 ___
 
@@ -40,17 +40,17 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:282](https://github.com/ioBroker/ioBroker.js-controller/blob/818c4029/packages/types-dev/index.d.ts#L282)
+[types-dev/index.d.ts:282](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L282)
 
 ___
 
 ### aggregate
 
-• `Optional` **aggregate**: ``"min"`` \| ``"max"`` \| ``"none"`` \| ``"minmax"`` \| ``"average"`` \| ``"total"`` \| ``"count"``
+• `Optional` **aggregate**: ``"min"`` \| ``"max"`` \| ``"count"`` \| ``"none"`` \| ``"minmax"`` \| ``"average"`` \| ``"total"``
 
 #### Defined in
 
-[types-dev/index.d.ts:286](https://github.com/ioBroker/ioBroker.js-controller/blob/818c4029/packages/types-dev/index.d.ts#L286)
+[types-dev/index.d.ts:286](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L286)
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:278](https://github.com/ioBroker/ioBroker.js-controller/blob/818c4029/packages/types-dev/index.d.ts#L278)
+[types-dev/index.d.ts:278](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L278)
 
 ___
 
@@ -70,7 +70,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:276](https://github.com/ioBroker/ioBroker.js-controller/blob/818c4029/packages/types-dev/index.d.ts#L276)
+[types-dev/index.d.ts:276](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L276)
 
 ___
 
@@ -80,7 +80,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/818c4029/packages/types-dev/index.d.ts#L279)
+[types-dev/index.d.ts:279](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L279)
 
 ___
 
@@ -90,7 +90,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:284](https://github.com/ioBroker/ioBroker.js-controller/blob/818c4029/packages/types-dev/index.d.ts#L284)
+[types-dev/index.d.ts:284](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L284)
 
 ___
 
@@ -100,7 +100,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:274](https://github.com/ioBroker/ioBroker.js-controller/blob/818c4029/packages/types-dev/index.d.ts#L274)
+[types-dev/index.d.ts:274](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L274)
 
 ___
 
@@ -110,7 +110,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:283](https://github.com/ioBroker/ioBroker.js-controller/blob/818c4029/packages/types-dev/index.d.ts#L283)
+[types-dev/index.d.ts:283](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L283)
 
 ___
 
@@ -120,7 +120,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:281](https://github.com/ioBroker/ioBroker.js-controller/blob/818c4029/packages/types-dev/index.d.ts#L281)
+[types-dev/index.d.ts:281](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L281)
 
 ___
 
@@ -130,7 +130,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:285](https://github.com/ioBroker/ioBroker.js-controller/blob/818c4029/packages/types-dev/index.d.ts#L285)
+[types-dev/index.d.ts:285](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L285)
 
 ___
 
@@ -140,7 +140,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:275](https://github.com/ioBroker/ioBroker.js-controller/blob/818c4029/packages/types-dev/index.d.ts#L275)
+[types-dev/index.d.ts:275](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L275)
 
 ___
 
@@ -150,4 +150,4 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/818c4029/packages/types-dev/index.d.ts#L277)
+[types-dev/index.d.ts:277](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L277)

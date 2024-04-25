@@ -1,4 +1,4 @@
-import type { TestContext } from '../_Types';
+import type { TestContext } from '../_Types.js';
 
 export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
     const testName = `${context.name} ${context.adapterShortName} files: `;
@@ -335,5 +335,3 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 }
-
-module.exports.register = register;

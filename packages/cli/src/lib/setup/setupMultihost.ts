@@ -1,10 +1,10 @@
 import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 import { tools } from '@iobroker/js-controller-common';
-import { isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common-db';
+import { tools as dbTools } from '@iobroker/js-controller-common-db';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import { MHClient, type BrowseResultEntry } from './multihostClient';
-import readline from 'readline';
+import { MHClient, type BrowseResultEntry } from './multihostClient.js';
+import readline from 'node:readline';
 import prompt from 'prompt';
 
 interface MHParams {
@@ -94,10 +94,17 @@ export class Multihost {
      * @param config iob config
      * @param changed if config has changed
      */
-    private showMHState(config: ioBroker.IoBrokerJson, changed: boolean): void {
+    private async showMHState(config: ioBroker.IoBrokerJson, changed: boolean): Promise<void> {
         if (config.multihostService.enabled) {
             let warningShown = false;
-            if (isLocalObjectsDbServer(config.objects.type, config.objects.host, true)) {
+
+            const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(
+                config.objects.type,
+                config.objects.host,
+                true
+            );
+
+            if (hasLocalObjectsServer) {
                 console.log('Changing objects server to accept connections on all IP addresses.');
                 config.objects.host = tools.getListenAllAddress();
                 changed = true;
@@ -112,7 +119,14 @@ export class Multihost {
                     `Please check the binding of the configured ${config.objects.type} server to allow remote connections.`
                 );
             }
-            if (isLocalStatesDbServer(config.states.type, config.states.host, true)) {
+
+            const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(
+                config.states.type,
+                config.states.host,
+                true
+            );
+
+            if (hasLocalStatesServer) {
                 console.log('Changing states server to accept connections on all IP addresses.');
                 config.states.host = tools.getListenAllAddress();
                 changed = true;
@@ -297,17 +311,26 @@ export class Multihost {
      * @param callback
      */
     connectHelper(mhClient: MHClient, ip: string, pass: string, callback: (err?: Error) => void): void {
-        mhClient.connect(ip, pass, (err, oObjects, oStates, ipHost) => {
+        mhClient.connect(ip, pass, async (err, oObjects, oStates, ipHost) => {
             if (err) {
                 callback(new Error(`Cannot connect to "${ip}": ${err.message}`));
             } else if (oObjects && oStates) {
                 const config = this.getConfig();
                 config.objects = oObjects;
                 config.states = oStates;
-                if (
-                    isLocalObjectsDbServer(config.objects.type, config.objects.host, true) ||
-                    isLocalStatesDbServer(config.states.type, config.states.host, true)
-                ) {
+
+                const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(
+                    config.objects.type,
+                    config.objects.host,
+                    true
+                );
+                const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(
+                    config.states.type,
+                    config.states.host,
+                    true
+                );
+
+                if (hasLocalObjectsServer || hasLocalStatesServer) {
                     callback(
                         new Error(
                             `IP Address of the remote host is ${tools.getLocalAddress()}. Connections from this host will not be accepted. Please change the configuration of this host to accept remote connections.`

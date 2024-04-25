@@ -1,13 +1,14 @@
 {
   "name": "@iobroker/js-controller-cli",
-  "version": "5.0.20-alpha.0-20240402-818c4029",
+  "type": "module",
+  "version": "5.0.20-alpha.0-20240425-20b08f31",
   "engines": {
     "node": ">=18.0.0"
   },
   "dependencies": {
     "@iobroker/js-controller-common": "file:../common",
     "@iobroker/js-controller-common-db": "file:../common-db",
-    "axios": "^1.6.0",
+    "axios": "^1.6.3",
     "chokidar": "^3.5.3",
     "daemonize2": "^0.4.2",
     "debug": "^4.3.4",
@@ -34,7 +35,7 @@
   },
   "scripts": {
     "build": "tsc -b tsconfig.build.json && tsc-alias",
-    "postbuild": "esm2cjs --in build/esm --out build/cjs -l error && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/"
+    "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/"
   },
   "main": "build/cjs/index.js",
   "module": "build/esm/index.js",

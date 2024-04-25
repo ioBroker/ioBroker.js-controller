@@ -1,4 +1,4 @@
-import type { TestContext } from '../_Types';
+import type { TestContext } from '../_Types.js';
 import { Validator } from '@iobroker/js-controller-adapter';
 
 import { spy } from 'sinon';

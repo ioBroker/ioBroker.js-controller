@@ -2,7 +2,7 @@ import { tools } from '@iobroker/js-controller-common';
 import { CLICommand, type CLICommandOptions } from './cliCommand.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import * as CLI from '@/lib/cli/messages.js';
-import { formatValue } from '@/lib/cli/cliTools';
+import { formatValue } from '@/lib/cli/cliTools.js';
 import * as rl from 'readline-sync';
 
 const ALIAS_STARTS_WITH = 'alias.';

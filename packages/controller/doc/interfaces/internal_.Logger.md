@@ -32,7 +32,7 @@ Verbosity of the log output
 
 #### Defined in
 
-[types-dev/index.d.ts:215](https://github.com/ioBroker/ioBroker.js-controller/blob/818c4029/packages/types-dev/index.d.ts#L215)
+[types-dev/index.d.ts:215](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L215)
 
 ## Methods
 
@@ -54,7 +54,7 @@ log message with debug level
 
 #### Defined in
 
-[types-dev/index.d.ts:206](https://github.com/ioBroker/ioBroker.js-controller/blob/818c4029/packages/types-dev/index.d.ts#L206)
+[types-dev/index.d.ts:206](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L206)
 
 ___
 
@@ -76,7 +76,7 @@ log message with error severity
 
 #### Defined in
 
-[types-dev/index.d.ts:212](https://github.com/ioBroker/ioBroker.js-controller/blob/818c4029/packages/types-dev/index.d.ts#L212)
+[types-dev/index.d.ts:212](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L212)
 
 ___
 
@@ -98,7 +98,7 @@ log message with info level (default output level for all adapters)
 
 #### Defined in
 
-[types-dev/index.d.ts:208](https://github.com/ioBroker/ioBroker.js-controller/blob/818c4029/packages/types-dev/index.d.ts#L208)
+[types-dev/index.d.ts:208](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L208)
 
 ___
 
@@ -120,7 +120,7 @@ log message with silly level
 
 #### Defined in
 
-[types-dev/index.d.ts:204](https://github.com/ioBroker/ioBroker.js-controller/blob/818c4029/packages/types-dev/index.d.ts#L204)
+[types-dev/index.d.ts:204](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L204)
 
 ___
 
@@ -142,4 +142,4 @@ log message with warning severity
 
 #### Defined in
 
-[types-dev/index.d.ts:210](https://github.com/ioBroker/ioBroker.js-controller/blob/818c4029/packages/types-dev/index.d.ts#L210)
+[types-dev/index.d.ts:210](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/index.d.ts#L210)

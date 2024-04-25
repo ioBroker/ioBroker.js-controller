@@ -10,19 +10,28 @@ import { PluginHandler } from '@iobroker/plugin-base';
 import semver from 'semver';
 import path from 'node:path';
 import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
-import { decryptArray, encryptArray, getSupportedFeatures, isMessageboxSupported } from '@/lib/adapter/utils';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const extend = require('node.extend');
+import {
+    decryptArray,
+    encryptArray,
+    getSupportedFeatures,
+    isMessageboxSupported,
+    getAdapterScopedPackageIdentifier
+} from '@/lib/adapter/utils.js';
+// @ts-expect-error no ts file
+import extend from 'node.extend';
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type Winston from 'winston';
 import type NodeSchedule from 'node-schedule';
+import yargs from 'yargs/yargs';
 
 // local version is always the same as controller version, since lerna exact: true is used
-import { version as controllerVersion } from '@iobroker/js-controller-adapter/package.json';
+import packJson from '@iobroker/js-controller-adapter/package.json' assert { type: 'json' };
 
-import { Log } from '@/lib/adapter/log';
-import { Validator } from './validator';
+const controllerVersion = packJson.version;
+
+import { Log } from '@/lib/adapter/log.js';
+import { Validator } from './validator.js';
 
 const { FORBIDDEN_CHARS } = tools;
 import {
@@ -40,7 +49,7 @@ import {
     NO_PROTECT_ADAPTERS,
     STATE_QUALITY,
     type SupportedFeature
-} from '@/lib/adapter/constants';
+} from '@/lib/adapter/constants.js';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import type {
     AdapterOptions,
@@ -108,11 +117,19 @@ import type {
     SendToUserInterfaceClientOptions,
     AllPropsUnknown,
     IoPackageInstanceObject,
-    AliasTargetEntry
-} from '@/lib/_Types';
-import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController';
+    AliasTargetEntry,
+    InstallNodeModuleOptions,
+    InternalInstallNodeModuleOptions,
+    StopParameters,
+    InternalStopParameters
+} from '@/lib/_Types.js';
+import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
+import type { CommandResult } from '@alcalzone/pak';
 
+import * as url from 'node:url';
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 tools.ensureDNSOrder();
 
 /**
@@ -660,7 +677,7 @@ export class AdapterClass extends EventEmitter {
     common?: ioBroker.InstanceCommon;
     private mboxSubscribed?: boolean;
     /** Stop the adapter */
-    stop?: () => Promise<void>;
+    stop?: (params?: StopParameters) => Promise<void>;
     version?: string;
     /** Stop the adapter only defined in compact, not for external usage */
     protected kill?: () => Promise<void>;
@@ -675,7 +692,6 @@ export class AdapterClass extends EventEmitter {
      */
     requireLog?: (isActive: boolean, options?: Partial<GetUserGroupsOptions>) => Promise<void> | void;
     private logOffTimer?: NodeJS.Timeout | null;
-    private logRedirect?: (isActive: boolean, id: string) => void;
     private logRequired?: boolean;
     private patterns?: Record<string, { regex: string }>;
     private statesConnectedTime?: number;
@@ -724,46 +740,71 @@ export class AdapterClass extends EventEmitter {
         this._config = this._options.config || this._config;
         this.startedInCompactMode = !!this._options.compact;
 
-        // possible arguments
-        // 0,1,.. - instance
-        // info, debug, warn, error - log level
-        // --force
-        // --logs
-        // --silent
-        // --install
-        // --debug = --force + --logs
-        if (process.argv) {
-            for (const argument of process.argv) {
-                if (
-                    argument === 'info' ||
-                    argument === 'debug' ||
-                    argument === 'error' ||
-                    argument === 'warn' ||
-                    argument === 'silly'
-                ) {
-                    this._config.log.level = argument;
-                    this.overwriteLogLevel = true;
-                } else if (argument === '--silent') {
-                    this._config.isInstall = true;
-                } else if (argument === '--install') {
-                    this._config.isInstall = true;
-                } else if (argument === '--logs') {
-                    this._config.consoleOutput = true;
-                } else if (argument === '--force') {
-                    this._config.forceIfDisabled = true;
-                } else if (argument === '--debug') {
-                    this._config.forceIfDisabled = true;
-                    this._config.consoleOutput = true;
-                    if (this._config.log.level !== 'silly') {
-                        this._config.log.level = 'debug';
-                        this.overwriteLogLevel = true;
-                    }
-                } else if (argument === '--console') {
-                    this._config.consoleOutput = true;
-                } else if (parseInt(argument, 10).toString() === argument) {
-                    this._config.instance = parseInt(argument, 10);
+        const parsedArgs = yargs(process.argv.slice(2))
+            .options({
+                loglevel: {
+                    describe: 'Define adapter log level',
+                    type: 'string'
+                },
+                silent: {
+                    describe: 'If is install run',
+                    type: 'boolean'
+                },
+                install: {
+                    describe: 'If is install run',
+                    type: 'boolean'
+                },
+                logs: {
+                    describe: 'If console output desired',
+                    type: 'boolean'
+                },
+                console: {
+                    describe: 'If console output desired',
+                    type: 'boolean'
+                },
+                force: {
+                    describe: 'If force start even if disabled',
+                    type: 'boolean'
+                },
+                debug: {
+                    describe: 'Same as --force combined with --console',
+                    type: 'boolean'
+                },
+                instance: {
+                    describe: 'Instance id, e.g. 0',
+                    type: 'string'
                 }
+            })
+            .parseSync();
+
+        if (parsedArgs.loglevel && ['info', 'debug', 'error', 'warn', 'silly'].includes(parsedArgs.loglevel)) {
+            this._config.log.level = parsedArgs.loglevel;
+            this.overwriteLogLevel = true;
+        }
+
+        if (parsedArgs.silent || parsedArgs.install) {
+            this._config.isInstall = true;
+        }
+
+        if (parsedArgs.logs || parsedArgs.console) {
+            this._config.consoleOutput = true;
+        }
+
+        if (parsedArgs.force) {
+            this._config.forceIfDisabled = true;
+        }
+
+        if (parsedArgs.debug) {
+            this._config.forceIfDisabled = true;
+            this._config.consoleOutput = true;
+            if (this._config.log.level !== 'silly') {
+                this._config.log.level = 'debug';
+                this.overwriteLogLevel = true;
             }
+        }
+
+        if (parsedArgs.instance && parseInt(parsedArgs.instance, 10).toString() === parsedArgs.instance) {
+            this._config.instance = parseInt(parsedArgs.instance, 10);
         }
 
         this._config.log.level = this._config.log.level || 'info';
@@ -1159,6 +1200,58 @@ export class AdapterClass extends EventEmitter {
 
         this.setExecutableCapabilities = tools.setExecutableCapabilities;
         this._init();
+    }
+
+    installNodeModule(moduleName: string, options: InstallNodeModuleOptions): Promise<CommandResult>;
+
+    /**
+     * Install specified npm module
+     *
+     * @param moduleName name of the node module
+     * @param options version information
+     */
+    installNodeModule(moduleName: unknown, options: unknown): Promise<CommandResult> {
+        Validator.assertString(moduleName, 'moduleName');
+        Validator.assertObject<InstallNodeModuleOptions>(options, 'options');
+
+        return this._installNodeModule({ ...options, moduleName });
+    }
+
+    private _installNodeModule(options: InternalInstallNodeModuleOptions): Promise<CommandResult> {
+        const { moduleName, version } = options;
+
+        const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
+        return tools.installNodeModule(`${internalModuleName}@npm:${moduleName}@${version}`);
+    }
+
+    uninstallNodeModule(moduleName: string): Promise<CommandResult>;
+
+    /**
+     * Uninstall specified npm module
+     *
+     * @param moduleName name of the node module
+     */
+    uninstallNodeModule(moduleName: unknown): Promise<CommandResult> {
+        Validator.assertString(moduleName, 'moduleName');
+
+        const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
+        return tools.uninstallNodeModule(internalModuleName);
+    }
+
+    importNodeModule(moduleName: string): Promise<unknown>;
+
+    /**
+     * Import a node module which has been installed via `installNodeModule`
+     *
+     * @param moduleName name of the node module
+     * @returns the required node module
+     */
+    importNodeModule(moduleName: unknown): Promise<unknown> {
+        Validator.assertString(moduleName, 'moduleName');
+
+        const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
+        // TODO: if https://github.com/microsoft/TypeScript/issues/54022 ever gets resolved, we should improve the return type
+        return import(internalModuleName);
     }
 
     // overload with real types
@@ -2044,12 +2137,15 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private async _stop(
-        isPause?: boolean,
-        isScheduled?: boolean,
-        exitCode?: number,
-        updateAliveState?: boolean
-    ): Promise<void> {
+    /**
+     * Stop an instance gracefully
+     *
+     * @param options information about the stoppage
+     */
+    private async _stop(options: InternalStopParameters = {}): Promise<void> {
+        const { isPause, isScheduled, reason } = options;
+        let { exitCode, updateAliveState } = options;
+
         exitCode = exitCode || (isScheduled ? EXIT_CODES.START_IMMEDIATELY_AFTER_STOP : 0);
         if (updateAliveState === undefined) {
             updateAliveState = true;
@@ -2062,7 +2158,7 @@ export class AdapterClass extends EventEmitter {
             this._reportInterval = null;
             const id = `system.adapter.${this.namespace}`;
 
-            const finishUnload = (): void => {
+            const finishUnload = async (): Promise<void> => {
                 if (this._timers.size) {
                     this._timers.forEach(timer => clearTimeout(timer));
                     this._timers.clear();
@@ -2085,19 +2181,18 @@ export class AdapterClass extends EventEmitter {
 
                 if (this.#states && updateAliveState) {
                     this.outputCount++;
-                    this.#states.setState(`${id}.alive`, { val: false, ack: true, from: id }, () => {
-                        if (!isPause) {
-                            this._logger.info(`${this.namespaceLog} terminating`);
-                        }
+                    await this.#states.setState(`${id}.alive`, { val: false, ack: true, from: id });
+                    if (!isPause) {
+                        this._logger.info(`${this.namespaceLog} terminating`);
+                    }
 
-                        // To this moment, the class could be destroyed
-                        this.terminate(exitCode);
-                    });
+                    // To this moment, the class could be destroyed
+                    this.terminate(reason, exitCode);
                 } else {
                     if (!isPause) {
                         this._logger.info(`${this.namespaceLog} terminating`);
                     }
-                    this.terminate(exitCode);
+                    this.terminate(reason, exitCode);
                 }
             };
 
@@ -2160,7 +2255,7 @@ export class AdapterClass extends EventEmitter {
      * Reads the file certificate from a given path and adds a file watcher to restart adapter on cert changes
      * if a cert is passed it is returned as it is
      *
-     * @param cert
+     * @param cert cert or path to cert
      */
     private _readFileCertificate(cert: string): string {
         if (typeof cert === 'string') {
@@ -2174,7 +2269,7 @@ export class AdapterClass extends EventEmitter {
                         this._logger.warn(
                             `${this.namespaceLog} New certificate "${filename}" detected. Restart adapter`
                         );
-                        setTimeout(() => this._stop(false, true), 2000);
+                        setTimeout(() => this._stop({ isPause: false, isScheduled: true }), 2_000);
                     });
                 }
             } catch (e) {
@@ -2768,8 +2863,13 @@ export class AdapterClass extends EventEmitter {
      *
      * @param id of the object
      * @param obj The object to set
+<<<<<<< HEAD
+     * @param [options] additional options
+     * @param [callback] optional callback function
+=======
      * @param options optional user context
      * @param callback optional callback
+>>>>>>> 0e706f4213e588a7efda7be7732e25c7157e0b2c
      */
     private async _setObjectWithDefaultValue(
         id: string,
@@ -3588,7 +3688,7 @@ export class AdapterClass extends EventEmitter {
      * @param design name of the design
      * @param search name of the view
      * @param params object containing startkey: first id to include in result; endkey: last id to include in result
-     * @param options
+     * @param options additional objects, e.g. for permissions
      * @param callback return result
      *      ```js
      *          function (err, doc) {
@@ -3697,9 +3797,9 @@ export class AdapterClass extends EventEmitter {
      * It is required, that ID consists namespace in startkey and endkey. E.g. `{startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '.\u9999'}`
      * to get all objects of the instance.
      *
-     * @param params
-     * @param options
-     * @param callback
+     * @param params startkey and endkey information
+     * @param options additional options, e.g. for permissions
+     * @param callback optional callback
      *      ```js
      *          function (err, res) {
      *              if (res && res.rows) {
@@ -7017,10 +7117,10 @@ export class AdapterClass extends EventEmitter {
      * Async version of sendTo
      * As we have a special case (first arg can be error or result, we need to promisify manually)
      *
-     * @param instanceName
-     * @param command
-     * @param message
-     * @param options
+     * @param instanceName name of the instance
+     * @param command command to send
+     * @param message message to send
+     * @param options additional options, e.g. for permissions
      */
     sendToAsync(instanceName: unknown, command: unknown, message?: unknown, options?: unknown): any {
         return new Promise((resolve, reject) => {
@@ -8247,6 +8347,13 @@ export class AdapterClass extends EventEmitter {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
         }
 
+        if (!this.#objects) {
+            this._logger.info(
+                `${this.namespaceLog} setForeignState not processed because Objects database not connected`
+            );
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
         try {
             this._utils.validateId(id, true, null);
         } catch (err) {
@@ -8329,9 +8436,12 @@ export class AdapterClass extends EventEmitter {
                     }
 
                     let targetObj;
-                    // check the rights
+                    // we ignore permissions on the target object and thus get it as admin user
                     try {
-                        targetObj = (await this._checkStates(aliasId, options, 'setState')).objs[0];
+                        targetObj = await this.#objects.getObject(aliasId, {
+                            ...options,
+                            user: SYSTEM_ADMIN_USER
+                        });
                     } catch (e) {
                         return tools.maybeCallbackWithError(callback, e);
                     }
@@ -8388,13 +8498,13 @@ export class AdapterClass extends EventEmitter {
 
                 if (obj?.common?.alias?.id) {
                     // alias id can be a string or can have id.write
-                    const aliasId = tools.isObject(obj.common.alias.id)
+                    const targetId = tools.isObject(obj.common.alias.id)
                         ? obj.common.alias.id.write
                         : obj.common.alias.id;
 
                     // validate here because we use objects/states db directly
                     try {
-                        this._utils.validateId(aliasId, true, null);
+                        this._utils.validateId(targetId, true, null);
                     } catch (e) {
                         this._logger.warn(`${this.namespaceLog} Error validating alias id of ${id}: ${e.message}`);
                         return tools.maybeCallbackWithError(
@@ -8411,31 +8521,34 @@ export class AdapterClass extends EventEmitter {
                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                     }
 
-                    // read object for formatting
-                    this.#objects.getObject(aliasId, options, (err, targetObj) => {
-                        if (!this.#states) {
-                            // if states is no longer existing, we do not need to unsubscribe
-                            this._logger.info(
-                                `${this.namespaceLog} setForeignState not processed because States database not connected`
-                            );
-                            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-                        }
-
-                        this.outputCount++;
-                        this.#states.setState(
-                            aliasId,
-                            tools.formatAliasValue({
-                                sourceCommon: obj.common as ioBroker.StateCommon,
-                                targetCommon: targetObj?.common as ioBroker.StateCommon | undefined,
-                                state,
-                                logger: this._logger,
-                                logNamespace: this.namespaceLog,
-                                sourceId: obj._id,
-                                targetId: targetObj?._id
-                            }),
-                            callback
-                        );
+                    // read object for formatting - we ignore permissions on the target object and thus get it as admin user
+                    const targetObj = await this.#objects.getObject(targetId, {
+                        ...options,
+                        user: SYSTEM_ADMIN_USER
                     });
+
+                    if (!this.#states) {
+                        // if states is no longer existing, we do not need to unsubscribe
+                        this._logger.info(
+                            `${this.namespaceLog} setForeignState not processed because States database not connected`
+                        );
+                        return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+                    }
+
+                    this.outputCount++;
+                    this.#states.setState(
+                        targetId,
+                        tools.formatAliasValue({
+                            sourceCommon: obj.common as ioBroker.StateCommon,
+                            targetCommon: targetObj?.common as ioBroker.StateCommon | undefined,
+                            state,
+                            logger: this._logger,
+                            logNamespace: this.namespaceLog,
+                            sourceId: obj._id,
+                            targetId: targetObj?._id
+                        }),
+                        callback
+                    );
                 } else {
                     this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 5`);
                     return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
@@ -8695,8 +8808,8 @@ export class AdapterClass extends EventEmitter {
 
         try {
             this._utils.validateId(id, true, options);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
         }
 
         let permCheckRequired = false;
@@ -8732,14 +8845,11 @@ export class AdapterClass extends EventEmitter {
                 if (aliasId) {
                     let sourceObj;
                     try {
-                        if (permCheckRequired) {
-                            sourceObj = (await this._checkStates(aliasId, options || {}, 'getState')).objs[0];
-                        } else {
-                            sourceObj = (await this.#objects.getObject(aliasId, options)) as
-                                | ioBroker.StateObject
-                                | null
-                                | undefined;
-                        }
+                        // we ignore permissions on the source object and thus get it as admin user
+                        sourceObj = (await this.#objects.getObject(aliasId, {
+                            ...options,
+                            user: SYSTEM_ADMIN_USER
+                        })) as ioBroker.StateObject | null | undefined;
                     } catch (e) {
                         return tools.maybeCallbackWithError(callback, e);
                     }
@@ -8750,8 +8860,7 @@ export class AdapterClass extends EventEmitter {
                     } else {
                         this.inputCount++;
                         try {
-                            // @ts-expect-error void return possible fix it
-                            state = await this.#states!.getState(aliasId);
+                            state = await this.#states.getState(aliasId);
                         } catch (e) {
                             return tools.maybeCallbackWithError(callback, e);
                         }
@@ -8779,7 +8888,7 @@ export class AdapterClass extends EventEmitter {
             if (this.oStates && this.oStates[id]) {
                 return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
             } else {
-                return this.#states!.getState(id, callback);
+                return this.#states.getState(id, callback);
             }
         }
     }
@@ -9347,7 +9456,7 @@ export class AdapterClass extends EventEmitter {
         pattern: string,
         callback?: ioBroker.ErrorCallback
     ): Promise<void> {
-        if (aliasObj && aliasObj.common && aliasObj.common.alias && aliasObj.common.alias.id) {
+        if (aliasObj?.common?.alias?.id) {
             if (aliasObj.type !== 'state') {
                 this._logger.warn(
                     // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
@@ -9400,7 +9509,8 @@ export class AdapterClass extends EventEmitter {
                 let sourceObj;
                 try {
                     await this.#states!.subscribe(sourceId);
-                    sourceObj = await this.#objects!.getObject(sourceId, this._options);
+                    // we ignore permissions on the source object and thus get it as admin user
+                    sourceObj = await this.#objects!.getObject(sourceId, { user: SYSTEM_ADMIN_USER });
                 } catch (e) {
                     return tools.maybeCallbackWithError(callback, e);
                 }
@@ -9715,8 +9825,7 @@ export class AdapterClass extends EventEmitter {
      * ```
      *
      * @param pattern string in form 'adapter.0.*'. Must be the same as subscribe.
-     * @param options]optional argument to describe the user context
-     * @param options
+     * @param options optional argument to describe the user context
      * @param callback return result
      * ```js
      * function (err) {}
@@ -9865,7 +9974,7 @@ export class AdapterClass extends EventEmitter {
      *
      * @param pattern string in form 'adapter.0.*' or like this. Only string allowed
      * @param options optional argument to describe the user context
-     * @param callback
+     * @param callback optional callback
      */
     subscribeStates(pattern: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
@@ -9901,7 +10010,7 @@ export class AdapterClass extends EventEmitter {
      *
      * @param pattern string in form 'adapter.0.*'. Must be the same as subscribe.
      * @param options optional argument to describe the user context
-     * @param callback
+     * @param callback optional callback
      */
     unsubscribeStates(pattern: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
@@ -10008,7 +10117,7 @@ export class AdapterClass extends EventEmitter {
 
             if (obj?.native?.licenses?.length) {
                 const now = Date.now();
-                const cert = fs.readFileSync(path.join(__dirname, '..', '..', 'cert', 'cloudCert.crt'));
+                const cert = fs.readFileSync(path.join(thisDir, '..', '..', 'cert', 'cloudCert.crt'));
                 let adapterObj: ioBroker.AdapterObject | null | undefined;
                 if (adapterName) {
                     try {
@@ -10095,6 +10204,27 @@ export class AdapterClass extends EventEmitter {
         });
 
         return licenses;
+    }
+
+    /**
+     * Add given id to log redirect list
+     *
+     * @param isActive if id should be added or removed
+     * @param id the id to add
+     */
+    private logRedirect(isActive: boolean, id: string): void {
+        // ignore itself
+        if (id === `system.adapter.${this.namespace}`) {
+            return;
+        }
+
+        if (isActive) {
+            if (!this.logList.has(id)) {
+                this.logList.add(id);
+            }
+        } else {
+            this.logList.delete(id);
+        }
     }
 
     private _reportStatus(): void {
@@ -10336,7 +10466,7 @@ export class AdapterClass extends EventEmitter {
                     const id = keys[i].substring(0, keys[i].length - '.logging'.length);
 
                     if (typeof objPart === 'object' && (objPart.val === true || objPart.val === 'true')) {
-                        this.logRedirect!(true, id);
+                        this.logRedirect(true, id);
                     }
                 }
                 if (this.logList.size && messages?.length && this.#states) {
@@ -10353,21 +10483,6 @@ export class AdapterClass extends EventEmitter {
             // disable log buffer
             messages = null;
         }
-
-        this.logRedirect = (isActive, id): void => {
-            // ignore itself
-            if (id === `system.adapter.${this.namespace}`) {
-                return;
-            }
-
-            if (isActive) {
-                if (!this.logList.has(id)) {
-                    this.logList.add(id);
-                }
-            } else {
-                this.logList.delete(id);
-            }
-        };
 
         this._options.logTransporter = this._options.logTransporter || this.ioPack.common.logTransporter;
 
@@ -10557,7 +10672,12 @@ export class AdapterClass extends EventEmitter {
                         }
                         // by deletion of state, stop this instance
                         if (sigKillVal !== process.pid && !this._config.forceIfDisabled) {
-                            this._stop(false, false, EXIT_CODES.ADAPTER_REQUESTED_TERMINATION, false);
+                            this._stop({
+                                isPause: false,
+                                isScheduled: false,
+                                exitCode: EXIT_CODES.ADAPTER_REQUESTED_TERMINATION,
+                                updateAliveState: false
+                            });
                             setTimeout(() => this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION), 4000);
                         }
                     }
@@ -10704,7 +10824,7 @@ export class AdapterClass extends EventEmitter {
                                 this.pluginHandler.instanciatePlugin(
                                     pluginName,
                                     this.pluginHandler.getPluginConfig(pluginName) || {},
-                                    __dirname
+                                    thisDir
                                 );
                                 this.pluginHandler.setDatabaseForPlugin(pluginName, this.#objects, this.#states);
                                 this.pluginHandler.initPlugin(pluginName, this.adapterConfig || {});
@@ -11240,12 +11360,12 @@ export class AdapterClass extends EventEmitter {
                     // @ts-expect-error
                     adapterConfig.common.mode === 'once'
                 ) {
-                    this.stop = () => this._stop(true);
+                    this.stop = params => this._stop({ ...params, isPause: true });
                 } else if (this.startedInCompactMode) {
-                    this.stop = () => this._stop(false);
+                    this.stop = params => this._stop({ ...params, isPause: false });
                     this.kill = this.stop;
                 } else {
-                    this.stop = () => this._stop(false);
+                    this.stop = params => this._stop({ ...params, isPause: false });
                 }
 
                 // Monitor logging state
@@ -11412,7 +11532,7 @@ export class AdapterClass extends EventEmitter {
                     );
                     this._restartScheduleJob = this._schedule.scheduleJob(adapterConfig.common.restartSchedule, () => {
                         this._logger.info(`${this.namespaceLog} Scheduled restart.`);
-                        this._stop(false, true);
+                        this._stop({ isPause: false, isScheduled: true });
                     });
                 }
             }
@@ -11513,7 +11633,12 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            this._stop(false, false, EXIT_CODES.UNCAUGHT_EXCEPTION, false);
+            this._stop({
+                isPause: false,
+                isScheduled: false,
+                exitCode: EXIT_CODES.UNCAUGHT_EXCEPTION,
+                updateAliveState: false
+            });
             setTimeout(() => this.terminate(EXIT_CODES.UNCAUGHT_EXCEPTION), 1_000);
         } catch (err) {
             this._logger.error(`${this.namespaceLog} exception by stop: ${err ? err.message : err}`);
@@ -11703,7 +11828,7 @@ export class AdapterClass extends EventEmitter {
                 }
 
                 this.inited = true;
-                this._initStates(this._prepareInitAdapter.bind(this));
+                this._initStates(() => this._prepareInitAdapter());
             });
         };
 
@@ -11730,7 +11855,7 @@ export class AdapterClass extends EventEmitter {
                 throw new Error(`Unknown states type: ${this._config.states.type}: ${err.message}`);
             }
         } else {
-            this.States = getStatesConstructor();
+            this.States = await getStatesConstructor();
         }
 
         if (this._config.objects && this._config.objects.type) {
@@ -11740,7 +11865,7 @@ export class AdapterClass extends EventEmitter {
                 throw new Error(`Unknown objects type: ${this._config.objects.type}: ${err.message}`);
             }
         } else {
-            this.Objects = getObjectsConstructor();
+            this.Objects = await getObjectsConstructor();
         }
 
         const ifaces = os.networkInterfaces();
@@ -11778,7 +11903,7 @@ export class AdapterClass extends EventEmitter {
 
         this.pluginHandler = new PluginHandler(pluginSettings);
         try {
-            this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, __dirname]); // first resolve from adapter directory, else from js-controller
+            this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, thisDir]); // first resolve from adapter directory, else from js-controller
         } catch (e) {
             this._logger.error(`Could not add plugins: ${e.message}`);
         }

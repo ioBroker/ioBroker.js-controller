@@ -71,6 +71,30 @@ or
 The main configuration is stored in `iobroker-data/iobroker.json`. Normally, there is no need to edit this file because the ioBroker CLI commands can control most of the settings.
 
 ## Feature Overview
+- [Admin UI](#admin-ui)
+- [Automatic adapter upgrade](#automatic-adapter-upgrade)
+- [Command Line Interface](#command-line-interface)
+- [Adapter Upgrade with Webserver](#adapter-upgrade-with-webserver)
+- [Controller UI Upgrade](#controller-ui-upgrade)
+- [Per host adapter objects](#per-host-adapter-objects)
+- [Operating system package management](#operating-system-package-management)
+- [Hostname](#hostname)
+- [Adapter process memory limitation](#adapter-process-memory-limitation)
+- [Directly executing TypeScript adapters](#directly-executing-typescript-adapters)
+- [Statistics](#statistics)
+- [Error Reporting via ioBroker Sentry](#error-reporting-via-iobroker-sentry)
+- [Notification System](#notification-system)
+- [Disk space warnings](#disk-space-warnings)
+- [Controlling and monitoring of adapter processes](#controlling-and-monitoring-of-adapter-processes)
+- [Multihost](#multihost)
+- [TIERS: Start instances in an ordered manner](#tiers-start-instances-in-an-ordered-manner)
+- [Custom Node.js process arguments](#custom-nodejs-process-arguments)
+- [IPv6 DNS resolution support](#ipv6-dns-resolution-support)
+- [Object and State Aliases](#object-and-state-aliases)
+- [State and objects databases and files](#state-and-objects-databases-and-files)
+- [Certificate Handling](#certificate-handling)
+- [js-controller Host Messages](#js-controller-host-messages)
+- [Adapter Development](#adapter-development)
 
 ### Admin UI
 **Feature status:** stable
@@ -176,6 +200,44 @@ interface ServerResponse {
 }
 ```
 
+### Managing node modules
+**Feature status:** New in 6.0.0
+
+In the past, adapters which needed additional user-defined node modules directly interacted with `npm` to install them. 
+With the ongoing development of `npm` it turned out to be problematically as additional packages get removed during other `npm` operations.
+
+Hence, the controller now provides convenience methods to manage additional node modules.
+
+To install a node module, execute:
+
+```typescript
+const result = await adapter.installNodeModule('axios', { version: '1.0.0' });
+
+if (result.success) {
+    // successfully installed
+}
+```
+
+To use the installed node module, you can import it:
+
+```typescript
+const module = await adapter.importNodeModule('axios');
+// now we can call axios specific methods
+const result = await module.get('https://www.iobroker.net/');
+```
+
+> **_NOTE:_** Always use the provided adapter method to import the module, importing the module directly with `import` or `require` statements will not work!
+
+To remove a no longer needed module:
+
+```typescript
+const result = await adapter.uninstallNodeModule('axios');
+
+if (result.success) {
+    // successfully uninstalled
+}
+```
+
 ### Per host `adapter` objects
 **Feature status:** New in 6.0.0
 
@@ -192,8 +254,20 @@ Furthermore, instances and their states will not move to another structure and w
 Note, that instances are unique across the whole system and are thus not affected by the described problem. Also objects of `type` instance have a `common.host` attribute
 to find the corresponding host.
 
+### Ignoring specific adapter version
+**Feature status:** New in 6.0.0
+
+If you know, that a specific version of an adapter is not suitable for you, you may want to ignore this update to avoid accidentally installing it. 
+You can do so by using the cli command `iobroker version <adapter> --ignore <version>` and to recognize all updates again use `iobroker version <adapter> --recognize`.
+If a version of an adapter is ignored, you will not be able to update to this specific version on this ioBroker host. 
+If you use a multihost environment you might need to execute the commands once per host.
+
+Internally this will set `common.ignoreVersion` to the specified version on the `system.host.<hostName>.adapter.<adapterName>` object.
+The version to be ignored can be specified via a semver range. So an absolute version is fine if you only want to ignore one specific update, e.g. `1.5.1`.
+Another example, if you want to ignore all updates in the `1.5.x` range, you can specify `~1.5.0`.
+
 ### Operating system package management
-**Feature status:** New in 5.1.0
+**Feature status:** New in 6.0.0
 
 **Feature Flag for detection:** `CONTROLLER_OS_PACKAGE_UPGRADE`
 
@@ -217,6 +291,23 @@ Note, that specifying a `version` is optional. The answer by the controller has 
 If a package fails, the response will have a value of `false` for `success` and an additional property `error` which contains the error message as a string.
 
 Currently only upgrading of packages is supported. If you need a specific OS dependency for your adapter, you can specify it inside `io-package.json` with the field `osDependencies`.
+
+### Custom install logic
+**Feature status:** New in 5.0.0
+
+If an adapter needs to execute custom install logic, one possibility is to use the `scripts` attribute of `package.json`. 
+However, often adapters already want to interact with the ioBroker databases during the installation logic.
+
+Hence, you can set `ioPackage.common.install` flag to true, to indicate that the js-controller should perform an installation run with your adapter after the npm installation is successfully done.
+During the installation run, the `install` instead of the `ready` event will be emitted. 
+Alternatively, you can also pass an `install` function to the constructor the same way as for `ready`.
+
+```typescript
+this.on('install', () => {
+    this.log.info('Performing installation logic ...')
+    // Perform your installation logic
+});
+```
 
 ### Hostname
 **Feature status:** stable
@@ -294,7 +385,7 @@ All of this helps me to provide an error-free smart home system that basically n
 If you want to disable the error reporting, you can do this by setting the state "system.host.NAME.plugins.sentry.enabled" to false. You should see a log message stating that sentry was disabled. After disabling the plugin no crashes from your system are reported and so cannot be fixed without reporting them by yourself manually!
 
 ### Notification System
-**Feature status:** Technology preview since js-controller 3.2.0
+**Feature status:** Stable since js-controller 5.0.0
 
 The notification system in ioBroker allows setting, detecting and storing notifications per Host and allows querying the details.
 
@@ -376,8 +467,9 @@ The js-controller defines in its io-package the system scope together with all d
 ```
 
 #### How to define own scopes?
-Each adapter can define its own "scopes" for own notifications with its own categories which then will be available in the system. 
-Please contact the core development group if you plan to add an own scope so that scope names can be checked to stay unique.
+Each adapter can define its own "scopes" for own notifications with its own categories which then will be available in the system.
+You can use the name of your adapter as a scope, e.g. `hm-rpc` to avoid conflicts with other scopes.
+If you plan on using a general purpose scope, please contact the core development group so that scope names can be checked to stay unique.
 The same applies if you see the need to enhance the system scope by additional categories. 
 Let's discuss the requirements that they can also be added officially into upcoming js-controller versions.
 
@@ -414,6 +506,12 @@ The message needs to take the following parameters in the message object:
 * instanceFilter - instance of notifications
 
 All three are optional and can be a string or null/undefined if ommited.
+
+### Disk space warnings
+**Feature status:** New in 6.0.0
+
+The js-controller will generate a notification of in the scope `system` and the category `diskSpaceIssues` on warning level, if your free disk space falls under a specified threshold. 
+By default, this threshold is 5 % of disk space. Via the state `system.host.<hostname>.diskWarning` you can override this level to any level between `0` and `100`. 
 
 ### Logging
 #### Log levels
@@ -725,8 +823,8 @@ and the alias could use the same value calculated as kWh.
 Some devices have separate states for semantically one state. One to read the current status from and one to write to, to
 control the device. You can combine these states into one alias by using a separate alias id to write to and another to read from.
 
-~As of now (js-controller 2.0.0 release) there are no front-ends to configure the aliases.~
-You can use Admin interface on the "Objects" tab to create aliases. Just open the context menu on the state, for which you want to create an alias, and select "Create Alias".
+We recommend to use the `devices` adapter to manage aliases. 
+Alternatively, you can use Admin interface on the "Objects" tab to create aliases. Just open the context menu on the state, for which you want to create an alias, and select "Create Alias".
 
 To create an alias object simple create a new object with an own name in the `alias.0` namespace and add the alias definition in the common section (here for an alias with the id `"alias.0.aliasName"`):
 
@@ -798,6 +896,8 @@ iobroker object set alias.0.aliasName common.alias.read="read-func"
 iobroker object set alias.0.aliasName common.alias.write="write-func"
 ```
 
+> **_NOTE:_** The permissions of the source object are ignored and only the permissions set on the alias object itself are relevant for database operations. 
+
 Additional information about aliases could be found [here](https://www.iobroker.net/#en/documentation/dev/aliases.md).
 
 ### State and objects databases and files
@@ -825,7 +925,7 @@ For the objects and states databases, special additional logging of the redis pr
 ```
 
 When not configured differently, the file databases are persisted every 15s (15000ms) after data are changed. The interval in ms can be changed by configuration in iobroker.json starting js-controller 3.0.
-**Note:** If you do that be aware that you may lose data when the js-controller crashes unexpectedly!
+> **_NOTE:_** If you do that be aware that you may lose data when the js-controller crashes unexpectedly!
 
 ```
 "objects": {
@@ -936,8 +1036,6 @@ With such a setup, ioBroker will connect to one of these sentinel processes to g
 
 ##### Using Password for Redis Databases
 **Feature status:** Stable
-
-
 
 ### Certificate Handling
 ... CLI

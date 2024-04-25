@@ -950,6 +950,10 @@
             "weather"
           ]
         },
+        "install": {
+          "description": "The adapter will be executed once additionally after installation and the `install` event will be emitted during this run. This allows for executing one time installation code.",
+          "type": "boolean"
+        },
         "unsafePerm": {
           "description": "if the package must be installed with \"npm --unsafe-perm\" parameter",
           "type": "boolean"

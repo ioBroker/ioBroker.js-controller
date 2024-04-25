@@ -703,6 +703,38 @@
       },
       "categories": [
         {
+          "category": "diskSpaceIssues",
+          "name": {
+            "en": "Issues with insufficient disk space",
+            "de": "Probleme mit unzureichendem Speicherplatz",
+            "ru": "Проблемы с недостаточным дисковым пространством",
+            "pt": "Problemas com espaço insuficiente no disco",
+            "nl": "Problemen met onvoldoende schijfruimte",
+            "fr": "Problèmes liés à un espace disque insuffisant",
+            "it": "Problemi di spazio su disco insufficiente",
+            "es": "Problemas de espacio insuficiente en disco",
+            "pl": "Problemy z niewystarczającą ilością miejsca na dysku",
+            "uk": "Проблеми з нестачею місця на диску",
+            "zh-cn": "磁盘空间不足的问题"
+          },
+          "severity": "alert",
+          "description": {
+            "en": "Your system is running out of disk space. Please free space on the disk to avoid problems.",
+            "de": "Ihr System verfügt nicht mehr über genügend Speicherplatz. Bitte geben Sie Speicherplatz auf der Festplatte frei, um Probleme zu vermeiden.",
+            "ru": "В вашей системе не хватает места на диске. Во избежание проблем освободите место на диске.",
+            "pt": "O seu sistema está a ficar sem espaço no disco. Liberte espaço no disco para evitar problemas.",
+            "nl": "Je systeem heeft bijna geen schijfruimte meer. Maak ruimte vrij op de schijf om problemen te voorkomen.",
+            "fr": "Votre système manque d'espace disque. Veuillez libérer de l'espace sur le disque pour éviter tout problème.",
+            "it": "Il sistema sta esaurendo lo spazio su disco. Liberare spazio sul disco per evitare problemi.",
+            "es": "Su sistema se está quedando sin espacio en disco. Por favor, libere espacio en el disco para evitar problemas.",
+            "pl": "W systemie zaczyna brakować miejsca na dysku. Aby uniknąć problemów, zwolnij miejsce na dysku.",
+            "uk": "У вашій системі закінчується місце на диску. Будь ласка, звільніть місце на диску, щоб уникнути проблем.",
+            "zh-cn": "您的系统正在耗尽磁盘空间。请释放磁盘空间，以免出现问题。"
+          },
+          "regex": [],
+          "limit": 1
+        },
+        {
           "category": "memIssues",
           "name": {
             "en": "Issues with RAM availability",
