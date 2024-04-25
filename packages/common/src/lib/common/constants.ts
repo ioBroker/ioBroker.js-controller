@@ -6,3 +6,5 @@ export const SYSTEM_HOST_PREFIX = 'system.host.';
 export const SYSTEM_REPOSITORIES_ID = 'system.repositories';
 /** The system config id */
 export const SYSTEM_CONFIG_ID = 'system.config';
+/** Unicode symbol to be appended on endkey of getObjectView */
+export const HIGHEST_UNICODE_SYMBOL = '\u9999';

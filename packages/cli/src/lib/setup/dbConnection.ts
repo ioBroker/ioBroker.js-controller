@@ -4,8 +4,7 @@ import {
     getObjectsConstructor,
     getStatesConstructor,
     objectsDbHasServer,
-    statesDbHasServer,
-    tools as dbTools
+    statesDbHasServer
 } from '@iobroker/js-controller-common-db';
 import { EXIT_CODES } from '@iobroker/js-controller-common';
 import { tools } from '@iobroker/js-controller-common';

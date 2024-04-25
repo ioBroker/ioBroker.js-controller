@@ -16,7 +16,7 @@ import path from 'node:path';
 import cp, { spawn, exec } from 'node:child_process';
 import semver from 'semver';
 import restart from '@/lib/restart.js';
-import { tools as dbTools, isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common-db';
+import { isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common-db';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual, inspect } from 'node:util';
@@ -29,6 +29,7 @@ import {
 } from '@iobroker/js-controller-common/constants';
 import { PluginHandler } from '@iobroker/plugin-base';
 import { NotificationHandler, getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
+import { BlocklistManager } from '@/lib/blocklistManager.js';
 import * as zipFiles from '@/lib/zipFiles.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
@@ -136,6 +137,7 @@ const controllerVersions: Record<string, string> = {};
 
 let pluginHandler: InstanceType<typeof PluginHandler>;
 let notificationHandler: NotificationHandler;
+let blocklistManager: BlocklistManager;
 let autoUpgradeManager: AdapterAutoUpgradeManager;
 /** array of instances which have requested repo update */
 let requestedRepoUpdates: RepoRequester[] = [];
@@ -692,6 +694,7 @@ async function initializeController(): Promise<void> {
     }
 
     autoUpgradeManager = new AdapterAutoUpgradeManager({ objects, states, logger, logPrefix: hostLogPrefix });
+    blocklistManager = new BlocklistManager({ objects });
 
     checkSystemLocaleSupported();
 
@@ -2191,6 +2194,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 }
 
                 await checkRebootRequired();
+                await disableBlocklistedInstances();
 
                 if (changed) {
                     await autoUpgradeAdapters();
@@ -3744,10 +3748,9 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         }
     }
 
-    const isBlocked = await dbTools.isAdapterVersionBlocked({
+    const isBlocked = await blocklistManager.isAdapterVersionBlocked({
         version: instance.common.version,
-        adapterName: instance.common.name,
-        objects
+        adapterName: instance.common.name
     });
 
     if (isBlocked) {
@@ -5779,6 +5782,27 @@ async function autoUpgradeAdapters(): Promise<void> {
         }
     } catch (e) {
         logger.error(`${hostLogPrefix} An error occurred while processing automatic adapter upgrades: ${e.message}`);
+    }
+}
+
+/**
+ * Disables all blocklisted instances which are currently enabled and generates notifications
+ */
+async function disableBlocklistedInstances(): Promise<void> {
+    let newlyDisabledInstances: ioBroker.InstanceObject[];
+
+    try {
+        newlyDisabledInstances = await blocklistManager.disableAllBlocklistedInstances();
+    } catch (e) {
+        logger.error(`${hostLogPrefix} Could not check if blocklisted adapters need to be disabled: ${e.message}`);
+        return;
+    }
+
+    for (const disabledInstance of newlyDisabledInstances) {
+        const message = `Instance "${disabledInstance._id}" has been stopped and disabled because the version "${disabledInstance.common.version}" has been blocked by the developer`;
+        logger.error(`${hostLogPrefix} ${message}`);
+
+        await notificationHandler.addMessage('system', 'blockedVersions', message, SYSTEM_HOST_PREFIX + hostname);
     }
 }
 
