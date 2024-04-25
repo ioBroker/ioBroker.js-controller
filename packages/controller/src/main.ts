@@ -2195,11 +2195,11 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     logger.warn(`${hostLogPrefix} Could not check for new OS updates: ${e.message}`);
                 }
 
+                await checkRebootRequired();
+
                 if (changed) {
                     await autoUpgradeAdapters();
                 }
-
-                await checkRebootRequired();
             } else {
                 logger.error(
                     `${hostLogPrefix} Invalid request ${
@@ -5761,6 +5761,10 @@ async function startUpgradeManager(options: UpgradeArguments): Promise<void> {
  * Checks if a system reboot is required and generates a notification if this is the case
  */
 async function checkRebootRequired(): Promise<void> {
+    if (process.platform !== 'linux') {
+        return;
+    }
+
     /** This file exists on most linux systems if a reboot is required */
     const rebootRequiredPath = '/var/run/reboot-required';
     /** This file contains a list of packages which require the reboot, separated by newline */
