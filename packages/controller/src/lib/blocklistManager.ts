@@ -19,6 +19,13 @@ interface AdapterVersionBlockedOptions {
     adapterName: string;
 }
 
+interface InternalAdapterVersionBlockedOptions extends AdapterVersionBlockedOptions {
+    /** The system repository object */
+    systemRepoObj: ioBroker.RepositoryObject;
+    /** The system config object */
+    systemConfigObj: ioBroker.SystemConfigObject;
+}
+
 export class BlocklistManager {
     /** The objects client */
     private readonly objects: ObjectsClient;
@@ -33,13 +40,20 @@ export class BlocklistManager {
      * @returns A list of disabled instances
      */
     async disableAllBlocklistedInstances(): Promise<ioBroker.InstanceObject[]> {
+        /** List of instances which we have disabled */
+        const disabledList: ioBroker.InstanceObject[] = [];
+
+        const systemRepoObj = await this.objects.getObject(SYSTEM_REPOSITORIES_ID);
+        const systemConfigObj = await this.objects.getObject(SYSTEM_CONFIG_ID);
+
+        if (!systemConfigObj || !systemRepoObj) {
+            return disabledList;
+        }
+
         const instancesView = await this.objects.getObjectViewAsync('system', 'instance', {
             startkey: SYSTEM_ADAPTER_PREFIX,
             endkey: SYSTEM_ADAPTER_PREFIX + HIGHEST_UNICODE_SYMBOL
         });
-
-        /** List of instances which we have disabled */
-        const disabledList: ioBroker.InstanceObject[] = [];
 
         for (const row of instancesView.rows) {
             const obj = row.value;
@@ -48,7 +62,9 @@ export class BlocklistManager {
                 continue;
             }
 
-            const isBlocked = await this.isAdapterVersionBlocked({
+            const isBlocked = this.internalIsAdapterVersionBlocked({
+                systemConfigObj,
+                systemRepoObj,
                 adapterName: obj.common.name,
                 version: obj.common.version
             });
@@ -73,14 +89,24 @@ export class BlocklistManager {
      * @returns A boolean indicating if the adapter version is blocked
      */
     async isAdapterVersionBlocked(options: AdapterVersionBlockedOptions): Promise<boolean> {
-        const { version, adapterName } = options;
-
         const systemRepoObj = await this.objects.getObject(SYSTEM_REPOSITORIES_ID);
         const systemConfigObj = await this.objects.getObject(SYSTEM_CONFIG_ID);
 
         if (!systemConfigObj || !systemRepoObj) {
             return false;
         }
+
+        return this.internalIsAdapterVersionBlocked({ ...options, systemRepoObj, systemConfigObj });
+    }
+
+    /**
+     * Check if version of a specific adapter is blocked
+     *
+     * @param options information about adapter, version and cached objects
+     * @returns A boolean indicating if the adapter version is blocked
+     */
+    private internalIsAdapterVersionBlocked(options: InternalAdapterVersionBlockedOptions): boolean {
+        const { adapterName, version, systemRepoObj, systemConfigObj } = options;
 
         const repo = systemRepoObj.native.repositories[systemConfigObj.common.activeRepo[0]];
 
