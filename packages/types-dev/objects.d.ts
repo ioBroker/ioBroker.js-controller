@@ -892,23 +892,27 @@ declare global {
             name: string;
             /** Newest available version */
             version: string;
+            /** Array of blocked versions, each entry represents a semver range */
+            blockedVersions: string[];
 
             /** Other Adapter related properties, not important for this implementation */
             [other: string]: unknown;
         }
 
-        interface RepositoryJson {
-            _repoInfo: {
-                /** If it is the official stable repository */
-                stable?: boolean;
-                /** i18n name of the repository */
-                name: Required<ioBroker.Translated>;
-                /** Time of repository update */
-                repoTime: string;
-            };
+        interface RepoInfo {
+            /** If it is the official stable repository */
+            stable?: boolean;
+            /** i18n name of the repository */
+            name: Required<ioBroker.Translated>;
+            /** Time of repository update */
+            repoTime: string;
+        }
 
-            /** Information about each adapter - Record needed for _repoInfo */
-            [adapter: string]: RepositoryJsonAdapterContent | Record<string, any>;
+        interface RepositoryJson {
+            _repoInfo: RepoInfo;
+
+            /** Information about each adapter */
+            [adapter: string]: RepositoryJsonAdapterContent | RepoInfo;
         }
 
         interface RepositoryInformation {

@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import path from 'node:path';
 import { tools } from '@iobroker/js-controller-common';
-import { tools as dbTools } from '@iobroker/js-controller-common-db';
+import { isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common-db';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import { MHClient, type BrowseResultEntry } from './multihostClient.js';
 import readline from 'node:readline';
@@ -97,11 +97,8 @@ export class Multihost {
     private async showMHState(config: ioBroker.IoBrokerJson, changed: boolean): Promise<void> {
         if (config.multihostService.enabled) {
             let warningShown = false;
-            const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(
-                config.objects.type,
-                config.objects.host,
-                true
-            );
+
+            const hasLocalObjectsServer = await isLocalObjectsDbServer(config.objects.type, config.objects.host, true);
 
             if (hasLocalObjectsServer) {
                 console.log('Changing objects server to accept connections on all IP addresses.');
@@ -119,11 +116,7 @@ export class Multihost {
                 );
             }
 
-            const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(
-                config.states.type,
-                config.states.host,
-                true
-            );
+            const hasLocalStatesServer = await isLocalStatesDbServer(config.states.type, config.states.host, true);
 
             if (hasLocalStatesServer) {
                 console.log('Changing states server to accept connections on all IP addresses.');
@@ -318,16 +311,12 @@ export class Multihost {
                 config.objects = oObjects;
                 config.states = oStates;
 
-                const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(
+                const hasLocalObjectsServer = await isLocalObjectsDbServer(
                     config.objects.type,
                     config.objects.host,
                     true
                 );
-                const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(
-                    config.states.type,
-                    config.states.host,
-                    true
-                );
+                const hasLocalStatesServer = await isLocalStatesDbServer(config.states.type, config.states.host, true);
 
                 if (hasLocalObjectsServer || hasLocalStatesServer) {
                     callback(

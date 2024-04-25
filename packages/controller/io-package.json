@@ -1104,7 +1104,7 @@
             "zh-cn": "总的版本被零星球队阻挠。.\n请提供最新资料。.\n必须能够以手工方式进行。."
           },
           "regex": [],
-          "limit": 1
+          "limit": 10
         },
         {
           "category": "databaseErrors",
@@ -1198,6 +1198,38 @@
             "pl": "Niektóre pakiety systemu operacyjnego mogą zostać zaktualizowane.",
             "uk": "Деякі пакунки ОС можна оновити.",
             "zh-cn": "某些操作系统软件包可以更新。"
+          },
+          "regex": [],
+          "limit": 1
+        },
+        {
+          "category": "systemRebootRequired",
+          "name": {
+            "en": "System reboot required",
+            "de": "Neustart des Systems erforderlich",
+            "ru": "Требуется перезагрузка системы",
+            "pt": "É necessário reiniciar o sistema",
+            "nl": "Systeem opnieuw opstarten vereist",
+            "fr": "Redémarrage du système nécessaire",
+            "it": "È necessario riavviare il sistema",
+            "es": "Es necesario reiniciar el sistema",
+            "pl": "Wymagany restart systemu",
+            "uk": "Потрібне перезавантаження системи",
+            "zh-cn": "需要重启系统"
+          },
+          "severity": "notify",
+          "description": {
+            "en": "Some recent updates require the system to be restarted.",
+            "de": "Einige kürzlich durchgeführte Aktualisierungen erfordern einen Neustart des Systems.",
+            "ru": "Некоторые последние обновления требуют перезагрузки системы.",
+            "pt": "Algumas actualizações recentes requerem um reinício do sistema.",
+            "nl": "Sommige recente updates vereisen een herstart van het systeem.",
+            "fr": "Certaines mises à jour récentes nécessitent un redémarrage du système.",
+            "it": "Alcuni aggiornamenti recenti richiedono il riavvio del sistema.",
+            "es": "Algunas actualizaciones recientes requieren reiniciar el sistema.",
+            "pl": "Niektóre z ostatnich aktualizacji wymagają ponownego uruchomienia systemu.",
+            "uk": "Деякі нещодавні оновлення вимагають перезавантаження системи.",
+            "zh-cn": "最近的一些更新需要重新启动系统。"
           },
           "regex": [],
           "limit": 1

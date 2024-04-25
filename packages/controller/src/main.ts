@@ -16,14 +16,20 @@ import path from 'node:path';
 import cp, { spawn, exec } from 'node:child_process';
 import semver from 'semver';
 import restart from '@/lib/restart.js';
-import { tools as dbTools } from '@iobroker/js-controller-common-db';
+import { isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common-db';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual, inspect } from 'node:util';
 import { tools, EXIT_CODES, logger as toolsLogger } from '@iobroker/js-controller-common';
-import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
+import {
+    SYSTEM_ADAPTER_PREFIX,
+    SYSTEM_CONFIG_ID,
+    SYSTEM_HOST_PREFIX,
+    SYSTEM_REPOSITORIES_ID
+} from '@iobroker/js-controller-common/constants';
 import { PluginHandler } from '@iobroker/plugin-base';
 import { NotificationHandler, getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
+import { BlocklistManager } from '@/lib/blocklistManager.js';
 import * as zipFiles from '@/lib/zipFiles.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
@@ -131,6 +137,7 @@ const controllerVersions: Record<string, string> = {};
 
 let pluginHandler: InstanceType<typeof PluginHandler>;
 let notificationHandler: NotificationHandler;
+let blocklistManager: BlocklistManager;
 let autoUpgradeManager: AdapterAutoUpgradeManager;
 /** array of instances which have requested repo update */
 let requestedRepoUpdates: RepoRequester[] = [];
@@ -211,8 +218,9 @@ const uploadTasks: UploadTask[] = [];
 const config = getConfig();
 
 /**
+ * Get the error text from an exit code
  *
- * @param code
+ * @param code exit code
  */
 function getErrorText(code: number): string {
     return EXIT_CODES[code];
@@ -304,16 +312,8 @@ async function startMultihost(__config?: Record<string, any>): Promise<boolean |
             }
         }
 
-        const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(
-            _config.objects.type,
-            _config.objects.host,
-            true
-        );
-        const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(
-            _config.states.type,
-            _config.states.host,
-            true
-        );
+        const hasLocalObjectsServer = await isLocalObjectsDbServer(_config.objects.type, _config.objects.host, true);
+        const hasLocalStatesServer = await isLocalStatesDbServer(_config.states.type, _config.states.host, true);
 
         if (!_config.objects.host || hasLocalObjectsServer) {
             logger.warn(
@@ -332,7 +332,7 @@ async function startMultihost(__config?: Record<string, any>): Promise<boolean |
                 let obj: ioBroker.SystemConfigObject | null | undefined;
                 let errText;
                 try {
-                    obj = await objects!.getObjectAsync('system.config');
+                    obj = await objects!.getObjectAsync(SYSTEM_CONFIG_ID);
                 } catch (e) {
                     // will log error below
                     errText = e.message;
@@ -694,6 +694,7 @@ async function initializeController(): Promise<void> {
     }
 
     autoUpgradeManager = new AdapterAutoUpgradeManager({ objects, states, logger, logPrefix: hostLogPrefix });
+    blocklistManager = new BlocklistManager({ objects });
 
     checkSystemLocaleSupported();
 
@@ -1401,7 +1402,7 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
         let err;
 
         try {
-            systemConfig = await objects!.getObjectAsync('system.config');
+            systemConfig = await objects!.getObjectAsync(SYSTEM_CONFIG_ID);
         } catch (e) {
             err = e;
         }
@@ -2061,7 +2062,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                 let systemConfig: ioBroker.SystemConfigObject | null | undefined;
                 try {
-                    systemConfig = await objects!.getObject('system.config');
+                    systemConfig = await objects!.getObject(SYSTEM_CONFIG_ID);
                 } catch {
                     // ignore
                 }
@@ -2088,7 +2089,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                 const globalRepo = {};
 
-                const systemRepos = await objects!.getObjectAsync('system.repositories');
+                const systemRepos = await objects!.getObjectAsync(SYSTEM_REPOSITORIES_ID);
                 let changed = false;
 
                 // Check if repositories exist
@@ -2174,7 +2175,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                     if (changed) {
                         try {
-                            await objects!.setObjectAsync('system.repositories', systemRepos);
+                            await objects!.setObjectAsync(SYSTEM_REPOSITORIES_ID, systemRepos);
                         } catch (e) {
                             logger.warn(`${hostLogPrefix} Repository object could not be updated: ${e.message}`);
                         }
@@ -2192,6 +2193,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 } catch (e) {
                     logger.warn(`${hostLogPrefix} Could not check for new OS updates: ${e.message}`);
                 }
+
+                await checkRebootRequired();
+                await disableBlocklistedInstances();
 
                 if (changed) {
                     await autoUpgradeAdapters();
@@ -3708,7 +3712,7 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
  * @param wakeUp
  */
 async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): Promise<void> {
-    if (isStopping || !connected) {
+    if (isStopping || !connected || !objects) {
         return;
     }
 
@@ -3743,6 +3747,19 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             // Do not start this instance
             return;
         }
+    }
+
+    const isBlocked = await blocklistManager.isAdapterVersionBlocked({
+        version: instance.common.version,
+        adapterName: instance.common.name
+    });
+
+    if (isBlocked) {
+        const message = `Do not start instance "${id}", because the version "${instance.common.version}" has been blocked by the developer`;
+        logger.error(`${hostLogPrefix} ${message}`);
+
+        await notificationHandler.addMessage('system', 'blockedVersions', message, SYSTEM_HOST_PREFIX + hostname);
+        return;
     }
 
     const adapterDir = tools.getAdapterDir(name);
@@ -5146,14 +5163,14 @@ export async function init(compactGroupId?: number): Promise<void> {
 
     // Get "objects" object
     // If "file" and on the local machine
-    const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host);
+    const hasLocalObjectsServer = await isLocalObjectsDbServer(config.objects.type, config.objects.host);
     if (hasLocalObjectsServer && !compactGroupController) {
         Objects = (await import(`@iobroker/db-objects-${config.objects.type}`)).Server;
     } else {
         Objects = await getObjectsConstructor();
     }
 
-    const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(config.states.type, config.states.host);
+    const hasLocalStatesServer = await isLocalStatesDbServer(config.states.type, config.states.host);
     // Get "states" object
     if (hasLocalStatesServer && !compactGroupController) {
         States = (await import(`@iobroker/db-states-${config.states.type}`)).Server;
@@ -5703,6 +5720,39 @@ async function startUpgradeManager(options: UpgradeArguments): Promise<void> {
 }
 
 /**
+ * Checks if a system reboot is required and generates a notification if this is the case
+ */
+async function checkRebootRequired(): Promise<void> {
+    if (process.platform !== 'linux') {
+        return;
+    }
+
+    /** This file exists on most linux systems if a reboot is required */
+    const rebootRequiredPath = '/var/run/reboot-required';
+    /** This file contains a list of packages which require the reboot, separated by newline */
+    const packagesListPath = '/var/run/reboot-required.pkgs';
+
+    const rebootRequired = await fs.pathExists(rebootRequiredPath);
+
+    if (!rebootRequired) {
+        return;
+    }
+
+    let message = 'At least one package update requires a system reboot';
+
+    try {
+        const content = await fs.readFile(packagesListPath, { encoding: 'utf-8' });
+        message = `The following package updates require a restart of the system: ${content.split('\n').join(', ')}`;
+    } catch (e) {
+        if (e.code !== 'ENOENT') {
+            logger.error(`${hostLogPrefix} Could not read file "${packagesListPath}": ${e.message}`);
+        }
+    }
+
+    await notificationHandler.addMessage('system', 'systemRebootRequired', message, `system.host.${hostname}`);
+}
+
+/**
  * Upgrade all upgradeable adapters with respect to their auto upgrade policy
  */
 async function autoUpgradeAdapters(): Promise<void> {
@@ -5733,6 +5783,27 @@ async function autoUpgradeAdapters(): Promise<void> {
         }
     } catch (e) {
         logger.error(`${hostLogPrefix} An error occurred while processing automatic adapter upgrades: ${e.message}`);
+    }
+}
+
+/**
+ * Disables all blocklisted instances which are currently enabled and generates notifications
+ */
+async function disableBlocklistedInstances(): Promise<void> {
+    let newlyDisabledInstances: ioBroker.InstanceObject[];
+
+    try {
+        newlyDisabledInstances = await blocklistManager.disableAllBlocklistedInstances();
+    } catch (e) {
+        logger.error(`${hostLogPrefix} Could not check if blocklisted adapters need to be disabled: ${e.message}`);
+        return;
+    }
+
+    for (const disabledInstance of newlyDisabledInstances) {
+        const message = `Instance "${disabledInstance._id}" has been stopped and disabled because the version "${disabledInstance.common.version}" has been blocked by the developer`;
+        logger.error(`${hostLogPrefix} ${message}`);
+
+        await notificationHandler.addMessage('system', 'blockedVersions', message, SYSTEM_HOST_PREFIX + hostname);
     }
 }
 

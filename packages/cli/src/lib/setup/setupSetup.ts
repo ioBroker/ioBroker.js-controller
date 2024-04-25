@@ -14,7 +14,12 @@ import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import fs from 'fs-extra';
 import path from 'node:path';
 import { EXIT_CODES, tools } from '@iobroker/js-controller-common';
-import { tools as dbTools } from '@iobroker/js-controller-common-db';
+import {
+    statesDbHasServer,
+    isLocalStatesDbServer,
+    isLocalObjectsDbServer,
+    objectsDbHasServer
+} from '@iobroker/js-controller-common-db';
 import { resetDbConnect, dbConnectAsync } from '@/lib/setup/dbConnection.js';
 import { BackupRestore } from '@/lib/setup/setupBackup.js';
 import crypto from 'node:crypto';
@@ -414,21 +419,15 @@ Please DO NOT copy files manually into ioBroker storage directories!`
      */
     async migrateObjects(newConfig: ioBroker.IoBrokerJson, oldConfig: ioBroker.IoBrokerJson): Promise<EXIT_CODES> {
         // allow migration if one of the db types changed or host changed of redis
-        const oldStatesHasServer = await dbTools.statesDbHasServer(oldConfig.states.type);
-        const oldObjectsHasServer = await dbTools.statesDbHasServer(oldConfig.objects.type);
-        const newStatesHasServer = await dbTools.statesDbHasServer(newConfig.states.type);
-        const newObjectsHasServer = await dbTools.statesDbHasServer(newConfig.objects.type);
+        const oldStatesHasServer = await statesDbHasServer(oldConfig.states.type);
+        const oldObjectsHasServer = await statesDbHasServer(oldConfig.objects.type);
+        const newStatesHasServer = await statesDbHasServer(newConfig.states.type);
+        const newObjectsHasServer = await statesDbHasServer(newConfig.objects.type);
 
-        const oldStatesLocalServer = await dbTools.isLocalStatesDbServer(oldConfig.states.type, oldConfig.states.host);
-        const oldObjectsLocalServer = await dbTools.isLocalObjectsDbServer(
-            oldConfig.objects.type,
-            oldConfig.objects.host
-        );
-        const newStatesLocalServer = await dbTools.isLocalStatesDbServer(newConfig.states.type, newConfig.states.host);
-        const newObjectsLocalServer = await dbTools.isLocalObjectsDbServer(
-            newConfig.objects.type,
-            newConfig.objects.host
-        );
+        const oldStatesLocalServer = await isLocalStatesDbServer(oldConfig.states.type, oldConfig.states.host);
+        const oldObjectsLocalServer = await isLocalObjectsDbServer(oldConfig.objects.type, oldConfig.objects.host);
+        const newStatesLocalServer = await isLocalStatesDbServer(newConfig.states.type, newConfig.states.host);
+        const newObjectsLocalServer = await isLocalObjectsDbServer(newConfig.objects.type, newConfig.objects.host);
 
         if (
             oldConfig &&
@@ -713,8 +712,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             );
         }
 
-        const hasObjectsServer = await dbTools.objectsDbHasServer(originalConfig.objects.type);
-        const hasStatesServer = await dbTools.statesDbHasServer(originalConfig.states.type);
+        const hasObjectsServer = await objectsDbHasServer(originalConfig.objects.type);
+        const hasStatesServer = await statesDbHasServer(originalConfig.states.type);
 
         if (hasObjectsServer || hasStatesServer) {
             console.log(`- Data Directory: ${tools.getDefaultDataDir()}`);
@@ -909,7 +908,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 ? originalConfig.states.port
                 : sp;
 
-        const statesHasServer = await dbTools.statesDbHasServer(stype);
+        const statesHasServer = await statesDbHasServer(stype);
 
         if (stype === otype && !statesHasServer && sHost === oHost) {
             defaultStatesPort = oPort;
@@ -962,8 +961,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         let dir;
         let hname;
 
-        const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(otype, oHost);
-        const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(stype, sHost);
+        const hasLocalObjectsServer = await isLocalObjectsDbServer(otype, oHost);
+        const hasLocalStatesServer = await isLocalStatesDbServer(stype, sHost);
 
         if (hasLocalStatesServer || hasLocalObjectsServer) {
             let validDataDir = false;
