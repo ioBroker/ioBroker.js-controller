@@ -5012,7 +5012,7 @@ export class AdapterClass extends EventEmitter {
      * @deprecated use `this.extendObject` instead
      */
     createDevice(deviceName: unknown, common: unknown, _native?: unknown, options?: unknown, callback?: unknown): any {
-        this._logger.warn(
+        this._logger.info(
             `${this.namespaceLog} Method "createDevice" is deprecated and will be removed in js-controller 7, use "extendObject/setObjectNotExists" instead`
         );
 
@@ -5115,7 +5115,7 @@ export class AdapterClass extends EventEmitter {
         options?: unknown,
         callback?: unknown
     ): any {
-        this._logger.warn(
+        this._logger.info(
             `${this.namespaceLog} Method "createChannel" is deprecated and will be removed in js-controller 7, use "extendObject/setObjectNotExists" instead`
         );
 
@@ -5226,7 +5226,7 @@ export class AdapterClass extends EventEmitter {
         options?: unknown,
         callback?: unknown
     ): any {
-        this._logger.warn(
+        this._logger.info(
             `${this.namespaceLog} Method "createState" is deprecated and will be removed in js-controller 7, use "extendObject/setObjectNotExists" instead`
         );
 
@@ -5418,7 +5418,7 @@ export class AdapterClass extends EventEmitter {
      *        ```
      */
     deleteDevice(deviceName: unknown, options: unknown, callback?: unknown): any {
-        this._logger.warn(
+        this._logger.info(
             `${this.namespaceLog} Method "deleteDevice" is deprecated and will be removed in js-controller 7, use "delObject" instead`
         );
 
@@ -5748,7 +5748,7 @@ export class AdapterClass extends EventEmitter {
      *        ```
      */
     deleteChannel(parentDevice: unknown, channelName: unknown, options?: unknown, callback?: unknown): any {
-        this._logger.warn(
+        this._logger.info(
             `${this.namespaceLog} Method "deleteChannel" is deprecated and will be removed in js-controller 7, use "delObject" instead`
         );
 
@@ -5864,7 +5864,7 @@ export class AdapterClass extends EventEmitter {
         options?: unknown,
         callback?: unknown
     ): any {
-        this._logger.warn(
+        this._logger.info(
             `${this.namespaceLog} Method "deleteState" is deprecated and will be removed in js-controller 7, use "delObject" instead`
         );
 
