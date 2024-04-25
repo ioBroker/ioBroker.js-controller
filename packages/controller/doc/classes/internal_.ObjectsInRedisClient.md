@@ -132,7 +132,7 @@ Activates the usage of sets
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:328
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:341
 
 ___
 
@@ -152,7 +152,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:261
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:274
 
 ___
 
@@ -406,7 +406,7 @@ Deactivates the usage of sets
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:332
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:345
 
 ___
 
@@ -472,7 +472,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:225
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:238
 
 ▸ **delObject**(`id`, `options`, `callback`): `void`
 
@@ -490,7 +490,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:225
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:226
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:239
 
 ▸ **delObject**(`id`, `options?`): `Promise`\<`void`\>
 
@@ -507,7 +507,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:226
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:227
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:240
 
 ___
 
@@ -528,7 +528,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:228
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:241
 
 ___
 
@@ -542,7 +542,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:266
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:279
 
 ___
 
@@ -563,7 +563,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:264
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:277
 
 ___
 
@@ -583,7 +583,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:265
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:278
 
 ___
 
@@ -671,7 +671,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:246
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:259
 
 ▸ **extendObject**\<`T`\>(`id`, `obj`, `options?`, `callback?`): `void` \| `Promise`\<`undefined` \| \{ `id`: `string` ; `value`: [`Object`](../modules/internal_.md#object)  }\>
 
@@ -696,7 +696,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:246
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:247
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:260
 
 ___
 
@@ -718,7 +718,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:248
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:261
 
 ___
 
@@ -743,7 +743,7 @@ Value will expire after ms milliseconds
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:298
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:311
 
 ___
 
@@ -790,7 +790,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:258
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:271
 
 ▸ **findObject**(`idOrName`, `type`, `callback`): `void`
 
@@ -808,7 +808,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:258
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:259
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:272
 
 ▸ **findObject**(`idOrName`, `type?`, `options?`): `Promise`\<`undefined` \| `string`\>
 
@@ -826,7 +826,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:259
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:260
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:273
 
 ___
 
@@ -871,7 +871,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:206
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:212
 
 ▸ **getKeys**(`pattern`, `callback`): `void`
 
@@ -888,7 +888,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:206
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:207
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:213
 
 ▸ **getKeys**(`pattern`, `options?`, `callback?`, `dontModify?`): `Promise`\<`undefined` \| `string`[]\>
 
@@ -907,7 +907,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:207
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:208
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:214
 
 ___
 
@@ -928,7 +928,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:209
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:215
 
 ___
 
@@ -950,7 +950,7 @@ Get value from meta namespace
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:338
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:351
 
 ___
 
@@ -1049,9 +1049,13 @@ ___
 
 `Promise`\<`undefined` \| ``null`` \| [`ObjectIdToObjectType`](../modules/internal_.md#objectidtoobjecttype)\<`T`, ``"read"``\>\>
 
+**`Deprecated`**
+
+use `getObject` without callback instead
+
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:204
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:210
 
 ___
 
@@ -1071,7 +1075,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:240
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:253
 
 ▸ **getObjectList**(`params`, `options?`): [`GetObjectListPromise`](../modules/internal_.md#getobjectlistpromise)
 
@@ -1088,7 +1092,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:240
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:241
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:254
 
 ▸ **getObjectList**(`params`, `callback`): `void`
 
@@ -1105,7 +1109,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:241
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:242
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:255
 
 ▸ **getObjectList**\<`T`\>(`params`, `options?`, `callback?`): `T` extends [`GetObjectListCallback`](../modules/internal_.md#getobjectlistcallback)\<[`Object`](../modules/internal_.md#object)\> ? `void` : [`GetObjectListPromise`](../modules/internal_.md#getobjectlistpromise)
 
@@ -1129,7 +1133,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:242
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:243
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:256
 
 ___
 
@@ -1150,7 +1154,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:244
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:257
 
 ___
 
@@ -1180,7 +1184,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:235
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:248
 
 ▸ **getObjectView**\<`Design`, `Search`\>(`design`, `search`, `params`, `options`, `callback`): `void`
 
@@ -1207,7 +1211,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:235
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:236
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:249
 
 ▸ **getObjectView**\<`Design`, `Search`\>(`design`, `search`, `params`, `callback`): `void`
 
@@ -1233,7 +1237,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:236
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:237
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:250
 
 ___
 
@@ -1263,7 +1267,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:238
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:251
 
 ___
 
@@ -1284,7 +1288,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:211
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:217
 
 ▸ **getObjects**(`keys`, `callback`): `void`
 
@@ -1301,7 +1305,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:211
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:212
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:218
 
 ▸ **getObjects**(`keys`, `options`, `callback`, `dontModify?`): `void`
 
@@ -1320,7 +1324,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:212
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:213
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:219
 
 ___
 
@@ -1341,7 +1345,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:214
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:220
 
 ___
 
@@ -1362,7 +1366,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:216
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:222
 
 ▸ **getObjectsByPattern**(`pattern`, `options`, `callback`): `void`
 
@@ -1380,7 +1384,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:216
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:217
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:223
 
 ___
 
@@ -1401,7 +1405,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:218
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:224
 
 ___
 
@@ -1417,7 +1421,7 @@ Get name of the primary host
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:310
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:323
 
 ___
 
@@ -1433,7 +1437,7 @@ Returns the protocol version from DB
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:290
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:303
 
 ___
 
@@ -1484,7 +1488,7 @@ Function to checks if comparisons will work according to the configured Locale
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:232
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:245
 
 ___
 
@@ -1498,7 +1502,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:267
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:280
 
 ___
 
@@ -1516,7 +1520,7 @@ number of migrated sets
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:286
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:299
 
 ___
 
@@ -1706,7 +1710,7 @@ Ensure we are no longer the primary host
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:314
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:327
 
 ___
 
@@ -1840,7 +1844,7 @@ Checks if a given set exists
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:280
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:293
 
 ___
 
@@ -1867,7 +1871,7 @@ ___
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:220
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:226
 
 ▸ **setObject**\<`T`\>(`id`, `obj`, `callback?`): `void` \| `Promise`\<`undefined` \| \{ `id`: `string`  }\>
 
@@ -1891,7 +1895,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:220
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:221
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:227
 
 ▸ **setObject**\<`T`\>(`id`, `obj`, `options?`, `callback?`): `void` \| `Promise`\<`undefined` \| \{ `id`: `string`  }\>
 
@@ -1916,7 +1920,7 @@ db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:221
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:222
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:228
 
 ___
 
@@ -1929,16 +1933,20 @@ ___
 | Name | Type |
 | :------ | :------ |
 | `id` | `string` |
-| `obj` | `Omit`\<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| `Omit`\<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.host.$\{string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.adapter.$\{string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.adapter.$\{string}.$\{number}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.user.$\{string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.group.$\{string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`ChartObject`](../interfaces/internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`ScheduleObject`](../interfaces/internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`RepositoryObject`](../interfaces/internal_.RepositoryObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: ``"system.repositories"`` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`DesignObject`](../interfaces/internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`\_design/$\{string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } |
+| `obj` | `Omit`\<[`StateObject`](../interfaces/internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`StateACL`](../interfaces/internal_.StateACL.md)  } \| `Omit`\<[`DeviceObject`](../interfaces/internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`ChannelObject`](../interfaces/internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`FolderObject`](../interfaces/internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`MetaObject`](../interfaces/internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`EnumObject`](../interfaces/internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`HostObject`](../interfaces/internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.host.$\{string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`AdapterObject`](../interfaces/internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: [`Adapter`](../modules/internal_.md#adapter) ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`InstanceObject`](../interfaces/internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.adapter.$\{string}.$\{number}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`UserObject`](../interfaces/internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.user.$\{string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`GroupObject`](../interfaces/internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.group.$\{string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`ScriptObject`](../interfaces/internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`ChartObject`](../interfaces/internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`ScheduleObject`](../interfaces/internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`RepositoryObject`](../interfaces/internal_.RepositoryObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: ``"system.repositories"`` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`OtherObject`](../interfaces/internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } \| `Omit`\<[`DesignObject`](../interfaces/internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`\_design/$\{string}\` ; `acl?`: [`ObjectACL`](../interfaces/internal_.ObjectACL.md)  } |
 | `options?` | ``null`` \| [`CallOptions`](../interfaces/internal_.CallOptions.md) |
 
 #### Returns
 
 `Promise`\<`undefined` \| \{ `id`: `string`  }\>
 
+**`Deprecated`**
+
+use `setObject` without callback instead
+
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:223
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:236
 
 ___
 
@@ -1963,7 +1971,7 @@ Value will expire after ms milliseconds
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:306
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:319
 
 ___
 
@@ -1985,7 +1993,7 @@ Sets the protocol version to the DB
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:320
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:333
 
 ___
 
@@ -2061,7 +2069,7 @@ Subscribe to expired events to get expiration of primary host
 
 #### Defined in
 
-db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:324
+db-objects-redis/build/esm/lib/objects/objectsInRedisClient.d.ts:337
 
 ___
 

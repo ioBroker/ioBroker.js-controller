@@ -79,7 +79,7 @@ declare global {
             // Guaranteed instance objects
             type Instance = `system.adapter.${string}.${number}`;
             // Guaranteed adapter objects
-            type Adapter = `system.adapter.${string}`;
+            type Adapter = `system.adapter.${string}` | `system.host.${string}.adapter.${string}`;
             // Guaranteed group objects
             type Group = `system.group.${string}`;
             // Guaranteed user objects
@@ -716,6 +716,8 @@ declare global {
             licenseInformation?: LicenseInformation;
             /** Messages, that will be shown (if condition evaluates to true) by upgrade or installation */
             messages?: MessageRule[];
+            /** If specific update of this adapter should be ignored, specifies version number to be ignored */
+            ignoreVersion?: string;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;

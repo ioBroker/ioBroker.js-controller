@@ -22,7 +22,7 @@
 
 #### Defined in
 
-[types-dev/objects.d.ts:503](https://github.com/ioBroker/ioBroker.js-controller/blob/4020943e/packages/types-dev/objects.d.ts#L503)
+[types-dev/objects.d.ts:503](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/objects.d.ts#L503)
 
 ___
 
@@ -32,7 +32,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:500](https://github.com/ioBroker/ioBroker.js-controller/blob/4020943e/packages/types-dev/objects.d.ts#L500)
+[types-dev/objects.d.ts:500](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/objects.d.ts#L500)
 
 ___
 
@@ -44,7 +44,7 @@ The vis widget does not support the listed major versions of vis
 
 #### Defined in
 
-[types-dev/objects.d.ts:505](https://github.com/ioBroker/ioBroker.js-controller/blob/4020943e/packages/types-dev/objects.d.ts#L505)
+[types-dev/objects.d.ts:505](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/objects.d.ts#L505)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:501](https://github.com/ioBroker/ioBroker.js-controller/blob/4020943e/packages/types-dev/objects.d.ts#L501)
+[types-dev/objects.d.ts:501](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/objects.d.ts#L501)
 
 ___
 
@@ -64,4 +64,4 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:502](https://github.com/ioBroker/ioBroker.js-controller/blob/4020943e/packages/types-dev/objects.d.ts#L502)
+[types-dev/objects.d.ts:502](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/objects.d.ts#L502)

@@ -61,6 +61,72 @@ type MessageUnsubscribeReason = 'client' | 'disconnect';
 export type ClientUnsubscribeReason = MessageUnsubscribeReason | 'clientSubscribeError';
 type UserInterfaceClientUnsubscribeReason = ClientUnsubscribeReason | 'timeout';
 
+// eslint-disable-next-line @typescript-eslint/ban-types
+type Invoice = 'free' | (string & {});
+
+export interface SuitableLicense {
+    /** Name of the license type, not necessarily matching adapter */
+    product: string;
+    /** E-Mail of license owner */
+    email: string;
+    /** Unique id of this license */
+    id: string;
+    /** The actual license */
+    json: string;
+    /** If it is a free license or not */
+    invoice: Invoice;
+    /** The adapter instance which uses this license */
+    usedBy?: string;
+    /** Version for which this license is valid */
+    version: string;
+    /** License is only valid for given UUID */
+    uuid?: string;
+    /** License if valid until this date 0000-00-00 00:00:00 if unlimited */
+    validTill: string;
+    /** License is only valid for X number of datapoints */
+    datapoints?: number;
+    /** Decoded property from jwt verify on json content with cloud cert */
+    decoded: {
+        /** E-Mail of license owner */
+        email: string;
+        comment: string;
+        /** License type, eg private */
+        type: string;
+        /** Adapter name */
+        name: string;
+        /** Address of license owner */
+        address: {
+            Country: string;
+            Name: string;
+            AddressLine1: string;
+            AddressLine2: string;
+            ZIP: string;
+            City: string;
+        };
+        ltype: string;
+        country: string;
+        eu: string;
+        /** VAT in percent */
+        vatP: 19;
+        /** Netto price information */
+        netto: number;
+        /** VAT price information */
+        vat: number;
+        /** Date when license expires */
+        expires: number;
+        /** How long license is valid, always in future if valid */
+        valid_till: string;
+        id: string;
+        iat: number;
+        /** Version for which this license is valid */
+        version: string;
+        /** License is only valid for given UUID */
+        uuid?: string;
+        /** If it is a free license or not */
+        invoice: Invoice;
+    };
+}
+
 export interface UserInterfaceSubscribeInfo {
     /** The client id, which can be used to send information to clients */
     clientId: string;
@@ -494,8 +560,34 @@ export interface InternalDeleteStateFromEnumOptions {
     callback?: ioBroker.ErrorCallback;
 }
 
+export interface StopParameters {
+    /** Specify an optional exit code */
+    exitCode?: number;
+    /** Specify an optional reason for stoppage */
+    reason?: string;
+}
+
+export interface InternalStopParameters extends StopParameters {
+    /** If mode is schedule or once */
+    isPause?: boolean;
+    /** If it has a restart schedule running */
+    isScheduled?: boolean;
+    /** If alive state should be updated, if undefined defaults to true */
+    updateAliveState?: boolean;
+}
+
 /**
  * The internal adapter config type should only be used to access config properties which are set by the adapter developers.
  * Only use it like `this.config as InternalAdapterConfig`
  */
 export type InternalAdapterConfig = Record<string, unknown>;
+
+export interface InstallNodeModuleOptions {
+    /** Version of node module */
+    version: string;
+}
+
+export interface InternalInstallNodeModuleOptions extends InstallNodeModuleOptions {
+    /** Name of the npm module */
+    moduleName: string;
+}
