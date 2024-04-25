@@ -1072,7 +1072,7 @@
             "zh-cn": "总的版本被零星球队阻挠。.\n请提供最新资料。.\n必须能够以手工方式进行。."
           },
           "regex": [],
-          "limit": 1
+          "limit": 10
         },
         {
           "category": "databaseErrors",

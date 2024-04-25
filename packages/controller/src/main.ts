@@ -24,6 +24,7 @@ import { tools, EXIT_CODES, logger as toolsLogger } from '@iobroker/js-controlle
 import {
     SYSTEM_ADAPTER_PREFIX,
     SYSTEM_CONFIG_ID,
+    SYSTEM_HOST_PREFIX,
     SYSTEM_REPOSITORIES_ID
 } from '@iobroker/js-controller-common/constants';
 import { PluginHandler } from '@iobroker/plugin-base';
@@ -3799,9 +3800,10 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
     });
 
     if (isBlocked) {
-        logger.error(
-            `${hostLogPrefix} Do not start instance "${id}", because the version "${instance.common.version}" has been blocked by the developer`
-        );
+        const message = `Do not start instance "${id}", because the version "${instance.common.version}" has been blocked by the developer`;
+        logger.error(`${hostLogPrefix} ${message}`);
+
+        await notificationHandler.addMessage('system', 'blockedVersions', message, SYSTEM_HOST_PREFIX + hostname);
         return;
     }
 
