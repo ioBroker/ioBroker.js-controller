@@ -26,4 +26,4 @@ Version of node module
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:521](https://github.com/ioBroker/ioBroker.js-controller/blob/e4f9cfa5/packages/adapter/src/lib/_Types.ts#L521)
+[adapter/src/lib/_Types.ts:521](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/adapter/src/lib/_Types.ts#L521)
