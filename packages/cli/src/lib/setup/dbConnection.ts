@@ -1,6 +1,12 @@
 import type { DbConnectAsyncReturn, DbConnectCallback } from '../_Types.js';
 import fs from 'fs-extra';
-import { getObjectsConstructor, getStatesConstructor, tools as dbTools } from '@iobroker/js-controller-common-db';
+import {
+    getObjectsConstructor,
+    getStatesConstructor,
+    objectsDbHasServer,
+    statesDbHasServer,
+    tools as dbTools
+} from '@iobroker/js-controller-common-db';
 import { EXIT_CODES } from '@iobroker/js-controller-common';
 import { tools } from '@iobroker/js-controller-common';
 import { setTimeout as wait } from 'node:timers/promises';
@@ -89,7 +95,7 @@ export async function dbConnect(
                     objects = null;
                 }
 
-                const hasObjectsServer = await dbTools.objectsDbHasServer(config.objects.type);
+                const hasObjectsServer = await objectsDbHasServer(config.objects.type);
 
                 if (hasObjectsServer) {
                     // Just open in memory DB itself
@@ -154,7 +160,7 @@ export async function dbConnect(
                     states = null;
                 }
 
-                const hasStatesServer = await dbTools.statesDbHasServer(config.states.type);
+                const hasStatesServer = await statesDbHasServer(config.states.type);
 
                 if (hasStatesServer) {
                     // Just open in memory DB itself

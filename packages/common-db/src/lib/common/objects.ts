@@ -26,12 +26,13 @@ export async function getObjectsConstructor(): Promise<typeof ObjectsClient> {
  * @param checkIfLocalOnly if true the method checks if the server listens to local connections only; else also external connection options are checked
  * @returns true if a server listens on this host (locally or globally/by IP)
  */
-export function isLocalObjectsDbServer(
+export async function isLocalObjectsDbServer(
     dbType: string,
     host: string | string[],
     checkIfLocalOnly: boolean = false
-): boolean {
-    if (!objectsDbHasServer(dbType)) {
+): Promise<boolean> {
+    const hasServer = await objectsDbHasServer(dbType);
+    if (!hasServer) {
         return false; // if no server it can not be a local server
     }
 
@@ -54,11 +55,12 @@ export function isLocalObjectsDbServer(
  * @param dbType database type
  * @returns true if a server class is available
  */
-export function objectsDbHasServer(dbType: string): boolean {
+export async function objectsDbHasServer(dbType: string): Promise<boolean> {
     try {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        return !!require(`@iobroker/db-objects-${dbType}`).Server;
-    } catch {
+        const objects = await import(`@iobroker/db-objects-${dbType}`);
+        return !!objects.Server;
+    } catch (e) {
+        console.error(e);
         throw new Error(`Installation error or unknown objects database type: ${dbType}`);
     }
 }

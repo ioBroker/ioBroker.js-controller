@@ -16,7 +16,7 @@ import path from 'node:path';
 import cp, { spawn, exec } from 'node:child_process';
 import semver from 'semver';
 import restart from '@/lib/restart.js';
-import { tools as dbTools } from '@iobroker/js-controller-common-db';
+import { tools as dbTools, isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common-db';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual, inspect } from 'node:util';
@@ -310,16 +310,8 @@ async function startMultihost(__config?: Record<string, any>): Promise<boolean |
             }
         }
 
-        const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(
-            _config.objects.type,
-            _config.objects.host,
-            true
-        );
-        const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(
-            _config.states.type,
-            _config.states.host,
-            true
-        );
+        const hasLocalObjectsServer = await isLocalObjectsDbServer(_config.objects.type, _config.objects.host, true);
+        const hasLocalStatesServer = await isLocalStatesDbServer(_config.states.type, _config.states.host, true);
 
         if (!_config.objects.host || hasLocalObjectsServer) {
             logger.warn(
@@ -5167,14 +5159,14 @@ export async function init(compactGroupId?: number): Promise<void> {
 
     // Get "objects" object
     // If "file" and on the local machine
-    const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host);
+    const hasLocalObjectsServer = await isLocalObjectsDbServer(config.objects.type, config.objects.host);
     if (hasLocalObjectsServer && !compactGroupController) {
         Objects = (await import(`@iobroker/db-objects-${config.objects.type}`)).Server;
     } else {
         Objects = await getObjectsConstructor();
     }
 
-    const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(config.states.type, config.states.host);
+    const hasLocalStatesServer = await isLocalStatesDbServer(config.states.type, config.states.host);
     // Get "states" object
     if (hasLocalStatesServer && !compactGroupController) {
         States = (await import(`@iobroker/db-states-${config.states.type}`)).Server;

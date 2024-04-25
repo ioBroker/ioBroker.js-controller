@@ -24,10 +24,10 @@ export async function getStatesConstructor(): Promise<typeof StatesClient> {
  * @param dbType database type
  * @returns true if a server class is available
  */
-export function statesDbHasServer(dbType: string): boolean {
+export async function statesDbHasServer(dbType: string): Promise<boolean> {
     try {
-        // eslint-disable-next-line @typescript-eslint/no-var-requires
-        return !!require(`@iobroker/db-states-${dbType}`).Server;
+        const states = await import(`@iobroker/db-states-${dbType}`);
+        return !!states.Server;
     } catch {
         throw new Error(`Installation error or unknown states database type: ${dbType}`);
     }
@@ -41,8 +41,13 @@ export function statesDbHasServer(dbType: string): boolean {
  * @param checkIfLocalOnly if true the method checks if the server listens to local connections only; else also external connection options are checked
  * @returns true if a server listens on this host (locally or globally/by IP)
  */
-export function isLocalStatesDbServer(dbType: string, host: string | string[], checkIfLocalOnly = false): boolean {
-    if (!statesDbHasServer(dbType)) {
+export async function isLocalStatesDbServer(
+    dbType: string,
+    host: string | string[],
+    checkIfLocalOnly = false
+): Promise<boolean> {
+    const hasServer = await statesDbHasServer(dbType);
+    if (!hasServer) {
         return false; // if no server it can not be a local server
     }
 

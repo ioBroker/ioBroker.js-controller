@@ -4,7 +4,7 @@ import { EXIT_CODES } from '@iobroker/js-controller-common';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual } from 'node:util';
 import Debug from 'debug';
-import { tools as dbTools } from '@iobroker/js-controller-common-db';
+import { objectsDbHasServer, isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common-db';
 import path from 'node:path';
 import yargs from 'yargs/yargs';
 import * as CLITools from '@/lib/cli/cliTools.js';
@@ -715,10 +715,7 @@ async function processCommand(
                         if (config.states.type === 'file') {
                             config.states.type = 'jsonl';
 
-                            const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(
-                                'file',
-                                config.states.host
-                            );
+                            const hasLocalStatesServer = await isLocalStatesDbServer('file', config.states.host);
                             if (hasLocalStatesServer) {
                                 // silent config change on secondaries
                                 console.log('States DB type migrated from "file" to "jsonl"');
@@ -729,10 +726,7 @@ async function processCommand(
                         if (config.objects.type === 'file') {
                             config.objects.type = 'jsonl';
 
-                            const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(
-                                'file',
-                                config.objects.host
-                            );
+                            const hasLocalObjectsServer = await isLocalObjectsDbServer('file', config.objects.host);
                             if (hasLocalObjectsServer) {
                                 // silent config change on secondaries
                                 console.log('Objects DB type migrated from "file" to "jsonl"');
@@ -2507,7 +2501,7 @@ async function processCommand(
 
         case 'checklog': {
             dbConnect(params, async ({ objects, states, isOffline, objectsDBType }) => {
-                const hasLocalObjectsServer = await dbTools.objectsDbHasServer(objectsDBType);
+                const hasLocalObjectsServer = await objectsDbHasServer(objectsDBType);
                 if (isOffline && hasLocalObjectsServer) {
                     console.log(`${tools.appName} is not running`);
                     return void callback(EXIT_CODES.CONTROLLER_NOT_RUNNING);
