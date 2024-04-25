@@ -1479,16 +1479,16 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
             doc.rows.sort((a, b) => {
                 try {
                     return semver.lt(
-                        a?.value?.common?.installedVersion ?? '0.0.0',
-                        b?.value?.common?.installedVersion ?? '0.0.0'
+                        a.value.common.installedVersion ?? '0.0.0',
+                        b.value.common.installedVersion ?? '0.0.0'
                     )
                         ? 1
                         : 0;
                 } catch {
                     logger.error(
-                        `${hostLogPrefix} Invalid versions: ${a?.value?.common?.installedVersion ?? '0.0.0'}[${
-                            a?.value?.common?.name ?? 'unknown'
-                        }] or ${b?.value?.common?.installedVersion ?? '0.0.0'}[${b?.value?.common?.name ?? 'unknown'}]`
+                        `${hostLogPrefix} Invalid versions: ${a.value.common.installedVersion ?? '0.0.0'}[${
+                            a.value.common.name ?? 'unknown'
+                        }] or ${b.value.common.installedVersion ?? '0.0.0'}[${b.value.common.name ?? 'unknown'}]`
                     );
                     return 0;
                 }
@@ -1497,9 +1497,9 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
             // Read installed versions of all hosts
             for (const row of doc.rows) {
                 diag.hosts.push({
-                    version: row.value!.common.installedVersion,
-                    platform: row.value!.common.platform,
-                    type: row.value!.native.os.platform
+                    version: row.value.common.installedVersion,
+                    platform: row.value.common.platform,
+                    type: row.value.native.os.platform
                 });
             }
         }
@@ -1521,9 +1521,10 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
         if (!err && doc?.rows.length) {
             // Read installed versions of all adapters
             for (const row of doc.rows) {
-                diag.adapters[row.value!.common.name] = {
-                    version: row.value!.common.version,
-                    platform: row.value!.common.platform
+                diag.adapters[row.value.common.name] = {
+                    version: row.value.common.version,
+                    platform: row.value.common.platform,
+                    installedFrom: row.value.common.installedFrom
                 };
 
                 if (VIS_ADAPTERS.includes(row.value.common.name as (typeof VIS_ADAPTERS)[number])) {
