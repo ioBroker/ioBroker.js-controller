@@ -34,7 +34,7 @@ Specify an optional exit code
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:499](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/adapter/src/lib/_Types.ts#L499)
+[adapter/src/lib/_Types.ts:565](https://github.com/ioBroker/ioBroker.js-controller/blob/289fdff3/packages/adapter/src/lib/_Types.ts#L565)
 
 ___
 
@@ -46,7 +46,7 @@ If mode is schedule or once
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:506](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/adapter/src/lib/_Types.ts#L506)
+[adapter/src/lib/_Types.ts:572](https://github.com/ioBroker/ioBroker.js-controller/blob/289fdff3/packages/adapter/src/lib/_Types.ts#L572)
 
 ___
 
@@ -58,7 +58,7 @@ If it has a restart schedule running
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:508](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/adapter/src/lib/_Types.ts#L508)
+[adapter/src/lib/_Types.ts:574](https://github.com/ioBroker/ioBroker.js-controller/blob/289fdff3/packages/adapter/src/lib/_Types.ts#L574)
 
 ___
 
@@ -74,7 +74,7 @@ Specify an optional reason for stoppage
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:501](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/adapter/src/lib/_Types.ts#L501)
+[adapter/src/lib/_Types.ts:567](https://github.com/ioBroker/ioBroker.js-controller/blob/289fdff3/packages/adapter/src/lib/_Types.ts#L567)
 
 ___
 
@@ -86,4 +86,4 @@ If alive state should be updated, if undefined defaults to true
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:510](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/adapter/src/lib/_Types.ts#L510)
+[adapter/src/lib/_Types.ts:576](https://github.com/ioBroker/ioBroker.js-controller/blob/289fdff3/packages/adapter/src/lib/_Types.ts#L576)

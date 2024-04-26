@@ -24,7 +24,7 @@
 
 #### Defined in
 
-[types-dev/objects.d.ts:563](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/objects.d.ts#L563)
+[types-dev/objects.d.ts:563](https://github.com/ioBroker/ioBroker.js-controller/blob/289fdff3/packages/types-dev/objects.d.ts#L563)
 
 ___
 
@@ -34,7 +34,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:561](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/objects.d.ts#L561)
+[types-dev/objects.d.ts:561](https://github.com/ioBroker/ioBroker.js-controller/blob/289fdff3/packages/types-dev/objects.d.ts#L561)
 
 ___
 
@@ -44,7 +44,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:558](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/objects.d.ts#L558)
+[types-dev/objects.d.ts:558](https://github.com/ioBroker/ioBroker.js-controller/blob/289fdff3/packages/types-dev/objects.d.ts#L558)
 
 ___
 
@@ -54,7 +54,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:559](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/objects.d.ts#L559)
+[types-dev/objects.d.ts:559](https://github.com/ioBroker/ioBroker.js-controller/blob/289fdff3/packages/types-dev/objects.d.ts#L559)
 
 ___
 
@@ -64,7 +64,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:557](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/objects.d.ts#L557)
+[types-dev/objects.d.ts:557](https://github.com/ioBroker/ioBroker.js-controller/blob/289fdff3/packages/types-dev/objects.d.ts#L557)
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:562](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/objects.d.ts#L562)
+[types-dev/objects.d.ts:562](https://github.com/ioBroker/ioBroker.js-controller/blob/289fdff3/packages/types-dev/objects.d.ts#L562)
 
 ___
 
@@ -84,4 +84,4 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:560](https://github.com/ioBroker/ioBroker.js-controller/blob/20b08f31/packages/types-dev/objects.d.ts#L560)
+[types-dev/objects.d.ts:560](https://github.com/ioBroker/ioBroker.js-controller/blob/289fdff3/packages/types-dev/objects.d.ts#L560)
