@@ -764,6 +764,9 @@ declare global {
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
+
+            /** Deactivated instances, that should not be shown in admin/Intro page */
+            intro?: string[];
         }
 
         interface OtherCommon extends ObjectCommon {
