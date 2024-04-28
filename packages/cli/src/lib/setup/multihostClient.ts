@@ -133,53 +133,55 @@ export class MHClient {
      * Start MH browsing for server
      *
      * @param timeout timeout to stop browsing
-     * @param isDebug
-     * @param callback
+     * @param isDebug debug will also show local addresses
      */
-    browse(
-        timeout: number,
-        isDebug: boolean,
-        callback: (err: Error | undefined, res: BrowseResultEntry[]) => void
-    ): void {
+    browse(timeout: number, isDebug: boolean): Promise<BrowseResultEntry[]> {
         const result: BrowseResultEntry[] = [];
         const ownIps = tools.findIPs();
 
-        this.startServer(
-            true,
-            timeout,
-            () => {
-                const text = JSON.stringify({
-                    cmd: 'browse',
-                    id: ++this.id
-                });
-                this.server!.send(text, 0, text.length, PORT, MULTICAST_ADDR);
-            },
-            (msg, rinfo) => {
-                // ignore own answers
-                if (isDebug || (tools.isLocalAddress(rinfo.address) && !ownIps.includes(rinfo.address))) {
-                    if (msg.result === 'not authenticated') {
-                        result.push({
-                            ip: rinfo.address,
-                            hostname: rinfo.address,
-                            info: 'authentication required',
-                            auth: msg.auth
-                        });
-                    } else if (msg.result === 'ok') {
-                        result.push(msg);
-                    } else {
-                        console.log(`Multihost discovery client: Unknown answer: ${JSON.stringify(msg)}`);
+        return new Promise((resolve, reject) => {
+            this.startServer(
+                true,
+                timeout,
+                () => {
+                    const text = JSON.stringify({
+                        cmd: 'browse',
+                        id: ++this.id
+                    });
+                    this.server!.send(text, 0, text.length, PORT, MULTICAST_ADDR);
+                },
+                (msg, rinfo) => {
+                    // ignore own answers
+                    if (isDebug || (!tools.isLocalAddress(rinfo.address) && !ownIps.includes(rinfo.address))) {
+                        if (msg.result === 'not authenticated') {
+                            result.push({
+                                ip: rinfo.address,
+                                hostname: rinfo.address,
+                                info: 'authentication required',
+                                auth: msg.auth
+                            });
+                        } else if (msg.result === 'ok') {
+                            result.push(msg);
+                        } else {
+                            console.log(`Multihost discovery client: Unknown answer: ${JSON.stringify(msg)}`);
+                        }
                     }
-                }
-                if (isDebug) {
-                    console.log(JSON.stringify(msg));
-                }
+                    if (isDebug) {
+                        console.log(JSON.stringify(msg));
+                    }
 
-                return false;
-            },
-            err => {
-                callback(err, result);
-            }
-        );
+                    return false;
+                },
+                err => {
+                    if (err) {
+                        reject(err);
+                        return;
+                    }
+
+                    resolve(result);
+                }
+            );
+        });
     }
 
     /**
