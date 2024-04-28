@@ -2671,15 +2671,14 @@ async function processCommand(
                         mh.status();
                         return void callback();
                     } else if (cmd === 'b' || cmd === 'browse') {
-                        mh.browse((err: any, list: any) => {
-                            if (err) {
-                                console.error(err);
-                                return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                            } else {
-                                mh.showHosts(list);
-                                return void callback();
-                            }
-                        });
+                        try {
+                            const list = await mh.browse();
+                            mh.showHosts(list);
+                            return void callback();
+                        } catch (e) {
+                            console.error(e.message);
+                            return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                        }
                     } else if (cmd === 'e' || cmd === 'enable') {
                         mh.enable(true, async (err: any) => {
                             if (err) {
