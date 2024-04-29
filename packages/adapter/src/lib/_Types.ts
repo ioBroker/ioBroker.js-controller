@@ -494,6 +494,13 @@ export interface InternalDeleteStateFromEnumOptions {
     callback?: ioBroker.ErrorCallback;
 }
 
+export interface InternalReportDeprecationOption {
+    /** Version in which this warning will throw an error instead */
+    version?: string;
+    /** The log line to report */
+    message: string;
+}
+
 /**
  * The internal adapter config type should only be used to access config properties which are set by the adapter developers.
  * Only use it like `this.config as InternalAdapterConfig`

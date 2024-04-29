@@ -44,6 +44,7 @@ import { setTimeout as wait } from 'node:timers/promises';
 import { getHostObjects } from '@/lib/objects.js';
 import * as url from 'node:url';
 import { createRequire } from 'node:module';
+import { message } from 'prompt';
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
 // eslint-disable-next-line unicorn/prefer-module
@@ -3040,6 +3041,21 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             // let the answer be sent
             await wait(200);
             restart(() => !isStopping && stop(false));
+            break;
+        }
+
+        case 'sendToSentry': {
+            const message: string = msg.message.message;
+
+            const sentryInstance = pluginHandler.getPluginInstance('sentry');
+
+            if (!sentryInstance) {
+                logger.debug(`${hostLogPrefix} Do not send message "${message}" to Sentry, because it is disabled`);
+                return;
+            }
+
+            // @ts-expect-error Plugin is not well typed and SentryPlugin has no types at all currently
+            sentryInstance.getSentryObject().captureException(message);
             break;
         }
     }

@@ -111,7 +111,8 @@ import type {
     SendToUserInterfaceClientOptions,
     AllPropsUnknown,
     IoPackageInstanceObject,
-    AliasTargetEntry
+    AliasTargetEntry,
+    InternalReportDeprecationOption
 } from '@/lib/_Types.js';
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
@@ -567,6 +568,8 @@ export interface AdapterClass {
  *
  */
 export class AdapterClass extends EventEmitter {
+    /** Cache of all deprecations which have already been transmitted */
+    private reportedDeprecations = new Set<string>();
     /** Instance to access states DB */
     #states?: StatesInRedisClient | null;
     /** Instance to access objects DB */
@@ -2815,8 +2818,7 @@ export class AdapterClass extends EventEmitter {
         try {
             tools.validateGeneralObjectProperties(obj, false);
         } catch (e) {
-            this._logger.warn(`${this.namespaceLog} Object ${id} is invalid: ${e.message}`);
-            return tools.maybeCallbackWithError(callback, e);
+            await this.reportDeprecation({ message: `Object ${id} is invalid: ${e.message}`, version: '7.0.0' });
         }
 
         try {
@@ -3037,8 +3039,10 @@ export class AdapterClass extends EventEmitter {
         try {
             tools.validateGeneralObjectProperties(options.obj, true);
         } catch (e) {
-            this._logger.warn(`${this.namespaceLog} Object ${options.id} is invalid: ${e.message}`);
-            return tools.maybeCallbackWithError(options.callback, e);
+            await this.reportDeprecation({
+                message: `Object ${options.id} is invalid: ${e.message}`,
+                version: '7.0.0'
+            });
         }
 
         try {
@@ -7041,10 +7045,10 @@ export class AdapterClass extends EventEmitter {
      * Async version of sendTo
      * As we have a special case (first arg can be error or result, we need to promisify manually)
      *
-     * @param instanceName
-     * @param command
-     * @param message
-     * @param options
+     * @param instanceName name of the instance where the message must be sent to. E.g. "pushover.0" or "system.adapter.pushover.0".
+     * @param command command name, like "send", "browse", "list". Command is depend on target adapter implementation.
+     * @param message object that will be given as argument for request
+     * @param options optional options to define a timeout. This allows to get an error callback if no answer received in time (only if target is specific instance)
      */
     sendToAsync(instanceName: unknown, command: unknown, message?: unknown, options?: unknown): any {
         return new Promise((resolve, reject) => {
@@ -9739,8 +9743,7 @@ export class AdapterClass extends EventEmitter {
      * ```
      *
      * @param pattern string in form 'adapter.0.*'. Must be the same as subscribe.
-     * @param options]optional argument to describe the user context
-     * @param options
+     * @param options optional argument to describe the user context
      * @param callback return result
      * ```js
      * function (err) {}
@@ -11716,6 +11719,39 @@ export class AdapterClass extends EventEmitter {
         }
 
         return mId;
+    }
+
+    /**
+     * This method reports deprecations via Sentry and can only be used internally
+     *
+     * @param options information about version to remove feature and the log message
+     */
+    private async reportDeprecation(options: InternalReportDeprecationOption): Promise<void> {
+        if (!this.#states) {
+            throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        const { version, message } = options;
+
+        const additionalMsg = version
+            ? `This will throw an error up from js-controller version ${version}! `
+            : 'Please report to the developer.';
+
+        this._logger.warn(`${this.namespaceLog} ${message} ${additionalMsg}`);
+
+        if (this.reportedDeprecations.has(message)) {
+            return;
+        }
+
+        this.reportedDeprecations.add(message);
+
+        const obj = {
+            command: 'sendToSentry',
+            message: { message, instance: this.namespace },
+            from: `system.adapter.${this.namespace}`
+        };
+
+        await this.#states.pushMessage(`system.host.${this.host}`, obj as any);
     }
 
     private async _init(): Promise<void> {
