@@ -53,7 +53,6 @@ import { setTimeout as wait } from 'node:timers/promises';
 import { getHostObjects } from '@/lib/objects.js';
 import * as url from 'node:url';
 import { createRequire } from 'node:module';
-import { message } from 'prompt';
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 // eslint-disable-next-line unicorn/prefer-module

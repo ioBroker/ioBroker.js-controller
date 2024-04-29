@@ -11928,7 +11928,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     /**
-     * This method reports deprecations via Sentry and can only be used internally
+     * This method reports deprecations via Sentry (controller own instance) and can only be used internally
      *
      * @param options information about version to remove feature and the log message
      */
