@@ -6,9 +6,9 @@
 
 ## Indexable
 
-▪ [adapter: `string`]: [`RepositoryJsonAdapterContent`](internal_.RepositoryJsonAdapterContent.md) \| `Record`\<`string`, `any`\>
+▪ [adapter: `string`]: [`RepositoryJsonAdapterContent`](internal_.RepositoryJsonAdapterContent.md) \| [`RepoInfo`](internal_.RepoInfo.md)
 
-Information about each adapter - Record needed for _repoInfo
+Information about each adapter
 
 ## Table of contents
 
@@ -20,16 +20,8 @@ Information about each adapter - Record needed for _repoInfo
 
 ### \_repoInfo
 
-• **\_repoInfo**: `Object`
-
-#### Type declaration
-
-| Name | Type | Description |
-| :------ | :------ | :------ |
-| `name` | `Required`\<[`Translated`](../modules/internal_.md#translated)\> | i18n name of the repository |
-| `repoTime` | `string` | Time of repository update |
-| `stable?` | `boolean` | If it is the official stable repository |
+• **\_repoInfo**: [`RepoInfo`](internal_.RepoInfo.md)
 
 #### Defined in
 
-[types-dev/objects.d.ts:885](https://github.com/ioBroker/ioBroker.js-controller/blob/165fc4c8/packages/types-dev/objects.d.ts#L885)
+[types-dev/objects.d.ts:912](https://github.com/ioBroker/ioBroker.js-controller/blob/12b5c7f4/packages/types-dev/objects.d.ts#L912)

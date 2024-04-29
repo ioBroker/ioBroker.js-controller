@@ -29,7 +29,7 @@ import type { ConnectionOptions, DbStatus } from '@iobroker/db-base/inMemFileDB'
 
 import * as url from 'node:url';
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 
 const ERRORS = CONSTS.ERRORS;
 
@@ -114,6 +114,12 @@ interface Script {
     hash: string;
     text: Buffer;
     loaded?: boolean;
+}
+
+interface Options {
+    /** The user id for database operations */
+    user?: string;
+    [other: string]: unknown;
 }
 
 type CheckFileCallback = (checkFailed: boolean, options?: CallOptions, fileOptions?: { notExists: boolean }) => void;
@@ -3053,21 +3059,19 @@ export class ObjectsInRedisClient {
     // cb version with options
     getObject<T extends string>(
         id: T,
-        options: Record<string, any> | undefined | null,
+        options: Options | undefined | null,
         callback: ioBroker.GetObjectCallback<T>
     ): void;
+    // Promise version
+    getObject<T extends string>(id: T, options?: Options | null): ioBroker.GetObjectPromise<T>;
     // no options but cb
     getObject<T extends string>(id: T, callback: ioBroker.GetObjectCallback<T>): void;
-    // Promise version
-    getObject<T extends string>(
-        id: T,
-        options?: Record<string, any> | null
-    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectCallback<T>>>;
+
     getObject<T extends string>(
         id: T,
         options?: any,
         callback?: ioBroker.GetObjectCallback<T>
-    ): void | Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetObjectCallback<T>>> {
+    ): void | ioBroker.GetObjectPromise<T> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -3092,6 +3096,12 @@ export class ObjectsInRedisClient {
         }
     }
 
+    /**
+     *
+     * @param id
+     * @param options
+     * @deprecated use `getObject` without callback instead
+     */
     getObjectAsync<T extends string>(
         id: T,
         options?: Record<string, any> | null
@@ -3683,6 +3693,13 @@ export class ObjectsInRedisClient {
         });
     }
 
+    /**
+     *
+     * @param id
+     * @param obj
+     * @param options
+     * @deprecated use `setObject` without callback instead
+     */
     setObjectAsync(
         id: string,
         obj: ioBroker.SettableObject,

@@ -5,7 +5,9 @@ import { tools } from '@iobroker/js-controller-common';
 import fs from 'fs-extra';
 import path from 'node:path';
 import { createRequire } from 'node:module';
-const require = createRequire(import.meta.url);
+
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __filename);
 
 const controllerIoPackPath = require.resolve('iobroker.js-controller/io-package.json');
 

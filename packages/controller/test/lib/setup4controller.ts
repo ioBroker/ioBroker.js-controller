@@ -5,7 +5,7 @@ import type { Client as StateRedisClient } from '@iobroker/db-states-redis';
 import * as url from 'node:url';
 import { appNameLowerCase } from '@iobroker/js-controller-common/tools';
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 
 export const rootDir = path.normalize(`${thisDir}/../../`);
 

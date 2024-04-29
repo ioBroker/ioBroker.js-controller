@@ -14,10 +14,23 @@ Other Adapter related properties, not important for this implementation
 
 ### Properties
 
+- [blockedVersions](internal_.RepositoryJsonAdapterContent.md#blockedversions)
 - [name](internal_.RepositoryJsonAdapterContent.md#name)
 - [version](internal_.RepositoryJsonAdapterContent.md#version)
 
 ## Properties
+
+### blockedVersions
+
+• **blockedVersions**: `string`[]
+
+Array of blocked versions, each entry represents a semver range
+
+#### Defined in
+
+[types-dev/objects.d.ts:896](https://github.com/ioBroker/ioBroker.js-controller/blob/12b5c7f4/packages/types-dev/objects.d.ts#L896)
+
+___
 
 ### name
 
@@ -27,7 +40,7 @@ Adapter name
 
 #### Defined in
 
-[types-dev/objects.d.ts:876](https://github.com/ioBroker/ioBroker.js-controller/blob/165fc4c8/packages/types-dev/objects.d.ts#L876)
+[types-dev/objects.d.ts:892](https://github.com/ioBroker/ioBroker.js-controller/blob/12b5c7f4/packages/types-dev/objects.d.ts#L892)
 
 ___
 
@@ -39,4 +52,4 @@ Newest available version
 
 #### Defined in
 
-[types-dev/objects.d.ts:878](https://github.com/ioBroker/ioBroker.js-controller/blob/165fc4c8/packages/types-dev/objects.d.ts#L878)
+[types-dev/objects.d.ts:894](https://github.com/ioBroker/ioBroker.js-controller/blob/12b5c7f4/packages/types-dev/objects.d.ts#L894)

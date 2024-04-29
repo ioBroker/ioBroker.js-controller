@@ -1,7 +1,7 @@
 import path from 'node:path';
 import * as url from 'node:url';
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 import testAdapter from './lib/testAdapter.js';
 const dataDir = path.join(thisDir, '..', 'tmp', 'data');
 

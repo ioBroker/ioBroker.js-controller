@@ -16,7 +16,7 @@ import { tools } from '@iobroker/db-base';
 import { getLocalAddress } from '@iobroker/js-controller-common/tools';
 
 import { RedisHandler } from '@iobroker/db-base';
-import ObjectsInMemoryFileDB from './objectsInMemFileDB.js';
+import { ObjectsInMemoryFileDB } from './objectsInMemFileDB.js';
 
 // settings = {
 //    change:    function (id, state) {},
@@ -43,7 +43,7 @@ import ObjectsInMemoryFileDB from './objectsInMemFileDB.js';
  * This class inherits statesInMemoryFileDB class and adds redis communication layer
  * to access the methods via redis protocol
  **/
-export default class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
+export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
     /**
      * Constructor
      * @param settings State and InMem-DB settings

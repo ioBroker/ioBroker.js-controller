@@ -7,7 +7,7 @@
  *
  */
 
-import * as fs from 'fs-extra';
+import fs from 'fs-extra';
 import { tools } from '@iobroker/js-controller-common';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual } from 'node:util';
@@ -260,8 +260,8 @@ export class Upload {
     /**
      * Uploads a file
      *
-     * @param source
-     * @param target
+     * @param source source path
+     * @param target target path
      */
     async uploadFile(source: string, target: string): Promise<string> {
         target = target.replace(/\\/g, '/');
@@ -483,11 +483,11 @@ export class Upload {
     /**
      * Upload given adapter
      *
-     * @param adapter
-     * @param isAdmin
-     * @param forceUpload
-     * @param subTree
-     * @param _logger
+     * @param adapter adapter name
+     * @param isAdmin if admin folder should be uploaded too
+     * @param forceUpload if upload should be forced
+     * @param subTree subtree path to upload
+     * @param _logger logger instance
      */
     async uploadAdapter(
         adapter: string,
@@ -576,8 +576,7 @@ export class Upload {
                 });
             }
             // Set indicator to 0
-            // @ts-expect-error fixed with #1917
-            await this.states.setStateAsync(uploadID, 0, true);
+            await this.states.setState(uploadID, { val: 0, ack: true });
         }
 
         let result;
@@ -669,7 +668,7 @@ export class Upload {
 
             for (const [attr, attrData] of Object.entries(additional)) {
                 // preserve these attributes, except, they were undefined before and preserve titleLang if current titleLang is of type string (changed by user)
-                if (preserveAttributes.includes(attr) || (attr === 'titleLang' && typeof attrData === 'string')) {
+                if (preserveAttributes.includes(attr) || (attr === 'titleLang' && typeof target[attr] === 'string')) {
                     if (target[attr] === undefined) {
                         target[attr] = attrData;
                     }
@@ -792,9 +791,9 @@ export class Upload {
     /**
      * Create object from io-package json
      *
-     * @param name
-     * @param ioPack
-     * @param logger
+     * @param name adapter name
+     * @param ioPack IoPack content
+     * @param logger logger instance
      */
     async upgradeAdapterObjects(
         name: string,
@@ -861,7 +860,7 @@ export class Upload {
 
             try {
                 await this.objects.setObjectAsync(`system.adapter.${name}`, obj);
-                await this.objects.setObjectAsync(`system.host.${hostname}.adapters.${name}`, obj);
+                await this.objects.setObjectAsync(`system.host.${hostname}.adapter.${name}`, obj);
             } catch (e) {
                 logger.error(
                     `Cannot set "system.adapter.${name}" and "system.host.${hostname}.adapters.${name}": ${e.message}`

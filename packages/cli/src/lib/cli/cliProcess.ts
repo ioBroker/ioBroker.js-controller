@@ -5,7 +5,7 @@ import path from 'node:path';
 import * as CLI from '@/lib/cli/messages.js';
 import { CLICommand } from '@/lib/cli/cliCommand.js';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
-import { tools as dbTools } from '@iobroker/js-controller-common-db';
+import { isLocalStatesDbServer, isLocalObjectsDbServer } from '@iobroker/js-controller-common-db';
 import deepClone from 'deep-clone';
 import { getObjectFrom, getInstanceName, normalizeAdapterName, enumInstances } from '@/lib/cli/cliTools.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
@@ -221,10 +221,11 @@ export class CLIProcess extends CLICommand {
                 const alive = hostAlive ? (hostAlive.val as boolean) : false;
                 CLI.success.controllerStatus(alive);
                 console.log();
-                if (
-                    !dbTools.isLocalStatesDbServer(config.states.type, config.states.host) &&
-                    !dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host)
-                ) {
+
+                const hasLocalStatesServer = await isLocalStatesDbServer(config.states.type, config.states.host);
+                const hasLocalObjectsServer = await isLocalObjectsDbServer(config.objects.type, config.objects.host);
+
+                if (!hasLocalStatesServer && !hasLocalObjectsServer) {
                     CLI.success.systemStatus(!isOffline);
                 }
 

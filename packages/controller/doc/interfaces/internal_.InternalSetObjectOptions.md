@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:286](https://github.com/ioBroker/ioBroker.js-controller/blob/165fc4c8/packages/adapter/src/lib/_Types.ts#L286)
+[adapter/src/lib/_Types.ts:352](https://github.com/ioBroker/ioBroker.js-controller/blob/12b5c7f4/packages/adapter/src/lib/_Types.ts#L352)
 
 ___
 
@@ -31,17 +31,17 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:283](https://github.com/ioBroker/ioBroker.js-controller/blob/165fc4c8/packages/adapter/src/lib/_Types.ts#L283)
+[adapter/src/lib/_Types.ts:349](https://github.com/ioBroker/ioBroker.js-controller/blob/12b5c7f4/packages/adapter/src/lib/_Types.ts#L349)
 
 ___
 
 ### obj
 
-• **obj**: `Omit`\<[`StateObject`](internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`StateACL`](internal_.StateACL.md)  } \| `Omit`\<[`DeviceObject`](internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`ChannelObject`](internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`FolderObject`](internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`MetaObject`](internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`EnumObject`](internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`HostObject`](internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.host.$\{string}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`AdapterObject`](internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.adapter.$\{string}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`InstanceObject`](internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.adapter.$\{string}.$\{number}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`UserObject`](internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.user.$\{string}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`GroupObject`](internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.group.$\{string}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`ScriptObject`](internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`ChartObject`](internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`ScheduleObject`](internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`RepositoryObject`](internal_.RepositoryObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: ``"system.repositories"`` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`OtherObject`](internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`DesignObject`](internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`\_design/$\{string}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  }
+• **obj**: `Omit`\<[`StateObject`](internal_.StateObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`StateACL`](internal_.StateACL.md)  } \| `Omit`\<[`DeviceObject`](internal_.DeviceObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`ChannelObject`](internal_.ChannelObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`FolderObject`](internal_.FolderObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`MetaObject`](internal_.MetaObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`EnumObject`](internal_.EnumObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`HostObject`](internal_.HostObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.host.$\{string}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`AdapterObject`](internal_.AdapterObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: [`Adapter`](../modules/internal_.md#adapter) ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`InstanceObject`](internal_.InstanceObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.adapter.$\{string}.$\{number}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`UserObject`](internal_.UserObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.user.$\{string}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`GroupObject`](internal_.GroupObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`system.group.$\{string}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`ScriptObject`](internal_.ScriptObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`ChartObject`](internal_.ChartObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`ScheduleObject`](internal_.ScheduleObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`RepositoryObject`](internal_.RepositoryObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: ``"system.repositories"`` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`OtherObject`](internal_.OtherObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: `string` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  } \| `Omit`\<[`DesignObject`](internal_.DesignObject.md), ``"_id"`` \| ``"acl"``\> & \{ `_id?`: \`\_design/$\{string}\` ; `acl?`: [`ObjectACL`](internal_.ObjectACL.md)  }
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:285](https://github.com/ioBroker/ioBroker.js-controller/blob/165fc4c8/packages/adapter/src/lib/_Types.ts#L285)
+[adapter/src/lib/_Types.ts:351](https://github.com/ioBroker/ioBroker.js-controller/blob/12b5c7f4/packages/adapter/src/lib/_Types.ts#L351)
 
 ___
 
@@ -51,4 +51,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:284](https://github.com/ioBroker/ioBroker.js-controller/blob/165fc4c8/packages/adapter/src/lib/_Types.ts#L284)
+[adapter/src/lib/_Types.ts:350](https://github.com/ioBroker/ioBroker.js-controller/blob/12b5c7f4/packages/adapter/src/lib/_Types.ts#L350)

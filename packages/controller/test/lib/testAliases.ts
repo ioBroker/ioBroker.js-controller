@@ -1,5 +1,6 @@
 import type { TestContext } from '../_Types.js';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
+import { PERMISSIONS } from './permissions.js';
 
 async function prepareGroupsAndUsers(objects: ObjectsInRedisClient): Promise<void> {
     await objects.setObject('system.group.userC', {
@@ -64,7 +65,7 @@ async function prepareGroupsAndUsers(objects: ObjectsInRedisClient): Promise<voi
         user: 'system.user.admin',
         ts: 1534947164702,
         acl: {
-            object: 1636, // 0664
+            object: PERMISSIONS['0664'],
             owner: 'system.user.admin',
             ownerGroup: 'system.group.administrator'
         }
@@ -132,7 +133,7 @@ async function prepareGroupsAndUsers(objects: ObjectsInRedisClient): Promise<voi
         user: 'system.user.admin',
         ts: 1534947164702,
         acl: {
-            object: 1636, // 0664
+            object: PERMISSIONS['0664'],
             owner: 'system.user.admin',
             ownerGroup: 'system.group.administrator'
         }
@@ -161,8 +162,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 native: {},
                 type: 'state',
                 acl: {
-                    state: 1638,
-                    object: 1536, // 0600
+                    state: PERMISSIONS['0666'],
+                    object: PERMISSIONS['0600'],
                     owner: 'system.user.userC',
                     ownerGroup: 'system.group.user1'
                 }
@@ -192,8 +193,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             native: {},
                             type: 'state',
                             acl: {
-                                state: 1638,
-                                object: 1638, // 0666
+                                state: PERMISSIONS['0666'],
+                                object: PERMISSIONS['0600'],
                                 owner: 'system.user.userC',
                                 ownerGroup: 'system.group.user1'
                             }
@@ -253,8 +254,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             native: {},
             type: 'state',
             acl: {
-                state: 1638,
-                object: 1536, // 0600
+                state: PERMISSIONS['0666'],
+                object: PERMISSIONS['0600'],
                 owner: 'system.user.userC',
                 ownerGroup: 'system.group.user1'
             }
@@ -281,8 +282,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             native: {},
             type: 'state',
             acl: {
-                state: 1638,
-                object: 1638, // 0666
+                state: PERMISSIONS['0666'],
+                object: PERMISSIONS['0666'],
                 owner: 'system.user.userC',
                 ownerGroup: 'system.group.user1'
             }
@@ -583,8 +584,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         native: {},
                         type: 'state',
                         acl: {
-                            object: 1638, // 0666
-                            state: 1638,
+                            object: PERMISSIONS['0666'],
+                            state: PERMISSIONS['0666'],
                             owner: 'system.user.userC',
                             ownerGroup: 'system.group.user1'
                         }
@@ -1029,9 +1030,67 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
     it(testName + 'Read alias states via getStates should apply permissions', async () => {
         const states = await context.adapter.getForeignStatesAsync(`${gAliasID}*`, { user: 'system.user.queen' });
-        console.log('ressss');
-        console.log(states);
         // on permission problems, we will receive only an id with null, ensure that this does not happen
         expect(states[`${gAliasID}C`]).to.be.ok;
+    });
+
+    it(testName + 'Alias setState ignores source permissions', async () => {
+        const nonAliasId = `${gid}.permissionNonAlias`;
+        const aliasId = `${gAliasID}.permissionOnlyAlias`;
+        const val = 3;
+
+        // we create a non-alias object where we have no permissions for
+        await context.adapter.setForeignObjectAsync(nonAliasId, {
+            common: {
+                name: 'forAlias',
+                type: 'number',
+                role: 'level',
+                read: true,
+                write: true
+            },
+            native: {},
+            type: 'state',
+            acl: {
+                state: PERMISSIONS['0600'], // 0600 only owner is allowed to write
+                object: PERMISSIONS['0600'],
+                owner: 'system.user.user',
+                ownerGroup: 'system.group.user1'
+            }
+        });
+
+        // we create an alias objects, where we have permissions for
+        await context.adapter.setForeignObjectAsync(aliasId, {
+            common: {
+                name: 'Test Alias',
+                type: 'number',
+                role: 'state',
+                min: 0,
+                max: 100,
+                unit: '%',
+                alias: {
+                    id: nonAliasId
+                },
+                read: true,
+                write: true
+            },
+            native: {},
+            type: 'state',
+            acl: {
+                state: PERMISSIONS['0666'],
+                object: PERMISSIONS['0666'],
+                owner: 'system.user.userC',
+                ownerGroup: 'system.group.user1'
+            }
+        });
+
+        // we use the user which is allowed to modify alias but not the source object
+        await context.adapter.setForeignStateAsync(aliasId, { val, ack: true }, { user: 'system.user.userD' });
+        // reading the alias should be okay
+        const state = await context.adapter.getForeignStateAsync(aliasId, { user: 'system.user.userD' });
+        expect(state?.val).to.be.equal(val);
+        // reading the source obj should not be ok
+        expect(
+            context.adapter.getForeignStateAsync(nonAliasId, { user: 'system.user.userD' })
+        ).to.be.eventually.rejectedWith('permissionError', 'Should have thrown a permission error');
     });
 }

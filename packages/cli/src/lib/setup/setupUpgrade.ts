@@ -1,17 +1,17 @@
 import Debug from 'debug';
-import * as fs from 'fs-extra';
+import fs from 'fs-extra';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import semver from 'semver';
-import { Upload } from './setupUpload.js';
-import { Install } from './setupInstall.js';
+import { Upload } from '@/lib/setup/setupUpload.js';
+import { Install } from '@/lib/setup/setupInstall.js';
 import rl from 'readline-sync';
 import tty from 'node:tty';
 import path from 'node:path';
-import { getRepository } from './utils.js';
+import { getRepository, isVersionIgnored } from '@/lib/setup/utils.js';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
-import type { ProcessExitCallback } from '../_Types.js';
-import { IoBrokerError } from './customError.js';
+import type { ProcessExitCallback } from '@/lib/_Types.js';
+import { IoBrokerError } from '@/lib/setup/customError.js';
 
 const debug = Debug('iobroker:cli');
 
@@ -168,8 +168,8 @@ export class Upgrade {
                 },
                 undefined
             );
-        } catch (err) {
-            return Promise.reject(err);
+        } catch (e) {
+            return Promise.reject(e);
         }
 
         if (objs?.rows?.length) {
@@ -187,8 +187,8 @@ export class Upgrade {
                                     )
                                 );
                             }
-                        } catch (err) {
-                            console.log(`Can not check js-controller dependency requirement: ${err.message}`);
+                        } catch (e) {
+                            console.log(`Can not check js-controller dependency requirement: ${e.message}`);
                             return Promise.reject(
                                 new Error(
                                     `Invalid version of "${dName}". Installed "${iopkg_.version}", required "${version}`
@@ -232,8 +232,8 @@ export class Upgrade {
                                     )
                                 );
                             }
-                        } catch (err) {
-                            console.log(`Can not check dependency requirement: ${err.message}`);
+                        } catch (e) {
+                            console.log(`Can not check dependency requirement: ${e.message}`);
                             return Promise.reject(
                                 new Error(
                                     `Invalid version of "${dName}". Installed "${instanceVersion}", required "${deps[dName]}`
@@ -257,8 +257,8 @@ export class Upgrade {
                                     )
                                 );
                             }
-                        } catch (err) {
-                            console.log(`Can not check dependency requirement: ${err.message}`);
+                        } catch (e) {
+                            console.log(`Can not check dependency requirement: ${e.message}`);
                             return Promise.reject(
                                 new Error(
                                     `Invalid version of "${dName}". Installed "${instanceVersion}", required "${globalDeps[dName]}`
@@ -517,8 +517,8 @@ export class Upgrade {
             if (!forceDowngrade) {
                 try {
                     await this._checkDependencies(repoAdapter.dependencies, repoAdapter.globalDependencies);
-                } catch (err) {
-                    return console.error(`Cannot check dependencies: ${err.message}`);
+                } catch (e) {
+                    return console.error(`Cannot check dependencies: ${e.message}`);
                 }
             }
 
@@ -533,9 +533,24 @@ export class Upgrade {
                 );
             } else {
                 const targetVersion = version || repoAdapter.version;
+
+                const isIgnored = await isVersionIgnored({
+                    adapterName: adapter,
+                    version: targetVersion,
+                    objects: this.objects
+                });
+
+                if (isIgnored) {
+                    console.log(
+                        `No upgrade of "${adapter}" desired, because version "${targetVersion}" is configured to be ignored by the user. Run "${tools.appNameLowerCase} version ${adapter} --recognize" to allow this upgrade!`
+                    );
+                    return;
+                }
+
                 try {
                     if (!showUpgradeDialog(installedVersion, targetVersion, adapter)) {
-                        return console.log(`No upgrade of "${adapter}" desired.`);
+                        console.log(`No upgrade of "${adapter}" desired.`);
+                        return;
                     }
                 } catch (e) {
                     console.log(`Can not check version information to display upgrade infos: ${e.message}`);
@@ -546,14 +561,13 @@ export class Upgrade {
                 try {
                     if (!semver.diff(installedVersion, targetVersion)) {
                         console.log(`Uninstall npm packet "${npmPacketName}" for a clean re-installation`);
-                        await tools.uninstallNodeModule(npmPacketName, { debug: false });
+                        await tools.uninstallNodeModule(npmPacketName, { debug: process.argv.includes('--debug') });
                     }
                 } catch (e) {
                     console.warn(`Could not uninstall npm packet "${npmPacketName}": ${e.message}`);
                 }
 
                 // Get the adapter from website
-                // @ts-expect-error it could also call processExit internally, but we want change it in future anyway
                 const { packetName, stoppedList } = await this.install.downloadPacket(
                     sources,
                     `${adapter}@${targetVersion}`
@@ -565,15 +579,17 @@ export class Upgrade {
             // Read repository from url or file
             const ioPack = (await tools.getJsonAsync(repoAdapter.meta)) as ioBroker.AdapterObject;
             if (!ioPack) {
-                return console.error(`Cannot parse file${repoAdapter.meta}`);
+                console.error(`Cannot parse file${repoAdapter.meta}`);
+                return;
             }
 
             if (!forceDowngrade) {
                 try {
                     // @ts-expect-error https://github.com/ioBroker/adapter-core/issues/455
                     await this._checkDependencies(ioPack.common.dependencies, ioPack.common.globalDependencies);
-                } catch (err) {
-                    return console.error(`Cannot check dependencies: ${err.message}`);
+                } catch (e) {
+                    console.error(`Cannot check dependencies: ${e.message}`);
+                    return;
                 }
             }
 
@@ -590,15 +606,29 @@ export class Upgrade {
             } else {
                 // Get the adapter from web site
                 const targetVersion = version || ioPack.common.version;
+
+                const isIgnored = await isVersionIgnored({
+                    adapterName: adapter,
+                    version: targetVersion,
+                    objects: this.objects
+                });
+
+                if (isIgnored) {
+                    console.log(
+                        `No upgrade of "${adapter}" desired, because version "${targetVersion}" is configured to be ignored by the user. Run "${tools.appNameLowerCase} version ${adapter} --recognize" to allow this upgrade!`
+                    );
+                    return;
+                }
+
                 try {
                     if (!showUpgradeDialog(installedVersion, targetVersion, adapter)) {
-                        return console.log(`No upgrade of "${adapter}" desired.`);
+                        console.log(`No upgrade of "${adapter}" desired.`);
+                        return;
                     }
-                } catch (err) {
-                    console.log(`Can not check version information to display upgrade infos: ${err.message}`);
+                } catch (e) {
+                    console.log(`Can not check version information to display upgrade infos: ${e.message}`);
                 }
                 console.log(`Update ${adapter} from @${installedVersion} to @${targetVersion}`);
-                // @ts-expect-error it could also call processExit internally, but we want change it in future anyway
                 const { packetName, stoppedList } = await this.install.downloadPacket(
                     sources,
                     `${adapter}@${targetVersion}`
@@ -606,54 +636,44 @@ export class Upgrade {
                 await finishUpgrade(packetName, ioPack);
                 await this.install.enableInstances(stoppedList, true);
             }
-        } else {
-            if (forceDowngrade) {
-                try {
-                    if (!showUpgradeDialog(installedVersion, version, adapter)) {
-                        return console.log(`No upgrade of "${adapter}" desired.`);
-                    }
-                } catch (e) {
-                    console.log(`Can not check version information to display upgrade infos: ${e.message}`);
+        } else if (forceDowngrade) {
+            try {
+                if (!showUpgradeDialog(installedVersion, version, adapter)) {
+                    return console.log(`No upgrade of "${adapter}" desired.`);
                 }
-                console.warn(`Unable to get version for "${adapter}". Update anyway.`);
-                console.log(`Update ${adapter} from @${installedVersion} to @${version}`);
-                // Get the adapter from website
-                // @ts-expect-error it could also call processExit internally but we want change it in future anyway
-                const { packetName, stoppedList } = await this.install.downloadPacket(sources, `${adapter}@${version}`);
-                await finishUpgrade(packetName);
-                await this.install.enableInstances(stoppedList, true);
-            } else {
-                return console.error(`Unable to get version for "${adapter}".`);
+            } catch (e) {
+                console.log(`Can not check version information to display upgrade infos: ${e.message}`);
             }
+            console.warn(`Unable to get version for "${adapter}". Update anyway.`);
+            console.log(`Update ${adapter} from @${installedVersion} to @${version}`);
+            // Get the adapter from website
+            const { packetName, stoppedList } = await this.install.downloadPacket(sources, `${adapter}@${version}`);
+            await finishUpgrade(packetName);
+            await this.install.enableInstances(stoppedList, true);
+        } else {
+            return console.error(`Unable to get version for "${adapter}".`);
         }
     }
 
     /**
      * Upgrade the js-controller
      *
-     * @param repoUrlOrObject
-     * @param forceDowngrade
-     * @param controllerRunning
+     * @param repoUrl the repo or url
+     * @param forceDowngrade if downgrades are allowed
+     * @param controllerRunning if controller is currently running
      */
-    async upgradeController(
-        repoUrlOrObject: string,
-        forceDowngrade: boolean,
-        controllerRunning: boolean
-    ): Promise<void> {
+    async upgradeController(repoUrl: string, forceDowngrade: boolean, controllerRunning: boolean): Promise<void> {
         let sources: Record<string, any>;
-        if (!repoUrlOrObject || !tools.isObject(repoUrlOrObject)) {
-            try {
-                const result = await getRepository({ repoName: repoUrlOrObject, objects: this.objects });
-                if (!result) {
-                    return console.warn(`Cannot get repository under "${repoUrlOrObject}"`);
-                }
-                sources = result;
-            } catch (e) {
-                console.error(e.message);
-                return this.processExit(e instanceof IoBrokerError ? e.code : e);
+
+        try {
+            const result = await getRepository({ repoName: repoUrl, objects: this.objects });
+            if (!result) {
+                return console.warn(`Cannot get repository under "${repoUrl}"`);
             }
-        } else {
-            sources = repoUrlOrObject;
+            sources = result;
+        } catch (e) {
+            console.error(e.message);
+            return this.processExit(e instanceof IoBrokerError ? e.code : e);
         }
 
         const installed = fs.readJSONSync(`${tools.getControllerDir()}/io-package.json`);
@@ -718,9 +738,9 @@ export class Upgrade {
             } else if (controllerRunning) {
                 console.warn(`Controller is running. Please stop ioBroker first.`);
             } else {
-                const name = ioPack?.common?.name ? ioPack.common.name : controllerName;
+                const name = ioPack?.common?.name || controllerName;
                 console.log(`Update ${name} from @${installed.common.version} to ${version}`);
-                // Get the controller from web site
+                // Get the controller from website
                 await this.install.downloadPacket(sources, name + version, { stopDb: true });
             }
         }

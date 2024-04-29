@@ -35,7 +35,7 @@ import { tools } from '@iobroker/db-base';
  * This class inherits InMemoryFileDB class and adds all relevant logic for states
  * including the available methods for use by js-controller directly
  **/
-export default class StatesInMemoryFileDB extends InMemoryFileDB {
+export class StatesInMemoryFileDB extends InMemoryFileDB {
     constructor(settings) {
         settings = settings || {};
         settings.fileDB = settings.fileDB || {

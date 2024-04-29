@@ -16,14 +16,20 @@ import path from 'node:path';
 import cp, { spawn, exec } from 'node:child_process';
 import semver from 'semver';
 import restart from '@/lib/restart.js';
-import { tools as dbTools } from '@iobroker/js-controller-common-db';
+import { isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common-db';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual, inspect } from 'node:util';
 import { tools, EXIT_CODES, logger as toolsLogger } from '@iobroker/js-controller-common';
-import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
+import {
+    SYSTEM_ADAPTER_PREFIX,
+    SYSTEM_CONFIG_ID,
+    SYSTEM_HOST_PREFIX,
+    SYSTEM_REPOSITORIES_ID
+} from '@iobroker/js-controller-common/constants';
 import { PluginHandler } from '@iobroker/plugin-base';
-import { NotificationHandler } from '@iobroker/js-controller-common-db';
+import { NotificationHandler, getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
+import { BlocklistManager } from '@/lib/blocklistManager.js';
 import * as zipFiles from '@/lib/zipFiles.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
@@ -31,8 +37,11 @@ import { Upload, PacketManager, type UpgradePacket } from '@iobroker/js-controll
 import decache from 'decache';
 import cronParser from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
+import type { GetDiskInfoResponse } from '@iobroker/js-controller-common/tools';
+import { DEFAULT_DISK_WARNING_LEVEL, getDiskWarningLevel } from '@/lib/utils.js';
 import { AdapterAutoUpgradeManager } from '@/lib/adapterAutoUpgradeManager.js';
 import {
+    getHostObject,
     getDefaultNodeArgs,
     type HostInfo,
     isAdapterEsmModule,
@@ -46,9 +55,9 @@ import * as url from 'node:url';
 import { createRequire } from 'node:module';
 import { message } from 'prompt';
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 // eslint-disable-next-line unicorn/prefer-module
-const require = createRequire(import.meta.url || 'file://' + __dirname);
+const require = createRequire(import.meta.url || 'file://' + __filename);
 
 type DiagInfoType = 'extended' | 'normal' | 'no-city' | 'none';
 type Dependencies = string[] | Record<string, string>[] | string | Record<string, string>;
@@ -129,6 +138,7 @@ const controllerVersions: Record<string, string> = {};
 
 let pluginHandler: InstanceType<typeof PluginHandler>;
 let notificationHandler: NotificationHandler;
+let blocklistManager: BlocklistManager;
 let autoUpgradeManager: AdapterAutoUpgradeManager;
 /** array of instances which have requested repo update */
 let requestedRepoUpdates: RepoRequester[] = [];
@@ -156,7 +166,7 @@ let callbackId = 1;
 const callbacks: Record<string, { time: number; cb: (message: ioBroker.MessagePayload) => void }> = {};
 const hostname = tools.getHostName();
 const controllerDir = tools.getControllerDir();
-let hostObjectPrefix = `system.host.${hostname}`;
+let hostObjectPrefix: ioBroker.ObjectIDs.Host = `system.host.${hostname}`;
 let hostLogPrefix = `host.${hostname}`;
 const compactGroupObjectPrefix = '.compactgroup';
 const logList: string[] = [];
@@ -198,6 +208,8 @@ let compactGroupController = false;
 let compactGroup: null | number = null;
 const compactProcs: Record<string, CompactProcess> = {};
 const scheduledInstances: Record<string, any> = {};
+/** If less than this disk space free in %, generate a warning */
+let diskWarningLevel = DEFAULT_DISK_WARNING_LEVEL;
 
 let updateIPsTimer: NodeJS.Timeout | null = null;
 let lastDiagSend: null | number = null;
@@ -207,8 +219,9 @@ const uploadTasks: UploadTask[] = [];
 const config = getConfig();
 
 /**
+ * Get the error text from an exit code
  *
- * @param code
+ * @param code exit code
  */
 function getErrorText(code: number): string {
     return EXIT_CODES[code];
@@ -251,10 +264,10 @@ function getConfig(): ioBroker.IoBrokerJson | never {
  * @param _config
  * @param secret
  */
-function _startMultihost(_config: Record<string, any>, secret: string | false): void {
-    const MHService = require('./lib/multihostServer.js');
+async function _startMultihost(_config: Record<string, any>, secret: string | false): Promise<void> {
+    const MHService = await import('./lib/multihostServer.js');
     const cpus = os.cpus();
-    mhService = new MHService(
+    mhService = new MHService.MHServer(
         hostname,
         logger,
         _config,
@@ -300,16 +313,8 @@ async function startMultihost(__config?: Record<string, any>): Promise<boolean |
             }
         }
 
-        const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(
-            _config.objects.type,
-            _config.objects.host,
-            true
-        );
-        const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(
-            _config.states.type,
-            _config.states.host,
-            true
-        );
+        const hasLocalObjectsServer = await isLocalObjectsDbServer(_config.objects.type, _config.objects.host, true);
+        const hasLocalStatesServer = await isLocalStatesDbServer(_config.states.type, _config.states.host, true);
 
         if (!_config.objects.host || hasLocalObjectsServer) {
             logger.warn(
@@ -328,7 +333,7 @@ async function startMultihost(__config?: Record<string, any>): Promise<boolean |
                 let obj: ioBroker.SystemConfigObject | null | undefined;
                 let errText;
                 try {
-                    obj = await objects!.getObjectAsync('system.config');
+                    obj = await objects!.getObjectAsync(SYSTEM_CONFIG_ID);
                 } catch (e) {
                     // will log error below
                     errText = e.message;
@@ -475,7 +480,12 @@ function createStates(onConnect: () => void): void {
         connection: config.states,
         logger: logger,
         hostname: hostname,
-        change: (id, stateOrMessage) => {
+        change: async (id, stateOrMessage) => {
+            if (!states || !objects) {
+                logger.error(`${hostLogPrefix} Could not handle state change of "${id}", because not connected`);
+                return;
+            }
+
             inputCount++;
             if (!id) {
                 return logger.error(`${hostLogPrefix} change event with no ID: ${JSON.stringify(stateOrMessage)}`);
@@ -509,29 +519,32 @@ function createStates(onConnect: () => void): void {
                 // If this system.adapter.NAME.0.alive, only main controller is handling this
                 if (state && !state.ack) {
                     const enabled = state.val;
-                    objects!.getObject(id.substring(0, id.length - 6 /*'.alive'.length*/), (err, obj) => {
-                        if (err) {
-                            logger.error(`${hostLogPrefix} Cannot read object: ${err.message}`);
-                        }
-                        if (obj?.common) {
-                            // IF adapter enabled => disable it
-                            if ((obj.common.enabled && !enabled) || (!obj.common.enabled && enabled)) {
-                                obj.common.enabled = !!enabled;
-                                logger.info(
-                                    `${hostLogPrefix} instance "${obj._id}" ${
-                                        obj.common.enabled ? 'enabled' : 'disabled'
-                                    } via .alive`
-                                );
-                                obj.from = hostObjectPrefix;
-                                obj.ts = Date.now();
-                                objects!.setObject(
-                                    obj._id,
-                                    obj,
-                                    err => err && logger.error(`${hostLogPrefix} Cannot set object: ${err.message}`)
-                                );
+                    let obj: ioBroker.Object | null | undefined;
+
+                    try {
+                        obj = await objects.getObject(id.substring(0, id.length - 6 /*'.alive'.length*/));
+                    } catch (e) {
+                        logger.error(`${hostLogPrefix} Cannot read object: ${e.message}`);
+                    }
+
+                    if (obj?.common) {
+                        // IF adapter enabled => disable it
+                        if ((obj.common.enabled && !enabled) || (!obj.common.enabled && enabled)) {
+                            obj.common.enabled = !!enabled;
+                            logger.info(
+                                `${hostLogPrefix} instance "${obj._id}" ${
+                                    obj.common.enabled ? 'enabled' : 'disabled'
+                                } via .alive`
+                            );
+                            obj.from = hostObjectPrefix;
+                            obj.ts = Date.now();
+                            try {
+                                await objects.setObject(obj._id, obj);
+                            } catch (e) {
+                                logger.error(`${hostLogPrefix} Cannot set object: ${e.message}`);
                             }
                         }
-                    });
+                    }
                 }
             } else if (subscribe[id]) {
                 const state = stateOrMessage as ioBroker.State;
@@ -572,7 +585,7 @@ function createStates(onConnect: () => void): void {
                 } else if (state.val && state.val !== currentLevel) {
                     logger.info(`${hostLogPrefix} Got invalid loglevel "${state.val}", ignoring`);
                 }
-                states!.setState(`${hostObjectPrefix}.logLevel`, {
+                await states.setState(`${hostObjectPrefix}.logLevel`, {
                     val: currentLevel,
                     ack: true,
                     from: hostObjectPrefix
@@ -611,6 +624,15 @@ function createStates(onConnect: () => void): void {
                         }
                     }
                 }
+            } else if (
+                id === `${hostObjectPrefix}.diskWarning` &&
+                stateOrMessage &&
+                'ack' in stateOrMessage &&
+                !stateOrMessage.ack
+            ) {
+                const warningLevel = getDiskWarningLevel(stateOrMessage);
+                diskWarningLevel = warningLevel;
+                await states.setState(id, { val: warningLevel, ack: true });
             }
         },
         connected: () => {
@@ -673,6 +695,7 @@ async function initializeController(): Promise<void> {
     }
 
     autoUpgradeManager = new AdapterAutoUpgradeManager({ objects, states, logger, logPrefix: hostLogPrefix });
+    blocklistManager = new BlocklistManager({ objects });
 
     checkSystemLocaleSupported();
 
@@ -754,12 +777,13 @@ function createObjects(onConnect: () => void): void {
             );
             // give the main controller a bit longer, so that adapter and compact processes can exit before
         },
-        change: async (id, _obj) => {
-            if (!started || !id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) {
+        change: async (_id, _obj) => {
+            if (!started || !_id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) {
                 return;
             }
 
             const obj = _obj as ioBroker.InstanceObject | null;
+            const id = _id as ioBroker.ObjectIDs.Instance;
 
             try {
                 logger.debug(`${hostLogPrefix} object change ${id} (from: ${obj ? obj.from : null})`);
@@ -833,7 +857,6 @@ function createObjects(onConnect: () => void): void {
                                     clearTimeout(proc.restartTimer);
                                 }
                                 const restartTimeout = (proc.config.common.stopTimeout || 500) + 2_500;
-                                // @ts-expect-error tell ts it is an instance id
                                 proc.restartTimer = setTimeout(_id => startInstance(_id), restartTimeout, id);
                             }
                         } else {
@@ -871,7 +894,6 @@ function createObjects(onConnect: () => void): void {
                                 proc.config.common.enabled &&
                                 (proc.config.common.mode !== 'extension' || !proc.config.native.webInstance)
                             ) {
-                                // @ts-expect-error ts not able to infer instance id here
                                 startInstance(id);
                             }
                         } else {
@@ -909,7 +931,6 @@ function createObjects(onConnect: () => void): void {
                     ) {
                         // We should give a slight delay to allow a potentially former existing process on another host to exit
                         const restartTimeout = (proc.config.common.stopTimeout || 500) + 2_500;
-                        // @ts-expect-error tell ts it is an instance id
                         proc.restartTimer = setTimeout(_id => startInstance(_id), restartTimeout, id);
                     }
                 }
@@ -997,7 +1018,7 @@ async function checkPrimaryHost(): Promise<void> {
     }
 }
 
-function reportStatus(): void {
+async function reportStatus(): Promise<void> {
     if (!states) {
         return;
     }
@@ -1085,28 +1106,46 @@ function reportStatus(): void {
 
     if (config.system.checkDiskInterval && Date.now() - lastDiskSizeCheck >= config.system.checkDiskInterval) {
         lastDiskSizeCheck = Date.now();
-        tools.getDiskInfo(os.platform(), (err, info) => {
-            if (err) {
-                logger.error(`${hostLogPrefix} Cannot read disk size: ${err.message}`);
-            }
-            try {
-                if (info) {
-                    states!.setState(`${id}.diskSize`, {
-                        val: Math.round((info['Disk size'] || 0) / (1024 * 1024)),
-                        ack: true,
-                        from: id
-                    });
-                    states!.setState(`${id}.diskFree`, {
-                        val: Math.round((info['Disk free'] || 0) / (1024 * 1024)),
-                        ack: true,
-                        from: id
-                    });
-                    outputCount += 2;
+        let info: GetDiskInfoResponse | null = null;
+
+        try {
+            info = await tools.getDiskInfo();
+        } catch (e) {
+            logger.error(`${hostLogPrefix} Cannot read disk size: ${e.message}`);
+        }
+
+        try {
+            if (info) {
+                const diskSize = Math.round((info['Disk size'] || 0) / (1024 * 1024));
+                const diskFree = Math.round((info['Disk free'] || 0) / (1024 * 1024));
+                const percentageFree = (diskFree / diskSize) * 100;
+                const isDiskWarningActive = percentageFree < diskWarningLevel;
+
+                if (isDiskWarningActive) {
+                    await notificationHandler.addMessage(
+                        'system',
+                        'diskSpaceIssues',
+                        `Your system has only ${percentageFree.toFixed(2)} % of disk space left.`,
+                        `system.host.${hostname}`
+                    );
                 }
-            } catch (e) {
-                logger.error(`${hostLogPrefix} Cannot read disk information: ${e.message}`);
+
+                states.setState(`${id}.diskSize`, {
+                    val: diskSize,
+                    ack: true,
+                    from: id
+                });
+                states.setState(`${id}.diskFree`, {
+                    val: diskFree,
+                    ack: true,
+                    from: id
+                });
+
+                outputCount += 2;
             }
-        });
+        } catch (e) {
+            logger.error(`${hostLogPrefix} Cannot read disk information: ${e.message}`);
+        }
     }
 
     // some statistics
@@ -1364,7 +1403,7 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
         let err;
 
         try {
-            systemConfig = await objects!.getObjectAsync('system.config');
+            systemConfig = await objects!.getObjectAsync(SYSTEM_CONFIG_ID);
         } catch (e) {
             err = e;
         }
@@ -1441,16 +1480,16 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
             doc.rows.sort((a, b) => {
                 try {
                     return semver.lt(
-                        a?.value?.common?.installedVersion ?? '0.0.0',
-                        b?.value?.common?.installedVersion ?? '0.0.0'
+                        a.value.common.installedVersion ?? '0.0.0',
+                        b.value.common.installedVersion ?? '0.0.0'
                     )
                         ? 1
                         : 0;
                 } catch {
                     logger.error(
-                        `${hostLogPrefix} Invalid versions: ${a?.value?.common?.installedVersion ?? '0.0.0'}[${
-                            a?.value?.common?.name ?? 'unknown'
-                        }] or ${b?.value?.common?.installedVersion ?? '0.0.0'}[${b?.value?.common?.name ?? 'unknown'}]`
+                        `${hostLogPrefix} Invalid versions: ${a.value.common.installedVersion ?? '0.0.0'}[${
+                            a.value.common.name ?? 'unknown'
+                        }] or ${b.value.common.installedVersion ?? '0.0.0'}[${b.value.common.name ?? 'unknown'}]`
                     );
                     return 0;
                 }
@@ -1459,9 +1498,9 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
             // Read installed versions of all hosts
             for (const row of doc.rows) {
                 diag.hosts.push({
-                    version: row.value!.common.installedVersion,
-                    platform: row.value!.common.platform,
-                    type: row.value!.native.os.platform
+                    version: row.value.common.installedVersion,
+                    platform: row.value.common.platform,
+                    type: row.value.native.os.platform
                 });
             }
         }
@@ -1483,9 +1522,10 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
         if (!err && doc?.rows.length) {
             // Read installed versions of all adapters
             for (const row of doc.rows) {
-                diag.adapters[row.value!.common.name] = {
-                    version: row.value!.common.version,
-                    platform: row.value!.common.platform
+                diag.adapters[row.value.common.name] = {
+                    version: row.value.common.version,
+                    platform: row.value.common.platform,
+                    installedFrom: row.value.common.installedFrom
                 };
 
                 if (VIS_ADAPTERS.includes(row.value.common.name as (typeof VIS_ADAPTERS)[number])) {
@@ -1622,111 +1662,54 @@ async function extendObjects(tasks: Record<string, any>[]): Promise<void> {
     }
 }
 
-function setMeta(): void {
+/**
+ * Create the host meta data like host objects and states
+ */
+async function setMeta(): Promise<void> {
     const id = hostObjectPrefix;
 
-    objects!.getObject(id, (err, oldObj) => {
-        let newObj: ioBroker.HostObject | ioBroker.FolderObject;
-        if (compactGroupController) {
-            newObj = {
-                _id: id,
-                type: 'folder',
-                common: {
-                    name: hostname + compactGroupObjectPrefix + compactGroup,
-                    cmd:
-                        process.argv[0] +
-                        ' ' +
-                        `${process.execArgv.join(' ')} `.replace(/--inspect-brk=\d+ /, '') +
-                        process.argv.slice(1).join(' '),
-                    hostname: hostname,
-                    address: tools.findIPs()
-                },
-                native: {}
-            };
-        } else {
-            // @ts-expect-error todo fix later
-            newObj = {
-                _id: id,
-                type: 'host',
-                common: {
-                    name: hostname,
-                    title:
-                        oldObj && oldObj.common && oldObj.common.title ? oldObj.common.title : ioPackage.common.title,
-                    installedVersion: version,
-                    platform: ioPackage.common.platform,
-                    cmd:
-                        process.argv[0] +
-                        ' ' +
-                        `${process.execArgv.join(' ')} `.replace(/--inspect-brk=\d+ /, '') +
-                        process.argv.slice(1).join(' '),
-                    hostname: hostname,
-                    address: tools.findIPs(),
-                    type: ioPackage.common.name
-                },
-                native: {
-                    process: {
-                        title: process.title,
-                        versions: process.versions,
-                        env: process.env
-                    },
-                    os: {
-                        hostname: hostname,
-                        type: os.type(),
-                        platform: os.platform(),
-                        arch: os.arch(),
-                        release: os.release(),
-                        endianness: os.endianness(),
-                        tmpdir: os.tmpdir()
-                    },
-                    hardware: {
-                        cpus: os.cpus(),
-                        totalmem: os.totalmem(),
-                        networkInterfaces: {}
-                    }
-                }
-            };
+    const oldObj = await objects!.getObject(id);
+    let newObj: ioBroker.HostObject | ioBroker.FolderObject;
+    if (compactGroupController) {
+        newObj = {
+            _id: id,
+            type: 'folder',
+            common: {
+                name: hostname + compactGroupObjectPrefix + compactGroup,
+                cmd: `${process.argv[0]} ${`${process.execArgv.join(' ')} `.replace(
+                    /--inspect-brk=\d+ /,
+                    ''
+                )}${process.argv.slice(1).join(' ')}`,
+                hostname: hostname,
+                address: tools.findIPs()
+            },
+            native: {}
+        };
+    } else {
+        newObj = getHostObject(oldObj);
+    }
 
-            if (oldObj?.common?.icon) {
-                newObj.common.icon = oldObj.common.icon;
-            }
-            if (oldObj?.common?.color) {
-                newObj.common.color = oldObj.common.color;
-            }
-            // remove dynamic information
-            if (newObj.native?.hardware?.cpus) {
-                for (const cpu of newObj.native.hardware.cpus) {
-                    if (cpu.times) {
-                        delete cpu.times;
-                    }
-                }
-            }
-            if (oldObj?.native.hardware?.networkInterfaces) {
-                newObj.native.hardware.networkInterfaces = oldObj.native.hardware.networkInterfaces;
-            }
-        }
+    if (oldObj) {
+        // @ts-expect-error todo: can be removed?
+        delete oldObj.cmd;
+        delete oldObj.from;
+        delete oldObj.ts;
+        delete oldObj.acl;
+    }
 
-        if (oldObj) {
-            // @ts-expect-error todo: can be removed?
-            delete oldObj.cmd;
-            delete oldObj.from;
-            delete oldObj.ts;
-            delete oldObj.acl;
-        }
-
-        if (!oldObj || !isDeepStrictEqual(newObj, oldObj)) {
-            newObj.from = hostObjectPrefix;
-            newObj.ts = Date.now();
-            objects!.setObject(id, newObj, err => {
-                if (err) {
-                    logger.error(`${hostLogPrefix} Cannot write host object: ${err.message}`);
-                } else {
-                    setIPs(newObj.common.address);
-                }
-            });
-        } else {
+    if (!oldObj || !isDeepStrictEqual(newObj, oldObj)) {
+        newObj.from = hostObjectPrefix;
+        newObj.ts = Date.now();
+        try {
+            // @ts-expect-error TODO: for compact controller we are setting a folder object to a system.host.XY id
+            await objects!.setObject(id, newObj);
             setIPs(newObj.common.address);
+        } catch (e) {
+            logger.error(`${hostLogPrefix} Cannot write host object: ${e.message}`);
         }
-    });
+    } else {
+        setIPs(newObj.common.address);
+    }
 
     config.system.checkDiskInterval =
         config.system.checkDiskInterval !== 0 ? Math.round(config.system.checkDiskInterval) || 300_000 : 0;
@@ -2080,7 +2063,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                 let systemConfig: ioBroker.SystemConfigObject | null | undefined;
                 try {
-                    systemConfig = await objects!.getObject('system.config');
+                    systemConfig = await objects!.getObject(SYSTEM_CONFIG_ID);
                 } catch {
                     // ignore
                 }
@@ -2107,7 +2090,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                 const globalRepo = {};
 
-                const systemRepos = await objects!.getObjectAsync('system.repositories');
+                const systemRepos = await objects!.getObjectAsync(SYSTEM_REPOSITORIES_ID);
                 let changed = false;
 
                 // Check if repositories exist
@@ -2193,7 +2176,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                     if (changed) {
                         try {
-                            await objects!.setObjectAsync('system.repositories', systemRepos);
+                            await objects!.setObjectAsync(SYSTEM_REPOSITORIES_ID, systemRepos);
                         } catch (e) {
                             logger.warn(`${hostLogPrefix} Repository object could not be updated: ${e.message}`);
                         }
@@ -2211,6 +2194,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 } catch (e) {
                     logger.warn(`${hostLogPrefix} Could not check for new OS updates: ${e.message}`);
                 }
+
+                await checkRebootRequired();
+                await disableBlocklistedInstances();
 
                 if (changed) {
                     await autoUpgradeAdapters();
@@ -2361,7 +2347,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 const lines = msg.message || 200;
                 let text = '';
                 // @ts-expect-error types not know this one
-                let logFile_ = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
+                let logFile_ = logger.getFileName();
 
                 if (!fs.existsSync(logFile_)) {
                     logFile_ = `${controllerDir}/../../log/${tools.appName}.log`;
@@ -2966,29 +2952,6 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             }
             break;
 
-        case 'certsUpdated': {
-            // restart all instances that depends on lets encrypt, except the issuer
-            const instances: string[] = [];
-            Object.entries(procs).forEach(([id, proc]) => {
-                if (
-                    proc.config?.common?.enabled && // if enabled
-                    proc.config.common.mode === 'daemon' && // if constantly running
-                    proc.config.native?.leEnabled && // if using letsencrypt
-                    !proc.config.native.leUpdate && // if not updating certs itself
-                    (!msg.message || msg.message.instance !== id)
-                ) {
-                    // and it not the issuer
-                    // restart this instance, because letsencrypt updated
-                    instances.push(id);
-                }
-            });
-
-            // @ts-expect-error ts not knows that these are instance ids
-            restartInstances(instances);
-
-            break;
-        }
-
         // read licenses from iobroker.net
         case 'updateLicenses': {
             try {
@@ -3058,26 +3021,6 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             sentryInstance.getSentryObject().captureException(message);
             break;
         }
-    }
-}
-
-// restart given instances sequentially
-/**
- *
- * @param instances
- * @param cb
- */
-async function restartInstances(instances: ioBroker.ObjectIDs.Instance[], cb?: () => void): Promise<void> {
-    if (!instances || !instances.length) {
-        cb && cb();
-    } else {
-        const id = instances.shift()!;
-        logger.info(
-            `${hostLogPrefix} instance "${id}" restarted because the "let's encrypt" certificates were updated`
-        );
-        await stopInstance(id, false);
-        startInstance(id);
-        setTimeout(() => restartInstances(instances, cb), 3_000);
     }
 }
 
@@ -3785,7 +3728,7 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
  * @param wakeUp
  */
 async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): Promise<void> {
-    if (isStopping || !connected) {
+    if (isStopping || !connected || !objects) {
         return;
     }
 
@@ -3820,6 +3763,19 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
             // Do not start this instance
             return;
         }
+    }
+
+    const isBlocked = await blocklistManager.isAdapterVersionBlocked({
+        version: instance.common.version,
+        adapterName: instance.common.name
+    });
+
+    if (isBlocked) {
+        const message = `Do not start instance "${id}", because the version "${instance.common.version}" has been blocked by the developer`;
+        logger.error(`${hostLogPrefix} ${message}`);
+
+        await notificationHandler.addMessage('system', 'blockedVersions', message, SYSTEM_HOST_PREFIX + hostname);
+        return;
     }
 
     const adapterDir = tools.getAdapterDir(name);
@@ -4382,7 +4338,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                 }
 
                                 const module = (await isAdapterEsmModule(name))
-                                    ? await import(adapterMainFile)
+                                    ? (await import(`${adapterMainFile}?update=${Date.now()}`)).default
                                     : require(adapterMainFile);
 
                                 proc.process = {
@@ -5223,19 +5179,19 @@ export async function init(compactGroupId?: number): Promise<void> {
 
     // Get "objects" object
     // If "file" and on the local machine
-    const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host);
+    const hasLocalObjectsServer = await isLocalObjectsDbServer(config.objects.type, config.objects.host);
     if (hasLocalObjectsServer && !compactGroupController) {
-        Objects = require(`@iobroker/db-objects-${config.objects.type}`).Server;
+        Objects = (await import(`@iobroker/db-objects-${config.objects.type}`)).Server;
     } else {
-        Objects = await require('@iobroker/js-controller-common-db').getObjectsConstructor();
+        Objects = await getObjectsConstructor();
     }
 
-    const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(config.states.type, config.states.host);
+    const hasLocalStatesServer = await isLocalStatesDbServer(config.states.type, config.states.host);
     // Get "states" object
     if (hasLocalStatesServer && !compactGroupController) {
-        States = require(`@iobroker/db-states-${config.states.type}`).Server;
+        States = (await import(`@iobroker/db-states-${config.states.type}`)).Server;
     } else {
-        States = await require('@iobroker/js-controller-common-db').getStatesConstructor();
+        States = await getStatesConstructor();
     }
 
     // Detect if outputs to console are forced. By default, they are disabled and redirected to log file
@@ -5416,11 +5372,9 @@ export async function init(compactGroupId?: number): Promise<void> {
         // get the current host versions
         try {
             const hostView = await objects!.getObjectViewAsync('system', 'host');
-            if (hostView?.rows) {
-                for (const row of hostView.rows) {
-                    if (row.value?.common?.installedVersion) {
-                        controllerVersions[row.id] = row.value.common.installedVersion;
-                    }
+            for (const row of hostView.rows) {
+                if (row.value?.common?.installedVersion) {
+                    controllerVersions[row.id] = row.value.common.installedVersion;
                 }
             }
         } catch {
@@ -5429,35 +5383,40 @@ export async function init(compactGroupId?: number): Promise<void> {
 
         // create the states object
         createStates(async () => {
-            // Subscribe for connection state of all instances
-            // Disabled in 1.5.x
-            // states.subscribe('*.info.connection');
+            if (!states || !objects) {
+                throw new Error(`States or objects have not been initialized yet`);
+            }
 
             if (connectTimeout) {
                 clearTimeout(connectTimeout);
                 connectTimeout = null;
             }
             // Subscribe for all logging objects
-            states!.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.logging`);
+            states.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.logging`);
 
-            // Subscribe for all logging objects
-            states!.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.alive`);
+            // Subscribe for all alive states
+            states.subscribe(`${SYSTEM_ADAPTER_PREFIX}*.alive`);
+            states.subscribe(`${hostObjectPrefix}.diskWarning`);
+            const diskWarningState = await states.getState(`${hostObjectPrefix}.diskWarning`);
+            if (diskWarningState) {
+                diskWarningLevel = getDiskWarningLevel(diskWarningState);
+            }
 
             // set current Loglevel and subscribe for changes
-            states!.setState(`${hostObjectPrefix}.logLevel`, {
+            states.setState(`${hostObjectPrefix}.logLevel`, {
                 val: config.log.level,
                 ack: true,
                 from: hostObjectPrefix
             });
-            states!.subscribe(`${hostObjectPrefix}.logLevel`);
+            states.subscribe(`${hostObjectPrefix}.logLevel`);
 
             if (!compactGroupController) {
                 try {
                     const nodeVersion = process.version.replace(/^v/, '');
-                    const prevNodeVersionState = await states!.getStateAsync(`${hostObjectPrefix}.nodeVersion`);
+                    const prevNodeVersionState = await states.getStateAsync(`${hostObjectPrefix}.nodeVersion`);
 
                     if (!prevNodeVersionState || prevNodeVersionState.val !== nodeVersion) {
-                        // detected a change in the nodejs version (or state non existing - upgrade from below v4)
+                        // detected a change in the nodejs version (or state non-existing - upgrade from below v4)
                         logger.info(
                             `${hostLogPrefix} Node.js version has changed from ${
                                 prevNodeVersionState ? prevNodeVersionState.val : 'unknown'
@@ -5476,7 +5435,7 @@ export async function init(compactGroupId?: number): Promise<void> {
                     }
 
                     // set current node version
-                    await states!.setState(`${hostObjectPrefix}.nodeVersion`, {
+                    await states.setState(`${hostObjectPrefix}.nodeVersion`, {
                         val: nodeVersion,
                         ack: true,
                         from: hostObjectPrefix
@@ -5492,7 +5451,7 @@ export async function init(compactGroupId?: number): Promise<void> {
 
             try {
                 // Read the current state of all log subscribers
-                keys = (await states!.getKeys(`${SYSTEM_ADAPTER_PREFIX}*.logging`))!;
+                keys = (await states.getKeys(`${SYSTEM_ADAPTER_PREFIX}*.logging`))!;
             } catch {
                 // ignore
             }
@@ -5502,29 +5461,29 @@ export async function init(compactGroupId?: number): Promise<void> {
                 let objs: ioBroker.AnyObject[];
 
                 try {
-                    objs = await objects!.getObjects(oKeys);
+                    objs = await objects.getObjects(oKeys);
                 } catch {
                     return;
                 }
 
-                const toDelete = keys!.filter((id, i) => !objs[i]);
+                const toDelete = keys.filter((id, i) => !objs[i]);
                 keys = keys!.filter((id, i) => objs[i]);
 
                 let statesArr: (ioBroker.State | null)[] | undefined;
 
                 try {
-                    statesArr = (await states!.getStates(keys))!;
+                    statesArr = (await states.getStates(keys))!;
                 } catch {
                     // ignore
                 }
 
                 if (statesArr) {
-                    for (let i = 0; i < keys!.length; i++) {
+                    for (let i = 0; i < keys.length; i++) {
                         const state = statesArr[i];
                         if (state?.val === true) {
                             logRedirect(
                                 true,
-                                keys![i].substring(0, keys![i].length - '.logging'.length).replace(/^io\./, ''),
+                                keys[i].substring(0, keys[i].length - '.logging'.length).replace(/^io\./, ''),
                                 'starting'
                             );
                         }
@@ -5777,6 +5736,39 @@ async function startUpgradeManager(options: UpgradeArguments): Promise<void> {
 }
 
 /**
+ * Checks if a system reboot is required and generates a notification if this is the case
+ */
+async function checkRebootRequired(): Promise<void> {
+    if (process.platform !== 'linux') {
+        return;
+    }
+
+    /** This file exists on most linux systems if a reboot is required */
+    const rebootRequiredPath = '/var/run/reboot-required';
+    /** This file contains a list of packages which require the reboot, separated by newline */
+    const packagesListPath = '/var/run/reboot-required.pkgs';
+
+    const rebootRequired = await fs.pathExists(rebootRequiredPath);
+
+    if (!rebootRequired) {
+        return;
+    }
+
+    let message = 'At least one package update requires a system reboot';
+
+    try {
+        const content = await fs.readFile(packagesListPath, { encoding: 'utf-8' });
+        message = `The following package updates require a restart of the system: ${content.split('\n').join(', ')}`;
+    } catch (e) {
+        if (e.code !== 'ENOENT') {
+            logger.error(`${hostLogPrefix} Could not read file "${packagesListPath}": ${e.message}`);
+        }
+    }
+
+    await notificationHandler.addMessage('system', 'systemRebootRequired', message, `system.host.${hostname}`);
+}
+
+/**
  * Upgrade all upgradeable adapters with respect to their auto upgrade policy
  */
 async function autoUpgradeAdapters(): Promise<void> {
@@ -5807,6 +5799,27 @@ async function autoUpgradeAdapters(): Promise<void> {
         }
     } catch (e) {
         logger.error(`${hostLogPrefix} An error occurred while processing automatic adapter upgrades: ${e.message}`);
+    }
+}
+
+/**
+ * Disables all blocklisted instances which are currently enabled and generates notifications
+ */
+async function disableBlocklistedInstances(): Promise<void> {
+    let newlyDisabledInstances: ioBroker.InstanceObject[];
+
+    try {
+        newlyDisabledInstances = await blocklistManager.disableAllBlocklistedInstances();
+    } catch (e) {
+        logger.error(`${hostLogPrefix} Could not check if blocklisted adapters need to be disabled: ${e.message}`);
+        return;
+    }
+
+    for (const disabledInstance of newlyDisabledInstances) {
+        const message = `Instance "${disabledInstance._id}" has been stopped and disabled because the version "${disabledInstance.common.version}" has been blocked by the developer`;
+        logger.error(`${hostLogPrefix} ${message}`);
+
+        await notificationHandler.addMessage('system', 'blockedVersions', message, SYSTEM_HOST_PREFIX + hostname);
     }
 }
 

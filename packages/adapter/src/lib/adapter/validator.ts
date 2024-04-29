@@ -297,7 +297,10 @@ export class Validator {
      * @param value value to check a type of
      * @param name name of the parameter for logging
      */
-    static assertObject(value: unknown, name: string): asserts value is Record<string, any> {
+    static assertObject<T extends Record<string, any> = Record<string, any>>(
+        value: unknown,
+        name: string
+    ): asserts value is T {
         if (!tools.isObject(value)) {
             throw new Error(`Parameter "${name}" needs to be a real object but type "${typeof value}" has been passed`);
         }

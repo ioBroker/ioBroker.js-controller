@@ -33,9 +33,9 @@ import * as url from 'node:url';
 import { createRequire } from 'node:module';
 
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __dirname));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 // eslint-disable-next-line unicorn/prefer-module
-const require = createRequire(import.meta.url || 'file://' + __dirname);
+const require = createRequire(import.meta.url || 'file://' + __filename);
 
 type DockerInformation =
     | {
@@ -254,8 +254,8 @@ export function checkNonEditable(
 /**
  * Checks if a version is up-to-date, throws error on invalid version strings
  *
- * @param repoVersion
- * @param installedVersion
+ * @param repoVersion version in repository
+ * @param installedVersion the current installed version
  */
 export function upToDate(repoVersion: string, installedVersion: string): boolean {
     // Check if the installed version is at least the repo version
@@ -1816,96 +1816,64 @@ export interface GetDiskInfoResponse {
 
 /**
  * Read disk free space
- *
- * @param platform result of os.platform() (win32 => Windows, darwin => OSX)
- * @param callback return result
- *        <pre><code>
- *            function (err, infos) {
- *              adapter.log.debug('Disks sizes is: ' + info['Disk size'] + ' - ' + info['Disk free']);
- *            }
- *        </code></pre>
  */
-export function getDiskInfo(
-    platform: NodeJS.Platform,
-    callback: (err?: Error | null, infos?: null | GetDiskInfoResponse) => void
-): void {
-    platform = platform || os.platform();
+export async function getDiskInfo(): Promise<GetDiskInfoResponse | null> {
+    const platform = process.platform;
     if (diskusage) {
         try {
             const path = platform === 'win32' ? thisDir.substring(0, 2) : '/';
             const info = diskusage.checkSync(path);
-            return callback && callback(null, { 'Disk size': info.total, 'Disk free': info.free });
-        } catch (err) {
-            console.log(err);
+            return { 'Disk size': info.total, 'Disk free': info.free };
+        } catch (e) {
+            console.log(e.message);
         }
     } else {
-        try {
-            if (platform === 'win32') {
-                // Caption  FreeSpace     Size
-                // A:
-                // C:       66993807360   214640357376
-                // D:
-                // Y:       116649795584  148368257024
-                // Z:       116649795584  148368257024
-                const disk = thisDir.substring(0, 2).toUpperCase();
+        if (platform === 'win32') {
+            // Caption  FreeSpace     Size
+            // A:
+            // C:       66993807360   214640357376
+            // D:
+            // Y:       116649795584  148368257024
+            // Z:       116649795584  148368257024
+            const disk = thisDir.substring(0, 2).toUpperCase();
 
-                exec(
-                    'wmic logicaldisk get size,freespace,caption',
-                    {
-                        encoding: 'utf8',
-                        windowsHide: true
-                    },
-                    (error, stdout) => {
-                        //, stderr) {
-                        if (stdout) {
-                            const lines = stdout.split('\n');
-                            const line = lines.find(line => {
-                                const parts = line.split(/\s+/);
-                                return parts[0].toUpperCase() === disk;
-                            });
-                            if (line) {
-                                const parts = line.split(/\s+/);
-                                return (
-                                    callback &&
-                                    callback(error, {
-                                        'Disk size': parseInt(parts[2]),
-                                        'Disk free': parseInt(parts[1])
-                                    })
-                                );
-                            }
-                        }
-                        callback && callback(error, null);
-                    }
-                );
-            } else {
-                exec('df -k /', { encoding: 'utf8', windowsHide: true }, (error, stdout) => {
-                    //, stderr) {
-                    // Filesystem            1K-blocks    Used Available Use% Mounted on
-                    // /dev/mapper/vg00-lv01 162544556 9966192 145767152   7% /
-                    try {
-                        if (stdout) {
-                            const parts = stdout.split('\n')[1].split(/\s+/);
-                            return (
-                                callback &&
-                                callback(error, {
-                                    'Disk size': parseInt(parts[1]) * 1024,
-                                    'Disk free': parseInt(parts[3]) * 1024
-                                })
-                            );
-                        }
-                    } catch {
-                        // continue regardless of error
-                    }
-                    callback && callback(error, null);
+            const { stdout } = await execAsync('wmic logicaldisk get size,freespace,caption');
+
+            if (typeof stdout === 'string') {
+                const lines = stdout.split('\n');
+                const line = lines.find(line => {
+                    const parts = line.split(/\s+/);
+                    return parts[0].toUpperCase() === disk;
                 });
+                if (line) {
+                    const parts = line.split(/\s+/);
+                    return {
+                        'Disk size': parseInt(parts[2]),
+                        'Disk free': parseInt(parts[1])
+                    };
+                }
             }
-        } catch (e) {
-            callback && callback(e, null);
+        } else {
+            const { stdout } = await execAsync(`df -k ${getRootDir()}`);
+            //, stderr) {
+            // Filesystem            1K-blocks    Used Available Use% Mounted on
+            // /dev/mapper/vg00-lv01 162544556 9966192 145767152   7% /
+            try {
+                if (typeof stdout === 'string') {
+                    const parts = stdout.split('\n')[1].split(/\s+/);
+                    return {
+                        'Disk size': parseInt(parts[1]) * 1024,
+                        'Disk free': parseInt(parts[3]) * 1024
+                    };
+                }
+            } catch {
+                // continue regardless of error
+            }
         }
     }
-}
 
-const getDiskInfoAsync = promisify(getDiskInfo);
+    return null;
+}
 
 export interface CertificateInfo {
     certificateFilename: string | null;
@@ -2164,7 +2132,7 @@ export async function getHostInfo(objects: any): Promise<HostInfo> {
     }
 
     try {
-        const info = await getDiskInfoAsync(data.Platform);
+        const info = await getDiskInfo();
         if (info) {
             Object.assign(data, info);
         }
@@ -3997,6 +3965,74 @@ export async function isIoBrokerInstalledAsSystemd(): Promise<boolean> {
     } catch {
         return false;
     }
+}
+
+/**
+ * Get a new host object
+ *
+ * @param oldObj the previous host object
+ */
+export function getHostObject(oldObj?: ioBroker.HostObject | null): ioBroker.HostObject {
+    const hostname = getHostName();
+    const ioPackage = fs.readJSONSync(path.join(getControllerDir(), 'io-package.json'));
+
+    const newObj: ioBroker.HostObject = {
+        _id: `system.host.${hostname}`,
+        type: 'host',
+        common: {
+            name: hostname,
+            title: oldObj?.common?.title || ioPackage.common.title,
+            installedVersion: ioPackage.common.version,
+            platform: ioPackage.common.platform,
+            cmd: `${process.argv[0]} ${`${process.execArgv.join(' ')} `.replace(/--inspect-brk=\d+ /, '')}${process.argv
+                .slice(1)
+                .join(' ')}`,
+            hostname,
+            address: findIPs(),
+            type: ioPackage.common.name
+        },
+        native: {
+            process: {
+                title: process.title,
+                versions: process.versions,
+                env: process.env
+            },
+            os: {
+                hostname: hostname,
+                type: os.type(),
+                platform: os.platform(),
+                arch: os.arch(),
+                release: os.release(),
+                endianness: os.endianness(),
+                tmpdir: os.tmpdir()
+            },
+            hardware: {
+                cpus: os.cpus(),
+                totalmem: os.totalmem(),
+                networkInterfaces: {}
+            }
+        }
+    };
+
+    if (oldObj?.common?.icon) {
+        newObj.common.icon = oldObj.common.icon;
+    }
+    if (oldObj?.common?.color) {
+        newObj.common.color = oldObj.common.color;
+    }
+    // remove dynamic information
+    if (newObj.native?.hardware?.cpus) {
+        for (const cpu of newObj.native.hardware.cpus) {
+            if (cpu.times) {
+                delete cpu.times;
+            }
+        }
+    }
+    if (oldObj?.native.hardware?.networkInterfaces) {
+        newObj.native.hardware.networkInterfaces = oldObj.native.hardware.networkInterfaces;
+    }
+
+    return newObj;
 }
 
 export * from '@/lib/common/maybeCallback.js';

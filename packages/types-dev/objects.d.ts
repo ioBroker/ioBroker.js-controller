@@ -79,7 +79,7 @@ declare global {
             // Guaranteed instance objects
             type Instance = `system.adapter.${string}.${number}`;
             // Guaranteed adapter objects
-            type Adapter = `system.adapter.${string}`;
+            type Adapter = `system.adapter.${string}` | `system.host.${string}.adapter.${string}`;
             // Guaranteed group objects
             type Group = `system.group.${string}`;
             // Guaranteed user objects
@@ -399,7 +399,7 @@ declare global {
             process: {
                 title: string;
                 versions: NodeJS.ProcessVersions;
-                env: Record<string, string>;
+                env: NodeJS.ProcessEnv;
             };
             os: {
                 hostname: string;
@@ -411,7 +411,9 @@ declare global {
                 tmpdir: ReturnType<(typeof os)['tmpdir']>;
             };
             hardware: {
-                cpus: ReturnType<(typeof os)['cpus']>;
+                /** Return value of os.cpu but property `times` could be removed from every entry */
+                cpus: (Omit<ReturnType<(typeof os)['cpus']>[number], 'times'> &
+                    Partial<Pick<ReturnType<(typeof os)['cpus']>[number], 'times'>>)[];
                 totalmem: ReturnType<(typeof os)['totalmem']>;
                 networkInterfaces: ReturnType<(typeof os)['networkInterfaces']>;
             };
@@ -551,9 +553,19 @@ declare global {
             };
         }
 
+        interface CustomAdminColumn {
+            path: string;
+            name?: ioBroker.StringOrTranslated;
+            objTypes?: ObjectType | ObjectType[];
+            width?: number;
+            edit?: boolean;
+            type?: CommonType;
+            align?: 'left' | 'center' | 'right';
+        }
+
         interface AdapterCommon extends ObjectCommon {
             /** Custom attributes to be shown in admin in the object browser */
-            adminColumns?: any[];
+            adminColumns?: string | (string | CustomAdminColumn)[];
             /** Settings for custom Admin Tabs */
             adminTab?: {
                 name?: string;
@@ -599,6 +611,8 @@ declare global {
             getHistory?: boolean;
             /** Filename of the local icon which is shown for installed adapters. Should be located in the `admin` directory */
             icon?: string;
+            /** The adapter will be executed once additionally after installation and the `install` event will be emitted during this run. This allows for executing one time installation code. */
+            install?: boolean;
             /** Source, where this adapter has been installed from, to enable reinstalling on e.g., backup restore */
             installedFrom?: string;
             /** Which version of this adapter is installed */
@@ -702,6 +716,8 @@ declare global {
             licenseInformation?: LicenseInformation;
             /** Messages, that will be shown (if condition evaluates to true) by upgrade or installation */
             messages?: MessageRule[];
+            /** If specific update of this adapter should be ignored, specifies version number to be ignored */
+            ignoreVersion?: string;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
@@ -876,23 +892,27 @@ declare global {
             name: string;
             /** Newest available version */
             version: string;
+            /** Array of blocked versions, each entry represents a semver range */
+            blockedVersions: string[];
 
             /** Other Adapter related properties, not important for this implementation */
             [other: string]: unknown;
         }
 
-        interface RepositoryJson {
-            _repoInfo: {
-                /** If it is the official stable repository */
-                stable?: boolean;
-                /** i18n name of the repository */
-                name: Required<ioBroker.Translated>;
-                /** Time of repository update */
-                repoTime: string;
-            };
+        interface RepoInfo {
+            /** If it is the official stable repository */
+            stable?: boolean;
+            /** i18n name of the repository */
+            name: Required<ioBroker.Translated>;
+            /** Time of repository update */
+            repoTime: string;
+        }
 
-            /** Information about each adapter - Record needed for _repoInfo */
-            [adapter: string]: RepositoryJsonAdapterContent | Record<string, any>;
+        interface RepositoryJson {
+            _repoInfo: RepoInfo;
+
+            /** Information about each adapter */
+            [adapter: string]: RepositoryJsonAdapterContent | RepoInfo;
         }
 
         interface RepositoryInformation {
