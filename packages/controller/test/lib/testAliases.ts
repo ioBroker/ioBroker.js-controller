@@ -1093,4 +1093,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             context.adapter.getForeignStateAsync(nonAliasId, { user: 'system.user.userD' })
         ).to.be.eventually.rejectedWith('permissionError', 'Should have thrown a permission error');
     });
+
+    it(testName + 'Non-existing alias should return a null value just like other state', async () => {
+        const normalState = await context.adapter.getForeignStateAsync(`${gid}.isNotExisting`);
+        const aliasState = await context.adapter.getForeignStateAsync(`${gAliasID}.isNotExisting`);
+
+        expect(normalState).to.be.null;
+        expect(aliasState).to.be.equal(normalState);
+    });
 }
