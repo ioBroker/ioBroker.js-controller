@@ -7823,7 +7823,7 @@ export class AdapterClass extends EventEmitter {
                     return tools.maybeCallbackWithError(callback, e);
                 }
             } else {
-                this._logger.warn(`${this.namespaceLog} ${`Alias ${fixedId} has no target 2`}`);
+                this._logger.warn(`${this.namespaceLog} Alias ${fixedId} has no target 2`);
                 return tools.maybeCallbackWithError(callback, `Alias ${fixedId} has no target`);
             }
         } else {
@@ -8578,7 +8578,7 @@ export class AdapterClass extends EventEmitter {
                         callback
                     );
                 } else {
-                    this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 4`);
+                    this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 3`);
                     return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
                 }
             } else {
@@ -8660,7 +8660,7 @@ export class AdapterClass extends EventEmitter {
                         callback
                     );
                 } else {
-                    this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 5`);
+                    this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 4`);
                     return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
                 }
             } else {
@@ -8939,7 +8939,6 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (id.startsWith(ALIAS_STARTS_WITH)) {
-            // TODO: optimize alias GET performance
             if (obj?.common?.alias?.id) {
                 // id can be string or can have attribute id.read
                 const aliasId = tools.isObject(obj.common.alias.id) ? obj.common.alias.id.read : obj.common.alias.id;
@@ -8991,8 +8990,8 @@ export class AdapterClass extends EventEmitter {
                     );
                 }
             } else {
-                this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 8`);
-                return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
+                // alias object non-existing or points to nowhere -> handle it like a non-existing state
+                return tools.maybeCallbackWithError(callback, null, null);
             }
         } else {
             if (this.oStates && this.oStates[id]) {
@@ -9651,8 +9650,8 @@ export class AdapterClass extends EventEmitter {
             }
         } else if (aliasObj && aliasObj.type === 'state') {
             // if state and no id given -> if no state just ignore it
-            this._logger.warn(`${this.namespaceLog} Alias ${aliasObj._id} has no target 12`);
-            return tools.maybeCallbackWithError(callback, new Error(`Alias ${aliasObj._id} has no target 12`));
+            this._logger.warn(`${this.namespaceLog} Alias ${aliasObj._id} has no target 5`);
+            return tools.maybeCallbackWithError(callback, new Error(`Alias ${aliasObj._id} has no target`));
         } else {
             return tools.maybeCallback(callback);
         }
