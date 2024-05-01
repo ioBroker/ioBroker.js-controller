@@ -23,7 +23,7 @@ The name of the deleted file or directory
 
 #### Defined in
 
-[types-dev/index.d.ts:464](https://github.com/ioBroker/ioBroker.js-controller/blob/12b5c7f4/packages/types-dev/index.d.ts#L464)
+[types-dev/index.d.ts:464](https://github.com/ioBroker/ioBroker.js-controller/blob/63fb6f8b0/packages/types-dev/index.d.ts#L464)
 
 ___
 
@@ -35,4 +35,4 @@ The parent directory of the deleted file or directory
 
 #### Defined in
 
-[types-dev/index.d.ts:462](https://github.com/ioBroker/ioBroker.js-controller/blob/12b5c7f4/packages/types-dev/index.d.ts#L462)
+[types-dev/index.d.ts:462](https://github.com/ioBroker/ioBroker.js-controller/blob/63fb6f8b0/packages/types-dev/index.d.ts#L462)
