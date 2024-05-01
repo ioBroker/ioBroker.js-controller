@@ -8,7 +8,7 @@
   "dependencies": {
     "@iobroker/js-controller-common": "file:../common",
     "deep-clone": "^3.0.3",
-    "fs-extra": "^11.1.0",
+    "fs-extra": "^11.2.0",
     "respjs": "^4.2.0"
   },
   "keywords": [
