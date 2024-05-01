@@ -667,7 +667,7 @@ ioBroker supports multiple Adapter modes. These are:
 
 > **_NOTE:_** Up from controller v6 for adapters of type `schedule`
 >
-> If the schedule consists of a CRON tab without specifically specifying seconds, the tab will be delayed randomly up to one minute. This is to prevent unwanted DDoS attacks. If your adapter needs to exactly run at a specified second, please specify the second in your CRON tab so no delay will be introduced by the controller.
+> If the schedule consists of a CRON tab without specifically specifying seconds, the execution will be delayed randomly up to 60 seconds. This is to prevent unwanted DDoS attacks. If your adapter needs to exactly run at a specified second, please specify the second in your CRON tab so no delay will be introduced by the controller.
 
 #### Start adapter instances as normal processes
 **Feature status:** stable
