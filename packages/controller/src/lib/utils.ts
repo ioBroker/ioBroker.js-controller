@@ -27,7 +27,7 @@ interface GetCronExpressionOptions {
 const MAX_SCHEDULE_DELAY = 59;
 
 /**
- * Delay the instance start if the expression has no seconds
+ * Delay the instance start if the expression has no seconds, and it is a cloud connection
  *
  * @param options information about the cron expression and connection type
  */
