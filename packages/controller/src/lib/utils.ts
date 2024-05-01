@@ -16,18 +16,26 @@ export function getDiskWarningLevel(state: ioBroker.State): number {
 /** Default value for disk warning level */
 export const DEFAULT_DISK_WARNING_LEVEL = 5;
 
+interface GetCronExpressionOptions {
+    /** The cron expression in the schedule */
+    cronExpression: string;
+    /** The connection type of the instance */
+    connectionType?: ioBroker.ConnectionType;
+}
+
 /** Max time in seconds to delay an instance start if no seconds specified, has to be below 60 */
 const MAX_SCHEDULE_DELAY = 59;
 
 /**
  * Delay the instance start if the expression has no seconds
  *
- * @param cronExpression the cron expression in the schedule
+ * @param options information about the cron expression and connection type
  */
-export function getCronExpression(cronExpression: string): string {
+export function getCronExpression(options: GetCronExpressionOptions): string {
+    const { cronExpression, connectionType } = options;
     const cronHasSeconds = cronExpression.split(' ').length > 5;
 
-    if (cronHasSeconds) {
+    if (cronHasSeconds || connectionType !== 'cloud') {
         return cronExpression;
     }
 

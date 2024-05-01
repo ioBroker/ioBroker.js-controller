@@ -665,7 +665,7 @@ ioBroker supports multiple Adapter modes. These are:
 * `once`:      The adapter ist started only once after it's object got modified. No restarting happens after the adapter stops.
 * `none`:      The adapter is officially not having any process, but could be a webExtension (so iis included by a web instance on the same host or is only running client side and so offering www files)
 
-> **_NOTE:_** Up from controller v6 for adapters of type `schedule`
+> **_NOTE:_** Up from controller v6 for adapters of type `schedule` and if `connectionType` is set to `cloud`
 >
 > If the schedule consists of a CRON tab without specifically specifying seconds, the execution will be delayed randomly up to 60 seconds. This is to prevent unwanted DDoS attacks. If your adapter needs to exactly run at a specified second, please specify the second in your CRON tab so no delay will be introduced by the controller.
 

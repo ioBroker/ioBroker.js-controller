@@ -4639,15 +4639,21 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                 break;
             }
 
-            proc.schedule = schedule.scheduleJob(getCronExpression(instance.common.schedule), () => {
-                // queue up, but only if not already queued
-                scheduledInstances[id] = {
-                    fileNameFull: adapterMainFile,
-                    adapterDir,
-                    wakeUp
-                };
-                Object.keys(scheduledInstances).length === 1 && startScheduledInstance();
-            });
+            proc.schedule = schedule.scheduleJob(
+                getCronExpression({
+                    cronExpression: instance.common.schedule,
+                    connectionType: instance.common.connectionType
+                }),
+                () => {
+                    // queue up, but only if not already queued
+                    scheduledInstances[id] = {
+                        fileNameFull: adapterMainFile,
+                        adapterDir,
+                        wakeUp
+                    };
+                    Object.keys(scheduledInstances).length === 1 && startScheduledInstance();
+                }
+            );
             logger.info(`${hostLogPrefix} instance scheduled ${instance._id} ${instance.common.schedule}`);
             // Start one time adapter by start or if configuration changed
             if (instance.common.allowInit) {
