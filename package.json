@@ -93,7 +93,7 @@
     "test-jsonl": "mocha packages/controller/test/jsonl/*.ts --exit",
     "test-redis-socket": "mocha packages/controller/test/redis-socket/*.ts --exit",
     "test-redis-sentinel": "mocha packages/controller/test/redis-sentinel/*.ts --exit",
-    "test-types-check": "tsc --project packages/controller/test/tsconfig.json",
+    "test-types-check": "tsc --project packages/controller/tsconfig.check.json",
     "test-types": "npm run test-types-check && npm run test --workspace=@iobroker/types"
   }
 }
