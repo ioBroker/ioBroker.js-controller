@@ -38,7 +38,7 @@ import decache from 'decache';
 import cronParser from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import type { GetDiskInfoResponse } from '@iobroker/js-controller-common/tools';
-import { DEFAULT_DISK_WARNING_LEVEL, getDiskWarningLevel } from '@/lib/utils.js';
+import { DEFAULT_DISK_WARNING_LEVEL, getCronExpression, getDiskWarningLevel } from '@/lib/utils.js';
 import { AdapterAutoUpgradeManager } from '@/lib/adapterAutoUpgradeManager.js';
 import {
     getHostObject,
@@ -3601,8 +3601,9 @@ function cleanErrors(procObj: Process, now: number | null, doOutput?: boolean): 
 }
 
 /**
+ * Start an instance of type schedule right now
  *
- * @param callback
+ * @param callback optional callback function
  */
 async function startScheduledInstance(callback?: () => void): Promise<void> {
     const idsToStart = Object.keys(scheduledInstances);
@@ -4638,7 +4639,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                 break;
             }
 
-            proc.schedule = schedule.scheduleJob(instance.common.schedule, () => {
+            proc.schedule = schedule.scheduleJob(getCronExpression(instance.common.schedule), () => {
                 // queue up, but only if not already queued
                 scheduledInstances[id] = {
                     fileNameFull: adapterMainFile,
