@@ -1,4 +1,4 @@
-import { getCronExpression } from '@/lib/utils.js';
+import { getCronExpression } from '../src/lib/utils.js';
 import { expect } from 'chai';
 
 describe('test internal helpers', () => {
