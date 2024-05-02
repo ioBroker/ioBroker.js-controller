@@ -1,7 +1,39 @@
 import { getCronExpression } from '../src/lib/utils.js';
 import { expect } from 'chai';
+import { BlocklistManager } from '../src/lib/blocklistManager.js';
+import { startController, stopController } from './lib/setup4controller.js';
+import url from 'node:url';
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url));
+import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
+
+let objects: ObjectsInRedisClient;
 
 describe('test internal helpers', () => {
+    before('Start js-controller', async function () {
+        this.timeout(23_000);
+
+        const { objects: _objects } = await startController({
+            objects: {
+                dataDir: `${thisDir}/../tmp/data`,
+                onChange: function (id: string, _obj: ioBroker.AnyObject) {
+                    console.log('object changed. ' + id);
+                }
+            },
+            states: {
+                dataDir: `${thisDir}/../tmp/data`,
+                onChange: function (id: string, _state: ioBroker.State) {
+                    console.log('state changed. ' + id);
+                }
+            }
+        });
+
+        if (!_objects) {
+            throw new Error('Could not connect to objects database!');
+        }
+
+        objects = _objects;
+    });
+
     it('getCronExpression', () => {
         const cronWithoutSeconds = '15 * * * *';
         const cronWithSeconds = '3 15 * * * *';
@@ -19,5 +51,23 @@ describe('test internal helpers', () => {
             connectionType: 'local'
         });
         expect(cronSecondsWrongConnectionType).to.be.equal(cronWithoutSeconds);
+    });
+
+    it('BlocklistManager', async () => {
+        const blocklistManager = new BlocklistManager({ objects });
+
+        let isBlocked = await blocklistManager.isAdapterVersionBlocked({ version: '1.0.0', adapterName: 'test' });
+        expect(isBlocked).to.be.false;
+
+        isBlocked = await blocklistManager.isAdapterVersionBlocked({ version: '3.14.0', adapterName: 'alexa2' });
+        expect(isBlocked).to.be.true;
+    });
+
+    after('Stop js-controller', async function () {
+        this.timeout(5_000);
+        await stopController();
+        await new Promise<void>(resolve => {
+            setTimeout(() => resolve(), 2_000);
+        });
     });
 });
