@@ -252,9 +252,21 @@
         "tls": {
           "type": "object",
           "properties": {
+            "rejectUnauthorized": {
+              "type": "boolean",
+              "description": "Needs to be false with self-signed certs"
+            },
             "ca": {
               "type": "string",
               "description": "The certificate content"
+            },
+            "key": {
+              "type": "string",
+              "description": "The key file content"
+            },
+            "cert": {
+              "type": "string",
+              "description": "The cert file content"
             }
           },
           "additionalProperties": false,
@@ -482,9 +494,21 @@
         "tls": {
           "type": "object",
           "properties": {
+            "rejectUnauthorized": {
+              "type": "boolean",
+              "description": "Needs to be false with self-signed certs"
+            },
             "ca": {
               "type": "string",
               "description": "The certificate content"
+            },
+            "key": {
+              "type": "string",
+              "description": "The key file content"
+            },
+            "cert": {
+              "type": "string",
+              "description": "The cert file content"
             }
           },
           "additionalProperties": false,
