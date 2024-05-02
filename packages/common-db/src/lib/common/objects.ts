@@ -64,3 +64,18 @@ export async function objectsDbHasServer(dbType: string): Promise<boolean> {
         throw new Error(`Installation error or unknown objects database type: ${dbType}`);
     }
 }
+
+/**
+ * Perform the objects interview if one has been provided
+ *
+ * @param dbType database type
+ * @returns the database options obtained by the answered questionnaire
+ */
+export async function performObjectsInterview(dbType: string): Promise<Partial<ioBroker.ObjectsDatabaseOptions>> {
+    const objects = await import(`@iobroker/db-objects-${dbType}`);
+    if (!objects.interview) {
+        return {};
+    }
+
+    return objects.interview();
+}

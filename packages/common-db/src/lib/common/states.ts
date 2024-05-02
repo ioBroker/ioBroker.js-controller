@@ -63,3 +63,18 @@ export async function isLocalStatesDbServer(
 
     return result;
 }
+
+/**
+ * Perform the states interview if one has been provided
+ *
+ * @param dbType database type
+ * @returns the database options obtained by the answered questionnaire
+ */
+export async function performStatesInterview(dbType: string): Promise<Partial<ioBroker.StatesDatabaseOptions>> {
+    const states = await import(`@iobroker/db-states-${dbType}`);
+    if (!states.interview) {
+        return {};
+    }
+
+    return states.interview();
+}

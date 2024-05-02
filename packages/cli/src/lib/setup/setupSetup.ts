@@ -18,7 +18,9 @@ import {
     statesDbHasServer,
     isLocalStatesDbServer,
     isLocalObjectsDbServer,
-    objectsDbHasServer
+    objectsDbHasServer,
+    performObjectsInterview,
+    performStatesInterview
 } from '@iobroker/js-controller-common-db';
 import { resetDbConnect, dbConnectAsync } from '@/lib/setup/dbConnection.js';
 import { BackupRestore } from '@/lib/setup/setupBackup.js';
@@ -244,12 +246,12 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             throw new Error('Objects not set up, call setupObjects first');
         }
 
-        if (iopkg.objects && iopkg.objects?.length > 0) {
+        if (iopkg.objects?.length > 0) {
             const obj = iopkg.objects.pop()!;
 
             let existingObj: ioBroker.Object | undefined | null;
             try {
-                existingObj = await this.objects.getObjectAsync(obj._id);
+                existingObj = await this.objects.getObject(obj._id);
             } catch {
                 // ignore
             }
@@ -1027,6 +1029,12 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         if (config.states.type === 'redis' && sSentinel && sSentinelName && sSentinelName !== 'mymaster') {
             config.states.sentinelName = sSentinelName;
         }
+
+        const partialObjectsConfig = performObjectsInterview(config.objects.type);
+        config.objects = { ...config.objects, ...partialObjectsConfig };
+
+        const partialStatesConfig = performStatesInterview(config.objects.type);
+        config.states = { ...config.states, ...partialStatesConfig };
 
         const exitCode = await this.migrateObjects(config, originalConfig);
         return exitCode;
