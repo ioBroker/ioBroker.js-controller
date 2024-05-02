@@ -249,6 +249,17 @@
         "jsonlOptions": {
           "$ref": "#/definitions/JsonlOptions"
         },
+        "tls": {
+          "type": "object",
+          "properties": {
+            "ca": {
+              "type": "string",
+              "description": "The certificate content"
+            }
+          },
+          "additionalProperties": false,
+          "description": "As soon as the tls property is defined, redis will try to connect via tls (currently only for redis)"
+        },
         "noFileCache": {
           "type": "boolean"
         },
@@ -467,6 +478,17 @@
         },
         "jsonlOptions": {
           "$ref": "#/definitions/JsonlOptions"
+        },
+        "tls": {
+          "type": "object",
+          "properties": {
+            "ca": {
+              "type": "string",
+              "description": "The certificate content"
+            }
+          },
+          "additionalProperties": false,
+          "description": "As soon as the tls property is defined, redis will try to connect via tls (currently only for redis)"
         }
       },
       "required": [

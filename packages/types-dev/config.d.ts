@@ -64,6 +64,11 @@ export interface DatabaseOptions {
     };
     backup: DatabaseBackupOptions;
     jsonlOptions: JsonlOptions;
+    /** As soon as the tls property is defined, redis will try to connect via tls (currently only for redis) */
+    tls?: {
+        /** The certificate content */
+        ca?: string;
+    };
 }
 
 export interface ObjectsDatabaseOptions extends DatabaseOptions {

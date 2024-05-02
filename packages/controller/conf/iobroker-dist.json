@@ -19,7 +19,8 @@
     "multihostService": {
         "enabled": false,
         "secure": true,
-        "password":  ""
+        "password":  "",
+        "persist": false
     },
     "objects" : {
         "type": "jsonl",
