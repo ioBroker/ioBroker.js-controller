@@ -825,8 +825,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             }
         }
 
-        const partialObjectsConfig = await performObjectsInterview(config.objects.type);
-        config.objects = { ...config.objects, ...partialObjectsConfig };
+        config.objects = await performObjectsInterview({ dbType: otype, config: config.objects });
 
         let oSentinelName = null;
         if (oSentinel) {
@@ -951,8 +950,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             }
         }
 
-        const partialStatesConfig = await performStatesInterview(config.objects.type);
-        config.states = { ...config.states, ...partialStatesConfig };
+        config.states = await performStatesInterview({ dbType: stype, config: config.states });
 
         let sSentinelName = null;
         if (sSentinel) {

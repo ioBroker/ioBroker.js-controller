@@ -4,15 +4,24 @@ import fs from 'fs-extra';
 /** Regex to limit inputs to yes/no shortcuts */
 const YES_NO_REGEX = /^[YyNn]?$/;
 
-type SharedDatabaseOptions = Partial<ioBroker.ObjectsDatabaseOptions> & Partial<ioBroker.StatesDatabaseOptions>;
+type SharedDatabaseOptions = ioBroker.ObjectsDatabaseOptions | ioBroker.StatesDatabaseOptions;
+
+interface DefaultRedisInterviewOptions<TConfig extends SharedDatabaseOptions> {
+    /** Database type */
+    type: 'objects' | 'states';
+    /** Prefilled config */
+    config: TConfig;
+}
 
 /**
  * The default redis interview shared between objects and states
  *
- * @param type database type
+ * @param options config and type information
  */
-export async function defaultRedisInterview(type: 'objects' | 'states'): Promise<SharedDatabaseOptions> {
-    const config: Partial<SharedDatabaseOptions> = {};
+export async function defaultRedisInterview<TConfig extends SharedDatabaseOptions>(
+    options: DefaultRedisInterviewOptions<TConfig>
+): Promise<TConfig> {
+    const { type, config } = options;
 
     let answer = rl.question(`Dou you use a TLS connection for your "${type}" redis-server? [y/N]:`, {
         limit: YES_NO_REGEX,
@@ -23,7 +32,7 @@ export async function defaultRedisInterview(type: 'objects' | 'states'): Promise
         return config;
     }
 
-    config.tls = {};
+    config.options.tls = {};
 
     answer = rl.question(`Dou you use a self-signed certificate for your "${type}" redis-server? [y/N]:`, {
         limit: YES_NO_REGEX,
@@ -31,14 +40,14 @@ export async function defaultRedisInterview(type: 'objects' | 'states'): Promise
     });
 
     if (answer.toLowerCase() === 'y') {
-        config.tls.rejectUnauthorized = false;
+        config.options.tls.rejectUnauthorized = false;
     }
 
     answer = rl.question(`Please specify the path to your "${type}" redis-server "certificate" file:`);
 
     try {
         const certContent = await fs.readFile(answer, { encoding: 'utf8' });
-        config.tls.cert = certContent;
+        config.options.tls.cert = certContent;
     } catch (e) {
         console.warn(`Could not read the "certificate" file, cert will be left empty: ${e.message}`);
     }
@@ -47,7 +56,7 @@ export async function defaultRedisInterview(type: 'objects' | 'states'): Promise
 
     try {
         const keyContent = await fs.readFile(answer, { encoding: 'utf8' });
-        config.tls.key = keyContent;
+        config.options.tls.key = keyContent;
     } catch (e) {
         console.warn(`Could not read the "key" file, cert will be left empty: ${e.message}`);
     }
@@ -56,7 +65,7 @@ export async function defaultRedisInterview(type: 'objects' | 'states'): Promise
 
     try {
         const caContent = await fs.readFile(answer, { encoding: 'utf8' });
-        config.tls.ca = caContent;
+        config.options.tls.ca = caContent;
     } catch (e) {
         console.warn(`Could not read the "CA" file, cert will be left empty: ${e.message}`);
     }

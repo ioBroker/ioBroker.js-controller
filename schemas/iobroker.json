@@ -232,6 +232,29 @@
             },
             "family": {
               "type": "number"
+            },
+            "tls": {
+              "type": "object",
+              "properties": {
+                "rejectUnauthorized": {
+                  "type": "boolean",
+                  "description": "Needs to be false with self-signed certs"
+                },
+                "ca": {
+                  "type": "string",
+                  "description": "The certificate content"
+                },
+                "key": {
+                  "type": "string",
+                  "description": "The key file content"
+                },
+                "cert": {
+                  "type": "string",
+                  "description": "The cert file content"
+                }
+              },
+              "additionalProperties": false,
+              "description": "As soon as the tls property is defined, redis will try to connect via tls (currently only for redis)"
             }
           },
           "required": [
@@ -248,29 +271,6 @@
         },
         "jsonlOptions": {
           "$ref": "#/definitions/JsonlOptions"
-        },
-        "tls": {
-          "type": "object",
-          "properties": {
-            "rejectUnauthorized": {
-              "type": "boolean",
-              "description": "Needs to be false with self-signed certs"
-            },
-            "ca": {
-              "type": "string",
-              "description": "The certificate content"
-            },
-            "key": {
-              "type": "string",
-              "description": "The key file content"
-            },
-            "cert": {
-              "type": "string",
-              "description": "The cert file content"
-            }
-          },
-          "additionalProperties": false,
-          "description": "As soon as the tls property is defined, redis will try to connect via tls (currently only for redis)"
         },
         "noFileCache": {
           "type": "boolean"
@@ -474,6 +474,29 @@
             },
             "family": {
               "type": "number"
+            },
+            "tls": {
+              "type": "object",
+              "properties": {
+                "rejectUnauthorized": {
+                  "type": "boolean",
+                  "description": "Needs to be false with self-signed certs"
+                },
+                "ca": {
+                  "type": "string",
+                  "description": "The certificate content"
+                },
+                "key": {
+                  "type": "string",
+                  "description": "The key file content"
+                },
+                "cert": {
+                  "type": "string",
+                  "description": "The cert file content"
+                }
+              },
+              "additionalProperties": false,
+              "description": "As soon as the tls property is defined, redis will try to connect via tls (currently only for redis)"
             }
           },
           "required": [
@@ -490,29 +513,6 @@
         },
         "jsonlOptions": {
           "$ref": "#/definitions/JsonlOptions"
-        },
-        "tls": {
-          "type": "object",
-          "properties": {
-            "rejectUnauthorized": {
-              "type": "boolean",
-              "description": "Needs to be false with self-signed certs"
-            },
-            "ca": {
-              "type": "string",
-              "description": "The certificate content"
-            },
-            "key": {
-              "type": "string",
-              "description": "The key file content"
-            },
-            "cert": {
-              "type": "string",
-              "description": "The cert file content"
-            }
-          },
-          "additionalProperties": false,
-          "description": "As soon as the tls property is defined, redis will try to connect via tls (currently only for redis)"
         }
       },
       "required": [
