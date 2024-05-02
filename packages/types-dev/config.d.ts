@@ -66,8 +66,14 @@ export interface DatabaseOptions {
     jsonlOptions: JsonlOptions;
     /** As soon as the tls property is defined, redis will try to connect via tls (currently only for redis) */
     tls?: {
+        /** Needs to be false with self-signed certs */
+        rejectUnauthorized?: boolean;
         /** The certificate content */
         ca?: string;
+        /** The key file content */
+        key?: string;
+        /** The cert file content */
+        cert?: string;
     };
 }
 
