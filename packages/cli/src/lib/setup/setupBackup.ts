@@ -1121,14 +1121,42 @@ export class BackupRestore {
                     return void this.processExit(9);
                 }
                 // Stop controller
-                await execAsync(`${tools.appNameLowerCase} stop`);
-
-                const exitCode = await this._restoreAfterStop({
-                    restartOnFinish: false,
-                    force,
-                    dontDeleteAdapters
+                // @ts-expect-error not a ts module
+                const daemon = (await import('daemonize2')).setup({
+                    main: path.join(controllerDir, 'controller.js'),
+                    name: `${tools.appName} controller`,
+                    pidfile: path.join(controllerDir, `${tools.appName}.pid`),
+                    cwd: controllerDir,
+                    stopTimeout: 1_000
                 });
-                callback && callback({ exitCode, objects: this.objects, states: this.states });
+
+                daemon.on('error', async () => {
+                    const exitCode = await this._restoreAfterStop({
+                        restartOnFinish: false,
+                        force,
+                        dontDeleteAdapters
+                    });
+                    callback && callback({ exitCode, objects: this.objects, states: this.states });
+                });
+                daemon.on('stopped', async () => {
+                    const exitCode = await this._restoreAfterStop({
+                        restartOnFinish: true,
+                        force,
+                        dontDeleteAdapters
+                    });
+                    callback && callback({ exitCode, objects: this.objects, states: this.states });
+                });
+                daemon.on('notrunning', async () => {
+                    console.log(`host.${this.hostname} OK.`);
+                    const exitCode = await this._restoreAfterStop({
+                        restartOnFinish: false,
+                        force,
+                        dontDeleteAdapters
+                    });
+                    callback && callback({ exitCode, objects: this.objects, states: this.states });
+                });
+
+                daemon.stop();
             }
         );
     }
@@ -1139,7 +1167,7 @@ export class BackupRestore {
     private async _restorePreservedAdapters(): Promise<void> {
         for (const adapterName of this.PRESERVE_ADAPTERS) {
             try {
-                const adapterObj = await this.objects.getObject(`system.adapter.${adapterName}`);
+                const adapterObj = await this.objects.getObjectAsync(`system.adapter.${adapterName}`);
                 if (adapterObj?.common?.version) {
                     let installSource;
                     if (adapterObj.common.installedFrom) {
