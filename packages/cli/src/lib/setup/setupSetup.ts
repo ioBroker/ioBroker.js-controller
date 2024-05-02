@@ -825,6 +825,9 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             }
         }
 
+        const partialObjectsConfig = await performObjectsInterview(config.objects.type);
+        config.objects = { ...config.objects, ...partialObjectsConfig };
+
         let oSentinelName = null;
         if (oSentinel) {
             const defaultSentinelName = originalConfig.objects.sentinelName
@@ -948,6 +951,9 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             }
         }
 
+        const partialStatesConfig = await performStatesInterview(config.objects.type);
+        config.states = { ...config.states, ...partialStatesConfig };
+
         let sSentinelName = null;
         if (sSentinel) {
             const defaultSentinelName = originalConfig.states.sentinelName
@@ -1029,12 +1035,6 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         if (config.states.type === 'redis' && sSentinel && sSentinelName && sSentinelName !== 'mymaster') {
             config.states.sentinelName = sSentinelName;
         }
-
-        const partialObjectsConfig = performObjectsInterview(config.objects.type);
-        config.objects = { ...config.objects, ...partialObjectsConfig };
-
-        const partialStatesConfig = performStatesInterview(config.objects.type);
-        config.states = { ...config.states, ...partialStatesConfig };
 
         const exitCode = await this.migrateObjects(config, originalConfig);
         return exitCode;
