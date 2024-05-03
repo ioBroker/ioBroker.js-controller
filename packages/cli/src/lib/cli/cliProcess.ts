@@ -1,19 +1,17 @@
-import type { CLICommandOptions } from '@/lib/cli/cliCommand.js';
-
 import fs from 'fs-extra';
 import path from 'node:path';
+import os from 'node:os';
+import { spawn } from 'node:child_process';
+import deepClone from 'deep-clone';
+
+import { isLocalStatesDbServer, isLocalObjectsDbServer } from '@iobroker/js-controller-common-db';
+import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import * as CLI from '@/lib/cli/messages.js';
 import { CLICommand } from '@/lib/cli/cliCommand.js';
-import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
-import { isLocalStatesDbServer, isLocalObjectsDbServer } from '@iobroker/js-controller-common-db';
-import deepClone from 'deep-clone';
 import { getObjectFrom, getInstanceName, normalizeAdapterName, enumInstances } from '@/lib/cli/cliTools.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
-import os from 'node:os';
-import { spawn } from 'node:child_process';
-// @ts-expect-error has no types but probably no longer needed as start/stop commands are no longer handled from this code
-import daemonize2 from 'daemonize2';
+import type { CLICommandOptions } from '@/lib/cli/cliCommand.js';
 
 // The root of this project. Change this when moving code to another directory
 const rootDir = tools.getControllerDir();
@@ -102,7 +100,7 @@ export class CLIProcess extends CLICommand {
 
     /**
      * Starts or stops a single or all instances of adapter.
-     * If there are multiple instances all will be started/stopped/restarted
+     * If there are multiple instances, all will be started/stopped/restarted
      *
      * @param adapter The adapter to start
      * @param enabled If adapter should be started or stopped
@@ -162,20 +160,65 @@ export class CLIProcess extends CLICommand {
         });
     }
 
-    /** Starts the JS controller */
-    startJSController(): void {
-        const daemon = setupDaemonize();
-        daemon.start();
+    /**
+     * Starts the JS controller
+     *
+     * @param callback The callback to call when the controller is started
+     */
+    startJSController(callback?: () => void): void {
+        let memoryLimitMB = 0;
+        try {
+            const config: ioBroker.IoBrokerJson = fs.readJSONSync(tools.getConfigFileName(), { encoding: 'utf-8' });
+            if (config?.system?.memoryLimitMB) {
+                memoryLimitMB = Math.round(config.system.memoryLimitMB);
+            }
+        } catch {
+            console.warn('Cannot read memoryLimitMB');
+            console.warn(
+                `May be config file does not exist.\nPlease call "${tools.appName} setup first" to initialize the settings.`
+            );
+        }
+        let pid: number;
+        try {
+            pid = parseInt(fs.readFileSync(path.join(rootDir, `${tools.appName}.pid`)).toString(), 10) || 0;
+        } catch {
+            pid = 0;
+        }
+
+        _tryKill(pid, _pid => {
+            const args = [path.join(rootDir, 'controller.js')];
+            if (memoryLimitMB) {
+                args.push(`--max-old-space-size=${memoryLimitMB}`);
+            }
+
+            const child = spawn(process.execPath, args, {
+                env: process.env,
+                detached: true,
+                stdio: ['ignore', 'ignore', 'ignore', 'ipc'],
+                windowsHide: true,
+                cwd: rootDir
+            });
+            child?.pid && fs.writeFileSync(path.join(rootDir, `${tools.appName}.pid`), child.pid.toString());
+            child.unref();
+            callback ? callback() : this.options.callback();
+        });
     }
 
     /** Stops the JS controller */
-    stopJSController(): void {
-        const { callback } = this.options;
-        const daemon = setupDaemonize();
-        // On non-Windows OSes start KILLALL script
-        // to make sure nothing keeps running
-        if (!os.platform().startsWith('win')) {
-            daemon.on('stopped', () => {
+    stopJSController(callback?: () => void): void {
+        let pid: number;
+        try {
+            pid = parseInt(fs.readFileSync(path.join(rootDir, `${tools.appName}.pid`)).toString(), 10) || 0;
+        } catch {
+            pid = 0;
+        }
+
+        _tryKill(pid, _pid => {
+            _pid && fs.unlinkSync(path.join(rootDir, `${tools.appName}.pid`));
+
+            // On non-Windows OSes start a KILLALL script
+            // to make sure nothing keeps running
+            if (_pid && !os.platform().startsWith('win')) {
                 let data = '';
                 if (fs.existsSync(killAllScriptPath)) {
                     fs.chmodSync(killAllScriptPath, '777');
@@ -183,22 +226,24 @@ export class CLIProcess extends CLICommand {
                     child.stdout.on('data', _data => (data += _data.toString().replace(/\n/g, '')));
                     child.stderr.on('data', _data => (data += _data.toString().replace(/\n/g, '')));
                     child.on('exit', exitCode => {
-                        console.log('Exit code for "killall.sh": ' + exitCode);
-                        return void callback();
+                        console.log(`Exit code for "killall.sh": ${exitCode}`);
+                        callback ? callback() : this.options.callback();
                     });
                 } else {
                     console.log('No "killall.sh" script found. Just stop.');
+                    callback ? callback() : this.options.callback();
                 }
-            });
-        }
-        daemon.stop();
+            } else {
+                callback ? callback() : this.options.callback();
+            }
+        });
     }
 
     /** Restarts the JS controller */
     restartJSController(): void {
-        const daemon = setupDaemonize();
-        daemon.on('stopped', () => daemon.start()).on('notrunning', () => daemon.start());
-        daemon.stop();
+        this.stopJSController(() => {
+            this.startJSController();
+        });
     }
 
     /**
@@ -309,7 +354,7 @@ function showInstanceStatus(states: StatesClient, adapterInstance: string): Prom
  * @param config
  * @param root
  */
-function showConfig(config: Record<string, any>, root?: string[]): void {
+function showConfig(config: ioBroker.IoBrokerJson, root?: string[]): void {
     if (!tools.isObject(config)) {
         return;
     }
@@ -319,12 +364,12 @@ function showConfig(config: Record<string, any>, root?: string[]): void {
         if (attr.match(/comment$/i)) {
             continue;
         }
-        if (typeof config[attr] === 'object') {
+        if (typeof (config as Record<string, any>)[attr] === 'object') {
             const nextRoot = deepClone(root);
             nextRoot.push(attr);
-            showConfig(config[attr], nextRoot);
+            showConfig((config as Record<string, any>)[attr], nextRoot);
         } else {
-            console.log(`${prefix}${(prefix ? '/' : '') + attr}: ${config[attr]}`);
+            console.log(`${prefix}${(prefix ? '/' : '') + attr}: ${(config as Record<string, any>)[attr]}`);
         }
     }
 }
@@ -363,31 +408,28 @@ function setInstanceEnabled(
     });
 }
 
-function setupDaemonize(): typeof daemonize2 {
-    let memoryLimitMB = 0;
-    try {
-        const config: ioBroker.IoBrokerJson = fs.readJSONSync(tools.getConfigFileName(), { encoding: 'utf-8' });
-        if (config?.system?.memoryLimitMB) {
-            memoryLimitMB = Math.round(config.system.memoryLimitMB);
-        }
-    } catch {
-        console.warn('Cannot read memoryLimitMB');
-        console.warn(
-            `May be config file does not exist.\nPlease call "${tools.appName} setup first" to initialize the settings.`
-        );
-    }
-    const startObj: Record<string, unknown> = {
-        main: path.join(rootDir, 'controller.js'),
-        name: `${tools.appName} controller`,
-        pidfile: path.join(rootDir, `${tools.appName}.pid`),
-        cwd: rootDir,
-        stopTimeout: 6_000
-    };
-    if (memoryLimitMB) {
-        startObj.args = `--max-old-space-size=${memoryLimitMB}`;
+/**
+ * Kills a process by its PID
+ *
+ * @param pid The PID of the process to kill
+ * @param callback The callback to call when the process is killed
+ */
+function _tryKill(
+    /** The PID of the process to kill */
+    pid: number,
+    callback: (_pid: number) => void
+): void {
+    if (!pid) {
+        callback(0);
     }
 
-    const daemon = daemonize2.setup(startObj);
-    daemon.on('error', (error: string) => CLI.error.unknown(error));
-    return daemon;
+    try {
+        process.kill(pid, 'SIGTERM');
+    } catch {
+        // ignore
+    }
+
+    setTimeout(() => {
+        callback(pid);
+    }, 5000);
 }
