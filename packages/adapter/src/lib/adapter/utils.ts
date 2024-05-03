@@ -9,8 +9,6 @@ import {
 import { SUPPORTED_FEATURES, type SupportedFeature } from '@/lib/adapter/constants.js';
 import path from 'node:path';
 import fs from 'fs-extra';
-import { Rule } from 'eslint';
-import Node = Rule.Node;
 
 interface EncryptArrayOptions {
     /** The objects whose values should be en/decrypted */
