@@ -48,7 +48,7 @@
     "@types/sinon": "^10.0.13",
     "@types/sinon-chai": "^3.2.9",
     "@types/tar": "^6.1.3",
-    "@types/triple-beam": "^1.3.2",
+    "@types/triple-beam": "^1.3.5",
     "@types/winston-syslog": "^2.4.0",
     "@types/yargs": "^17.0.8",
     "@typescript-eslint/eslint-plugin": "^6.18.1",
@@ -93,7 +93,7 @@
     "test-jsonl": "mocha packages/controller/test/jsonl/*.ts --exit",
     "test-redis-socket": "mocha packages/controller/test/redis-socket/*.ts --exit",
     "test-redis-sentinel": "mocha packages/controller/test/redis-sentinel/*.ts --exit",
-    "test-types-check": "tsc --project packages/controller/test/tsconfig.json",
+    "test-types-check": "tsc --project packages/controller/tsconfig.check.json",
     "test-types": "npm run test-types-check && npm run test --workspace=@iobroker/types"
   }
 }

@@ -1,0 +1,4 @@
+// specialized config for type checking (test folder included)
+{
+  "extends": "./tsconfig.json",
+}

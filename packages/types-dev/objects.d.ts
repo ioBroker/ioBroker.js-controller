@@ -264,17 +264,18 @@ declare global {
 
             /**
              * Settings for IOT adapters and how the state should be named in e.g., Alexa.
-             * The string "ignore" is a special case, causing the state to be ignored.
-             * A value of `null` means, that the device should be removed by the IOT adapters
+             * The string "ignore" (deprecated please use boolean `false` instead) or boolean value `false` is a special case, causing the state to be ignored.
+             * A value of `null` means that the device should be removed by the IOT adapters
              */
             smartName?:
                 | null
+                | false
                 | string
                 | ({ [lang in Languages]?: string } & {
                       /** Which kind of device it is */
                       smartType?: string | null;
                       /** Which value to set when the ON command is issued */
-                      byOn?: string | null;
+                      byON?: string | null;
                   });
         }
 
@@ -563,6 +564,8 @@ declare global {
             align?: 'left' | 'center' | 'right';
         }
 
+        type ConnectionType = 'local' | 'cloud';
+
         interface AdapterCommon extends ObjectCommon {
             /** Custom attributes to be shown in admin in the object browser */
             adminColumns?: string | (string | CustomAdminColumn)[];
@@ -588,7 +591,7 @@ declare global {
             /** Whether this adapter includes custom blocks for Blockly. If true, `admin/blockly.js` must exist. */
             blockly?: boolean;
             /** Where the adapter will get its data from. Set this together with @see dataSource */
-            connectionType?: 'local' | 'cloud';
+            connectionType?: ConnectionType;
             /** If true, this adapter can be started in compact mode (in the same process as other adpaters) */
             compact?: boolean;
             /** The directory relative to iobroker-data where the adapter stores the data. Supports the placeholder `%INSTANCE%`. This folder will be backed up and restored automatically. */
@@ -764,6 +767,9 @@ declare global {
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
+
+            /** Deactivated instances, that should not be shown in admin/Intro page */
+            intro?: string[];
         }
 
         interface OtherCommon extends ObjectCommon {
