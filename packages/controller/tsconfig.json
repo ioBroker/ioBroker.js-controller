@@ -2,7 +2,6 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "outDir": "build/esm",
-    "rootDir": "src",
     "module": "NodeNext",
     "paths": {
       "@/*": [
@@ -43,6 +42,7 @@
     }
   ],
   "include": [
+    "test/**/*.ts",
     "src/**/*.ts",
     "src/**/*.js"
   ],

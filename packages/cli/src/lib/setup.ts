@@ -4,7 +4,7 @@ import { EXIT_CODES } from '@iobroker/js-controller-common';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual } from 'node:util';
 import Debug from 'debug';
-import { tools as dbTools } from '@iobroker/js-controller-common-db';
+import { objectsDbHasServer, isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common-db';
 import path from 'node:path';
 import yargs from 'yargs/yargs';
 import * as CLITools from '@/lib/cli/cliTools.js';
@@ -20,10 +20,13 @@ import { CLIMessage } from '@/lib/cli/cliMessage.js';
 import { CLIPlugin } from '@/lib/cli/cliPlugin.js';
 import { error as CLIError } from '@/lib/cli/messages.js';
 import type { CLICommandContext, CLICommandOptions } from '@/lib/cli/cliCommand.js';
-import { getRepository } from '@/lib/setup/utils.js';
+import { getRepository, ignoreVersion, recognizeVersion } from '@/lib/setup/utils.js';
 import { dbConnect, dbConnectAsync, exitApplicationSave } from '@/lib/setup/dbConnection.js';
 import { IoBrokerError } from '@/lib/setup/customError.js';
+import type { ListType } from '@/lib/setup/setupList.js';
 import * as url from 'node:url';
+import * as events from 'node:events';
+
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 import { createRequire } from 'node:module';
@@ -34,7 +37,7 @@ tools.ensureDNSOrder();
 
 const debug = Debug('iobroker:cli');
 
-require('node:events').EventEmitter.prototype._maxListeners = 100;
+events.EventEmitter.setMaxListeners(100);
 process.setMaxListeners(0);
 
 let _yargs: ReturnType<typeof yargs>;
@@ -483,7 +486,17 @@ function initYargs(): ReturnType<typeof yargs> {
                 );
         })
         .command('vendor <passphrase> [<vendor.json>]', 'Update the vendor information using given passphrase')
-        .command(['version [<adapter>]', 'v [<adapter>]'], 'Show version of js-controller or specified adapter')
+        .command(['version [<adapter>]', 'v [<adapter>]'], 'Show version of js-controller or specified adapter', {
+            ignore: {
+                describe:
+                    'Ignore specific version of this adapter. The adapter will not be upgradeable to this specific version.',
+                type: 'string'
+            },
+            recognize: {
+                describe: 'No longer ignore specific versions of this adapter.',
+                type: 'boolean'
+            }
+        })
         .wrap(null);
 
     return _yargs;
@@ -504,11 +517,11 @@ function showHelp(): void {
  * @param command - command to execute
  * @param args - arguments passed to yargs
  * @param params - object with parsed params by yargs, e. g. --force is params.force
- * @param callback
+ * @param callback - callback to be called with the exit code
  */
 async function processCommand(
     command: string | number,
-    args: any[],
+    args: string[],
     params: Record<string, any>,
     callback: ExitCodeCb
 ): Promise<void> {
@@ -702,10 +715,7 @@ async function processCommand(
                         if (config.states.type === 'file') {
                             config.states.type = 'jsonl';
 
-                            const hasLocalStatesServer = await dbTools.isLocalStatesDbServer(
-                                'file',
-                                config.states.host
-                            );
+                            const hasLocalStatesServer = await isLocalStatesDbServer('file', config.states.host);
                             if (hasLocalStatesServer) {
                                 // silent config change on secondaries
                                 console.log('States DB type migrated from "file" to "jsonl"');
@@ -716,10 +726,7 @@ async function processCommand(
                         if (config.objects.type === 'file') {
                             config.objects.type = 'jsonl';
 
-                            const hasLocalObjectsServer = await dbTools.isLocalObjectsDbServer(
-                                'file',
-                                config.objects.host
-                            );
+                            const hasLocalObjectsServer = await isLocalObjectsDbServer('file', config.objects.host);
                             if (hasLocalObjectsServer) {
                                 // silent config change on secondaries
                                 console.log('Objects DB type migrated from "file" to "jsonl"');
@@ -848,28 +855,20 @@ async function processCommand(
         case 'install':
         case 'i': {
             let name = args[0];
-            let instance = args[1];
-            let repoUrl = args[2];
-
-            if (instance === 0) {
-                instance = '0';
-            }
-            if (repoUrl === 0) {
-                repoUrl = '0';
-            }
+            let instance: string | undefined = args[1];
+            let repoUrl: string | undefined = args[2];
 
             if (parseInt(instance, 10).toString() !== (instance || '').toString()) {
                 repoUrl = instance;
-                instance = null;
+                instance = undefined;
             }
             if (parseInt(repoUrl, 10).toString() === (repoUrl || '').toString()) {
                 const temp = instance;
                 instance = repoUrl;
                 repoUrl = temp;
             }
-            if (parseInt(instance, 10).toString() === (instance || '').toString()) {
-                instance = parseInt(instance, 10);
-                params.instance = instance;
+            if (instance && parseInt(instance, 10).toString() === (instance || '').toString()) {
+                params.instance = parseInt(instance, 10);
             }
 
             // If user accidentally wrote tools.appName.adapter => remove adapter
@@ -917,7 +916,6 @@ async function processCommand(
 
                 if (!adapterDir || !fs.existsSync(adapterDir)) {
                     try {
-                        // @ts-expect-error todo check or handle null return value
                         const { stoppedList } = await install.downloadPacket(repoUrl, installName);
                         await install.installAdapter(installName, repoUrl);
                         await install.enableInstances(stoppedList, true); // even if unlikely make sure to re-enable disabled instances
@@ -925,9 +923,9 @@ async function processCommand(
                             await install.createInstance(name, params);
                         }
                         return void callback();
-                    } catch (err) {
-                        console.error(`adapter "${name}" cannot be installed: ${err.message}`);
-                        return void callback(EXIT_CODES.UNKNOWN_ERROR);
+                    } catch (e) {
+                        console.error(`adapter "${name}" cannot be installed: ${e.message}`);
+                        return void callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.UNKNOWN_ERROR);
                     }
                 } else if (command !== 'install' && command !== 'i') {
                     try {
@@ -1093,9 +1091,9 @@ async function processCommand(
                 }
             }
 
-            if (instance || instance === 0) {
+            if (instance) {
                 dbConnect(params, async ({ objects, states }) => {
-                    const { Install } = await import('./setup/setupInstall.js');
+                    const { Install } = await import('@/lib/setup/setupInstall.js');
                     const install = new Install({
                         objects,
                         states,
@@ -1104,12 +1102,12 @@ async function processCommand(
                     });
 
                     console.log(`Delete instance "${adapter}.${instance}"`);
-                    await install.deleteInstance(adapter, instance);
+                    await install.deleteInstance(adapter, parseInt(instance));
                     callback();
                 });
             } else {
                 dbConnect(params, async ({ objects, states }) => {
-                    const { Install } = await import('./setup/setupInstall.js');
+                    const { Install } = await import('@/lib/setup/setupInstall.js');
                     const install = new Install({
                         objects,
                         states,
@@ -1349,7 +1347,7 @@ async function processCommand(
                     objects,
                     processExit: callback
                 });
-                list.list(args[0], args[1], params);
+                list.list(args[0] as ListType, args[1], params);
             });
             break;
         }
@@ -1420,7 +1418,7 @@ async function processCommand(
                     );
                 } else {
                     const parts = pattern.split('/');
-                    const id = parts.shift();
+                    const id = parts.shift()!;
                     const path = parts.join('/');
 
                     // @ts-expect-error todo processed should not exist, how to proceed?
@@ -1514,7 +1512,7 @@ async function processCommand(
                     );
                 } else {
                     const parts = pattern.split('/');
-                    const id = parts.shift();
+                    const id = parts.shift()!;
                     const path = parts.join('/');
 
                     objects.rm(id, path, { user: 'system.user.admin' }, async (err, processed) => {
@@ -1543,14 +1541,14 @@ async function processCommand(
         }
 
         case 'chmod': {
-            let mode = args[0];
+            let mode: string | number = args[0];
             let pattern = args[1];
 
             if (!mode) {
                 CLIError.requiredArgumentMissing('mode', 'chmod 777 /vis-2.0/main/*');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
-                //yargs has converted it to number
+                // yargs has converted it to number
                 mode = parseInt(mode.toString(), 16);
             }
 
@@ -1621,7 +1619,7 @@ async function processCommand(
                     );
                 } else {
                     const parts = pattern.split('/');
-                    const id = parts.shift();
+                    const id = parts.shift()!;
                     const path = parts.join('/');
 
                     objects.chmodFile(id, path, { user: 'system.user.admin', mode: mode }, async (err, processed) => {
@@ -1651,7 +1649,7 @@ async function processCommand(
 
         case 'chown': {
             let user = args[0];
-            let group = args[1];
+            let group: string | undefined = args[1];
             let pattern = args[2];
 
             if (!pattern) {
@@ -1700,7 +1698,7 @@ async function processCommand(
                                         '*',
                                         {
                                             user: 'system.user.admin',
-                                            owner: user,
+                                            owner: user as ioBroker.ObjectIDs.User,
                                             ownerGroup: group
                                         },
                                         // @ts-expect-error todo _id should not exist how to handle
@@ -1741,7 +1739,7 @@ async function processCommand(
                     );
                 } else {
                     const parts = pattern.split('/');
-                    const id = parts.shift();
+                    const id = parts.shift()!;
                     const path = parts.join('/');
 
                     objects.chownFile(
@@ -1749,7 +1747,7 @@ async function processCommand(
                         path,
                         {
                             user: 'system.user.admin',
-                            owner: user,
+                            owner: user as ioBroker.ObjectIDs.User,
                             ownerGroup: group
                         },
                         async (err, processed) => {
@@ -2443,7 +2441,7 @@ async function processCommand(
                         console.error(`Error: ${err.message}`);
                         return void callback(EXIT_CODES.CANNOT_GET_UUID);
                     }
-                    if (obj && obj.native) {
+                    if (obj?.native) {
                         console.log(obj.native.uuid);
                         return void callback();
                     } else {
@@ -2457,25 +2455,53 @@ async function processCommand(
 
         case 'v':
         case 'version': {
-            const adapter = args[0];
-            let pckg;
+            const adapter = params.adapter;
+
+            if (params.ignore) {
+                try {
+                    const { objects } = await dbConnectAsync(false, params);
+                    await ignoreVersion({ adapterName: adapter, version: params.ignore, objects });
+                } catch (e) {
+                    console.error(e.message);
+                    callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.UNKNOWN_ERROR);
+                    return;
+                }
+                console.log(`Successfully ignored version "${params.ignore}" of adapter "${params.adapter}"!`);
+                callback();
+                return;
+            }
+
+            if (params.recognize) {
+                try {
+                    const { objects } = await dbConnectAsync(false, params);
+                    await recognizeVersion({ adapterName: adapter, objects });
+                } catch (e) {
+                    console.error(e.message);
+                    callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.UNKNOWN_ERROR);
+                }
+                console.log(`Successfully recognized all versions of adapter "${params.adapter}" again!`);
+                callback();
+                return;
+            }
+
+            let packJson;
             if (adapter) {
                 try {
-                    pckg = require(`${tools.appName.toLowerCase()}.${adapter}/package.json`);
+                    packJson = require(`${tools.appName.toLowerCase()}.${adapter}/package.json`);
                 } catch {
-                    pckg = { version: `"${adapter}" not found` };
+                    packJson = { version: `"${adapter}" not found` };
                 }
             } else {
-                pckg = require(`@iobroker/js-controller-common/package.json`);
+                packJson = require(`@iobroker/js-controller-common/package.json`);
             }
-            console.log(pckg.version);
+            console.log(packJson.version);
 
             return void callback();
         }
 
         case 'checklog': {
             dbConnect(params, async ({ objects, states, isOffline, objectsDBType }) => {
-                const hasLocalObjectsServer = await dbTools.objectsDbHasServer(objectsDBType);
+                const hasLocalObjectsServer = await objectsDbHasServer(objectsDBType);
                 if (isOffline && hasLocalObjectsServer) {
                     console.log(`${tools.appName} is not running`);
                     return void callback(EXIT_CODES.CONTROLLER_NOT_RUNNING);
@@ -2645,15 +2671,14 @@ async function processCommand(
                         mh.status();
                         return void callback();
                     } else if (cmd === 'b' || cmd === 'browse') {
-                        mh.browse((err: any, list: any) => {
-                            if (err) {
-                                console.error(err);
-                                return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                            } else {
-                                mh.showHosts(list);
-                                return void callback();
-                            }
-                        });
+                        try {
+                            const list = await mh.browse();
+                            mh.showHosts(list);
+                            return void callback();
+                        } catch (e) {
+                            console.error(e.message);
+                            return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                        }
                     } else if (cmd === 'e' || cmd === 'enable') {
                         mh.enable(true, async (err: any) => {
                             if (err) {
@@ -2685,7 +2710,7 @@ async function processCommand(
                             }
                         });
                     } else if (cmd === 'c' || cmd === 'connect') {
-                        mh.connect(args[1], args[2], (err: any) => {
+                        mh.connect(parseInt(args[1]), args[2], (err: any) => {
                             if (err) {
                                 console.error(err);
                             }
@@ -2797,6 +2822,11 @@ const OBJECTS_THAT_CANNOT_BE_DELETED = [
     'system.user.admin'
 ];
 
+/**
+ * Deletes given objects from the database
+ *
+ * @param ids ids to delete from database
+ */
 async function delObjects(ids: string[]): Promise<void> {
     const { objects } = await dbConnectAsync(false);
 
@@ -2813,6 +2843,9 @@ async function delObjects(ids: string[]): Promise<void> {
     }
 }
 
+/**
+ * Deletes all states from the database
+ */
 async function delStates(): Promise<number> {
     const { states } = await dbConnectAsync(false);
 
@@ -2928,7 +2961,7 @@ export function execute(): void {
     // @ts-expect-error todo fix it
     const command = _yargs.argv._[0];
 
-    const args = [];
+    const args: string[] = [];
 
     // skip interpreter, filename and command
     for (let i = 3; i < process.argv.length; i++) {
