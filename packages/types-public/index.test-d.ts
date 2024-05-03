@@ -682,7 +682,7 @@ adapter.getObjectAsync('id').then(obj => {
 declare let state: ioBroker.StateObject;
 if (typeof state.common.smartName === 'object' && state.common.smartName !== null) {
     state.common.smartName.de && state.common.smartName.de.toUpperCase();
-    state.common.smartName.byOn && state.common.smartName.byOn.toUpperCase();
+    state.common.smartName.byON && state.common.smartName.byON.toUpperCase();
 }
 
 declare let enumObj: ioBroker.EnumObject;
