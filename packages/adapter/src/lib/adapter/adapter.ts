@@ -10,7 +10,13 @@ import { PluginHandler } from '@iobroker/plugin-base';
 import semver from 'semver';
 import path from 'node:path';
 import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
-import { decryptArray, encryptArray, getSupportedFeatures, isMessageboxSupported } from '@/lib/adapter/utils.js';
+import {
+    decryptArray,
+    encryptArray,
+    getSupportedFeatures,
+    isMessageboxSupported,
+    getAdapterScopedPackageIdentifier
+} from '@/lib/adapter/utils.js';
 // @ts-expect-error no ts file
 import extend from 'node.extend';
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
@@ -111,10 +117,16 @@ import type {
     SendToUserInterfaceClientOptions,
     AllPropsUnknown,
     IoPackageInstanceObject,
-    AliasTargetEntry
+    AliasTargetEntry,
+    SuitableLicense,
+    InstallNodeModuleOptions,
+    InternalInstallNodeModuleOptions,
+    StopParameters,
+    InternalStopParameters
 } from '@/lib/_Types.js';
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
+import type { CommandResult } from '@alcalzone/pak';
 
 import * as url from 'node:url';
 // eslint-disable-next-line unicorn/prefer-module
@@ -445,13 +457,17 @@ export interface AdapterClass {
 
     /**
      * creates an object with type device
+     *
+     * @deprecated use `extendObject` instead
      */
     createDeviceAsync(deviceName: string, common?: Partial<ioBroker.DeviceCommon>): ioBroker.SetObjectPromise;
+    /** @deprecated use `extendObject` instead */
     createDeviceAsync(
         deviceName: string,
         common: Partial<ioBroker.DeviceCommon>,
         native?: Record<string, any>
     ): ioBroker.SetObjectPromise;
+    /** @deprecated use `extendObject` instead */
     createDeviceAsync(
         deviceName: string,
         common: Partial<ioBroker.DeviceCommon>,
@@ -466,18 +482,22 @@ export interface AdapterClass {
 
     /**
      * Creates an object with type channel. It must be located under a device
+     *
+     * @deprecated use `extendObject` instead
      */
     createChannelAsync(
         parentDevice: string,
         channelName: string,
         roleOrCommon?: string | Partial<ioBroker.ChannelCommon>
     ): ioBroker.SetObjectPromise;
+    /** @deprecated use `extendObject` instead */
     createChannelAsync(
         parentDevice: string,
         channelName: string,
         roleOrCommon: string | Partial<ioBroker.ChannelCommon>,
         native?: Record<string, any>
     ): ioBroker.SetObjectPromise;
+    /** @deprecated use `extendObject` instead */
     createChannelAsync(
         parentDevice: string,
         channelName: string,
@@ -488,6 +508,8 @@ export interface AdapterClass {
 
     /**
      * Creates a state and the corresponding object. It must be located in a channel under a device
+     *
+     * @deprecated use `extendObject` instead
      */
     createStateAsync(
         parentDevice: string,
@@ -495,6 +517,7 @@ export interface AdapterClass {
         stateName: string,
         roleOrCommon?: string | Partial<ioBroker.StateCommon>
     ): ioBroker.SetObjectPromise;
+    /** @deprecated use `extendObject` instead */
     createStateAsync(
         parentDevice: string,
         parentChannel: string,
@@ -502,6 +525,7 @@ export interface AdapterClass {
         roleOrCommon: string | Partial<ioBroker.StateCommon>,
         native?: Record<string, any>
     ): ioBroker.SetObjectPromise;
+    /** @deprecated use `extendObject` instead */
     createStateAsync(
         parentDevice: string,
         parentChannel: string,
@@ -513,15 +537,22 @@ export interface AdapterClass {
 
     /**
      * Deletes a channel and its states. It must have been created with createChannel
+     *
+     * @deprecated use `this.delObject` instead
      */
     deleteChannelAsync(channelName: string, options?: unknown): Promise<void>;
+    /** @deprecated use `this.delObject` instead */
     deleteChannelAsync(parentDevice: string, channelName: string, options?: unknown): Promise<void>;
 
     /**
      * Deletes a state. It must have been created with createState
+     *
+     * @deprecated use `this.delObject` instead
      */
     deleteStateAsync(stateName: string, options?: unknown): Promise<void>;
+    /** @deprecated use `this.delObject` instead */
     deleteStateAsync(parentChannel: string, stateName: string, options?: unknown): Promise<void>;
+    /** @deprecated use `this.delObject` instead */
     deleteStateAsync(parentDevice: string, parentChannel: string, stateName: string, options?: unknown): Promise<void>;
 
     /**
@@ -666,7 +697,7 @@ export class AdapterClass extends EventEmitter {
     common?: ioBroker.InstanceCommon;
     private mboxSubscribed?: boolean;
     /** Stop the adapter */
-    stop?: () => Promise<void>;
+    stop?: (params?: StopParameters) => Promise<void>;
     version?: string;
     /** Stop the adapter only defined in compact, not for external usage */
     protected kill?: () => Promise<void>;
@@ -993,21 +1024,29 @@ export class AdapterClass extends EventEmitter {
 
         /**
          * Promise-version of `Adapter.createDevice`
+         *
+         * @deprecated use `extendObject` instead
          */
         this.createDeviceAsync = tools.promisify(this.createDevice, this);
 
         /**
          * Promise-version of `Adapter.createChannel`
+         *
+         * @deprecated use `extendObject` instead
          */
         this.createChannelAsync = tools.promisify(this.createChannel, this);
 
         /**
          * Promise-version of `Adapter.createState`
+         *
+         * @deprecated use `extendObject` instead
          */
         this.createStateAsync = tools.promisify(this.createState, this);
 
         /**
          * Promise-version of `Adapter.deleteDevice`
+         *
+         * @deprecated use `delObject` instead
          */
         this.deleteDeviceAsync = tools.promisify(this.deleteDevice, this);
 
@@ -1023,11 +1062,15 @@ export class AdapterClass extends EventEmitter {
 
         /**
          * Promise-version of `Adapter.deleteChannel`
+         *
+         * @deprecated use `delObject` instead
          */
         this.deleteChannelAsync = tools.promisify(this.deleteChannel, this);
 
         /**
          * Promise-version of `Adapter.deleteState`
+         *
+         * @deprecated use `delObject` instead
          */
         this.deleteStateAsync = tools.promisify(this.deleteState, this);
 
@@ -1189,6 +1232,58 @@ export class AdapterClass extends EventEmitter {
 
         this.setExecutableCapabilities = tools.setExecutableCapabilities;
         this._init();
+    }
+
+    installNodeModule(moduleName: string, options: InstallNodeModuleOptions): Promise<CommandResult>;
+
+    /**
+     * Install specified npm module
+     *
+     * @param moduleName name of the node module
+     * @param options version information
+     */
+    installNodeModule(moduleName: unknown, options: unknown): Promise<CommandResult> {
+        Validator.assertString(moduleName, 'moduleName');
+        Validator.assertObject<InstallNodeModuleOptions>(options, 'options');
+
+        return this._installNodeModule({ ...options, moduleName });
+    }
+
+    private _installNodeModule(options: InternalInstallNodeModuleOptions): Promise<CommandResult> {
+        const { moduleName, version } = options;
+
+        const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
+        return tools.installNodeModule(`${internalModuleName}@npm:${moduleName}@${version}`);
+    }
+
+    uninstallNodeModule(moduleName: string): Promise<CommandResult>;
+
+    /**
+     * Uninstall specified npm module
+     *
+     * @param moduleName name of the node module
+     */
+    uninstallNodeModule(moduleName: unknown): Promise<CommandResult> {
+        Validator.assertString(moduleName, 'moduleName');
+
+        const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
+        return tools.uninstallNodeModule(internalModuleName);
+    }
+
+    importNodeModule(moduleName: string): Promise<unknown>;
+
+    /**
+     * Import a node module which has been installed via `installNodeModule`
+     *
+     * @param moduleName name of the node module
+     * @returns the required node module
+     */
+    importNodeModule(moduleName: unknown): Promise<unknown> {
+        Validator.assertString(moduleName, 'moduleName');
+
+        const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
+        // TODO: if https://github.com/microsoft/TypeScript/issues/54022 ever gets resolved, we should improve the return type
+        return import(internalModuleName);
     }
 
     // overload with real types
@@ -2074,12 +2169,15 @@ export class AdapterClass extends EventEmitter {
         });
     }
 
-    private async _stop(
-        isPause?: boolean,
-        isScheduled?: boolean,
-        exitCode?: number,
-        updateAliveState?: boolean
-    ): Promise<void> {
+    /**
+     * Stop an instance gracefully
+     *
+     * @param options information about the stoppage
+     */
+    private async _stop(options: InternalStopParameters = {}): Promise<void> {
+        const { isPause, isScheduled, reason } = options;
+        let { exitCode, updateAliveState } = options;
+
         exitCode = exitCode || (isScheduled ? EXIT_CODES.START_IMMEDIATELY_AFTER_STOP : 0);
         if (updateAliveState === undefined) {
             updateAliveState = true;
@@ -2092,7 +2190,7 @@ export class AdapterClass extends EventEmitter {
             this._reportInterval = null;
             const id = `system.adapter.${this.namespace}`;
 
-            const finishUnload = (): void => {
+            const finishUnload = async (): Promise<void> => {
                 if (this._timers.size) {
                     this._timers.forEach(timer => clearTimeout(timer));
                     this._timers.clear();
@@ -2115,19 +2213,18 @@ export class AdapterClass extends EventEmitter {
 
                 if (this.#states && updateAliveState) {
                     this.outputCount++;
-                    this.#states.setState(`${id}.alive`, { val: false, ack: true, from: id }, () => {
-                        if (!isPause) {
-                            this._logger.info(`${this.namespaceLog} terminating`);
-                        }
+                    await this.#states.setState(`${id}.alive`, { val: false, ack: true, from: id });
+                    if (!isPause) {
+                        this._logger.info(`${this.namespaceLog} terminating`);
+                    }
 
-                        // To this moment, the class could be destroyed
-                        this.terminate(exitCode);
-                    });
+                    // To this moment, the class could be destroyed
+                    this.terminate(reason, exitCode);
                 } else {
                     if (!isPause) {
                         this._logger.info(`${this.namespaceLog} terminating`);
                     }
-                    this.terminate(exitCode);
+                    this.terminate(reason, exitCode);
                 }
             };
 
@@ -2190,7 +2287,7 @@ export class AdapterClass extends EventEmitter {
      * Reads the file certificate from a given path and adds a file watcher to restart adapter on cert changes
      * if a cert is passed it is returned as it is
      *
-     * @param cert
+     * @param cert cert or path to cert
      */
     private _readFileCertificate(cert: string): string {
         if (typeof cert === 'string') {
@@ -2204,7 +2301,7 @@ export class AdapterClass extends EventEmitter {
                         this._logger.warn(
                             `${this.namespaceLog} New certificate "${filename}" detected. Restart adapter`
                         );
-                        setTimeout(() => this._stop(false, true), 2000);
+                        setTimeout(() => this._stop({ isPause: false, isScheduled: true }), 2_000);
                     });
                 }
             } catch (e) {
@@ -3618,7 +3715,7 @@ export class AdapterClass extends EventEmitter {
      * @param design name of the design
      * @param search name of the view
      * @param params object containing startkey: first id to include in result; endkey: last id to include in result
-     * @param options
+     * @param options additional objects, e.g. for permissions
      * @param callback return result
      *      ```js
      *          function (err, doc) {
@@ -3727,9 +3824,9 @@ export class AdapterClass extends EventEmitter {
      * It is required, that ID consists namespace in startkey and endkey. E.g. `{startkey: 'hm-rpc.' + adapter.instance + '.', endkey: 'hm-rpc.' + adapter.instance + '.\u9999'}`
      * to get all objects of the instance.
      *
-     * @param params
-     * @param options
-     * @param callback
+     * @param params startkey and endkey information
+     * @param options additional options, e.g. for permissions
+     * @param callback optional callback
      *      ```js
      *          function (err, res) {
      *              if (res && res.rows) {
@@ -4978,18 +5075,22 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
+    /** @deprecated use `this.extendObject` instead */
     createDevice(deviceName: string, callback?: ioBroker.SetObjectCallback): void;
+    /** @deprecated use `this.extendObject` instead */
     createDevice(
         deviceName: string,
         common: Partial<ioBroker.DeviceCommon>,
         callback?: ioBroker.SetObjectCallback
     ): void;
+    /** @deprecated use `this.extendObject` instead */
     createDevice(
         deviceName: string,
         common: Partial<ioBroker.DeviceCommon>,
         native: Record<string, any>,
         callback?: ioBroker.SetObjectCallback
     ): void;
+    /** @deprecated use `this.extendObject` instead */
     createDevice(
         deviceName: string,
         common: Partial<ioBroker.DeviceCommon>,
@@ -4998,7 +5099,19 @@ export class AdapterClass extends EventEmitter {
         callback?: ioBroker.SetObjectCallback
     ): void;
 
+    /**
+     * @param deviceName
+     * @param common
+     * @param _native
+     * @param options
+     * @param callback
+     * @deprecated use `this.extendObject` instead
+     */
     createDevice(deviceName: unknown, common: unknown, _native?: unknown, options?: unknown, callback?: unknown): any {
+        this._logger.info(
+            `${this.namespaceLog} Method "createDevice" is deprecated and will be removed in js-controller 7, use "extendObject/setObjectNotExists" instead`
+        );
+
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5052,13 +5165,16 @@ export class AdapterClass extends EventEmitter {
         );
     }
 
+    /** @deprecated use `this.extendObject` instead */
     createChannel(parentDevice: string, channelName: string, callback?: ioBroker.SetObjectCallback): void;
+    /** @deprecated use `this.extendObject` instead */
     createChannel(
         parentDevice: string,
         channelName: string,
         roleOrCommon: string | Partial<ioBroker.ChannelCommon>,
         callback?: ioBroker.SetObjectCallback
     ): void;
+    /** @deprecated use `this.extendObject` instead */
     createChannel(
         parentDevice: string,
         channelName: string,
@@ -5066,6 +5182,7 @@ export class AdapterClass extends EventEmitter {
         native: Record<string, any>,
         callback?: ioBroker.SetObjectCallback
     ): void;
+    /** @deprecated use `this.extendObject` instead */
     createChannel(
         parentDevice: string,
         channelName: string,
@@ -5075,7 +5192,17 @@ export class AdapterClass extends EventEmitter {
         callback?: ioBroker.SetObjectCallback
     ): void;
 
-    // name of channel must be in format "channel"
+    /**
+     * Name of channel must be in format "channel"
+     *
+     * @param parentDevice
+     * @param channelName
+     * @param roleOrCommon
+     * @param _native
+     * @param options
+     * @param callback
+     * @deprecated use `this.extendObject` instead
+     */
     createChannel(
         parentDevice: unknown,
         channelName: unknown,
@@ -5084,6 +5211,10 @@ export class AdapterClass extends EventEmitter {
         options?: unknown,
         callback?: unknown
     ): any {
+        this._logger.info(
+            `${this.namespaceLog} Method "createChannel" is deprecated and will be removed in js-controller 7, use "extendObject/setObjectNotExists" instead`
+        );
+
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5137,12 +5268,14 @@ export class AdapterClass extends EventEmitter {
         this.setObjectNotExists(channelName as string, obj as any, options, callback);
     }
 
+    /** @deprecated use `this.extendObject` instead */
     createState(
         parentDevice: string,
         parentChannel: string,
         stateName: string,
         callback?: ioBroker.SetObjectCallback
     ): void;
+    /** @deprecated use `this.extendObject` instead */
     createState(
         parentDevice: string,
         parentChannel: string,
@@ -5150,6 +5283,7 @@ export class AdapterClass extends EventEmitter {
         roleOrCommon: string | Partial<ioBroker.StateCommon>,
         callback?: ioBroker.SetObjectCallback
     ): void;
+    /** @deprecated use `this.extendObject` instead */
     createState(
         parentDevice: string,
         parentChannel: string,
@@ -5158,6 +5292,7 @@ export class AdapterClass extends EventEmitter {
         native: Record<string, any>,
         callback?: ioBroker.SetObjectCallback
     ): void;
+    /** @deprecated use `this.extendObject` instead */
     createState(
         parentDevice: string,
         parentChannel: string,
@@ -5167,6 +5302,17 @@ export class AdapterClass extends EventEmitter {
         options: unknown,
         callback?: ioBroker.SetObjectCallback
     ): void;
+
+    /**
+     * @param parentDevice
+     * @param parentChannel
+     * @param stateName
+     * @param roleOrCommon
+     * @param _native
+     * @param options
+     * @param callback
+     * @deprecated use `this.extendObject` instead
+     */
     createState(
         parentDevice: unknown,
         parentChannel: unknown,
@@ -5176,6 +5322,10 @@ export class AdapterClass extends EventEmitter {
         options?: unknown,
         callback?: unknown
     ): any {
+        this._logger.info(
+            `${this.namespaceLog} Method "createState" is deprecated and will be removed in js-controller 7, use "extendObject/setObjectNotExists" instead`
+        );
+
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5345,12 +5495,15 @@ export class AdapterClass extends EventEmitter {
         );
     }
 
+    /** @deprecated use `this.delObject` instead */
     deleteDevice(deviceName: string, callback?: ioBroker.ErrorCallback): void;
+    /** @deprecated use `this.delObject` instead */
     deleteDevice(deviceName: string, options: unknown, callback?: ioBroker.ErrorCallback): void;
 
     /**
      * Delete device with all its channels and states.
      *
+     * @deprecated use `this.delObject` instead
      * @param deviceName is the part of ID like: adapter.instance.<deviceName>
      * @param options optional user context
      * @param callback return result
@@ -5361,6 +5514,10 @@ export class AdapterClass extends EventEmitter {
      *        ```
      */
     deleteDevice(deviceName: unknown, options: unknown, callback?: unknown): any {
+        this._logger.info(
+            `${this.namespaceLog} Method "deleteDevice" is deprecated and will be removed in js-controller 7, use "delObject" instead`
+        );
+
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5659,8 +5816,11 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /** @deprecated use `this.delObject` instead */
     deleteChannel(channelName: string, callback?: ioBroker.ErrorCallback): void;
+    /** @deprecated use `this.delObject` instead */
     deleteChannel(channelName: string, options?: unknown, callback?: ioBroker.ErrorCallback): void;
+    /** @deprecated use `this.delObject` instead */
     deleteChannel(
         parentDevice: string,
         channelName: string,
@@ -5671,6 +5831,7 @@ export class AdapterClass extends EventEmitter {
     /**
      * Deletes channel and underlying structure
      *
+     * @deprecated use `this.delObject` instead
      * @alias deleteChannel
      * @param parentDevice is the part of ID like: adapter.instance.<deviceName>
      * @param channelName is the part of ID like: adapter.instance.<deviceName>.<channelName>
@@ -5683,6 +5844,10 @@ export class AdapterClass extends EventEmitter {
      *        ```
      */
     deleteChannel(parentDevice: unknown, channelName: unknown, options?: unknown, callback?: unknown): any {
+        this._logger.info(
+            `${this.namespaceLog} Method "deleteChannel" is deprecated and will be removed in js-controller 7, use "delObject" instead`
+        );
+
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -5767,8 +5932,11 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
+    /** @deprecated use `this.delObject` instead */
     deleteState(parentChannel: string, stateName: string, options?: unknown, callback?: ioBroker.ErrorCallback): void;
+    /** @deprecated use `this.delObject` instead */
     deleteState(stateName: string, options?: unknown, callback?: ioBroker.ErrorCallback): void;
+    /** @deprecated use `this.delObject` instead */
     deleteState(
         parentDevice: string | null,
         parentChannel: string | null,
@@ -5777,6 +5945,14 @@ export class AdapterClass extends EventEmitter {
         callback?: ioBroker.ErrorCallback
     ): void;
 
+    /**
+     * @param parentDevice
+     * @param parentChannel
+     * @param stateName
+     * @param options
+     * @param callback
+     * @deprecated use `this.delObject` instead
+     */
     deleteState(
         parentDevice: unknown,
         parentChannel: unknown,
@@ -5784,6 +5960,10 @@ export class AdapterClass extends EventEmitter {
         options?: unknown,
         callback?: unknown
     ): any {
+        this._logger.info(
+            `${this.namespaceLog} Method "deleteState" is deprecated and will be removed in js-controller 7, use "delObject" instead`
+        );
+
         if (typeof parentChannel === 'function' && stateName === undefined) {
             stateName = parentDevice;
             callback = parentChannel;
@@ -7047,10 +7227,10 @@ export class AdapterClass extends EventEmitter {
      * Async version of sendTo
      * As we have a special case (first arg can be error or result, we need to promisify manually)
      *
-     * @param instanceName
-     * @param command
-     * @param message
-     * @param options
+     * @param instanceName name of the instance
+     * @param command command to send
+     * @param message message to send
+     * @param options additional options, e.g. for permissions
      */
     sendToAsync(instanceName: unknown, command: unknown, message?: unknown, options?: unknown): any {
         return new Promise((resolve, reject) => {
@@ -7643,7 +7823,7 @@ export class AdapterClass extends EventEmitter {
                     return tools.maybeCallbackWithError(callback, e);
                 }
             } else {
-                this._logger.warn(`${this.namespaceLog} ${`Alias ${fixedId} has no target 2`}`);
+                this._logger.warn(`${this.namespaceLog} Alias ${fixedId} has no target 2`);
                 return tools.maybeCallbackWithError(callback, `Alias ${fixedId} has no target`);
             }
         } else {
@@ -8398,7 +8578,7 @@ export class AdapterClass extends EventEmitter {
                         callback
                     );
                 } else {
-                    this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 4`);
+                    this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 3`);
                     return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
                 }
             } else {
@@ -8480,7 +8660,7 @@ export class AdapterClass extends EventEmitter {
                         callback
                     );
                 } else {
-                    this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 5`);
+                    this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 4`);
                     return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
                 }
             } else {
@@ -8759,7 +8939,6 @@ export class AdapterClass extends EventEmitter {
         }
 
         if (id.startsWith(ALIAS_STARTS_WITH)) {
-            // TODO: optimize alias GET performance
             if (obj?.common?.alias?.id) {
                 // id can be string or can have attribute id.read
                 const aliasId = tools.isObject(obj.common.alias.id) ? obj.common.alias.id.read : obj.common.alias.id;
@@ -8811,8 +8990,8 @@ export class AdapterClass extends EventEmitter {
                     );
                 }
             } else {
-                this._logger.warn(`${this.namespaceLog} Alias ${id} has no target 8`);
-                return tools.maybeCallbackWithError(callback, `Alias ${id} has no target`);
+                // alias object non-existing or points to nowhere -> handle it like a non-existing state
+                return tools.maybeCallbackWithError(callback, null, null);
             }
         } else {
             if (this.oStates && this.oStates[id]) {
@@ -9471,8 +9650,8 @@ export class AdapterClass extends EventEmitter {
             }
         } else if (aliasObj && aliasObj.type === 'state') {
             // if state and no id given -> if no state just ignore it
-            this._logger.warn(`${this.namespaceLog} Alias ${aliasObj._id} has no target 12`);
-            return tools.maybeCallbackWithError(callback, new Error(`Alias ${aliasObj._id} has no target 12`));
+            this._logger.warn(`${this.namespaceLog} Alias ${aliasObj._id} has no target 5`);
+            return tools.maybeCallbackWithError(callback, new Error(`Alias ${aliasObj._id} has no target`));
         } else {
             return tools.maybeCallback(callback);
         }
@@ -9755,8 +9934,7 @@ export class AdapterClass extends EventEmitter {
      * ```
      *
      * @param pattern string in form 'adapter.0.*'. Must be the same as subscribe.
-     * @param options]optional argument to describe the user context
-     * @param options
+     * @param options optional argument to describe the user context
      * @param callback return result
      * ```js
      * function (err) {}
@@ -9905,7 +10083,7 @@ export class AdapterClass extends EventEmitter {
      *
      * @param pattern string in form 'adapter.0.*' or like this. Only string allowed
      * @param options optional argument to describe the user context
-     * @param callback
+     * @param callback optional callback
      */
     subscribeStates(pattern: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
@@ -9941,7 +10119,7 @@ export class AdapterClass extends EventEmitter {
      *
      * @param pattern string in form 'adapter.0.*'. Must be the same as subscribe.
      * @param options optional argument to describe the user context
-     * @param callback
+     * @param callback optional callback
      */
     unsubscribeStates(pattern: unknown, options: unknown, callback?: unknown): any {
         if (typeof options === 'function') {
@@ -10033,8 +10211,8 @@ export class AdapterClass extends EventEmitter {
      * @param adapterName Return licenses for specific adapter
      * @returns list of suitable licenses
      */
-    async getSuitableLicenses(all?: boolean, adapterName?: string): Promise<any> {
-        const licenses: Record<string, any>[] = [];
+    async getSuitableLicenses(all?: boolean, adapterName?: string): Promise<SuitableLicense[]> {
+        const licenses: SuitableLicense[] = [];
         try {
             const obj = await this.getForeignObjectAsync('system.licenses');
             const uuidObj = await this.getForeignObjectAsync('system.meta.uuid');
@@ -10060,7 +10238,7 @@ export class AdapterClass extends EventEmitter {
 
                 const version = semver.major(adapterObj?.common?.version || this.pack!.version);
 
-                obj.native.licenses.forEach((license: Record<string, any>) => {
+                for (const license of obj.native.licenses as Omit<SuitableLicense, 'decoded'>[]) {
                     try {
                         const decoded: any = jwt.verify(license.json, cert);
                         if (
@@ -10074,7 +10252,6 @@ export class AdapterClass extends EventEmitter {
                                 (all || !license.usedBy || license.usedBy === this.namespace)
                             ) {
                                 // Licenses for version ranges 0.x and 1.x are handled identically and are valid for both version ranges.
-                                //
                                 // If license is for adapter with version 0 or 1
                                 if (
                                     decoded.version === '&lt;2' ||
@@ -10084,19 +10261,25 @@ export class AdapterClass extends EventEmitter {
                                 ) {
                                     // check the current adapter major version
                                     if (version !== 0 && version !== 1) {
-                                        return;
+                                        // exception if vis-1 has UUID, so it is valid for vis-2
+                                        const exception =
+                                            decoded.name === 'iobroker.vis' && version === 2 && decoded.uuid;
+
+                                        if (!exception) {
+                                            continue;
+                                        }
                                     }
                                 } else if (decoded.version && decoded.version !== version) {
-                                    // Licenses for adapter versions >=2 need to match to the adapter major version
+                                    // Licenses for adapter versions >=2 need to match to the adapter major version,
                                     // which means that a new major version requires new licenses if it would be "included"
-                                    // in last purchase
+                                    //  in the last purchase
 
                                     // decoded.version could be only '<2' or direct version, like "2", "3" and so on
-                                    return;
+                                    continue;
                                 }
                                 if (decoded.uuid && decoded.uuid !== uuid) {
                                     // License is not for this server
-                                    return;
+                                    continue;
                                 }
 
                                 // remove free license if commercial license found
@@ -10106,22 +10289,21 @@ export class AdapterClass extends EventEmitter {
                                         licenses.splice(pos, 1);
                                     }
                                 }
-                                license.decoded = decoded;
-                                licenses.push(license);
+
+                                licenses.push({ ...license, decoded });
                             }
                         }
                     } catch (err) {
                         this._logger.error(
-                            `${this.namespaceLog} Cannot decode license "${license.name}": ${err.message}`
+                            `${this.namespaceLog} Cannot decode license "${license.product}": ${err.message}`
                         );
                     }
-                });
+                }
             }
         } catch {
             // ignore
         }
 
-        // @ts-expect-error
         licenses.sort((a, b) => {
             const aInvoice = a.decoded.invoice !== 'free';
             const bInvoice = b.decoded.invoice !== 'free';
@@ -10132,6 +10314,8 @@ export class AdapterClass extends EventEmitter {
             } else if (bInvoice) {
                 return 1;
             }
+
+            return 0;
         });
 
         return licenses;
@@ -10603,7 +10787,12 @@ export class AdapterClass extends EventEmitter {
                         }
                         // by deletion of state, stop this instance
                         if (sigKillVal !== process.pid && !this._config.forceIfDisabled) {
-                            this._stop(false, false, EXIT_CODES.ADAPTER_REQUESTED_TERMINATION, false);
+                            this._stop({
+                                isPause: false,
+                                isScheduled: false,
+                                exitCode: EXIT_CODES.ADAPTER_REQUESTED_TERMINATION,
+                                updateAliveState: false
+                            });
                             setTimeout(() => this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION), 4000);
                         }
                     }
@@ -11286,12 +11475,12 @@ export class AdapterClass extends EventEmitter {
                     // @ts-expect-error
                     adapterConfig.common.mode === 'once'
                 ) {
-                    this.stop = () => this._stop(true);
+                    this.stop = params => this._stop({ ...params, isPause: true });
                 } else if (this.startedInCompactMode) {
-                    this.stop = () => this._stop(false);
+                    this.stop = params => this._stop({ ...params, isPause: false });
                     this.kill = this.stop;
                 } else {
-                    this.stop = () => this._stop(false);
+                    this.stop = params => this._stop({ ...params, isPause: false });
                 }
 
                 // Monitor logging state
@@ -11458,7 +11647,7 @@ export class AdapterClass extends EventEmitter {
                     );
                     this._restartScheduleJob = this._schedule.scheduleJob(adapterConfig.common.restartSchedule, () => {
                         this._logger.info(`${this.namespaceLog} Scheduled restart.`);
-                        this._stop(false, true);
+                        this._stop({ isPause: false, isScheduled: true });
                     });
                 }
             }
@@ -11559,7 +11748,12 @@ export class AdapterClass extends EventEmitter {
         }
 
         try {
-            this._stop(false, false, EXIT_CODES.UNCAUGHT_EXCEPTION, false);
+            this._stop({
+                isPause: false,
+                isScheduled: false,
+                exitCode: EXIT_CODES.UNCAUGHT_EXCEPTION,
+                updateAliveState: false
+            });
             setTimeout(() => this.terminate(EXIT_CODES.UNCAUGHT_EXCEPTION), 1_000);
         } catch (err) {
             this._logger.error(`${this.namespaceLog} exception by stop: ${err ? err.message : err}`);

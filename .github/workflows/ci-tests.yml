@@ -61,9 +61,8 @@ jobs:
         run: |
           brew update
           # temporary ignore brew problems
-          brew install redis || true
-          ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents
-          launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
+          brew install redis
+          brew services start redis
 
       - name: Prepare installation (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
@@ -110,7 +109,7 @@ jobs:
     steps:
       - id: automerge
         name: automerge
-        uses: "pascalgn/automerge-action@v0.16.2"
+        uses: "pascalgn/automerge-action@v0.16.3"
         env:
           GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}"
           MERGE_LABELS: "automated pr"
