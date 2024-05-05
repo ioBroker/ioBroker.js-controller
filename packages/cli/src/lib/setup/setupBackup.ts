@@ -9,6 +9,7 @@ import { Upload } from './setupUpload.js';
 import type { CleanDatabaseHandler, ProcessExitCallback, RestartController } from '../_Types.js';
 import { dbConnectAsync, resetDbConnect } from './dbConnection.js';
 import { IoBrokerError } from './customError.js';
+import { CLIProcess } from '@/lib/cli/cliProcess.js';
 
 export interface CLIBackupRestoreOptions {
     dbMigration?: boolean;
@@ -1032,32 +1033,6 @@ export class BackupRestore {
     }
 
     /**
-     * Kills a process by its PID
-     *
-     * @param pid The PID of the process to kill
-     * @param callback The callback to call when the process is killed
-     */
-    _tryKill(
-        /** The PID of the process to kill */
-        pid: number,
-        callback: (_pid: number) => void
-    ): void {
-        if (!pid) {
-            callback(0);
-        }
-
-        try {
-            process.kill(pid, 'SIGTERM');
-        } catch {
-            // ignore
-        }
-
-        setTimeout(() => {
-            callback(pid);
-        }, 5000);
-    }
-
-    /**
      * Restores a backup
      *
      * @param options Restore options
@@ -1135,7 +1110,7 @@ export class BackupRestore {
                 cwd: this.tmpDir
             },
             undefined,
-            err => {
+            async err => {
                 if (err) {
                     console.error(`host.${this.hostname} Cannot extract from file "${name}": ${err.message}`);
                     return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
@@ -1146,23 +1121,15 @@ export class BackupRestore {
                     );
                     return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
                 }
-                // Stop controller
-                let pid: number;
-                try {
-                    pid =
-                        parseInt(fs.readFileSync(path.join(controllerDir, `${tools.appName}.pid`)).toString(), 10) || 0;
-                } catch {
-                    pid = 0;
-                }
-                this._tryKill(pid, () => {
-                    this._restoreAfterStop({
-                        restartOnFinish: false,
-                        force,
-                        dontDeleteAdapters
-                    }).then(exitCode => {
-                        callback && callback({ exitCode, objects: this.objects, states: this.states });
-                    });
+
+                await CLIProcess.stopJSController();
+                const exitCode = await this._restoreAfterStop({
+                    restartOnFinish: false,
+                    force,
+                    dontDeleteAdapters
                 });
+
+                callback({ exitCode, objects: this.objects, states: this.states });
             }
         );
     }
@@ -1173,7 +1140,7 @@ export class BackupRestore {
     private async _restorePreservedAdapters(): Promise<void> {
         for (const adapterName of this.PRESERVE_ADAPTERS) {
             try {
-                const adapterObj = await this.objects.getObjectAsync(`system.adapter.${adapterName}`);
+                const adapterObj = await this.objects.getObject(`system.adapter.${adapterName}`);
                 if (adapterObj?.common?.version) {
                     let installSource;
                     if (adapterObj.common.installedFrom) {
