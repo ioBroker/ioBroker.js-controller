@@ -192,7 +192,8 @@ export class CLIProcess extends CLICommand {
         }
 
         if (pid) {
-            await tryKill(pid);
+            console.log(`Controller is already running with pid ${pid}`);
+            return;
         }
 
         const args = [path.join(rootDir, 'controller.js')];
