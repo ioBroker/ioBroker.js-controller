@@ -183,11 +183,12 @@ export class CLIProcess extends CLICommand {
                 `May be config file does not exist.\nPlease call "${tools.appName} setup first" to initialize the settings.`
             );
         }
+
         let pid: number | undefined;
         try {
-            pid = parseInt(fs.readFileSync(path.join(rootDir, `${tools.appName}.pid`)).toString(), 10);
-        } catch {
-            // ignore
+            pid = await tools.getControllerPid();
+        } catch (e) {
+            console.error(`Could not read pid file: ${e.message}`);
         }
 
         if (pid) {
@@ -207,9 +208,6 @@ export class CLIProcess extends CLICommand {
             cwd: rootDir
         });
 
-        if (child?.pid) {
-            fs.writeFileSync(path.join(rootDir, `${tools.appName}.pid`), child.pid.toString());
-        }
         child.unref();
     }
 
@@ -219,7 +217,7 @@ export class CLIProcess extends CLICommand {
     static async stopJSController(): Promise<void> {
         let pid: number | undefined;
         try {
-            pid = parseInt(fs.readFileSync(path.join(rootDir, `${tools.appName}.pid`), { encoding: 'utf-8' }));
+            pid = await tools.getControllerPid();
         } catch (e) {
             console.error(`Could not read pid file: ${e.message}`);
         }
@@ -229,7 +227,6 @@ export class CLIProcess extends CLICommand {
         }
 
         await tryKill(pid);
-        fs.unlinkSync(path.join(rootDir, `${tools.appName}.pid`));
 
         // On non-Windows OSes start a KILLALL script
         // to make sure nothing keeps running
