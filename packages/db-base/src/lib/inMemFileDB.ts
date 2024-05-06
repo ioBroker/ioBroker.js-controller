@@ -319,9 +319,6 @@ export class InMemoryFileDB {
             cb = options;
             options = undefined;
         }
-        if (!client._subscribe) {
-            client._subscribe = new Map();
-        }
 
         if (!this.regExps.has(type)) {
             this.regExps.set(type, new Map());
@@ -329,18 +326,8 @@ export class InMemoryFileDB {
 
         const regExpsForType = this.regExps.get(type)!;
 
-        if (!client._subscribe.has(type)) {
-            client._subscribe.set(type, []);
-        }
-
-        const s = client._subscribe.get(type)!;
-
         if (pattern instanceof Array) {
             for (const patternStr of pattern) {
-                if (s.find(sub => sub.pattern === patternStr)) {
-                    continue;
-                }
-
                 const regexStr = tools.pattern2RegEx(patternStr);
                 const regex = new RegExp(regexStr);
 
@@ -354,14 +341,9 @@ export class InMemoryFileDB {
                 if (!found) {
                     regExs.clients.push({ client, pattern: patternStr });
                 }
-                s.push({ pattern: patternStr, regex: regex, options });
             }
         } else {
             try {
-                if (!s.find(sub => sub.pattern === pattern)) {
-                    s.push({ pattern, regex: new RegExp(tools.pattern2RegEx(pattern)), options });
-                }
-
                 const regexStr = tools.pattern2RegEx(pattern);
                 const regex = new RegExp(regexStr);
 
@@ -389,20 +371,9 @@ export class InMemoryFileDB {
         pattern: string | string[],
         cb?: () => void
     ): void | Promise<void> {
-        const s = client?._subscribe?.get(type);
-
-        if (!s) {
-            return tools.maybeCallback(cb);
-        }
-
         const regExpsForType = this.regExps.get(type)!;
 
         const removeEntry = (p: string): void => {
-            const index = s.findIndex(sub => sub.pattern === p);
-            if (index > -1) {
-                s.splice(index, 1);
-            }
-
             const regexStr = tools.pattern2RegEx(p);
 
             const entry = regExpsForType.get(regexStr);
