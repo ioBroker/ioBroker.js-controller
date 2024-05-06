@@ -187,39 +187,30 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
     /**
      * Publish a subscribed value to one of the redis connections in redis format
-     * @param client Instance of RedisHandler
+     * @param clientOptions Instance of RedisHandler and pattern
      * @param type Type of subscribed key
      * @param id Subscribed ID
      * @param obj Object to publish
      * @returns Publish counter 0 or 1 depending on if send out or not
      */
-    publishToClient(client, type, id, obj) {
-        if (!client._subscribe || !client._subscribe.has(type)) {
-            return 0;
-        }
-        const s = client._subscribe.get(type);
-
-        const found = s.find(sub => sub.regex.test(id));
-
-        if (!found) {
-            return 0;
-        }
+    publishToClient(clientOptions, type, id, obj) {
+        const { client, pattern } = clientOptions;
 
         if (type === 'meta') {
             this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${obj}`);
-            const sendPattern = this.namespaceMeta + found.pattern;
+            const sendPattern = this.namespaceMeta + pattern;
             const sendId = this.namespaceMeta + id;
             client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
         } else if (type === 'files') {
             const objString = JSON.stringify(obj);
             this.log.silly(`${this.namespace} Redis Publish File ${id}=${objString}`);
-            const sendPattern = this.namespaceFile + found.pattern;
+            const sendPattern = this.namespaceFile + pattern;
             const sendId = this.namespaceFile + id;
             client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
         } else {
             const objString = JSON.stringify(obj);
             this.log.silly(`${this.namespace} Redis Publish Object ${id}=${objString}`);
-            const sendPattern = (type === 'objects' ? '' : this.namespaceObjects) + found.pattern;
+            const sendPattern = (type === 'objects' ? '' : this.namespaceObjects) + pattern;
             const sendId = (type === 'objects' ? this.namespaceObj : this.namespaceObjects) + id;
             client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
         }

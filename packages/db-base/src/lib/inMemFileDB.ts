@@ -102,11 +102,11 @@ interface SubscriptionClient extends Partial<InstanceType<typeof RedisHandler>> 
     _subscribe?: Map<string, Subscription[]>;
 }
 
-interface SubscriptionClientRegex extends SubscriptionClient {
+interface SubscriptionClientRegex {
     /** The RegExp object */
     regex: RegExp;
     /** All clients for this regexp */
-    clients: SubscriptionClient[];
+    clients: { client: SubscriptionClient; pattern: string }[];
 }
 
 /** Nested map, first outher map for type, inner for regexp */
@@ -352,7 +352,7 @@ export class InMemoryFileDB {
 
                 const found = !!regExs.clients.find(cl => cl === client);
                 if (!found) {
-                    regExs.clients.push(client);
+                    regExs.clients.push({ client, pattern: patternStr });
                 }
                 s.push({ pattern: patternStr, regex: regex, options });
             }
@@ -373,7 +373,7 @@ export class InMemoryFileDB {
 
                 const found = !!regExs.clients.find(cl => cl === client);
                 if (!found) {
-                    regExs.clients.push(client);
+                    regExs.clients.push({ client, pattern });
                 }
             } catch (e) {
                 console.error(e);
@@ -411,7 +411,7 @@ export class InMemoryFileDB {
                 return;
             }
 
-            const clientIndex = entry.clients.findIndex(cl => cl === client);
+            const clientIndex = entry.clients.findIndex(cl => cl.client === client);
 
             if (clientIndex > -1) {
                 entry.clients.splice(clientIndex, 1);
@@ -431,10 +431,6 @@ export class InMemoryFileDB {
         }
 
         return tools.maybeCallback(cb);
-    }
-
-    publishToClients(_client: SubscriptionClient, _type: string, _id: string, _obj: any): number {
-        throw new Error('no communication handling implemented');
     }
 
     publishPattern(_patternInformation: SubscriptionClientRegex, _type: string, _id: string, _obj: unknown): number {
