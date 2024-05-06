@@ -17,6 +17,7 @@ import { getLocalAddress } from '@iobroker/js-controller-common/tools';
 
 import { RedisHandler } from '@iobroker/db-base';
 import { ObjectsInMemoryFileDB } from './objectsInMemFileDB.js';
+import { EXIT_CODES } from '@iobroker/js-controller-common';
 
 // settings = {
 //    change:    function (id, state) {},
@@ -92,7 +93,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                 this.log.error(
                     `${this.namespace} Cannot start inMem-objects on port ${settings.port || 9001}: ${e.message}`
                 );
-                process.exit(24); // todo: replace it with exitcode
+                process.exit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
             });
     }
 
@@ -162,14 +163,37 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
     }
 
     /**
+     * Publish a subscribed value to one of the redis connection by pattern in redis format
+     *
+     * @param patternInformation all redis handler for given pattern and pattern itself
+     * @param type Type of subscribed key
+     * @param id Subscribed ID
+     * @param obj Object to publish
+     * @returns Publish counter
+     */
+    publishPattern(patternInformation, type, id, obj) {
+        let publishCount = 0;
+
+        if (!patternInformation.regex.test(id)) {
+            return publishCount;
+        }
+
+        for (const client of patternInformation.clients) {
+            publishCount += this.publishToClient(client, type, id, obj);
+        }
+
+        return publishCount;
+    }
+
+    /**
      * Publish a subscribed value to one of the redis connections in redis format
      * @param client Instance of RedisHandler
      * @param type Type of subscribed key
      * @param id Subscribed ID
      * @param obj Object to publish
-     * @returns {number} Publish counter 0 or 1 depending on if send out or not
+     * @returns Publish counter 0 or 1 depending on if send out or not
      */
-    publishToClients(client, type, id, obj) {
+    publishToClient(client, type, id, obj) {
         if (!client._subscribe || !client._subscribe.has(type)) {
             return 0;
         }
@@ -177,28 +201,29 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
         const found = s.find(sub => sub.regex.test(id));
 
-        if (found) {
-            if (type === 'meta') {
-                this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${obj}`);
-                const sendPattern = this.namespaceMeta + found.pattern;
-                const sendId = this.namespaceMeta + id;
-                client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
-            } else if (type === 'files') {
-                const objString = JSON.stringify(obj);
-                this.log.silly(`${this.namespace} Redis Publish File ${id}=${objString}`);
-                const sendPattern = this.namespaceFile + found.pattern;
-                const sendId = this.namespaceFile + id;
-                client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
-            } else {
-                const objString = JSON.stringify(obj);
-                this.log.silly(`${this.namespace} Redis Publish Object ${id}=${objString}`);
-                const sendPattern = (type === 'objects' ? '' : this.namespaceObjects) + found.pattern;
-                const sendId = (type === 'objects' ? this.namespaceObj : this.namespaceObjects) + id;
-                client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
-            }
-            return 1;
+        if (!found) {
+            return 0;
         }
-        return 0;
+
+        if (type === 'meta') {
+            this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${obj}`);
+            const sendPattern = this.namespaceMeta + found.pattern;
+            const sendId = this.namespaceMeta + id;
+            client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
+        } else if (type === 'files') {
+            const objString = JSON.stringify(obj);
+            this.log.silly(`${this.namespace} Redis Publish File ${id}=${objString}`);
+            const sendPattern = this.namespaceFile + found.pattern;
+            const sendId = this.namespaceFile + id;
+            client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
+        } else {
+            const objString = JSON.stringify(obj);
+            this.log.silly(`${this.namespace} Redis Publish Object ${id}=${objString}`);
+            const sendPattern = (type === 'objects' ? '' : this.namespaceObjects) + found.pattern;
+            const sendId = (type === 'objects' ? this.namespaceObj : this.namespaceObjects) + id;
+            client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
+        }
+        return 1;
     }
 
     /**

@@ -13,6 +13,7 @@ import { inspect } from 'node:util';
 import { RedisHandler } from '@iobroker/db-base';
 import { StatesInMemoryJsonlDB } from './statesInMemJsonlDB.js';
 import { getLocalAddress } from '@iobroker/js-controller-common/tools';
+import { EXIT_CODES } from '@iobroker/js-controller-common';
 
 // settings = {
 //    change:    function (id, state) {},
@@ -78,7 +79,7 @@ export class StatesInMemoryServer extends StatesInMemoryJsonlDB {
                 this.log.error(
                     `${this.namespace} Cannot start inMem-states on port ${this.settings.port || 9000}: ${e.message}`
                 );
-                process.exit(24); // todo: replace it with exitcode
+                process.exit(EXIT_CODES.NO_CONNECTION_TO_STATES_DB);
             });
     }
 
@@ -114,6 +115,29 @@ export class StatesInMemoryServer extends StatesInMemoryJsonlDB {
     }
 
     /**
+     * Publish a subscribed value to one of the redis connection by pattern in redis format
+     *
+     * @param patternInformation all redis handler for given pattern and pattern itself
+     * @param type Type of subscribed key
+     * @param id Subscribed ID
+     * @param obj Object to publish
+     * @returns Publish counter
+     */
+    publishPattern(patternInformation, type, id, obj) {
+        let publishCount = 0;
+
+        if (!patternInformation.regex.test(id)) {
+            return publishCount;
+        }
+
+        for (const client of patternInformation.clients) {
+            publishCount += this.publishToClient(client, type, id, obj);
+        }
+
+        return publishCount;
+    }
+
+    /**
      * Publish a subscribed value to one of the redis connections in redis format
      *
      * @param client Instance of RedisHandler
@@ -122,7 +146,7 @@ export class StatesInMemoryServer extends StatesInMemoryJsonlDB {
      * @param obj Object to publish
      * @returns Publish counter 0 or 1 depending if send out or not
      */
-    publishToClients(client, type, id, obj) {
+    publishToClient(client, type, id, obj) {
         if (!client._subscribe || !client._subscribe.has(type)) {
             return 0;
         }

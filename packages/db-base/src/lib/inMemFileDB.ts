@@ -102,12 +102,23 @@ interface SubscriptionClient extends Partial<InstanceType<typeof RedisHandler>> 
     _subscribe?: Map<string, Subscription[]>;
 }
 
+interface SubscriptionClientRegex extends SubscriptionClient {
+    /** The RegExp object */
+    regex: RegExp;
+    /** All clients for this regexp */
+    clients: SubscriptionClient[];
+}
+
+/** Nested map, first outher map for type, inner for regexp */
+type RegExpsClients = Map<string, Map<string, SubscriptionClientRegex>>;
+
 /**
  * The parent of the class structure, which provides basic JSON storage
  * and general subscription and publish functionality
  */
 export class InMemoryFileDB {
-    private regExps = new Map<RegExp, SubscriptionClient[]>();
+    /** Store all clients per RegExp */
+    private regExps: RegExpsClients = new Map();
     private settings: FileDbSettings;
     private readonly change: ChangeFunction | undefined;
     protected dataset: Record<string, any>;
@@ -312,24 +323,60 @@ export class InMemoryFileDB {
             client._subscribe = new Map();
         }
 
+        if (!this.regExps.has(type)) {
+            this.regExps.set(type, new Map());
+        }
+
+        const regExpsForType = this.regExps.get(type)!;
+
         if (!client._subscribe.has(type)) {
             client._subscribe.set(type, []);
         }
 
         const s = client._subscribe.get(type)!;
 
-        // TODO here add regex too
         if (pattern instanceof Array) {
-            pattern.forEach(pattern => {
-                if (s.find(sub => sub.pattern === pattern)) {
-                    return;
+            for (const patternStr of pattern) {
+                if (s.find(sub => sub.pattern === patternStr)) {
+                    continue;
                 }
 
-                s.push({ pattern, regex: new RegExp(tools.pattern2RegEx(pattern)), options });
-            });
+                const regexStr = tools.pattern2RegEx(patternStr);
+                const regex = new RegExp(regexStr);
+
+                if (!regExpsForType.has(regexStr)) {
+                    regExpsForType.set(regexStr, { regex, clients: [] });
+                }
+
+                const regExs = regExpsForType.get(regexStr)!;
+
+                const found = !!regExs.clients.find(cl => cl === client);
+                if (!found) {
+                    regExs.clients.push(client);
+                }
+                s.push({ pattern: patternStr, regex: regex, options });
+            }
         } else {
-            if (!s.find(sub => sub.pattern === pattern)) {
-                s.push({ pattern, regex: new RegExp(tools.pattern2RegEx(pattern)), options });
+            try {
+                if (!s.find(sub => sub.pattern === pattern)) {
+                    s.push({ pattern, regex: new RegExp(tools.pattern2RegEx(pattern)), options });
+                }
+
+                const regexStr = tools.pattern2RegEx(pattern);
+                const regex = new RegExp(regexStr);
+
+                if (!regExpsForType.has(regexStr)) {
+                    regExpsForType.set(regexStr, { regex, clients: [] });
+                }
+
+                const regExs = regExpsForType.get(regexStr)!;
+
+                const found = !!regExs.clients.find(cl => cl === client);
+                if (!found) {
+                    regExs.clients.push(client);
+                }
+            } catch (e) {
+                console.error(e);
             }
         }
 
@@ -344,28 +391,53 @@ export class InMemoryFileDB {
     ): void | Promise<void> {
         const s = client?._subscribe?.get(type);
 
-        // TODO here remove regexp too
-        if (s) {
-            const removeEntry = (p: string): void => {
-                const index = s.findIndex(sub => sub.pattern === p);
-                if (index > -1) {
-                    s.splice(index, 1);
-                }
-            };
+        if (!s) {
+            return tools.maybeCallback(cb);
+        }
 
-            if (pattern instanceof Array) {
-                pattern.forEach(p => {
-                    removeEntry(p);
-                });
-            } else {
-                removeEntry(pattern);
+        const regExpsForType = this.regExps.get(type)!;
+
+        const removeEntry = (p: string): void => {
+            const index = s.findIndex(sub => sub.pattern === p);
+            if (index > -1) {
+                s.splice(index, 1);
             }
+
+            const regexStr = tools.pattern2RegEx(p);
+
+            const entry = regExpsForType.get(regexStr);
+
+            if (!entry) {
+                return;
+            }
+
+            const clientIndex = entry.clients.findIndex(cl => cl === client);
+
+            if (clientIndex > -1) {
+                entry.clients.splice(clientIndex, 1);
+            }
+
+            if (entry.clients.length === 0) {
+                regExpsForType.delete(regexStr);
+            }
+        };
+
+        if (pattern instanceof Array) {
+            for (const p of pattern) {
+                removeEntry(p);
+            }
+        } else {
+            removeEntry(pattern);
         }
 
         return tools.maybeCallback(cb);
     }
 
     publishToClients(_client: SubscriptionClient, _type: string, _id: string, _obj: any): number {
+        throw new Error('no communication handling implemented');
+    }
+
+    publishPattern(_patternInformation: SubscriptionClientRegex, _type: string, _id: string, _obj: unknown): number {
         throw new Error('no communication handling implemented');
     }
 
@@ -558,13 +630,23 @@ export class InMemoryFileDB {
             return 0;
         }
 
-        const clients = this.getClients();
+        //const clients = this.getClients();
         let publishCount = 0;
 
-        // TODO: here do it per regex instead
-        for (const client of clients.values()) {
-            publishCount += this.publishToClients(client, type, id, obj);
+        const patternInfo = this.regExps.get(type);
+
+        if (!patternInfo) {
+            return 0;
         }
+
+        for (const regex of patternInfo.values()) {
+            publishCount += this.publishPattern(regex, type, id, obj);
+        }
+
+        // TODO: here do it per regex instead
+        //for (const client of clients.values()) {
+        //   publishCount += this.publishToClients(client, type, id, obj);
+        //}
 
         // local subscriptions
         if (
