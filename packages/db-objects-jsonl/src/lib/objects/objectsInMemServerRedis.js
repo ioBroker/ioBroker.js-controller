@@ -51,7 +51,8 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
     constructor(settings) {
         super(settings);
 
-        this.serverConnections = {};
+        /** @type {Map<string, SubscriptionClient>} */
+        this.serverConnections = new Map();
         this.namespaceObjects =
             (this.settings.redisNamespace || (settings.connection && settings.connection.redisNamespace) || 'cfg') +
             '.';
@@ -60,7 +61,6 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         this.namespaceSet = this.namespaceObjects + 's.';
         this.namespaceSetLen = this.namespaceSet.length;
 
-        // this.namespaceObjectsLen   = this.namespaceObjects.length;
         this.namespaceFileLen = this.namespaceFile.length;
         this.namespaceObjLen = this.namespaceObj.length;
         this.namespaceMeta = `${this.settings.namespaceMeta || 'meta'}.`;
@@ -860,10 +860,10 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
      */
     async destroy() {
         if (this.server) {
-            Object.keys(this.serverConnections).forEach(s => {
-                this.serverConnections[s].close();
-                delete this.serverConnections[s];
-            });
+            for (const [connName, connection] of this.serverConnections) {
+                connection.close();
+                this.serverConnections.delete(connName);
+            }
 
             await new Promise(resolve => {
                 if (!this.server) {
@@ -981,10 +981,10 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         const handler = new RedisHandler(socket, options);
         this._socketEvents(handler);
 
-        this.serverConnections[socket.remoteAddress + ':' + socket.remotePort] = handler;
+        this.serverConnections.add(`${socket.remoteAddress}:${socket.remotePort}`, handler);
         socket.on('close', () => {
-            if (this.serverConnections[socket.remoteAddress + ':' + socket.remotePort]) {
-                delete this.serverConnections[socket.remoteAddress + ':' + socket.remotePort];
+            if (this.serverConnections.has(`${socket.remoteAddress}:${socket.remotePort}`)) {
+                this.serverConnections.delete(`${socket.remoteAddress}:${socket.remotePort}`);
             }
         });
     }

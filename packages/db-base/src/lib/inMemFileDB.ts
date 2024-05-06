@@ -12,6 +12,7 @@ import path from 'node:path';
 import { tools } from '@iobroker/js-controller-common';
 import type { InternalLogger } from '@iobroker/js-controller-common/tools';
 import { createGzip } from 'node:zlib';
+import type { RedisHandler } from './redisHandler.js';
 
 // settings = {
 //    change:    function (id, state) {},
@@ -97,8 +98,8 @@ interface Subscription {
     options: any;
 }
 
-interface SubscriptionClient {
-    _subscribe?: Record<string, Subscription[]>;
+interface SubscriptionClient extends Partial<InstanceType<typeof RedisHandler>> {
+    _subscribe?: Map<string, Subscription[]>;
 }
 
 /**
@@ -106,6 +107,7 @@ interface SubscriptionClient {
  * and general subscription and publish functionality
  */
 export class InMemoryFileDB {
+    private regExps = new Map<RegExp, SubscriptionClient[]>();
     private settings: FileDbSettings;
     private readonly change: ChangeFunction | undefined;
     protected dataset: Record<string, any>;
@@ -306,11 +308,17 @@ export class InMemoryFileDB {
             cb = options;
             options = undefined;
         }
-        client._subscribe = client._subscribe || {};
-        client._subscribe[type] = client._subscribe[type] || [];
+        if (!client._subscribe) {
+            client._subscribe = new Map();
+        }
 
-        const s = client._subscribe[type];
+        if (!client._subscribe.has(type)) {
+            client._subscribe.set(type, []);
+        }
 
+        const s = client._subscribe.get(type)!;
+
+        // TODO here add regex too
         if (pattern instanceof Array) {
             pattern.forEach(pattern => {
                 if (s.find(sub => sub.pattern === pattern)) {
@@ -334,7 +342,9 @@ export class InMemoryFileDB {
         pattern: string | string[],
         cb?: () => void
     ): void | Promise<void> {
-        const s = client?._subscribe?.[type];
+        const s = client?._subscribe?.get(type);
+
+        // TODO here remove regexp too
         if (s) {
             const removeEntry = (p: string): void => {
                 const index = s.findIndex(sub => sub.pattern === p);
@@ -538,8 +548,8 @@ export class InMemoryFileDB {
         return { type: 'file', server: true };
     }
 
-    getClients(): Record<string, any> {
-        return {};
+    getClients(): Map<string, SubscriptionClient> {
+        return new Map();
     }
 
     publishAll(type: string, id: string, obj: any): number {
@@ -551,19 +561,18 @@ export class InMemoryFileDB {
         const clients = this.getClients();
         let publishCount = 0;
 
-        if (clients && typeof clients === 'object') {
-            for (const i of Object.keys(clients)) {
-                publishCount += this.publishToClients(clients[i], type, id, obj);
-            }
+        // TODO: here do it per regex instead
+        for (const client of Object.values(clients)) {
+            publishCount += this.publishToClients(client, type, id, obj);
         }
 
         // local subscriptions
         if (
             this.change &&
             this.callbackSubscriptionClient._subscribe &&
-            this.callbackSubscriptionClient._subscribe[type]
+            this.callbackSubscriptionClient._subscribe.has(type)
         ) {
-            for (const entry of this.callbackSubscriptionClient._subscribe[type]) {
+            for (const entry of this.callbackSubscriptionClient._subscribe.get(type)!) {
                 if (entry.regex.test(id)) {
                     // @ts-expect-error we have checked 3 lines above
                     setImmediate(() => this.change(id, obj));
