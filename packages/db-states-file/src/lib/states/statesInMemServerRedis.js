@@ -122,10 +122,10 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
      * @returns Publish counter 0 or 1 depending on if send out or not
      */
     publishToClients(client, type, id, obj) {
-        if (!client._subscribe || !client._subscribe[type]) {
+        if (!client._subscribe || !client._subscribe.has(type)) {
             return 0;
         }
-        const s = client._subscribe[type];
+        const s = client._subscribe.get(type);
 
         const found = s.find(sub => sub.regex.test(id));
 

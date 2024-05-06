@@ -562,7 +562,7 @@ export class InMemoryFileDB {
         let publishCount = 0;
 
         // TODO: here do it per regex instead
-        for (const client of Object.values(clients)) {
+        for (const client of clients.values()) {
             publishCount += this.publishToClients(client, type, id, obj);
         }
 
