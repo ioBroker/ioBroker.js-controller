@@ -508,7 +508,7 @@ export class StatesInMemoryServer extends StatesInMemoryJsonlDB {
         const handler = new RedisHandler(socket, options);
         this._socketEvents(handler);
 
-        this.serverConnections.add(`${socket.remoteAddress}:${socket.remotePort}`, handler);
+        this.serverConnections.set(`${socket.remoteAddress}:${socket.remotePort}`, handler);
 
         socket.on('close', () => {
             if (this.serverConnections.has(`${socket.remoteAddress}:${socket.remotePort}`)) {
