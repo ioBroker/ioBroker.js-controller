@@ -332,9 +332,6 @@ export class InMemoryFileDB {
         }
     }
 
-    handleSubscribe(client: SubscriptionClient, type: string, pattern: string | string[]): void;
-    handleSubscribe(client: SubscriptionClient, type: string, pattern: string | string[]): void;
-
     handleSubscribe(client: SubscriptionClient, type: string, pattern: string | string[]): void {
         if (!this.regExps.has(type)) {
             this.regExps.set(type, new Map());
