@@ -109,7 +109,16 @@ interface SubscriptionClientRegex {
     clients: { client: SubscriptionClient; pattern: string }[];
 }
 
-/** Nested map, first outher map for type, inner for regexp */
+interface AddRemoveRegexOptions {
+    /** The type of subscription to remove */
+    type: string;
+    /** The pattern to remove */
+    pattern: string;
+    /** The client to remove */
+    client: SubscriptionClient;
+}
+
+/** Nested map, outer map for type, inner for regexp */
 type RegExpsClients = Map<string, Map<string, SubscriptionClientRegex>>;
 
 /**
@@ -299,109 +308,83 @@ export class InMemoryFileDB {
         fs.ensureDirSync(this.backupDir);
     }
 
-    handleSubscribe(client: SubscriptionClient, type: string, pattern: string | string[], cb?: () => void): void;
-    handleSubscribe(
-        client: SubscriptionClient,
-        type: string,
-        pattern: string | string[],
-        options: any,
-        cb?: () => void
-    ): void;
+    /**
+     * Add client subscribe to a regex for given type
+     *
+     * @param options pattern, client and type information
+     */
+    private addSubscribeToRegex(options: AddRemoveRegexOptions): void {
+        const { type, pattern, client } = options;
 
-    handleSubscribe(
-        client: SubscriptionClient,
-        type: string,
-        pattern: string | string[],
-        options: any,
-        cb?: () => void
-    ): void {
-        if (typeof options === 'function') {
-            cb = options;
-            options = undefined;
+        const regExpsForType = this.regExps.get(type)!;
+        const regexStr = tools.pattern2RegEx(pattern);
+        const regex = new RegExp(regexStr);
+
+        if (!regExpsForType.has(regexStr)) {
+            regExpsForType.set(regexStr, { regex, clients: [] });
         }
 
+        const regExs = regExpsForType.get(regexStr)!;
+
+        const found = !!regExs.clients.find(cl => cl === client);
+        if (!found) {
+            regExs.clients.push({ client, pattern });
+        }
+    }
+
+    handleSubscribe(client: SubscriptionClient, type: string, pattern: string | string[]): void;
+    handleSubscribe(client: SubscriptionClient, type: string, pattern: string | string[]): void;
+
+    handleSubscribe(client: SubscriptionClient, type: string, pattern: string | string[]): void {
         if (!this.regExps.has(type)) {
             this.regExps.set(type, new Map());
         }
 
-        const regExpsForType = this.regExps.get(type)!;
-
         if (pattern instanceof Array) {
             for (const patternStr of pattern) {
-                const regexStr = tools.pattern2RegEx(patternStr);
-                const regex = new RegExp(regexStr);
-
-                if (!regExpsForType.has(regexStr)) {
-                    regExpsForType.set(regexStr, { regex, clients: [] });
-                }
-
-                const regExs = regExpsForType.get(regexStr)!;
-
-                const found = !!regExs.clients.find(cl => cl === client);
-                if (!found) {
-                    regExs.clients.push({ client, pattern: patternStr });
-                }
+                this.addSubscribeToRegex({ pattern: patternStr, client, type });
             }
         } else {
-            try {
-                const regexStr = tools.pattern2RegEx(pattern);
-                const regex = new RegExp(regexStr);
-
-                if (!regExpsForType.has(regexStr)) {
-                    regExpsForType.set(regexStr, { regex, clients: [] });
-                }
-
-                const regExs = regExpsForType.get(regexStr)!;
-
-                const found = !!regExs.clients.find(cl => cl === client);
-                if (!found) {
-                    regExs.clients.push({ client, pattern });
-                }
-            } catch (e) {
-                console.error(e);
-            }
+            this.addSubscribeToRegex({ pattern, client, type });
         }
-
-        typeof cb === 'function' && cb();
     }
 
-    handleUnsubscribe(
-        client: SubscriptionClient,
-        type: string,
-        pattern: string | string[],
-        cb?: () => void
-    ): void | Promise<void> {
+    /**
+     * Remove client subscribe from a regex for given type
+     *
+     * @param options pattern, client and type information
+     */
+    private removeSubscribeFromRegex(options: AddRemoveRegexOptions): void {
+        const { type, pattern, client } = options;
+
         const regExpsForType = this.regExps.get(type)!;
+        const regexStr = tools.pattern2RegEx(pattern);
 
-        const removeEntry = (p: string): void => {
-            const regexStr = tools.pattern2RegEx(p);
+        const entry = regExpsForType.get(regexStr);
 
-            const entry = regExpsForType.get(regexStr);
-
-            if (!entry) {
-                return;
-            }
-
-            const clientIndex = entry.clients.findIndex(cl => cl.client === client);
-
-            if (clientIndex > -1) {
-                entry.clients.splice(clientIndex, 1);
-            }
-
-            if (entry.clients.length === 0) {
-                regExpsForType.delete(regexStr);
-            }
-        };
-
-        if (pattern instanceof Array) {
-            for (const p of pattern) {
-                removeEntry(p);
-            }
-        } else {
-            removeEntry(pattern);
+        if (!entry) {
+            return;
         }
 
-        return tools.maybeCallback(cb);
+        const clientIndex = entry.clients.findIndex(cl => cl.client === client);
+
+        if (clientIndex > -1) {
+            entry.clients.splice(clientIndex, 1);
+        }
+
+        if (entry.clients.length === 0) {
+            regExpsForType.delete(regexStr);
+        }
+    }
+
+    handleUnsubscribe(client: SubscriptionClient, type: string, pattern: string | string[]): void | Promise<void> {
+        if (pattern instanceof Array) {
+            for (const p of pattern) {
+                this.removeSubscribeFromRegex({ pattern: p, client, type });
+            }
+        } else {
+            this.removeSubscribeFromRegex({ pattern, client, type });
+        }
     }
 
     publishPattern(_patternInformation: SubscriptionClientRegex, _type: string, _id: string, _obj: unknown): number {
@@ -609,11 +592,6 @@ export class InMemoryFileDB {
         for (const regex of patternInfo.values()) {
             publishCount += this.publishPattern(regex, type, id, obj);
         }
-
-        // TODO: here do it per regex instead
-        //for (const client of clients.values()) {
-        //   publishCount += this.publishToClients(client, type, id, obj);
-        //}
 
         // local subscriptions
         if (
