@@ -10,7 +10,6 @@
     "@iobroker/js-controller-common-db": "file:../common-db",
     "axios": "^1.6.3",
     "chokidar": "^3.5.3",
-    "daemonize2": "^0.4.2",
     "debug": "^4.3.4",
     "deep-clone": "^3.0.3",
     "event-stream": "^4.0.1",
