@@ -4036,6 +4036,15 @@ export function getHostObject(oldObj?: ioBroker.HostObject | null): ioBroker.Hos
 }
 
 /**
+ * Get file name of the pids file
+ *
+ * @returns file name of the pids file
+ */
+export function getPidsFileName(): string {
+    return path.join(getControllerDir(), 'pids.txt');
+}
+
+/**
  * Get all ioBroker process ids
  *
  * @returns process ids or empty array if no process running
@@ -4044,7 +4053,7 @@ export async function getPids(): Promise<number[]> {
     let pids: number[] = [];
 
     try {
-        const pidsContent = await fs.readFile(path.join(getControllerDir(), 'pids.txt'), { encoding: 'utf-8' });
+        const pidsContent = await fs.readFile(getPidsFileName(), { encoding: 'utf-8' });
         pids = JSON.parse(pidsContent);
     } catch (e) {
         if (e.code !== 'ENOENT') {

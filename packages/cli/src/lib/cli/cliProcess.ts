@@ -248,6 +248,13 @@ export class CLIProcess extends CLICommand {
                 console.log('No "killall.sh" script found. Just stop.');
             }
         }
+
+        try {
+            // delete pids.txt file
+            fs.unlinkSync(tools.getPidsFileName());
+        } catch {
+            // ignore
+        }
     }
 
     /** Restarts the JS controller */
