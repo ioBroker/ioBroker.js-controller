@@ -3,9 +3,12 @@ import {
     isControllerUiUpgradeSupported,
     encrypt,
     decrypt,
-    appNameLowerCase
+    appNameLowerCase,
+    getRootDir
 } from '@iobroker/js-controller-common/tools';
 import { SUPPORTED_FEATURES, type SupportedFeature } from '@/lib/adapter/constants.js';
+import path from 'node:path';
+import fs from 'fs-extra';
 
 interface EncryptArrayOptions {
     /** The objects whose values should be en/decrypted */
@@ -97,4 +100,28 @@ export function getAdapterScopedPackageIdentifier(options: GetScopedPackageIdent
     }
 
     return `@${appNameLowerCase}-${namespace}/${internalModuleName}`;
+}
+
+/**
+ * List all packages installed in the given adapter namespace
+ *
+ * @param namespace namespace to check installed modules for
+ */
+export async function listInstalledNodeModules(namespace: string): Promise<string[]> {
+    const packJson = (await fs.readJson(path.join(getRootDir(), 'package.json'))) as {
+        dependencies: Record<string, string>;
+    };
+    const dependencies: string[] = [];
+
+    for (const [dependency, versionInfo] of Object.entries(packJson.dependencies)) {
+        if (!dependency.startsWith(`@${appNameLowerCase}-${namespace}/`)) {
+            continue;
+        }
+
+        // remove npm: and version after last @
+        const realDependencyName = versionInfo.substring(4, versionInfo.lastIndexOf('@'));
+        dependencies.push(realDependencyName);
+    }
+
+    return dependencies;
 }

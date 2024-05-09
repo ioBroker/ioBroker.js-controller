@@ -15,7 +15,8 @@ import {
     encryptArray,
     getSupportedFeatures,
     isMessageboxSupported,
-    getAdapterScopedPackageIdentifier
+    getAdapterScopedPackageIdentifier,
+    listInstalledNodeModules
 } from '@/lib/adapter/utils.js';
 // @ts-expect-error no ts file
 import extend from 'node.extend';
@@ -1254,6 +1255,13 @@ export class AdapterClass extends EventEmitter {
 
         const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
         return tools.installNodeModule(`${internalModuleName}@npm:${moduleName}@${version}`);
+    }
+
+    /**
+     * List all additional installed node modules from this adapter
+     */
+    listInstalledNodeModules(): Promise<string[]> {
+        return listInstalledNodeModules(this.namespace);
     }
 
     uninstallNodeModule(moduleName: string): Promise<CommandResult>;
