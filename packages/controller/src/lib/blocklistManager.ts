@@ -108,17 +108,18 @@ export class BlocklistManager {
     private internalIsAdapterVersionBlocked(options: InternalAdapterVersionBlockedOptions): boolean {
         const { adapterName, version, systemRepoObj, systemConfigObj } = options;
 
-        const repo = systemRepoObj.native.repositories[systemConfigObj.common.activeRepo[0]];
+        for (const activeRepoName of systemConfigObj.common.activeRepo) {
+            const repo = systemRepoObj.native.repositories[activeRepoName];
+            const adapterEntry = repo.json?.[adapterName];
 
-        const adapterEntry = repo.json?.[adapterName];
+            if (!adapterEntry || !('blockedVersions' in adapterEntry)) {
+                return false;
+            }
 
-        if (!adapterEntry || !('blockedVersions' in adapterEntry)) {
-            return false;
-        }
-
-        for (const blockedVersion of adapterEntry.blockedVersions) {
-            if (semver.satisfies(version, blockedVersion, { includePrerelease: true })) {
-                return true;
+            for (const blockedVersion of adapterEntry.blockedVersions) {
+                if (semver.satisfies(version, blockedVersion, { includePrerelease: true })) {
+                    return true;
+                }
             }
         }
 
