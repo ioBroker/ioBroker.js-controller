@@ -564,7 +564,7 @@ export interface InternalReportDeprecationOption {
     /** Version in which this warning will throw an error instead */
     version?: string;
     /** The log line to report */
-    message: string;
+    deprecationMessage: string;
 }
 
 export interface StopParameters {

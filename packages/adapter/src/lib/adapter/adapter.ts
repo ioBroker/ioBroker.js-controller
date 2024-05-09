@@ -2923,7 +2923,10 @@ export class AdapterClass extends EventEmitter {
         try {
             tools.validateGeneralObjectProperties(obj, false);
         } catch (e) {
-            await this.reportDeprecation({ message: `Object ${id} is invalid: ${e.message}`, version: '7.0.0' });
+            await this.reportDeprecation({
+                deprecationMessage: `Object ${id} is invalid: ${e.message}`,
+                version: '7.0.0'
+            });
         }
 
         try {
@@ -3145,7 +3148,7 @@ export class AdapterClass extends EventEmitter {
             tools.validateGeneralObjectProperties(options.obj, true);
         } catch (e) {
             await this.reportDeprecation({
-                message: `Object ${options.id} is invalid: ${e.message}`,
+                deprecationMessage: `Object ${options.id} is invalid: ${e.message}`,
                 version: '7.0.0'
             });
         }
@@ -11944,23 +11947,31 @@ export class AdapterClass extends EventEmitter {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
-        const { version, message } = options;
+        const { version, deprecationMessage } = options;
 
         const additionalMsg = version
             ? `This will throw an error up from js-controller version ${version}! `
             : 'Please report to the developer.';
 
-        this._logger.warn(`${this.namespaceLog} ${message} ${additionalMsg}`);
+        this._logger.warn(`${this.namespaceLog} ${deprecationMessage} ${additionalMsg}`);
 
-        if (this.reportedDeprecations.has(message)) {
+        if (this.reportedDeprecations.has(deprecationMessage)) {
             return;
         }
 
-        this.reportedDeprecations.add(message);
+        this.reportedDeprecations.add(deprecationMessage);
 
         const obj = {
             command: 'sendToSentry',
-            message: { message, instance: this.namespace },
+            message: {
+                extraInfo: {
+                    deprecationMessage,
+                    adapter: this.name,
+                    version: this.version
+                },
+                message: 'Deprecation',
+                level: 'info'
+            },
             from: `system.adapter.${this.namespace}`
         };
 

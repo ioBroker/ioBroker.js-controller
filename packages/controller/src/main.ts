@@ -3008,6 +3008,8 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'sendToSentry': {
             const message: string = msg.message.message;
+            const level: string = msg.message.level;
+            const extraInfo: Record<string, unknown> = msg.message.extraInfo;
 
             const sentryInstance = pluginHandler.getPluginInstance('sentry');
 
@@ -3017,7 +3019,20 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             }
 
             // @ts-expect-error Plugin is not well typed and SentryPlugin has no types at all currently
-            sentryInstance.getSentryObject().captureException(message);
+            const sentryObj = sentryInstance.getSentryObject();
+
+            sentryObj.withScope((scope: any) => {
+                scope.setLevel(level);
+                for (const [attr, val] of Object.entries(extraInfo)) {
+                    if (attr === 'message' || attr === 'level') {
+                        continue;
+                    }
+
+                    scope.setExtra(attr, val);
+                }
+
+                sentryObj.captureMessage(message, 'info');
+            });
             break;
         }
     }
