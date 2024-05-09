@@ -21,7 +21,7 @@ in maintenance mode, we can access invalid ids to delete them, only works with t
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/e03492751/packages/adapter/src/lib/adapter/validator.ts#L10)
+[adapter/src/lib/adapter/validator.ts:10](https://github.com/ioBroker/ioBroker.js-controller/blob/d36cddc8d/packages/adapter/src/lib/adapter/validator.ts#L10)
 
 ___
 
@@ -31,4 +31,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/adapter/validator.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/e03492751/packages/adapter/src/lib/adapter/validator.ts#L11)
+[adapter/src/lib/adapter/validator.ts:11](https://github.com/ioBroker/ioBroker.js-controller/blob/d36cddc8d/packages/adapter/src/lib/adapter/validator.ts#L11)
