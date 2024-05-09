@@ -3024,10 +3024,6 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             sentryObj.withScope((scope: any) => {
                 scope.setLevel(level);
                 for (const [attr, val] of Object.entries(extraInfo)) {
-                    if (attr === 'message' || attr === 'level') {
-                        continue;
-                    }
-
                     scope.setExtra(attr, val);
                 }
 
