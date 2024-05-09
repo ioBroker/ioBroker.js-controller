@@ -238,6 +238,14 @@ if (result.success) {
 }
 ```
 
+To list all installed node modules by your adapter:
+
+```typescript
+const installedNodeModules = await adapter.listInstalledNodeModules();
+
+adapter.log.info(`Installed modules are: ${installedNodeModules.join(', ')}`);
+```
+
 ### Per host `adapter` objects
 **Feature status:** New in 6.0.0
 
