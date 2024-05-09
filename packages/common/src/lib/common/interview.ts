@@ -43,34 +43,38 @@ export async function defaultRedisInterview<TConfig extends SharedDatabaseOption
         config.options.tls.rejectUnauthorized = false;
     }
 
-    answer = rl.question(`Please specify the path to your "${type}" redis-server "certificate" file:`);
+    do {
+        answer = rl.question(`Please specify the path to your "${type}" redis-server "certificate" file:`);
 
-    try {
-        const certContent = await fs.readFile(answer, { encoding: 'utf8' });
-        config.options.tls.cert = certContent;
-    } catch (e) {
-        console.warn(`Could not read the "certificate" file, cert will be left empty: ${e.message}`);
-        return config;
-    }
+        try {
+            const certContent = await fs.readFile(answer, { encoding: 'utf8' });
+            config.options.tls.cert = certContent;
+        } catch (e) {
+            console.warn(`Could not read the "certificate" file: ${e.message}`);
+        }
+    } while (!config.options.tls.cert);
 
-    answer = rl.question(`Please specify the path to your "${type}" redis-server "key" file:`);
+    do {
+        answer = rl.question(`Please specify the path to your "${type}" redis-server "key" file:`);
 
-    try {
-        const keyContent = await fs.readFile(answer, { encoding: 'utf8' });
-        config.options.tls.key = keyContent;
-    } catch (e) {
-        console.warn(`Could not read the "key" file, cert will be left empty: ${e.message}`);
-        return config;
-    }
+        try {
+            const keyContent = await fs.readFile(answer, { encoding: 'utf8' });
+            config.options.tls.key = keyContent;
+        } catch (e) {
+            console.warn(`Could not read the "key" file: ${e.message}`);
+        }
+    } while (!config.options.tls.key);
 
-    answer = rl.question(`Please specify the path to your "${type}" redis-server "CA" file:`);
+    do {
+        answer = rl.question(`Please specify the path to your "${type}" redis-server "CA" file:`);
 
-    try {
-        const caContent = await fs.readFile(answer, { encoding: 'utf8' });
-        config.options.tls.ca = caContent;
-    } catch (e) {
-        console.warn(`Could not read the "CA" file, cert will be left empty: ${e.message}`);
-    }
+        try {
+            const caContent = await fs.readFile(answer, { encoding: 'utf8' });
+            config.options.tls.ca = caContent;
+        } catch (e) {
+            console.warn(`Could not read the "CA" file: ${e.message}`);
+        }
+    } while (!config.options.tls.ca);
 
     return config;
 }
