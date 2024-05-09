@@ -11969,7 +11969,7 @@ export class AdapterClass extends EventEmitter {
                     adapter: this.name,
                     version: this.version
                 },
-                message: 'Deprecation',
+                message: `Deprecation ${this.name}`,
                 level: 'info'
             },
             from: `system.adapter.${this.namespace}`
