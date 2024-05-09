@@ -23,7 +23,7 @@ export async function defaultRedisInterview<TConfig extends SharedDatabaseOption
 ): Promise<TConfig> {
     const { type, config } = options;
 
-    let answer = rl.question(`Dou you use a TLS connection for your "${type}" redis-server? [y/N]:`, {
+    let answer = rl.question(`Do you use a TLS connection for your "${type}" redis-server? [y/N]:`, {
         limit: YES_NO_REGEX,
         defaultInput: 'N'
     });
@@ -34,7 +34,7 @@ export async function defaultRedisInterview<TConfig extends SharedDatabaseOption
 
     config.options.tls = {};
 
-    answer = rl.question(`Dou you use a self-signed certificate for your "${type}" redis-server? [y/N]:`, {
+    answer = rl.question(`Do you use a self-signed certificate for your "${type}" redis-server? [y/N]:`, {
         limit: YES_NO_REGEX,
         defaultInput: 'N'
     });
@@ -50,6 +50,7 @@ export async function defaultRedisInterview<TConfig extends SharedDatabaseOption
         config.options.tls.cert = certContent;
     } catch (e) {
         console.warn(`Could not read the "certificate" file, cert will be left empty: ${e.message}`);
+        return config;
     }
 
     answer = rl.question(`Please specify the path to your "${type}" redis-server "key" file:`);
@@ -59,6 +60,7 @@ export async function defaultRedisInterview<TConfig extends SharedDatabaseOption
         config.options.tls.key = keyContent;
     } catch (e) {
         console.warn(`Could not read the "key" file, cert will be left empty: ${e.message}`);
+        return config;
     }
 
     answer = rl.question(`Please specify the path to your "${type}" redis-server "CA" file:`);
