@@ -235,7 +235,7 @@ export class PacketManager {
             return [];
         }
 
-        const packagesList = res.split('\n').filter(packageInfo => packageInfo !== '');
+        const packagesList = res.split('\n').filter(packageInfo => packageInfo.trim() !== '');
         // first line is no package, just Listing...
         packagesList.shift();
 
