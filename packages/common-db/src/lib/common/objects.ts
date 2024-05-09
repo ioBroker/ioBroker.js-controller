@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import { tools } from '@iobroker/js-controller-common';
-import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
+import type { Client as ObjectsClient, interview } from '@iobroker/db-objects-redis';
 
 export async function getObjectsConstructor(): Promise<typeof ObjectsClient> {
     const config = fs.readJSONSync(tools.getConfigFileName());
@@ -63,4 +63,30 @@ export async function objectsDbHasServer(dbType: string): Promise<boolean> {
         console.error(e);
         throw new Error(`Installation error or unknown objects database type: ${dbType}`);
     }
+}
+
+interface PerformObjectsInterviewOptions {
+    /** The partial states db options */
+    config: ioBroker.ObjectsDatabaseOptions;
+    /** Db type, like redis */
+    dbType: string;
+}
+
+/**
+ * Perform the objects interview if one has been provided
+ *
+ * @param options dbtype and the partial config
+ * @returns the database options obtained by the answered questionnaire
+ */
+export async function performObjectsInterview(
+    options: PerformObjectsInterviewOptions
+): Promise<ioBroker.ObjectsDatabaseOptions> {
+    const { dbType, config } = options;
+
+    const objects = await import(`@iobroker/db-objects-${dbType}`);
+    if (!objects.interview) {
+        return config;
+    }
+
+    return objects.interview(config satisfies Parameters<typeof interview>[0]);
 }

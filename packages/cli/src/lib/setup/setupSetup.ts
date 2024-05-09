@@ -18,7 +18,9 @@ import {
     statesDbHasServer,
     isLocalStatesDbServer,
     isLocalObjectsDbServer,
-    objectsDbHasServer
+    objectsDbHasServer,
+    performObjectsInterview,
+    performStatesInterview
 } from '@iobroker/js-controller-common-db';
 import { resetDbConnect, dbConnectAsync } from '@/lib/setup/dbConnection.js';
 import { BackupRestore } from '@/lib/setup/setupBackup.js';
@@ -244,12 +246,12 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             throw new Error('Objects not set up, call setupObjects first');
         }
 
-        if (iopkg.objects && iopkg.objects?.length > 0) {
+        if (iopkg.objects?.length > 0) {
             const obj = iopkg.objects.pop()!;
 
             let existingObj: ioBroker.Object | undefined | null;
             try {
-                existingObj = await this.objects.getObjectAsync(obj._id);
+                existingObj = await this.objects.getObject(obj._id);
             } catch {
                 // ignore
             }
@@ -823,6 +825,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             }
         }
 
+        config.objects = await performObjectsInterview({ dbType: otype, config: config.objects });
+
         let oSentinelName = null;
         if (oSentinel) {
             const defaultSentinelName = originalConfig.objects.sentinelName
@@ -945,6 +949,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 return EXIT_CODES.INVALID_ARGUMENTS;
             }
         }
+
+        config.states = await performStatesInterview({ dbType: stype, config: config.states });
 
         let sSentinelName = null;
         if (sSentinel) {

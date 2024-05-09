@@ -666,7 +666,7 @@ export class AdapterClass extends EventEmitter {
     private autoSubscribe: string[] = [];
     private defaultHistory: null | string = null;
     private pluginHandler?: InstanceType<typeof PluginHandler>;
-    private _reportInterval?: null | NodeJS.Timer;
+    private _reportInterval?: null | NodeJS.Timeout;
     private getPortRunning: null | InternalGetPortOptions = null;
     private readonly _namespaceRegExp: RegExp;
     instance?: number;
