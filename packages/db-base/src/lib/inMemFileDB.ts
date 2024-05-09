@@ -577,17 +577,14 @@ export class InMemoryFileDB {
             return 0;
         }
 
-        //const clients = this.getClients();
         let publishCount = 0;
 
         const patternInfo = this.regExps.get(type);
 
-        if (!patternInfo) {
-            return 0;
-        }
-
-        for (const regex of patternInfo.values()) {
-            publishCount += this.publishPattern(regex, type, id, obj);
+        if (patternInfo) {
+            for (const regex of patternInfo.values()) {
+                publishCount += this.publishPattern(regex, type, id, obj);
+            }
         }
 
         // local subscriptions
