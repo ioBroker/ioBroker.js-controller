@@ -6,6 +6,10 @@ import type { IoBJson, DatabaseOptions, ObjectsDatabaseOptions as ObjectsDbOptio
 
 export {}; // avoids exporting AtLeastOne into the global scope
 
+declare const __brand: unique symbol;
+type Brand<B> = { [__brand]: B };
+type Branded<T, B> = T & Brand<B>;
+
 // Requires at least one of the properties of T to be given, whether it's optional or not
 type AtLeastOne<T, Req = { [K in keyof T]-?: T[K] }, Opt = { [K in keyof T]+?: T[K] }> = {
     [K in keyof Req]: Omit<Opt, K> & { [P in K]: Req[P] };
@@ -501,8 +505,8 @@ declare global {
 
         type GetSessionCallback = (session: Session) => void;
 
-        type Timeout = number & { __ioBrokerBrand: 'Timeout' };
-        type Interval = number & { __ioBrokerBrand: 'Interval' };
+        type Timeout = Branded<number, 'Timeout'> | null; // or null to not allow native clearTimeout
+        type Interval = Branded<number, 'Interval'> | null; // or null to not allow native clearInterval
 
         /**
          * The ioBroker global config

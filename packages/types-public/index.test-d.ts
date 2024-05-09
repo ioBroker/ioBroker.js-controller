@@ -1,3 +1,5 @@
+import { clearTimeout } from 'node:timers';
+
 declare function assertNever(val: never): never;
 
 // Let the tests begin
