@@ -21,7 +21,7 @@ If the adapter has accepted the client subscription
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:143](https://github.com/ioBroker/ioBroker.js-controller/blob/31d1cb492/packages/adapter/src/lib/_Types.ts#L143)
+[adapter/src/lib/_Types.ts:143](https://github.com/ioBroker/ioBroker.js-controller/blob/d36cddc8d/packages/adapter/src/lib/_Types.ts#L143)
 
 ___
 
@@ -33,4 +33,4 @@ Optional heartbeat, if set, the client needs to re-subscribe every heartbeat int
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:145](https://github.com/ioBroker/ioBroker.js-controller/blob/31d1cb492/packages/adapter/src/lib/_Types.ts#L145)
+[adapter/src/lib/_Types.ts:145](https://github.com/ioBroker/ioBroker.js-controller/blob/d36cddc8d/packages/adapter/src/lib/_Types.ts#L145)

@@ -1,7 +1,7 @@
 {
   "name": "iobroker.js-controller",
   "type": "module",
-  "version": "5.0.20-alpha.0-20240504-31d1cb492",
+  "version": "5.0.20-alpha.0-20240508-d36cddc8d",
   "engines": {
     "node": ">=18.0.0"
   },
@@ -24,7 +24,6 @@
     "@iobroker/plugin-sentry": "~1.2.1",
     "axios": "^1.6.3",
     "cron-parser": "^4.9.0",
-    "daemonize2": "^0.4.2",
     "debug": "^4.3.4",
     "decache": "^4.6.1",
     "deep-clone": "^3.0.3",
