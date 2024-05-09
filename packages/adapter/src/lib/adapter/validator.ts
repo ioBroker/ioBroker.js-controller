@@ -8,6 +8,7 @@ type Pattern = string | string[];
 export interface ValidateIdOptions {
     /** in maintenance mode, we can access invalid ids to delete them, only works with the admin user */
     maintenance?: boolean;
+    /** User used to check for access rights */
     user?: string;
 }
 
