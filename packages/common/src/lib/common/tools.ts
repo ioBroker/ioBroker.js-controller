@@ -4035,4 +4035,43 @@ export function getHostObject(oldObj?: ioBroker.HostObject | null): ioBroker.Hos
     return newObj;
 }
 
+/**
+ * Get file name of the pids file
+ *
+ * @returns file name of the pids file
+ */
+export function getPidsFileName(): string {
+    return path.join(getControllerDir(), 'pids.txt');
+}
+
+/**
+ * Get all ioBroker process ids
+ *
+ * @returns process ids or empty array if no process running
+ */
+export async function getPids(): Promise<number[]> {
+    let pids: number[] = [];
+
+    try {
+        const pidsContent = await fs.readFile(getPidsFileName(), { encoding: 'utf-8' });
+        pids = JSON.parse(pidsContent);
+    } catch (e) {
+        if (e.code !== 'ENOENT') {
+            throw e;
+        }
+    }
+
+    return pids;
+}
+
+/**
+ * Get the controller pid
+ *
+ * @returns pid if running else undefined
+ */
+export async function getControllerPid(): Promise<number | undefined> {
+    const pids = await getPids();
+    return pids.pop();
+}
+
 export * from '@/lib/common/maybeCallback.js';
