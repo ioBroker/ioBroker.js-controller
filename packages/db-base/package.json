@@ -1,7 +1,7 @@
 {
   "name": "@iobroker/db-base",
   "type": "module",
-  "version": "5.0.20-alpha.0-20240502-e03492751",
+  "version": "5.0.20-alpha.0-20240510-819f1976e",
   "engines": {
     "node": ">=18.0.0"
   },
@@ -27,7 +27,7 @@
     "url": "https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/db-base"
   },
   "scripts": {
-    "build": "tsc -b tsconfig.build.json",
+    "build": "tsc -b tsconfig.build.json && tsc-alias",
     "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/"
   },
   "main": "build/cjs/index.js",

@@ -1,886 +1,1187 @@
 {
-    "system.certificates": {
-        "_id": "system.certificates",
-        "type": "config",
-        "common": {
-            "name": "System certificates"
-        },
-        "native": {
-            "certificates": {
-                "defaultPrivate": "-----BEGIN RSA PRIVATE KEY-----\r\nMIICXQIBAAKBgQDQ6dVCuqpl0hdECy35tQP7n/FKAK6Yz8z04F3g8NtkLrJ3IR1+\r\nNo0ijLE2Ka5ONZV2WlRzybWomAvOGnfbSH7NG/wkQ9saBb15bAU03RLeyFmDc5Rz\r\newgjoQzJwXNWIIbqdiUWUqhy3IOzfoRrNprpDm5mv2pwEUxOuF8mB62vgQIDAQAB\r\nAoGBAKmS5DQB6IY1fgURPgROVilMrkJvQ0luguLRq+IGH062SM5B5vqntO+yW7Wn\r\nJ4D8JZGnyJ0jwXxTzmFBQsCPm7vQ3VkH1ir4JhlIWJ11Z3p3XMNWNJ5mrDAyEupn\r\nShCFQxW9EDL7efVFztqgyiWw5/uxV4AJQyBgtsF4PijmgT8xAkEA+SlmVXcuzIPy\r\nZTfNXRCWHvzZM9EaRVQXNSYqMHXLRx412gw42ihk/+GIYaw7y5ObjlMosfzzCyot\r\naMMA/KT1TwJBANalpnrDE0BhYuv/ccnxJv/pZ6aJZ4P/gyRV02UUc0WTAGnxU4el\r\nJPtREWCyCjaVq26S7fh4DGotcDhDEkpzei8CQA5aGyHrJo/zPcAk0bh9nxgT2nMI\r\npWm+6UNPenimIFptXA6+S3wNfZvbot51bFBSpVAybBKsjldjS5BQQztKSTMCQQCe\r\nMhYBkjZlE6Fhh7GogOgaYj53GfvF6BISPIMBk1HlrBL5AdhrN4aLBtOE7ZLjaemg\r\nI//pSSj1NCnp/VzErFkXAkA/6q2Th8M4Z2LzL46GeRavLXFd1IQmFULWZAkx5afk\r\n8/anbz31nnA9CFu+oR/jTp7urYsIUQ3y6ksJwGGKHVlQ\r\n-----END RSA PRIVATE KEY-----\r\n",
-                "defaultPublic": "-----BEGIN CERTIFICATE-----\r\nMIICfzCCAegCCQC1y0d8DNip4TANBgkqhkiG9w0BAQUFADCBgzELMAkGA1UEBhMC\r\nREUxGTAXBgNVBAgMEEJhZGVuV3VlcnRlbWJlcmcxEjAQBgNVBAcMCUthcmxzcnVo\r\nZTERMA8GA1UECgwIaW9Ccm9rZXIxEDAOBgNVBAMMB0JsdWVmb3gxIDAeBgkqhkiG\r\n9w0BCQEWEWRvZ2Fmb3hAZ21haWwuY29tMB4XDTE1MDQyMjIwMjgwM1oXDTE2MDQy\r\nMTIwMjgwM1owgYMxCzAJBgNVBAYTAkRFMRkwFwYDVQQIDBBCYWRlbld1ZXJ0ZW1i\r\nZXJnMRIwEAYDVQQHDAlLYXJsc3J1aGUxETAPBgNVBAoMCGlvQnJva2VyMRAwDgYD\r\nVQQDDAdCbHVlZm94MSAwHgYJKoZIhvcNAQkBFhFkb2dhZm94QGdtYWlsLmNvbTCB\r\nnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEA0OnVQrqqZdIXRAst+bUD+5/xSgCu\r\nmM/M9OBd4PDbZC6ydyEdfjaNIoyxNimuTjWVdlpUc8m1qJgLzhp320h+zRv8JEPb\r\nGgW9eWwFNN0S3shZg3OUc3sII6EMycFzViCG6nYlFlKoctyDs36Eazaa6Q5uZr9q\r\ncBFMTrhfJgetr4ECAwEAATANBgkqhkiG9w0BAQUFAAOBgQBgp4dhA9HulN7/rh4H\r\n+e+hAYqjWvFpdNqwcWAyopBig9B9WL3OIkzpgTuBmH76JxzJCuZJkjO4HLGzQ3KF\r\nsFU0lvqqoz9osgYmXe1K0fBjIcm/RFazGTHVxv+UgVqQ3KldrlkvR3T2VIRlT5hI\r\n0Y1m6J3YZDMF7D6uc1jrsYHkMQ==\r\n-----END CERTIFICATE-----\r\n"
-            }
-        },
-        "acl": {
-            "owner": "system.user.admin",
-            "ownerGroup": "system.group.administrator",
-            "object": 1536
-        }
+  "system.certificates": {
+    "_id": "system.certificates",
+    "type": "config",
+    "common": {
+      "name": "System certificates"
     },
-    "system.repositories": {
-        "_id": "system.repositories",
-        "type": "config",
-        "common": {
-            "name": "System repositories"
-        },
-        "native": {
-            "repositories": {
-                "stable": {
-                    "link": "http://download.iobroker.net/sources-dist.json",
-                    "json": null
-                },
-                "beta": {
-                    "link": "http://download.iobroker.net/sources-dist-latest.json",
-                    "json": null
-                },
-                "sources": {
-                    "link": "conf/sources-dist.json",
-                    "json": null
-                },
-                "online": {
-                    "link": "https://raw.githubusercontent.com/ioBroker/ioBroker.repositories/master/sources-dist.json",
-                    "json": null
-                }
-            }
-        },
-        "acl": {
-            "owner": "system.user.admin",
-            "ownerGroup": "system.group.administrator",
-            "object": 1604
-        }
+    "native": {
+      "certificates": {
+        "defaultPrivate": "-----BEGIN RSA PRIVATE KEY-----\r\nMIICXQIBAAKBgQDQ6dVCuqpl0hdECy35tQP7n/FKAK6Yz8z04F3g8NtkLrJ3IR1+\r\nNo0ijLE2Ka5ONZV2WlRzybWomAvOGnfbSH7NG/wkQ9saBb15bAU03RLeyFmDc5Rz\r\newgjoQzJwXNWIIbqdiUWUqhy3IOzfoRrNprpDm5mv2pwEUxOuF8mB62vgQIDAQAB\r\nAoGBAKmS5DQB6IY1fgURPgROVilMrkJvQ0luguLRq+IGH062SM5B5vqntO+yW7Wn\r\nJ4D8JZGnyJ0jwXxTzmFBQsCPm7vQ3VkH1ir4JhlIWJ11Z3p3XMNWNJ5mrDAyEupn\r\nShCFQxW9EDL7efVFztqgyiWw5/uxV4AJQyBgtsF4PijmgT8xAkEA+SlmVXcuzIPy\r\nZTfNXRCWHvzZM9EaRVQXNSYqMHXLRx412gw42ihk/+GIYaw7y5ObjlMosfzzCyot\r\naMMA/KT1TwJBANalpnrDE0BhYuv/ccnxJv/pZ6aJZ4P/gyRV02UUc0WTAGnxU4el\r\nJPtREWCyCjaVq26S7fh4DGotcDhDEkpzei8CQA5aGyHrJo/zPcAk0bh9nxgT2nMI\r\npWm+6UNPenimIFptXA6+S3wNfZvbot51bFBSpVAybBKsjldjS5BQQztKSTMCQQCe\r\nMhYBkjZlE6Fhh7GogOgaYj53GfvF6BISPIMBk1HlrBL5AdhrN4aLBtOE7ZLjaemg\r\nI//pSSj1NCnp/VzErFkXAkA/6q2Th8M4Z2LzL46GeRavLXFd1IQmFULWZAkx5afk\r\n8/anbz31nnA9CFu+oR/jTp7urYsIUQ3y6ksJwGGKHVlQ\r\n-----END RSA PRIVATE KEY-----\r\n",
+        "defaultPublic": "-----BEGIN CERTIFICATE-----\r\nMIICfzCCAegCCQC1y0d8DNip4TANBgkqhkiG9w0BAQUFADCBgzELMAkGA1UEBhMC\r\nREUxGTAXBgNVBAgMEEJhZGVuV3VlcnRlbWJlcmcxEjAQBgNVBAcMCUthcmxzcnVo\r\nZTERMA8GA1UECgwIaW9Ccm9rZXIxEDAOBgNVBAMMB0JsdWVmb3gxIDAeBgkqhkiG\r\n9w0BCQEWEWRvZ2Fmb3hAZ21haWwuY29tMB4XDTE1MDQyMjIwMjgwM1oXDTE2MDQy\r\nMTIwMjgwM1owgYMxCzAJBgNVBAYTAkRFMRkwFwYDVQQIDBBCYWRlbld1ZXJ0ZW1i\r\nZXJnMRIwEAYDVQQHDAlLYXJsc3J1aGUxETAPBgNVBAoMCGlvQnJva2VyMRAwDgYD\r\nVQQDDAdCbHVlZm94MSAwHgYJKoZIhvcNAQkBFhFkb2dhZm94QGdtYWlsLmNvbTCB\r\nnzANBgkqhkiG9w0BAQEFAAOBjQAwgYkCgYEA0OnVQrqqZdIXRAst+bUD+5/xSgCu\r\nmM/M9OBd4PDbZC6ydyEdfjaNIoyxNimuTjWVdlpUc8m1qJgLzhp320h+zRv8JEPb\r\nGgW9eWwFNN0S3shZg3OUc3sII6EMycFzViCG6nYlFlKoctyDs36Eazaa6Q5uZr9q\r\ncBFMTrhfJgetr4ECAwEAATANBgkqhkiG9w0BAQUFAAOBgQBgp4dhA9HulN7/rh4H\r\n+e+hAYqjWvFpdNqwcWAyopBig9B9WL3OIkzpgTuBmH76JxzJCuZJkjO4HLGzQ3KF\r\nsFU0lvqqoz9osgYmXe1K0fBjIcm/RFazGTHVxv+UgVqQ3KldrlkvR3T2VIRlT5hI\r\n0Y1m6J3YZDMF7D6uc1jrsYHkMQ==\r\n-----END CERTIFICATE-----\r\n"
+      }
     },
-    "system.config": {
-        "_id": "system.config",
-        "type": "config",
-        "common": {
-            "name": "System configuration",
-            "language": "",
-            "tempUnit": "°C",
-            "currency": "€",
-            "dateFormat": "DD.MM.YYYY",
-            "isFloatComma": true,
-            "licenseConfirmed": false,
-            "activeRepo": ["stable"],
-            "diag": "extended",
-            "defaultHistory": "",
-            "defaultNewAcl": {
-                "object": 1636,
-                "state": 1636,
-                "file": 1636,
-                "owner": "system.user.governor",
-                "ownerGroup": "system.group.senatorGroup"
-            }
-        },
-        "native": {
-            "secret": "05fe0b4701125b01d6de004d2bc054e569a4f615e7d389b7"
-        },
-        "acl": {
-            "owner": "system.user.admin",
-            "ownerGroup": "system.group.administrator",
-            "object": 1604
-        }
-    },
-    "system.licenses": {
-        "_id": "system.licenses",
-        "type": "config",
-        "common": {
-            "name": "Licenses from iobroker.net"
-        },
-        "native": {
-            "login": "",
-            "password": "",
-            "licenses": [],
-            "readTime": 0
-        },
-        "acl": {
-            "owner": "system.user.admin",
-            "ownerGroup": "system.group.administrator",
-            "object": 1604
-        }
-    },
-    "enum.rooms": {
-        "_id": "enum.rooms",
-        "common": {
-            "name": "Rooms",
-            "desc": {
-                "en": "List of the rooms",
-                "de": "Die Liste von Räumen",
-                "ru": "Список комнат"
-            },
-            "object-non-deletable": true
-        },
-        "type": "enum",
-        "acl": {
-            "owner": "system.user.admin",
-            "ownerGroup": "system.group.administrator",
-            "object": 1911
-        }
-    },
-    "enum.rooms.kitchen": {
-        "_id": "enum.rooms.kitchen",
-        "type": "enum",
-        "common": {
-            "name": {
-                "en": "Kitchen",
-                "ru": "Кухня",
-                "de": "Küche",
-                "fr": "Cuisine",
-                "it": "Cucina",
-                "nl": "Keuken",
-                "pl": "Kuchnia",
-                "pt": "Cozinha",
-                "es": "Cocina",
-                "zh-cn": "厨房"
-            },
-            "color": "",
-            "desc": "",
-            "members": []
-        },
-        "native": {},
-        "acl": {
-            "object": 1636,
-            "owner": "system.user.admin",
-            "ownerGroup": "system.group.administrator"
-        }
-    },
-    "system.group.user": {
-        "_id": "system.group.user",
-        "type": "group",
-        "common": {
-            "name": "User",
-            "description": {
-                "en": "Cannot modify anything"
-            },
-            "members": [],
-            "dontDelete": true,
-            "url": "https://github.com/ioBroker/ioBroker.js-controller/archive/master.zip",
-            "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/io-package.json",
-            "acl": {
-                "object": {
-                    "list": true,
-                    "read": true,
-                    "write": false,
-                    "delete": false
-                },
-                "state": {
-                    "list": true,
-                    "read": true,
-                    "write": true,
-                    "create": true,
-                    "delete": false
-                },
-                "users": {
-                    "list": true,
-                    "read": true,
-                    "write": false,
-                    "create": false,
-                    "delete": false
-                },
-                "other": {
-                    "execute": false,
-                    "http": true,
-                    "sendto": false
-                },
-                "file": {
-                    "list": true,
-                    "read": true,
-                    "write": false,
-                    "create": false,
-                    "delete": false
-                }
-            }
-        },
-        "acl": {
-            "owner": "system.user.admin",
-            "ownerGroup": "system.group.administrator",
-            "object": 1604
-        }
-    },
-    "system.group.senatorGroup": {
-        "type": "group",
-        "common": {
-            "name": {
-                "en": "User",
-                "de": "Benutzer",
-                "ru": "Пользователь",
-                "pt": "Do utilizador",
-                "nl": "Gebruiker",
-                "fr": "Utilisateur",
-                "it": "Utente",
-                "es": "Usuario",
-                "pl": "Użytkownik",
-                "zh-cn": "用户"
-            },
-            "description": {
-                "en": "Cannot modify everything",
-                "de": "Kann nicht alles ändern",
-                "ru": "Не может изменять все",
-                "pt": "Não é possível modificar tudo",
-                "nl": "Kan niet alles wijzigen",
-                "fr": "Impossible de tout modifier",
-                "it": "Non è possibile modificare tutto",
-                "es": "No se puede modificar todo",
-                "pl": "Nie można modyfikować wszystkiego",
-                "zh-cn": "用户无法修改所有内容"
-            },
-            "members": [],
-            "url": "https://github.com/ioBroker/ioBroker.js-controller/archive/master.zip",
-            "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/io-package.json",
-            "acl": {
-                "object": {
-                    "list": true,
-                    "read": true,
-                    "write": false,
-                    "delete": false
-                },
-                "state": {
-                    "list": true,
-                    "read": true,
-                    "write": true,
-                    "create": true,
-                    "delete": false
-                },
-                "users": {
-                    "list": true,
-                    "read": true,
-                    "write": false,
-                    "create": false,
-                    "delete": false
-                },
-                "other": {
-                    "execute": false,
-                    "http": true,
-                    "sendto": false
-                },
-                "file": {
-                    "list": true,
-                    "read": true,
-                    "write": false,
-                    "create": false,
-                    "delete": false
-                }
-            }
-        },
-        "acl": {
-            "owner": "system.user.admin",
-            "ownerGroup": "system.group.administrator",
-            "object": 1604
-        },
-        "from": "system.host.moritz-ThinkPad-E470.cli",
-        "ts": 1590391132049,
-        "user": "system.user.admin",
-        "native": {}
-    },
-    "system.group.administrator": {
-        "_id": "system.group.administrator",
-        "type": "group",
-        "common": {
-            "name": "Administrator",
-            "description": {
-                "en": "Can do everything with ioBroker"
-            },
-            "members": [
-                "system.user.admin",
-                "system.user.queen"
-            ],
-            "dontDelete": true,
-            "acl": {
-                "object": {
-                    "list": true,
-                    "read": true,
-                    "write": true,
-                    "delete": true
-                },
-                "state": {
-                    "list": true,
-                    "read": true,
-                    "write": true,
-                    "create": true,
-                    "delete": true
-                },
-                "users": {
-                    "list": true,
-                    "read": true,
-                    "write": true,
-                    "create": true,
-                    "delete": true
-                },
-                "other": {
-                    "execute": true,
-                    "http": true,
-                    "sendto": true
-                },
-                "file": {
-                    "list": true,
-                    "read": true,
-                    "write": true,
-                    "create": true,
-                    "delete": true
-                }
-            }
-        },
-        "acl": {
-            "owner": "system.user.admin",
-            "ownerGroup": "system.group.administrator",
-            "object": 1604
-        }
-    },
-    "_design/system": {
-        "_id": "_design/system",
-        "language": "javascript",
-        "views": {
-            "host": {
-                "map": "function(doc) { if (doc.type=='host') emit(doc._id, doc) }"
-            },
-            "adapter": {
-                "map": "function(doc) { if (doc.type=='adapter') emit(doc._id, doc) }"
-            },
-            "instance": {
-                "map": "function(doc) { if (doc.type=='instance') emit(doc._id, doc) }"
-            },
-            "instanceStats": {
-                "map": "function(doc) { if (doc.type=='instance') emit(doc._id, parseInt(doc._id.split('.').pop(), 10)) }",
-                "reduce": "_stats"
-            },
-            "meta": {
-                "map": "function(doc) { if (doc.type=='meta') emit(doc._id, doc) }"
-            },
-            "chart": {
-                "map": "function(doc) { if (doc.type=='chart') emit(doc._id, doc) }"
-            },
-            "device": {
-                "map": "function(doc) { if (doc.type=='device') emit(doc._id, doc) }"
-            },
-            "channel": {
-                "map": "function(doc) { if (doc.type=='channel') emit(doc._id, doc) }"
-            },
-            "state": {
-                "map": "function(doc) { if (doc.type=='state') emit(doc._id, doc) }"
-            },
-            "folder": {
-                "map": "function(doc) { if (doc.type === 'folder') emit(doc._id, doc) }"
-            },
-            "enum": {
-                "map": "function(doc) { if (doc.type=='enum') emit(doc._id, doc) }"
-            },
-            "script": {
-                "map": "function(doc) { if (doc.type=='script') emit(doc._id, doc) }"
-            },
-            "group": {
-                "map": "function(doc) { if (doc.type=='group') emit(doc.common.name, doc) }"
-            },
-            "user": {
-                "map": "function(doc) { if (doc.type=='user') emit(doc.common.name, doc) }"
-            },
-            "config": {
-                "map": "function(doc) { if (doc.type=='config') emit(doc.common.name, doc) }"
-            },
-            "custom": {
-                "map": "function(doc) { doc.type === 'state' && doc.common && doc.common.custom && emit(doc._id, doc.common.custom) }"
-            }
-        },
-        "acl": {
-            "owner": "system.user.admin",
-            "ownerGroup": "system.group.administrator",
-            "object": 1092
-        }
-    },
-    "system.user.governor": {
-        "common": {
-            "name": "test",
-            "icon": "",
-            "color": false,
-            "desc": "",
-            "enabled": true,
-            "password": "pbkdf2$10000$41042c09409f8c13128bfa640790e59cb22aaf28f56af6564f2da453e7e0882bf78e439818f209eac1edc04486472c9c5dc47b3c2712edc09ed5b0e482f67d3a2315910b9b998d458b106566942c8291c72c36f8fa0ff6d738a9430a833ed79740e4853e7bb2d6cde32b86db6a56136010c8daf866c18f0e8b22ef822f8c1e1017c775f9c7e777175762a1747082255fdbfc0af191268b2c2dc304fca2c42f5277c752a1929b8363a4751c019cfe0e747f5c935a9aae841861e6a50768ec8aed44dd99013f158d3d9b75bf19854664f10dd617bd87f08c90b67de9da8bbd73590b6aec4cf76657b974e058a5ba9f55b14c9d2c779068e3f1c2d0d9a0c3e7a1d9$94244cb339a17d981c21dc3fdd450fe8"
-        },
-        "type": "user",
-        "native": {},
-        "from": "system.adapter.admin.0",
-        "user": "system.user.admin",
-        "ts": 1607426917204,
-        "acl": {
-            "object": 1636,
-            "owner": "system.user.admin",
-            "ownerGroup": "system.group.user"
-        },
-        "_id": "system.user.governor"
-    },
-    "system.user.queen": {
-        "common": {
-            "name": "Queen",
-            "icon": "",
-            "color": false,
-            "desc": "As the mightiest chess figure, the queen has the same rights as admin by belonging to the administrator group",
-            "enabled": true,
-            "password": "pbkdf2$10000$41042c09409f8c13128bfa640790e59cb22aaf28f56af6564f2da453e7e0882bf78e439818f209eac1edc04486472c9c5dc47b3c2712edc09ed5b0e482f67d3a2315910b9b998d458b106566942c8291c72c36f8fa0ff6d738a9430a833ed79740e4853e7bb2d6cde32b86db6a56136010c8daf866c18f0e8b22ef822f8c1e1017c775f9c7e777175762a1747082255fdbfc0af191268b2c2dc304fca2c42f5277c752a1929b8363a4751c019cfe0e747f5c935a9aae841861e6a50768ec8aed44dd99013f158d3d9b75bf19854664f10dd617bd87f08c90b67de9da8bbd73590b6aec4cf76657b974e058a5ba9f55b14c9d2c779068e3f1c2d0d9a0c3e7a1d9$94244cb339a17d981c21dc3fdd450fe8"
-        },
-        "type": "user",
-        "native": {},
-        "from": "system.adapter.admin.0",
-        "user": "system.user.admin",
-        "ts": 1607426917204,
-        "acl": {
-            "object": 1636,
-            "owner": "system.user.admin",
-            "ownerGroup": "system.group.administrator"
-        },
-        "_id": "system.user.queen"
-    },
-    "system.user.admin": {
-        "type": "user",
-        "common": {
-            "name": "admin",
-            "password": "pbkdf2$10000$4d792929abf08d3b3db88b953b50cce3ad072508efac7557f143f753abad064b9ae302f4b4fb7bbbffed81988d16d5d0e16035eeb37baaf4469d4b5bfcf1f40f$5f20563568196add659adc14474732e1",
-            "dontDelete": true,
-            "enabled": true
-        },
-        "native": {
-        },
-        "_id": "system.user.admin"
-    },
-    "system.meta.uuid": {
-        "type": "meta",
-        "common": {
-            "name": "uuid",
-            "type": "uuid"
-        },
-        "native": {
-            "uuid": "f29a09f1-d724-6bce-04a0-f65bf12ac300"
-        },
-        "_id": "system.meta.uuid"
-    },
-    "admin.admin": {
-        "type": "meta",
-        "common": {
-            "name": "admin",
-            "type": "admin"
-        },
-        "native": {},
-        "_id": "admin.admin"
-    },
-    "system.adapter.admin": {
-        "_id": "system.adapter.admin",
-        "type": "adapter",
-        "common": {
-            "name": "admin",
-            "version": "0.7.4",
-            "title": "ioBroker Admin",
-            "desc": {
-                "en": "Opens a webserver for the ioBroker admin UI",
-                "de": "Stellt Webserver für 'ioBroker Admin UI' zur Verfügung",
-                "ru": "Запускает веб сервер с 'ioBroker admin UI' для удобной настройки через веб интерфейс"
-            },
-            "mode": "daemon",
-            "platform": "Javascript/Node.js",
-            "loglevel": "info",
-            "icon": "admin.png",
-            "messagebox": true,
-            "supportedMessages": {
-                "custom": true
-            },
-            "enabled": true,
-            "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/admin/admin.png",
-            "keywords": [
-                "setup",
-                "config",
-                "update",
-                "upgrade",
-                "system",
-                "konfiguration",
-                "administration",
-                "einrichtung",
-                "wartung"
-            ],
-            "readme": "https://github.com/ioBroker/ioBroker.admin/blob/master/README.md",
-            "authors": [
-                "hobbyquaker <hq@ccu.io>",
-                "bluefox <bluefox@ccu.io>"
-            ],
-            "dependencies": [
-                {
-                    "js-controller": ">=0.8.0"
-                }
-            ],
-            "type": "common adapters",
-            "license": "MIT",
-            "logTransporter": true,
-            "stopBeforeUpdate": true,
-            "wwwDontUpload": true,
-            "localLink": "%protocol%://%ip%:%port%",
-            "installedVersion": "0.7.4"
-        },
-        "native": {
-            "port": 8081,
-            "auth": false,
-            "secure": false,
-            "bind": "0.0.0.0",
-            "cache": false,
-            "certPublic": "",
-            "certPrivate": "",
-            "ttl": 3600,
-            "defaultUser": "admin"
-        }
-    },
-    "system.adapter.admin.upload": {
-        "_id": "system.adapter.admin.upload",
-        "type": "state",
-        "common": {
-            "name": "admin.upload",
-            "type": "number",
-            "role": "indicator.state",
-            "unit": "%",
-            "def": 0,
-            "desc": "Upload process indicator"
-        },
-        "native": {}
-    },
-    "system.adapter.admin.0.uptime": {
-        "_id": "system.adapter.admin.0.uptime",
-        "type": "state",
-        "common": {
-            "name": "admin.0.uptime",
-            "type": "number",
-            "role": "indicator.state",
-            "unit": "seconds"
-        },
-        "native": {}
-    },
-    "system.adapter.admin.0.memRss": {
-        "_id": "system.adapter.admin.0.memRss",
-        "type": "state",
-        "common": {
-            "name": "admin.0.memRss",
-            "desc": "Resident set size",
-            "type": "number",
-            "role": "indicator.state",
-            "unit": "MB"
-        },
-        "native": {}
-    },
-    "system.adapter.admin.0.memHeapTotal": {
-        "_id": "system.adapter.admin.0.memHeapTotal",
-        "type": "state",
-        "common": {
-            "name": "admin.0.memHeapTotal",
-            "type": "number",
-            "role": "indicator.state",
-            "unit": "MB"
-        },
-        "native": {}
-    },
-    "system.adapter.admin.0.memHeapUsed": {
-        "_id": "system.adapter.admin.0.memHeapUsed",
-        "type": "state",
-        "common": {
-            "name": "admin.0.memHeapUsed",
-            "type": "number",
-            "role": "indicator.state",
-            "unit": "MB"
-        },
-        "native": {}
-    },
-    "system.adapter.admin.0.connected": {
-        "_id": "system.adapter.admin.0.connected",
-        "type": "state",
-        "common": {
-            "name": "admin.0.connected",
-            "type": "boolean",
-            "role": "indicator.state"
-        },
-        "native": {}
-    },
-    "system.adapter.admin.0.alive": {
-        "_id": "system.adapter.admin.0.alive",
-        "type": "state",
-        "common": {
-            "name": "admin.0.alive",
-            "type": "boolean",
-            "role": "indicator.state"
-        },
-        "native": {}
-    },
-    "system.adapter.admin.0": {
-        "_id": "system.adapter.admin.0",
-        "type": "instance",
-        "common": {
-            "name": "admin",
-            "version": "0.7.4",
-            "title": "ioBroker Admin",
-            "desc": {
-                "en": "Opens a webserver for the ioBroker admin UI",
-                "de": "Stellt Webserver für 'ioBroker Admin UI' zur Verfügung",
-                "ru": "Запускает веб сервер с 'ioBroker admin UI' для удобной настройки через веб интерфейс"
-            },
-            "mode": "daemon",
-            "platform": "Javascript/Node.js",
-            "loglevel": "info",
-            "icon": "admin.png",
-            "messagebox": true,
-            "enabled": false,
-            "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/admin/admin.png",
-            "keywords": [
-                "setup",
-                "config",
-                "update",
-                "upgrade",
-                "system",
-                "konfiguration",
-                "administration",
-                "einrichtung",
-                "wartung"
-            ],
-            "readme": "https://github.com/ioBroker/ioBroker.admin/blob/master/README.md",
-            "authors": [
-                "hobbyquaker <hq@ccu.io>",
-                "bluefox <bluefox@ccu.io>"
-            ],
-            "dependencies": [
-                {
-                    "js-controller": ">=0.8.0"
-                }
-            ],
-            "type": "common adapters",
-            "license": "MIT",
-            "logTransporter": true,
-            "stopBeforeUpdate": true,
-            "wwwDontUpload": true,
-            "localLink": "%protocol%://%ip%:%port%",
-            "installedVersion": "0.7.4",
-            "host": "TR_TDW_DEV"
-        },
-        "native": {
-            "port": 8081,
-            "auth": false,
-            "secure": false,
-            "bind": "0.0.0.0",
-            "cache": false,
-            "certPublic": "",
-            "certPrivate": "",
-            "ttl": 3600,
-            "defaultUser": "admin"
-        }
-    },
-    "test.admin": {
-        "type": "meta",
-        "common": {
-            "name": "admin",
-            "type": "admin"
-        },
-        "native": {
-        },
-        "_id": "test.admin"
-    },
-    "system.adapter.test.upload": {
-        "_id": "system.adapter.test.upload",
-        "type": "state",
-        "common": {
-            "name": "test.upload",
-            "type": "number",
-            "role": "indicator.state",
-            "unit": "%",
-            "def": 0,
-            "desc": "Upload process indicator"
-        },
-        "native": {}
-    },
-    "system.adapter.test": {
-        "common": {
-            "name": "test",
-            "version": "0.1.0",
-            "title": "test Adapter",
-            "desc": {
-                "en": "This adapter connect",
-                "de": "This adapter connect",
-                "ru": "This adapter connect"
-            },
-            "license": "MIT",
-            "platform": "Javascript/Node.js",
-            "mode": "daemon",
-            "loglevel": "info",
-            "readme": "https://github.com/ioBroker/ioBroker.test/blob/master/README.md",
-            "icon": "test.png",
-            "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.test/master/admin/test.png",
-            "type": "communication",
-            "preserveSettings": "smartName",
-            "enabled": false,
-            "messagebox": true,
-            "stopBeforeUpdate": true,
-            "news": {
-                "0.6.2": {
-                    "en": "add option Place function in names first",
-                    "de": "Option hinzugefügt: Platziere Funktionsnamen vorne",
-                    "ru": "Добавлена опция: Имена функций в начале"
-                },
-                "0.6.1": {
-                    "en": "fix reconnect",
-                    "de": "Korrigiere Wiederverbindung",
-                    "ru": "Исправлено распознавание дисконнекта"
-                }
-            },
-            "authors": [
-                "bluefox <dogafox@gmail.com>"
-            ],
-            "keywords": [
-                "web",
-                "test",
-                "communication"
-            ],
-            "dependencies": [
-                {
-                    "js-controller": ">=0.9.0"
-                }
-            ],
-            "config": {
-                "width ": 1224,
-                "height": 520
-            }
-        },
-        "native": {
-            "paramA": "",
-            "paramB": ""
-        },
-        "_id": "system.adapter.test",
-        "type": "adapter"
-    },
-    "system.adapter.test.0.uptime": {
-        "_id": "system.adapter.test.0.uptime",
-        "type": "state",
-        "common": {
-            "name": "test.0.uptime",
-            "type": "number",
-            "role": "indicator.state",
-            "unit": "seconds"
-        },
-        "native": {
-        }
-    },
-    "system.adapter.test.0.memRss": {
-        "_id": "system.adapter.test.0.memRss",
-        "type": "state",
-        "common": {
-            "name": "test.0.memRss",
-            "desc": "Resident set size",
-            "type": "number",
-            "role": "indicator.state",
-            "unit": "MB"
-        },
-        "native": {}
-    },
-    "system.adapter.test.0.memHeapTotal": {
-        "_id": "system.adapter.test.0.memHeapTotal",
-        "type": "state",
-        "common": {
-            "name": "test.0.memHeapTotal",
-            "type": "number",
-            "role": "indicator.state",
-            "unit": "MB"
-        },
-        "native": {
-        }
-    },
-    "system.adapter.test.0.memHeapUsed": {
-        "_id": "system.adapter.test.0.memHeapUsed",
-        "type": "state",
-        "common": {
-            "name": "test.0.memHeapUsed",
-            "type": "number",
-            "role": "indicator.state",
-            "unit": "MB"
-        },
-        "native": {
-        }
-    },
-    "system.adapter.test.0.connected": {
-        "_id": "system.adapter.test.0.connected",
-        "type": "state",
-        "common": {
-            "name": "test.0.connected",
-            "type": "boolean",
-            "role": "indicator.state"
-        },
-        "native": {
-        }
-    },
-    "system.adapter.test.0.alive": {
-        "_id": "system.adapter.test.0.alive",
-        "type": "state",
-        "common": {
-            "name": "test.0.alive",
-            "type": "boolean",
-            "role": "indicator.state"
-        },
-        "native": {}
-    },
-    "system.adapter.test.0": {
-        "common": {
-            "name": "test",
-            "version": "0.1.0",
-            "title": "test Adapter",
-            "desc": {
-                "en": "This adapter connect",
-                "de": "This adapter connect",
-                "ru": "This adapter connect"
-            },
-            "license": "MIT",
-            "platform": "Javascript/Node.js",
-            "mode": "daemon",
-            "loglevel": "info",
-            "readme": "https://github.com/ioBroker/ioBroker.test/blob/master/README.md",
-            "icon": "test.png",
-            "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.test/master/admin/test.png",
-            "type": "communication",
-            "preserveSettings": "smartName",
-            "enabled": true,
-            "messagebox": true,
-            "stopBeforeUpdate": true,
-            "news": {
-                "0.6.2": {
-                    "en": "add option Place function in names first",
-                    "de": "Option hinzugefügt: Platziere Funktionsnamen vorne",
-                    "ru": "Добавлена опция: Имена функций в начале"
-                },
-                "0.6.1": {
-                    "en": "fix reconnect",
-                    "de": "Korrigiere Wiederverbindung",
-                    "ru": "Исправлено распознавание дисконнекта"
-                }
-            },
-            "authors": [
-                "bluefox <dogafox@gmail.com>"
-            ],
-            "keywords": [
-                "web",
-                "test",
-                "communication"
-            ],
-            "dependencies": [
-                {
-                    "js-controller": ">=0.9.0"
-                }
-            ],
-            "config": {
-                "width ": 1224,
-                "height": 520
-            }
-        },
-        "native": {
-            "paramString": "value1",
-            "paramNumber": 42,
-            "paramBoolean": false,
-            "username": "tesla",
-            "password": "G\\\b\u000bY\fS",
-            "secondPassword": "$/aes-192-cbc:bcc46f0eec2addc9a54e70776c3f3f79:3861c124787cffb3e1a4e575f5acdb51a1e279ccde98a427946e1762075f051f"
-        },
-        "protectedNative": [
-            "username",
-            "password"
-        ],
-        "encryptedNative": [
-            "password",
-            "secondPassword"
-        ],
-        "_id": "system.adapter.test.0",
-        "type": "adapter"
+    "acl": {
+      "owner": "system.user.admin",
+      "ownerGroup": "system.group.administrator",
+      "object": 1536
     }
+  },
+  "system.repositories": {
+    "_id": "system.repositories",
+    "type": "config",
+    "common": {
+      "name": "System repositories"
+    },
+    "native": {
+      "repositories": {
+        "stable": {
+          "link": "http://download.iobroker.net/sources-dist.json",
+          "json": {
+            "alexa2": {
+              "name": "alexa2",
+              "version": "3.26.5",
+              "blockedVersions": [
+                "~3.14.0",
+                "~3.15.0",
+                "~3.16.0",
+                "3.17.0",
+                "3.17.1",
+                "3.17.2",
+                "3.17.3"
+              ],
+              "title": "Alexa2 (Amazon Echo)",
+              "titleLang": {
+                "en": "Alexa2 (Amazon Echo)",
+                "de": "Alexa2 (Amazon Echo)",
+                "ru": "Alexa2 (Amazon Echo)",
+                "pt": "Alexa2 (Amazon Echo)",
+                "nl": "Alexa2 (Amazon Echo)",
+                "fr": "Alexa2 (Amazon Echo)",
+                "it": "Alexa2 (Amazon Echo)",
+                "es": "Alexa2 (eco de Amazon)",
+                "pl": "Alexa2 (Amazon Echo)",
+                "zh-cn": "Alexa2（Amazon回声）",
+                "uk": "Alexa2 (Amazon Echo)"
+              },
+              "desc": {
+                "en": "Remote control for Alexa (Amazon Echo)",
+                "de": "Steuerung von Alexa (Amazon Echo)",
+                "ru": "Управление Alexa (Amazon Echo)",
+                "pt": "Controle remoto para Alexa (Amazon Echo)",
+                "nl": "Afstandsbediening voor Alexa (Amazon Echo)",
+                "fr": "Télécommande pour Alexa (Amazon Echo)",
+                "it": "Telecomando per Alexa (Amazon Echo)",
+                "es": "Control remoto para Alexa (Amazon Echo)",
+                "pl": "Pilot do Alexa (Amazon Echo)",
+                "zh-cn": "Alexa（Amazon Echo）的遥控器",
+                "uk": "Пульт дистанційного керування для Alexa (Amazon Echo)"
+              },
+              "platform": "Javascript/Node.js",
+              "news": {
+                "3.26.5": {
+                  "en": "Adjust History query to recent Amazon changes",
+                  "de": "Begleichen Sie die Geschichte Anfrage an aktuelle Amazon-Änderungen",
+                  "ru": "Настройте исторический запрос на недавние изменения в Amazon",
+                  "pt": "Ajustar a consulta de história às mudanças recentes da Amazônia",
+                  "nl": "Historische zoekopdracht aanpassen aan recente Amazon-wijzigingen",
+                  "fr": "Régler la requête d'historique aux changements récents d'Amazon",
+                  "it": "Regolare la query di storia alle recenti modifiche Amazon",
+                  "es": "Adjust Historia consulta a cambios recientes de Amazon",
+                  "pl": "Dostosuj zapytanie Historia do ostatnich zmian Amazon",
+                  "uk": "Налаштування історичного запиту на останні зміни Amazon",
+                  "zh-cn": "调整历史查询以适应最近的亚马逊更改"
+                }
+              },
+              "keywords": [
+                "alexa",
+                "amazon",
+                "amazon echo",
+                "echo dot",
+                "echo show"
+              ],
+              "authors": [
+                "Apollon77 <iobroker@fischer-ka.de>"
+              ],
+              "mode": "daemon",
+              "icon": "https://raw.githubusercontent.com/Apollon77/ioBroker.alexa2/master/admin/alexa.png",
+              "materialize": true,
+              "extIcon": "https://raw.githubusercontent.com/Apollon77/ioBroker.alexa2/master/admin/alexa.png",
+              "readme": "https://github.com/Apollon77/ioBroker.alexa2/blob/master/README.md",
+              "loglevel": "info",
+              "type": "iot-systems",
+              "enabled": true,
+              "messagebox": true,
+              "license": "MIT",
+              "connectionType": "cloud",
+              "dataSource": "push",
+              "tier": 2,
+              "compact": true,
+              "dependencies": [
+                {
+                  "js-controller": ">=2.0.0"
+                }
+              ],
+              "plugins": {
+                "sentry": {
+                  "dsn": "https://e9ac55f23fe149e78b1eab9ed4bf26ad@sentry.iobroker.net/8",
+                  "pathWhitelist": [
+                    "@apollon",
+                    "alexa-cookie2",
+                    "alexa-remote2"
+                  ],
+                  "errorBlacklist": [
+                    "SyntaxError"
+                  ]
+                }
+              },
+              "messages": [
+                {
+                  "condition": {
+                    "operand": "and",
+                    "rules": [
+                      "oldVersion<3.13.0",
+                      "newVersion>=3.13.0"
+                    ]
+                  },
+                  "title": {
+                    "en": "Important notice!",
+                    "de": "Wichtiger Hinweis!",
+                    "ru": "Важное замечание!",
+                    "pt": "Notícia importante!",
+                    "nl": "Belangrijke mededeling!",
+                    "fr": "Avis important!",
+                    "it": "Avviso IMPORTANTE!",
+                    "es": "Noticia importante!",
+                    "pl": "Ważna uwaga!",
+                    "zh-cn": "重要通知!",
+                    "uk": "Важливе повідомлення!"
+                  },
+                  "text": {
+                    "en": "The new version 1.2.x will potentially change the Names of List Objects when special characters (including \".\") are used! Please delete the old objects manually if needed.",
+                    "de": "Die neue Version 1.2.x wird die Namen der Listenobjekte möglicherweise ändern, wenn Sonderzeichen (einschließlich \".\") verwendet werden! Bitte löschen Sie die alten Objekte bei Bedarf manuell.",
+                    "ru": "Новая версия 1.2.x потенциально изменит имена объектов списка, когда используются специальные символы (включая \".\")! Пожалуйста, удалите старые объекты вручную, если это необходимо.",
+                    "pt": "A nova versão 1.2.x irá potencialmente alterar os nomes dos objetos de lista quando caracteres especiais (incluindo \".\") são usados! Por favor, exclua os objetos antigos manualmente, se necessário.",
+                    "nl": "De nieuwe versie 1.2.x zal mogelijk de Namen van List Objects veranderen als speciale personages (includeren) worden gebruikt. Verwijder de oude objecten handmatig als het nodig is.",
+                    "fr": "La nouvelle version 1.2.x modifiera potentiellement les Noms des objets de la liste lorsque des caractères spéciaux (y compris \"). Veuillez supprimer les anciens objets manuellement si nécessaire.",
+                    "it": "La nuova versione 1.2.x cambierà potenzialmente i nomi degli oggetti di elenco quando vengono utilizzati caratteri speciali (inclusi \".\")! Si prega di eliminare i vecchi oggetti manualmente se necessario.",
+                    "es": "La nueva versión 1.2.x potencialmente cambiará los Nombres de Objetos de Lista cuando se utilizan caracteres especiales (incluyendo \"). Por favor, borre los viejos objetos manualmente si es necesario.",
+                    "pl": "Nowa wersja 1.2.x będzie potencjalnie zmieniać nazwę nazw obiektów listowych, kiedy używa się specjalnych postaci (w tym „.”). Okazuje się, że stare obiekty ręcznie będą potrzebne.",
+                    "zh-cn": "新版本1.2.x将有可能改变名单所列物品的名称(包括“......”)。 请在必要时删除旧物体。.",
+                    "uk": "Нова версія 1.2.x потенційно змінить імена об’єктів списку, коли використовуються спеціальні символи (включаючи «.»)! За потреби видаліть старі об’єкти вручну."
+                  },
+                  "level": "warn",
+                  "buttons": [
+                    "agree",
+                    "cancel"
+                  ]
+                },
+                {
+                  "condition": {
+                    "operand": "and",
+                    "rules": [
+                      "oldVersion<3.15.0",
+                      "newVersion>=3.15.0"
+                    ]
+                  },
+                  "title": {
+                    "en": "Format to create Reminder/Alarms changed!",
+                    "de": "Format zum Erstellen von Reminder/Alarms geändert!",
+                    "ru": "Формат для создания Reminder/Alarms изменился!",
+                    "pt": "Formato para criar lembrete / alarmes alterado!",
+                    "nl": "Format om Reminder/Alarms te creëren!",
+                    "fr": "Format pour créer Reminder/Alarms changé!",
+                    "it": "Formato per creare Reminder/Allarma cambiate!",
+                    "es": "Formato para crear Reminder/Alarms cambiado!",
+                    "pl": "W celu stworzenia zmian Reminder/Alarms!",
+                    "zh-cn": "创建Reminder/Alarms的格局改变了!",
+                    "uk": "Змінено формат створення нагадувань/будильників!"
+                  },
+                  "text": {
+                    "en": "The format used in the \"New\" states for Alarms or Reminders has changed and allows now to provide more Details. Please see the Readme for the details!",
+                    "de": "Das Format, das in den neuen Zuständen für Alarme oder Reminders verwendet wird, hat sich geändert und ermöglicht nun mehr Details. Die Readme enthält alle Details!",
+                    "ru": "Изменен формат, используемый в новых состояниях для тревоги или напоминаний и позволяет теперь предоставить более подробную информацию. Пожалуйста, посмотрите Readme для деталей!",
+                    "pt": "O formato usado nos Novos estados para Alarmes ou Lembretes mudou e agora permite fornecer mais detalhes. Por favor, veja o Readme para os detalhes!",
+                    "nl": "De formaat gebruikt in de Nieuwe staten voor Alarms of Reminders is veranderd en staat nu toe om meer Details te leveren. Zie de Readme voor de details!",
+                    "fr": "Le format utilisé dans les nouveaux états pour les armes ou les rappels a changé et permet maintenant de fournir plus de détails. Veuillez voir le Readme pour les détails!",
+                    "it": "Il formato utilizzato nei nuovi stati per gli allarmi o i ripetitori è cambiato e consente ora di fornire ulteriori dettagli. Si prega di vedere il Readme per i dettagli!",
+                    "es": "El formato utilizado en los Nuevos estados para Alarmas o Recordatorios ha cambiado y permite ahora proporcionar más detalles. Por favor, vea el Readme para los detalles!",
+                    "pl": "Format używany w nowych stanach dla Alarmsa lub Remindersa został zmieniony i pozwala obecnie na dostarczenie większej liczby dekatów. Wyglądaj na szczegóły!",
+                    "zh-cn": "新州用于申报或递解剂的格式已经改变,现在可以提供更多的细节。 请见详细!",
+                    "uk": "Формат, який використовується в станах «Новий» для будильників або нагадувань, змінився і тепер дозволяє надавати більше деталей. Будь ласка, перегляньте файл Readme, щоб дізнатися більше!"
+                  },
+                  "level": "warn",
+                  "buttons": [
+                    "agree",
+                    "cancel"
+                  ],
+                  "link": "https://github.com/Apollon77/ioBroker.alexa2#alexa20echo-devicesserialnumberalarm",
+                  "linkText": {
+                    "en": "Readme",
+                    "de": "Reader",
+                    "ru": "Читать",
+                    "pt": "Readme",
+                    "nl": "Lees",
+                    "fr": "Readme",
+                    "it": "Readme",
+                    "es": "Readme",
+                    "pl": "Ready",
+                    "zh-cn": "阅读摘要",
+                    "uk": "Readme"
+                  }
+                },
+                {
+                  "condition": {
+                    "operand": "and",
+                    "rules": [
+                      "oldVersion<3.18.0",
+                      "newVersion>=3.18.0"
+                    ]
+                  },
+                  "title": {
+                    "en": "Changes in Smart Home device syncing",
+                    "de": "Änderungen der Smart Home Gerätesynchronisation",
+                    "ru": "Изменения в синхронизации устройства Smart Home",
+                    "pt": "Alterações na sincronização de dispositivos Smart Home",
+                    "nl": "Veranderingen in Smart Home apparaat",
+                    "fr": "Changements dans la synchronisation de l'appareil Smart Home",
+                    "it": "Modifiche nella sincronizzazione dei dispositivi Smart Home",
+                    "es": "Cambios en la sincronización de dispositivos Smart Home",
+                    "pl": "Zmiany w Smart Home urządzenie synchronizujące",
+                    "zh-cn": "Smart家装置的合并变化",
+                    "uk": "Зміни в синхронізації пристрою Smart Home"
+                  },
+                  "text": {
+                    "en": "Starting with version 3.18.0 smart home device values are no longer synced by default. You need to enable the new state #includeInIntervalQuery existing for each syncable device in the objects in order for the device to be synchronized. Please enable only those that you really need to reduce the requests to Amazon and the Skills and prevent blocking or issues.",
+                    "de": "Ab Version 3.18.0 werden Smart Home-Gerät-Werte nicht mehr standardmäßig synchronisiert. Der neuen Zustand #includeInInterQuery, der für jedes synchronisierbare Gerät in den Objekten vorhanden ist, muss aktiviert werden um das Gerät zu synchronisieren. Bitte nur diejenigen Geräte aktivieren, die wirklich benötigt werden, um die Anfragen an Amazon und die Skills zu reduzieren und Blockierung oder Probleme zu verhindern.",
+                    "ru": "Начиная с версии 3.18.0 интеллектуальные ценности домашнего устройства больше не синхронизированы по умолчанию. Вам необходимо включить новое состояние #includeInIntervalQuery существующее для каждого синхронного устройства в объектах, чтобы устройство было синхронизировано. Пожалуйста, включите только те, что вам действительно нужно уменьшить запросы на Amazon и навыки и предотвратить блокировку или проблемы.",
+                    "pt": "Começando com a versão 3.18.0 os valores de dispositivo doméstico inteligente não são mais sincronizados por padrão. Você precisa ativar o novo estado #includeInIntervalQuery existente para cada dispositivo sincronizável nos objetos para que o dispositivo seja sincronizado. Por favor, ative apenas aqueles que você realmente precisa para reduzir os pedidos para Amazon e as habilidades e evitar bloqueio ou problemas.",
+                    "nl": "Beginnend met versie 3.18.0 slimme thuis apparatuur is niet meer gesynchroniseerd door defect. Je moet de nieuwe staat in staat stellen includeïntervalQuery die bestaat voor elk syncable apparaat in de objecten om het apparaat te synchroniseren. Betrek alleen degenen die je echt nodig hebt om de verzoeken naar Amazone en de Skills te verminderen en blokkeren of problemen te voorkomen.",
+                    "fr": "À partir de la version 3.18.0, les valeurs de périphérique à domicile intelligent ne sont plus synchronisées par défaut. Vous devez activer le nouvel état #includeInIntervalQuery existant pour chaque périphérique synchronisé dans les objets afin que le dispositif soit synchronisé. S'il vous plaît activer seulement ceux que vous avez vraiment besoin de réduire les demandes à Amazon et les Compétences et prévenir le blocage ou les problèmes.",
+                    "it": "A partire dalla versione 3.18.0 i valori dei dispositivi smart home non sono più sincronizzati per impostazione predefinita. È necessario abilitare il nuovo stato #includeInIntervalQuery esistente per ogni dispositivo sincronizzabile negli oggetti in modo che il dispositivo sia sincronizzato. Si prega di attivare solo quelli che è davvero necessario ridurre le richieste a Amazon e le competenze e prevenire il blocco o problemi.",
+                    "es": "Empezando con la versión 3.18.0, los valores de dispositivo hogar inteligente ya no se sincronizan por defecto. Necesita habilitar el nuevo estado #includeInIntervalQuery existente para cada dispositivo sincronizable en los objetos con el fin de sincronizar el dispositivo. Por favor, active sólo aquellos que realmente necesita para reducir las solicitudes a Amazon y las Habilidades y evitar el bloqueo o problemas.",
+                    "pl": "Począwszy od wersji 3.18.0, inteligentne urządzenia domowe nie są już zsynchronizowane. Musisz umożliwić nowy stan #include InIntervalQuery istniejące dla każdego urządzenia synchronizującego się w obiektach. Pozwólcie to tylko tym, że musisz zredukować żądania do Amazona i Umiejętności i zapobiegać blokowaniu lub problemom.",
+                    "zh-cn": "从第3.18.0版的家里装置价值开始,不再因违约而形成。 你们需要使新的国家能够为各物体的每个可核对装置建立新的国家行动目标。 仅请你真正需要减少对亚马逊和技能的要求,并防止阻断或问题。.",
+                    "uk": "Починаючи з версії 3.18.0, значення пристрою розумного дому більше не синхронізуються за умовчанням. Вам потрібно ввімкнути новий стан #includeInIntervalQuery, який існує для кожного синхронізованого пристрою в об’єктах, щоб пристрій міг синхронізуватися. Увімкніть лише ті, які вам дійсно потрібні, щоб зменшити кількість запитів до Amazon і Skills і запобігти блокуванню чи проблемам."
+                  },
+                  "level": "warn",
+                  "buttons": [
+                    "agree",
+                    "cancel"
+                  ],
+                  "link": "https://github.com/Apollon77/ioBroker.alexa2#alexa20echo-devicesserialnumberalarm",
+                  "linkText": {
+                    "en": "Readme",
+                    "de": "Reader",
+                    "ru": "Читать",
+                    "pt": "Readme",
+                    "nl": "Lees",
+                    "fr": "Readme",
+                    "it": "Readme",
+                    "es": "Readme",
+                    "pl": "Ready",
+                    "zh-cn": "阅读摘要",
+                    "uk": "Readme"
+                  }
+                },
+                {
+                  "condition": {
+                    "operand": "and",
+                    "rules": [
+                      "oldVersion<3.26.0",
+                      "newVersion>=3.26.0"
+                    ]
+                  },
+                  "title": {
+                    "en": "Changes in activity synchronisation",
+                    "de": "Änderungen der Aktivitätssynchronisation",
+                    "ru": "Изменения в синхронизации активности",
+                    "pt": "Alterações na sincronização de atividades",
+                    "nl": "Verandering in actuele synchronisatie",
+                    "fr": "Changements de synchronisation d'activité",
+                    "it": "Modifiche della sincronizzazione delle attività",
+                    "es": "Cambios en la sincronización de actividad",
+                    "pl": "Zmiany w synchronizacji aktywności",
+                    "uk": "Зміна синхронізації активності",
+                    "zh-cn": "B. 活动统一时间的变化"
+                  },
+                  "text": {
+                    "en": "Starting with Version 3.26.0 The activity/history is no longer queried automatically. If you need this automatic query please enable it in the settings - but only if you really need it! It generates load on the amazon systems and we should try to reduce this as much as possible please!",
+                    "de": "Beginnend mit Version 3.26.0 Die Aktivität/History wird nicht mehr automatisch abgefragt. Wenn Sie diese automatische Abfrage benötigen, aktivieren Sie es bitte in den Einstellungen - aber nur, wenn Sie es wirklich brauchen! Es erzeugt Belastung der Amazonsysteme und wir sollten versuchen, dies so viel wie möglich zu reduzieren, bitte!",
+                    "ru": "Начиная с версии 3.26.0 Деятельность/история больше не запрашивается автоматически. Если вам нужен этот автоматический запрос, пожалуйста, включите его в настройках - но только если вам это действительно нужно! Он генерирует нагрузку на амазоночные системы, и мы должны попытаться уменьшить это как можно больше, пожалуйста!",
+                    "pt": "Começando com a versão 3.26.0 A atividade/história não é mais consultada automaticamente. Se você precisar desta consulta automática, por favor ative-a nas configurações - mas só se você realmente precisar dele! Ele gera carga nos sistemas de amazon e devemos tentar reduzir isso tanto quanto possível, por favor!",
+                    "nl": "Begin met Version 3.26.0 De activiteit/hestory is niet meer automatisch. Als je deze automatische zoektocht nodig hebt, zet het dan in de settings, maar alleen als je het echt nodig hebt! Het genereert lading op de Amazone-systemen en we moeten proberen dit zoveel mogelijk te verminderen!",
+                    "fr": "À partir de la version 3.26.0 L'activité/l'histoire n'est plus demandée automatiquement. Si vous avez besoin de cette requête automatique, veuillez l'activer dans les paramètres - mais seulement si vous en avez vraiment besoin! Il génère de la charge sur les systèmes amazon et nous devrions essayer de réduire cela autant que possible s'il vous plaît!",
+                    "it": "A partire dalla versione 3.26.0 L'attività/storia non è più richiesta automaticamente. Se hai bisogno di questa query automatica, abilitalo nelle impostazioni - ma solo se ne hai davvero bisogno! Esso genera carico sui sistemi amazon e dovremmo cercare di ridurre questo il più possibile per favore!",
+                    "es": "Empezando con la versión 3.26.0 La actividad/historia ya no se pregunta automáticamente. Si necesita esta consulta automática, por favor, activela en la configuración - pero sólo si realmente lo necesita! Genera carga en los sistemas amazon y debemos tratar de reducir todo lo posible por favor!",
+                    "pl": "Od wersji 3.26.0 Aktywność/historia nie jest już automatycznie kwestionowana. Jeśli potrzebujesz automatycznego zapytania, co pozwalasz w ustawieniach - ale tylko wtedy, jeśli tak naprawdę potrzebujesz! Wykorzystuje on ładunek na systemach amazonek i powinniśmy starać się zredukować to, co jest możliwe!",
+                    "uk": "Починаючи з версії 3.26.0 Діяльність/історія не передається автоматично. Якщо вам потрібен цей автоматичний запит, будь ласка, ввімкніть його в налаштуваннях - але тільки якщо вам дійсно потрібно! Ми можемо самі зателефонувати одержувачу!",
+                    "zh-cn": "A. 导 言 活动/法令不再自动提出。 如果你需要这种自动问询,请在环境中这样做,但只有你真正需要! 它给马纳区系统带来了沉重的负担,我们应尽量减少这一点!"
+                  },
+                  "level": "warn",
+                  "buttons": [
+                    "agree",
+                    "cancel"
+                  ]
+                }
+              ],
+              "node": ">=16.0.0",
+              "meta": "https://raw.githubusercontent.com/Apollon77/ioBroker.alexa2/master/io-package.json",
+              "published": "2018-07-20T14:34:19.324Z",
+              "versionDate": "2024-04-16T19:53:28.377Z",
+              "stars": -1,
+              "stat": 21891,
+              "issues": 0,
+              "score": 1,
+              "weekDownloads": 649,
+              "latestVersion": "3.26.5"
+            }
+          }
+        },
+        "beta": {
+          "link": "http://download.iobroker.net/sources-dist-latest.json",
+          "json": null
+        },
+        "sources": {
+          "link": "conf/sources-dist.json",
+          "json": null
+        },
+        "online": {
+          "link": "https://raw.githubusercontent.com/ioBroker/ioBroker.repositories/master/sources-dist.json",
+          "json": null
+        }
+      }
+    },
+    "acl": {
+      "owner": "system.user.admin",
+      "ownerGroup": "system.group.administrator",
+      "object": 1604
+    }
+  },
+  "system.config": {
+    "_id": "system.config",
+    "type": "config",
+    "common": {
+      "name": "System configuration",
+      "language": "",
+      "tempUnit": "°C",
+      "currency": "€",
+      "dateFormat": "DD.MM.YYYY",
+      "isFloatComma": true,
+      "licenseConfirmed": false,
+      "activeRepo": [
+        "stable"
+      ],
+      "diag": "extended",
+      "defaultHistory": "",
+      "defaultNewAcl": {
+        "object": 1636,
+        "state": 1636,
+        "file": 1636,
+        "owner": "system.user.governor",
+        "ownerGroup": "system.group.senatorGroup"
+      }
+    },
+    "native": {
+      "secret": "05fe0b4701125b01d6de004d2bc054e569a4f615e7d389b7"
+    },
+    "acl": {
+      "owner": "system.user.admin",
+      "ownerGroup": "system.group.administrator",
+      "object": 1604
+    }
+  },
+  "system.licenses": {
+    "_id": "system.licenses",
+    "type": "config",
+    "common": {
+      "name": "Licenses from iobroker.net"
+    },
+    "native": {
+      "login": "",
+      "password": "",
+      "licenses": [],
+      "readTime": 0
+    },
+    "acl": {
+      "owner": "system.user.admin",
+      "ownerGroup": "system.group.administrator",
+      "object": 1604
+    }
+  },
+  "enum.rooms": {
+    "_id": "enum.rooms",
+    "common": {
+      "name": "Rooms",
+      "desc": {
+        "en": "List of the rooms",
+        "de": "Die Liste von Räumen",
+        "ru": "Список комнат"
+      },
+      "object-non-deletable": true
+    },
+    "type": "enum",
+    "acl": {
+      "owner": "system.user.admin",
+      "ownerGroup": "system.group.administrator",
+      "object": 1911
+    }
+  },
+  "enum.rooms.kitchen": {
+    "_id": "enum.rooms.kitchen",
+    "type": "enum",
+    "common": {
+      "name": {
+        "en": "Kitchen",
+        "ru": "Кухня",
+        "de": "Küche",
+        "fr": "Cuisine",
+        "it": "Cucina",
+        "nl": "Keuken",
+        "pl": "Kuchnia",
+        "pt": "Cozinha",
+        "es": "Cocina",
+        "zh-cn": "厨房"
+      },
+      "color": "",
+      "desc": "",
+      "members": []
+    },
+    "native": {},
+    "acl": {
+      "object": 1636,
+      "owner": "system.user.admin",
+      "ownerGroup": "system.group.administrator"
+    }
+  },
+  "system.group.user": {
+    "_id": "system.group.user",
+    "type": "group",
+    "common": {
+      "name": "User",
+      "description": {
+        "en": "Cannot modify anything"
+      },
+      "members": [],
+      "dontDelete": true,
+      "url": "https://github.com/ioBroker/ioBroker.js-controller/archive/master.zip",
+      "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/io-package.json",
+      "acl": {
+        "object": {
+          "list": true,
+          "read": true,
+          "write": false,
+          "delete": false
+        },
+        "state": {
+          "list": true,
+          "read": true,
+          "write": true,
+          "create": true,
+          "delete": false
+        },
+        "users": {
+          "list": true,
+          "read": true,
+          "write": false,
+          "create": false,
+          "delete": false
+        },
+        "other": {
+          "execute": false,
+          "http": true,
+          "sendto": false
+        },
+        "file": {
+          "list": true,
+          "read": true,
+          "write": false,
+          "create": false,
+          "delete": false
+        }
+      }
+    },
+    "acl": {
+      "owner": "system.user.admin",
+      "ownerGroup": "system.group.administrator",
+      "object": 1604
+    }
+  },
+  "system.group.senatorGroup": {
+    "type": "group",
+    "common": {
+      "name": {
+        "en": "User",
+        "de": "Benutzer",
+        "ru": "Пользователь",
+        "pt": "Do utilizador",
+        "nl": "Gebruiker",
+        "fr": "Utilisateur",
+        "it": "Utente",
+        "es": "Usuario",
+        "pl": "Użytkownik",
+        "zh-cn": "用户"
+      },
+      "description": {
+        "en": "Cannot modify everything",
+        "de": "Kann nicht alles ändern",
+        "ru": "Не может изменять все",
+        "pt": "Não é possível modificar tudo",
+        "nl": "Kan niet alles wijzigen",
+        "fr": "Impossible de tout modifier",
+        "it": "Non è possibile modificare tutto",
+        "es": "No se puede modificar todo",
+        "pl": "Nie można modyfikować wszystkiego",
+        "zh-cn": "用户无法修改所有内容"
+      },
+      "members": [],
+      "url": "https://github.com/ioBroker/ioBroker.js-controller/archive/master.zip",
+      "meta": "https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/io-package.json",
+      "acl": {
+        "object": {
+          "list": true,
+          "read": true,
+          "write": false,
+          "delete": false
+        },
+        "state": {
+          "list": true,
+          "read": true,
+          "write": true,
+          "create": true,
+          "delete": false
+        },
+        "users": {
+          "list": true,
+          "read": true,
+          "write": false,
+          "create": false,
+          "delete": false
+        },
+        "other": {
+          "execute": false,
+          "http": true,
+          "sendto": false
+        },
+        "file": {
+          "list": true,
+          "read": true,
+          "write": false,
+          "create": false,
+          "delete": false
+        }
+      }
+    },
+    "acl": {
+      "owner": "system.user.admin",
+      "ownerGroup": "system.group.administrator",
+      "object": 1604
+    },
+    "from": "system.host.moritz-ThinkPad-E470.cli",
+    "ts": 1590391132049,
+    "user": "system.user.admin",
+    "native": {}
+  },
+  "system.group.administrator": {
+    "_id": "system.group.administrator",
+    "type": "group",
+    "common": {
+      "name": "Administrator",
+      "description": {
+        "en": "Can do everything with ioBroker"
+      },
+      "members": [
+        "system.user.admin",
+        "system.user.queen"
+      ],
+      "dontDelete": true,
+      "acl": {
+        "object": {
+          "list": true,
+          "read": true,
+          "write": true,
+          "delete": true
+        },
+        "state": {
+          "list": true,
+          "read": true,
+          "write": true,
+          "create": true,
+          "delete": true
+        },
+        "users": {
+          "list": true,
+          "read": true,
+          "write": true,
+          "create": true,
+          "delete": true
+        },
+        "other": {
+          "execute": true,
+          "http": true,
+          "sendto": true
+        },
+        "file": {
+          "list": true,
+          "read": true,
+          "write": true,
+          "create": true,
+          "delete": true
+        }
+      }
+    },
+    "acl": {
+      "owner": "system.user.admin",
+      "ownerGroup": "system.group.administrator",
+      "object": 1604
+    }
+  },
+  "_design/system": {
+    "_id": "_design/system",
+    "language": "javascript",
+    "views": {
+      "host": {
+        "map": "function(doc) { if (doc.type=='host') emit(doc._id, doc) }"
+      },
+      "adapter": {
+        "map": "function(doc) { if (doc.type=='adapter') emit(doc._id, doc) }"
+      },
+      "instance": {
+        "map": "function(doc) { if (doc.type=='instance') emit(doc._id, doc) }"
+      },
+      "instanceStats": {
+        "map": "function(doc) { if (doc.type=='instance') emit(doc._id, parseInt(doc._id.split('.').pop(), 10)) }",
+        "reduce": "_stats"
+      },
+      "meta": {
+        "map": "function(doc) { if (doc.type=='meta') emit(doc._id, doc) }"
+      },
+      "chart": {
+        "map": "function(doc) { if (doc.type=='chart') emit(doc._id, doc) }"
+      },
+      "device": {
+        "map": "function(doc) { if (doc.type=='device') emit(doc._id, doc) }"
+      },
+      "channel": {
+        "map": "function(doc) { if (doc.type=='channel') emit(doc._id, doc) }"
+      },
+      "state": {
+        "map": "function(doc) { if (doc.type=='state') emit(doc._id, doc) }"
+      },
+      "folder": {
+        "map": "function(doc) { if (doc.type === 'folder') emit(doc._id, doc) }"
+      },
+      "enum": {
+        "map": "function(doc) { if (doc.type=='enum') emit(doc._id, doc) }"
+      },
+      "script": {
+        "map": "function(doc) { if (doc.type=='script') emit(doc._id, doc) }"
+      },
+      "group": {
+        "map": "function(doc) { if (doc.type=='group') emit(doc.common.name, doc) }"
+      },
+      "user": {
+        "map": "function(doc) { if (doc.type=='user') emit(doc.common.name, doc) }"
+      },
+      "config": {
+        "map": "function(doc) { if (doc.type=='config') emit(doc.common.name, doc) }"
+      },
+      "custom": {
+        "map": "function(doc) { doc.type === 'state' && doc.common && doc.common.custom && emit(doc._id, doc.common.custom) }"
+      }
+    },
+    "acl": {
+      "owner": "system.user.admin",
+      "ownerGroup": "system.group.administrator",
+      "object": 1092
+    }
+  },
+  "system.user.governor": {
+    "common": {
+      "name": "test",
+      "icon": "",
+      "color": false,
+      "desc": "",
+      "enabled": true,
+      "password": "pbkdf2$10000$41042c09409f8c13128bfa640790e59cb22aaf28f56af6564f2da453e7e0882bf78e439818f209eac1edc04486472c9c5dc47b3c2712edc09ed5b0e482f67d3a2315910b9b998d458b106566942c8291c72c36f8fa0ff6d738a9430a833ed79740e4853e7bb2d6cde32b86db6a56136010c8daf866c18f0e8b22ef822f8c1e1017c775f9c7e777175762a1747082255fdbfc0af191268b2c2dc304fca2c42f5277c752a1929b8363a4751c019cfe0e747f5c935a9aae841861e6a50768ec8aed44dd99013f158d3d9b75bf19854664f10dd617bd87f08c90b67de9da8bbd73590b6aec4cf76657b974e058a5ba9f55b14c9d2c779068e3f1c2d0d9a0c3e7a1d9$94244cb339a17d981c21dc3fdd450fe8"
+    },
+    "type": "user",
+    "native": {},
+    "from": "system.adapter.admin.0",
+    "user": "system.user.admin",
+    "ts": 1607426917204,
+    "acl": {
+      "object": 1636,
+      "owner": "system.user.admin",
+      "ownerGroup": "system.group.user"
+    },
+    "_id": "system.user.governor"
+  },
+  "system.user.queen": {
+    "common": {
+      "name": "Queen",
+      "icon": "",
+      "color": false,
+      "desc": "As the mightiest chess figure, the queen has the same rights as admin by belonging to the administrator group",
+      "enabled": true,
+      "password": "pbkdf2$10000$41042c09409f8c13128bfa640790e59cb22aaf28f56af6564f2da453e7e0882bf78e439818f209eac1edc04486472c9c5dc47b3c2712edc09ed5b0e482f67d3a2315910b9b998d458b106566942c8291c72c36f8fa0ff6d738a9430a833ed79740e4853e7bb2d6cde32b86db6a56136010c8daf866c18f0e8b22ef822f8c1e1017c775f9c7e777175762a1747082255fdbfc0af191268b2c2dc304fca2c42f5277c752a1929b8363a4751c019cfe0e747f5c935a9aae841861e6a50768ec8aed44dd99013f158d3d9b75bf19854664f10dd617bd87f08c90b67de9da8bbd73590b6aec4cf76657b974e058a5ba9f55b14c9d2c779068e3f1c2d0d9a0c3e7a1d9$94244cb339a17d981c21dc3fdd450fe8"
+    },
+    "type": "user",
+    "native": {},
+    "from": "system.adapter.admin.0",
+    "user": "system.user.admin",
+    "ts": 1607426917204,
+    "acl": {
+      "object": 1636,
+      "owner": "system.user.admin",
+      "ownerGroup": "system.group.administrator"
+    },
+    "_id": "system.user.queen"
+  },
+  "system.user.admin": {
+    "type": "user",
+    "common": {
+      "name": "admin",
+      "password": "pbkdf2$10000$4d792929abf08d3b3db88b953b50cce3ad072508efac7557f143f753abad064b9ae302f4b4fb7bbbffed81988d16d5d0e16035eeb37baaf4469d4b5bfcf1f40f$5f20563568196add659adc14474732e1",
+      "dontDelete": true,
+      "enabled": true
+    },
+    "native": {
+    },
+    "_id": "system.user.admin"
+  },
+  "system.meta.uuid": {
+    "type": "meta",
+    "common": {
+      "name": "uuid",
+      "type": "uuid"
+    },
+    "native": {
+      "uuid": "f29a09f1-d724-6bce-04a0-f65bf12ac300"
+    },
+    "_id": "system.meta.uuid"
+  },
+  "admin.admin": {
+    "type": "meta",
+    "common": {
+      "name": "admin",
+      "type": "admin"
+    },
+    "native": {},
+    "_id": "admin.admin"
+  },
+  "system.adapter.admin": {
+    "_id": "system.adapter.admin",
+    "type": "adapter",
+    "common": {
+      "name": "admin",
+      "version": "0.7.4",
+      "title": "ioBroker Admin",
+      "desc": {
+        "en": "Opens a webserver for the ioBroker admin UI",
+        "de": "Stellt Webserver für 'ioBroker Admin UI' zur Verfügung",
+        "ru": "Запускает веб сервер с 'ioBroker admin UI' для удобной настройки через веб интерфейс"
+      },
+      "mode": "daemon",
+      "platform": "Javascript/Node.js",
+      "loglevel": "info",
+      "icon": "admin.png",
+      "messagebox": true,
+      "supportedMessages": {
+        "custom": true
+      },
+      "enabled": true,
+      "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/admin/admin.png",
+      "keywords": [
+        "setup",
+        "config",
+        "update",
+        "upgrade",
+        "system",
+        "konfiguration",
+        "administration",
+        "einrichtung",
+        "wartung"
+      ],
+      "readme": "https://github.com/ioBroker/ioBroker.admin/blob/master/README.md",
+      "authors": [
+        "hobbyquaker <hq@ccu.io>",
+        "bluefox <bluefox@ccu.io>"
+      ],
+      "dependencies": [
+        {
+          "js-controller": ">=0.8.0"
+        }
+      ],
+      "type": "common adapters",
+      "license": "MIT",
+      "logTransporter": true,
+      "stopBeforeUpdate": true,
+      "wwwDontUpload": true,
+      "localLink": "%protocol%://%ip%:%port%",
+      "installedVersion": "0.7.4"
+    },
+    "native": {
+      "port": 8081,
+      "auth": false,
+      "secure": false,
+      "bind": "0.0.0.0",
+      "cache": false,
+      "certPublic": "",
+      "certPrivate": "",
+      "ttl": 3600,
+      "defaultUser": "admin"
+    }
+  },
+  "system.adapter.admin.upload": {
+    "_id": "system.adapter.admin.upload",
+    "type": "state",
+    "common": {
+      "name": "admin.upload",
+      "type": "number",
+      "role": "indicator.state",
+      "unit": "%",
+      "def": 0,
+      "desc": "Upload process indicator"
+    },
+    "native": {}
+  },
+  "system.adapter.admin.0.uptime": {
+    "_id": "system.adapter.admin.0.uptime",
+    "type": "state",
+    "common": {
+      "name": "admin.0.uptime",
+      "type": "number",
+      "role": "indicator.state",
+      "unit": "seconds"
+    },
+    "native": {}
+  },
+  "system.adapter.admin.0.memRss": {
+    "_id": "system.adapter.admin.0.memRss",
+    "type": "state",
+    "common": {
+      "name": "admin.0.memRss",
+      "desc": "Resident set size",
+      "type": "number",
+      "role": "indicator.state",
+      "unit": "MB"
+    },
+    "native": {}
+  },
+  "system.adapter.admin.0.memHeapTotal": {
+    "_id": "system.adapter.admin.0.memHeapTotal",
+    "type": "state",
+    "common": {
+      "name": "admin.0.memHeapTotal",
+      "type": "number",
+      "role": "indicator.state",
+      "unit": "MB"
+    },
+    "native": {}
+  },
+  "system.adapter.admin.0.memHeapUsed": {
+    "_id": "system.adapter.admin.0.memHeapUsed",
+    "type": "state",
+    "common": {
+      "name": "admin.0.memHeapUsed",
+      "type": "number",
+      "role": "indicator.state",
+      "unit": "MB"
+    },
+    "native": {}
+  },
+  "system.adapter.admin.0.connected": {
+    "_id": "system.adapter.admin.0.connected",
+    "type": "state",
+    "common": {
+      "name": "admin.0.connected",
+      "type": "boolean",
+      "role": "indicator.state"
+    },
+    "native": {}
+  },
+  "system.adapter.admin.0.alive": {
+    "_id": "system.adapter.admin.0.alive",
+    "type": "state",
+    "common": {
+      "name": "admin.0.alive",
+      "type": "boolean",
+      "role": "indicator.state"
+    },
+    "native": {}
+  },
+  "system.adapter.admin.0": {
+    "_id": "system.adapter.admin.0",
+    "type": "instance",
+    "common": {
+      "name": "admin",
+      "version": "0.7.4",
+      "title": "ioBroker Admin",
+      "desc": {
+        "en": "Opens a webserver for the ioBroker admin UI",
+        "de": "Stellt Webserver für 'ioBroker Admin UI' zur Verfügung",
+        "ru": "Запускает веб сервер с 'ioBroker admin UI' для удобной настройки через веб интерфейс"
+      },
+      "mode": "daemon",
+      "platform": "Javascript/Node.js",
+      "loglevel": "info",
+      "icon": "admin.png",
+      "messagebox": true,
+      "enabled": false,
+      "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.admin/master/admin/admin.png",
+      "keywords": [
+        "setup",
+        "config",
+        "update",
+        "upgrade",
+        "system",
+        "konfiguration",
+        "administration",
+        "einrichtung",
+        "wartung"
+      ],
+      "readme": "https://github.com/ioBroker/ioBroker.admin/blob/master/README.md",
+      "authors": [
+        "hobbyquaker <hq@ccu.io>",
+        "bluefox <bluefox@ccu.io>"
+      ],
+      "dependencies": [
+        {
+          "js-controller": ">=0.8.0"
+        }
+      ],
+      "type": "common adapters",
+      "license": "MIT",
+      "logTransporter": true,
+      "stopBeforeUpdate": true,
+      "wwwDontUpload": true,
+      "localLink": "%protocol%://%ip%:%port%",
+      "installedVersion": "0.7.4",
+      "host": "TR_TDW_DEV"
+    },
+    "native": {
+      "port": 8081,
+      "auth": false,
+      "secure": false,
+      "bind": "0.0.0.0",
+      "cache": false,
+      "certPublic": "",
+      "certPrivate": "",
+      "ttl": 3600,
+      "defaultUser": "admin"
+    }
+  },
+  "test.admin": {
+    "type": "meta",
+    "common": {
+      "name": "admin",
+      "type": "admin"
+    },
+    "native": {
+    },
+    "_id": "test.admin"
+  },
+  "system.adapter.test.upload": {
+    "_id": "system.adapter.test.upload",
+    "type": "state",
+    "common": {
+      "name": "test.upload",
+      "type": "number",
+      "role": "indicator.state",
+      "unit": "%",
+      "def": 0,
+      "desc": "Upload process indicator"
+    },
+    "native": {}
+  },
+  "system.adapter.test": {
+    "common": {
+      "name": "test",
+      "version": "0.1.0",
+      "title": "test Adapter",
+      "desc": {
+        "en": "This adapter connect",
+        "de": "This adapter connect",
+        "ru": "This adapter connect"
+      },
+      "license": "MIT",
+      "platform": "Javascript/Node.js",
+      "mode": "daemon",
+      "loglevel": "info",
+      "readme": "https://github.com/ioBroker/ioBroker.test/blob/master/README.md",
+      "icon": "test.png",
+      "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.test/master/admin/test.png",
+      "type": "communication",
+      "preserveSettings": "smartName",
+      "enabled": false,
+      "messagebox": true,
+      "stopBeforeUpdate": true,
+      "news": {
+        "0.6.2": {
+          "en": "add option Place function in names first",
+          "de": "Option hinzugefügt: Platziere Funktionsnamen vorne",
+          "ru": "Добавлена опция: Имена функций в начале"
+        },
+        "0.6.1": {
+          "en": "fix reconnect",
+          "de": "Korrigiere Wiederverbindung",
+          "ru": "Исправлено распознавание дисконнекта"
+        }
+      },
+      "authors": [
+        "bluefox <dogafox@gmail.com>"
+      ],
+      "keywords": [
+        "web",
+        "test",
+        "communication"
+      ],
+      "dependencies": [
+        {
+          "js-controller": ">=0.9.0"
+        }
+      ],
+      "config": {
+        "width ": 1224,
+        "height": 520
+      }
+    },
+    "native": {
+      "paramA": "",
+      "paramB": ""
+    },
+    "_id": "system.adapter.test",
+    "type": "adapter"
+  },
+  "system.adapter.test.0.uptime": {
+    "_id": "system.adapter.test.0.uptime",
+    "type": "state",
+    "common": {
+      "name": "test.0.uptime",
+      "type": "number",
+      "role": "indicator.state",
+      "unit": "seconds"
+    },
+    "native": {
+    }
+  },
+  "system.adapter.test.0.memRss": {
+    "_id": "system.adapter.test.0.memRss",
+    "type": "state",
+    "common": {
+      "name": "test.0.memRss",
+      "desc": "Resident set size",
+      "type": "number",
+      "role": "indicator.state",
+      "unit": "MB"
+    },
+    "native": {}
+  },
+  "system.adapter.test.0.memHeapTotal": {
+    "_id": "system.adapter.test.0.memHeapTotal",
+    "type": "state",
+    "common": {
+      "name": "test.0.memHeapTotal",
+      "type": "number",
+      "role": "indicator.state",
+      "unit": "MB"
+    },
+    "native": {
+    }
+  },
+  "system.adapter.test.0.memHeapUsed": {
+    "_id": "system.adapter.test.0.memHeapUsed",
+    "type": "state",
+    "common": {
+      "name": "test.0.memHeapUsed",
+      "type": "number",
+      "role": "indicator.state",
+      "unit": "MB"
+    },
+    "native": {
+    }
+  },
+  "system.adapter.test.0.connected": {
+    "_id": "system.adapter.test.0.connected",
+    "type": "state",
+    "common": {
+      "name": "test.0.connected",
+      "type": "boolean",
+      "role": "indicator.state"
+    },
+    "native": {
+    }
+  },
+  "system.adapter.test.0.alive": {
+    "_id": "system.adapter.test.0.alive",
+    "type": "state",
+    "common": {
+      "name": "test.0.alive",
+      "type": "boolean",
+      "role": "indicator.state"
+    },
+    "native": {}
+  },
+  "system.adapter.test.0": {
+    "common": {
+      "name": "test",
+      "version": "0.1.0",
+      "title": "test Adapter",
+      "desc": {
+        "en": "This adapter connect",
+        "de": "This adapter connect",
+        "ru": "This adapter connect"
+      },
+      "license": "MIT",
+      "platform": "Javascript/Node.js",
+      "mode": "daemon",
+      "loglevel": "info",
+      "readme": "https://github.com/ioBroker/ioBroker.test/blob/master/README.md",
+      "icon": "test.png",
+      "extIcon": "https://raw.githubusercontent.com/ioBroker/ioBroker.test/master/admin/test.png",
+      "type": "communication",
+      "preserveSettings": "smartName",
+      "enabled": true,
+      "messagebox": true,
+      "stopBeforeUpdate": true,
+      "news": {
+        "0.6.2": {
+          "en": "add option Place function in names first",
+          "de": "Option hinzugefügt: Platziere Funktionsnamen vorne",
+          "ru": "Добавлена опция: Имена функций в начале"
+        },
+        "0.6.1": {
+          "en": "fix reconnect",
+          "de": "Korrigiere Wiederverbindung",
+          "ru": "Исправлено распознавание дисконнекта"
+        }
+      },
+      "authors": [
+        "bluefox <dogafox@gmail.com>"
+      ],
+      "keywords": [
+        "web",
+        "test",
+        "communication"
+      ],
+      "dependencies": [
+        {
+          "js-controller": ">=0.9.0"
+        }
+      ],
+      "config": {
+        "width ": 1224,
+        "height": 520
+      }
+    },
+    "native": {
+      "paramString": "value1",
+      "paramNumber": 42,
+      "paramBoolean": false,
+      "username": "tesla",
+      "password": "G\\\b\u000bY\fS",
+      "secondPassword": "$/aes-192-cbc:bcc46f0eec2addc9a54e70776c3f3f79:3861c124787cffb3e1a4e575f5acdb51a1e279ccde98a427946e1762075f051f"
+    },
+    "protectedNative": [
+      "username",
+      "password"
+    ],
+    "encryptedNative": [
+      "password",
+      "secondPassword"
+    ],
+    "_id": "system.adapter.test.0",
+    "type": "adapter"
+  }
 }

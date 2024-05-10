@@ -264,17 +264,18 @@ declare global {
 
             /**
              * Settings for IOT adapters and how the state should be named in e.g., Alexa.
-             * The string "ignore" is a special case, causing the state to be ignored.
-             * A value of `null` means, that the device should be removed by the IOT adapters
+             * The string "ignore" (deprecated please use boolean `false` instead) or boolean value `false` is a special case, causing the state to be ignored.
+             * A value of `null` means that the device should be removed by the IOT adapters
              */
             smartName?:
                 | null
+                | false
                 | string
                 | ({ [lang in Languages]?: string } & {
                       /** Which kind of device it is */
                       smartType?: string | null;
                       /** Which value to set when the ON command is issued */
-                      byOn?: string | null;
+                      byON?: string | null;
                   });
         }
 

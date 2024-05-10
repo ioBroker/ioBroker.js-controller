@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import { tools } from '@iobroker/js-controller-common';
-import type { Client as StatesClient } from '@iobroker/db-states-redis';
+import type { Client as StatesClient, interview } from '@iobroker/db-states-redis';
 
 export async function getStatesConstructor(): Promise<typeof StatesClient> {
     const config = fs.readJSONSync(tools.getConfigFileName());
@@ -62,4 +62,30 @@ export async function isLocalStatesDbServer(
     }
 
     return result;
+}
+
+interface PerformStatesInterviewOptions {
+    /** The partial states db options */
+    config: ioBroker.StatesDatabaseOptions;
+    /** Db type, like redis */
+    dbType: string;
+}
+
+/**
+ * Perform the states interview if one has been provided
+ *
+ * @param options db type and partial config
+ * @returns the database options obtained by the answered questionnaire
+ */
+export async function performStatesInterview(
+    options: PerformStatesInterviewOptions
+): Promise<ioBroker.StatesDatabaseOptions> {
+    const { dbType, config } = options;
+
+    const states = await import(`@iobroker/db-states-${dbType}`);
+    if (!states.interview) {
+        return config;
+    }
+
+    return states.interview(config satisfies Parameters<typeof interview>[0]);
 }

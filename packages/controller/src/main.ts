@@ -3005,6 +3005,32 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             restart(() => !isStopping && stop(false));
             break;
         }
+
+        case 'sendToSentry': {
+            const message: string = msg.message.message;
+            const level: string = msg.message.level;
+            const extraInfo: Record<string, unknown> = msg.message.extraInfo;
+
+            const sentryInstance = pluginHandler.getPluginInstance('sentry');
+
+            if (!sentryInstance) {
+                logger.debug(`${hostLogPrefix} Do not send message "${message}" to Sentry, because it is disabled`);
+                return;
+            }
+
+            // @ts-expect-error Plugin is not well typed and SentryPlugin has no types at all currently
+            const sentryObj = sentryInstance.getSentryObject();
+
+            sentryObj.withScope((scope: any) => {
+                scope.setLevel(level);
+                for (const [attr, val] of Object.entries(extraInfo)) {
+                    scope.setExtra(attr, val);
+                }
+
+                sentryObj.captureMessage(message, 'info');
+            });
+            break;
+        }
     }
 }
 
@@ -3357,10 +3383,10 @@ function storePids(): void {
             }
             pids.push(process.pid);
             try {
-                fs.writeFileSync(`${controllerDir}/pids.txt`, JSON.stringify(pids));
+                fs.writeFileSync(tools.getPidsFileName(), JSON.stringify(pids));
             } catch (err) {
                 logger.error(
-                    `${hostLogPrefix} could not store process id list in ${controllerDir}/pids.txt! Please check permissions and user ownership of this file. Was ioBroker started as a different user? Please also check left over processes when stopping ioBroker!\n${err}`
+                    `${hostLogPrefix} could not store process id list in ${tools.getPidsFileName()}! Please check permissions and user ownership of this file. Was ioBroker started as a different user? Please also check left over processes when stopping ioBroker!\n${err}`
                 );
                 logger.error(`${hostLogPrefix} Please consider running the installation fixer when on Linux.`);
             }
@@ -5020,7 +5046,7 @@ function stopInstances(forceStop: boolean, callback?: ((wasForced?: boolean) => 
 }
 
 /**
- * Stops the js-controller and all running adapter instances, if no cb provided pids.txt is deleted and process exit will be called
+ * Stops the js-controller and all running adapter instances if no cb provided pids.txt is deleted and process exit will be called
  *
  * @param force kills instances under all circumstances
  * @param callback callback function
@@ -5121,10 +5147,10 @@ function stop(force?: boolean, callback?: () => void): void {
                         clearTimeout(storeTimer);
                     }
                     // delete pids.txt
-                    fs.unlinkSync(path.join(controllerDir, 'pids.txt'));
+                    fs.unlinkSync(tools.getPidsFileName());
                 } catch (e) {
                     if (e.code !== 'ENOENT') {
-                        logger.error(`${hostLogPrefix} Could not delete ${path.join(controllerDir, 'pids.txt')}: ${e}`);
+                        logger.error(`${hostLogPrefix} Could not delete ${tools.getPidsFileName()}: ${e}`);
                     }
                 }
                 process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED);
