@@ -38,10 +38,12 @@
 * (foxriver76/bluefox/Apollon77) minor fixes and stability improvements
 
 **Developer relevant DEPRECATIONS/WARNINGS**
+* (foxriver76) adapters need to use `adapter-core` version 3.1.4 or higher
 * (foxriver76) it is now validated that `obj.native` is of type `Record<string, unknown>`
 * (foxriver76) Let's encrypt has been removed (`@iobroker/webeserver` should be used instead)
 * (foxriver76) deprecated `delete`/`createState/channel/device` methods
 * (foxriver76) deprecated ioPack `common.license` which is replaced by the new object `common.licenseInfo`
+* (foxriver76) ioPack mode `subscribe` has been removed as you can achieve the same with mode `once` and setting `system.adapter.xy.alive` state (also removed `common.wakeup` and `common.subscribe` because of this)
 
 **Developer relevant new features**
 * (foxriver76) adapters can now be written as ESM modules having full support (including compact mode)
@@ -50,7 +52,6 @@
 * (foxriver76) allow to specify reason and exit code on `adapter.stop`
 * (foxriver76) if you blocklist a version in the repository the controller won't start it anymore and will generate a notification 
 * (foxriver76) for adapters of type `schedule` and `connectionType` set to `cloud` the schedule will be automatically delayed by up to 60 seconds randomly per user if the CRON does not contain a seconds argument, this is to prevent DDoS attacks
-
 
 **Developer relevant optimizations and fixes**
 * (foxriver76) fixed crash case if an malformed object was defined in ioPack instanceObjects
