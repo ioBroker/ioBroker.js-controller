@@ -772,6 +772,9 @@ declare global {
 
             /** Deactivated instances, that should not be shown in admin/Intro page */
             intro?: string[];
+
+            /** Wich tabs are visible in admin in the left menu */
+            tabsVisible?: { name: string; visible: boolean }[];
         }
 
         interface OtherCommon extends ObjectCommon {
