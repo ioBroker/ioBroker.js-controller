@@ -572,7 +572,9 @@ declare global {
             /** Settings for custom Admin Tabs */
             adminTab?: {
                 name?: StringOrTranslated;
-                /** Icon name for FontAwesome */
+                /** Base 64 icon for the tab */
+                icon?: string;
+                /** @deprecated icon name for FontAwesome (works only in admin 4)*/
                 'fa-icon'?: string;
                 /** If true, the Tab is not reloaded when the configuration changes */
                 ignoreConfigUpdate?: boolean;
