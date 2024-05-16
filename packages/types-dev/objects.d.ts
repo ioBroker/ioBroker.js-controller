@@ -723,7 +723,7 @@ declare global {
             licenseInformation?: LicenseInformation;
             /** Messages, that will be shown (if condition evaluates to true) by upgrade or installation */
             messages?: MessageRule[];
-            /** If specific update of this adapter should be ignored, specifies version number to be ignored */
+            /** If a specific update of this adapter should be ignored, specifies version number to be ignored */
             ignoreVersion?: string;
 
             // Make it possible to narrow the object type using the custom property
@@ -776,7 +776,7 @@ declare global {
             intro?: string[];
 
             /** Wich tabs are visible in admin in the left menu */
-            tabsVisible?: { name: string; visible: boolean }[];
+            tabsVisible?: { name: string; visible: boolean; color?: string }[];
         }
 
         interface OtherCommon extends ObjectCommon {
