@@ -571,7 +571,7 @@ declare global {
             adminColumns?: string | (string | CustomAdminColumn)[];
             /** Settings for custom Admin Tabs */
             adminTab?: {
-                name?: string;
+                name?: StringOrTranslated;
                 /** Icon name for FontAwesome */
                 'fa-icon'?: string;
                 /** If true, the Tab is not reloaded when the configuration changes */
