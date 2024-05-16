@@ -580,6 +580,8 @@ declare global {
                 link?: string;
                 /** If true, only one instance of this tab will be created for all instances */
                 singleton?: boolean;
+                /** Order number in admin tabs */
+                order?: number;
             };
             allowInit?: boolean;
             /** If the adapter should be automatically upgraded and which version ranges are supported */
