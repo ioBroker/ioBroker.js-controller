@@ -376,6 +376,9 @@ declare global {
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
+
+            /** disable sentry reporting */
+            disableDataReporting?: boolean;
         }
 
         interface HostCommon extends ObjectCommon {
@@ -694,7 +697,7 @@ declare global {
             /** @deprecated Use @see supportedMessages up from controller v5 */
             supportStopInstance?: boolean;
             /** The translated names of this adapter to be shown in the admin UI */
-            titleLang?: Record<Languages, string>;
+            titleLang?: StringOrTranslated;
             /** @deprecated The name of this adapter to be shown in the admin UI. Use @see titleLang instead. */
             title?: string;
             /** The type of this adapter */
@@ -728,6 +731,9 @@ declare global {
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
+
+            /** sentry and other plugins */
+            plugins?: Record<string, Record<string, any>>;
         }
 
         interface SystemConfigCommon extends ObjectCommon {
