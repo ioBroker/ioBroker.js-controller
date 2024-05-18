@@ -3011,15 +3011,13 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             const level: string = msg.message.level;
             const extraInfo: Record<string, unknown> = msg.message.extraInfo;
 
-            const sentryInstance = pluginHandler.getPluginInstance('sentry');
+            // @ts-expect-error Plugin is not well typed and SentryPlugin has no types at all currently
+            const sentryObj = pluginHandler.getPluginInstance('sentry')?.getSentryObject();
 
-            if (!sentryInstance) {
+            if (!sentryObj) {
                 logger.debug(`${hostLogPrefix} Do not send message "${message}" to Sentry, because it is disabled`);
                 return;
             }
-
-            // @ts-expect-error Plugin is not well typed and SentryPlugin has no types at all currently
-            const sentryObj = sentryInstance.getSentryObject();
 
             sentryObj.withScope((scope: any) => {
                 scope.setLevel(level);
