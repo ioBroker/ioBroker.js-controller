@@ -288,6 +288,7 @@ declare global {
             ignoreNull?: boolean;
             sessionId?: any;
             aggregate?: 'minmax' | 'min' | 'max' | 'average' | 'total' | 'count' | 'none';
+            returnNewestEntries?: boolean;
         }
 
         interface DelObjectOptions {
