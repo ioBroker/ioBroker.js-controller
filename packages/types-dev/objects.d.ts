@@ -376,9 +376,6 @@ declare global {
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
-
-            /** disable sentry reporting */
-            disableDataReporting?: boolean;
         }
 
         interface HostCommon extends ObjectCommon {
