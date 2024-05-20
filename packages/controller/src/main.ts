@@ -2976,7 +2976,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
         }
 
         case 'upgradeOsPackages': {
-            const { packages, restart } = msg.message;
+            const { packages, restart: restartRequired } = msg.message;
 
             try {
                 await upgradeOsPackages(packages);
@@ -2991,7 +2991,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 logger.warn(`${hostLogPrefix} Could not check for new OS updates after upgrade: ${e.message}`);
             }
 
-            if (restart) {
+            if (restartRequired) {
                 await wait(200);
                 restart(() => !isStopping && stop(false));
             }
