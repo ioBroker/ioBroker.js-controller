@@ -1001,10 +1001,13 @@ async () => {
 };
 
 // Test registerNotification
-// @ts-expect-error
-adapter.registerNotification('foobar', 'accessErrors', 'This is a problem!');
+// @ts-expect-error known scope can only have defined category
+adapter.registerNotification('system', 'unknown', 'This is a problem!');
 adapter.registerNotification('system', 'accessErrors', 'This is a problem!');
 adapter.registerNotification('system', null, 'This is a problem!');
+// unknown scopes can have any category null | string
+adapter.registerNotification('someAdapter', null, 'This is a notification!');
+adapter.registerNotification('someAdapter', 'unknown', 'This is a notification!');
 
 // https://github.com/ioBroker/adapter-core/issues/429
 adapter.namespace === 'foo-bar.0';
