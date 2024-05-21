@@ -93,12 +93,13 @@
   "types": "build/esm/main.d.ts",
   "exports": {
     ".": {
-      "import": "./build/esm/index.js",
-      "require": "./build/cjs/index.js",
+      "import": "./build/esm/main.js",
+      "require": "./build/cjs/main.js",
       "types": "./build/esm/main.d.ts"
     },
     "./package.json": "./package.json",
-    "./io-package.json": "./io-package.json"
+    "./io-package.json": "./io-package.json",
+    "./iobroker.js": "./iobroker.js"
   },
   "license": "MIT",
   "files": [
