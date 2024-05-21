@@ -343,7 +343,7 @@ export interface InternalGetEncryptedConfigOptions {
     callback?: GetEncryptedConfigCallback;
 }
 
-export type TimeoutCallback = (args?: any[]) => void;
+export type TimeoutCallback = (...args: any[]) => void;
 
 export interface InternalSetObjectOptions {
     id: string;

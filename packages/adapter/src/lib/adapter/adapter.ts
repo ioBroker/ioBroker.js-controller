@@ -2598,7 +2598,11 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    setTimeout(cb: TimeoutCallback, timeout: number, ...args: any[]): ioBroker.Timeout | undefined;
+    setTimeout<TCallback extends TimeoutCallback>(
+        cb: TCallback,
+        timeout: number,
+        ...args: Parameters<TCallback>
+    ): ioBroker.Timeout | undefined;
     /**
      * Same as setTimeout,
      * but it clears the running timers during the unload process
@@ -2685,7 +2689,11 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    setInterval(cb: TimeoutCallback, timeout: number, ...args: any[]): ioBroker.Interval | undefined;
+    setInterval<TCallback extends TimeoutCallback>(
+        cb: TCallback,
+        timeout: number,
+        ...args: Parameters<TCallback>
+    ): ioBroker.Interval | undefined;
 
     /**
      * Same as setInterval
