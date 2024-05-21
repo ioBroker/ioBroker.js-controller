@@ -780,6 +780,9 @@ declare global {
 
             /** Wich tabs are visible in admin in the left menu */
             tabsVisible?: { name: string; visible: boolean; color?: string }[];
+
+            /** Global saved expert mode */
+            expertMode?: boolean;
         }
 
         interface OtherCommon extends ObjectCommon {
