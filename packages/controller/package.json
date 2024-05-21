@@ -98,7 +98,8 @@
       "types": "./build/esm/main.d.ts"
     },
     "./package.json": "./package.json",
-    "./io-package.json": "./io-package.json"
+    "./io-package.json": "./io-package.json",
+    "./iobroker.js": "./iobroker.js"
   },
   "license": "MIT",
   "files": [
