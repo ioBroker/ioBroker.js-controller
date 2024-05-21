@@ -725,12 +725,11 @@ declare global {
             messages?: MessageRule[];
             /** If a specific update of this adapter should be ignored, specifies version number to be ignored */
             ignoreVersion?: string;
+            /** Sentry and other plugins */
+            plugins?: { [pluginName: string]: Record<string, any> };
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
-
-            /** sentry and other plugins */
-            plugins?: Record<string, Record<string, any>>;
         }
 
         interface SystemConfigCommon extends ObjectCommon {
@@ -771,18 +770,22 @@ declare global {
                 /** Default policy, if none has been set explicit for the adapter */
                 defaultPolicy: AutoUpgradePolicy;
             };
+            /** Deactivated instances, that should not be shown in admin/Intro page */
+            intro?: string[];
+            /** Which tabs are visible in admin in the left menu */
+            tabsVisible?: {
+                /** Name of the tab */
+                name: string;
+                /** If the tab should be visible */
+                visible: boolean;
+                /** Optional color of the tab */
+                color?: string;
+            }[];
+            /** Global saved expert mode for admin */
+            expertMode?: boolean;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
-
-            /** Deactivated instances, that should not be shown in admin/Intro page */
-            intro?: string[];
-
-            /** Wich tabs are visible in admin in the left menu */
-            tabsVisible?: { name: string; visible: boolean; color?: string }[];
-
-            /** Global saved expert mode */
-            expertMode?: boolean;
         }
 
         interface OtherCommon extends ObjectCommon {
