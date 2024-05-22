@@ -29,7 +29,7 @@ Callback information. This is set when the source expects a response
 
 #### Defined in
 
-[types-dev/index.d.ts:253](https://github.com/ioBroker/ioBroker.js-controller/blob/819f1976e/packages/types-dev/index.d.ts#L253)
+[types-dev/index.d.ts:253](https://github.com/ioBroker/ioBroker.js-controller/blob/9b71d3242/packages/types-dev/index.d.ts#L253)
 
 ___
 
@@ -41,7 +41,7 @@ The command to be executed
 
 #### Defined in
 
-[types-dev/index.d.ts:247](https://github.com/ioBroker/ioBroker.js-controller/blob/819f1976e/packages/types-dev/index.d.ts#L247)
+[types-dev/index.d.ts:247](https://github.com/ioBroker/ioBroker.js-controller/blob/9b71d3242/packages/types-dev/index.d.ts#L247)
 
 ___
 
@@ -53,7 +53,7 @@ The source of this message
 
 #### Defined in
 
-[types-dev/index.d.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/819f1976e/packages/types-dev/index.d.ts#L251)
+[types-dev/index.d.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/9b71d3242/packages/types-dev/index.d.ts#L251)
 
 ___
 
@@ -65,4 +65,4 @@ The message payload
 
 #### Defined in
 
-[types-dev/index.d.ts:249](https://github.com/ioBroker/ioBroker.js-controller/blob/819f1976e/packages/types-dev/index.d.ts#L249)
+[types-dev/index.d.ts:249](https://github.com/ioBroker/ioBroker.js-controller/blob/9b71d3242/packages/types-dev/index.d.ts#L249)

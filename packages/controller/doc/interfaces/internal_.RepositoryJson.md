@@ -24,4 +24,4 @@ Information about each adapter
 
 #### Defined in
 
-[types-dev/objects.d.ts:918](https://github.com/ioBroker/ioBroker.js-controller/blob/819f1976e/packages/types-dev/objects.d.ts#L918)
+[types-dev/objects.d.ts:918](https://github.com/ioBroker/ioBroker.js-controller/blob/9b71d3242/packages/types-dev/objects.d.ts#L918)

@@ -6,6 +6,10 @@
 
 Predefined notification scopes and their categories
 
+## Indexable
+
+▪ [other: `string`]: `string`
+
 ## Table of contents
 
 ### Properties
@@ -20,4 +24,4 @@ Predefined notification scopes and their categories
 
 #### Defined in
 
-[types-dev/index.d.ts:313](https://github.com/ioBroker/ioBroker.js-controller/blob/819f1976e/packages/types-dev/index.d.ts#L313)
+[types-dev/index.d.ts:313](https://github.com/ioBroker/ioBroker.js-controller/blob/9b71d3242/packages/types-dev/index.d.ts#L313)
