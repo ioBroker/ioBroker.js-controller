@@ -1,10 +1,26 @@
-export default function createAdapterStore(session, defaultTtl = 3600) {
+type Session = any;
+
+// TODO: in the long term move this file somewhere where we have types access it is nowhere used in controller itself and just exported for adapters so it should go to js-controller-adapter package
+interface AdapterStoreOptions {
+    /** The ioBroker adapter */
+    adapter: any;
+    /** The cookie */
+    cookie: any;
+}
+
+/**
+ * Function to create an AdapterStore constructor
+ *
+ * @param session The session object
+ * @param defaultTtl the default time to live
+ * @returns the constructor to create a new AdapterStore
+ */
+export function createAdapterStore(session: Session, defaultTtl = 3600): any {
     const Store = session.Store;
 
     class AdapterStore extends Store {
-        constructor(options) {
+        constructor(options: AdapterStoreOptions) {
             super(options);
-            // const that = this;
 
             this.adapter = options.adapter;
 
@@ -18,12 +34,11 @@ export default function createAdapterStore(session, defaultTtl = 3600) {
         /**
          * Attempt to fetch session by the given `sid`.
          *
-         * @param {String} sid Session ID
-         * @param {Function} fn callback
-         * @api public
+         * @param sid Session ID
+         * @param fn callback
          */
-        get(sid, fn) {
-            this.adapter.getSession(sid, obj => {
+        get(sid: string, fn: (err?: any, obj?: any) => void): void {
+            this.adapter.getSession(sid, (obj: any) => {
                 if (obj) {
                     if (fn) {
                         return fn(null, obj);
@@ -39,13 +54,12 @@ export default function createAdapterStore(session, defaultTtl = 3600) {
         /**
          * Commit the given `sess` object associated with the given `sid`.
          *
-         * @param {String} sid Session ID
-         * @param {Number} ttl Time to live
-         * @param {Session} sess
-         * @param {Function} fn callback
-         * @api public
+         * @param sid Session ID
+         * @param ttl Time to live
+         * @param sess the session
+         * @param fn callback
          */
-        set(sid, ttl, sess, fn) {
+        set(sid: string, ttl: number, sess: Session, fn: (args: any) => void): void {
             if (typeof ttl === 'object') {
                 fn = sess;
                 sess = ttl;
@@ -57,6 +71,8 @@ export default function createAdapterStore(session, defaultTtl = 3600) {
             }
             ttl = ttl || defaultTtl;
             this.adapter.setSession(sid, ttl, sess, function () {
+                // @ts-expect-error fix later
+                // eslint-disable-next-line prefer-rest-params
                 fn && fn.apply(this, arguments);
             }); // do not use here => !!!
         }
@@ -64,11 +80,10 @@ export default function createAdapterStore(session, defaultTtl = 3600) {
         /**
          * Destroy the session associated with the given `sid`.
          *
-         * @param {String} sid Session ID
-         * @param {Function} fn callback
-         * @api public
+         * @param sid Session ID
+         * @param fn callback
          */
-        destroy(sid, fn) {
+        destroy(sid: string, fn: () => void): void {
             this.adapter.destroySession(sid, fn);
         }
     }
