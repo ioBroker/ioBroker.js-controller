@@ -321,6 +321,7 @@ declare global {
                 | 'remoteHostErrors'
                 | 'restartLoop'
                 | 'fileToJsonl';
+            [other: string]: string;
         }
         interface AdapterConfig {
             // This is a stub to be augmented in every adapter

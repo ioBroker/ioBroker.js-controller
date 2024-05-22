@@ -688,6 +688,16 @@ if (typeof state.common.smartName === 'object' && state.common.smartName !== nul
 declare let enumObj: ioBroker.EnumObject;
 enumObj.common.members && enumObj.common.members.map(() => 1);
 
+adapter.setInterval((_param1: number, _param2: string) => {}, 100, 100, '');
+// @ts-expect-error missing required parameter _param2
+adapter.setInterval((_param1: number, _param2: string) => {}, 100, 100);
+// @ts-expect-error wrong type of _param2
+adapter.setInterval((_param1: number, _param2: string) => {}, 100, 100, 1);
+adapter.setTimeout((_param1: number, _param2: string) => {}, 100, 100, '');
+// @ts-expect-error missing required parameter _param2
+adapter.setTimeout((_param1: number, _param2: string) => {}, 100, 100);
+// @ts-expect-error wrong type of _param2
+adapter.setTimeout((_param1: number, _param2: string) => {}, 100, 100, 1);
 // Adapter.clearTimeout and clearInterval are not compatible with the builtins
 adapter.clearTimeout(adapter.setTimeout(() => {}, 10));
 adapter.clearInterval(adapter.setInterval(() => {}, 10));
@@ -996,10 +1006,13 @@ async () => {
 };
 
 // Test registerNotification
-// @ts-expect-error
-adapter.registerNotification('foobar', 'accessErrors', 'This is a problem!');
+// @ts-expect-error known scope can only have defined category
+adapter.registerNotification('system', 'unknown', 'This is a problem!');
 adapter.registerNotification('system', 'accessErrors', 'This is a problem!');
 adapter.registerNotification('system', null, 'This is a problem!');
+// unknown scopes can have any category null | string
+adapter.registerNotification('someAdapter', null, 'This is a notification!');
+adapter.registerNotification('someAdapter', 'unknown', 'This is a notification!');
 
 // https://github.com/ioBroker/adapter-core/issues/429
 adapter.namespace === 'foo-bar.0';

@@ -1,7 +1,7 @@
 {
   "name": "iobroker.js-controller",
   "type": "module",
-  "version": "5.0.20-alpha.0-20240510-819f1976e",
+  "version": "6.0.0",
   "engines": {
     "node": ">=18.0.0"
   },
@@ -38,6 +38,9 @@
     "readline-sync": "^1.4.10",
     "semver": "^7.5.2",
     "tar": "^6.2.1"
+  },
+  "peerDependencies": {
+    "@iobroker/adapter-core": "^2.6.11 || ^3.1.4"
   },
   "homepage": "https://www.iobroker.com",
   "description": "Updated by reinstall.js on 2018-06-11T15:19:56.688Z",
@@ -93,12 +96,13 @@
   "types": "build/esm/main.d.ts",
   "exports": {
     ".": {
-      "import": "./build/esm/index.js",
-      "require": "./build/cjs/index.js",
+      "import": "./build/esm/main.js",
+      "require": "./build/cjs/main.js",
       "types": "./build/esm/main.d.ts"
     },
     "./package.json": "./package.json",
-    "./io-package.json": "./io-package.json"
+    "./io-package.json": "./io-package.json",
+    "./iobroker.js": "./iobroker.js"
   },
   "license": "MIT",
   "files": [
