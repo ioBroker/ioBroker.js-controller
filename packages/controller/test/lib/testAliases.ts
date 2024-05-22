@@ -1,6 +1,7 @@
 import type { TestContext } from '../_Types.js';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import { PERMISSIONS } from './permissions.js';
+import { setTimeout as wait } from 'node:timers/promises';
 
 async function prepareGroupsAndUsers(objects: ObjectsInRedisClient): Promise<void> {
     await objects.setObject('system.group.userC', {
@@ -490,6 +491,28 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 setTimeout(() => done(), 500);
             });
         });
+    }).timeout(3_000);
+
+    // Avoid Issue 2753
+    it(testName + 'Test subscribe alias multiple times should only publish once', async () => {
+        let noTriggered = 0;
+
+        context.onAdapterStateChanged = (id, state) => {
+            if (id === gAliasID) {
+                expect(state).to.be.ok;
+                noTriggered++;
+            }
+        };
+
+        await context.adapter.subscribeForeignStatesAsync(gAliasID);
+        await context.adapter.subscribeForeignStatesAsync(gAliasID);
+
+        await context.states.setState(gid, 10);
+        await wait(500);
+        console.log('111111111');
+        console.log(noTriggered);
+
+        expect(noTriggered).to.equal(1);
     }).timeout(3_000);
 
     it(testName + 'Test negative subscribe aliases regex', done => {
