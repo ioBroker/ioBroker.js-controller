@@ -509,8 +509,6 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         await context.states.setState(gid, 10);
         await wait(500);
-        console.log('111111111');
-        console.log(noTriggered);
 
         expect(noTriggered).to.equal(1);
     }).timeout(3_000);
