@@ -7634,7 +7634,7 @@ export class AdapterClass extends EventEmitter {
      * ack, options and callback are optional
      *
      * @param id object ID of the state.
-     * @param state simple value or object with attribues.
+     * @param state simple value or object with attributes.
      *  If state is object and ack exists too as function argument, function argument has priority.
      *  ```js
      *      {
