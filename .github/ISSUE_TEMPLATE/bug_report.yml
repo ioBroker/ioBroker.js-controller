@@ -38,7 +38,7 @@ body:
     attributes:
       label: JS-controller version
       description: Please fill in the version of js-controller
-    validation:
+    validations:
       required: true
 
   - type: input
@@ -46,5 +46,5 @@ body:
     attributes:
       label: node version
       description: Please fill in the version of installed, use node -v to show
-    validation:
+    validations:
       required: true
