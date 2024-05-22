@@ -1996,7 +1996,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
 
         case 'cmdExec': {
-            const mainFile = path.join(thisDir, '..', `${tools.appName.toLowerCase()}.js`);
+            const mainFile = path.join(tools.getControllerDir(), `${tools.appName.toLowerCase()}.js`);
             const args = [...getDefaultNodeArgs(mainFile), mainFile];
             if (!msg.message.data || typeof msg.message.data !== 'string') {
                 logger.warn(
@@ -3436,7 +3436,7 @@ function installAdapters(): void {
             );
         }
 
-        const mainFile = path.join(thisDir, '..', `${tools.appName.toLowerCase()}.js`);
+        const mainFile = path.join(tools.getControllerDir(), `${tools.appName.toLowerCase()}.js`);
         const installArgs = [];
         const installOptions = { windowsHide: true };
         if (!task.rebuild && task.installedFrom && proc.downloadRetry < 3) {
@@ -3543,7 +3543,7 @@ function installAdapters(): void {
             });
             child.on('error', err => {
                 logger.error(
-                    `${hostLogPrefix} Cannot execute "${thisDir}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${
+                    `${hostLogPrefix} Cannot execute "${tools.getControllerDir()}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${
                         err.message
                     }`
                 );
@@ -3554,7 +3554,7 @@ function installAdapters(): void {
             });
         } catch (err) {
             logger.error(
-                `${hostLogPrefix} Cannot execute "${thisDir}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${err}`
+                `${hostLogPrefix} Cannot execute "${tools.getControllerDir()}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${err}`
             );
             setTimeout(() => {
                 installQueue.shift();

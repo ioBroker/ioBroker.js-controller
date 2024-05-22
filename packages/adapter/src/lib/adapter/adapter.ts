@@ -10969,11 +10969,22 @@ export class AdapterClass extends EventEmitter {
                             }
                         }
                     }
-                } else if (this.adapterReady && this.aliases.has(id)) {
+                } else if (!this._stopInProgress && this.adapterReady && this.aliases.has(id)) {
                     // If adapter is ready and for this ID exist some alias links
                     const alias = this.aliases.get(id);
-                    alias!.targets.forEach(target => {
+                    /** Prevent multiple publishes if multiple pattern contain this alias id */
+                    const uniqueTargets = new Set<string>();
+
+                    for (const target of alias!.targets) {
+                        const targetId = target.id;
+                        if (uniqueTargets.has(targetId)) {
+                            continue;
+                        }
+
+                        uniqueTargets.add(targetId);
+
                         const source = alias!.source!;
+
                         const aState = state
                             ? tools.formatAliasValue({
                                   sourceCommon: source,
@@ -10982,13 +10993,11 @@ export class AdapterClass extends EventEmitter {
                                   logger: this._logger,
                                   logNamespace: this.namespaceLog,
                                   sourceId: id,
-                                  targetId: target.id
+                                  targetId
                               })
                             : null;
 
-                        const targetId = target.id;
-
-                        if (!this._stopInProgress && (aState || !state)) {
+                        if (aState || !state) {
                             if (typeof this._options.stateChange === 'function') {
                                 this._options.stateChange(targetId, aState);
                             } else {
@@ -10996,7 +11005,7 @@ export class AdapterClass extends EventEmitter {
                                 setImmediate(() => this.emit('stateChange', targetId, aState));
                             }
                         }
-                    });
+                    }
                 }
             },
             changeUser: (id, state) => {
