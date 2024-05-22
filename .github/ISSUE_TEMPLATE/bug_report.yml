@@ -44,7 +44,7 @@ body:
   - type: input
     id: node
     attributes:
-      label: node version
+      label: Node version
       description: Please fill in the version of node-js installed, use node -v to show
     validations:
       required: true
