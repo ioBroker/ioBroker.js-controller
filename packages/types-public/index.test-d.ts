@@ -144,6 +144,12 @@ adapter.setState('state.name', { val: 'value', ack: true, q: adapter.constants.S
 // @ts-expect-error invalid quality
 adapter.setState('state.name', { val: 'value', ack: true, q: 1234 });
 
+// setState without callback is returning a promise
+adapter.setState('state.name', true, true).then(id => id.toLowerCase());
+adapter.setState('state.name', true).then(id => id.toLowerCase());
+adapter.setState('state.name', true, {}).then(id => id.toLowerCase());
+adapter.setState('state.name', true, true, {}).then(id => id.toLowerCase());
+
 adapter.setStateAsync('state.name', 'value').then(id => id.toLowerCase());
 adapter.setStateAsync('state.name', 'value', true).then(id => id.toLowerCase());
 adapter.setStateAsync('state.name', { val: 'value', ack: true }).then(id => id.toLowerCase());
