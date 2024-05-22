@@ -10969,7 +10969,7 @@ export class AdapterClass extends EventEmitter {
                             }
                         }
                     }
-                } else if (this.adapterReady && this.aliases.has(id)) {
+                } else if (!this._stopInProgress && this.adapterReady && this.aliases.has(id)) {
                     // If adapter is ready and for this ID exist some alias links
                     const alias = this.aliases.get(id);
                     /** Prevent multiple publishes if multiple pattern contain this alias id */
@@ -10997,7 +10997,7 @@ export class AdapterClass extends EventEmitter {
                               })
                             : null;
 
-                        if (!this._stopInProgress && (aState || !state)) {
+                        if (aState || !state) {
                             if (typeof this._options.stateChange === 'function') {
                                 this._options.stateChange(targetId, aState);
                             } else {
