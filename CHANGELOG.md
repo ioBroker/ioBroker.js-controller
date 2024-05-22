@@ -4,6 +4,61 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__ - Kiera
+
+**Breaking changes**
+* Support for Node.js 16 is dropped!
+* Binary states have been removed
+* Let's encrypt has been removed
+
+**Features**
+* (foxriver76) Added possibility to automatically upgrade adapters (see https://github.com/ioBroker/ioBroker.js-controller?tab=readme-ov-file#automatic-adapter-upgrade)
+* (foxriver76) if updates for OS packages are available a notification is generated (Linux only)
+* (foxriver76) the controller creates a notification if free disk space is critical (see https://github.com/ioBroker/ioBroker.js-controller?tab=readme-ov-file#disk-space-warnings)
+* (foxriver76) allow to ignore specific adapter versions (see https://github.com/ioBroker/ioBroker.js-controller?tab=readme-ov-file#ignoring-specific-adapter-version)
+* (foxriver76) if an adapter is blocklisted and thus stopped the controller now generates a notification
+* (foxriver76) allow to configure redis tls during `setup custom`
+
+**Optimizations and fixes**
+* (foxriver76) we now send `SIGKILL` instead of `SIGTERM` if adapter does not stop in normal time to prevent ghost processes
+* (foxriver76) prevent crash case if an invalid pattern  is scanned in the database
+* (foxriver76) we now log the pid if a adapter process is stopped
+* (foxriver76/Apollon77) fixed crash case on file rotation
+* (foxriver76) optimized error messages and help text for cli commands `url` and `install`
+* (foxriver76) if users want to install non existing adapters we now hint to the `url` command instead of recommending the use of npm
+* (foxriver76) when interacting with aliases we no longer check permissions of the alias and the original object, we now only check the alias
+* (foxriver76) host object is now already created during `setup first` run, allowing eg to disable sentry globally before first start of ioBroker
+* (foxriver76) if the user sets a custom title for instances this is now preserved during upload
+* (foxriver76) on reinstallation of adapters we uninstall the package manually first to ensure a correct reinstall
+* (foxriver76) fixed problem on multihost discover
+* (foxriver76) if `getState` is called on a non existing or non linked alias we return `null` like for all other non existing states
+* (foxriver76) optimize alias subscribe performance for non-redis dbs
+* (foxriver76/bluefox/Apollon77) updated dependencies
+* (foxriver76/bluefox/Apollon77) minor fixes and stability improvements
+
+**Developer relevant DEPRECATIONS/WARNINGS**
+* (foxriver76) adapters need to specify `adapter-core` version 3.1.4 or higher or allow an upgrade to this version by specifying e.g. `^3.x.x`
+* (foxriver76) it is now validated that `obj.native` is of type `Record<string, unknown>`
+* (foxriver76) Let's encrypt has been removed (`@iobroker/webeserver` should be used instead)
+* (foxriver76) deprecated `delete`/`createState/channel/device` methods
+* (foxriver76) deprecated ioPack `common.license` which is replaced by the new object `common.licenseInfo`
+* (foxriver76) ioPack mode `subscribe` has been removed as you can achieve the same with mode `once` and setting `system.adapter.xy.alive` state (also removed `common.wakeup` and `common.subscribe` because of this)
+
+**Developer relevant new features**
+* (foxriver76) js-controller (and thus the whole ioBroker) is now running as an ESM module internally while staying a 100 % backward compatible to adapters written in cjs
+* (foxriver76) adapters can now be written as ESM modules having full support (including compact mode)
+* (foxriver76) we provide all exports as ESM and as CJS to allow adapter developers to choose what to use
+* (foxriver76) added convenient methods to manage node modules (see https://github.com/ioBroker/ioBroker.js-controller?tab=readme-ov-file#managing-node-modules)
+* (foxriver76) allow to specify reason and exit code on `adapter.stop`
+* (foxriver76) if you blocklist a version in your `io-package.json` the controller won't start it anymore and will generate a notification 
+* (foxriver76) for adapters of type `schedule` and `connectionType` set to `cloud` the schedule will be automatically delayed by up to 60 seconds randomly per user if the CRON does not contain a seconds argument, this is to prevent DDoS attacks
+
+**Developer relevant optimizations and fixes**
+* (foxriver76) fixed crash case if an malformed object was defined in ioPack instanceObjects
+* (foxriver76) when interacting with aliases we no longer check permissions of the alias and the original object, we now only check the alias
+* (foxriver76) if `getState` is called on a non-existing or non-linked alias we return `null` like for all other non-existing states
+* (foxriver76/bluefox) multiple improvements on type level
+
 ## 5.0.19 (2024-01-30) - Jana
 * (foxriver76) fixed issue on `getStates` with aliases
 
