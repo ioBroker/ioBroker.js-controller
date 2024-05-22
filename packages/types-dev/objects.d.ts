@@ -381,7 +381,10 @@ declare global {
         interface HostCommon extends ObjectCommon {
             /** The display name of this host */
             name: string;
+            /** Changeable name of the host */
             title: string;
+            /** base64 encoded icon */
+            icon?: string
             installedVersion: string; // e.g. 1.2.3 (following semver)
             /** The command line of the executable */
             cmd: string;
