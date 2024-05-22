@@ -646,7 +646,7 @@ declare global {
             /** Name of the adapter (without leading `ioBroker.`) */
             name: string;
             /** News per version in i18n */
-            news?: Record<string, Record<string, Translated>>;
+            news?: { [version: string]: Translated };
             /** If `true`, no configuration dialog will be shown */
             noConfig?: true;
             /** If `true`, this adapter's instances will not be shown in the admin overview screen. Useful for icon sets and widgets... */
