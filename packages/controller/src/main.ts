@@ -1996,7 +1996,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
 
         case 'cmdExec': {
-            const mainFile = path.join(thisDir, '..', `${tools.appName.toLowerCase()}.js`);
+            const mainFile = path.join(tools.getControllerDir(), `${tools.appName.toLowerCase()}.js`);
             const args = [...getDefaultNodeArgs(mainFile), mainFile];
             if (!msg.message.data || typeof msg.message.data !== 'string') {
                 logger.warn(
