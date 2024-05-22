@@ -7605,26 +7605,26 @@ export class AdapterClass extends EventEmitter {
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         callback?: T
-    ): T extends ioBroker.SetStateCallback ? void : ioBroker.SetStatePromise;
-    setState<T extends ioBroker.SetStateCallback>(
+    ): T extends unknown ? ioBroker.SetStatePromise : void;
+    setState<T extends ioBroker.SetStateCallback | undefined>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
         callback?: T
-    ): T extends ioBroker.SetStateCallback ? void : ioBroker.SetStatePromise;
-    setState<T extends ioBroker.SetStateCallback>(
+    ): T extends unknown ? ioBroker.SetStatePromise : void;
+    setState<T extends ioBroker.SetStateCallback | undefined>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         options?: Partial<GetUserGroupsOptions> | null,
         callback?: T
-    ): T extends ioBroker.SetStateCallback ? void : ioBroker.SetStatePromise;
-    setState<T extends ioBroker.SetStateCallback>(
+    ): T extends unknown ? ioBroker.SetStatePromise : void;
+    setState<T extends ioBroker.SetStateCallback | undefined>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
         options?: Partial<GetUserGroupsOptions> | null,
         callback?: T
-    ): T extends ioBroker.SetStateCallback ? void : ioBroker.SetStatePromise;
+    ): T extends unknown ? ioBroker.SetStatePromise : void;
 
     /**
      * Writes value into states DB.
