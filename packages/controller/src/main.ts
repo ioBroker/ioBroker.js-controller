@@ -1996,7 +1996,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
 
         case 'cmdExec': {
-            const mainFile = path.join(thisDir, '..', `${tools.appName.toLowerCase()}.js`);
+            const mainFile = path.join(tools.getControllerDir(), `${tools.appName.toLowerCase()}.js`);
             const args = [...getDefaultNodeArgs(mainFile), mainFile];
             if (!msg.message.data || typeof msg.message.data !== 'string') {
                 logger.warn(
@@ -3436,7 +3436,7 @@ function installAdapters(): void {
             );
         }
 
-        const mainFile = path.join(thisDir, '..', `${tools.appName.toLowerCase()}.js`);
+        const mainFile = path.join(tools.getControllerDir(), `${tools.appName.toLowerCase()}.js`);
         const installArgs = [];
         const installOptions = { windowsHide: true };
         if (!task.rebuild && task.installedFrom && proc.downloadRetry < 3) {
@@ -3543,7 +3543,7 @@ function installAdapters(): void {
             });
             child.on('error', err => {
                 logger.error(
-                    `${hostLogPrefix} Cannot execute "${thisDir}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${
+                    `${hostLogPrefix} Cannot execute "${tools.getControllerDir()}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${
                         err.message
                     }`
                 );
@@ -3554,7 +3554,7 @@ function installAdapters(): void {
             });
         } catch (err) {
             logger.error(
-                `${hostLogPrefix} Cannot execute "${thisDir}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${err}`
+                `${hostLogPrefix} Cannot execute "${tools.getControllerDir()}/${tools.appName.toLowerCase()}.js ${commandScope} ${name}: ${err}`
             );
             setTimeout(() => {
                 installQueue.shift();
@@ -3666,7 +3666,13 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
         if (!proc.process) {
             // reset sigKill to 0 if it was set to another value from "once run"
             await states!.setState(`${instance._id}.sigKill`, { val: 0, ack: false, from: hostObjectPrefix });
-            const args = [instance._id.split('.').pop() || '0', instance.common.loglevel || 'info'];
+
+            const args = [
+                '--instance',
+                instance._id.split('.').pop() || '0',
+                '--loglevel',
+                instance.common.loglevel || 'info'
+            ];
             try {
                 proc.process = cp.fork(fileNameFull, args, {
                     execArgv: tools.getDefaultNodeArgs(fileNameFull),
@@ -3804,11 +3810,13 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         return;
     }
 
+    const loglevel = instance.common.loglevel || 'info';
+    const instanceNo = instance._id.split('.').pop() || '0';
     /** Args passed to the actual adapter code */
     const args =
         instance?._id && instance.common
-            ? [instance._id.split('.').pop() || '0', instance.common.loglevel || 'info']
-            : ['0', 'info'];
+            ? ['--instance', instanceNo, '--loglevel', loglevel]
+            : ['--instance', '0', '--loglevel', 'info'];
 
     /** Args passed to Node.js */
     const execArgv: string[] = [];
@@ -3836,7 +3844,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
     // www-only adapters have no start file
     if (instance.common.onlyWWW) {
-        logger.debug(`${hostLogPrefix} startInstance ${name}.${args[0]} only WWW files. Nothing to start`);
+        logger.debug(`${hostLogPrefix} startInstance ${name}.${instanceNo} only WWW files. Nothing to start`);
         return;
     }
 
@@ -3846,7 +3854,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         try {
             adapterMainFile = await tools.resolveAdapterMainFile(name);
         } catch {
-            logger.error(`${hostLogPrefix} startInstance ${name}.${args[0]}: cannot find start file!`);
+            logger.error(`${hostLogPrefix} startInstance ${name}.${instanceNo}: cannot find start file!`);
             return;
         }
     }
@@ -3860,7 +3868,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         proc.engine = packJSON?.engines?.node;
     } catch {
         logger.error(
-            `${hostLogPrefix} startInstance ${name}.${args[0]}: Cannot read and parse "${adapterDir}/package.json"`
+            `${hostLogPrefix} startInstance ${name}.${instanceNo}: Cannot read and parse "${adapterDir}/package.json"`
         );
     }
 
@@ -3868,7 +3876,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
     if (proc.engine) {
         if (!semver.satisfies(process.version.replace(/^v/, ''), proc.engine)) {
             logger.warn(
-                `${hostLogPrefix} startInstance ${name}.${args[0]}: required Node.js version ${proc.engine}, actual version ${process.version}`
+                `${hostLogPrefix} startInstance ${name}.${instanceNo}: required Node.js version ${proc.engine}, actual version ${process.version}`
             );
             // disable instance
             objects!.getObject(id, (err, obj) => {
@@ -3876,7 +3884,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                     obj.common.enabled = false;
                     objects!.setObject(obj._id, obj, _err =>
                         logger.warn(
-                            `${hostLogPrefix} startInstance ${name}.${args[0]}: instance disabled because of Node.js version mismatch`
+                            `${hostLogPrefix} startInstance ${name}.${instanceNo}: instance disabled because of Node.js version mismatch`
                         )
                     );
                 }
@@ -3955,7 +3963,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                 }
 
                 logger.debug(
-                    `${hostLogPrefix} startInstance ${name}.${args[0]} loglevel=${args[1]}, compact=${
+                    `${hostLogPrefix} startInstance ${name}.${instanceNo} loglevel=${loglevel}, compact=${
                         instance.common.compact && instance.common.runAsCompactMode
                             ? `true (${instance.common.compactGroup})`
                             : 'false'
@@ -4169,7 +4177,6 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                 }
 
                                 if (!proc.crashCount || proc.crashCount < 3) {
-                                    /** @ts-expect error if needed add it to types */
                                     proc.restartTimer = setTimeout(
                                         _id => startInstance(_id),
                                         code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP
