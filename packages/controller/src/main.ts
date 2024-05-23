@@ -3810,11 +3810,12 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         return;
     }
 
+    const loglevel = instance.common.loglevel || 'info';
     const instanceNo = instance._id.split('.').pop() || '0';
     /** Args passed to the actual adapter code */
     const args =
         instance?._id && instance.common
-            ? ['--instance', instanceNo, '--loglevel', instance.common.loglevel || 'info']
+            ? ['--instance', instanceNo, '--loglevel', loglevel]
             : ['--instance', '0', '--loglevel', 'info'];
 
     /** Args passed to Node.js */
@@ -3962,7 +3963,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                 }
 
                 logger.debug(
-                    `${hostLogPrefix} startInstance ${name}.${instanceNo} loglevel=${args[1]}, compact=${
+                    `${hostLogPrefix} startInstance ${name}.${instanceNo} loglevel=${loglevel}, compact=${
                         instance.common.compact && instance.common.runAsCompactMode
                             ? `true (${instance.common.compactGroup})`
                             : 'false'
