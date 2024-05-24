@@ -519,7 +519,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         res = await execAsync(`"${process.execPath}" "${iobExecutable}" setup first`);
         // Sentry info is on stderr so check exit code here
         expect(res.code).to.be.equal(0);
-    }).timeout(200_000);
+    }).timeout(20_000);
 
     // setup custom
     // url

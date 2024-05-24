@@ -192,6 +192,9 @@ export class Setup {
             console.error(`Could not ensure that adapters object for this host exists: ${e.message}`);
         }
 
+        if (!process.env.CI) {
+            await this._updatePackages();
+        }
         await this._cleanupInstallation();
 
         // special methods which are only there on objects server
@@ -1551,8 +1554,6 @@ require('${path.normalize(thisDir + '/..')}/setup').execute();`;
                 console.log(`Non-critical error: ${e.message}`);
             }
         } else if (ignoreIfExist) {
-            await this._updatePackages();
-
             // it is a setup first run and config exists yet
             try {
                 config = fs.readJSONSync(configFileName);
