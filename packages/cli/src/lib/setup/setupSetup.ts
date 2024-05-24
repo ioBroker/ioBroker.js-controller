@@ -1405,7 +1405,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
      *
      * @param options setup options
      */
-    async setup(options: SetupCommandOptions): Promise<void> {
+    setup(options: SetupCommandOptions): void {
         const { ignoreIfExist, useRedis, callback } = options;
 
         let config;
