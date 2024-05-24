@@ -109,6 +109,10 @@ export class BlocklistManager {
         const { adapterName, version, systemRepoObj, systemConfigObj } = options;
 
         for (const activeRepoName of systemConfigObj.common.activeRepo) {
+            if (!(activeRepoName in systemRepoObj.native.repositories)) {
+                return false;
+            }
+
             const repo = systemRepoObj.native.repositories[activeRepoName];
             const adapterEntry = repo.json?.[adapterName];
 
