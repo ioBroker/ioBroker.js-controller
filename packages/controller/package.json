@@ -39,9 +39,6 @@
     "semver": "^7.5.2",
     "tar": "^6.2.1"
   },
-  "peerDependencies": {
-    "@iobroker/adapter-core": "^2.6.11 || ^3.1.4"
-  },
   "homepage": "https://www.iobroker.com",
   "description": "Updated by reinstall.js on 2018-06-11T15:19:56.688Z",
   "keywords": [
