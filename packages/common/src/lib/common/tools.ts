@@ -1672,7 +1672,7 @@ export interface InstallNodeModuleOptions {
  *
  * @param cwd Which directory to work in. If none is given, this defaults to ioBroker's root directory.
  */
-async function detectPackageManagerWithFallback(cwd?: string): Promise<PackageManager> {
+export async function detectPackageManagerWithFallback(cwd?: string): Promise<PackageManager> {
     try {
         // For the first attempt, use pak's default of requiring a lockfile. This makes sure we find ioBroker's root dir
         return await detectPackageManager(

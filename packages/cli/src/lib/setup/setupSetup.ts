@@ -193,6 +193,7 @@ export class Setup {
         }
 
         await this._cleanupInstallation();
+        await this._updatePackages();
 
         // special methods which are only there on objects server
         // TODO this check will lead to objects being never in the following code
@@ -1193,6 +1194,21 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             await this._cleanupForbiddenIds();
         } catch (e) {
             console.error(`Cannot clean up objects and states with forbidden IDs: ${e.message}`);
+        }
+    }
+
+    /**
+     * Performs `npm update` to ensure adapters deps are updated to the newest available packages in-range
+     * This allows e.g. hot fixing in adapter-core and backport of critical fixes
+     */
+    private async _updatePackages(): Promise<void> {
+        console.log('Updating dependencies...');
+
+        try {
+            const pakManager = await tools.detectPackageManagerWithFallback(tools.getRootDir());
+            await pakManager.update();
+        } catch (e) {
+            console.error(`Could not update dependencies: ${e.message}`);
         }
     }
 
