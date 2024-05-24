@@ -193,7 +193,6 @@ export class Setup {
         }
 
         await this._cleanupInstallation();
-        await this._updatePackages();
 
         // special methods which are only there on objects server
         // TODO this check will lead to objects being never in the following code
@@ -1403,7 +1402,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
      *
      * @param options setup options
      */
-    setup(options: SetupCommandOptions): void {
+    async setup(options: SetupCommandOptions): Promise<void> {
         const { ignoreIfExist, useRedis, callback } = options;
 
         let config;
@@ -1552,6 +1551,8 @@ require('${path.normalize(thisDir + '/..')}/setup').execute();`;
                 console.log(`Non-critical error: ${e.message}`);
             }
         } else if (ignoreIfExist) {
+            await this._updatePackages();
+
             // it is a setup first run and config exists yet
             try {
                 config = fs.readJSONSync(configFileName);
