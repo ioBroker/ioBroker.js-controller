@@ -5,9 +5,9 @@ declare global {
         /** Defines access rights for a single file */
         interface FileACL {
             /** Full name of the user who owns this file, e.g. "system.user.admin" */
-            owner: string;
+            owner: ObjectIDs.User;
             /** Full name of the group who owns this file, e.g. "system.group.administrator" */
-            ownerGroup: string;
+            ownerGroup: ObjectIDs.Group;
             /** Linux-type permissions defining access to this file */
             permissions: number;
         }
@@ -23,9 +23,9 @@ declare global {
         /** Defines access rights for a single object */
         interface ObjectACL {
             /** Full name of the user who owns this object, e.g. "system.user.admin" */
-            owner: string;
+            owner: ObjectIDs.User;
             /** Full name of the group who owns this object, e.g. "system.group.administrator" */
-            ownerGroup: string;
+            ownerGroup: ObjectIDs.Group;
             /** Linux-type permissions defining access to this object */
             object: number;
         }
@@ -746,6 +746,10 @@ declare global {
             longitude: string;
             /** Configured latitude */
             latitude: string;
+            /** Optional user's city (only for diagnostics) */
+            city?: string;
+            /** Optional user's country (only for diagnostics) */
+            country?: string;
             /** Default history instance */
             defaultHistory: string;
             /** Which diag data is allowed to be sent */
