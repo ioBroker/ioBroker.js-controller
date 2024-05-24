@@ -36,7 +36,7 @@ The default permissions of this group
 
 #### Defined in
 
-[types-dev/objects.d.ts:441](https://github.com/ioBroker/ioBroker.js-controller/blob/1d3cb759c/packages/types-dev/objects.d.ts#L441)
+[types-dev/objects.d.ts:441](https://github.com/ioBroker/ioBroker.js-controller/blob/14a872375/packages/types-dev/objects.d.ts#L441)
 
 ___
 
@@ -52,7 +52,7 @@ Color attribute used in UI
 
 #### Defined in
 
-[types-dev/objects.d.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/1d3cb759c/packages/types-dev/objects.d.ts#L178)
+[types-dev/objects.d.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/14a872375/packages/types-dev/objects.d.ts#L178)
 
 ___
 
@@ -62,7 +62,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:445](https://github.com/ioBroker/ioBroker.js-controller/blob/1d3cb759c/packages/types-dev/objects.d.ts#L445)
+[types-dev/objects.d.ts:445](https://github.com/ioBroker/ioBroker.js-controller/blob/14a872375/packages/types-dev/objects.d.ts#L445)
 
 ___
 
@@ -78,7 +78,7 @@ Description of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:170](https://github.com/ioBroker/ioBroker.js-controller/blob/1d3cb759c/packages/types-dev/objects.d.ts#L170)
+[types-dev/objects.d.ts:170](https://github.com/ioBroker/ioBroker.js-controller/blob/14a872375/packages/types-dev/objects.d.ts#L170)
 
 ___
 
@@ -94,7 +94,7 @@ When set to true, this object may not be deleted
 
 #### Defined in
 
-[types-dev/objects.d.ts:173](https://github.com/ioBroker/ioBroker.js-controller/blob/1d3cb759c/packages/types-dev/objects.d.ts#L173)
+[types-dev/objects.d.ts:173](https://github.com/ioBroker/ioBroker.js-controller/blob/14a872375/packages/types-dev/objects.d.ts#L173)
 
 ___
 
@@ -106,7 +106,7 @@ A group can be disabled, if missing, a group is active
 
 #### Defined in
 
-[types-dev/objects.d.ts:443](https://github.com/ioBroker/ioBroker.js-controller/blob/1d3cb759c/packages/types-dev/objects.d.ts#L443)
+[types-dev/objects.d.ts:443](https://github.com/ioBroker/ioBroker.js-controller/blob/14a872375/packages/types-dev/objects.d.ts#L443)
 
 ___
 
@@ -122,7 +122,7 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 #### Defined in
 
-[types-dev/objects.d.ts:176](https://github.com/ioBroker/ioBroker.js-controller/blob/1d3cb759c/packages/types-dev/objects.d.ts#L176)
+[types-dev/objects.d.ts:176](https://github.com/ioBroker/ioBroker.js-controller/blob/14a872375/packages/types-dev/objects.d.ts#L176)
 
 ___
 
@@ -138,7 +138,7 @@ Icon for this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:183](https://github.com/ioBroker/ioBroker.js-controller/blob/1d3cb759c/packages/types-dev/objects.d.ts#L183)
+[types-dev/objects.d.ts:183](https://github.com/ioBroker/ioBroker.js-controller/blob/14a872375/packages/types-dev/objects.d.ts#L183)
 
 ___
 
@@ -150,7 +150,7 @@ The users of this group
 
 #### Defined in
 
-[types-dev/objects.d.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/1d3cb759c/packages/types-dev/objects.d.ts#L439)
+[types-dev/objects.d.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/14a872375/packages/types-dev/objects.d.ts#L439)
 
 ___
 
@@ -166,7 +166,7 @@ The name of this group
 
 #### Defined in
 
-[types-dev/objects.d.ts:437](https://github.com/ioBroker/ioBroker.js-controller/blob/1d3cb759c/packages/types-dev/objects.d.ts#L437)
+[types-dev/objects.d.ts:437](https://github.com/ioBroker/ioBroker.js-controller/blob/14a872375/packages/types-dev/objects.d.ts#L437)
 
 ___
 
@@ -182,4 +182,4 @@ role of the object
 
 #### Defined in
 
-[types-dev/objects.d.ts:185](https://github.com/ioBroker/ioBroker.js-controller/blob/1d3cb759c/packages/types-dev/objects.d.ts#L185)
+[types-dev/objects.d.ts:185](https://github.com/ioBroker/ioBroker.js-controller/blob/14a872375/packages/types-dev/objects.d.ts#L185)
