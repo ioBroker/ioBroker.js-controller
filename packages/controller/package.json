@@ -8,6 +8,9 @@
   "bin": {
     "iobroker": "./iobroker.js"
   },
+  "peerDependencies": {
+    "@iobroker/adapter-core": "^2.6.12"
+  },
   "dependencies": {
     "@alcalzone/esbuild-register": "^2.5.1-1",
     "@iobroker/db-objects-file": "file:../db-objects-file",
