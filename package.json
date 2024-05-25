@@ -55,7 +55,7 @@
     "@typescript-eslint/parser": "^6.18.1",
     "chai": "^4.3.4",
     "chai-as-promised": "^7.1.1",
-    "cpy-cli": "^4.2.0",
+    "cpy-cli": "^5.0.0",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^9.1.0",
     "eslint-plugin-jsdoc": "^48.2.1",
