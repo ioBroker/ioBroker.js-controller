@@ -133,7 +133,7 @@ import type {
     InternalStopParameters
 } from '@/lib/_Types.js';
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
-import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
+import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
 import type { CommandResult } from '@alcalzone/pak';
 
 import * as url from 'node:url';

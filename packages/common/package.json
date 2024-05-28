@@ -45,11 +45,7 @@
       "require": "./build/cjs/index.js",
       "types": "./build/esm/index.d.ts"
     },
-    "./constants": {
-      "import": "./build/esm/lib/common/constants.js",
-      "require": "./build/cjs/lib/common/constants.js",
-      "types": "./build/esm/lib/common/constants.d.ts"
-    }
+    "./package.json": "./package.json"
   },
   "license": "MIT",
   "publishConfig": {

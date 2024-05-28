@@ -5,7 +5,11 @@ import { spawn } from 'node:child_process';
 import deepClone from 'deep-clone';
 import { setTimeout as wait } from 'node:timers/promises';
 
-import { isLocalStatesDbServer, isLocalObjectsDbServer } from '@iobroker/js-controller-common';
+import {
+    isLocalStatesDbServer,
+    isLocalObjectsDbServer,
+    getInstancesOrderedByStartPrio
+} from '@iobroker/js-controller-common';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import * as CLI from '@/lib/cli/messages.js';
 import { CLICommand } from '@/lib/cli/cliCommand.js';
@@ -94,7 +98,7 @@ export class CLIProcess extends CLICommand {
         dbConnect(async params => {
             const { objects } = params;
             // Enumerate all adapter instances
-            const instances = await tools.getInstancesOrderedByStartPrio(objects, console);
+            const instances = await getInstancesOrderedByStartPrio(objects, console);
             // Create a promise for each. setInstanceEnabled only starts/stops when necessary
             const instancePromises = instances
                 .filter(obj => obj.common.enabled !== enabled)

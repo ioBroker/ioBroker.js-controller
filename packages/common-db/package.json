@@ -58,11 +58,15 @@
       "require": "./build/cjs/index.js",
       "types": "./build/esm/index.d.ts"
     },
-    "./package.json": "./package.json",
     "./tools": {
       "import": "./build/esm/lib/common/tools.js",
       "require": "./build/cjs/lib/common/tools.js",
       "types": "./build/esm/lib/common/tools.d.ts"
+    },
+    "./constants": {
+      "import": "./build/esm/lib/common/constants.js",
+      "require": "./build/cjs/lib/common/constants.js",
+      "types": "./build/esm/lib/common/constants.d.ts"
     }
   },
   "files": [

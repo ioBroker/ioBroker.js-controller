@@ -28,14 +28,15 @@ import {
     NotificationHandler,
     getObjectsConstructor,
     getStatesConstructor,
-    zipFiles
+    zipFiles,
+    getInstancesOrderedByStartPrio
 } from '@iobroker/js-controller-common';
 import {
     SYSTEM_ADAPTER_PREFIX,
     SYSTEM_CONFIG_ID,
     SYSTEM_HOST_PREFIX,
     SYSTEM_REPOSITORIES_ID
-} from '@iobroker/js-controller-common/constants';
+} from '@iobroker/js-controller-common-db/constants';
 import { PluginHandler } from '@iobroker/plugin-base';
 import { BlocklistManager } from '@/lib/blocklistManager.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
@@ -3040,7 +3041,11 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 }
 
 async function getInstances(): Promise<void> {
-    const instances = await tools.getInstancesOrderedByStartPrio(objects, logger, hostLogPrefix);
+    if (!objects) {
+        throw new Error('Objects database not connected');
+    }
+
+    const instances = await getInstancesOrderedByStartPrio(objects, logger, hostLogPrefix);
 
     if (instances.length === 0) {
         logger.info(`${hostLogPrefix} no instances found`);

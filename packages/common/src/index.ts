@@ -11,8 +11,8 @@ export {
     performObjectsInterview
 } from '@/lib/common/objects.js';
 export { NotificationHandler } from '@/lib/common/notificationHandler.js';
-export * as constants from '@/lib/common/constants.js';
 export * as zipFiles from '@/lib/common/zipFiles.js';
+export * from '@/lib/common/tools.js';
 export * from '@iobroker/js-controller-common-db';
 
 /** Shim until all adapters are using adapter-core 3.1.4 or higher */
