@@ -22,6 +22,7 @@
     "@iobroker/js-controller-adapter": "file:../adapter",
     "@iobroker/js-controller-cli": "file:../cli",
     "@iobroker/js-controller-common": "file:../common",
+    "@iobroker/js-controller-common-db": "file:../common-db",
     "@iobroker/plugin-base": "~1.2.1",
     "@iobroker/plugin-sentry": "~1.2.1",
     "axios": "^1.6.3",
