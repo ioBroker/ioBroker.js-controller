@@ -1,5 +1,5 @@
 import { expect } from 'chai';
-import { FORBIDDEN_CHARS, execAsync } from '@iobroker/js-controller-common/tools';
+import { FORBIDDEN_CHARS, execAsync } from '@iobroker/js-controller-common-db/tools';
 
 describe('test tools.js helpers', () => {
     it('FORBIDDEN_CHARS', () => {
