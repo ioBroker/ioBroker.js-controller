@@ -906,8 +906,8 @@ export class Install {
             options.enabled === true || options.enabled === false
                 ? options.enabled
                 : instanceObj.common.enabled === true || instanceObj.common.enabled === false
-                ? instanceObj.common.enabled
-                : false;
+                  ? instanceObj.common.enabled
+                  : false;
 
         if (options.port) {
             instanceObj.native = instanceObj.native || {};
