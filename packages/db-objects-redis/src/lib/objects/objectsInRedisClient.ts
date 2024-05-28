@@ -24,7 +24,7 @@ import type {
 import * as utils from '@/lib/objects/objectsUtils.js';
 import semver from 'semver';
 import * as CONSTS from '@/lib/objects/constants.js';
-import type { InternalLogger } from '@iobroker/js-controller-common/tools';
+import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
 import type { ConnectionOptions, DbStatus } from '@iobroker/db-base/inMemFileDB';
 
 import * as url from 'node:url';
