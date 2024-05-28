@@ -18,7 +18,7 @@ export interface OrderedInstancesObject {
  */
 export async function getInstancesOrderedByStartPrio(
     objects: ObjectsClient,
-    logger: InternalLogger,
+    logger: InternalLogger | typeof console,
     logPrefix = ''
 ): Promise<ioBroker.InstanceObject[]> {
     const instances: OrderedInstancesObject = { 1: [], 2: [], 3: [], admin: [] };
