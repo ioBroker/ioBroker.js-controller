@@ -21,16 +21,16 @@ import {
     objectsDbHasServer,
     performObjectsInterview,
     performStatesInterview
-} from '@iobroker/js-controller-common-db';
+} from '@iobroker/js-controller-common';
 import { resetDbConnect, dbConnectAsync } from '@/lib/setup/dbConnection.js';
 import { BackupRestore } from '@/lib/setup/setupBackup.js';
 import crypto from 'node:crypto';
 import deepClone from 'deep-clone';
 import * as pluginInfos from '@/lib/setup/pluginInfos.js';
 import rl from 'readline-sync';
-import { FORBIDDEN_CHARS, getHostObject } from '@iobroker/js-controller-common/tools';
+import { FORBIDDEN_CHARS, getHostObject } from '@iobroker/js-controller-common-db/tools';
 import os from 'node:os';
-import { SYSTEM_ADAPTER_PREFIX, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common/constants';
+import { SYSTEM_ADAPTER_PREFIX, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common-db/constants';
 import { Upload } from '@/lib/setup/setupUpload.js';
 import { createRequire } from 'node:module';
 import * as url from 'node:url';
@@ -962,8 +962,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             const defaultSentinelName = originalConfig.states.sentinelName
                 ? originalConfig.states.sentinelName
                 : oSentinelName && oPort === sPort
-                ? oSentinelName
-                : 'mymaster';
+                  ? oSentinelName
+                  : 'mymaster';
             sSentinelName = rl.question(`States Redis Sentinel Master Name [${defaultSentinelName}]: `, {
                 defaultInput: defaultSentinelName
             });

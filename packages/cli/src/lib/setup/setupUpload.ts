@@ -16,7 +16,7 @@ import mime from 'mime-types';
 import { join } from 'node:path';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import type { InternalLogger } from '@iobroker/js-controller-common/tools';
+import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
 
 const hostname = tools.getHostName();
 

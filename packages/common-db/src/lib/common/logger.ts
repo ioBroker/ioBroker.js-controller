@@ -236,8 +236,8 @@ export function logger(
                         transport.localTime !== undefined
                             ? transport.localTime
                             : userOptions.localTime === undefined
-                            ? true
-                            : userOptions.localTime;
+                              ? true
+                              : userOptions.localTime;
                     transport.datePattern = 'YYYY-MM-DD';
                     transport.format = winston.format.combine(winston.format.printf(formatter));
                     /*transport.logException = function (message, info, next, err) {
@@ -246,8 +246,8 @@ export function logger(
                     transport.zippedArchive = isWindows
                         ? false
                         : transport.zippedArchive !== undefined
-                        ? transport.zippedArchive
-                        : true;
+                          ? transport.zippedArchive
+                          : true;
 
                     if (transport.maxFiles === null && userOptions.maxDays) {
                         transport.maxFiles = `${userOptions.maxDays}d`;

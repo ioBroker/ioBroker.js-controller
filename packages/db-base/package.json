@@ -6,7 +6,7 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "@iobroker/js-controller-common": "file:../common",
+    "@iobroker/js-controller-common-db": "file:../common-db",
     "deep-clone": "^3.0.3",
     "fs-extra": "^11.1.0",
     "respjs": "^4.2.0"

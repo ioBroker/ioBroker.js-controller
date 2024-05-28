@@ -4,7 +4,7 @@ import {
     SYSTEM_ADAPTER_PREFIX,
     SYSTEM_CONFIG_ID,
     SYSTEM_REPOSITORIES_ID
-} from '@iobroker/js-controller-common/constants';
+} from '@iobroker/js-controller-common-db/constants';
 import semver from 'semver';
 
 interface BlocklistManagerOptions {

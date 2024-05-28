@@ -1,4 +1,4 @@
-import { defaultRedisInterview } from '@iobroker/js-controller-common';
+import { defaultRedisInterview } from '@iobroker/js-controller-common-db';
 
 /**
  * Custom interview during setup

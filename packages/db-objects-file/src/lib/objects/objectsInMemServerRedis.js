@@ -13,11 +13,11 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { objectsUtils as utils } from '@iobroker/db-objects-redis';
 import { tools } from '@iobroker/db-base';
-import { getLocalAddress } from '@iobroker/js-controller-common/tools';
+import { getLocalAddress } from '@iobroker/js-controller-common-db/tools';
 
 import { RedisHandler } from '@iobroker/db-base';
 import { ObjectsInMemoryFileDB } from './objectsInMemFileDB.js';
-import { EXIT_CODES } from '@iobroker/js-controller-common';
+import { EXIT_CODES } from '@iobroker/js-controller-common-db';
 
 // settings = {
 //    change:    function (id, state) {},

@@ -120,39 +120,39 @@ declare global {
             T extends ObjectIDs.State
                 ? StateObject
                 : // Instance and Adapter must come before meta or `system.adapter.admin` will resolve to MetaObject
-                T extends ObjectIDs.Instance
-                ? InstanceObject
-                : T extends ObjectIDs.Adapter
-                ? AdapterObject
-                : T extends ObjectIDs.Channel
-                ? ChannelObject
-                : T extends ObjectIDs.Meta
-                ? MetaObject
-                : T extends ObjectIDs.Misc
-                ? AdapterScopedObject
-                : T extends ObjectIDs.ScriptOrChannel
-                ? ScriptObject | ChannelObject
-                : T extends ObjectIDs.Enum
-                ? EnumObject
-                : T extends ObjectIDs.Group
-                ? GroupObject
-                : T extends ObjectIDs.User
-                ? UserObject
-                : T extends ObjectIDs.Host
-                ? HostObject
-                : T extends ObjectIDs.Design
-                ? DesignObject
-                : T extends ObjectIDs.Repository
-                ? RepositoryObject
-                : T extends ObjectIDs.SystemConfig
-                ? SystemConfigObject
-                : T extends ObjectIDs.Config
-                ? OtherObject & { type: 'config' }
-                : T extends ObjectIDs.AdapterScoped
-                ? AdapterScopedObject
-                : Read extends 'read'
-                ? ioBroker.Object
-                : AnyObject;
+                  T extends ObjectIDs.Instance
+                  ? InstanceObject
+                  : T extends ObjectIDs.Adapter
+                    ? AdapterObject
+                    : T extends ObjectIDs.Channel
+                      ? ChannelObject
+                      : T extends ObjectIDs.Meta
+                        ? MetaObject
+                        : T extends ObjectIDs.Misc
+                          ? AdapterScopedObject
+                          : T extends ObjectIDs.ScriptOrChannel
+                            ? ScriptObject | ChannelObject
+                            : T extends ObjectIDs.Enum
+                              ? EnumObject
+                              : T extends ObjectIDs.Group
+                                ? GroupObject
+                                : T extends ObjectIDs.User
+                                  ? UserObject
+                                  : T extends ObjectIDs.Host
+                                    ? HostObject
+                                    : T extends ObjectIDs.Design
+                                      ? DesignObject
+                                      : T extends ObjectIDs.Repository
+                                        ? RepositoryObject
+                                        : T extends ObjectIDs.SystemConfig
+                                          ? SystemConfigObject
+                                          : T extends ObjectIDs.Config
+                                            ? OtherObject & { type: 'config' }
+                                            : T extends ObjectIDs.AdapterScoped
+                                              ? AdapterScopedObject
+                                              : Read extends 'read'
+                                                ? ioBroker.Object
+                                                : AnyObject;
 
         type Languages = 'en' | 'de' | 'ru' | 'pt' | 'nl' | 'fr' | 'it' | 'es' | 'pl' | 'uk' | 'zh-cn';
         type Translated = { en: string } & { [lang in Languages]?: string };
@@ -1152,41 +1152,41 @@ declare global {
             ? View extends 'host'
                 ? HostObject
                 : View extends 'adapter'
-                ? AdapterObject
-                : View extends 'instance'
-                ? InstanceObject
-                : View extends 'meta'
-                ? MetaObject
-                : View extends 'device'
-                ? DeviceObject
-                : View extends 'channel'
-                ? ChannelObject
-                : View extends 'state'
-                ? StateObject
-                : View extends 'folder'
-                ? FolderObject
-                : View extends 'enum'
-                ? EnumObject
-                : View extends 'script'
-                ? ScriptObject
-                : View extends 'group'
-                ? GroupObject
-                : View extends 'user'
-                ? UserObject
-                : View extends 'chart'
-                ? ChartObject
-                : View extends 'schedule'
-                ? ScheduleObject
-                : View extends 'config'
-                ?
-                      | RepositoryObject
-                      | SystemConfigObject
-                      | (OtherObject & {
-                            type: 'config';
-                        })
-                : View extends 'custom'
-                ? NonNullable<StateObject['common']['custom']>
-                : ioBroker.Object
+                  ? AdapterObject
+                  : View extends 'instance'
+                    ? InstanceObject
+                    : View extends 'meta'
+                      ? MetaObject
+                      : View extends 'device'
+                        ? DeviceObject
+                        : View extends 'channel'
+                          ? ChannelObject
+                          : View extends 'state'
+                            ? StateObject
+                            : View extends 'folder'
+                              ? FolderObject
+                              : View extends 'enum'
+                                ? EnumObject
+                                : View extends 'script'
+                                  ? ScriptObject
+                                  : View extends 'group'
+                                    ? GroupObject
+                                    : View extends 'user'
+                                      ? UserObject
+                                      : View extends 'chart'
+                                        ? ChartObject
+                                        : View extends 'schedule'
+                                          ? ScheduleObject
+                                          : View extends 'config'
+                                            ?
+                                                  | RepositoryObject
+                                                  | SystemConfigObject
+                                                  | (OtherObject & {
+                                                        type: 'config';
+                                                    })
+                                            : View extends 'custom'
+                                              ? NonNullable<StateObject['common']['custom']>
+                                              : ioBroker.Object
             : any;
     }
 }

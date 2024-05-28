@@ -5,7 +5,7 @@ import {
     decrypt,
     appNameLowerCase,
     getRootDir
-} from '@iobroker/js-controller-common/tools';
+} from '@iobroker/js-controller-common-db/tools';
 import { SUPPORTED_FEATURES, type SupportedFeature } from '@/lib/adapter/constants.js';
 import path from 'node:path';
 import fs from 'fs-extra';

@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process';
 import os from 'node:os';
-import { getRootDir } from '@iobroker/js-controller-common/tools';
+import { getRootDir } from '@iobroker/js-controller-common-db/tools';
 import path from 'node:path';
 import url from 'node:url';
 

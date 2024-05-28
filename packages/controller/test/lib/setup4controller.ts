@@ -3,7 +3,7 @@ import path from 'node:path';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 import type { Client as StateRedisClient } from '@iobroker/db-states-redis';
 import * as url from 'node:url';
-import { appNameLowerCase } from '@iobroker/js-controller-common/tools';
+import { appNameLowerCase } from '@iobroker/js-controller-common-db/tools';
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 
