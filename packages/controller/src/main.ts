@@ -27,7 +27,8 @@ import {
     isLocalStatesDbServer,
     NotificationHandler,
     getObjectsConstructor,
-    getStatesConstructor
+    getStatesConstructor,
+    zipFiles
 } from '@iobroker/js-controller-common';
 import {
     SYSTEM_ADAPTER_PREFIX,
@@ -37,7 +38,6 @@ import {
 } from '@iobroker/js-controller-common/constants';
 import { PluginHandler } from '@iobroker/plugin-base';
 import { BlocklistManager } from '@/lib/blocklistManager.js';
-import * as zipFiles from '@/lib/zipFiles.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { Upload, PacketManager, type UpgradePacket } from '@iobroker/js-controller-cli';
