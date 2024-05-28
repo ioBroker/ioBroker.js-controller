@@ -192,6 +192,10 @@ export class Setup {
             console.error(`Could not ensure that adapters object for this host exists: ${e.message}`);
         }
 
+        if (process.platform === 'win32') {
+            await this._fixWindowsControllerJs();
+        }
+
         await this._cleanupInstallation();
 
         // special methods which are only there on objects server
@@ -1153,6 +1157,20 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             }
 
             await setupUpload.upgradeAdapterObjects(name);
+        }
+    }
+
+    /**
+     * Replace the `controller.js` file in the root directory to work with ESM
+     */
+    async _fixWindowsControllerJs(): Promise<void> {
+        const content = `import('./node_modules/iobroker.js-controller/controller.js');`;
+        const filePath = path.join(tools.getRootDir(), 'controller.js');
+
+        try {
+            await fs.writeFile(filePath, content, { encoding: 'utf-8' });
+        } catch (e) {
+            console.error(`Could not fix "${filePath}": ${e.message}`);
         }
     }
 
