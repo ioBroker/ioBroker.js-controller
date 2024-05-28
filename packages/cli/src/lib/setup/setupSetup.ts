@@ -193,6 +193,7 @@ export class Setup {
         }
 
         if (process.platform === 'win32') {
+            // TODO: remove this fix after controller v6
             await this._fixWindowsControllerJs();
         }
 
