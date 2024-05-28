@@ -3,13 +3,19 @@ import fs from 'fs-extra';
 import os from 'node:os';
 import jwt from 'jsonwebtoken';
 import { EventEmitter } from 'node:events';
-import { tools, EXIT_CODES, password, logger } from '@iobroker/js-controller-common';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
 import { PluginHandler } from '@iobroker/plugin-base';
 import semver from 'semver';
 import path from 'node:path';
-import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common';
+import {
+    getObjectsConstructor,
+    getStatesConstructor,
+    tools,
+    EXIT_CODES,
+    password,
+    logger
+} from '@iobroker/js-controller-common';
 import {
     decryptArray,
     encryptArray,

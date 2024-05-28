@@ -9,8 +9,8 @@
 
 import fs from 'fs-extra';
 import path from 'node:path';
-import { tools } from '@iobroker/js-controller-common';
-import type { InternalLogger } from '@iobroker/js-controller-common/tools';
+import { tools } from '@iobroker/js-controller-common-db';
+import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
 import { createGzip } from 'node:zlib';
 import type { RedisHandler } from '@/lib/redisHandler.js';
 
