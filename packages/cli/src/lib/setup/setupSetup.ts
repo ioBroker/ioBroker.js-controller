@@ -21,7 +21,7 @@ import {
     objectsDbHasServer,
     performObjectsInterview,
     performStatesInterview
-} from '@iobroker/js-controller-common-db';
+} from '@iobroker/js-controller-common';
 import { resetDbConnect, dbConnectAsync } from '@/lib/setup/dbConnection.js';
 import { BackupRestore } from '@/lib/setup/setupBackup.js';
 import crypto from 'node:crypto';

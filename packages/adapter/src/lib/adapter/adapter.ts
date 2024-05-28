@@ -9,7 +9,7 @@ import deepClone from 'deep-clone';
 import { PluginHandler } from '@iobroker/plugin-base';
 import semver from 'semver';
 import path from 'node:path';
-import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
+import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common';
 import {
     decryptArray,
     encryptArray,

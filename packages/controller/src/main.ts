@@ -16,11 +16,19 @@ import path from 'node:path';
 import cp, { spawn, exec } from 'node:child_process';
 import semver from 'semver';
 import restart from '@/lib/restart.js';
-import { isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common-db';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual, inspect } from 'node:util';
-import { tools, EXIT_CODES, logger as toolsLogger } from '@iobroker/js-controller-common';
+import {
+    tools,
+    EXIT_CODES,
+    logger as toolsLogger,
+    isLocalObjectsDbServer,
+    isLocalStatesDbServer,
+    NotificationHandler,
+    getObjectsConstructor,
+    getStatesConstructor
+} from '@iobroker/js-controller-common';
 import {
     SYSTEM_ADAPTER_PREFIX,
     SYSTEM_CONFIG_ID,
@@ -28,7 +36,6 @@ import {
     SYSTEM_REPOSITORIES_ID
 } from '@iobroker/js-controller-common/constants';
 import { PluginHandler } from '@iobroker/plugin-base';
-import { NotificationHandler, getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
 import { BlocklistManager } from '@/lib/blocklistManager.js';
 import * as zipFiles from '@/lib/zipFiles.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';

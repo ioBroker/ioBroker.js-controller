@@ -4,31 +4,9 @@
   "compilerOptions": {
     "allowJs": false,
     "checkJs": false,
-    "noEmit": false
+    "noEmit": false,
+    "outDir": "build/esm"
   },
-  "references": [
-    {
-      "path": "../db-objects-file/tsconfig.build.json"
-    },
-    {
-      "path": "../db-objects-jsonl/tsconfig.build.json"
-    },
-    {
-      "path": "../db-objects-redis/tsconfig.build.json"
-    },
-    {
-      "path": "../db-states-file/tsconfig.build.json"
-    },
-    {
-      "path": "../db-states-jsonl/tsconfig.build.json"
-    },
-    {
-      "path": "../db-states-redis/tsconfig.build.json"
-    },
-    {
-      "path": "../common/tsconfig.build.json"
-    },
-  ],
   "include": [
     "src/**/*.ts"
   ],

@@ -4,7 +4,7 @@ import { EXIT_CODES } from '@iobroker/js-controller-common';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual } from 'node:util';
 import Debug from 'debug';
-import { objectsDbHasServer, isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common-db';
+import { objectsDbHasServer, isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common';
 import path from 'node:path';
 import yargs from 'yargs/yargs';
 import * as CLITools from '@/lib/cli/cliTools.js';
@@ -735,7 +735,7 @@ async function processCommand(
                         }
 
                         if (migrated) {
-                            const { NotificationHandler } = await import('@iobroker/js-controller-common-db');
+                            const { NotificationHandler } = await import('@iobroker/js-controller-common');
 
                             const hostname = tools.getHostName();
 

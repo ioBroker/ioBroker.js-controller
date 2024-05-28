@@ -9,10 +9,7 @@
   "references": [
     {
       "path": "../common/tsconfig.build.json"
-    },
-    {
-      "path": "../common-db/tsconfig.build.json"
-    },
+    }
   ],
   "include": [
     "src/**/*.ts",

@@ -3,30 +3,21 @@
   "type": "module",
   "version": "6.0.1-alpha.0-20240525-56d9e4a2e",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=12.0.0"
   },
   "optionalDependencies": {
-    "@datalust/winston-seq": "^1.0.0",
-    "diskusage": "^1.1.3",
+    "winston-seq-updated": "^1.0.4",
     "winston-syslog": "^2.6.0"
   },
   "dependencies": {
-    "@alcalzone/pak": "^0.8.1",
-    "axios": "^1.6.3",
-    "ci-info": "^3.8.0",
-    "deep-clone": "^3.0.3",
-    "event-stream": "^4.0.1",
-    "fs-extra": "^11.1.0",
-    "jsonwebtoken": "^9.0.0",
-    "node-forge": "^1.3.0",
-    "node.extend": "^2.0.2",
-    "promisify-child-process": "^4.1.2",
-    "readline": "^1.3.0",
-    "semver": "^7.5.2",
-    "triple-beam": "^1.3.0",
-    "winston": "^3.7.2",
-    "winston-daily-rotate-file": "^5.0.0",
-    "winston-transport": "^4.5.0"
+    "@iobroker/db-objects-file": "file:../db-objects-file",
+    "@iobroker/db-objects-jsonl": "file:../db-objects-jsonl",
+    "@iobroker/db-objects-redis": "file:../db-objects-redis",
+    "@iobroker/db-states-file": "file:../db-states-file",
+    "@iobroker/db-states-jsonl": "file:../db-states-jsonl",
+    "@iobroker/db-states-redis": "file:../db-states-redis",
+    "@iobroker/js-controller-common-db": "file:../common-db",
+    "fs-extra": "^11.1.0"
   },
   "keywords": [
     "ioBroker"
@@ -39,7 +30,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/common"
+    "url": "https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/common-db"
   },
   "scripts": {
     "build": "tsc -b tsconfig.build.json && tsc-alias",
@@ -48,27 +39,16 @@
   "main": "build/cjs/index.js",
   "module": "build/esm/index.js",
   "types": "build/esm/index.d.ts",
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
   "exports": {
     ".": {
       "import": "./build/esm/index.js",
       "require": "./build/cjs/index.js",
       "types": "./build/esm/index.d.ts"
-    },
-    "./package.json": "./package.json",
-    "./tools": {
-      "import": "./build/esm/lib/common/tools.js",
-      "require": "./build/cjs/lib/common/tools.js",
-      "types": "./build/esm/lib/common/tools.d.ts"
-    },
-    "./constants": {
-      "import": "./build/esm/lib/common/constants.js",
-      "require": "./build/cjs/lib/common/constants.js",
-      "types": "./build/esm/lib/common/constants.d.ts"
     }
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
   },
   "files": [
     "build/"

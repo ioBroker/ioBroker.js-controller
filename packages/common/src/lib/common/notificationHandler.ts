@@ -5,7 +5,7 @@
  */
 
 import fs from 'fs-extra';
-import { tools } from '@iobroker/js-controller-common';
+import { tools } from '@iobroker/js-controller-common-db';
 import path from 'node:path';
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';

@@ -5,7 +5,7 @@ import { spawn } from 'node:child_process';
 import deepClone from 'deep-clone';
 import { setTimeout as wait } from 'node:timers/promises';
 
-import { isLocalStatesDbServer, isLocalObjectsDbServer } from '@iobroker/js-controller-common-db';
+import { isLocalStatesDbServer, isLocalObjectsDbServer } from '@iobroker/js-controller-common';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import * as CLI from '@/lib/cli/messages.js';
 import { CLICommand } from '@/lib/cli/cliCommand.js';
