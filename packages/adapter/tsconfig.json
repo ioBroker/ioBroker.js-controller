@@ -31,7 +31,10 @@
     },
     {
       "path": "../common/tsconfig.json"
-    }
+    },
+    {
+      "path": "../common-db/tsconfig.json"
+    },
   ],
   "include": [
     "src/**/*.ts"
