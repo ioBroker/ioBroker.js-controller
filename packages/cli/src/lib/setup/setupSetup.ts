@@ -28,7 +28,7 @@ import crypto from 'node:crypto';
 import deepClone from 'deep-clone';
 import * as pluginInfos from '@/lib/setup/pluginInfos.js';
 import rl from 'readline-sync';
-import { FORBIDDEN_CHARS, getHostObject } from '@iobroker/js-controller-common/tools';
+import { FORBIDDEN_CHARS, getHostObject } from '@iobroker/js-controller-common-db/tools';
 import os from 'node:os';
 import { SYSTEM_ADAPTER_PREFIX, SYSTEM_HOST_PREFIX } from '@iobroker/js-controller-common/constants';
 import { Upload } from '@/lib/setup/setupUpload.js';
