@@ -5,9 +5,9 @@ declare global {
         /** Defines access rights for a single file */
         interface FileACL {
             /** Full name of the user who owns this file, e.g. "system.user.admin" */
-            owner: ObjectIDs.User;
+            owner: string;
             /** Full name of the group who owns this file, e.g. "system.group.administrator" */
-            ownerGroup: ObjectIDs.Group;
+            ownerGroup: string;
             /** Linux-type permissions defining access to this file */
             permissions: number;
         }
@@ -23,9 +23,9 @@ declare global {
         /** Defines access rights for a single object */
         interface ObjectACL {
             /** Full name of the user who owns this object, e.g. "system.user.admin" */
-            owner: ObjectIDs.User;
+            owner: string;
             /** Full name of the group who owns this object, e.g. "system.group.administrator" */
-            ownerGroup: ObjectIDs.Group;
+            ownerGroup: string;
             /** Linux-type permissions defining access to this object */
             object: number;
         }
