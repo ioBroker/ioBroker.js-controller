@@ -2152,13 +2152,13 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                         );
 
                                         changed = changed || (result?.json && result.changed);
-                                    }
 
-                                    // If repo was really changed
-                                    if (result?.json && result.changed) {
-                                        currentRepo.json = result.json;
-                                        currentRepo.hash = result.hash || '';
-                                        currentRepo.time = new Date().toISOString();
+                                        // If repo was really changed
+                                        if (result?.json && result.changed) {
+                                            currentRepo.json = result.json;
+                                            currentRepo.hash = result.hash || '';
+                                            currentRepo.time = new Date().toISOString();
+                                        }
                                     }
 
                                     // Make sure, that time is stored too to prevent the frequent access to repo server
