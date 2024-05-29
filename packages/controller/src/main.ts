@@ -2134,27 +2134,23 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                     `${hostLogPrefix} Updating repository "${repoUrl}" under "${currentRepo.link}"`
                                 );
                                 try {
-                                    let result: ioBroker.RepositoryInformation | RepositoryFile;
-                                    // prevent the request of repos by multiple admin adapters at start
                                     if (
-                                        currentRepo.json &&
-                                        currentRepo.time &&
-                                        currentRepo.hash &&
-                                        Date.now() - new Date(currentRepo.time).getTime() < 30_000
+                                        !currentRepo.json ||
+                                        !currentRepo.time ||
+                                        !currentRepo.hash ||
+                                        // prevent the request of repos by multiple admin adapters at start
+                                        Date.now() - new Date(currentRepo.time).getTime() >= 30_000
                                     ) {
-                                        result = currentRepo;
-                                    } else {
-                                        result = await tools.getRepositoryFileAsync(
+                                        const result = await tools.getRepositoryFileAsync(
                                             currentRepo.link,
                                             currentRepo.hash,
                                             updateRepo,
                                             currentRepo.json
                                         );
 
-                                        changed = changed || (result?.json && result.changed);
-
                                         // If repo was really changed
                                         if (result?.json && result.changed) {
+                                            changed = true;
                                             currentRepo.json = result.json;
                                             currentRepo.hash = result.hash || '';
                                             currentRepo.time = new Date().toISOString();
