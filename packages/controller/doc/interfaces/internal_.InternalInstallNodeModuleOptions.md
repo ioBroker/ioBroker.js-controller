@@ -27,7 +27,7 @@ Name of the npm module
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:599](https://github.com/ioBroker/ioBroker.js-controller/blob/56d9e4a2e/packages/adapter/src/lib/_Types.ts#L599)
+[adapter/src/lib/_Types.ts:599](https://github.com/ioBroker/ioBroker.js-controller/blob/9dbeeb628fed8bbdac147ce03ecc5b399e6f5ed0/packages/adapter/src/lib/_Types.ts#L599)
 
 ___
 
@@ -43,4 +43,4 @@ Version of node module
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:594](https://github.com/ioBroker/ioBroker.js-controller/blob/56d9e4a2e/packages/adapter/src/lib/_Types.ts#L594)
+[adapter/src/lib/_Types.ts:594](https://github.com/ioBroker/ioBroker.js-controller/blob/9dbeeb628fed8bbdac147ce03ecc5b399e6f5ed0/packages/adapter/src/lib/_Types.ts#L594)
