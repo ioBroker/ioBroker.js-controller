@@ -53,7 +53,6 @@ import {
     getDefaultNodeArgs,
     type HostInfo,
     isAdapterEsmModule,
-    type RepositoryFile
 } from '@iobroker/js-controller-common-db/tools';
 import type { UpgradeArguments } from '@/lib/upgradeManager.js';
 import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
