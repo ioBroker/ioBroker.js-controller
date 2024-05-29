@@ -52,7 +52,7 @@ import {
     getHostObject,
     getDefaultNodeArgs,
     type HostInfo,
-    isAdapterEsmModule,
+    isAdapterEsmModule
 } from '@iobroker/js-controller-common-db/tools';
 import type { UpgradeArguments } from '@/lib/upgradeManager.js';
 import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
