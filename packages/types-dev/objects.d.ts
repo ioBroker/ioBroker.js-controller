@@ -381,7 +381,10 @@ declare global {
         interface HostCommon extends ObjectCommon {
             /** The display name of this host */
             name: string;
+            /** Changeable name of the host */
             title: string;
+            /** base64 encoded icon */
+            icon?: string;
             installedVersion: string; // e.g. 1.2.3 (following semver)
             /** The command line of the executable */
             cmd: string;
@@ -571,8 +574,10 @@ declare global {
             adminColumns?: string | (string | CustomAdminColumn)[];
             /** Settings for custom Admin Tabs */
             adminTab?: {
-                name?: string;
-                /** Icon name for FontAwesome */
+                name?: StringOrTranslated;
+                /** Base 64 icon for the tab */
+                icon?: string;
+                /** @deprecated icon name for FontAwesome (works only in admin 4)*/
                 'fa-icon'?: string;
                 /** If true, the Tab is not reloaded when the configuration changes */
                 ignoreConfigUpdate?: boolean;
@@ -580,6 +585,8 @@ declare global {
                 link?: string;
                 /** If true, only one instance of this tab will be created for all instances */
                 singleton?: boolean;
+                /** Order number in admin tabs */
+                order?: number;
             };
             allowInit?: boolean;
             /** If the adapter should be automatically upgraded and which version ranges are supported */
@@ -642,7 +649,7 @@ declare global {
             /** Name of the adapter (without leading `ioBroker.`) */
             name: string;
             /** News per version in i18n */
-            news?: Record<string, Record<string, Translated>>;
+            news?: { [version: string]: Translated };
             /** If `true`, no configuration dialog will be shown */
             noConfig?: true;
             /** If `true`, this adapter's instances will not be shown in the admin overview screen. Useful for icon sets and widgets... */
@@ -690,7 +697,7 @@ declare global {
             /** @deprecated Use @see supportedMessages up from controller v5 */
             supportStopInstance?: boolean;
             /** The translated names of this adapter to be shown in the admin UI */
-            titleLang?: Record<Languages, string>;
+            titleLang?: StringOrTranslated;
             /** @deprecated The name of this adapter to be shown in the admin UI. Use @see titleLang instead. */
             title?: string;
             /** The type of this adapter */
@@ -719,8 +726,10 @@ declare global {
             licenseInformation?: LicenseInformation;
             /** Messages, that will be shown (if condition evaluates to true) by upgrade or installation */
             messages?: MessageRule[];
-            /** If specific update of this adapter should be ignored, specifies version number to be ignored */
+            /** If a specific update of this adapter should be ignored, specifies version number to be ignored */
             ignoreVersion?: string;
+            /** Sentry and other plugins */
+            plugins?: { [pluginName: string]: Record<string, any> };
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
@@ -737,6 +746,10 @@ declare global {
             longitude: string;
             /** Configured latitude */
             latitude: string;
+            /** Optional user's city (only for diagnostics) */
+            city?: string;
+            /** Optional user's country (only for diagnostics) */
+            country?: string;
             /** Default history instance */
             defaultHistory: string;
             /** Which diag data is allowed to be sent */
@@ -764,12 +777,22 @@ declare global {
                 /** Default policy, if none has been set explicit for the adapter */
                 defaultPolicy: AutoUpgradePolicy;
             };
+            /** Deactivated instances, that should not be shown in admin/Intro page */
+            intro?: string[];
+            /** Which tabs are visible in admin in the left menu */
+            tabsVisible?: {
+                /** Name of the tab */
+                name: string;
+                /** If the tab should be visible */
+                visible: boolean;
+                /** Optional color of the tab */
+                color?: string;
+            }[];
+            /** Global saved expert mode for admin */
+            expertMode?: boolean;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
-
-            /** Deactivated instances, that should not be shown in admin/Intro page */
-            intro?: string[];
         }
 
         interface OtherCommon extends ObjectCommon {

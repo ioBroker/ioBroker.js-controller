@@ -288,6 +288,8 @@ declare global {
             ignoreNull?: boolean;
             sessionId?: any;
             aggregate?: 'minmax' | 'min' | 'max' | 'average' | 'total' | 'count' | 'none';
+            /** Returned data is normally sorted ascending by date, this option lets you return the newest instead of the oldest values if the number of returned points is limited */
+            returnNewestEntries?: boolean;
         }
 
         interface DelObjectOptions {

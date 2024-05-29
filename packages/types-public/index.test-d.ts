@@ -805,7 +805,12 @@ const _adapterObject: ioBroker.AdapterObject = {
             'zh-cn': 'foo'
         },
         version: '1.2.3',
-        blockedVersions: ['~3.14.0', '4.0.1']
+        blockedVersions: ['~3.14.0', '4.0.1'],
+        plugins: {
+            sentry: {
+                dsn: 'XYZ'
+            }
+        }
     },
     instanceObjects: [],
     objects: []
