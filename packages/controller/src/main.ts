@@ -2151,11 +2151,11 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                             currentRepo.json
                                         );
 
-                                        changed = result.json && result.changed;
+                                        changed = changed || (result?.json && result.changed);
                                     }
 
                                     // If repo was really changed
-                                    if (changed) {
+                                    if (result?.json && result.changed) {
                                         currentRepo.json = result.json;
                                         currentRepo.hash = result.hash || '';
                                         currentRepo.time = new Date().toISOString();
@@ -2181,8 +2181,10 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         }
                     }
 
-                    if (changed) {
+                    if (changed || updateRepo) {
                         try {
+                            // we must update the repository object, as admin will retry every time by restart
+                            systemRepos.ts = Date.now();
                             await objects!.setObjectAsync(SYSTEM_REPOSITORIES_ID, systemRepos);
                         } catch (e) {
                             logger.warn(`${hostLogPrefix} Repository object could not be updated: ${e.message}`);
