@@ -3,7 +3,7 @@ import type { Socket } from 'node:net';
 import Resp from 'respjs';
 import { EventEmitter } from 'node:events';
 import { QUEUED_STR_BUF, OK_STR_BUF } from './constants.js';
-import type { InternalLogger } from '@iobroker/js-controller-common/tools';
+import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
 
 type NestedArray<T> = T[] | NestedArray<T>[];
 

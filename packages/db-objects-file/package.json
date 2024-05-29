@@ -1,50 +1,50 @@
 {
-  "name": "@iobroker/db-objects-file",
-  "type": "module",
-  "version": "6.0.1-alpha.0-20240523-1d3cb759c",
-  "engines": {
-    "node": ">=12.0.0"
-  },
-  "dependencies": {
-    "@iobroker/db-base": "file:../db-base",
-    "@iobroker/db-objects-redis": "file:../db-objects-redis",
-    "deep-clone": "^3.0.3",
-    "fs-extra": "^11.1.0"
-  },
-  "keywords": [
-    "ioBroker",
-    "redis",
-    "redundancy"
-  ],
-  "author": "bluefox <dogafox@gmail.com>",
-  "contributors": [
-    "bluefox <dogafox@gmail.com>",
-    "Apollon77 <iobroker@fischer-ka.de>",
-    "foxriver76 <moritz.heusinger@gmail.com>"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/db-objects-file"
-  },
-  "scripts": {
-    "build": "tsc -b tsconfig.build.json",
-    "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/"
-  },
-  "main": "build/cjs/index.js",
-  "module": "build/esm/index.js",
-  "types": "build/esm/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./build/esm/index.js",
-      "require": "./build/cjs/index.js",
-      "types": "./build/esm/index.d.ts"
-    }
-  },
-  "license": "Apache 2.0",
-  "publishConfig": {
-    "access": "public"
-  },
-  "files": [
-    "build/"
-  ]
+    "name": "@iobroker/db-objects-file",
+    "type": "module",
+    "version": "6.0.1-alpha.0-20240529-9dbeeb628",
+    "engines": {
+        "node": ">=12.0.0"
+    },
+    "dependencies": {
+        "@iobroker/db-base": "file:../db-base",
+        "@iobroker/db-objects-redis": "file:../db-objects-redis",
+        "deep-clone": "^3.0.3",
+        "fs-extra": "^11.1.0"
+    },
+    "keywords": [
+        "ioBroker",
+        "redis",
+        "redundancy"
+    ],
+    "author": "bluefox <dogafox@gmail.com>",
+    "contributors": [
+        "bluefox <dogafox@gmail.com>",
+        "Apollon77 <iobroker@fischer-ka.de>",
+        "foxriver76 <moritz.heusinger@gmail.com>"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/db-objects-file"
+    },
+    "scripts": {
+        "build": "tsc -b tsconfig.build.json",
+        "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/"
+    },
+    "main": "build/cjs/index.js",
+    "module": "build/esm/index.js",
+    "types": "build/esm/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./build/esm/index.js",
+            "require": "./build/cjs/index.js",
+            "types": "./build/esm/index.d.ts"
+        }
+    },
+    "license": "Apache 2.0",
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "build/"
+    ]
 }

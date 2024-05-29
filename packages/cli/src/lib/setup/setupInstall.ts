@@ -22,7 +22,7 @@ import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { ProcessExitCallback } from '@/lib/_Types.js';
 import { IoBrokerError } from '@/lib/setup/customError.js';
 import type { CommandResult } from '@alcalzone/pak';
-import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
+import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
 import { createRequire } from 'node:module';
 
 // eslint-disable-next-line unicorn/prefer-module
@@ -906,8 +906,8 @@ export class Install {
             options.enabled === true || options.enabled === false
                 ? options.enabled
                 : instanceObj.common.enabled === true || instanceObj.common.enabled === false
-                ? instanceObj.common.enabled
-                : false;
+                  ? instanceObj.common.enabled
+                  : false;
 
         if (options.port) {
             instanceObj.native = instanceObj.native || {};

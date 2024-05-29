@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import path from 'node:path';
 import { tools } from '@iobroker/js-controller-common';
-import { isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common-db';
+import { isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import { MHClient, type BrowseResultEntry } from './multihostClient.js';
 import readline from 'node:readline';

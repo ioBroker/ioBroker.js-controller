@@ -16,28 +16,36 @@ import path from 'node:path';
 import cp, { spawn, exec } from 'node:child_process';
 import semver from 'semver';
 import restart from '@/lib/restart.js';
-import { isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common-db';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual, inspect } from 'node:util';
-import { tools, EXIT_CODES, logger as toolsLogger } from '@iobroker/js-controller-common';
+import {
+    tools,
+    EXIT_CODES,
+    logger as toolsLogger,
+    isLocalObjectsDbServer,
+    isLocalStatesDbServer,
+    NotificationHandler,
+    getObjectsConstructor,
+    getStatesConstructor,
+    zipFiles,
+    getInstancesOrderedByStartPrio
+} from '@iobroker/js-controller-common';
 import {
     SYSTEM_ADAPTER_PREFIX,
     SYSTEM_CONFIG_ID,
     SYSTEM_HOST_PREFIX,
     SYSTEM_REPOSITORIES_ID
-} from '@iobroker/js-controller-common/constants';
+} from '@iobroker/js-controller-common-db/constants';
 import { PluginHandler } from '@iobroker/plugin-base';
-import { NotificationHandler, getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
 import { BlocklistManager } from '@/lib/blocklistManager.js';
-import * as zipFiles from '@/lib/zipFiles.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
 import { Upload, PacketManager, type UpgradePacket } from '@iobroker/js-controller-cli';
 import decache from 'decache';
 import cronParser from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
-import type { GetDiskInfoResponse } from '@iobroker/js-controller-common/tools';
+import type { GetDiskInfoResponse } from '@iobroker/js-controller-common-db/tools';
 import { DEFAULT_DISK_WARNING_LEVEL, getCronExpression, getDiskWarningLevel } from '@/lib/utils.js';
 import { AdapterAutoUpgradeManager } from '@/lib/adapterAutoUpgradeManager.js';
 import {
@@ -46,7 +54,7 @@ import {
     type HostInfo,
     isAdapterEsmModule,
     type RepositoryFile
-} from '@iobroker/js-controller-common/tools';
+} from '@iobroker/js-controller-common-db/tools';
 import type { UpgradeArguments } from '@/lib/upgradeManager.js';
 import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
 import { setTimeout as wait } from 'node:timers/promises';
@@ -3033,7 +3041,11 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 }
 
 async function getInstances(): Promise<void> {
-    const instances = await tools.getInstancesOrderedByStartPrio(objects, logger, hostLogPrefix);
+    if (!objects) {
+        throw new Error('Objects database not connected');
+    }
+
+    const instances = await getInstancesOrderedByStartPrio(objects, logger, hostLogPrefix);
 
     if (instances.length === 0) {
         logger.info(`${hostLogPrefix} no instances found`);
@@ -4182,8 +4194,8 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                         code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP
                                             ? 1_000
                                             : proc.config.common.restartSchedule || restartTimerExisting
-                                            ? 1_000
-                                            : 30_000,
+                                              ? 1_000
+                                              : 30_000,
                                         id
                                     );
                                     // 156 is special code that adapter wants itself to be restarted immediately
@@ -4593,8 +4605,8 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                                     code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP
                                                         ? 1_000
                                                         : procs[id].config.common.restartSchedule
-                                                        ? 1_000
-                                                        : 30_000,
+                                                          ? 1_000
+                                                          : 30_000,
                                                     id
                                                 );
                                             });

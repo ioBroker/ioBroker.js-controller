@@ -1,44 +1,44 @@
 {
-  "name": "@iobroker/types",
-  "version": "6.0.1-alpha.0-20240523-1d3cb759c",
-  "engines": {
-    "node": ">=12.0.0"
-  },
-  "keywords": [
-    "ioBroker"
-  ],
-  "author": "foxriver76 <moritz.heusinger@gmail.com>",
-  "contributors": [
-    "foxriver76 <moritz.heusinger@gmail.com>"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/types-public"
-  },
-  "devDependencies": {
-    "tsd": "^0.24.1"
-  },
-  "scripts": {
-    "build": "ts-node build.ts",
-    "test": "tsd"
-  },
-  "main": "index.js",
-  "types": "index.d.ts",
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
-  "files": [
-    "build/",
-    "index.d.ts",
-    "public.d.ts",
-    "LICENSE"
-  ],
-  "tsd": {
-    "compilerOptions": {
-      "types": [
-        "@iobroker/types"
-      ]
+    "name": "@iobroker/types",
+    "version": "6.0.1-alpha.0-20240529-9dbeeb628",
+    "engines": {
+        "node": ">=12.0.0"
+    },
+    "keywords": [
+        "ioBroker"
+    ],
+    "author": "foxriver76 <moritz.heusinger@gmail.com>",
+    "contributors": [
+        "foxriver76 <moritz.heusinger@gmail.com>"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/types-public"
+    },
+    "devDependencies": {
+        "tsd": "^0.24.1"
+    },
+    "scripts": {
+        "build": "ts-node build.ts",
+        "test": "tsd"
+    },
+    "main": "index.js",
+    "types": "index.d.ts",
+    "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "build/",
+        "index.d.ts",
+        "public.d.ts",
+        "LICENSE"
+    ],
+    "tsd": {
+        "compilerOptions": {
+            "types": [
+                "@iobroker/types"
+            ]
+        }
     }
-  }
 }

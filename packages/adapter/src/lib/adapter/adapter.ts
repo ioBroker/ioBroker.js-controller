@@ -3,13 +3,19 @@ import fs from 'fs-extra';
 import os from 'node:os';
 import jwt from 'jsonwebtoken';
 import { EventEmitter } from 'node:events';
-import { tools, EXIT_CODES, password, logger } from '@iobroker/js-controller-common';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
 import { PluginHandler } from '@iobroker/plugin-base';
 import semver from 'semver';
 import path from 'node:path';
-import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
+import {
+    getObjectsConstructor,
+    getStatesConstructor,
+    tools,
+    EXIT_CODES,
+    password,
+    logger
+} from '@iobroker/js-controller-common';
 import {
     decryptArray,
     encryptArray,
@@ -127,7 +133,7 @@ import type {
     InternalStopParameters
 } from '@/lib/_Types.js';
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
-import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
+import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
 import type { CommandResult } from '@alcalzone/pak';
 
 import * as url from 'node:url';
@@ -847,8 +853,8 @@ export class AdapterClass extends EventEmitter {
             this._options.compactInstance !== undefined
                 ? this._options.compactInstance
                 : this._options.instance !== undefined
-                ? this._options.instance
-                : this._config.instance || 0,
+                  ? this._options.instance
+                  : this._config.instance || 0,
             10
         );
 
@@ -2270,27 +2276,24 @@ export class AdapterClass extends EventEmitter {
 
             // Even if the developer forgets to call the unload callback, we need to stop the process.
             // Therefore, wait a short while and then force the unload procedure
-            setTimeout(
-                () => {
-                    if (this.#states) {
-                        finishUnload();
+            setTimeout(() => {
+                if (this.#states) {
+                    finishUnload();
 
-                        // Give 1 second to write the value
-                        setTimeout(() => {
-                            if (!isPause) {
-                                this._logger.info(`${this.namespaceLog} terminating with timeout`);
-                            }
-                            this.terminate(exitCode);
-                        }, 1_000);
-                    } else {
+                    // Give 1 second to write the value
+                    setTimeout(() => {
                         if (!isPause) {
-                            this._logger.info(`${this.namespaceLog} terminating`);
+                            this._logger.info(`${this.namespaceLog} terminating with timeout`);
                         }
                         this.terminate(exitCode);
+                    }, 1_000);
+                } else {
+                    if (!isPause) {
+                        this._logger.info(`${this.namespaceLog} terminating`);
                     }
-                },
-                this.common?.stopTimeout || 500
-            );
+                    this.terminate(exitCode);
+                }
+            }, this.common?.stopTimeout || 500);
         }
     }
 
@@ -7004,8 +7007,8 @@ export class AdapterClass extends EventEmitter {
                 ? this.isFloatComma === undefined
                     ? '.,'
                     : this.isFloatComma
-                    ? '.,'
-                    : ',.'
+                      ? '.,'
+                      : ',.'
                 : _format;
 
         if (typeof value !== 'number') {
@@ -11612,8 +11615,8 @@ export class AdapterClass extends EventEmitter {
                 this.version = this.pack?.version
                     ? this.pack.version
                     : this.ioPack?.common
-                    ? this.ioPack.common.version
-                    : 'unknown';
+                      ? this.ioPack.common.version
+                      : 'unknown';
                 // display if it's a non-official version - only if installedFrom is explicitly given and differs it's not npm
                 const isNpmVersion =
                     !this.ioPack ||
@@ -11799,8 +11802,14 @@ export class AdapterClass extends EventEmitter {
             for (const instObj of instanceObj.instanceObjects) {
                 const obj: IoPackageInstanceObject & { state?: unknown } = instObj;
 
+                const allowedTopLevelTypes: ioBroker.ObjectType[] = ['meta', 'device'];
+
                 // the object comes from non-checked io-package, so treat the id as unknown
-                if (!obj || typeof (obj._id as unknown) !== 'string' || (!obj._id && obj.type !== 'meta')) {
+                if (
+                    !obj ||
+                    typeof (obj._id as unknown) !== 'string' ||
+                    (obj._id === '' && !allowedTopLevelTypes.includes(obj.type))
+                ) {
                     this._logger.error(
                         `${this.namespaceLog} ${this.namespace} invalid instance object: ${JSON.stringify(obj)}`
                     );

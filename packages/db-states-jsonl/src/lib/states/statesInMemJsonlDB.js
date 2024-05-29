@@ -12,7 +12,7 @@ import { JsonlDB } from '@alcalzone/jsonl-db';
 import path from 'node:path';
 import fs from 'node:fs';
 import os from 'node:os';
-import { tools } from '@iobroker/js-controller-common';
+import { tools } from '@iobroker/js-controller-common-db';
 
 // settings = {
 //    change:    function (id, state) {},

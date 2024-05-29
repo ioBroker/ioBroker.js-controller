@@ -12,8 +12,8 @@ import { inspect } from 'node:util';
 
 import { RedisHandler } from '@iobroker/db-base';
 import { StatesInMemoryJsonlDB } from './statesInMemJsonlDB.js';
-import { getLocalAddress } from '@iobroker/js-controller-common/tools';
-import { EXIT_CODES } from '@iobroker/js-controller-common';
+import { getLocalAddress } from '@iobroker/js-controller-common-db/tools';
+import { EXIT_CODES } from '@iobroker/js-controller-common-db';
 
 // settings = {
 //    change:    function (id, state) {},
