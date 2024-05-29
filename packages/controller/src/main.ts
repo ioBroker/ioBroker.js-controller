@@ -2101,9 +2101,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                 // Check if repositories exist
                 if (systemRepos?.native?.repositories) {
-                    let updateRepo = false;
+                    let forcedUpdate = false;
                     if (tools.isObject(msg.message)) {
-                        updateRepo = msg.message.update;
+                        forcedUpdate = msg.message.update;
                         msg.message = msg.message.repo;
                     }
 
@@ -2128,7 +2128,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                             const currentRepo = systemRepos.native.repositories[repoUrl];
 
                             // If repo is not yet loaded
-                            if (!currentRepo.json || updateRepo) {
+                            if (!currentRepo.json || forcedUpdate) {
                                 logger.info(
                                     `${hostLogPrefix} Updating repository "${repoUrl}" under "${currentRepo.link}"`
                                 );
@@ -2137,13 +2137,12 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                                         !currentRepo.json ||
                                         !currentRepo.time ||
                                         !currentRepo.hash ||
-                                        // prevent the request of repos by multiple admin adapters at start
                                         Date.now() - new Date(currentRepo.time).getTime() >= 30_000
                                     ) {
                                         const result = await tools.getRepositoryFileAsync(
                                             currentRepo.link,
                                             currentRepo.hash,
-                                            updateRepo,
+                                            forcedUpdate,
                                             currentRepo.json
                                         );
 
@@ -2176,11 +2175,11 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         }
                     }
 
-                    if (changed || updateRepo) {
+                    if (changed || forcedUpdate) {
                         try {
-                            // we must update the repository object, as admin will retry every time by restart
+                            // update timestamp so adapters like admin know when it was written the last time
                             systemRepos.ts = Date.now();
-                            await objects!.setObjectAsync(SYSTEM_REPOSITORIES_ID, systemRepos);
+                            await objects!.setObject(SYSTEM_REPOSITORIES_ID, systemRepos);
                         } catch (e) {
                             logger.warn(`${hostLogPrefix} Repository object could not be updated: ${e.message}`);
                         }
