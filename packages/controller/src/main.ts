@@ -52,8 +52,7 @@ import {
     getHostObject,
     getDefaultNodeArgs,
     type HostInfo,
-    isAdapterEsmModule,
-    type RepositoryFile
+    isAdapterEsmModule
 } from '@iobroker/js-controller-common-db/tools';
 import type { UpgradeArguments } from '@/lib/upgradeManager.js';
 import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
@@ -2102,9 +2101,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                 // Check if repositories exist
                 if (systemRepos?.native?.repositories) {
-                    let updateRepo = false;
+                    let forcedUpdate = false;
                     if (tools.isObject(msg.message)) {
-                        updateRepo = msg.message.update;
+                        forcedUpdate = msg.message.update;
                         msg.message = msg.message.repo;
                     }
 
@@ -2129,36 +2128,31 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                             const currentRepo = systemRepos.native.repositories[repoUrl];
 
                             // If repo is not yet loaded
-                            if (!currentRepo.json || updateRepo) {
+                            if (!currentRepo.json || forcedUpdate) {
                                 logger.info(
                                     `${hostLogPrefix} Updating repository "${repoUrl}" under "${currentRepo.link}"`
                                 );
                                 try {
-                                    let result: ioBroker.RepositoryInformation | RepositoryFile;
-                                    // prevent the request of repos by multiple admin adapters at start
                                     if (
-                                        currentRepo.json &&
-                                        currentRepo.time &&
-                                        currentRepo.hash &&
-                                        Date.now() - new Date(currentRepo.time).getTime() < 30_000
+                                        !currentRepo.json ||
+                                        !currentRepo.time ||
+                                        !currentRepo.hash ||
+                                        Date.now() - new Date(currentRepo.time).getTime() >= 30_000
                                     ) {
-                                        result = currentRepo;
-                                    } else {
-                                        result = await tools.getRepositoryFileAsync(
+                                        const result = await tools.getRepositoryFileAsync(
                                             currentRepo.link,
                                             currentRepo.hash,
-                                            updateRepo,
+                                            forcedUpdate,
                                             currentRepo.json
                                         );
 
-                                        changed = result.json && result.changed;
-                                    }
-
-                                    // If repo was really changed
-                                    if (changed) {
-                                        currentRepo.json = result.json;
-                                        currentRepo.hash = result.hash || '';
-                                        currentRepo.time = new Date().toISOString();
+                                        // If repo was really changed
+                                        if (result?.json && result.changed) {
+                                            changed = true;
+                                            currentRepo.json = result.json;
+                                            currentRepo.hash = result.hash || '';
+                                            currentRepo.time = new Date().toISOString();
+                                        }
                                     }
 
                                     // Make sure, that time is stored too to prevent the frequent access to repo server
@@ -2181,9 +2175,11 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         }
                     }
 
-                    if (changed) {
+                    if (changed || forcedUpdate) {
                         try {
-                            await objects!.setObjectAsync(SYSTEM_REPOSITORIES_ID, systemRepos);
+                            // update timestamp so adapters like admin know when it was written the last time
+                            systemRepos.ts = Date.now();
+                            await objects!.setObject(SYSTEM_REPOSITORIES_ID, systemRepos);
                         } catch (e) {
                             logger.warn(`${hostLogPrefix} Repository object could not be updated: ${e.message}`);
                         }
