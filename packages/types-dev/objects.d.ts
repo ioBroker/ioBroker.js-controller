@@ -481,7 +481,7 @@ declare global {
               };
 
         /**
-         * Object which defines, if the adapter supports receiving messages via sendTo.
+         * Object which defines if the adapter supports receiving messages via sendTo.
          * Additionally, it defines if specific messages are supported.
          * If one property is enabled, the object `system.adapter.<adaptername>.<adapterinstance>.messagebox will be created to send messages to the adapter (used for email, pushover, etc...)
          */
@@ -517,8 +517,8 @@ declare global {
             /** Use 'paid' for adapters which do not work without a paid license. Use 'commercial' for adapters which require a license for commercial use only. Use 'limited' if some functionalities are not available without a paid license. */
             type: 'free';
             /**
-             * Hyperlink, where information about the license can be found. For non-free licenses the linked page should contain information about free features (if applicable), time of validity, link to shop and seller information.
-             * This is required if the license type is different from 'free'. For 'free' licenses an optional link to the license file can be placed here.
+             * Hyperlink, where information about the license can be found. For non-free licenses, the linked page should contain information about free features (if applicable), time of validity, link to shop and seller information.
+             * This is required if the license type is different from 'free'. For 'free' licenses, an optional link to the license file can be placed here.
              */
             link?: string;
         }
@@ -529,8 +529,8 @@ declare global {
             /** Use 'paid' for adapters which do not work without a paid license. Use 'commercial' for adapters which require a license for commercial use only. Use 'limited' if some functionalities are not available without a paid license. */
             type: PaidLicenseType;
             /**
-             * Hyperlink, where information about the license can be found. For non-free licenses the linked page should contain information about free features (if applicable), time of validity, link to shop and seller information.
-             * This is required if the license type is different from 'free'. For 'free' licenses an optional link to the license file can be placed here.
+             * Hyperlink, where information about the license can be found. For non-free licenses, the linked page should contain information about free features (if applicable), time of validity, link to shop and seller information.
+             * This is required if the license type is different from 'free'. For 'free' licenses, an optional link to the license file can be placed here.
              */
             link: string;
         }
@@ -621,7 +621,7 @@ declare global {
             getHistory?: boolean;
             /** Filename of the local icon which is shown for installed adapters. Should be located in the `admin` directory */
             icon?: string;
-            /** The adapter will be executed once additionally after installation and the `install` event will be emitted during this run. This allows for executing one time installation code. */
+            /** The adapter will be executed once additionally after installation, and the `install` event will be emitted during this run. This allows for executing one time installation code. */
             install?: boolean;
             /** Source, where this adapter has been installed from, to enable reinstalling on e.g., backup restore */
             installedFrom?: string;
@@ -633,7 +633,7 @@ declare global {
             /** @deprecated Use @see localLinks */
             localLink?: string;
             loglevel?: LogLevel;
-            /** Whether this adapter receives logs from other hosts and adapters (e.g., to strore them somewhere) */
+            /** Whether this adapter receives logs from other hosts and adapters (e.g., to store them somewhere) */
             logTransporter?: boolean;
             /** Path to the start file of the adapter. Should be the same as in `package.json` */
             main?: string;

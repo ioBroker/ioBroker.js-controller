@@ -1224,6 +1224,7 @@ export class StateRedisClient {
             throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
         }
 
+        // @ts-expect-error very strange error
         const fullMessage: ioBroker.Message = { ...message, _id: this.globalMessageId++ };
 
         if (this.globalMessageId >= 0xffffffff) {
