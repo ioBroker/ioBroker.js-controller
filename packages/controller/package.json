@@ -21,7 +21,7 @@
         "@iobroker/js-controller-common": "file:../common",
         "@iobroker/js-controller-common-db": "file:../common-db",
         "@iobroker/plugin-base": "~2.0.1",
-        "@iobroker/plugin-sentry": "~2.0.2",
+        "@iobroker/plugin-sentry": "~2.0.4",
         "axios": "^1.6.3",
         "cron-parser": "^4.9.0",
         "debug": "^4.3.4",

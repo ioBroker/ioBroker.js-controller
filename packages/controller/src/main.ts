@@ -38,7 +38,7 @@ import {
     SYSTEM_REPOSITORIES_ID
 } from '@iobroker/js-controller-common-db/constants';
 import { PluginHandler } from '@iobroker/plugin-base';
-import type { SentryPlugin } from '@iobroker/plugin-sentry';
+import type SentryPlugin from '@iobroker/plugin-sentry';
 import { BlocklistManager } from '@/lib/blocklistManager.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
