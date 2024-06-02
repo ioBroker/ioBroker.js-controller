@@ -106,7 +106,7 @@ export class AdapterAutoUpgradeManager {
                 continue;
             }
 
-            if (semver.gt(adapterConfig.version, repoAdapterInfo.version)) {
+            if (semver.gte(adapterConfig.version, repoAdapterInfo.version)) {
                 continue;
             }
 
