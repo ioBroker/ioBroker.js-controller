@@ -379,7 +379,7 @@ export async function exitApplicationSave(exitCode?: number): Promise<never> {
  *
  * @param config - parsed content of iobroker.json
  */
-function initializePlugins(config: Record<string, any>): Promise<void> {
+async function initializePlugins(config: Record<string, any>): Promise<void> {
     const ioPackage = fs.readJsonSync(path.join(tools.getControllerDir(), 'io-package.json'));
     const packageJson = fs.readJsonSync(path.join(tools.getControllerDir(), 'package.json'));
     const hostname = tools.getHostName();
@@ -413,9 +413,7 @@ function initializePlugins(config: Record<string, any>): Promise<void> {
     pluginHandler.addPlugins(config.plugins, tools.getControllerDir()); // ... plugins from iobroker.json
     pluginHandler.setDatabaseForPlugins(objects, states);
 
-    return new Promise(resolve => {
-        pluginHandler.initPlugins(ioPackage, () => resolve());
-    });
+    await pluginHandler.initPlugins(ioPackage);
 }
 
 /**
