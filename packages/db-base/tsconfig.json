@@ -3,12 +3,7 @@
   "compilerOptions": {
     "outDir": "build/esm",
     "rootDir": "src",
-    "module": "NodeNext",
-    "paths": {
-      "@/*": [
-        "./src/*"
-      ]
-    }
+    "module": "NodeNext"
   },
   "references": [
     {
