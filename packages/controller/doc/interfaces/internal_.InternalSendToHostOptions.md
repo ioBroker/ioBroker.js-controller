@@ -21,7 +21,7 @@
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:490](https://github.com/ioBroker/ioBroker.js-controller/blob/b57a294042de33ec1626f5f0a84b06bb80ba1327/packages/adapter/src/lib/_Types.ts#L490)
+[adapter/src/lib/_Types.ts:490](https://github.com/ioBroker/ioBroker.js-controller/blob/3deca26fa44043f003a1a0b2a2f9fc7a9d2ca7ae/packages/adapter/src/lib/_Types.ts#L490)
 
 ___
 
@@ -31,7 +31,7 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:488](https://github.com/ioBroker/ioBroker.js-controller/blob/b57a294042de33ec1626f5f0a84b06bb80ba1327/packages/adapter/src/lib/_Types.ts#L488)
+[adapter/src/lib/_Types.ts:488](https://github.com/ioBroker/ioBroker.js-controller/blob/3deca26fa44043f003a1a0b2a2f9fc7a9d2ca7ae/packages/adapter/src/lib/_Types.ts#L488)
 
 ___
 
@@ -43,7 +43,7 @@ if null, send to all hosts
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:487](https://github.com/ioBroker/ioBroker.js-controller/blob/b57a294042de33ec1626f5f0a84b06bb80ba1327/packages/adapter/src/lib/_Types.ts#L487)
+[adapter/src/lib/_Types.ts:487](https://github.com/ioBroker/ioBroker.js-controller/blob/3deca26fa44043f003a1a0b2a2f9fc7a9d2ca7ae/packages/adapter/src/lib/_Types.ts#L487)
 
 ___
 
@@ -53,4 +53,4 @@ ___
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:489](https://github.com/ioBroker/ioBroker.js-controller/blob/b57a294042de33ec1626f5f0a84b06bb80ba1327/packages/adapter/src/lib/_Types.ts#L489)
+[adapter/src/lib/_Types.ts:489](https://github.com/ioBroker/ioBroker.js-controller/blob/3deca26fa44043f003a1a0b2a2f9fc7a9d2ca7ae/packages/adapter/src/lib/_Types.ts#L489)
