@@ -317,14 +317,14 @@ export class InMemoryFileDB {
         const { type, pattern, client } = options;
 
         const regExpsForType = this.regExps.get(type)!;
-        const regexStr = tools.pattern2RegEx(pattern);
-        const regex = new RegExp(regexStr);
 
-        if (!regExpsForType.has(regexStr)) {
-            regExpsForType.set(regexStr, { regex, clients: [] });
+        if (!regExpsForType.has(pattern)) {
+            const regexStr = tools.pattern2RegEx(pattern);
+            const regex = new RegExp(regexStr);
+            regExpsForType.set(pattern, { regex, clients: [] });
         }
 
-        const regExs = regExpsForType.get(regexStr)!;
+        const regExs = regExpsForType.get(pattern)!;
 
         const found = !!regExs.clients.find(cl => cl === client);
         if (!found) {
@@ -355,9 +355,7 @@ export class InMemoryFileDB {
         const { type, pattern, client } = options;
 
         const regExpsForType = this.regExps.get(type)!;
-        const regexStr = tools.pattern2RegEx(pattern);
-
-        const entry = regExpsForType.get(regexStr);
+        const entry = regExpsForType.get(pattern);
 
         if (!entry) {
             return;
@@ -370,7 +368,7 @@ export class InMemoryFileDB {
         }
 
         if (entry.clients.length === 0) {
-            regExpsForType.delete(regexStr);
+            regExpsForType.delete(pattern);
         }
     }
 
