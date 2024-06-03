@@ -1,9 +1,9 @@
 {
-    "name": "@iobroker/db-base",
-    "type": "module",
-    "version": "6.0.1-alpha.0-20240603-3deca26fa",
-    "engines": {
-        "node": ">=18.0.0"
+  "name": "@iobroker/db-base",
+  "type": "module",
+  "version": "6.0.1-alpha.0-20240603-3deca26fa",
+  "engines": {
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "@iobroker/js-controller-common-db": "file:../common-db",
@@ -34,23 +34,23 @@
   "module": "build/esm/index.js",
   "types": "build/esm/index.d.ts",
   "exports": {
-        ".": {
-            "import": "./build/esm/index.js",
-            "require": "./build/cjs/index.js",
-            "types": "./build/esm/index.d.ts"
-        },
-        "./package.json": "./package.json",
-        "./inMemFileDB": {
-            "import": "./build/esm/lib/inMemFileDB.js",
-            "require": "./build/cjs/lib/inMemFileDB.js",
-            "types": "./build/esm/lib/inMemFileDB.d.ts"
-        }
+    ".": {
+      "import": "./build/esm/index.js",
+      "require": "./build/cjs/index.js",
+      "types": "./build/esm/index.d.ts"
     },
-    "license": "MIT",
-    "publishConfig": {
-        "access": "public"
-    },
-    "files": [
-        "build/"
-    ]
+    "./package.json": "./package.json",
+    "./inMemFileDB": {
+      "import": "./build/esm/lib/inMemFileDB.js",
+      "require": "./build/cjs/lib/inMemFileDB.js",
+      "types": "./build/esm/lib/inMemFileDB.d.ts"
+    }
+  },
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "files": [
+    "build/"
+  ]
 }
