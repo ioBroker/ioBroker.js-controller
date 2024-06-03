@@ -48,14 +48,15 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
     constructor(settings) {
         super(settings);
 
-        /** @type {Map<string, SubscriptionClient>} */
-        this.serverConnections = new Map();
+        this.serverConnections = {};
         this.namespaceStates = (this.settings.redisNamespace || 'io') + '.';
         this.namespaceMsg = (this.settings.namespaceMsg || 'messagebox') + '.';
         this.namespaceLog = (this.settings.namespaceLog || 'log') + '.';
         this.namespaceSession = (this.settings.namespaceSession || 'session') + '.';
+        //this.namespaceStatesLen  = this.namespaceStates.length;
         this.namespaceMsgLen = this.namespaceMsg.length;
         this.namespaceLogLen = this.namespaceLog.length;
+        //this.namespaceSessionlen = this.namespaceSession.length;
         this.metaNamespace = (this.settings.metaNamespace || 'meta') + '.';
         this.metaNamespaceLen = this.metaNamespace.length;
 
@@ -114,61 +115,45 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
     }
 
     /**
-     * Publish a subscribed value to one of the redis connection by pattern in redis format
-     *
-     * @param patternInformation all redis handler for given pattern and pattern itself
-     * @param type Type of subscribed key
-     * @param id Subscribed ID
-     * @param obj Object to publish
-     * @returns Publish counter
-     */
-    publishPattern(patternInformation, type, id, obj) {
-        let publishCount = 0;
-
-        if (!patternInformation.regex.test(id)) {
-            return publishCount;
-        }
-
-        for (const client of patternInformation.clients) {
-            publishCount += this.publishToClient(client, type, id, obj);
-        }
-
-        return publishCount;
-    }
-
-    /**
      * Publish a subscribed value to one of the redis connections in redis format
-     * @param clientOptions Instance of RedisHandler and pattern
+     * @param client Instance of RedisHandler
      * @param type Type of subscribed key
      * @param id Subscribed ID
      * @param obj Object to publish
-     * @returns Publish counter 0 or 1 depending on if send out or not
+     * @returns {number} Publish counter 0 or 1 depending on if send out or not
      */
-    publishToClient(clientOptions, type, id, obj) {
-        const { client, pattern } = clientOptions;
-
-        if (type === 'meta') {
-            this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${obj}`);
-            const sendPattern = this.metaNamespace + pattern;
-            const sendId = this.metaNamespace + id;
-            client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
-        } else {
-            let objString;
-            try {
-                objString = JSON.stringify(obj);
-            } catch (e) {
-                // mainly catch circular structures - thus log object with inspect
-                this.log.error(`${this.namespace} Error on publishing state: ${id}=${inspect(obj)}: ${e.message}`);
-                return 0;
-            }
-
-            this.log.silly(`${this.namespace} Redis Publish State ${id}=${objString}`);
-            const sendPattern = (type === 'state' ? '' : this.namespaceStates) + pattern;
-            const sendId = (type === 'state' ? '' : this.namespaceStates) + id;
-            client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
+    publishToClients(client, type, id, obj) {
+        if (!client._subscribe || !client._subscribe[type]) {
+            return 0;
         }
+        const s = client._subscribe[type];
 
-        return 1;
+        const found = s.find(sub => sub.regex.test(id));
+
+        if (found) {
+            if (type === 'meta') {
+                this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${obj}`);
+                const sendPattern = this.metaNamespace + found.pattern;
+                const sendId = this.metaNamespace + id;
+                client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
+            } else {
+                let objString;
+                try {
+                    objString = JSON.stringify(obj);
+                } catch (e) {
+                    // mainly catch circular structures - thus log object with inspect
+                    this.log.error(`${this.namespace} Error on publishing state: ${id}=${inspect(obj)}: ${e.message}`);
+                    return 0;
+                }
+
+                this.log.silly(`${this.namespace} Redis Publish State ${id}=${objString}`);
+                const sendPattern = (type === 'state' ? '' : this.namespaceStates) + found.pattern;
+                const sendId = (type === 'state' ? '' : this.namespaceStates) + id;
+                client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
+            }
+            return 1;
+        }
+        return 0;
     }
 
     /**
@@ -383,10 +368,10 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
         handler.on('psubscribe', (data, responseId) => {
             const { id, namespace } = this._normalizeId(data[0]);
             if (namespace === this.namespaceMsg) {
-                this._subscribeMessageForClient(handler, id.substring(this.namespaceMsgLen));
+                this._subscribeMessageForClient(handler, id.substr(this.namespaceMsgLen));
                 handler.sendArray(responseId, ['psubscribe', data[0], 1]);
             } else if (namespace === this.namespaceLog) {
-                this._subscribeLogForClient(handler, id.substring(this.namespaceLogLen));
+                this._subscribeLogForClient(handler, id.substr(this.namespaceLogLen));
                 handler.sendArray(responseId, ['psubscribe', data[0], 1]);
             } else if (namespace === this.namespaceStates) {
                 try {
@@ -410,10 +395,10 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
         handler.on('punsubscribe', (data, responseId) => {
             const { id, namespace } = this._normalizeId(data[0]);
             if (namespace === this.namespaceMsg) {
-                this._unsubscribeMessageForClient(handler, id.substring(this.namespaceMsgLen));
+                this._unsubscribeMessageForClient(handler, id.substr(this.namespaceMsgLen));
                 handler.sendArray(responseId, ['punsubscribe', data[0], 1]);
             } else if (namespace === this.namespaceLog) {
-                this._unsubscribeLogForClient(handler, id.substring(this.namespaceLogLen));
+                this._unsubscribeLogForClient(handler, id.substr(this.namespaceLogLen));
                 handler.sendArray(responseId, ['punsubscribe', data[0], 1]);
             } else if (namespace === this.namespaceStates) {
                 this._unsubscribeForClient(handler, id);
@@ -473,6 +458,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
 
     /**
      * Return connected RedisHandlers/Connections
+     * @returns {{}|*}
      */
     getClients() {
         return this.serverConnections;
@@ -483,9 +469,9 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
      */
     async destroy() {
         if (this.server) {
-            for (const [connectionName, connection] of this.serverConnections) {
-                connection.close();
-                this.serverConnections.delete(connectionName);
+            for (const s of Object.keys(this.serverConnections)) {
+                this.serverConnections[s].close();
+                delete this.serverConnections[s];
             }
 
             await new Promise(resolve => {
@@ -521,11 +507,11 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
         const handler = new RedisHandler(socket, options);
         this._socketEvents(handler);
 
-        this.serverConnections.set(`${socket.remoteAddress}:${socket.remotePort}`, handler);
+        this.serverConnections[socket.remoteAddress + ':' + socket.remotePort] = handler;
 
         socket.on('close', () => {
-            if (this.serverConnections.has(`${socket.remoteAddress}:${socket.remotePort}`)) {
-                this.serverConnections.delete(`${socket.remoteAddress}:${socket.remotePort}`);
+            if (this.serverConnections[socket.remoteAddress + ':' + socket.remotePort]) {
+                delete this.serverConnections[socket.remoteAddress + ':' + socket.remotePort];
             }
         });
     }
