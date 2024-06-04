@@ -599,16 +599,16 @@ declare global {
             blockly?: boolean;
             /** Where the adapter will get its data from. Set this together with @see dataSource */
             connectionType?: ConnectionType;
-            /** If true, this adapter can be started in compact mode (in the same process as other adpaters) */
+            /** If true, this adapter can be started in compact mode (in the same process as other adapters) */
             compact?: boolean;
             /** The directory relative to iobroker-data where the adapter stores the data. Supports the placeholder `%INSTANCE%`. This folder will be backed up and restored automatically. */
             dataFolder?: string;
             /** How the adapter will mainly receive its data. Set this together with @see connectionType */
             dataSource?: 'poll' | 'push' | 'assumption';
             /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter on the same host. */
-            dependencies?: Array<Record<string, string>>;
+            dependencies?: Array<{ [adapterName: string]: string } | string>;
             /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter in the whole system. */
-            globalDependencies?: Array<Record<string, string>>;
+            globalDependencies?: Array<{ [adapterName: string]: string } | string>;
             /** Which files outside the README.md have documentation for the adapter */
             docs?: Partial<Record<Languages, string | string[]>>;
             /** Whether new instances should be enabled by default. *Should* be `false`! */
@@ -621,7 +621,7 @@ declare global {
             getHistory?: boolean;
             /** Filename of the local icon which is shown for installed adapters. Should be located in the `admin` directory */
             icon?: string;
-            /** The adapter will be executed once additionally after installation and the `install` event will be emitted during this run. This allows for executing one time installation code. */
+            /** The adapter will be executed once additionally after installation, and the `install` event will be emitted during this run. This allows for executing one time installation code. */
             install?: boolean;
             /** Source, where this adapter has been installed from, to enable reinstalling on e.g., backup restore */
             installedFrom?: string;
@@ -633,7 +633,7 @@ declare global {
             /** @deprecated Use @see localLinks */
             localLink?: string;
             loglevel?: LogLevel;
-            /** Whether this adapter receives logs from other hosts and adapters (e.g., to strore them somewhere) */
+            /** Whether this adapter receives logs from other hosts and adapters (e.g., to store them somewhere) */
             logTransporter?: boolean;
             /** Path to the start file of the adapter. Should be the same as in `package.json` */
             main?: string;
@@ -676,7 +676,7 @@ declare global {
             platform: 'Javascript/Node.js';
             /** The keys of common attributes (e.g. `history`) which are not deleted in a `setObject` call even if they are not present. Deletion must be done explicitly by setting them to `null`. */
             preserveSettings?: string | string[];
-            /** Which adapters must be restarted after installing or updating this adapter. */
+            /** Which adapters must be restarted after installing or updating of this adapter. */
             restartAdapters?: string[];
             /** CRON schedule to restart mode `daemon` adapters */
             restartSchedule?: string;
@@ -750,6 +750,8 @@ declare global {
             city?: string;
             /** Optional user's country (only for diagnostics) */
             country?: string;
+            /** monday or sunday */
+            firstDayOfWeek?: 'monday' | 'sunday';
             /** Default history instance */
             defaultHistory: string;
             /** Which diag data is allowed to be sent */
@@ -760,6 +762,8 @@ declare global {
             defaultLogLevel?: LogLevel;
             /** Used date format for formatting */
             dateFormat: string;
+            /** This name will be shown in admin's header. Just to identify the whole installation */
+            siteName:? string;
             /** Default acl for new objects */
             defaultNewAcl: {
                 object: number;
@@ -803,9 +807,9 @@ declare global {
         }
 
         /**
-         * ioBroker has built-in protection for specific attributes of objects. If this protection is installed in the object, then the protected attributes of object cannot be changed by the user without valid password.
+         * ioBroker has built-in protection for specific attributes of objects. If this protection is installed in the object, then the protected attributes of an object cannot be changed by the user without a valid password.
          * To protect the properties from change, the special attribute "nonEdit" must be added to the object. This attribute contains the password, which is required to change the object.
-         * If object does not have "nonEdit" attribute, so the hash will be saved into "nonEdit.passHash". After that if someone will change the object, he must provide the password in "nonEdit.password".
+         * If an object does not have "nonEdit" attribute, so the hash will be saved into "nonEdit.passHash". After that, if someone changes the object, he must provide the password in "nonEdit.password".
          * If the password is correct, the object attributes will be updated. If the password is wrong, the object will not be changed.
          * Note, that all properties outside "nonEdit" can be updated without providing the password. Furthermore, do not confuse e.g. "nonEdit.common" with "obj.common" they are not linked in any way.
          */
@@ -947,9 +951,11 @@ declare global {
         interface RepositoryInformation {
             /** Url to the repository */
             link: string;
-            json: RepositoryJson | null;
+            json?: RepositoryJson | null;
             hash?: string;
             time?: string;
+            /** if this repository stable */
+            stable?: boolean;
         }
 
         interface RepositoryObject extends BaseObject {
@@ -986,10 +992,23 @@ declare global {
             common?: Partial<InstanceCommon>;
         }
 
-        /** TODO: To be defined */
-        type NotificationCategory = any;
+        // it is defined in notificationHandler.ts
+        type NotificationCategory = {
+            category: 'memIssues' | 'fsIoErrors' | 'noDiskSpace' | 'accessErrors' |
+                'nonExistingFileErrors' | 'remoteHostErrors' | 'restartLoop' | 'fileToJsonl' |
+                'automaticAdapterUpgradeFailed' | 'automaticAdapterUpgradeSuccessful' | 'blockedVersions' |
+                'databaseErrors' | 'securityIssues' | 'packageUpdates' |
+                'systemRebootRequired' | 'diskSpaceIssues' | string;
+            name: Translated;
+            /** `info` will only be shown by admin, while `notify` might also be used by messaging adapters, `alert` ensures both */
+            severity: 'info' | 'notify' | 'alert';
+            description: Translated;
+            regex: string[];
+            limit: number;
+        };
 
         interface Notification {
+            /** Each adapter can define its own "scopes" for own notifications with its own categories which then will be available in the system. */
             scope: string;
             name: Translated;
             description: Translated;

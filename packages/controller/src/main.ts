@@ -45,7 +45,7 @@ import { Upload, PacketManager, type UpgradePacket } from '@iobroker/js-controll
 import decache from 'decache';
 import cronParser from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
-import type { GetDiskInfoResponse } from '@iobroker/js-controller-common-db/tools';
+import type { AdapterInformation, GetDiskInfoResponse } from '@iobroker/js-controller-common-db/tools';
 import { DEFAULT_DISK_WARNING_LEVEL, getCronExpression, getDiskWarningLevel } from '@/lib/utils.js';
 import { AdapterAutoUpgradeManager } from '@/lib/adapterAutoUpgradeManager.js';
 import {
@@ -1837,7 +1837,7 @@ function initMessageQueue(): void {
 }
 
 /**
- * Send a message to other adapter instance
+ * Send a message to another adapter instance
  *
  * @param objName - adapter name (hm-rpc) or id like system.host.rpi/system.adapter,hm-rpc
  * @param command
@@ -1895,11 +1895,9 @@ async function sendTo(
     }
 }
 
-/**
- *
- * @param hostId
- */
-async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host): Promise<Record<string, any> | null | undefined> {
+async function getVersionFromHost(
+    hostId: ioBroker.ObjectIDs.Host
+): Promise<(ioBroker.HostCommon & { host: string; runningVersion: string }) | null | undefined> {
     const state = await states!.getState(`${hostId}.alive`);
     if (state?.val) {
         return new Promise(resolve => {
@@ -1913,7 +1911,7 @@ async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host): Promise<Reco
                 if (timeout) {
                     clearTimeout(timeout);
                     timeout = null;
-                    resolve(ioPack);
+                    resolve(ioPack as any as (ioBroker.HostCommon & { host: string; runningVersion: string }));
                 }
             });
         });
@@ -2224,24 +2222,22 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         endkey: 'system.host.\u9999'
                     },
                     async (err, doc) => {
-                        const result: Record<string, any> = tools.getInstalledInfo(version);
+                        const result: Record<string, AdapterInformation | { [hostName: string]: ioBroker.HostCommon & { host: string; runningVersion: string } }> = tools.getInstalledInfo(version);
                         result.hosts = {};
                         if (doc?.rows.length) {
                             // Read installed versions of all hosts
                             for (const row of doc.rows) {
                                 // If desired a local version, do not ask it, just answer
                                 if (row.id === hostObjectPrefix) {
-                                    const ioPackCommon = deepClone(ioPackage.common);
+                                    const ioPackCommon: ioBroker.HostCommon & { host: string; runningVersion: string } = deepClone(ioPackage.common);
 
                                     ioPackCommon.host = hostname;
                                     ioPackCommon.runningVersion = version;
                                     result.hosts[hostname] = ioPackCommon;
                                 } else {
-                                    // @ts-expect-error https://github.com/ioBroker/ioBroker.js-controller/issues/2089
-                                    const ioPack = await getVersionFromHost(row.id);
+                                    const ioPack = await getVersionFromHost(row.id as ioBroker.ObjectIDs.Host);
                                     if (ioPack) {
                                         result.hosts[ioPack.host] = ioPack;
-                                        result.hosts[ioPack.host].controller = true;
                                     }
                                 }
                             }
@@ -2275,7 +2271,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'getVersion':
             if (msg.callback && msg.from) {
-                const ioPackCommon = deepClone(ioPackage.common);
+                const ioPackCommon: ioBroker.HostCommon & { host: string; runningVersion: string } = deepClone(ioPackage.common);
                 ioPackCommon.host = hostname;
                 ioPackCommon.runningVersion = version;
                 sendTo(msg.from, msg.command, ioPackCommon, msg.callback);
@@ -2523,7 +2519,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     location = path.normalize(`${controllerDir}/../../`);
                 }
 
-                const enrichedHostInfo = {
+                const enrichedHostInfo: HostInfo & { 'Active instances': number; location: string; Uptime: number } = {
                     ...hostInfo,
                     'Active instances': count,
                     location,
