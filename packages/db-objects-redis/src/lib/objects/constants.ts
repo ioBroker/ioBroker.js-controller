@@ -1,7 +1,8 @@
 export enum ERRORS {
     ERROR_PERMISSION = 'permissionError',
     ERROR_NOT_FOUND = 'Not exists',
-    ERROR_DB_CLOSED = 'DB closed'
+    ERROR_DB_CLOSED = 'DB closed',
+    ERROR_PARSE = 'parseError'
 }
 
 export const SYSTEM_ADMIN_USER = 'system.user.admin';

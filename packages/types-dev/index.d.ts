@@ -293,10 +293,10 @@ declare global {
         }
 
         interface DelObjectOptions {
-            /** Whether all child objects should be deleted aswell */
+            /** Whether all child objects should be deleted as well */
             recursive?: boolean;
-            // Allow non-documented properties
-            [other: string]: unknown;
+            /** Current user */
+            user?: string;
         }
 
         interface ExtendObjectOptionsPreserve {
@@ -306,8 +306,12 @@ declare global {
         interface ExtendObjectOptions {
             /** Which properties of the original object should be preserved */
             preserve?: ExtendObjectOptionsPreserve;
-            // Allow non-documented properties
-            [other: string]: unknown;
+            /** Current user */
+            user?: string;
+            /** Set as the owner of the object */
+            owner?: string;
+            /** Set as the owner group of the object */
+            ownerGroup?: string;
         }
 
         /** Predefined notification scopes and their categories */
@@ -451,7 +455,7 @@ declare global {
             /** Name of the file or directory */
             file: string;
             /** File system stats */
-            stats: fs.Stats;
+            stats: { size?: number };
             /** Whether this is a directory or a file */
             isDir: boolean;
             /** Access rights */

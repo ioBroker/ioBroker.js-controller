@@ -12,7 +12,7 @@ declare global {
             permissions: number;
         }
 
-        /** Defines access rights for a single file, applied to a user or group */
+        /** This ACL information will be returned in read file  */
         interface EvaluatedFileACL extends FileACL {
             /** Whether the user may read the file */
             read: boolean;
@@ -28,6 +28,11 @@ declare global {
             ownerGroup: string;
             /** Linux-type permissions defining access to this object */
             object: number;
+        }
+
+        /** Defines access rights for a meta-object */
+        interface MetaACL extends ObjectACL {
+            file: number;
         }
 
         /** Defines access rights for a single state object */
@@ -894,6 +899,7 @@ declare global {
         interface MetaObject extends BaseObject {
             type: 'meta';
             common: MetaCommon;
+            acl?: MetaACL;
         }
 
         interface PartialMetaObject extends Partial<Omit<MetaObject, 'common'>> {
