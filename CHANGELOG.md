@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 6.0.0 (2024-05-22) - Kiera
+## __WORK IN PROGRESS__ - Kiera
 
 **Breaking changes**
 * Support for Node.js 16 is dropped!
