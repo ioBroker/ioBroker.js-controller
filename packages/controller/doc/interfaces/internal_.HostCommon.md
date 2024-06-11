@@ -40,7 +40,7 @@ An array of IP addresses this host exposes
 
 #### Defined in
 
-[types-dev/objects.d.ts:393](https://github.com/ioBroker/ioBroker.js-controller/blob/8378eb65cafb11585b021f48b68d110664ca52a8/packages/types-dev/objects.d.ts#L393)
+[types-dev/objects.d.ts:393](https://github.com/ioBroker/ioBroker.js-controller/blob/7978d8c33d6336ccf959994fdaed1cae33167c51/packages/types-dev/objects.d.ts#L393)
 
 ___
 
@@ -52,7 +52,7 @@ The command line of the executable
 
 #### Defined in
 
-[types-dev/objects.d.ts:390](https://github.com/ioBroker/ioBroker.js-controller/blob/8378eb65cafb11585b021f48b68d110664ca52a8/packages/types-dev/objects.d.ts#L390)
+[types-dev/objects.d.ts:390](https://github.com/ioBroker/ioBroker.js-controller/blob/7978d8c33d6336ccf959994fdaed1cae33167c51/packages/types-dev/objects.d.ts#L390)
 
 ___
 
@@ -68,7 +68,7 @@ Color attribute used in UI
 
 #### Defined in
 
-[types-dev/objects.d.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/8378eb65cafb11585b021f48b68d110664ca52a8/packages/types-dev/objects.d.ts#L178)
+[types-dev/objects.d.ts:178](https://github.com/ioBroker/ioBroker.js-controller/blob/7978d8c33d6336ccf959994fdaed1cae33167c51/packages/types-dev/objects.d.ts#L178)
 
 ___
 
@@ -78,7 +78,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:399](https://github.com/ioBroker/ioBroker.js-controller/blob/8378eb65cafb11585b021f48b68d110664ca52a8/packages/types-dev/objects.d.ts#L399)
+[types-dev/objects.d.ts:399](https://github.com/ioBroker/ioBroker.js-controller/blob/7978d8c33d6336ccf959994fdaed1cae33167c51/packages/types-dev/objects.d.ts#L399)
 
 ___
 
@@ -94,7 +94,7 @@ Description of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:170](https://github.com/ioBroker/ioBroker.js-controller/blob/8378eb65cafb11585b021f48b68d110664ca52a8/packages/types-dev/objects.d.ts#L170)
+[types-dev/objects.d.ts:170](https://github.com/ioBroker/ioBroker.js-controller/blob/7978d8c33d6336ccf959994fdaed1cae33167c51/packages/types-dev/objects.d.ts#L170)
 
 ___
 
@@ -110,7 +110,7 @@ When set to true, this object may not be deleted
 
 #### Defined in
 
-[types-dev/objects.d.ts:173](https://github.com/ioBroker/ioBroker.js-controller/blob/8378eb65cafb11585b021f48b68d110664ca52a8/packages/types-dev/objects.d.ts#L173)
+[types-dev/objects.d.ts:173](https://github.com/ioBroker/ioBroker.js-controller/blob/7978d8c33d6336ccf959994fdaed1cae33167c51/packages/types-dev/objects.d.ts#L173)
 
 ___
 
@@ -126,7 +126,7 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 #### Defined in
 
-[types-dev/objects.d.ts:176](https://github.com/ioBroker/ioBroker.js-controller/blob/8378eb65cafb11585b021f48b68d110664ca52a8/packages/types-dev/objects.d.ts#L176)
+[types-dev/objects.d.ts:176](https://github.com/ioBroker/ioBroker.js-controller/blob/7978d8c33d6336ccf959994fdaed1cae33167c51/packages/types-dev/objects.d.ts#L176)
 
 ___
 
@@ -136,7 +136,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:391](https://github.com/ioBroker/ioBroker.js-controller/blob/8378eb65cafb11585b021f48b68d110664ca52a8/packages/types-dev/objects.d.ts#L391)
+[types-dev/objects.d.ts:391](https://github.com/ioBroker/ioBroker.js-controller/blob/7978d8c33d6336ccf959994fdaed1cae33167c51/packages/types-dev/objects.d.ts#L391)
 
 ___
 
@@ -152,7 +152,7 @@ base64 encoded icon
 
 #### Defined in
 
-[types-dev/objects.d.ts:387](https://github.com/ioBroker/ioBroker.js-controller/blob/8378eb65cafb11585b021f48b68d110664ca52a8/packages/types-dev/objects.d.ts#L387)
+[types-dev/objects.d.ts:387](https://github.com/ioBroker/ioBroker.js-controller/blob/7978d8c33d6336ccf959994fdaed1cae33167c51/packages/types-dev/objects.d.ts#L387)
 
 ___
 
@@ -162,7 +162,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:388](https://github.com/ioBroker/ioBroker.js-controller/blob/8378eb65cafb11585b021f48b68d110664ca52a8/packages/types-dev/objects.d.ts#L388)
+[types-dev/objects.d.ts:388](https://github.com/ioBroker/ioBroker.js-controller/blob/7978d8c33d6336ccf959994fdaed1cae33167c51/packages/types-dev/objects.d.ts#L388)
 
 ___
 
@@ -178,7 +178,7 @@ The display name of this host
 
 #### Defined in
 
-[types-dev/objects.d.ts:383](https://github.com/ioBroker/ioBroker.js-controller/blob/8378eb65cafb11585b021f48b68d110664ca52a8/packages/types-dev/objects.d.ts#L383)
+[types-dev/objects.d.ts:383](https://github.com/ioBroker/ioBroker.js-controller/blob/7978d8c33d6336ccf959994fdaed1cae33167c51/packages/types-dev/objects.d.ts#L383)
 
 ___
 
@@ -188,7 +188,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:396](https://github.com/ioBroker/ioBroker.js-controller/blob/8378eb65cafb11585b021f48b68d110664ca52a8/packages/types-dev/objects.d.ts#L396)
+[types-dev/objects.d.ts:396](https://github.com/ioBroker/ioBroker.js-controller/blob/7978d8c33d6336ccf959994fdaed1cae33167c51/packages/types-dev/objects.d.ts#L396)
 
 ___
 
@@ -204,7 +204,7 @@ role of the object
 
 #### Defined in
 
-[types-dev/objects.d.ts:185](https://github.com/ioBroker/ioBroker.js-controller/blob/8378eb65cafb11585b021f48b68d110664ca52a8/packages/types-dev/objects.d.ts#L185)
+[types-dev/objects.d.ts:185](https://github.com/ioBroker/ioBroker.js-controller/blob/7978d8c33d6336ccf959994fdaed1cae33167c51/packages/types-dev/objects.d.ts#L185)
 
 ___
 
@@ -216,7 +216,7 @@ Changeable name of the host
 
 #### Defined in
 
-[types-dev/objects.d.ts:385](https://github.com/ioBroker/ioBroker.js-controller/blob/8378eb65cafb11585b021f48b68d110664ca52a8/packages/types-dev/objects.d.ts#L385)
+[types-dev/objects.d.ts:385](https://github.com/ioBroker/ioBroker.js-controller/blob/7978d8c33d6336ccf959994fdaed1cae33167c51/packages/types-dev/objects.d.ts#L385)
 
 ___
 
@@ -226,4 +226,4 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:395](https://github.com/ioBroker/ioBroker.js-controller/blob/8378eb65cafb11585b021f48b68d110664ca52a8/packages/types-dev/objects.d.ts#L395)
+[types-dev/objects.d.ts:395](https://github.com/ioBroker/ioBroker.js-controller/blob/7978d8c33d6336ccf959994fdaed1cae33167c51/packages/types-dev/objects.d.ts#L395)

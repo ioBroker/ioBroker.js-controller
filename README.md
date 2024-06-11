@@ -224,6 +224,14 @@ To use the installed node module, you can import it:
 
 ```typescript
 const module = await adapter.importNodeModule('axios');
+```
+
+Note, that the behavior mimics the one of [JavaScript's "import" operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import). 
+
+If you are just interested in the `default export`, use the example below.
+
+```typescript
+const module = (await adapter.importNodeModule('axios')).default;
 // now we can call axios specific methods
 const result = await module.get('https://www.iobroker.net/');
 ```
