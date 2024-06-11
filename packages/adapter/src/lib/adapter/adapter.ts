@@ -1254,7 +1254,7 @@ export class AdapterClass extends EventEmitter {
      * @param options version information
      */
     installNodeModule(moduleNameOrUrl: unknown, options: unknown): Promise<CommandResult> {
-        Validator.assertString(moduleNameOrUrl, 'moduleName');
+        Validator.assertString(moduleNameOrUrl, 'moduleNameOrUrl');
         Validator.assertObject<InstallNodeModuleOptions>(options, 'options');
 
         return this._installNodeModule({ ...options, moduleNameOrUrl });
