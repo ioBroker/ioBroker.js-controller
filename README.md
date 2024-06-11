@@ -219,6 +219,7 @@ if (result.success) {
 }
 ```
 
+Instead of specifying a module name you can also specify a URL to e.g. install a package from GitHub.
 To use the installed node module, you can import it:
 
 ```typescript
