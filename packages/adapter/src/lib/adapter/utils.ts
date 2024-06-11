@@ -4,7 +4,8 @@ import {
     encrypt,
     decrypt,
     appNameLowerCase,
-    getRootDir
+    getRootDir,
+    execAsync
 } from '@iobroker/js-controller-common-db/tools';
 import { SUPPORTED_FEATURES, type SupportedFeature } from '@/lib/adapter/constants.js';
 import path from 'node:path';
@@ -124,4 +125,21 @@ export async function listInstalledNodeModules(namespace: string): Promise<strin
     }
 
     return dependencies;
+}
+
+/**
+ * Request a module name by given url using `npm view`
+ *
+ * @param url the url to the package which should be installed via npm
+ */
+export async function requestModuleNameByUrl(url: string): Promise<string> {
+    const res = await execAsync(`npm view ${url} name`);
+
+    if (typeof res.stdout !== 'string') {
+        throw new Error(
+            `Could not determine module name for url "${url}". Unexpected stdout: "${res.stdout ? res.stdout.toString() : ''}"`
+        );
+    }
+
+    return res.stdout;
 }
