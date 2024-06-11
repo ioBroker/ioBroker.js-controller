@@ -1270,12 +1270,8 @@ export class AdapterClass extends EventEmitter {
             moduleName = await requestModuleNameByUrl(moduleNameOrUrl);
         }
 
-        this._logger.warn('Test ' + moduleName);
-
         const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
         const packageIdentifier = isUrl ? moduleNameOrUrl : `npm:${moduleName}@${version}`;
-
-        this._logger.warn(`test ${internalModuleName}@${packageIdentifier}`)
 
         return tools.installNodeModule(`${internalModuleName}@${packageIdentifier}`);
     }
