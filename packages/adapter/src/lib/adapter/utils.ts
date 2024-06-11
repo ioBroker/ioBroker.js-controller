@@ -141,5 +141,5 @@ export async function requestModuleNameByUrl(url: string): Promise<string> {
         );
     }
 
-    return res.stdout;
+    return res.stdout.trim();
 }
