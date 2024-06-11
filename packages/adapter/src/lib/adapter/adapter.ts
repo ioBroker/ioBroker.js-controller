@@ -22,7 +22,8 @@ import {
     getSupportedFeatures,
     isMessageboxSupported,
     getAdapterScopedPackageIdentifier,
-    listInstalledNodeModules
+    listInstalledNodeModules,
+    requestModuleNameByUrl
 } from '@/lib/adapter/utils.js';
 // @ts-expect-error no ts file
 import extend from 'node.extend';
@@ -1249,21 +1250,30 @@ export class AdapterClass extends EventEmitter {
     /**
      * Install specified npm module
      *
-     * @param moduleName name of the node module
+     * @param moduleNameOrUrl name of the node module or GitHub url which can be passed to `npm install`
      * @param options version information
      */
-    installNodeModule(moduleName: unknown, options: unknown): Promise<CommandResult> {
-        Validator.assertString(moduleName, 'moduleName');
+    installNodeModule(moduleNameOrUrl: unknown, options: unknown): Promise<CommandResult> {
+        Validator.assertString(moduleNameOrUrl, 'moduleNameOrUrl');
         Validator.assertObject<InstallNodeModuleOptions>(options, 'options');
 
-        return this._installNodeModule({ ...options, moduleName });
+        return this._installNodeModule({ ...options, moduleNameOrUrl });
     }
 
-    private _installNodeModule(options: InternalInstallNodeModuleOptions): Promise<CommandResult> {
-        const { moduleName, version } = options;
+    private async _installNodeModule(options: InternalInstallNodeModuleOptions): Promise<CommandResult> {
+        const { moduleNameOrUrl, version } = options;
+
+        let moduleName = moduleNameOrUrl;
+        const isUrl = URL.canParse(moduleNameOrUrl);
+
+        if (isUrl) {
+            moduleName = await requestModuleNameByUrl(moduleNameOrUrl);
+        }
 
         const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
-        return tools.installNodeModule(`${internalModuleName}@npm:${moduleName}@${version}`);
+        const packageIdentifier = isUrl ? moduleNameOrUrl : `npm:${moduleName}@${version}`;
+
+        return tools.installNodeModule(`${internalModuleName}@${packageIdentifier}`);
     }
 
     /**
@@ -1310,7 +1320,7 @@ export class AdapterClass extends EventEmitter {
      * Decrypt the password/value with given key
      *
      * @param secretVal to use for decrypt (or value if only one parameter is given)
-     * @param  [value] value to decrypt (if secret is provided)
+     * @param value value to decrypt (if secret is provided)
      */
     decrypt(secretVal: unknown, value?: unknown): string {
         if (value === undefined) {
