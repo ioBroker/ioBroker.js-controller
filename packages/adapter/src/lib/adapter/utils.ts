@@ -10,6 +10,10 @@ import {
 import { SUPPORTED_FEATURES, type SupportedFeature } from '@/lib/adapter/constants.js';
 import path from 'node:path';
 import fs from 'fs-extra';
+import { createRequire } from 'node:module';
+
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __filename);
 
 interface EncryptArrayOptions {
     /** The objects whose values should be en/decrypted */
@@ -114,14 +118,15 @@ export async function listInstalledNodeModules(namespace: string): Promise<strin
     };
     const dependencies: string[] = [];
 
-    for (const [dependency, versionInfo] of Object.entries(packJson.dependencies)) {
+    for (const dependency of Object.keys(packJson.dependencies)) {
         if (!dependency.startsWith(`@${appNameLowerCase}-${namespace}/`)) {
             continue;
         }
 
-        // remove npm: and version after last @
-        const realDependencyName = versionInfo.substring(4, versionInfo.lastIndexOf('@'));
-        dependencies.push(realDependencyName);
+        const packPath = require.resolve(`${dependency}/package.json`);
+        const packJson = await fs.readJson(packPath);
+
+        dependencies.push(packJson.name);
     }
 
     return dependencies;
