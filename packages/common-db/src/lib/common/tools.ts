@@ -334,7 +334,7 @@ export async function isHostRunning(objects: any, states: any): Promise<boolean>
 /**
  * Checks if ioBroker is installed in a dev environment
  */
-function _isDevInstallation(): boolean {
+export function isDevInstallation(): boolean {
     return fs.pathExistsSync(`${getControllerDir()}/../../packages/controller`);
 }
 
@@ -345,7 +345,7 @@ type AppName = 'iobroker' | 'ioBroker';
  * Get the app name either for prod or for dev installation
  */
 function getAppName(): AppName {
-    if (_isDevInstallation()) {
+    if (isDevInstallation()) {
         // dev install - GitHub folder is uppercase
         return 'ioBroker';
     }
@@ -2220,7 +2220,7 @@ export function getDefaultDataDir(): string {
         return envDataDir;
     }
 
-    if (_isDevInstallation()) {
+    if (isDevInstallation()) {
         // dev install
         return './data/';
     }
@@ -2243,9 +2243,9 @@ export function getConfigFileName(): string {
 
     const controllerDir = getControllerDir();
     const fallbackConfigFile = path.join(controllerDir, 'data', `${appNameLowerCase}.json`);
-    const isDevInstallation = _isDevInstallation();
+    const isDevInstall = isDevInstallation();
 
-    if (isDevInstallation) {
+    if (isDevInstall) {
         const devConfigFile = path.join(controllerDir, 'conf', `${appNameLowerCase}.json`);
 
         if (fs.existsSync(devConfigFile)) {
@@ -2257,7 +2257,7 @@ export function getConfigFileName(): string {
 
     const prodConfigFile = path.join(getRootDir(), `${appNameLowerCase}-data`, `${appNameLowerCase}.json`);
 
-    if (!fs.existsSync(prodConfigFile) && isDevInstallation) {
+    if (!fs.existsSync(prodConfigFile) && isDevInstall) {
         return fallbackConfigFile;
     }
 

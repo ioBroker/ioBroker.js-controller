@@ -1112,6 +1112,10 @@ Please DO NOT copy files manually into ioBroker storage directories!`
      * Add adapter-core in supported version in the overrides field of the root package.json and call install there to apply it
      */
     private async addAdapterCoreRequirement(): Promise<void> {
+        if (tools.isDevInstallation()) {
+            return;
+        }
+
         const rootDir = tools.getRootDir();
         const packPath = path.join(rootDir, 'package.json');
         const packJson = await fs.readJson(packPath);
