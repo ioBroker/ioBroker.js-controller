@@ -29,7 +29,11 @@ The ioBroker.js-controller is the heart of any ioBroker installation. The contro
 * js-controller 1.x works with Node.js 4.x, 6.x, 8.x and probably 10.x (untested)
 
 Please try to stay current with your Node.js version because the support is limited in time. As of now (May 2024) all Node.js versions below 18.x are no longer supported by Node.js and considered EOL (End Of Life).
-To upgrade your Node.js version and ioBroker, please follow https://forum.iobroker.net/topic/44566/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten-2021-edition !
+To upgrade your Node.js version and ioBroker, please follow https://forum.iobroker.net/topic/44566/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten-2021-edition!
+
+As it is hard to keep a lot of the decentralized adapters up-to-date, up from controller version 6.0.4 the js-controller will override the `@iobroker/adapter-core` dependency of single adapters to ensure compatibility with the current js-controller version.
+
+* js-controller 6.x (Kiera) specifies this version as `^3.1.6`.
 
 ## Links
 * [Changelog](CHANGELOG.md)

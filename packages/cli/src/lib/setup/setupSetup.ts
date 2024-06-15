@@ -63,7 +63,12 @@ export interface SetupCommandOptions {
 }
 
 export class Setup {
+    /** Object IDs which are not allowed to exist but could be generated due to errors in the past */
     private readonly KNOWN_GARBAGE_OBJECT_IDS = ['null', 'undefined'];
+    /** Adapter core version supported by this js-controller */
+    private readonly SUPPORTED_ADAPTER_CORE_VERSION = '^3.1.6';
+    /** Default name for redis sentinels */
+    private readonly DEFAULT_SENTINEL_NAME = 'mymaster';
     private readonly processExit: ProcessExitCallback;
     private states: StatesRedisClient | undefined;
     private objects: ObjectsRedisClient | undefined;
@@ -195,6 +200,12 @@ export class Setup {
         if (process.platform === 'win32') {
             // TODO: remove this fix after controller v6
             await this._fixWindowsControllerJs();
+        }
+
+        try {
+            await this.addAdapterCoreRequirement();
+        } catch (e) {
+            console.error(`Could not add "@iobroker/adapter-core" requirement: ${e.message}`);
         }
 
         await this._cleanupInstallation();
@@ -703,7 +714,9 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         if (Array.isArray(originalConfig.objects.host)) {
             console.log(
                 `  - Sentinel-Master-Name: ${
-                    originalConfig.objects.sentinelName ? originalConfig.objects.sentinelName : 'mymaster'
+                    originalConfig.objects.sentinelName
+                        ? originalConfig.objects.sentinelName
+                        : this.DEFAULT_SENTINEL_NAME
                 }`
             );
         }
@@ -714,7 +727,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         if (Array.isArray(originalConfig.states.host)) {
             console.log(
                 `  - Sentinel-Master-Name: ${
-                    originalConfig.states.sentinelName ? originalConfig.states.sentinelName : 'mymaster'
+                    originalConfig.states.sentinelName ? originalConfig.states.sentinelName : this.DEFAULT_SENTINEL_NAME
                 }`
             );
         }
@@ -836,7 +849,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         if (oSentinel) {
             const defaultSentinelName = originalConfig.objects.sentinelName
                 ? originalConfig.objects.sentinelName
-                : 'mymaster';
+                : this.DEFAULT_SENTINEL_NAME;
             oSentinelName = rl.question(`Objects Redis Sentinel Master Name [${defaultSentinelName}]: `, {
                 defaultInput: defaultSentinelName
             });
@@ -963,7 +976,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 ? originalConfig.states.sentinelName
                 : oSentinelName && oPort === sPort
                   ? oSentinelName
-                  : 'mymaster';
+                  : this.DEFAULT_SENTINEL_NAME;
             sSentinelName = rl.question(`States Redis Sentinel Master Name [${defaultSentinelName}]: `, {
                 defaultInput: defaultSentinelName
             });
@@ -1032,10 +1045,20 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         if (dir) {
             config.states.dataDir = dir;
         }
-        if (config.objects.type === 'redis' && oSentinel && oSentinelName && oSentinelName !== 'mymaster') {
+        if (
+            config.objects.type === 'redis' &&
+            oSentinel &&
+            oSentinelName &&
+            oSentinelName !== this.DEFAULT_SENTINEL_NAME
+        ) {
             config.objects.sentinelName = oSentinelName;
         }
-        if (config.states.type === 'redis' && sSentinel && sSentinelName && sSentinelName !== 'mymaster') {
+        if (
+            config.states.type === 'redis' &&
+            sSentinel &&
+            sSentinelName &&
+            sSentinelName !== this.DEFAULT_SENTINEL_NAME
+        ) {
             config.states.sentinelName = sSentinelName;
         }
 
@@ -1083,6 +1106,35 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             await this.objects.setObject(id, getHostObject());
             console.log(`Created host object "${id}"`);
         }
+    }
+
+    /**
+     * Add adapter-core in supported version in the overrides field of the root package.json and call install there to apply it
+     */
+    private async addAdapterCoreRequirement(): Promise<void> {
+        if (tools.isDevInstallation()) {
+            return;
+        }
+
+        const rootDir = tools.getRootDir();
+        const packPath = path.join(rootDir, 'package.json');
+        const packJson = await fs.readJson(packPath);
+
+        if (packJson.overrides?.['@iobroker/adapter-core'] === this.SUPPORTED_ADAPTER_CORE_VERSION) {
+            console.log(
+                `The supported version of "@iobroker/adapter-core" is already specified as "${this.SUPPORTED_ADAPTER_CORE_VERSION}"`
+            );
+            return;
+        }
+
+        packJson.overrides = { '@iobroker/adapter-core': this.SUPPORTED_ADAPTER_CORE_VERSION };
+
+        await fs.writeFile(packPath, JSON.stringify(packJson));
+        await tools.execAsync('npm i --omit=dev', { cwd: rootDir });
+
+        console.log(
+            `Successfully specified supported "@iobroker/adapter-core" version as "${this.SUPPORTED_ADAPTER_CORE_VERSION}"`
+        );
     }
 
     /**
