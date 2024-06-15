@@ -1114,7 +1114,14 @@ Please DO NOT copy files manually into ioBroker storage directories!`
     private async addAdapterCoreRequirement(): Promise<void> {
         const rootDir = tools.getRootDir();
         const packPath = path.join(rootDir, 'package.json');
-        const packJson: Record<string, unknown> = await fs.readJson(packPath);
+        const packJson = await fs.readJson(packPath);
+
+        if (packJson.overrides?.['@iobroker/adapter-core'] === this.SUPPORTED_ADAPTER_CORE_VERSION) {
+            console.log(
+                `The supported version of "@iobroker/adapter-core" is already specified as "${this.SUPPORTED_ADAPTER_CORE_VERSION}"`
+            );
+            return;
+        }
 
         packJson.overrides = { '@iobroker/adapter-core': this.SUPPORTED_ADAPTER_CORE_VERSION };
 
