@@ -12018,10 +12018,6 @@ export class AdapterClass extends EventEmitter {
      * Initialize the plugin handler for this adapter
      */
     private _initPluginHandler(): void {
-        if (!this.ioPack.common.plugins) {
-            return;
-        }
-
         const pluginSettings: PluginHandlerSettings = {
             scope: 'adapter',
             namespace: `system.adapter.${this.namespace}`,
@@ -12036,7 +12032,7 @@ export class AdapterClass extends EventEmitter {
 
         this.pluginHandler = new PluginHandler(pluginSettings);
         try {
-            this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, thisDir]); // first resolve from adapter directory, else from js-controller
+            this.pluginHandler.addPlugins(this.ioPack.common.plugins || {}, [this.adapterDir, thisDir]); // first resolve from adapter directory, else from js-controller
         } catch (e) {
             this._logger.error(`Could not add plugins: ${e.message}`);
         }
