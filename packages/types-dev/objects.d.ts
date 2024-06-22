@@ -750,6 +750,8 @@ declare global {
             city?: string;
             /** Optional user's country (only for diagnostics) */
             country?: string;
+            /** Temperature unit */
+            tempUnit: '°C' | '°F';
             /** Default history instance */
             defaultHistory: string;
             /** Which diag data is allowed to be sent */
