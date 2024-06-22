@@ -754,6 +754,8 @@ declare global {
             tempUnit?: '°C' | '°F';
             /** Currency */
             currency?: string;
+            /** First day of the week */
+            firstDayOfWeek?: 'monday' | 'sunday';
             /** Default history instance */
             defaultHistory: string;
             /** Which diag data is allowed to be sent */
