@@ -752,6 +752,8 @@ declare global {
             country?: string;
             /** Temperature unit */
             tempUnit?: '°C' | '°F';
+            /** Currency */
+            currency?: string;
             /** Default history instance */
             defaultHistory: string;
             /** Which diag data is allowed to be sent */
