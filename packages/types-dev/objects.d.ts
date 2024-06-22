@@ -743,9 +743,9 @@ declare global {
             /** If floating comma is used instead of dot */
             isFloatComma: boolean;
             /** Configured longitude */
-            longitude: string;
+            longitude: number;
             /** Configured latitude */
-            latitude: string;
+            latitude: number;
             /** Optional user's city (only for diagnostics) */
             city?: string;
             /** Optional user's country (only for diagnostics) */
