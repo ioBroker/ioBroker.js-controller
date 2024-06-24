@@ -1130,7 +1130,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         packJson.overrides = { '@iobroker/adapter-core': this.SUPPORTED_ADAPTER_CORE_VERSION };
 
         await fs.writeFile(packPath, JSON.stringify(packJson));
-        await tools.execAsync('npm i --omit=dev', { cwd: rootDir });
+        await tools.execAsync('npm i --omit=dev --ignore-scripts', { cwd: rootDir });
 
         console.log(
             `Successfully specified supported "@iobroker/adapter-core" version as "${this.SUPPORTED_ADAPTER_CORE_VERSION}"`
