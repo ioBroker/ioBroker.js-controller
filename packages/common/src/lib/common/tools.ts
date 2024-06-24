@@ -65,3 +65,25 @@ export async function getInstancesOrderedByStartPrio(
 
     return [...instances.admin, ...instances['1'], ...instances['2'], ...instances['3']];
 }
+
+interface IsInstalledFromNpmOptions {
+    /** Installed from attribute of instance/adapter object */
+    installedFrom?: ioBroker.InstalledFrom;
+    /** Name of the adapter */
+    adapterName: string;
+}
+
+/**
+ * Check if the adapter has been installed from NPM
+ *
+ * @param options installedFrom and name information
+ */
+export function isInstalledFromNpm(options: IsInstalledFromNpmOptions): boolean {
+    const { adapterName, installedFrom } = options;
+
+    if (installedFrom === undefined) {
+        return true;
+    }
+
+    return installedFrom.startsWith(`${appName.toLowerCase()}.${adapterName}`);
+}

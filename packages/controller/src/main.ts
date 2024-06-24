@@ -29,7 +29,8 @@ import {
     getObjectsConstructor,
     getStatesConstructor,
     zipFiles,
-    getInstancesOrderedByStartPrio
+    getInstancesOrderedByStartPrio,
+    isInstalledFromNpm
 } from '@iobroker/js-controller-common';
 import {
     SYSTEM_ADAPTER_PREFIX,
@@ -3696,7 +3697,14 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
                 storePids();
                 const { pid } = proc.process;
 
-                logger.info(`${hostLogPrefix} instance ${instance._id} started with pid ${proc.process.pid}`);
+                const isNpm = isInstalledFromNpm({
+                    installedFrom: instance.common.installedFrom,
+                    adapterName: instance.common.name
+                });
+
+                logger.info(
+                    `${hostLogPrefix} instance ${instance._id} in version "${instance.common.version}"${!isNpm ? ` (non-npm: ${instance.common.installedFrom})` : ''} started with pid ${proc.process.pid}`
+                );
 
                 proc.process.on('exit', (code, signal) => {
                     outputCount++;
@@ -4325,8 +4333,13 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                 `${hostLogPrefix} instance ${instance._id} is handled by compact group controller pid ${proc.process.pid}`
                             );
                         } else {
+                            const isNpm = isInstalledFromNpm({
+                                installedFrom: instance.common.installedFrom,
+                                adapterName: instance.common.name
+                            });
+
                             logger.info(
-                                `${hostLogPrefix} instance ${instance._id} started with pid ${proc.process.pid}`
+                                `${hostLogPrefix} instance ${instance._id} in version "${instance.common.version}"${!isNpm ? ` (non-npm: ${instance.common.installedFrom})` : ''} started with pid ${proc.process.pid}`
                             );
                         }
                     }
@@ -4705,12 +4718,19 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                         windowsHide: true,
                         cwd: adapterDir!
                     });
-                } catch (err) {
-                    logger.info(`${hostLogPrefix} instance ${instance._id} could not be started: ${err}`);
+                } catch (e) {
+                    logger.info(`${hostLogPrefix} instance ${instance._id} could not be started: ${e.message}`);
                 }
                 if (proc.process) {
                     storePids();
-                    logger.info(`${hostLogPrefix} instance ${instance._id} started with pid ${proc.process.pid}`);
+                    const isNpm = isInstalledFromNpm({
+                        installedFrom: instance.common.installedFrom,
+                        adapterName: instance.common.name
+                    });
+
+                    logger.info(
+                        `${hostLogPrefix} instance ${instance._id} in version "${instance.common.version}"${!isNpm ? ` (non-npm: ${instance.common.installedFrom})` : ''} started with pid ${proc.process.pid}`
+                    );
 
                     proc.process.on('exit', (code, signal) => {
                         cleanAutoSubscribes(id, () => {

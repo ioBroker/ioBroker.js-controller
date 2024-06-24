@@ -32,6 +32,7 @@ if (extractorResult.succeeded) {
     fs.copyFileSync(path.join(thisDir, '../types-dev/objects.d.ts'), path.join(thisDir, 'build/objects.d.ts'));
     fs.copyFileSync(path.join(thisDir, '../types-dev/index.d.ts'), path.join(thisDir, 'build/shared.d.ts'));
     fs.copyFileSync(path.join(thisDir, '../types-dev/config.d.ts'), path.join(thisDir, 'build/config.d.ts'));
+    fs.copyFileSync(path.join(thisDir, '../types-dev/utils.d.ts'), path.join(thisDir, 'build/utils.d.ts'));
 
     // Ensure that the generated types don't contain any references to @iobroker/*
     if (content.includes('@iobroker/')) {
