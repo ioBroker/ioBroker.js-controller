@@ -750,11 +750,11 @@ declare global {
             city?: string;
             /** Optional user's country (only for diagnostics) */
             country?: string;
-            /** Temperature unit */
+            /** User-defined temperature unit */
             tempUnit?: '°C' | '°F';
-            /** Currency */
+            /** User-defined currency */
             currency?: string;
-            /** First day of the week */
+            /** User-defined first day of the week */
             firstDayOfWeek?: 'monday' | 'sunday';
             /** Default history instance */
             defaultHistory: string;
