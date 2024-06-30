@@ -2987,6 +2987,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 sendTo(msg.from, msg.command, { success: true }, msg.callback);
             } catch (e) {
                 sendTo(msg.from, msg.command, { error: e.message, success: false }, msg.callback);
+                return;
             }
 
             try {
@@ -2996,6 +2997,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             }
 
             if (restartRequired) {
+                logger.info(`${hostLogPrefix} Restart js-controller because desired after package upgrade`);
                 await wait(200);
                 restart(() => !isStopping && stop(false));
             }
