@@ -4,6 +4,9 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__ - Kiera
+* (foxriver76) fixed Windows installation
+
 ## 6.0.5 (2024-06-16) - Kiera
 
 **Breaking changes**
