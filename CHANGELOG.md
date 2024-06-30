@@ -5,6 +5,7 @@
 -->
 
 ## __WORK IN PROGRESS__ - Kiera
+* (foxriver76) fixed Windows installation
 * (foxriver76) fixed issue on package updates (e.g. Admin Node.js update)
 
 ## 6.0.5 (2024-06-16) - Kiera
