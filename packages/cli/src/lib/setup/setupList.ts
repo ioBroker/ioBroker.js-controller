@@ -59,6 +59,17 @@ export type ListType =
     | 'files'
     | 'f';
 
+interface AdapterListEntry {
+    /** The object id */
+    id: string;
+    /** Adapter name */
+    name: string;
+    /** Version of adapter */
+    version: string;
+    /** The configured upgrade policy */
+    'upgrade policy': ioBroker.AutoUpgradePolicy;
+}
+
 export class List {
     private config: Record<string, any>;
     private objects: ObjectsRedisClient;
@@ -388,7 +399,7 @@ export class List {
                                 return;
                             }
                             const reg = filter ? new RegExp(tools.pattern2RegEx('system.adapter.' + filter)) : null;
-                            const vals = [];
+                            const adapterList: AdapterListEntry[] = [];
                             for (const obj of objs.rows) {
                                 if (obj.value.type !== 'adapter') {
                                     continue;
@@ -405,7 +416,7 @@ export class List {
                                         name = name[lang] || name.en;
                                     }
 
-                                    vals.push({
+                                    adapterList.push({
                                         id,
                                         name,
                                         version: obj.value.common.version,
@@ -414,7 +425,7 @@ export class List {
                                 }
                             }
 
-                            console.table(vals);
+                            console.table(adapterList);
                             this.processExit();
                         }
                     );
