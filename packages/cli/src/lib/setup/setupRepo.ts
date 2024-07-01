@@ -175,8 +175,8 @@ export class Repo {
      */
     async showRepo(repoUrl: string | string[], flags: RepoFlags): Promise<void> {
         // Get the repositories
-        const systemConfig = await this.objects.getObjectAsync('system.config');
-        const systemRepos = await this.objects.getObjectAsync('system.repositories');
+        const systemConfig = await this.objects.getObject('system.config');
+        const systemRepos = await this.objects.getObject('system.repositories');
         if (!systemConfig) {
             console.error('Error: Object "system.config" not found');
         } else if (!systemRepos) {
@@ -331,22 +331,30 @@ export class Repo {
      */
     async showRepoStatus(): Promise<number> {
         try {
-            const obj = await this.objects.getObjectAsync('system.repositories');
+            const obj = await this.objects.getObject('system.repositories');
+            const objCfg = await this.objects.getObject('system.config');
+
             if (!obj) {
                 console.error('List is empty');
                 return EXIT_CODES.CANNOT_GET_REPO_LIST;
             } else if (obj.native.repositories) {
-                Object.keys(obj.native.repositories).forEach(r =>
-                    console.log(`${r.padEnd(14)}: ${obj.native.repositories[r].link}`)
+                console.table(
+                    Object.entries(obj.native.repositories).map(([key, value]) => {
+                        return {
+                            name: key,
+                            url: value.link,
+                            'auto upgrade': objCfg?.common.adapterAutoUpgrade?.repositories[key] ?? false
+                        };
+                    })
                 );
 
-                const objCfg = await this.objects.getObjectAsync('system.config');
                 if (objCfg?.common) {
                     let activeRepo = objCfg.common.activeRepo;
                     if (typeof activeRepo === 'string') {
                         activeRepo = [activeRepo];
                     }
                     console.log(`\nActive repo(s): ${activeRepo.join(', ')}`);
+                    console.log(`Upgrade policy: ${objCfg.common.adapterAutoUpgrade?.defaultPolicy}` ?? 'none');
                 }
             } else {
                 console.error('List is empty');
