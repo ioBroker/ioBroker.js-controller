@@ -354,7 +354,7 @@ export class Repo {
                         activeRepo = [activeRepo];
                     }
                     console.log(`\nActive repo(s): ${activeRepo.join(', ')}`);
-                    console.log(`Upgrade policy: ${objCfg.common.adapterAutoUpgrade?.defaultPolicy}` ?? 'none');
+                    console.log(`Upgrade policy: ${objCfg.common.adapterAutoUpgrade?.defaultPolicy ?? 'none'}`);
                 }
             } else {
                 console.error('List is empty');
