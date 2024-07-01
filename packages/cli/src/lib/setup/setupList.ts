@@ -388,10 +388,12 @@ export class List {
                                 return;
                             }
                             const reg = filter ? new RegExp(tools.pattern2RegEx('system.adapter.' + filter)) : null;
+                            const vals = [];
                             for (const obj of objs.rows) {
                                 if (obj.value.type !== 'adapter') {
                                     continue;
                                 }
+
                                 if (
                                     !reg ||
                                     reg.test(obj.value._id) ||
@@ -403,11 +405,16 @@ export class List {
                                         name = name[lang] || name.en;
                                     }
 
-                                    const text = `${id.padEnd(39)}: ${name.padEnd(14)} - v${obj.value.common.version}`;
-
-                                    console.log(text);
+                                    vals.push({
+                                        id,
+                                        name,
+                                        version: obj.value.common.version,
+                                        'upgrade policy': obj.value.common.automaticUpgrade ?? 'none'
+                                    });
                                 }
                             }
+
+                            console.table(vals);
                             this.processExit();
                         }
                     );
