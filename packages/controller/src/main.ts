@@ -161,8 +161,6 @@ if (os.platform() === 'win32') {
 
 tools.ensureDNSOrder();
 
-let title = `${tools.appName}.js-controller`;
-
 let Objects: typeof ObjectsClient;
 let States: typeof StatesClient;
 
@@ -5171,6 +5169,8 @@ function stop(force?: boolean, callback?: () => void): void {
  * @param compactGroupId the id of the compact group
  */
 export async function init(compactGroupId?: number): Promise<void> {
+    let title = `${tools.appName}.js-controller`;
+
     if (compactGroupId) {
         compactGroupController = true;
         compactGroup = compactGroupId;
