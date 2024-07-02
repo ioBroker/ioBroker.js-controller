@@ -5771,13 +5771,12 @@ async function checkRebootRequired(): Promise<void> {
     /** This file contains a list of packages which require the reboot, separated by newline */
     const packagesListPath = '/var/run/reboot-required.pkgs';
 
-    const rebootRequired = await fs.pathExists(rebootRequiredPath);
+    isRebootRequired = await fs.pathExists(rebootRequiredPath);
 
-    if (!rebootRequired) {
+    if (!isRebootRequired) {
         return;
     }
 
-    isRebootRequired = true;
     let message = 'At least one package update requires a system reboot';
 
     try {
