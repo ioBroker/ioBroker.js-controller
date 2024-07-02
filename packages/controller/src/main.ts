@@ -186,13 +186,14 @@ let connectTimeout: null | NodeJS.Timeout = null;
 let reportInterval: null | NodeJS.Timeout = null;
 let primaryHostInterval: null | NodeJS.Timeout = null;
 let isPrimary = false;
+/** If system reboot is required */
+let isRebootRequired = false;
+
 const PRIMARY_HOST_LOCK_TIME = 60_000;
 const VENDOR_BOOTSTRAP_FILE = '/opt/iobroker/iob-vendor-secret.json';
 const VENDOR_FILE = '/etc/iob-vendor.json';
 
 const procs: Record<string, Process> = {};
-// TODO type is probably InstanceCommon
-const hostAdapter: Record<string, any> = {};
 const subscribe: Record<string, ioBroker.ObjectIDs.Instance[]> = {};
 const stopTimeouts: Record<string, StopTimeoutObject> = {};
 let states: StatesClient | null = null;
@@ -818,7 +819,6 @@ function createObjects(onConnect: () => void): void {
                         proc.config.common.host = null;
                         // @ts-expect-error it is only used in checkAndAddInstance, find a way without modifying the InstanceObject
                         proc.config.deleted = true;
-                        delete hostAdapter[id];
                         logger.info(`${hostLogPrefix} object deleted ${id}`);
                     } else {
                         if (proc.config.common.enabled && !obj.common.enabled) {
@@ -843,8 +843,6 @@ function createObjects(onConnect: () => void): void {
                             );
                         }
                         proc.config = obj;
-                        hostAdapter[id] = hostAdapter[id] || {};
-                        hostAdapter[id].config = obj;
                     }
                     if (proc.process || proc.config.common.mode === 'schedule') {
                         proc.restartExpected = true;
@@ -886,7 +884,6 @@ function createObjects(onConnect: () => void): void {
                             await notificationHandler.clearNotifications(null, null, id);
 
                             delete procs[id];
-                            delete hostAdapter[id];
                         }
                     } else if (installQueue.find(obj => obj.id === id)) {
                         // ignore object changes when still in the installation queue
@@ -920,7 +917,6 @@ function createObjects(onConnect: () => void): void {
                             }
 
                             delete procs[id];
-                            delete hostAdapter[id];
                         }
                     }
                 } else if (obj?.common) {
@@ -3163,11 +3159,6 @@ function checkAndAddInstance(instance: ioBroker.InstanceObject, ipArr: string[])
                 ? logger.error(`${hostLogPrefix} Cannot update hostname for ${instance._id}: ${err.message}`)
                 : logger.info(`${hostLogPrefix} Set hostname ${hostname} for ${instance._id}`)
         );
-    }
-
-    hostAdapter[instance._id] = hostAdapter[instance._id] || {};
-    if (!hostAdapter[instance._id].config) {
-        hostAdapter[instance._id].config = deepClone(instance);
     }
 
     if (!instanceRelevantForThisController(instance, ipArr)) {
@@ -5771,7 +5762,7 @@ async function startUpgradeManager(options: UpgradeArguments): Promise<void> {
  * Checks if a system reboot is required and generates a notification if this is the case
  */
 async function checkRebootRequired(): Promise<void> {
-    if (process.platform !== 'linux') {
+    if (process.platform !== 'linux' || isRebootRequired) {
         return;
     }
 
@@ -5786,6 +5777,7 @@ async function checkRebootRequired(): Promise<void> {
         return;
     }
 
+    isRebootRequired = true;
     let message = 'At least one package update requires a system reboot';
 
     try {
