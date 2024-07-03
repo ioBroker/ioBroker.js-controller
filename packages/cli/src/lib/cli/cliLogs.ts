@@ -69,7 +69,7 @@ export class CLILogs extends CLICommand {
                 const parts = fileName.split('/');
                 parts.pop();
                 chokidar
-                    .watch(`${parts.join('/')}/iobroker*`, { awaitWriteFinish: { stabilityThreshold: 500 } })
+                    .watch(`${parts.join('/')}/iobroker.current.log`, { awaitWriteFinish: { stabilityThreshold: 500 } })
                     .on('all', this.watchHandler.bind(this, options))
                     .on('ready', () => (this.isReady = true));
             }
