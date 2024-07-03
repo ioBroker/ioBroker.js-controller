@@ -4,6 +4,10 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (foxriver76) added auto upgrade information to cli `list adapters` and `repo show`
+* (foxriver76) do not show the stack trace if user does not exist on `iob user check`
+
 ## 6.0.6 (2024-06-30) - Kiera
 * (foxriver76) fixed Windows installation
 * (foxriver76) fixed issue on package updates (e.g. Admin Node.js update)

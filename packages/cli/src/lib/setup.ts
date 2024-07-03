@@ -1815,9 +1815,9 @@ async function processCommand(
                         }
                     });
                 } else if (command === 'check') {
-                    users.checkUserPassword(user, password, (err: any) => {
+                    users.checkUserPassword(user, password, err => {
                         if (err) {
-                            console.error(err);
+                            console.error(err.message);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
                             console.log(`Password for user "${user}" matches.`);
@@ -1825,9 +1825,9 @@ async function processCommand(
                         }
                     });
                 } else if (command === 'set' || command === 'passwd') {
-                    users.setUserPassword(user, password, (err: any) => {
+                    users.setUserPassword(user, password, err => {
                         if (err) {
-                            console.error(err);
+                            console.error(err.message);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
                             console.log(`Password for "${user}" was successfully set.`);
@@ -1835,9 +1835,9 @@ async function processCommand(
                         }
                     });
                 } else if (command === 'enable' || command === 'e') {
-                    users.enableUser(user, true, (err: any) => {
+                    users.enableUser(user, true, err => {
                         if (err) {
-                            console.error(err);
+                            console.error(err.message);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
                             console.log(`User "${user}" was successfully enabled.`);
@@ -1845,9 +1845,9 @@ async function processCommand(
                         }
                     });
                 } else if (command === 'disable' || command === 'd') {
-                    users.enableUser(user, false, (err: any) => {
+                    users.enableUser(user, false, err => {
                         if (err) {
-                            console.error(err);
+                            console.error(err.message);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
                             console.log(`User "${user}" was successfully disabled.`);
@@ -1855,9 +1855,9 @@ async function processCommand(
                         }
                     });
                 } else if (command === 'get') {
-                    users.getUser(user, (err: any, isEnabled: any) => {
+                    users.getUser(user, (err, isEnabled) => {
                         if (err) {
-                            console.error(err);
+                            console.error(err.message);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
                             console.log(`User "${user}" is ${isEnabled ? 'enabled' : 'disabled'}`);
