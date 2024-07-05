@@ -1,3 +1,5 @@
+import { ExtendObjectOptions } from '@iobroker/types-dev';
+
 export interface AdapterOptions {
     subscribesChange?: (subs: Record<string, { regex: RegExp }>) => void;
     /** If the adapter collects logs from all adapters (experts only). Default: false */
@@ -268,7 +270,7 @@ export type CheckPasswordCallback = (success: boolean, user: string) => void;
 export interface InternalCheckPasswordOptions {
     user: string;
     pw: string;
-    options?: Record<string, any> | null;
+    options?: ioBroker.RequestOptions | null;
     callback: CheckPasswordCallback;
 }
 
@@ -279,7 +281,7 @@ export interface InternalGetUserIDOptions {
 export interface InternalSetPasswordOptions {
     user: string;
     pw: string;
-    options?: Record<string, any> | null;
+    options?: ioBroker.RequestOptions | null;
     callback?: ioBroker.ErrorCallback;
 }
 
@@ -288,7 +290,7 @@ export type CheckGroupCallback = (result: boolean) => void;
 export interface InternalCheckGroupOptions {
     user: string;
     group: string;
-    options?: Record<string, any> | null;
+    options?: ioBroker.RequestOptions | null;
     callback?: CheckGroupCallback;
 }
 
@@ -313,7 +315,7 @@ export type AllPropsUnknown<T> = { [K in keyof T]: unknown };
 export interface InternalCalculatePermissionsOptions {
     user: string;
     commandsPermissions: CommandsPermissions;
-    options?: Record<string, any> | null;
+    options?: ioBroker.RequestOptions | null;
     callback?: CalculatePermissionsCallback;
 }
 
@@ -347,20 +349,20 @@ export type TimeoutCallback = (...args: any[]) => void;
 
 export interface InternalSetObjectOptions {
     id: string;
-    options?: Record<string, any> | null;
+    options?: ioBroker.ExtendObjectOptions | null;
     obj: ioBroker.SettableObject;
     callback?: ioBroker.SetObjectCallback;
 }
 
 export interface InternalDelStateOptions {
     id: string;
-    options?: Record<string, any> | null;
+    options?: ioBroker.DelObjectOptions | null;
     callback?: ioBroker.ErrorCallback;
 }
 
 export interface InternalGetObjectOptions {
     id: string;
-    options: unknown;
+    options?: ioBroker.RequestOptions | null;
     callback?: ioBroker.GetObjectCallback<any>;
 }
 
@@ -374,14 +376,14 @@ export interface InternalGetObjectsOptions {
     pattern: Pattern;
     type?: string;
     enums?: ioBroker.EnumList;
-    options?: Record<string, any> | null;
+    options?: ioBroker.RequestOptions | null;
     callback?: ioBroker.GetObjectsCallbackTyped<any>;
 }
 
 export interface InternalGetChannelsOfOptions {
     parentDevice?: string;
     callback?: ioBroker.GetObjectsCallback3<ioBroker.ChannelObject>;
-    options?: Record<string, any> | null;
+    options?: ioBroker.RequestOptions | null;
 }
 
 export interface InternalGetAdapterObjectsOptions {
@@ -392,19 +394,19 @@ export interface InternalGetObjectViewOptions {
     design: string;
     search: string;
     params: ioBroker.GetObjectViewParams;
-    options?: Record<string, any> | null;
+    options?: ioBroker.RequestOptions | null;
     callback?: ioBroker.GetObjectViewCallback<ioBroker.AnyObject>;
 }
 
 export interface InternalGetEnumOptions {
     _enum: string;
-    options?: Record<string, any> | null;
+    options?: ioBroker.RequestOptions | null;
     callback?: ioBroker.GetEnumCallback;
 }
 
 export interface InternalGetEnumsOptions {
     _enumList?: ioBroker.EnumList;
-    options?: Record<string, any> | null;
+    options?: ioBroker.RequestOptions | null;
     callback?: ioBroker.GetEnumsCallback;
 }
 
@@ -417,8 +419,8 @@ export interface InternalDelObjectOptions {
 export interface InternalCreateDeviceOptions {
     deviceName: string;
     common?: Partial<ioBroker.DeviceCommon>;
-    _native?: Record<string, any> | null;
-    options: unknown;
+    _native?: Record<string, any>;
+    options: ioBroker.RequestOptions | null;
     callback?: ioBroker.SetObjectCallback;
 }
 
@@ -438,15 +440,15 @@ export interface InternalCreateStateOptions {
     parentDevice: string;
     parentChannel: string;
     stateName: string;
-    common: Partial<ioBroker.StateCommon>;
-    _native: Record<string, any>;
-    options?: Record<string, any> | null;
+    common: ioBroker.StateCommon;
+    native: Record<string, any>;
+    options?: ioBroker.RequestOptions | null;
     callback?: ioBroker.SetObjectCallback;
 }
 
 export interface InternalSubscribeOptions {
     pattern: Pattern;
-    options?: Record<string, any> | null;
+    options?: ioBroker.RequestOptions | null;
     callback?: ioBroker.ErrorCallback;
 }
 
@@ -455,7 +457,7 @@ export interface InternalAddChannelToEnumOptions {
     addTo: string;
     parentDevice: string;
     channelName: string;
-    options?: Record<string, any> | null;
+    options?: ioBroker.RequestOptions | null;
     callback?: ioBroker.ErrorCallback;
 }
 
@@ -492,14 +494,8 @@ export interface InternalSendToHostOptions {
 
 export interface InternalGetStateOptions {
     id: string;
-    options?: Record<string, any> | null;
+    options?: ioBroker.RequestOptions | null;
     callback?: ioBroker.GetStateCallback;
-}
-
-export interface InternalGetStatesOptions {
-    pattern: Pattern;
-    options: Record<string, any>;
-    callback: ioBroker.GetStatesCallback;
 }
 
 export interface InternalDeleteDeviceOptions {
@@ -511,7 +507,7 @@ export interface InternalDeleteChannelFromEnumOptions {
     enumName: string;
     parentDevice: string;
     channelName: string;
-    options?: Record<string, any> | null;
+    options?: ioBroker.RequestOptions | null;
     callback?: ioBroker.ErrorCallback;
 }
 
@@ -525,19 +521,19 @@ export interface InternalDeleteStateOptions {
     parentDevice: string;
     parentChannel: string;
     stateName: string;
-    options?: Record<string, any> | null;
+    options?: ioBroker.RequestOptions | null;
     callback?: ioBroker.ErrorCallback;
 }
 
 export interface InternalGetDevicesOptions {
-    options?: Record<string, any> | null;
+    options?: ioBroker.RequestOptions | null;
     callback: ioBroker.GetObjectsCallback3<ioBroker.DeviceObject>;
 }
 
 export interface InternalGetStatesOfOptions {
     parentDevice: string | null | undefined;
     parentChannel: string | null | undefined;
-    options?: Record<string, any> | null;
+    options?: ioBroker.RequestOptions | null;
     callback: ioBroker.GetObjectsCallback3<ioBroker.StateObject>;
 }
 
@@ -547,7 +543,7 @@ export interface InternalAddStateToEnumOptions {
     parentDevice: string;
     parentChannel: string;
     stateName: string;
-    options?: Record<string, any> | null;
+    options?: ioBroker.RequestOptions | null;
     callback?: ioBroker.ErrorCallback;
 }
 
@@ -556,12 +552,12 @@ export interface InternalDeleteStateFromEnumOptions {
     parentDevice: string;
     parentChannel: string;
     stateName: string;
-    options?: Record<string, any> | null;
+    options?: ioBroker.RequestOptions | null;
     callback?: ioBroker.ErrorCallback;
 }
 
 export interface InternalReportDeprecationOption {
-    /** Version in which this warning will throw an error instead */
+    /** Version, in which this warning will throw an error instead */
     version?: string;
     /** The log line to report */
     deprecationMessage: string;

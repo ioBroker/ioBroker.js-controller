@@ -13,8 +13,8 @@ import { tools } from '@iobroker/db-base';
 import * as CONSTS from '@/lib/objects/constants.js';
 import mime from 'mime-types';
 import {
-    AllCallOptions,
-    CallOptionsInternal,
+    AllPossibleRequestOptions,
+    RequestOptionsInternal,
     MetaFileData
 } from '@/lib/objects/objectsInRedisClient.js';
 
@@ -48,7 +48,7 @@ export interface FileObject {
     acl: ioBroker.EvaluatedFileACL;
 }
 
-export type CheckFileRightsCallback = (err: Error | null | undefined, options: CallOptionsInternal, meta?: MetaFileData) => void;
+export type CheckFileRightsCallback = (err: Error | null | undefined, options: RequestOptionsInternal, meta?: MetaFileData) => void;
 
 const textTypes = ['.js', '.json', '.svg'];
 
@@ -70,7 +70,7 @@ function getKnownMimeType(ext: string): FileMimeInformation | null {
     return null;
 }
 
-type UserRights = { groups: ioBroker.ObjectIDs.Group[], acl: ioBroker.ObjectPermissions };
+export type UserRights = { groups: ioBroker.ObjectIDs.Group[], acl: ioBroker.ObjectPermissions };
 
 // For objects
 const defaultAcl: UserRights = {
@@ -132,7 +132,7 @@ export function getMimeType(ext: string, isTextData: boolean): FileMimeInformati
 
 export function checkFile(
     fileOptions: MetaFileData,
-    options: CallOptionsInternal,
+    options: RequestOptionsInternal,
     flag: number,
     defaultNewAcl?: ACLObject | null
 ): boolean {
@@ -195,11 +195,11 @@ export function checkFileRights(
     objects: any,
     id: string,
     name: string | null,
-    options: AllCallOptions | null | undefined,
+    options: AllPossibleRequestOptions | null | undefined,
     flag: CONSTS.GenericAccessFlags,
     callback?: CheckFileRightsCallback
 ): any {
-    let internalOptions: CallOptionsInternal;
+    let internalOptions: RequestOptionsInternal;
     if (!options) {
         // Before files converted, let's think: if no options it is "admin"
         objects.getUserGroup(CONSTS.SYSTEM_ADMIN_USER, (_user: ioBroker.ObjectIDs.User, groups: ioBroker.ObjectIDs.Group[], acl: ioBroker.ObjectPermissions) => {
@@ -214,7 +214,7 @@ export function checkFileRights(
         return;
     }
 
-    internalOptions = options as CallOptionsInternal;
+    internalOptions = options as RequestOptionsInternal;
 
     if (!internalOptions.user) {
         // Before files converted, let's think: if no options it is "admin"
@@ -267,7 +267,7 @@ export function checkFileRights(
     }
 
     internalOptions.checked = true;
-    objects.checkFile(id, name, internalOptions, flag as number, (err: Error, _internalOptions: CallOptionsInternal, meta?: MetaFileData) => {
+    objects.checkFile(id, name, internalOptions, flag as number, (err: Error, _internalOptions: RequestOptionsInternal, meta?: MetaFileData) => {
         if (err) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION, _internalOptions);
         }
@@ -407,100 +407,94 @@ export function getUserGroup(
                             users[u].groups.push(groups[g]._id);
 
                             if (groups[g].common.acl?.file) {
+                                const groupAcl: ioBroker.ObjectOperationPermissions = groups[g].common.acl.file;
                                 if (!users[u].acl?.file) {
                                     users[u].acl = users[u].acl || {};
                                     users[u].acl.file = users[u].acl.file || {};
+                                    const stateAcl: ioBroker.ObjectOperationPermissions = users[u].acl.file;
 
-                                    users[u].acl.file.create = groups[g].common.acl.file.create;
-                                    users[u].acl.file.read = groups[g].common.acl.file.read;
-                                    users[u].acl.file.write = groups[g].common.acl.file.write;
-                                    users[u].acl.file.delete = groups[g].common.acl.file.delete;
-                                    users[u].acl.file.list = groups[g].common.acl.file.list;
+                                    stateAcl.create = groupAcl.create;
+                                    stateAcl.read = groupAcl.read;
+                                    stateAcl.write = groupAcl.write;
+                                    stateAcl.delete = groupAcl.delete;
+                                    stateAcl.list = groupAcl.list;
                                 } else {
+                                    const stateAcl: ioBroker.ObjectOperationPermissions = users[u].acl.file;
                                     // merge rights all together
-                                    users[u].acl.file.create =
-                                        users[u].acl.file.create || groups[g].common.acl.file.create;
-                                    users[u].acl.file.read = users[u].acl.file.read || groups[g].common.acl.file.read;
-                                    users[u].acl.file.write =
-                                        users[u].acl.file.write || groups[g].common.acl.file.write;
-                                    users[u].acl.file.delete =
-                                        users[u].acl.file.delete || groups[g].common.acl.file.delete;
-                                    users[u].acl.file.list = users[u].acl.file.list || groups[g].common.acl.file.list;
+                                    stateAcl.create = stateAcl.create || groupAcl.create;
+                                    stateAcl.read = stateAcl.read || groupAcl.read;
+                                    stateAcl.write = stateAcl.write || groupAcl.write;
+                                    stateAcl.delete = stateAcl.delete || groupAcl.delete;
+                                    stateAcl.list = stateAcl.list || groupAcl.list;
                                 }
                             }
 
                             if (groups[g].common.acl?.object) {
+                                const groupAcl: ioBroker.ObjectOperationPermissions = groups[g].common.acl.object;
                                 if (!users[u].acl?.object) {
                                     users[u].acl = users[u].acl || {};
                                     users[u].acl.object = users[u].acl.object || {};
+                                    const stateAcl: ioBroker.ObjectOperationPermissions = users[u].acl.object;
 
-                                    users[u].acl.object.create = groups[g].common.acl.object.create;
-                                    users[u].acl.object.read = groups[g].common.acl.object.read;
-                                    users[u].acl.object.write = groups[g].common.acl.object.write;
-                                    users[u].acl.object.delete = groups[g].common.acl.object.delete;
-                                    users[u].acl.object.list = groups[g].common.acl.object.list;
+                                    stateAcl.create = groupAcl.create;
+                                    stateAcl.read = groupAcl.read;
+                                    stateAcl.write = groupAcl.write;
+                                    stateAcl.delete = groupAcl.delete;
+                                    stateAcl.list = groupAcl.list;
                                 } else {
+                                    const stateAcl: ioBroker.ObjectOperationPermissions = users[u].acl.object;
                                     // merge rights all together
-                                    users[u].acl.object.create =
-                                        users[u].acl.object.create || groups[g].common.acl.object.create;
-                                    users[u].acl.object.read =
-                                        users[u].acl.object.read || groups[g].common.acl.object.read;
-                                    users[u].acl.object.write =
-                                        users[u].acl.object.write || groups[g].common.acl.object.write;
-                                    users[u].acl.object.delete =
-                                        users[u].acl.object.delete || groups[g].common.acl.object.delete;
-                                    users[u].acl.object.list =
-                                        users[u].acl.object.list || groups[g].common.acl.object.list;
+                                    stateAcl.create = stateAcl.create || groupAcl.create;
+                                    stateAcl.read = stateAcl.read || groupAcl.read;
+                                    stateAcl.write = stateAcl.write || groupAcl.write;
+                                    stateAcl.delete = stateAcl.delete || groupAcl.delete;
+                                    stateAcl.list = stateAcl.list || groupAcl.list;
                                 }
                             }
 
                             if (groups[g].common.acl?.users) {
+                                const groupAcl: ioBroker.ObjectOperationPermissions = groups[g].common.acl.users;
                                 if (!users[u].acl?.users) {
                                     users[u].acl = users[u].acl || {};
                                     users[u].acl.users = users[u].acl.users || {};
+                                    const stateAcl: ioBroker.ObjectOperationPermissions = users[u].acl.users;
 
-                                    users[u].acl.users.create = groups[g].common.acl.users.create;
-                                    users[u].acl.users.read = groups[g].common.acl.users.read;
-                                    users[u].acl.users.write = groups[g].common.acl.users.write;
-                                    users[u].acl.users.delete = groups[g].common.acl.users.delete;
-                                    users[u].acl.users.list = groups[g].common.acl.users.list;
+                                    stateAcl.create = groupAcl.create;
+                                    stateAcl.read = groupAcl.read;
+                                    stateAcl.write = groupAcl.write;
+                                    stateAcl.delete = groupAcl.delete;
+                                    stateAcl.list = groupAcl.list;
                                 } else {
+                                    const stateAcl: ioBroker.ObjectOperationPermissions = users[u].acl.users;
                                     // merge rights all together
-                                    users[u].acl.users.create =
-                                        users[u].acl.users.create || groups[g].common.acl.users.create;
-                                    users[u].acl.users.read =
-                                        users[u].acl.users.read || groups[g].common.acl.users.read;
-                                    users[u].acl.users.write =
-                                        users[u].acl.users.write || groups[g].common.acl.users.write;
-                                    users[u].acl.users.delete =
-                                        users[u].acl.users.delete || groups[g].common.acl.users.delete;
-                                    users[u].acl.users.list =
-                                        users[u].acl.users.list || groups[g].common.acl.users.list;
+                                    stateAcl.create = stateAcl.create || groupAcl.create;
+                                    stateAcl.read = stateAcl.read || groupAcl.read;
+                                    stateAcl.write = stateAcl.write || groupAcl.write;
+                                    stateAcl.delete = stateAcl.delete || groupAcl.delete;
+                                    stateAcl.list = stateAcl.list || groupAcl.list;
                                 }
                             }
 
                             if (groups[g].common.acl?.state) {
+                                const groupAcl: ioBroker.ObjectOperationPermissions = groups[g].common.acl.state as ioBroker.ObjectOperationPermissions;
                                 if (!users[u].acl?.state) {
                                     users[u].acl = users[u].acl || ({} as ioBroker.PermissionSet);
-                                    users[u].acl.state = users[u].acl.state || ({} as ioBroker.PermissionSet['state']);
+                                    users[u].acl.state = users[u].acl.state || ({} as ioBroker.ObjectOperationPermissions);
+                                    const stateAcl: ioBroker.ObjectOperationPermissions = users[u].acl.state as ioBroker.ObjectOperationPermissions;
 
-                                    users[u].acl.state.create = groups[g].common.acl.state.create;
-                                    users[u].acl.state.read = groups[g].common.acl.state.read;
-                                    users[u].acl.state.write = groups[g].common.acl.state.write;
-                                    users[u].acl.state.delete = groups[g].common.acl.state.delete;
-                                    users[u].acl.state.list = groups[g].common.acl.state.list;
+                                    stateAcl.create = groupAcl.create;
+                                    stateAcl.read = groupAcl.read;
+                                    stateAcl.write = groupAcl.write;
+                                    stateAcl.delete = groupAcl.delete;
+                                    stateAcl.list = groupAcl.list;
                                 } else {
+                                    const stateAcl: ioBroker.ObjectOperationPermissions = users[u].acl.state as ioBroker.ObjectOperationPermissions;
                                     // merge rights all together
-                                    users[u].acl.state.create =
-                                        users[u].acl.state.create || groups[g].common.acl.state.create;
-                                    users[u].acl.state.read =
-                                        users[u].acl.state.read || groups[g].common.acl.state.read;
-                                    users[u].acl.state.write =
-                                        users[u].acl.state.write || groups[g].common.acl.state.write;
-                                    users[u].acl.state.delete =
-                                        users[u].acl.state.delete || groups[g].common.acl.state.delete;
-                                    users[u].acl.state.list =
-                                        users[u].acl.state.list || groups[g].common.acl.state.list;
+                                    stateAcl.create = stateAcl.create || groupAcl.create;
+                                    stateAcl.read = stateAcl.read || groupAcl.read;
+                                    stateAcl.write = stateAcl.write || groupAcl.write;
+                                    stateAcl.delete = stateAcl.delete || groupAcl.delete;
+                                    stateAcl.list = stateAcl.list || groupAcl.list;
                                 }
                             }
                         }
@@ -554,7 +548,7 @@ export function sanitizePath(id: string, name: string): { id: string; name: stri
 
 export function checkObject(
     obj: ioBroker.AnyObject | FileObject | null,
-    options: CallOptionsInternal,
+    options: RequestOptionsInternal,
     flag: CONSTS.GenericAccessFlags
 ): boolean {
     // read the rights of an object
@@ -574,7 +568,7 @@ export function checkObject(
     // ACCESS_DELETE and ACCESS_CREATE will be converted to ACCESS_WRITE
     if (flag === CONSTS.ACCESS_DELETE || flag === CONSTS.ACCESS_CREATE) {
         flag = CONSTS.ACCESS_WRITE;
-    } else if (flag === CONSTS.ACCESS_LIST) {
+    } else if (flag as any as string === CONSTS.ACCESS_LIST) {
         flag = CONSTS.ACCESS_READ;
     }
 
@@ -608,11 +602,11 @@ export function checkObjectRights(
     objects: any,
     id: string | null,
     object: ioBroker.Object | null,
-    options: AllCallOptions | null | undefined,
+    options: AllPossibleRequestOptions | null | undefined,
     flag: CONSTS.GenericAccessFlags,
-    callback: (err: Error | null | undefined, internalOptions: CallOptionsInternal) => void
+    callback: (err: Error | null | undefined, internalOptions: RequestOptionsInternal) => void
 ): void | Promise<Record<string, any>> {
-    let internalOptions: CallOptionsInternal;
+    let internalOptions: RequestOptionsInternal;
 
     if (!options?.user) {
         // Before files converted, let's think: if no options it is "admin"
@@ -623,7 +617,7 @@ export function checkObjectRights(
             acl: getDefaultAdminRights()
         };
     } else {
-        internalOptions = options as CallOptionsInternal;
+        internalOptions = options as RequestOptionsInternal;
     }
 
     if (!internalOptions.acl) {

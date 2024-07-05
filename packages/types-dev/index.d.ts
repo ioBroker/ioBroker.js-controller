@@ -427,12 +427,39 @@ declare global {
             sessionId?: string
         ) => void;
 
+        interface RequestOptions {
+            /** name of the user, which make a request */
+            user?: string; // ioBroker.ObjectIDs.User;
+        }
+
+        // write request could contain mimeType for file
+        interface WriteFileOptions extends RequestOptions {
+            mimeType?: string;
+            mode?: number;
+        }
+
+        interface ChangeOwnerOptions extends RequestOptions {
+            owner?: string; // ioBroker.ObjectIDs.User;
+            ownerGroup?: string; // ioBroker.ObjectIDs.Group;
+        }
+
+        interface ChangeModeFileOptions extends RequestOptions {
+            mode: number | string;
+        }
+
+        interface ChangeModeObjectOptions extends RequestOptions {
+            object: number | string;
+            /** @deprecated use "object" instead */
+            mode?: number | string;
+            state?: number | string;
+        }
+
         /** Contains the return values of readDir */
         interface ReadDirResult {
             /** Name of the file or directory */
             file: string;
             /** File system stats */
-            stats: Partial<fs.Stats>;
+            stats: { size?: number };
             /** Whether this is a directory or a file */
             isDir: boolean;
             /** Access rights */
