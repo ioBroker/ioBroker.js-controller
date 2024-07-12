@@ -23,7 +23,7 @@ Callback information for a passed message
 
 #### Defined in
 
-[types-dev/index.d.ts:243](https://github.com/ioBroker/ioBroker.js-controller/blob/5c723a4aca9318c1ca4bf76890cc718cda8d7a8f/packages/types-dev/index.d.ts#L243)
+[types-dev/index.d.ts:240](https://github.com/ioBroker/ioBroker.js-controller/blob/f4f04aafd2ad7897f4540de31e39dc68a4db1044/packages/types-dev/index.d.ts#L240)
 
 ___
 
@@ -35,7 +35,7 @@ ID of this callback
 
 #### Defined in
 
-[types-dev/index.d.ts:241](https://github.com/ioBroker/ioBroker.js-controller/blob/5c723a4aca9318c1ca4bf76890cc718cda8d7a8f/packages/types-dev/index.d.ts#L241)
+[types-dev/index.d.ts:238](https://github.com/ioBroker/ioBroker.js-controller/blob/f4f04aafd2ad7897f4540de31e39dc68a4db1044/packages/types-dev/index.d.ts#L238)
 
 ___
 
@@ -47,7 +47,7 @@ The original message payload
 
 #### Defined in
 
-[types-dev/index.d.ts:239](https://github.com/ioBroker/ioBroker.js-controller/blob/5c723a4aca9318c1ca4bf76890cc718cda8d7a8f/packages/types-dev/index.d.ts#L239)
+[types-dev/index.d.ts:236](https://github.com/ioBroker/ioBroker.js-controller/blob/f4f04aafd2ad7897f4540de31e39dc68a4db1044/packages/types-dev/index.d.ts#L236)
 
 ___
 
@@ -59,4 +59,4 @@ Timestamp of this message
 
 #### Defined in
 
-[types-dev/index.d.ts:245](https://github.com/ioBroker/ioBroker.js-controller/blob/5c723a4aca9318c1ca4bf76890cc718cda8d7a8f/packages/types-dev/index.d.ts#L245)
+[types-dev/index.d.ts:242](https://github.com/ioBroker/ioBroker.js-controller/blob/f4f04aafd2ad7897f4540de31e39dc68a4db1044/packages/types-dev/index.d.ts#L242)

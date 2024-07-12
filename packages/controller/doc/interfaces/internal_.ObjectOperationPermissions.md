@@ -26,7 +26,7 @@ Whether a user may create objects of this type
 
 #### Defined in
 
-[types-dev/index.d.ts:107](https://github.com/ioBroker/ioBroker.js-controller/blob/5c723a4aca9318c1ca4bf76890cc718cda8d7a8f/packages/types-dev/index.d.ts#L107)
+[types-dev/index.d.ts:104](https://github.com/ioBroker/ioBroker.js-controller/blob/f4f04aafd2ad7897f4540de31e39dc68a4db1044/packages/types-dev/index.d.ts#L104)
 
 ___
 
@@ -38,7 +38,7 @@ Whether a user may delete objects of this type
 
 #### Defined in
 
-[types-dev/index.d.ts:109](https://github.com/ioBroker/ioBroker.js-controller/blob/5c723a4aca9318c1ca4bf76890cc718cda8d7a8f/packages/types-dev/index.d.ts#L109)
+[types-dev/index.d.ts:106](https://github.com/ioBroker/ioBroker.js-controller/blob/f4f04aafd2ad7897f4540de31e39dc68a4db1044/packages/types-dev/index.d.ts#L106)
 
 ___
 
@@ -50,7 +50,7 @@ Whether a user may enumerate objects of this type
 
 #### Defined in
 
-[types-dev/index.d.ts:101](https://github.com/ioBroker/ioBroker.js-controller/blob/5c723a4aca9318c1ca4bf76890cc718cda8d7a8f/packages/types-dev/index.d.ts#L101)
+[types-dev/index.d.ts:98](https://github.com/ioBroker/ioBroker.js-controller/blob/f4f04aafd2ad7897f4540de31e39dc68a4db1044/packages/types-dev/index.d.ts#L98)
 
 ___
 
@@ -62,7 +62,7 @@ Whether a user may read objects of this type
 
 #### Defined in
 
-[types-dev/index.d.ts:103](https://github.com/ioBroker/ioBroker.js-controller/blob/5c723a4aca9318c1ca4bf76890cc718cda8d7a8f/packages/types-dev/index.d.ts#L103)
+[types-dev/index.d.ts:100](https://github.com/ioBroker/ioBroker.js-controller/blob/f4f04aafd2ad7897f4540de31e39dc68a4db1044/packages/types-dev/index.d.ts#L100)
 
 ___
 
@@ -74,4 +74,4 @@ Whether a user may write objects of this type
 
 #### Defined in
 
-[types-dev/index.d.ts:105](https://github.com/ioBroker/ioBroker.js-controller/blob/5c723a4aca9318c1ca4bf76890cc718cda8d7a8f/packages/types-dev/index.d.ts#L105)
+[types-dev/index.d.ts:102](https://github.com/ioBroker/ioBroker.js-controller/blob/f4f04aafd2ad7897f4540de31e39dc68a4db1044/packages/types-dev/index.d.ts#L102)
