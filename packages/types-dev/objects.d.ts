@@ -1,4 +1,5 @@
 import type * as os from 'node:os';
+import type { Branded } from './utils';
 
 declare global {
     namespace ioBroker {
@@ -340,6 +341,9 @@ declare global {
             tab?: 'html' | 'materialize';
         }
 
+        /** Installed from attribute of instance/adapter object */
+        type InstalledFrom = Branded<string, 'InstalledFrom'>;
+
         interface InstanceCommon extends AdapterCommon {
             version: string;
             /** The name of the host where this instance is running */
@@ -364,7 +368,8 @@ declare global {
             compactGroup?: number;
             /** String (or array) with names of attributes in common of instance, which will not be deleted. */
             preserveSettings?: string | string[];
-            installedFrom?: string;
+            /** Source, where this adapter has been installed from, to enable reinstalling on e.g., backup restore */
+            installedFrom?: InstalledFrom;
             /** Arguments passed to the adapter process, this disables compact mode */
             nodeProcessParams?: string[];
             /** If adapter can consume log messages, like admin, javascript or logparser */
@@ -624,7 +629,7 @@ declare global {
             /** The adapter will be executed once additionally after installation and the `install` event will be emitted during this run. This allows for executing one time installation code. */
             install?: boolean;
             /** Source, where this adapter has been installed from, to enable reinstalling on e.g., backup restore */
-            installedFrom?: string;
+            installedFrom?: InstalledFrom;
             /** Which version of this adapter is installed */
             installedVersion: string;
             keywords?: string[];
@@ -743,13 +748,19 @@ declare global {
             /** If floating comma is used instead of dot */
             isFloatComma: boolean;
             /** Configured longitude */
-            longitude: string;
+            longitude?: number;
             /** Configured latitude */
-            latitude: string;
+            latitude?: number;
             /** Optional user's city (only for diagnostics) */
             city?: string;
             /** Optional user's country (only for diagnostics) */
             country?: string;
+            /** User-defined temperature unit */
+            tempUnit?: '°C' | '°F';
+            /** User-defined currency */
+            currency?: string;
+            /** User-defined first day of the week */
+            firstDayOfWeek?: 'monday' | 'sunday';
             /** Default history instance */
             defaultHistory: string;
             /** Which diag data is allowed to be sent */

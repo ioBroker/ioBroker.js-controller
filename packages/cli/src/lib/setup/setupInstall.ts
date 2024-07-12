@@ -301,8 +301,8 @@ export class Install {
                     npmVersion = semver.valid(npmVersion.trim());
                 }
                 console.log(`NPM version: ${npmVersion}`);
-            } catch (err) {
-                console.error(`Error trying to check npm version: ${err.message}`);
+            } catch (e) {
+                console.error(`Error trying to check npm version: ${e.message}`);
             }
 
             if (!npmVersion) {
@@ -330,8 +330,8 @@ export class Install {
                 console.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
                 return this.processExit(EXIT_CODES.INVALID_NPM_VERSION);
             }
-        } catch (err) {
-            console.error(`Could not check npm version: ${err.message}`);
+        } catch (e) {
+            console.error(`Could not check npm version: ${e.message}`);
             console.error('Assuming that correct version is installed.');
         }
 

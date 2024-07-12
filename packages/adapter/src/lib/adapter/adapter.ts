@@ -14,7 +14,8 @@ import {
     tools,
     EXIT_CODES,
     password,
-    logger
+    logger,
+    isInstalledFromNpm
 } from '@iobroker/js-controller-common';
 import {
     decryptArray,
@@ -22,7 +23,8 @@ import {
     getSupportedFeatures,
     isMessageboxSupported,
     getAdapterScopedPackageIdentifier,
-    listInstalledNodeModules
+    listInstalledNodeModules,
+    requestModuleNameByUrl
 } from '@/lib/adapter/utils.js';
 // @ts-expect-error no ts file
 import extend from 'node.extend';
@@ -685,7 +687,7 @@ export class AdapterClass extends EventEmitter {
     /** contents of package.json */
     pack?: Record<string, any>;
     /** contents of io-package.json */
-    ioPack: Record<string, any>; // contents of io-package.json TODO difference to adapterConfig?
+    ioPack: ioBroker.InstanceObject;
     private _initializeTimeout?: NodeJS.Timeout | null;
     private inited?: boolean;
     /** contents of iobroker.json if required via AdapterOptions */
@@ -697,9 +699,9 @@ export class AdapterClass extends EventEmitter {
     /** configured language of system.config, only available if requested via AdapterOptions `useFormatDate` */
     language?: ioBroker.Languages;
     /** longitude configured in system.config, only available if requested via AdapterOptions `useFormatDate`*/
-    longitude?: string;
+    longitude?: number;
     /** latitude configured in system.config, only available if requested via AdapterOptions `useFormatDate`*/
-    latitude?: string;
+    latitude?: number;
     private _defaultObjs?: Record<string, Partial<ioBroker.StateCommon>>;
     private _aliasObjectsSubscribed?: boolean;
     config: ioBroker.AdapterConfig = {};
@@ -1249,21 +1251,30 @@ export class AdapterClass extends EventEmitter {
     /**
      * Install specified npm module
      *
-     * @param moduleName name of the node module
+     * @param moduleNameOrUrl name of the node module or GitHub url which can be passed to `npm install`
      * @param options version information
      */
-    installNodeModule(moduleName: unknown, options: unknown): Promise<CommandResult> {
-        Validator.assertString(moduleName, 'moduleName');
+    installNodeModule(moduleNameOrUrl: unknown, options: unknown): Promise<CommandResult> {
+        Validator.assertString(moduleNameOrUrl, 'moduleNameOrUrl');
         Validator.assertObject<InstallNodeModuleOptions>(options, 'options');
 
-        return this._installNodeModule({ ...options, moduleName });
+        return this._installNodeModule({ ...options, moduleNameOrUrl });
     }
 
-    private _installNodeModule(options: InternalInstallNodeModuleOptions): Promise<CommandResult> {
-        const { moduleName, version } = options;
+    private async _installNodeModule(options: InternalInstallNodeModuleOptions): Promise<CommandResult> {
+        const { moduleNameOrUrl, version } = options;
+
+        let moduleName = moduleNameOrUrl;
+        const isUrl = URL.canParse(moduleNameOrUrl);
+
+        if (isUrl) {
+            moduleName = await requestModuleNameByUrl(moduleNameOrUrl);
+        }
 
         const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
-        return tools.installNodeModule(`${internalModuleName}@npm:${moduleName}@${version}`);
+        const packageIdentifier = isUrl ? moduleNameOrUrl : `npm:${moduleName}@${version}`;
+
+        return tools.installNodeModule(`${internalModuleName}@${packageIdentifier}`);
     }
 
     /**
@@ -1310,7 +1321,7 @@ export class AdapterClass extends EventEmitter {
      * Decrypt the password/value with given key
      *
      * @param secretVal to use for decrypt (or value if only one parameter is given)
-     * @param  [value] value to decrypt (if secret is provided)
+     * @param value value to decrypt (if secret is provided)
      */
     decrypt(secretVal: unknown, value?: unknown): string {
         if (value === undefined) {
@@ -11584,6 +11595,32 @@ export class AdapterClass extends EventEmitter {
                                 )
                             )
                     );
+
+                    this._reportStatus();
+                    const id = `system.adapter.${this.namespace}`;
+                    this.#states.setState(`${id}.compactMode`, {
+                        ack: true,
+                        from: id,
+                        val: this.startedInCompactMode
+                    });
+
+                    this.outputCount++;
+
+                    if (this.startedInCompactMode) {
+                        this.#states.setState(`${id}.cpu`, { ack: true, from: id, val: 0 });
+                        this.#states.setState(`${id}.cputime`, { ack: true, from: id, val: 0 });
+                        this.#states.setState(`${id}.memRss`, { val: 0, ack: true, from: id });
+                        this.#states.setState(`${id}.memHeapTotal`, { val: 0, ack: true, from: id });
+                        this.#states.setState(`${id}.memHeapUsed`, { val: 0, ack: true, from: id });
+                        this.#states.setState(`${id}.eventLoopLag`, { val: 0, ack: true, from: id });
+                        this.outputCount += 6;
+                    } else {
+                        tools.measureEventLoopLag(1_000, lag => {
+                            if (lag) {
+                                this.eventLoopLags.push(lag);
+                            }
+                        });
+                    }
                 }
             }
         } else {
@@ -11617,11 +11654,11 @@ export class AdapterClass extends EventEmitter {
                   ? this.ioPack.common.version
                   : 'unknown';
             // display if it's a non-official version - only if installedFrom is explicitly given and differs it's not npm
-            const isNpmVersion =
-                !this.ioPack ||
-                !this.ioPack.common ||
-                typeof this.ioPack.common.installedFrom !== 'string' ||
-                this.ioPack.common.installedFrom.startsWith(`${tools.appName.toLowerCase()}.${this.name}`);
+            // display if it's a non-official version - only if installedFrom is explicitly given and differs it's not npm
+            const isNpmVersion = isInstalledFromNpm({
+                adapterName: this.name,
+                installedFrom: this.ioPack.common.installedFrom
+            });
 
             this._logger.info(
                 `${this.namespaceLog} starting. Version ${this.version} ${
@@ -11997,6 +12034,33 @@ export class AdapterClass extends EventEmitter {
         await this.#states.pushMessage(`system.host.${this.host}`, obj as any);
     }
 
+    /**
+     * Initialize the plugin handler for this adapter
+     */
+    private _initPluginHandler(): void {
+        const pluginSettings: PluginHandlerSettings = {
+            scope: 'adapter',
+            namespace: `system.adapter.${this.namespace}`,
+            logNamespace: this.namespaceLog,
+            // @ts-expect-error
+            log: this._logger,
+            iobrokerConfig: this._config,
+            // @ts-expect-error
+            parentPackage: this.pack,
+            controllerVersion
+        };
+
+        this.pluginHandler = new PluginHandler(pluginSettings);
+        try {
+            this.pluginHandler.addPlugins(this.ioPack.common.plugins || {}, [this.adapterDir, thisDir]); // first resolve from adapter directory, else from js-controller
+        } catch (e) {
+            this._logger.error(`Could not add plugins: ${e.message}`);
+        }
+    }
+
+    /**
+     * Initializes the adapter
+     */
     private async _init(): Promise<void> {
         /**
          * Initiates the databases
@@ -12070,24 +12134,7 @@ export class AdapterClass extends EventEmitter {
         process.on('uncaughtException', err => this._exceptionHandler(err));
         process.on('unhandledRejection', err => this._exceptionHandler(err as any, true));
 
-        const pluginSettings: PluginHandlerSettings = {
-            scope: 'adapter',
-            namespace: `system.adapter.${this.namespace}`,
-            logNamespace: this.namespaceLog,
-            // @ts-expect-error
-            log: this._logger,
-            iobrokerConfig: this._config,
-            // @ts-expect-error
-            parentPackage: this.pack,
-            controllerVersion
-        };
-
-        this.pluginHandler = new PluginHandler(pluginSettings);
-        try {
-            this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, thisDir]); // first resolve from adapter directory, else from js-controller
-        } catch (e) {
-            this._logger.error(`Could not add plugins: ${e.message}`);
-        }
+        this._initPluginHandler();
         // finally init
         _initDBs();
     }

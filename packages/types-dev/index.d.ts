@@ -3,17 +3,17 @@
 import type * as fs from 'node:fs';
 import './objects';
 import type { IoBJson, DatabaseOptions, ObjectsDatabaseOptions as ObjectsDbOptions } from './config';
+import type { Branded } from './utils';
 
 export {}; // avoids exporting AtLeastOne into the global scope
-
-declare const __brand: unique symbol;
-type Brand<B> = { [__brand]: B };
-type Branded<T, B> = T & Brand<B>;
 
 // Requires at least one of the properties of T to be given, whether it's optional or not
 type AtLeastOne<T, Req = { [K in keyof T]-?: T[K] }, Opt = { [K in keyof T]+?: T[K] }> = {
     [K in keyof Req]: Omit<Opt, K> & { [P in K]: Req[P] };
 }[keyof Req];
+
+/** Type of T but makes specific optional properties required */
+export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 
 declare global {
     namespace ioBroker {

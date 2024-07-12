@@ -31,6 +31,7 @@ import {
 import type * as DiskUsage from 'diskusage';
 import * as url from 'node:url';
 import { createRequire } from 'node:module';
+import type { WithRequired } from '@iobroker/types-dev';
 
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
@@ -334,7 +335,7 @@ export async function isHostRunning(objects: any, states: any): Promise<boolean>
 /**
  * Checks if ioBroker is installed in a dev environment
  */
-function _isDevInstallation(): boolean {
+export function isDevInstallation(): boolean {
     return fs.pathExistsSync(`${getControllerDir()}/../../packages/controller`);
 }
 
@@ -345,7 +346,7 @@ type AppName = 'iobroker' | 'ioBroker';
  * Get the app name either for prod or for dev installation
  */
 function getAppName(): AppName {
-    if (_isDevInstallation()) {
+    if (isDevInstallation()) {
         // dev install - GitHub folder is uppercase
         return 'ioBroker';
     }
@@ -1715,22 +1716,27 @@ export async function installNodeModule(
         pak.loglevel = 'error';
     }
 
+    // And install the module
+    const installOpts: WithRequired<InstallOptions, 'additionalArgs'> = {
+        additionalArgs: []
+    };
+
     // Set up streams to pass the command output through
     if (options.debug) {
         const stdall = new PassThrough();
         pak.stdall = stdall;
         pipeLinewise(stdall, process.stdout);
+        installOpts.additionalArgs.push('--foreground-scripts');
     } else {
         const stdout = new PassThrough();
         pak.stdout = stdout;
         pipeLinewise(stdout, process.stdout);
     }
 
-    // And install the module
-    const installOpts: InstallOptions = {};
     if (options.unsafePerm) {
-        installOpts.additionalArgs = ['--unsafe-perm'];
+        installOpts.additionalArgs.push('--unsafe-perm');
     }
+
     return pak.install([npmUrl], installOpts);
 }
 
@@ -2220,7 +2226,7 @@ export function getDefaultDataDir(): string {
         return envDataDir;
     }
 
-    if (_isDevInstallation()) {
+    if (isDevInstallation()) {
         // dev install
         return './data/';
     }
@@ -2243,9 +2249,9 @@ export function getConfigFileName(): string {
 
     const controllerDir = getControllerDir();
     const fallbackConfigFile = path.join(controllerDir, 'data', `${appNameLowerCase}.json`);
-    const isDevInstallation = _isDevInstallation();
+    const isDevInstall = isDevInstallation();
 
-    if (isDevInstallation) {
+    if (isDevInstall) {
         const devConfigFile = path.join(controllerDir, 'conf', `${appNameLowerCase}.json`);
 
         if (fs.existsSync(devConfigFile)) {
@@ -2257,7 +2263,7 @@ export function getConfigFileName(): string {
 
     const prodConfigFile = path.join(getRootDir(), `${appNameLowerCase}-data`, `${appNameLowerCase}.json`);
 
-    if (!fs.existsSync(prodConfigFile) && isDevInstallation) {
+    if (!fs.existsSync(prodConfigFile) && isDevInstall) {
         return fallbackConfigFile;
     }
 
