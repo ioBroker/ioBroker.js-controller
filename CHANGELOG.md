@@ -4,6 +4,9 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (foxriver76) prevent `iob logs --watch` logging the entries two times
+
 ## 6.0.6 (2024-06-30) - Kiera
 * (foxriver76) fixed Windows installation
 * (foxriver76) fixed issue on package updates (e.g. Admin Node.js update)
