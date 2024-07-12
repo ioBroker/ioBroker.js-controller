@@ -31,6 +31,7 @@ import {
 import type * as DiskUsage from 'diskusage';
 import * as url from 'node:url';
 import { createRequire } from 'node:module';
+import type { WithRequired } from '@iobroker/types-dev';
 
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
@@ -1715,22 +1716,27 @@ export async function installNodeModule(
         pak.loglevel = 'error';
     }
 
+    // And install the module
+    const installOpts: WithRequired<InstallOptions, 'additionalArgs'> = {
+        additionalArgs: []
+    };
+
     // Set up streams to pass the command output through
     if (options.debug) {
         const stdall = new PassThrough();
         pak.stdall = stdall;
         pipeLinewise(stdall, process.stdout);
+        installOpts.additionalArgs.push('--foreground-scripts');
     } else {
         const stdout = new PassThrough();
         pak.stdout = stdout;
         pipeLinewise(stdout, process.stdout);
     }
 
-    // And install the module
-    const installOpts: InstallOptions = {};
     if (options.unsafePerm) {
-        installOpts.additionalArgs = ['--unsafe-perm'];
+        installOpts.additionalArgs.push('--unsafe-perm');
     }
+
     return pak.install([npmUrl], installOpts);
 }
 

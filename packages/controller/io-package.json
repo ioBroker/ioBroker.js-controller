@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "js-controller",
-    "version": "6.0.5",
+    "version": "6.0.7",
     "platform": "Javascript/Node.js",
     "controller": true,
     "mode": "daemon",
@@ -19,7 +19,7 @@
       "zh-cn": "JS控制器"
     },
     "news": {
-      "6.0.5": {
+      "6.0.6": {
         "en": "see CHANGELOG.md",
         "de": "siehe CHANGELOG.md",
         "ru": "см. CHANGELOG.md",
@@ -464,8 +464,6 @@
         },
         "city": "",
         "country": "",
-        "longitude": "",
-        "latitude": "",
         "language": "",
         "tempUnit": "°C",
         "currency": "",

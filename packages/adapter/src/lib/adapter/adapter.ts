@@ -699,9 +699,9 @@ export class AdapterClass extends EventEmitter {
     /** configured language of system.config, only available if requested via AdapterOptions `useFormatDate` */
     language?: ioBroker.Languages;
     /** longitude configured in system.config, only available if requested via AdapterOptions `useFormatDate`*/
-    longitude?: string;
+    longitude?: number;
     /** latitude configured in system.config, only available if requested via AdapterOptions `useFormatDate`*/
-    latitude?: string;
+    latitude?: number;
     private _defaultObjs?: Record<string, Partial<ioBroker.StateCommon>>;
     private _aliasObjectsSubscribed?: boolean;
     config: ioBroker.AdapterConfig = {};

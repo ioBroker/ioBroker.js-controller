@@ -12,6 +12,9 @@ type AtLeastOne<T, Req = { [K in keyof T]-?: T[K] }, Opt = { [K in keyof T]+?: T
     [K in keyof Req]: Omit<Opt, K> & { [P in K]: Req[P] };
 }[keyof Req];
 
+/** Type of T but makes specific optional properties required */
+export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
+
 declare global {
     namespace ioBroker {
         /** Two-way mapping for state quality ("q" attribute of a state) */

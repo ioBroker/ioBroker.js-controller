@@ -17,7 +17,7 @@ export default function restart(callback?: () => void): void {
         cmd = path.join(getRootDir(), 'iob.bat');
         args = ['restart'];
     } else {
-        // Unix has a global iobroker binary that delegates to the init system
+        // Unix has a global ioBroker binary that delegates to the init system
         // We need to call that, so we don't have two instances of ioBroker running
         cmd = 'iobroker';
         args = ['restart'];
