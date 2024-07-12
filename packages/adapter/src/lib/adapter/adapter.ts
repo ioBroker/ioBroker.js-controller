@@ -11595,32 +11595,6 @@ export class AdapterClass extends EventEmitter {
                                 )
                             )
                     );
-
-                    this._reportStatus();
-                    const id = `system.adapter.${this.namespace}`;
-                    this.#states.setState(`${id}.compactMode`, {
-                        ack: true,
-                        from: id,
-                        val: this.startedInCompactMode
-                    });
-
-                    this.outputCount++;
-
-                    if (this.startedInCompactMode) {
-                        this.#states.setState(`${id}.cpu`, { ack: true, from: id, val: 0 });
-                        this.#states.setState(`${id}.cputime`, { ack: true, from: id, val: 0 });
-                        this.#states.setState(`${id}.memRss`, { val: 0, ack: true, from: id });
-                        this.#states.setState(`${id}.memHeapTotal`, { val: 0, ack: true, from: id });
-                        this.#states.setState(`${id}.memHeapUsed`, { val: 0, ack: true, from: id });
-                        this.#states.setState(`${id}.eventLoopLag`, { val: 0, ack: true, from: id });
-                        this.outputCount += 6;
-                    } else {
-                        tools.measureEventLoopLag(1_000, lag => {
-                            if (lag) {
-                                this.eventLoopLags.push(lag);
-                            }
-                        });
-                    }
                 }
             }
         } else {
