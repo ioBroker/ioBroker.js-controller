@@ -14,7 +14,8 @@ import {
     tools,
     EXIT_CODES,
     password,
-    logger
+    logger,
+    isInstalledFromNpm
 } from '@iobroker/js-controller-common';
 import {
     decryptArray,
@@ -686,7 +687,7 @@ export class AdapterClass extends EventEmitter {
     /** contents of package.json */
     pack?: Record<string, any>;
     /** contents of io-package.json */
-    ioPack: Record<string, any>; // contents of io-package.json TODO difference to adapterConfig?
+    ioPack: ioBroker.InstanceObject;
     private _initializeTimeout?: NodeJS.Timeout | null;
     private inited?: boolean;
     /** contents of iobroker.json if required via AdapterOptions */
@@ -11628,11 +11629,10 @@ export class AdapterClass extends EventEmitter {
                       ? this.ioPack.common.version
                       : 'unknown';
                 // display if it's a non-official version - only if installedFrom is explicitly given and differs it's not npm
-                const isNpmVersion =
-                    !this.ioPack ||
-                    !this.ioPack.common ||
-                    typeof this.ioPack.common.installedFrom !== 'string' ||
-                    this.ioPack.common.installedFrom.startsWith(`${tools.appName.toLowerCase()}.${this.name}`);
+                const isNpmVersion = isInstalledFromNpm({
+                    adapterName: this.name,
+                    installedFrom: this.ioPack.common.installedFrom
+                });
 
                 this._logger.info(
                     `${this.namespaceLog} starting. Version ${this.version} ${
@@ -11651,7 +11651,7 @@ export class AdapterClass extends EventEmitter {
                     this.#states.setState(`${id}.compactMode`, {
                         ack: true,
                         from: id,
-                        val: !!this.startedInCompactMode
+                        val: this.startedInCompactMode
                     });
 
                     this.outputCount++;
@@ -12014,6 +12014,33 @@ export class AdapterClass extends EventEmitter {
         await this.#states.pushMessage(`system.host.${this.host}`, obj as any);
     }
 
+    /**
+     * Initialize the plugin handler for this adapter
+     */
+    private _initPluginHandler(): void {
+        const pluginSettings: PluginHandlerSettings = {
+            scope: 'adapter',
+            namespace: `system.adapter.${this.namespace}`,
+            logNamespace: this.namespaceLog,
+            // @ts-expect-error
+            log: this._logger,
+            iobrokerConfig: this._config,
+            // @ts-expect-error
+            parentPackage: this.pack,
+            controllerVersion
+        };
+
+        this.pluginHandler = new PluginHandler(pluginSettings);
+        try {
+            this.pluginHandler.addPlugins(this.ioPack.common.plugins || {}, [this.adapterDir, thisDir]); // first resolve from adapter directory, else from js-controller
+        } catch (e) {
+            this._logger.error(`Could not add plugins: ${e.message}`);
+        }
+    }
+
+    /**
+     * Initializes the adapter
+     */
     private async _init(): Promise<void> {
         /**
          * Initiates the databases
@@ -12087,24 +12114,7 @@ export class AdapterClass extends EventEmitter {
         process.on('uncaughtException', err => this._exceptionHandler(err));
         process.on('unhandledRejection', err => this._exceptionHandler(err as any, true));
 
-        const pluginSettings: PluginHandlerSettings = {
-            scope: 'adapter',
-            namespace: `system.adapter.${this.namespace}`,
-            logNamespace: this.namespaceLog,
-            // @ts-expect-error
-            log: this._logger,
-            iobrokerConfig: this._config,
-            // @ts-expect-error
-            parentPackage: this.pack,
-            controllerVersion
-        };
-
-        this.pluginHandler = new PluginHandler(pluginSettings);
-        try {
-            this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, thisDir]); // first resolve from adapter directory, else from js-controller
-        } catch (e) {
-            this._logger.error(`Could not add plugins: ${e.message}`);
-        }
+        this._initPluginHandler();
         // finally init
         _initDBs();
     }

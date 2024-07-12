@@ -26,6 +26,7 @@
         "index.d.ts",
         "config.d.ts",
         "objects.d.ts",
+        "utils.d.ts",
         "LICENSE"
     ]
 }
