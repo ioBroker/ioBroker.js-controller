@@ -5,6 +5,8 @@
 -->
 
 ## __WORK IN PROGRESS__
+* (foxriver76) added auto upgrade information to cli `list adapters` and `repo show`
+* (foxriver76) do not show the stack trace if user does not exist on `iob user check`
 * (foxriver76) prevent `iob logs --watch` logging the entries two times
 
 ## 6.0.6 (2024-06-30) - Kiera
