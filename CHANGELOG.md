@@ -4,7 +4,10 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 6.0.7 (2024-07-12)
+## __WORK IN PROGRESS__ - Kiera
+* (foxriver76) fixed problem with Sentry plugin
+
+## 6.0.7 (2024-07-12) - Kiera
 * (foxriver76) added auto upgrade information to cli `list adapters` and `repo show`
 * (foxriver76) do not show the stack trace if user does not exist on `iob user check`
 * (foxriver76) prevent `iob logs --watch` logging the entries two times

@@ -8,7 +8,6 @@
     "dependencies": {
         "@iobroker/js-controller-common": "file:../common",
         "@iobroker/js-controller-common-db": "file:../common-db",
-        "@iobroker/plugin-base": "~2.0.1",
         "axios": "^1.6.3",
         "chokidar": "^3.5.3",
         "debug": "^4.3.4",
