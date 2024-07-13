@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__ - Kiera
+## 6.0.8 (2024-07-13) - Kiera
 * (foxriver76) fixed problem with Sentry plugin
 
 ## 6.0.7 (2024-07-12) - Kiera

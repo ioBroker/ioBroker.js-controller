@@ -34,7 +34,7 @@ The same as @link{value}
 
 #### Defined in
 
-[types-dev/index.d.ts:495](https://github.com/ioBroker/ioBroker.js-controller/blob/f4f04aafd2ad7897f4540de31e39dc68a4db1044/packages/types-dev/index.d.ts#L495)
+[types-dev/index.d.ts:495](https://github.com/ioBroker/ioBroker.js-controller/blob/15b63baad7cacbc59edebce9945e4c2f83b7912e/packages/types-dev/index.d.ts#L495)
 
 ___
 
@@ -50,7 +50,7 @@ The ID of this object
 
 #### Defined in
 
-[types-dev/index.d.ts:481](https://github.com/ioBroker/ioBroker.js-controller/blob/f4f04aafd2ad7897f4540de31e39dc68a4db1044/packages/types-dev/index.d.ts#L481)
+[types-dev/index.d.ts:481](https://github.com/ioBroker/ioBroker.js-controller/blob/15b63baad7cacbc59edebce9945e4c2f83b7912e/packages/types-dev/index.d.ts#L481)
 
 ___
 
@@ -66,4 +66,4 @@ A copy of the object
 
 #### Defined in
 
-[types-dev/index.d.ts:493](https://github.com/ioBroker/ioBroker.js-controller/blob/f4f04aafd2ad7897f4540de31e39dc68a4db1044/packages/types-dev/index.d.ts#L493)
+[types-dev/index.d.ts:493](https://github.com/ioBroker/ioBroker.js-controller/blob/15b63baad7cacbc59edebce9945e4c2f83b7912e/packages/types-dev/index.d.ts#L493)

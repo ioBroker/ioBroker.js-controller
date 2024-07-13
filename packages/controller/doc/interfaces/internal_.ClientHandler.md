@@ -22,7 +22,7 @@ Name of the subscriber
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/f4f04aafd2ad7897f4540de31e39dc68a4db1044/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L41)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/15b63baad7cacbc59edebce9945e4c2f83b7912e/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L41)
 
 ___
 
@@ -34,7 +34,7 @@ The session id of the client connection
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:39](https://github.com/ioBroker/ioBroker.js-controller/blob/f4f04aafd2ad7897f4540de31e39dc68a4db1044/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L39)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:39](https://github.com/ioBroker/ioBroker.js-controller/blob/15b63baad7cacbc59edebce9945e4c2f83b7912e/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L39)
 
 ___
 
@@ -46,4 +46,4 @@ Individual type which can be specified
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:43](https://github.com/ioBroker/ioBroker.js-controller/blob/f4f04aafd2ad7897f4540de31e39dc68a4db1044/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L43)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:43](https://github.com/ioBroker/ioBroker.js-controller/blob/15b63baad7cacbc59edebce9945e4c2f83b7912e/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L43)
