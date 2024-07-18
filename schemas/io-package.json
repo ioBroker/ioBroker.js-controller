@@ -1208,7 +1208,7 @@
                       "type": "string"
                     },
                     "intro": {
-                      "description": "Should be this link be shown on intro tab in admin",
+                      "description": "If this link should be shown on the intro tab in admin",
                       "type": "boolean"
                     },
                     "icon": {
