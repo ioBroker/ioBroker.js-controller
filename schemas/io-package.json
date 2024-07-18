@@ -1229,6 +1229,17 @@
                     "order": {
                       "description": "Used on \"intro\" and cloud tabs to sort the links",
                       "type": "number"
+                    },
+                    "description": {
+                      "description": "Description of the link. Could be multi-language",
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "$ref": "#/definitions/multilingual"
+                        }
+                      ]
                     }
                   },
                   "additionalProperties": false,

@@ -646,6 +646,7 @@ declare global {
                       pro?: string;
                       intro?: boolean;
                       order?: number;
+                      description?: ioBroker.StringOrTranslated;
                   }
             >;
             /** @deprecated Use @see localLinks */
