@@ -1496,6 +1496,7 @@
           }
         },
         "welcomeScreen": {
+          "deprecationMessage": "Please use common.localLinks instead",
           "description": "Array of pages, that should be shown on the \"web\" index.html page. [\"vis/edit.html\", \"vis/index.html\"] or [{\"link\": \"vis/edit.html\", \"name\": \"Vis editor\", \"img\": \"vis/img/edit.png\", \"color\": \"blue\"}, \"vis/index.html\"]",
           "type": "array",
           "items": {
@@ -1506,6 +1507,7 @@
           }
         },
         "welcomeScreenPro": {
+          "deprecationMessage": "Please use common.localLinks instead",
           "description": "Array of pages used on access via ioBroker cloud, that should be shown on the \"web\" index.html page. [\"vis/edit.html\", \"vis/index.html\"] or [{\"link\": \"vis/edit.html\", \"name\": \"Vis editor\", \"img\": \"vis/img/edit.png\", \"color\": \"blue\"}, \"vis/index.html\"]",
           "type": "array",
           "items": {
