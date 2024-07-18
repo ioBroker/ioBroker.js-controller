@@ -1180,7 +1180,7 @@
               "anyOf": [
                 {
                   "type": "string",
-                  "deprecationMessage": "Please structure {link, color, pro, cloud, intro, icon, name, order} instead of string"
+                  "deprecationMessage": "Please use structure {link, color, pro, cloud, intro, icon, name, order} instead of string"
                 },
                 {
                   "properties": {
