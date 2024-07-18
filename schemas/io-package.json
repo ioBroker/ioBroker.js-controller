@@ -1180,7 +1180,7 @@
               "anyOf": [
                 {
                   "type": "string",
-                  "deprecationMessage": "Please use structure {link, color, pro, cloud, intro, icon, name, order} instead of string"
+                  "description": "DEPRECATED: Please use structure {link, color, pro, cloud, intro, icon, name, order} instead of string"
                 },
                 {
                   "properties": {
@@ -1195,7 +1195,7 @@
                       "anyOf": [
                         {
                           "type": "boolean",
-                          "deprecationMessage": "Please use link template as string instead of boolean"
+                          "description": "DEPRECATED: Please use link template as string instead of boolean"
                         },
                         {
                           "description": "Link to the adapter, like: vis-2/index.html according to \"https://iobroker.pro/\"",
@@ -1507,8 +1507,7 @@
           }
         },
         "welcomeScreen": {
-          "deprecationMessage": "Please use common.localLinks instead",
-          "description": "Array of pages, that should be shown on the \"web\" index.html page. [\"vis/edit.html\", \"vis/index.html\"] or [{\"link\": \"vis/edit.html\", \"name\": \"Vis editor\", \"img\": \"vis/img/edit.png\", \"color\": \"blue\"}, \"vis/index.html\"]",
+          "description": "DEPRECATED: Please use common.localLinks instead. Array of pages, that should be shown on the \"web\" index.html page. [\"vis/edit.html\", \"vis/index.html\"] or [{\"link\": \"vis/edit.html\", \"name\": \"Vis editor\", \"img\": \"vis/img/edit.png\", \"color\": \"blue\"}, \"vis/index.html\"]",
           "type": "array",
           "items": {
             "type": [
@@ -1518,8 +1517,7 @@
           }
         },
         "welcomeScreenPro": {
-          "deprecationMessage": "Please use common.localLinks instead",
-          "description": "Array of pages used on access via ioBroker cloud, that should be shown on the \"web\" index.html page. [\"vis/edit.html\", \"vis/index.html\"] or [{\"link\": \"vis/edit.html\", \"name\": \"Vis editor\", \"img\": \"vis/img/edit.png\", \"color\": \"blue\"}, \"vis/index.html\"]",
+          "description": "DEPRECATED: Please use common.localLinks instead. Array of pages used on access via ioBroker cloud, that should be shown on the \"web\" index.html page. [\"vis/edit.html\", \"vis/index.html\"] or [{\"link\": \"vis/edit.html\", \"name\": \"Vis editor\", \"img\": \"vis/img/edit.png\", \"color\": \"blue\"}, \"vis/index.html\"]",
           "type": "array",
           "items": {
             "type": [
