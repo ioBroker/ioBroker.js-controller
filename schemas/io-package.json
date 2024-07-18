@@ -1179,21 +1179,56 @@
             ".+": {
               "anyOf": [
                 {
-                  "type": "string"
+                  "type": "string",
+                  "deprecationMessage": "Please structure {link, color, pro, cloud, intro, icon, name, order} instead of string"
                 },
                 {
                   "properties": {
                     "link": {
-                      "type": "string"
+                      "type": "string",
+                      "description": "Link to the web service of this adapter, like: %web_protocol%://%ip%:%web_port%/vis-2/edit.html"
                     },
                     "color": {
                       "type": "string"
                     },
                     "pro": {
+                      "anyOf": [
+                        {
+                          "type": "boolean",
+                          "deprecationMessage": "Please use link template as string instead of boolean"
+                        },
+                        {
+                          "description": "Link to the adapter, like: vis-2/index.html according to \"https://iobroker.pro/\"",
+                          "type": "string"
+                        }
+                      ]
+                    },
+                    "cloud": {
+                      "description": "Link to the adapter, like: vis-2/index.html according to \"https://iobroker.net/\"",
+                      "type": "string"
+                    },
+                    "intro": {
+                      "description": "Should be this link be shown on intro tab in admin",
                       "type": "boolean"
                     },
                     "icon": {
+                      "description": "Link to icon, like \"vis-2/img/favicon.png\"",
                       "type": "string"
+                    },
+                    "name": {
+                      "description": "Name of the link. Could be multi-language",
+                      "anyOf": [
+                        {
+                          "type": "string"
+                        },
+                        {
+                          "$ref": "#/definitions/multilingual"
+                        }
+                      ]
+                    },
+                    "order": {
+                      "description": "Used on \"intro\" and cloud tabs to sort the links",
+                      "type": "number"
                     }
                   },
                   "additionalProperties": false,
