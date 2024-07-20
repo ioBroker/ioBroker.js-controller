@@ -260,6 +260,13 @@ const installedNodeModules = await adapter.listInstalledNodeModules();
 adapter.log.info(`Installed modules are: ${installedNodeModules.join(', ')}`);
 ```
 
+To get the adapter scoped package identifier you can use: 
+
+```typescript
+// e.g. @iobroker-javascript.0/axios
+const packageIdentifier = adapter.getAdapterScopedPackageIdentifier('axios');
+```
+
 ### Per host `adapter` objects
 **Feature status:** New in 6.0.0
 

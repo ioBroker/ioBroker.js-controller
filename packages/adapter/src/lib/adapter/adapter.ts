@@ -1246,6 +1246,15 @@ export class AdapterClass extends EventEmitter {
         this._init();
     }
 
+    /**
+     * Get the adapter scoped package identifier of a node module
+     *
+     * @param moduleName name of the node module
+     */
+    getAdapterScopedPackageIdentifier(moduleName: string): string {
+        return getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
+    }
+
     installNodeModule(moduleName: string, options: InstallNodeModuleOptions): Promise<CommandResult>;
 
     /**
