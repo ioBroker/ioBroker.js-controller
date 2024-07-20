@@ -9,7 +9,7 @@ interface DatabaseBackupOptions {
     /** by default backup every 2 hours. Time is in minutes. To disable backup set the value to 0 */
     period: number;
     '// period': string;
-    /** Absolute path to backup directory or empty to backup in data directory */
+    /** Absolute path to back-up directory or empty to back-up in data directory */
     path: string;
     '// path': string;
 }
@@ -33,7 +33,7 @@ interface JsonlOptions {
     '// throttleFS (1)': string;
     '// throttleFS (2)': string;
     /**
-     * By default, the database immediately writes to the database file. Write accesses can be reduced using the throttleFS option.
+     * By default, the database immediately writes to the database file. Write access can be reduced using the throttleFS option.
      * Be aware that buffered changes will be lost in case the process crashes
      */
     throttleFS: {
@@ -41,7 +41,7 @@ interface JsonlOptions {
         /** Write to the database file no more than every intervalMs milliseconds. */
         intervalMs: number;
         '// maxBufferedCommands': string;
-        /** Force writing after this many changes have been buffered. This reduces memory consumption and data loss in case of a crash. */
+        /** Force writing of buffered commands after so many changes. This reduces memory consumption and data loss in case of a crash. */
         maxBufferedCommands: number;
     };
 }

@@ -574,6 +574,27 @@ declare global {
 
         type ConnectionType = 'local' | 'cloud';
 
+        type LocalLink = {
+            /** Link to the web service of this adapter, like: "%web_protocol%://%ip%:%web_port%/vis-2/edit.html" */
+            link: string;
+            /** Name of the link. Could be multi-language */
+            name?: ioBroker.StringOrTranslated;
+            /** Color */
+            color?: string;
+            /** Link to icon, like "vis-2/img/favicon.png" */
+            icon?: string;
+            /** Link to the adapter if it could be shown in the free cloud, like: vis-2/index.html according to "https://iobroker.net/" */
+            cloud?: string;
+            /** Link to the adapter if it could be shown in the pro-cloud, like: vis-2/edit.html according to "https://iobroker.pro/" */
+            pro?: string;
+            /** If this link should be shown on the intro tab in admin. false = do not show */
+            intro?: boolean;
+            /** Order of the card. Used on "intro" and cloud tabs to sort the links */
+            order?: number;
+            /** Description of the link. Could be multi-language */
+            description?: ioBroker.StringOrTranslated;
+        };
+
         interface AdapterCommon extends ObjectCommon {
             /** Custom attributes to be shown in admin in the object browser */
             adminColumns?: string | (string | CustomAdminColumn)[];
@@ -604,7 +625,7 @@ declare global {
             blockly?: boolean;
             /** Where the adapter will get its data from. Set this together with @see dataSource */
             connectionType?: ConnectionType;
-            /** If true, this adapter can be started in compact mode (in the same process as other adpaters) */
+            /** If true, this adapter can be started in compact mode (in the same process as other adapters) */
             compact?: boolean;
             /** The directory relative to iobroker-data where the adapter stores the data. Supports the placeholder `%INSTANCE%`. This folder will be backed up and restored automatically. */
             dataFolder?: string;
@@ -626,7 +647,7 @@ declare global {
             getHistory?: boolean;
             /** Filename of the local icon which is shown for installed adapters. Should be located in the `admin` directory */
             icon?: string;
-            /** The adapter will be executed once additionally after installation and the `install` event will be emitted during this run. This allows for executing one time installation code. */
+            /** The adapter will be executed once additionally after installation, and the `install` event will be emitted during this run. This allows for executing one time installation code. */
             install?: boolean;
             /** Source, where this adapter has been installed from, to enable reinstalling on e.g., backup restore */
             installedFrom?: InstalledFrom;
@@ -634,17 +655,17 @@ declare global {
             installedVersion: string;
             keywords?: string[];
             /** A dictionary of links to web services this adapter provides */
-            localLinks?: Record<string, string>;
+            localLinks?: Record<string, string | LocalLink>;
             /** @deprecated Use @see localLinks */
             localLink?: string;
             loglevel?: LogLevel;
-            /** Whether this adapter receives logs from other hosts and adapters (e.g., to strore them somewhere) */
+            /** Whether this adapter receives logs from other hosts and adapters (e.g., to store them somewhere) */
             logTransporter?: boolean;
             /** Path to the start file of the adapter. Should be the same as in `package.json` */
             main?: string;
-            /** Whether the admin tab is written in materialize style. Required for Admin 3+ */
+            /** Whether the admin tab is written in materialized style. Required for Admin 3+ */
             materializeTab?: boolean;
-            /** Whether the admin configuration dialog is written in materialize style. Required for Admin 3+ */
+            /** Whether the admin configuration dialog is written in materialized style. Required for Admin 3+ */
             materialize: boolean;
             /** @deprecated Use @see supportedMessages up from controller v5 */
             messagebox?: true;
@@ -720,9 +741,9 @@ declare global {
             webExtension?: string;
             webPreSettings?: any; // ?
             webservers?: any; // ?
-            /** A list of pages that should be shown on the "web" index page */
+            /** @deprecated (use localLinks) A list of pages that should be shown on the "web" index page */
             welcomeScreen?: WelcomeScreenEntry[];
-            /** A list of pages that should be shown on the ioBroker cloud index page */
+            /** @deprecated (use localLinks) A list of pages that should be shown on the ioBroker cloud index page */
             welcomeScreenPro?: WelcomeScreenEntry[];
             wwwDontUpload?: boolean;
             /** @deprecated Use 'common.licenseInformation' instead */

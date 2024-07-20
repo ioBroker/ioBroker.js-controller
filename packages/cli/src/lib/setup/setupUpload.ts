@@ -1,7 +1,7 @@
 /**
  *      Upload adapter files into DB
  *
- *      Copyright 2013-2023 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -744,10 +744,17 @@ export class Upload {
                     newObject.common.installedVersion = ioPack.common.version;
                     newObject.common.installedFrom = ioPack.common.installedFrom;
 
+                    // do not merge visWidgets and localLinks
                     if (ioPack.common.visWidgets) {
                         newObject.common.visWidgets = ioPack.common.visWidgets;
                     } else {
                         delete newObject.common.visWidgets;
+                    }
+
+                    if (ioPack.common.localLinks) {
+                        newObject.common.localLinks = ioPack.common.localLinks;
+                    } else {
+                        delete newObject.common.localLinks;
                     }
 
                     if (!ioPack.common.compact && newObject.common.compact) {
