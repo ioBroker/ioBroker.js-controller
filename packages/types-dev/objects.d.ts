@@ -574,6 +574,27 @@ declare global {
 
         type ConnectionType = 'local' | 'cloud';
 
+        type LocalLink = {
+            /** Link to the web service of this adapter, like: "%web_protocol%://%ip%:%web_port%/vis-2/edit.html" */
+            link: string;
+            /** Name of the link. Could be multi-language */
+            name?: ioBroker.StringOrTranslated;
+            /** Color */
+            color?: string;
+            /** Link to icon, like "vis-2/img/favicon.png" */
+            icon?: string;
+            /** Link to the adapter if it could be shown in the free cloud, like: vis-2/index.html according to "https://iobroker.net/" */
+            cloud?: string;
+            /** Link to the adapter if it could be shown in the pro-cloud, like: vis-2/edit.html according to "https://iobroker.pro/" */
+            pro?: string;
+            /** If this link should be shown on the intro tab in admin. false = do not show */
+            intro?: boolean;
+            /** Order of the card. Used on "intro" and cloud tabs to sort the links */
+            order?: number;
+            /** Description of the link. Could be multi-language */
+            description?: ioBroker.StringOrTranslated;
+        };
+
         interface AdapterCommon extends ObjectCommon {
             /** Custom attributes to be shown in admin in the object browser */
             adminColumns?: string | (string | CustomAdminColumn)[];
@@ -634,30 +655,7 @@ declare global {
             installedVersion: string;
             keywords?: string[];
             /** A dictionary of links to web services this adapter provides */
-            localLinks?: Record<
-                string,
-                | string
-                | {
-                      /** Link to the web service of this adapter, like: "%web_protocol%://%ip%:%web_port%/vis-2/edit.html" */
-                      link: string;
-                      /** Name of the link. Could be multi-language */
-                      name?: ioBroker.StringOrTranslated;
-                      /** Color */
-                      color?: string;
-                      /** Link to icon, like "vis-2/img/favicon.png" */
-                      icon?: string;
-                      /** Link to the adapter if it could be shown in the free cloud, like: vis-2/index.html according to "https://iobroker.net/" */
-                      cloud?: string;
-                      /** Link to the adapter if it could be shown in the pro-cloud, like: vis-2/edit.html according to "https://iobroker.pro/" */
-                      pro?: string;
-                      /** If this link should be shown on the intro tab in admin. false = do not show */
-                      intro?: boolean;
-                      /** Order of the card. Used on "intro" and cloud tabs to sort the links */
-                      order?: number;
-                      /** Description of the link. Could be multi-language */
-                      description?: ioBroker.StringOrTranslated;
-                  }
-            >;
+            localLinks?: Record<string, string | LocalLink>;
             /** @deprecated Use @see localLinks */
             localLink?: string;
             loglevel?: LogLevel;
