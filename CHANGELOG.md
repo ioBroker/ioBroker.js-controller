@@ -4,6 +4,9 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__ - Kiera
+* (foxriver76) provide method `getAdapterScopedPackageIdentifier` for adapters
+
 ## 6.0.8 (2024-07-13) - Kiera
 * (foxriver76) fixed problem with Sentry plugin
 
