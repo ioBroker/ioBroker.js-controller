@@ -750,6 +750,7 @@ export class Upload {
                     } else {
                         delete newObject.common.visWidgets;
                     }
+
                     if (ioPack.common.localLinks) {
                         newObject.common.localLinks = ioPack.common.localLinks;
                     } else {
