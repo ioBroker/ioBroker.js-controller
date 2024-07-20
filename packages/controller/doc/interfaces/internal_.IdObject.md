@@ -20,7 +20,7 @@
 
 #### Defined in
 
-[types-dev/index.d.ts:89](https://github.com/ioBroker/ioBroker.js-controller/blob/15b63baad7cacbc59edebce9945e4c2f83b7912e/packages/types-dev/index.d.ts#L89)
+[types-dev/index.d.ts:89](https://github.com/ioBroker/ioBroker.js-controller/blob/0e3f4a4745f0024873156040d8f9f1cc55edbba6/packages/types-dev/index.d.ts#L89)
 
 ___
 
@@ -30,7 +30,7 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:88](https://github.com/ioBroker/ioBroker.js-controller/blob/15b63baad7cacbc59edebce9945e4c2f83b7912e/packages/types-dev/index.d.ts#L88)
+[types-dev/index.d.ts:88](https://github.com/ioBroker/ioBroker.js-controller/blob/0e3f4a4745f0024873156040d8f9f1cc55edbba6/packages/types-dev/index.d.ts#L88)
 
 ___
 
@@ -40,4 +40,4 @@ ___
 
 #### Defined in
 
-[types-dev/index.d.ts:90](https://github.com/ioBroker/ioBroker.js-controller/blob/15b63baad7cacbc59edebce9945e4c2f83b7912e/packages/types-dev/index.d.ts#L90)
+[types-dev/index.d.ts:90](https://github.com/ioBroker/ioBroker.js-controller/blob/0e3f4a4745f0024873156040d8f9f1cc55edbba6/packages/types-dev/index.d.ts#L90)

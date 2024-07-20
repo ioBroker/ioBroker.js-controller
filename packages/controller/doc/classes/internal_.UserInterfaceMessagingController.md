@@ -35,7 +35,7 @@
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:69](https://github.com/ioBroker/ioBroker.js-controller/blob/15b63baad7cacbc59edebce9945e4c2f83b7912e/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L69)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:69](https://github.com/ioBroker/ioBroker.js-controller/blob/0e3f4a4745f0024873156040d8f9f1cc55edbba6/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L69)
 
 ## Methods
 
@@ -57,7 +57,7 @@ Register subscription from new client
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/15b63baad7cacbc59edebce9945e4c2f83b7912e/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L116)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/0e3f4a4745f0024873156040d8f9f1cc55edbba6/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L116)
 
 ___
 
@@ -80,7 +80,7 @@ It contains an array of types which should be unsubscribed
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:159](https://github.com/ioBroker/ioBroker.js-controller/blob/15b63baad7cacbc59edebce9945e4c2f83b7912e/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L159)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:159](https://github.com/ioBroker/ioBroker.js-controller/blob/0e3f4a4745f0024873156040d8f9f1cc55edbba6/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L159)
 
 ___
 
@@ -102,7 +102,7 @@ Send a message to all active clients
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:103](https://github.com/ioBroker/ioBroker.js-controller/blob/15b63baad7cacbc59edebce9945e4c2f83b7912e/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L103)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:103](https://github.com/ioBroker/ioBroker.js-controller/blob/0e3f4a4745f0024873156040d8f9f1cc55edbba6/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L103)
 
 ___
 
@@ -124,4 +124,4 @@ Send a message to the given clientId
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:82](https://github.com/ioBroker/ioBroker.js-controller/blob/15b63baad7cacbc59edebce9945e4c2f83b7912e/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L82)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:82](https://github.com/ioBroker/ioBroker.js-controller/blob/0e3f4a4745f0024873156040d8f9f1cc55edbba6/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L82)
