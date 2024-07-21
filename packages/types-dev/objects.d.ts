@@ -702,6 +702,8 @@ declare global {
             platform: 'Javascript/Node.js';
             /** The keys of common attributes (e.g. `history`) which are not deleted in a `setObject` call even if they are not present. Deletion must be done explicitly by setting them to `null`. */
             preserveSettings?: string | string[];
+            /** Url of the ReadMe file */
+            readme?: string;
             /** Which adapters must be restarted after installing or updating this adapter. */
             restartAdapters?: string[];
             /** CRON schedule to restart mode `daemon` adapters */
