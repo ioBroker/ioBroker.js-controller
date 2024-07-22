@@ -510,8 +510,6 @@ declare global {
             name: string;
             url: string;
             components: string[];
-            /** The vis widget does not support the listed major versions of vis */
-            ignoreInVersions: number[];
         }
 
         type PaidLicenseType = 'paid' | 'commercial' | 'limited';
@@ -732,7 +730,10 @@ declare global {
             unsafePerm?: true;
             /** The available version in the ioBroker repo. */
             version: string;
-            visWidgets?: Record<string, VisWidget>;
+            /** The vis widget does not support the listed major versions of vis */
+            visWidgets?: Record<string, VisWidget> | { ignoreInVersions?: number[] };
+            /** If `true`, the adapter will be started if any value is written into `system.adapter.<name>.<instance>.wakeup. Normally, the adapter should stop after processing the event. */
+            wakeup?: boolean;
             /** Include the adapter version in the URL of the web adapter, e.g. `http://ip:port/1.2.3/material` instead of `http://ip:port/material` */
             webByVersion?: boolean;
             /** Whether the web server in this adapter can be extended with plugin/extensions */
