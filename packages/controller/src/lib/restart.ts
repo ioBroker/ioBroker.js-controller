@@ -1,7 +1,6 @@
 import { spawn } from 'node:child_process';
-import { exec } from 'node:child_process';
 import os from 'node:os';
-import { getRootDir } from '@iobroker/js-controller-common-db/tools';
+import { execAsync, getRootDir } from '@iobroker/js-controller-common-db/tools';
 import path from 'node:path';
 import url from 'node:url';
 
@@ -10,38 +9,29 @@ import url from 'node:url';
  *
  * @param callback callback to execute after restart is triggered
  */
-export default function restart(callback?: () => void): void {
+export default async function restart(callback?: () => void): Promise<void> {
     let cmd;
     let args;
     if (os.platform() === 'win32') {
-        // On Windows, we use powershell to restart the service, because execution of bat files
-        // is no more possible
+        // On Windows, we use powershell to restart the service, because execution of bat files is no more possible
         const envPath = path.join(getRootDir(), '.env').replaceAll('\\', '\\\\');
-        cmd =
-            'powershell -Command ' +
-            '"$envPath = \\"' +
-            envPath +
-            '\\"; ' +
-            '$iobServiceName = \\"ioBroker\\"; ' +
-            'if (Test-Path $envPath){' +
-            '  foreach ($line in Get-Content $envPath){' +
-            '    $line = $line.Trim(); ' +
-            '    if ($line -match \\"^\\s*iobservicename\\s*=\\s*(.+)\\s*$\\"){' +
-            '      $iobServiceName = $matches[1].Trim(); break;' +
-            '    }' +
-            '  }' +
-            '}' +
-            'Write-Output \\"Restarting service $iobServiceName.exe\\";' +
-            'Restart-Service \\"$iobServiceName.exe\\" -Force"';
-        exec(cmd, (error, stdout, stderr) => {
-            if (error) {
-                console.error(`Error occurred: ${error.toString()}`);
-            }
-            if (stderr) {
-                console.error(`Error occurred: ${stderr}`);
-            }
-            console.log(`OK: ${stdout}`);
-        });
+        cmd = `powershell -Command "$envPath = \\"${envPath}\\"; 
+        $iobServiceName = \\"ioBroker\\"; 
+        if (Test-Path $envPath) {  
+          foreach ($line in Get-Content $envPath) {    
+            $line = $line.Trim(); 
+            if ($line -match \\"^\\s*iobservicename\\s*=\\s*(.+)\\s*$\\") {      
+                $iobServiceName = $matches[1].Trim(); break;   
+            }  
+          }
+        }
+        Write-Output \\"Restarting service $iobServiceName.exe\\";Restart-Service \\"$iobServiceName.exe\\" -Force"`;
+
+        try {
+            await execAsync(cmd);
+        } catch (e) {
+            console.error(`Restart failed: ${e.message}`);
+        }
     } else {
         // Unix has a global ioBroker binary that delegates to the init system
         // We need to call that, so we don't have two instances of ioBroker running
