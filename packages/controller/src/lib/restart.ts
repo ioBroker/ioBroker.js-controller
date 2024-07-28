@@ -15,17 +15,20 @@ export default async function restart(callback?: () => void): Promise<void> {
     if (os.platform() === 'win32') {
         // On Windows, we use powershell to restart the service, because execution of bat files is no more possible
         const envPath = path.join(getRootDir(), '.env').replaceAll('\\', '\\\\');
-        cmd = `powershell -Command "$envPath = \\"${envPath}\\"; 
-        $iobServiceName = \\"ioBroker\\"; 
-        if (Test-Path $envPath) {  
-          foreach ($line in Get-Content $envPath) {    
-            $line = $line.Trim(); 
-            if ($line -match \\"^\\s*iobservicename\\s*=\\s*(.+)\\s*$\\") {      
-                $iobServiceName = $matches[1].Trim(); break;   
-            }  
+        cmd = `powershell -Command "$envPath = \\"${envPath}\\";
+        $iobServiceName = \\"ioBroker\\";
+        if (Test-Path $envPath) {
+          foreach ($line in Get-Content $envPath) {
+            $line = $line.Trim();
+            if ($line -match \\"^\\s*iobservicename\\s*=\\s*(.+)\\s*$\\") {
+                $iobServiceName = $matches[1].Trim(); break;
+            }
           }
         }
         Write-Output \\"Restarting service $iobServiceName.exe\\";Restart-Service \\"$iobServiceName.exe\\" -Force"`;
+
+        // Remove line breaks, because the powershell command will fail otherwise
+        cmd = cmd.replaceAll('\r\n', ' ').replaceAll('\n', ' ').replaceAll('\r', ' ');
 
         try {
             await execAsync(cmd);
