@@ -28,7 +28,7 @@ export default async function restart(callback?: () => void): Promise<void> {
         Write-Output \\"Restarting service $iobServiceName.exe\\";Restart-Service \\"$iobServiceName.exe\\" -Force"`;
 
         // Remove line breaks, because the powershell command will fail otherwise
-        cmd = cmd.replaceAll('\r\n', ' ').replaceAll('\n', ' ').replaceAll('\r', ' ');
+        cmd = cmd.replace(/[\r\n]+/gm, ' ');
 
         try {
             await execAsync(cmd);
