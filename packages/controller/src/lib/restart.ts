@@ -27,6 +27,8 @@ export default async function restart(callback?: () => void): Promise<void> {
         }
         Write-Output \\"Restarting service $iobServiceName.exe\\";Restart-Service \\"$iobServiceName.exe\\" -Force"`;
 
+        cmd = cmd.replace(/[\r\n]+/gm, '');
+
         try {
             await execAsync(cmd);
         } catch (e) {
