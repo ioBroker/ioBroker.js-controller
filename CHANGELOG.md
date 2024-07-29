@@ -4,6 +4,10 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (foxriver76) clear package update notification if no updates are present anymore
+* (Gaspode69) fixed restarting controller on Windows systems
+
 ## 6.0.9 (2024-07-20) - Kiera
 * (foxriver76) provide method `getAdapterScopedPackageIdentifier` for adapters
 
