@@ -12,7 +12,7 @@ interface GetRepositoryOptions {
 }
 
 /**
- * Get json of the given repository
+ * Get JSON of the given repository
  *
  * @param options Repository specific options
  */
