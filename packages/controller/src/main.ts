@@ -5714,6 +5714,10 @@ async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promis
  * Check for updatable OS packages and register them as notification
  */
 async function listUpdatableOsPackages(): Promise<void> {
+    if (tools.isDocker()) {
+        return;
+    }
+
     const packManager = new PacketManager();
     await packManager.ready();
 
