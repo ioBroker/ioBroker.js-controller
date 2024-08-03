@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "js-controller",
-    "version": "6.0.9",
+    "version": "6.0.10",
     "platform": "Javascript/Node.js",
     "controller": true,
     "mode": "daemon",
