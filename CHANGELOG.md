@@ -5,6 +5,7 @@
 -->
 
 ## __WORK IN PROGRESS__
+* (foxriver76) do not check for OS updates on Docker installations
 * (foxriver76) clear package update notification if no updates are present anymore
 * (Gaspode69) fixed restarting controller on Windows systems
 
