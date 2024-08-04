@@ -1,7 +1,7 @@
 /**
  *      States DB in redis - Client
  *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
  *      Copyright 2013-2014 hobbyquaker
  *
  *      MIT License

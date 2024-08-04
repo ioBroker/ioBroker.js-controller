@@ -2,7 +2,7 @@
  *
  *      password hash and check
  *
- *      7'2014-2022 Bluefox <dogafox@gmail.com>
+ *      7'2014-2024 Bluefox <dogafox@gmail.com>
  *             2014 hobbyquaker <hq@ccu.io>
  *
  *      derived from https://github.com/florianheinemann/password-hash-and-salt/ (MIT License)
