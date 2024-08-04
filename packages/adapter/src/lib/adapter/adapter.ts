@@ -9667,13 +9667,9 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    private async _removeAliasSubscribe(
-        sourceId: string,
-        aliasObj: number | AliasTargetEntry,
-        callback?: () => void
-    ): Promise<void> {
+    private async _removeAliasSubscribe(sourceId: string, aliasObj: number | AliasTargetEntry): Promise<void> {
         if (!this.aliases.has(sourceId)) {
-            return tools.maybeCallback(callback);
+            return;
         }
 
         // remove from targets array
@@ -9688,7 +9684,6 @@ export class AdapterClass extends EventEmitter {
                 await this.#states!.unsubscribe(sourceId);
             }
         }
-        return tools.maybeCallback(callback);
     }
 
     subscribeForeignStates(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
@@ -11161,15 +11156,14 @@ export class AdapterClass extends EventEmitter {
 
                                 // if linked ID changed
                                 if (newSourceId !== sourceId) {
-                                    this._removeAliasSubscribe(sourceId, targetAlias, async () => {
-                                        try {
-                                            await this._addAliasSubscribe(obj, targetAlias.pattern);
-                                        } catch (e) {
-                                            this._logger.error(
-                                                `${this.namespaceLog} Could not add alias subscription: ${e.message}`
-                                            );
-                                        }
-                                    });
+                                    await this._removeAliasSubscribe(sourceId, targetAlias);
+                                    try {
+                                        await this._addAliasSubscribe(obj, targetAlias.pattern);
+                                    } catch (e) {
+                                        this._logger.error(
+                                            `${this.namespaceLog} Could not add alias subscription: ${e.message}`
+                                        );
+                                    }
                                 } else {
                                     // update attributes
                                     targetAlias.min = obj.common.min;
@@ -11180,7 +11174,7 @@ export class AdapterClass extends EventEmitter {
                             } else {
                                 // link was deleted
                                 // remove from targets array
-                                this._removeAliasSubscribe(sourceId, targetAlias);
+                                await this._removeAliasSubscribe(sourceId, targetAlias);
                             }
                         }
                     }
