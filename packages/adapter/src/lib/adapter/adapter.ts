@@ -7849,7 +7849,7 @@ export class AdapterClass extends EventEmitter {
                         aliasId,
                         tools.formatAliasValue({
                             sourceCommon: obj?.common,
-                            targetCommon: targetObj?.common as any,
+                            targetCommon: targetObj?.common,
                             state: stateObj as ioBroker.State,
                             logger: this._logger,
                             logNamespace: this.namespaceLog,
@@ -9600,100 +9600,70 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    private async _addAliasSubscribe(
-        aliasObj: ioBroker.StateObject,
-        pattern: string,
-        callback?: ioBroker.ErrorCallback
-    ): Promise<void> {
-        if (aliasObj?.common?.alias?.id) {
-            if (aliasObj.type !== 'state') {
-                this._logger.warn(
-                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                    `${this.namespaceLog} Expected alias ${aliasObj._id} to be of type "state", got "${aliasObj.type}"`
-                );
-                return tools.maybeCallbackWithError(
-                    callback,
-                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                    new Error(`Expected alias ${aliasObj._id} to be of type "state", got "${aliasObj.type}"`)
-                );
-            }
+    /**
+     * Add subscription for given alias, if it is not a state it will be ignored
+     *
+     * @param aliasObj the alias object
+     * @param pattern pattern to subscribe for
+     */
+    private async _addAliasSubscribe(aliasObj: ioBroker.AnyObject, pattern: string): Promise<void> {
+        if (aliasObj.type !== 'state') {
+            // no state types do not need to be subscribed
+            return;
+        }
 
-            // id can be string or can have attribute read
-            const sourceId = tools.isObject(aliasObj.common.alias.id)
-                ? aliasObj.common.alias.id.read
-                : aliasObj.common.alias.id;
-
-            // validate here because we use objects/states db directly
-            try {
-                this._utils.validateId(sourceId, true, null);
-            } catch (e) {
-                this._logger.warn(`${this.namespaceLog} Error validating alias id of ${aliasObj._id}: ${e.message}`);
-                return tools.maybeCallbackWithError(
-                    callback,
-                    new Error(`Error validating alias id of ${aliasObj._id}: ${e.message}`)
-                );
-            }
-
-            let aliasDetails;
-            if (!this.aliases.has(sourceId)) {
-                aliasDetails = { source: null, targets: [] };
-                this.aliases.set(sourceId, aliasDetails);
-            } else {
-                aliasDetails = this.aliases.get(sourceId) || { source: null, targets: [] };
-            }
-
-            const targetEntry = {
-                alias: deepClone(aliasObj.common.alias),
-                id: aliasObj._id,
-                pattern,
-                type: aliasObj.common.type,
-                max: aliasObj.common.max,
-                min: aliasObj.common.min,
-                unit: aliasObj.common.unit
-            };
-
-            aliasDetails.targets.push(targetEntry);
-
-            if (!aliasDetails.source) {
-                let sourceObj;
-                try {
-                    await this.#states!.subscribe(sourceId);
-                    // we ignore permissions on the source object and thus get it as admin user
-                    sourceObj = await this.#objects!.getObject(sourceId, { user: SYSTEM_ADMIN_USER });
-                } catch (e) {
-                    return tools.maybeCallbackWithError(callback, e);
-                }
-
-                if (sourceObj?.common) {
-                    if (!this.aliases.has(sourceObj._id)) {
-                        // TODO what means this, we ensured alias existed, did some async stuff now it's gone -> alias has been deleted?
-                        this._logger.error(
-                            `${
-                                this.namespaceLog
-                            } Alias subscription error. Please check your alias definitions: sourceId=${sourceId}, sourceObj=${JSON.stringify(
-                                sourceObj
-                            )}`
-                        );
-                    } else {
-                        aliasDetails.source = {
-                            min: sourceObj.common.min,
-                            max: sourceObj.common.max,
-                            type: sourceObj.common.type,
-                            unit: sourceObj.common.unit
-                        };
-                    }
-                }
-
-                return tools.maybeCallback(callback);
-            } else {
-                return tools.maybeCallback(callback);
-            }
-        } else if (aliasObj && aliasObj.type === 'state') {
-            // if state and no id given -> if no state just ignore it
+        if (!aliasObj.common?.alias?.id) {
+            // if state and no id given
             this._logger.warn(`${this.namespaceLog} Alias ${aliasObj._id} has no target 5`);
-            return tools.maybeCallbackWithError(callback, new Error(`Alias ${aliasObj._id} has no target`));
+            throw new Error(`Alias ${aliasObj._id} has no target`);
+        }
+
+        // id can be string or can have attribute read
+        const sourceId = tools.isObject(aliasObj.common.alias.id)
+            ? aliasObj.common.alias.id.read
+            : aliasObj.common.alias.id;
+
+        // validate here because we use objects/states db directly
+        try {
+            this._utils.validateId(sourceId, true, null);
+        } catch (e) {
+            throw new Error(`Error validating alias id of ${aliasObj._id}: ${e.message}`);
+        }
+
+        let aliasDetails;
+        if (!this.aliases.has(sourceId)) {
+            aliasDetails = { source: undefined, targets: [] };
+            this.aliases.set(sourceId, aliasDetails);
         } else {
-            return tools.maybeCallback(callback);
+            aliasDetails = this.aliases.get(sourceId)!;
+        }
+
+        const targetEntry = {
+            alias: deepClone(aliasObj.common.alias),
+            id: aliasObj._id,
+            pattern,
+            type: aliasObj.common.type,
+            max: aliasObj.common.max,
+            min: aliasObj.common.min,
+            unit: aliasObj.common.unit
+        };
+
+        aliasDetails.targets.push(targetEntry);
+
+        if (!aliasDetails.source) {
+            await this.#states!.subscribe(sourceId);
+            // we ignore permissions on the source object and thus get it as admin user
+            const sourceObj = await this.#objects!.getObject(sourceId, { user: SYSTEM_ADMIN_USER });
+
+            // if we have a common and the alias has not been removed in-between
+            if (sourceObj?.common && this.aliases.has(sourceObj._id)) {
+                aliasDetails.source = {
+                    min: sourceObj.common.min,
+                    max: sourceObj.common.max,
+                    type: sourceObj.common.type,
+                    unit: sourceObj.common.unit
+                };
+            }
         }
     }
 
@@ -9852,8 +9822,7 @@ export class AdapterClass extends EventEmitter {
 
                 for (const aliasObj of aliasObjs) {
                     if (aliasObj) {
-                        // @ts-expect-error check if alias subscribe also takes non-state objects and then ignores
-                        promises.push(new Promise(resolve => this._addAliasSubscribe(aliasObj, aliasObj._id, resolve)));
+                        promises.push(this._addAliasSubscribe(aliasObj, aliasObj._id));
                     }
                 }
             }
@@ -9891,8 +9860,7 @@ export class AdapterClass extends EventEmitter {
                         // If alias
                         if (id.startsWith(ALIAS_STARTS_WITH)) {
                             const aliasObj = objs[id];
-                            // @ts-expect-error
-                            promises.push(new Promise(resolve => this._addAliasSubscribe(aliasObj, pattern, resolve)));
+                            promises.push(this._addAliasSubscribe(aliasObj, pattern));
                         }
                     }
 
@@ -9947,8 +9915,8 @@ export class AdapterClass extends EventEmitter {
             try {
                 const aliasObj = await this.#objects.getObjectAsync(pattern, options);
                 if (aliasObj) {
-                    // cb will be called, but await for catching promisified part
-                    await this._addAliasSubscribe(aliasObj as ioBroker.StateObject, pattern, callback);
+                    await this._addAliasSubscribe(aliasObj, pattern);
+                    return tools.maybeCallback(callback);
                 } else {
                     return tools.maybeCallback(callback);
                 }
@@ -10994,11 +10962,11 @@ export class AdapterClass extends EventEmitter {
                     }
                 } else if (!this._stopInProgress && this.adapterReady && this.aliases.has(id)) {
                     // If adapter is ready and for this ID exist some alias links
-                    const alias = this.aliases.get(id);
+                    const alias = this.aliases.get(id)!;
                     /** Prevent multiple publishes if multiple pattern contain this alias id */
                     const uniqueTargets = new Set<string>();
 
-                    for (const target of alias!.targets) {
+                    for (const target of alias.targets) {
                         const targetId = target.id;
                         if (uniqueTargets.has(targetId)) {
                             continue;
@@ -11006,7 +10974,7 @@ export class AdapterClass extends EventEmitter {
 
                         uniqueTargets.add(targetId);
 
-                        const source = alias!.source!;
+                        const source = alias!.source;
 
                         const aState = state
                             ? tools.formatAliasValue({
@@ -11195,10 +11163,7 @@ export class AdapterClass extends EventEmitter {
                                 if (newSourceId !== sourceId) {
                                     this._removeAliasSubscribe(sourceId, targetAlias, async () => {
                                         try {
-                                            await this._addAliasSubscribe(
-                                                obj as ioBroker.StateObject,
-                                                targetAlias.pattern
-                                            );
+                                            await this._addAliasSubscribe(obj, targetAlias.pattern);
                                         } catch (e) {
                                             this._logger.error(
                                                 `${this.namespaceLog} Could not add alias subscription: ${e.message}`
@@ -11221,7 +11186,7 @@ export class AdapterClass extends EventEmitter {
                     }
 
                     // it's a new alias, we add it to our subscription
-                    if (isNewAlias) {
+                    if (isNewAlias && obj) {
                         for (const aliasPattern of this.aliasPatterns) {
                             // check if it's in our subs range, if so add it
                             const testPattern =
@@ -11234,7 +11199,7 @@ export class AdapterClass extends EventEmitter {
                                 (testPattern instanceof RegExp && testPattern.test(id))
                             ) {
                                 try {
-                                    await this._addAliasSubscribe(obj as ioBroker.StateObject, id);
+                                    await this._addAliasSubscribe(obj, id);
                                 } catch (e) {
                                     this._logger.warn(
                                         `${this.namespaceLog} Could not add alias subscription: ${e.message}`
