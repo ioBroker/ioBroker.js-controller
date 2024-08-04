@@ -9630,14 +9630,6 @@ export class AdapterClass extends EventEmitter {
             throw new Error(`Error validating alias id of ${aliasObj._id}: ${e.message}`);
         }
 
-        let aliasDetails;
-        if (!this.aliases.has(sourceId)) {
-            aliasDetails = { source: undefined, targets: [] };
-            this.aliases.set(sourceId, aliasDetails);
-        } else {
-            aliasDetails = this.aliases.get(sourceId)!;
-        }
-
         const targetEntry = {
             alias: deepClone(aliasObj.common.alias),
             id: aliasObj._id,
@@ -9648,7 +9640,15 @@ export class AdapterClass extends EventEmitter {
             unit: aliasObj.common.unit
         };
 
-        aliasDetails.targets.push(targetEntry);
+        let aliasDetails: AliasDetails;
+
+        if (!this.aliases.has(sourceId)) {
+            aliasDetails = { targets: [] };
+            // add the alias before doing anything async, so if a delete comes in between we can detect it
+            this.aliases.set(sourceId, aliasDetails);
+        } else {
+            aliasDetails = this.aliases.get(sourceId)!;
+        }
 
         if (!aliasDetails.source) {
             await this.#states!.subscribe(sourceId);
@@ -9665,21 +9665,32 @@ export class AdapterClass extends EventEmitter {
                 };
             }
         }
+
+        // add the alias target after we have ensured that we have the source set
+        aliasDetails.targets.push(targetEntry);
     }
 
-    private async _removeAliasSubscribe(sourceId: string, aliasObj: number | AliasTargetEntry): Promise<void> {
+    /**
+     * Remove an alias subscribe
+     *
+     * @param sourceId id of the source object
+     * @param aliasObjOrIdx the alias target or the index of the targets array
+     */
+    private async _removeAliasSubscribe(sourceId: string, aliasObjOrIdx: number | AliasTargetEntry): Promise<void> {
         if (!this.aliases.has(sourceId)) {
             return;
         }
 
+        const alias = this.aliases.get(sourceId)!;
+
         // remove from targets array
-        const pos = typeof aliasObj === 'number' ? aliasObj : this.aliases.get(sourceId)!.targets.indexOf(aliasObj);
+        const pos = typeof aliasObjOrIdx === 'number' ? aliasObjOrIdx : alias.targets.indexOf(aliasObjOrIdx);
 
         if (pos !== -1) {
-            this.aliases.get(sourceId)!.targets.splice(pos, 1);
+            alias.targets.splice(pos, 1);
 
             // unsubscribe if no more aliases exists
-            if (!this.aliases.get(sourceId)!.targets.length) {
+            if (!alias.targets.length) {
                 this.aliases.delete(sourceId);
                 await this.#states!.unsubscribe(sourceId);
             }
@@ -9892,23 +9903,9 @@ export class AdapterClass extends EventEmitter {
                 this.#objects.subscribe(`${ALIAS_STARTS_WITH}*`);
             }
 
-            // aliases['sourceId'] = {
-            //     source: {common attributes},
-            //     targets: [
-            //         {
-            //             alias: {},
-            //             id: 'aliasId',
-            //             pattern: 'some pattern',
-            //             type: stateType,
-            //             max: number,
-            //             min: number,
-            //         }
-            //     ]
-            // };
-
             // just read one alias Object
             try {
-                const aliasObj = await this.#objects.getObjectAsync(pattern, options);
+                const aliasObj = await this.#objects.getObject(pattern, options);
                 if (aliasObj) {
                     await this._addAliasSubscribe(aliasObj, pattern);
                     return tools.maybeCallback(callback);
