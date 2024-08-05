@@ -120,4 +120,4 @@ Just a dummy, always responds with `null`.
 
 ## License
 Apache 2.0
-Copyright 2018-2023 bluefox <dogafox@gmail.com>  
+Copyright 2018-2024 bluefox <dogafox@gmail.com>  

@@ -4,4 +4,4 @@ It makes sense to place methods here too, which require typings from the databas
 
 ## License
 MIT
-Copyright 2018-2023 bluefox <dogafox@gmail.com>  
+Copyright 2018-2024 bluefox <dogafox@gmail.com>  

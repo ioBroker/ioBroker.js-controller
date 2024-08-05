@@ -3,7 +3,7 @@
  *
  *      Master multihost functionality
  *
- *      Copyright 2014-2022 bluefox <dogafox@gmail.com>,
+ *      Copyright 2014-2024 bluefox <dogafox@gmail.com>,
  *      MIT License
  *
  */
