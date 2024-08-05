@@ -3,7 +3,7 @@
  *
  *      Controls Adapter-Processes
  *
- *      Copyright 2013-2023 bluefox <dogafox@gmail.com>,
+ *      Copyright 2013-2024 bluefox <dogafox@gmail.com>,
  *                2013-2014 hobbyquaker <hq@ccu.io>
  *      MIT License
  *
@@ -5302,7 +5302,7 @@ export async function init(compactGroupId?: number): Promise<void> {
         logger.info(
             `${hostLogPrefix} ${tools.appName}.js-controller version ${version} ${ioPackage.common.name} starting`
         );
-        logger.info(`${hostLogPrefix} Copyright (c) 2014-2023 bluefox, 2014 hobbyquaker`);
+        logger.info(`${hostLogPrefix} Copyright (c) 2014-2024 bluefox, 2014 hobbyquaker`);
         logger.info(`${hostLogPrefix} hostname: ${hostname}, node: ${process.version}`);
         logger.info(`${hostLogPrefix} ip addresses: ${tools.findIPs().join(' ')}`);
 

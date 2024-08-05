@@ -2,7 +2,7 @@
  * Object DB in REDIS - Client
  *
  * MIT License
- * Written by bluefox <dogafox@gmail.com>, 2014-2022
+ * Written by bluefox <dogafox@gmail.com>, 2014-2024
  *
  */
 // @ts-expect-error no ts module

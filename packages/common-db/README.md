@@ -3,4 +3,4 @@ The Library contains the common utils for the ioBroker controller which can be u
 
 ## License
 MIT
-Copyright 2018-2023 bluefox <dogafox@gmail.com>  
+Copyright 2018-2024 bluefox <dogafox@gmail.com>  

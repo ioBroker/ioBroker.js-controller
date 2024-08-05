@@ -3,4 +3,4 @@ The Library contains the cli classes of ioBroker.
 
 ## License
 MIT
-Copyright 2018-2023 bluefox <dogafox@gmail.com>  
+Copyright 2018-2024 bluefox <dogafox@gmail.com>  
