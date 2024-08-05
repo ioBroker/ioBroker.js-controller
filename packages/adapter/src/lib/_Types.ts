@@ -200,7 +200,7 @@ export interface InternalFormatDateOptions {
 }
 
 export interface AliasDetails {
-    source: AliasDetailsSource | null;
+    source?: AliasDetailsSource;
     targets: AliasTargetEntry[];
 }
 
