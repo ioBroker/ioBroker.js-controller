@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 6.0.10 (2024-08-05)
 * (foxriver76) fixed "alias subscription error" log 
 * (foxriver76) do not check for OS updates on Docker installations
 * (foxriver76) clear package update notification if no updates are present anymore
