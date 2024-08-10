@@ -50,7 +50,7 @@ export interface AdapterOptions {
     error?: ioBroker.ErrorHandler;
     /**
      * Absolute paths to the i18n directories, required if the `adapter.translate` method will be used
-     * It is recommended to place a  folder named "i18n" in the root of your project if you want to use translations
+     * It is recommended to place a folder named "i18n" in the root of your project if you want to use translations
      */
     translationDirectories?: string[];
 }

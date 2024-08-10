@@ -1,7 +1,6 @@
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import path from 'node:path';
 import fs from 'node:fs/promises';
-import { SYSTEM_CONFIG_ID } from '@/lib/adapter/constants.js';
 
 interface TranslationManagerOptions {
     /** The objects DB instance */
