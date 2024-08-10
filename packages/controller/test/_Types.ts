@@ -1,9 +1,9 @@
-import type { AdapterClass } from '@iobroker/js-controller-adapter';
+import type { AdapterClass, AdapterOptions } from '@iobroker/js-controller-adapter';
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
 
 export interface TestContext extends Mocha.Context {
-    adapter: AdapterClass;
+    adapter: AdapterClass<AdapterOptions>;
     states: StatesInRedisClient;
     objects: ObjectsInRedisClient;
     /** Allow to unregister handler by setting null */
