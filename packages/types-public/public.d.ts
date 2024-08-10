@@ -4,7 +4,7 @@ import type { AdapterClass, AdapterOptions as _AdapterOptions } from './build/ty
 
 declare global {
     namespace ioBroker {
-        type Adapter = AdapterClass;
+        type Adapter<TOptions extends _AdapterOptions | string> = AdapterClass<TOptions>;
 
         type AdapterOptions = _AdapterOptions;
     }

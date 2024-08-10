@@ -3,7 +3,8 @@ import { clearTimeout } from 'node:timers';
 declare function assertNever(val: never): never;
 
 // Let the tests begin
-declare let adapter: ioBroker.Adapter;
+declare let adapter: ioBroker.Adapter<{ name: 'test' }>;
+declare let adapterWithTranslator: ioBroker.Adapter<{ name: 'test'; translationDirectories: ['superI18nDir'] }>;
 
 // Test EventEmitter definitions
 adapter
@@ -1011,6 +1012,13 @@ async () => {
     // This should not error
     states.foo;
 };
+
+// Test translator
+const notAvailableTranslation = adapter.translate('test');
+assertNever(notAvailableTranslation);
+
+const translated = adapterWithTranslator.translate('text');
+translated.substring(1);
 
 // Test registerNotification
 // @ts-expect-error known scope can only have defined category

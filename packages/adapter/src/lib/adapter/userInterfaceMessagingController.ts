@@ -16,7 +16,7 @@ export interface HeartbeatTimer {
 
 export interface MessagingControllerOptions {
     /** The adapter using this messaging controller */
-    adapter: AdapterClass;
+    adapter: AdapterClass<any>;
     /** Callback to call if successfully subscribed */
     subscribeCallback?: UserInterfaceClientSubscribeHandler;
     /** Callback to call if successfully unsubscribed */
@@ -57,7 +57,7 @@ interface UserInterfaceMessage {
 
 export class UserInterfaceMessagingController {
     /** The adapter using this messaging controller */
-    private readonly adapter: AdapterClass;
+    private readonly adapter: AdapterClass<any>;
     /** Callback to call if successfully subscribed */
     private readonly unsubscribeCallback?: UserInterfaceClientUnsubscribeHandler;
     /** Callback to call if successfully unsubscribed */

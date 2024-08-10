@@ -147,7 +147,8 @@ tools.ensureDNSOrder();
 /**
  * Here we define dynamically created methods
  */
-export interface AdapterClass {
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export interface AdapterClass<TOptions extends AdapterOptions | string> {
     on(event: 'stateChange', listener: ioBroker.StateChangeHandler): this;
     on(event: 'objectChange', listener: ioBroker.ObjectChangeHandler): this;
     on(event: 'fileChange', listener: ioBroker.FileChangeHandler): this;
@@ -608,7 +609,7 @@ export interface AdapterClass {
  *  _initObjects => _initStates => _prepareInitAdapter => _initAdapter => _initLogging => _createInstancesObjects => ready
  *
  */
-export class AdapterClass extends EventEmitter {
+export class AdapterClass<TOptions extends AdapterOptions | string> extends EventEmitter {
     /** Cache of all deprecations which have already been transmitted */
     private reportedDeprecations = new Set<string>();
     /** Instance to access states DB */
@@ -740,7 +741,7 @@ export class AdapterClass extends EventEmitter {
     /** Controller for messaging related functionality */
     private readonly uiMessagingController: UserInterfaceMessagingController;
 
-    constructor(options: AdapterOptions | string) {
+    constructor(options: TOptions) {
         super();
 
         // enable "const adapter = require(__dirname + '/../../lib/adapter.js')('adapterName');" call
@@ -1326,7 +1327,7 @@ export class AdapterClass extends EventEmitter {
         return import(internalModuleName);
     }
 
-    translate(key: string): string;
+    translate(key: string): TOptions extends { translationDirectories: string[] } ? string : never;
 
     /**
      * Translate given key to current configured language
