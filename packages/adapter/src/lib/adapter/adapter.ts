@@ -139,6 +139,7 @@ import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constan
 import type { CommandResult } from '@alcalzone/pak';
 
 import * as url from 'node:url';
+import type { TranslationManager } from '@/lib/adapter/TranslationManager.js';
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 tools.ensureDNSOrder();
@@ -622,6 +623,8 @@ export class AdapterClass extends EventEmitter {
     private readonly _config: Record<string, any>;
     private readonly _options: AdapterOptions;
     private readonly startedInCompactMode: boolean;
+    /** The translation manager instance */
+    private readonly translationManager?: TranslationManager;
     /** List of instances which want our logs */
     private readonly logList = new Set<string>();
     private readonly aliases = new Map<string, AliasDetails>();
@@ -1321,6 +1324,24 @@ export class AdapterClass extends EventEmitter {
         const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
         // TODO: if https://github.com/microsoft/TypeScript/issues/54022 ever gets resolved, we should improve the return type
         return import(internalModuleName);
+    }
+
+    translate(key: string): string;
+
+    /**
+     * Translate given key to current configured language
+     * This requires `translationDirectories` to be set in the adapter options
+     *
+     * @param key the key to return the translation for
+     */
+    translate(key: unknown): string {
+        if (!this.translationManager) {
+            throw new Error('TranslationManager requires translation directories to be set');
+        }
+
+        Validator.assertString(key, 'key');
+
+        return this.translationManager.translate(key);
     }
 
     // overload with real types

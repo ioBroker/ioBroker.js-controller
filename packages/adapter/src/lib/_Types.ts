@@ -48,6 +48,8 @@ export interface AdapterOptions {
     reconnect?: () => MaybePromise;
     /** Handler to handle uncaught exceptions, return true if no further handling required */
     error?: ioBroker.ErrorHandler;
+    /** Paths to the i18n directories`, required if the `adapter.translate` method will be used */
+    translationDirectories?: string[];
 }
 
 export type IoPackageInstanceObject =
