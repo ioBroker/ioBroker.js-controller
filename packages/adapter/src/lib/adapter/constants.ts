@@ -5,6 +5,7 @@ export const DEFAULT_SECRET = 'Zgfr56gFe87jJOM';
 export const ALIAS_STARTS_WITH = 'alias.';
 export const SYSTEM_ADMIN_USER = 'system.user.admin';
 export const SYSTEM_ADMIN_GROUP = 'system.group.administrator';
+export const SYSTEM_CONFIG_ID = 'system.config';
 export const ERROR_PERMISSION = 'permissionError';
 export const ACCESS_GROUP_READ = 0x40;
 export const ACCESS_GROUP_WRITE = 0x20;

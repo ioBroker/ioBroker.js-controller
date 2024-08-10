@@ -48,7 +48,10 @@ export interface AdapterOptions {
     reconnect?: () => MaybePromise;
     /** Handler to handle uncaught exceptions, return true if no further handling required */
     error?: ioBroker.ErrorHandler;
-    /** Paths to the i18n directories`, required if the `adapter.translate` method will be used */
+    /**
+     * Absolute paths to the i18n directories, required if the `adapter.translate` method will be used
+     * It is recommended to place a  folder named "i18n" in the root of your project if you want to use translations
+     */
     translationDirectories?: string[];
 }
 

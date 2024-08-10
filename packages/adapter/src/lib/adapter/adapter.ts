@@ -57,7 +57,8 @@ import {
     ACCESS_USER_READ,
     NO_PROTECT_ADAPTERS,
     STATE_QUALITY,
-    type SupportedFeature
+    type SupportedFeature,
+    SYSTEM_CONFIG_ID
 } from '@/lib/adapter/constants.js';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import type {
@@ -139,7 +140,7 @@ import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constan
 import type { CommandResult } from '@alcalzone/pak';
 
 import * as url from 'node:url';
-import type { TranslationManager } from '@/lib/adapter/TranslationManager.js';
+import { TranslationManager } from '@/lib/adapter/translationManager.js';
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 tools.ensureDNSOrder();
@@ -625,7 +626,7 @@ export class AdapterClass<TOptions extends AdapterOptions | string> extends Even
     private readonly _options: AdapterOptions;
     private readonly startedInCompactMode: boolean;
     /** The translation manager instance */
-    private readonly translationManager?: TranslationManager;
+    private translationManager?: TranslationManager;
     /** List of instances which want our logs */
     private readonly logList = new Set<string>();
     private readonly aliases = new Map<string, AliasDetails>();
@@ -1327,22 +1328,27 @@ export class AdapterClass<TOptions extends AdapterOptions | string> extends Even
         return import(internalModuleName);
     }
 
-    translate(key: string): TOptions extends { translationDirectories: string[] } ? string : never;
+    translate(
+        key: string,
+        placeholders?: Record<string, string>
+    ): TOptions extends { translationDirectories: string[] } ? string : never;
 
     /**
      * Translate given key to current configured language
      * This requires `translationDirectories` to be set in the adapter options
      *
      * @param key the key to return the translation for
+     * @param placeholders A dictionary of keys which will be replaced by their corresponding value
      */
-    translate(key: unknown): string {
+    translate(key: unknown, placeholders: unknown): string {
         if (!this.translationManager) {
             throw new Error('TranslationManager requires translation directories to be set');
         }
 
         Validator.assertString(key, 'key');
+        Validator.assertObject<Record<string, string>>(placeholders, 'placeholders');
 
-        return this.translationManager.translate(key);
+        return this.translationManager.translate(key, placeholders);
     }
 
     // overload with real types
@@ -2630,7 +2636,7 @@ export class AdapterClass<TOptions extends AdapterOptions | string> extends Even
         }
 
         try {
-            const data = await this.getForeignObjectAsync('system.config');
+            const data = await this.getForeignObjectAsync(SYSTEM_CONFIG_ID);
             if (data?.native) {
                 this._systemSecret = data.native.secret;
             }
@@ -9070,7 +9076,7 @@ export class AdapterClass<TOptions extends AdapterOptions | string> extends Even
             // read default history instance from system.config
             let data;
             try {
-                data = await this.getForeignObjectAsync('system.config', null);
+                data = await this.getForeignObjectAsync(SYSTEM_CONFIG_ID, null);
             } catch {
                 // ignore
             }
@@ -11094,20 +11100,19 @@ export class AdapterClass<TOptions extends AdapterOptions | string> extends Even
 
                 // Read dateformat if using of formatDate is announced
                 if (this._options.useFormatDate) {
-                    this.#objects.getObject('system.config', (err, data) => {
-                        if (data?.common) {
-                            this.dateFormat = data.common.dateFormat;
-                            this.isFloatComma = data.common.isFloatComma;
-                            this.language = data.common.language;
-                            this.longitude = data.common.longitude;
-                            this.latitude = data.common.latitude;
-                            this.defaultHistory = data.common.defaultHistory;
-                        }
-                        if (data?.native) {
-                            this._systemSecret = data.native.secret;
-                        }
-                        return tools.maybeCallback(cb);
-                    });
+                    const data = await this.#objects.getObject(SYSTEM_CONFIG_ID);
+                    if (data?.common) {
+                        this.dateFormat = data.common.dateFormat;
+                        this.isFloatComma = data.common.isFloatComma;
+                        this.language = data.common.language;
+                        this.longitude = data.common.longitude;
+                        this.latitude = data.common.latitude;
+                        this.defaultHistory = data.common.defaultHistory;
+                    }
+                    if (data?.native) {
+                        this._systemSecret = data.native.secret;
+                    }
+                    return tools.maybeCallback(cb);
                 } else {
                     return tools.maybeCallback(cb);
                 }
@@ -11122,7 +11127,7 @@ export class AdapterClass<TOptions extends AdapterOptions | string> extends Even
 
                         this._logger.warn(`${this.namespaceLog} Cannot connect/reconnect to objects DB. Terminating`);
                         this.terminate(EXIT_CODES.NO_ERROR);
-                    }, 4000);
+                    }, 4_000);
             },
             change: async (id, obj) => {
                 // System level object changes (and alias objects)
@@ -11139,18 +11144,20 @@ export class AdapterClass<TOptions extends AdapterOptions | string> extends Even
                     return;
                 }
 
-                // update language, dateFormat and comma
-                if (
-                    id === 'system.config' &&
-                    obj?.common &&
-                    (this._options.useFormatDate || this.defaultHistory !== undefined)
-                ) {
-                    this.dateFormat = obj.common.dateFormat;
-                    this.isFloatComma = obj.common.isFloatComma;
-                    this.language = obj.common.language;
-                    this.longitude = obj.common.longitude;
-                    this.latitude = obj.common.latitude;
-                    this.defaultHistory = obj.common.defaultHistory;
+                if (id === SYSTEM_CONFIG_ID && obj?.common) {
+                    if (this.translationManager) {
+                        await this.translationManager.updateLanguage(obj.common.language);
+                    }
+
+                    // update language, dateFormat and comma
+                    if (this._options.useFormatDate || this.defaultHistory !== undefined) {
+                        this.dateFormat = obj.common.dateFormat;
+                        this.isFloatComma = obj.common.isFloatComma;
+                        this.language = obj.common.language;
+                        this.longitude = obj.common.longitude;
+                        this.latitude = obj.common.latitude;
+                        this.defaultHistory = obj.common.defaultHistory;
+                    }
                 }
 
                 // if alias
@@ -11385,6 +11392,17 @@ export class AdapterClass<TOptions extends AdapterOptions | string> extends Even
      */
     private async _initAdapter(adapterConfig?: AdapterOptions | ioBroker.InstanceObject | null): Promise<void> {
         await this._initLogging();
+
+        if (this._options.translationDirectories && this.#objects) {
+            await this.#objects.subscribeAsync(SYSTEM_CONFIG_ID);
+
+            this.translationManager = new TranslationManager({
+                configDirs: this._options.translationDirectories,
+                objects: this.#objects
+            });
+
+            await this.translationManager.init();
+        }
 
         if (!this.pluginHandler) {
             return;

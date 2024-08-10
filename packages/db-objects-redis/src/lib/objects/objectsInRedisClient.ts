@@ -2633,7 +2633,7 @@ export class ObjectsInRedisClient {
         });
     }
 
-    subscribeUserAsync(pattern: string | string[], options: CallOptions): Promise<void> {
+    subscribeUserAsync(pattern: string | string[], options?: CallOptions): Promise<void> {
         return new Promise((resolve, reject) =>
             this.subscribeUser(pattern, options, err => (err ? reject(err) : resolve()))
         );
