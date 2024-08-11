@@ -57,8 +57,7 @@ import {
     ACCESS_USER_READ,
     NO_PROTECT_ADAPTERS,
     STATE_QUALITY,
-    type SupportedFeature,
-    SYSTEM_CONFIG_ID
+    type SupportedFeature
 } from '@/lib/adapter/constants.js';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import type {
@@ -136,7 +135,7 @@ import type {
     InternalStopParameters
 } from '@/lib/_Types.js';
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
-import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
+import { SYSTEM_ADAPTER_PREFIX, SYSTEM_CONFIG_ID } from '@iobroker/js-controller-common-db/constants';
 import type { CommandResult } from '@alcalzone/pak';
 
 import * as url from 'node:url';

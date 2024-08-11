@@ -5,6 +5,8 @@ import { spy } from 'sinon';
 import * as chai from 'chai';
 import * as sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
+import { SYSTEM_CONFIG_ID } from '@iobroker/js-controller-common-db/constants';
+import { setTimeout as wait } from 'node:timers/promises';
 
 chai.use(sinonChai.default);
 chai.use(chaiAsPromised);
@@ -609,9 +611,31 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
     it(context.name + ' ' + context.adapterShortName + ' translate', () => {
         const translated = context.adapter.translate('Device ID');
-        expect(translated).to.be.equal('Geräte ID');
+        expect(translated).to.be.equal('Device ID');
 
         const translatedWithPlaceholder = context.adapter.translate('Device ID of $device', { $device: 'SEC123' });
         expect(translatedWithPlaceholder).to.be.equal('Device ID of SEC123');
     });
+
+    it(
+        context.name + ' ' + context.adapterShortName + ' translate needs to respect language changes during runtime',
+        async () => {
+            const translatedEn = context.adapter.translate('Device ID');
+            expect(translatedEn).to.be.equal('Device ID');
+
+            const sysConfObj = await context.objects.getObject(SYSTEM_CONFIG_ID);
+
+            if (!sysConfObj) {
+                throw new Error('Could not get "system.config"');
+            }
+
+            sysConfObj.common.language = 'de';
+
+            await context.objects.setObject(SYSTEM_CONFIG_ID, sysConfObj);
+            await wait(500);
+
+            const translatedDe = context.adapter.translate('Device ID');
+            expect(translatedDe).to.be.equal('Geräte ID');
+        }
+    );
 }

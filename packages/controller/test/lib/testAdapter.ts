@@ -120,7 +120,7 @@ export default function testAdapter(options: Record<string, any>): void {
                 /** activate the log transporter to be tested */
                 logTransporter: true,
                 /** Provide translation method */
-                translationDirectories: [path.join(fileURLToPath(import.meta.url), '..', 'i18n')]
+                translationDirectories: [path.join(fileURLToPath(new URL('.', import.meta.url)), '..', 'i18n')]
             });
         });
     }
