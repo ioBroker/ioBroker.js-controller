@@ -11144,7 +11144,7 @@ export class AdapterClass<TOptions extends AdapterOptions | string> extends Even
                 }
 
                 if (id === SYSTEM_CONFIG_ID && obj?.common) {
-                    if (this.translationManager) {
+                    if (this.translationManager && obj.common.language) {
                         await this.translationManager.updateLanguage(obj.common.language);
                     }
 

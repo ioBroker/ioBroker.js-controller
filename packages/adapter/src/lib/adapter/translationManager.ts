@@ -19,6 +19,8 @@ export class TranslationManager {
     private readonly configDirs: string[];
     /** The actual translations */
     private translations = new Map<string, string>();
+    /** The currently loaded language */
+    private loadedLanguage?: ioBroker.Languages;
 
     constructor(options: TranslationManagerOptions) {
         this.objects = options.objects;
@@ -41,8 +43,13 @@ export class TranslationManager {
      * @param lang the language to load the translations for
      */
     public async updateLanguage(lang: ioBroker.Languages): Promise<void> {
+        if (lang === this.loadedLanguage) {
+            return;
+        }
+
         this.translations.clear();
 
+        this.loadedLanguage = lang;
         let allTranslations: Record<string, string> = {};
 
         for (const configDir of this.configDirs) {
