@@ -81,6 +81,8 @@ The main configuration is stored in `iobroker-data/iobroker.json`. Normally, the
 - [Command Line Interface](#command-line-interface)
 - [Adapter Upgrade with Webserver](#adapter-upgrade-with-webserver)
 - [Controller UI Upgrade](#controller-ui-upgrade)
+- [Managing node modules](#managing-node-modules)
+- [Backend translations](#backend-translations)
 - [Per host adapter objects](#per-host-adapter-objects)
 - [Operating system package management](#operating-system-package-management)
 - [Hostname](#hostname)
@@ -266,6 +268,57 @@ To get the adapter scoped package identifier you can use:
 // e.g. @iobroker-javascript.0/axios
 const packageIdentifier = adapter.getAdapterScopedPackageIdentifier('axios');
 ```
+
+### Backend translations
+**Feature status:** New in Nightly only
+
+Some adapters need to perform translations in the backend. For this you can specify an i18n folder (or multiple folders if necessary) when initializing your adapter via `translationDirectories`.
+
+An example constructor looks like this
+```typescript
+public constructor(options: Partial<utils.AdapterOptions> = {}) {
+  super({
+      ...options,
+      name: 'test',
+    /** Specify one or more directories to use translations from */
+    translationDirectories: [
+        path.join(__dirname, 'i18n')
+    ]
+  });
+}
+```
+
+
+The structure of the `i18n` folder requires to have a `.json` file set for a language which should be able to be translated. The name of the file should match the `ioBroker.Languages`. 
+Hence, a file to translate to German would be named `de.json` and could look like this:
+
+```json
+{
+  "Device ID": "Geräte ID",
+  "Device ID of $device": "Geräte ID von $device"
+}
+```
+
+The translations will automatically be updated to the currently configured language in `system.config`. Hence, if the user changes the language the translations will be updated automatically. 
+If no translations for the selected language are available it will always fall back to English, hence in all cases it is necessary to provide a file `en.json`.
+
+If you have configured the `translationDiretories` in the adapter options you can use the `adapter.translate` method. 
+Assuming the example `de.json` file from above we can now use it like:
+
+```typescript
+// if the `common.language` attribute of the `system.config` object is set to `de` it will return a string `Geräte ID`
+this.translate('Device ID');
+```
+
+In the second definition you may notice that we are using a placeholder `$device`. Placeholders can be any string, but we recommend to follow a `$name` syntax.
+To translate a text with placeholders, see the following example:
+
+```typescript
+// if the `common.language` attribute of the `system.config` object is set to `de` it will return a string `Geräte ID von Heizung`
+this.translate('Device ID of $device', { '$device' : 'Heizung' });
+```
+
+Note, that all occurrences of the placeholder will be replaced. Hence, you could re-use a unique `$name` placeholder multiple times in one definition.
 
 ### Per host `adapter` objects
 **Feature status:** New in 6.0.0

@@ -1345,7 +1345,10 @@ export class AdapterClass<TOptions extends AdapterOptions | string> extends Even
         }
 
         Validator.assertString(key, 'key');
-        Validator.assertObject<Record<string, string>>(placeholders, 'placeholders');
+
+        if (placeholders !== undefined) {
+            Validator.assertObject<Record<string, string>>(placeholders, 'placeholders');
+        }
 
         return this.translationManager.translate(key, placeholders);
     }

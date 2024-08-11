@@ -53,7 +53,18 @@ export class TranslationManager {
         let allTranslations: Record<string, string> = {};
 
         for (const configDir of this.configDirs) {
-            const content = await fs.readFile(path.join(configDir, `${lang}.json`), { encoding: 'utf8' });
+            let content: string;
+
+            try {
+                content = await fs.readFile(path.join(configDir, `${lang}.json`), { encoding: 'utf8' });
+            } catch (e) {
+                if (e.code !== 'ENOENT' || lang === DEFAULT_LANG) {
+                    throw e;
+                }
+
+                // fallback to default language if no translations are available for configured language
+                content = await fs.readFile(path.join(configDir, `${DEFAULT_LANG}.json`), { encoding: 'utf8' });
+            }
             const newTranslations: Record<string, string> = JSON.parse(content);
 
             allTranslations = { ...allTranslations, ...newTranslations };
