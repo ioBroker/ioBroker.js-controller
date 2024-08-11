@@ -19,6 +19,7 @@ import { register as testAliases } from './testAliases.js';
 import { register as testConsole } from './testConsole.js';
 
 import * as url from 'node:url';
+import { fileURLToPath } from 'node:url';
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
 
@@ -117,7 +118,9 @@ export default function testAdapter(options: Record<string, any>): void {
                 },
                 compact: true,
                 /** activate the log transporter to be tested */
-                logTransporter: true
+                logTransporter: true,
+                /** Provide translation method */
+                translationDirectories: [path.join(fileURLToPath(import.meta.url), '..', 'i18n')]
             });
         });
     }
