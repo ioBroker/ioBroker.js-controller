@@ -32,11 +32,7 @@ export class TranslationManager {
     public async init(): Promise<void> {
         const sysConfObj = await this.objects.getObject('system.config');
 
-        if (sysConfObj) {
-            await this.updateLanguage(sysConfObj.common.language);
-        } else {
-            await this.updateLanguage(DEFAULT_LANG);
-        }
+        await this.updateLanguage(sysConfObj?.common.language || DEFAULT_LANG);
     }
 
     /**
