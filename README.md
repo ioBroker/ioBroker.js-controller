@@ -272,19 +272,22 @@ const packageIdentifier = adapter.getAdapterScopedPackageIdentifier('axios');
 ### Backend translations
 **Feature status:** New in Nightly only
 
-Some adapters need to perform translations in the backend. For this you can specify an i18n folder (or multiple folders if necessary) when initializing your adapter via `translationDirectories`.
+Some adapters need to perform translations in the backend. For this you can specify an `i18n` folder (or multiple folders if necessary) by absolute path when initializing your adapter via `translationDirectories`.
 
-An example constructor looks like this
+An example constructor looks like this:
+
 ```typescript
-public constructor(options: Partial<utils.AdapterOptions> = {}) {
-  super({
-      ...options,
-      name: 'test',
-    /** Specify one or more directories to use translations from */
-    translationDirectories: [
-        path.join(__dirname, 'i18n')
-    ]
-  });
+class YourAdapter extends utils.Adapter {
+    public constructor(options: Partial<utils.AdapterOptions> = {}) {
+        super({
+            ...options,
+            name: 'test',
+            /** Specify one or more directories with an absolute path to use translations from */
+            translationDirectories: [
+                path.join(__dirname, 'i18n')
+            ]
+        });
+    }
 }
 ```
 
