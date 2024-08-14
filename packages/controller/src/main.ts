@@ -5725,20 +5725,15 @@ async function listUpdatableOsPackages(): Promise<void> {
 
     const packageStateId = `${hostObjectPrefix}.osPackageUpdates`;
     const packagesState = await states.getState(packageStateId);
-    const newPackStateVal = JSON.stringify(packages);
 
-    if (packagesState?.val === newPackStateVal) {
-        return;
-    }
-
-    await states.setState(packageStateId, { val: newPackStateVal, ack: true });
+    await states.setState(packageStateId, { val: JSON.stringify(packages), ack: true });
 
     if (!packages.length) {
         await notificationHandler.clearNotifications('system', 'packageUpdates', `system.host.${hostname}`);
         return;
     }
 
-    const knownPackages = JSON.parse(typeof packagesState?.val === 'string' ? packagesState.val : '[]');
+    const knownPackages: string[] = JSON.parse(typeof packagesState?.val === 'string' ? packagesState.val : '[]');
     const hasNewPackage = !!packages.find(pack => !knownPackages.includes(pack));
 
     if (!hasNewPackage) {
