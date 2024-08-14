@@ -5714,7 +5714,7 @@ async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promis
  * Check for updatable OS packages and register them as notification
  */
 async function listUpdatableOsPackages(): Promise<void> {
-    if (tools.isDocker()) {
+    if (tools.isDocker() || !states) {
         return;
     }
 
@@ -5723,13 +5723,30 @@ async function listUpdatableOsPackages(): Promise<void> {
 
     const packages = await packManager.listUpgradeablePackages();
 
+    const packageStateId = `${hostObjectPrefix}.osPackageUpdates`;
+
+    const packagesState = await states.getState(packageStateId);
+    const newPackStateVal = JSON.stringify(packages);
+
+    if (packagesState?.val === newPackStateVal) {
+        return;
+    }
+
+    await states.setState(`${hostObjectPrefix}.osPackageUpdates`, { val: newPackStateVal, ack: true });
+
     if (!packages.length) {
         await notificationHandler.clearNotifications('system', 'packageUpdates', `system.host.${hostname}`);
         return;
     }
 
+    const knownPackages = JSON.parse(typeof packagesState?.val === 'string' ? packagesState.val : '[]');
+    const hasNewPackage = !!packages.find(pack => !knownPackages.includes(pack));
+
+    if (!hasNewPackage) {
+        return;
+    }
+
     await notificationHandler.addMessage('system', 'packageUpdates', packages.join('\n'), `system.host.${hostname}`);
-    await states!.setState(`${hostObjectPrefix}.osPackageUpdates`, { val: JSON.stringify(packages), ack: true });
 }
 
 /**
