@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## __WORK IN PROGRESS__ - Kiera
 * (@foxriver76) only generate `packageUpdates` notification, if new updates detected
 
 ## 6.0.10 (2024-08-05) - Kiera
