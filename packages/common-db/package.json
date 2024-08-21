@@ -12,7 +12,7 @@
     },
     "dependencies": {
         "@alcalzone/pak": "^0.8.1",
-        "axios": "^1.6.3",
+        "axios": "^1.7.4",
         "ci-info": "^3.8.0",
         "deep-clone": "^3.0.3",
         "event-stream": "^4.0.1",
