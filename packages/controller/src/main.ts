@@ -5734,7 +5734,7 @@ async function listUpdatableOsPackages(): Promise<void> {
     }
 
     const knownPackages: string[] = typeof packagesState?.val === 'string' ? JSON.parse(packagesState.val) : [];
-    const hasNewPackage = !!packages.find(pack => !knownPackages.includes(pack));
+    const hasNewPackage = packages.some(pack => !knownPackages.includes(pack));
 
     if (!hasNewPackage) {
         return;
