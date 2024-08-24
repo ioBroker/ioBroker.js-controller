@@ -1,7 +1,7 @@
 /**
  *      Redirect for older installations
  *
- *      Copyright 2018-2022 bluefox <dogafox@gmail.com>,
+ *      Copyright 2018-2024 bluefox <dogafox@gmail.com>,
  *      MIT License
  *
  */

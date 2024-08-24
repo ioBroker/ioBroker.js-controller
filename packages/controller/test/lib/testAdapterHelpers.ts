@@ -598,4 +598,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             });
         });
     }
+
+    it(context.name + ' ' + context.adapterShortName + ' getAdapterScopedPackageIdentifier', () => {
+        const nonOrgaPacket = context.adapter.getAdapterScopedPackageIdentifier('axios');
+        const orgaPacket = context.adapter.getAdapterScopedPackageIdentifier('@iobroker/adapter-react-v5');
+
+        expect(nonOrgaPacket).to.be.equal('@iobroker-test.0/axios');
+        expect(orgaPacket).to.be.equal('@iobroker-test.0/iobroker-adapter-react-v5');
+    });
 }

@@ -1,7 +1,7 @@
 {
     "name": "@iobroker/js-controller-common-db",
     "type": "module",
-    "version": "6.0.1-alpha.0-20240603-8378eb65c",
+    "version": "6.0.12-alpha.0-20240823-8c44dc255",
     "engines": {
         "node": ">=18.0.0"
     },
@@ -12,7 +12,7 @@
     },
     "dependencies": {
         "@alcalzone/pak": "^0.8.1",
-        "axios": "^1.6.3",
+        "axios": "^1.7.4",
         "ci-info": "^3.8.0",
         "deep-clone": "^3.0.3",
         "event-stream": "^4.0.1",

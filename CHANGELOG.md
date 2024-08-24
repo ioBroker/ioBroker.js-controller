@@ -4,7 +4,31 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 6.0.0 (2024-05-22) - Kiera
+## 6.0.11 (2024-08-21) - Kiera
+* (@foxriver76) only generate `packageUpdates` notification, if new updates detected
+
+## 6.0.10 (2024-08-05) - Kiera
+* (foxriver76) fixed "alias subscription error" log 
+* (foxriver76) do not check for OS updates on Docker installations
+* (foxriver76) clear package update notification if no updates are present anymore
+* (Gaspode69) fixed restarting controller on Windows systems
+
+## 6.0.9 (2024-07-20) - Kiera
+* (foxriver76) provide method `getAdapterScopedPackageIdentifier` for adapters
+
+## 6.0.8 (2024-07-13) - Kiera
+* (foxriver76) fixed problem with Sentry plugin
+
+## 6.0.7 (2024-07-12) - Kiera
+* (foxriver76) added auto upgrade information to cli `list adapters` and `repo show`
+* (foxriver76) do not show the stack trace if user does not exist on `iob user check`
+* (foxriver76) prevent `iob logs --watch` logging the entries two times
+
+## 6.0.6 (2024-06-30) - Kiera
+* (foxriver76) fixed Windows installation
+* (foxriver76) fixed issue on package updates (e.g. Admin Node.js update)
+
+## 6.0.5 (2024-06-16) - Kiera
 
 **Breaking changes**
 * Support for Node.js 16 is dropped!

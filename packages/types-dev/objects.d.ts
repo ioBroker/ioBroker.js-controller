@@ -1,4 +1,5 @@
 import type * as os from 'node:os';
+import type { Branded } from './utils';
 
 declare global {
     namespace ioBroker {
@@ -340,6 +341,9 @@ declare global {
             tab?: 'html' | 'materialize';
         }
 
+        /** Installed from attribute of instance/adapter object */
+        type InstalledFrom = Branded<string, 'InstalledFrom'>;
+
         interface InstanceCommon extends AdapterCommon {
             version: string;
             /** The name of the host where this instance is running */
@@ -364,7 +368,8 @@ declare global {
             compactGroup?: number;
             /** String (or array) with names of attributes in common of instance, which will not be deleted. */
             preserveSettings?: string | string[];
-            installedFrom?: string;
+            /** Source, where this adapter has been installed from, to enable reinstalling on e.g., backup restore */
+            installedFrom?: InstalledFrom;
             /** Arguments passed to the adapter process, this disables compact mode */
             nodeProcessParams?: string[];
             /** If adapter can consume log messages, like admin, javascript or logparser */
@@ -569,6 +574,27 @@ declare global {
 
         type ConnectionType = 'local' | 'cloud';
 
+        type LocalLink = {
+            /** Link to the web service of this adapter, like: "%web_protocol%://%ip%:%web_port%/vis-2/edit.html" */
+            link: string;
+            /** Name of the link. Could be multi-language */
+            name?: ioBroker.StringOrTranslated;
+            /** Color */
+            color?: string;
+            /** Link to icon, like "vis-2/img/favicon.png" */
+            icon?: string;
+            /** Link to the adapter if it could be shown in the free cloud, like: vis-2/index.html according to "https://iobroker.net/" */
+            cloud?: string;
+            /** Link to the adapter if it could be shown in the pro-cloud, like: vis-2/edit.html according to "https://iobroker.pro/" */
+            pro?: string;
+            /** If this link should be shown on the intro tab in admin. false = do not show */
+            intro?: boolean;
+            /** Order of the card. Used on "intro" and cloud tabs to sort the links */
+            order?: number;
+            /** Description of the link. Could be multi-language */
+            description?: ioBroker.StringOrTranslated;
+        };
+
         interface AdapterCommon extends ObjectCommon {
             /** Custom attributes to be shown in admin in the object browser */
             adminColumns?: string | (string | CustomAdminColumn)[];
@@ -624,12 +650,12 @@ declare global {
             /** The adapter will be executed once additionally after installation, and the `install` event will be emitted during this run. This allows for executing one time installation code. */
             install?: boolean;
             /** Source, where this adapter has been installed from, to enable reinstalling on e.g., backup restore */
-            installedFrom?: string;
+            installedFrom?: InstalledFrom;
             /** Which version of this adapter is installed */
             installedVersion: string;
             keywords?: string[];
             /** A dictionary of links to web services this adapter provides */
-            localLinks?: Record<string, string>;
+            localLinks?: Record<string, string | LocalLink>;
             /** @deprecated Use @see localLinks */
             localLink?: string;
             loglevel?: LogLevel;
@@ -637,9 +663,9 @@ declare global {
             logTransporter?: boolean;
             /** Path to the start file of the adapter. Should be the same as in `package.json` */
             main?: string;
-            /** Whether the admin tab is written in materialize style. Required for Admin 3+ */
+            /** Whether the admin tab is written in materialized style. Required for Admin 3+ */
             materializeTab?: boolean;
-            /** Whether the admin configuration dialog is written in materialize style. Required for Admin 3+ */
+            /** Whether the admin configuration dialog is written in materialized style. Required for Admin 3+ */
             materialize: boolean;
             /** @deprecated Use @see supportedMessages up from controller v5 */
             messagebox?: true;
@@ -676,7 +702,9 @@ declare global {
             platform: 'Javascript/Node.js';
             /** The keys of common attributes (e.g. `history`) which are not deleted in a `setObject` call even if they are not present. Deletion must be done explicitly by setting them to `null`. */
             preserveSettings?: string | string[];
-            /** Which adapters must be restarted after installing or updating of this adapter. */
+            /** Url of the ReadMe file */
+            readme?: string;
+            /** Which adapters must be restarted after installing or updating this adapter. */
             restartAdapters?: string[];
             /** CRON schedule to restart mode `daemon` adapters */
             restartSchedule?: string;
@@ -715,9 +743,9 @@ declare global {
             webExtension?: string;
             webPreSettings?: any; // ?
             webservers?: any; // ?
-            /** A list of pages that should be shown on the "web" index page */
+            /** @deprecated (use localLinks) A list of pages that should be shown on the "web" index page */
             welcomeScreen?: WelcomeScreenEntry[];
-            /** A list of pages that should be shown on the ioBroker cloud index page */
+            /** @deprecated (use localLinks) A list of pages that should be shown on the ioBroker cloud index page */
             welcomeScreenPro?: WelcomeScreenEntry[];
             wwwDontUpload?: boolean;
             /** @deprecated Use 'common.licenseInformation' instead */
@@ -743,14 +771,18 @@ declare global {
             /** If floating comma is used instead of dot */
             isFloatComma: boolean;
             /** Configured longitude */
-            longitude: string;
+            longitude?: number;
             /** Configured latitude */
-            latitude: string;
+            latitude?: number;
             /** Optional user's city (only for diagnostics) */
             city?: string;
             /** Optional user's country (only for diagnostics) */
             country?: string;
-            /** monday or sunday */
+            /** User-defined temperature unit */
+            tempUnit?: '°C' | '°F';
+            /** User-defined currency */
+            currency?: string;
+            /** User-defined first day of the week: monday or sunday */
             firstDayOfWeek?: 'monday' | 'sunday';
             /** Default history instance */
             defaultHistory: string;

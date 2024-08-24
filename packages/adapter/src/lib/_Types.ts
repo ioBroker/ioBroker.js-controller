@@ -200,7 +200,7 @@ export interface InternalFormatDateOptions {
 }
 
 export interface AliasDetails {
-    source: AliasDetailsSource | null;
+    source?: AliasDetailsSource;
     targets: AliasTargetEntry[];
 }
 
@@ -595,6 +595,6 @@ export interface InstallNodeModuleOptions {
 }
 
 export interface InternalInstallNodeModuleOptions extends InstallNodeModuleOptions {
-    /** Name of the npm module */
-    moduleName: string;
+    /** Name of the npm module or an installable url ẁorking with `npm install` */
+    moduleNameOrUrl: string;
 }

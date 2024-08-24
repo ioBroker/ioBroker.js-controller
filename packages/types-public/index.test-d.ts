@@ -788,6 +788,13 @@ const _adapterObject: ioBroker.AdapterObject = {
         name: 'test',
         automaticUpgrade: 'minor',
         platform: 'Javascript/Node.js',
+        localLinks: {
+            link1: '%web_protocol%://%ip%:%web_port%/vis-2/edit.html',
+            link2: {
+                name: { en: 'Service' },
+                link: '%web_protocol%://%ip%:%web_port%/vis-2/edit.html'
+            }
+        },
         supportedMessages: {
             deviceManager: true
         },
