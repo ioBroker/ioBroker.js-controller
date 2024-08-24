@@ -1,4 +1,4 @@
-import { execAsync, type InternalLogger } from '@iobroker/js-controller-common/tools';
+import { execAsync, type InternalLogger } from '@iobroker/js-controller-common-db/tools';
 
 enum LOG_LEVELS {
     silly = 5,
@@ -235,7 +235,7 @@ export class PacketManager {
             return [];
         }
 
-        const packagesList = res.split('\n');
+        const packagesList = res.split('\n').filter(packageInfo => packageInfo.trim() !== '');
         // first line is no package, just Listing...
         packagesList.shift();
 
@@ -245,7 +245,7 @@ export class PacketManager {
     /**
      * Installs multiple packets. The returned Promise contains the list of failed packets
      *
-     * @param packets
+     * @param packets list of packets to install
      */
     private async _installPackets(packets: string[]): Promise<string[]> {
         const failed: string[] = [];
@@ -278,7 +278,7 @@ export class PacketManager {
         }
 
         for (const packet of packets) {
-            let upgradeCmd = `upgrade ${packet.name}`;
+            let upgradeCmd = `upgrade -y ${packet.name}`;
 
             if (packet.version) {
                 if (this.manager === 'apt') {
@@ -295,7 +295,7 @@ export class PacketManager {
     /**
      * Installs all given packets
      *
-     * @param packets
+     * @param packets list of packets or single packet to upgrade
      */
     async install(packets: string[] | string): Promise<void> {
         packets = packets || [];

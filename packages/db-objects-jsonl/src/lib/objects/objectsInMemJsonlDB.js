@@ -1,24 +1,18 @@
 /**
  *      Object DB in memory - Server
  *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
  */
 
-/* jshint -W097 */
-/* jshint strict: false */
-/* jslint node: true */
-/* jshint -W061 */
-'use strict';
-
-const { ObjectsInMemoryFileDB } = require('@iobroker/db-objects-file');
-const { JsonlDB } = require('@alcalzone/jsonl-db');
-const path = require('path');
-const fs = require('fs');
-const os = require('os');
-const { tools } = require('@iobroker/js-controller-common');
+import { ObjectsInMemoryFileDB } from '@iobroker/db-objects-file';
+import { JsonlDB } from '@alcalzone/jsonl-db';
+import path from 'node:path';
+import fs from 'node:fs';
+import os from 'node:os';
+import { tools } from '@iobroker/js-controller-common-db';
 
 /**
  * Normalizes options for the JsonlDB
@@ -90,7 +84,7 @@ function normalizeJsonlOptions(conf = {}) {
  * This class inherits InMemoryFileDB class and adds all relevant logic for objects
  * including the available methods for use by js-controller directly
  **/
-class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
+export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
     constructor(settings) {
         settings = settings || {};
         settings.fileDB = {
@@ -277,5 +271,3 @@ class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
         }
     }
 }
-
-module.exports = ObjectsInMemoryJsonlDB;

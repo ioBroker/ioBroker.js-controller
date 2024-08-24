@@ -1,10 +1,10 @@
 import fs from 'fs-extra';
-import path from 'path';
+import path from 'node:path';
 import { tools } from '@iobroker/js-controller-common';
-import { tools as dbTools } from '@iobroker/js-controller-common-db';
+import { isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
-import { MHClient, type BrowseResultEntry } from './multihostClient';
-import readline from 'readline';
+import { MHClient, type BrowseResultEntry } from './multihostClient.js';
+import readline from 'node:readline';
 import prompt from 'prompt';
 
 interface MHParams {
@@ -74,18 +74,15 @@ export class Multihost {
 
     /**
      * Start MH browsing
-     *
-     * @param callback
      */
-    browse(callback: (err?: Error | undefined, list?: BrowseResultEntry[]) => void): void {
+    async browse(): Promise<BrowseResultEntry[]> {
         const mhClient = new MHClient();
-        mhClient.browse(2_000, !!this.params.debug, (err, list) => {
-            if (err) {
-                callback(new Error(`Multihost discovery client: Cannot browse: ${err.message}`));
-            } else {
-                callback(undefined, list);
-            }
-        });
+        try {
+            const res = await mhClient.browse(2_000, !!this.params.debug);
+            return res;
+        } catch (e) {
+            throw new Error(`Multihost discovery client: Cannot browse: ${e.message}`);
+        }
     }
 
     /**
@@ -94,10 +91,13 @@ export class Multihost {
      * @param config iob config
      * @param changed if config has changed
      */
-    private showMHState(config: ioBroker.IoBrokerJson, changed: boolean): void {
+    private async showMHState(config: ioBroker.IoBrokerJson, changed: boolean): Promise<void> {
         if (config.multihostService.enabled) {
             let warningShown = false;
-            if (dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host, true)) {
+
+            const hasLocalObjectsServer = await isLocalObjectsDbServer(config.objects.type, config.objects.host, true);
+
+            if (hasLocalObjectsServer) {
                 console.log('Changing objects server to accept connections on all IP addresses.');
                 config.objects.host = tools.getListenAllAddress();
                 changed = true;
@@ -112,7 +112,10 @@ export class Multihost {
                     `Please check the binding of the configured ${config.objects.type} server to allow remote connections.`
                 );
             }
-            if (dbTools.isLocalStatesDbServer(config.states.type, config.states.host, true)) {
+
+            const hasLocalStatesServer = await isLocalStatesDbServer(config.states.type, config.states.host, true);
+
+            if (hasLocalStatesServer) {
                 console.log('Changing states server to accept connections on all IP addresses.');
                 config.states.host = tools.getListenAllAddress();
                 changed = true;
@@ -297,17 +300,22 @@ export class Multihost {
      * @param callback
      */
     connectHelper(mhClient: MHClient, ip: string, pass: string, callback: (err?: Error) => void): void {
-        mhClient.connect(ip, pass, (err, oObjects, oStates, ipHost) => {
+        mhClient.connect(ip, pass, async (err, oObjects, oStates, ipHost) => {
             if (err) {
                 callback(new Error(`Cannot connect to "${ip}": ${err.message}`));
             } else if (oObjects && oStates) {
                 const config = this.getConfig();
                 config.objects = oObjects;
                 config.states = oStates;
-                if (
-                    dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host, true) ||
-                    dbTools.isLocalStatesDbServer(config.states.type, config.states.host, true)
-                ) {
+
+                const hasLocalObjectsServer = await isLocalObjectsDbServer(
+                    config.objects.type,
+                    config.objects.host,
+                    true
+                );
+                const hasLocalStatesServer = await isLocalStatesDbServer(config.states.type, config.states.host, true);
+
+                if (hasLocalObjectsServer || hasLocalStatesServer) {
                     callback(
                         new Error(
                             `IP Address of the remote host is ${tools.getLocalAddress()}. Connections from this host will not be accepted. Please change the configuration of this host to accept remote connections.`
@@ -340,11 +348,11 @@ export class Multihost {
      * @param pass password
      * @param callback
      */
-    connect(
+    async connect(
         index: number | null,
         pass: string | null,
         callback: (err?: Error, list?: BrowseResultEntry[]) => void
-    ): void {
+    ): Promise<void> {
         if (typeof pass === 'function') {
             callback = pass;
             pass = null;
@@ -355,57 +363,57 @@ export class Multihost {
         }
 
         const mhClient = new MHClient();
+        let list: BrowseResultEntry[];
 
-        mhClient.browse(2_000, !!this.params.debug, (err, list) => {
-            if (err) {
-                callback(new Error(`Cannot browse: ${err.message}`));
-            } else {
-                this.showHosts(list);
+        try {
+            list = await mhClient.browse(2_000, !!this.params.debug);
+        } catch (e) {
+            callback(new Error(`Cannot browse: ${e.message}`));
+            return;
+        }
 
-                if (index !== null && index !== undefined && index > 0) {
-                    if (list && index < list.length + 1) {
-                        if (!pass) {
-                            callback(
-                                new Error('No password defined: please use "multihost connect <NUMBER> <PASSWORD>"')
-                            );
-                        } else {
-                            this.connectHelper(mhClient, list[index - 1].ip!, pass, callback);
-                        }
-                    } else {
-                        callback(new Error(`Invalid index: ${index}`));
-                    }
-                } else if (list && list.length) {
-                    const rl = readline.createInterface({
-                        input: process.stdin,
-                        output: process.stdout
-                    });
-                    rl.question('Please select host [1]: ', answer => {
-                        if (answer === '' || answer === null || answer === undefined) {
-                            index = 1;
-                        }
-                        index = parseInt(answer, 10) - 1;
-                        const listEntry = list[index];
-                        if (!listEntry) {
-                            rl.close();
-                            callback(new Error(`Invalid index: ${answer}`));
-                        } else {
-                            if (listEntry.auth) {
-                                this.readPassword(password => {
-                                    if (password) {
-                                        this.connectHelper(mhClient, listEntry.ip!, password, callback);
-                                    } else {
-                                        callback(new Error('No password entered!'));
-                                    }
-                                });
-                            } else {
-                                this.connectHelper(mhClient, listEntry.ip!, '', callback);
-                            }
-                        }
-                    });
+        this.showHosts(list);
+
+        if (index !== null && index !== undefined && index > 0) {
+            if (list && index < list.length + 1) {
+                if (!pass) {
+                    callback(new Error('No password defined: please use "multihost connect <NUMBER> <PASSWORD>"'));
                 } else {
-                    callback(undefined, list);
+                    this.connectHelper(mhClient, list[index - 1].ip!, pass, callback);
                 }
+            } else {
+                callback(new Error(`Invalid index: ${index}`));
             }
-        });
+        } else if (list && list.length) {
+            const rl = readline.createInterface({
+                input: process.stdin,
+                output: process.stdout
+            });
+            rl.question('Please select host [1]: ', answer => {
+                if (answer === '' || answer === null || answer === undefined) {
+                    index = 1;
+                }
+                index = parseInt(answer, 10) - 1;
+                const listEntry = list[index];
+                if (!listEntry) {
+                    rl.close();
+                    callback(new Error(`Invalid index: ${answer}`));
+                } else {
+                    if (listEntry.auth) {
+                        this.readPassword(password => {
+                            if (password) {
+                                this.connectHelper(mhClient, listEntry.ip!, password, callback);
+                            } else {
+                                callback(new Error('No password entered!'));
+                            }
+                        });
+                    } else {
+                        this.connectHelper(mhClient, listEntry.ip!, '', callback);
+                    }
+                }
+            });
+        } else {
+            callback(undefined, list);
+        }
     }
 }

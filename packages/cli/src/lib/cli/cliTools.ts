@@ -44,7 +44,7 @@ export function validateAdapterIdentifier(name: string): boolean {
  * Ensures that the given string contains a valid identifier for
  * an adapter (without instance number) or instance (with instance number)
  *
- * @param name
+ * @param name the adapter name or instance
  */
 export function validateAdapterOrInstanceIdentifier(name: string): boolean {
     return /^[a-z0-9\-_]+(\.\d+)?$/.test(name);
@@ -54,7 +54,7 @@ export function validateAdapterOrInstanceIdentifier(name: string): boolean {
  * Ensures that the given string contains a valid identifier for
  * an adapter (without instance number) or instance (with instance number)
  *
- * @param name
+ * @param name the adapter name or instance
  */
 export function splitAdapterOrInstanceIdentifierWithVersion(
     name: string
@@ -87,15 +87,12 @@ export function getInstanceName(instanceObjID: string): string {
  * @param adapter (optional) The adapter whose instances should be enumerated
  * @returns An array of instance objects
  */
-export async function enumInstances(
-    objects: ObjectsClient,
-    adapter?: string
-): Promise<(ioBroker.InferGetObjectViewItemType<'system', 'instance'> | null)[]> {
+export async function enumInstances(objects: ObjectsClient, adapter?: string): Promise<ioBroker.InstanceObject[]> {
     // if no adapter given all instances should be returned
     const startkey = `system.adapter.${adapter ? `${adapter}.` : ''}`;
     const data = await enumObjects(objects, 'instance', startkey);
     // because of startkey logic not only receive objects with the dot at the end, so filter them!
-    return data.filter(it => it && it._id.startsWith(startkey));
+    return data.filter((it): it is ioBroker.InstanceObject => !!(it && it._id.startsWith(startkey)));
 }
 
 /**
@@ -104,9 +101,7 @@ export async function enumInstances(
  * @param objects The objects DB to use
  * @returns An array of host objects
  */
-export function enumHosts(
-    objects: ObjectsClient
-): Promise<(ioBroker.InferGetObjectViewItemType<'system', 'host'> | null)[]> {
+export function enumHosts(objects: ObjectsClient): Promise<ioBroker.InferGetObjectViewItemType<'system', 'host'>[]> {
     return enumObjects(objects, 'host', 'system.host.');
 }
 
@@ -121,7 +116,7 @@ export function enumObjects<T extends string>(
     objects: ObjectsClient,
     type: T,
     startkey: string
-): Promise<(ioBroker.InferGetObjectViewItemType<'system', T> | null)[]> {
+): Promise<ioBroker.InferGetObjectViewItemType<'system', T>[]> {
     return new Promise((resolve, reject) => {
         const endkey = `${startkey}\u9999`;
         objects.getObjectView('system', type, { startkey, endkey }, null, (err, res) => {
@@ -129,8 +124,8 @@ export function enumObjects<T extends string>(
                 return reject(err);
             }
 
-            let ret: (ioBroker.InferGetObjectViewItemType<'system', T> | null)[] = [];
-            if (res && res.rows) {
+            let ret: ioBroker.InferGetObjectViewItemType<'system', T>[] = [];
+            if (res?.rows) {
                 ret = res.rows.map(row => row.value);
             }
             resolve(ret);

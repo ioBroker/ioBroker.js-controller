@@ -1,8 +1,9 @@
 // Types which are safe to share within this repository AND publicly
 
-import type * as fs from 'fs';
+import type * as fs from 'node:fs';
 import './objects';
 import type { IoBJson, DatabaseOptions, ObjectsDatabaseOptions as ObjectsDbOptions } from './config';
+import type { Branded } from './utils';
 
 export {}; // avoids exporting AtLeastOne into the global scope
 
@@ -10,6 +11,9 @@ export {}; // avoids exporting AtLeastOne into the global scope
 type AtLeastOne<T, Req = { [K in keyof T]-?: T[K] }, Opt = { [K in keyof T]+?: T[K] }> = {
     [K in keyof Req]: Omit<Opt, K> & { [P in K]: Req[P] };
 }[keyof Req];
+
+/** Type of T but makes specific optional properties required */
+export type WithRequired<T, K extends keyof T> = T & { [P in K]-?: T[P] };
 
 declare global {
     namespace ioBroker {
@@ -284,6 +288,8 @@ declare global {
             ignoreNull?: boolean;
             sessionId?: any;
             aggregate?: 'minmax' | 'min' | 'max' | 'average' | 'total' | 'count' | 'none';
+            /** Returned data is normally sorted ascending by date, this option lets you return the newest instead of the oldest values if the number of returned points is limited */
+            returnNewestEntries?: boolean;
         }
 
         interface DelObjectOptions {
@@ -315,6 +321,7 @@ declare global {
                 | 'remoteHostErrors'
                 | 'restartLoop'
                 | 'fileToJsonl';
+            [other: string]: string;
         }
         interface AdapterConfig {
             // This is a stub to be augmented in every adapter
@@ -399,9 +406,6 @@ declare global {
 
         type GetStatesCallback = (err?: Error | null, states?: Record<string, State>) => void;
         type GetStatesPromise = Promise<NonNullCallbackReturnTypeOf<GetStatesCallback>>;
-
-        type GetBinaryStateCallback = (err?: Error | null, state?: Buffer) => void;
-        type GetBinaryStatePromise = Promise<CallbackReturnTypeOf<GetBinaryStateCallback>>;
 
         type SetStateCallback = (err?: Error | null, id?: string) => void;
         type SetStatePromise = Promise<NonNullCallbackReturnTypeOf<SetStateCallback>>;
@@ -504,8 +508,8 @@ declare global {
 
         type GetSessionCallback = (session: Session) => void;
 
-        type Timeout = number & { __ioBrokerBrand: 'Timeout' };
-        type Interval = number & { __ioBrokerBrand: 'Interval' };
+        type Timeout = Branded<number, 'Timeout'> | null; // or null to not allow native clearTimeout
+        type Interval = Branded<number, 'Interval'> | null; // or null to not allow native clearInterval
 
         /**
          * The ioBroker global config

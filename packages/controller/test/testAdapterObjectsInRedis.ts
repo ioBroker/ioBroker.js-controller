@@ -1,28 +1,28 @@
 import { expect } from 'chai';
-import { startController, stopController } from './lib/setup4controller';
+import { startController, stopController } from './lib/setup4controller.js';
 let objects = null;
 let states = null;
 const textName = 'Redis ';
 
-import fs from 'fs';
-import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const tests = require('./lib/testObjects');
+import fs from 'node:fs';
+import { register } from './lib/testObjects.js';
 
-interface Context {
-    objects: ObjectsInRedisClient | null;
-    name: string;
-}
-const context: Context = {
+import * as url from 'node:url';
+import type { TestContext } from './_Types.js';
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+
+const context: TestContext = {
+    // @ts-expect-error will be filled in time
     objects: null,
     name: textName
 };
-if (!fs.existsSync(__dirname + '/../tmp')) {
-    fs.mkdirSync(__dirname + '/../tmp');
+if (!fs.existsSync(thisDir + '/../tmp')) {
+    fs.mkdirSync(thisDir + '/../tmp');
 }
 
 const objectsConfig = {
-    dataDir: __dirname + '/../tmp/data',
+    dataDir: thisDir + '/../tmp/data',
     type: 'redis',
     host: '127.0.0.1',
     port: 6379,
@@ -43,7 +43,7 @@ describe(textName + 'Test Objects Redis', function () {
         const { objects: _objects, states: _states } = await startController({
             objects: objectsConfig,
             states: {
-                dataDir: __dirname + '/../tmp/data',
+                dataDir: thisDir + '/../tmp/data',
                 onChange: (id: string, _state: ioBroker.State) => {
                     console.log('state changed. ' + id);
                 }
@@ -52,12 +52,13 @@ describe(textName + 'Test Objects Redis', function () {
 
         objects = _objects;
         states = _states;
+        // @ts-expect-error fix later
         context.objects = _objects;
         expect(objects).to.be.ok;
         expect(states).to.be.ok;
     });
 
-    tests.register(it, expect, context);
+    register(it, expect, context);
 
     after(textName + 'Stop js-controller', async function () {
         this.timeout(5_000);

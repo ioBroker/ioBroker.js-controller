@@ -1,3 +1,3 @@
-export { InMemoryFileDB } from './lib/inMemFileDB';
-export { RedisHandler } from './lib/redisHandler';
-export { tools } from '@iobroker/js-controller-common';
+export { InMemoryFileDB } from './lib/inMemFileDB.js';
+export { RedisHandler } from './lib/redisHandler.js';
+export { tools } from '@iobroker/js-controller-common-db';

@@ -3,19 +3,18 @@
  *
  *      Master multihost functionality
  *
- *      Copyright 2014-2022 bluefox <dogafox@gmail.com>,
+ *      Copyright 2014-2024 bluefox <dogafox@gmail.com>,
  *      MIT License
  *
  */
 
-'use strict';
-const dgram = require('dgram');
-const { tools: dbTools } = require('@iobroker/js-controller-common-db');
+import dgram from 'node:dgram';
+import { tools as dbTools } from '@iobroker/js-controller-common-db';
 const PORT = 50005;
 const MULTICAST_ADDR = '239.255.255.250';
 
 /** @class */
-function MHServer(hostname, logger, config, info, ips, secret) {
+export function MHServer(hostname, logger, config, info, ips, secret) {
     const count = 0;
     const buffer = {};
     const lastFrame = {};
@@ -79,9 +78,9 @@ function MHServer(hostname, logger, config, info, ips, secret) {
         }
     }
 
-    function sha(secret, salt, callback) {
+    async function sha(secret, salt, callback) {
         // calculate sha256
-        crypto = crypto || require('crypto');
+        crypto = crypto || (await import('node:crypto'));
         const hash = crypto.createHash('sha256');
 
         hash.on('readable', () => {
@@ -308,5 +307,3 @@ function MHServer(hostname, logger, config, info, ips, secret) {
 
     return this;
 }
-
-module.exports = MHServer;

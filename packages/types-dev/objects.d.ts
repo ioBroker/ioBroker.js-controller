@@ -1,4 +1,5 @@
-import type * as os from 'os';
+import type * as os from 'node:os';
+import type { Branded } from './utils';
 
 declare global {
     namespace ioBroker {
@@ -79,7 +80,7 @@ declare global {
             // Guaranteed instance objects
             type Instance = `system.adapter.${string}.${number}`;
             // Guaranteed adapter objects
-            type Adapter = `system.adapter.${string}`;
+            type Adapter = `system.adapter.${string}` | `system.host.${string}.adapter.${string}`;
             // Guaranteed group objects
             type Group = `system.group.${string}`;
             // Guaranteed user objects
@@ -120,39 +121,39 @@ declare global {
             T extends ObjectIDs.State
                 ? StateObject
                 : // Instance and Adapter must come before meta or `system.adapter.admin` will resolve to MetaObject
-                T extends ObjectIDs.Instance
-                ? InstanceObject
-                : T extends ObjectIDs.Adapter
-                ? AdapterObject
-                : T extends ObjectIDs.Channel
-                ? ChannelObject
-                : T extends ObjectIDs.Meta
-                ? MetaObject
-                : T extends ObjectIDs.Misc
-                ? AdapterScopedObject
-                : T extends ObjectIDs.ScriptOrChannel
-                ? ScriptObject | ChannelObject
-                : T extends ObjectIDs.Enum
-                ? EnumObject
-                : T extends ObjectIDs.Group
-                ? GroupObject
-                : T extends ObjectIDs.User
-                ? UserObject
-                : T extends ObjectIDs.Host
-                ? HostObject
-                : T extends ObjectIDs.Design
-                ? DesignObject
-                : T extends ObjectIDs.Repository
-                ? RepositoryObject
-                : T extends ObjectIDs.SystemConfig
-                ? SystemConfigObject
-                : T extends ObjectIDs.Config
-                ? OtherObject & { type: 'config' }
-                : T extends ObjectIDs.AdapterScoped
-                ? AdapterScopedObject
-                : Read extends 'read'
-                ? ioBroker.Object
-                : AnyObject;
+                  T extends ObjectIDs.Instance
+                  ? InstanceObject
+                  : T extends ObjectIDs.Adapter
+                    ? AdapterObject
+                    : T extends ObjectIDs.Channel
+                      ? ChannelObject
+                      : T extends ObjectIDs.Meta
+                        ? MetaObject
+                        : T extends ObjectIDs.Misc
+                          ? AdapterScopedObject
+                          : T extends ObjectIDs.ScriptOrChannel
+                            ? ScriptObject | ChannelObject
+                            : T extends ObjectIDs.Enum
+                              ? EnumObject
+                              : T extends ObjectIDs.Group
+                                ? GroupObject
+                                : T extends ObjectIDs.User
+                                  ? UserObject
+                                  : T extends ObjectIDs.Host
+                                    ? HostObject
+                                    : T extends ObjectIDs.Design
+                                      ? DesignObject
+                                      : T extends ObjectIDs.Repository
+                                        ? RepositoryObject
+                                        : T extends ObjectIDs.SystemConfig
+                                          ? SystemConfigObject
+                                          : T extends ObjectIDs.Config
+                                            ? OtherObject & { type: 'config' }
+                                            : T extends ObjectIDs.AdapterScoped
+                                              ? AdapterScopedObject
+                                              : Read extends 'read'
+                                                ? ioBroker.Object
+                                                : AnyObject;
 
         type Languages = 'en' | 'de' | 'ru' | 'pt' | 'nl' | 'fr' | 'it' | 'es' | 'pl' | 'uk' | 'zh-cn';
         type Translated = { en: string } & { [lang in Languages]?: string };
@@ -160,7 +161,7 @@ declare global {
         /** For objects, we require the English language to be present */
         type StringOrTranslated = string | Translated;
 
-        type CommonType = 'number' | 'string' | 'boolean' | 'array' | 'object' | 'mixed' | 'file';
+        type CommonType = 'number' | 'string' | 'boolean' | 'array' | 'object' | 'mixed';
 
         interface ObjectCommon {
             /** The name of this object as a simple string or an object with translations */
@@ -264,17 +265,18 @@ declare global {
 
             /**
              * Settings for IOT adapters and how the state should be named in e.g., Alexa.
-             * The string "ignore" is a special case, causing the state to be ignored.
-             * A value of `null` means, that the device should be removed by the IOT adapters
+             * The string "ignore" (deprecated please use boolean `false` instead) or boolean value `false` is a special case, causing the state to be ignored.
+             * A value of `null` means that the device should be removed by the IOT adapters
              */
             smartName?:
                 | null
+                | false
                 | string
                 | ({ [lang in Languages]?: string } & {
                       /** Which kind of device it is */
                       smartType?: string | null;
                       /** Which value to set when the ON command is issued */
-                      byOn?: string | null;
+                      byON?: string | null;
                   });
         }
 
@@ -339,6 +341,9 @@ declare global {
             tab?: 'html' | 'materialize';
         }
 
+        /** Installed from attribute of instance/adapter object */
+        type InstalledFrom = Branded<string, 'InstalledFrom'>;
+
         interface InstanceCommon extends AdapterCommon {
             version: string;
             /** The name of the host where this instance is running */
@@ -363,7 +368,8 @@ declare global {
             compactGroup?: number;
             /** String (or array) with names of attributes in common of instance, which will not be deleted. */
             preserveSettings?: string | string[];
-            installedFrom?: string;
+            /** Source, where this adapter has been installed from, to enable reinstalling on e.g., backup restore */
+            installedFrom?: InstalledFrom;
             /** Arguments passed to the adapter process, this disables compact mode */
             nodeProcessParams?: string[];
             /** If adapter can consume log messages, like admin, javascript or logparser */
@@ -380,7 +386,10 @@ declare global {
         interface HostCommon extends ObjectCommon {
             /** The display name of this host */
             name: string;
+            /** Changeable name of the host */
             title: string;
+            /** base64 encoded icon */
+            icon?: string;
             installedVersion: string; // e.g. 1.2.3 (following semver)
             /** The command line of the executable */
             cmd: string;
@@ -399,7 +408,7 @@ declare global {
             process: {
                 title: string;
                 versions: NodeJS.ProcessVersions;
-                env: Record<string, string>;
+                env: NodeJS.ProcessEnv;
             };
             os: {
                 hostname: string;
@@ -411,7 +420,9 @@ declare global {
                 tmpdir: ReturnType<(typeof os)['tmpdir']>;
             };
             hardware: {
-                cpus: ReturnType<(typeof os)['cpus']>;
+                /** Return value of os.cpu but property `times` could be removed from every entry */
+                cpus: (Omit<ReturnType<(typeof os)['cpus']>[number], 'times'> &
+                    Partial<Pick<ReturnType<(typeof os)['cpus']>[number], 'times'>>)[];
                 totalmem: ReturnType<(typeof os)['totalmem']>;
                 networkInterfaces: ReturnType<(typeof os)['networkInterfaces']>;
             };
@@ -551,13 +562,48 @@ declare global {
             };
         }
 
+        interface CustomAdminColumn {
+            path: string;
+            name?: ioBroker.StringOrTranslated;
+            objTypes?: ObjectType | ObjectType[];
+            width?: number;
+            edit?: boolean;
+            type?: CommonType;
+            align?: 'left' | 'center' | 'right';
+        }
+
+        type ConnectionType = 'local' | 'cloud';
+
+        type LocalLink = {
+            /** Link to the web service of this adapter, like: "%web_protocol%://%ip%:%web_port%/vis-2/edit.html" */
+            link: string;
+            /** Name of the link. Could be multi-language */
+            name?: ioBroker.StringOrTranslated;
+            /** Color */
+            color?: string;
+            /** Link to icon, like "vis-2/img/favicon.png" */
+            icon?: string;
+            /** Link to the adapter if it could be shown in the free cloud, like: vis-2/index.html according to "https://iobroker.net/" */
+            cloud?: string;
+            /** Link to the adapter if it could be shown in the pro-cloud, like: vis-2/edit.html according to "https://iobroker.pro/" */
+            pro?: string;
+            /** If this link should be shown on the intro tab in admin. false = do not show */
+            intro?: boolean;
+            /** Order of the card. Used on "intro" and cloud tabs to sort the links */
+            order?: number;
+            /** Description of the link. Could be multi-language */
+            description?: ioBroker.StringOrTranslated;
+        };
+
         interface AdapterCommon extends ObjectCommon {
             /** Custom attributes to be shown in admin in the object browser */
-            adminColumns?: any[];
+            adminColumns?: string | (string | CustomAdminColumn)[];
             /** Settings for custom Admin Tabs */
             adminTab?: {
-                name?: string;
-                /** Icon name for FontAwesome */
+                name?: StringOrTranslated;
+                /** Base 64 icon for the tab */
+                icon?: string;
+                /** @deprecated icon name for FontAwesome (works only in admin 4)*/
                 'fa-icon'?: string;
                 /** If true, the Tab is not reloaded when the configuration changes */
                 ignoreConfigUpdate?: boolean;
@@ -565,6 +611,8 @@ declare global {
                 link?: string;
                 /** If true, only one instance of this tab will be created for all instances */
                 singleton?: boolean;
+                /** Order number in admin tabs */
+                order?: number;
             };
             allowInit?: boolean;
             /** If the adapter should be automatically upgraded and which version ranges are supported */
@@ -576,8 +624,8 @@ declare global {
             /** Whether this adapter includes custom blocks for Blockly. If true, `admin/blockly.js` must exist. */
             blockly?: boolean;
             /** Where the adapter will get its data from. Set this together with @see dataSource */
-            connectionType?: 'local' | 'cloud';
-            /** If true, this adapter can be started in compact mode (in the same process as other adpaters) */
+            connectionType?: ConnectionType;
+            /** If true, this adapter can be started in compact mode (in the same process as other adapters) */
             compact?: boolean;
             /** The directory relative to iobroker-data where the adapter stores the data. Supports the placeholder `%INSTANCE%`. This folder will be backed up and restored automatically. */
             dataFolder?: string;
@@ -599,23 +647,25 @@ declare global {
             getHistory?: boolean;
             /** Filename of the local icon which is shown for installed adapters. Should be located in the `admin` directory */
             icon?: string;
+            /** The adapter will be executed once additionally after installation, and the `install` event will be emitted during this run. This allows for executing one time installation code. */
+            install?: boolean;
             /** Source, where this adapter has been installed from, to enable reinstalling on e.g., backup restore */
-            installedFrom?: string;
+            installedFrom?: InstalledFrom;
             /** Which version of this adapter is installed */
             installedVersion: string;
             keywords?: string[];
             /** A dictionary of links to web services this adapter provides */
-            localLinks?: Record<string, string>;
+            localLinks?: Record<string, string | LocalLink>;
             /** @deprecated Use @see localLinks */
             localLink?: string;
             loglevel?: LogLevel;
-            /** Whether this adapter receives logs from other hosts and adapters (e.g., to strore them somewhere) */
+            /** Whether this adapter receives logs from other hosts and adapters (e.g., to store them somewhere) */
             logTransporter?: boolean;
             /** Path to the start file of the adapter. Should be the same as in `package.json` */
             main?: string;
-            /** Whether the admin tab is written in materialize style. Required for Admin 3+ */
+            /** Whether the admin tab is written in materialized style. Required for Admin 3+ */
             materializeTab?: boolean;
-            /** Whether the admin configuration dialog is written in materialize style. Required for Admin 3+ */
+            /** Whether the admin configuration dialog is written in materialized style. Required for Admin 3+ */
             materialize: boolean;
             /** @deprecated Use @see supportedMessages up from controller v5 */
             messagebox?: true;
@@ -625,7 +675,7 @@ declare global {
             /** Name of the adapter (without leading `ioBroker.`) */
             name: string;
             /** News per version in i18n */
-            news?: Record<string, Record<string, Translated>>;
+            news?: { [version: string]: Translated };
             /** If `true`, no configuration dialog will be shown */
             noConfig?: true;
             /** If `true`, this adapter's instances will not be shown in the admin overview screen. Useful for icon sets and widgets... */
@@ -652,6 +702,8 @@ declare global {
             platform: 'Javascript/Node.js';
             /** The keys of common attributes (e.g. `history`) which are not deleted in a `setObject` call even if they are not present. Deletion must be done explicitly by setting them to `null`. */
             preserveSettings?: string | string[];
+            /** Url of the ReadMe file */
+            readme?: string;
             /** Which adapters must be restarted after installing or updating this adapter. */
             restartAdapters?: string[];
             /** CRON schedule to restart mode `daemon` adapters */
@@ -673,7 +725,7 @@ declare global {
             /** @deprecated Use @see supportedMessages up from controller v5 */
             supportStopInstance?: boolean;
             /** The translated names of this adapter to be shown in the admin UI */
-            titleLang?: Record<Languages, string>;
+            titleLang?: StringOrTranslated;
             /** @deprecated The name of this adapter to be shown in the admin UI. Use @see titleLang instead. */
             title?: string;
             /** The type of this adapter */
@@ -691,9 +743,9 @@ declare global {
             webExtension?: string;
             webPreSettings?: any; // ?
             webservers?: any; // ?
-            /** A list of pages that should be shown on the "web" index page */
+            /** @deprecated (use localLinks) A list of pages that should be shown on the "web" index page */
             welcomeScreen?: WelcomeScreenEntry[];
-            /** A list of pages that should be shown on the ioBroker cloud index page */
+            /** @deprecated (use localLinks) A list of pages that should be shown on the ioBroker cloud index page */
             welcomeScreenPro?: WelcomeScreenEntry[];
             wwwDontUpload?: boolean;
             /** @deprecated Use 'common.licenseInformation' instead */
@@ -702,6 +754,10 @@ declare global {
             licenseInformation?: LicenseInformation;
             /** Messages, that will be shown (if condition evaluates to true) by upgrade or installation */
             messages?: MessageRule[];
+            /** If a specific update of this adapter should be ignored, specifies version number to be ignored */
+            ignoreVersion?: string;
+            /** Sentry and other plugins */
+            plugins?: { [pluginName: string]: Record<string, any> };
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
@@ -715,9 +771,19 @@ declare global {
             /** If floating comma is used instead of dot */
             isFloatComma: boolean;
             /** Configured longitude */
-            longitude: string;
+            longitude?: number;
             /** Configured latitude */
-            latitude: string;
+            latitude?: number;
+            /** Optional user's city (only for diagnostics) */
+            city?: string;
+            /** Optional user's country (only for diagnostics) */
+            country?: string;
+            /** User-defined temperature unit */
+            tempUnit?: '°C' | '°F';
+            /** User-defined currency */
+            currency?: string;
+            /** User-defined first day of the week */
+            firstDayOfWeek?: 'monday' | 'sunday';
             /** Default history instance */
             defaultHistory: string;
             /** Which diag data is allowed to be sent */
@@ -745,6 +811,19 @@ declare global {
                 /** Default policy, if none has been set explicit for the adapter */
                 defaultPolicy: AutoUpgradePolicy;
             };
+            /** Deactivated instances, that should not be shown in admin/Intro page */
+            intro?: string[];
+            /** Which tabs are visible in admin in the left menu */
+            tabsVisible?: {
+                /** Name of the tab */
+                name: string;
+                /** If the tab should be visible */
+                visible: boolean;
+                /** Optional color of the tab */
+                color?: string;
+            }[];
+            /** Global saved expert mode for admin */
+            expertMode?: boolean;
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
@@ -876,23 +955,27 @@ declare global {
             name: string;
             /** Newest available version */
             version: string;
+            /** Array of blocked versions, each entry represents a semver range */
+            blockedVersions: string[];
 
             /** Other Adapter related properties, not important for this implementation */
             [other: string]: unknown;
         }
 
-        interface RepositoryJson {
-            _repoInfo: {
-                /** If it is the official stable repository */
-                stable?: boolean;
-                /** i18n name of the repository */
-                name: Required<ioBroker.Translated>;
-                /** Time of repository update */
-                repoTime: string;
-            };
+        interface RepoInfo {
+            /** If it is the official stable repository */
+            stable?: boolean;
+            /** i18n name of the repository */
+            name: Required<ioBroker.Translated>;
+            /** Time of repository update */
+            repoTime: string;
+        }
 
-            /** Information about each adapter - Record needed for _repoInfo */
-            [adapter: string]: RepositoryJsonAdapterContent | Record<string, any>;
+        interface RepositoryJson {
+            _repoInfo: RepoInfo;
+
+            /** Information about each adapter */
+            [adapter: string]: RepositoryJsonAdapterContent | RepoInfo;
         }
 
         interface RepositoryInformation {
@@ -1126,41 +1209,41 @@ declare global {
             ? View extends 'host'
                 ? HostObject
                 : View extends 'adapter'
-                ? AdapterObject
-                : View extends 'instance'
-                ? InstanceObject
-                : View extends 'meta'
-                ? MetaObject
-                : View extends 'device'
-                ? DeviceObject
-                : View extends 'channel'
-                ? ChannelObject
-                : View extends 'state'
-                ? StateObject
-                : View extends 'folder'
-                ? FolderObject
-                : View extends 'enum'
-                ? EnumObject
-                : View extends 'script'
-                ? ScriptObject
-                : View extends 'group'
-                ? GroupObject
-                : View extends 'user'
-                ? UserObject
-                : View extends 'chart'
-                ? ChartObject
-                : View extends 'schedule'
-                ? ScheduleObject
-                : View extends 'config'
-                ?
-                      | RepositoryObject
-                      | SystemConfigObject
-                      | (OtherObject & {
-                            type: 'config';
-                        })
-                : View extends 'custom'
-                ? NonNullable<StateObject['common']['custom']>
-                : ioBroker.Object
+                  ? AdapterObject
+                  : View extends 'instance'
+                    ? InstanceObject
+                    : View extends 'meta'
+                      ? MetaObject
+                      : View extends 'device'
+                        ? DeviceObject
+                        : View extends 'channel'
+                          ? ChannelObject
+                          : View extends 'state'
+                            ? StateObject
+                            : View extends 'folder'
+                              ? FolderObject
+                              : View extends 'enum'
+                                ? EnumObject
+                                : View extends 'script'
+                                  ? ScriptObject
+                                  : View extends 'group'
+                                    ? GroupObject
+                                    : View extends 'user'
+                                      ? UserObject
+                                      : View extends 'chart'
+                                        ? ChartObject
+                                        : View extends 'schedule'
+                                          ? ScheduleObject
+                                          : View extends 'config'
+                                            ?
+                                                  | RepositoryObject
+                                                  | SystemConfigObject
+                                                  | (OtherObject & {
+                                                        type: 'config';
+                                                    })
+                                            : View extends 'custom'
+                                              ? NonNullable<StateObject['common']['custom']>
+                                              : ioBroker.Object
             : any;
     }
 }

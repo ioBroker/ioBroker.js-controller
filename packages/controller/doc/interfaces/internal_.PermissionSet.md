@@ -38,7 +38,7 @@ The access rights for files
 
 #### Defined in
 
-[types-dev/index.d.ts:108](https://github.com/ioBroker/ioBroker.js-controller/blob/1f96ea5e/packages/types-dev/index.d.ts#L108)
+[types-dev/index.d.ts:112](https://github.com/ioBroker/ioBroker.js-controller/blob/8c44dc255583a0a0370d85b4262312bfd93bcdc8/packages/types-dev/index.d.ts#L112)
 
 ___
 
@@ -50,7 +50,7 @@ The name of the groups this ACL was merged from
 
 #### Defined in
 
-[types-dev/index.d.ts:121](https://github.com/ioBroker/ioBroker.js-controller/blob/1f96ea5e/packages/types-dev/index.d.ts#L121)
+[types-dev/index.d.ts:125](https://github.com/ioBroker/ioBroker.js-controller/blob/8c44dc255583a0a0370d85b4262312bfd93bcdc8/packages/types-dev/index.d.ts#L125)
 
 ___
 
@@ -66,7 +66,7 @@ The access rights for objects
 
 #### Defined in
 
-[types-dev/index.d.ts:110](https://github.com/ioBroker/ioBroker.js-controller/blob/1f96ea5e/packages/types-dev/index.d.ts#L110)
+[types-dev/index.d.ts:114](https://github.com/ioBroker/ioBroker.js-controller/blob/8c44dc255583a0a0370d85b4262312bfd93bcdc8/packages/types-dev/index.d.ts#L114)
 
 ___
 
@@ -86,7 +86,7 @@ The access rights for certain commands
 
 #### Defined in
 
-[types-dev/index.d.ts:123](https://github.com/ioBroker/ioBroker.js-controller/blob/1f96ea5e/packages/types-dev/index.d.ts#L123)
+[types-dev/index.d.ts:127](https://github.com/ioBroker/ioBroker.js-controller/blob/8c44dc255583a0a0370d85b4262312bfd93bcdc8/packages/types-dev/index.d.ts#L127)
 
 ___
 
@@ -102,7 +102,7 @@ The access rights for states
 
 #### Defined in
 
-[types-dev/index.d.ts:114](https://github.com/ioBroker/ioBroker.js-controller/blob/1f96ea5e/packages/types-dev/index.d.ts#L114)
+[types-dev/index.d.ts:118](https://github.com/ioBroker/ioBroker.js-controller/blob/8c44dc255583a0a0370d85b4262312bfd93bcdc8/packages/types-dev/index.d.ts#L118)
 
 ___
 
@@ -114,7 +114,7 @@ The name of the user this ACL is for
 
 #### Defined in
 
-[types-dev/index.d.ts:119](https://github.com/ioBroker/ioBroker.js-controller/blob/1f96ea5e/packages/types-dev/index.d.ts#L119)
+[types-dev/index.d.ts:123](https://github.com/ioBroker/ioBroker.js-controller/blob/8c44dc255583a0a0370d85b4262312bfd93bcdc8/packages/types-dev/index.d.ts#L123)
 
 ___
 
@@ -130,4 +130,4 @@ The access rights for users/groups
 
 #### Defined in
 
-[types-dev/index.d.ts:112](https://github.com/ioBroker/ioBroker.js-controller/blob/1f96ea5e/packages/types-dev/index.d.ts#L112)
+[types-dev/index.d.ts:116](https://github.com/ioBroker/ioBroker.js-controller/blob/8c44dc255583a0a0370d85b4262312bfd93bcdc8/packages/types-dev/index.d.ts#L116)

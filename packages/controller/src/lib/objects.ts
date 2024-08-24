@@ -1,4 +1,5 @@
 import fs from 'fs-extra';
+import { DEFAULT_DISK_WARNING_LEVEL } from '@/lib/utils.js';
 
 interface GetHostOptions {
     /** The host base id */
@@ -317,16 +318,6 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
     });
 
     objs.push({
-        _id: `${id}.zip`,
-        type: 'folder',
-        common: {
-            name: 'ZIP files',
-            desc: 'Files for download'
-        },
-        native: {}
-    });
-
-    objs.push({
         _id: `${id}.logLevel`,
         type: 'state',
         common: {
@@ -393,11 +384,11 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
             type: 'state',
             common: {
                 name: `${hostname} - disk warning level`,
-                desc: 'Show warning in admin if the free disk space is below this value',
+                desc: 'Generate a warning if the free disk space is below this value',
                 type: 'number',
                 read: true,
                 write: true,
-                def: 5,
+                def: DEFAULT_DISK_WARNING_LEVEL,
                 role: 'level',
                 unit: '%'
             },

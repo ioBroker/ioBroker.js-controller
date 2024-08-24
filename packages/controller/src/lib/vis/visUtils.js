@@ -618,7 +618,7 @@ function getUsedObjectIDsInWidget(views, view, wid, linkContext) {
     }
 }
 
-function getUsedObjectIDs(views, isByViews) {
+export function getUsedObjectIDs(views, isByViews) {
     if (!views) {
         console.log('Check why views are not yet loaded!');
         return null;
@@ -681,5 +681,3 @@ function getUsedObjectIDs(views, isByViews) {
 
     return linkContext;
 }
-
-module.exports = { getUsedObjectIDs };

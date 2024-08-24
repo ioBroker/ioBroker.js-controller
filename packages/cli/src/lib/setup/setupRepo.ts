@@ -3,7 +3,8 @@ import axios from 'axios';
 import fs from 'fs-extra';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesRedisClient } from '@iobroker/db-states-redis';
-import path from 'path';
+import { isVersionIgnored } from '@/lib/setup/utils.js';
+import path from 'node:path';
 
 export interface CLIRepoOptions {
     objects: ObjectsRedisClient;
@@ -174,8 +175,8 @@ export class Repo {
      */
     async showRepo(repoUrl: string | string[], flags: RepoFlags): Promise<void> {
         // Get the repositories
-        const systemConfig = await this.objects.getObjectAsync('system.config');
-        const systemRepos = await this.objects.getObjectAsync('system.repositories');
+        const systemConfig = await this.objects.getObject('system.config');
+        const systemRepos = await this.objects.getObject('system.repositories');
         if (!systemConfig) {
             console.error('Error: Object "system.config" not found');
         } else if (!systemRepos) {
@@ -223,7 +224,7 @@ export class Repo {
                 // not important if fails
             }
 
-            this.showRepoResult(allSources, flags);
+            return this.showRepoResult(allSources, flags);
         }
     }
 
@@ -233,7 +234,7 @@ export class Repo {
      * @param sources Repo json sources
      * @param flags CLI flags
      */
-    private showRepoResult(sources: Record<string, any>, flags: RepoFlags): void {
+    private async showRepoResult(sources: Record<string, any>, flags: RepoFlags): Promise<void> {
         const installed = tools.getInstalledInfo();
         const adapters = Object.keys(sources).sort();
 
@@ -263,7 +264,13 @@ export class Repo {
                     ) {
                         updatable = true;
                         text = text.padEnd(11 + 15 + 11 + 18);
-                        text += ' [Updatable]';
+                        const isIgnored = await isVersionIgnored({
+                            adapterName: name,
+                            objects: this.objects,
+                            version: sources[name].version
+                        });
+
+                        text += isIgnored ? ' [Ignored]' : ' [Updatable]';
                     }
                 } catch (e) {
                     console.error(`Cannot determine update info of "${name}": ${e.message}`);
@@ -279,7 +286,7 @@ export class Repo {
     /**
      * Update Admin info states with number of updates
      *
-     * @param sources
+     * @param sources the repository object
      */
     private async updateInfo(sources: Record<string, any>): Promise<void> {
         const installed = tools.getInstalledInfo();
@@ -324,22 +331,30 @@ export class Repo {
      */
     async showRepoStatus(): Promise<number> {
         try {
-            const obj = await this.objects.getObjectAsync('system.repositories');
+            const obj = await this.objects.getObject('system.repositories');
+            const objCfg = await this.objects.getObject('system.config');
+
             if (!obj) {
                 console.error('List is empty');
                 return EXIT_CODES.CANNOT_GET_REPO_LIST;
             } else if (obj.native.repositories) {
-                Object.keys(obj.native.repositories).forEach(r =>
-                    console.log(`${r.padEnd(14)}: ${obj.native.repositories[r].link}`)
+                console.table(
+                    Object.entries(obj.native.repositories).map(([key, value]) => {
+                        return {
+                            name: key,
+                            url: value.link,
+                            'auto upgrade': objCfg?.common.adapterAutoUpgrade?.repositories[key] ?? false
+                        };
+                    })
                 );
 
-                const objCfg = await this.objects.getObjectAsync('system.config');
                 if (objCfg?.common) {
                     let activeRepo = objCfg.common.activeRepo;
                     if (typeof activeRepo === 'string') {
                         activeRepo = [activeRepo];
                     }
                     console.log(`\nActive repo(s): ${activeRepo.join(', ')}`);
+                    console.log(`Upgrade policy: ${objCfg.common.adapterAutoUpgrade?.defaultPolicy ?? 'none'}`);
                 }
             } else {
                 console.error('List is empty');

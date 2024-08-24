@@ -1,17 +1,17 @@
 /**
  *      States DB in memory - Server
  *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
  */
 
 import fs from 'fs-extra';
-import path from 'path';
-import { tools } from '@iobroker/js-controller-common';
-import type { InternalLogger } from '@iobroker/js-controller-common/tools';
-import { createGzip } from 'zlib';
+import path from 'node:path';
+import { tools } from '@iobroker/js-controller-common-db';
+import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
+import { createGzip } from 'node:zlib';
 
 // settings = {
 //    change:    function (id, state) {},

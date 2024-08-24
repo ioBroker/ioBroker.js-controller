@@ -1,5 +1,15 @@
-import { isObject, isControllerUiUpgradeSupported, encrypt, decrypt } from '@iobroker/js-controller-common/tools';
-import { SUPPORTED_FEATURES, type SupportedFeature } from './constants';
+import {
+    isObject,
+    isControllerUiUpgradeSupported,
+    encrypt,
+    decrypt,
+    appNameLowerCase,
+    getRootDir,
+    execAsync
+} from '@iobroker/js-controller-common-db/tools';
+import { SUPPORTED_FEATURES, type SupportedFeature } from '@/lib/adapter/constants.js';
+import path from 'node:path';
+import fs from 'fs-extra';
 
 interface EncryptArrayOptions {
     /** The objects whose values should be en/decrypted */
@@ -8,6 +18,13 @@ interface EncryptArrayOptions {
     keys: string[];
     /** Secret to use for en/decryption */
     secret: string;
+}
+
+interface GetScopedPackageIdentifierOptions {
+    /** Name of the node module */
+    moduleName: string;
+    /** Adapter namespace */
+    namespace: string;
 }
 
 /**
@@ -68,4 +85,67 @@ export function decryptArray(options: EncryptArrayOptions): void {
             obj[attr] = decrypt(secret, val);
         }
     }
+}
+
+/**
+ * Transform a npm moduleName to the adapter scoped name, like `axios` to `@iobroker-javascript.0/axios`
+ *
+ * @param options name of the node module and namespace information
+ */
+export function getAdapterScopedPackageIdentifier(options: GetScopedPackageIdentifierOptions): string {
+    const { moduleName, namespace } = options;
+
+    let internalModuleName = moduleName;
+    if (internalModuleName.startsWith('@')) {
+        internalModuleName = internalModuleName.substring(1).replace(/\//g, '-');
+    }
+
+    return `@${appNameLowerCase}-${namespace}/${internalModuleName}`;
+}
+
+/**
+ * List all packages installed in the given adapter namespace
+ *
+ * @param namespace namespace to check installed modules for
+ */
+export async function listInstalledNodeModules(namespace: string): Promise<string[]> {
+    const packJson = (await fs.readJson(path.join(getRootDir(), 'package.json'))) as {
+        dependencies: Record<string, string>;
+    };
+    const dependencies: string[] = [];
+
+    for (const [dependency, versionInfo] of Object.entries(packJson.dependencies)) {
+        if (!dependency.startsWith(`@${appNameLowerCase}-${namespace}/`)) {
+            continue;
+        }
+
+        let realDependencyName: string;
+        // remove npm: and version after last @
+        if (versionInfo.startsWith('npm:')) {
+            realDependencyName = versionInfo.substring(4, versionInfo.lastIndexOf('@'));
+        } else {
+            realDependencyName = await requestModuleNameByUrl(versionInfo);
+        }
+
+        dependencies.push(realDependencyName);
+    }
+
+    return dependencies;
+}
+
+/**
+ * Request a module name by given url using `npm view`
+ *
+ * @param url the url to the package which should be installed via npm
+ */
+export async function requestModuleNameByUrl(url: string): Promise<string> {
+    const res = await execAsync(`npm view ${url} name`);
+
+    if (typeof res.stdout !== 'string') {
+        throw new Error(
+            `Could not determine module name for url "${url}". Unexpected stdout: "${res.stdout ? res.stdout.toString() : ''}"`
+        );
+    }
+
+    return res.stdout.trim();
 }

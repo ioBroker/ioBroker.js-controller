@@ -4,4 +4,4 @@ The Library contains the JSONL Database classes for File based states database c
 ## License
 The MIT License (MIT)
 
-Copyright 2018-2023 bluefox <dogafox@gmail.com>
+Copyright 2018-2024 bluefox <dogafox@gmail.com>

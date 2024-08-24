@@ -1,23 +1,16 @@
 /**
  *      States DB in memory - Server with Redis protocol
  *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
  */
 
-/** @module statesInMemory */
+import { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
+import { ObjectsInMemoryServer } from './objectsInMemServerRedis.js';
 
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node: true */
-'use strict';
-
-const ObjectsInRedisClient = require('@iobroker/db-objects-redis').Client;
-const ObjectsInMemServer = require('./objectsInMemServerRedis');
-
-class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
+export class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
     constructor(settings) {
         settings.autoConnect = false; // delay Client connection to when we need it
         super(settings);
@@ -31,7 +24,7 @@ class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
                 this.connectDb(); // now that server is connected also connect client
             }
         };
-        this.objectsServer = new ObjectsInMemServer(serverSettings);
+        this.objectsServer = new ObjectsInMemoryServer(serverSettings);
     }
 
     async destroy() {
@@ -51,4 +44,3 @@ class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
         return this.objectsServer.dirExists(id, name);
     }
 }
-module.exports = ObjectsInMemoryServerClass;

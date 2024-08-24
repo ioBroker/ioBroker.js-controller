@@ -2,45 +2,45 @@ import fs from 'fs-extra';
 import { tools } from '@iobroker/js-controller-common';
 import { EXIT_CODES } from '@iobroker/js-controller-common';
 import deepClone from 'deep-clone';
-import { isDeepStrictEqual } from 'util';
+import { isDeepStrictEqual } from 'node:util';
 import Debug from 'debug';
-import { tools as dbTools } from '@iobroker/js-controller-common-db';
-import path from 'path';
-import yargs from 'yargs';
-import * as CLITools from './cli/cliTools';
-import { CLIHost } from './cli/cliHost';
-import { CLIStates } from './cli/cliStates';
-import { CLIDebug } from './cli/cliDebug';
-import { CLICert } from './cli/cliCert';
-import { CLIObjects } from './cli/cliObjects';
-import { CLICompact } from './cli/cliCompact';
-import { CLILogs } from './cli/cliLogs';
-import { error as CLIError } from './cli/messages';
-import type { CLICommandContext, CLICommandOptions } from './cli/cliCommand';
-import { getRepository } from './setup/utils';
-import { dbConnect, dbConnectAsync, exitApplicationSave } from './setup/dbConnection';
-import { IoBrokerError } from './setup/customError';
+import { objectsDbHasServer, isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common';
+import path from 'node:path';
+import yargs from 'yargs/yargs';
+import * as CLITools from '@/lib/cli/cliTools.js';
+import { CLIHost } from '@/lib/cli/cliHost.js';
+import { CLIStates } from '@/lib/cli/cliStates.js';
+import { CLIDebug } from '@/lib/cli/cliDebug.js';
+import { CLICert } from '@/lib/cli/cliCert.js';
+import { CLIObjects } from '@/lib/cli/cliObjects.js';
+import { CLICompact } from '@/lib/cli/cliCompact.js';
+import { CLILogs } from '@/lib/cli/cliLogs.js';
+import { CLIProcess } from '@/lib/cli/cliProcess.js';
+import { CLIMessage } from '@/lib/cli/cliMessage.js';
+import { CLIPlugin } from '@/lib/cli/cliPlugin.js';
+import { error as CLIError } from '@/lib/cli/messages.js';
+import type { CLICommandContext, CLICommandOptions } from '@/lib/cli/cliCommand.js';
+import { getRepository, ignoreVersion, recognizeVersion } from '@/lib/setup/utils.js';
+import { dbConnect, dbConnectAsync, exitApplicationSave } from '@/lib/setup/dbConnection.js';
+import { IoBrokerError } from '@/lib/setup/customError.js';
+import type { ListType } from '@/lib/setup/setupList.js';
+import * as url from 'node:url';
+import * as events from 'node:events';
+
+// eslint-disable-next-line unicorn/prefer-module
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+import { createRequire } from 'node:module';
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __filename);
 
 tools.ensureDNSOrder();
 
-/**
- * Polyfill until everything ported to TS
- */
-const cli = {
-    command: {
-        process: require('./cli/cliProcess.js'),
-        message: require('./cli/cliMessage.js'),
-        plugin: require('./cli/cliPlugin.js')
-    }
-} as const;
-
 const debug = Debug('iobroker:cli');
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-require('events').EventEmitter.prototype._maxListeners = 100;
+events.EventEmitter.setMaxListeners(100);
 process.setMaxListeners(0);
 
-let _yargs: yargs.Argv;
+let _yargs: ReturnType<typeof yargs>;
 
 type ExitCodeCb = (exitCode?: number) => void;
 
@@ -50,8 +50,11 @@ interface InternalRebuildOptions {
     debug: boolean;
 }
 
-function initYargs(): yargs.Argv {
-    _yargs = yargs
+/**
+ * Initialize Yargs to parse commands correctly and be able to output correct help
+ */
+function initYargs(): ReturnType<typeof yargs> {
+    _yargs = yargs(process.argv.slice(2))
         .scriptName(tools.appName)
         .locale('en') // otherwise it could be mixed, because our implementations are in english
         .version(false) // disable yargs own version handling, because we have our own depending on passed instances
@@ -259,13 +262,6 @@ function initYargs(): yargs.Argv {
                     pretty: {
                         describe: 'Prettify output',
                         type: 'boolean'
-                    }
-                })
-                .command('getBinary <id>', 'Get binary state, specified by id', {
-                    encoding: {
-                        describe: 'Encoding for the binary state, like utf-8, ascii, hex, base64, binary',
-                        type: 'string',
-                        default: 'binary'
                     }
                 })
                 .command('getValue <id>', 'Get state value, specified by id', {})
@@ -490,7 +486,17 @@ function initYargs(): yargs.Argv {
                 );
         })
         .command('vendor <passphrase> [<vendor.json>]', 'Update the vendor information using given passphrase')
-        .command(['version [<adapter>]', 'v [<adapter>]'], 'Show version of js-controller or specified adapter')
+        .command(['version [<adapter>]', 'v [<adapter>]'], 'Show version of js-controller or specified adapter', {
+            ignore: {
+                describe:
+                    'Ignore specific version of this adapter. The adapter will not be upgradeable to this specific version.',
+                type: 'string'
+            },
+            recognize: {
+                describe: 'No longer ignore specific versions of this adapter.',
+                type: 'boolean'
+            }
+        })
         .wrap(null);
 
     return _yargs;
@@ -498,14 +504,10 @@ function initYargs(): yargs.Argv {
 
 /**
  * Show yargs help, if processCommand is used as import, yargs won't be initialized
- *
- * @param _yargs - yargs instance
  */
-function showHelp(_yargs?: yargs.Argv): void {
+function showHelp(): void {
     if (_yargs) {
         _yargs.showHelp();
-    } else {
-        yargs.showHelp();
     }
 }
 
@@ -515,11 +517,11 @@ function showHelp(_yargs?: yargs.Argv): void {
  * @param command - command to execute
  * @param args - arguments passed to yargs
  * @param params - object with parsed params by yargs, e. g. --force is params.force
- * @param callback
+ * @param callback - callback to be called with the exit code
  */
 async function processCommand(
     command: string | number,
-    args: any[],
+    args: string[],
     params: Record<string, any>,
     callback: ExitCodeCb
 ): Promise<void> {
@@ -531,7 +533,7 @@ async function processCommand(
     switch (command) {
         case 'start':
         case 'stop': {
-            const procCommand = new cli.command.process(commandOptions);
+            const procCommand = new CLIProcess(commandOptions);
             procCommand[command](args);
             break;
         }
@@ -544,14 +546,14 @@ async function processCommand(
 
         case 'status':
         case 'isrun': {
-            const procCommand = new cli.command.process(commandOptions);
+            const procCommand = new CLIProcess(commandOptions);
             procCommand.status(args);
             break;
         }
 
         case 'r':
         case 'restart': {
-            const procCommand = new cli.command.process(commandOptions);
+            const procCommand = new CLIProcess(commandOptions);
             procCommand.restart(args);
             break;
         }
@@ -606,8 +608,8 @@ async function processCommand(
             isRedis = params.redis || isRedis;
             isFirst = params.first || isFirst;
 
-            setup.setup(
-                async () => {
+            setup.setup({
+                callback: async () => {
                     const { states, objects } = await dbConnectAsync(false, params);
                     if (isFirst) {
                         // Creates all instances that are needed on a fresh installation
@@ -624,10 +626,7 @@ async function processCommand(
                         for (const instance of initialInstances) {
                             try {
                                 const adapterInstalled = !!require.resolve(
-                                    `${tools.appName.toLowerCase()}.${instance}`,
-                                    {
-                                        paths: tools.getDefaultRequireResolvePaths(module)
-                                    }
+                                    `${tools.appName.toLowerCase()}.${instance}`
                                 );
 
                                 if (adapterInstalled) {
@@ -716,7 +715,8 @@ async function processCommand(
                         if (config.states.type === 'file') {
                             config.states.type = 'jsonl';
 
-                            if (dbTools.isLocalStatesDbServer('file', config.states.host)) {
+                            const hasLocalStatesServer = await isLocalStatesDbServer('file', config.states.host);
+                            if (hasLocalStatesServer) {
                                 // silent config change on secondaries
                                 console.log('States DB type migrated from "file" to "jsonl"');
                                 migrated += 'States';
@@ -725,7 +725,9 @@ async function processCommand(
 
                         if (config.objects.type === 'file') {
                             config.objects.type = 'jsonl';
-                            if (dbTools.isLocalObjectsDbServer('file', config.objects.host)) {
+
+                            const hasLocalObjectsServer = await isLocalObjectsDbServer('file', config.objects.host);
+                            if (hasLocalObjectsServer) {
                                 // silent config change on secondaries
                                 console.log('Objects DB type migrated from "file" to "jsonl"');
                                 migrated += migrated ? ' and Objects' : 'Objects';
@@ -733,7 +735,7 @@ async function processCommand(
                         }
 
                         if (migrated) {
-                            const { NotificationHandler } = await import('@iobroker/js-controller-common-db');
+                            const { NotificationHandler } = await import('@iobroker/js-controller-common');
 
                             const hostname = tools.getHostName();
 
@@ -776,9 +778,9 @@ async function processCommand(
 
                     return void callback();
                 },
-                isFirst,
-                isRedis
-            );
+                ignoreIfExist: isFirst,
+                useRedis: isRedis
+            });
             break;
         }
 
@@ -853,28 +855,20 @@ async function processCommand(
         case 'install':
         case 'i': {
             let name = args[0];
-            let instance = args[1];
-            let repoUrl = args[2];
-
-            if (instance === 0) {
-                instance = '0';
-            }
-            if (repoUrl === 0) {
-                repoUrl = '0';
-            }
+            let instance: string | undefined = args[1];
+            let repoUrl: string | undefined = args[2];
 
             if (parseInt(instance, 10).toString() !== (instance || '').toString()) {
                 repoUrl = instance;
-                instance = null;
+                instance = undefined;
             }
             if (parseInt(repoUrl, 10).toString() === (repoUrl || '').toString()) {
                 const temp = instance;
                 instance = repoUrl;
                 repoUrl = temp;
             }
-            if (parseInt(instance, 10).toString() === (instance || '').toString()) {
-                instance = parseInt(instance, 10);
-                params.instance = instance;
+            if (instance && parseInt(instance, 10).toString() === (instance || '').toString()) {
+                params.instance = parseInt(instance, 10);
             }
 
             // If user accidentally wrote tools.appName.adapter => remove adapter
@@ -922,7 +916,6 @@ async function processCommand(
 
                 if (!adapterDir || !fs.existsSync(adapterDir)) {
                     try {
-                        // @ts-expect-error todo check or handle null return value
                         const { stoppedList } = await install.downloadPacket(repoUrl, installName);
                         await install.installAdapter(installName, repoUrl);
                         await install.enableInstances(stoppedList, true); // even if unlikely make sure to re-enable disabled instances
@@ -930,9 +923,9 @@ async function processCommand(
                             await install.createInstance(name, params);
                         }
                         return void callback();
-                    } catch (err) {
-                        console.error(`adapter "${name}" cannot be installed: ${err.message}`);
-                        return void callback(EXIT_CODES.UNKNOWN_ERROR);
+                    } catch (e) {
+                        console.error(`adapter "${name}" cannot be installed: ${e.message}`);
+                        return void callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.UNKNOWN_ERROR);
                     }
                 } else if (command !== 'install' && command !== 'i') {
                     try {
@@ -1098,9 +1091,9 @@ async function processCommand(
                 }
             }
 
-            if (instance || instance === 0) {
+            if (instance) {
                 dbConnect(params, async ({ objects, states }) => {
-                    const { Install } = await import('./setup/setupInstall.js');
+                    const { Install } = await import('@/lib/setup/setupInstall.js');
                     const install = new Install({
                         objects,
                         states,
@@ -1109,12 +1102,12 @@ async function processCommand(
                     });
 
                     console.log(`Delete instance "${adapter}.${instance}"`);
-                    await install.deleteInstance(adapter, instance);
+                    await install.deleteInstance(adapter, parseInt(instance));
                     callback();
                 });
             } else {
                 dbConnect(params, async ({ objects, states }) => {
-                    const { Install } = await import('./setup/setupInstall.js');
+                    const { Install } = await import('@/lib/setup/setupInstall.js');
                     const install = new Install({
                         objects,
                         states,
@@ -1129,7 +1122,7 @@ async function processCommand(
             break;
         }
         case 'unsetup': {
-            const rl = (await import('readline')).createInterface({
+            const rl = (await import('node:readline')).createInterface({
                 input: process.stdin,
                 output: process.stdout
             });
@@ -1167,7 +1160,7 @@ async function processCommand(
 
         case 'msg':
         case 'message': {
-            const messageCommand = new cli.command.message(commandOptions);
+            const messageCommand = new CLIMessage(commandOptions);
             messageCommand.execute(args);
             break;
         }
@@ -1354,7 +1347,7 @@ async function processCommand(
                     objects,
                     processExit: callback
                 });
-                list.list(args[0], args[1], params);
+                list.list(args[0] as ListType, args[1], params);
             });
             break;
         }
@@ -1425,7 +1418,7 @@ async function processCommand(
                     );
                 } else {
                     const parts = pattern.split('/');
-                    const id = parts.shift();
+                    const id = parts.shift()!;
                     const path = parts.join('/');
 
                     // @ts-expect-error todo processed should not exist, how to proceed?
@@ -1519,7 +1512,7 @@ async function processCommand(
                     );
                 } else {
                     const parts = pattern.split('/');
-                    const id = parts.shift();
+                    const id = parts.shift()!;
                     const path = parts.join('/');
 
                     objects.rm(id, path, { user: 'system.user.admin' }, async (err, processed) => {
@@ -1548,14 +1541,14 @@ async function processCommand(
         }
 
         case 'chmod': {
-            let mode = args[0];
+            let mode: string | number = args[0];
             let pattern = args[1];
 
             if (!mode) {
                 CLIError.requiredArgumentMissing('mode', 'chmod 777 /vis-2.0/main/*');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
-                //yargs has converted it to number
+                // yargs has converted it to number
                 mode = parseInt(mode.toString(), 16);
             }
 
@@ -1626,7 +1619,7 @@ async function processCommand(
                     );
                 } else {
                     const parts = pattern.split('/');
-                    const id = parts.shift();
+                    const id = parts.shift()!;
                     const path = parts.join('/');
 
                     objects.chmodFile(id, path, { user: 'system.user.admin', mode: mode }, async (err, processed) => {
@@ -1656,7 +1649,7 @@ async function processCommand(
 
         case 'chown': {
             let user = args[0];
-            let group = args[1];
+            let group: string | undefined = args[1];
             let pattern = args[2];
 
             if (!pattern) {
@@ -1705,7 +1698,7 @@ async function processCommand(
                                         '*',
                                         {
                                             user: 'system.user.admin',
-                                            owner: user,
+                                            owner: user as ioBroker.ObjectIDs.User,
                                             ownerGroup: group
                                         },
                                         // @ts-expect-error todo _id should not exist how to handle
@@ -1746,7 +1739,7 @@ async function processCommand(
                     );
                 } else {
                     const parts = pattern.split('/');
-                    const id = parts.shift();
+                    const id = parts.shift()!;
                     const path = parts.join('/');
 
                     objects.chownFile(
@@ -1754,7 +1747,7 @@ async function processCommand(
                         path,
                         {
                             user: 'system.user.admin',
-                            owner: user,
+                            owner: user as ioBroker.ObjectIDs.User,
                             ownerGroup: group
                         },
                         async (err, processed) => {
@@ -1822,9 +1815,9 @@ async function processCommand(
                         }
                     });
                 } else if (command === 'check') {
-                    users.checkUserPassword(user, password, (err: any) => {
+                    users.checkUserPassword(user, password, err => {
                         if (err) {
-                            console.error(err);
+                            console.error(err.message);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
                             console.log(`Password for user "${user}" matches.`);
@@ -1832,9 +1825,9 @@ async function processCommand(
                         }
                     });
                 } else if (command === 'set' || command === 'passwd') {
-                    users.setUserPassword(user, password, (err: any) => {
+                    users.setUserPassword(user, password, err => {
                         if (err) {
-                            console.error(err);
+                            console.error(err.message);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
                             console.log(`Password for "${user}" was successfully set.`);
@@ -1842,9 +1835,9 @@ async function processCommand(
                         }
                     });
                 } else if (command === 'enable' || command === 'e') {
-                    users.enableUser(user, true, (err: any) => {
+                    users.enableUser(user, true, err => {
                         if (err) {
-                            console.error(err);
+                            console.error(err.message);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
                             console.log(`User "${user}" was successfully enabled.`);
@@ -1852,9 +1845,9 @@ async function processCommand(
                         }
                     });
                 } else if (command === 'disable' || command === 'd') {
-                    users.enableUser(user, false, (err: any) => {
+                    users.enableUser(user, false, err => {
                         if (err) {
-                            console.error(err);
+                            console.error(err.message);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
                             console.log(`User "${user}" was successfully disabled.`);
@@ -1862,9 +1855,9 @@ async function processCommand(
                         }
                     });
                 } else if (command === 'get') {
-                    users.getUser(user, (err: any, isEnabled: any) => {
+                    users.getUser(user, (err, isEnabled) => {
                         if (err) {
-                            console.error(err);
+                            console.error(err.message);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
                             console.log(`User "${user}" is ${isEnabled ? 'enabled' : 'disabled'}`);
@@ -2448,7 +2441,7 @@ async function processCommand(
                         console.error(`Error: ${err.message}`);
                         return void callback(EXIT_CODES.CANNOT_GET_UUID);
                     }
-                    if (obj && obj.native) {
+                    if (obj?.native) {
                         console.log(obj.native.uuid);
                         return void callback();
                     } else {
@@ -2462,25 +2455,54 @@ async function processCommand(
 
         case 'v':
         case 'version': {
-            const adapter = args[0];
-            let pckg;
+            const adapter = params.adapter;
+
+            if (params.ignore) {
+                try {
+                    const { objects } = await dbConnectAsync(false, params);
+                    await ignoreVersion({ adapterName: adapter, version: params.ignore, objects });
+                } catch (e) {
+                    console.error(e.message);
+                    callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.UNKNOWN_ERROR);
+                    return;
+                }
+                console.log(`Successfully ignored version "${params.ignore}" of adapter "${params.adapter}"!`);
+                callback();
+                return;
+            }
+
+            if (params.recognize) {
+                try {
+                    const { objects } = await dbConnectAsync(false, params);
+                    await recognizeVersion({ adapterName: adapter, objects });
+                } catch (e) {
+                    console.error(e.message);
+                    callback(e instanceof IoBrokerError ? e.code : EXIT_CODES.UNKNOWN_ERROR);
+                }
+                console.log(`Successfully recognized all versions of adapter "${params.adapter}" again!`);
+                callback();
+                return;
+            }
+
+            let packJson;
             if (adapter) {
                 try {
-                    pckg = require(`${tools.appName.toLowerCase()}.${adapter}/package.json`);
+                    packJson = require(`${tools.appName.toLowerCase()}.${adapter}/package.json`);
                 } catch {
-                    pckg = { version: `"${adapter}" not found` };
+                    packJson = { version: `"${adapter}" not found` };
                 }
             } else {
-                pckg = require(`@iobroker/js-controller-common/package.json`);
+                packJson = require(`@iobroker/js-controller-common/package.json`);
             }
-            console.log(pckg.version);
+            console.log(packJson.version);
 
             return void callback();
         }
 
         case 'checklog': {
-            dbConnect(params, ({ objects, states, isOffline, objectsDBType }) => {
-                if (isOffline && dbTools.objectsDbHasServer(objectsDBType)) {
+            dbConnect(params, async ({ objects, states, isOffline, objectsDBType }) => {
+                const hasLocalObjectsServer = await objectsDbHasServer(objectsDBType);
+                if (isOffline && hasLocalObjectsServer) {
                     console.log(`${tools.appName} is not running`);
                     return void callback(EXIT_CODES.CONTROLLER_NOT_RUNNING);
                 } else {
@@ -2649,15 +2671,14 @@ async function processCommand(
                         mh.status();
                         return void callback();
                     } else if (cmd === 'b' || cmd === 'browse') {
-                        mh.browse((err: any, list: any) => {
-                            if (err) {
-                                console.error(err);
-                                return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                            } else {
-                                mh.showHosts(list);
-                                return void callback();
-                            }
-                        });
+                        try {
+                            const list = await mh.browse();
+                            mh.showHosts(list);
+                            return void callback();
+                        } catch (e) {
+                            console.error(e.message);
+                            return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                        }
                     } else if (cmd === 'e' || cmd === 'enable') {
                         mh.enable(true, async (err: any) => {
                             if (err) {
@@ -2689,7 +2710,7 @@ async function processCommand(
                             }
                         });
                     } else if (cmd === 'c' || cmd === 'connect') {
-                        mh.connect(args[1], args[2], (err: any) => {
+                        mh.connect(parseInt(args[1]), args[2], (err: any) => {
                             if (err) {
                                 console.error(err);
                             }
@@ -2738,7 +2759,7 @@ async function processCommand(
         }
 
         case 'plugin': {
-            const pluginCommand = new cli.command.plugin(commandOptions);
+            const pluginCommand = new CLIPlugin(commandOptions);
             pluginCommand.execute(args);
             break;
         }
@@ -2801,6 +2822,11 @@ const OBJECTS_THAT_CANNOT_BE_DELETED = [
     'system.user.admin'
 ];
 
+/**
+ * Deletes given objects from the database
+ *
+ * @param ids ids to delete from database
+ */
 async function delObjects(ids: string[]): Promise<void> {
     const { objects } = await dbConnectAsync(false);
 
@@ -2817,6 +2843,9 @@ async function delObjects(ids: string[]): Promise<void> {
     }
 }
 
+/**
+ * Deletes all states from the database
+ */
 async function delStates(): Promise<number> {
     const { states } = await dbConnectAsync(false);
 
@@ -2912,9 +2941,9 @@ function unsetup(params: Record<string, any>, callback: ExitCodeCb): void {
  */
 async function restartController(): Promise<void> {
     console.log('Starting node restart.js');
-    const { spawn } = await import('child_process');
+    const { spawn } = await import('node:child_process');
 
-    const child = spawn('node', [`${__dirname}/restart.js`], {
+    const child = spawn('node', [`${thisDir}/restart.js`], {
         detached: true,
         stdio: ['ignore', 'ignore', 'ignore'],
         windowsHide: true
@@ -2932,7 +2961,7 @@ export function execute(): void {
     // @ts-expect-error todo fix it
     const command = _yargs.argv._[0];
 
-    const args = [];
+    const args: string[] = [];
 
     // skip interpreter, filename and command
     for (let i = 3; i < process.argv.length; i++) {

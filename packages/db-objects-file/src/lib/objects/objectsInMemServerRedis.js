@@ -1,28 +1,23 @@
 /**
  *      Objects DB in memory - Server with Redis protocol
  *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
  */
 
-/** @module objectsInRedis */
+import net from 'node:net';
+import fs from 'fs-extra';
+import path from 'node:path';
+import crypto from 'node:crypto';
+import { objectsUtils as utils } from '@iobroker/db-objects-redis';
+import { tools } from '@iobroker/db-base';
+import { getLocalAddress } from '@iobroker/js-controller-common-db/tools';
+import { EXIT_CODES } from '@iobroker/js-controller-common-db';
 
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node: true */
-'use strict';
-const net = require('net');
-const fs = require('fs-extra');
-const path = require('path');
-const crypto = require('crypto');
-const utils = require('@iobroker/db-objects-redis').objectsUtils;
-const tools = require('@iobroker/db-base').tools;
-const { getLocalAddress } = require('@iobroker/js-controller-common/tools');
-
-const { RedisHandler } = require('@iobroker/db-base');
-const ObjectsInMemoryFileDB = require('./objectsInMemFileDB');
+import { RedisHandler } from '@iobroker/db-base';
+import { ObjectsInMemoryFileDB } from './objectsInMemFileDB.js';
 
 // settings = {
 //    change:    function (id, state) {},
@@ -49,7 +44,7 @@ const ObjectsInMemoryFileDB = require('./objectsInMemFileDB');
  * This class inherits statesInMemoryFileDB class and adds redis communication layer
  * to access the methods via redis protocol
  **/
-class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
+export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
     /**
      * Constructor
      * @param settings State and InMem-DB settings
@@ -98,7 +93,7 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                 this.log.error(
                     `${this.namespace} Cannot start inMem-objects on port ${settings.port || 9001}: ${e.message}`
                 );
-                process.exit(24); // todo: replace it with exitcode
+                process.exit(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
             });
     }
 
@@ -1028,5 +1023,3 @@ class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         });
     }
 }
-
-module.exports = ObjectsInMemoryServer;

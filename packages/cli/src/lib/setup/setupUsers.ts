@@ -1,5 +1,5 @@
 import { password, tools, EXIT_CODES } from '@iobroker/js-controller-common';
-import type { ProcessExitCallback } from '../_Types';
+import type { ProcessExitCallback } from '../_Types.js';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import prompt from 'prompt';
 
@@ -7,6 +7,9 @@ export interface CLIUsersOptions {
     processExit: ProcessExitCallback;
     objects: ObjectsRedisClient;
 }
+
+/** Return type of prompt.get() for user */
+type UsernamePromptProps = { password: string; username: string };
 
 export class Users {
     private readonly objects: ObjectsRedisClient;
@@ -461,12 +464,12 @@ export class Users {
             };
             prompt.start();
 
-            prompt.get(schema, (err, result) => {
-                this.checkPassword(result.username as string, result.password as string, (err, res) => {
+            prompt.get<UsernamePromptProps>(schema, (err, result) => {
+                this.checkPassword(result.username, result.password, (err, res) => {
                     if (err || !res) {
                         return tools.maybeCallbackWithError(
                             callback,
-                            `Password for user "${result.username as string}" does not match${err ? ': ' + err : ''}`
+                            `Password for user "${result.username as string}" does not match${err ? `: ${err.message}` : ''}`
                         );
                     } else {
                         return tools.maybeCallbackWithError(callback, null);
@@ -488,13 +491,12 @@ export class Users {
             };
             prompt.start();
 
-            prompt.get(schema, (err, result) => {
-                // @ts-expect-error external types problem?
+            prompt.get<UsernamePromptProps>(schema, (err, result) => {
                 this.checkPassword(username, result.password, (err, res) => {
                     if (err || !res) {
                         return tools.maybeCallbackWithError(
                             callback,
-                            `Password for user "${username}" does not matched${err ? ': ' + err : ''}`
+                            `Password for user "${username}" does not match${err ? `: ${err.message}` : ''}`
                         );
                     } else {
                         return tools.maybeCallbackWithError(callback, null);
@@ -506,7 +508,7 @@ export class Users {
                 if (err || !res) {
                     return tools.maybeCallbackWithError(
                         callback,
-                        'Password for user "' + username + '" does not matched' + (err ? ': ' + err : '')
+                        `Password for user "${username}" does not match${err ? `: ${err.message}` : ''}`
                     );
                 } else {
                     return tools.maybeCallbackWithError(callback, null);

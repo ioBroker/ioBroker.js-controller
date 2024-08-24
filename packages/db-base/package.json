@@ -1,55 +1,56 @@
 {
-  "name": "@iobroker/db-base",
-  "version": "5.0.20-alpha.0-20240326-1f96ea5e",
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "dependencies": {
-    "@iobroker/js-controller-common": "file:../common",
-    "deep-clone": "^3.0.3",
-    "fs-extra": "^11.1.0",
-    "respjs": "^4.2.0"
-  },
-  "keywords": [
-    "ioBroker",
-    "redis",
-    "redundancy"
-  ],
-  "author": "bluefox <dogafox@gmail.com>",
-  "contributors": [
-    "bluefox <dogafox@gmail.com>",
-    "Apollon77 <iobroker@fischer-ka.de>",
-    "foxriver76 <moritz.heusinger@gmail.com>"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ioBroker/ioBroker.js-controller/packages/db-base"
-  },
-  "scripts": {
-    "build": "tsc -b tsconfig.build.json",
-    "postbuild": "esm2cjs --in build/esm --out build/cjs -l error && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/"
-  },
-  "main": "build/cjs/index.js",
-  "module": "build/esm/index.js",
-  "types": "build/esm/index.d.ts",
-  "exports": {
-    ".": {
-      "import": "./build/esm/index.js",
-      "require": "./build/cjs/index.js",
-      "types": "./build/esm/index.d.ts"
+    "name": "@iobroker/db-base",
+    "type": "module",
+    "version": "6.0.12-alpha.0-20240823-8c44dc255",
+    "engines": {
+        "node": ">=18.0.0"
     },
-    "./package.json": "./package.json",
-    "./inMemFileDB": {
-      "import": "./build/esm/lib/inMemFileDB.js",
-      "require": "./build/cjs/lib/inMemFileDB.js",
-      "types": "./build/esm/lib/inMemFileDB.d.ts"
-    }
-  },
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
-  },
-  "files": [
-    "build/"
-  ]
+    "dependencies": {
+        "@iobroker/js-controller-common-db": "file:../common-db",
+        "deep-clone": "^3.0.3",
+        "fs-extra": "^11.1.0",
+        "respjs": "^4.2.0"
+    },
+    "keywords": [
+        "ioBroker",
+        "redis",
+        "redundancy"
+    ],
+    "author": "bluefox <dogafox@gmail.com>",
+    "contributors": [
+        "bluefox <dogafox@gmail.com>",
+        "Apollon77 <iobroker@fischer-ka.de>",
+        "foxriver76 <moritz.heusinger@gmail.com>"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/db-base"
+    },
+    "scripts": {
+        "build": "tsc -b tsconfig.build.json",
+        "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/"
+    },
+    "main": "build/cjs/index.js",
+    "module": "build/esm/index.js",
+    "types": "build/esm/index.d.ts",
+    "exports": {
+        ".": {
+            "import": "./build/esm/index.js",
+            "require": "./build/cjs/index.js",
+            "types": "./build/esm/index.d.ts"
+        },
+        "./package.json": "./package.json",
+        "./inMemFileDB": {
+            "import": "./build/esm/lib/inMemFileDB.js",
+            "require": "./build/cjs/lib/inMemFileDB.js",
+            "types": "./build/esm/lib/inMemFileDB.d.ts"
+        }
+    },
+    "license": "MIT",
+    "publishConfig": {
+        "access": "public"
+    },
+    "files": [
+        "build/"
+    ]
 }

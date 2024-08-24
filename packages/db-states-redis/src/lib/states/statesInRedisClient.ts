@@ -1,7 +1,7 @@
 /**
  *      States DB in redis - Client
  *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
  *      Copyright 2013-2014 hobbyquaker
  *
  *      MIT License
@@ -10,8 +10,8 @@
 
 import Redis from 'ioredis';
 import { tools } from '@iobroker/db-base';
-import { isDeepStrictEqual } from 'util';
-import type { InternalLogger } from '@iobroker/js-controller-common/tools';
+import { isDeepStrictEqual } from 'node:util';
+import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
 import type IORedis from 'ioredis';
 import type { DbStatus, ConnectionOptions } from '@iobroker/db-base/inMemFileDB';
 
@@ -864,9 +864,17 @@ export class StateRedisClient {
         return id;
     }
 
+    getState(id: string): ioBroker.GetStatePromise;
+    getState(
+        id: string,
+        callback?: (err: Error | null | undefined, state?: ioBroker.State | null) => void
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetStateCallback> | void>;
+
     /**
-     * @param id
-     * @param callback
+     * Get state from database
+     *
+     * @param id id of the state
+     * @param callback optional callback, leave out and use promise return type
      */
     async getState(
         id: string,
@@ -1417,74 +1425,6 @@ export class StateRedisClient {
             return tools.maybeCallback(callback);
         } catch (e) {
             return tools.maybeCallbackWithRedisError(callback, e);
-        }
-    }
-
-    async setBinaryState(id: string, data: Buffer, callback?: ioBroker.ErrorCallback): Promise<void> {
-        if (!id || typeof id !== 'string') {
-            return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
-        }
-
-        if (!this.client) {
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        if (!Buffer.isBuffer(data)) {
-            data = Buffer.from(data);
-        }
-
-        try {
-            await this.client.set(this.namespaceRedis + id, data);
-            // for back compatibility send normal state, but with the flag "binary"
-            await this.client.publish(
-                this.namespaceRedis + id,
-                JSON.stringify({ val: null, binary: true, size: data.byteLength, ack: true })
-            );
-            return tools.maybeCallback(callback);
-        } catch (e) {
-            return tools.maybeCallbackWithRedisError(callback, e);
-        }
-    }
-
-    async getBinaryState(
-        id: string,
-        callback: (err: Error | undefined | null, state?: Buffer) => void
-    ): Promise<Buffer | void> {
-        if (!id || typeof id !== 'string') {
-            return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
-        }
-
-        if (!this.client) {
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        let data;
-        try {
-            data = await this.client.getBuffer(this.namespaceRedis + id);
-            return tools.maybeCallbackWithError(callback, null, data);
-        } catch (e) {
-            return tools.maybeCallbackWithRedisError(callback, e);
-        }
-    }
-
-    async delBinaryState(
-        id: string,
-        callback?: (err: Error | undefined | null, id?: string) => void
-    ): Promise<string | void> {
-        if (!id || typeof id !== 'string') {
-            return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
-        }
-
-        if (!this.client) {
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        try {
-            await this.client.del(this.namespaceRedis + id);
-            await this.client.publish(this.namespaceRedis + id, JSON.stringify(null));
-            return tools.maybeCallbackWithError(callback, null, id);
-        } catch (e) {
-            return tools.maybeCallbackWithRedisError(callback, e, id);
         }
     }
 

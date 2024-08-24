@@ -1,24 +1,19 @@
 /**
  *      States DB in memory - Server with Redis protocol
  *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
  */
 
-/** @module statesInMemory */
+import net from 'node:net';
+import { inspect } from 'node:util';
 
-/* jshint -W097 */
-/* jshint strict:false */
-/* jslint node: true */
-'use strict';
-const net = require('net');
-const { inspect } = require('util');
-
-const { RedisHandler } = require('@iobroker/db-base');
-const StatesInMemoryJsonlDB = require('./statesInMemJsonlDB');
-const { getLocalAddress } = require('@iobroker/js-controller-common/tools');
+import { RedisHandler } from '@iobroker/db-base';
+import { StatesInMemoryJsonlDB } from './statesInMemJsonlDB.js';
+import { getLocalAddress } from '@iobroker/js-controller-common-db/tools';
+import { EXIT_CODES } from '@iobroker/js-controller-common-db';
 
 // settings = {
 //    change:    function (id, state) {},
@@ -45,7 +40,7 @@ const { getLocalAddress } = require('@iobroker/js-controller-common/tools');
  * This class inherits statesInMemoryFileDB class and adds socket.io communication layer
  * to access the methods via socket.io
  */
-class StatesInMemoryServer extends StatesInMemoryJsonlDB {
+export class StatesInMemoryServer extends StatesInMemoryJsonlDB {
     /**
      * Constructor
      *
@@ -85,7 +80,7 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
                 this.log.error(
                     `${this.namespace} Cannot start inMem-states on port ${this.settings.port || 9000}: ${e.message}`
                 );
-                process.exit(24); // todo: replace it with exitcode
+                process.exit(EXIT_CODES.NO_CONNECTION_TO_STATES_DB);
             });
     }
 
@@ -272,14 +267,7 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
             const { id, namespace } = this._normalizeId(data[0]);
             if (namespace === this.namespaceStates) {
                 try {
-                    let state;
-                    try {
-                        state = JSON.parse(data[1].toString('utf-8'));
-                    } catch {
-                        // No JSON, so handle as binary data and set as Buffer
-                        this._setBinaryState(id, data[1]);
-                        return void handler.sendString(responseId, 'OK');
-                    }
+                    const state = JSON.parse(data[1].toString('utf-8'));
                     this._setStateDirect(id, state);
                     handler.sendString(responseId, 'OK');
                 } catch (err) {
@@ -301,13 +289,8 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
             const { id, namespace } = this._normalizeId(data[0]);
             if (namespace === this.namespaceStates) {
                 try {
-                    let state;
-                    try {
-                        state = JSON.parse(data[2].toString('utf-8'));
-                    } catch {
-                        // No JSON, so handle as binary data and set as Buffer
-                        state = data[2];
-                    }
+                    const state = JSON.parse(data[2].toString('utf-8'));
+
                     const expire = parseInt(data[1].toString('utf-8'), 10);
                     if (isNaN(expire)) {
                         return void handler.sendError(
@@ -569,5 +552,3 @@ class StatesInMemoryServer extends StatesInMemoryJsonlDB {
         });
     }
 }
-
-module.exports = StatesInMemoryServer;

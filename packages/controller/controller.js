@@ -1,9 +1,9 @@
 /**
  *      Redirect for older installations
  *
- *      Copyright 2018-2022 bluefox <dogafox@gmail.com>,
+ *      Copyright 2018-2024 bluefox <dogafox@gmail.com>,
  *      MIT License
  *
  */
 
-require('./build/cjs/main').init();
+import('./build/esm/main.js').then(res => res.init());

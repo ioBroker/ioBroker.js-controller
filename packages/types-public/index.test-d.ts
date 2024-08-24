@@ -1,3 +1,5 @@
+import { clearTimeout } from 'node:timers';
+
 declare function assertNever(val: never): never;
 
 // Let the tests begin
@@ -142,6 +144,12 @@ adapter.setState('state.name', { val: 'value', ack: true, q: adapter.constants.S
 // @ts-expect-error invalid quality
 adapter.setState('state.name', { val: 'value', ack: true, q: 1234 });
 
+// setState without callback is returning a promise
+adapter.setState('state.name', true, true).then(id => id.toLowerCase());
+adapter.setState('state.name', true).then(id => id.toLowerCase());
+adapter.setState('state.name', true, {}).then(id => id.toLowerCase());
+adapter.setState('state.name', true, true, {}).then(id => id.toLowerCase());
+
 adapter.setStateAsync('state.name', 'value').then(id => id.toLowerCase());
 adapter.setStateAsync('state.name', 'value', true).then(id => id.toLowerCase());
 adapter.setStateAsync('state.name', { val: 'value', ack: true }).then(id => id.toLowerCase());
@@ -180,10 +188,6 @@ adapter.getState('state.id', (err, state) => state && state.from.toLowerCase());
 adapter.getStateAsync('state.id').then(state => state && state.from.toLowerCase());
 adapter.getForeignState('state.id', (err, state) => state && state.from.toLowerCase());
 adapter.getForeignStateAsync('state.id').then(state => state && state.from.toLowerCase());
-adapter.getBinaryState('state.id', (err, state) => state && state.writeUInt16BE(0, 0));
-adapter.getBinaryStateAsync('state.id').then(state => state && state.writeUInt16BE(0, 0));
-adapter.getForeignBinaryState('state.id', (err, state) => state && state.writeUInt16BE(0, 0));
-adapter.getForeignBinaryStateAsync('state.id').then(state => state && state.writeUInt16BE(0, 0));
 
 adapter.setObject('obj.id', { type: 'device', common: { name: 'foo' }, native: {} });
 adapter.setObject('obj.id', { type: 'device', common: { name: 'foo' }, native: {} }, (_err, _id) => {});
@@ -598,10 +602,6 @@ adapter.setStateChanged('id', null);
 adapter.setForeignStateChanged('id', null);
 adapter.setStateChangedAsync('id', null);
 adapter.setForeignStateChangedAsync('id', null);
-adapter.delBinaryState('id');
-adapter.delBinaryStateAsync('id').then(() => null);
-adapter.delForeignBinaryState('id');
-adapter.delForeignBinaryStateAsync('id').then(() => null);
 
 // Objects and arrays are not valid state values
 // @ts-expect-error
@@ -688,12 +688,22 @@ adapter.getObjectAsync('id').then(obj => {
 declare let state: ioBroker.StateObject;
 if (typeof state.common.smartName === 'object' && state.common.smartName !== null) {
     state.common.smartName.de && state.common.smartName.de.toUpperCase();
-    state.common.smartName.byOn && state.common.smartName.byOn.toUpperCase();
+    state.common.smartName.byON && state.common.smartName.byON.toUpperCase();
 }
 
 declare let enumObj: ioBroker.EnumObject;
 enumObj.common.members && enumObj.common.members.map(() => 1);
 
+adapter.setInterval((_param1: number, _param2: string) => {}, 100, 100, '');
+// @ts-expect-error missing required parameter _param2
+adapter.setInterval((_param1: number, _param2: string) => {}, 100, 100);
+// @ts-expect-error wrong type of _param2
+adapter.setInterval((_param1: number, _param2: string) => {}, 100, 100, 1);
+adapter.setTimeout((_param1: number, _param2: string) => {}, 100, 100, '');
+// @ts-expect-error missing required parameter _param2
+adapter.setTimeout((_param1: number, _param2: string) => {}, 100, 100);
+// @ts-expect-error wrong type of _param2
+adapter.setTimeout((_param1: number, _param2: string) => {}, 100, 100, 1);
 // Adapter.clearTimeout and clearInterval are not compatible with the builtins
 adapter.clearTimeout(adapter.setTimeout(() => {}, 10));
 adapter.clearInterval(adapter.setInterval(() => {}, 10));
@@ -778,6 +788,13 @@ const _adapterObject: ioBroker.AdapterObject = {
         name: 'test',
         automaticUpgrade: 'minor',
         platform: 'Javascript/Node.js',
+        localLinks: {
+            link1: '%web_protocol%://%ip%:%web_port%/vis-2/edit.html',
+            link2: {
+                name: { en: 'Service' },
+                link: '%web_protocol%://%ip%:%web_port%/vis-2/edit.html'
+            }
+        },
         supportedMessages: {
             deviceManager: true
         },
@@ -795,7 +812,12 @@ const _adapterObject: ioBroker.AdapterObject = {
             'zh-cn': 'foo'
         },
         version: '1.2.3',
-        blockedVersions: ['~3.14.0', '4.0.1']
+        blockedVersions: ['~3.14.0', '4.0.1'],
+        plugins: {
+            sentry: {
+                dsn: 'XYZ'
+            }
+        }
     },
     instanceObjects: [],
     objects: []
@@ -871,13 +893,11 @@ const _userObject: ioBroker.UserObject = {
 
 // Ensure that getForeignObject tries to resolve a specific object type
 async () => {
-    const inst: ioBroker.InstanceObject | null | undefined = await adapter.getForeignObjectAsync(
-        'system.adapter.admin.0'
-    );
+    const inst: ioBroker.InstanceObject | null | undefined =
+        await adapter.getForeignObjectAsync('system.adapter.admin.0');
 
-    const adptr: ioBroker.AdapterObject | null | undefined = await adapter.getForeignObjectAsync(
-        'system.adapter.admin'
-    );
+    const adptr: ioBroker.AdapterObject | null | undefined =
+        await adapter.getForeignObjectAsync('system.adapter.admin');
 
     let meta: ioBroker.MetaObject | null | undefined;
     meta = await adapter.getForeignObjectAsync('admin.0');
@@ -903,25 +923,21 @@ async () => {
     enm = await adapter.getForeignObjectAsync('enum.functions');
     enm = await adapter.getForeignObjectAsync('enum.functions.light');
 
-    const group: ioBroker.GroupObject | null | undefined = await adapter.getForeignObjectAsync(
-        'system.group.admin.faz'
-    );
+    const group: ioBroker.GroupObject | null | undefined =
+        await adapter.getForeignObjectAsync('system.group.admin.faz');
 
     const user: ioBroker.UserObject | null | undefined = await adapter.getForeignObjectAsync('system.user.admin.faz');
 
     const host: ioBroker.HostObject | null | undefined = await adapter.getForeignObjectAsync('system.host.my-hostname');
 
-    const config: (ioBroker.OtherObject & { type: 'config' }) | null | undefined = await adapter.getForeignObjectAsync(
-        'system.certificates'
-    );
+    const config: (ioBroker.OtherObject & { type: 'config' }) | null | undefined =
+        await adapter.getForeignObjectAsync('system.certificates');
 
-    const sysConfig: ioBroker.SystemConfigObject | null | undefined = await adapter.getForeignObjectAsync(
-        'system.config'
-    );
+    const sysConfig: ioBroker.SystemConfigObject | null | undefined =
+        await adapter.getForeignObjectAsync('system.config');
 
-    const systemRepo: ioBroker.RepositoryObject | null | undefined = await adapter.getForeignObjectAsync(
-        'system.repositories'
-    );
+    const systemRepo: ioBroker.RepositoryObject | null | undefined =
+        await adapter.getForeignObjectAsync('system.repositories');
 
     let misc:
         | ioBroker.FolderObject
@@ -997,10 +1013,13 @@ async () => {
 };
 
 // Test registerNotification
-// @ts-expect-error
-adapter.registerNotification('foobar', 'accessErrors', 'This is a problem!');
+// @ts-expect-error known scope can only have defined category
+adapter.registerNotification('system', 'unknown', 'This is a problem!');
 adapter.registerNotification('system', 'accessErrors', 'This is a problem!');
 adapter.registerNotification('system', null, 'This is a problem!');
+// unknown scopes can have any category null | string
+adapter.registerNotification('someAdapter', null, 'This is a notification!');
+adapter.registerNotification('someAdapter', 'unknown', 'This is a notification!');
 
 // https://github.com/ioBroker/adapter-core/issues/429
 adapter.namespace === 'foo-bar.0';

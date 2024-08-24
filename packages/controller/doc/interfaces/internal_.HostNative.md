@@ -20,15 +20,15 @@
 
 #### Type declaration
 
-| Name | Type |
-| :------ | :------ |
-| `cpus` | `CpuInfo`[] |
-| `networkInterfaces` | `Dict`\<`NetworkInterfaceInfo`[]\> |
-| `totalmem` | `number` |
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `cpus` | `Omit`\<`CpuInfo`, ``"times"``\> & `Partial`\<`Pick`\<`CpuInfo`, ``"times"``\>\>[] | Return value of os.cpu but property `times` could be removed from every entry |
+| `networkInterfaces` | `Dict`\<`NetworkInterfaceInfo`[]\> | - |
+| `totalmem` | `number` | - |
 
 #### Defined in
 
-[types-dev/objects.d.ts:413](https://github.com/ioBroker/ioBroker.js-controller/blob/1f96ea5e/packages/types-dev/objects.d.ts#L413)
+[types-dev/objects.d.ts:422](https://github.com/ioBroker/ioBroker.js-controller/blob/8c44dc255583a0a0370d85b4262312bfd93bcdc8/packages/types-dev/objects.d.ts#L422)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:404](https://github.com/ioBroker/ioBroker.js-controller/blob/1f96ea5e/packages/types-dev/objects.d.ts#L404)
+[types-dev/objects.d.ts:413](https://github.com/ioBroker/ioBroker.js-controller/blob/8c44dc255583a0a0370d85b4262312bfd93bcdc8/packages/types-dev/objects.d.ts#L413)
 
 ___
 
@@ -62,10 +62,10 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `env` | `Record`\<`string`, `string`\> |
+| `env` | `ProcessEnv` |
 | `title` | `string` |
 | `versions` | `ProcessVersions` |
 
 #### Defined in
 
-[types-dev/objects.d.ts:399](https://github.com/ioBroker/ioBroker.js-controller/blob/1f96ea5e/packages/types-dev/objects.d.ts#L399)
+[types-dev/objects.d.ts:408](https://github.com/ioBroker/ioBroker.js-controller/blob/8c44dc255583a0a0370d85b4262312bfd93bcdc8/packages/types-dev/objects.d.ts#L408)

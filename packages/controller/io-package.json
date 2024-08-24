@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "js-controller",
-    "version": "5.0.20",
+    "version": "6.0.12",
     "platform": "Javascript/Node.js",
     "controller": true,
     "mode": "daemon",
@@ -19,6 +19,18 @@
       "zh-cn": "JS控制器"
     },
     "news": {
+      "6.0.11": {
+        "en": "see CHANGELOG.md",
+        "de": "siehe CHANGELOG.md",
+        "ru": "см. CHANGELOG.md",
+        "pt": "veja CHANGELOG.md",
+        "nl": "zie CHANGELOG.md",
+        "fr": "voir CHANGELOG.md",
+        "it": "vedi CHANGELOG.md",
+        "es": "ver CHANGELOG.md",
+        "pl": "zobacz CHANGELOG.md",
+        "zh-cn": "看到CHANGELOG.md"
+      },
       "5.0.17": {
         "en": "see CHANGELOG.md",
         "de": "siehe CHANGELOG.md",
@@ -452,8 +464,6 @@
         },
         "city": "",
         "country": "",
-        "longitude": "",
-        "latitude": "",
         "language": "",
         "tempUnit": "°C",
         "currency": "",
@@ -702,6 +712,38 @@
         "zh-cn": "这些通知由ioBroker系统收集，并指出您应检查并修复的问题"
       },
       "categories": [
+        {
+          "category": "diskSpaceIssues",
+          "name": {
+            "en": "Issues with insufficient disk space",
+            "de": "Probleme mit unzureichendem Speicherplatz",
+            "ru": "Проблемы с недостаточным дисковым пространством",
+            "pt": "Problemas com espaço insuficiente no disco",
+            "nl": "Problemen met onvoldoende schijfruimte",
+            "fr": "Problèmes liés à un espace disque insuffisant",
+            "it": "Problemi di spazio su disco insufficiente",
+            "es": "Problemas de espacio insuficiente en disco",
+            "pl": "Problemy z niewystarczającą ilością miejsca na dysku",
+            "uk": "Проблеми з нестачею місця на диску",
+            "zh-cn": "磁盘空间不足的问题"
+          },
+          "severity": "alert",
+          "description": {
+            "en": "Your system is running out of disk space. Please free space on the disk to avoid problems.",
+            "de": "Ihr System verfügt nicht mehr über genügend Speicherplatz. Bitte geben Sie Speicherplatz auf der Festplatte frei, um Probleme zu vermeiden.",
+            "ru": "В вашей системе не хватает места на диске. Во избежание проблем освободите место на диске.",
+            "pt": "O seu sistema está a ficar sem espaço no disco. Liberte espaço no disco para evitar problemas.",
+            "nl": "Je systeem heeft bijna geen schijfruimte meer. Maak ruimte vrij op de schijf om problemen te voorkomen.",
+            "fr": "Votre système manque d'espace disque. Veuillez libérer de l'espace sur le disque pour éviter tout problème.",
+            "it": "Il sistema sta esaurendo lo spazio su disco. Liberare spazio sul disco per evitare problemi.",
+            "es": "Su sistema se está quedando sin espacio en disco. Por favor, libere espacio en el disco para evitar problemas.",
+            "pl": "W systemie zaczyna brakować miejsca na dysku. Aby uniknąć problemów, zwolnij miejsce na dysku.",
+            "uk": "У вашій системі закінчується місце на диску. Будь ласка, звільніть місце на диску, щоб уникнути проблем.",
+            "zh-cn": "您的系统正在耗尽磁盘空间。请释放磁盘空间，以免出现问题。"
+          },
+          "regex": [],
+          "limit": 1
+        },
         {
           "category": "memIssues",
           "name": {
@@ -1072,7 +1114,7 @@
             "zh-cn": "总的版本被零星球队阻挠。.\n请提供最新资料。.\n必须能够以手工方式进行。."
           },
           "regex": [],
-          "limit": 1
+          "limit": 10
         },
         {
           "category": "databaseErrors",
@@ -1166,6 +1208,38 @@
             "pl": "Niektóre pakiety systemu operacyjnego mogą zostać zaktualizowane.",
             "uk": "Деякі пакунки ОС можна оновити.",
             "zh-cn": "某些操作系统软件包可以更新。"
+          },
+          "regex": [],
+          "limit": 1
+        },
+        {
+          "category": "systemRebootRequired",
+          "name": {
+            "en": "System reboot required",
+            "de": "Neustart des Systems erforderlich",
+            "ru": "Требуется перезагрузка системы",
+            "pt": "É necessário reiniciar o sistema",
+            "nl": "Systeem opnieuw opstarten vereist",
+            "fr": "Redémarrage du système nécessaire",
+            "it": "È necessario riavviare il sistema",
+            "es": "Es necesario reiniciar el sistema",
+            "pl": "Wymagany restart systemu",
+            "uk": "Потрібне перезавантаження системи",
+            "zh-cn": "需要重启系统"
+          },
+          "severity": "notify",
+          "description": {
+            "en": "Some recent updates require the system to be restarted.",
+            "de": "Einige kürzlich durchgeführte Aktualisierungen erfordern einen Neustart des Systems.",
+            "ru": "Некоторые последние обновления требуют перезагрузки системы.",
+            "pt": "Algumas actualizações recentes requerem um reinício do sistema.",
+            "nl": "Sommige recente updates vereisen een herstart van het systeem.",
+            "fr": "Certaines mises à jour récentes nécessitent un redémarrage du système.",
+            "it": "Alcuni aggiornamenti recenti richiedono il riavvio del sistema.",
+            "es": "Algunas actualizaciones recientes requieren reiniciar el sistema.",
+            "pl": "Niektóre z ostatnich aktualizacji wymagają ponownego uruchomienia systemu.",
+            "uk": "Деякі нещодавні оновлення вимагають перезавантаження системи.",
+            "zh-cn": "最近的一些更新需要重新启动系统。"
           },
           "regex": [],
           "limit": 1

@@ -1,4 +1,4 @@
-import { MAX_TIMEOUT, SYSTEM_ADMIN_USER } from '@/lib/adapter/constants';
+import { MAX_TIMEOUT, SYSTEM_ADMIN_USER } from '@/lib/adapter/constants.js';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 
 type Callback = (...args: any[]) => void | Promise<void>;
@@ -8,6 +8,7 @@ type Pattern = string | string[];
 export interface ValidateIdOptions {
     /** in maintenance mode, we can access invalid ids to delete them, only works with the admin user */
     maintenance?: boolean;
+    /** User used to check for access rights */
     user?: string;
 }
 
@@ -82,18 +83,12 @@ export class Validator {
 
                 if (state.val !== null) {
                     // now check if a type is correct, null is always allowed
-                    if (obj.common.type === 'file') {
-                        // file has to be set with setBinaryState
-                        this.log.warn(
-                            `${this.namespaceLog} State to set for "${id}" has to be written with setBinaryState/Async, because its object is of type "file"`
-                        );
-                    } else if (
+                    if (
                         !(
                             (obj.common.type === 'mixed' && typeof state.val !== 'object') ||
                             (obj.common.type !== 'object' && obj.common.type === typeof state.val) ||
                             (obj.common.type === 'array' && typeof state.val === 'string') ||
                             (obj.common.type === 'json' && typeof state.val === 'string') ||
-                            (obj.common.type === 'file' && typeof state.val === 'string') ||
                             (obj.common.type === 'object' && typeof state.val === 'string')
                         )
                     ) {
@@ -302,7 +297,10 @@ export class Validator {
      * @param value value to check a type of
      * @param name name of the parameter for logging
      */
-    static assertObject(value: unknown, name: string): asserts value is Record<string, any> {
+    static assertObject<T extends Record<string, any> = Record<string, any>>(
+        value: unknown,
+        name: string
+    ): asserts value is T {
         if (!tools.isObject(value)) {
             throw new Error(`Parameter "${name}" needs to be a real object but type "${typeof value}" has been passed`);
         }

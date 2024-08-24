@@ -1,30 +1,24 @@
 /**
  *      Object DB in memory - Server
  *
- *      Copyright 2013-2023 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
  */
 
-/* jshint -W097 */
-/* jshint strict: false */
-/* jslint node: true */
-/* jshint -W061 */
-'use strict';
-
-const fs = require('fs-extra');
-const path = require('path');
-const { InMemoryFileDB } = require('@iobroker/db-base');
-const tools = require('@iobroker/db-base').tools;
-const utils = require('@iobroker/db-objects-redis').objectsUtils;
-const deepClone = require('deep-clone');
+import fs from 'fs-extra';
+import path from 'node:path';
+import { InMemoryFileDB } from '@iobroker/db-base';
+import { tools } from '@iobroker/db-base';
+import { objectsUtils as utils } from '@iobroker/db-objects-redis';
+import deepClone from 'deep-clone';
 
 /**
  * This class inherits InMemoryFileDB class and adds all relevant logic for objects
  * including the available methods for use by js-controller directly
  **/
-class ObjectsInMemoryFileDB extends InMemoryFileDB {
+export class ObjectsInMemoryFileDB extends InMemoryFileDB {
     constructor(settings) {
         settings = settings || {};
         settings.fileDB = settings.fileDB || {
@@ -1030,5 +1024,3 @@ class ObjectsInMemoryFileDB extends InMemoryFileDB {
         }
     }
 }
-
-module.exports = ObjectsInMemoryFileDB;

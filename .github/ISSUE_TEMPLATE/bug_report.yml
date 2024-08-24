@@ -32,3 +32,19 @@ body:
       description: If possible, please describe how we can reproduce this bug as detailed as possible
     validations:
       required: false
+
+  - type: input
+    id: version
+    attributes:
+      label: JS-controller version
+      description: Please fill in the version of js-controller
+    validations:
+      required: true
+
+  - type: input
+    id: node
+    attributes:
+      label: Node version
+      description: Please fill in the version of Node.js installed, use node -v to show
+    validations:
+      required: true

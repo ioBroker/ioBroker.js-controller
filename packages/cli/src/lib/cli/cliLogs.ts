@@ -1,9 +1,12 @@
-import { CLICommand, type CLICommandOptions } from './cliCommand';
+import { CLICommand, type CLICommandOptions } from './cliCommand.js';
 import { tools, logger as toolsLogger } from '@iobroker/js-controller-common';
 import chokidar from 'chokidar';
 import fs from 'fs-extra';
-import os from 'os';
+import os from 'node:os';
 import es from 'event-stream';
+import { createRequire } from 'node:module';
+// eslint-disable-next-line unicorn/prefer-module
+const require = createRequire(import.meta.url || 'file://' + __filename);
 
 const { getConfigFileName } = tools;
 
@@ -66,7 +69,10 @@ export class CLILogs extends CLICommand {
                 const parts = fileName.split('/');
                 parts.pop();
                 chokidar
-                    .watch(`${parts.join('/')}/iobroker*`, { awaitWriteFinish: { stabilityThreshold: 500 } })
+                    .watch(`${parts.join('/')}/iobroker*`, {
+                        awaitWriteFinish: { stabilityThreshold: 500 },
+                        followSymlinks: false
+                    })
                     .on('all', this.watchHandler.bind(this, options))
                     .on('ready', () => (this.isReady = true));
             }
