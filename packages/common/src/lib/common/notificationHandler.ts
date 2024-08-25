@@ -41,6 +41,14 @@ export interface CategoryConfigEntry {
     description: MultilingualObject;
     regex: string[];
     limit: number;
+    /**
+     * Show button in UI, that leads to this link:
+     * - true - URL = http://IP:8081/#tab-instances/config/system.adapter.ADAPTER.N
+     * - `simpleText` - URL = http://IP:8081/#tab-instances/config/system.adapter.ADAPTER.N/<simpleText>
+     * - `#url` - URL = http://IP:8081/#url
+     * - `http[s]://...` - URL = http[s]://...
+     */
+    link?: string | true;
 }
 
 interface NotificationMessageObject {
@@ -65,6 +73,7 @@ export interface FilteredNotificationInformation {
                 description: MultilingualObject;
                 name: MultilingualObject;
                 severity: Severity;
+                link?: string | true;
                 instances: {
                     [instance: string]: {
                         messages: NotificationMessageObject[];
@@ -81,6 +90,7 @@ interface NotificationSetupCategory {
     name: MultilingualObject;
     severity: Severity;
     description: MultilingualObject;
+    link?: string | true;
 }
 
 interface NotificationSetupObject {
@@ -167,7 +177,7 @@ export class NotificationHandler {
             });
 
             for (const entry of res.rows) {
-                // check that instance has notifications settings
+                // check that instance has notification settings
                 if (entry.value.notifications) {
                     await this.addConfig(entry.value.notifications);
                 }
@@ -201,23 +211,26 @@ export class NotificationHandler {
     /**
      * Add a new category to the given scope with a provided optional list of regex
      *
-     * @param notifications - notifications array
+     * @param notifications Array with notifications
      */
-    async addConfig(notifications: NotificationsConfigEntry[]): Promise<void> {
+    async addConfig(
+        /** Array with notifications */
+        notifications: NotificationsConfigEntry[]
+    ): Promise<void> {
         // if valid attributes, store it
         if (Array.isArray(notifications)) {
             for (const scopeObj of notifications) {
                 // create the state object for each scope if non-existing
                 let obj;
                 try {
-                    obj = await this.objects.getObjectAsync(`system.host.${this.host}.notifications.${scopeObj.scope}`);
+                    obj = await this.objects.getObject(`system.host.${this.host}.notifications.${scopeObj.scope}`);
                 } catch {
                     // ignore
                 }
 
                 if (!obj) {
                     try {
-                        await this.objects.setObjectAsync(`system.host.${this.host}.notifications.${scopeObj.scope}`, {
+                        await this.objects.setObject(`system.host.${this.host}.notifications.${scopeObj.scope}`, {
                             type: 'state',
                             common: {
                                 type: 'object',
@@ -264,7 +277,8 @@ export class NotificationHandler {
                                 limit: categoryObj.limit,
                                 name: categoryObj.name,
                                 severity: categoryObj.severity,
-                                description: categoryObj.description
+                                description: categoryObj.description,
+                                link: categoryObj.link
                             };
                         } catch (e) {
                             this.log.error(
@@ -329,7 +343,7 @@ export class NotificationHandler {
                     this.currentNotifications[scope][_category][instance] || [];
 
                 if (!this.setup[scope]?.categories[_category]) {
-                    // no setup for this instance/category combination found - so nothing to add
+                    // no setup for this instance/category combination found - so we have nothing to add
                     this.log.warn(
                         `${this.logPrefix} No configuration found for scope "${scope}" and category "${_category}"`
                     );
@@ -422,7 +436,7 @@ export class NotificationHandler {
     }
 
     /**
-     * Load notifications from file
+     * Load notifications from a file
      */
     private _loadNotifications(): void {
         try {
@@ -468,7 +482,11 @@ export class NotificationHandler {
                 continue;
             }
 
-            res[scope] = { categories: {}, description: this.setup[scope].description, name: this.setup[scope].name };
+            res[scope] = {
+                categories: {},
+                description: this.setup[scope].description,
+                name: this.setup[scope].name
+            };
 
             for (const category of Object.keys(this.currentNotifications[scope])) {
                 if (categoryFilter && categoryFilter !== category) {
@@ -487,7 +505,8 @@ export class NotificationHandler {
                     instances: {},
                     description: categoryObj.description,
                     name: categoryObj.name,
-                    severity: categoryObj.severity
+                    severity: categoryObj.severity,
+                    link: categoryObj.link
                 };
 
                 for (const instance of Object.keys(this.currentNotifications[scope][category])) {

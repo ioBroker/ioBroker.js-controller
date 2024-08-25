@@ -1020,10 +1020,26 @@ declare global {
             common?: Partial<InstanceCommon>;
         }
 
-        /** TODO: To be defined */
-        type NotificationCategory = any;
+        type NotificationCategory = {
+            category: string;
+            name: Translated;
+            description: Translated;
+            /** `info` will only be shown by admin, while `notify` might also be used by messaging adapters, `alert` ensures both */
+            severity: 'info' | 'notify' | 'alert';
+            regex: string[];
+            limit: number;
+            /**
+             * Show button, that leads to this link:
+             * - true - URL = http://IP:8081/#tab-instances/config/system.adapter.ADAPTER.N
+             * - `simpleText` - URL = http://IP:8081/#tab-instances/config/system.adapter.ADAPTER.N/<>simpleText>
+             * - `#url` - URL = http://IP:8081/#url
+             * - `http[s]://...` - URL = http[s]://...
+             */
+            link?: string | true;
+        };
 
         interface Notification {
+            /** e.g. system */
             scope: string;
             name: Translated;
             description: Translated;
