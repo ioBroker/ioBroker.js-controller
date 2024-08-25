@@ -20,14 +20,30 @@
         "type"
       ],
       "properties": {
-        "_id": {
+        "url": {
+          "description": "URL for button",
           "type": "string"
         },
-        "type": {
+        "text": {
+          "description": "Label of the button",
+          "$ref": "#/definitions/multilingual"
+        },
+        "target": {
+          "description": "Target: _blank, _self. Default is self",
           "type": "string"
         },
-        "common": {
+        "icon": {
+          "description": "base64 icon",
+          "type": "string"
+        },
+        "style": {
+          "description": "CSS style of the button",
           "type": "object"
+        },
+        "variant": {
+          "description": "Button style. Default is `contained`",
+          "type": "string",
+          "enum": ["outlined", "text", "contained"]
         }
       }
     },
@@ -687,6 +703,22 @@
         "NPOSL-3.0",
         "Interbase-1.0"
       ]
+    },
+    "categoriesLink": {
+      "description": "Show button, that leads to this link",
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "_id": {
+          "type": "string"
+        },
+        "type": {
+          "type": "string"
+        },
+        "common": {
+          "type": "object"
+        }
+      }
     }
   },
   "type": "object",
@@ -1715,8 +1747,7 @@
                   "description": "Maximum amount of notifications to collect of this type"
                 },
                 "link": {
-                  "type": "string",
-                  "description": "Show button, that leads to this link"
+                  "$ref": "#/definitions/categoriesLink"
                 }
               }
             }

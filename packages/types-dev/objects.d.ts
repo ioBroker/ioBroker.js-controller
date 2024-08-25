@@ -1028,14 +1028,26 @@ declare global {
             severity: 'info' | 'notify' | 'alert';
             regex: string[];
             limit: number;
-            /**
-             * Show button, that leads to this link:
-             * - true - URL = http://IP:8081/#tab-instances/config/system.adapter.ADAPTER.N
-             * - `simpleText` - URL = http://IP:8081/#tab-instances/config/system.adapter.ADAPTER.N/<>simpleText>
-             * - `#url` - URL = http://IP:8081/#url
-             * - `http[s]://...` - URL = http[s]://...
-             */
-            link?: string | true;
+            /** Show button, that leads to this link */
+            link?: {
+                /**
+                 * - empty - URL = http://IP:8081/#tab-instances/config/system.adapter.ADAPTER.N
+                 * - `simpleText` - URL = http://IP:8081/#tab-instances/config/system.adapter.ADAPTER.N/<>simpleText>
+                 * - `#url` - URL = http://IP:8081/#url
+                 * - `http[s]://...` - URL = http[s]://...
+                 */
+                url?: string;
+                /** Button text. Default is "open" */
+                text?: Translated;
+                /** Link target */
+                target?: '_blank' | '_self' | string;
+                /** base64 icon */
+                icon?: string;
+                /** CSS style of the button */
+                style?: Record<string, string>;
+                /** Button style. Default is `contained` */
+                variant?: 'outlined' | 'text' | 'contained';
+            };
         };
 
         interface Notification {
