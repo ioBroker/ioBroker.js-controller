@@ -20,30 +20,14 @@
         "type"
       ],
       "properties": {
-        "url": {
-          "description": "URL for button",
+        "_id": {
           "type": "string"
         },
-        "text": {
-          "description": "Label of the button",
-          "$ref": "#/definitions/multilingual"
-        },
-        "target": {
-          "description": "Target: _blank, _self. Default is self",
+        "type": {
           "type": "string"
         },
-        "icon": {
-          "description": "base64 icon",
-          "type": "string"
-        },
-        "style": {
-          "description": "CSS style of the button",
+        "common": {
           "type": "object"
-        },
-        "variant": {
-          "description": "Button style. Default is `contained`",
-          "type": "string",
-          "enum": ["outlined", "text", "contained"]
         }
       }
     },
@@ -709,14 +693,30 @@
       "type": "object",
       "additionalProperties": false,
       "properties": {
-        "_id": {
+        "url": {
+          "description": "URL for button",
           "type": "string"
         },
-        "type": {
+        "text": {
+          "description": "Label of the button",
+          "$ref": "#/definitions/multilingual"
+        },
+        "target": {
+          "description": "Target: _blank, _self. Default is self",
           "type": "string"
         },
-        "common": {
+        "icon": {
+          "description": "base64 icon",
+          "type": "string"
+        },
+        "style": {
+          "description": "CSS style of the button",
           "type": "object"
+        },
+        "variant": {
+          "description": "Button style. Default is `contained`",
+          "type": "string",
+          "enum": ["outlined", "text", "contained"]
         }
       }
     }
