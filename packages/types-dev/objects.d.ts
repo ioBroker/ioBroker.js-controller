@@ -795,7 +795,7 @@ declare global {
             /** Used date format for formatting */
             dateFormat: string;
             /** This name will be shown in admin's header. Just to identify the whole installation */
-            siteName:? string;
+            siteName?: string;
             /** Default acl for new objects */
             defaultNewAcl: {
                 object: number;
