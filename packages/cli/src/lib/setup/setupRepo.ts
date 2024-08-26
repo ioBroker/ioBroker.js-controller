@@ -106,7 +106,7 @@ export class Repo {
                 console.error(`Cannot download repository hash file from "${hashUrl}": ${e.message}`);
             }
             if (hash?.data && oldRepos.native.repositories[repoName].hash === hash.data.hash) {
-                return oldRepos.native.repositories[repoName].json;
+                return oldRepos.native.repositories[repoName].json || null;
             }
         }
 
@@ -164,7 +164,7 @@ export class Repo {
             await this.objects.setObjectAsync('system.repositories', oldRepos);
         }
 
-        return oldRepos.native.repositories[repoName].json;
+        return oldRepos.native.repositories[repoName].json || null;
     }
 
     /**

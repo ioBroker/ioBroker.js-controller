@@ -632,9 +632,9 @@ declare global {
             /** How the adapter will mainly receive its data. Set this together with @see connectionType */
             dataSource?: 'poll' | 'push' | 'assumption';
             /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter on the same host. */
-            dependencies?: Array<{ [adapterName: string]: string } | string>;
+            dependencies?: { [adapterName: string]: string }[] | string[];
             /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter in the whole system. */
-            globalDependencies?: Array<{ [adapterName: string]: string } | string>;
+            globalDependencies?: { [adapterName: string]: string }[] | string[];
             /** Which files outside the README.md have documentation for the adapter */
             docs?: Partial<Record<Languages, string | string[]>>;
             /** Whether new instances should be enabled by default. *Should* be `false`! */
