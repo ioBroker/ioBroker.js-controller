@@ -1906,7 +1906,7 @@ async function getVersionFromHost(
                 if (timeout) {
                     clearTimeout(timeout);
                     timeout = null;
-                    resolve(ioPack as any as (ioBroker.HostCommon & { host: string; runningVersion: string }));
+                    resolve(ioPack as any as ioBroker.HostCommon & { host: string; runningVersion: string });
                 }
             });
         });
@@ -2217,14 +2217,19 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         endkey: 'system.host.\u9999'
                     },
                     async (err, doc) => {
-                        const result: Record<string, AdapterInformation | { [hostName: string]: ioBroker.HostCommon & { host: string; runningVersion: string } }> = tools.getInstalledInfo(version);
+                        const result: Record<
+                            string,
+                            | AdapterInformation
+                            | { [hostName: string]: ioBroker.HostCommon & { host: string; runningVersion: string } }
+                        > = tools.getInstalledInfo(version);
                         result.hosts = {};
                         if (doc?.rows.length) {
                             // Read installed versions of all hosts
                             for (const row of doc.rows) {
                                 // If desired a local version, do not ask it, just answer
                                 if (row.id === hostObjectPrefix) {
-                                    const ioPackCommon: ioBroker.HostCommon & { host: string; runningVersion: string } = deepClone(ioPackage.common);
+                                    const ioPackCommon: ioBroker.HostCommon & { host: string; runningVersion: string } =
+                                        deepClone(ioPackage.common);
 
                                     ioPackCommon.host = hostname;
                                     ioPackCommon.runningVersion = version;
@@ -2266,7 +2271,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'getVersion':
             if (msg.callback && msg.from) {
-                const ioPackCommon: ioBroker.HostCommon & { host: string; runningVersion: string } = deepClone(ioPackage.common);
+                const ioPackCommon: ioBroker.HostCommon & { host: string; runningVersion: string } = deepClone(
+                    ioPackage.common
+                );
                 ioPackCommon.host = hostname;
                 ioPackCommon.runningVersion = version;
                 sendTo(msg.from, msg.command, ioPackCommon, msg.callback);

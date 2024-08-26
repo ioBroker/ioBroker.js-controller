@@ -1026,11 +1026,24 @@ declare global {
 
         // it is defined in notificationHandler.ts
         type NotificationCategory = {
-            category: 'memIssues' | 'fsIoErrors' | 'noDiskSpace' | 'accessErrors' |
-                'nonExistingFileErrors' | 'remoteHostErrors' | 'restartLoop' | 'fileToJsonl' |
-                'automaticAdapterUpgradeFailed' | 'automaticAdapterUpgradeSuccessful' | 'blockedVersions' |
-                'databaseErrors' | 'securityIssues' | 'packageUpdates' |
-                'systemRebootRequired' | 'diskSpaceIssues' | string;
+            category:
+                | 'memIssues'
+                | 'fsIoErrors'
+                | 'noDiskSpace'
+                | 'accessErrors'
+                | 'nonExistingFileErrors'
+                | 'remoteHostErrors'
+                | 'restartLoop'
+                | 'fileToJsonl'
+                | 'automaticAdapterUpgradeFailed'
+                | 'automaticAdapterUpgradeSuccessful'
+                | 'blockedVersions'
+                | 'databaseErrors'
+                | 'securityIssues'
+                | 'packageUpdates'
+                | 'systemRebootRequired'
+                | 'diskSpaceIssues'
+                | string;
             name: Translated;
             /** `info` will only be shown by admin, while `notify` might also be used by messaging adapters, `alert` ensures both */
             severity: 'info' | 'notify' | 'alert';
