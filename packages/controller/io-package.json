@@ -751,17 +751,17 @@
           },
           "severity": "alert",
           "description": {
-            "en": "Your system is running out of disk space. Please free space on the disk to avoid problems.",
-            "de": "Ihr System verfügt nicht mehr über genügend Speicherplatz. Bitte geben Sie Speicherplatz auf der Festplatte frei, um Probleme zu vermeiden.",
-            "ru": "В вашей системе не хватает места на диске. Во избежание проблем освободите место на диске.",
-            "pt": "O seu sistema está a ficar sem espaço no disco. Liberte espaço no disco para evitar problemas.",
-            "nl": "Je systeem heeft bijna geen schijfruimte meer. Maak ruimte vrij op de schijf om problemen te voorkomen.",
-            "fr": "Votre système manque d'espace disque. Veuillez libérer de l'espace sur le disque pour éviter tout problème.",
-            "it": "Il sistema sta esaurendo lo spazio su disco. Liberare spazio sul disco per evitare problemi.",
-            "es": "Su sistema se está quedando sin espacio en disco. Por favor, libere espacio en el disco para evitar problemas.",
-            "pl": "W systemie zaczyna brakować miejsca na dysku. Aby uniknąć problemów, zwolnij miejsce na dysku.",
-            "uk": "У вашій системі закінчується місце на диску. Будь ласка, звільніть місце на диску, щоб уникнути проблем.",
-            "zh-cn": "您的系统正在耗尽磁盘空间。请释放磁盘空间，以免出现问题。"
+            "en": "Your system is running out of disk space according to the user-defined threshold. Please free space on the disk to avoid problems.",
+            "de": "Ihr System verfügt nicht mehr über den vom Benutzer eingestellten Speicherplatz. Bitte geben Sie Speicherplatz auf der Festplatte frei, um Probleme zu vermeiden.",
+            "ru": "В вашей системе закончилось место на диске в соответствии с заданным пользователем порогом. Во избежание проблем освободите место на диске.",
+            "pt": "O seu sistema está a ficar sem espaço em disco de acordo com o limite definido pelo utilizador. Liberte espaço no disco para evitar problemas.",
+            "nl": "Uw systeem heeft bijna geen schijfruimte meer volgens de door de gebruiker ingestelde drempelwaarde. Maak ruimte vrij op de schijf om problemen te voorkomen.",
+            "fr": "Votre système manque d'espace disque selon le seuil défini par l'utilisateur. Veuillez libérer de l'espace sur le disque pour éviter tout problème.",
+            "it": "Il sistema sta esaurendo lo spazio su disco in base alla soglia definita dall'utente. Liberare spazio sul disco per evitare problemi.",
+            "es": "Su sistema se está quedando sin espacio en disco según el umbral definido por el usuario. Por favor, libere espacio en el disco para evitar problemas.",
+            "pl": "W systemie zaczyna brakować miejsca na dysku zgodnie z progiem zdefiniowanym przez użytkownika. Aby uniknąć problemów, zwolnij miejsce na dysku.",
+            "uk": "У вашій системі закінчується місце на диску відповідно до визначеного користувачем порогового значення. Будь ласка, звільніть місце на диску, щоб уникнути проблем.",
+            "zh-cn": "根据用户定义的阈值，您的系统即将耗尽磁盘空间。请释放磁盘空间，以免出现问题。"
           },
           "regex": [],
           "limit": 1
