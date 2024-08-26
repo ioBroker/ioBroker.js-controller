@@ -208,6 +208,7 @@ export class NotificationHandler {
                             it: 'Notifiche',
                             es: 'Notificaciones',
                             pl: 'Powiadomienia',
+                            uk: 'Сповіщення',
                             'zh-cn': '通知事项'
                         }
                     },
