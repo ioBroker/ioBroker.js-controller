@@ -3,7 +3,7 @@
  *
  *      Controls Adapter-Processes
  *
- *      Copyright 2013-2023 bluefox <dogafox@gmail.com>,
+ *      Copyright 2013-2024 bluefox <dogafox@gmail.com>,
  *                2013-2014 hobbyquaker <hq@ccu.io>
  *      MIT License
  *
@@ -29,7 +29,8 @@ import {
     getObjectsConstructor,
     getStatesConstructor,
     zipFiles,
-    getInstancesOrderedByStartPrio
+    getInstancesOrderedByStartPrio,
+    isInstalledFromNpm
 } from '@iobroker/js-controller-common';
 import {
     SYSTEM_ADAPTER_PREFIX,
@@ -52,8 +53,7 @@ import {
     getHostObject,
     getDefaultNodeArgs,
     type HostInfo,
-    isAdapterEsmModule,
-    type RepositoryFile
+    isAdapterEsmModule
 } from '@iobroker/js-controller-common-db/tools';
 import type { UpgradeArguments } from '@/lib/upgradeManager.js';
 import { AdapterUpgradeManager } from '@/lib/adapterUpgradeManager.js';
@@ -162,8 +162,6 @@ if (os.platform() === 'win32') {
 
 tools.ensureDNSOrder();
 
-let title = `${tools.appName}.js-controller`;
-
 let Objects: typeof ObjectsClient;
 let States: typeof StatesClient;
 
@@ -187,13 +185,14 @@ let connectTimeout: null | NodeJS.Timeout = null;
 let reportInterval: null | NodeJS.Timeout = null;
 let primaryHostInterval: null | NodeJS.Timeout = null;
 let isPrimary = false;
+/** If system reboot is required */
+let isRebootRequired = false;
+
 const PRIMARY_HOST_LOCK_TIME = 60_000;
 const VENDOR_BOOTSTRAP_FILE = '/opt/iobroker/iob-vendor-secret.json';
 const VENDOR_FILE = '/etc/iob-vendor.json';
 
 const procs: Record<string, Process> = {};
-// TODO type is probably InstanceCommon
-const hostAdapter: Record<string, any> = {};
 const subscribe: Record<string, ioBroker.ObjectIDs.Instance[]> = {};
 const stopTimeouts: Record<string, StopTimeoutObject> = {};
 let states: StatesClient | null = null;
@@ -819,7 +818,6 @@ function createObjects(onConnect: () => void): void {
                         proc.config.common.host = null;
                         // @ts-expect-error it is only used in checkAndAddInstance, find a way without modifying the InstanceObject
                         proc.config.deleted = true;
-                        delete hostAdapter[id];
                         logger.info(`${hostLogPrefix} object deleted ${id}`);
                     } else {
                         if (proc.config.common.enabled && !obj.common.enabled) {
@@ -844,8 +842,6 @@ function createObjects(onConnect: () => void): void {
                             );
                         }
                         proc.config = obj;
-                        hostAdapter[id] = hostAdapter[id] || {};
-                        hostAdapter[id].config = obj;
                     }
                     if (proc.process || proc.config.common.mode === 'schedule') {
                         proc.restartExpected = true;
@@ -887,7 +883,6 @@ function createObjects(onConnect: () => void): void {
                             await notificationHandler.clearNotifications(null, null, id);
 
                             delete procs[id];
-                            delete hostAdapter[id];
                         }
                     } else if (installQueue.find(obj => obj.id === id)) {
                         // ignore object changes when still in the installation queue
@@ -921,7 +916,6 @@ function createObjects(onConnect: () => void): void {
                             }
 
                             delete procs[id];
-                            delete hostAdapter[id];
                         }
                     }
                 } else if (obj?.common) {
@@ -2102,9 +2096,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                 // Check if repositories exist
                 if (systemRepos?.native?.repositories) {
-                    let updateRepo = false;
+                    let forcedUpdate = false;
                     if (tools.isObject(msg.message)) {
-                        updateRepo = msg.message.update;
+                        forcedUpdate = msg.message.update;
                         msg.message = msg.message.repo;
                     }
 
@@ -2129,36 +2123,31 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                             const currentRepo = systemRepos.native.repositories[repoUrl];
 
                             // If repo is not yet loaded
-                            if (!currentRepo.json || updateRepo) {
+                            if (!currentRepo.json || forcedUpdate) {
                                 logger.info(
                                     `${hostLogPrefix} Updating repository "${repoUrl}" under "${currentRepo.link}"`
                                 );
                                 try {
-                                    let result: ioBroker.RepositoryInformation | RepositoryFile;
-                                    // prevent the request of repos by multiple admin adapters at start
                                     if (
-                                        currentRepo.json &&
-                                        currentRepo.time &&
-                                        currentRepo.hash &&
-                                        Date.now() - new Date(currentRepo.time).getTime() < 30_000
+                                        !currentRepo.json ||
+                                        !currentRepo.time ||
+                                        !currentRepo.hash ||
+                                        Date.now() - new Date(currentRepo.time).getTime() >= 30_000
                                     ) {
-                                        result = currentRepo;
-                                    } else {
-                                        result = await tools.getRepositoryFileAsync(
+                                        const result = await tools.getRepositoryFileAsync(
                                             currentRepo.link,
                                             currentRepo.hash,
-                                            updateRepo,
+                                            forcedUpdate,
                                             currentRepo.json
                                         );
 
-                                        changed = result.json && result.changed;
-                                    }
-
-                                    // If repo was really changed
-                                    if (changed) {
-                                        currentRepo.json = result.json;
-                                        currentRepo.hash = result.hash || '';
-                                        currentRepo.time = new Date().toISOString();
+                                        // If repo was really changed
+                                        if (result?.json && result.changed) {
+                                            changed = true;
+                                            currentRepo.json = result.json;
+                                            currentRepo.hash = result.hash || '';
+                                            currentRepo.time = new Date().toISOString();
+                                        }
                                     }
 
                                     // Make sure, that time is stored too to prevent the frequent access to repo server
@@ -2181,9 +2170,11 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         }
                     }
 
-                    if (changed) {
+                    if (changed || forcedUpdate) {
                         try {
-                            await objects!.setObjectAsync(SYSTEM_REPOSITORIES_ID, systemRepos);
+                            // update timestamp so adapters like admin know when it was written the last time
+                            systemRepos.ts = Date.now();
+                            await objects!.setObject(SYSTEM_REPOSITORIES_ID, systemRepos);
                         } catch (e) {
                             logger.warn(`${hostLogPrefix} Repository object could not be updated: ${e.message}`);
                         }
@@ -2991,6 +2982,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 sendTo(msg.from, msg.command, { success: true }, msg.callback);
             } catch (e) {
                 sendTo(msg.from, msg.command, { error: e.message, success: false }, msg.callback);
+                return;
             }
 
             try {
@@ -3000,6 +2992,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             }
 
             if (restartRequired) {
+                logger.info(`${hostLogPrefix} Restart js-controller because desired after package upgrade`);
                 await wait(200);
                 restart(() => !isStopping && stop(false));
             }
@@ -3165,11 +3158,6 @@ function checkAndAddInstance(instance: ioBroker.InstanceObject, ipArr: string[])
                 ? logger.error(`${hostLogPrefix} Cannot update hostname for ${instance._id}: ${err.message}`)
                 : logger.info(`${hostLogPrefix} Set hostname ${hostname} for ${instance._id}`)
         );
-    }
-
-    hostAdapter[instance._id] = hostAdapter[instance._id] || {};
-    if (!hostAdapter[instance._id].config) {
-        hostAdapter[instance._id].config = deepClone(instance);
     }
 
     if (!instanceRelevantForThisController(instance, ipArr)) {
@@ -3700,7 +3688,14 @@ async function startScheduledInstance(callback?: () => void): Promise<void> {
                 storePids();
                 const { pid } = proc.process;
 
-                logger.info(`${hostLogPrefix} instance ${instance._id} started with pid ${proc.process.pid}`);
+                const isNpm = isInstalledFromNpm({
+                    installedFrom: instance.common.installedFrom,
+                    adapterName: instance.common.name
+                });
+
+                logger.info(
+                    `${hostLogPrefix} instance ${instance._id} in version "${instance.common.version}"${!isNpm ? ` (non-npm: ${instance.common.installedFrom})` : ''} started with pid ${proc.process.pid}`
+                );
 
                 proc.process.on('exit', (code, signal) => {
                     outputCount++;
@@ -4329,8 +4324,13 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                 `${hostLogPrefix} instance ${instance._id} is handled by compact group controller pid ${proc.process.pid}`
                             );
                         } else {
+                            const isNpm = isInstalledFromNpm({
+                                installedFrom: instance.common.installedFrom,
+                                adapterName: instance.common.name
+                            });
+
                             logger.info(
-                                `${hostLogPrefix} instance ${instance._id} started with pid ${proc.process.pid}`
+                                `${hostLogPrefix} instance ${instance._id} in version "${instance.common.version}"${!isNpm ? ` (non-npm: ${instance.common.installedFrom})` : ''} started with pid ${proc.process.pid}`
                             );
                         }
                     }
@@ -4709,12 +4709,19 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                         windowsHide: true,
                         cwd: adapterDir!
                     });
-                } catch (err) {
-                    logger.info(`${hostLogPrefix} instance ${instance._id} could not be started: ${err}`);
+                } catch (e) {
+                    logger.info(`${hostLogPrefix} instance ${instance._id} could not be started: ${e.message}`);
                 }
                 if (proc.process) {
                     storePids();
-                    logger.info(`${hostLogPrefix} instance ${instance._id} started with pid ${proc.process.pid}`);
+                    const isNpm = isInstalledFromNpm({
+                        installedFrom: instance.common.installedFrom,
+                        adapterName: instance.common.name
+                    });
+
+                    logger.info(
+                        `${hostLogPrefix} instance ${instance._id} in version "${instance.common.version}"${!isNpm ? ` (non-npm: ${instance.common.installedFrom})` : ''} started with pid ${proc.process.pid}`
+                    );
 
                     proc.process.on('exit', (code, signal) => {
                         cleanAutoSubscribes(id, () => {
@@ -5182,6 +5189,8 @@ function stop(force?: boolean, callback?: () => void): void {
  * @param compactGroupId the id of the compact group
  */
 export async function init(compactGroupId?: number): Promise<void> {
+    let title = `${tools.appName}.js-controller`;
+
     if (compactGroupId) {
         compactGroupController = true;
         compactGroup = compactGroupId;
@@ -5293,7 +5302,7 @@ export async function init(compactGroupId?: number): Promise<void> {
         logger.info(
             `${hostLogPrefix} ${tools.appName}.js-controller version ${version} ${ioPackage.common.name} starting`
         );
-        logger.info(`${hostLogPrefix} Copyright (c) 2014-2023 bluefox, 2014 hobbyquaker`);
+        logger.info(`${hostLogPrefix} Copyright (c) 2014-2024 bluefox, 2014 hobbyquaker`);
         logger.info(`${hostLogPrefix} hostname: ${hostname}, node: ${process.version}`);
         logger.info(`${hostLogPrefix} ip addresses: ${tools.findIPs().join(' ')}`);
 
@@ -5705,17 +5714,33 @@ async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promis
  * Check for updatable OS packages and register them as notification
  */
 async function listUpdatableOsPackages(): Promise<void> {
+    if (tools.isDocker() || !states) {
+        return;
+    }
+
     const packManager = new PacketManager();
     await packManager.ready();
 
     const packages = await packManager.listUpgradeablePackages();
 
+    const packageStateId = `${hostObjectPrefix}.osPackageUpdates`;
+    const packagesState = await states.getState(packageStateId);
+
+    await states.setState(packageStateId, { val: JSON.stringify(packages), ack: true });
+
     if (!packages.length) {
+        await notificationHandler.clearNotifications('system', 'packageUpdates', `system.host.${hostname}`);
+        return;
+    }
+
+    const knownPackages: string[] = typeof packagesState?.val === 'string' ? JSON.parse(packagesState.val) : [];
+    const hasNewPackage = packages.some(pack => !knownPackages.includes(pack));
+
+    if (!hasNewPackage) {
         return;
     }
 
     await notificationHandler.addMessage('system', 'packageUpdates', packages.join('\n'), `system.host.${hostname}`);
-    await states!.setState(`${hostObjectPrefix}.osPackageUpdates`, { val: JSON.stringify(packages), ack: true });
 }
 
 /**
@@ -5773,7 +5798,7 @@ async function startUpgradeManager(options: UpgradeArguments): Promise<void> {
  * Checks if a system reboot is required and generates a notification if this is the case
  */
 async function checkRebootRequired(): Promise<void> {
-    if (process.platform !== 'linux') {
+    if (process.platform !== 'linux' || isRebootRequired) {
         return;
     }
 
@@ -5782,9 +5807,9 @@ async function checkRebootRequired(): Promise<void> {
     /** This file contains a list of packages which require the reboot, separated by newline */
     const packagesListPath = '/var/run/reboot-required.pkgs';
 
-    const rebootRequired = await fs.pathExists(rebootRequiredPath);
+    isRebootRequired = await fs.pathExists(rebootRequiredPath);
 
-    if (!rebootRequired) {
+    if (!isRebootRequired) {
         return;
     }
 

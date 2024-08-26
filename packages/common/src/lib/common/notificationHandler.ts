@@ -1,7 +1,7 @@
 /**
  * Notification handler class
  *
- *  2021-2023 foxriver76 <moritz.heusinger@gmail.com>
+ *  2021-2024 foxriver76 <moritz.heusinger@gmail.com>
  */
 
 import fs from 'fs-extra';

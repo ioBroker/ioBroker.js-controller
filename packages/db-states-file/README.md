@@ -81,5 +81,5 @@ Is used to handle `setname` and `getname` requests. `setname` is used to change 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2014-2023 bluefox <dogafox@gmail.com>,
+Copyright (c) 2014-2024 bluefox <dogafox@gmail.com>,
 Copyright (c) 2014      hobbyquaker

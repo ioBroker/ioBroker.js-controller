@@ -1,7 +1,7 @@
 {
     "name": "iobroker.js-controller",
     "type": "module",
-    "version": "6.0.1-alpha.0-20240530-b38e01746",
+    "version": "6.0.12-alpha.0-20240823-8c44dc255",
     "engines": {
         "node": ">=18.0.0"
     },
@@ -22,7 +22,7 @@
         "@iobroker/js-controller-common-db": "file:../common-db",
         "@iobroker/plugin-base": "~1.2.1",
         "@iobroker/plugin-sentry": "~1.2.1",
-        "axios": "^1.6.3",
+        "axios": "^1.7.4",
         "cron-parser": "^4.9.0",
         "debug": "^4.3.4",
         "decache": "^4.6.1",
