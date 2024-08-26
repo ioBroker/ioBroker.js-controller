@@ -236,7 +236,7 @@ declare global {
             message: MessagePayload;
             /** ID of this callback */
             id: number;
-            /** Is it request or response? */
+            /** Is it request or response: If ack is false, it means the message is a request. If ack is true, it means the message is a response. */
             ack: boolean;
             /** Timestamp of this message */
             time: number;
