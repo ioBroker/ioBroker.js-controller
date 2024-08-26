@@ -716,7 +716,11 @@
         "variant": {
           "description": "Button style. Default is `contained`",
           "type": "string",
-          "enum": ["outlined", "text", "contained"]
+          "enum": [
+            "outlined",
+            "text",
+            "contained"
+          ]
         }
       }
     }

@@ -66,6 +66,7 @@ export interface CategoryConfigEntry {
 interface NotificationMessageObject {
     message: string;
     ts: number;
+    actionData: object | null | undefined;
 }
 
 interface NotificationsObject {
@@ -351,12 +352,14 @@ export class NotificationHandler {
      * @param category - category of the message, if non we check against regex of scope
      * @param message - message to add
      * @param instance - instance e.g., hm-rpc.1 or hostname, if hostname it needs to be prefixed like system.host.rpi
+     * @param actionData - data for the notification action
      */
     async addMessage(
         scope: string,
         category: string | null | undefined,
         message: string,
-        instance: string
+        instance: string,
+        actionData?: object | null
     ): Promise<void> {
         if (typeof instance !== 'string') {
             this.log.error(
@@ -410,7 +413,7 @@ export class NotificationHandler {
                 }
 
                 // add a new element at the beginning
-                this.currentNotifications[scope][_category][instance].unshift({ message, ts: Date.now() });
+                this.currentNotifications[scope][_category][instance].unshift({ message, ts: Date.now(), actionData });
             }
         }
 
@@ -425,7 +428,7 @@ export class NotificationHandler {
 
         // set updated scope state
         try {
-            await this.states.setStateAsync(`system.host.${this.host}.notifications.${scope}`, {
+            await this.states.setState(`system.host.${this.host}.notifications.${scope}`, {
                 val: JSON.stringify(stateVal),
                 ack: true
             });

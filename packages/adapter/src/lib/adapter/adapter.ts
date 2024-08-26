@@ -7589,17 +7589,24 @@ export class AdapterClass extends EventEmitter {
     registerNotification<Scope extends keyof ioBroker.NotificationScopes>(
         scope: Scope,
         category: ioBroker.NotificationScopes[Scope] | null,
-        message: string
+        offlineMessage: string,
+        actionData?: object
     ): Promise<void>;
 
     /**
      * Send notification with given scope and category to host of this adapter
      *
      * @param scope - scope to be addressed
-     * @param category - to be addressed, if null message will be checked by regex of given scope
-     * @param message - message to be stored/checked
+     * @param category - to be addressed, if a null message will be checked by regex of given scope
+     * @param offlineMessage - message to be stored/checked
+     * @param actionData - Information for the notification action
      */
-    async registerNotification(scope: unknown, category: unknown, message: unknown): Promise<void> {
+    async registerNotification(
+        scope: unknown,
+        category: unknown,
+        offlineMessage: unknown,
+        actionData?: unknown
+    ): Promise<void> {
         if (!this.#states) {
             // if states is no longer existing, we do not need to set
             this._logger.info(
@@ -7612,11 +7619,17 @@ export class AdapterClass extends EventEmitter {
         if (category !== null) {
             Validator.assertString(category, 'category');
         }
-        Validator.assertString(message, 'message');
+        Validator.assertString(offlineMessage, 'message');
 
         const obj = {
             command: 'addNotification',
-            message: { scope, category, message, instance: this.namespace },
+            message: {
+                scope,
+                category,
+                message: offlineMessage,
+                instance: this.namespace,
+                actionData
+            },
             from: `system.adapter.${this.namespace}`
         };
 

@@ -2925,7 +2925,8 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 msg.message.scope,
                 msg.message.category,
                 msg.message.message,
-                msg.message.instance
+                msg.message.instance,
+                msg.message.actionData
             );
             if (msg.callback && msg.from) {
                 sendTo(msg.from, msg.command, { result: 'ok' }, msg.callback);
