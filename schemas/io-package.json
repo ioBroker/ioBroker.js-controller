@@ -687,42 +687,6 @@
         "NPOSL-3.0",
         "Interbase-1.0"
       ]
-    },
-    "categoriesLink": {
-      "description": "Show button, that leads to this link",
-      "type": "object",
-      "additionalProperties": false,
-      "properties": {
-        "url": {
-          "description": "URL for button",
-          "type": "string"
-        },
-        "text": {
-          "description": "Label of the button",
-          "$ref": "#/definitions/multilingual"
-        },
-        "target": {
-          "description": "Target: _blank, _self. Default is self",
-          "type": "string"
-        },
-        "icon": {
-          "description": "base64 icon",
-          "type": "string"
-        },
-        "style": {
-          "description": "CSS style of the button",
-          "type": "object"
-        },
-        "variant": {
-          "description": "Button style. Default is `contained`",
-          "type": "string",
-          "enum": [
-            "outlined",
-            "text",
-            "contained"
-          ]
-        }
-      }
     }
   },
   "type": "object",
@@ -1749,9 +1713,6 @@
                 "limit": {
                   "type": "number",
                   "description": "Maximum amount of notifications to collect of this type"
-                },
-                "link": {
-                  "$ref": "#/definitions/categoriesLink"
                 }
               }
             }
