@@ -6,6 +6,9 @@
 ## **WORK IN PROGRESS**
 * (bluefox) Added the link button in notifications
 
+## __WORK IN PROGRESS__
+* (@foxriver76) enhanced translations for the `diskSpaceIssues` notification category
+
 ## 6.0.11 (2024-08-21) - Kiera
 * (foxriver76) only generate `packageUpdates` notification, if new updates detected
 
