@@ -7589,7 +7589,9 @@ export class AdapterClass extends EventEmitter {
     registerNotification<Scope extends keyof ioBroker.NotificationScopes>(
         scope: Scope,
         category: ioBroker.NotificationScopes[Scope] | null,
+        /** Message for messangers */
         message: string,
+        /** Message to be shown in admin */
         actionData?: ioBroker.NotificationAction
     ): Promise<void>;
 
@@ -7598,8 +7600,8 @@ export class AdapterClass extends EventEmitter {
      *
      * @param scope - scope to be addressed
      * @param category - to be addressed, if a null message will be checked by regex of given scope
-     * @param message - message to be stored/checked
-     * @param actionData - Information for the notification action
+     * @param message - message to be stored/checked for messangers
+     * @param actionData - Information for the notification action in Admin
      */
     async registerNotification(
         scope: unknown,
