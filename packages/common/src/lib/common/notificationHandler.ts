@@ -46,7 +46,7 @@ export interface CategoryConfigEntry {
 interface NotificationMessageObject {
     message: string;
     ts: number;
-    actionData: object | null | undefined;
+    actionData?: ioBroker.NotificationAction;
 }
 
 interface NotificationsObject {
@@ -298,7 +298,7 @@ export class NotificationHandler {
         category: string | null | undefined,
         message: string,
         instance: string,
-        actionData?: object | null
+        actionData?: ioBroker.NotificationAction
     ): Promise<void> {
         if (typeof instance !== 'string') {
             this.log.error(

@@ -323,6 +323,15 @@ declare global {
                 | 'fileToJsonl';
             [other: string]: string;
         }
+
+        /** Structure for notification actions */
+        export interface NotificationAction {
+            /** This message will be shown if instance is offline */
+            offlineMessage?: ioBroker.StringOrTranslated;
+            /** any other data required for instance to show the dynamic GUI in the notification */
+            [other: string]: any;
+        }
+
         interface AdapterConfig {
             // This is a stub to be augmented in every adapter
         }
