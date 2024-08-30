@@ -56,7 +56,7 @@ interface ServerResponse {
 
 class UpgradeManager {
     /** Wait ms until controller is stopped */
-    private readonly STOP_TIMEOUT_MS = 3_000;
+    private readonly STOP_TIMEOUT_MS = 5_000;
     /** Wait ms for delivery of final response */
     private readonly SHUTDOWN_TIMEOUT = 10_000;
     /** Instance of admin to get information from */
