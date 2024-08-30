@@ -3,20 +3,28 @@ import fs from 'fs-extra';
 import os from 'node:os';
 import jwt from 'jsonwebtoken';
 import { EventEmitter } from 'node:events';
-import { tools, EXIT_CODES, password, logger } from '@iobroker/js-controller-common';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
 import { PluginHandler } from '@iobroker/plugin-base';
 import semver from 'semver';
 import path from 'node:path';
-import { getObjectsConstructor, getStatesConstructor } from '@iobroker/js-controller-common-db';
+import {
+    getObjectsConstructor,
+    getStatesConstructor,
+    tools,
+    EXIT_CODES,
+    password,
+    logger,
+    isInstalledFromNpm
+} from '@iobroker/js-controller-common';
 import {
     decryptArray,
     encryptArray,
     getSupportedFeatures,
     isMessageboxSupported,
     getAdapterScopedPackageIdentifier,
-    listInstalledNodeModules
+    listInstalledNodeModules,
+    requestModuleNameByUrl
 } from '@/lib/adapter/utils.js';
 // @ts-expect-error no ts file
 import extend from 'node.extend';
@@ -127,7 +135,7 @@ import type {
     InternalStopParameters
 } from '@/lib/_Types.js';
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
-import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common/constants';
+import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
 import type { CommandResult } from '@alcalzone/pak';
 
 import * as url from 'node:url';
@@ -679,7 +687,7 @@ export class AdapterClass extends EventEmitter {
     /** contents of package.json */
     pack?: Record<string, any>;
     /** contents of io-package.json */
-    ioPack: Record<string, any>; // contents of io-package.json TODO difference to adapterConfig?
+    ioPack: ioBroker.InstanceObject;
     private _initializeTimeout?: NodeJS.Timeout | null;
     private inited?: boolean;
     /** contents of iobroker.json if required via AdapterOptions */
@@ -691,9 +699,9 @@ export class AdapterClass extends EventEmitter {
     /** configured language of system.config, only available if requested via AdapterOptions `useFormatDate` */
     language?: ioBroker.Languages;
     /** longitude configured in system.config, only available if requested via AdapterOptions `useFormatDate`*/
-    longitude?: string;
+    longitude?: number;
     /** latitude configured in system.config, only available if requested via AdapterOptions `useFormatDate`*/
-    latitude?: string;
+    latitude?: number;
     private _defaultObjs?: Record<string, Partial<ioBroker.StateCommon>>;
     private _aliasObjectsSubscribed?: boolean;
     config: ioBroker.AdapterConfig = {};
@@ -847,8 +855,8 @@ export class AdapterClass extends EventEmitter {
             this._options.compactInstance !== undefined
                 ? this._options.compactInstance
                 : this._options.instance !== undefined
-                ? this._options.instance
-                : this._config.instance || 0,
+                  ? this._options.instance
+                  : this._config.instance || 0,
             10
         );
 
@@ -1238,26 +1246,44 @@ export class AdapterClass extends EventEmitter {
         this._init();
     }
 
+    /**
+     * Get the adapter scoped package identifier of a node module
+     *
+     * @param moduleName name of the node module
+     */
+    getAdapterScopedPackageIdentifier(moduleName: string): string {
+        return getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
+    }
+
     installNodeModule(moduleName: string, options: InstallNodeModuleOptions): Promise<CommandResult>;
 
     /**
      * Install specified npm module
      *
-     * @param moduleName name of the node module
+     * @param moduleNameOrUrl name of the node module or GitHub url which can be passed to `npm install`
      * @param options version information
      */
-    installNodeModule(moduleName: unknown, options: unknown): Promise<CommandResult> {
-        Validator.assertString(moduleName, 'moduleName');
+    installNodeModule(moduleNameOrUrl: unknown, options: unknown): Promise<CommandResult> {
+        Validator.assertString(moduleNameOrUrl, 'moduleNameOrUrl');
         Validator.assertObject<InstallNodeModuleOptions>(options, 'options');
 
-        return this._installNodeModule({ ...options, moduleName });
+        return this._installNodeModule({ ...options, moduleNameOrUrl });
     }
 
-    private _installNodeModule(options: InternalInstallNodeModuleOptions): Promise<CommandResult> {
-        const { moduleName, version } = options;
+    private async _installNodeModule(options: InternalInstallNodeModuleOptions): Promise<CommandResult> {
+        const { moduleNameOrUrl, version } = options;
+
+        let moduleName = moduleNameOrUrl;
+        const isUrl = URL.canParse(moduleNameOrUrl);
+
+        if (isUrl) {
+            moduleName = await requestModuleNameByUrl(moduleNameOrUrl);
+        }
 
         const internalModuleName = getAdapterScopedPackageIdentifier({ moduleName, namespace: this.namespace });
-        return tools.installNodeModule(`${internalModuleName}@npm:${moduleName}@${version}`);
+        const packageIdentifier = isUrl ? moduleNameOrUrl : `npm:${moduleName}@${version}`;
+
+        return tools.installNodeModule(`${internalModuleName}@${packageIdentifier}`);
     }
 
     /**
@@ -1304,7 +1330,7 @@ export class AdapterClass extends EventEmitter {
      * Decrypt the password/value with given key
      *
      * @param secretVal to use for decrypt (or value if only one parameter is given)
-     * @param  [value] value to decrypt (if secret is provided)
+     * @param value value to decrypt (if secret is provided)
      */
     decrypt(secretVal: unknown, value?: unknown): string {
         if (value === undefined) {
@@ -2270,27 +2296,24 @@ export class AdapterClass extends EventEmitter {
 
             // Even if the developer forgets to call the unload callback, we need to stop the process.
             // Therefore, wait a short while and then force the unload procedure
-            setTimeout(
-                () => {
-                    if (this.#states) {
-                        finishUnload();
+            setTimeout(() => {
+                if (this.#states) {
+                    finishUnload();
 
-                        // Give 1 second to write the value
-                        setTimeout(() => {
-                            if (!isPause) {
-                                this._logger.info(`${this.namespaceLog} terminating with timeout`);
-                            }
-                            this.terminate(exitCode);
-                        }, 1_000);
-                    } else {
+                    // Give 1 second to write the value
+                    setTimeout(() => {
                         if (!isPause) {
-                            this._logger.info(`${this.namespaceLog} terminating`);
+                            this._logger.info(`${this.namespaceLog} terminating with timeout`);
                         }
                         this.terminate(exitCode);
+                    }, 1_000);
+                } else {
+                    if (!isPause) {
+                        this._logger.info(`${this.namespaceLog} terminating`);
                     }
-                },
-                this.common?.stopTimeout || 500
-            );
+                    this.terminate(exitCode);
+                }
+            }, this.common?.stopTimeout || 500);
         }
     }
 
@@ -2598,7 +2621,11 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    setTimeout(cb: TimeoutCallback, timeout: number, ...args: any[]): ioBroker.Timeout | undefined;
+    setTimeout<TCallback extends TimeoutCallback>(
+        cb: TCallback,
+        timeout: number,
+        ...args: Parameters<TCallback>
+    ): ioBroker.Timeout | undefined;
     /**
      * Same as setTimeout,
      * but it clears the running timers during the unload process
@@ -2685,7 +2712,11 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signature
-    setInterval(cb: TimeoutCallback, timeout: number, ...args: any[]): ioBroker.Interval | undefined;
+    setInterval<TCallback extends TimeoutCallback>(
+        cb: TCallback,
+        timeout: number,
+        ...args: Parameters<TCallback>
+    ): ioBroker.Interval | undefined;
 
     /**
      * Same as setInterval
@@ -6996,8 +7027,8 @@ export class AdapterClass extends EventEmitter {
                 ? this.isFloatComma === undefined
                     ? '.,'
                     : this.isFloatComma
-                    ? '.,'
-                    : ',.'
+                      ? '.,'
+                      : ',.'
                 : _format;
 
         if (typeof value !== 'number') {
@@ -7597,26 +7628,26 @@ export class AdapterClass extends EventEmitter {
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         callback?: T
-    ): T extends ioBroker.SetStateCallback ? void : ioBroker.SetStatePromise;
-    setState<T extends ioBroker.SetStateCallback>(
+    ): T extends unknown ? ioBroker.SetStatePromise : void;
+    setState<T extends ioBroker.SetStateCallback | undefined>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
         callback?: T
-    ): T extends ioBroker.SetStateCallback ? void : ioBroker.SetStatePromise;
-    setState<T extends ioBroker.SetStateCallback>(
+    ): T extends unknown ? ioBroker.SetStatePromise : void;
+    setState<T extends ioBroker.SetStateCallback | undefined>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         options?: Partial<GetUserGroupsOptions> | null,
         callback?: T
-    ): T extends ioBroker.SetStateCallback ? void : ioBroker.SetStatePromise;
-    setState<T extends ioBroker.SetStateCallback>(
+    ): T extends unknown ? ioBroker.SetStatePromise : void;
+    setState<T extends ioBroker.SetStateCallback | undefined>(
         id: string | ioBroker.IdObject,
         state: ioBroker.State | ioBroker.StateValue | ioBroker.SettableState,
         ack: boolean,
         options?: Partial<GetUserGroupsOptions> | null,
         callback?: T
-    ): T extends ioBroker.SetStateCallback ? void : ioBroker.SetStatePromise;
+    ): T extends unknown ? ioBroker.SetStatePromise : void;
 
     /**
      * Writes value into states DB.
@@ -7626,7 +7657,7 @@ export class AdapterClass extends EventEmitter {
      * ack, options and callback are optional
      *
      * @param id object ID of the state.
-     * @param state simple value or object with attribues.
+     * @param state simple value or object with attributes.
      *  If state is object and ack exists too as function argument, function argument has priority.
      *  ```js
      *      {
@@ -7818,7 +7849,7 @@ export class AdapterClass extends EventEmitter {
                         aliasId,
                         tools.formatAliasValue({
                             sourceCommon: obj?.common,
-                            targetCommon: targetObj?.common as any,
+                            targetCommon: targetObj?.common,
                             state: stateObj as ioBroker.State,
                             logger: this._logger,
                             logNamespace: this.namespaceLog,
@@ -9569,125 +9600,101 @@ export class AdapterClass extends EventEmitter {
         }
     }
 
-    private async _addAliasSubscribe(
-        aliasObj: ioBroker.StateObject,
-        pattern: string,
-        callback?: ioBroker.ErrorCallback
-    ): Promise<void> {
-        if (aliasObj?.common?.alias?.id) {
-            if (aliasObj.type !== 'state') {
-                this._logger.warn(
-                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                    `${this.namespaceLog} Expected alias ${aliasObj._id} to be of type "state", got "${aliasObj.type}"`
-                );
-                return tools.maybeCallbackWithError(
-                    callback,
-                    // eslint-disable-next-line @typescript-eslint/restrict-template-expressions
-                    new Error(`Expected alias ${aliasObj._id} to be of type "state", got "${aliasObj.type}"`)
-                );
-            }
-
-            // id can be string or can have attribute read
-            const sourceId = tools.isObject(aliasObj.common.alias.id)
-                ? aliasObj.common.alias.id.read
-                : aliasObj.common.alias.id;
-
-            // validate here because we use objects/states db directly
-            try {
-                this._utils.validateId(sourceId, true, null);
-            } catch (e) {
-                this._logger.warn(`${this.namespaceLog} Error validating alias id of ${aliasObj._id}: ${e.message}`);
-                return tools.maybeCallbackWithError(
-                    callback,
-                    new Error(`Error validating alias id of ${aliasObj._id}: ${e.message}`)
-                );
-            }
-
-            let aliasDetails;
-            if (!this.aliases.has(sourceId)) {
-                aliasDetails = { source: null, targets: [] };
-                this.aliases.set(sourceId, aliasDetails);
-            } else {
-                aliasDetails = this.aliases.get(sourceId) || { source: null, targets: [] };
-            }
-
-            const targetEntry = {
-                alias: deepClone(aliasObj.common.alias),
-                id: aliasObj._id,
-                pattern,
-                type: aliasObj.common.type,
-                max: aliasObj.common.max,
-                min: aliasObj.common.min,
-                unit: aliasObj.common.unit
-            };
-
-            aliasDetails.targets.push(targetEntry);
-
-            if (!aliasDetails.source) {
-                let sourceObj;
-                try {
-                    await this.#states!.subscribe(sourceId);
-                    // we ignore permissions on the source object and thus get it as admin user
-                    sourceObj = await this.#objects!.getObject(sourceId, { user: SYSTEM_ADMIN_USER });
-                } catch (e) {
-                    return tools.maybeCallbackWithError(callback, e);
-                }
-
-                if (sourceObj?.common) {
-                    if (!this.aliases.has(sourceObj._id)) {
-                        // TODO what means this, we ensured alias existed, did some async stuff now it's gone -> alias has been deleted?
-                        this._logger.error(
-                            `${
-                                this.namespaceLog
-                            } Alias subscription error. Please check your alias definitions: sourceId=${sourceId}, sourceObj=${JSON.stringify(
-                                sourceObj
-                            )}`
-                        );
-                    } else {
-                        aliasDetails.source = {
-                            min: sourceObj.common.min,
-                            max: sourceObj.common.max,
-                            type: sourceObj.common.type,
-                            unit: sourceObj.common.unit
-                        };
-                    }
-                }
-
-                return tools.maybeCallback(callback);
-            } else {
-                return tools.maybeCallback(callback);
-            }
-        } else if (aliasObj && aliasObj.type === 'state') {
-            // if state and no id given -> if no state just ignore it
-            this._logger.warn(`${this.namespaceLog} Alias ${aliasObj._id} has no target 5`);
-            return tools.maybeCallbackWithError(callback, new Error(`Alias ${aliasObj._id} has no target`));
-        } else {
-            return tools.maybeCallback(callback);
+    /**
+     * Add subscription for given alias, if it is not a state it will be ignored
+     *
+     * @param aliasObj the alias object
+     * @param pattern pattern to subscribe for
+     */
+    private async _addAliasSubscribe(aliasObj: ioBroker.AnyObject, pattern: string): Promise<void> {
+        if (aliasObj.type !== 'state') {
+            // no state types do not need to be subscribed
+            return;
         }
+
+        if (!aliasObj.common?.alias?.id) {
+            // if state and no id given
+            this._logger.warn(`${this.namespaceLog} Alias ${aliasObj._id} has no target 5`);
+            throw new Error(`Alias ${aliasObj._id} has no target`);
+        }
+
+        // id can be string or can have attribute read
+        const sourceId = tools.isObject(aliasObj.common.alias.id)
+            ? aliasObj.common.alias.id.read
+            : aliasObj.common.alias.id;
+
+        // validate here because we use objects/states db directly
+        try {
+            this._utils.validateId(sourceId, true, null);
+        } catch (e) {
+            throw new Error(`Error validating alias id of ${aliasObj._id}: ${e.message}`);
+        }
+
+        const targetEntry = {
+            alias: deepClone(aliasObj.common.alias),
+            id: aliasObj._id,
+            pattern,
+            type: aliasObj.common.type,
+            max: aliasObj.common.max,
+            min: aliasObj.common.min,
+            unit: aliasObj.common.unit
+        };
+
+        let aliasDetails: AliasDetails;
+
+        if (!this.aliases.has(sourceId)) {
+            aliasDetails = { targets: [] };
+            // add the alias before doing anything async, so if a delete comes in between we can detect it
+            this.aliases.set(sourceId, aliasDetails);
+        } else {
+            aliasDetails = this.aliases.get(sourceId)!;
+        }
+
+        if (!aliasDetails.source) {
+            await this.#states!.subscribe(sourceId);
+            // we ignore permissions on the source object and thus get it as admin user
+            const sourceObj = await this.#objects!.getObject(sourceId, { user: SYSTEM_ADMIN_USER });
+
+            // if we have a common and the alias has not been removed in-between
+            if (sourceObj?.common && this.aliases.has(sourceObj._id)) {
+                aliasDetails.source = {
+                    min: sourceObj.common.min,
+                    max: sourceObj.common.max,
+                    type: sourceObj.common.type,
+                    unit: sourceObj.common.unit
+                };
+            }
+        }
+
+        // add the alias target after we have ensured that we have the source set
+        aliasDetails.targets.push(targetEntry);
     }
 
-    private async _removeAliasSubscribe(
-        sourceId: string,
-        aliasObj: number | AliasTargetEntry,
-        callback?: () => void
-    ): Promise<void> {
+    /**
+     * Remove an alias subscribe
+     *
+     * @param sourceId id of the source object
+     * @param aliasObjOrIdx the alias target or the index of the targets array
+     */
+    private async _removeAliasSubscribe(sourceId: string, aliasObjOrIdx: number | AliasTargetEntry): Promise<void> {
         if (!this.aliases.has(sourceId)) {
-            return tools.maybeCallback(callback);
+            return;
         }
 
+        const alias = this.aliases.get(sourceId)!;
+
         // remove from targets array
-        const pos = typeof aliasObj === 'number' ? aliasObj : this.aliases.get(sourceId)!.targets.indexOf(aliasObj);
+        const pos = typeof aliasObjOrIdx === 'number' ? aliasObjOrIdx : alias.targets.indexOf(aliasObjOrIdx);
 
         if (pos !== -1) {
-            this.aliases.get(sourceId)!.targets.splice(pos, 1);
+            alias.targets.splice(pos, 1);
 
             // unsubscribe if no more aliases exists
-            if (!this.aliases.get(sourceId)!.targets.length) {
+            if (!alias.targets.length) {
                 this.aliases.delete(sourceId);
                 await this.#states!.unsubscribe(sourceId);
             }
         }
-        return tools.maybeCallback(callback);
     }
 
     subscribeForeignStates(pattern: Pattern, callback?: ioBroker.ErrorCallback): void;
@@ -9821,8 +9828,7 @@ export class AdapterClass extends EventEmitter {
 
                 for (const aliasObj of aliasObjs) {
                     if (aliasObj) {
-                        // @ts-expect-error check if alias subscribe also takes non-state objects and then ignores
-                        promises.push(new Promise(resolve => this._addAliasSubscribe(aliasObj, aliasObj._id, resolve)));
+                        promises.push(this._addAliasSubscribe(aliasObj, aliasObj._id));
                     }
                 }
             }
@@ -9860,8 +9866,7 @@ export class AdapterClass extends EventEmitter {
                         // If alias
                         if (id.startsWith(ALIAS_STARTS_WITH)) {
                             const aliasObj = objs[id];
-                            // @ts-expect-error
-                            promises.push(new Promise(resolve => this._addAliasSubscribe(aliasObj, pattern, resolve)));
+                            promises.push(this._addAliasSubscribe(aliasObj, pattern));
                         }
                     }
 
@@ -9898,26 +9903,12 @@ export class AdapterClass extends EventEmitter {
                 this.#objects.subscribe(`${ALIAS_STARTS_WITH}*`);
             }
 
-            // aliases['sourceId'] = {
-            //     source: {common attributes},
-            //     targets: [
-            //         {
-            //             alias: {},
-            //             id: 'aliasId',
-            //             pattern: 'some pattern',
-            //             type: stateType,
-            //             max: number,
-            //             min: number,
-            //         }
-            //     ]
-            // };
-
             // just read one alias Object
             try {
-                const aliasObj = await this.#objects.getObjectAsync(pattern, options);
+                const aliasObj = await this.#objects.getObject(pattern, options);
                 if (aliasObj) {
-                    // cb will be called, but await for catching promisified part
-                    await this._addAliasSubscribe(aliasObj as ioBroker.StateObject, pattern, callback);
+                    await this._addAliasSubscribe(aliasObj, pattern);
+                    return tools.maybeCallback(callback);
                 } else {
                     return tools.maybeCallback(callback);
                 }
@@ -10961,11 +10952,22 @@ export class AdapterClass extends EventEmitter {
                             }
                         }
                     }
-                } else if (this.adapterReady && this.aliases.has(id)) {
+                } else if (!this._stopInProgress && this.adapterReady && this.aliases.has(id)) {
                     // If adapter is ready and for this ID exist some alias links
-                    const alias = this.aliases.get(id);
-                    alias!.targets.forEach(target => {
-                        const source = alias!.source!;
+                    const alias = this.aliases.get(id)!;
+                    /** Prevent multiple publishes if multiple pattern contain this alias id */
+                    const uniqueTargets = new Set<string>();
+
+                    for (const target of alias.targets) {
+                        const targetId = target.id;
+                        if (uniqueTargets.has(targetId)) {
+                            continue;
+                        }
+
+                        uniqueTargets.add(targetId);
+
+                        const source = alias!.source;
+
                         const aState = state
                             ? tools.formatAliasValue({
                                   sourceCommon: source,
@@ -10974,13 +10976,11 @@ export class AdapterClass extends EventEmitter {
                                   logger: this._logger,
                                   logNamespace: this.namespaceLog,
                                   sourceId: id,
-                                  targetId: target.id
+                                  targetId
                               })
                             : null;
 
-                        const targetId = target.id;
-
-                        if (!this._stopInProgress && (aState || !state)) {
+                        if (aState || !state) {
                             if (typeof this._options.stateChange === 'function') {
                                 this._options.stateChange(targetId, aState);
                             } else {
@@ -10988,7 +10988,7 @@ export class AdapterClass extends EventEmitter {
                                 setImmediate(() => this.emit('stateChange', targetId, aState));
                             }
                         }
-                    });
+                    }
                 }
             },
             changeUser: (id, state) => {
@@ -11153,18 +11153,14 @@ export class AdapterClass extends EventEmitter {
 
                                 // if linked ID changed
                                 if (newSourceId !== sourceId) {
-                                    this._removeAliasSubscribe(sourceId, targetAlias, async () => {
-                                        try {
-                                            await this._addAliasSubscribe(
-                                                obj as ioBroker.StateObject,
-                                                targetAlias.pattern
-                                            );
-                                        } catch (e) {
-                                            this._logger.error(
-                                                `${this.namespaceLog} Could not add alias subscription: ${e.message}`
-                                            );
-                                        }
-                                    });
+                                    await this._removeAliasSubscribe(sourceId, targetAlias);
+                                    try {
+                                        await this._addAliasSubscribe(obj, targetAlias.pattern);
+                                    } catch (e) {
+                                        this._logger.error(
+                                            `${this.namespaceLog} Could not add alias subscription: ${e.message}`
+                                        );
+                                    }
                                 } else {
                                     // update attributes
                                     targetAlias.min = obj.common.min;
@@ -11175,13 +11171,13 @@ export class AdapterClass extends EventEmitter {
                             } else {
                                 // link was deleted
                                 // remove from targets array
-                                this._removeAliasSubscribe(sourceId, targetAlias);
+                                await this._removeAliasSubscribe(sourceId, targetAlias);
                             }
                         }
                     }
 
                     // it's a new alias, we add it to our subscription
-                    if (isNewAlias) {
+                    if (isNewAlias && obj) {
                         for (const aliasPattern of this.aliasPatterns) {
                             // check if it's in our subs range, if so add it
                             const testPattern =
@@ -11194,7 +11190,7 @@ export class AdapterClass extends EventEmitter {
                                 (testPattern instanceof RegExp && testPattern.test(id))
                             ) {
                                 try {
-                                    await this._addAliasSubscribe(obj as ioBroker.StateObject, id);
+                                    await this._addAliasSubscribe(obj, id);
                                 } catch (e) {
                                     this._logger.warn(
                                         `${this.namespaceLog} Could not add alias subscription: ${e.message}`
@@ -11595,14 +11591,13 @@ export class AdapterClass extends EventEmitter {
                 this.version = this.pack?.version
                     ? this.pack.version
                     : this.ioPack?.common
-                    ? this.ioPack.common.version
-                    : 'unknown';
+                      ? this.ioPack.common.version
+                      : 'unknown';
                 // display if it's a non-official version - only if installedFrom is explicitly given and differs it's not npm
-                const isNpmVersion =
-                    !this.ioPack ||
-                    !this.ioPack.common ||
-                    typeof this.ioPack.common.installedFrom !== 'string' ||
-                    this.ioPack.common.installedFrom.startsWith(`${tools.appName.toLowerCase()}.${this.name}`);
+                const isNpmVersion = isInstalledFromNpm({
+                    adapterName: this.name,
+                    installedFrom: this.ioPack.common.installedFrom
+                });
 
                 this._logger.info(
                     `${this.namespaceLog} starting. Version ${this.version} ${
@@ -11621,7 +11616,7 @@ export class AdapterClass extends EventEmitter {
                     this.#states.setState(`${id}.compactMode`, {
                         ack: true,
                         from: id,
-                        val: !!this.startedInCompactMode
+                        val: this.startedInCompactMode
                     });
 
                     this.outputCount++;
@@ -11782,8 +11777,14 @@ export class AdapterClass extends EventEmitter {
             for (const instObj of instanceObj.instanceObjects) {
                 const obj: IoPackageInstanceObject & { state?: unknown } = instObj;
 
+                const allowedTopLevelTypes: ioBroker.ObjectType[] = ['meta', 'device'];
+
                 // the object comes from non-checked io-package, so treat the id as unknown
-                if (!obj || typeof (obj._id as unknown) !== 'string' || (!obj._id && obj.type !== 'meta')) {
+                if (
+                    !obj ||
+                    typeof (obj._id as unknown) !== 'string' ||
+                    (obj._id === '' && !allowedTopLevelTypes.includes(obj.type))
+                ) {
                     this._logger.error(
                         `${this.namespaceLog} ${this.namespace} invalid instance object: ${JSON.stringify(obj)}`
                     );
@@ -11978,6 +11979,33 @@ export class AdapterClass extends EventEmitter {
         await this.#states.pushMessage(`system.host.${this.host}`, obj as any);
     }
 
+    /**
+     * Initialize the plugin handler for this adapter
+     */
+    private _initPluginHandler(): void {
+        const pluginSettings: PluginHandlerSettings = {
+            scope: 'adapter',
+            namespace: `system.adapter.${this.namespace}`,
+            logNamespace: this.namespaceLog,
+            // @ts-expect-error
+            log: this._logger,
+            iobrokerConfig: this._config,
+            // @ts-expect-error
+            parentPackage: this.pack,
+            controllerVersion
+        };
+
+        this.pluginHandler = new PluginHandler(pluginSettings);
+        try {
+            this.pluginHandler.addPlugins(this.ioPack.common.plugins || {}, [this.adapterDir, thisDir]); // first resolve from adapter directory, else from js-controller
+        } catch (e) {
+            this._logger.error(`Could not add plugins: ${e.message}`);
+        }
+    }
+
+    /**
+     * Initializes the adapter
+     */
     private async _init(): Promise<void> {
         /**
          * Initiates the databases
@@ -12051,24 +12079,7 @@ export class AdapterClass extends EventEmitter {
         process.on('uncaughtException', err => this._exceptionHandler(err));
         process.on('unhandledRejection', err => this._exceptionHandler(err as any, true));
 
-        const pluginSettings: PluginHandlerSettings = {
-            scope: 'adapter',
-            namespace: `system.adapter.${this.namespace}`,
-            logNamespace: this.namespaceLog,
-            // @ts-expect-error
-            log: this._logger,
-            iobrokerConfig: this._config,
-            // @ts-expect-error
-            parentPackage: this.pack,
-            controllerVersion
-        };
-
-        this.pluginHandler = new PluginHandler(pluginSettings);
-        try {
-            this.pluginHandler.addPlugins(this.ioPack.common.plugins, [this.adapterDir, thisDir]); // first resolve from adapter directory, else from js-controller
-        } catch (e) {
-            this._logger.error(`Could not add plugins: ${e.message}`);
-        }
+        this._initPluginHandler();
         // finally init
         _initDBs();
     }

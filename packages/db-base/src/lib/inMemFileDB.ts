@@ -1,7 +1,7 @@
 /**
  *      States DB in memory - Server
  *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -9,10 +9,9 @@
 
 import fs from 'fs-extra';
 import path from 'node:path';
-import { tools } from '@iobroker/js-controller-common';
-import type { InternalLogger } from '@iobroker/js-controller-common/tools';
+import { tools } from '@iobroker/js-controller-common-db';
+import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
 import { createGzip } from 'node:zlib';
-import type { RedisHandler } from '@/lib/redisHandler.js';
 
 // settings = {
 //    change:    function (id, state) {},
@@ -98,36 +97,15 @@ interface Subscription {
     options: any;
 }
 
-interface SubscriptionClient extends Partial<InstanceType<typeof RedisHandler>> {
-    _subscribe?: Map<string, Subscription[]>;
+interface SubscriptionClient {
+    _subscribe?: Record<string, Subscription[]>;
 }
-
-interface SubscriptionClientRegex {
-    /** The RegExp object */
-    regex: RegExp;
-    /** All clients for this regexp */
-    clients: { client: SubscriptionClient; pattern: string }[];
-}
-
-interface AddRemoveRegexOptions {
-    /** The type of subscription to remove */
-    type: string;
-    /** The pattern to remove */
-    pattern: string;
-    /** The client to remove */
-    client: SubscriptionClient;
-}
-
-/** Nested map, outer map for type, inner for regexp */
-type RegExpsClients = Map<string, Map<string, SubscriptionClientRegex>>;
 
 /**
  * The parent of the class structure, which provides basic JSON storage
  * and general subscription and publish functionality
  */
 export class InMemoryFileDB {
-    /** Store all clients per RegExp */
-    private regExps: RegExpsClients = new Map();
     private settings: FileDbSettings;
     private readonly change: ChangeFunction | undefined;
     protected dataset: Record<string, any>;
@@ -308,83 +286,76 @@ export class InMemoryFileDB {
         fs.ensureDirSync(this.backupDir);
     }
 
-    /**
-     * Add client subscribe to a regex for given type
-     *
-     * @param options pattern, client and type information
-     */
-    private addSubscribeToRegex(options: AddRemoveRegexOptions): void {
-        const { type, pattern, client } = options;
+    handleSubscribe(client: SubscriptionClient, type: string, pattern: string | string[], cb?: () => void): void;
+    handleSubscribe(
+        client: SubscriptionClient,
+        type: string,
+        pattern: string | string[],
+        options: any,
+        cb?: () => void
+    ): void;
 
-        const regExpsForType = this.regExps.get(type)!;
-        const regexStr = tools.pattern2RegEx(pattern);
-        const regex = new RegExp(regexStr);
-
-        if (!regExpsForType.has(regexStr)) {
-            regExpsForType.set(regexStr, { regex, clients: [] });
+    handleSubscribe(
+        client: SubscriptionClient,
+        type: string,
+        pattern: string | string[],
+        options: any,
+        cb?: () => void
+    ): void {
+        if (typeof options === 'function') {
+            cb = options;
+            options = undefined;
         }
+        client._subscribe = client._subscribe || {};
+        client._subscribe[type] = client._subscribe[type] || [];
 
-        const regExs = regExpsForType.get(regexStr)!;
-
-        const found = !!regExs.clients.find(cl => cl === client);
-        if (!found) {
-            regExs.clients.push({ client, pattern });
-        }
-    }
-
-    handleSubscribe(client: SubscriptionClient, type: string, pattern: string | string[]): void {
-        if (!this.regExps.has(type)) {
-            this.regExps.set(type, new Map());
-        }
+        const s = client._subscribe[type];
 
         if (pattern instanceof Array) {
-            for (const patternStr of pattern) {
-                this.addSubscribeToRegex({ pattern: patternStr, client, type });
-            }
+            pattern.forEach(pattern => {
+                if (s.find(sub => sub.pattern === pattern)) {
+                    return;
+                }
+
+                s.push({ pattern, regex: new RegExp(tools.pattern2RegEx(pattern)), options });
+            });
         } else {
-            this.addSubscribeToRegex({ pattern, client, type });
-        }
-    }
-
-    /**
-     * Remove client subscribe from a regex for given type
-     *
-     * @param options pattern, client and type information
-     */
-    private removeSubscribeFromRegex(options: AddRemoveRegexOptions): void {
-        const { type, pattern, client } = options;
-
-        const regExpsForType = this.regExps.get(type)!;
-        const regexStr = tools.pattern2RegEx(pattern);
-
-        const entry = regExpsForType.get(regexStr);
-
-        if (!entry) {
-            return;
-        }
-
-        const clientIndex = entry.clients.findIndex(cl => cl.client === client);
-
-        if (clientIndex > -1) {
-            entry.clients.splice(clientIndex, 1);
-        }
-
-        if (entry.clients.length === 0) {
-            regExpsForType.delete(regexStr);
-        }
-    }
-
-    handleUnsubscribe(client: SubscriptionClient, type: string, pattern: string | string[]): void | Promise<void> {
-        if (pattern instanceof Array) {
-            for (const p of pattern) {
-                this.removeSubscribeFromRegex({ pattern: p, client, type });
+            if (!s.find(sub => sub.pattern === pattern)) {
+                s.push({ pattern, regex: new RegExp(tools.pattern2RegEx(pattern)), options });
             }
-        } else {
-            this.removeSubscribeFromRegex({ pattern, client, type });
         }
+
+        typeof cb === 'function' && cb();
     }
 
-    publishPattern(_patternInformation: SubscriptionClientRegex, _type: string, _id: string, _obj: unknown): number {
+    handleUnsubscribe(
+        client: SubscriptionClient,
+        type: string,
+        pattern: string | string[],
+        cb?: () => void
+    ): void | Promise<void> {
+        const s = client?._subscribe?.[type];
+        if (s) {
+            const removeEntry = (p: string): void => {
+                const index = s.findIndex(sub => sub.pattern === p);
+                if (index > -1) {
+                    s.splice(index, 1);
+                }
+            };
+
+            if (pattern instanceof Array) {
+                pattern.forEach(p => {
+                    removeEntry(p);
+                });
+            } else {
+                removeEntry(pattern);
+            }
+        }
+
+        return tools.maybeCallback(cb);
+    }
+
+    publishToClients(_client: SubscriptionClient, _type: string, _id: string, _obj: any): number {
         throw new Error('no communication handling implemented');
     }
 
@@ -567,8 +538,8 @@ export class InMemoryFileDB {
         return { type: 'file', server: true };
     }
 
-    getClients(): Map<string, SubscriptionClient> {
-        return new Map();
+    getClients(): Record<string, any> {
+        return {};
     }
 
     publishAll(type: string, id: string, obj: any): number {
@@ -577,13 +548,12 @@ export class InMemoryFileDB {
             return 0;
         }
 
+        const clients = this.getClients();
         let publishCount = 0;
 
-        const patternInfo = this.regExps.get(type);
-
-        if (patternInfo) {
-            for (const regex of patternInfo.values()) {
-                publishCount += this.publishPattern(regex, type, id, obj);
+        if (clients && typeof clients === 'object') {
+            for (const i of Object.keys(clients)) {
+                publishCount += this.publishToClients(clients[i], type, id, obj);
             }
         }
 
@@ -591,9 +561,9 @@ export class InMemoryFileDB {
         if (
             this.change &&
             this.callbackSubscriptionClient._subscribe &&
-            this.callbackSubscriptionClient._subscribe.has(type)
+            this.callbackSubscriptionClient._subscribe[type]
         ) {
-            for (const entry of this.callbackSubscriptionClient._subscribe.get(type)!) {
+            for (const entry of this.callbackSubscriptionClient._subscribe[type]) {
                 if (entry.regex.test(id)) {
                     // @ts-expect-error we have checked 3 lines above
                     setImmediate(() => this.change(id, obj));

@@ -24,4 +24,4 @@ Which properties of the original object should be preserved
 
 #### Defined in
 
-[types-dev/index.d.ts:306](https://github.com/ioBroker/ioBroker.js-controller/blob/819f1976e/packages/types-dev/index.d.ts#L306)
+[types-dev/index.d.ts:308](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/index.d.ts#L308)

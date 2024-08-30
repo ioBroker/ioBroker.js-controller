@@ -5,6 +5,7 @@ import { startController, stopController } from './lib/setup4controller.js';
 import url from 'node:url';
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url));
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
+import { isInstalledFromNpm } from '@iobroker/js-controller-common';
 
 let objects: ObjectsInRedisClient;
 
@@ -61,6 +62,22 @@ describe('test internal helpers', () => {
 
         isBlocked = await blocklistManager.isAdapterVersionBlocked({ version: '3.14.0', adapterName: 'alexa2' });
         expect(isBlocked).to.be.true;
+    });
+
+    it('isInstalledFromNpm', () => {
+        expect(
+            isInstalledFromNpm({
+                adapterName: 'admin',
+                installedFrom: 'iobroker.admin@6.13.16' as ioBroker.InstalledFrom
+            })
+        ).to.be.true;
+
+        expect(
+            isInstalledFromNpm({
+                adapterName: 'benchmark',
+                installedFrom: 'foxriver76/ioBroker.benchmark' as ioBroker.InstalledFrom
+            })
+        ).to.be.false;
     });
 
     after('Stop js-controller', async function () {

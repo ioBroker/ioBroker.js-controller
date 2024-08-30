@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "js-controller",
-    "version": "5.0.20",
+    "version": "6.0.12",
     "platform": "Javascript/Node.js",
     "controller": true,
     "mode": "daemon",
@@ -16,9 +16,23 @@
       "it": "Controller JS",
       "es": "Controlador JS",
       "pl": "Kontroler JS",
+      "uk": "Контролер JS",
       "zh-cn": "JS控制器"
     },
     "news": {
+      "6.0.11": {
+        "en": "see CHANGELOG.md",
+        "de": "siehe CHANGELOG.md",
+        "ru": "см. CHANGELOG.md",
+        "pt": "veja CHANGELOG.md",
+        "nl": "zie CHANGELOG.md",
+        "fr": "voir CHANGELOG.md",
+        "it": "vedi CHANGELOG.md",
+        "es": "ver CHANGELOG.md",
+        "pl": "zobacz CHANGELOG.md",
+        "uk": "див. CHANGELOG.md",
+        "zh-cn": "看到CHANGELOG.md"
+      },
       "5.0.17": {
         "en": "see CHANGELOG.md",
         "de": "siehe CHANGELOG.md",
@@ -29,6 +43,7 @@
         "it": "vedi CHANGELOG.md",
         "es": "ver CHANGELOG.md",
         "pl": "zobacz CHANGELOG.md",
+        "uk": "див. CHANGELOG.md",
         "zh-cn": "看到CHANGELOG.md"
       },
       "4.0.24": {
@@ -41,6 +56,7 @@
         "it": "vedi CHANGELOG.md",
         "es": "ver CHANGELOG.md",
         "pl": "zobacz CHANGELOG.md",
+        "uk": "див. CHANGELOG.md",
         "zh-cn": "看到CHANGELOG.md"
       },
       "3.3.22": {
@@ -53,6 +69,7 @@
         "it": "vedi CHANGELOG.md",
         "es": "ver CHANGELOG.md",
         "pl": "zobacz CHANGELOG.md",
+        "uk": "див. CHANGELOG.md",
         "zh-cn": "看到CHANGELOG.md"
       },
       "3.2.16": {
@@ -65,6 +82,7 @@
         "it": "vedi CHANGELOG.md",
         "es": "ver CHANGELOG.md",
         "pl": "zobacz CHANGELOG.md",
+        "uk": "див. CHANGELOG.md",
         "zh-cn": "看到CHANGELOG.md"
       },
       "3.1.6": {
@@ -77,6 +95,7 @@
         "it": "vedi CHANGELOG.md",
         "es": "ver CHANGELOG.md",
         "pl": "zobacz CHANGELOG.md",
+        "uk": "див. CHANGELOG.md",
         "zh-cn": "看到CHANGELOG.md"
       },
       "3.0.20": {
@@ -89,6 +108,7 @@
         "it": "vedi CHANGELOG.md",
         "es": "ver CHANGELOG.md",
         "pl": "zobacz CHANGELOG.md",
+        "uk": "див. CHANGELOG.md",
         "zh-cn": "看到CHANGELOG.md"
       }
     },
@@ -102,6 +122,7 @@
       "it": "Implementazione Javascript/Node.js del controller ioBroker",
       "es": "Implementación de JavaScript/Node.js del controlador ioBroker",
       "pl": "Implementacja JavaScript/Node.js kontrolera ioBroker",
+      "uk": "Реалізація контролера ioBroker на Javascript/Node.js",
       "zh-cn": "Javascript / Node.js实现了ioBroker控制器"
     },
     "tier": 1,
@@ -148,6 +169,7 @@
           "it": "Selettori di oggetti",
           "es": "Selectores de objeto",
           "pl": "Selektory obiektów",
+          "uk": "Селектори об'єкта",
           "zh-cn": "对象的选择器"
         },
         "dontDelete": true
@@ -227,6 +249,7 @@
           "it": "Amministratore",
           "es": "Administrador",
           "pl": "Administrator",
+          "uk": "Адміністратор",
           "zh-cn": "管理员"
         },
         "desc": {
@@ -239,6 +262,7 @@
           "it": "Può fare tutto con il sistema",
           "es": "Puede hacer todo con System",
           "pl": "Potrafi zrobić wszystko dzięki Systemowi",
+          "uk": "Може робити все з системою",
           "zh-cn": "可以用系统做任何事情"
         },
         "members": [
@@ -301,6 +325,7 @@
           "it": "Utente",
           "es": "Usuario",
           "pl": "Użytkownik",
+          "uk": "Користувач",
           "zh-cn": "用户"
         },
         "desc": {
@@ -313,6 +338,7 @@
           "it": "Non è possibile modificare tutto",
           "es": "No se puede modificar todo",
           "pl": "Nie można modyfikować wszystkiego",
+          "uk": "Не може змінювати все",
           "zh-cn": "用户无法修改所有内容"
         },
         "members": [],
@@ -372,6 +398,7 @@
           "it": "Camere",
           "es": "Habitaciones",
           "pl": "Pokoje",
+          "uk": "Кімнати",
           "zh-cn": "客房"
         },
         "desc": {
@@ -384,6 +411,7 @@
           "it": "Elenco delle stanze",
           "es": "Lista de las habitaciones",
           "pl": "Lista pokoi",
+          "uk": "Список кімнат",
           "zh-cn": "房间清单"
         },
         "members": [],
@@ -410,6 +438,7 @@
           "it": "funzioni",
           "es": "Funciones",
           "pl": "Funkcje",
+          "uk": "функції",
           "zh-cn": "职能"
         },
         "desc": {
@@ -422,6 +451,7 @@
           "it": "Elenco delle funzioni",
           "es": "Lista de las funciones",
           "pl": "Lista funkcji",
+          "uk": "Список функцій",
           "zh-cn": "功能列表"
         },
         "members": [],
@@ -448,12 +478,11 @@
           "it": "Configurazione di sistema",
           "es": "Configuración del sistema",
           "pl": "Konfiguracja systemu",
+          "uk": "Конфігурація системи",
           "zh-cn": "系统配置"
         },
         "city": "",
         "country": "",
-        "longitude": "",
-        "latitude": "",
         "language": "",
         "tempUnit": "°C",
         "currency": "",
@@ -502,6 +531,7 @@
           "it": "Repository di sistema",
           "es": "Repositorios del sistema",
           "pl": "Repozytoria systemowe",
+          "uk": "Системні репозиторії",
           "zh-cn": "系统资料库"
         },
         "dontDelete": true
@@ -633,6 +663,7 @@
           "it": "Cartella principale di oggetti e file dell'utente",
           "es": "Carpeta raíz de objetos y archivos de usuario",
           "pl": "Folder główny obiektów i plików użytkownika",
+          "uk": "Коренева папка об'єктів користувача та файлів",
           "zh-cn": "用户对象和文件根文件夹"
         },
         "desc": {
@@ -645,6 +676,7 @@
           "it": "Qui puoi caricare i tuoi file o creare oggetti e stati privati",
           "es": "Aquí puede cargar sus archivos o crear sus objetos y estados privados",
           "pl": "Tutaj możesz przesyłać pliki lub tworzyć prywatne obiekty i stany",
+          "uk": "Тут ви можете завантажити свої файли або створити свої приватні об'єкти та стани",
           "zh-cn": "在这里您可以上传文件或创建私有对象和状态"
         },
         "type": "meta.user",
@@ -719,17 +751,17 @@
           },
           "severity": "alert",
           "description": {
-            "en": "Your system is running out of disk space. Please free space on the disk to avoid problems.",
-            "de": "Ihr System verfügt nicht mehr über genügend Speicherplatz. Bitte geben Sie Speicherplatz auf der Festplatte frei, um Probleme zu vermeiden.",
-            "ru": "В вашей системе не хватает места на диске. Во избежание проблем освободите место на диске.",
-            "pt": "O seu sistema está a ficar sem espaço no disco. Liberte espaço no disco para evitar problemas.",
-            "nl": "Je systeem heeft bijna geen schijfruimte meer. Maak ruimte vrij op de schijf om problemen te voorkomen.",
-            "fr": "Votre système manque d'espace disque. Veuillez libérer de l'espace sur le disque pour éviter tout problème.",
-            "it": "Il sistema sta esaurendo lo spazio su disco. Liberare spazio sul disco per evitare problemi.",
-            "es": "Su sistema se está quedando sin espacio en disco. Por favor, libere espacio en el disco para evitar problemas.",
-            "pl": "W systemie zaczyna brakować miejsca na dysku. Aby uniknąć problemów, zwolnij miejsce na dysku.",
-            "uk": "У вашій системі закінчується місце на диску. Будь ласка, звільніть місце на диску, щоб уникнути проблем.",
-            "zh-cn": "您的系统正在耗尽磁盘空间。请释放磁盘空间，以免出现问题。"
+            "en": "Your system is running out of disk space according to the user-defined threshold. Please free space on the disk to avoid problems.",
+            "de": "Ihr System verfügt nicht mehr über den vom Benutzer eingestellten Speicherplatz. Bitte geben Sie Speicherplatz auf der Festplatte frei, um Probleme zu vermeiden.",
+            "ru": "В вашей системе закончилось место на диске в соответствии с заданным пользователем порогом. Во избежание проблем освободите место на диске.",
+            "pt": "O seu sistema está a ficar sem espaço em disco de acordo com o limite definido pelo utilizador. Liberte espaço no disco para evitar problemas.",
+            "nl": "Uw systeem heeft bijna geen schijfruimte meer volgens de door de gebruiker ingestelde drempelwaarde. Maak ruimte vrij op de schijf om problemen te voorkomen.",
+            "fr": "Votre système manque d'espace disque selon le seuil défini par l'utilisateur. Veuillez libérer de l'espace sur le disque pour éviter tout problème.",
+            "it": "Il sistema sta esaurendo lo spazio su disco in base alla soglia definita dall'utente. Liberare spazio sul disco per evitare problemi.",
+            "es": "Su sistema se está quedando sin espacio en disco según el umbral definido por el usuario. Por favor, libere espacio en el disco para evitar problemas.",
+            "pl": "W systemie zaczyna brakować miejsca na dysku zgodnie z progiem zdefiniowanym przez użytkownika. Aby uniknąć problemów, zwolnij miejsce na dysku.",
+            "uk": "У вашій системі закінчується місце на диску відповідно до визначеного користувачем порогового значення. Будь ласка, звільніть місце на диску, щоб уникнути проблем.",
+            "zh-cn": "根据用户定义的阈值，您的系统即将耗尽磁盘空间。请释放磁盘空间，以免出现问题。"
           },
           "regex": [],
           "limit": 1

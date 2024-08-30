@@ -1,112 +1,113 @@
 {
-  "name": "iobroker.js-controller",
-  "type": "module",
-  "version": "5.0.20-alpha.0-20240510-819f1976e",
-  "engines": {
-    "node": ">=18.0.0"
-  },
-  "bin": {
-    "iobroker": "./iobroker.js"
-  },
-  "dependencies": {
-    "@alcalzone/esbuild-register": "^2.5.1-1",
-    "@iobroker/db-objects-file": "file:../db-objects-file",
-    "@iobroker/db-objects-jsonl": "file:../db-objects-jsonl",
-    "@iobroker/db-objects-redis": "file:../db-objects-redis",
-    "@iobroker/db-states-file": "file:../db-states-file",
-    "@iobroker/db-states-jsonl": "file:../db-states-jsonl",
-    "@iobroker/db-states-redis": "file:../db-states-redis",
-    "@iobroker/js-controller-adapter": "file:../adapter",
-    "@iobroker/js-controller-cli": "file:../cli",
-    "@iobroker/js-controller-common": "file:../common",
-    "@iobroker/js-controller-common-db": "file:../common-db",
-    "@iobroker/plugin-base": "~1.2.1",
-    "@iobroker/plugin-sentry": "~1.2.1",
-    "axios": "^1.6.3",
-    "cron-parser": "^4.9.0",
-    "debug": "^4.3.4",
-    "decache": "^4.6.1",
-    "deep-clone": "^3.0.3",
-    "fs-extra": "^11.1.0",
-    "jsonwebtoken": "^9.0.0",
-    "jszip": "^3.10.1",
-    "loadavg-windows": "^1.1.1",
-    "node-schedule": "^2.1.1",
-    "pidusage": "^3.0.2",
-    "promisify-child-process": "^4.1.1",
-    "prompt": "^1.2.2",
-    "readline-sync": "^1.4.10",
-    "semver": "^7.5.2",
-    "tar": "^6.2.1"
-  },
-  "homepage": "https://www.iobroker.com",
-  "description": "Updated by reinstall.js on 2018-06-11T15:19:56.688Z",
-  "keywords": [
-    "ioBroker",
-    "Smarthome",
-    "Home Automation",
-    "Smart Metering",
-    "Homematic",
-    "Hue",
-    "KNX",
-    "Z-Wave",
-    "ZigBee",
-    "Bidcos",
-    "TV",
-    "Sonos",
-    "AV Receiver"
-  ],
-  "bugs": {
-    "url": "https://github.com/ioBroker/ioBroker.js-controller/issues"
-  },
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/ioBroker/ioBroker.js-controller/blob/master/LICENSE"
-    }
-  ],
-  "author": "bluefox <dogafox@gmail.com>",
-  "contributors": [
-    "bluefox <dogafox@gmail.com>",
-    "hobbyquaker <hq@ccu.io>"
-  ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/ioBroker/ioBroker.js-controller"
-  },
-  "scripts": {
-    "build": "tsc -b tsconfig.build.json && tsc-alias",
-    "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/",
-    "preinstall": "node build/esm/lib/preinstallCheck.js",
-    "install": "node iobroker.js setup first",
-    "start": "node iobroker.js start",
-    "stop": "node iobroker.js stop",
-    "restart": "node iobroker.js restart",
-    "release": "release-script",
-    "test": "mocha test --exit",
-    "test-jsonl": "mocha test/jsonl/ --exit",
-    "test-redis-socket": "mocha test/redis-socket/ --exit",
-    "test-redis-sentinel": "mocha test/redis-sentinel/ --exit"
-  },
-  "main": "build/cjs/main.js",
-  "module": "build/esm/main.js",
-  "types": "build/esm/main.d.ts",
-  "exports": {
-    ".": {
-      "import": "./build/esm/index.js",
-      "require": "./build/cjs/index.js",
-      "types": "./build/esm/main.d.ts"
+    "name": "iobroker.js-controller",
+    "type": "module",
+    "version": "6.0.12-alpha.0-20240827-34e3febb4",
+    "engines": {
+        "node": ">=18.0.0"
     },
-    "./package.json": "./package.json",
-    "./io-package.json": "./io-package.json"
-  },
-  "license": "MIT",
-  "files": [
-    "conf/",
-    "build/",
-    "controller.js",
-    "io-package.json",
-    "iobroker.js",
-    "main.js"
-  ]
+    "bin": {
+        "iobroker": "./iobroker.js"
+    },
+    "dependencies": {
+        "@alcalzone/esbuild-register": "^2.5.1-1",
+        "@iobroker/db-objects-file": "file:../db-objects-file",
+        "@iobroker/db-objects-jsonl": "file:../db-objects-jsonl",
+        "@iobroker/db-objects-redis": "file:../db-objects-redis",
+        "@iobroker/db-states-file": "file:../db-states-file",
+        "@iobroker/db-states-jsonl": "file:../db-states-jsonl",
+        "@iobroker/db-states-redis": "file:../db-states-redis",
+        "@iobroker/js-controller-adapter": "file:../adapter",
+        "@iobroker/js-controller-cli": "file:../cli",
+        "@iobroker/js-controller-common": "file:../common",
+        "@iobroker/js-controller-common-db": "file:../common-db",
+        "@iobroker/plugin-base": "~1.2.1",
+        "@iobroker/plugin-sentry": "~1.2.1",
+        "axios": "^1.7.4",
+        "cron-parser": "^4.9.0",
+        "debug": "^4.3.4",
+        "decache": "^4.6.1",
+        "deep-clone": "^3.0.3",
+        "fs-extra": "^11.1.0",
+        "jsonwebtoken": "^9.0.0",
+        "jszip": "^3.10.1",
+        "loadavg-windows": "^1.1.1",
+        "node-schedule": "^2.1.1",
+        "pidusage": "^3.0.2",
+        "promisify-child-process": "^4.1.1",
+        "prompt": "^1.2.2",
+        "readline-sync": "^1.4.10",
+        "semver": "^7.5.2",
+        "tar": "^6.2.1"
+    },
+    "homepage": "https://www.iobroker.com",
+    "description": "Updated by reinstall.js on 2018-06-11T15:19:56.688Z",
+    "keywords": [
+        "ioBroker",
+        "Smarthome",
+        "Home Automation",
+        "Smart Metering",
+        "Homematic",
+        "Hue",
+        "KNX",
+        "Z-Wave",
+        "ZigBee",
+        "Bidcos",
+        "TV",
+        "Sonos",
+        "AV Receiver"
+    ],
+    "bugs": {
+        "url": "https://github.com/ioBroker/ioBroker.js-controller/issues"
+    },
+    "licenses": [
+        {
+            "type": "MIT",
+            "url": "https://github.com/ioBroker/ioBroker.js-controller/blob/master/LICENSE"
+        }
+    ],
+    "author": "bluefox <dogafox@gmail.com>",
+    "contributors": [
+        "bluefox <dogafox@gmail.com>",
+        "hobbyquaker <hq@ccu.io>"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/ioBroker/ioBroker.js-controller"
+    },
+    "scripts": {
+        "build": "tsc -b tsconfig.build.json && tsc-alias",
+        "postbuild": "esm2cjs --in build/esm --out build/cjs -l error -t node18 && cpy ./**/*.d.ts ./build/cjs/ --cwd=build/esm/",
+        "preinstall": "node build/esm/lib/preinstallCheck.js",
+        "install": "node iobroker.js setup first",
+        "start": "node iobroker.js start",
+        "stop": "node iobroker.js stop",
+        "restart": "node iobroker.js restart",
+        "release": "release-script",
+        "test": "mocha test --exit",
+        "test-jsonl": "mocha test/jsonl/ --exit",
+        "test-redis-socket": "mocha test/redis-socket/ --exit",
+        "test-redis-sentinel": "mocha test/redis-sentinel/ --exit"
+    },
+    "main": "build/cjs/main.js",
+    "module": "build/esm/main.js",
+    "types": "build/esm/main.d.ts",
+    "exports": {
+        ".": {
+            "import": "./build/esm/main.js",
+            "require": "./build/cjs/main.js",
+            "types": "./build/esm/main.d.ts"
+        },
+        "./package.json": "./package.json",
+        "./io-package.json": "./io-package.json",
+        "./iobroker.js": "./iobroker.js"
+    },
+    "license": "MIT",
+    "files": [
+        "conf/",
+        "build/",
+        "controller.js",
+        "io-package.json",
+        "iobroker.js",
+        "main.js"
+    ]
 }

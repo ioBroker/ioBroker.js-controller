@@ -26,7 +26,7 @@ The buttons which should be shown on the message dialog
 
 #### Defined in
 
-[types-dev/objects.d.ts:549](https://github.com/ioBroker/ioBroker.js-controller/blob/819f1976e/packages/types-dev/objects.d.ts#L549)
+[types-dev/objects.d.ts:557](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/objects.d.ts#L557)
 
 ___
 
@@ -45,7 +45,7 @@ The condition which needs to be met to display the message
 
 #### Defined in
 
-[types-dev/objects.d.ts:551](https://github.com/ioBroker/ioBroker.js-controller/blob/819f1976e/packages/types-dev/objects.d.ts#L551)
+[types-dev/objects.d.ts:559](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/objects.d.ts#L559)
 
 ___
 
@@ -57,7 +57,7 @@ The severity level of the message
 
 #### Defined in
 
-[types-dev/objects.d.ts:547](https://github.com/ioBroker/ioBroker.js-controller/blob/819f1976e/packages/types-dev/objects.d.ts#L547)
+[types-dev/objects.d.ts:555](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/objects.d.ts#L555)
 
 ___
 
@@ -69,7 +69,7 @@ Optional link
 
 #### Defined in
 
-[types-dev/objects.d.ts:543](https://github.com/ioBroker/ioBroker.js-controller/blob/819f1976e/packages/types-dev/objects.d.ts#L543)
+[types-dev/objects.d.ts:551](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/objects.d.ts#L551)
 
 ___
 
@@ -81,7 +81,7 @@ Text of the link
 
 #### Defined in
 
-[types-dev/objects.d.ts:545](https://github.com/ioBroker/ioBroker.js-controller/blob/819f1976e/packages/types-dev/objects.d.ts#L545)
+[types-dev/objects.d.ts:553](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/objects.d.ts#L553)
 
 ___
 
@@ -93,7 +93,7 @@ The message content
 
 #### Defined in
 
-[types-dev/objects.d.ts:541](https://github.com/ioBroker/ioBroker.js-controller/blob/819f1976e/packages/types-dev/objects.d.ts#L541)
+[types-dev/objects.d.ts:549](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/objects.d.ts#L549)
 
 ___
 
@@ -105,4 +105,4 @@ The message title
 
 #### Defined in
 
-[types-dev/objects.d.ts:539](https://github.com/ioBroker/ioBroker.js-controller/blob/819f1976e/packages/types-dev/objects.d.ts#L539)
+[types-dev/objects.d.ts:547](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/objects.d.ts#L547)

@@ -200,7 +200,7 @@ export interface InternalFormatDateOptions {
 }
 
 export interface AliasDetails {
-    source: AliasDetailsSource | null;
+    source?: AliasDetailsSource;
     targets: AliasTargetEntry[];
 }
 
@@ -343,7 +343,7 @@ export interface InternalGetEncryptedConfigOptions {
     callback?: GetEncryptedConfigCallback;
 }
 
-export type TimeoutCallback = (args?: any[]) => void;
+export type TimeoutCallback = (...args: any[]) => void;
 
 export interface InternalSetObjectOptions {
     id: string;
@@ -595,6 +595,6 @@ export interface InstallNodeModuleOptions {
 }
 
 export interface InternalInstallNodeModuleOptions extends InstallNodeModuleOptions {
-    /** Name of the npm module */
-    moduleName: string;
+    /** Name of the npm module or an installable url ẁorking with `npm install` */
+    moduleNameOrUrl: string;
 }

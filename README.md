@@ -21,14 +21,19 @@ The ioBroker.js-controller is the heart of any ioBroker installation. The contro
 - [License](#license)
 
 ## Compatibility
+* js-controller 6.x (Kiera) works with Node.js 18.x, 20.x and probably 22.x
 * js-controller 5.x works with Node.js 16.x, 18.x and probably 20.x
 * js-controller 4.x works with Node.js 12.x, 14.x, 16.x (incl. up to NPM 8) and probably 18.x
 * js-controller 3.x works with Node.js 10.x, 12.x, 14.x and probably 16.x (first tests look good, NPM 7 still has some issues, so NPM6 is best)
 * js-controller 2.x works with Node.js 8.x, 10.x, 12.x and probably 14.x (untested)
 * js-controller 1.x works with Node.js 4.x, 6.x, 8.x and probably 10.x (untested)
 
-Please try to stay current with your Node.js version because the support is limited in time. As of now (April 2023) all Node.js versions below 16.x are no longer supported by Node.js and considered EOL (End Of Life).
-To upgrade your Node.js version and ioBroker, please follow https://forum.iobroker.net/topic/44566/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten-2021-edition !
+Please try to stay current with your Node.js version because the support is limited in time. As of now (May 2024) all Node.js versions below 18.x are no longer supported by Node.js and considered EOL (End Of Life).
+To upgrade your Node.js version and ioBroker, please follow https://forum.iobroker.net/topic/44566/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten-2021-edition!
+
+As it is hard to keep a lot of the decentralized adapters up-to-date, up from controller version 6.0.4 the js-controller will override the `@iobroker/adapter-core` dependency of single adapters to ensure compatibility with the current js-controller version.
+
+* js-controller 6.x (Kiera) specifies this version as `^3.1.6`.
 
 ## Links
 * [Changelog](CHANGELOG.md)
@@ -218,10 +223,19 @@ if (result.success) {
 }
 ```
 
+Instead of specifying a module name you can also specify a URL to e.g. install a package from GitHub.
 To use the installed node module, you can import it:
 
 ```typescript
 const module = await adapter.importNodeModule('axios');
+```
+
+Note, that the behavior mimics the one of [JavaScript's "import" operator](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/import). 
+
+If you are just interested in the `default export`, use the example below.
+
+```typescript
+const module = (await adapter.importNodeModule('axios')).default;
 // now we can call axios specific methods
 const result = await module.get('https://www.iobroker.net/');
 ```
@@ -244,6 +258,13 @@ To list all installed node modules by your adapter:
 const installedNodeModules = await adapter.listInstalledNodeModules();
 
 adapter.log.info(`Installed modules are: ${installedNodeModules.join(', ')}`);
+```
+
+To get the adapter scoped package identifier you can use: 
+
+```typescript
+// e.g. @iobroker-javascript.0/axios
+const packageIdentifier = adapter.getAdapterScopedPackageIdentifier('axios');
 ```
 
 ### Per host `adapter` objects
@@ -1298,6 +1319,6 @@ This new process and rules are introduced with js-controller 2.0 and updated to 
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2023 bluefox <dogafox@gmail.com>,
+Copyright (c) 2014-2024 bluefox <dogafox@gmail.com>,
 
 Copyright (c) 2014      hobbyquaker

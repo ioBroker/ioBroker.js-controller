@@ -5,7 +5,7 @@ import {
     getStatesConstructor,
     objectsDbHasServer,
     statesDbHasServer
-} from '@iobroker/js-controller-common-db';
+} from '@iobroker/js-controller-common';
 import { EXIT_CODES } from '@iobroker/js-controller-common';
 import { tools } from '@iobroker/js-controller-common';
 import { setTimeout as wait } from 'node:timers/promises';

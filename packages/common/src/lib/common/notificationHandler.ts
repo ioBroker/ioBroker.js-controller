@@ -1,11 +1,11 @@
 /**
  * Notification handler class
  *
- *  2021-2023 foxriver76 <moritz.heusinger@gmail.com>
+ *  2021-2024 foxriver76 <moritz.heusinger@gmail.com>
  */
 
 import fs from 'fs-extra';
-import { tools } from '@iobroker/js-controller-common';
+import { tools } from '@iobroker/js-controller-common-db';
 import path from 'node:path';
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
@@ -148,6 +148,7 @@ export class NotificationHandler {
                             it: 'Notifiche',
                             es: 'Notificaciones',
                             pl: 'Powiadomienia',
+                            uk: 'Сповіщення',
                             'zh-cn': '通知事项'
                         }
                     },

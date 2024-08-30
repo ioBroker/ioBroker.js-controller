@@ -1,7 +1,7 @@
 /**
  *      Object DB in memory - Server
  *
- *      Copyright 2013-2023 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *

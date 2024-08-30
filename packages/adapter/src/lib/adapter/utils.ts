@@ -4,8 +4,9 @@ import {
     encrypt,
     decrypt,
     appNameLowerCase,
-    getRootDir
-} from '@iobroker/js-controller-common/tools';
+    getRootDir,
+    execAsync
+} from '@iobroker/js-controller-common-db/tools';
 import { SUPPORTED_FEATURES, type SupportedFeature } from '@/lib/adapter/constants.js';
 import path from 'node:path';
 import fs from 'fs-extra';
@@ -118,10 +119,33 @@ export async function listInstalledNodeModules(namespace: string): Promise<strin
             continue;
         }
 
+        let realDependencyName: string;
         // remove npm: and version after last @
-        const realDependencyName = versionInfo.substring(4, versionInfo.lastIndexOf('@'));
+        if (versionInfo.startsWith('npm:')) {
+            realDependencyName = versionInfo.substring(4, versionInfo.lastIndexOf('@'));
+        } else {
+            realDependencyName = await requestModuleNameByUrl(versionInfo);
+        }
+
         dependencies.push(realDependencyName);
     }
 
     return dependencies;
+}
+
+/**
+ * Request a module name by given url using `npm view`
+ *
+ * @param url the url to the package which should be installed via npm
+ */
+export async function requestModuleNameByUrl(url: string): Promise<string> {
+    const res = await execAsync(`npm view ${url} name`);
+
+    if (typeof res.stdout !== 'string') {
+        throw new Error(
+            `Could not determine module name for url "${url}". Unexpected stdout: "${res.stdout ? res.stdout.toString() : ''}"`
+        );
+    }
+
+    return res.stdout.trim();
 }

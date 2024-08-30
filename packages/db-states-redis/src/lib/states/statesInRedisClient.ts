@@ -1,7 +1,7 @@
 /**
  *      States DB in redis - Client
  *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
  *      Copyright 2013-2014 hobbyquaker
  *
  *      MIT License
@@ -11,7 +11,7 @@
 import Redis from 'ioredis';
 import { tools } from '@iobroker/db-base';
 import { isDeepStrictEqual } from 'node:util';
-import type { InternalLogger } from '@iobroker/js-controller-common/tools';
+import type { InternalLogger } from '@iobroker/js-controller-common-db/tools';
 import type IORedis from 'ioredis';
 import type { DbStatus, ConnectionOptions } from '@iobroker/db-base/inMemFileDB';
 

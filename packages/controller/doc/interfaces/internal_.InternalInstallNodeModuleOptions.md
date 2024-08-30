@@ -14,20 +14,20 @@
 
 ### Properties
 
-- [moduleName](internal_.InternalInstallNodeModuleOptions.md#modulename)
+- [moduleNameOrUrl](internal_.InternalInstallNodeModuleOptions.md#modulenameorurl)
 - [version](internal_.InternalInstallNodeModuleOptions.md#version)
 
 ## Properties
 
-### moduleName
+### moduleNameOrUrl
 
-• **moduleName**: `string`
+• **moduleNameOrUrl**: `string`
 
-Name of the npm module
+Name of the npm module or an installable url ẁorking with `npm install`
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:599](https://github.com/ioBroker/ioBroker.js-controller/blob/819f1976e/packages/adapter/src/lib/_Types.ts#L599)
+[adapter/src/lib/_Types.ts:599](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/adapter/src/lib/_Types.ts#L599)
 
 ___
 
@@ -43,4 +43,4 @@ Version of node module
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:594](https://github.com/ioBroker/ioBroker.js-controller/blob/819f1976e/packages/adapter/src/lib/_Types.ts#L594)
+[adapter/src/lib/_Types.ts:594](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/adapter/src/lib/_Types.ts#L594)

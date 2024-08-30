@@ -81,10 +81,10 @@ export class Upgrade {
 
             while (relevantAdapters.length) {
                 let oneAdapterAdded = false;
-                // create ordered list for upgrades
+                // create an ordered list for upgrades
                 for (let i = relevantAdapters.length - 1; i >= 0; i--) {
                     const relAdapter = relevantAdapters[i];
-                    // if new version has no dependencies we can upgrade
+                    // if a new version has no dependencies, we can upgrade
                     if (!repo[relAdapter].dependencies && !repo[relAdapter].globalDependencies) {
                         // no deps, simply add it
                         sortedAdapters.push(relAdapter);
@@ -101,7 +101,7 @@ export class Upgrade {
                         for (const [depName, version] of Object.entries(allDeps)) {
                             debug(`adapter "${relAdapter}" has dependency "${depName}": "${version}"`);
                             if (version !== '*') {
-                                // dependency is important, because it affects version range
+                                // dependency is important because it affects the version range
                                 if (relevantAdapters.includes(depName)) {
                                     // the dependency is also in the upgrade list and not previously added, we should add the dependency first
                                     debug(`conflict for dependency "${depName}" at adapter "${relAdapter}"`);
@@ -110,7 +110,7 @@ export class Upgrade {
                                 }
                             }
                         }
-                        // we reached here and no conflict so every dep is satisfied
+                        // we reached here and no conflict, so every dep is satisfied
                         if (!conflict) {
                             sortedAdapters.push(relAdapter);
                             relevantAdapters.splice(relevantAdapters.indexOf(relAdapter), 1);
@@ -204,7 +204,7 @@ export class Upgrade {
                         gInstances = objs.rows.filter(obj => obj.value.common && obj.value.common.name === dName);
                     }
                     if (deps[dName] !== undefined) {
-                        // local dep get all instances on same host
+                        // local dependencies: get all instances on the same host
                         locInstances = objs.rows.filter(
                             obj =>
                                 obj.value.common &&
@@ -217,7 +217,7 @@ export class Upgrade {
                     }
 
                     let isFound = false;
-                    // we check, that all instances match - respect different local and global dep versions
+                    // we check that all instances match - respect different local and global dep versions
                     for (const instance of locInstances) {
                         const instanceVersion = instance.value.common.version;
                         try {
@@ -277,9 +277,9 @@ export class Upgrade {
     }
 
     /**
-     * Try to async upgrade adapter from given source with some checks
+     * Try to async upgrade adapter from a given source with some checks
      *
-     * @param repoUrlOrObject url of the selected repository or parsed repo, if undefined use current active repository
+     * @param repoUrlOrObject url of the selected repository or parsed repo, if undefined, use current active repository
      * @param adapter name of the adapter (can also include version like web@3.0.0)
      * @param forceDowngrade flag to force downgrade
      * @param autoConfirm automatically confirm the tty questions (bypass)
@@ -353,7 +353,7 @@ export class Upgrade {
 
         const adapterDir = tools.getAdapterDir(adapter);
 
-        // Read actual description of installed adapter with version
+        // Read the actual description of installed adapter with a version
         if (!adapterDir || (!version && !fs.existsSync(path.join(adapterDir, 'io-package.json')))) {
             return console.log(
                 `Adapter "${adapter}"${
@@ -395,7 +395,7 @@ export class Upgrade {
             const isMajor = semver.major(installedVersion) !== semver.major(targetVersion);
 
             if (autoConfirm || (!tty.isatty(process.stdout.fd) && (!isMajor || !upgradeAll))) {
-                // force flag or script on non major or single adapter upgrade -> always upgrade
+                // force flag or script on non-major or single adapter upgrade -> always upgrade
                 return true;
             }
 
@@ -512,7 +512,7 @@ export class Upgrade {
             return true;
         };
 
-        // If version is included in repository
+        // If a version is included in the repository
         if (repoAdapter.version) {
             if (!forceDowngrade) {
                 try {
@@ -604,7 +604,7 @@ export class Upgrade {
                     } is up to date.`
                 );
             } else {
-                // Get the adapter from web site
+                // Get the adapter from website
                 const targetVersion = version || ioPack.common.version;
 
                 const isIgnored = await isVersionIgnored({

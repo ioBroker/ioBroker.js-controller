@@ -1,7 +1,7 @@
 /**
  *      List different objects for CLI
  *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -58,6 +58,17 @@ export type ListType =
     | 'e'
     | 'files'
     | 'f';
+
+interface AdapterListEntry {
+    /** The object id */
+    id: string;
+    /** Adapter name */
+    name: string;
+    /** Version of adapter */
+    version: string;
+    /** The configured upgrade policy */
+    'upgrade policy': ioBroker.AutoUpgradePolicy;
+}
 
 export class List {
     private config: Record<string, any>;
@@ -388,10 +399,12 @@ export class List {
                                 return;
                             }
                             const reg = filter ? new RegExp(tools.pattern2RegEx('system.adapter.' + filter)) : null;
+                            const adapterList: AdapterListEntry[] = [];
                             for (const obj of objs.rows) {
                                 if (obj.value.type !== 'adapter') {
                                     continue;
                                 }
+
                                 if (
                                     !reg ||
                                     reg.test(obj.value._id) ||
@@ -403,11 +416,16 @@ export class List {
                                         name = name[lang] || name.en;
                                     }
 
-                                    const text = `${id.padEnd(39)}: ${name.padEnd(14)} - v${obj.value.common.version}`;
-
-                                    console.log(text);
+                                    adapterList.push({
+                                        id,
+                                        name,
+                                        version: obj.value.common.version,
+                                        'upgrade policy': obj.value.common.automaticUpgrade ?? 'none'
+                                    });
                                 }
                             }
+
+                            console.table(adapterList);
                             this.processExit();
                         }
                     );

@@ -1,7 +1,7 @@
 /**
  *      Object DB in memory - Server
  *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -12,7 +12,7 @@ import { JsonlDB } from '@alcalzone/jsonl-db';
 import path from 'node:path';
 import fs from 'node:fs';
 import os from 'node:os';
-import { tools } from '@iobroker/js-controller-common';
+import { tools } from '@iobroker/js-controller-common-db';
 
 /**
  * Normalizes options for the JsonlDB

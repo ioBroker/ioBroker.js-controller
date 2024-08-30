@@ -4,7 +4,7 @@ import {
     SYSTEM_ADAPTER_PREFIX,
     SYSTEM_CONFIG_ID,
     SYSTEM_REPOSITORIES_ID
-} from '@iobroker/js-controller-common/constants';
+} from '@iobroker/js-controller-common-db/constants';
 import semver from 'semver';
 
 interface BlocklistManagerOptions {
@@ -109,6 +109,10 @@ export class BlocklistManager {
         const { adapterName, version, systemRepoObj, systemConfigObj } = options;
 
         for (const activeRepoName of systemConfigObj.common.activeRepo) {
+            if (!(activeRepoName in systemRepoObj.native.repositories)) {
+                return false;
+            }
+
             const repo = systemRepoObj.native.repositories[activeRepoName];
             const adapterEntry = repo.json?.[adapterName];
 

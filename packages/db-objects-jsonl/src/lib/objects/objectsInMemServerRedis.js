@@ -1,7 +1,7 @@
 /**
  *      Objects DB in memory - Server with Redis protocol
  *
- *      Copyright 2013-2022 bluefox <dogafox@gmail.com>
+ *      Copyright 2013-2024 bluefox <dogafox@gmail.com>
  *
  *      MIT License
  *
@@ -13,11 +13,11 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { objectsUtils as utils } from '@iobroker/db-objects-redis';
 import { tools } from '@iobroker/db-base';
-import { getLocalAddress } from '@iobroker/js-controller-common/tools';
+import { getLocalAddress } from '@iobroker/js-controller-common-db/tools';
 
 import { RedisHandler } from '@iobroker/db-base';
 import { ObjectsInMemoryJsonlDB } from './objectsInMemJsonlDB.js';
-import { EXIT_CODES } from '@iobroker/js-controller-common';
+import { EXIT_CODES } from '@iobroker/js-controller-common-db';
 
 // settings = {
 //    change:    function (id, state) {},
@@ -52,8 +52,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
     constructor(settings) {
         super(settings);
 
-        /** @type {Map<string, SubscriptionClient>} */
-        this.serverConnections = new Map();
+        this.serverConnections = {};
         this.namespaceObjects =
             (this.settings.redisNamespace || (settings.connection && settings.connection.redisNamespace) || 'cfg') +
             '.';
@@ -62,6 +61,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         this.namespaceSet = this.namespaceObjects + 's.';
         this.namespaceSetLen = this.namespaceSet.length;
 
+        // this.namespaceObjectsLen   = this.namespaceObjects.length;
         this.namespaceFileLen = this.namespaceFile.length;
         this.namespaceObjLen = this.namespaceObj.length;
         this.namespaceMeta = `${this.settings.namespaceMeta || 'meta'}.`;
@@ -163,59 +163,43 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
     }
 
     /**
-     * Publish a subscribed value to one of the redis connection by pattern in redis format
-     *
-     * @param patternInformation all redis handler for given pattern and pattern itself
-     * @param type Type of subscribed key
-     * @param id Subscribed ID
-     * @param obj Object to publish
-     * @returns Publish counter
-     */
-    publishPattern(patternInformation, type, id, obj) {
-        let publishCount = 0;
-
-        if (!patternInformation.regex.test(id)) {
-            return publishCount;
-        }
-
-        for (const client of patternInformation.clients) {
-            publishCount += this.publishToClient(client, type, id, obj);
-        }
-
-        return publishCount;
-    }
-
-    /**
      * Publish a subscribed value to one of the redis connections in redis format
-     * @param clientOptions Instance of RedisHandler and pattern
+     * @param client Instance of RedisHandler
      * @param type Type of subscribed key
      * @param id Subscribed ID
      * @param obj Object to publish
-     * @returns Publish counter 0 or 1 depending on if send out or not
+     * @returns {number} Publish counter 0 or 1 depending on if send out or not
      */
-    publishToClient(clientOptions, type, id, obj) {
-        const { client, pattern } = clientOptions;
-
-        if (type === 'meta') {
-            this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${obj}`);
-            const sendPattern = this.namespaceMeta + pattern;
-            const sendId = this.namespaceMeta + id;
-            client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
-        } else if (type === 'files') {
-            const objString = JSON.stringify(obj);
-            this.log.silly(`${this.namespace} Redis Publish File ${id}=${objString}`);
-            const sendPattern = this.namespaceFile + pattern;
-            const sendId = this.namespaceFile + id;
-            client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
-        } else {
-            const objString = JSON.stringify(obj);
-            this.log.silly(`${this.namespace} Redis Publish Object ${id}=${objString}`);
-            const sendPattern = (type === 'objects' ? '' : this.namespaceObjects) + pattern;
-            const sendId = (type === 'objects' ? this.namespaceObj : this.namespaceObjects) + id;
-            client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
+    publishToClients(client, type, id, obj) {
+        if (!client._subscribe || !client._subscribe[type]) {
+            return 0;
         }
+        const s = client._subscribe[type];
 
-        return 1;
+        const found = s.find(sub => sub.regex.test(id));
+
+        if (found) {
+            if (type === 'meta') {
+                this.log.silly(`${this.namespace} Redis Publish Meta ${id}=${obj}`);
+                const sendPattern = this.namespaceMeta + found.pattern;
+                const sendId = this.namespaceMeta + id;
+                client.sendArray(null, ['pmessage', sendPattern, sendId, obj]);
+            } else if (type === 'files') {
+                const objString = JSON.stringify(obj);
+                this.log.silly(`${this.namespace} Redis Publish File ${id}=${objString}`);
+                const sendPattern = this.namespaceFile + found.pattern;
+                const sendId = this.namespaceFile + id;
+                client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
+            } else {
+                const objString = JSON.stringify(obj);
+                this.log.silly(`${this.namespace} Redis Publish Object ${id}=${objString}`);
+                const sendPattern = (type === 'objects' ? '' : this.namespaceObjects) + found.pattern;
+                const sendId = (type === 'objects' ? this.namespaceObj : this.namespaceObjects) + id;
+                client.sendArray(null, ['pmessage', sendPattern, sendId, objString]);
+            }
+            return 1;
+        }
+        return 0;
     }
 
     /**
@@ -877,10 +861,10 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
      */
     async destroy() {
         if (this.server) {
-            for (const [connName, connection] of this.serverConnections) {
-                connection.close();
-                this.serverConnections.delete(connName);
-            }
+            Object.keys(this.serverConnections).forEach(s => {
+                this.serverConnections[s].close();
+                delete this.serverConnections[s];
+            });
 
             await new Promise(resolve => {
                 if (!this.server) {
@@ -998,10 +982,10 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryJsonlDB {
         const handler = new RedisHandler(socket, options);
         this._socketEvents(handler);
 
-        this.serverConnections.set(`${socket.remoteAddress}:${socket.remotePort}`, handler);
+        this.serverConnections[socket.remoteAddress + ':' + socket.remotePort] = handler;
         socket.on('close', () => {
-            if (this.serverConnections.has(`${socket.remoteAddress}:${socket.remotePort}`)) {
-                this.serverConnections.delete(`${socket.remoteAddress}:${socket.remotePort}`);
+            if (this.serverConnections[socket.remoteAddress + ':' + socket.remotePort]) {
+                delete this.serverConnections[socket.remoteAddress + ':' + socket.remotePort];
             }
         });
     }
