@@ -18,7 +18,7 @@ export type TaskObject = ioBroker.SettableObject & { state?: ioBroker.SettableSt
 /**
  * Get all ioBroker objects which should be created in the `system.host.<hostname>` scope
  *
- * @param options
+ * @param options information about hostname, compact controller, the base ID and the config
  */
 export function getHostObjects(options: GetHostOptions): TaskObject[] {
     const { id, hostname, isCompactGroupController, config } = options;
