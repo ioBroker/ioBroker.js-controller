@@ -1,5 +1,6 @@
 import fs from 'fs-extra';
 import { DEFAULT_DISK_WARNING_LEVEL } from '@/lib/utils.js';
+import { tools } from '@iobroker/js-controller-common-db';
 
 interface GetHostOptions {
     /** The host base id */
@@ -14,6 +15,11 @@ interface GetHostOptions {
 
 export type TaskObject = ioBroker.SettableObject & { state?: ioBroker.SettableState };
 
+/**
+ * Get all ioBroker objects which should be created in the `system.host.<hostname>` scope
+ *
+ * @param options
+ */
 export function getHostObjects(options: GetHostOptions): TaskObject[] {
     const { id, hostname, isCompactGroupController, config } = options;
 
@@ -391,6 +397,22 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
                 def: DEFAULT_DISK_WARNING_LEVEL,
                 role: 'level',
                 unit: '%'
+            },
+            native: {}
+        });
+    }
+
+    if (tools.getDockerInformation().isOfficial) {
+        objs.push({
+            _id: `${id}.availableDockerVersion`,
+            type: 'state',
+            common: {
+                name: 'The available docker version at DockerHub',
+                desc: 'The newest version of the ioBroker image found on DockerHub',
+                type: 'string',
+                read: true,
+                write: false,
+                role: 'text'
             },
             native: {}
         });

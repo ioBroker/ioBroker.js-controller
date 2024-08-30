@@ -6,6 +6,7 @@
 
 ## __WORK IN PROGRESS__
 * (@foxriver76) enhanced translations for the `diskSpaceIssues` notification category
+* (@foxriver76) added notification if new image is available on Docker Hub (for official docker systems)
 
 ## 6.0.11 (2024-08-21) - Kiera
 * (@foxriver76) only generate `packageUpdates` notification, if new updates detected

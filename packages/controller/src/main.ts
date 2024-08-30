@@ -2188,6 +2188,12 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 requestedRepoUpdates = [];
 
                 try {
+                    await checkAvailableDockerUpdate();
+                } catch (e) {
+                    logger.warn(`${hostLogPrefix} Could not check for new Docker image: ${e.message}`);
+                }
+
+                try {
                     await listUpdatableOsPackages();
                 } catch (e) {
                     logger.warn(`${hostLogPrefix} Could not check for new OS updates: ${e.message}`);
@@ -5708,6 +5714,33 @@ async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promis
         outputCount++;
         await states!.setState(adapterInstance, { val: false, ack: true, from: hostObjectPrefix });
     }
+}
+
+/**
+ * Check if a new Docker Image version is available
+ */
+async function checkAvailableDockerUpdate(): Promise<void> {
+    const dockerInfo = tools.getDockerInformation();
+
+    if (!dockerInfo.isOfficial || !states) {
+        return;
+    }
+
+    const newestVersion = await tools.getNewestDockerImageVersion();
+
+    if (semver.lte(newestVersion, dockerInfo.officialVersion)) {
+        return;
+    }
+
+    const dockerVersionStateId = `${hostObjectPrefix}.availableDockerVersion`;
+    const knownVersion = (await states.getState(dockerVersionStateId))?.val;
+    await states.setState(dockerVersionStateId, { val: newestVersion, ack: true });
+
+    if (knownVersion === newestVersion) {
+        return;
+    }
+
+    await notificationHandler.addMessage('system', 'dockerUpdate', newestVersion, `system.host.${hostname}`);
 }
 
 /**

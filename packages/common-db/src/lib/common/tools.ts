@@ -102,6 +102,21 @@ interface FormatAliasValueOptions {
     targetId?: string;
 }
 
+/**
+ * Response from DOCKER_INFO_URL
+ */
+interface DockerHubResponse {
+    /** Results, filtered to one entry */
+    results: [
+        {
+            /** Contains the version like v1.5.3 */
+            name: string;
+            [other: string]: unknown;
+        }
+    ];
+    [other: string]: unknown;
+}
+
 export enum ERRORS {
     ERROR_NOT_FOUND = 'Not exists',
     ERROR_EMPTY_OBJECT = 'null object',
@@ -117,6 +132,8 @@ const randomID = Math.round(Math.random() * 10_000_000_000_000); // Used for cre
 const VENDOR_FILE = '/etc/iob-vendor.json';
 /** This file contains the version string in an official docker image */
 const OFFICIAL_DOCKER_FILE = '/opt/scripts/.docker_config/.thisisdocker';
+/** URL to fetch information of the latest docker image */
+const DOCKER_INFO_URL = 'https://hub.docker.com/v2/namespaces/iobroker/repositories/iobroker/tags?page_size=1';
 /** Version of official Docker image which started to support UI upgrade */
 const DOCKER_VERSION_UI_UPGRADE = '8.1.0';
 
@@ -424,6 +441,15 @@ function getMac(callback: (e?: Error | null, mac?: string) => void): void {
             }
         }
     });
+}
+
+/**
+ * Fetch the version of the newest available docker image from DockerHub
+ */
+export async function getNewestDockerImageVersion(): Promise<string> {
+    const res = await axios.get<DockerHubResponse>(DOCKER_INFO_URL);
+
+    return res.data.results[0].name;
 }
 
 /**
