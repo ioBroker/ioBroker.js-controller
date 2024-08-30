@@ -4,9 +4,7 @@
 	## **WORK IN PROGRESS**
 -->
 ## **WORK IN PROGRESS**
-* (bluefox) Added the link button in notifications
-
-## __WORK IN PROGRESS__
+* (bluefox) Added support for dynamic notification layout (in Admin)
 * (@foxriver76) enhanced translations for the `diskSpaceIssues` notification category
 
 ## 6.0.11 (2024-08-21) - Kiera

@@ -7589,9 +7589,9 @@ export class AdapterClass extends EventEmitter {
     registerNotification<Scope extends keyof ioBroker.NotificationScopes>(
         scope: Scope,
         category: ioBroker.NotificationScopes[Scope] | null,
-        /** Message for messangers */
+        /** Static message (e.g. for messengers) */
         message: string,
-        /** Message to be shown in admin */
+        /** Dynamic message to be shown in admin. This object will be sent to instance to build the schema for dynamic layout (without `offlineMessage`) */
         actionData?: ioBroker.NotificationAction
     ): Promise<void>;
 

@@ -205,10 +205,7 @@ export class NotificationHandler {
      *
      * @param notifications Array with notifications
      */
-    async addConfig(
-        /** Array with notifications */
-        notifications: NotificationsConfigEntry[]
-    ): Promise<void> {
+    async addConfig(notifications: NotificationsConfigEntry[]): Promise<void> {
         // if valid attributes, store it
         if (Array.isArray(notifications)) {
             for (const scopeObj of notifications) {
