@@ -4839,7 +4839,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    subscribeForeignFiles(id: string, pattern: string | string[], options?: unknown): void;
+    subscribeForeignFiles(id: string, pattern: string | string[], options?: unknown): Promise<void>;
 
     /**
      * Subscribe for the changes of files in specific instance.
@@ -4867,7 +4867,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    unsubscribeForeignFiles(id: string, pattern: string | string[], options?: unknown): void;
+    unsubscribeForeignFiles(id: string, pattern: string | string[], options?: unknown): Promise<void>;
 
     /**
      * Unsubscribe for the changes of files on specific instance.
