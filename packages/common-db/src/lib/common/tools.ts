@@ -423,37 +423,44 @@ function findPath(path: string, url: string): string {
     }
 }
 
-function getMac(callback: (e?: Error | null, mac?: string) => void): void {
+/**
+ * Get MAC address of this host
+ */
+async function getMac(): Promise<string> {
     const macRegex = /(?:[a-z0-9]{2}[:-]){5}[a-z0-9]{2}/gi;
     const zeroRegex = /(?:[0]{2}[:-]){5}[0]{2}/;
     const command = process.platform.indexOf('win') === 0 ? 'getmac' : 'ifconfig || ip link';
 
-    exec(command, { windowsHide: true }, (err, stdout, _stderr) => {
-        if (err) {
-            callback(err);
-        } else {
-            let macAddress;
-            let match;
-            let result = null;
+    const { stdout, stderr } = await execAsync(command);
 
-            while (true) {
-                match = macRegex.exec(stdout);
-                if (!match) {
-                    break;
-                }
-                macAddress = match[0];
-                if (!zeroRegex.test(macAddress) && !result) {
-                    result = macAddress;
-                }
-            }
+    if (typeof stderr === 'string') {
+        throw new Error(stderr);
+    }
 
-            if (result === null) {
-                callback(new Error(`could not determine the mac address from:\n${stdout}`));
-            } else {
-                callback(null, result.replace(/-/g, ':').toLowerCase());
-            }
+    if (typeof stdout !== 'string') {
+        throw new Error(`Unexpected stdout: ${stdout?.toString()}`);
+    }
+
+    let macAddress;
+    let match;
+    let result = null;
+
+    while (true) {
+        match = macRegex.exec(stdout);
+        if (!match) {
+            break;
         }
-    });
+        macAddress = match[0];
+        if (!zeroRegex.test(macAddress) && !result) {
+            result = macAddress;
+        }
+    }
+
+    if (result === null) {
+        throw new Error(`Could not determine the mac address from:\n${stdout}`);
+    }
+
+    return result.replace(/-/g, ':').toLowerCase();
 }
 
 /**
@@ -536,19 +543,18 @@ export function isDocker(): boolean {
     }
 }
 
-// Build unique uuid based on MAC address if possible
-function uuid(givenMac: string | null, callback: (uuid: string) => void): void {
-    if (typeof givenMac === 'function') {
-        callback = givenMac;
-        givenMac = '';
-    }
-
+/**
+ * Build unique uuid based on MAC address if possible
+ *
+ * @param givenMac the given MAC address
+ */
+async function uuid(givenMac?: string): Promise<string> {
+    givenMac = givenMac ?? '';
     const _isDocker = isDocker();
 
     // return constant UUID for all CI environments to keep the statistics clean
-
     if (require('ci-info').isCI) {
-        return callback('55travis-pipe-line-cior-githubaction');
+        return '55travis-pipe-line-cior-githubaction';
     }
 
     let mac = givenMac !== null ? givenMac || '' : null;
@@ -575,23 +581,15 @@ function uuid(givenMac: string | null, callback: (uuid: string) => void): void {
     }
 
     if (!_isDocker && mac === '') {
-        return getMac((_err, mac) => uuid(mac || null, callback));
+        const mac = await getMac();
+        return uuid(mac);
     }
 
     if (!_isDocker && mac) {
         const md5sum = crypto.createHash('md5');
         md5sum.update(mac);
         mac = md5sum.digest('hex');
-        u =
-            mac.substring(0, 8) +
-            '-' +
-            mac.substring(8, 12) +
-            '-' +
-            mac.substring(12, 16) +
-            '-' +
-            mac.substring(16, 20) +
-            '-' +
-            mac.substring(20);
+        u = `${mac.substring(0, 8)}-${mac.substring(8, 12)}-${mac.substring(12, 16)}-${mac.substring(16, 20)}-${mac.substring(20)}`;
     } else {
         // Returns a RFC4122 compliant v4 UUID https://gist.github.com/LeverOne/1308368 (DO WTF YOU WANT TO PUBLIC LICENSE)
         let a: any;
@@ -603,55 +601,56 @@ function uuid(givenMac: string | null, callback: (uuid: string) => void): void {
         u = b;
     }
 
-    callback(u);
+    return u;
 }
 
-function updateUuid(newUuid: string, _objects: any, callback: (uuid?: string) => void): void {
-    uuid('', async _uuid => {
-        _uuid = newUuid || _uuid;
-        // Add vendor prefix to UUID
-        if (fs.existsSync(VENDOR_FILE)) {
-            try {
-                const vendor = await fs.readJSON(VENDOR_FILE);
-                if (vendor.vendor?.uuidPrefix?.length === 2 && !_uuid.startsWith(vendor.vendor.uuidPrefix)) {
-                    _uuid = vendor.vendor.uuidPrefix + _uuid;
-                }
-            } catch {
-                console.error(`Cannot parse ${VENDOR_FILE}`);
+/**
+ * Update the installation UUID
+ *
+ * @param newUuid the new UUID to set
+ * @param _objects the objects DB instance
+ */
+async function updateUuid(newUuid: string, _objects: any): Promise<string> {
+    let _uuid = await uuid('');
+    _uuid = newUuid || _uuid;
+    // Add vendor prefix to UUID
+    if (fs.existsSync(VENDOR_FILE)) {
+        try {
+            const vendor = await fs.readJSON(VENDOR_FILE);
+            if (vendor.vendor?.uuidPrefix?.length === 2 && !_uuid.startsWith(vendor.vendor.uuidPrefix)) {
+                _uuid = vendor.vendor.uuidPrefix + _uuid;
             }
+        } catch {
+            console.error(`Cannot parse ${VENDOR_FILE}`);
         }
+    }
 
-        _objects.setObject(
-            'system.meta.uuid',
-            {
-                type: 'meta',
-                common: {
-                    name: 'uuid',
-                    type: 'uuid'
-                },
-                ts: new Date().getTime(),
-                from: `system.host.${getHostName()}.tools`,
-                native: {
-                    uuid: _uuid
-                }
+    try {
+        await _objects.setObject('system.meta.uuid', {
+            type: 'meta',
+            common: {
+                name: 'uuid',
+                type: 'uuid'
             },
-            (err: Error | null) => {
-                if (err) {
-                    console.error(`object system.meta.uuid cannot be updated: ${err.message}`);
-                    callback();
-                } else {
-                    _objects.getObject('system.meta.uuid', (err: Error | null, obj: ioBroker.Object) => {
-                        if (obj.native.uuid !== _uuid) {
-                            console.error('object system.meta.uuid cannot be updated: write protected');
-                        } else {
-                            console.log(`object system.meta.uuid created: ${_uuid}`);
-                        }
-                        callback(_uuid);
-                    });
-                }
+            ts: new Date().getTime(),
+            from: `system.host.${getHostName()}.tools`,
+            native: {
+                uuid: _uuid
             }
-        );
-    });
+        });
+    } catch (e) {
+        throw new Error(`Object system.meta.uuid cannot be updated: ${e.message}`);
+    }
+
+    const obj: ioBroker.Object = await _objects.getObject('system.meta.uuid');
+
+    if (obj.native.uuid !== _uuid) {
+        console.error('object system.meta.uuid cannot be updated: write protected');
+    } else {
+        console.log(`object system.meta.uuid created: ${_uuid}`);
+    }
+
+    return _uuid;
 }
 
 /**
@@ -661,101 +660,90 @@ function updateUuid(newUuid: string, _objects: any, callback: (uuid?: string) =>
  * @returns uuid if successfully created/updated
  */
 export async function createUuid(objects: any): Promise<void | string> {
-    const promiseCheckPassword = new Promise<void>(resolve =>
-        objects.getObject('system.user.admin', (err: Error | null, obj: ioBroker.UserObject) => {
-            if (err || !obj) {
-                // Default Password for user 'admin' is application name in lower case
-                password(appName).hash(null, null, (err, res) => {
-                    err && console.error(err);
+    const userObj: ioBroker.UserObject = await objects.getObject('system.user.admin');
+    if (!userObj) {
+        await new Promise<void>(resolve => {
+            // Default Password for user 'admin' is application name in lower case
+            password(appName).hash(null, null, async (err, res) => {
+                err && console.error(err);
 
-                    // Create user here and not in io-package.js because of hash password
-                    objects.setObject(
-                        'system.user.admin',
-                        {
-                            type: 'user',
-                            common: {
-                                name: 'admin',
-                                password: res,
-                                dontDelete: true,
-                                enabled: true
-                            },
-                            ts: new Date().getTime(),
-                            from: `system.host.${getHostName()}.tools`,
-                            native: {}
-                        },
-                        () => {
-                            console.log('object system.user.admin created');
-                            resolve();
-                        }
-                    );
+                // Create user here and not in io-package.js because of hash password
+                await objects.setObject('system.user.admin', {
+                    type: 'user',
+                    common: {
+                        name: 'admin',
+                        password: res,
+                        dontDelete: true,
+                        enabled: true
+                    },
+                    ts: new Date().getTime(),
+                    from: `system.host.${getHostName()}.tools`,
+                    native: {}
                 });
-            } else {
+
+                console.log('object system.user.admin created');
                 resolve();
-            }
-        })
-    );
-    const promiseCheckUuid = new Promise<void | string>(resolve =>
-        objects.getObject('system.meta.uuid', (err: Error | null, obj: ioBroker.Object) => {
-            if (!err && obj?.native?.uuid) {
-                const PROBLEM_UUIDS = [
-                    'ab265f4a-67f9-a46a-c0b2-61e4b95cefe5',
-                    '7abd3182-d399-f7bd-da19-9550d8babede',
-                    'deb6f2a8-fe69-5491-0a50-a9f9b8f3419c',
-                    'ec66c85e-fc36-f6f9-f1c9-f5a2882d23c7',
-                    'e6203b03-f5f4-253a-e4f6-b295fc543ab7',
-                    'd659fa3d-7ef9-202a-ea23-acd0aff67b24'
-                ];
+            });
+        });
+    }
 
-                // if COMMON invalid docker uuid
-                if (PROBLEM_UUIDS.includes(obj.native.uuid)) {
-                    // Read vis license
-                    objects.getObject('system.adapter.vis.0', (err: Error | null, licObj: ioBroker.Object) => {
-                        if (!licObj || !licObj.native || !licObj.native.license) {
-                            // generate new UUID
-                            updateUuid('', objects, _uuid => resolve(_uuid));
-                        } else {
-                            // decode obj.native.license
-                            let data;
-                            try {
-                                data = jwt.decode(licObj.native.license);
-                            } catch {
-                                data = null;
-                            }
+    const obj: ioBroker.Object = await objects.getObject('system.meta.uuid');
+    if (!obj?.native?.uuid) {
+        // generate new UUID
+        return updateUuid('', objects);
+    }
 
-                            if (!data || typeof data === 'string' || !data.uuid) {
-                                // generate new UUID
-                                updateUuid('', objects, __uuid => resolve(__uuid));
-                            } else {
-                                if (data.uuid !== obj.native.uuid) {
-                                    updateUuid(data.correct ? data.uuid : '', objects, _uuid => resolve(_uuid));
-                                } else {
-                                    // Show error
-                                    console.warn(
-                                        `Your iobroker.vis license must be updated. Please contact info@iobroker.net to get a new license!`
-                                    );
-                                    console.warn(
-                                        `Provide following information in email: ${data.email}, invoice: ${data.invoice}`
-                                    );
-                                    resolve();
-                                }
-                            }
-                        }
-                    });
-                } else {
-                    resolve();
-                }
+    const PROBLEM_UUIDS = [
+        'ab265f4a-67f9-a46a-c0b2-61e4b95cefe5',
+        '7abd3182-d399-f7bd-da19-9550d8babede',
+        'deb6f2a8-fe69-5491-0a50-a9f9b8f3419c',
+        'ec66c85e-fc36-f6f9-f1c9-f5a2882d23c7',
+        'e6203b03-f5f4-253a-e4f6-b295fc543ab7',
+        'd659fa3d-7ef9-202a-ea23-acd0aff67b24'
+    ];
+
+    // check if COMMON invalid docker uuid
+    if (!PROBLEM_UUIDS.includes(obj.native.uuid)) {
+        return;
+    }
+
+    // Read vis license
+    const licObj: ioBroker.Object = objects.getObject('system.adapter.vis.0');
+    if (!licObj || !licObj.native || !licObj.native.license) {
+        return updateUuid('', objects);
+    } else {
+        // decode obj.native.license
+        let data;
+        try {
+            data = jwt.decode(licObj.native.license);
+        } catch {
+            data = null;
+        }
+
+        if (!data || typeof data === 'string' || !data.uuid) {
+            // generate new UUID
+            return updateUuid('', objects);
+        } else {
+            if (data.uuid !== obj.native.uuid) {
+                return updateUuid(data.correct ? data.uuid : '', objects);
             } else {
-                // generate new UUID
-                updateUuid('', objects, _uuid => resolve(_uuid));
+                // Show error
+                console.warn(
+                    `Your iobroker.vis license must be updated. Please contact info@iobroker.net to get a new license!`
+                );
+                console.warn(`Provide following information in email: ${data.email}, invoice: ${data.invoice}`);
             }
-        })
-    );
-
-    const result = await Promise.all([promiseCheckPassword, promiseCheckUuid]);
-    return result[1];
+        }
+    }
 }
 
-// Download file to tmp or return file name directly
+/**
+ * Download file to tmp or return file name directly
+ *
+ * @param urlOrPath
+ * @param fileName
+ * @param callback
+ */
 export async function getFile(urlOrPath: string, fileName: string, callback: (file?: string) => void): Promise<void> {
     // If object was read
     if (
