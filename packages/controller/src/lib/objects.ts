@@ -404,15 +404,15 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
 
     if (tools.getDockerInformation().isOfficial) {
         objs.push({
-            _id: `${id}.availableDockerVersion`,
+            _id: `${id}.availableDockerBuild`,
             type: 'state',
             common: {
-                name: 'The available docker version at DockerHub',
-                desc: 'The newest version of the ioBroker image found on DockerHub',
+                name: 'Last update of the Docker Image',
+                desc: 'The timestamp of the last update of the Docker Image',
                 type: 'string',
                 read: true,
                 write: false,
-                role: 'text'
+                role: 'date'
             },
             native: {}
         });

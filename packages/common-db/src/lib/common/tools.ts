@@ -111,10 +111,21 @@ interface DockerHubResponse {
         {
             /** Contains the version like v1.5.3 */
             name: string;
+            /** Timestamp of last update of this image, like 2024-08-29T01:26:32.378554Z */
+            last_updated: string;
             [other: string]: unknown;
         }
     ];
     [other: string]: unknown;
+}
+
+export interface DockerImageInformation {
+    /** The official version like v10.0.0 */
+    version: string;
+    /** Time of last image update */
+    lastUpdated: string;
+    /** If the version is newer than the one currently running */
+    isNew: boolean;
 }
 
 export enum ERRORS {
@@ -134,6 +145,8 @@ const VENDOR_FILE = '/etc/iob-vendor.json';
 const OFFICIAL_DOCKER_FILE = '/opt/scripts/.docker_config/.thisisdocker';
 /** URL to fetch information of the latest docker image */
 const DOCKER_INFO_URL = 'https://hub.docker.com/v2/namespaces/iobroker/repositories/iobroker/tags?page_size=1';
+/** Time the image approx. needs to be built and published to DockerHub */
+const DOCKER_HUB_BUILD_TIME_MS = 6 * 60 * 60 * 1_000;
 /** Version of official Docker image which started to support UI upgrade */
 const DOCKER_VERSION_UI_UPGRADE = '8.1.0';
 
@@ -444,12 +457,17 @@ function getMac(callback: (e?: Error | null, mac?: string) => void): void {
 }
 
 /**
- * Fetch the version of the newest available docker image from DockerHub
+ * Fetch the image information of the newest available (official) ioBroker Docker image from DockerHub
  */
-export async function getNewestDockerImageVersion(): Promise<string> {
+export async function getNewestDockerImageVersion(): Promise<DockerImageInformation> {
     const res = await axios.get<DockerHubResponse>(DOCKER_INFO_URL);
 
-    return res.data.results[0].name;
+    const dockerResult = res.data.results[0];
+    const isNew =
+        new Date(dockerResult.last_updated).getTime() >
+        new Date(process.env.BUILD).getTime() + DOCKER_HUB_BUILD_TIME_MS;
+
+    return { version: dockerResult.name, lastUpdated: dockerResult.last_updated, isNew };
 }
 
 /**
@@ -1610,10 +1628,10 @@ export function getAdapterDir(adapter: string): string | null {
  * Returns the hostname of this host
  */
 export function getHostName(): string {
-    // for tests purposes
     if (process.env.IOB_HOSTNAME) {
         return process.env.IOB_HOSTNAME;
     }
+
     try {
         const configName = getConfigFileName();
         const config = fs.readJSONSync(configName);

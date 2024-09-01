@@ -5726,21 +5726,26 @@ async function checkAvailableDockerUpdate(): Promise<void> {
         return;
     }
 
-    const newestVersion = await tools.getNewestDockerImageVersion();
+    const { isNew, lastUpdated, version } = await tools.getNewestDockerImageVersion();
 
-    if (semver.lte(newestVersion, dockerInfo.officialVersion)) {
+    if (!isNew) {
         return;
     }
 
-    const dockerVersionStateId = `${hostObjectPrefix}.availableDockerVersion`;
-    const knownVersion = (await states.getState(dockerVersionStateId))?.val;
-    await states.setState(dockerVersionStateId, { val: newestVersion, ack: true });
+    const dockerVersionStateId = `${hostObjectPrefix}.availableDockerBuild`;
+    const knownLastUpdated = (await states.getState(dockerVersionStateId))?.val;
+    await states.setState(dockerVersionStateId, { val: lastUpdated, ack: true });
 
-    if (knownVersion === newestVersion) {
+    if (knownLastUpdated === lastUpdated) {
         return;
     }
 
-    await notificationHandler.addMessage('system', 'dockerUpdate', newestVersion, `system.host.${hostname}`);
+    await notificationHandler.addMessage(
+        'system',
+        'dockerUpdate',
+        `${version} (${lastUpdated})`,
+        `system.host.${hostname}`
+    );
 }
 
 /**
