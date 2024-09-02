@@ -137,8 +137,8 @@ interface RepoRequester {
     callback: ioBroker.MessageCallbackInfo;
 }
 
-/** Return type of `getVersionFromHost` */
-type GetVersionFromHostObject = ioBroker.HostCommon & { host: string; runningVersion: string };
+/** Host information including host id and running version */
+type HostInformation = ioBroker.HostCommon & { host: string; runningVersion: string };
 
 const VIS_ADAPTERS = ['vis', 'vis-2'] as const;
 const ioPackage = fs.readJSONSync(path.join(tools.getControllerDir(), 'io-package.json'));
@@ -1897,9 +1897,7 @@ async function sendTo(
  *
  * @param hostId host to get the version information from
  */
-async function getVersionFromHost(
-    hostId: ioBroker.ObjectIDs.Host
-): Promise<GetVersionFromHostObject | null | undefined> {
+async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host): Promise<HostInformation | null> {
     const state = await states!.getState(`${hostId}.alive`);
     if (state?.val) {
         return new Promise(resolve => {
@@ -1913,7 +1911,8 @@ async function getVersionFromHost(
                 if (timeout) {
                     clearTimeout(timeout);
                     timeout = null;
-                    resolve(ioPack as unknown as GetVersionFromHostObject);
+                    // @ts-expect-error sendTo needs to be fixed, because in some cases there is no error and return value is in first arg
+                    resolve(ioPack);
                 }
             });
         });
@@ -2225,7 +2224,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 });
 
                 const installedInfo = tools.getInstalledInfo();
-                const hosts: Record<string, ioBroker.HostCommon & { host: string; runningVersion: string }> = {};
+                const hosts: Record<string, HostInformation> = {};
 
                 if (doc?.rows.length) {
                     // Read installed versions of all hosts
