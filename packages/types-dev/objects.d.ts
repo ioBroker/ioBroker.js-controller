@@ -430,7 +430,7 @@ declare global {
 
         interface UserCommon extends ObjectCommon {
             /** The username */
-            name: string;
+            name: StringOrTranslated;
             /** The hashed password */
             password: string;
             /** Whether this user is enabled */
@@ -442,7 +442,7 @@ declare global {
 
         interface GroupCommon extends ObjectCommon {
             /** The name of this group */
-            name: string;
+            name: StringOrTranslated;
             /** The users of this group */
             members: ObjectIDs.User[]; // system.user.name, ...
             /** The default permissions of this group */
@@ -729,7 +729,35 @@ declare global {
             /** @deprecated The name of this adapter to be shown in the admin UI. Use @see titleLang instead. */
             title?: string;
             /** The type of this adapter */
-            type?: string;
+            type?:
+                | 'alarm'
+                | 'climate-control'
+                | 'communication'
+                | 'date-and-time'
+                | 'energy'
+                | 'garden'
+                | 'general'
+                | 'geoposition'
+                | 'hardware'
+                | 'health'
+                | 'household'
+                | 'infrastructure'
+                | 'iot-systems'
+                | 'lighting'
+                | 'logic'
+                | 'messaging'
+                | 'metering'
+                | 'misc-data'
+                | 'multimedia'
+                | 'network'
+                | 'protocols'
+                | 'storage'
+                | 'utility'
+                | 'vehicle'
+                | 'visualization'
+                | 'visualization-icons'
+                | 'visualization-widgets'
+                | 'weather';
             /** If `true`, the `npm` package must be installed with the `--unsafe-perm` flag */
             unsafePerm?: true;
             /** The available version in the ioBroker repo. */
