@@ -4843,7 +4843,6 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Subscribe for the changes of files in specific instance.
-     * This is an async function!
      *
      * @param id adapter ID like 'vis-2.0' or 'vis-2.admin'
      * @param pattern pattern like 'channel.*' or '*' (all files) - without namespaces. You can use array of patterns
@@ -4871,7 +4870,6 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Unsubscribe for the changes of files on specific instance.
-     * This is an async function!
      *
      * @param id adapter ID like 'vis-2.0' or 'vis-2.admin'
      * @param pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
