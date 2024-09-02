@@ -4849,7 +4849,7 @@ export class AdapterClass extends EventEmitter {
      * @param pattern pattern like 'channel.*' or '*' (all files) - without namespaces. You can use array of patterns
      * @param options optional user context
      */
-    subscribeForeignFiles(id: unknown, pattern: unknown, options?: unknown): any {
+    subscribeForeignFiles(id: unknown, pattern: unknown, options?: unknown): Promise<void> {
         if (!this.#objects) {
             this._logger.info(
                 `${this.namespaceLog} subscribeForeignFiles not processed because Objects database not connected`
@@ -4877,7 +4877,7 @@ export class AdapterClass extends EventEmitter {
      * @param pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
      * @param options optional user context
      */
-    unsubscribeForeignFiles(id: unknown, pattern: unknown, options?: unknown): any {
+    unsubscribeForeignFiles(id: unknown, pattern: unknown, options?: unknown): Promise<void> {
         if (!pattern) {
             pattern = '*';
         }
