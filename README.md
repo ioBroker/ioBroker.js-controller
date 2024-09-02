@@ -546,7 +546,7 @@ By default, this threshold is 5 % of disk space. Via the state `system.host.<hos
 #### Log levels
 **Feature status:** stable
 
-The js-controller and each adapter have defined its own log level. By default, `info` is used. The following log levels can be used:
+The js-controller and each adapter can define their own log level. By default, `info` is used. The following log levels can be used:
 * silly (most logging)
 * debug
 * info

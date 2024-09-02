@@ -46,7 +46,7 @@ import { Upload, PacketManager, type UpgradePacket } from '@iobroker/js-controll
 import decache from 'decache';
 import cronParser from 'cron-parser';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
-import type { AdapterInformation, GetDiskInfoResponse } from '@iobroker/js-controller-common-db/tools';
+import type { GetDiskInfoResponse } from '@iobroker/js-controller-common-db/tools';
 import { DEFAULT_DISK_WARNING_LEVEL, getCronExpression, getDiskWarningLevel } from '@/lib/utils.js';
 import { AdapterAutoUpgradeManager } from '@/lib/adapterAutoUpgradeManager.js';
 import {
@@ -136,6 +136,9 @@ interface RepoRequester {
     from: string;
     callback: ioBroker.MessageCallbackInfo;
 }
+
+/** Return type of `getVersionFromHost` */
+type GetVersionFromHostObject = ioBroker.HostCommon & { host: string; runningVersion: string };
 
 const VIS_ADAPTERS = ['vis', 'vis-2'] as const;
 const ioPackage = fs.readJSONSync(path.join(tools.getControllerDir(), 'io-package.json'));
@@ -1280,7 +1283,6 @@ function cleanAutoSubscribes(instanceID: ioBroker.ObjectIDs.Instance, callback: 
                     // remove this instance from autoSubscribe
                     if (row.value?.common.subscribable) {
                         count++;
-                        // @ts-expect-error https://github.com/ioBroker/ioBroker.js-controller/issues/2089
                         cleanAutoSubscribe(instance, row.id, () => !--count && callback && callback());
                     }
                 }
@@ -1890,9 +1892,14 @@ async function sendTo(
     }
 }
 
+/**
+ * Get the version information from given host
+ *
+ * @param hostId host to get the version information from
+ */
 async function getVersionFromHost(
     hostId: ioBroker.ObjectIDs.Host
-): Promise<(ioBroker.HostCommon & { host: string; runningVersion: string }) | null | undefined> {
+): Promise<GetVersionFromHostObject | null | undefined> {
     const state = await states!.getState(`${hostId}.alive`);
     if (state?.val) {
         return new Promise(resolve => {
@@ -1906,7 +1913,7 @@ async function getVersionFromHost(
                 if (timeout) {
                     clearTimeout(timeout);
                     timeout = null;
-                    resolve(ioPack as any as ioBroker.HostCommon & { host: string; runningVersion: string });
+                    resolve(ioPack as unknown as GetVersionFromHostObject);
                 }
             });
         });
@@ -1916,6 +1923,9 @@ async function getVersionFromHost(
     }
 }
 
+/**
+ * Upload all adapters which are currently in `uploadTasks` queue
+ */
 async function startAdapterUpload(): Promise<void> {
     if (!uploadTasks.length) {
         return;
@@ -2209,43 +2219,34 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
         case 'getInstalled':
             if (msg.callback && msg.from) {
                 // Get a list of all hosts
-                objects!.getObjectView(
-                    'system',
-                    'host',
-                    {
-                        startkey: 'system.host.',
-                        endkey: 'system.host.\u9999'
-                    },
-                    async (err, doc) => {
-                        const result: Record<
-                            string,
-                            | AdapterInformation
-                            | { [hostName: string]: ioBroker.HostCommon & { host: string; runningVersion: string } }
-                        > = tools.getInstalledInfo(version);
-                        result.hosts = {};
-                        if (doc?.rows.length) {
-                            // Read installed versions of all hosts
-                            for (const row of doc.rows) {
-                                // If desired a local version, do not ask it, just answer
-                                if (row.id === hostObjectPrefix) {
-                                    const ioPackCommon: ioBroker.HostCommon & { host: string; runningVersion: string } =
-                                        deepClone(ioPackage.common);
+                const doc = await objects!.getObjectViewAsync('system', 'host', {
+                    startkey: 'system.host.',
+                    endkey: 'system.host.\u9999'
+                });
 
-                                    ioPackCommon.host = hostname;
-                                    ioPackCommon.runningVersion = version;
-                                    result.hosts[hostname] = ioPackCommon;
-                                } else {
-                                    const ioPack = await getVersionFromHost(row.id as ioBroker.ObjectIDs.Host);
-                                    if (ioPack) {
-                                        result.hosts[ioPack.host] = ioPack;
-                                    }
-                                }
+                const installedInfo = tools.getInstalledInfo();
+                const hosts: Record<string, ioBroker.HostCommon & { host: string; runningVersion: string }> = {};
+
+                if (doc?.rows.length) {
+                    // Read installed versions of all hosts
+                    for (const row of doc.rows) {
+                        // If desired a local version, do not ask it, just answer
+                        if (row.id === hostObjectPrefix) {
+                            const ioPackCommon = deepClone(ioPackage.common);
+
+                            ioPackCommon.host = hostname;
+                            ioPackCommon.runningVersion = version;
+                            hosts[hostname] = ioPackCommon;
+                        } else {
+                            const ioPack = await getVersionFromHost(row.id);
+                            if (ioPack) {
+                                hosts[ioPack.host] = ioPack;
                             }
                         }
-
-                        sendTo(msg.from, msg.command, result, msg.callback);
                     }
-                );
+                }
+
+                sendTo(msg.from, msg.command, { ...installedInfo, hosts }, msg.callback);
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
@@ -2521,7 +2522,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     location = path.normalize(`${controllerDir}/../../`);
                 }
 
-                const enrichedHostInfo: HostInfo & { 'Active instances': number; location: string; Uptime: number } = {
+                const enrichedHostInfo = {
                     ...hostInfo,
                     'Active instances': count,
                     location,
@@ -3036,6 +3037,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
     }
 }
 
+/**
+ * Collect all instances on this host and call `initInstances`
+ */
 async function getInstances(): Promise<void> {
     if (!objects) {
         throw new Error('Objects database not connected');

@@ -595,6 +595,9 @@ declare global {
             description?: ioBroker.StringOrTranslated;
         };
 
+        /** Format for local and global dependencies */
+        type Depdendencies = { [adapterName: string]: string }[] | string[];
+
         interface AdapterCommon extends ObjectCommon {
             /** Custom attributes to be shown in admin in the object browser */
             adminColumns?: string | (string | CustomAdminColumn)[];
@@ -632,9 +635,9 @@ declare global {
             /** How the adapter will mainly receive its data. Set this together with @see connectionType */
             dataSource?: 'poll' | 'push' | 'assumption';
             /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter on the same host. */
-            dependencies?: { [adapterName: string]: string }[] | string[];
+            dependencies?: Depdendencies;
             /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter in the whole system. */
-            globalDependencies?: { [adapterName: string]: string }[] | string[];
+            globalDependencies?: Depdendencies;
             /** Which files outside the README.md have documentation for the adapter */
             docs?: Partial<Record<Languages, string | string[]>>;
             /** Whether new instances should be enabled by default. *Should* be `false`! */
@@ -810,7 +813,7 @@ declare global {
             tempUnit?: '°C' | '°F';
             /** User-defined currency */
             currency?: string;
-            /** User-defined first day of the week: monday or sunday */
+            /** User-defined first day of the week */
             firstDayOfWeek?: 'monday' | 'sunday';
             /** Default history instance */
             defaultHistory: string;
@@ -1011,10 +1014,10 @@ declare global {
         interface RepositoryInformation {
             /** Url to the repository */
             link: string;
-            json?: RepositoryJson | null;
+            json: RepositoryJson | null;
             hash?: string;
             time?: string;
-            /** if this repository stable */
+            /** If this repository stable */
             stable?: boolean;
         }
 
@@ -1054,6 +1057,7 @@ declare global {
 
         // it is defined in notificationHandler.ts
         type NotificationCategory = {
+            /** The unique category identifier */
             category:
                 | 'memIssues'
                 | 'fsIoErrors'
@@ -1072,19 +1076,26 @@ declare global {
                 | 'systemRebootRequired'
                 | 'diskSpaceIssues'
                 | string;
+            /** The human-readable category name */
             name: Translated;
-            /** `info` will only be shown by admin, while `notify` might also be used by messaging adapters, `alert` ensures both */
-            severity: 'info' | 'notify' | 'alert';
+            /** The human-readable category description */
             description: Translated;
+            /** Allows to define the severity of the notification with `info` being the lowest `notify` representing middle priority, `alert` representing high priority and often containing critical information */
+            severity: 'info' | 'notify' | 'alert';
+            /** If a regex is specified, the js-controller will check error messages on adapter crashes against this regex and will generate a notification of this category */
             regex: string[];
+            /** Deletes older messages if more than the specified amount is present for this category */
             limit: number;
         };
 
         interface Notification {
-            /** Each adapter can define its own "scopes" for own notifications with its own categories which then will be available in the system. */
+            /** Each adapter can define its own "scopes" for own notifications with its own categories which then will be available in the system. Adapters should only register one scope which matches the name of the adapter. */
             scope: string;
+            /** The human-readable name of this scope */
             name: Translated;
+            /** The human-readable description of this scope */
             description: Translated;
+            /** All notification categories of this scope */
             categories: NotificationCategory[];
         }
 

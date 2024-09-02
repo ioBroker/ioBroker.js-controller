@@ -80,11 +80,11 @@ export class Repo {
         systemRepos?: ioBroker.RepositoryObject
     ): Promise<null | ioBroker.RepositoryJson> {
         if (!repoName) {
-            const sysConfig = systemConfig || (await this.objects.getObjectAsync('system.config'));
+            const sysConfig = systemConfig || (await this.objects.getObject('system.config'));
             repoName = sysConfig!.common.activeRepo;
         }
 
-        const oldRepos = systemRepos || (await this.objects.getObjectAsync('system.repositories'));
+        const oldRepos = systemRepos || (await this.objects.getObject('system.repositories'));
         if (!oldRepos?.native.repositories?.[repoName]) {
             console.log(`Error: repository "${repoName}" not found in the "system.repositories`);
             return null;
@@ -101,12 +101,12 @@ export class Repo {
             (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://'))
         ) {
             try {
-                hash = await axios({ url: hashUrl, timeout: 10000 });
+                hash = await axios({ url: hashUrl, timeout: 10_000 });
             } catch (e) {
                 console.error(`Cannot download repository hash file from "${hashUrl}": ${e.message}`);
             }
             if (hash?.data && oldRepos.native.repositories[repoName].hash === hash.data.hash) {
-                return oldRepos.native.repositories[repoName].json || null;
+                return oldRepos.native.repositories[repoName].json;
             }
         }
 
@@ -161,10 +161,10 @@ export class Repo {
         if (changed) {
             oldRepos.from = `system.host.${tools.getHostName()}.cli`;
             oldRepos.ts = Date.now();
-            await this.objects.setObjectAsync('system.repositories', oldRepos);
+            await this.objects.setObject('system.repositories', oldRepos);
         }
 
-        return oldRepos.native.repositories[repoName].json || null;
+        return oldRepos.native.repositories[repoName].json;
     }
 
     /**
@@ -319,8 +319,8 @@ export class Repo {
             const listStr = list.join(', ');
             for (const row of objs.rows) {
                 if (row?.value?.type === 'instance') {
-                    await this.states.setStateAsync(`${row.id}.info.updatesNumber`, { val: list.length, ack: true });
-                    await this.states.setStateAsync(`${row.id}.info.updatesList`, { val: listStr, ack: true });
+                    await this.states.setState(`${row.id}.info.updatesNumber`, { val: list.length, ack: true });
+                    await this.states.setState(`${row.id}.info.updatesList`, { val: listStr, ack: true });
                 }
             }
         }
@@ -412,7 +412,7 @@ export class Repo {
                     delete repoObj.native.repositories[repoName];
                     repoObj.from = `system.host.${tools.getHostName()}.cli`;
                     repoObj.ts = Date.now();
-                    await this.objects.setObjectAsync('system.repositories', repoObj);
+                    await this.objects.setObject('system.repositories', repoObj);
                 }
             }
         }
