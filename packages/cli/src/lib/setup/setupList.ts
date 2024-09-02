@@ -561,7 +561,12 @@ export class List {
                                         if (
                                             !reg ||
                                             reg.test(obj.value._id) ||
-                                            (obj.value.common && reg.test(obj.value.common.name))
+                                            (obj.value.common &&
+                                                reg.test(
+                                                    tools.isObject(obj.value.common.name)
+                                                        ? obj.value.common.name[lang] || obj.value.common.name.en
+                                                        : obj.value.common.name
+                                                ))
                                         ) {
                                             const id = obj.value._id;
                                             let name = obj.value.common.name;
@@ -621,7 +626,12 @@ export class List {
                                 if (
                                     !reg ||
                                     reg.test(obj.value._id) ||
-                                    (obj.value.common && reg.test(obj.value.common.name))
+                                    (obj.value.common &&
+                                        reg.test(
+                                            tools.isObject(obj.value.common.name)
+                                                ? obj.value.common.name[lang] || obj.value.common.name.en
+                                                : obj.value.common.name
+                                        ))
                                 ) {
                                     const id = obj.value._id.substring(13);
                                     if (id === 'administrator') {
