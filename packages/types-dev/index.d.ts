@@ -204,15 +204,15 @@ declare global {
 
         type LogLevel = 'silly' | 'debug' | 'info' | 'warn' | 'error';
         interface Logger {
-            /** to log a message with silly level */
+            /** log a message with silly level */
             silly(message: string): void;
-            /** to log a message with debug level */
+            /** log a message with debug level */
             debug(message: string): void;
-            /** to log a message with info level (default output level for all adapters) */
+            /** log a message with info level (default output level for all adapters) */
             info(message: string): void;
-            /** to log a message with warning severity */
+            /** log a message with warning severity */
             warn(message: string): void;
-            /** to log a message with error severity */
+            /** log a message with error severity */
             error(message: string): void;
 
             /** Verbosity of the log output */
@@ -236,7 +236,7 @@ declare global {
             message: MessagePayload;
             /** ID of this callback */
             id: number;
-            /** Is it request or response: If ack is false, it means the message is a request. If ack is true, it means the message is a response. */
+            /** If ack is false, it means the message is a request. If ack is true, it means the message is a response */
             ack: boolean;
             /** Timestamp of this message */
             time: number;
