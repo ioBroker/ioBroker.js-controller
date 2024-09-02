@@ -478,7 +478,7 @@ declare global {
 
         interface GetObjectViewItem<T extends AnyObject> {
             /** The ID of this object */
-            id: string;
+            id: T['_id'];
             /** A copy of the object from the DB */
             value: T;
         }

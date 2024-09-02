@@ -424,7 +424,7 @@ The definition also contains localized names and descriptions that can be used t
 Registered notifications are stored per host and can be requested via messages to the host. They are also stored when the controller stops and loaded on next start.
 Additionally, a summary of the stored categories per scope with a number of stored notifications and the last added timestamp is available in the state `system.host.hostname.notifications.scopeid` as a JSON.
 
-The js-controller defines in its io-package the system scope together with all details. You can use this as an example and the JSON schema will help you validate your notifications.
+The js-controller defines in its io-package the system scope together with all details. You can use this as an example, and the JSON schema will help you validate your notifications.
 
 ```json
 {
@@ -534,7 +534,7 @@ The message needs to take the following parameters in the message object:
 * categoryFilter - category of notifications
 * instanceFilter - instance of notifications
 
-All three are optional and can be a string or null/undefined if ommited.
+All three are optional and can be a string or null/undefined if omitted.
 
 ### Disk space warnings
 **Feature status:** New in 6.0.0
@@ -546,7 +546,7 @@ By default, this threshold is 5 % of disk space. Via the state `system.host.<hos
 #### Log levels
 **Feature status:** stable
 
-The js-controller and each adapter has defined its own log level. By default, `info` is used. The following log levels can be used:
+The js-controller and each adapter can define their own log level. By default, `info` is used. The following log levels can be used:
 * silly (most logging)
 * debug
 * info
