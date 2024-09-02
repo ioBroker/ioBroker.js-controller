@@ -4839,17 +4839,16 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    subscribeForeignFiles(id: string, pattern: string | string[], options?: unknown): void;
+    subscribeForeignFiles(id: string, pattern: string | string[], options?: unknown): Promise<void>;
 
     /**
      * Subscribe for the changes of files in specific instance.
-     * This is async function!
      *
      * @param id adapter ID like 'vis-2.0' or 'vis-2.admin'
      * @param pattern pattern like 'channel.*' or '*' (all files) - without namespaces. You can use array of patterns
      * @param options optional user context
      */
-    subscribeForeignFiles(id: unknown, pattern: unknown, options?: unknown): any {
+    subscribeForeignFiles(id: unknown, pattern: unknown, options?: unknown): Promise<void> {
         if (!this.#objects) {
             this._logger.info(
                 `${this.namespaceLog} subscribeForeignFiles not processed because Objects database not connected`
@@ -4867,17 +4866,16 @@ export class AdapterClass extends EventEmitter {
     }
 
     // external signatures
-    unsubscribeForeignFiles(id: string, pattern: string | string[], options?: unknown): void;
+    unsubscribeForeignFiles(id: string, pattern: string | string[], options?: unknown): Promise<void>;
 
     /**
      * Unsubscribe for the changes of files on specific instance.
-     * This is async function!
      *
      * @param id adapter ID like 'vis-2.0' or 'vis-2.admin'
      * @param pattern pattern like 'channel.*' or '*' (all objects) - without namespaces
      * @param options optional user context
      */
-    unsubscribeForeignFiles(id: unknown, pattern: unknown, options?: unknown): any {
+    unsubscribeForeignFiles(id: unknown, pattern: unknown, options?: unknown): Promise<void> {
         if (!pattern) {
             pattern = '*';
         }
