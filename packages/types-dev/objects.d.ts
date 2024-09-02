@@ -430,7 +430,7 @@ declare global {
 
         interface UserCommon extends ObjectCommon {
             /** The username */
-            name: string;
+            name: StringOrTranslated;
             /** The hashed password */
             password: string;
             /** Whether this user is enabled */
@@ -442,7 +442,7 @@ declare global {
 
         interface GroupCommon extends ObjectCommon {
             /** The name of this group */
-            name: string;
+            name: StringOrTranslated;
             /** The users of this group */
             members: ObjectIDs.User[]; // system.user.name, ...
             /** The default permissions of this group */

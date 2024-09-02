@@ -7296,8 +7296,8 @@ export class AdapterClass extends EventEmitter {
         let { instanceName } = _options;
 
         const obj: ioBroker.SendableMessage = {
-            command: command,
-            message: message,
+            command,
+            message,
             from: `system.adapter.${this.namespace}`
         };
 
@@ -7336,7 +7336,7 @@ export class AdapterClass extends EventEmitter {
             }
 
             try {
-                // Send to all instances of adapter
+                // Send it to all instances of adapter
                 const res = await this.#objects.getObjectView('system', 'instance', {
                     startkey: `${instanceName}.`,
                     endkey: `${instanceName}.\u9999`
@@ -7365,7 +7365,7 @@ export class AdapterClass extends EventEmitter {
                     }
 
                     obj.callback = {
-                        message: message,
+                        message,
                         id: this._callbackId++,
                         ack: false,
                         time: Date.now()
@@ -7399,8 +7399,9 @@ export class AdapterClass extends EventEmitter {
                         }
                     }
                 } else {
+                    // callback is an object
                     obj.callback = callback;
-                    obj.callback!.ack = true;
+                    obj.callback.ack = true;
                 }
             }
 
@@ -7540,6 +7541,7 @@ export class AdapterClass extends EventEmitter {
 
                     this.messageCallbacks.set(obj.callback.id, { cb: callback, time: Date.now() });
                 } else {
+                    // callback is an object
                     obj.callback = callback;
                     obj.callback.ack = true;
                 }
@@ -10878,7 +10880,7 @@ export class AdapterClass extends EventEmitter {
                         }
 
                         // If callback stored for this request
-                        if (obj.callback && obj.callback.ack && obj.callback.id && callbackObj) {
+                        if (obj.callback?.ack && obj.callback.id && callbackObj) {
                             // Call callback function
                             if (typeof callbackObj.cb === 'function') {
                                 callbackObj.cb(obj.message);
@@ -10910,7 +10912,7 @@ export class AdapterClass extends EventEmitter {
                             }
 
                             if (this._options.message) {
-                                // Else inform about new message the adapter
+                                // Else inform about a new message the adapter
                                 this._options.message(obj);
                             }
                             this.emit('message', obj);
