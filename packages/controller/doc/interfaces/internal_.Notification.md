@@ -17,11 +17,13 @@
 
 ### categories
 
-• **categories**: `any`[]
+• **categories**: [`NotificationCategory`](../modules/internal_.md#notificationcategory)[]
+
+All notification categories of this scope
 
 #### Defined in
 
-[types-dev/objects.d.ts:1030](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/objects.d.ts#L1030)
+[types-dev/objects.d.ts:1099](https://github.com/ioBroker/ioBroker.js-controller/blob/dbd1caae0c23752b279143c9d5ad2a09f78a1127/packages/types-dev/objects.d.ts#L1099)
 
 ___
 
@@ -29,9 +31,11 @@ ___
 
 • **description**: [`Translated`](../modules/internal_.md#translated)
 
+The human-readable description of this scope
+
 #### Defined in
 
-[types-dev/objects.d.ts:1029](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/objects.d.ts#L1029)
+[types-dev/objects.d.ts:1097](https://github.com/ioBroker/ioBroker.js-controller/blob/dbd1caae0c23752b279143c9d5ad2a09f78a1127/packages/types-dev/objects.d.ts#L1097)
 
 ___
 
@@ -39,9 +43,11 @@ ___
 
 • **name**: [`Translated`](../modules/internal_.md#translated)
 
+The human-readable name of this scope
+
 #### Defined in
 
-[types-dev/objects.d.ts:1028](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/objects.d.ts#L1028)
+[types-dev/objects.d.ts:1095](https://github.com/ioBroker/ioBroker.js-controller/blob/dbd1caae0c23752b279143c9d5ad2a09f78a1127/packages/types-dev/objects.d.ts#L1095)
 
 ___
 
@@ -49,6 +55,8 @@ ___
 
 • **scope**: `string`
 
+Each adapter can define its own "scopes" for own notifications with its own categories which then will be available in the system. Adapters should only register one scope which matches the name of the adapter.
+
 #### Defined in
 
-[types-dev/objects.d.ts:1027](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/objects.d.ts#L1027)
+[types-dev/objects.d.ts:1093](https://github.com/ioBroker/ioBroker.js-controller/blob/dbd1caae0c23752b279143c9d5ad2a09f78a1127/packages/types-dev/objects.d.ts#L1093)
