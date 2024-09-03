@@ -2846,8 +2846,8 @@ export class AdapterClass extends EventEmitter {
         if (options.obj.type !== 'meta') {
             try {
                 this._utils.validateId(options.id, false, null);
-            } catch (err) {
-                this._logger.error(tools.appendStackTrace(`${this.namespaceLog} ${err.message}`));
+            } catch (e) {
+                this._logger.error(tools.appendStackTrace(`${this.namespaceLog} ${e.message}`));
                 return;
             }
         }
@@ -3478,8 +3478,8 @@ export class AdapterClass extends EventEmitter {
 
         try {
             this._utils.validateId(id, true, null);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
         }
 
         Validator.assertString(id, 'id');
@@ -3725,8 +3725,8 @@ export class AdapterClass extends EventEmitter {
 
         try {
             this._utils.validateId(id, false, null);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
         }
 
         this.#objects.getObject(this._utils.fixId(id), options, callback);
@@ -4419,8 +4419,8 @@ export class AdapterClass extends EventEmitter {
 
         try {
             this._utils.validateId(id, true, null);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
         }
 
         this.#objects.findObject(id, type, options || {}, callback);
@@ -4468,8 +4468,8 @@ export class AdapterClass extends EventEmitter {
 
         try {
             this._utils.validateId(id, true, options);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
         }
 
         return this._getForeignObject({ id, options, callback });
@@ -4605,8 +4605,8 @@ export class AdapterClass extends EventEmitter {
 
         try {
             this._utils.validateId(id, true, options);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
         }
 
         if (options !== null && options !== undefined) {
@@ -4653,8 +4653,8 @@ export class AdapterClass extends EventEmitter {
 
                     try {
                         await this.#objects!.delObject(obj._id, options);
-                    } catch (err) {
-                        return tools.maybeCallbackWithError(callback, err);
+                    } catch (e) {
+                        return tools.maybeCallbackWithError(callback, e);
                     }
                     if (obj.type === 'state') {
                         try {
@@ -4944,8 +4944,8 @@ export class AdapterClass extends EventEmitter {
 
         try {
             this._utils.validateId(id, false, null);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
         }
 
         return this._setObjectNotExists({
@@ -5064,11 +5064,11 @@ export class AdapterClass extends EventEmitter {
 
         try {
             this._utils.validateId(id, true, null);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
         }
 
-        // check if object exists
+        // check if the object exists
         let objExists;
         try {
             objExists = await this.#objects.objectExists(id, options || {});
@@ -7736,8 +7736,8 @@ export class AdapterClass extends EventEmitter {
 
         try {
             this._utils.validateId(id, false, null);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
         }
 
         const fixedId = this._utils.fixId(id, false);
@@ -8364,8 +8364,8 @@ export class AdapterClass extends EventEmitter {
 
         try {
             this._utils.validateId(id, false, null);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
         }
 
         const fixedId = this._utils.fixId(id, false);
@@ -8506,8 +8506,8 @@ export class AdapterClass extends EventEmitter {
 
         try {
             this._utils.validateId(id, true, null);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
         }
 
         if (tools.isObject(state)) {
@@ -8818,8 +8818,8 @@ export class AdapterClass extends EventEmitter {
 
         try {
             this._utils.validateId(id, true, null);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
         }
 
         if (tools.isObject(state)) {
@@ -9118,7 +9118,7 @@ export class AdapterClass extends EventEmitter {
      *      - average - Same as max, but take average value.
      *      - total - Same as max, but calculate total value.
      *      - count - Same as max, but calculate number of values (nulls will be calculated).
-     *      - none - No aggregation at all. Only raw values in given period.
+     *      - none - No aggregation at all. Only raw values in the given period.
      *
      * @param id object ID of the state.
      * @param options see function description
@@ -9153,9 +9153,9 @@ export class AdapterClass extends EventEmitter {
 
         try {
             this._utils.validateId(id, true, null);
-        } catch (err) {
+        } catch (e) {
             // @ts-expect-error
-            return tools.maybeCallbackWithError(callback, err);
+            return tools.maybeCallbackWithError(callback, e);
         }
 
         options = options || {};
@@ -9257,8 +9257,8 @@ export class AdapterClass extends EventEmitter {
 
         try {
             this._utils.validateId(id, false, null);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
         }
 
         // delState does the same as delForeignState, but fixes the ID first
@@ -9311,8 +9311,8 @@ export class AdapterClass extends EventEmitter {
 
         try {
             this._utils.validateId(id, true, options);
-        } catch (err) {
-            return tools.maybeCallbackWithError(callback, err);
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
         }
 
         if (options?.user && options.user !== SYSTEM_ADMIN_USER) {
@@ -10293,9 +10293,9 @@ export class AdapterClass extends EventEmitter {
                                 licenses.push({ ...license, decoded });
                             }
                         }
-                    } catch (err) {
+                    } catch (e) {
                         this._logger.error(
-                            `${this.namespaceLog} Cannot decode license "${license.product}": ${err.message}`
+                            `${this.namespaceLog} Cannot decode license "${license.product}": ${e.message}`
                         );
                     }
                 }
@@ -10426,8 +10426,8 @@ export class AdapterClass extends EventEmitter {
                     from: id,
                     expire: reportStatusExpirySec
                 });
-            } catch (err) {
-                this._logger.warn(`${this.namespaceLog} Could not query used process memory: ${err.message}`);
+            } catch (e) {
+                this._logger.warn(`${this.namespaceLog} Could not query used process memory: ${e.message}`);
             }
             this.outputCount += 3;
             if (this.eventLoopLags.length) {
@@ -11759,8 +11759,8 @@ export class AdapterClass extends EventEmitter {
                 updateAliveState: false
             });
             setTimeout(() => this.terminate(EXIT_CODES.UNCAUGHT_EXCEPTION), 1_000);
-        } catch (err) {
-            this._logger.error(`${this.namespaceLog} exception by stop: ${err ? err.message : err}`);
+        } catch (e) {
+            this._logger.error(`${this.namespaceLog} exception by stop: ${e ? e.message : e}`);
         }
     }
 
@@ -12041,8 +12041,8 @@ export class AdapterClass extends EventEmitter {
         if (this._config.states && this._config.states.type) {
             try {
                 this.States = (await import(`@iobroker/db-states-${this._config.states.type}`)).Client;
-            } catch (err) {
-                throw new Error(`Unknown states type: ${this._config.states.type}: ${err.message}`);
+            } catch (e) {
+                throw new Error(`Unknown states type: ${this._config.states.type}: ${e.message}`);
             }
         } else {
             this.States = await getStatesConstructor();
@@ -12051,8 +12051,8 @@ export class AdapterClass extends EventEmitter {
         if (this._config.objects && this._config.objects.type) {
             try {
                 this.Objects = (await import(`@iobroker/db-objects-${this._config.objects.type}`)).Client;
-            } catch (err) {
-                throw new Error(`Unknown objects type: ${this._config.objects.type}: ${err.message}`);
+            } catch (e) {
+                throw new Error(`Unknown objects type: ${this._config.objects.type}: ${e.message}`);
             }
         } else {
             this.Objects = await getObjectsConstructor();
