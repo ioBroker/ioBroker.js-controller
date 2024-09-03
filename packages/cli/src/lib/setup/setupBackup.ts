@@ -47,6 +47,17 @@ interface Backup {
     states: Record<string, ioBroker.State>;
 }
 
+interface PreprocessObjectOptions {
+    /** The hostname */
+    hostname: string;
+    /** The object to preprocess */
+    object: ioBroker.Object;
+    /** If the host has a custom hostname */
+    isCustomHostname: boolean;
+    /** Regex to check for this host */
+    thisHostnameRegex: RegExp;
+}
+
 export interface RestoreBackupOptions {
     /** backup name, absolute path or index */
     name: string | number;
@@ -279,7 +290,7 @@ export class BackupRestore {
         }
 
         const hostname = tools.getHostName();
-        const thisHostnameRegex = new RegExp(`^system\\.host\\.${hostname}\\.(\\w+)$`);
+        const thisHostnameRegex = new RegExp(`^system\\.host\\.${hostname}\\.(.+)$`);
 
         fs.ensureDirSync(this.bkpDir);
         fs.ensureDirSync(this.tmpDir);
@@ -311,7 +322,13 @@ export class BackupRestore {
         try {
             const res = await this.objects.getObjectListAsync({ include_docs: true });
             for (const row of res.rows) {
-                await objectsFd.write(JSON.stringify(row.value) + '\n');
+                const preprocessedValue = await this._preprocessObject({
+                    object: row.value,
+                    isCustomHostname,
+                    hostname,
+                    thisHostnameRegex
+                });
+                await objectsFd.write(JSON.stringify(preprocessedValue) + '\n');
             }
 
             console.log(`host.${hostname} ${res.rows.length || 'no'} objects saved`);
@@ -320,76 +337,6 @@ export class BackupRestore {
         }
 
         await objectsFd.close();
-
-        // try to find user files
-        /**
-        if (result.objects) {
-            for (const object of result.objects) {
-                if (!object?.value || !object.value._id || !object.value.common) {
-                    continue;
-                }
-
-                if (!isCustomHostname) {
-                    if (
-                        object.value._id.match(/^system\.adapter\.([\w\d_-]+).(\d+)$/) &&
-                        object.value.common.host === hostname
-                    ) {
-                        object.value.common.host = this.HOSTNAME_PLACEHOLDER;
-                        if (object.value) {
-                            object.value.common.host = this.HOSTNAME_PLACEHOLDER;
-                        }
-                    } else if (thisHostnameRegex.test(object.value._id)) {
-                        object.value._id = object.value._id.replace(hostname, this.HOSTNAME_PLACEHOLDER_REPLACE);
-                        object.id = object.value._id;
-                    } else if (object.value._id === `system.host.${hostname}`) {
-                        object.value._id = `system.host.${this.HOSTNAME_PLACEHOLDER}`;
-                        object.value.common.name = object.value._id;
-                        object.value.common.hostname = this.HOSTNAME_PLACEHOLDER;
-                        if (object.value.native && object.value.native.os) {
-                            object.value.native.os.hostname = this.HOSTNAME_PLACEHOLDER;
-                        }
-                        object.id = object.value._id;
-                        if (object.value) {
-                            object.value.common.name = object.value._id;
-                            object.value.common.hostname = this.HOSTNAME_PLACEHOLDER;
-                            if (object.value.native?.os) {
-                                object.value.native.os.hostname = this.HOSTNAME_PLACEHOLDER;
-                            }
-                        }
-                    }
-                }
-
-                // Read all files
-                if (object.value.type === 'meta' && object.value.common?.type === 'meta.user') {
-                    // do not process "xxx.0. " and "xxx.0."
-                    if (object.id.trim() === object.id && object.id[object.id.length - 1] !== '.') {
-                        await this.copyDir(object.id, '', `${this.tmpDir}/backup/files/${object.id}`);
-                    }
-                }
-
-                // Read all files
-                if (object.value.type === 'instance' && object.value.common?.dataFolder) {
-                    let dataFolderPath = object.value.common.dataFolder;
-
-                    if (dataFolderPath[0] !== '/' && !dataFolderPath.match(/^\w:/)) {
-                        dataFolderPath = path.join(this.configDir, dataFolderPath);
-                    }
-
-                    if (fs.existsSync(dataFolderPath)) {
-                        try {
-                            this.copyFolderRecursiveSync(dataFolderPath, `${this.tmpDir}/backup`);
-                        } catch (e) {
-                            console.error(
-                                `host.${hostname} Could not backup "${dataFolderPath}" directory: ${e.message}`
-                            );
-                            this.removeTempBackupDir();
-                            throw new IoBrokerError({ message: e.message, code: EXIT_CODES.CANNOT_COPY_DIR });
-                        }
-                    }
-                }
-            }
-        }
-         */
 
         const statesFd = await open(path.join(backupBasePath, 'states.jsonl'), 'a');
 
@@ -418,7 +365,7 @@ export class BackupRestore {
                         }
                     }
 
-                    await statesFd.write(JSON.stringify(obj) + '\n');
+                    await statesFd.write(JSON.stringify({ id: keys[i], state: obj }) + '\n');
                 }
 
                 await statesFd.close();
@@ -623,6 +570,70 @@ export class BackupRestore {
                 }
             }
         }
+    }
+
+    /**
+     * Preprocess object before storing it in the backup file
+     *
+     * @param options object and host information
+     */
+    private async _preprocessObject(options: PreprocessObjectOptions): Promise<ioBroker.Object> {
+        const { object, isCustomHostname, hostname, thisHostnameRegex } = options;
+
+        if (!object || !object._id || !object.common) {
+            return object;
+        }
+
+        if (!isCustomHostname) {
+            if (object._id.match(/^system\.adapter\.([\w\d_-]+).(\d+)$/) && object.common.host === hostname) {
+                object.common.host = this.HOSTNAME_PLACEHOLDER;
+                object.common.host = this.HOSTNAME_PLACEHOLDER;
+            } else if (thisHostnameRegex.test(object._id)) {
+                object._id = object._id.replace(hostname, this.HOSTNAME_PLACEHOLDER_REPLACE);
+            } else if (object._id === `system.host.${hostname}`) {
+                object._id = `system.host.${this.HOSTNAME_PLACEHOLDER}`;
+                object.common.name = object._id;
+                object.common.hostname = this.HOSTNAME_PLACEHOLDER;
+                if (object.native && object.native.os) {
+                    object.native.os.hostname = this.HOSTNAME_PLACEHOLDER;
+                }
+
+                object.common.name = object._id;
+                object.common.hostname = this.HOSTNAME_PLACEHOLDER;
+                if (object.native?.os) {
+                    object.native.os.hostname = this.HOSTNAME_PLACEHOLDER;
+                }
+            }
+        }
+
+        // Read all files
+        if (object.type === 'meta' && object.common?.type === 'meta.user') {
+            // do not process "xxx.0. " and "xxx.0."
+            if (object._id.trim() === object._id && object._id[object._id.length - 1] !== '.') {
+                await this.copyDir(object._id, '', `${this.tmpDir}/backup/files/${object._id}`);
+            }
+        }
+
+        // Read all files
+        if (object.type === 'instance' && object.common?.dataFolder) {
+            let dataFolderPath = object.common.dataFolder;
+
+            if (dataFolderPath[0] !== '/' && !dataFolderPath.match(/^\w:/)) {
+                dataFolderPath = path.join(this.configDir, dataFolderPath);
+            }
+
+            if (fs.existsSync(dataFolderPath)) {
+                try {
+                    this.copyFolderRecursiveSync(dataFolderPath, `${this.tmpDir}/backup`);
+                } catch (e) {
+                    console.error(`host.${hostname} Could not backup "${dataFolderPath}" directory: ${e.message}`);
+                    this.removeTempBackupDir();
+                    throw new IoBrokerError({ message: e.message, code: EXIT_CODES.CANNOT_COPY_DIR });
+                }
+            }
+        }
+
+        return object;
     }
 
     private _copyBackupedFiles(backupDir: string): void {
