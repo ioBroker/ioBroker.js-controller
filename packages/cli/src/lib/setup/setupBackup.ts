@@ -65,7 +65,6 @@ export interface RestoreBackupOptions {
     force: boolean;
     /** skip adapter deletion, e.g. for setup custom db migration */
     dontDeleteAdapters: boolean;
-    callback: (res: RestoreBackupReturnValue) => void;
 }
 
 const controllerDir = tools.getControllerDir();
@@ -434,7 +433,7 @@ export class BackupRestore {
             }
 
             try {
-                await this.objects.setObjectAsync(_objects[i].id, _objects[i].value);
+                await this.objects.setObject(_objects[i].id, _objects[i].value);
             } catch (err) {
                 console.warn(`host.${this.hostname} Cannot restore ${_objects[i].id}: ${err.message}`);
             }
@@ -458,7 +457,7 @@ export class BackupRestore {
         for (const object of objectList) {
             let obj;
             try {
-                obj = await this.objects.getObjectAsync(object._id);
+                obj = await this.objects.getObject(object._id);
             } catch {
                 // ignore
             }
@@ -466,7 +465,7 @@ export class BackupRestore {
             if (!obj) {
                 // object not existing -> create it
                 try {
-                    await this.objects.setObjectAsync(object._id, object);
+                    await this.objects.setObject(object._id, object);
                     console.log(`host.${this.hostname} object ${object._id} created`);
                 } catch {
                     // ignore
@@ -1094,8 +1093,8 @@ export class BackupRestore {
      *
      * @param options Restore options
      */
-    restoreBackup(options: RestoreBackupOptions): void {
-        const { name: _name, dontDeleteAdapters, force, callback } = options;
+    async restoreBackup(options: RestoreBackupOptions): Promise<RestoreBackupReturnValue> {
+        const { name: _name, dontDeleteAdapters, force } = options;
 
         let backups;
         let name = typeof _name === 'number' ? _name.toString() : _name;
@@ -1112,7 +1111,7 @@ export class BackupRestore {
             } else {
                 console.warn('No backups found');
             }
-            return void this.processExit(EXIT_CODES.INVALID_ARGUMENTS);
+            return { exitCode: EXIT_CODES.INVALID_ARGUMENTS, objects: this.objects, states: this.states };
         }
 
         if (!this.cleanDatabase) {
@@ -1153,42 +1152,45 @@ export class BackupRestore {
         }
         if (!fs.existsSync(name)) {
             console.error(`host.${this.hostname} Cannot find ${name}`);
-            return void this.processExit(EXIT_CODES.INVALID_ARGUMENTS);
+            return { exitCode: EXIT_CODES.INVALID_ARGUMENTS, objects: this.objects, states: this.states };
         }
+
+        const backupBasePath = path.join(this.tmpDir, 'backup');
 
         // delete /backup/backup.json
-        if (fs.existsSync(`${this.tmpDir}/backup/backup.json`)) {
-            fs.unlinkSync(`${this.tmpDir}/backup/backup.json`);
+        if (fs.existsSync(path.join(backupBasePath, 'backup.json'))) {
+            fs.unlinkSync(path.join(backupBasePath, 'backup.json'));
         }
 
-        tar.extract(
-            {
+        try {
+            await tar.extract({
                 file: name,
                 cwd: this.tmpDir
-            },
-            undefined,
-            async err => {
-                if (err) {
-                    console.error(`host.${this.hostname} Cannot extract from file "${name}": ${err.message}`);
-                    return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
-                }
-                if (!fs.existsSync(`${this.tmpDir}/backup/backup.json`)) {
-                    console.error(
-                        `host.${this.hostname} Cannot find extracted file from file "${this.tmpDir}/backup/backup.json"`
-                    );
-                    return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
-                }
+            });
+        } catch (e) {
+            console.error(`host.${this.hostname} Cannot extract from file "${name}": ${e.message}`);
+            return { exitCode: EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP, objects: this.objects, states: this.states };
+        }
 
-                await CLIProcess.stopJSController();
-                const exitCode = await this._restoreAfterStop({
-                    restartOnFinish: false,
-                    force,
-                    dontDeleteAdapters
-                });
+        // TODO: or check for config.json
+        if (
+            !(await fs.pathExists(path.join(backupBasePath, 'backup.json'))) &&
+            !(await fs.pathExists(path.join(backupBasePath, 'config.json')))
+        ) {
+            console.error(
+                `host.${this.hostname} Cannot find extracted file "${path.join(backupBasePath, 'backup.json')}" or "${path.join(backupBasePath, 'config.json')}"`
+            );
+            return { exitCode: EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP, objects: this.objects, states: this.states };
+        }
 
-                callback({ exitCode, objects: this.objects, states: this.states });
-            }
-        );
+        await CLIProcess.stopJSController();
+        const exitCode = await this._restoreAfterStop({
+            restartOnFinish: false,
+            force,
+            dontDeleteAdapters
+        });
+
+        return { exitCode, objects: this.objects, states: this.states };
     }
 
     /**
