@@ -137,6 +137,9 @@ interface RepoRequester {
     callback: ioBroker.MessageCallbackInfo;
 }
 
+/** Host information including host id and running version */
+type HostInformation = ioBroker.HostCommon & { host: string; runningVersion: string };
+
 const VIS_ADAPTERS = ['vis', 'vis-2'] as const;
 const ioPackage = fs.readJSONSync(path.join(tools.getControllerDir(), 'io-package.json'));
 const version = ioPackage.common.version;
@@ -1280,7 +1283,6 @@ function cleanAutoSubscribes(instanceID: ioBroker.ObjectIDs.Instance, callback: 
                     // remove this instance from autoSubscribe
                     if (row.value?.common.subscribable) {
                         count++;
-                        // @ts-expect-error https://github.com/ioBroker/ioBroker.js-controller/issues/2089
                         cleanAutoSubscribe(instance, row.id, () => !--count && callback && callback());
                     }
                 }
@@ -1832,7 +1834,7 @@ function initMessageQueue(): void {
 }
 
 /**
- * Send a message to other adapter instance
+ * Send a message to another adapter instance
  *
  * @param objName - adapter name (hm-rpc) or id like system.host.rpi/system.adapter,hm-rpc
  * @param command
@@ -1891,10 +1893,11 @@ async function sendTo(
 }
 
 /**
+ * Get the version information from given host
  *
- * @param hostId
+ * @param hostId host to get the version information from
  */
-async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host): Promise<Record<string, any> | null | undefined> {
+async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host): Promise<HostInformation | null> {
     const state = await states!.getState(`${hostId}.alive`);
     if (state?.val) {
         return new Promise(resolve => {
@@ -1908,6 +1911,7 @@ async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host): Promise<Reco
                 if (timeout) {
                     clearTimeout(timeout);
                     timeout = null;
+                    // @ts-expect-error sendTo needs to be fixed, because in some cases there is no error and return value is in first arg
                     resolve(ioPack);
                 }
             });
@@ -1918,6 +1922,9 @@ async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host): Promise<Reco
     }
 }
 
+/**
+ * Upload all adapters which are currently in `uploadTasks` queue
+ */
 async function startAdapterUpload(): Promise<void> {
     if (!uploadTasks.length) {
         return;
@@ -2217,40 +2224,34 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
         case 'getInstalled':
             if (msg.callback && msg.from) {
                 // Get a list of all hosts
-                objects!.getObjectView(
-                    'system',
-                    'host',
-                    {
-                        startkey: 'system.host.',
-                        endkey: 'system.host.\u9999'
-                    },
-                    async (err, doc) => {
-                        const result: Record<string, any> = tools.getInstalledInfo(version);
-                        result.hosts = {};
-                        if (doc?.rows.length) {
-                            // Read installed versions of all hosts
-                            for (const row of doc.rows) {
-                                // If desired a local version, do not ask it, just answer
-                                if (row.id === hostObjectPrefix) {
-                                    const ioPackCommon = deepClone(ioPackage.common);
+                const doc = await objects!.getObjectViewAsync('system', 'host', {
+                    startkey: 'system.host.',
+                    endkey: 'system.host.\u9999'
+                });
 
-                                    ioPackCommon.host = hostname;
-                                    ioPackCommon.runningVersion = version;
-                                    result.hosts[hostname] = ioPackCommon;
-                                } else {
-                                    // @ts-expect-error https://github.com/ioBroker/ioBroker.js-controller/issues/2089
-                                    const ioPack = await getVersionFromHost(row.id);
-                                    if (ioPack) {
-                                        result.hosts[ioPack.host] = ioPack;
-                                        result.hosts[ioPack.host].controller = true;
-                                    }
-                                }
+                const installedInfo = tools.getInstalledInfo();
+                const hosts: Record<string, HostInformation> = {};
+
+                if (doc?.rows.length) {
+                    // Read installed versions of all hosts
+                    for (const row of doc.rows) {
+                        // If desired a local version, do not ask it, just answer
+                        if (row.id === hostObjectPrefix) {
+                            const ioPackCommon = deepClone(ioPackage.common);
+
+                            ioPackCommon.host = hostname;
+                            ioPackCommon.runningVersion = version;
+                            hosts[hostname] = ioPackCommon;
+                        } else {
+                            const ioPack = await getVersionFromHost(row.id);
+                            if (ioPack) {
+                                hosts[ioPack.host] = ioPack;
                             }
                         }
-
-                        sendTo(msg.from, msg.command, result, msg.callback);
                     }
-                );
+                }
+
+                sendTo(msg.from, msg.command, { ...installedInfo, hosts }, msg.callback);
             } else {
                 logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
@@ -2276,7 +2277,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'getVersion':
             if (msg.callback && msg.from) {
-                const ioPackCommon = deepClone(ioPackage.common);
+                const ioPackCommon: ioBroker.HostCommon & { host: string; runningVersion: string } = deepClone(
+                    ioPackage.common
+                );
                 ioPackCommon.host = hostname;
                 ioPackCommon.runningVersion = version;
                 sendTo(msg.from, msg.command, ioPackCommon, msg.callback);
@@ -3039,6 +3042,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
     }
 }
 
+/**
+ * Collect all instances on this host and call `initInstances`
+ */
 async function getInstances(): Promise<void> {
     if (!objects) {
         throw new Error('Objects database not connected');
