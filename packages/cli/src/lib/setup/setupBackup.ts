@@ -10,6 +10,7 @@ import type { CleanDatabaseHandler, ProcessExitCallback, RestartController } fro
 import { dbConnectAsync, resetDbConnect } from './dbConnection.js';
 import { IoBrokerError } from './customError.js';
 import { CLIProcess } from '@/lib/cli/cliProcess.js';
+import { open, writeFile } from 'node:fs/promises';
 
 export interface CLIBackupRestoreOptions {
     dbMigration?: boolean;
@@ -277,24 +278,17 @@ export class BackupRestore {
             }
         }
 
-        let result: Backup | null = { objects: null, states: {} };
-
         const hostname = tools.getHostName();
+        const thisHostnameRegex = new RegExp(`^system\\.host\\.${hostname}\\.(\\w+)$`);
 
-        try {
-            const res = await this.objects.getObjectListAsync({ include_docs: true });
-            if (res) {
-                // getObjectList returns value and doc as the same so filter out doc to reduce backup size
-                result.objects = res.rows.map(entry => {
-                    return {
-                        id: entry.id,
-                        value: entry.value
-                    };
-                });
-            }
-        } catch (e) {
-            console.error(`host.${hostname} Cannot get objects: ${e.message}`);
-        }
+        fs.ensureDirSync(this.bkpDir);
+        fs.ensureDirSync(this.tmpDir);
+
+        this.removeTempBackupDir();
+
+        const backupBasePath = path.join(this.tmpDir, 'backup');
+        fs.ensureDirSync(backupBasePath);
+        fs.ensureDirSync(path.join(backupBasePath, 'files'));
 
         let isCustomHostname = false;
         let config: ioBroker.IoBrokerJson | undefined;
@@ -308,52 +302,27 @@ export class BackupRestore {
             console.error(`host.${hostname} Cannot read config file: ${e.message}`);
         }
 
-        result.config = !noConfig && config ? config : null;
-
-        const r = new RegExp(`^system\\.host\\.${hostname}\\.(\\w+)$`);
-
-        try {
-            const keys = await this.states.getKeys('*');
-            const objs = await this.states.getStates(keys!);
-
-            if (keys && objs) {
-                for (let i = 0; i < keys.length; i++) {
-                    const obj = objs[i];
-
-                    if (!obj) {
-                        continue;
-                    }
-
-                    if (!isCustomHostname) {
-                        // if it's a default hostname, we will have a new default after restore and need to replace
-                        if (obj.from === `system.host.${hostname}` || r.test(obj.from)) {
-                            obj.from.replace(
-                                `system.host.${hostname}`,
-                                `system.host.${this.HOSTNAME_PLACEHOLDER_REPLACE}`
-                            );
-                        }
-                        if (r.test(keys[i])) {
-                            keys[i] = keys[i].replace(hostname, this.HOSTNAME_PLACEHOLDER_REPLACE);
-                        }
-                    }
-                    result.states[keys[i]] = obj;
-                }
-
-                console.log(`host.${hostname} ${keys.length} states saved`);
-            }
-        } catch (e) {
-            console.error(`host.${hostname} Cannot get states: ${e.message}`);
+        if (!noConfig && config) {
+            await writeFile(path.join(backupBasePath, 'config.json'), JSON.stringify(config), { encoding: 'utf-8' });
         }
 
-        fs.ensureDirSync(this.bkpDir);
-        fs.ensureDirSync(this.tmpDir);
+        const objectsFd = await open(path.join(backupBasePath, 'objects.jsonl'), 'a');
 
-        this.removeTempBackupDir();
+        try {
+            const res = await this.objects.getObjectListAsync({ include_docs: true });
+            for (const row of res.rows) {
+                await objectsFd.write(JSON.stringify(row.value) + '\n');
+            }
 
-        fs.ensureDirSync(`${this.tmpDir}/backup`);
-        fs.ensureDirSync(`${this.tmpDir}/backup/files`);
+            console.log(`host.${hostname} ${res.rows.length || 'no'} objects saved`);
+        } catch (e) {
+            console.error(`host.${hostname} Cannot get objects: ${e.message}`);
+        }
+
+        await objectsFd.close();
 
         // try to find user files
+        /**
         if (result.objects) {
             for (const object of result.objects) {
                 if (!object?.value || !object.value._id || !object.value.common) {
@@ -369,7 +338,7 @@ export class BackupRestore {
                         if (object.value) {
                             object.value.common.host = this.HOSTNAME_PLACEHOLDER;
                         }
-                    } else if (r.test(object.value._id)) {
+                    } else if (thisHostnameRegex.test(object.value._id)) {
                         object.value._id = object.value._id.replace(hostname, this.HOSTNAME_PLACEHOLDER_REPLACE);
                         object.id = object.value._id;
                     } else if (object.value._id === `system.host.${hostname}`) {
@@ -420,14 +389,50 @@ export class BackupRestore {
                 }
             }
         }
+         */
 
-        console.log(`host.${hostname} ${result.objects?.length || 'no'} objects saved`);
+        const statesFd = await open(path.join(backupBasePath, 'states.jsonl'), 'a');
 
         try {
-            await fs.writeJSON(`${this.tmpDir}/backup/backup.json`, result, { spaces: 0 });
-            result = null; // ... to allow GC to clean it up because no longer needed
+            const keys = await this.states.getKeys('*');
+            const objs = await this.states.getStates(keys!);
 
-            this._validateBackupAfterCreation();
+            if (keys) {
+                for (let i = 0; i < keys.length; i++) {
+                    const obj = objs[i];
+
+                    if (!obj) {
+                        continue;
+                    }
+
+                    if (!isCustomHostname) {
+                        // if it's a default hostname, we will have a new default after restore and need to replace
+                        if (obj.from === `system.host.${hostname}` || thisHostnameRegex.test(obj.from)) {
+                            obj.from.replace(
+                                `system.host.${hostname}`,
+                                `system.host.${this.HOSTNAME_PLACEHOLDER_REPLACE}`
+                            );
+                        }
+                        if (thisHostnameRegex.test(keys[i])) {
+                            keys[i] = keys[i].replace(hostname, this.HOSTNAME_PLACEHOLDER_REPLACE);
+                        }
+                    }
+
+                    await statesFd.write(JSON.stringify(obj) + '\n');
+                }
+
+                await statesFd.close();
+                console.log(`host.${hostname} ${keys.length} states saved`);
+            }
+        } catch (e) {
+            console.error(`host.${hostname} Cannot get states: ${e.message}`);
+        }
+
+        console.log(`host.${hostname} Validating backup ...`);
+        try {
+            await this._validateBackupAfterCreation();
+            console.log(`host.${hostname} The backup is valid!`);
+
             return await this._packBackup(name);
         } catch (e) {
             console.error(`host.${hostname} Backup not created: ${e.message}`);
@@ -859,19 +864,60 @@ export class BackupRestore {
     /**
      * Validates the backup.json and all json files inside the backup after (in temporary directory), here we only abort if backup.json is corrupted
      */
-    private _validateBackupAfterCreation(): void {
-        const backupJSON = fs.readJSONSync(`${this.tmpDir}/backup/backup.json`);
-        if (!backupJSON.objects || !backupJSON.objects.length) {
+    private async _validateBackupAfterCreation(): Promise<void> {
+        const backupBaseDir = path.join(this.tmpDir, 'backup');
+        await fs.readJSON(path.join(backupBaseDir, 'config.json'));
+
+        if (!(await fs.pathExists(path.join(backupBaseDir, 'objects.jsonl')))) {
             throw new Error('Backup does not contain valid objects');
         }
 
+        if (!(await fs.pathExists(path.join(backupBaseDir, 'states.jsonl')))) {
+            throw new Error('Backup does not contain valid states');
+        }
+
+        await this._validateDatabaseFiles();
+
         // we check all other json files, we assume them as optional, because user created files may be no valid json
         try {
-            this._checkDirectory(`${this.tmpDir}/backup/files`);
-        } catch (err) {
-            console.warn(`host.${this.hostname} One or more optional files are corrupted: ${err.message}`);
+            this._checkDirectory(path.join(backupBaseDir, 'files'));
+        } catch (e) {
+            console.warn(`host.${this.hostname} One or more optional files are corrupted: ${e.message}`);
             console.warn(`host.${this.hostname} Please ensure that self-created JSON files are valid`);
         }
+    }
+
+    /**
+     * Validate that the created JSONL files in the temporary directories are parseable
+     */
+    private async _validateDatabaseFiles(): Promise<void> {
+        const backupBaseDir = path.join(this.tmpDir, 'backup');
+
+        const objectsFd = await open(path.join(backupBaseDir, 'objects.jsonl'));
+        const rlObjects = objectsFd.readLines();
+
+        for await (const line of rlObjects) {
+            try {
+                JSON.parse(line);
+            } catch (e) {
+                throw new Error(`The "objects.jsonl" file is corrupted: ${e.message}`);
+            }
+        }
+
+        await objectsFd.close();
+
+        const statesFd = await open(path.join(backupBaseDir, 'states.jsonl'));
+        const rlStates = statesFd.readLines();
+
+        for await (const line of rlStates) {
+            try {
+                JSON.parse(line);
+            } catch (e) {
+                throw new Error(`The "states.jsonl" file is corrupted: ${e.message}`);
+            }
+        }
+
+        await statesFd.close();
     }
 
     /**
