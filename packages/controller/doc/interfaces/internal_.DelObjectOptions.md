@@ -20,8 +20,8 @@
 
 • `Optional` **recursive**: `boolean`
 
-Whether all child objects should be deleted aswell
+Whether all child objects should be deleted as well
 
 #### Defined in
 
-[types-dev/index.d.ts:297](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/index.d.ts#L297)
+[types-dev/index.d.ts:297](https://github.com/ioBroker/ioBroker.js-controller/blob/dbd1caae0c23752b279143c9d5ad2a09f78a1127/packages/types-dev/index.d.ts#L297)
