@@ -54,8 +54,8 @@ interface PreprocessObjectOptions {
     object: ioBroker.Object;
     /** If the host has a custom hostname */
     isCustomHostname: boolean;
-    /** Regex to check for this host */
-    thisHostnameRegex: RegExp;
+    /** String to check if it is a sub object or state of this host (will not match the host object directly) */
+    thisHostNameStartsWith: string;
 }
 
 export interface RestoreBackupOptions {
@@ -289,7 +289,8 @@ export class BackupRestore {
         }
 
         const hostname = tools.getHostName();
-        const thisHostnameRegex = new RegExp(`^system\\.host\\.${hostname}\\.(.+)$`);
+        // String to check if it is a sub object or state of this host (will not match the host object directly)
+        const thisHostNameStartsWith = `system.host.${hostname}.`;
 
         fs.ensureDirSync(this.bkpDir);
         fs.ensureDirSync(this.tmpDir);
@@ -325,7 +326,7 @@ export class BackupRestore {
                     object: row.value,
                     isCustomHostname,
                     hostname,
-                    thisHostnameRegex
+                    thisHostNameStartsWith
                 });
                 await objectsFd.write(JSON.stringify(preprocessedValue) + '\n');
             }
@@ -353,13 +354,13 @@ export class BackupRestore {
 
                     if (!isCustomHostname) {
                         // if it's a default hostname, we will have a new default after restore and need to replace
-                        if (obj.from === `system.host.${hostname}` || thisHostnameRegex.test(obj.from)) {
+                        if (obj.from === `system.host.${hostname}`) {
                             obj.from.replace(
                                 `system.host.${hostname}`,
                                 `system.host.${this.HOSTNAME_PLACEHOLDER_REPLACE}`
                             );
                         }
-                        if (thisHostnameRegex.test(keys[i])) {
+                        if (keys[i].startsWith(thisHostNameStartsWith)) {
                             keys[i] = keys[i].replace(hostname, this.HOSTNAME_PLACEHOLDER_REPLACE);
                         }
                     }
@@ -566,7 +567,7 @@ export class BackupRestore {
      * @param options object and host information
      */
     private async _preprocessObject(options: PreprocessObjectOptions): Promise<ioBroker.Object> {
-        const { object, isCustomHostname, hostname, thisHostnameRegex } = options;
+        const { object, isCustomHostname, hostname, thisHostNameStartsWith } = options;
 
         if (!object || !object._id || !object.common) {
             return object;
@@ -576,7 +577,7 @@ export class BackupRestore {
             if (object._id.match(/^system\.adapter\.([\w\d_-]+).(\d+)$/) && object.common.host === hostname) {
                 object.common.host = this.HOSTNAME_PLACEHOLDER;
                 object.common.host = this.HOSTNAME_PLACEHOLDER;
-            } else if (thisHostnameRegex.test(object._id)) {
+            } else if (object._id.startsWith(thisHostNameStartsWith)) {
                 object._id = object._id.replace(hostname, this.HOSTNAME_PLACEHOLDER_REPLACE);
             } else if (object._id === `system.host.${hostname}`) {
                 object._id = `system.host.${this.HOSTNAME_PLACEHOLDER}`;
