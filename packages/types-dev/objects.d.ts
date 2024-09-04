@@ -430,7 +430,7 @@ declare global {
 
         interface UserCommon extends ObjectCommon {
             /** The username */
-            name: string;
+            name: StringOrTranslated;
             /** The hashed password */
             password: string;
             /** Whether this user is enabled */
@@ -442,7 +442,7 @@ declare global {
 
         interface GroupCommon extends ObjectCommon {
             /** The name of this group */
-            name: string;
+            name: StringOrTranslated;
             /** The users of this group */
             members: ObjectIDs.User[]; // system.user.name, ...
             /** The default permissions of this group */
@@ -595,6 +595,9 @@ declare global {
             description?: ioBroker.StringOrTranslated;
         };
 
+        /** Format for local and global dependencies */
+        type Depdendencies = { [adapterName: string]: string }[] | string[];
+
         interface AdapterCommon extends ObjectCommon {
             /** Custom attributes to be shown in admin in the object browser */
             adminColumns?: string | (string | CustomAdminColumn)[];
@@ -632,9 +635,9 @@ declare global {
             /** How the adapter will mainly receive its data. Set this together with @see connectionType */
             dataSource?: 'poll' | 'push' | 'assumption';
             /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter on the same host. */
-            dependencies?: Array<Record<string, string>>;
+            dependencies?: Depdendencies;
             /** A record of ioBroker adapters (including "js-controller") and version ranges which are required for this adapter in the whole system. */
-            globalDependencies?: Array<Record<string, string>>;
+            globalDependencies?: Depdendencies;
             /** Which files outside the README.md have documentation for the adapter */
             docs?: Partial<Record<Languages, string | string[]>>;
             /** Whether new instances should be enabled by default. *Should* be `false`! */
@@ -729,7 +732,35 @@ declare global {
             /** @deprecated The name of this adapter to be shown in the admin UI. Use @see titleLang instead. */
             title?: string;
             /** The type of this adapter */
-            type?: string;
+            type?:
+                | 'alarm'
+                | 'climate-control'
+                | 'communication'
+                | 'date-and-time'
+                | 'energy'
+                | 'garden'
+                | 'general'
+                | 'geoposition'
+                | 'hardware'
+                | 'health'
+                | 'household'
+                | 'infrastructure'
+                | 'iot-systems'
+                | 'lighting'
+                | 'logic'
+                | 'messaging'
+                | 'metering'
+                | 'misc-data'
+                | 'multimedia'
+                | 'network'
+                | 'protocols'
+                | 'storage'
+                | 'utility'
+                | 'vehicle'
+                | 'visualization'
+                | 'visualization-icons'
+                | 'visualization-widgets'
+                | 'weather';
             /** If `true`, the `npm` package must be installed with the `--unsafe-perm` flag */
             unsafePerm?: true;
             /** The available version in the ioBroker repo. */
@@ -794,6 +825,8 @@ declare global {
             defaultLogLevel?: LogLevel;
             /** Used date format for formatting */
             dateFormat: string;
+            /** This name will be shown in admin's header. Just to identify the whole installation */
+            siteName?: string;
             /** Default acl for new objects */
             defaultNewAcl: {
                 object: number;
@@ -837,9 +870,9 @@ declare global {
         }
 
         /**
-         * ioBroker has built-in protection for specific attributes of objects. If this protection is installed in the object, then the protected attributes of object cannot be changed by the user without valid password.
+         * ioBroker has built-in protection for specific attributes of objects. If this protection is installed in the object, then the protected attributes of an object cannot be changed by the user without a valid password.
          * To protect the properties from change, the special attribute "nonEdit" must be added to the object. This attribute contains the password, which is required to change the object.
-         * If object does not have "nonEdit" attribute, so the hash will be saved into "nonEdit.passHash". After that if someone will change the object, he must provide the password in "nonEdit.password".
+         * If an object does not have "nonEdit" attribute, so the hash will be saved into "nonEdit.passHash". After that, if someone changes the object, he must provide the password in "nonEdit.password".
          * If the password is correct, the object attributes will be updated. If the password is wrong, the object will not be changed.
          * Note, that all properties outside "nonEdit" can be updated without providing the password. Furthermore, do not confuse e.g. "nonEdit.common" with "obj.common" they are not linked in any way.
          */
@@ -984,6 +1017,8 @@ declare global {
             json: RepositoryJson | null;
             hash?: string;
             time?: string;
+            /** If this repository stable */
+            stable?: boolean;
         }
 
         interface RepositoryObject extends BaseObject {
@@ -1020,13 +1055,47 @@ declare global {
             common?: Partial<InstanceCommon>;
         }
 
-        /** TODO: To be defined */
-        type NotificationCategory = any;
+        // it is defined in notificationHandler.ts
+        type NotificationCategory = {
+            /** The unique category identifier */
+            category:
+                | 'memIssues'
+                | 'fsIoErrors'
+                | 'noDiskSpace'
+                | 'accessErrors'
+                | 'nonExistingFileErrors'
+                | 'remoteHostErrors'
+                | 'restartLoop'
+                | 'fileToJsonl'
+                | 'automaticAdapterUpgradeFailed'
+                | 'automaticAdapterUpgradeSuccessful'
+                | 'blockedVersions'
+                | 'databaseErrors'
+                | 'securityIssues'
+                | 'packageUpdates'
+                | 'systemRebootRequired'
+                | 'diskSpaceIssues'
+                | string;
+            /** The human-readable category name */
+            name: Translated;
+            /** The human-readable category description */
+            description: Translated;
+            /** Allows to define the severity of the notification with `info` being the lowest `notify` representing middle priority, `alert` representing high priority and often containing critical information */
+            severity: 'info' | 'notify' | 'alert';
+            /** If a regex is specified, the js-controller will check error messages on adapter crashes against this regex and will generate a notification of this category */
+            regex: string[];
+            /** Deletes older messages if more than the specified amount is present for this category */
+            limit: number;
+        };
 
         interface Notification {
+            /** Each adapter can define its own "scopes" for own notifications with its own categories which then will be available in the system. Adapters should only register one scope which matches the name of the adapter. */
             scope: string;
+            /** The human-readable name of this scope */
             name: Translated;
+            /** The human-readable description of this scope */
             description: Translated;
+            /** All notification categories of this scope */
             categories: NotificationCategory[];
         }
 

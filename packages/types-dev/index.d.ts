@@ -25,7 +25,7 @@ declare global {
             BAD: 0x01;
             /** The instance cannot establish a connection */
             CONNECTION_PROBLEM: 0x02;
-            /** Substitute value from controller, do not set this in adapters */
+            /** Substitute value from controller. Do not set this in adapters */
             SUBSTITUTE_FROM_CONTROLLER: 0x10;
             /** Quality for default values */
             SUBSTITUTE_INITIAL_VALUE: 0x20;
@@ -204,15 +204,15 @@ declare global {
 
         type LogLevel = 'silly' | 'debug' | 'info' | 'warn' | 'error';
         interface Logger {
-            /** log message with silly level */
+            /** log a message with silly level */
             silly(message: string): void;
-            /** log message with debug level */
+            /** log a message with debug level */
             debug(message: string): void;
-            /** log message with info level (default output level for all adapters) */
+            /** log a message with info level (default output level for all adapters) */
             info(message: string): void;
-            /** log message with warning severity */
+            /** log a message with warning severity */
             warn(message: string): void;
-            /** log message with error severity */
+            /** log a message with error severity */
             error(message: string): void;
 
             /** Verbosity of the log output */
@@ -236,7 +236,7 @@ declare global {
             message: MessagePayload;
             /** ID of this callback */
             id: number;
-            // ???
+            /** If ack is false, it means the message is a request. If ack is true, it means the message is a response */
             ack: boolean;
             /** Timestamp of this message */
             time: number;
@@ -293,7 +293,7 @@ declare global {
         }
 
         interface DelObjectOptions {
-            /** Whether all child objects should be deleted aswell */
+            /** Whether all child objects should be deleted as well */
             recursive?: boolean;
             // Allow non-documented properties
             [other: string]: unknown;
@@ -478,7 +478,7 @@ declare global {
 
         interface GetObjectViewItem<T extends AnyObject> {
             /** The ID of this object */
-            id: string;
+            id: T['_id'];
             /** A copy of the object from the DB */
             value: T;
         }
