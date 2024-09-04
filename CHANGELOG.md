@@ -7,6 +7,7 @@
 ## __WORK IN PROGRESS__
 * (@foxriver76) updated plugin base and sentry plugin to version 2
 * (@foxriver76) enhanced translations for the `diskSpaceIssues` notification category
+* (@foxriver76) extend the time to wait until controller is stopped on controller UI upgrade
 * (@foxriver76) improved backup/restore process to work for arbitrary large installations
 
 ## 6.0.11 (2024-08-21) - Kiera
