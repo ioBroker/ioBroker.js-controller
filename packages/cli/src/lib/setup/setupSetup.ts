@@ -647,33 +647,32 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                     });
                     console.log('Restore backup ...');
                     console.log(`${COLOR_GREEN}This can take some time ... please be patient!${COLOR_RESET}`);
-                    backupRestore.restoreBackup({
+                    const { objects, states, exitCode } = await backupRestore.restoreBackup({
                         name: filePath,
                         force: false,
-                        dontDeleteAdapters: true,
-                        callback: async ({ exitCode, states, objects }) => {
-                            this.objects = objects;
-                            this.states = states;
-
-                            if (exitCode) {
-                                console.log(`Error happened during restore. Exit-Code: ${exitCode}`);
-                                console.log();
-                                console.log(`restoring conf/${tools.appName.toLowerCase()}.json`);
-                                fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));
-                                fs.unlinkSync(`${tools.getConfigFileName()}.bak`);
-                            } else {
-                                await this._maybeMigrateSets();
-                                console.log('Backup restored - Migration successful');
-                                console.log(COLOR_YELLOW);
-                                console.log('Important: If your system consists of multiple hosts please execute ');
-                                console.log('"iobroker upload all" on the master AFTER all other hosts/slaves have ');
-                                console.log('also been updated to this states/objects database configuration AND are');
-                                console.log(`running!${COLOR_RESET}`);
-                            }
-
-                            resolve(exitCode ? EXIT_CODES.MIGRATION_ERROR : EXIT_CODES.NO_ERROR);
-                        }
+                        dontDeleteAdapters: true
                     });
+
+                    this.objects = objects;
+                    this.states = states;
+
+                    if (exitCode) {
+                        console.log(`Error happened during restore. Exit-Code: ${exitCode}`);
+                        console.log();
+                        console.log(`restoring conf/${tools.appName.toLowerCase()}.json`);
+                        fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(oldConfig, null, 2));
+                        fs.unlinkSync(`${tools.getConfigFileName()}.bak`);
+                    } else {
+                        await this._maybeMigrateSets();
+                        console.log('Backup restored - Migration successful');
+                        console.log(COLOR_YELLOW);
+                        console.log('Important: If your system consists of multiple hosts please execute ');
+                        console.log('"iobroker upload all" on the master AFTER all other hosts/slaves have ');
+                        console.log('also been updated to this states/objects database configuration AND are');
+                        console.log(`running!${COLOR_RESET}`);
+                    }
+
+                    resolve(exitCode ? EXIT_CODES.MIGRATION_ERROR : EXIT_CODES.NO_ERROR);
                 });
             } else if (!newObjectsHasServer) {
                 console.log('');
