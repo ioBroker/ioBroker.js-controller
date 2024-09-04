@@ -5,6 +5,7 @@
 -->
 
 ## __WORK IN PROGRESS__
+* (@foxriver76) updated plugin base and sentry plugin to version 2
 * (@foxriver76) enhanced translations for the `diskSpaceIssues` notification category
 * (@foxriver76) improved backup/restore process to work for arbitrary large installations
 
