@@ -22,7 +22,7 @@ The adapter using this messaging controller
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:19](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L19)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:19](https://github.com/ioBroker/ioBroker.js-controller/blob/dbd1caae0c23752b279143c9d5ad2a09f78a1127/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L19)
 
 ___
 
@@ -34,7 +34,7 @@ Callback to call if successfully subscribed
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:21](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L21)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:21](https://github.com/ioBroker/ioBroker.js-controller/blob/dbd1caae0c23752b279143c9d5ad2a09f78a1127/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L21)
 
 ___
 
@@ -46,4 +46,4 @@ Callback to call if successfully unsubscribed
 
 #### Defined in
 
-[adapter/src/lib/adapter/userInterfaceMessagingController.ts:23](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L23)
+[adapter/src/lib/adapter/userInterfaceMessagingController.ts:23](https://github.com/ioBroker/ioBroker.js-controller/blob/dbd1caae0c23752b279143c9d5ad2a09f78a1127/packages/adapter/src/lib/adapter/userInterfaceMessagingController.ts#L23)
