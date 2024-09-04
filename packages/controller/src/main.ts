@@ -5471,7 +5471,7 @@ export async function init(compactGroupId?: number): Promise<void> {
                                 prevNodeVersionState ? prevNodeVersionState.val : 'unknown'
                             } to ${nodeVersion}`
                         );
-                        if (os.platform() === 'linux') {
+                        if (os.platform() === 'linux' && process.env.IOB_NO_SETCAP !== 'true') {
                             // ensure capabilities are set
                             const capabilities = ['cap_net_admin', 'cap_net_bind_service', 'cap_net_raw'];
                             await tools.setExecutableCapabilities(process.execPath, capabilities, true, true, true);
