@@ -11,6 +11,7 @@
 - [hash](internal_.RepositoryInformation.md#hash)
 - [json](internal_.RepositoryInformation.md#json)
 - [link](internal_.RepositoryInformation.md#link)
+- [stable](internal_.RepositoryInformation.md#stable)
 - [time](internal_.RepositoryInformation.md#time)
 
 ## Properties
@@ -21,7 +22,7 @@
 
 #### Defined in
 
-[types-dev/objects.d.ts:985](https://github.com/ioBroker/ioBroker.js-controller/blob/bb39b56985d2141130fd7ada5e4d35b1a3779c05/packages/types-dev/objects.d.ts#L985)
+[types-dev/objects.d.ts:1018](https://github.com/ioBroker/ioBroker.js-controller/blob/dbd1caae0c23752b279143c9d5ad2a09f78a1127/packages/types-dev/objects.d.ts#L1018)
 
 ___
 
@@ -31,7 +32,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:984](https://github.com/ioBroker/ioBroker.js-controller/blob/bb39b56985d2141130fd7ada5e4d35b1a3779c05/packages/types-dev/objects.d.ts#L984)
+[types-dev/objects.d.ts:1017](https://github.com/ioBroker/ioBroker.js-controller/blob/dbd1caae0c23752b279143c9d5ad2a09f78a1127/packages/types-dev/objects.d.ts#L1017)
 
 ___
 
@@ -43,7 +44,19 @@ Url to the repository
 
 #### Defined in
 
-[types-dev/objects.d.ts:983](https://github.com/ioBroker/ioBroker.js-controller/blob/bb39b56985d2141130fd7ada5e4d35b1a3779c05/packages/types-dev/objects.d.ts#L983)
+[types-dev/objects.d.ts:1016](https://github.com/ioBroker/ioBroker.js-controller/blob/dbd1caae0c23752b279143c9d5ad2a09f78a1127/packages/types-dev/objects.d.ts#L1016)
+
+___
+
+### stable
+
+• `Optional` **stable**: `boolean`
+
+If this repository stable
+
+#### Defined in
+
+[types-dev/objects.d.ts:1021](https://github.com/ioBroker/ioBroker.js-controller/blob/dbd1caae0c23752b279143c9d5ad2a09f78a1127/packages/types-dev/objects.d.ts#L1021)
 
 ___
 
@@ -53,4 +66,4 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:986](https://github.com/ioBroker/ioBroker.js-controller/blob/bb39b56985d2141130fd7ada5e4d35b1a3779c05/packages/types-dev/objects.d.ts#L986)
+[types-dev/objects.d.ts:1019](https://github.com/ioBroker/ioBroker.js-controller/blob/dbd1caae0c23752b279143c9d5ad2a09f78a1127/packages/types-dev/objects.d.ts#L1019)

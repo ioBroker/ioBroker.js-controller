@@ -6,6 +6,10 @@
 
 ## __WORK IN PROGRESS__
 * (@foxriver76) updated plugin base and sentry plugin to version 2
+* (@foxriver76) enhanced translations for the `diskSpaceIssues` notification category
+
+## 6.0.11 (2024-08-21) - Kiera
+* (@foxriver76) only generate `packageUpdates` notification, if new updates detected
 
 ## 6.0.10 (2024-08-05) - Kiera
 * (foxriver76) fixed "alias subscription error" log 

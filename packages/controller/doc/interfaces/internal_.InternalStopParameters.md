@@ -34,7 +34,7 @@ Specify an optional exit code
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:572](https://github.com/ioBroker/ioBroker.js-controller/blob/bb39b56985d2141130fd7ada5e4d35b1a3779c05/packages/adapter/src/lib/_Types.ts#L572)
+[adapter/src/lib/_Types.ts:572](https://github.com/ioBroker/ioBroker.js-controller/blob/dbd1caae0c23752b279143c9d5ad2a09f78a1127/packages/adapter/src/lib/_Types.ts#L572)
 
 ___
 
@@ -46,7 +46,7 @@ If mode is schedule or once
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:579](https://github.com/ioBroker/ioBroker.js-controller/blob/bb39b56985d2141130fd7ada5e4d35b1a3779c05/packages/adapter/src/lib/_Types.ts#L579)
+[adapter/src/lib/_Types.ts:579](https://github.com/ioBroker/ioBroker.js-controller/blob/dbd1caae0c23752b279143c9d5ad2a09f78a1127/packages/adapter/src/lib/_Types.ts#L579)
 
 ___
 
@@ -58,7 +58,7 @@ If it has a restart schedule running
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:581](https://github.com/ioBroker/ioBroker.js-controller/blob/bb39b56985d2141130fd7ada5e4d35b1a3779c05/packages/adapter/src/lib/_Types.ts#L581)
+[adapter/src/lib/_Types.ts:581](https://github.com/ioBroker/ioBroker.js-controller/blob/dbd1caae0c23752b279143c9d5ad2a09f78a1127/packages/adapter/src/lib/_Types.ts#L581)
 
 ___
 
@@ -74,7 +74,7 @@ Specify an optional reason for stoppage
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:574](https://github.com/ioBroker/ioBroker.js-controller/blob/bb39b56985d2141130fd7ada5e4d35b1a3779c05/packages/adapter/src/lib/_Types.ts#L574)
+[adapter/src/lib/_Types.ts:574](https://github.com/ioBroker/ioBroker.js-controller/blob/dbd1caae0c23752b279143c9d5ad2a09f78a1127/packages/adapter/src/lib/_Types.ts#L574)
 
 ___
 
@@ -86,4 +86,4 @@ If alive state should be updated, if undefined defaults to true
 
 #### Defined in
 
-[adapter/src/lib/_Types.ts:583](https://github.com/ioBroker/ioBroker.js-controller/blob/bb39b56985d2141130fd7ada5e4d35b1a3779c05/packages/adapter/src/lib/_Types.ts#L583)
+[adapter/src/lib/_Types.ts:583](https://github.com/ioBroker/ioBroker.js-controller/blob/dbd1caae0c23752b279143c9d5ad2a09f78a1127/packages/adapter/src/lib/_Types.ts#L583)
