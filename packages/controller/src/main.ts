@@ -39,6 +39,7 @@ import {
     SYSTEM_REPOSITORIES_ID
 } from '@iobroker/js-controller-common-db/constants';
 import { PluginHandler } from '@iobroker/plugin-base';
+import type SentryPlugin from '@iobroker/plugin-sentry';
 import { BlocklistManager } from '@/lib/blocklistManager.js';
 import type { Client as ObjectsClient } from '@iobroker/db-objects-redis';
 import type { Client as StatesClient } from '@iobroker/db-states-redis';
@@ -616,8 +617,8 @@ function createStates(onConnect: () => void): void {
                 }
                 if (pluginHandler.isPluginActive(pluginName) !== state.val) {
                     if (state.val) {
-                        if (!pluginHandler.isPluginInstanciated(pluginName)) {
-                            pluginHandler.instanciatePlugin(
+                        if (!pluginHandler.isPluginInstantiated(pluginName)) {
+                            pluginHandler.instantiatePlugin(
                                 pluginName,
                                 pluginHandler.getPluginConfig(pluginName)!,
                                 controllerDir
@@ -712,16 +713,15 @@ async function initializeController(): Promise<void> {
         connected = true;
         if (!isStopping) {
             pluginHandler.setDatabaseForPlugins(objects, states);
-            pluginHandler.initPlugins(ioPackage, async () => {
-                states!.subscribe(`${hostObjectPrefix}.plugins.*`);
+            await pluginHandler.initPlugins(ioPackage);
+            states!.subscribe(`${hostObjectPrefix}.plugins.*`);
 
-                // Do not start if we're still stopping the instances
-                await checkHost();
-                startMultihost(config);
-                setMeta();
-                started = true;
-                getInstances();
-            });
+            // Do not start if we're still stopping the instances
+            await checkHost();
+            startMultihost(config);
+            setMeta();
+            started = true;
+            getInstances();
         }
     } else {
         connected = true;
@@ -3015,8 +3015,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             const level: string = msg.message.level;
             const extraInfo: Record<string, unknown> = msg.message.extraInfo;
 
-            // @ts-expect-error Plugin is not well typed and SentryPlugin has no types at all currently
-            const sentryObj = pluginHandler.getPluginInstance('sentry')?.getSentryObject();
+            const sentryObj = (
+                pluginHandler.getPluginInstance('sentry') as InstanceType<typeof SentryPlugin> | null
+            )?.getSentryObject();
 
             if (!sentryObj) {
                 logger.debug(`${hostLogPrefix} Do not send message "${message}" to Sentry, because it is disabled`);
