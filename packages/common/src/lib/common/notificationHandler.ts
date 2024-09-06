@@ -46,7 +46,7 @@ export interface CategoryConfigEntry {
 interface NotificationMessageObject {
     message: string;
     ts: number;
-    actionData?: ioBroker.NotificationAction;
+    contextData?: ioBroker.NotificationAction;
 }
 
 interface NotificationsObject {
@@ -288,14 +288,14 @@ export class NotificationHandler {
      * @param category - category of the message, if non we check against regex of scope
      * @param message - message to add
      * @param instance - instance e.g., hm-rpc.1 or hostname, if hostname it needs to be prefixed like system.host.rpi
-     * @param actionData - data for the notification action
+     * @param contextData - data for the notification action
      */
     async addMessage(
         scope: string,
         category: string | null | undefined,
         message: string,
         instance: string,
-        actionData?: ioBroker.NotificationAction
+        contextData?: ioBroker.NotificationAction
     ): Promise<void> {
         if (typeof instance !== 'string') {
             this.log.error(
@@ -349,7 +349,7 @@ export class NotificationHandler {
                 }
 
                 // add a new element at the beginning
-                this.currentNotifications[scope][_category][instance].unshift({ message, ts: Date.now(), actionData });
+                this.currentNotifications[scope][_category][instance].unshift({ message, ts: Date.now(), contextData });
             }
         }
 

@@ -7592,7 +7592,7 @@ export class AdapterClass extends EventEmitter {
         /** Static message (e.g. for messengers) */
         message: string,
         /** Dynamic message to be shown in admin. This object will be sent to instance to build the schema for dynamic layout (without `offlineMessage`) */
-        actionData?: ioBroker.NotificationAction
+        contextData?: ioBroker.NotificationAction
     ): Promise<void>;
 
     /**
@@ -7601,13 +7601,13 @@ export class AdapterClass extends EventEmitter {
      * @param scope - scope to be addressed
      * @param category - to be addressed, if a null message will be checked by regex of given scope
      * @param message - message to be stored/checked for messangers
-     * @param actionData - Information for the notification action in Admin
+     * @param contextData - Information for the notification action in Admin
      */
     async registerNotification(
         scope: unknown,
         category: unknown,
         message: unknown,
-        actionData?: unknown
+        contextData?: unknown
     ): Promise<void> {
         if (!this.#states) {
             // if states is no longer existing, we do not need to set
@@ -7630,7 +7630,7 @@ export class AdapterClass extends EventEmitter {
                 category,
                 message,
                 instance: this.namespace,
-                actionData
+                contextData
             },
             from: `system.adapter.${this.namespace}`
         };
