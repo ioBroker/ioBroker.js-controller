@@ -28,7 +28,7 @@ If custom messages are supported (same as legacy messagebox)
 
 #### Defined in
 
-[types-dev/objects.d.ts:495](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/objects.d.ts#L495)
+[types-dev/objects.d.ts:495](https://github.com/ioBroker/ioBroker.js-controller/blob/b63ccb8074d230ee4dfca2157807dab34ca19b65/packages/types-dev/objects.d.ts#L495)
 
 ___
 
@@ -40,7 +40,7 @@ If adapter supports the device manager and thus responds to the corresponding me
 
 #### Defined in
 
-[types-dev/objects.d.ts:501](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/objects.d.ts#L501)
+[types-dev/objects.d.ts:501](https://github.com/ioBroker/ioBroker.js-controller/blob/b63ccb8074d230ee4dfca2157807dab34ca19b65/packages/types-dev/objects.d.ts#L501)
 
 ___
 
@@ -52,7 +52,7 @@ If adapter supports getHistory message.
 
 #### Defined in
 
-[types-dev/objects.d.ts:503](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/objects.d.ts#L503)
+[types-dev/objects.d.ts:503](https://github.com/ioBroker/ioBroker.js-controller/blob/b63ccb8074d230ee4dfca2157807dab34ca19b65/packages/types-dev/objects.d.ts#L503)
 
 ___
 
@@ -64,7 +64,7 @@ If notification handling is supported, for information, see https://github.com/f
 
 #### Defined in
 
-[types-dev/objects.d.ts:497](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/objects.d.ts#L497)
+[types-dev/objects.d.ts:497](https://github.com/ioBroker/ioBroker.js-controller/blob/b63ccb8074d230ee4dfca2157807dab34ca19b65/packages/types-dev/objects.d.ts#L497)
 
 ___
 
@@ -76,4 +76,4 @@ If adapter supports signal stopInstance. Use number if you need more than 1000 m
 
 #### Defined in
 
-[types-dev/objects.d.ts:499](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/objects.d.ts#L499)
+[types-dev/objects.d.ts:499](https://github.com/ioBroker/ioBroker.js-controller/blob/b63ccb8074d230ee4dfca2157807dab34ca19b65/packages/types-dev/objects.d.ts#L499)

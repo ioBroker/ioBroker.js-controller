@@ -100,6 +100,7 @@ The main configuration is stored in `iobroker-data/iobroker.json`. Normally, the
 - [Certificate Handling](#certificate-handling)
 - [js-controller Host Messages](#js-controller-host-messages)
 - [Adapter Development](#adapter-development)
+- [Environment Variables](#environment-variables)
 
 ### Admin UI
 **Feature status:** stable
@@ -1297,10 +1298,22 @@ Following adapter methods support maintenance mode:
 
 *** Do not use this mode for any other purposes except sanitizing/cleaning/repairing of existing DBs (Object and States)***
 
+### Environment Variables
+Feature status: **stable**
+
+There are several environment variables which are respected by the js-controller. 
+
+#### `IOB_NO_SETCAP` (up from js-controller 6.1.X)
+By default, the js-controller sets some capabilities on the Node.js executable. 
+Currently, `cap_net_admin`, `cap_net_bind_service`, `cap_net_raw` are set to e.g. allow Node.js to start/stop BLE advertising without root privileges. On installation these are set by the ioBroker installer. 
+However, on upgrades of Node.js these get lost. If js-controller detects a Node.js upgrade, it will ensure that these capabilities are set again.
+
+In some scenarios, e.g. during development it may be useful to deactivate this feature. You can do so by settings the `IOB_NO_SETCAP` environment variable to `true`.
+
 ## Release cycle and Development process overview
 The goal is to release an update for the js-controller roughly all 6 months (April/September). The main reasons for this are shorter iterations and fewer changes that can be problematic for the users (and getting fast feedback) and also trying to stay up-to-date with the dependencies.
 
-For the dependencies, we will use depend-a-bot. In general, the goal is still to support a certain range of node.js LTS versions. Currently, js-controller 3.0 will start with nodes 10.x up to 12/14.x. If dependency updates break that and would require a major-release, this will be discussed and decided on core developer level BEFORE merging such a dependency change!
+For the dependencies, we will use depend-a-bot. In general, the goal is still to support a certain range of Node.js LTS versions. Currently, js-controller 3.0 will start with nodes 10.x up to 12/14.x. If dependency updates break that and would require a major-release, this will be discussed and decided on core developer level BEFORE merging such a dependency change!
 
 For the planned changes, we use a backlog approach. This means that out of the existing issues for the project, the core developers select issues to put into a prioritized backlog in the project view. Other users also can propose tickets. All merged PRs (also when unplanned/not prioritized before) are included as finished tickets in the project (so a project is assigned to them manually on merge).
 When a ticket is contained in the backlog, this does not mean that it will be done in the next version! But it helps if developers have some time to see what’s considered important. The current project will always get the name „Next Release“. All older projects will get the respective release version number to know the history.

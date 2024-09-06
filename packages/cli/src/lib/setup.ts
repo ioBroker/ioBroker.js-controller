@@ -1259,7 +1259,7 @@ async function processCommand(
         case 'restore': {
             const { BackupRestore } = await import('./setup/setupBackup.js');
 
-            dbConnect(params, ({ isOffline, objects, states }) => {
+            dbConnect(params, async ({ isOffline, objects, states }) => {
                 if (!isOffline) {
                     console.error(`Stop ${tools.appName} first!`);
                     return void callback(EXIT_CODES.CONTROLLER_RUNNING);
@@ -1273,17 +1273,16 @@ async function processCommand(
                     processExit: callback
                 });
 
-                backup.restoreBackup({
+                const { exitCode } = await backup.restoreBackup({
                     name: args[0],
                     force: !!params.force,
-                    dontDeleteAdapters: false,
-                    callback: ({ exitCode }) => {
-                        if (exitCode === EXIT_CODES.NO_ERROR) {
-                            console.log('System successfully restored!');
-                        }
-                        return void callback(exitCode);
-                    }
+                    dontDeleteAdapters: false
                 });
+
+                if (exitCode === EXIT_CODES.NO_ERROR) {
+                    console.log('System successfully restored!');
+                }
+                return void callback(exitCode);
             });
             break;
         }
@@ -1304,7 +1303,7 @@ async function processCommand(
                 try {
                     const filePath = await backup.createBackup(name);
                     console.log(`Backup created: ${filePath!}`);
-                    console.log('This backup can only be restored with js-controller version up from 4.1');
+                    console.log('This backup can only be restored with js-controller version 6.1 or higher');
                     return void callback(EXIT_CODES.NO_ERROR);
                 } catch (e) {
                     console.log(`Cannot create backup: ${e.message}`);

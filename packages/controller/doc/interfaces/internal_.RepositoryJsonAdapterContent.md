@@ -28,7 +28,7 @@ Array of blocked versions, each entry represents a semver range
 
 #### Defined in
 
-[types-dev/objects.d.ts:959](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/objects.d.ts#L959)
+[types-dev/objects.d.ts:992](https://github.com/ioBroker/ioBroker.js-controller/blob/b63ccb8074d230ee4dfca2157807dab34ca19b65/packages/types-dev/objects.d.ts#L992)
 
 ___
 
@@ -40,7 +40,7 @@ Adapter name
 
 #### Defined in
 
-[types-dev/objects.d.ts:955](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/objects.d.ts#L955)
+[types-dev/objects.d.ts:988](https://github.com/ioBroker/ioBroker.js-controller/blob/b63ccb8074d230ee4dfca2157807dab34ca19b65/packages/types-dev/objects.d.ts#L988)
 
 ___
 
@@ -52,4 +52,4 @@ Newest available version
 
 #### Defined in
 
-[types-dev/objects.d.ts:957](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/objects.d.ts#L957)
+[types-dev/objects.d.ts:990](https://github.com/ioBroker/ioBroker.js-controller/blob/b63ccb8074d230ee4dfca2157807dab34ca19b65/packages/types-dev/objects.d.ts#L990)
