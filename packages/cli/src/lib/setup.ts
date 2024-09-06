@@ -2907,11 +2907,11 @@ function unsetup(params: Record<string, any>, callback: ExitCodeCb): void {
             }
             objects.getObject('system.config', (_err, obj) => {
                 if (obj?.common.licenseConfirmed || obj?.common.language || obj?.native?.secret) {
-                    obj.common.licenseConfirmed = false;
                     obj.common.language = 'en';
                     // allow with parameter --keepsecret to not delete the secret
                     // This is very specific use case for vendors and must not be described in documentation
                     if (!params.keepsecret) {
+                        obj.common.licenseConfirmed = false;
                         obj.native && delete obj.native.secret;
                     }
 
