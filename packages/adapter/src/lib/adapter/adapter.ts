@@ -11523,7 +11523,7 @@ export class AdapterClass extends EventEmitter {
         if ((adapterConfig as ioBroker.InstanceObject).common.version !== packJson.version) {
             // TODO: think about to make upload automatically if a version on disk is newer than in DB. Now it is just hint in the log.
             this._logger.warn(
-                `${this.namespaceLog} Version in DB is ${(adapterConfig as ioBroker.InstanceObject).common.version}, but this version is ${packJson.version}. Please synchronise the adapter with "iob upload ${(adapterConfig as ioBroker.InstanceObject).common.name}".`
+                `${this.namespaceLog} Version in DB is ${(adapterConfig as ioBroker.InstanceObject).common.version}, but installed version is ${packJson.version}. Please synchronise the adapter with "iob upload ${(adapterConfig as ioBroker.InstanceObject).common.name}".`
             );
         }
 
