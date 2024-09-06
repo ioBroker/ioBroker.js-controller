@@ -160,14 +160,14 @@ export interface AdapterClass {
     /**
      * Extend an object and create it if it might not exist
      *
-     * @deprecated use `adapter.extendObject` without callback instead
+     * @deprecated use `adapter.extendObject` without a callback instead
      */
     extendObjectAsync(
         id: string,
         objPart: ioBroker.PartialObject,
         options?: ioBroker.ExtendObjectOptions
     ): ioBroker.SetObjectPromise;
-    /** Set capabilities of the given executable. Only works on Linux systems. */
+    /** Set the capabilities of the given executable. Only works on Linux systems. */
     setExecutableCapabilities(
         execPath: string,
         capabilities: string[],
@@ -194,7 +194,7 @@ export interface AdapterClass {
         params: ioBroker.GetObjectViewParams | null | undefined,
         options?: unknown
     ): ioBroker.GetObjectViewPromise<ioBroker.InferGetObjectViewItemType<Design, Search>>;
-    /** Returns a list of objects with id between params.startkey and params.endkey */
+    /** Returns a list of objects with id between `params.startkey` and `params.endkey` */
     getObjectListAsync(
         params: ioBroker.GetObjectListParams | null,
         options?: { sorted?: boolean } | Record<string, any>
@@ -288,7 +288,7 @@ export interface AdapterClass {
     delStateAsync(id: string, options?: unknown): Promise<void>;
     /** Deletes a state from the states DB, but not the associated object */
     delForeignStateAsync(id: string, options?: unknown): Promise<void>;
-    /** Read all states of this adapter which match the given pattern */
+    /** Read all states of this adapter that match the given pattern */
     getStatesAsync(pattern: string, options?: unknown): ioBroker.GetStatesPromise;
     /** Read all states (which might not belong to this adapter) which match the given pattern */
     getForeignStatesAsync(pattern: Pattern, options?: unknown): ioBroker.GetStatesPromise;
@@ -7220,7 +7220,7 @@ export class AdapterClass extends EventEmitter {
      * If no instance given (e.g. "pushover"), the callback argument will be ignored. Because normally many responses will come.
      *
      * @param instanceName name of the instance where the message must be sent to. E.g. "pushover.0" or "system.adapter.pushover.0".
-     * @param command command name, like "send", "browse", "list". Command is depend on target adapter implementation.
+     * @param command command name, like "send", "browse", "list". Command is depending on target adapter implementation.
      * @param message object that will be given as argument for request
      * @param callback optional return result
      *        ```js
@@ -7229,7 +7229,7 @@ export class AdapterClass extends EventEmitter {
      *              if (!result) adapter.log.error('No response received');
      *            }
      *        ```
-     * @param options optional options to define a timeout. This allows to get an error callback if no answer received in time (only if target is specific instance)
+     * @param options optional options to define a timeout. This allows getting an error callback if no answer received in time (only if target is specific instance)
      */
     sendTo(instanceName: unknown, command: unknown, message: unknown, callback?: unknown, options?: unknown): any {
         if (typeof message === 'function' && typeof callback === 'undefined') {
@@ -7263,12 +7263,12 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Async version of sendTo
-     * As we have a special case (first arg can be error or result, we need to promisify manually)
+     * As we have a special case (first arg can be an error or result, we need to promisify manually)
      *
      * @param instanceName name of the instance where the message must be sent to. E.g. "pushover.0" or "system.adapter.pushover.0".
      * @param command command name, like "send", "browse", "list". Command is depend on target adapter implementation.
      * @param message object that will be given as argument for request
-     * @param options optional options to define a timeout. This allows to get an error callback if no answer received in time (only if target is specific instance)
+     * @param options optional options to define a timeout. This allows getting an error callback if no answer received in time (only if target is specific instance)
      */
     sendToAsync(instanceName: unknown, command: unknown, message?: unknown, options?: unknown): any {
         return new Promise((resolve, reject) => {
@@ -8586,7 +8586,7 @@ export class AdapterClass extends EventEmitter {
                     }
 
                     let targetObj;
-                    // we ignore permissions on the target object and thus get it as admin user
+                    // we ignore permissions on the target object and thus get it as an admin user
                     try {
                         targetObj = await this.#objects.getObject(aliasId, {
                             ...options,
@@ -8671,7 +8671,7 @@ export class AdapterClass extends EventEmitter {
                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                     }
 
-                    // read object for formatting - we ignore permissions on the target object and thus get it as admin user
+                    // read an object for formatting - we ignore permissions on the target object and thus get it as an admin user
                     const targetObj = await this.#objects.getObject(targetId, {
                         ...options,
                         user: SYSTEM_ADMIN_USER
@@ -8980,7 +8980,7 @@ export class AdapterClass extends EventEmitter {
 
         if (id.startsWith(ALIAS_STARTS_WITH)) {
             if (obj?.common?.alias?.id) {
-                // id can be string or can have attribute id.read
+                // id can be a string or can have attribute id.read
                 const aliasId = tools.isObject(obj.common.alias.id) ? obj.common.alias.id.read : obj.common.alias.id;
 
                 // validate here because we use objects/states db directly
@@ -8994,7 +8994,7 @@ export class AdapterClass extends EventEmitter {
                 if (aliasId) {
                     let sourceObj;
                     try {
-                        // we ignore permissions on the source object and thus get it as admin user
+                        // we ignore permissions on the source object and thus get it as an admin user
                         sourceObj = (await this.#objects.getObject(aliasId, {
                             ...options,
                             user: SYSTEM_ADMIN_USER
@@ -11518,6 +11518,14 @@ export class AdapterClass extends EventEmitter {
         }
 
         this.adapterConfig = adapterConfig;
+
+        // Check that version in DB is the same as on disk
+        if ((adapterConfig as ioBroker.InstanceObject).common.version !== packJson.version) {
+            // TODO: think about to make upload automatically if a version on disk is newer than in DB. Now it is just hint in the log.
+            this._logger.warn(
+                `${this.namespaceLog} Version in DB is ${(adapterConfig as ioBroker.InstanceObject).common.version}, but this version is ${packJson.version}. Please synchronise the adapter with "iob upload ${(adapterConfig as ioBroker.InstanceObject).common.name}".`
+            );
+        }
 
         this._utils = new Validator(
             this.#objects,
