@@ -13,10 +13,6 @@ interface GetHostOptions {
 }
 
 export type TaskObject = ioBroker.SettableObject & {
-    /**
-eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee *
-eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-     */
     state?: ioBroker.SettableState;
 };
 

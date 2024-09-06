@@ -477,14 +477,7 @@ export function sanitizePath(
     id: string,
     name: string
 ): {
-    /**
-eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee *
-eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
-     */
-    id: string /**
-iiiiiiiiiiii *
-iiiiiiiiiiii
-                */;
+    id: string;
     name: string;
 } {
     if (!name) {
