@@ -413,9 +413,7 @@ function initializePlugins(config: Record<string, any>): Promise<void> {
     pluginHandler.addPlugins(config.plugins, tools.getControllerDir()); // ... plugins from iobroker.json
     pluginHandler.setDatabaseForPlugins(objects, states);
 
-    return new Promise(resolve => {
-        pluginHandler.initPlugins(ioPackage, () => resolve());
-    });
+    return pluginHandler.initPlugins(ioPackage);
 }
 
 /**

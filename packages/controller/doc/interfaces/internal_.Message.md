@@ -32,7 +32,7 @@ ID of this message
 
 #### Defined in
 
-[types-dev/index.d.ts:259](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/index.d.ts#L259)
+[types-dev/index.d.ts:259](https://github.com/ioBroker/ioBroker.js-controller/blob/b63ccb8074d230ee4dfca2157807dab34ca19b65/packages/types-dev/index.d.ts#L259)
 
 ___
 
@@ -48,7 +48,7 @@ Callback information. This is set when the source expects a response
 
 #### Defined in
 
-[types-dev/index.d.ts:253](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/index.d.ts#L253)
+[types-dev/index.d.ts:253](https://github.com/ioBroker/ioBroker.js-controller/blob/b63ccb8074d230ee4dfca2157807dab34ca19b65/packages/types-dev/index.d.ts#L253)
 
 ___
 
@@ -64,7 +64,7 @@ The command to be executed
 
 #### Defined in
 
-[types-dev/index.d.ts:247](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/index.d.ts#L247)
+[types-dev/index.d.ts:247](https://github.com/ioBroker/ioBroker.js-controller/blob/b63ccb8074d230ee4dfca2157807dab34ca19b65/packages/types-dev/index.d.ts#L247)
 
 ___
 
@@ -80,7 +80,7 @@ The source of this message
 
 #### Defined in
 
-[types-dev/index.d.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/index.d.ts#L251)
+[types-dev/index.d.ts:251](https://github.com/ioBroker/ioBroker.js-controller/blob/b63ccb8074d230ee4dfca2157807dab34ca19b65/packages/types-dev/index.d.ts#L251)
 
 ___
 
@@ -96,4 +96,4 @@ The message payload
 
 #### Defined in
 
-[types-dev/index.d.ts:249](https://github.com/ioBroker/ioBroker.js-controller/blob/34e3febb44c91492104ab37fef1775198d5dc796/packages/types-dev/index.d.ts#L249)
+[types-dev/index.d.ts:249](https://github.com/ioBroker/ioBroker.js-controller/blob/b63ccb8074d230ee4dfca2157807dab34ca19b65/packages/types-dev/index.d.ts#L249)
