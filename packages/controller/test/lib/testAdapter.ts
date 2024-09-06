@@ -141,7 +141,7 @@ export default function testAdapter(options: Record<string, any>): void {
                     cb();
                 }
             } else {
-                setTimeout(() => checkConnectionOfAdapter(isConnected, cb, counter! + 1), 1_000);
+                setTimeout(() => checkConnectionOfAdapter(isConnected, cb, counter + 1), 1_000);
             }
         });
     }
@@ -215,7 +215,7 @@ export default function testAdapter(options: Record<string, any>): void {
 
             if (objectsConfig.type !== 'file') {
                 const objs = fs.readJSONSync(path.join(thisDir, 'objects.json'));
-                await addObjects(_objects!, objs);
+                await addObjects(context.objects, objs);
                 await startAdapter();
             } else {
                 await startAdapter();
@@ -245,10 +245,10 @@ export default function testAdapter(options: Record<string, any>): void {
                 // @ts-expect-error should not exist
                 expect(context.adapter.objects).to.be.undefined;
                 expect(context.adapter.log).to.be.ok;
-                expect(context.adapter.log!.info).to.be.a('function');
-                expect(context.adapter.log!.debug).to.be.a('function');
-                expect(context.adapter.log!.warn).to.be.a('function');
-                expect(context.adapter.log!.error).to.be.a('function');
+                expect(context.adapter.log.info).to.be.a('function');
+                expect(context.adapter.log.debug).to.be.a('function');
+                expect(context.adapter.log.warn).to.be.a('function');
+                expect(context.adapter.log.error).to.be.a('function');
                 expect(context.adapter.config.paramString).to.be.equal('value1');
                 expect(context.adapter.config.paramNumber).to.be.equal(42);
                 expect(context.adapter.config.paramBoolean).to.be.equal(false);

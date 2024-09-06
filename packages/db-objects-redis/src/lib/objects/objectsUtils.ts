@@ -302,7 +302,12 @@ export function getUserGroup(
     objects.getObjectList(
         { startkey: 'system.group.', endkey: 'system.group.\u9999' },
         { checked: true },
-        (err: Error, arr: { rows: Array<ioBroker.GetObjectViewItem<ioBroker.GroupObject>> }) => {
+        (
+            err: Error,
+            arr: {
+                rows: Array<ioBroker.GetObjectViewItem<ioBroker.GroupObject>>;
+            }
+        ) => {
             if (err) {
                 error = err;
             }
@@ -325,7 +330,12 @@ export function getUserGroup(
             objects.getObjectList(
                 { startkey: 'system.user.', endkey: 'system.user.\u9999' },
                 { checked: true },
-                (err?: Error | null, arr?: { rows: ioBroker.GetObjectListItem<ioBroker.UserObject>[] }) => {
+                (
+                    err?: Error | null,
+                    arr?: {
+                        rows: ioBroker.GetObjectListItem<ioBroker.UserObject>[];
+                    }
+                ) => {
                     if (err) {
                         error = err;
                     }
@@ -463,7 +473,20 @@ export function getUserGroup(
     );
 }
 
-export function sanitizePath(id: string, name: string): { id: string; name: string } {
+export function sanitizePath(
+    id: string,
+    name: string
+): {
+    /**
+eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee *
+eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+     */
+    id: string /**
+iiiiiiiiiiii *
+iiiiiiiiiiii
+                */;
+    name: string;
+} {
     if (!name) {
         name = '';
     }

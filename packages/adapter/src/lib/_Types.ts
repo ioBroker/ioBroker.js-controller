@@ -1,5 +1,12 @@
 export interface AdapterOptions {
-    subscribesChange?: (subs: Record<string, { regex: RegExp }>) => void;
+    subscribesChange?: (
+        subs: Record<
+            string,
+            {
+                regex: RegExp;
+            }
+        >
+    ) => void;
     /** If the adapter collects logs from all adapters (experts only). Default: false */
     logTransporter?: boolean;
     /** if true, the date format from system.config */
@@ -61,7 +68,6 @@ type MessageUnsubscribeReason = 'client' | 'disconnect';
 export type ClientUnsubscribeReason = MessageUnsubscribeReason | 'clientSubscribeError';
 type UserInterfaceClientUnsubscribeReason = ClientUnsubscribeReason | 'timeout';
 
-// eslint-disable-next-line @typescript-eslint/ban-types
 type Invoice = 'free' | (string & {});
 
 export interface SuitableLicense {
@@ -292,7 +298,10 @@ export interface InternalCheckGroupOptions {
     callback?: CheckGroupCallback;
 }
 
-export type CommandsPermissionsEntry = { type: 'object' | 'state' | '' | 'other' | 'file'; operation: string };
+export type CommandsPermissionsEntry = {
+    type: 'object' | 'state' | '' | 'other' | 'file';
+    operation: string;
+};
 export type CommandsPermissionsObject = {
     [permission: string]: CommandsPermissionsEntry;
 };

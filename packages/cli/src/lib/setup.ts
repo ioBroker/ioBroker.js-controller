@@ -1302,7 +1302,7 @@ async function processCommand(
 
                 try {
                     const filePath = await backup.createBackup(name);
-                    console.log(`Backup created: ${filePath!}`);
+                    console.log(`Backup created: ${filePath}`);
                     console.log('This backup can only be restored with js-controller version 6.1 or higher');
                     return void callback(EXIT_CODES.NO_ERROR);
                 } catch (e) {
@@ -1693,7 +1693,7 @@ async function processCommand(
                                     }
                                     count++;
                                     objects.chownFile(
-                                        row.value.common.name as string,
+                                        row.value.common.name,
                                         '*',
                                         {
                                             user: 'system.user.admin',
@@ -2632,7 +2632,7 @@ async function processCommand(
                                 return void callback(EXIT_CODES.INVALID_REPO);
                             }
                         } else {
-                            console.warn('Unknown repo command: ' + repoUrlOrCommand);
+                            console.warn(`Unknown repo command: ${repoUrlOrCommand as string}`);
                             return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                         }
                     }

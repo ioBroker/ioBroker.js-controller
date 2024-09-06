@@ -1,4 +1,3 @@
-/* eslint-disable require-await */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 import { maybeCallback, maybeCallbackWithError, maybeCallbackWithRedisError } from '@/lib/common/maybeCallback.js';
@@ -6,7 +5,7 @@ import { maybeCallback, maybeCallbackWithError, maybeCallbackWithRedisError } fr
 // ============================================================
 // maybeCallbackWithError => Callback
 
-async () => {
+() => {
     // maybeCallbackWithError, empty callback
     const cb = (): void => {};
 
@@ -29,7 +28,7 @@ async () => {
     maybeCallbackWithError(cb, 'this is an error', 'why', 'are', 'you', 'calling', 'me', 'with', 'arguments');
 };
 
-async () => {
+() => {
     // maybeCallbackWithError, callback only takes an error argument
     const cb = (err?: Error | null): void => {};
 
@@ -52,14 +51,14 @@ async () => {
     maybeCallbackWithError(cb, 'this is an error', 'why', 'are', 'you', 'calling', 'me', 'with', 'arguments');
 };
 
-async () => {
+() => {
     // maybeCallbackWithError, callback only takes an argument that's not compatible with Error
     const cb = (err?: number): void => {};
     // @ts-expect-error
     maybeCallbackWithError(cb, null);
 };
 
-async () => {
+() => {
     // maybeCallbackWithError, callback takes an error and some additional args
     const cb = (err: Error | null | undefined, arg1: number, arg2: string): void => {};
 
@@ -96,7 +95,7 @@ async () => {
 // ============================================================
 // maybeCallbackWithError => Promise
 
-async () => {
+() => {
     // maybeCallbackWithError, empty callback, or maybe no callback
     const cb = undefined as (() => void) | undefined;
 
@@ -153,7 +152,7 @@ async () => {
 // ============================================================
 // maybeCallbackWithRedisError => Callback
 
-async () => {
+() => {
     // maybeCallbackWithRedisError, empty callback
     const cb = (): void => {};
 
@@ -176,7 +175,7 @@ async () => {
     maybeCallbackWithRedisError(cb, 'this is an error', 'why', 'are', 'you', 'calling', 'me', 'with', 'arguments');
 };
 
-async () => {
+() => {
     // maybeCallbackWithRedisError, callback only takes an error argument
     const cb = (err?: Error | null): void => {};
 
@@ -199,14 +198,14 @@ async () => {
     maybeCallbackWithRedisError(cb, 'this is an error', 'why', 'are', 'you', 'calling', 'me', 'with', 'arguments');
 };
 
-async () => {
+() => {
     // maybeCallbackWithRedisError, callback only takes an argument that's not compatible with Error
     const cb = (err?: number): void => {};
     // @ts-expect-error
     maybeCallbackWithRedisError(cb, null);
 };
 
-async () => {
+() => {
     // maybeCallbackWithRedisError, callback takes an error and some additional args
     const cb = (err: Error | null | undefined, arg1: number, arg2: string): void => {};
 
@@ -243,7 +242,7 @@ async () => {
 // ============================================================
 // maybeCallback => Callback
 
-async () => {
+() => {
     // maybeCallback, empty callback
     const cb = (): void => {};
 
@@ -255,7 +254,7 @@ async () => {
     maybeCallback(cb, 'why', 'are', 'you', 'calling', 'me', 'with', 'arguments');
 };
 
-async () => {
+() => {
     // maybeCallback, callback takes some args
     const cb = (arg1: number, arg2?: string): void => {};
 
@@ -277,7 +276,7 @@ async () => {
 // ============================================================
 // maybeCallback => Promise
 
-async () => {
+() => {
     // maybeCallback, empty callback, or maybe no callback
     const cb = undefined as (() => void) | undefined;
 

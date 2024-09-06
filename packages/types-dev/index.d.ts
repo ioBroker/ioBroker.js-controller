@@ -323,6 +323,7 @@ declare global {
                 | 'fileToJsonl';
             [other: string]: string;
         }
+        // eslint-disable-next-line @typescript-eslint/no-empty-object-type
         interface AdapterConfig {
             // This is a stub to be augmented in every adapter
         }

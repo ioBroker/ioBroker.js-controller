@@ -184,8 +184,12 @@ export class AdapterAutoUpgradeManager {
     private async getRepository(name: string): Promise<Record<string, ioBroker.RepositoryJsonAdapterContent>> {
         const obj = await this.objects.getObjectAsync('system.repositories');
 
-        const jsonContent: (ioBroker.RepositoryJson & { _repoInfo?: any }) | null | undefined =
-            obj?.native?.repositories?.[name]?.json;
+        const jsonContent:
+            | (ioBroker.RepositoryJson & {
+                  _repoInfo?: any;
+              })
+            | null
+            | undefined = obj?.native?.repositories?.[name]?.json;
 
         if (!jsonContent) {
             throw new Error(`Could not get repository information for "${name}"`);
@@ -219,9 +223,9 @@ export class AdapterAutoUpgradeManager {
             .map(row => {
                 return {
                     // ts can not infer, that we filtered out falsy row.value entries
-                    name: row.value!.common.name,
-                    version: row.value!.common.version,
-                    upgradePolicy: row.value!.common.automaticUpgrade! || defaultPolicy
+                    name: row.value.common.name,
+                    version: row.value.common.version,
+                    upgradePolicy: row.value.common.automaticUpgrade! || defaultPolicy
                 };
             });
     }

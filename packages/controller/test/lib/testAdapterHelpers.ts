@@ -307,7 +307,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             },
             2 ** 32 / 2 - 1
         );
-        context.adapter.clearTimeout(timeout!);
+        context.adapter.clearTimeout(timeout);
 
         // is valid
         context.adapter.setTimeout(() => {
@@ -341,14 +341,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             },
             2 ** 32 / 2 - 1
         );
-        context.adapter.clearInterval(interval!);
+        context.adapter.clearInterval(interval);
 
         // is valid
         interval = context.adapter.setInterval(() => {
             /** pass */
         }, 0);
 
-        context.adapter.clearInterval(interval!);
+        context.adapter.clearInterval(interval);
 
         expect(() => {
             context.adapter.setInterval(

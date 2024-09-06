@@ -150,7 +150,7 @@ export class Validator {
      * @param options optional
      * @throws Error when id is invalid
      */
-    validateId(id: string | any, isForeignId: boolean, options?: ValidateIdOptions | null): asserts id is string {
+    validateId(id: any, isForeignId: boolean, options?: ValidateIdOptions | null): asserts id is string {
         // there is a special maintenance mode to clear the DB from invalid IDs
         if (options && options.maintenance && options.user === SYSTEM_ADMIN_USER) {
             return;

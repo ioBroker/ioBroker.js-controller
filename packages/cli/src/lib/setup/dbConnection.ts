@@ -51,7 +51,7 @@ export async function dbConnect(
         onlyCheck = false;
     }
     if (typeof params === 'function') {
-        callback = params as DbConnectCallback;
+        callback = params;
         params = {};
     }
 
@@ -202,7 +202,7 @@ export async function dbConnect(
                         change: (id, msg) => states?.onChange(id, msg)
                     });
                     // @ts-expect-error todo according to types and first look states.onchange does not exist
-                    states!.onChange = null; // here the custom onChange handler could be installed
+                    states.onChange = null; // here the custom onChange handler could be installed
                 } else {
                     if (states) {
                         // Destroy Client we tried to connect with
@@ -260,7 +260,7 @@ export async function dbConnect(
     );
 
     // try to connect as client
-    objects = new Objects!({
+    objects = new Objects({
         connection: config.objects,
         logger: {
             silly: (_msg: string) => {
@@ -282,7 +282,7 @@ export async function dbConnect(
             isObjectConnected = true;
 
             if (isStatesConnected && typeof callback === 'function') {
-                const isOffline = await checkSystemOffline(onlyCheck as boolean);
+                const isOffline = await checkSystemOffline(onlyCheck);
                 try {
                     await initializePlugins(config);
                 } catch {
@@ -293,7 +293,7 @@ export async function dbConnect(
         }
     });
 
-    states = new States!({
+    states = new States({
         connection: config.states,
         logger: {
             silly: (_msg: string) => {
@@ -315,7 +315,7 @@ export async function dbConnect(
             isStatesConnected = true;
 
             if (isObjectConnected && typeof callback === 'function') {
-                const isOffline = await checkSystemOffline(onlyCheck as boolean);
+                const isOffline = await checkSystemOffline(onlyCheck);
                 try {
                     await initializePlugins(config);
                 } catch {

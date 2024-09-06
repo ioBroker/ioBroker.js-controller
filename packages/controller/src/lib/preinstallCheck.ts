@@ -81,7 +81,7 @@ function checkNpmVersion(): Promise<string> {
                 }
             );
         } catch (e) {
-            reject(e);
+            reject(e as Error);
         }
     });
 }

@@ -17,7 +17,7 @@ import deepClone from 'deep-clone';
 /**
  * This class inherits InMemoryFileDB class and adds all relevant logic for objects
  * including the available methods for use by js-controller directly
- **/
+ */
 export class ObjectsInMemoryFileDB extends InMemoryFileDB {
     constructor(settings) {
         settings = settings || {};
@@ -34,11 +34,9 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         }
 
         this.META_ID = '**META**';
-        /** @type {Record<string, any>} */
         this.fileOptions = {};
         this.files = {};
         this.writeTimer = null;
-        /** @type {string[]} */
         this.writeIds = [];
         this.preserveSettings = ['custom'];
         this.defaultNewAcl = this.settings.defaultNewAcl || null;
@@ -455,12 +453,11 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
     /**
      * Check if given object exists
      *
-     * @param {string} id id of the object
-     * @param {object} [_options] optional user context
-     * @return {boolean}
+     * @param id id of the object
+     * @returns if the object exists
      */
     // needed by server
-    _objectExists(id, _options) {
+    _objectExists(id) {
         if (!id || typeof id !== 'string') {
             throw new Error(`invalid id ${JSON.stringify(id)}`);
         }
@@ -477,9 +474,9 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
     /**
      * Check if given file exists
      *
-     * @param {string} id id of the namespace
-     * @param {string} [name] name of the file
-     * @returns {boolean}
+     * @param id id of the namespace
+     * @param [name] name of the file
+     * @returns
      */
     // needed by server
     _fileExists(id, name) {
@@ -504,9 +501,9 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
     /**
      * Check if given directory exists
      *
-     * @param {string} id id of the namespace
-     * @param {string} [name] name of the directory
-     * @returns {boolean}
+     * @param id id of the namespace
+     * @param [name] name of the directory
+     * @returns
      */
     // special functionality only for Server (used together with SyncFileDirectory)
     dirExists(id, name) {
@@ -621,7 +618,6 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         const len = name ? name.length : 0;
         for (const f of Object.keys(this.fileOptions[id])) {
             if (!name || f.substring(0, len) === name) {
-                /** @type {string|string[]} */
                 let rest = f.substring(len);
                 rest = rest.split('/', 2);
                 if (rest[0] && _files.indexOf(rest[0]) === -1) {
@@ -868,8 +864,8 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
     /**
      * Get value of given meta id
      *
-     * @param {string} id
-     * @returns {*}
+     * @param id
+     * @returns
      */
     getMeta(id) {
         const meta = this._ensureMetaDict();
@@ -879,8 +875,8 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
     /**
      * Sets given value to id in metaNamespace
      *
-     * @param {string} id
-     * @param {string} value
+     * @param id
+     * @param value
      */
     setMeta(id, value) {
         const meta = this._ensureMetaDict();
@@ -916,8 +912,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
     /**
      * Delete the given object from the dataset
      *
-     * @param  {string} id unique id of the object
-     * @private
+     * @param id unique id of the object
      */
     _delObject(id) {
         const obj = this.dataset[id];
@@ -950,7 +945,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
             rows: []
         };
 
-        // eslint-disable-next-line no-unused-vars
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         function _emit_(id, obj) {
             result.rows.push({ id: id, value: obj });
         }

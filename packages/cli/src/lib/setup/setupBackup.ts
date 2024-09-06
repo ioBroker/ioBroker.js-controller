@@ -732,7 +732,10 @@ export class BackupRestore {
 
         for await (let line of rlStates) {
             line = line.replace(this.HOSTNAME_PLACEHOLDER_REGEX, hostname);
-            const state: { id: string; state: ioBroker.State } = JSON.parse(line);
+            const state: {
+                id: string;
+                state: ioBroker.State;
+            } = JSON.parse(line);
             await this._setStateHelper(state.id, state.state);
             count++;
         }

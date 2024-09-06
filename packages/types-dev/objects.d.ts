@@ -1075,7 +1075,7 @@ declare global {
                 | 'packageUpdates'
                 | 'systemRebootRequired'
                 | 'diskSpaceIssues'
-                | string;
+                | (string & {});
             /** The human-readable category name */
             name: Translated;
             /** The human-readable category description */

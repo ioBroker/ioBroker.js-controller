@@ -347,7 +347,10 @@ export class Upload {
         adapter: string,
         path: string,
         logger: Logger | typeof console
-    ): Promise<{ filesToDelete: File[]; dirs: File[] }> {
+    ): Promise<{
+        filesToDelete: File[];
+        dirs: File[];
+    }> {
         let _files: File[] = [];
         let _dirs: File[] = [];
         let files: ioBroker.ReadDirResult[];

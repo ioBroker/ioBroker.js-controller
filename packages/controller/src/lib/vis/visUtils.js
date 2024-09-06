@@ -13,8 +13,8 @@ function deepClone(obj) {
 /**
  * Determine if the string is of form identifier:ioBrokerId, like, val:hm-rpc.0.device.channel.state
  *
- * @param {string} assignment the possible assignment to check
- * @return {boolean}
+ * @param assignment the possible assignment to check
+ * @returns
  */
 function isIdBinding(assignment) {
     return !!assignment.match(/^[\d\w_]+:\s?[-.\d\w_#]+$/);

@@ -469,7 +469,7 @@ export class Users {
                     if (err || !res) {
                         return tools.maybeCallbackWithError(
                             callback,
-                            `Password for user "${result.username as string}" does not match${err ? `: ${err.message}` : ''}`
+                            `Password for user "${result.username}" does not match${err ? `: ${err.message}` : ''}`
                         );
                     } else {
                         return tools.maybeCallbackWithError(callback, null);

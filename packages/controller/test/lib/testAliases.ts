@@ -292,26 +292,26 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         let states = await context.adapter.getForeignStatesAsync(gAliasID + '1');
         // No scaling because no % and no min, max in source object
-        expect(states![gAliasID + '1'].val).to.be.equal(5);
-        expect(states![gAliasID + '1'].ack).to.be.true;
+        expect(states[gAliasID + '1'].val).to.be.equal(5);
+        expect(states[gAliasID + '1'].ack).to.be.true;
 
         // original array should not be changed
         const ids = [nonAliasId1, gAliasID + '1', nonAliasId2];
 
         states = await context.adapter.getForeignStatesAsync(ids);
         expect(ids[0]).to.be.equal(nonAliasId1);
-        expect(states![nonAliasId1].val).to.be.equal(3);
-        expect(states![nonAliasId1].ack).to.be.true;
+        expect(states[nonAliasId1].val).to.be.equal(3);
+        expect(states[nonAliasId1].ack).to.be.true;
 
         // It must be scaled from -100, 2, 100
         // to                     -10, 0.2, 10
         expect(ids[1]).to.be.equal(gAliasID + '1');
-        expect(states![gAliasID + '1'].val).to.be.equal(5);
-        expect(states![gAliasID + '1'].ack).to.be.true;
+        expect(states[gAliasID + '1'].val).to.be.equal(5);
+        expect(states[gAliasID + '1'].ack).to.be.true;
 
         expect(ids[2]).to.be.equal(nonAliasId2);
-        expect(states![nonAliasId2].val).to.be.equal(2);
-        expect(states![nonAliasId2].ack).to.be.true;
+        expect(states[nonAliasId2].val).to.be.equal(2);
+        expect(states[nonAliasId2].ack).to.be.true;
     }).timeout(3_000);
 
     it(testName + 'Write alias state', done => {

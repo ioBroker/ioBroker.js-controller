@@ -10,22 +10,22 @@
  *      The created hash is of the following format: <algorithm>$<iterations>$<hash>$<salt>
  *
  *      Usage Example:
-
+ 
  var password = require('./lib/password.js');
-
+ 
  password('test').hash(null, null, function (err, res) {
     console.log(res);
-
+ 
     password('test').check(res, function (err, res) {
         console.log('test: ' + res);
     });
-
+ 
     password('muh').check(res, function (err, res) {
         console.log('muh: ' + res);
     });
-
+ 
  });
-
+ 
  *
  */
 

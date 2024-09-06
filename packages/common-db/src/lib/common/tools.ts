@@ -1896,7 +1896,10 @@ export interface CertificateInfo {
     /** subject that is signed */
     subject: Record<string, any>;
     /** server name this certificate belong to */
-    dnsNames: { type: number; value: string }[];
+    dnsNames: {
+        type: number;
+        value: string;
+    }[];
     /** this certificate can be used for the following purposes */
     keyUsage: Record<string, any>;
     /** usable or client, server or ... */
@@ -2310,6 +2313,7 @@ export function promisify(
         return new Promise<void | Record<string, any> | any[]>(async (resolve, reject) => {
             try {
                 // await this to allow streamlining errors not passed via callback by async methods
+                // eslint-disable-next-line @typescript-eslint/await-thenable
                 await fn.apply(
                     context,
                     args.concat([
@@ -2346,7 +2350,7 @@ export function promisify(
                     ])
                 );
             } catch (e) {
-                reject(e);
+                reject(e as Error);
             }
         });
     };

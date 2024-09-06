@@ -333,15 +333,15 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         objects
             .getObjectList({ startkey: namespace, endkey: testId })
             .then(res => {
-                expect(res!.rows.length).to.be.equal(3);
-                const obj = res!.rows.find(val => val.value._id === testId);
+                expect(res.rows.length).to.be.equal(3);
+                const obj = res.rows.find(val => val.value._id === testId);
                 expect(obj!.id).to.be.equal(testId);
                 expect(obj!.value._id).to.be.equal(testId);
                 return objects.getObjectList({ startkey: '', endkey: ' ' });
             })
             .then(res => {
                 console.log(JSON.stringify(res));
-                expect(res!.rows.length).to.be.equal(0);
+                expect(res.rows.length).to.be.equal(0);
                 done();
             })
             .catch(err => {
@@ -389,9 +389,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
 
         // now check that our object view contains our object
-        expect(doc!.rows).to.be.an('array');
-        expect(doc!.rows.length).to.be.equal(1);
-        expect(doc!.rows[0].value._id).to.be.equal('testAdapter.test');
+        expect(doc.rows).to.be.an('array');
+        expect(doc.rows.length).to.be.equal(1);
+        expect(doc.rows[0].value._id).to.be.equal('testAdapter.test');
 
         // @ts-expect-error put it back on
         context.objects.useSets = true;

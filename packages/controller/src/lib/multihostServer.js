@@ -13,7 +13,16 @@ import { tools as dbTools } from '@iobroker/js-controller-common-db';
 const PORT = 50005;
 const MULTICAST_ADDR = '239.255.255.250';
 
-/** @class */
+/**
+ * The Multihost Server allows connection from other ioBroker hosts
+ *
+ * @param hostname
+ * @param logger
+ * @param config
+ * @param info
+ * @param ips
+ * @param secret
+ */
 export function MHServer(hostname, logger, config, info, ips, secret) {
     const count = 0;
     const buffer = {};
@@ -85,7 +94,9 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
 
         hash.on('readable', () => {
             const data = hash.read();
-            data && callback(data.toString('hex'));
+            if (data) {
+                callback(data.toString('hex'));
+            }
         });
 
         hash.write(secret + salt);
@@ -216,7 +227,7 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
                 }, 5000);
         });
 
-        server.on('close', _err => {
+        server.on('close', () => {
             server = null;
 
             if (!initTimer && !stopped) {
@@ -296,7 +307,9 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
                 server = null;
             } catch {
                 server = null;
-                callback && callback();
+                if (callback) {
+                    callback();
+                }
             }
         } else if (callback) {
             callback();

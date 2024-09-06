@@ -12,7 +12,13 @@ interface GetHostOptions {
     config: ioBroker.IoBrokerJson;
 }
 
-export type TaskObject = ioBroker.SettableObject & { state?: ioBroker.SettableState };
+export type TaskObject = ioBroker.SettableObject & {
+    /**
+eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee *
+eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+     */
+    state?: ioBroker.SettableState;
+};
 
 export function getHostObjects(options: GetHostOptions): TaskObject[] {
     const { id, hostname, isCompactGroupController, config } = options;

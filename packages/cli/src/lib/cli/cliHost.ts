@@ -122,7 +122,7 @@ export class CLIHost extends CLICommand {
                 const instances = await enumInstances(objects);
                 const instancesToRename = instances.filter(i => i?.common.host === hostname);
                 for (const instance of instancesToRename) {
-                    await changeInstanceHost(objects, instance!, newHostname);
+                    await changeInstanceHost(objects, instance, newHostname);
                 }
 
                 // Notify the user that we are done
@@ -262,7 +262,7 @@ export class CLIHost extends CLICommand {
 
                         // And save it
                         try {
-                            await objects.setObjectAsync(object._id, object!);
+                            await objects.setObjectAsync(object._id, object);
                         } catch (err) {
                             CLI.error.cannotChangeObject(object._id, err.message);
                         }

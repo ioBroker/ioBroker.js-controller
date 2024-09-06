@@ -16,11 +16,11 @@ import { tools } from '@iobroker/js-controller-common-db';
 
 /**
  * Normalizes options for the JsonlDB
- * @param {Record<string, any> | undefined} conf The jsonlOptions options from iobroker.json
- * @returns {import("@alcalzone/jsonl-db").JsonlDBOptions<any>}
+ *
+ * @param conf The jsonlOptions options from iobroker.json
+ * @returns
  */
 function normalizeJsonlOptions(conf = {}) {
-    /** @type {import("@alcalzone/jsonl-db").JsonlDBOptions<any>} */
     const ret = {
         autoCompress: {
             // Compress when the number of uncompressed entries has grown a lot
@@ -83,7 +83,7 @@ function normalizeJsonlOptions(conf = {}) {
 /**
  * This class inherits InMemoryFileDB class and adds all relevant logic for objects
  * including the available methods for use by js-controller directly
- **/
+ */
 export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
     constructor(settings) {
         settings = settings || {};
@@ -98,7 +98,6 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
         };
         super(settings);
 
-        /** @type {JsonlDB<any>} */
         this._db = new JsonlDB(path.join(this.dataDir, settings.jsonlDB.fileName), jsonlOptions);
     }
 
@@ -109,27 +108,43 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
 
         // Create an object-like wrapper around the internal Map
         this.dataset = new Proxy(this._db, {
-            /** @param {any} prop */
+            /**
+             * @param target
+             * @param prop
+             */
             get(target, prop) {
                 return target.get(prop);
             },
-            /** @param {any} prop */
+            /**
+             * @param target
+             * @param prop
+             */
             has(target, prop) {
                 return target.has(prop);
             },
-            /** @param {any} prop */
+            /**
+             * @param target
+             * @param prop
+             * @param value
+             */
             set(target, prop, value) {
                 target.set(prop, value);
                 return true;
             },
-            /** @param {any} prop */
+            /**
+             * @param target
+             * @param prop
+             */
             deleteProperty(target, prop) {
                 return target.delete(prop);
             },
             ownKeys(target) {
                 return [...target.keys()];
             },
-            /** @param {any} prop */
+            /**
+             * @param target
+             * @param prop
+             */
             getOwnPropertyDescriptor(target, prop) {
                 if (!target.has(prop)) {
                     return undefined;
@@ -152,7 +167,8 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
 
     /**
      * Checks if an existing file DB should be migrated to JSONL
-     * @returns {Promise<boolean>} true if the file DB was migrated. false if not.
+     *
+     * @returns true if the file DB was migrated. false if not.
      * If this returns true, the jsonl DB was opened and doesn't need to be opened again.
      */
     async _maybeMigrateFileDB() {
@@ -190,7 +206,6 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
         }
 
         // Figure out which file needs to be imported
-        /** @type {string} */
         let importFilename;
         if (jsonTimeStamp > 0 && jsonTimeStamp >= bakTimeStamp && jsonTimeStamp >= jsonlTimeStamp) {
             importFilename = jsonFileName;

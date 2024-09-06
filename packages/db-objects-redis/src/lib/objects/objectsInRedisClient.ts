@@ -1041,11 +1041,19 @@ export class ObjectsInRedisClient {
         id: string,
         name: string,
         data: Buffer | string,
-        options: { virtualFile?: any; user?: any; group?: any; mode?: any; mimeType?: string },
+        options: {
+            virtualFile?: any;
+            user?: any;
+            group?: any;
+            mode?: any;
+            mimeType?: string;
+        },
         callback: ioBroker.ErrorCallback | undefined,
         meta: {
             acl?: Record<string, any>;
-            stats?: { size: number };
+            stats?: {
+                size: number;
+            };
             notExists?: boolean;
             mimeType?: string;
             binary?: boolean;
@@ -2005,7 +2013,7 @@ export class ObjectsInRedisClient {
                 } else {
                     // we create a dummy file (for file this file exists to store meta data) - do not override passed options
                     options = { ...options, virtualFile: true };
-                    const realName = dirName + (dirName!.endsWith('/') ? '' : '/');
+                    const realName = dirName + (dirName.endsWith('/') ? '' : '/');
                     this.writeFile(id, `${realName}_data.json`, '', options, callback);
                 }
             }
@@ -2519,7 +2527,7 @@ export class ObjectsInRedisClient {
                 } else {
                     return this._subscribeFile(id, pattern)
                         .then(() => resolve())
-                        .catch(err => reject(err));
+                        .catch((err: Error) => reject(err));
                 }
             });
         });
@@ -2533,7 +2541,7 @@ export class ObjectsInRedisClient {
                 } else {
                     return this._unsubscribeFile(id, pattern)
                         .then(() => resolve())
-                        .catch(err => reject(err));
+                        .catch((err: Error) => reject(err));
                 }
             });
         });
@@ -3415,7 +3423,7 @@ export class ObjectsInRedisClient {
                 if (err) {
                     return tools.maybeCallbackWithRedisError(callback, err);
                 } else {
-                    return this._getObjectsByPattern(pattern, options, callback!);
+                    return this._getObjectsByPattern(pattern, options, callback);
                 }
             });
         }

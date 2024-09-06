@@ -43,10 +43,11 @@ import { ObjectsInMemoryFileDB } from './objectsInMemFileDB.js';
 /**
  * This class inherits statesInMemoryFileDB class and adds redis communication layer
  * to access the methods via redis protocol
- **/
+ */
 export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
     /**
      * Constructor
+     *
      * @param settings State and InMem-DB settings
      */
     constructor(settings) {
@@ -99,10 +100,10 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
     /**
      * Separate Namespace from ID and return both
+     *
      * @param idWithNamespace ID or Array of IDs containing a redis namespace and the real ID
-     * @returns {{namespace: (string); id: string; name?: string; isMeta?: boolean}} Object with namespace and the
+     * @returns Object with namespace and the
      *                                                      ID/Array of IDs without the namespace
-     * @private
      */
     _normalizeId(idWithNamespace) {
         let ns = this.namespaceObjects;
@@ -164,11 +165,12 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
     /**
      * Publish a subscribed value to one of the redis connections in redis format
+     *
      * @param client Instance of RedisHandler
      * @param type Type of subscribed key
      * @param id Subscribed ID
      * @param obj Object to publish
-     * @returns {number} Publish counter 0 or 1 depending on if send out or not
+     * @returns Publish counter 0 or 1 depending on if send out or not
      */
     publishToClients(client, type, id, obj) {
         if (!client._subscribe || !client._subscribe[type]) {
@@ -204,10 +206,11 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
     /**
      * Generate ID for a File
+     *
      * @param id ID of the File
      * @param name Name of the file
      * @param isMeta generate a META ID or a Data ID?
-     * @returns {string} File-ID
+     * @returns File-ID
      */
     getFileId(id, name, isMeta) {
         // e.g. ekey.admin and admin/ekey.png
@@ -225,8 +228,8 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
     /**
      * Register all event listeners for Handler and implement the relevant logic
+     *
      * @param handler RedisHandler instance
-     * @private
      */
     _socketEvents(handler) {
         let connectionName = null;
@@ -439,7 +442,6 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                         }
                         const obj = this._clone(this.fileOptions[id][name]);
                         try {
-                            // @ts-ignore
                             obj.stats = fs.statSync(path.join(this.objectsDir, id, name));
                         } catch (err) {
                             if (!name.endsWith('/_data.json')) {
@@ -850,7 +852,8 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
     /**
      * Return connected RedisHandlers/Connections
-     * @returns {{}|*}
+     *
+     * @returns
      */
     getClients() {
         return this.serverConnections;
@@ -886,10 +889,9 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
      * Get keys matching pattern and send it to given responseId, for "SCAN" and "KEYS" - Objects and files supported
      *
      * @param handler RedisHandler instance
-     * @param {string} pattern - pattern without namespace prefix
-     * @param {number} responseId - Id where response will be sent to
-     * @param {boolean} isScan - if used by "SCAN" this flag should be true
-     * @private
+     * @param pattern - pattern without namespace prefix
+     * @param responseId - Id where response will be sent to
+     * @param isScan - if used by "SCAN" this flag should be true
      */
     _handleScanOrKeys(handler, pattern, responseId, isScan = false) {
         const { id, namespace, name, isMeta } = this._normalizeId(pattern);
@@ -966,8 +968,8 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
     /**
      * Initialize RedisHandler for a new network connection
+     *
      * @param socket Network socket
-     * @private
      */
     _initSocket(socket) {
         if (this.settings.connection.enhancedLogging) {
@@ -992,9 +994,9 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
     /**
      * Initialize Redis Server
+     *
      * @param settings Settings object
-     * @private
-     * @return {Promise<void>}
+     * @returns
      */
     _initRedisServer(settings) {
         return new Promise((resolve, reject) => {

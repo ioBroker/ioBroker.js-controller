@@ -22,13 +22,13 @@ export async function getRepository(options: GetRepositoryOptions): Promise<Reco
 
     let repoNameOrArray: string | string[] | undefined = repoName;
     if (!repoName || repoName === 'auto') {
-        const systemConfig = await objects!.getObjectAsync('system.config');
+        const systemConfig = await objects.getObjectAsync('system.config');
         repoNameOrArray = systemConfig!.common.activeRepo;
     }
 
     const repoArr = !Array.isArray(repoNameOrArray) ? [repoNameOrArray!] : repoNameOrArray;
 
-    const systemRepos = (await objects!.getObjectAsync('system.repositories'))!;
+    const systemRepos = (await objects.getObjectAsync('system.repositories'))!;
 
     const allSources = {};
     let changed = false;

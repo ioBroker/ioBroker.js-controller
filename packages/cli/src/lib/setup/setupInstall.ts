@@ -1899,7 +1899,7 @@ export class Install {
                 // we need to respect host relative to the instance
                 [scopedHostname] = doc.rows
                     .filter(row => row.id === `system.adapter.${adapter}.${instance}`)
-                    .map(row => row.value!.common.host);
+                    .map(row => row.value.common.host);
             }
 
             // fallback is this host
@@ -1930,7 +1930,7 @@ export class Install {
                     }
                 }
 
-                const globalDeps = tools.parseDependencies(row.value!.common.globalDependencies);
+                const globalDeps = tools.parseDependencies(row.value.common.globalDependencies);
 
                 for (const globalDep of Object.keys(globalDeps)) {
                     if (globalDep === adapter) {
@@ -1939,7 +1939,7 @@ export class Install {
                             if (this._checkDependencyFulfilledForeignHosts(adapter, doc.rows, scopedHostname)) {
                                 break;
                             } else {
-                                return row.value!.common.name;
+                                return row.value.common.name;
                             }
                         } else if (
                             this._checkDependencyFulfilledForeignHosts(adapter, doc.rows, scopedHostname) ||
@@ -1948,7 +1948,7 @@ export class Install {
                             // another instance of our adapter is on another host or on ours, no need to search further
                             break;
                         } else {
-                            return row.value!.common.name;
+                            return row.value.common.name;
                         }
                     }
                 }

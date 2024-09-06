@@ -157,20 +157,15 @@ export class Upgrade {
         const allDeps = { ...deps, ...globalDeps };
 
         // Get all installed adapters
-        let objs;
-        try {
-            objs = await this.objects.getObjectViewAsync(
-                'system',
-                'instance',
-                {
-                    startkey: 'system.adapter.',
-                    endkey: 'system.adapter.\u9999'
-                },
-                undefined
-            );
-        } catch (e) {
-            return Promise.reject(e);
-        }
+        const objs = await this.objects.getObjectViewAsync(
+            'system',
+            'instance',
+            {
+                startkey: 'system.adapter.',
+                endkey: 'system.adapter.\u9999'
+            },
+            undefined
+        );
 
         if (objs?.rows?.length) {
             for (const dName in allDeps) {

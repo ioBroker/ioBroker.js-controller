@@ -578,7 +578,7 @@ function createStates(onConnect: () => void): void {
                 if (
                     typeof state.val === 'string' &&
                     state.val !== currentLevel &&
-                    ['silly', 'debug', 'info', 'warn', 'error'].includes(state.val as string)
+                    ['silly', 'debug', 'info', 'warn', 'error'].includes(state.val)
                 ) {
                     config.log.level = state.val;
                     for (const transport in logger.transports) {
@@ -587,7 +587,7 @@ function createStates(onConnect: () => void): void {
                             // @ts-expect-error it's our custom property
                             !logger.transports[transport]._defaultConfigLoglevel
                         ) {
-                            logger.transports[transport].level = state.val as string;
+                            logger.transports[transport].level = state.val;
                         }
                     }
                     logger.info(`${hostLogPrefix} Loglevel changed from "${currentLevel}" to "${state.val}"`);
@@ -714,7 +714,7 @@ async function initializeController(): Promise<void> {
         if (!isStopping) {
             pluginHandler.setDatabaseForPlugins(objects, states);
             await pluginHandler.initPlugins(ioPackage);
-            states!.subscribe(`${hostObjectPrefix}.plugins.*`);
+            states.subscribe(`${hostObjectPrefix}.plugins.*`);
 
             // Do not start if we're still stopping the instances
             await checkHost();
@@ -3066,7 +3066,7 @@ async function getInstances(): Promise<void> {
         for (const instance of instances) {
             // register all common fields that may not be deleted, like "mobile" or "history"
             if (instance.common.preserveSettings) {
-                objects!.addPreserveSettings(instance.common.preserveSettings);
+                objects.addPreserveSettings(instance.common.preserveSettings);
             }
 
             // @ts-expect-error is mode web valid, it is not in schema
@@ -3893,7 +3893,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                 `${hostLogPrefix} startInstance ${name}.${instanceNo}: required Node.js version ${proc.engine}, actual version ${process.version}`
             );
             // disable instance
-            objects!.getObject(id, (err, obj) => {
+            objects.getObject(id, (err, obj) => {
                 if (obj && obj.common && obj.common.enabled) {
                     obj.common.enabled = false;
                     objects!.setObject(obj._id, obj, _err =>
@@ -4871,7 +4871,7 @@ async function stopInstance(id: string, force: boolean): Promise<void> {
                         logger.info(
                             `${hostLogPrefix} stopInstance self ${instance._id} killing pid ${
                                 proc.process ? proc.process.pid : 'undefined'
-                            }${result ? ': ' + result : ''}`
+                            }${result ? `: ${result as any}` : ''}`
                         );
                         if (proc.process && !proc.startedAsCompactGroup) {
                             proc.stopping = true;
@@ -5517,7 +5517,7 @@ export async function init(compactGroupId?: number): Promise<void> {
                 }
 
                 const toDelete = keys.filter((id, i) => !objs[i]);
-                keys = keys!.filter((id, i) => objs[i]);
+                keys = keys.filter((id, i) => objs[i]);
 
                 let statesArr: (ioBroker.State | null)[] | undefined;
 
@@ -5680,10 +5680,10 @@ async function _getNumberOfInstances(): Promise<
             endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
         });
 
-        const noInstances = instancesView!.rows.length;
+        const noInstances = instancesView.rows.length;
 
         if (config.system.compact) {
-            for (const row of instancesView!.rows) {
+            for (const row of instancesView.rows) {
                 const state = await states!.getStateAsync(`${row.id}.compactMode`);
                 if (state?.val) {
                     noCompactInstances++;

@@ -34,7 +34,7 @@ import { tools } from '@iobroker/db-base';
 /**
  * This class inherits InMemoryFileDB class and adds all relevant logic for states
  * including the available methods for use by js-controller directly
- **/
+ */
 export class StatesInMemoryFileDB extends InMemoryFileDB {
     constructor(settings) {
         settings = settings || {};
@@ -154,8 +154,8 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
     /**
      * Get value of given meta id
      *
-     * @param {string} id
-     * @returns {*}
+     * @param id
+     * @returns
      */
     getMeta(id) {
         const meta = this._ensureMetaDict();
@@ -165,8 +165,8 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
     /**
      * Sets given value to id in metaNamespace
      *
-     * @param {string} id
-     * @param {string} value
+     * @param id
+     * @param value
      */
     setMeta(id, value) {
         const meta = this._ensureMetaDict();

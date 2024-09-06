@@ -503,7 +503,7 @@ export class NotificationHandler {
                 }
             }
         }
-        return res as FilteredNotificationInformation;
+        return res;
     }
 
     /**

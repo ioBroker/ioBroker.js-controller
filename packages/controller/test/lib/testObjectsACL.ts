@@ -235,7 +235,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             };
 
             // we change the acl during runtime - it has to be applied on next setObject
-            await objects.setObjectAsync('system.config', config!);
+            await objects.setObjectAsync('system.config', config);
 
             await objects.setObjectAsync(
                 'test.aclAdminChange',

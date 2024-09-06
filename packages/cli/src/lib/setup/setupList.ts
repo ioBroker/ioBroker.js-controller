@@ -338,7 +338,7 @@ export class List {
                                 name = name[lang] || name.en;
                             }
 
-                            if (!reg || reg.test(obj.value._id) || (name && reg.test(name as string))) {
+                            if (!reg || reg.test(obj.value._id) || (name && reg.test(name))) {
                                 if (obj.value.type) {
                                     const id = obj.value._id;
                                     const type = obj.value.type;
