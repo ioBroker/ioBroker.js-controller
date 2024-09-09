@@ -2,6 +2,6 @@
 root = true
 
 # Unix-style newlines with a newline ending every file
-[*.{js,ts}]
+[*.{js,json,ts}]
 indent_style = space
 indent_size = 4
