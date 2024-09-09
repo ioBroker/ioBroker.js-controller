@@ -1,5 +1,3 @@
-/// <reference types="@iobroker/types" />
-
 import { clearTimeout } from 'node:timers';
 
 declare function assertNever(val: never): never;
