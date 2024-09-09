@@ -201,7 +201,7 @@
         "project": "./tsconfig.json"
       },
       "files": [
-        "**/*.test-d.ts"
+        "**/*.tst.ts"
       ],
       "extends": [
         "plugin:@typescript-eslint/recommended"
