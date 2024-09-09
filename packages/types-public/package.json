@@ -16,7 +16,7 @@
         "url": "https://github.com/ioBroker/ioBroker.js-controller/tree/master/packages/types-public"
     },
     "devDependencies": {
-        "tsd": "^0.24.1"
+        "tsd": "^0.31.2"
     },
     "scripts": {
         "build": "ts-node build.ts",
