@@ -413,7 +413,7 @@ export class CLIObjects extends CLICommand {
                     res.encryptedNative?.includes(prop)
                 ) {
                     try {
-                        config = config || (await objects.getObjectAsync('system.config'));
+                        config = config || (await objects.getObjectAsync('system.config'))!;
                         res.native[prop] = tools.encrypt(config.native.secret, res.native[prop]);
                     } catch (e) {
                         console.error(`Could not auto-encrypt property "${prop}": ${e.message}`);

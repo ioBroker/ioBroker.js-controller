@@ -295,7 +295,7 @@ export class Users {
                             console.log('Passwords are not identical!');
                             return void this.processExit(EXIT_CODES.INVALID_PASSWORD);
                         }
-                        // @ts-expect-error external types problem?
+
                         this.addUser(username, result.password, err => {
                             if (err) {
                                 return tools.maybeCallbackWithError(callback, err);
@@ -374,7 +374,7 @@ export class Users {
                         if (result.password !== result.repeatPassword) {
                             return tools.maybeCallbackWithError(callback, 'Passwords are not identical!');
                         }
-                        // @ts-expect-error external types problem?
+
                         this.setPassword(username, result.password, err => {
                             if (err) {
                                 return tools.maybeCallbackWithError(callback, err);
