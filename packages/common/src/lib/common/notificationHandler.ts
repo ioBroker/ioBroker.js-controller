@@ -46,7 +46,7 @@ export interface CategoryConfigEntry {
 interface NotificationMessageObject {
     message: string;
     ts: number;
-    contextData?: ioBroker.NotificationAction;
+    contextData?: ioBroker.NotificationContextData;
 }
 
 interface NotificationsObject {
@@ -98,6 +98,19 @@ interface ScopeStateValue {
     [category: string]: {
         count: number;
     };
+}
+
+interface AddMessageOptions {
+    /** Scope of the message */
+    scope: string;
+    /** Category of the message, if non we check against regex of scope */
+    category?: string | null;
+    /** Message to add */
+    message: string;
+    /** Instance e.g., hm-rpc.1 or hostname, if hostname it needs to be prefixed like system.host.rpi */
+    instance: string;
+    /** Additional context for the notification which can be used by notification processing adapters */
+    contextData?: ioBroker.NotificationContextData;
 }
 
 export class NotificationHandler {
@@ -284,19 +297,12 @@ export class NotificationHandler {
     /**
      * Add a message to the scope and category
      *
-     * @param scope - scope of the message
-     * @param category - category of the message, if non we check against regex of scope
-     * @param message - message to add
-     * @param instance - instance e.g., hm-rpc.1 or hostname, if hostname it needs to be prefixed like system.host.rpi
-     * @param contextData - data for the notification action
+     * @param options The scope, category, message, instance and contextData information
      */
-    async addMessage(
-        scope: string,
-        category: string | null | undefined,
-        message: string,
-        instance: string,
-        contextData?: ioBroker.NotificationAction
-    ): Promise<void> {
+    async addMessage(options: AddMessageOptions): Promise<void> {
+        const { message, scope, category, contextData } = options;
+        let { instance } = options;
+
         if (typeof instance !== 'string') {
             this.log.error(
                 `${this.logPrefix} [addMessage] Instance has to be of type "string", got "${typeof instance}"`

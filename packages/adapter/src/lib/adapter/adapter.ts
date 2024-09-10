@@ -132,7 +132,8 @@ import type {
     InstallNodeModuleOptions,
     InternalInstallNodeModuleOptions,
     StopParameters,
-    InternalStopParameters
+    InternalStopParameters,
+    NotificationOptions
 } from '@/lib/_Types.js';
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
@@ -7589,10 +7590,8 @@ export class AdapterClass extends EventEmitter {
     registerNotification<Scope extends keyof ioBroker.NotificationScopes>(
         scope: Scope,
         category: ioBroker.NotificationScopes[Scope] | null,
-        /** Static message (e.g. for messengers) */
         message: string,
-        /** Dynamic message to be shown in admin. This object will be sent to instance to build the schema for dynamic layout (without `offlineMessage`) */
-        contextData?: ioBroker.NotificationAction
+        options?: NotificationOptions
     ): Promise<void>;
 
     /**
@@ -7600,15 +7599,10 @@ export class AdapterClass extends EventEmitter {
      *
      * @param scope - scope to be addressed
      * @param category - to be addressed, if a null message will be checked by regex of given scope
-     * @param message - message to be stored/checked for messangers
-     * @param contextData - Information for the notification action in Admin
+     * @param message - message to be stored/checked
+     * @param options - Additional options for the notification, currently `contextData` is supported
      */
-    async registerNotification(
-        scope: unknown,
-        category: unknown,
-        message: unknown,
-        contextData?: unknown
-    ): Promise<void> {
+    async registerNotification(scope: unknown, category: unknown, message: unknown, options?: unknown): Promise<void> {
         if (!this.#states) {
             // if states is no longer existing, we do not need to set
             this._logger.info(
@@ -7623,6 +7617,10 @@ export class AdapterClass extends EventEmitter {
         }
         Validator.assertString(message, 'message');
 
+        if (options !== undefined) {
+            Validator.assertObject<NotificationOptions>(options, 'options');
+        }
+
         const obj = {
             command: 'addNotification',
             message: {
@@ -7630,7 +7628,7 @@ export class AdapterClass extends EventEmitter {
                 category,
                 message,
                 instance: this.namespace,
-                contextData
+                contextData: options?.contextData
             },
             from: `system.adapter.${this.namespace}`
         };

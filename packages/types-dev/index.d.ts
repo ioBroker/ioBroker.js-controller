@@ -324,13 +324,8 @@ declare global {
             [other: string]: string;
         }
 
-        /** Structure for notification actions */
-        export interface NotificationAction {
-            /** This message will be shown if instance is offline */
-            offlineMessage?: ioBroker.StringOrTranslated;
-            /** any other data required for instance to show the dynamic GUI in the notification */
-            [other: string]: any;
-        }
+        /** Additional context for the notification which can be used by notification processing adapters */
+        type NotificationContextData = Record<string, unknown>;
 
         interface AdapterConfig {
             // This is a stub to be augmented in every adapter
