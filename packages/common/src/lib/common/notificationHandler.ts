@@ -36,7 +36,7 @@ export type Severity = 'info' | 'notify' | 'alert';
 export interface CategoryConfigEntry {
     category: string;
     name: MultilingualObject;
-    /** `info` will only be shown by admin, while `notify` might also be used by messaging adapters, `alert` ensures both */
+    /** Allows defining the severity of the notification with `info` being the lowest, `notify` representing middle priority, `alert` representing high priority and often containing critical information */
     severity: Severity;
     description: MultilingualObject;
     regex: string[];
