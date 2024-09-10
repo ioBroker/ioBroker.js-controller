@@ -142,14 +142,14 @@ export class NotificationHandler {
         // create the initial notifications object
         let obj;
         try {
-            obj = await this.objects.getObjectAsync(`system.host.${this.host}.notifications`);
+            obj = await this.objects.getObject(`system.host.${this.host}.notifications`);
         } catch {
             // ignore
         }
 
         if (!obj) {
             try {
-                await this.objects.setObjectAsync(`system.host.${this.host}.notifications`, {
+                await this.objects.setObject(`system.host.${this.host}.notifications`, {
                     type: 'folder',
                     common: {
                         name: {
