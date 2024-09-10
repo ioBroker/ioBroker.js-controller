@@ -7,7 +7,7 @@ Since this package does not start with `@types/`, the types are not automaticall
 ```json
 {
   "compilerOptions": {
-	"types": ["node", "@iobroker/types"]
+    "types": ["node", "@iobroker/types"]
   }
 }
 ```
