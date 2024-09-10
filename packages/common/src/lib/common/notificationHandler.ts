@@ -216,7 +216,7 @@ export class NotificationHandler {
     /**
      * Add a new category to the given scope with a provided optional list of regex
      *
-     * @param notifications Array with notifications
+     * @param notifications - Array with notifications
      */
     async addConfig(notifications: NotificationsConfigEntry[]): Promise<void> {
         // if valid attributes, store it
