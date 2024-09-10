@@ -486,7 +486,7 @@ declare global {
               };
 
         /**
-         * Object which defines, if the adapter supports receiving messages via sendTo.
+         * Object which defines if the adapter supports receiving messages via sendTo.
          * Additionally, it defines if specific messages are supported.
          * If one property is enabled, the object `system.adapter.<adaptername>.<adapterinstance>.messagebox will be created to send messages to the adapter (used for email, pushover, etc...)
          */
@@ -522,8 +522,8 @@ declare global {
             /** Use 'paid' for adapters which do not work without a paid license. Use 'commercial' for adapters which require a license for commercial use only. Use 'limited' if some functionalities are not available without a paid license. */
             type: 'free';
             /**
-             * Hyperlink, where information about the license can be found. For non-free licenses the linked page should contain information about free features (if applicable), time of validity, link to shop and seller information.
-             * This is required if the license type is different from 'free'. For 'free' licenses an optional link to the license file can be placed here.
+             * Hyperlink, where information about the license can be found. For non-free licenses, the linked page should contain information about free features (if applicable), time of validity, link to shop and seller information.
+             * This is required if the license type is different from 'free'. For 'free' licenses, an optional link to the license file can be placed here.
              */
             link?: string;
         }
@@ -534,8 +534,8 @@ declare global {
             /** Use 'paid' for adapters which do not work without a paid license. Use 'commercial' for adapters which require a license for commercial use only. Use 'limited' if some functionalities are not available without a paid license. */
             type: PaidLicenseType;
             /**
-             * Hyperlink, where information about the license can be found. For non-free licenses the linked page should contain information about free features (if applicable), time of validity, link to shop and seller information.
-             * This is required if the license type is different from 'free'. For 'free' licenses an optional link to the license file can be placed here.
+             * Hyperlink, where information about the license can be found. For non-free licenses, the linked page should contain information about free features (if applicable), time of validity, link to shop and seller information.
+             * This is required if the license type is different from 'free'. For 'free' licenses, an optional link to the license file can be placed here.
              */
             link: string;
         }
@@ -1089,7 +1089,7 @@ declare global {
         };
 
         interface Notification {
-            /** Each adapter can define its own "scopes" for own notifications with its own categories which then will be available in the system. Adapters should only register one scope which matches the name of the adapter. */
+            /** E.g., `system`. Each adapter can define its own "scopes" for own notifications with its own categories which then will be available in the system. Adapters should only register one scope which matches the name of the adapter. */
             scope: string;
             /** The human-readable name of this scope */
             name: Translated;
