@@ -327,7 +327,7 @@ declare global {
         /** Additional context for the notification which can be used by notification processing adapters */
         interface NotificationContextData {
             /** Use a `key` specific to the adapter or if a feature is supported by all adapters of a type, the type (e.g. `messaging`) is also fine. */
-            [adapterNameOrAdapterType]: unknown;
+            [adapterNameOrAdapterType: string]: unknown;
         }
 
         interface AdapterConfig {
