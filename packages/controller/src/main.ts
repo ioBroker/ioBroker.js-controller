@@ -985,13 +985,14 @@ async function checkSystemLocaleSupported(): Promise<void> {
     const isSupported = await objects.isSystemLocaleSupported();
 
     if (!isSupported) {
-        await notificationHandler.addMessage(
-            'system',
-            'databaseErrors',
-            'Your redis server is using an unsupported locale. This can lead to unexpected behavior of your ioBroker installation as well as data loss. ' +
+        await notificationHandler.addMessage({
+            category: 'system',
+            scope: 'databaseErrors',
+            message:
+                'Your redis server is using an unsupported locale. This can lead to unexpected behavior of your ioBroker installation as well as data loss. ' +
                 'Please configure your Redis Server according to https://forum.iobroker.net/topic/52976/wichtiger-hinweis-f%C3%BCr-redis-installationen?_=1678099836122',
-            `system.host.${hostname}`
-        );
+            instance: `system.host.${hostname}`
+        });
     }
 }
 
@@ -1124,12 +1125,12 @@ async function reportStatus(): Promise<void> {
                 const isDiskWarningActive = percentageFree < diskWarningLevel;
 
                 if (isDiskWarningActive) {
-                    await notificationHandler.addMessage(
-                        'system',
-                        'diskSpaceIssues',
-                        `Your system has only ${percentageFree.toFixed(2)} % of disk space left.`,
-                        `system.host.${hostname}`
-                    );
+                    await notificationHandler.addMessage({
+                        scope: 'system',
+                        category: 'diskSpaceIssues',
+                        message: `Your system has only ${percentageFree.toFixed(2)} % of disk space left.`,
+                        instance: `system.host.${hostname}`
+                    });
                 }
 
                 states.setState(`${id}.diskSize`, {
@@ -2913,12 +2914,14 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
         }
 
         case 'addNotification':
-            await notificationHandler.addMessage(
-                msg.message.scope,
-                msg.message.category,
-                msg.message.message,
-                msg.message.instance
-            );
+            await notificationHandler.addMessage({
+                scope: msg.message.scope,
+                category: msg.message.category,
+                message: msg.message.message,
+                instance: msg.message.instance,
+                contextData: msg.message.contextData
+            });
+
             if (msg.callback && msg.from) {
                 sendTo(msg.from, msg.command, { result: 'ok' }, msg.callback);
             }
@@ -3772,6 +3775,17 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         mode = 'daemon';
     }
 
+    // Check if all required adapters installed and have a valid version
+    if (instance.common.dependencies || instance.common.globalDependencies) {
+        try {
+            await checkVersions(id, instance.common.dependencies, instance.common.globalDependencies);
+        } catch (e) {
+            logger.error(`${hostLogPrefix} startInstance ${id} ${e.message}`);
+            // Do not start this instance
+            return;
+        }
+    }
+
     const adapterDir = tools.getAdapterDir(name);
     if (adapterDir === null || !fs.existsSync(adapterDir)) {
         proc.downloadRetry = proc.downloadRetry || 0;
@@ -3840,7 +3854,12 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         const message = `Do not start instance "${id}", because the version "${instance.common.version}" has been blocked by the developer`;
         logger.error(`${hostLogPrefix} ${message}`);
 
-        await notificationHandler.addMessage('system', 'blockedVersions', message, SYSTEM_HOST_PREFIX + hostname);
+        await notificationHandler.addMessage({
+            scope: 'system',
+            category: 'blockedVersions',
+            message,
+            instance: SYSTEM_HOST_PREFIX + hostname
+        });
         return;
     }
 
@@ -3946,12 +3965,12 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
         // add it to notifications for popup
         try {
-            await notificationHandler.addMessage(
-                'system',
-                'memIssues',
-                `Your system has only ${availableMemMB} MB RAM left available and an additional adapter process is started. Please check your system, settings and active instances to prevent swapping and Out-Of-Memory situations!`,
-                `system.host.${hostname}`
-            );
+            await notificationHandler.addMessage({
+                scope: 'system',
+                category: 'memIssues',
+                message: `Your system has only ${availableMemMB} MB RAM left available and an additional adapter process is started. Please check your system, settings and active instances to prevent swapping and Out-Of-Memory situations!`,
+                instance: `system.host.${hostname}`
+            });
         } catch (e) {
             logger.warn(`${hostLogPrefix} Could not add OOM notification: ${e.message}`);
         }
@@ -4208,12 +4227,12 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                     logger.warn(
                                         `${hostLogPrefix} Do not restart adapter ${id} because restart loop detected`
                                     );
-                                    await notificationHandler.addMessage(
-                                        'system',
-                                        'restartLoop',
-                                        'Restart loop detected',
-                                        id
-                                    );
+                                    await notificationHandler.addMessage({
+                                        scope: 'system',
+                                        category: 'restartLoop',
+                                        message: 'Restart loop detected',
+                                        instance: id
+                                    });
                                     proc.crashCount = 0;
                                     if (proc.crashResetTimer) {
                                         logger.debug(
@@ -5749,7 +5768,12 @@ async function listUpdatableOsPackages(): Promise<void> {
         return;
     }
 
-    await notificationHandler.addMessage('system', 'packageUpdates', packages.join('\n'), `system.host.${hostname}`);
+    await notificationHandler.addMessage({
+        scope: 'system',
+        category: 'packageUpdates',
+        message: packages.join('\n'),
+        instance: `system.host.${hostname}`
+    });
 }
 
 /**
@@ -5833,7 +5857,12 @@ async function checkRebootRequired(): Promise<void> {
         }
     }
 
-    await notificationHandler.addMessage('system', 'systemRebootRequired', message, `system.host.${hostname}`);
+    await notificationHandler.addMessage({
+        scope: 'system',
+        category: 'systemRebootRequired',
+        message,
+        instance: `system.host.${hostname}`
+    });
 }
 
 /**
@@ -5849,21 +5878,25 @@ async function autoUpgradeAdapters(): Promise<void> {
         const { upgradedAdapters, failedAdapters } = await autoUpgradeManager.upgradeAdapters();
 
         if (upgradedAdapters.length) {
-            await notificationHandler.addMessage(
-                'system',
-                'automaticAdapterUpgradeSuccessful',
-                upgradedAdapters.map(entry => `${entry.name}: ${entry.oldVersion} -> ${entry.newVersion}`).join('\n'),
-                `system.host.${hostname}`
-            );
+            await notificationHandler.addMessage({
+                scope: 'system',
+                category: 'automaticAdapterUpgradeSuccessful',
+                message: upgradedAdapters
+                    .map(entry => `${entry.name}: ${entry.oldVersion} -> ${entry.newVersion}`)
+                    .join('\n'),
+                instance: `system.host.${hostname}`
+            });
         }
 
         if (failedAdapters.length) {
-            await notificationHandler.addMessage(
-                'system',
-                'automaticAdapterUpgradeFailed',
-                failedAdapters.map(entry => `${entry.name}: ${entry.oldVersion} -> ${entry.newVersion}`).join('\n'),
-                `system.host.${hostname}`
-            );
+            await notificationHandler.addMessage({
+                scope: 'system',
+                category: 'automaticAdapterUpgradeFailed',
+                message: failedAdapters
+                    .map(entry => `${entry.name}: ${entry.oldVersion} -> ${entry.newVersion}`)
+                    .join('\n'),
+                instance: `system.host.${hostname}`
+            });
         }
     } catch (e) {
         logger.error(`${hostLogPrefix} An error occurred while processing automatic adapter upgrades: ${e.message}`);
@@ -5887,7 +5920,12 @@ async function disableBlocklistedInstances(): Promise<void> {
         const message = `Instance "${disabledInstance._id}" has been stopped and disabled because the version "${disabledInstance.common.version}" has been blocked by the developer`;
         logger.error(`${hostLogPrefix} ${message}`);
 
-        await notificationHandler.addMessage('system', 'blockedVersions', message, SYSTEM_HOST_PREFIX + hostname);
+        await notificationHandler.addMessage({
+            scope: 'system',
+            category: 'blockedVersions',
+            message,
+            instance: SYSTEM_HOST_PREFIX + hostname
+        });
     }
 }
 

@@ -36,7 +36,7 @@ export type Severity = 'info' | 'notify' | 'alert';
 export interface CategoryConfigEntry {
     category: string;
     name: MultilingualObject;
-    /** `info` will only be shown by admin, while `notify` might also be used by messaging adapters, `alert` ensures both */
+    /** Allows defining the severity of the notification with `info` being the lowest, `notify` representing middle priority, `alert` representing high priority and often containing critical information */
     severity: Severity;
     description: MultilingualObject;
     regex: string[];
@@ -46,6 +46,7 @@ export interface CategoryConfigEntry {
 interface NotificationMessageObject {
     message: string;
     ts: number;
+    contextData?: ioBroker.NotificationContextData;
 }
 
 interface NotificationsObject {
@@ -99,6 +100,19 @@ interface ScopeStateValue {
     };
 }
 
+interface AddMessageOptions {
+    /** Scope of the message */
+    scope: string;
+    /** Category of the message, if non we check against regex of scope */
+    category?: string | null;
+    /** Message to add */
+    message: string;
+    /** Instance e.g., hm-rpc.1 or hostname, if hostname it needs to be prefixed like system.host.rpi */
+    instance: string;
+    /** Additional context for the notification which can be used by notification processing adapters */
+    contextData?: ioBroker.NotificationContextData;
+}
+
 export class NotificationHandler {
     private states: StatesInRedisClient;
     private objects: ObjectsInRedisClient;
@@ -128,14 +142,14 @@ export class NotificationHandler {
         // create the initial notifications object
         let obj;
         try {
-            obj = await this.objects.getObjectAsync(`system.host.${this.host}.notifications`);
+            obj = await this.objects.getObject(`system.host.${this.host}.notifications`);
         } catch {
             // ignore
         }
 
         if (!obj) {
             try {
-                await this.objects.setObjectAsync(`system.host.${this.host}.notifications`, {
+                await this.objects.setObject(`system.host.${this.host}.notifications`, {
                     type: 'folder',
                     common: {
                         name: {
@@ -168,7 +182,7 @@ export class NotificationHandler {
             });
 
             for (const entry of res.rows) {
-                // check that instance has notifications settings
+                // check that instance has notification settings
                 if (entry.value.notifications) {
                     await this.addConfig(entry.value.notifications);
                 }
@@ -202,7 +216,7 @@ export class NotificationHandler {
     /**
      * Add a new category to the given scope with a provided optional list of regex
      *
-     * @param notifications - notifications array
+     * @param notifications - Array with notifications
      */
     async addConfig(notifications: NotificationsConfigEntry[]): Promise<void> {
         // if valid attributes, store it
@@ -211,14 +225,14 @@ export class NotificationHandler {
                 // create the state object for each scope if non-existing
                 let obj;
                 try {
-                    obj = await this.objects.getObjectAsync(`system.host.${this.host}.notifications.${scopeObj.scope}`);
+                    obj = await this.objects.getObject(`system.host.${this.host}.notifications.${scopeObj.scope}`);
                 } catch {
                     // ignore
                 }
 
                 if (!obj) {
                     try {
-                        await this.objects.setObjectAsync(`system.host.${this.host}.notifications.${scopeObj.scope}`, {
+                        await this.objects.setObject(`system.host.${this.host}.notifications.${scopeObj.scope}`, {
                             type: 'state',
                             common: {
                                 type: 'object',
@@ -283,17 +297,12 @@ export class NotificationHandler {
     /**
      * Add a message to the scope and category
      *
-     * @param scope - scope of the message
-     * @param category - category of the message, if non we check against regex of scope
-     * @param message - message to add
-     * @param instance - instance e.g., hm-rpc.1 or hostname, if hostname it needs to be prefixed like system.host.rpi
+     * @param options The scope, category, message, instance and contextData information
      */
-    async addMessage(
-        scope: string,
-        category: string | null | undefined,
-        message: string,
-        instance: string
-    ): Promise<void> {
+    async addMessage(options: AddMessageOptions): Promise<void> {
+        const { message, scope, category, contextData } = options;
+        let { instance } = options;
+
         if (typeof instance !== 'string') {
             this.log.error(
                 `${this.logPrefix} [addMessage] Instance has to be of type "string", got "${typeof instance}"`
@@ -330,7 +339,7 @@ export class NotificationHandler {
                     this.currentNotifications[scope][_category][instance] || [];
 
                 if (!this.setup[scope]?.categories[_category]) {
-                    // no setup for this instance/category combination found - so nothing to add
+                    // no setup for this instance/category combination found - so we have nothing to add
                     this.log.warn(
                         `${this.logPrefix} No configuration found for scope "${scope}" and category "${_category}"`
                     );
@@ -346,7 +355,7 @@ export class NotificationHandler {
                 }
 
                 // add a new element at the beginning
-                this.currentNotifications[scope][_category][instance].unshift({ message, ts: Date.now() });
+                this.currentNotifications[scope][_category][instance].unshift({ message, ts: Date.now(), contextData });
             }
         }
 
@@ -361,7 +370,7 @@ export class NotificationHandler {
 
         // set updated scope state
         try {
-            await this.states.setStateAsync(`system.host.${this.host}.notifications.${scope}`, {
+            await this.states.setState(`system.host.${this.host}.notifications.${scope}`, {
                 val: JSON.stringify(stateVal),
                 ack: true
             });
@@ -423,7 +432,7 @@ export class NotificationHandler {
     }
 
     /**
-     * Load notifications from file
+     * Load notifications from a file
      */
     private _loadNotifications(): void {
         try {
@@ -469,7 +478,11 @@ export class NotificationHandler {
                 continue;
             }
 
-            res[scope] = { categories: {}, description: this.setup[scope].description, name: this.setup[scope].name };
+            res[scope] = {
+                categories: {},
+                description: this.setup[scope].description,
+                name: this.setup[scope].name
+            };
 
             for (const category of Object.keys(this.currentNotifications[scope])) {
                 if (categoryFilter && categoryFilter !== category) {
