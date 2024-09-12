@@ -616,7 +616,7 @@ declare global {
                 /** Order number in admin tabs */
                 order?: number;
             };
-            /** if the mode is `schedule`, start one time adapter by ioBroker start, or by the configuration changes */
+            /** If the mode is `schedule`, start one time adapter by ioBroker start, or by the configuration changes */
             allowInit?: boolean;
             /** If the adapter should be automatically upgraded and which version ranges are supported */
             automaticUpgrade?: AutoUpgradePolicy;
@@ -779,7 +779,7 @@ declare global {
             webExtension?: string;
             /** List of parameters that must be included in info.js by webServer adapter. (Example material: `"webPreSettings": { "materialBackground": "native.loadingBackground" }`). Web adapter uses this setting to create a customized info.js file to provide some essential settings for index.html file before the socket connection is established to provide e.g., background color of the loading screen. */
             webPreSettings?: Record<string, any>;
-            /** @deprecated (where does it necessary?) Array of web server's instances that should serve content from the adapter's www folder */
+            /** @deprecated (where is it necessary?) Array of web server's instances that should serve content from the adapter's www folder */
             webservers?: string[];
             /** @deprecated (use localLinks) A list of pages that should be shown on the "web" index page */
             welcomeScreen?: WelcomeScreenEntry[];
@@ -1044,20 +1044,10 @@ declare global {
             common: RepositoryCommon;
         }
 
-        interface InstanceObject extends BaseObject {
+        interface InstanceObject extends AdapterObject {
             _id: ObjectIDs.Instance;
             type: 'instance';
             common: InstanceCommon;
-            /** These properties will be removed when foreign adapters access it */
-            protectedNative?: string[];
-            /** These properties will be automatically encrypted and decrypted when used with adapter.config */
-            encryptedNative?: string[];
-            /** Register notifications for the built-in notification system */
-            notifications?: Notification[];
-            /** Objects created for each instance, inside the namespace of this adapter */
-            instanceObjects: (StateObject | DeviceObject | ChannelObject | FolderObject | MetaObject)[];
-            /** Objects created for the adapter, anywhere in the global namespace */
-            objects: ioBroker.AnyObject[];
         }
 
         interface PartialInstanceObject extends Partial<Omit<InstanceObject, 'common'>> {
