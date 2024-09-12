@@ -34,6 +34,9 @@ interface Logger extends InternalLogger {
     log(message: string): void;
 }
 
+/** Logger without noisy levels */
+type MinimalLogger = Omit<Logger, 'info' | 'silly' | 'debug'>;
+
 export class Upload {
     private readonly states: StatesRedisClient;
     private readonly objects: ObjectsRedisClient;
@@ -324,7 +327,7 @@ export class Upload {
         return `${adapter}/${target}`;
     }
 
-    async eraseFiles(files: any[], logger: Logger | typeof console): Promise<void> {
+    async eraseFiles(files: any[], logger: MinimalLogger | typeof console): Promise<void> {
         if (files && files.length) {
             for (const file of files) {
                 try {
@@ -346,7 +349,7 @@ export class Upload {
     async collectExistingFilesToDelete(
         adapter: string,
         path: string,
-        logger: Logger | typeof console
+        logger: MinimalLogger | typeof console
     ): Promise<{ filesToDelete: File[]; dirs: File[] }> {
         let _files: File[] = [];
         let _dirs: File[] = [];
@@ -392,11 +395,11 @@ export class Upload {
         isAdmin: boolean,
         files: string[],
         id: string,
-        logger: Logger | typeof console
+        logger: MinimalLogger | typeof console
     ): Promise<string> {
         const uploadID = `system.adapter.${adapter}.upload`;
 
-        await this.states.setStateAsync(uploadID, { val: 0, ack: true });
+        await this.states.setState(uploadID, { val: 0, ack: true });
 
         for (let f = 0; f < files.length; f++) {
             const file = files[f];
@@ -494,7 +497,7 @@ export class Upload {
         isAdmin: boolean,
         forceUpload: boolean,
         subTree?: string,
-        _logger?: Logger
+        _logger?: MinimalLogger
     ): Promise<string> {
         const id = adapter + (isAdmin ? '.admin' : '');
         const adapterDir = tools.getAdapterDir(adapter);
@@ -708,7 +711,7 @@ export class Upload {
         name: string,
         ioPack: ioBroker.AdapterObject,
         hostname: string,
-        logger: Logger | typeof console
+        logger: MinimalLogger | typeof console
     ): Promise<string> {
         // Update all instances of this host
         const res = await this.objects.getObjectViewAsync('system', 'instance', {
@@ -805,7 +808,7 @@ export class Upload {
     async upgradeAdapterObjects(
         name: string,
         ioPack?: ioBroker.AdapterObject,
-        logger: Logger | typeof console = console
+        logger: MinimalLogger | typeof console = console
     ): Promise<string> {
         const adapterDir = tools.getAdapterDir(name);
         let ioPackFile;

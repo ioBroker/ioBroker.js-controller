@@ -75,7 +75,7 @@ interface GetLogFilesResult {
 }
 interface UploadTask {
     adapter: string;
-    msg: ioBroker.SendableMessage;
+    msg?: ioBroker.SendableMessage;
 }
 
 interface RebuildArgs {
@@ -223,8 +223,6 @@ let diskWarningLevel = DEFAULT_DISK_WARNING_LEVEL;
 
 let updateIPsTimer: NodeJS.Timeout | null = null;
 let lastDiagSend: null | number = null;
-
-const uploadTasks: UploadTask[] = [];
 
 const config = getConfig();
 
@@ -1924,13 +1922,11 @@ async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host): Promise<Host
 }
 
 /**
- * Upload all adapters which are currently in `uploadTasks` queue
+ * Upload given adapter
+ *
+ * @param task The upload task information containing name and an optional message
  */
-async function startAdapterUpload(): Promise<void> {
-    if (!uploadTasks.length) {
-        return;
-    }
-
+async function uploadAdapter(task: UploadTask): Promise<void> {
     if (!upload) {
         upload = new Upload({
             states: states!,
@@ -1938,9 +1934,9 @@ async function startAdapterUpload(): Promise<void> {
         });
     }
 
-    const msg = uploadTasks[0].msg;
+    const msg = task.msg;
 
-    const logger = msg.from
+    const logger = msg?.from
         ? {
               log: (text: string) =>
                   // @ts-expect-error formally text is not allowed in Message, why not wrapped in message payload property?
@@ -1954,18 +1950,13 @@ async function startAdapterUpload(): Promise<void> {
           }
         : undefined;
 
-    // @ts-expect-error yes the logger is missing some levels
-    await upload.uploadAdapter(uploadTasks[0].adapter, true, true, '', logger);
-    // @ts-expect-error the logger is missing some levels
-    await upload.upgradeAdapterObjects(uploadTasks[0].adapter, undefined, logger);
-    // @ts-expect-error yes the logger is missing some levels
-    await upload.uploadAdapter(uploadTasks[0].adapter, false, true, '', logger);
+    await upload.uploadAdapter(task.adapter, true, true, '', logger);
+    await upload.upgradeAdapterObjects(task.adapter, undefined, logger);
+    await upload.uploadAdapter(task.adapter, false, true, '', logger);
     // send response to requester
-    msg.callback && msg.from && sendTo(msg.from, msg.command, { result: 'done' }, msg.callback);
-
-    uploadTasks.shift();
-
-    setImmediate(startAdapterUpload);
+    if (msg?.callback && msg.from) {
+        sendTo(msg.from, msg.command, { result: 'done' }, msg.callback);
+    }
 }
 
 /**
@@ -2803,9 +2794,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'upload': {
             if (msg.message) {
-                uploadTasks.push({ adapter: msg.message, msg });
-                // start upload if no tasks running
-                uploadTasks.length === 1 && startAdapterUpload();
+                uploadAdapter({ adapter: msg.message, msg });
             } else {
                 logger.error(`${hostLogPrefix} No adapter name is specified for upload command from  ${msg.from}`);
             }
@@ -3797,26 +3786,8 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         }
     }
 
-    const isBlocked = await blocklistManager.isAdapterVersionBlocked({
-        version: instance.common.version,
-        adapterName: instance.common.name
-    });
-
-    if (isBlocked) {
-        const message = `Do not start instance "${id}", because the version "${instance.common.version}" has been blocked by the developer`;
-        logger.error(`${hostLogPrefix} ${message}`);
-
-        await notificationHandler.addMessage({
-            scope: 'system',
-            category: 'blockedVersions',
-            message,
-            instance: SYSTEM_HOST_PREFIX + hostname
-        });
-        return;
-    }
-
     const adapterDir = tools.getAdapterDir(name);
-    if (!fs.existsSync(adapterDir!)) {
+    if (adapterDir === null || !fs.existsSync(adapterDir)) {
         proc.downloadRetry = proc.downloadRetry || 0;
         logger.debug(`${hostLogPrefix} startInstance Queue ${id} for installation`);
         installQueue.push({
@@ -3859,6 +3830,50 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         }
     }
 
+    try {
+        // check if the io-package content is uploaded to the database
+        const ioPack = fs.readJSONSync(path.join(adapterDir, 'io-package.json'));
+
+        if (ioPack.common.version !== instance.common.version) {
+            logger.warn(`${hostLogPrefix} Detected missing upload of adapter "${name}" - starting upload now.`);
+            await uploadAdapter({ adapter: name });
+            return;
+        }
+    } catch (e) {
+        logger.error(
+            `${hostLogPrefix} startInstance ${name}.${instanceNo}: Error while ensuring adapter is uploaded: ${e.message}`
+        );
+    }
+
+    const isBlocked = await blocklistManager.isAdapterVersionBlocked({
+        version: instance.common.version,
+        adapterName: instance.common.name
+    });
+
+    if (isBlocked) {
+        const message = `Do not start instance "${id}", because the version "${instance.common.version}" has been blocked by the developer`;
+        logger.error(`${hostLogPrefix} ${message}`);
+
+        await notificationHandler.addMessage({
+            scope: 'system',
+            category: 'blockedVersions',
+            message,
+            instance: SYSTEM_HOST_PREFIX + hostname
+        });
+        return;
+    }
+
+    // Check if all required adapters installed and have a valid version
+    if (instance.common.dependencies || instance.common.globalDependencies) {
+        try {
+            await checkVersions(id, instance.common.dependencies, instance.common.globalDependencies);
+        } catch (e) {
+            logger.error(`${hostLogPrefix} startInstance ${id} ${e.message}`);
+            // Do not start this instance
+            return;
+        }
+    }
+
     // workaround for old vis
     if (instance.common.onlyWWW && name === 'vis') {
         instance.common.onlyWWW = false;
@@ -3886,7 +3901,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
     // read node.js engine requirements
     try {
         // read directly from disk and not via require to allow "on the fly" updates of adapters.
-        const packJSON = fs.readJSONSync(`${adapterDir}/package.json`);
+        const packJSON = fs.readJSONSync(path.join(adapterDir, 'package.json'));
         proc.engine = packJSON?.engines?.node;
     } catch {
         logger.error(
@@ -3901,16 +3916,14 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                 `${hostLogPrefix} startInstance ${name}.${instanceNo}: required Node.js version ${proc.engine}, actual version ${process.version}`
             );
             // disable instance
-            objects!.getObject(id, (err, obj) => {
-                if (obj && obj.common && obj.common.enabled) {
-                    obj.common.enabled = false;
-                    objects!.setObject(obj._id, obj, _err =>
-                        logger.warn(
-                            `${hostLogPrefix} startInstance ${name}.${instanceNo}: instance disabled because of Node.js version mismatch`
-                        )
-                    );
-                }
-            });
+            const obj = await objects!.getObject(id);
+            if (obj?.common?.enabled) {
+                obj.common.enabled = false;
+                await objects!.setObject(obj._id, obj);
+                logger.warn(
+                    `${hostLogPrefix} startInstance ${name}.${instanceNo}: instance disabled because of Node.js version mismatch`
+                );
+            }
             return;
         }
     }
