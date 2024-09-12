@@ -1044,7 +1044,7 @@ declare global {
             common: RepositoryCommon;
         }
 
-        interface InstanceObject extends AdapterObject {
+        interface InstanceObject extends Omit<AdapterObject, 'type'>, BaseObject {
             _id: ObjectIDs.Instance;
             type: 'instance';
             common: InstanceCommon;
