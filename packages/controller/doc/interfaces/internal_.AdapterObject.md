@@ -44,7 +44,7 @@ The ID of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:1103](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/types-dev/objects.d.ts#L1103)
+[types-dev/objects.d.ts:1103](https://github.com/ioBroker/ioBroker.js-controller/blob/9a3639aedf4d283ec031e1ded125b70fb2f2e3cd/packages/types-dev/objects.d.ts#L1103)
 
 ___
 
@@ -58,7 +58,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:900](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/types-dev/objects.d.ts#L900)
+[types-dev/objects.d.ts:900](https://github.com/ioBroker/ioBroker.js-controller/blob/9a3639aedf4d283ec031e1ded125b70fb2f2e3cd/packages/types-dev/objects.d.ts#L900)
 
 ___
 
@@ -72,7 +72,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:1105](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/types-dev/objects.d.ts#L1105)
+[types-dev/objects.d.ts:1105](https://github.com/ioBroker/ioBroker.js-controller/blob/9a3639aedf4d283ec031e1ded125b70fb2f2e3cd/packages/types-dev/objects.d.ts#L1105)
 
 ___
 
@@ -84,7 +84,7 @@ Like protectedNative, but the properties are also encrypted and decrypted automa
 
 #### Defined in
 
-[types-dev/objects.d.ts:1109](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/types-dev/objects.d.ts#L1109)
+[types-dev/objects.d.ts:1109](https://github.com/ioBroker/ioBroker.js-controller/blob/9a3639aedf4d283ec031e1ded125b70fb2f2e3cd/packages/types-dev/objects.d.ts#L1109)
 
 ___
 
@@ -98,7 +98,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:899](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/types-dev/objects.d.ts#L899)
+[types-dev/objects.d.ts:899](https://github.com/ioBroker/ioBroker.js-controller/blob/9a3639aedf4d283ec031e1ded125b70fb2f2e3cd/packages/types-dev/objects.d.ts#L899)
 
 ___
 
@@ -112,7 +112,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:901](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/types-dev/objects.d.ts#L901)
+[types-dev/objects.d.ts:901](https://github.com/ioBroker/ioBroker.js-controller/blob/9a3639aedf4d283ec031e1ded125b70fb2f2e3cd/packages/types-dev/objects.d.ts#L901)
 
 ___
 
@@ -124,7 +124,7 @@ Objects created for each instance, inside the namespace of this adapter
 
 #### Defined in
 
-[types-dev/objects.d.ts:1113](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/types-dev/objects.d.ts#L1113)
+[types-dev/objects.d.ts:1113](https://github.com/ioBroker/ioBroker.js-controller/blob/9a3639aedf4d283ec031e1ded125b70fb2f2e3cd/packages/types-dev/objects.d.ts#L1113)
 
 ___
 
@@ -138,7 +138,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:897](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/types-dev/objects.d.ts#L897)
+[types-dev/objects.d.ts:897](https://github.com/ioBroker/ioBroker.js-controller/blob/9a3639aedf4d283ec031e1ded125b70fb2f2e3cd/packages/types-dev/objects.d.ts#L897)
 
 ___
 
@@ -154,7 +154,7 @@ These properties can only be edited if the correct password is provided
 
 #### Defined in
 
-[types-dev/objects.d.ts:906](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/types-dev/objects.d.ts#L906)
+[types-dev/objects.d.ts:906](https://github.com/ioBroker/ioBroker.js-controller/blob/9a3639aedf4d283ec031e1ded125b70fb2f2e3cd/packages/types-dev/objects.d.ts#L906)
 
 ___
 
@@ -166,7 +166,7 @@ Register notifications for the built-in notification system
 
 #### Defined in
 
-[types-dev/objects.d.ts:1111](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/types-dev/objects.d.ts#L1111)
+[types-dev/objects.d.ts:1111](https://github.com/ioBroker/ioBroker.js-controller/blob/9a3639aedf4d283ec031e1ded125b70fb2f2e3cd/packages/types-dev/objects.d.ts#L1111)
 
 ___
 
@@ -178,7 +178,7 @@ Objects created for the adapter, anywhere in the global namespace
 
 #### Defined in
 
-[types-dev/objects.d.ts:1115](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/types-dev/objects.d.ts#L1115)
+[types-dev/objects.d.ts:1115](https://github.com/ioBroker/ioBroker.js-controller/blob/9a3639aedf4d283ec031e1ded125b70fb2f2e3cd/packages/types-dev/objects.d.ts#L1115)
 
 ___
 
@@ -190,7 +190,7 @@ An array of `native` properties which cannot be accessed from outside the defini
 
 #### Defined in
 
-[types-dev/objects.d.ts:1107](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/types-dev/objects.d.ts#L1107)
+[types-dev/objects.d.ts:1107](https://github.com/ioBroker/ioBroker.js-controller/blob/9a3639aedf4d283ec031e1ded125b70fb2f2e3cd/packages/types-dev/objects.d.ts#L1107)
 
 ___
 
@@ -204,7 +204,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:904](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/types-dev/objects.d.ts#L904)
+[types-dev/objects.d.ts:904](https://github.com/ioBroker/ioBroker.js-controller/blob/9a3639aedf4d283ec031e1ded125b70fb2f2e3cd/packages/types-dev/objects.d.ts#L904)
 
 ___
 
@@ -218,7 +218,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:1104](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/types-dev/objects.d.ts#L1104)
+[types-dev/objects.d.ts:1104](https://github.com/ioBroker/ioBroker.js-controller/blob/9a3639aedf4d283ec031e1ded125b70fb2f2e3cd/packages/types-dev/objects.d.ts#L1104)
 
 ___
 
@@ -234,4 +234,4 @@ The user who created or updated this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:903](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/types-dev/objects.d.ts#L903)
+[types-dev/objects.d.ts:903](https://github.com/ioBroker/ioBroker.js-controller/blob/9a3639aedf4d283ec031e1ded125b70fb2f2e3cd/packages/types-dev/objects.d.ts#L903)
