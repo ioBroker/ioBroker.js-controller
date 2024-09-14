@@ -132,7 +132,8 @@ import type {
     InstallNodeModuleOptions,
     InternalInstallNodeModuleOptions,
     StopParameters,
-    InternalStopParameters
+    InternalStopParameters,
+    NotificationOptions
 } from '@/lib/_Types.js';
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
@@ -7587,17 +7588,19 @@ export class AdapterClass extends EventEmitter {
     registerNotification<Scope extends keyof ioBroker.NotificationScopes>(
         scope: Scope,
         category: ioBroker.NotificationScopes[Scope] | null,
-        message: string
+        message: string,
+        options?: NotificationOptions
     ): Promise<void>;
 
     /**
      * Send notification with given scope and category to host of this adapter
      *
      * @param scope - scope to be addressed
-     * @param category - to be addressed, if null message will be checked by regex of given scope
+     * @param category - to be addressed, if a null message will be checked by regex of given scope
      * @param message - message to be stored/checked
+     * @param options - Additional options for the notification, currently `contextData` is supported
      */
-    async registerNotification(scope: unknown, category: unknown, message: unknown): Promise<void> {
+    async registerNotification(scope: unknown, category: unknown, message: unknown, options?: unknown): Promise<void> {
         if (!this.#states) {
             // if states is no longer existing, we do not need to set
             this._logger.info(
@@ -7612,9 +7615,19 @@ export class AdapterClass extends EventEmitter {
         }
         Validator.assertString(message, 'message');
 
+        if (options !== undefined) {
+            Validator.assertObject<NotificationOptions>(options, 'options');
+        }
+
         const obj = {
             command: 'addNotification',
-            message: { scope, category, message, instance: this.namespace },
+            message: {
+                scope,
+                category,
+                message,
+                instance: this.namespace,
+                contextData: options?.contextData
+            },
             from: `system.adapter.${this.namespace}`
         };
 

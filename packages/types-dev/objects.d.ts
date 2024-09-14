@@ -1089,7 +1089,7 @@ declare global {
         };
 
         interface Notification {
-            /** Each adapter can define its own "scopes" for own notifications with its own categories which then will be available in the system. Adapters should only register one scope which matches the name of the adapter. */
+            /** E.g., `system`. Each adapter can define its own "scopes" for own notifications with its own categories which then will be available in the system. Adapters should only register one scope which matches the name of the adapter. */
             scope: string;
             /** The human-readable name of this scope */
             name: Translated;
