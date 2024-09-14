@@ -272,7 +272,7 @@ function getConfig(): ioBroker.IoBrokerJson | never {
  * @param _config
  * @param secret
  */
-async function _startMultihost(_config: Record<string, any>, secret: string | false): Promise<void> {
+async function _startMultihost(_config: ioBroker.IoBrokerJson, secret: string | false): Promise<void> {
     const MHService = await import('./lib/multihostServer.js');
     const cpus = os.cpus();
     mhService = new MHService.MHServer(
@@ -297,7 +297,7 @@ async function _startMultihost(_config: Record<string, any>, secret: string | fa
  *
  * @param __config - the iobroker config object
  */
-async function startMultihost(__config?: Record<string, any>): Promise<boolean | void> {
+async function startMultihost(__config?: ioBroker.IoBrokerJson): Promise<boolean | void> {
     if (compactGroupController) {
         return;
     }
@@ -341,7 +341,7 @@ async function startMultihost(__config?: Record<string, any>): Promise<boolean |
                 let obj: ioBroker.SystemConfigObject | null | undefined;
                 let errText;
                 try {
-                    obj = await objects!.getObjectAsync(SYSTEM_CONFIG_ID);
+                    obj = await objects!.getObject(SYSTEM_CONFIG_ID);
                 } catch (e) {
                     // will log error below
                     errText = e.message;
@@ -1405,7 +1405,7 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
         let err;
 
         try {
-            systemConfig = await objects!.getObjectAsync(SYSTEM_CONFIG_ID);
+            systemConfig = await objects!.getObject(SYSTEM_CONFIG_ID);
         } catch (e) {
             err = e;
         }
@@ -2839,9 +2839,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 const configFile = tools.getConfigFileName();
                 if (fs.existsSync(configFile)) {
                     try {
-                        let config = fs.readFileSync(configFile).toString('utf8');
+                        const strConfig = fs.readFileSync(configFile).toString('utf8');
                         const stat = fs.lstatSync(configFile);
-                        config = JSON.parse(config);
+                        const config: ioBroker.IoBrokerJson = JSON.parse(strConfig);
                         sendTo(msg.from, msg.command, { config, isActive: uptimeStart > stat.mtimeMs }, msg.callback);
                     } catch {
                         const error = `Cannot parse file ${configFile}`;
@@ -2865,7 +2865,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             if (msg.message) {
                 const configFile = tools.getConfigFileName();
                 if (fs.existsSync(configFile)) {
-                    let config;
+                    let config: ioBroker.IoBrokerJson | undefined;
                     if (typeof msg.message === 'string') {
                         try {
                             config = JSON.parse(msg.message);
@@ -2876,7 +2876,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         config = msg.message;
                     }
 
-                    if (!error) {
+                    if (!error && config) {
                         // todo validate structure, because very important
                         if (!config.system) {
                             error = 'Cannot find "system" in data';
@@ -2889,12 +2889,14 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         }
                     }
 
-                    if (!error) {
+                    if (!error && config) {
                         try {
                             fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
                         } catch {
                             error = `Cannot write file ${configFile}`;
                         }
+                    } else {
+                        error = `Invalid data for writeBaseSettings ${msg.from}`;
                     }
                 }
             } else {
@@ -5232,7 +5234,7 @@ export async function init(compactGroupId?: number): Promise<void> {
         stopTimeout += 5_000;
     }
 
-    // If bootstrap file detected, it must be deleted, but give time for a bootstrap process to use this file
+    // If a bootstrap file detected, it must be deleted, but give time for a bootstrap process to use this file
     if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
         setTimeout(() => {
             try {
