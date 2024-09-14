@@ -161,14 +161,14 @@ export interface AdapterClass {
     /**
      * Extend an object and create it if it might not exist
      *
-     * @deprecated use `adapter.extendObject` without callback instead
+     * @deprecated use `adapter.extendObject` without a callback instead
      */
     extendObjectAsync(
         id: string,
         objPart: ioBroker.PartialObject,
         options?: ioBroker.ExtendObjectOptions
     ): ioBroker.SetObjectPromise;
-    /** Set capabilities of the given executable. Only works on Linux systems. */
+    /** Set the capabilities of the given executable. Only works on Linux systems. */
     setExecutableCapabilities(
         execPath: string,
         capabilities: string[],
@@ -195,7 +195,7 @@ export interface AdapterClass {
         params: ioBroker.GetObjectViewParams | null | undefined,
         options?: unknown
     ): ioBroker.GetObjectViewPromise<ioBroker.InferGetObjectViewItemType<Design, Search>>;
-    /** Returns a list of objects with id between params.startkey and params.endkey */
+    /** Returns a list of objects with id between `params.startkey` and `params.endkey` */
     getObjectListAsync(
         params: ioBroker.GetObjectListParams | null,
         options?: { sorted?: boolean } | Record<string, any>
@@ -289,7 +289,7 @@ export interface AdapterClass {
     delStateAsync(id: string, options?: unknown): Promise<void>;
     /** Deletes a state from the states DB, but not the associated object */
     delForeignStateAsync(id: string, options?: unknown): Promise<void>;
-    /** Read all states of this adapter which match the given pattern */
+    /** Read all states of this adapter that match the given pattern */
     getStatesAsync(pattern: string, options?: unknown): ioBroker.GetStatesPromise;
     /** Read all states (which might not belong to this adapter) which match the given pattern */
     getForeignStatesAsync(pattern: Pattern, options?: unknown): ioBroker.GetStatesPromise;
@@ -1336,7 +1336,7 @@ export class AdapterClass extends EventEmitter {
     decrypt(secretVal: unknown, value?: unknown): string {
         if (value === undefined) {
             value = secretVal;
-            secretVal = this._systemSecret;
+            secretVal = this._systemSecret as string;
         }
 
         Validator.assertString(secretVal, 'secretVal');
@@ -1358,7 +1358,7 @@ export class AdapterClass extends EventEmitter {
     encrypt(secretVal: unknown, value?: unknown): string {
         if (value === undefined) {
             value = secretVal;
-            secretVal = this._systemSecret;
+            secretVal = this._systemSecret as string;
         }
 
         Validator.assertString(secretVal, 'secretVal');
@@ -4538,33 +4538,31 @@ export class AdapterClass extends EventEmitter {
         this.delForeignObject(id, options, callback);
     }
 
-    private _deleteObjects(
+    private async _deleteObjects(
         tasks: { id: string; [other: string]: any }[],
-        options: Record<string, any>,
-        cb?: () => void
-    ): void | Promise<void> {
+        options: Record<string, any>
+    ): Promise<void> {
         if (!tasks || !tasks.length) {
-            return tools.maybeCallback(cb);
-        } else {
-            const task = tasks.shift();
-            this.#objects!.delObject(task!.id, options, async err => {
-                if (err) {
-                    return tools.maybeCallbackWithError(cb, err);
-                }
-                if (task!.state) {
-                    try {
-                        await this.delForeignStateAsync(task!.id, options);
-                    } catch (e) {
-                        this._logger.warn(`${this.namespaceLog} Could not remove state of ${task!.id}: ${e.message}`);
-                    }
-                }
+            return;
+        }
+        for (const task of tasks) {
+            try {
+                await this.#objects!.delObject(task!.id, options);
+            } catch (e) {
+                this._logger.warn(`${this.namespaceLog} Could not remove object ${task!.id}: ${e.message}`);
+            }
+            if (task!.state) {
                 try {
-                    await tools.removeIdFromAllEnums(this.#objects, task!.id, this.enums);
+                    await this.delForeignStateAsync(task!.id, options);
                 } catch (e) {
-                    this._logger.warn(`${this.namespaceLog} Could not remove ${task!.id} from enums: ${e.message}`);
+                    this._logger.warn(`${this.namespaceLog} Could not remove state of ${task!.id}: ${e.message}`);
                 }
-                setImmediate(() => this._deleteObjects(tasks, options, cb));
-            });
+            }
+            try {
+                await tools.removeIdFromAllEnums(this.#objects, task!.id, this.enums);
+            } catch (e) {
+                this._logger.warn(`${this.namespaceLog} Could not remove ${task!.id} from enums: ${e.message}`);
+            }
         }
     }
 
@@ -4631,15 +4629,15 @@ export class AdapterClass extends EventEmitter {
 
                 const selector = { startkey: `${id}.`, endkey: `${id}.\u9999` };
                 // read all underlying states
-                this.#objects!.getObjectList(selector, options, (err, res) => {
-                    res &&
-                        res.rows.forEach(
-                            (item: ioBroker.GetObjectListItem<ioBroker.Object>) =>
-                                !tasks.find(task => task.id === item.id) &&
-                                (!item.value || !item.value.common || !item.value.common.dontDelete) && // exclude objects with dontDelete flag
-                                tasks.push({ id: item.id, state: item.value && item.value.type === 'state' })
-                        );
-                    this._deleteObjects(tasks, options, callback);
+                this.#objects!.getObjectList(selector, options, async (err, res) => {
+                    res?.rows.forEach(
+                        (item: ioBroker.GetObjectListItem<ioBroker.Object>) =>
+                            !tasks.find(task => task.id === item.id) &&
+                            (!item.value || !item.value.common || !item.value.common.dontDelete) && // exclude objects with dontDelete flag
+                            tasks.push({ id: item.id, state: item.value && item.value.type === 'state' })
+                    );
+                    await this._deleteObjects(tasks, options);
+                    tools.maybeCallback(callback);
                 });
             });
         } else {
@@ -7264,12 +7262,12 @@ export class AdapterClass extends EventEmitter {
 
     /**
      * Async version of sendTo
-     * As we have a special case (first arg can be error or result, we need to promisify manually)
+     * As we have a special case (first arg can be an error or result, we need to promisify manually)
      *
      * @param instanceName name of the instance where the message must be sent to. E.g. "pushover.0" or "system.adapter.pushover.0".
-     * @param command command name, like "send", "browse", "list". Command is depend on target adapter implementation.
+     * @param command command name, like "send", "browse", "list". Command is depending on target adapter implementation.
      * @param message object that will be given as argument for request
-     * @param options optional options to define a timeout. This allows to get an error callback if no answer received in time (only if target is specific instance)
+     * @param options optional options to define a timeout. This allows getting an error callback if no answer received in time (only if target is a specific instance)
      */
     sendToAsync(instanceName: unknown, command: unknown, message?: unknown, options?: unknown): any {
         return new Promise((resolve, reject) => {
@@ -8684,7 +8682,7 @@ export class AdapterClass extends EventEmitter {
                         return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
                     }
 
-                    // read object for formatting - we ignore permissions on the target object and thus get it as admin user
+                    // read an object for formatting - we ignore permissions on the target object and thus get it as an admin user
                     const targetObj = await this.#objects.getObject(targetId, {
                         ...options,
                         user: SYSTEM_ADMIN_USER
@@ -8993,7 +8991,7 @@ export class AdapterClass extends EventEmitter {
 
         if (id.startsWith(ALIAS_STARTS_WITH)) {
             if (obj?.common?.alias?.id) {
-                // id can be string or can have attribute id.read
+                // id can be a string or can have attribute id.read
                 const aliasId = tools.isObject(obj.common.alias.id) ? obj.common.alias.id.read : obj.common.alias.id;
 
                 // validate here because we use objects/states db directly
@@ -9665,7 +9663,7 @@ export class AdapterClass extends EventEmitter {
 
         if (!aliasDetails.source) {
             await this.#states!.subscribe(sourceId);
-            // we ignore permissions on the source object and thus get it as admin user
+            // we ignore permissions on the source object and thus get it as an admin user
             const sourceObj = await this.#objects!.getObject(sourceId, { user: SYSTEM_ADMIN_USER });
 
             // if we have a common and the alias has not been removed in-between
@@ -11532,6 +11530,14 @@ export class AdapterClass extends EventEmitter {
 
         this.adapterConfig = adapterConfig;
 
+        // Check that version in DB is the same as on disk
+        if ((adapterConfig as ioBroker.InstanceObject).common.version !== packJson.version) {
+            // TODO: think about to make upload automatically if a version on disk is newer than in DB. Now it is just hint in the log.
+            this._logger.warn(
+                `${this.namespaceLog} Version in DB is ${(adapterConfig as ioBroker.InstanceObject).common.version}, but this version is ${packJson.version}. Please synchronise the adapter with "iob upload ${(adapterConfig as ioBroker.InstanceObject).common.name}".`
+            );
+        }
+
         this._utils = new Validator(
             this.#objects,
             this.#states,
@@ -11772,7 +11778,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     private async _createInstancesObjects(instanceObj: ioBroker.InstanceObject): Promise<void> {
-        let objs: (IoPackageInstanceObject & { state?: unknown })[];
+        let objs: (IoPackageInstanceObject & { state?: ioBroker.StateValue })[];
 
         if (instanceObj?.common && !('onlyWWW' in instanceObj.common) && instanceObj.common.mode !== 'once') {
             objs = tools.getInstanceIndicatorObjects(this.namespace);
@@ -11782,7 +11788,7 @@ export class AdapterClass extends EventEmitter {
 
         if (instanceObj && 'instanceObjects' in instanceObj) {
             for (const instObj of instanceObj.instanceObjects) {
-                const obj: IoPackageInstanceObject & { state?: unknown } = instObj;
+                const obj: IoPackageInstanceObject & { state?: ioBroker.StateValue } = instObj;
 
                 const allowedTopLevelTypes: ioBroker.ObjectType[] = ['meta', 'device'];
 
@@ -11870,63 +11876,59 @@ export class AdapterClass extends EventEmitter {
             });
         }
 
-        return new Promise(resolve => {
-            this._extendObjects(objs, resolve);
-        });
+        try {
+            await this._extendObjects(objs);
+        } catch (e) {
+            this._logger.error(`${this.namespaceLog} Cannot update objects: ${e}`);
+        }
     }
 
-    private async _extendObjects(tasks: Record<string, any>, callback: () => void): Promise<void> {
+    private async _extendObjects(tasks: (IoPackageInstanceObject & { state?: ioBroker.StateValue })[]): Promise<void> {
         if (!tasks || !tasks.length) {
-            return tools.maybeCallback(callback);
+            return;
         }
-        const task = tasks.shift();
-        const state = task.state;
-        if (state !== undefined) {
-            delete task.state;
-        }
-
-        try {
-            tools.validateGeneralObjectProperties(task, true);
-        } catch (e) {
-            this._logger.error(`${this.namespaceLog} Object ${task._id} is invalid: ${e.message}`);
-            return tools.maybeCallbackWithError(callback, e);
-        }
-
-        if (!this.#objects) {
-            this._logger.info(
-                `${this.namespaceLog} extendObjects not processed because Objects database not connected.`
-            );
-            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        }
-
-        // preserve attributes on instance creation
-        const options = { preserve: { common: ['name'], native: true } };
-
-        try {
-            await this.extendForeignObjectAsync(task._id, task, options);
-        } catch {
-            // ignore
-        }
-
-        if (state !== undefined) {
-            if (!this.#states) {
-                this._logger.info(
-                    `${this.namespaceLog} extendObjects not processed because States database not connected.`
-                );
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        for (const task of tasks) {
+            const state = task.state;
+            if (state !== undefined) {
+                delete task.state;
             }
-            this.outputCount++;
-            this.#states.setState(
-                task._id,
-                {
+            try {
+                tools.validateGeneralObjectProperties(task, true);
+            } catch (e) {
+                this._logger.error(`${this.namespaceLog} Object ${task._id} is invalid: ${e.message}`);
+                throw e;
+            }
+
+            if (!this.#objects) {
+                this._logger.info(
+                    `${this.namespaceLog} extendObjects not processed because Objects database not connected.`
+                );
+                throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+            }
+
+            // preserve attributes on instance creation
+            const options = { preserve: { common: ['name'], native: true } };
+
+            try {
+                await this.extendForeignObjectAsync(task._id, task, options);
+            } catch {
+                // ignore
+            }
+
+            if (state !== undefined) {
+                if (!this.#states) {
+                    this._logger.info(
+                        `${this.namespaceLog} extendObjects not processed because States database not connected.`
+                    );
+                    throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+                }
+                this.outputCount++;
+                await this.#states.setState(task._id, {
                     val: state,
                     from: `system.adapter.${this.namespace}`,
                     ack: true
-                },
-                () => setImmediate(() => this._extendObjects(tasks, callback))
-            );
-        } else {
-            setImmediate(() => this._extendObjects(tasks, callback));
+                });
+            }
         }
     }
 
