@@ -2070,8 +2070,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                 // Collect statistics (only if license has been confirmed - user agreed)
                 if (
-                    systemConfig?.common &&
-                    systemConfig.common.diag &&
+                    systemConfig?.common?.diag &&
                     systemConfig.common.licenseConfirmed &&
                     (!lastDiagSend || Date.now() - lastDiagSend > 30_000) // prevent sending of diagnostics by multiple admin instances
                 ) {
@@ -2096,7 +2095,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 // Check if repositories exist
                 if (systemRepos?.native?.repositories) {
                     let forcedUpdate = false;
-                    if (tools.isObject(msg.message)) {
+                    if (msg.message && tools.isObject(msg.message)) {
                         forcedUpdate = msg.message.update;
                         msg.message = msg.message.repo;
                     }
