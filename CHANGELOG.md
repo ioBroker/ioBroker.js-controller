@@ -12,7 +12,6 @@
 * (@GermanBluefox/@foxriver76) implemented automatic upload on adapter start if version mismatch is detected
 * (@foxriver76) enriched logging on upload with version information
 
-
 ## 6.0.11 (2024-08-21) - Kiera
 * (foxriver76) only generate `packageUpdates` notification, if new updates detected
 
