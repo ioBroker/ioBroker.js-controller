@@ -2894,7 +2894,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         } catch {
                             error = `Cannot write file ${configFile}`;
                         }
-                    } else if (!config) {
+                    } else if (!error) {
                         error = `Invalid data for writeBaseSettings ${msg.from}`;
                     }
                 }
