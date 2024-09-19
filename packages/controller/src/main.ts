@@ -2875,9 +2875,11 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                         config = msg.message;
                     }
 
-                    if (!error && config) {
+                    if (!error) {
                         // todo validate structure, because very important
-                        if (!config.system) {
+                        if (!config) {
+                            error = 'Empty config';
+                        } else if (!config.system) {
                             error = 'Cannot find "system" in data';
                         } else if (!config.objects) {
                             error = 'Cannot find "objects" in data';
