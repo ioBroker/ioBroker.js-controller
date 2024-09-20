@@ -435,8 +435,7 @@ export class Install {
                 console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
                 return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
             }
-            // create file that indicates that npm was called there
-            fs.writeFileSync(path.join(installDir, 'iob_npm.done'), ' ');
+
             // command succeeded
             return { _url: npmUrl, installDir: path.dirname(installDir) };
         } else {
