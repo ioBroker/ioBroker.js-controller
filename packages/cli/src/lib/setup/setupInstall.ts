@@ -435,8 +435,7 @@ export class Install {
                 console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
                 return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
             }
-            // create file that indicates that npm was called there
-            fs.writeFileSync(path.join(installDir, 'iob_npm.done'), ' ');
+
             // command succeeded
             return { _url: npmUrl, installDir: path.dirname(installDir) };
         } else {
@@ -814,14 +813,14 @@ export class Install {
         let obj;
         let err;
         try {
-            obj = await this.objects.getObjectAsync(`system.adapter.${adapter}`);
+            obj = await this.objects.getObject(`system.adapter.${adapter}`);
         } catch (_err) {
             err = _err;
         }
         // Adapter is not installed - install it now
         if (err || !obj || !obj.common.installedVersion) {
             await this.installAdapter(adapter);
-            obj = await this.objects.getObjectAsync(`system.adapter.${adapter}`);
+            obj = await this.objects.getObject(`system.adapter.${adapter}`);
         }
 
         if (!obj) {
@@ -837,7 +836,7 @@ export class Install {
             startkey: `${SYSTEM_ADAPTER_PREFIX}${adapter}.`,
             endkey: `${SYSTEM_ADAPTER_PREFIX}${adapter}.\u9999`
         });
-        const systemConfig = await this.objects.getObjectAsync('system.config');
+        const systemConfig = await this.objects.getObject('system.config');
         const defaultLogLevel = systemConfig?.common?.defaultLogLevel;
         if (!res) {
             console.error(`host.${hostname} error: view instanceStats`);
@@ -1845,34 +1844,9 @@ export class Install {
             return;
         }
 
-        const { installDir } = res;
-
-        if (name) {
-            await this.upload.uploadAdapter(name, true, true);
-            await this.upload.uploadAdapter(name, false, true);
-            await this.upload.upgradeAdapterObjects(name);
-        } else {
-            // Try to find io-package.json with the newest date
-            const dirs = fs.readdirSync(installDir);
-            let date = null;
-            let dir = null;
-            for (const _dir of dirs) {
-                if (fs.existsSync(`${installDir}/${_dir}/io-package.json`)) {
-                    const stat = fs.statSync(`${installDir}/${_dir}/io-package.json`);
-                    if (!date || stat.mtime.getTime() > date.getTime()) {
-                        dir = _dir;
-                        date = stat.mtime;
-                    }
-                }
-            }
-            // if modify time is not older than one hour
-            if (dir && date && Date.now() - date.getTime() < 3600000) {
-                name = dir.substring(tools.appName.length + 1);
-                await this.upload.uploadAdapter(name, true, true);
-                await this.upload.uploadAdapter(name, false, true);
-                await this.upload.upgradeAdapterObjects(name);
-            }
-        }
+        await this.upload.uploadAdapter(name, true, true);
+        await this.upload.uploadAdapter(name, false, true);
+        await this.upload.upgradeAdapterObjects(name);
 
         // re-enable stopped instances
         await this.enableInstances(stoppedList, true);

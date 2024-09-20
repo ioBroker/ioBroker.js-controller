@@ -755,12 +755,12 @@ async function processCommand(
                                 );
                                 await notificationHandler.addConfig(ioPackage.notifications);
 
-                                await notificationHandler.addMessage(
-                                    'system',
-                                    'fileToJsonl',
-                                    `Migrated: ${migrated}`,
-                                    `system.host.${hostname}`
-                                );
+                                await notificationHandler.addMessage({
+                                    scope: 'system',
+                                    category: 'fileToJsonl',
+                                    message: `Migrated: ${migrated}`,
+                                    instance: `system.host.${hostname}`
+                                });
 
                                 notificationHandler.storeNotifications();
                             } catch (e) {
