@@ -5772,12 +5772,12 @@ async function checkAvailableDockerUpdate(): Promise<void> {
         return;
     }
 
-    await notificationHandler.addMessage(
-        'system',
-        'dockerUpdate',
-        `${version} (${lastUpdated})`,
-        `system.host.${hostname}`
-    );
+    await notificationHandler.addMessage({
+        scope: 'system',
+        category: 'dockerUpdate',
+        message: `${version} (${lastUpdated})`,
+        instance: `system.host.${hostname}`
+    });
 }
 
 /**
