@@ -50,7 +50,7 @@ It prefixes every message with the given namespace
 
 #### Defined in
 
-[adapter/src/lib/adapter/log.ts:17](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/adapter/src/lib/adapter/log.ts#L17)
+[adapter/src/lib/adapter/log.ts:17](https://github.com/ioBroker/ioBroker.js-controller/blob/4149909bc476d149ab982187a6b3b61b340b9ab1/packages/adapter/src/lib/adapter/log.ts#L17)
 
 ## Properties
 
@@ -66,7 +66,7 @@ Verbosity of the log output
 
 #### Defined in
 
-[adapter/src/lib/adapter/log.ts:8](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/adapter/src/lib/adapter/log.ts#L8)
+[adapter/src/lib/adapter/log.ts:8](https://github.com/ioBroker/ioBroker.js-controller/blob/4149909bc476d149ab982187a6b3b61b340b9ab1/packages/adapter/src/lib/adapter/log.ts#L8)
 
 ## Methods
 
@@ -92,7 +92,7 @@ log a message with debug level
 
 #### Defined in
 
-[adapter/src/lib/adapter/log.ts:37](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/adapter/src/lib/adapter/log.ts#L37)
+[adapter/src/lib/adapter/log.ts:37](https://github.com/ioBroker/ioBroker.js-controller/blob/4149909bc476d149ab982187a6b3b61b340b9ab1/packages/adapter/src/lib/adapter/log.ts#L37)
 
 ___
 
@@ -118,7 +118,7 @@ log a message with error severity
 
 #### Defined in
 
-[adapter/src/lib/adapter/log.ts:45](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/adapter/src/lib/adapter/log.ts#L45)
+[adapter/src/lib/adapter/log.ts:45](https://github.com/ioBroker/ioBroker.js-controller/blob/4149909bc476d149ab982187a6b3b61b340b9ab1/packages/adapter/src/lib/adapter/log.ts#L45)
 
 ___
 
@@ -144,7 +144,7 @@ log a message with info level (default output level for all adapters)
 
 #### Defined in
 
-[adapter/src/lib/adapter/log.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/adapter/src/lib/adapter/log.ts#L41)
+[adapter/src/lib/adapter/log.ts:41](https://github.com/ioBroker/ioBroker.js-controller/blob/4149909bc476d149ab982187a6b3b61b340b9ab1/packages/adapter/src/lib/adapter/log.ts#L41)
 
 ___
 
@@ -170,7 +170,7 @@ log a message with silly level
 
 #### Defined in
 
-[adapter/src/lib/adapter/log.ts:33](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/adapter/src/lib/adapter/log.ts#L33)
+[adapter/src/lib/adapter/log.ts:33](https://github.com/ioBroker/ioBroker.js-controller/blob/4149909bc476d149ab982187a6b3b61b340b9ab1/packages/adapter/src/lib/adapter/log.ts#L33)
 
 ___
 
@@ -196,4 +196,4 @@ log a message with warning severity
 
 #### Defined in
 
-[adapter/src/lib/adapter/log.ts:49](https://github.com/ioBroker/ioBroker.js-controller/blob/b159ac233f7a87a414127911fe2ae71c3b8f699b/packages/adapter/src/lib/adapter/log.ts#L49)
+[adapter/src/lib/adapter/log.ts:49](https://github.com/ioBroker/ioBroker.js-controller/blob/4149909bc476d149ab982187a6b3b61b340b9ab1/packages/adapter/src/lib/adapter/log.ts#L49)
