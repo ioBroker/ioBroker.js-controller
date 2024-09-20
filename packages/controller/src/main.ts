@@ -4743,7 +4743,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                     proc.process = cp.fork(adapterMainFile, args, {
                         // @ts-expect-error if mode !== extension we have ensured it exists
                         execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
-                        // @ts-expect-error missing from types, but we already tested it is needed
+                        // @ts-expect-error missing from types, but we already tested it is necessary
                         windowsHide: true,
                         cwd: adapterDir!
                     });
