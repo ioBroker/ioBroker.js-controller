@@ -436,7 +436,7 @@ export class Upload {
                 const now = Date.now();
                 if (now - this.lastProgressUpdate > 1_000) {
                     this.lastProgressUpdate = now;
-                    await this.states.setStateAsync(uploadID, {
+                    await this.states.setState(uploadID, {
                         val: Math.round((1_000 * (files.length - f)) / files.length) / 10,
                         ack: true
                     });
@@ -453,7 +453,7 @@ export class Upload {
 
         // Set upload progress to 0;
         if (!isAdmin && files.length) {
-            await this.states.setStateAsync(uploadID, { val: 0, ack: true });
+            await this.states.setState(uploadID, { val: 0, ack: true });
         }
 
         return adapter;
@@ -553,12 +553,12 @@ export class Upload {
             let obj;
             const uploadID = `system.adapter.${adapter}.upload`;
             try {
-                obj = await this.objects.getObjectAsync(uploadID);
+                obj = await this.objects.getObject(uploadID);
             } catch {
                 // ignore
             }
             if (!obj) {
-                await this.objects.setObjectAsync(uploadID, {
+                await this.objects.setObject(uploadID, {
                     _id: uploadID,
                     type: 'state',
                     common: {
@@ -722,7 +722,7 @@ export class Upload {
         if (res) {
             for (const row of res.rows) {
                 if (row.value?.common.host === hostname) {
-                    const _obj = await this.objects.getObjectAsync(row.id);
+                    const _obj = await this.objects.getObject(row.id);
                     const newObject = deepClone(_obj) as ioBroker.InstanceObject;
 
                     // TODO: refactor the following assignments into a method, where we can define which attributes need a real override and their defaults
@@ -822,9 +822,13 @@ export class Upload {
             }
             ioPackFile = null;
         }
+
         ioPack = ioPack || ioPackFile;
 
         if (ioPack) {
+            logger.log(
+                `Updating objects from io-package.json for adapter "${name}" with version "${ioPack.common.version}"`
+            );
             // Always update installedFrom from File on disk if exists and set
             if (ioPackFile?.common?.installedFrom) {
                 ioPack.common = ioPack.common || {};
@@ -869,8 +873,8 @@ export class Upload {
             obj.ts = Date.now();
 
             try {
-                await this.objects.setObjectAsync(`system.adapter.${name}`, obj);
-                await this.objects.setObjectAsync(`system.host.${hostname}.adapter.${name}`, obj);
+                await this.objects.setObject(`system.adapter.${name}`, obj);
+                await this.objects.setObject(`system.host.${hostname}.adapter.${name}`, obj);
             } catch (e) {
                 logger.error(
                     `Cannot set "system.adapter.${name}" and "system.host.${hostname}.adapters.${name}": ${e.message}`
