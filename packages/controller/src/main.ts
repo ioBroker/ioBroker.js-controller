@@ -1846,6 +1846,10 @@ async function sendTo(
     message: ioBroker.MessagePayload,
     callback?: ioBroker.ErrorCallback | ioBroker.MessageCallbackInfo
 ): Promise<void> {
+    if (!states) {
+        return;
+    }
+
     if (message === undefined) {
         message = command;
         command = 'send';
@@ -1876,7 +1880,7 @@ async function sendTo(
         }
     }
     try {
-        await states!.pushMessage(objName, obj);
+        await states.pushMessage(objName, obj);
     } catch (e) {
         // do not stringify the object, we had the issue with the invalid string length on serialization
         logger.error(
