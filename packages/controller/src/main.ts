@@ -138,6 +138,13 @@ interface RepoRequester {
     callback: ioBroker.MessageCallbackInfo;
 }
 
+interface SendResponseToOptions {
+    /** The message we want to respond to */
+    receivedMsg: ioBroker.SendableMessage;
+    /** The response payload */
+    payload: Record<string, unknown>;
+}
+
 /** Host information including host id and running version */
 type HostInformation = ioBroker.HostCommon & { host: string; runningVersion: string };
 
@@ -272,7 +279,7 @@ function getConfig(): ioBroker.IoBrokerJson | never {
  * @param _config
  * @param secret
  */
-async function _startMultihost(_config: Record<string, any>, secret: string | false): Promise<void> {
+async function _startMultihost(_config: ioBroker.IoBrokerJson, secret: string | false): Promise<void> {
     const MHService = await import('./lib/multihostServer.js');
     const cpus = os.cpus();
     mhService = new MHService.MHServer(
@@ -297,7 +304,7 @@ async function _startMultihost(_config: Record<string, any>, secret: string | fa
  *
  * @param __config - the iobroker config object
  */
-async function startMultihost(__config?: Record<string, any>): Promise<boolean | void> {
+async function startMultihost(__config?: ioBroker.IoBrokerJson): Promise<boolean | void> {
     if (compactGroupController) {
         return;
     }
@@ -341,7 +348,7 @@ async function startMultihost(__config?: Record<string, any>): Promise<boolean |
                 let obj: ioBroker.SystemConfigObject | null | undefined;
                 let errText;
                 try {
-                    obj = await objects!.getObjectAsync(SYSTEM_CONFIG_ID);
+                    obj = await objects!.getObject(SYSTEM_CONFIG_ID);
                 } catch (e) {
                     // will log error below
                     errText = e.message;
@@ -1405,7 +1412,7 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
         let err;
 
         try {
-            systemConfig = await objects!.getObjectAsync(SYSTEM_CONFIG_ID);
+            systemConfig = await objects!.getObject(SYSTEM_CONFIG_ID);
         } catch (e) {
             err = e;
         }
@@ -2074,8 +2081,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                 // Collect statistics (only if license has been confirmed - user agreed)
                 if (
-                    systemConfig?.common &&
-                    systemConfig.common.diag &&
+                    systemConfig?.common?.diag &&
                     systemConfig.common.licenseConfirmed &&
                     (!lastDiagSend || Date.now() - lastDiagSend > 30_000) // prevent sending of diagnostics by multiple admin instances
                 ) {
@@ -2849,9 +2855,8 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 const configFile = tools.getConfigFileName();
                 if (fs.existsSync(configFile)) {
                     try {
-                        let config = fs.readFileSync(configFile).toString('utf8');
+                        const config: ioBroker.IoBrokerJson = fs.readJsonSync(configFile);
                         const stat = fs.lstatSync(configFile);
-                        config = JSON.parse(config);
                         sendTo(msg.from, msg.command, { config, isActive: uptimeStart > stat.mtimeMs }, msg.callback);
                     } catch {
                         const error = `Cannot parse file ${configFile}`;
@@ -2871,56 +2876,58 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
 
         case 'writeBaseSettings': {
-            let error;
-            if (msg.message) {
-                const configFile = tools.getConfigFileName();
-                if (fs.existsSync(configFile)) {
-                    let config;
-                    if (typeof msg.message === 'string') {
-                        try {
-                            config = JSON.parse(msg.message);
-                        } catch {
-                            error = `Cannot parse data ${msg.message}`;
-                        }
-                    } else {
-                        config = msg.message;
-                    }
-
-                    if (!error) {
-                        // todo validate structure, because very important
-                        if (!config.system) {
-                            error = 'Cannot find "system" in data';
-                        } else if (!config.objects) {
-                            error = 'Cannot find "objects" in data';
-                        } else if (!config.states) {
-                            error = 'Cannot find "states" in data';
-                        } else if (!config.log) {
-                            error = 'Cannot find "log" in data';
-                        }
-                    }
-
-                    if (!error) {
-                        try {
-                            fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
-                        } catch {
-                            error = `Cannot write file ${configFile}`;
-                        }
-                    }
-                }
-            } else {
-                error = `No data found for writeBaseSettings ${msg.from}`;
-            }
-
-            if (error) {
+            if (!msg.message) {
+                const error = `No data found on writeBaseSettings from "${msg.from}"`;
                 logger.error(`${hostLogPrefix} ${error}`);
-                if (msg.callback && msg.from) {
-                    sendTo(msg.from, msg.command, { error }, msg.callback);
-                }
-            } else {
-                msg.callback && msg.from && sendTo(msg.from, msg.command, { result: 'ok' }, msg.callback);
+                return sendResponseTo({ receivedMsg: msg, payload: { error } });
             }
 
-            break;
+            const configFile = tools.getConfigFileName();
+
+            if (!fs.existsSync(configFile)) {
+                const error = `No config file exists on writeBaseSettings from "${msg.from}"`;
+                logger.error(`${hostLogPrefix} ${error}`);
+                return sendResponseTo({ receivedMsg: msg, payload: { error } });
+            }
+
+            let config: ioBroker.IoBrokerJson | undefined;
+            if (typeof msg.message === 'string') {
+                try {
+                    config = JSON.parse(msg.message);
+                } catch {
+                    return sendResponseTo({
+                        receivedMsg: msg,
+                        payload: { error: `Cannot parse data: "${msg.message}"` }
+                    });
+                }
+            } else {
+                config = msg.message;
+            }
+
+            if (!config) {
+                return sendResponseTo({ receivedMsg: msg, payload: { error: 'Empty config' } });
+            }
+
+            if (!config.system) {
+                return sendResponseTo({ receivedMsg: msg, payload: { error: 'Cannot find "system" in data' } });
+            }
+            if (!config.objects) {
+                return sendResponseTo({ receivedMsg: msg, payload: { error: 'Cannot find "objects" in data' } });
+            }
+            if (!config.states) {
+                return sendResponseTo({ receivedMsg: msg, payload: { error: 'Cannot find "states" in data' } });
+            }
+            if (!config.log) {
+                return sendResponseTo({ receivedMsg: msg, payload: { error: 'Cannot find "log" in data' } });
+            }
+
+            try {
+                fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
+            } catch {
+                return sendResponseTo({ receivedMsg: msg, payload: { error: `Cannot write file ${configFile}` } });
+            }
+
+            return sendResponseTo({ receivedMsg: msg, payload: { result: 'ok' } });
         }
 
         case 'addNotification':
@@ -3036,6 +3043,19 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             });
             break;
         }
+    }
+}
+
+/**
+ * Wrapper around sendTo for message responses
+ *
+ * @param options The received message and response payload
+ */
+async function sendResponseTo(options: SendResponseToOptions): Promise<void> {
+    const { receivedMsg, payload } = options;
+
+    if (receivedMsg.callback && receivedMsg.from) {
+        await sendTo(receivedMsg.from, receivedMsg.command, payload, receivedMsg.callback);
     }
 }
 
@@ -5242,7 +5262,7 @@ export async function init(compactGroupId?: number): Promise<void> {
         stopTimeout += 5_000;
     }
 
-    // If bootstrap file detected, it must be deleted, but give time for a bootstrap process to use this file
+    // If a bootstrap file detected, it must be deleted, but give time for a bootstrap process to use this file
     if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
         setTimeout(() => {
             try {
