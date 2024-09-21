@@ -2608,7 +2608,7 @@ export function decrypt(key: string, value: string): string {
  * @param it The variable to test
  * @returns true if it is Record<string, any>
  */
-export function isObject(it: any): it is Record<string, any> {
+export function isObject(it: unknown): it is Record<string, any> {
     // This is necessary because:
     // typeof null === 'object'
     // typeof [] === 'object'
@@ -2622,8 +2622,8 @@ export function isObject(it: any): it is Record<string, any> {
  *
  * @param it The variable to test
  */
-export function isArray(it: any): it is any[] {
-    return Array.isArray(it); // from node 0.1 is a part of engine
+export function isArray(it: unknown): it is any[] {
+    return Array.isArray(it);
 }
 
 /**
