@@ -2106,7 +2106,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 // Check if repositories exist
                 if (systemRepos?.native?.repositories) {
                     let forcedUpdate = false;
-                    if (msg.message && tools.isObject(msg.message)) {
+                    if (tools.isObject(msg.message)) {
                         forcedUpdate = msg.message.update;
                         msg.message = msg.message.repo;
                     }
