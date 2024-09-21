@@ -138,6 +138,13 @@ interface RepoRequester {
     callback: ioBroker.MessageCallbackInfo;
 }
 
+interface SendResponseToOptions {
+    /** The message we want to respond to */
+    receivedMsg: ioBroker.SendableMessage;
+    /** The response payload */
+    payload: Record<string, unknown>;
+}
+
 /** Host information including host id and running version */
 type HostInformation = ioBroker.HostCommon & { host: string; runningVersion: string };
 
@@ -2870,62 +2877,58 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
 
         case 'writeBaseSettings': {
-            let error: string | undefined;
-            if (msg.message) {
-                const configFile = tools.getConfigFileName();
-                if (fs.existsSync(configFile)) {
-                    let config: ioBroker.IoBrokerJson | undefined;
-                    if (typeof msg.message === 'string') {
-                        try {
-                            config = JSON.parse(msg.message);
-                        } catch {
-                            error = `Cannot parse data ${msg.message}`;
-                        }
-                    } else {
-                        config = msg.message;
-                    }
-
-                    if (!error) {
-                        // todo validate structure, because very important
-                        if (!config) {
-                            error = 'Empty config';
-                        } else if (!config.system) {
-                            error = 'Cannot find "system" in data';
-                        } else if (!config.objects) {
-                            error = 'Cannot find "objects" in data';
-                        } else if (!config.states) {
-                            error = 'Cannot find "states" in data';
-                        } else if (!config.log) {
-                            error = 'Cannot find "log" in data';
-                        }
-                    }
-
-                    if (!error && config) {
-                        try {
-                            fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
-                        } catch {
-                            error = `Cannot write file ${configFile}`;
-                        }
-                    } else if (!error) {
-                        error = `Invalid data for writeBaseSettings ${msg.from}`;
-                    }
-                }
-            } else {
-                error = `No data found for writeBaseSettings ${msg.from}`;
-            }
-
-            if (error) {
+            if (!msg.message) {
+                const error = `No data found on writeBaseSettings from "${msg.from}"`;
                 logger.error(`${hostLogPrefix} ${error}`);
-                if (msg.callback && msg.from) {
-                    sendTo(msg.from, msg.command, { error }, msg.callback);
-                }
-            } else {
-                if (msg.callback && msg.from) {
-                    sendTo(msg.from, msg.command, { result: 'ok' }, msg.callback);
-                }
+                return sendResponseTo({ receivedMsg: msg, payload: { error } });
             }
 
-            break;
+            const configFile = tools.getConfigFileName();
+
+            if (!fs.existsSync(configFile)) {
+                const error = `No config file exists on writeBaseSettings from "${msg.from}"`;
+                logger.error(`${hostLogPrefix} ${error}`);
+                return sendResponseTo({ receivedMsg: msg, payload: { error } });
+            }
+
+            let config: ioBroker.IoBrokerJson | undefined;
+            if (typeof msg.message === 'string') {
+                try {
+                    config = JSON.parse(msg.message);
+                } catch {
+                    return sendResponseTo({
+                        receivedMsg: msg,
+                        payload: { error: `Cannot parse data: "${msg.message}"` }
+                    });
+                }
+            } else {
+                config = msg.message;
+            }
+
+            if (!config) {
+                return sendResponseTo({ receivedMsg: msg, payload: { error: 'Empty config' } });
+            }
+
+            if (!config.system) {
+                return sendResponseTo({ receivedMsg: msg, payload: { error: 'Cannot find "system" in data' } });
+            }
+            if (!config.objects) {
+                return sendResponseTo({ receivedMsg: msg, payload: { error: 'Cannot find "objects" in data' } });
+            }
+            if (!config.states) {
+                return sendResponseTo({ receivedMsg: msg, payload: { error: 'Cannot find "states" in data' } });
+            }
+            if (!config.log) {
+                return sendResponseTo({ receivedMsg: msg, payload: { error: 'Cannot find "log" in data' } });
+            }
+
+            try {
+                fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
+            } catch {
+                return sendResponseTo({ receivedMsg: msg, payload: { error: `Cannot write file ${configFile}` } });
+            }
+
+            return sendResponseTo({ receivedMsg: msg, payload: { result: 'ok' } });
         }
 
         case 'addNotification':
@@ -3041,6 +3044,19 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             });
             break;
         }
+    }
+}
+
+/**
+ * Wrapper around send to for message responses
+ *
+ * @param options the received message and response payload
+ */
+async function sendResponseTo(options: SendResponseToOptions): Promise<void> {
+    const { receivedMsg, payload } = options;
+
+    if (receivedMsg.callback && receivedMsg.from) {
+        await sendTo(receivedMsg.from, receivedMsg.command, payload, receivedMsg.callback);
     }
 }
 
