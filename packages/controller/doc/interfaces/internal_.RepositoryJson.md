@@ -22,6 +22,8 @@ Information about each adapter
 
 • **\_repoInfo**: [`RepoInfo`](internal_.RepoInfo.md)
 
+Information about the repository: creation time, name, is it stable
+
 #### Defined in
 
-[types-dev/objects.d.ts:1008](https://github.com/ioBroker/ioBroker.js-controller/blob/4149909bc476d149ab982187a6b3b61b340b9ab1/packages/types-dev/objects.d.ts#L1008)
+[types-dev/objects.d.ts:1017](https://github.com/ioBroker/ioBroker.js-controller/blob/0dac039a749f141970d858b4fa272b223b00d9d1/packages/types-dev/objects.d.ts#L1017)
