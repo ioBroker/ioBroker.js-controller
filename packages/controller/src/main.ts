@@ -3047,9 +3047,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 }
 
 /**
- * Wrapper around send to for message responses
+ * Wrapper around sendTo for message responses
  *
- * @param options the received message and response payload
+ * @param options The received message and response payload
  */
 async function sendResponseTo(options: SendResponseToOptions): Promise<void> {
     const { receivedMsg, payload } = options;
