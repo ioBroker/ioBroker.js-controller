@@ -1846,6 +1846,10 @@ async function sendTo(
     message: ioBroker.MessagePayload,
     callback?: ioBroker.ErrorCallback | ioBroker.MessageCallbackInfo
 ): Promise<void> {
+    if (!states) {
+        return;
+    }
+
     if (message === undefined) {
         message = command;
         command = 'send';
@@ -1876,7 +1880,7 @@ async function sendTo(
         }
     }
     try {
-        await states!.pushMessage(objName, obj);
+        await states.pushMessage(objName, obj);
     } catch (e) {
         // do not stringify the object, we had the issue with the invalid string length on serialization
         logger.error(
@@ -2184,6 +2188,12 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 }
 
                 requestedRepoUpdates = [];
+
+                try {
+                    await checkAvailableDockerUpdate();
+                } catch (e) {
+                    logger.warn(`${hostLogPrefix} Could not check for new Docker image: ${e.message}`);
+                }
 
                 try {
                     await listUpdatableOsPackages();
@@ -4736,7 +4746,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                     proc.process = cp.fork(adapterMainFile, args, {
                         // @ts-expect-error if mode !== extension we have ensured it exists
                         execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
-                        // @ts-expect-error missing from types, but we already tested it is needed
+                        // @ts-expect-error missing from types, but we already tested it is necessary
                         windowsHide: true,
                         cwd: adapterDir!
                     });
@@ -5739,6 +5749,38 @@ async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promis
         outputCount++;
         await states!.setState(adapterInstance, { val: false, ack: true, from: hostObjectPrefix });
     }
+}
+
+/**
+ * Check if a new Docker Image version is available
+ */
+async function checkAvailableDockerUpdate(): Promise<void> {
+    const dockerInfo = tools.getDockerInformation();
+
+    if (!dockerInfo.isOfficial || !states) {
+        return;
+    }
+
+    const { isNew, lastUpdated, version } = await tools.getNewestDockerImageVersion();
+
+    if (!isNew) {
+        return;
+    }
+
+    const dockerVersionStateId = `${hostObjectPrefix}.availableDockerBuild`;
+    const knownLastUpdated = (await states.getState(dockerVersionStateId))?.val;
+    await states.setState(dockerVersionStateId, { val: lastUpdated, ack: true });
+
+    if (knownLastUpdated === lastUpdated) {
+        return;
+    }
+
+    await notificationHandler.addMessage({
+        scope: 'system',
+        category: 'dockerUpdate',
+        message: `${version} (${lastUpdated})`,
+        instance: `system.host.${hostname}`
+    });
 }
 
 /**

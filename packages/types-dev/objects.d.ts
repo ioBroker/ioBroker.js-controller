@@ -374,11 +374,8 @@ declare global {
             nodeProcessParams?: string[];
             /** If adapter can consume log messages, like admin, javascript or logparser */
             logTransporter?: boolean;
-            /** Type of the admin UI */
-            adminUI?: AdminUi;
             /** Optional memory limit for this instance */
             memoryLimitMB?: number;
-
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
         }
@@ -601,6 +598,8 @@ declare global {
         interface AdapterCommon extends ObjectCommon {
             /** Custom attributes to be shown in admin in the object browser */
             adminColumns?: string | (string | CustomAdminColumn)[];
+            /** Type of the admin UI */
+            adminUI?: AdminUi;
             /** Settings for custom Admin Tabs */
             adminTab?: {
                 name?: StringOrTranslated;
@@ -617,6 +616,7 @@ declare global {
                 /** Order number in admin tabs */
                 order?: number;
             };
+            /** If the mode is `schedule`, start one time adapter by ioBroker start, or by the configuration changes */
             allowInit?: boolean;
             /** If the adapter should be automatically upgraded and which version ranges are supported */
             automaticUpgrade?: AutoUpgradePolicy;
@@ -654,13 +654,15 @@ declare global {
             install?: boolean;
             /** Source, where this adapter has been installed from, to enable reinstalling on e.g., backup restore */
             installedFrom?: InstalledFrom;
-            /** Which version of this adapter is installed */
+            /** Shows which version of this adapter is installed */
             installedVersion: string;
+            /** Keywords are used by search in admin. Do not write ioBroker here */
             keywords?: string[];
             /** A dictionary of links to web services this adapter provides */
             localLinks?: Record<string, string | LocalLink>;
             /** @deprecated Use @see localLinks */
             localLink?: string;
+            /** Default log level for this adapter. It can be changed for every instance separately */
             loglevel?: LogLevel;
             /** Whether this adapter receives logs from other hosts and adapters (e.g., to store them somewhere) */
             logTransporter?: boolean;
@@ -674,6 +676,7 @@ declare global {
             messagebox?: true;
             /** Messages which are supported by the adapter, supportedMessages.custom: true is the equivalent to messagebox: true */
             supportedMessages?: SupportedMessages;
+            /** Running mode: `none`, `daemon`, `schedule`, `once`, `extension` */
             mode: InstanceMode;
             /** Name of the adapter (without leading `ioBroker.`) */
             name: string;
@@ -702,6 +705,7 @@ declare global {
             };
             /** Which OSes this adapter supports */
             os?: 'linux' | 'darwin' | 'win32' | Array<'linux' | 'darwin' | 'win32'>;
+            /** Constant */
             platform: 'Javascript/Node.js';
             /** The keys of common attributes (e.g. `history`) which are not deleted in a `setObject` call even if they are not present. Deletion must be done explicitly by setting them to `null`. */
             preserveSettings?: string | string[];
@@ -713,7 +717,6 @@ declare global {
             restartSchedule?: string;
             /** If the adapter runs in `schedule` mode, this contains the CRON */
             schedule?: string;
-            serviceStates?: boolean | string;
             /** Whether this adapter may only be installed once per host */
             singletonHost?: boolean;
             /** Whether this adapter may only be installed once in the whole system */
@@ -722,6 +725,7 @@ declare global {
             stopBeforeUpdate?: boolean;
             /** Overrides the default timeout that ioBroker will wait before force-stopping the adapter */
             stopTimeout?: number;
+            /** This adapter supports a special mode: if someone subscribes on its states, it starts to read them. It is done to save the bandwidth or load of the slave device */
             subscribable?: boolean;
             /** If `true`, this adapter provides custom per-state settings. Requires a `custom_m.html` file in the `admin` directory. */
             supportCustoms?: boolean;
@@ -765,6 +769,7 @@ declare global {
             unsafePerm?: true;
             /** The available version in the ioBroker repo. */
             version: string;
+            /** Definition of the vis-2 widgets */
             visWidgets?: Record<string, VisWidget>;
             /** Include the adapter version in the URL of the web adapter, e.g. `http://ip:port/1.2.3/material` instead of `http://ip:port/material` */
             webByVersion?: boolean;
@@ -772,12 +777,15 @@ declare global {
             webExtendable?: boolean;
             /** Relative path to a module that contains an extension for the web adapter. Use together with @see native.webInstance to configure which instances this affects */
             webExtension?: string;
-            webPreSettings?: any; // ?
-            webservers?: any; // ?
+            /** List of parameters that must be included in info.js by webServer adapter. (Example material: `"webPreSettings": { "materialBackground": "native.loadingBackground" }`). Web adapter uses this setting to create a customized info.js file to provide some essential settings for index.html file before the socket connection is established to provide e.g., background color of the loading screen. */
+            webPreSettings?: Record<string, any>;
+            /** @deprecated (where is it necessary?) Array of web server's instances that should serve content from the adapter's www folder */
+            webservers?: string[];
             /** @deprecated (use localLinks) A list of pages that should be shown on the "web" index page */
             welcomeScreen?: WelcomeScreenEntry[];
             /** @deprecated (use localLinks) A list of pages that should be shown on the ioBroker cloud index page */
             welcomeScreenPro?: WelcomeScreenEntry[];
+            /** @deprecated (rename the `www` folder in e.g. `adminWww`) If true, the `www` folder will be not uploaded into DB */
             wwwDontUpload?: boolean;
             /** @deprecated Use 'common.licenseInformation' instead */
             license?: string;
@@ -846,7 +854,7 @@ declare global {
             };
             /** Deactivated instances, that should not be shown in admin/Intro page */
             intro?: string[];
-            /** Which tabs are visible in admin in the left menu */
+            /** Defines which tabs are visible in the left menu of the admin */
             tabsVisible?: {
                 /** Name of the tab */
                 name: string;
@@ -1005,6 +1013,7 @@ declare global {
         }
 
         interface RepositoryJson {
+            /** Information about the repository: creation time, name, is it stable */
             _repoInfo: RepoInfo;
 
             /** Information about each adapter */
@@ -1035,20 +1044,10 @@ declare global {
             common: RepositoryCommon;
         }
 
-        interface InstanceObject extends BaseObject {
+        interface InstanceObject extends Omit<AdapterObject, 'type'>, BaseObject {
             _id: ObjectIDs.Instance;
             type: 'instance';
             common: InstanceCommon;
-            /** These properties will be removed when foreign adapters access it */
-            protectedNative?: string[];
-            /** These properties will be automatically encrypted and decrypted when used with adapter.config */
-            encryptedNative?: string[];
-            /** Register notifications for the built-in notification system */
-            notifications?: Notification[];
-            /** Objects created for each instance, inside the namespace of this adapter */
-            instanceObjects: (StateObject | DeviceObject | ChannelObject | FolderObject | MetaObject)[];
-            /** Objects created for the adapter, anywhere in the global namespace */
-            objects: ioBroker.AnyObject[];
         }
 
         interface PartialInstanceObject extends Partial<Omit<InstanceObject, 'common'>> {
