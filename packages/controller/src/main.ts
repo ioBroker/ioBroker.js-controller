@@ -2870,7 +2870,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
 
         case 'writeBaseSettings': {
-            let error;
+            let error: string | undefined;
             if (msg.message) {
                 const configFile = tools.getConfigFileName();
                 if (fs.existsSync(configFile)) {
@@ -2920,7 +2920,9 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                     sendTo(msg.from, msg.command, { error }, msg.callback);
                 }
             } else {
-                msg.callback && msg.from && sendTo(msg.from, msg.command, { result: 'ok' }, msg.callback);
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, { result: 'ok' }, msg.callback);
+                }
             }
 
             break;
