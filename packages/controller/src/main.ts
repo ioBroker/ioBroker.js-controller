@@ -2855,9 +2855,8 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 const configFile = tools.getConfigFileName();
                 if (fs.existsSync(configFile)) {
                     try {
-                        const strConfig = fs.readFileSync(configFile).toString('utf8');
+                        const config: ioBroker.IoBrokerJson = fs.readJsonSync(configFile);
                         const stat = fs.lstatSync(configFile);
-                        const config: ioBroker.IoBrokerJson = JSON.parse(strConfig);
                         sendTo(msg.from, msg.command, { config, isActive: uptimeStart > stat.mtimeMs }, msg.callback);
                     } catch {
                         const error = `Cannot parse file ${configFile}`;
