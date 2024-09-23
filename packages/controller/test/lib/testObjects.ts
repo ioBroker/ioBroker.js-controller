@@ -276,7 +276,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             objects.getObject(testId, (err, obj) => {
                 expect(err).to.be.not.ok;
                 expect(obj!._id).to.be.equal(testId);
-                expect(obj!.common.def).to.be.equal('default');
+                expect((obj!.common as ioBroker.StateCommon).def).to.be.equal('default');
                 expect(obj!.common.name).to.be.equal('test2');
 
                 objects.extendObject(`${namespace}.other`, { common: { def: 'default' } }, null, (err, res, id) => {

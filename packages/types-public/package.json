@@ -25,6 +25,9 @@
     "publishConfig": {
         "access": "public"
     },
+    "devDependencies": {
+        "tsd": "^0.31.2"
+    },
     "files": [
         "build/",
         "index.d.ts",

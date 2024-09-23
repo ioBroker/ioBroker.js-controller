@@ -66,7 +66,6 @@
     "ts-json-schema-generator": "~1.2.0",
     "ts-node": "^10.9.2",
     "tsc-alias": "^1.8.8",
-    "tsd": "^0.31.2",
     "typedoc": "^0.25.12",
     "typedoc-plugin-markdown": "^3.17.1",
     "typedoc-plugin-missing-exports": "^2.2.0",
@@ -92,10 +91,5 @@
     "test-redis-sentinel": "mocha packages/controller/test/redis-sentinel/*.ts --exit",
     "test-types-check": "tsc --project packages/controller/tsconfig.check.json",
     "test-types": "npm run test-types-check && npm run test --workspace=@iobroker/types"
-  },
-  "overrides": {
-    "tsd": {
-      "@types/eslint": ">=8.0.0"
-    }
   }
 }
