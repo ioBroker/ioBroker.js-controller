@@ -10,17 +10,17 @@ export function formatSeconds(seconds: number): string {
     _seconds %= 3_600 * 24;
     let hours: number | string = Math.floor(_seconds / 3_600);
     if (hours < 10) {
-        hours = '0' + hours;
+        hours = `0${hours}`;
     }
     _seconds %= 3_600;
     let minutes: number | string = Math.floor(_seconds / 60);
     if (minutes < 10) {
-        minutes = '0' + minutes;
+        minutes = `0${minutes}`;
     }
     _seconds %= 60;
     _seconds = Math.floor(_seconds);
     if (_seconds < 10) {
-        _seconds = '0' + _seconds;
+        _seconds = `0${_seconds}`;
     }
     let text = '';
     if (days) {
@@ -74,5 +74,5 @@ export function formatBytes(bytes: number): string {
         bytes /= 1024;
         ++u;
     } while (Math.abs(bytes) >= 1024 && u < units.length - 1);
-    return bytes.toFixed(1) + ' ' + units[u];
+    return `${bytes.toFixed(1)} ${units[u]}`;
 }

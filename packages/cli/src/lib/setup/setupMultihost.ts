@@ -40,12 +40,12 @@ export class Multihost {
                 config = fs.readJsonSync(this.configName);
             } else {
                 config = fs.readJsonSync(
-                    path.join(tools.getControllerDir(), 'conf', `${tools.appName.toLowerCase()}-dist.json`)
+                    path.join(tools.getControllerDir(), 'conf', `${tools.appName.toLowerCase()}-dist.json`),
                 );
             }
         } catch {
             config = fs.readJsonSync(
-                path.join(tools.getControllerDir(), 'conf', `${tools.appName.toLowerCase()}-dist.json`)
+                path.join(tools.getControllerDir(), 'conf', `${tools.appName.toLowerCase()}-dist.json`),
             );
         }
         return config;
@@ -59,14 +59,14 @@ export class Multihost {
     showHosts(list: BrowseResultEntry[]): void {
         if (!list || !list.length) {
             console.info(
-                'No Multihost server found. Make sure iobroker is running on the host where you enabled multihost discovery (and it is not this host)!'
+                'No Multihost server found. Make sure iobroker is running on the host where you enabled multihost discovery (and it is not this host)!',
             );
         } else {
             for (let i = 0; i < list.length; i++) {
                 console.log(
                     `${i + 1} | ${list[i].hostname!.padStart(20)} | ${list[i].slave ? 'slave' : ' host'} | ${list[
                         i
-                    ].ip!.padStart(20)} | ${JSON.stringify(list[i].info)}`
+                    ].ip!.padStart(20)} | ${JSON.stringify(list[i].info)}`,
                 );
             }
         }
@@ -104,12 +104,12 @@ export class Multihost {
             } else if (config.objects.type === 'redis') {
                 warningShown = true;
                 console.log(
-                    `Please check the binding of redis service. By default it is only local: http://download.redis.io/redis-stable/redis.conf\nChange "bind 127.0.0.1" to "bind ${tools.getListenAllAddress()}" or to others.`
+                    `Please check the binding of redis service. By default it is only local: http://download.redis.io/redis-stable/redis.conf\nChange "bind 127.0.0.1" to "bind ${tools.getListenAllAddress()}" or to others.`,
                 );
             } else {
                 warningShown = true;
                 console.log(
-                    `Please check the binding of the configured ${config.objects.type} server to allow remote connections.`
+                    `Please check the binding of the configured ${config.objects.type} server to allow remote connections.`,
                 );
             }
 
@@ -122,12 +122,12 @@ export class Multihost {
             } else if (config.states.type === 'redis') {
                 !warningShown &&
                     console.log(
-                        `Please check the binding of redis service. By default it is only local: http://download.redis.io/redis-stable/redis.conf\nChange "bind 127.0.0.1" to "bind ${tools.getListenAllAddress()}" or to others.`
+                        `Please check the binding of redis service. By default it is only local: http://download.redis.io/redis-stable/redis.conf\nChange "bind 127.0.0.1" to "bind ${tools.getListenAllAddress()}" or to others.`,
                     );
             } else {
                 !warningShown &&
                     console.log(
-                        `Please check the binding of the configured ${config.states.type} server to allow remote connections.`
+                        `Please check the binding of the configured ${config.states.type} server to allow remote connections.`,
                     );
             }
         }
@@ -143,7 +143,7 @@ export class Multihost {
         console.log(
             `Persistent activation:      ${
                 config.multihostService.enabled && config.multihostService.persist ? 'enabled' : 'disabled'
-            }`
+            }`,
         );
         console.log(`Objects:                    ${config.objects.type} on ${config.objects.host}`);
         console.log(`States:                     ${config.states.type} on ${config.states.host}`);
@@ -165,14 +165,14 @@ export class Multihost {
             config.multihostService.enabled = true;
             config.multihostService.password = '';
             console.log(
-                'Multihost discovery server activated on this host. If iobroker is currently not running please start befeore trying to discover this host.'
+                'Multihost discovery server activated on this host. If iobroker is currently not running please start befeore trying to discover this host.',
             );
             console.log(
-                'Important: Multihost discovery works with UDP packets. Make sure they are routed correctly in your network. If you use Docker you also need to configure this correctly.'
+                'Important: Multihost discovery works with UDP packets. Make sure they are routed correctly in your network. If you use Docker you also need to configure this correctly.',
             );
             if (!this.params.persist) {
                 console.log(
-                    'Multihost discovery will be automatically deactivated after 15 minutes. If you want to activate it permanently use the --persist flag'
+                    'Multihost discovery will be automatically deactivated after 15 minutes. If you want to activate it permanently use the --persist flag',
                 );
             }
         } else if (!isEnable && config.multihostService.enabled) {
@@ -206,15 +206,15 @@ export class Multihost {
                             description: 'Enter secret phrase for connection:',
                             pattern: /^[^'"]+$/,
                             message: 'No " are allowed',
-                            hidden: true
+                            hidden: true,
                         },
                         passwordRepeat: {
                             description: 'Repeat secret phrase for connection:',
                             pattern: /^[^'"]+$/,
                             message: 'No " are allowed',
-                            hidden: true
-                        }
-                    }
+                            hidden: true,
+                        },
+                    },
                 };
                 prompt.start();
 
@@ -226,7 +226,7 @@ export class Multihost {
                             this.objects.getObject('system.config', (err, obj) => {
                                 config.multihostService.password = tools.encrypt(
                                     obj!.native.secret,
-                                    password.password as string
+                                    password.password as string,
                                 );
                                 this.showMHState(config, changed);
                                 callback();
@@ -263,7 +263,7 @@ export class Multihost {
     readPassword(callback: (password: string) => void): void {
         const rl = readline.createInterface({
             input: process.stdin,
-            output: process.stdout
+            output: process.stdout,
         });
 
         function hidden(query: string, callback: (pw: string) => void): void {
@@ -278,7 +278,7 @@ export class Multihost {
                         break;
 
                     default:
-                        process.stdout.write('\x1B[2K\x1B[200D' + query + new Array(rl.line.length + 1).join('*'));
+                        process.stdout.write(`\x1B[2K\x1B[200D${query}${new Array(rl.line.length + 1).join('*')}`);
                         break;
                 }
             });
@@ -311,15 +311,15 @@ export class Multihost {
                 const hasLocalObjectsServer = await isLocalObjectsDbServer(
                     config.objects.type,
                     config.objects.host,
-                    true
+                    true,
                 );
                 const hasLocalStatesServer = await isLocalStatesDbServer(config.states.type, config.states.host, true);
 
                 if (hasLocalObjectsServer || hasLocalStatesServer) {
                     callback(
                         new Error(
-                            `IP Address of the remote host is ${tools.getLocalAddress()}. Connections from this host will not be accepted. Please change the configuration of this host to accept remote connections.`
-                        )
+                            `IP Address of the remote host is ${tools.getLocalAddress()}. Connections from this host will not be accepted. Please change the configuration of this host to accept remote connections.`,
+                        ),
                     );
                 } else {
                     if (tools.isListenAllAddress(config.states.host)) {
@@ -351,7 +351,7 @@ export class Multihost {
     async connect(
         index: number | null,
         pass: string | null,
-        callback: (err?: Error, list?: BrowseResultEntry[]) => void
+        callback: (err?: Error, list?: BrowseResultEntry[]) => void,
     ): Promise<void> {
         if (typeof pass === 'function') {
             callback = pass;
@@ -387,7 +387,7 @@ export class Multihost {
         } else if (list && list.length) {
             const rl = readline.createInterface({
                 input: process.stdin,
-                output: process.stdout
+                output: process.stdout,
             });
             rl.question('Please select host [1]: ', answer => {
                 if (answer === '' || answer === null || answer === undefined) {

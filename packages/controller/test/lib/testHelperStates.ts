@@ -5,7 +5,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
     // deleteChannel
     // deleteState
-    it(testName + 'delete state should validate the input', async () => {
+    it(`${testName}delete state should validate the input`, async () => {
         await context.adapter.deleteStateAsync('test');
         await context.adapter.deleteStateAsync('dev', 'channel', 'state');
         await context.adapter.deleteStateAsync('channel', 'state');
@@ -15,7 +15,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         // @ts-expect-error invalid test case
         return expect(context.adapter.deleteStateAsync({})).to.be.eventually.rejectedWith(
             /needs to be of type "string" but type "object"/g,
-            'Should have thrown on invalid input'
+            'Should have thrown on invalid input',
         );
     });
 
@@ -27,7 +27,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     // createState
     // deleteDevice
 
-    it(testName + 'requireLog should activate corresponding state', async () => {
+    it(`${testName}requireLog should activate corresponding state`, async () => {
         // default should be false or non-existent
         let state = await context.states.getState(`system.adapter.${context.adapter.namespace}.logging`);
         expect(state?.val).to.be.not.ok;

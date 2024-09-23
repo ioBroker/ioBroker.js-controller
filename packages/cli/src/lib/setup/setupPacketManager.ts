@@ -6,7 +6,7 @@ enum LOG_LEVELS {
     log = 3,
     info = 2,
     warn = 1,
-    error = 0
+    error = 0,
 }
 
 interface Logger extends InternalLogger {
@@ -37,8 +37,8 @@ export class PacketManager {
     private readonly COMMANDS = {
         listUpgradeable: {
             apt: 'list --upgradeable',
-            yum: 'check-update'
-        }
+            yum: 'check-update',
+        },
     } as const;
 
     constructor(options: PacketManagerOptions = { logLevel: LOG_LEVELS.info }) {
@@ -50,7 +50,7 @@ export class PacketManager {
             log: text => options.logLevel >= LOG_LEVELS.log && console.log(text),
             warn: text => options.logLevel >= LOG_LEVELS.warn && console.warn(text),
             error: text => options.logLevel >= LOG_LEVELS.error && console.error(text),
-            debug: text => options.logLevel >= LOG_LEVELS.debug && console.log(text)
+            debug: text => options.logLevel >= LOG_LEVELS.debug && console.log(text),
         };
         this.dpkg = false;
         this.sudo = false;
@@ -110,10 +110,9 @@ export class PacketManager {
                 (err.stderr && err.stderr.includes('dpkg --help'))
             ) {
                 return true;
-            } else {
-                this.logger.error(`Cannot detect dpkg: ${err.stderr || err.stdout || err}`);
-                return false;
             }
+            this.logger.error(`Cannot detect dpkg: ${err.stderr || err.stdout || err}`);
+            return false;
         }
     }
 
@@ -125,10 +124,9 @@ export class PacketManager {
             // non zero exit code, however lets check if ok
             if ((err.stdout && err.stdout.includes('sudo -h')) || (err.stderr && err.stderr.includes('sudo -h'))) {
                 return true;
-            } else {
-                this.logger.error(`Cannot detect sudo: ${err.stderr || err.stdout || err}`);
-                return false;
             }
+            this.logger.error(`Cannot detect sudo: ${err.stderr || err.stdout || err}`);
+            return false;
         }
     }
 
@@ -226,7 +224,7 @@ export class PacketManager {
         }
 
         const { stdout } = await execAsync(
-            `${(this.sudo ? 'sudo ' : '') + this.manager} ${this.COMMANDS.listUpgradeable[this.manager]}`
+            `${(this.sudo ? 'sudo ' : '') + this.manager} ${this.COMMANDS.listUpgradeable[this.manager]}`,
         );
 
         const res = Buffer.isBuffer(stdout) ? stdout.toString('utf-8') : stdout;
@@ -320,19 +318,19 @@ export class PacketManager {
             if (failed.length > 0) {
                 this.logger.warn(
                     `The following ${this.manager || 'OS'} packages could not be installed: ${failed.join(
-                        ', '
-                    )}. Please install them manually.`
+                        ', ',
+                    )}. Please install them manually.`,
                 );
 
                 if (notInstalled.length) {
                     this.logger.info(
-                        `Installed the following ${this.manager || 'OS'} packages: ${notInstalled.join(', ')}`
+                        `Installed the following ${this.manager || 'OS'} packages: ${notInstalled.join(', ')}`,
                     );
                 }
 
                 if (installed.length) {
                     this.logger.info(
-                        `These ${this.manager || 'OS'} packages were already installed: ${installed.join(', ')}`
+                        `These ${this.manager || 'OS'} packages were already installed: ${installed.join(', ')}`,
                     );
                 }
             }

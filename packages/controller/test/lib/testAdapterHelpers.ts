@@ -11,7 +11,7 @@ chai.use(chaiAsPromised);
 
 export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
     //adapterGetPort
-    it(context.name + ' ' + context.adapterShortName + ' adapter: find next free port', function (done) {
+    it(`${context.name} ${context.adapterShortName} adapter: find next free port`, function (done) {
         this.timeout(3_000);
 
         // @ts-expect-error expects more args
@@ -33,7 +33,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     //checkPassword
-    it(context.name + ' ' + context.adapterShortName + ' adapter: validates user and password', function (done) {
+    it(`${context.name} ${context.adapterShortName} adapter: validates user and password`, function (done) {
         this.timeout(3_000);
 
         //@ts-expect-error Expecting a callback
@@ -53,7 +53,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     //checkPassword (async)
-    it(context.name + ' ' + context.adapterShortName + ' adapter: validates user and password (ASYNC)', () => {
+    it(`${context.name} ${context.adapterShortName} adapter: validates user and password (ASYNC)`, () => {
         const promises = [
             // promisify always provides a callback, so that doesn't need to be tested
             // User doesn't exist
@@ -63,14 +63,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             // Wrong password
             context.adapter
                 .checkPasswordAsync('admin', '1234')
-                .should.eventually.deep.equal([false, 'system.user.admin'])
+                .should.eventually.deep.equal([false, 'system.user.admin']),
         ];
 
         return Promise.all(promises);
     }).timeout(3_000);
 
     //setPassword
-    it(context.name + ' ' + context.adapterShortName + ' adapter: sets the users password', function (done) {
+    it(`${context.name} ${context.adapterShortName} adapter: sets the users password`, function (done) {
         this.timeout(3_000);
         // TODO: sync
         // TODO: async
@@ -78,7 +78,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     //checkGroup
-    it(context.name + ' ' + context.adapterShortName + ' adapter: user exists and is in the group', function (done) {
+    it(`${context.name} ${context.adapterShortName} adapter: user exists and is in the group`, function (done) {
         this.timeout(3_000);
         // TODO: sync
         // TODO: async
@@ -86,7 +86,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     //calculatePermissions
-    it(context.name + ' ' + context.adapterShortName + ' adapter: get the user permissions', function (done) {
+    it(`${context.name} ${context.adapterShortName} adapter: get the user permissions`, function (done) {
         this.timeout(3_000);
         // TODO: sync
         // TODO: async
@@ -94,13 +94,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // getCertificates
-    it(context.name + ' ' + context.adapterShortName + ' adapter: returns SSL certificates by name', async () => {
+    it(`${context.name} ${context.adapterShortName} adapter: returns SSL certificates by name`, async () => {
         // has to work without chained certificate
         const certs = await context.adapter.getCertificatesAsync('defaultPublic', 'defaultPrivate');
         expect(certs).to.be.ok;
     });
 
-    it(context.name + ' ' + context.adapterShortName + ' adapter: get the user id', async () => {
+    it(`${context.name} ${context.adapterShortName} adapter: get the user id`, async () => {
         let id = await context.adapter.getUserID('admin');
         expect(id).to.be.equal('system.user.admin');
         id = await context.adapter.getUserID('test');
@@ -112,7 +112,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // formatValue
-    it(context.name + ' ' + context.adapterShortName + ' adapter: Check formatValue', function (done) {
+    it(`${context.name} ${context.adapterShortName} adapter: Check formatValue`, function (done) {
         this.timeout(3_000);
         let testValue;
 
@@ -136,7 +136,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         testValue = context.adapter.formatValue('1000', ''); //1.000,00
         const testValue2 = context.adapter.formatValue(
             '1000',
-            context.adapter.isFloatComma === undefined ? '.,' : context.adapter.isFloatComma ? '.,' : ',.'
+            context.adapter.isFloatComma === undefined ? '.,' : context.adapter.isFloatComma ? '.,' : ',.',
         ); //1.000,00
         expect(testValue).to.equal(testValue2);
 
@@ -160,7 +160,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // formatDate
-    it(context.name + ' ' + context.adapterShortName + ' adapter: Check formatDate', function (done) {
+    it(`${context.name} ${context.adapterShortName} adapter: Check formatDate`, function (done) {
         this.timeout(3_000);
         const testDate = new Date(0);
         let testStringDate;
@@ -213,7 +213,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // Validator.fixId
-    it(context.name + ' ' + context.adapterShortName + ' adapter utils: check fixId', () => {
+    it(`${context.name} ${context.adapterShortName} adapter utils: check fixId`, () => {
         const utils = new Validator(
             context.objects,
             context.states,
@@ -222,7 +222,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             console,
             context.adapter.namespace,
             // @ts-expect-error internal access
-            context.adapter._namespaceRegExp
+            context.adapter._namespaceRegExp,
         );
 
         const adapterName = context.adapter.name;
@@ -230,37 +230,37 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         const adapterInstance = context.adapter.instance;
         expect(adapterInstance).to.equal(0);
         const adapterNamespace = context.adapter.namespace;
-        expect(adapterNamespace).to.equal(adapterName + '.' + adapterInstance);
+        expect(adapterNamespace).to.equal(`${adapterName}.${adapterInstance}`);
 
         let testString;
         //test with Object empty
         testString = utils.fixId({});
         expect(testString).to.be.a('string');
-        expect(testString).to.equal(adapterNamespace + '.');
+        expect(testString).to.equal(`${adapterNamespace}.`);
 
         //test with Object state
         testString = utils.fixId({
-            state: 'baz'
+            state: 'baz',
         });
         expect(testString).to.be.a('string');
-        expect(testString).to.equal(adapterNamespace + '.baz');
+        expect(testString).to.equal(`${adapterNamespace}.baz`);
 
         //test with Object state + channel
         testString = utils.fixId({
             state: 'baz',
-            channel: 'bar'
+            channel: 'bar',
         });
         expect(testString).to.be.a('string');
-        expect(testString).to.equal(adapterNamespace + '.bar.baz');
+        expect(testString).to.equal(`${adapterNamespace}.bar.baz`);
 
         //test with Object state + channel + device
         testString = utils.fixId({
             state: 'baz',
             channel: 'bar',
-            device: 'foo'
+            device: 'foo',
         });
         expect(testString).to.be.a('string');
-        expect(testString).to.equal(adapterNamespace + '.foo.bar.baz');
+        expect(testString).to.equal(`${adapterNamespace}.foo.bar.baz`);
 
         //test with string empty as state
         testString = utils.fixId('');
@@ -270,44 +270,44 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         //test with string empty as subscribe
         testString = utils.fixId('', true);
         expect(testString).to.be.a('string');
-        expect(testString).to.equal(adapterNamespace + '.');
+        expect(testString).to.equal(`${adapterNamespace}.`);
 
         //test with string state
         testString = utils.fixId('baz');
         expect(testString).to.be.a('string');
-        expect(testString).to.equal(adapterNamespace + '.baz');
+        expect(testString).to.equal(`${adapterNamespace}.baz`);
 
         //test with string state + channel
         testString = utils.fixId('bar.baz');
         expect(testString).to.be.a('string');
-        expect(testString).to.equal(adapterNamespace + '.bar.baz');
+        expect(testString).to.equal(`${adapterNamespace}.bar.baz`);
 
         //test with string state + channel + device
         testString = utils.fixId('foo.bar.baz');
         expect(testString).to.be.a('string');
-        expect(testString).to.equal(adapterNamespace + '.foo.bar.baz');
+        expect(testString).to.equal(`${adapterNamespace}.foo.bar.baz`);
 
         //test with already fixed ID
-        testString = utils.fixId(adapterNamespace + '.foo.bar.baz');
+        testString = utils.fixId(`${adapterNamespace}.foo.bar.baz`);
         expect(testString).to.be.a('string');
-        expect(testString).to.equal(adapterNamespace + '.foo.bar.baz');
+        expect(testString).to.equal(`${adapterNamespace}.foo.bar.baz`);
 
         //test composition
         testString = utils.fixId(utils.fixId('foo.bar.baz'));
         expect(testString).to.be.a('string');
-        expect(testString).to.equal(adapterNamespace + '.foo.bar.baz');
+        expect(testString).to.equal(`${adapterNamespace}.foo.bar.baz`);
     }).timeout(2_000);
 
     // Check setTimeout throw
-    it(context.name + ' ' + context.adapterShortName + ' adapter: check setTimeout', done => {
+    it(`${context.name} ${context.adapterShortName} adapter: check setTimeout`, done => {
         // is valid
         const timeout = context.adapter.setTimeout(
             () => {
                 /** pass */
             },
-            2 ** 32 / 2 - 1
+            2 ** 32 / 2 - 1,
         );
-        context.adapter.clearTimeout(timeout!);
+        context.adapter.clearTimeout(timeout);
 
         // is valid
         context.adapter.setTimeout(() => {
@@ -319,7 +319,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 () => {
                     /** pass */
                 },
-                2 ** 32 / 2
+                2 ** 32 / 2,
             );
         }).to.throw(/is larger than/, 'Invalid timeout not thrown');
 
@@ -333,29 +333,29 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // Check setInterval throw
-    it(context.name + ' ' + context.adapterShortName + ' adapter: check setInterval', done => {
+    it(`${context.name} ${context.adapterShortName} adapter: check setInterval`, done => {
         // is valid
         let interval = context.adapter.setInterval(
             () => {
                 /** pass */
             },
-            2 ** 32 / 2 - 1
+            2 ** 32 / 2 - 1,
         );
-        context.adapter.clearInterval(interval!);
+        context.adapter.clearInterval(interval);
 
         // is valid
         interval = context.adapter.setInterval(() => {
             /** pass */
         }, 0);
 
-        context.adapter.clearInterval(interval!);
+        context.adapter.clearInterval(interval);
 
         expect(() => {
             context.adapter.setInterval(
                 () => {
                     /** pass */
                 },
-                2 ** 32 / 2
+                2 ** 32 / 2,
             );
         }).to.throw(/is larger than/, 'Invalid timeout not thrown');
 
@@ -369,7 +369,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // idToDCS
-    it(context.name + ' ' + context.adapterShortName + ' adapter: Check idToDCS', function (done) {
+    it(`${context.name} ${context.adapterShortName} adapter: Check idToDCS`, function (done) {
         this.timeout(3000);
         let testString;
 
@@ -389,7 +389,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // _DCS2ID
-    it(context.name + ' ' + context.adapterShortName + ' adapter: Check _DCS2ID', function (done) {
+    it(`${context.name} ${context.adapterShortName} adapter: Check _DCS2ID`, function (done) {
         this.timeout(3_000);
         let testString;
 
@@ -440,7 +440,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         done();
     });
 
-    it(context.name + ' ' + context.adapterShortName + ' adapter: encrypt decrypt functions', () => {
+    it(`${context.name} ${context.adapterShortName} adapter: encrypt decrypt functions`, () => {
         const encrypted = context.adapter.encrypt('topSecret');
         // we only check not equal, because encryption can change and is not always deterministic
         expect(encrypted.length).to.equal(79);
@@ -450,35 +450,28 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(decrypted).to.equal('topSecret');
     });
 
-    it(
-        context.name + ' ' + context.adapterShortName + ' adapter: updateConfig needs to respect encryptedNative',
-        async () => {
-            const oldConfig = await context.adapter.getForeignObjectAsync(
-                `system.adapter.${context.adapter.namespace}`
-            );
+    it(`${context.name} ${context.adapterShortName} adapter: updateConfig needs to respect encryptedNative`, async () => {
+        const oldConfig = await context.adapter.getForeignObjectAsync(`system.adapter.${context.adapter.namespace}`);
 
-            const passphrase = 'SavePassword123';
+        const passphrase = 'SavePassword123';
 
-            await context.adapter.updateConfig({ secondPassword: passphrase });
-            const newConfig = await context.adapter.getForeignObjectAsync(
-                `system.adapter.${context.adapter.namespace}`
-            );
+        await context.adapter.updateConfig({ secondPassword: passphrase });
+        const newConfig = await context.adapter.getForeignObjectAsync(`system.adapter.${context.adapter.namespace}`);
 
-            // non encrypted and non updated params stay the same
-            expect(newConfig?.native.paramString).to.exist;
-            expect(newConfig?.native.paramString).to.be.equal(oldConfig?.native.paramString);
+        // non encrypted and non updated params stay the same
+        expect(newConfig?.native.paramString).to.exist;
+        expect(newConfig?.native.paramString).to.be.equal(oldConfig?.native.paramString);
 
-            // encrypted non updated passwords, decrypt to the same value
-            expect(newConfig?.native.password).to.exist;
-            expect(context.adapter.decrypt(newConfig?.native.password)).to.be.equal(
-                context.adapter.decrypt(oldConfig?.native.password)
-            );
+        // encrypted non updated passwords, decrypt to the same value
+        expect(newConfig?.native.password).to.exist;
+        expect(context.adapter.decrypt(newConfig?.native.password)).to.be.equal(
+            context.adapter.decrypt(oldConfig?.native.password),
+        );
 
-            // updated encrypted value is correctly decrypted
-            expect(newConfig?.native.secondPassword).to.exist;
-            expect(context.adapter.decrypt(newConfig?.native.secondPassword)).to.be.equal(passphrase);
-        }
-    );
+        // updated encrypted value is correctly decrypted
+        expect(newConfig?.native.secondPassword).to.exist;
+        expect(context.adapter.decrypt(newConfig?.native.secondPassword)).to.be.equal(passphrase);
+    });
 
     // setState object validation
     for (const method of ['setState', 'setStateChanged', 'setForeignState', 'setForeignStateChanged']) {
@@ -599,7 +592,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     }
 
-    it(context.name + ' ' + context.adapterShortName + ' getAdapterScopedPackageIdentifier', () => {
+    it(`${context.name} ${context.adapterShortName} getAdapterScopedPackageIdentifier`, () => {
         const nonOrgaPacket = context.adapter.getAdapterScopedPackageIdentifier('axios');
         const orgaPacket = context.adapter.getAdapterScopedPackageIdentifier('@iobroker/adapter-react-v5');
 

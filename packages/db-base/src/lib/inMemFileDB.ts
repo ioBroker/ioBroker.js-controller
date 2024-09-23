@@ -134,7 +134,7 @@ export class InMemoryFileDB {
             files: 24, // minimum number of files
             hours: 48, // hours
             period: 120, // minutes
-            path: '' // use default path
+            path: '', // use default path
         };
 
         this.dataDir = this.settings.connection.dataDir || tools.getDefaultDataDir();
@@ -159,10 +159,10 @@ export class InMemoryFileDB {
                 this.initBackupDir();
             } catch (e) {
                 this.log.error(
-                    `Database backups are disabled, because backup directory could not be initialized: ${e.message}`
+                    `Database backups are disabled, because backup directory could not be initialized: ${e.message}`,
                 );
                 this.log.error(
-                    'This leads to an increased risk of data loss, please check that the configured backup directory is available and restart the controller'
+                    'This leads to an increased risk of data loss, please check that the configured backup directory is available and restart the controller',
                 );
                 this.settings.backup.disabled = true;
             }
@@ -205,7 +205,7 @@ export class InMemoryFileDB {
                 await fs.readJSON(`${datasetName}.bak`);
             } catch (e) {
                 this.log.info(
-                    `${this.namespace} Rewrite bak file, because error on verify ${datasetName}.bak: ${e.message}`
+                    `${this.namespace} Rewrite bak file, because error on verify ${datasetName}.bak: ${e.message}`,
                 );
                 try {
                     const jsonString = JSON.stringify(ret);
@@ -227,14 +227,14 @@ export class InMemoryFileDB {
                             await fs.move(datasetName, `${datasetName}.broken`, { overwrite: true });
                         } catch (e) {
                             this.log.error(
-                                `${this.namespace} Cannot copy the broken file ${datasetName} to ${datasetName}.broken ${e.message}`
+                                `${this.namespace} Cannot copy the broken file ${datasetName} to ${datasetName}.broken ${e.message}`,
                             );
                         }
                         try {
                             await fs.writeFile(datasetName, JSON.stringify(ret));
                         } catch (e) {
                             this.log.error(
-                                `${this.namespace} Cannot restore backup file as new main ${datasetName}: ${e.message}`
+                                `${this.namespace} Cannot restore backup file as new main ${datasetName}: ${e.message}`,
                             );
                         }
                     }
@@ -243,10 +243,10 @@ export class InMemoryFileDB {
                 }
             } catch (err) {
                 this.log.error(
-                    `${this.namespace} Cannot load ${datasetName}.bak: ${err.message}. Continue with empty dataset!`
+                    `${this.namespace} Cannot load ${datasetName}.bak: ${err.message}. Continue with empty dataset!`,
                 );
                 this.log.error(
-                    `${this.namespace} If this is no Migration or initial start please restore the last backup from ${this.backupDir}`
+                    `${this.namespace} If this is no Migration or initial start please restore the last backup from ${this.backupDir}`,
                 );
             }
         }
@@ -265,7 +265,7 @@ export class InMemoryFileDB {
         const maxTimeoutMinutes = Math.floor((2 ** 31 - 1) / 60000);
         if (this.settings.backup.period > maxTimeoutMinutes) {
             this.log.warn(
-                `${this.namespace} Configured backup period ${this.settings.backup.period} is larger than the supported maximum of ${maxTimeoutMinutes} minutes. Defaulting to 120 minutes.`
+                `${this.namespace} Configured backup period ${this.settings.backup.period} is larger than the supported maximum of ${maxTimeoutMinutes} minutes. Defaulting to 120 minutes.`,
             );
             this.settings.backup.period = 120;
         }
@@ -292,7 +292,7 @@ export class InMemoryFileDB {
         type: string,
         pattern: string | string[],
         options: any,
-        cb?: () => void
+        cb?: () => void,
     ): void;
 
     handleSubscribe(
@@ -300,7 +300,7 @@ export class InMemoryFileDB {
         type: string,
         pattern: string | string[],
         options: any,
-        cb?: () => void
+        cb?: () => void,
     ): void {
         if (typeof options === 'function') {
             cb = options;
@@ -332,7 +332,7 @@ export class InMemoryFileDB {
         client: SubscriptionClient,
         type: string,
         pattern: string | string[],
-        cb?: () => void
+        cb?: () => void,
     ): void | Promise<void> {
         const s = client?._subscribe?.[type];
         if (s) {
@@ -365,7 +365,7 @@ export class InMemoryFileDB {
         files.sort();
         const limit = Date.now() - this.settings.backup.hours * 3600000;
 
-        files = files.filter(f => f.endsWith(baseFilename + '.gz'));
+        files = files.filter(f => f.endsWith(`${baseFilename}.gz`));
 
         while (files.length > this.settings.backup.files) {
             const file = files.shift();
@@ -379,7 +379,7 @@ export class InMemoryFileDB {
                     fs.unlinkSync(path.join(this.backupDir, file));
                 } catch (e) {
                     this.log.error(
-                        `${this.namespace} Cannot delete file "${path.join(this.backupDir, file)}: ${e.message}`
+                        `${this.namespace} Cannot delete file "${path.join(this.backupDir, file)}: ${e.message}`,
                     );
                 }
             }
@@ -389,24 +389,24 @@ export class InMemoryFileDB {
     getTimeStr(date: number): string {
         const dateObj = new Date(date);
 
-        let text = dateObj.getFullYear().toString() + '-';
+        let text = `${dateObj.getFullYear().toString()}-`;
         let v = dateObj.getMonth() + 1;
         if (v < 10) {
             text += '0';
         }
-        text += v.toString() + '-';
+        text += `${v.toString()}-`;
 
         v = dateObj.getDate();
         if (v < 10) {
             text += '0';
         }
-        text += v.toString() + '_';
+        text += `${v.toString()}_`;
 
         v = dateObj.getHours();
         if (v < 10) {
             text += '0';
         }
-        text += v.toString() + '-';
+        text += `${v.toString()}-`;
 
         v = dateObj.getMinutes();
         if (v < 10) {
@@ -471,7 +471,7 @@ export class InMemoryFileDB {
             await fs.move(`${this.datasetName}.new`, this.datasetName, { overwrite: true });
         } catch (e) {
             this.log.error(
-                `${this.namespace} Cannot move ${this.datasetName}.new to ${this.datasetName}: ${e.message}. Try direct write as fallback`
+                `${this.namespace} Cannot move ${this.datasetName}.new to ${this.datasetName}: ${e.message}. Try direct write as fallback`,
             );
             try {
                 await fs.writeFile(this.datasetName, jsonString);
@@ -507,7 +507,7 @@ export class InMemoryFileDB {
             this.lastSave = now;
             const backFileName = path.join(
                 this.backupDir,
-                this.getTimeStr(now) + '_' + this.settings.fileDB.fileName + '.gz'
+                `${this.getTimeStr(now)}_${this.settings.fileDB.fileName}.gz`,
             );
 
             try {

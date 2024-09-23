@@ -13,7 +13,9 @@ interface GetHostOptions {
     config: ioBroker.IoBrokerJson;
 }
 
-export type TaskObject = ioBroker.SettableObject & { state?: ioBroker.SettableState };
+export type TaskObject = ioBroker.SettableObject & {
+    state?: ioBroker.SettableState;
+};
 
 /**
  * Get all ioBroker objects which should be created in the `system.host.<hostname>` scope
@@ -34,9 +36,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
                 type: 'boolean',
                 read: true,
                 write: false,
-                role: 'indicator'
+                role: 'indicator',
             },
-            native: {}
+            native: {},
         });
 
         objs.push({
@@ -49,9 +51,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
                 write: false,
                 min: 0,
                 role: 'value',
-                unit: 'processes'
+                unit: 'processes',
             },
-            native: {}
+            native: {},
         });
 
         objs.push({
@@ -63,9 +65,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
                 read: true,
                 write: false,
                 desc: 'Node.js version of the host process.',
-                role: 'state'
+                role: 'state',
             },
-            native: {}
+            native: {},
         });
 
         objs.push({
@@ -77,9 +79,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
                 read: true,
                 write: false,
                 desc: 'The output of the "update" command from the package manager like apt or yum',
-                role: 'state'
+                role: 'state',
             },
-            native: {}
+            native: {},
         });
     }
 
@@ -93,9 +95,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
             write: false,
             min: 0,
             role: 'value',
-            unit: 'processes'
+            unit: 'processes',
         },
-        native: {}
+        native: {},
     });
 
     objs.push({
@@ -108,9 +110,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
             write: false,
             min: 0,
             role: 'value',
-            unit: 'instances'
+            unit: 'instances',
         },
-        native: {}
+        native: {},
     });
 
     objs.push({
@@ -123,9 +125,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
             write: false,
             min: 0,
             role: 'value',
-            unit: '% of one core'
+            unit: '% of one core',
         },
-        native: {}
+        native: {},
     });
 
     objs.push({
@@ -138,9 +140,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
             write: false,
             min: 0,
             role: 'value',
-            unit: 'seconds'
+            unit: 'seconds',
         },
-        native: {}
+        native: {},
     });
 
     objs.push({
@@ -154,9 +156,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
             read: true,
             write: false,
             min: 0,
-            max: 100
+            max: 100,
         },
-        native: {}
+        native: {},
     });
 
     objs.push({
@@ -169,9 +171,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
             read: true,
             write: false,
             min: 0,
-            unit: 'MB'
+            unit: 'MB',
         },
-        native: {}
+        native: {},
     });
 
     if (fs.existsSync('/proc/meminfo')) {
@@ -185,9 +187,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
                 read: true,
                 write: false,
                 min: 0,
-                unit: 'MB'
+                unit: 'MB',
             },
-            native: {}
+            native: {},
         });
     }
 
@@ -201,9 +203,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
             read: true,
             write: false,
             min: 0,
-            unit: 'MB'
+            unit: 'MB',
         },
-        native: {}
+        native: {},
     });
 
     objs.push({
@@ -217,9 +219,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
             read: true,
             write: false,
             min: 0,
-            unit: 'MB'
+            unit: 'MB',
         },
-        native: {}
+        native: {},
     });
 
     objs.push({
@@ -232,9 +234,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
             read: true,
             write: false,
             min: 0,
-            unit: 'seconds'
+            unit: 'seconds',
         },
-        native: {}
+        native: {},
     });
 
     objs.push({
@@ -246,9 +248,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
             role: 'value',
             read: true,
             write: false,
-            name: `${hostname} - load average 1min`
+            name: `${hostname} - load average 1min`,
         },
-        native: {}
+        native: {},
     });
 
     objs.push({
@@ -259,9 +261,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
             read: true,
             write: false,
             type: 'boolean',
-            role: 'indicator'
+            role: 'indicator',
         },
-        native: {}
+        native: {},
     });
 
     objs.push({
@@ -273,9 +275,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
             read: true,
             write: false,
             type: 'number',
-            role: 'value'
+            role: 'value',
         },
-        native: {}
+        native: {},
     });
 
     objs.push({
@@ -288,9 +290,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
             read: true,
             write: false,
             role: 'value',
-            unit: 'events/15 seconds'
+            unit: 'events/15 seconds',
         },
-        native: {}
+        native: {},
     });
 
     objs.push({
@@ -303,9 +305,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
             read: true,
             write: false,
             role: 'value',
-            unit: 'events/15 seconds'
+            unit: 'events/15 seconds',
         },
-        native: {}
+        native: {},
     });
 
     objs.push({
@@ -318,9 +320,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
             read: true,
             write: false,
             role: 'value',
-            unit: 'ms'
+            unit: 'ms',
         },
-        native: {}
+        native: {},
     });
 
     objs.push({
@@ -332,9 +334,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
             read: true,
             write: true,
             desc: 'Loglevel of the host process. Will be set on start with defined value but can be overridden during runtime',
-            role: 'state'
+            role: 'state',
         },
-        native: {}
+        native: {},
     });
 
     objs.push({
@@ -345,13 +347,13 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
             type: 'number',
             read: true,
             write: false,
-            role: 'value'
+            role: 'value',
         },
         native: {},
         state: {
             val: process.pid,
-            ack: true
-        }
+            ack: true,
+        },
     });
 
     if (config.system.checkDiskInterval) {
@@ -365,9 +367,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
                 read: true,
                 write: false,
                 role: 'value',
-                unit: 'MiB'
+                unit: 'MiB',
             },
-            native: {}
+            native: {},
         });
 
         objs.push({
@@ -380,9 +382,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
                 read: true,
                 write: false,
                 role: 'value',
-                unit: 'MiB'
+                unit: 'MiB',
             },
-            native: {}
+            native: {},
         });
 
         objs.push({
@@ -396,9 +398,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
                 write: true,
                 def: DEFAULT_DISK_WARNING_LEVEL,
                 role: 'level',
-                unit: '%'
+                unit: '%',
             },
-            native: {}
+            native: {},
         });
     }
 
@@ -412,9 +414,9 @@ export function getHostObjects(options: GetHostOptions): TaskObject[] {
                 type: 'string',
                 read: true,
                 write: false,
-                role: 'date'
+                role: 'date',
             },
-            native: {}
+            native: {},
         });
     }
 

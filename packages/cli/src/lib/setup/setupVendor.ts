@@ -49,7 +49,7 @@ export class Vendor {
             debug: (text: string) => console.log(text),
             info: (text: string) => console.log(text),
             error: (text: string) => console.error(text),
-            warn: (text: string) => console.warn(text)
+            warn: (text: string) => console.warn(text),
         };
 
         file = file || VENDOR_FILE;
@@ -94,13 +94,13 @@ export class Vendor {
                         type: 'meta',
                         common: {
                             name: 'uuid',
-                            type: 'uuid'
+                            type: 'uuid',
                         },
                         ts: new Date().getTime(),
                         from: `system.host.${tools.getHostName()}.tools`,
                         native: {
-                            uuid: uuid
-                        }
+                            uuid: uuid,
+                        },
                     });
                     logger.info(`object system.meta.uuid created: ${uuid}`);
                 } catch (e) {
@@ -178,9 +178,9 @@ export class Vendor {
                     const arr = await this.objects.getObjectListAsync(
                         {
                             startkey: id,
-                            endkey: id + '\u9999'
+                            endkey: `${id}\u9999`,
                         },
-                        { checked: true }
+                        { checked: true },
                     );
 
                     if (arr && arr.rows && arr.rows.length) {

@@ -4,7 +4,7 @@ import type {
     UserInterfaceClientRemoveMessage,
     UserInterfaceClientSubscribeHandler,
     UserInterfaceClientSubscribeReturnType,
-    UserInterfaceClientUnsubscribeHandler
+    UserInterfaceClientUnsubscribeHandler,
 } from '@/lib/_Types.js';
 
 export interface HeartbeatTimer {
@@ -91,7 +91,7 @@ export class UserInterfaceMessagingController {
         return states.pushMessage(handler.from, {
             command: 'im',
             message: { m: handler.type, s: handler.sid, d: data } satisfies UserInterfaceMessage,
-            from: `system.adapter.${this.adapter.namespace}`
+            from: `system.adapter.${this.adapter.namespace}`,
         });
     }
 
@@ -114,7 +114,7 @@ export class UserInterfaceMessagingController {
      * @param msg The subscribe message
      */
     async registerClientSubscribeByMessage(
-        msg: ioBroker.Message
+        msg: ioBroker.Message,
     ): Promise<UserInterfaceClientSubscribeReturnType | undefined> {
         if (!this.subscribeCallback) {
             return;

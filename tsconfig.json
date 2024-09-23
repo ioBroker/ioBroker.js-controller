@@ -21,6 +21,7 @@
     "pretty": true
   },
   "include": [
+    "*.config.mjs",
     "packages/**/*.js",
     "packages/**/*.ts",
     "packages/controller/io-package.json",

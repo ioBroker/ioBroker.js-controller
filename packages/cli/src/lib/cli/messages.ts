@@ -2,20 +2,20 @@ import { tools } from '@iobroker/js-controller-common';
 
 const errorMessages = Object.freeze({
     stateNotFound: (stateID: string, error?: string) =>
-        `The state ${stateID} was not found!` + (error ? ` Reason: ${error}` : ''),
+        `The state ${stateID} was not found!${error ? ` Reason: ${error}` : ''}`,
     stateNotBinary: (stateId: string) => `State "${stateId}" is not binary.`,
     stateBinaryGetUnsupported: (stateId: string) => `State "${stateId}" is a binary state, please use getBinary.`,
     stateBinarySetUnsupported: (stateId: string) => `State "${stateId}" is a binary state and cannot be set via cli.`,
     objectNotFound: (objectID: string, error?: string) =>
-        `The object ${objectID} was not found!` + (error ? ` Reason: ${error}` : ''),
+        `The object ${objectID} was not found!${error ? ` Reason: ${error}` : ''}`,
     cannotUpdateObject: (objectID: string, error?: string) =>
-        `The object ${objectID} could not be updated!` + (error ? ` Reason: ${error}` : ''),
+        `The object ${objectID} could not be updated!${error ? ` Reason: ${error}` : ''}`,
     cannotDeleteObject: (objectID: string, error?: string) =>
-        `The object ${objectID} cannot be deleted!` + (error ? ` Reason: ${error}` : ''),
+        `The object ${objectID} cannot be deleted!${error ? ` Reason: ${error}` : ''}`,
     cannotDeleteObjectFromEnums: (objectID: string, error?: string) =>
-        `The object ${objectID} could not be deleted from enums!` + (error ? ` Reason: ${error}` : ''),
+        `The object ${objectID} could not be deleted from enums!${error ? ` Reason: ${error}` : ''}`,
     cannotChangeObject: (objectID: string, error?: string) =>
-        `The object ${objectID} cannot be changed!` + (error ? ` Reason: ${error}` : ''),
+        `The object ${objectID} cannot be changed!${error ? ` Reason: ${error}` : ''}`,
     objectPropertyNotFound: (objectID: string, propPath: string) =>
         `The requested property "${propPath}" or one of its parents was not found in the object "${objectID}"!`,
     invalidPropertyOrValue: () => `The property path or value is not valid. Please make sure the value is valid JSON.`,
@@ -23,22 +23,22 @@ const errorMessages = Object.freeze({
 
     unknownCommand: (prefix: string, command: string) => `Unknown command "${prefix} ${command}"!`,
     requiredArgumentMissing: (argName: string, exampleCommand?: string) =>
-        `The required argument "${argName}" is missing!` + (exampleCommand ? ` Example: "${exampleCommand}"` : ''),
+        `The required argument "${argName}" is missing!${exampleCommand ? ` Example: "${exampleCommand}"` : ''}`,
 
     noInstancesFound: (adapter: string) => `Cannot find any instances of "${adapter}"!`,
     invalidInstance: (instance: string) => `The instance "${instance}" does not exist!`,
     specifyInstance: (adapter: string, adapterInstances: string[]) =>
         `The adapter "${adapter}" has multiple instances! Please specify which one should be started: "${adapterInstances.join(
-            '", "'
+            '", "',
         )}".`,
     adapterDirNotFound: (adapter: string) => `Cannot find the installation dir for adapter "${adapter}"!`,
     mainFileNotFound: (adapter: string) => `Cannot find the main file for adapter "${adapter}"!`,
     cannotLoadIoPackage: (adapter: string) => `Cannot load the io-package.json file for adapter "${adapter}"!`,
 
     wrongCommandPrefix: (wrongPrefix: string, command: string, correctPrefix?: string) =>
-        `The command ${command} is not intended to be used with ${wrongPrefix}!` + correctPrefix
-            ? `Please use "${correctPrefix} ${command}" instead.`
-            : '',
+        `The command ${command} is not intended to be used with ${wrongPrefix}!${
+            correctPrefix ? ` Please use "${correctPrefix} ${command}" instead.` : ''
+        }`,
     unknown: (err: string) => `An unknown error occurred: ${err}`,
 
     cannotChangeRunningSystem: () => `Cannot execute changes on running system. Stop ${tools.appName} first.`,
@@ -52,7 +52,7 @@ const errorMessages = Object.freeze({
 
     cert: (certName: string) => `Certificate "${certName}" not found or error parsing certificate information.`,
     instanceAlreadyRunning: (instance: string) =>
-        `The instance "${instance}" is already running, please stop instance first.`
+        `The instance "${instance}" is already running, please stop instance first.`,
 });
 
 const successMessages = Object.freeze({
@@ -81,12 +81,12 @@ const successMessages = Object.freeze({
     pluginStatus: (pluginName: string, host: string, instance: string, status: boolean) =>
         `The plugin "${pluginName}" is ${status ? 'enabled' : 'disabled'} for ${
             host ? `host "${host}"` : `instance "${instance}"`
-        }.`
+        }.`,
 });
 
 const warnings = Object.freeze({
     noInstancesFoundOnHost: (hostname?: string) =>
-        hostname ? `No instances found for host "${hostname}"!` : `No instances found!`
+        hostname ? `No instances found for host "${hostname}"!` : `No instances found!`,
 });
 
 // Capsule success messages in console.log

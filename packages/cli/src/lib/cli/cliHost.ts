@@ -122,7 +122,7 @@ export class CLIHost extends CLICommand {
                 const instances = await enumInstances(objects);
                 const instancesToRename = instances.filter(i => i?.common.host === hostname);
                 for (const instance of instancesToRename) {
-                    await changeInstanceHost(objects, instance!, newHostname);
+                    await changeInstanceHost(objects, instance, newHostname);
                 }
 
                 // Notify the user that we are done
@@ -224,14 +224,14 @@ export class CLIHost extends CLICommand {
                     Object.assign(host, {
                         _id: `system.host.${newHostname}`,
                         from: getObjectFrom(),
-                        ts: Date.now()
+                        ts: Date.now(),
                     });
                     Object.assign(host.common, {
                         name: host._id,
                         hostname: newHostname,
                         address: [],
                         cmd: '',
-                        native: { process: {}, os: {}, hardware: {} }
+                        native: { process: {}, os: {}, hardware: {} },
                     });
                     // And save it
                     try {
@@ -257,12 +257,12 @@ export class CLIHost extends CLICommand {
                         Object.assign(object, {
                             _id: object._id.replace(`system.host.${prevHostname}`, `system.host.${newHostname}`),
                             from: getObjectFrom(),
-                            ts: Date.now()
+                            ts: Date.now(),
                         });
 
                         // And save it
                         try {
-                            await objects.setObjectAsync(object._id, object!);
+                            await objects.setObjectAsync(object._id, object);
                         } catch (err) {
                             CLI.error.cannotChangeObject(object._id, err.message);
                         }
@@ -302,7 +302,7 @@ export class CLIHost extends CLICommand {
 async function changeInstanceHost(
     objects: ObjectsClient,
     instance: ioBroker.InstanceObject,
-    newHostname: string
+    newHostname: string,
 ): Promise<void> {
     const oldInstanceHost = instance.common.host;
     instance.from = getObjectFrom();

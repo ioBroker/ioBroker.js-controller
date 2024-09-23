@@ -34,13 +34,13 @@ import { tools } from '@iobroker/db-base';
 /**
  * This class inherits InMemoryFileDB class and adds all relevant logic for states
  * including the available methods for use by js-controller directly
- **/
+ */
 export class StatesInMemoryFileDB extends InMemoryFileDB {
     constructor(settings) {
         settings = settings || {};
         settings.fileDB = settings.fileDB || {
             fileName: 'states.json',
-            backupDirName: 'backup-objects'
+            backupDirName: 'backup-objects',
         };
         super(settings);
 
@@ -154,8 +154,8 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
     /**
      * Get value of given meta id
      *
-     * @param {string} id
-     * @returns {*}
+     * @param id
+     * @returns
      */
     getMeta(id) {
         const meta = this._ensureMetaDict();
@@ -165,8 +165,8 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
     /**
      * Sets given value to id in metaNamespace
      *
-     * @param {string} id
-     * @param {string} value
+     * @param id
+     * @param value
      */
     setMeta(id, value) {
         const meta = this._ensureMetaDict();
@@ -253,22 +253,22 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
 
     // needed by Server
     _subscribeMessageForClient(client, id) {
-        this.handleSubscribe(client, 'messagebox', 'messagebox.' + id);
+        this.handleSubscribe(client, 'messagebox', `messagebox.${id}`);
     }
 
     // needed by Server
     _unsubscribeMessageForClient(client, id) {
-        this.handleUnsubscribe(client, 'messagebox', 'messagebox.' + id);
+        this.handleUnsubscribe(client, 'messagebox', `messagebox.${id}`);
     }
 
     // needed by Server
     _subscribeLogForClient(client, id) {
-        this.handleSubscribe(client, 'log', 'log.' + id);
+        this.handleSubscribe(client, 'log', `log.${id}`);
     }
 
     // needed by Server
     _unsubscribeLogForClient(client, id) {
-        this.handleUnsubscribe(client, 'log', 'log.' + id);
+        this.handleUnsubscribe(client, 'log', `log.${id}`);
     }
 
     // needed by Server
@@ -291,7 +291,7 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
                 timeout: setTimeout(() => {
                     this.sessionExpires[id].timeout = null;
                     this._expireSession(id);
-                }, expireDate)
+                }, expireDate),
             };
         } else {
             this.sessionExpires[id] = {
@@ -299,7 +299,7 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
                 timeout: setTimeout(() => {
                     this.sessionExpires[id].timeout = null;
                     this._handleSessionExpire(id, expireDate);
-                }, this.ONE_DAY_IN_SECS)
+                }, this.ONE_DAY_IN_SECS),
             };
         }
     }

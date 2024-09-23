@@ -13,7 +13,16 @@ import { tools as dbTools } from '@iobroker/js-controller-common-db';
 const PORT = 50005;
 const MULTICAST_ADDR = '239.255.255.250';
 
-/** @class */
+/**
+ * The Multihost Server allows connection from other ioBroker hosts
+ *
+ * @param hostname
+ * @param logger
+ * @param config
+ * @param info
+ * @param ips
+ * @param secret
+ */
 export function MHServer(hostname, logger, config, info, ips, secret) {
     const count = 0;
     const buffer = {};
@@ -35,7 +44,7 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
             user: config.objects.user,
             pass: config.objects.pass,
             options: config.objects.options,
-            maxQueue: config.objects.maxQueue
+            maxQueue: config.objects.maxQueue,
         };
     }
 
@@ -47,7 +56,7 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
             user: config.states.user,
             pass: config.states.pass,
             options: config.states.options,
-            maxQueue: config.states.maxQueue
+            maxQueue: config.states.maxQueue,
         };
     }
 
@@ -59,7 +68,7 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
                     server.send(text, 0, text.length, rinfo.port, rinfo.address);
                 } catch (e) {
                     logger.warn(
-                        `host.${hostname} Multi-host discovery server: cannot send answer to ${rinfo.address}:${rinfo.port}: ${e}`
+                        `host.${hostname} Multi-host discovery server: cannot send answer to ${rinfo.address}:${rinfo.port}: ${e}`,
                     );
                 }
             });
@@ -85,7 +94,9 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
 
         hash.on('readable', () => {
             const data = hash.read();
-            data && callback(data.toString('hex'));
+            if (data) {
+                callback(data.toString('hex'));
+            }
         });
 
         hash.write(secret + salt);
@@ -101,7 +112,7 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
         const ts = new Date().getTime();
         checkAuthList(ts);
 
-        const id = rinfo.address + ':' + rinfo.port;
+        const id = `${rinfo.address}:${rinfo.port}`;
 
         switch (msg.cmd) {
             case 'browse':
@@ -113,9 +124,9 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
                                     auth: config.multihostService.secure,
                                     cmd: msg.cmd,
                                     id: msg.id,
-                                    result: 'invalid password'
+                                    result: 'invalid password',
                                 },
-                                rinfo
+                                rinfo,
                             );
                         } else {
                             authList[id].auth = true;
@@ -129,9 +140,9 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
                                     info: info,
                                     hostname: hostname,
                                     slave: !dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host),
-                                    result: 'ok'
+                                    result: 'ok',
                                 },
-                                rinfo
+                                rinfo,
                             );
                         }
                     });
@@ -148,15 +159,15 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
                             info: info,
                             hostname: hostname,
                             slave: !dbTools.isLocalObjectsDbServer(config.objects.type, config.objects.host),
-                            result: 'ok'
+                            result: 'ok',
                         },
-                        rinfo
+                        rinfo,
                     );
                 } else {
                     authList[id] = {
                         time: ts,
                         salt: (Math.random() * 1000000 + ts).toString().substring(0, 16),
-                        auth: false
+                        auth: false,
                     };
                     // padding
                     if (authList[id].salt.length < 16) {
@@ -168,9 +179,9 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
                             cmd: msg.cmd,
                             id: msg.id,
                             result: 'not authenticated',
-                            salt: authList[id].salt
+                            salt: authList[id].salt,
                         },
-                        rinfo
+                        rinfo,
                     );
                 }
                 break;
@@ -180,9 +191,9 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
                     {
                         cmd: msg.cmd,
                         id: msg.id,
-                        result: 'unknown command'
+                        result: 'unknown command',
                     },
-                    rinfo
+                    rinfo,
                 );
                 break;
         }
@@ -197,14 +208,14 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
 
         if (count > 10) {
             return logger.warn(
-                'host.' + hostname + ' Multi-host discovery server: Port ' + PORT + ' is occupied. Service stopped.'
+                `host.${hostname} Multi-host discovery server: Port ${PORT} is occupied. Service stopped.`,
             );
         }
 
         server = dgram.createSocket({ type: 'udp4', reuseAddr: true });
 
         server.on('error', err => {
-            logger.error('host.' + hostname + ' Multi-host discovery server: error: ' + err.stack);
+            logger.error(`host.${hostname} Multi-host discovery server: error: ${err.stack}`);
             server.close();
             server = null;
 
@@ -216,7 +227,7 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
                 }, 5000);
         });
 
-        server.on('close', _err => {
+        server.on('close', () => {
             server = null;
 
             if (!initTimer && !stopped) {
@@ -231,7 +242,7 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
             // following messages are allowed
             const text = msg.toString();
             const now = new Date().getTime();
-            const id = rinfo.address + ':' + rinfo.port;
+            const id = `${rinfo.address}:${rinfo.port}`;
 
             for (const ids in buffer) {
                 if (!lastFrame[ids]) {
@@ -251,7 +262,7 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
             if (!buffer[id] && text[0] !== '{') {
                 // ignore message
                 logger.debug(
-                    `host.${hostname} Multi-host discovery server: Message from ${rinfo.address} ignored: ${text}`
+                    `host.${hostname} Multi-host discovery server: Message from ${rinfo.address} ignored: ${text}`,
                 );
             } else {
                 buffer[id] = (buffer[id] || '') + msg.toString();
@@ -277,7 +288,7 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
             }
             const address = server.address();
             logger.info(
-                `host.${hostname} Multi-host discovery server: service started on ${address.address}:${address.port}`
+                `host.${hostname} Multi-host discovery server: service started on ${address.address}:${address.port}`,
             );
         });
 
@@ -296,7 +307,9 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
                 server = null;
             } catch {
                 server = null;
-                callback && callback();
+                if (callback) {
+                    callback();
+                }
             }
         } else if (callback) {
             callback();

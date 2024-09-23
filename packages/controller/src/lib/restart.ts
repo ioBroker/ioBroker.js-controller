@@ -44,7 +44,7 @@ export default async function restart(callback?: () => void): Promise<void> {
         const child = spawn(cmd, args, {
             detached: true,
             stdio: ['ignore', 'ignore', 'ignore'],
-            windowsHide: true
+            windowsHide: true,
         });
         child.unref();
     }
@@ -56,7 +56,7 @@ export default async function restart(callback?: () => void): Promise<void> {
 }
 
 // eslint-disable-next-line unicorn/prefer-module
-const modulePath = url.fileURLToPath(import.meta.url || 'file://' + __filename);
+const modulePath = url.fileURLToPath(import.meta.url || `file://${__filename}`);
 if (process.argv[1] === modulePath) {
     restart();
 }

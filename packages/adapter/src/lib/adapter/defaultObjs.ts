@@ -6,38 +6,38 @@ export function createDefaults(): Record<string, Partial<ioBroker.StateCommon>> 
             write: true,
             min: 0,
             max: 100,
-            unit: '%'
+            unit: '%',
         },
         'indicator.working': {
             def: false,
             type: 'boolean',
             read: true,
-            write: false
+            write: false,
         },
         'indicator.maintenance': {
             def: false,
             type: 'boolean',
             read: true,
-            write: false
+            write: false,
         },
         'indicator.maintenance.lowbat': {
             def: false,
             type: 'boolean',
             read: true,
             write: false,
-            desc: 'Low battery'
+            desc: 'Low battery',
         },
         'indicator.maintenance.unreach': {
             def: false,
             type: 'boolean',
             read: true,
             write: false,
-            desc: 'Device unreachable'
+            desc: 'Device unreachable',
         },
         switch: {
             type: 'boolean',
             read: true,
-            write: true
-        }
+            write: true,
+        },
     } as const;
 }

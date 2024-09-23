@@ -116,22 +116,22 @@ export class CLICompact extends CLICommand {
                 if (!err && obj) {
                     if (!obj.common.compact) {
                         console.log(
-                            'This adapter does not support compact mode. The below settings will have no effect!'
+                            'This adapter does not support compact mode. The below settings will have no effect!',
                         );
                         console.log();
                     } else {
-                        console.log('Adapter supports compact mode:     ' + !!obj.common.compact);
+                        console.log(`Adapter supports compact mode:     ${!!obj.common.compact}`);
                     }
-                    console.log('Compact mode enabled for instance: ' + !!obj.common.runAsCompactMode);
+                    console.log(`Compact mode enabled for instance: ${!!obj.common.runAsCompactMode}`);
                     console.log(
-                        'Compact group:                     ' +
-                            (obj.common.compactGroup !== undefined ? obj.common.compactGroup : 1)
+                        `Compact group:                     ${
+                            obj.common.compactGroup !== undefined ? obj.common.compactGroup : 1
+                        }`,
                     );
                     return void callback();
-                } else {
-                    CLI.error.invalidInstance(instance);
-                    return void callback(24);
                 }
+                CLI.error.invalidInstance(instance);
+                return void callback(24);
             });
         });
     }
@@ -170,7 +170,7 @@ export class CLICompact extends CLICommand {
                 console.log('This adapter does not support compact mode. The below settings will have no effect!');
                 console.log();
             } else {
-                console.log('Adapter supports compact mode :    ' + !!obj.common.compact);
+                console.log(`Adapter supports compact mode :    ${!!obj.common.compact}`);
             }
             let newRunAsCompactMode;
             if (targetState !== undefined && targetState !== !!obj.common.runAsCompactMode) {
@@ -188,14 +188,16 @@ export class CLICompact extends CLICommand {
                 }
             }
             console.log(
-                'Compact mode enabled for instance: ' +
-                    (newRunAsCompactMode !== undefined ? '--> ' + newRunAsCompactMode : !!obj.common.runAsCompactMode)
+                `Compact mode enabled for instance: ${
+                    newRunAsCompactMode !== undefined ? `--> ${newRunAsCompactMode}` : !!obj.common.runAsCompactMode
+                }`,
             );
             console.log(
-                'Compact group:                     ' +
-                    (newCompactGroup !== undefined && obj.common.compactGroup !== newCompactGroup
-                        ? '--> ' + newCompactGroup
-                        : obj.common.compactGroup)
+                `Compact group:                     ${
+                    newCompactGroup !== undefined && obj.common.compactGroup !== newCompactGroup
+                        ? `--> ${newCompactGroup}`
+                        : obj.common.compactGroup
+                }`,
             );
             if (newRunAsCompactMode !== undefined || newCompactGroup !== undefined) {
                 if (newCompactGroup !== undefined) {

@@ -57,31 +57,31 @@ function checkNpmVersion(): Promise<string> {
                         for (const unsupportedVersion of UNSUPPORTED_NPM_VERSION_RANGES) {
                             if (gte(npmVersion, unsupportedVersion.start) && lt(npmVersion, unsupportedVersion.end)) {
                                 console.warn(
-                                    '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+                                    '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',
                                 );
                                 console.warn('WARNING:');
                                 console.warn('You are using an unsupported npm version!');
                                 console.warn('This can lead to problems when installing further packages');
                                 console.warn();
                                 console.warn(
-                                    `Please use "npm install -g npm@${RECOMMENDED_NPM_VERSION}" to upgrade npm to ${RECOMMENDED_NPM_VERSION}.x or `
+                                    `Please use "npm install -g npm@${RECOMMENDED_NPM_VERSION}" to upgrade npm to ${RECOMMENDED_NPM_VERSION}.x or `,
                                 );
                                 console.warn('use "npm install -g npm@latest" to install a supported version of npm!');
                                 console.warn(
-                                    'You need to make sure to repeat this step after installing an update to NodeJS and/or npm.'
+                                    'You need to make sure to repeat this step after installing an update to NodeJS and/or npm.',
                                 );
                                 console.warn(
-                                    '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!'
+                                    '!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!',
                                 );
                                 process.exit(EXIT_CODE_CANNOT_INSTALL_NPM_PACKET);
                             }
                         }
                         resolve(npmVersion);
                     }
-                }
+                },
             );
         } catch (e) {
-            reject(e);
+            reject(e as Error);
         }
     });
 }
@@ -113,7 +113,7 @@ function parseVersion(version: string): VersionObject {
     return {
         major: parseInt(parsed[1]),
         minor: parseInt(parsed[2]),
-        build: parseInt(parsed[3])
+        build: parseInt(parsed[3]),
     };
 }
 

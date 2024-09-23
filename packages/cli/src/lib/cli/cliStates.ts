@@ -86,7 +86,7 @@ export class CLIStates extends CLICommand {
 
             let answer = rl.question('Changing the protocol version will restart all hosts! Continue? [N/y]', {
                 limit: /^(yes|y|n|no)$/i,
-                defaultInput: 'no'
+                defaultInput: 'no',
             });
 
             answer = answer.toLowerCase();
@@ -165,7 +165,7 @@ export class CLIStates extends CLICommand {
                                         logger: console,
                                         logNamespace: '',
                                         sourceId: sourceObj?._id,
-                                        targetId: targetObj._id
+                                        targetId: targetObj._id,
                                     });
                                     console.log(resultTransform(state));
                                 }
@@ -272,17 +272,16 @@ export class CLIStates extends CLICommand {
                                     logger: console,
                                     logNamespace: '',
                                     sourceId: obj._id,
-                                    targetId: targetObj?._id
+                                    targetId: targetObj?._id,
                                 }),
                                 err => {
                                     if (err) {
                                         CLI.error.unknown(err.message);
                                         return void callback(1); // ?
-                                    } else {
-                                        CLI.success.stateUpdated(id, val, !!ack);
-                                        return void callback(0);
                                     }
-                                }
+                                    CLI.success.stateUpdated(id, val, !!ack);
+                                    return void callback(0);
+                                },
                             );
                         });
                     } else {
@@ -326,10 +325,9 @@ export class CLIStates extends CLICommand {
                         if (err) {
                             CLI.error.unknown(err.message);
                             return void callback(1); // ?
-                        } else {
-                            CLI.success.stateUpdated(id, val, !!ack);
-                            return void callback(0);
                         }
+                        CLI.success.stateUpdated(id, val, !!ack);
+                        return void callback(0);
                     });
                 });
             }
@@ -356,10 +354,9 @@ export class CLIStates extends CLICommand {
                 if (err) {
                     CLI.error.stateNotFound(id, err.message);
                     return void callback(3);
-                } else {
-                    CLI.success.stateDeleted(id);
-                    return void callback(0);
                 }
+                CLI.success.stateDeleted(id);
+                return void callback(0);
             });
         });
     }

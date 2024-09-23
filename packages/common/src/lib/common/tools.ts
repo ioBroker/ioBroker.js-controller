@@ -19,7 +19,7 @@ export interface OrderedInstancesObject {
 export async function getInstancesOrderedByStartPrio(
     objects: ObjectsClient,
     logger: InternalLogger | typeof console,
-    logPrefix = ''
+    logPrefix = '',
 ): Promise<ioBroker.InstanceObject[]> {
     const instances: OrderedInstancesObject = { 1: [], 2: [], 3: [], admin: [] };
     const allowedTiers = [1, 2, 3];
@@ -33,7 +33,7 @@ export async function getInstancesOrderedByStartPrio(
     try {
         doc = await objects.getObjectViewAsync('system', 'instance', {
             startkey: 'system.adapter.',
-            endkey: 'system.adapter.\u9999'
+            endkey: 'system.adapter.\u9999',
         });
     } catch (e) {
         if (e.message?.startsWith('Cannot find ')) {

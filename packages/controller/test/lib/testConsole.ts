@@ -5,7 +5,7 @@ import type { TestContext } from '../_Types.js';
 import fs from 'fs-extra';
 import * as url from 'node:url';
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 
 const iobExecutable = path.join(thisDir, '..', '..', 'iobroker.js');
 
@@ -13,17 +13,17 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     const testName = `${context.name} ${context.adapterShortName} console: `;
 
     // passwd, user passwd, user check
-    it(testName + 'user passwd', async () => {
+    it(`${testName}user passwd`, async () => {
         let res;
 
         res = await execAsync(
-            `"${process.execPath}" "${iobExecutable}" passwd admin --password ${context.appName.toLowerCase()}`
+            `"${process.execPath}" "${iobExecutable}" passwd admin --password ${context.appName.toLowerCase()}`,
         );
         expect(res.stderr).to.be.not.ok;
 
         // check password
         res = await execAsync(
-            `"${process.execPath}" "${iobExecutable}" user check admin --password ${context.appName.toLowerCase()}`
+            `"${process.execPath}" "${iobExecutable}" user check admin --password ${context.appName.toLowerCase()}`,
         );
         expect(res.stderr).to.be.not.ok;
         // negative check
@@ -31,7 +31,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             await execAsync(
                 `"${
                     process.execPath
-                }" "${iobExecutable}" user check admin --password ${`${context.appName.toLowerCase()}2`}`
+                }" "${iobExecutable}" user check admin --password ${`${context.appName.toLowerCase()}2`}`,
             );
             expect(true, 'should throw').to.be.false;
         } catch {
@@ -41,14 +41,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         res = await execAsync(
             `"${
                 process.execPath
-            }" "${iobExecutable}" user passwd admin --password ${`${context.appName.toLowerCase()}1`}`
+            }" "${iobExecutable}" user passwd admin --password ${`${context.appName.toLowerCase()}1`}`,
         );
         expect(res.stderr).to.be.not.ok;
         // check new Password
         res = await execAsync(
             `"${
                 process.execPath
-            }" "${iobExecutable}" user check admin --password ${`${context.appName.toLowerCase()}1`}`
+            }" "${iobExecutable}" user check admin --password ${`${context.appName.toLowerCase()}1`}`,
         );
         expect(res.stderr).to.be.not.ok;
 
@@ -56,12 +56,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         res = await execAsync(
             `"${
                 process.execPath
-            }" "${iobExecutable}" user passwd admin --password ${`${context.appName.toLowerCase()}`}`
+            }" "${iobExecutable}" user passwd admin --password ${`${context.appName.toLowerCase()}`}`,
         );
         expect(res.stderr).to.be.not.ok;
         // check password
         res = await execAsync(
-            `"${process.execPath}" "${iobExecutable}" user check admin --password ${`${context.appName.toLowerCase()}`}`
+            `"${process.execPath}" "${iobExecutable}" user check admin --password ${`${context.appName.toLowerCase()}`}`,
         );
         expect(res.stderr).to.be.not.ok;
 
@@ -70,7 +70,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             await execAsync(
                 `"${
                     process.execPath
-                }" "${iobExecutable}" user passwd uuuser --password ${`${context.appName.toLowerCase()}1`}`
+                }" "${iobExecutable}" user passwd uuuser --password ${`${context.appName.toLowerCase()}1`}`,
             );
             expect(true, 'should throw').to.be.false;
         } catch {
@@ -82,7 +82,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             await execAsync(
                 `"${
                     process.execPath
-                }" "${iobExecutable}" user check uuuser --password ${`${context.appName.toLowerCase()}1`}`
+                }" "${iobExecutable}" user check uuuser --password ${`${context.appName.toLowerCase()}1`}`,
             );
             expect(true, 'should throw').to.be.false;
         } catch {
@@ -91,7 +91,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     }).timeout(40_000);
 
     // user get
-    it(testName + 'user get', async () => {
+    it(`${testName}user get`, async () => {
         // check if no args set
         try {
             await execAsync(`"${process.execPath}" "${iobExecutable}" user`);
@@ -120,7 +120,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     }).timeout(20_000);
 
     // adduser user add
-    it(testName + 'user add', async () => {
+    it(`${testName}user add`, async () => {
         let res;
         // check if no args set
         try {
@@ -140,7 +140,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         // add user
         res = await execAsync(
-            `"${process.execPath}" "${iobExecutable}" user add newUser --password user --ingroup user`
+            `"${process.execPath}" "${iobExecutable}" user add newUser --password user --ingroup user`,
         );
         expect(res.stderr).to.be.not.ok;
 
@@ -166,7 +166,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     }).timeout(20_000);
 
     // user disable / enable
-    it(testName + 'user disable/enable', async () => {
+    it(`${testName}user disable/enable`, async () => {
         let res;
 
         // add second user
@@ -215,7 +215,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     }).timeout(25_000);
 
     // ud udel userdel deluser user del
-    it(testName + 'user del', async () => {
+    it(`${testName}user del`, async () => {
         let res;
         // check if no args set
         try {
@@ -248,7 +248,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     }).timeout(20_000);
 
     // group add
-    it(testName + 'group add', async () => {
+    it(`${testName}group add`, async () => {
         // check if no args set
         try {
             await execAsync(`"${process.execPath}" "${iobExecutable}" group add`);
@@ -279,7 +279,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     }).timeout(20_000);
 
     // group del
-    it(testName + 'group del', async () => {
+    it(`${testName}group del`, async () => {
         // check if no args set
         try {
             await execAsync(`"${process.execPath}" "${iobExecutable}" group del`);
@@ -310,7 +310,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     }).timeout(20_000);
 
     // group list
-    it(testName + 'group list', async () => {
+    it(`${testName}group list`, async () => {
         // check if no args set
         // no user defined
         try {
@@ -334,7 +334,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     }).timeout(20_000);
 
     // group get
-    it(testName + 'group get', async () => {
+    it(`${testName}group get`, async () => {
         // check if no args set
         try {
             await execAsync(`"${process.execPath}" "${iobExecutable}" group`);
@@ -365,7 +365,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     }).timeout(20_000);
 
     // group disable / enable
-    it(testName + 'group disable/enable', async () => {
+    it(`${testName}group disable/enable`, async () => {
         let res;
         // add second group
         res = await execAsync(`"${process.execPath}" "${iobExecutable}" group add group1`);
@@ -413,7 +413,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     }).timeout(25_000);
 
     // group useradd
-    it(testName + 'group useradd', async () => {
+    it(`${testName}group useradd`, async () => {
         let res;
 
         // add non existing user
@@ -446,7 +446,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     }).timeout(20_000);
 
     // group userdel
-    it(testName + 'group userdel', async () => {
+    it(`${testName}group userdel`, async () => {
         // delete non existing user
         try {
             await execAsync(`"${process.execPath}" "${iobExecutable}" group userdel group1 user5`);
@@ -482,7 +482,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     // stop ??
 
     // status
-    it(testName + 'status', async () => {
+    it(`${testName}status`, async () => {
         // check status
         try {
             await execAsync(`"${process.execPath}" "${iobExecutable}" status`);
@@ -508,7 +508,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
     // update
     // setup
-    it(testName + 'setup', async () => {
+    it(`${testName}setup`, async () => {
         let res;
         // check setup
         res = await execAsync(`"${process.execPath}" "${iobExecutable}" setup`);
@@ -536,7 +536,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
     // message
     // update
-    it(testName + 'update', async () => {
+    it(`${testName}update`, async () => {
         // check update
         const res = await execAsync(`"${process.execPath}" "${iobExecutable}" update`);
         expect(res.stderr).to.be.not.ok;
@@ -547,7 +547,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     // clean
     // restore
     // backup
-    it(testName + 'backup', async () => {
+    it(`${testName}backup`, async () => {
         // create backup
         const dir = BackupRestore.getBackupDir();
 
@@ -599,7 +599,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     // file f
 
     // id uuid
-    it(testName + 'uuid', async () => {
+    it(`${testName}uuid`, async () => {
         let res;
         // uuid
         res = await execAsync(`"${process.execPath}" "${iobExecutable}" uuid`);
@@ -611,7 +611,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     }).timeout(20_000);
 
     // v version
-    it(testName + 'version', async () => {
+    it(`${testName}version`, async () => {
         let res;
         // version
         res = await execAsync(`"${process.execPath}" "${iobExecutable}" version`);
@@ -623,7 +623,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     }).timeout(20_000);
 
     // repo
-    it(testName + 'repo', async () => {
+    it(`${testName}repo`, async () => {
         let res;
         // add non existing repo
         res = await execAsync(`"${process.execPath}" "${iobExecutable}" repo add local some/path`);
@@ -686,7 +686,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     }).timeout(50_000);
 
     // license
-    it(testName + 'license', async () => {
+    it(`${testName}license`, async () => {
         // test license
         const licenseText =
             'eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiaW9icm9rZXIudmlzIiwidHlwZSI6InRlc3QiLCJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiZXhwaXJlcyI6MjQ0NDM5ODA5NSwidmVyc2lvbiI6IjwyIiwiaWQiOiI5NTBkYWEwMC01MzcxLTExZTctYjQwNS14eHh4eHh4eHh4eHh4IiwiaWF0IjoxNDk3NzEzMjk1fQ.K9t9ZtvAsdeNFTJed4Sidq2jrr9UFOYpMt6VLmBdVzWueI9DnCXFS5PwBFTBTmF9WMhVk6LBw5ujIVl130B_5NrHl21PHkCLvJeW7jGsMgWDINuBK5F9k8LZABdsv7uDbqNDSOsVrFwEKOu2V3N5sMWYOVE4N_COIg9saaLvyN69oIP27PTgk1GHuyU4giFKGLPTp10L5p2hxLX0lEPjSdDggbl7dEqEe1-u5WwkyBizp03pMtHGYtjnACtP_KBuOly7QpmAnoPlfFoW79xgRjICbd41wT43IvhKAAo1zfnRAeWfQ7QoUViKsc6N1es87QC4KKw-eToLPXOO5UzWOg';
@@ -721,12 +721,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 mode: 'daemon',
                 platform: 'Javascript/Node.js',
                 materialize: true,
-                installedVersion: '1.0.0'
+                installedVersion: '1.0.0',
             },
             native: {},
             type: 'instance',
             instanceObjects: [],
-            objects: []
+            objects: [],
         });
         // license must be taken
         res = await execAsync(`"${process.execPath}" "${iobExecutable}" license ${licenseFile}`);

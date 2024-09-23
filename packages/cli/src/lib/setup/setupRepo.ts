@@ -46,22 +46,22 @@ export class Repo {
         this.defaultSystemRepo = {
             common: {
                 name: 'System repositories',
-                dontDelete: true
+                dontDelete: true,
             },
             native: {
                 repositories: {
                     stable: {
                         link: 'http://download.iobroker.net/sources-dist.json',
-                        json: null
+                        json: null,
                     },
                     beta: {
                         link: 'http://download.iobroker.net/sources-dist-latest.json',
-                        json: null
-                    }
-                }
+                        json: null,
+                    },
+                },
             },
             _id: 'system.repositories',
-            type: 'config'
+            type: 'config',
         };
     }
 
@@ -77,7 +77,7 @@ export class Repo {
         repoName: string,
         force: boolean | undefined,
         systemConfig?: ioBroker.OtherObject,
-        systemRepos?: ioBroker.RepositoryObject
+        systemRepos?: ioBroker.RepositoryObject,
     ): Promise<null | ioBroker.RepositoryJson> {
         if (!repoName) {
             const sysConfig = systemConfig || (await this.objects.getObject('system.config'));
@@ -126,7 +126,7 @@ export class Repo {
                 data = await axios({
                     url: urlOrPath,
                     timeout: 10_000,
-                    headers: { 'User-Agent': agent }
+                    headers: { 'User-Agent': agent },
                 });
                 if (data.data) {
                     data = data.data;
@@ -202,7 +202,7 @@ export class Repo {
                         systemRepos.native.repositories[url] = {
                             link: repo,
                             json: null,
-                            hash: ''
+                            hash: '',
                         };
                     }
 
@@ -211,8 +211,8 @@ export class Repo {
                 } else {
                     console.error(
                         `Error: unknown repository is active - "${url}". Known: ${Object.keys(
-                            systemRepos.native.repositories
-                        ).join(', ')}`
+                            systemRepos.native.repositories,
+                        ).join(', ')}`,
                     );
                 }
             }
@@ -245,7 +245,7 @@ export class Repo {
             text = text.padEnd(11 + 15);
 
             if (sources[name].version) {
-                text += ': ' + sources[name].version;
+                text += `: ${sources[name].version}`;
             }
             text = text.padEnd(11 + 15 + 11);
 
@@ -267,7 +267,7 @@ export class Repo {
                         const isIgnored = await isVersionIgnored({
                             adapterName: name,
                             objects: this.objects,
-                            version: sources[name].version
+                            version: sources[name].version,
                         });
 
                         text += isIgnored ? ' [Ignored]' : ' [Updatable]';
@@ -312,7 +312,7 @@ export class Repo {
 
         const objs = await this.objects.getObjectViewAsync('system', 'instance', {
             startkey: 'system.adapter.admin',
-            endkey: 'system.adapter.admin\u9999'
+            endkey: 'system.adapter.admin\u9999',
         });
 
         if (objs?.rows?.length) {
@@ -343,9 +343,9 @@ export class Repo {
                         return {
                             name: key,
                             url: value.link,
-                            'auto upgrade': objCfg?.common.adapterAutoUpgrade?.repositories[key] ?? false
+                            'auto upgrade': objCfg?.common.adapterAutoUpgrade?.repositories[key] ?? false,
                         };
-                    })
+                    }),
                 );
 
                 if (objCfg?.common) {
@@ -381,7 +381,7 @@ export class Repo {
         } else {
             obj.native.repositories[repoName] = {
                 link: repoUrl,
-                json: null
+                json: null,
             };
             obj.from = `system.host.${tools.getHostName()}.cli`;
             obj.ts = Date.now();

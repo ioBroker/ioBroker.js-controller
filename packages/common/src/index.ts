@@ -2,13 +2,13 @@ export {
     getStatesConstructor,
     statesDbHasServer,
     isLocalStatesDbServer,
-    performStatesInterview
+    performStatesInterview,
 } from '@/lib/common/states.js';
 export {
     getObjectsConstructor,
     objectsDbHasServer,
     isLocalObjectsDbServer,
-    performObjectsInterview
+    performObjectsInterview,
 } from '@/lib/common/objects.js';
 export { NotificationHandler } from '@/lib/common/notificationHandler.js';
 export * as zipFiles from '@/lib/common/zipFiles.js';

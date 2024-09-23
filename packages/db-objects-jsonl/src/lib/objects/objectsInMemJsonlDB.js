@@ -16,11 +16,11 @@ import { tools } from '@iobroker/js-controller-common-db';
 
 /**
  * Normalizes options for the JsonlDB
- * @param {Record<string, any> | undefined} conf The jsonlOptions options from iobroker.json
- * @returns {import("@alcalzone/jsonl-db").JsonlDBOptions<any>}
+ *
+ * @param conf The jsonlOptions options from iobroker.json
+ * @returns
  */
 function normalizeJsonlOptions(conf = {}) {
-    /** @type {import("@alcalzone/jsonl-db").JsonlDBOptions<any>} */
     const ret = {
         autoCompress: {
             // Compress when the number of uncompressed entries has grown a lot
@@ -28,12 +28,12 @@ function normalizeJsonlOptions(conf = {}) {
             sizeFactorMinimumSize: 25000,
             // Compress at least daily to avoid a huge file when DBs have few objects
             // but big objects are updated regularly (e.g. the repositories)
-            intervalMs: 1000 * 60 * 60 * 23
+            intervalMs: 1000 * 60 * 60 * 23,
         },
         ignoreReadErrors: true,
         throttleFS: {
             intervalMs: 60000,
-            maxBufferedCommands: 1000
+            maxBufferedCommands: 1000,
         },
         lockfile: {
             // 5 retries starting at 250ms add up to just above 2s,
@@ -41,8 +41,8 @@ function normalizeJsonlOptions(conf = {}) {
             retries: 5,
             retryMinTimeoutMs: 250,
             // This makes sure the DB stays locked for maximum 2s even if the process crashes
-            staleMs: 2000
-        }
+            staleMs: 2000,
+        },
     };
 
     // Be really careful what we allow here. Incorrect settings may cause problems in production.
@@ -83,22 +83,21 @@ function normalizeJsonlOptions(conf = {}) {
 /**
  * This class inherits InMemoryFileDB class and adds all relevant logic for objects
  * including the available methods for use by js-controller directly
- **/
+ */
 export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
     constructor(settings) {
         settings = settings || {};
         settings.fileDB = {
             fileName: 'objects.json',
-            backupDirName: 'backup-objects'
+            backupDirName: 'backup-objects',
         };
 
         const jsonlOptions = normalizeJsonlOptions(settings.connection.jsonlOptions);
         settings.jsonlDB = {
-            fileName: 'objects.jsonl'
+            fileName: 'objects.jsonl',
         };
         super(settings);
 
-        /** @type {JsonlDB<any>} */
         this._db = new JsonlDB(path.join(this.dataDir, settings.jsonlDB.fileName), jsonlOptions);
     }
 
@@ -109,27 +108,43 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
 
         // Create an object-like wrapper around the internal Map
         this.dataset = new Proxy(this._db, {
-            /** @param {any} prop */
+            /**
+             * @param target
+             * @param prop
+             */
             get(target, prop) {
                 return target.get(prop);
             },
-            /** @param {any} prop */
+            /**
+             * @param target
+             * @param prop
+             */
             has(target, prop) {
                 return target.has(prop);
             },
-            /** @param {any} prop */
+            /**
+             * @param target
+             * @param prop
+             * @param value
+             */
             set(target, prop, value) {
                 target.set(prop, value);
                 return true;
             },
-            /** @param {any} prop */
+            /**
+             * @param target
+             * @param prop
+             */
             deleteProperty(target, prop) {
                 return target.delete(prop);
             },
             ownKeys(target) {
                 return [...target.keys()];
             },
-            /** @param {any} prop */
+            /**
+             * @param target
+             * @param prop
+             */
             getOwnPropertyDescriptor(target, prop) {
                 if (!target.has(prop)) {
                     return undefined;
@@ -138,9 +153,9 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
                     configurable: true,
                     enumerable: true,
                     writable: true,
-                    value: target.get(prop)
+                    value: target.get(prop),
                 };
-            }
+            },
         });
 
         if (this.settings.backup && this.settings.backup.period && !this.settings.backup.disabled) {
@@ -152,13 +167,14 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
 
     /**
      * Checks if an existing file DB should be migrated to JSONL
-     * @returns {Promise<boolean>} true if the file DB was migrated. false if not.
+     *
+     * @returns true if the file DB was migrated. false if not.
      * If this returns true, the jsonl DB was opened and doesn't need to be opened again.
      */
     async _maybeMigrateFileDB() {
         const jsonlFileName = path.join(this.dataDir, this.settings.jsonlDB.fileName);
         const jsonFileName = path.join(this.dataDir, this.settings.fileDB.fileName);
-        const bakFileName = path.join(this.dataDir, this.settings.fileDB.fileName + '.bak');
+        const bakFileName = path.join(this.dataDir, `${this.settings.fileDB.fileName}.bak`);
 
         // Check the timestamps of each file, defaulting to 0 if they don't exist
         let jsonlTimeStamp = 0;
@@ -190,7 +206,6 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
         }
 
         // Figure out which file needs to be imported
-        /** @type {string} */
         let importFilename;
         if (jsonTimeStamp > 0 && jsonTimeStamp >= bakTimeStamp && jsonTimeStamp >= jsonlTimeStamp) {
             importFilename = jsonFileName;
@@ -236,7 +251,7 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
         const tmpBackupFileName = path.join(os.tmpdir(), `${this.getTimeStr(now)}_${this.settings.jsonlDB.fileName}`);
         const backupFileName = path.join(
             this.backupDir,
-            `${this.getTimeStr(now)}_${this.settings.jsonlDB.fileName}.gz`
+            `${this.getTimeStr(now)}_${this.settings.jsonlDB.fileName}.gz`,
         );
 
         if (!this._db.isOpen) {

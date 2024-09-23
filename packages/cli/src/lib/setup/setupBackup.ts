@@ -259,19 +259,9 @@ export class BackupRestore {
     async createBackup(name: string, noConfig?: boolean): Promise<string> {
         if (!name) {
             const d = new Date();
-            name =
-                d.getFullYear() +
-                '_' +
-                ('0' + (d.getMonth() + 1)).slice(-2) +
-                '_' +
-                ('0' + d.getDate()).slice(-2) +
-                '-' +
-                ('0' + d.getHours()).slice(-2) +
-                '_' +
-                ('0' + d.getMinutes()).slice(-2) +
-                '_' +
-                ('0' + d.getSeconds()).slice(-2) +
-                `_backup${tools.appName}`;
+            name = `${d.getFullYear()}_${`0${d.getMonth() + 1}`.slice(-2)}_${`0${d.getDate()}`.slice(-2)}-${`0${d.getHours()}`.slice(
+                -2,
+            )}_${`0${d.getMinutes()}`.slice(-2)}_${`0${d.getSeconds()}`.slice(-2)}_backup${tools.appName}`;
         }
 
         name = name.toString().replace(/\\/g, '/');
@@ -326,9 +316,9 @@ export class BackupRestore {
                     object: row.value,
                     isCustomHostname,
                     hostname,
-                    thisHostNameStartsWith
+                    thisHostNameStartsWith,
                 });
-                await objectsFd.write(JSON.stringify(preprocessedValue) + '\n');
+                await objectsFd.write(`${JSON.stringify(preprocessedValue)}\n`);
             }
 
             console.log(`host.${hostname} ${res.rows.length || 'no'} objects saved`);
@@ -357,7 +347,7 @@ export class BackupRestore {
                         if (obj.from === `system.host.${hostname}`) {
                             obj.from.replace(
                                 `system.host.${hostname}`,
-                                `system.host.${this.HOSTNAME_PLACEHOLDER_REPLACE}`
+                                `system.host.${this.HOSTNAME_PLACEHOLDER_REPLACE}`,
                             );
                         }
                         if (keys[i].startsWith(thisHostNameStartsWith)) {
@@ -365,7 +355,7 @@ export class BackupRestore {
                         }
                     }
 
-                    await statesFd.write(JSON.stringify({ id: keys[i], state: obj }) + '\n');
+                    await statesFd.write(`${JSON.stringify({ id: keys[i], state: obj })}\n`);
                 }
 
                 await statesFd.close();
@@ -488,7 +478,7 @@ export class BackupRestore {
         // if installed as npm
         if (
             fs.existsSync(
-                path.join(controllerDir, '..', '..', 'node_modules', `${tools.appName.toLowerCase()}.js-controller`)
+                path.join(controllerDir, '..', '..', 'node_modules', `${tools.appName.toLowerCase()}.js-controller`),
             )
         ) {
             const p = path.join(controllerDir, '..');
@@ -732,7 +722,10 @@ export class BackupRestore {
 
         for await (let line of rlStates) {
             line = line.replace(this.HOSTNAME_PLACEHOLDER_REGEX, hostname);
-            const state: { id: string; state: ioBroker.State } = JSON.parse(line);
+            const state: {
+                id: string;
+                state: ioBroker.State;
+            } = JSON.parse(line);
             await this._setStateHelper(state.id, state.state);
             count++;
         }
@@ -787,7 +780,7 @@ export class BackupRestore {
                 controllerDir,
                 restore.config?.system?.hostname || hostname,
                 restore.objects,
-                force
+                force,
             );
 
             if (exitCode) {
@@ -848,11 +841,11 @@ export class BackupRestore {
             console.log('Forced restore - executing setup ...');
             try {
                 await execAsync(
-                    `"${process.execPath}" "${path.join(controllerDir, `${tools.appName.toLowerCase()}.js`)}" setup`
+                    `"${process.execPath}" "${path.join(controllerDir, `${tools.appName.toLowerCase()}.js`)}" setup`,
                 );
             } catch (e) {
                 console.error(
-                    `Could not execute "setup" command, please ensure "setup" is called before starting ioBroker: ${e.message}`
+                    `Could not execute "setup" command, please ensure "setup" is called before starting ioBroker: ${e.message}`,
                 );
             }
         }
@@ -873,7 +866,7 @@ export class BackupRestore {
      */
     private async connectToNewDatabase(config: ioBroker.IoBrokerJson): Promise<void> {
         console.log(
-            `host.${this.hostname} Connecting to new DB "${config.states.type}/${config.objects.type}" (can take up to 20s) ...`
+            `host.${this.hostname} Connecting to new DB "${config.states.type}/${config.objects.type}" (can take up to 20s) ...`,
         );
         await resetDbConnect();
         const { objects, states } = await dbConnectAsync(false);
@@ -921,7 +914,7 @@ export class BackupRestore {
         controllerDir: string,
         backupHostname: string,
         backupObjects: BackupObject[],
-        force: boolean
+        force: boolean,
     ): void | number {
         try {
             const ioPackJson = fs.readJsonSync(path.join(controllerDir, 'io-package.json'));
@@ -937,18 +930,17 @@ export class BackupRestore {
                     console.warn('The current version of js-controller differs from the version in the backup.');
                     console.warn('The js-controller version of the backup can not be restored automatically.');
                     console.warn(
-                        `To restore the js-controller version of the backup, execute "npm i iobroker.js-controller@${hostObj.value.common.installedVersion} --omit=dev" inside your ioBroker directory`
+                        `To restore the js-controller version of the backup, execute "npm i iobroker.js-controller@${hostObj.value.common.installedVersion} --omit=dev" inside your ioBroker directory`,
                     );
                     console.warn(
-                        'If you really want to restore the backup with the current installed js-controller, execute the restore command with the --force flag'
+                        'If you really want to restore the backup with the current installed js-controller, execute the restore command with the --force flag',
                     );
 
                     return EXIT_CODES.CANNOT_RESTORE_BACKUP;
-                } else {
-                    console.info('The current version of js-controller differs from the version in the backup.');
-                    console.info('The js-controller version of the backup can not be restored automatically.');
-                    console.info('Note, that your backup might differ in behavior due to this version change!');
                 }
+                console.info('The current version of js-controller differs from the version in the backup.');
+                console.info('The js-controller version of the backup can not be restored automatically.');
+                console.info('Note, that your backup might differ in behavior due to this version change!');
             }
         } catch {
             // ignore
@@ -969,9 +961,8 @@ export class BackupRestore {
                 }
             }
             return result;
-        } else {
-            return result;
         }
+        return result;
     }
 
     /**
@@ -1068,16 +1059,15 @@ export class BackupRestore {
                     console.log('Please specify one of the backup names:');
                     for (const t in backups) {
                         console.log(
-                            `${backups[t]} or ${backups[t].replace(`_backup${tools.appName}.tar.gz`, '')} or ${t}`
+                            `${backups[t]} or ${backups[t].replace(`_backup${tools.appName}.tar.gz`, '')} or ${t}`,
                         );
                     }
                 } else {
                     console.log(`No existing backups. Create a backup, using "${tools.appName} backup" first`);
                 }
                 return void this.processExit(EXIT_CODES.INVALID_ARGUMENTS);
-            } else {
-                console.log(`host.${this.hostname} Using backup file ${name}`);
             }
+            console.log(`host.${this.hostname} Using backup file ${name}`);
         }
 
         name = name.toString().replace(/\\/g, '/');
@@ -1104,7 +1094,7 @@ export class BackupRestore {
             tar.extract(
                 {
                     file: name,
-                    cwd: this.tmpDir
+                    cwd: this.tmpDir,
                 },
                 undefined,
                 err => {
@@ -1114,7 +1104,7 @@ export class BackupRestore {
                     }
                     if (!fs.existsSync(`${this.tmpDir}/backup/backup.json`)) {
                         console.error(
-                            `host.${this.hostname} Validation failed. Cannot find extracted file from file "${this.tmpDir}/backup/backup.json"`
+                            `host.${this.hostname} Validation failed. Cannot find extracted file from file "${this.tmpDir}/backup/backup.json"`,
                         );
                         return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
                     }
@@ -1125,7 +1115,7 @@ export class BackupRestore {
                         backupJSON = fs.readJSONSync(`${this.tmpDir}/backup/backup.json`);
                     } catch (err) {
                         console.error(
-                            `host.${this.hostname} Backup corrupted. Backup ${name} does not contain a valid backup.json file: ${err.message}`
+                            `host.${this.hostname} Backup corrupted. Backup ${name} does not contain a valid backup.json file: ${err.message}`,
                         );
                         this.removeTempBackupDir();
 
@@ -1138,7 +1128,7 @@ export class BackupRestore {
                             this.removeTempBackupDir();
                         } catch (e) {
                             console.error(
-                                `host.${this.hostname} Cannot clear temporary backup directory: ${e.message}`
+                                `host.${this.hostname} Cannot clear temporary backup directory: ${e.message}`,
                             );
                         }
                         return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
@@ -1155,7 +1145,7 @@ export class BackupRestore {
                         console.error(`host.${this.hostname} Backup corrupted: ${err.message}`);
                         return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
                     }
-                }
+                },
             );
         });
     }
@@ -1209,7 +1199,7 @@ export class BackupRestore {
             backups.sort((a, b) => (b > a ? 1 : b === a ? 0 : -1));
             if (backups.length) {
                 backups.forEach((backup, i) =>
-                    console.log(`${backup} or ${backup.replace(`_backup${tools.appName}.tar.gz`, '')} or ${i}`)
+                    console.log(`${backup} or ${backup.replace(`_backup${tools.appName}.tar.gz`, '')} or ${i}`),
                 );
             } else {
                 console.warn('No backups found');
@@ -1234,7 +1224,7 @@ export class BackupRestore {
                 if (backups.length) {
                     console.log('Please specify one of the backup names:');
                     backups.forEach((backup, i) =>
-                        console.log(`${backup} or ${backup.replace(`_backup${tools.appName}.tar.gz`, '')} or ${i}`)
+                        console.log(`${backup} or ${backup.replace(`_backup${tools.appName}.tar.gz`, '')} or ${i}`),
                     );
                 }
             } else {
@@ -1268,7 +1258,7 @@ export class BackupRestore {
         try {
             await tar.extract({
                 file: name,
-                cwd: this.tmpDir
+                cwd: this.tmpDir,
             });
         } catch (e) {
             console.error(`host.${this.hostname} Cannot extract from file "${name}": ${e.message}`);
@@ -1280,7 +1270,7 @@ export class BackupRestore {
             !(await fs.pathExists(path.join(backupBasePath, 'config.json')))
         ) {
             console.error(
-                `host.${this.hostname} Cannot find extracted file "${path.join(backupBasePath, 'backup.json')}" or "${path.join(backupBasePath, 'config.json')}"`
+                `host.${this.hostname} Cannot find extracted file "${path.join(backupBasePath, 'backup.json')}" or "${path.join(backupBasePath, 'config.json')}"`,
             );
             return { exitCode: EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP, objects: this.objects, states: this.states };
         }
@@ -1289,7 +1279,7 @@ export class BackupRestore {
         const exitCode = await this._restoreAfterStop({
             restartOnFinish: false,
             force,
-            dontDeleteAdapters
+            dontDeleteAdapters,
         });
 
         this.removeTempBackupDir();
