@@ -1,7 +1,7 @@
 {
     "name": "@iobroker/js-controller-adapter",
     "type": "module",
-    "version": "6.0.12-alpha.0-20240907-52bf8f589",
+    "version": "6.0.12-alpha.0-20240922-1ea0ace13",
     "engines": {
         "node": ">=18.0.0"
     },

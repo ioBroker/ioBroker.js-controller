@@ -512,6 +512,12 @@ This method takes the following parameters:
 * scope: scope to be addressed
 * category: category to be addressed, if a null message will be checked by regex of given scope
 * message: message to be stored/checked
+* options: Available with js-controller version 6.1. Additional options for the notification, currently you can provide additional `contextData` which is also stored with the notification information. Notification processing adapters can use this data
+
+Note, that the structure of the `contextData` which can be stored via the options object is not defined by the controller. Adapters which handle messages can use individual data attributes. 
+Currently, it is planned to support individual notification customization in the `admin` adapter. More information will be available in the `admin` adapter as soon as this feature is ready.
+
+As a best practice the top-level of `contextData` should not be populated with individual data belonging to instances. Use a `key` specific to the adapter or if a feature is supported by all adapters of a type, the type (e.g. `messaging`) is also fine.
 
 When a regex is defined then `console.error` output from the adapter is always checked by the regex and notifications are registered automatically when the regex matches! 
 
@@ -519,9 +525,9 @@ When a regex is defined then `console.error` output from the adapter is always c
 The host supports the __message__ command `getNotifications` to query the stored notifications together with the localized names and descriptions.
 
 The message needs to take the following parameters in the message object:
-* scopeFilter - scope of notifications
-* categoryFilter - category of notifications
-* instanceFilter - instance of notifications
+* `scope` - scope of notifications
+* `category` - category of notifications
+* `instance` - instance of notifications
 
 All three are optional and can be a string or null/undefined if omitted.
 
@@ -531,9 +537,9 @@ The host supports the __message__ command `clearNotifications` to clear specific
 **Please only clear notifications that really were handled and displayed to the user especially for "system" scope!**
 
 The message needs to take the following parameters in the message object:
-* scopeFilter - scope of notifications
-* categoryFilter - category of notifications
-* instanceFilter - instance of notifications
+* `scope` - scope of notifications
+* `category` - category of notifications
+* `instance` - instance of notifications
 
 All three are optional and can be a string or null/undefined if omitted.
 

@@ -85,10 +85,7 @@ export function maybeCallback<
  * @param args - as many arguments as needed, which will be returned by the callback function or by the Promise
  * @returns if Promise is resolved with multiple arguments, an array is returned
  */
-export function maybeCallback<T extends any[]>(
-    callback?: MaybeCbCallback<T> | null | undefined,
-    ...args: T
-): Promise<any> | void {
+export function maybeCallback<T extends any[]>(callback?: MaybeCbCallback<T> | null, ...args: T): Promise<any> | void {
     if (typeof callback === 'function') {
         // if function we call it with given param
         setImmediate(callback, ...args);

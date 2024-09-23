@@ -75,7 +75,7 @@ interface GetLogFilesResult {
 }
 interface UploadTask {
     adapter: string;
-    msg: ioBroker.SendableMessage;
+    msg?: ioBroker.SendableMessage;
 }
 
 interface RebuildArgs {
@@ -136,6 +136,13 @@ interface RepoRequester {
     /** requesting instance */
     from: string;
     callback: ioBroker.MessageCallbackInfo;
+}
+
+interface SendResponseToOptions {
+    /** The message we want to respond to */
+    receivedMsg: ioBroker.SendableMessage;
+    /** The response payload */
+    payload: Record<string, unknown>;
 }
 
 /** Host information including host id and running version */
@@ -224,8 +231,6 @@ let diskWarningLevel = DEFAULT_DISK_WARNING_LEVEL;
 let updateIPsTimer: NodeJS.Timeout | null = null;
 let lastDiagSend: null | number = null;
 
-const uploadTasks: UploadTask[] = [];
-
 const config = getConfig();
 
 /**
@@ -274,7 +279,7 @@ function getConfig(): ioBroker.IoBrokerJson | never {
  * @param _config
  * @param secret
  */
-async function _startMultihost(_config: Record<string, any>, secret: string | false): Promise<void> {
+async function _startMultihost(_config: ioBroker.IoBrokerJson, secret: string | false): Promise<void> {
     const MHService = await import('./lib/multihostServer.js');
     const cpus = os.cpus();
     mhService = new MHService.MHServer(
@@ -299,7 +304,7 @@ async function _startMultihost(_config: Record<string, any>, secret: string | fa
  *
  * @param __config - the iobroker config object
  */
-async function startMultihost(__config?: Record<string, any>): Promise<boolean | void> {
+async function startMultihost(__config?: ioBroker.IoBrokerJson): Promise<boolean | void> {
     if (compactGroupController) {
         return;
     }
@@ -343,7 +348,7 @@ async function startMultihost(__config?: Record<string, any>): Promise<boolean |
                 let obj: ioBroker.SystemConfigObject | null | undefined;
                 let errText;
                 try {
-                    obj = await objects!.getObjectAsync(SYSTEM_CONFIG_ID);
+                    obj = await objects!.getObject(SYSTEM_CONFIG_ID);
                 } catch (e) {
                     // will log error below
                     errText = e.message;
@@ -987,13 +992,14 @@ async function checkSystemLocaleSupported(): Promise<void> {
     const isSupported = await objects.isSystemLocaleSupported();
 
     if (!isSupported) {
-        await notificationHandler.addMessage(
-            'system',
-            'databaseErrors',
-            'Your redis server is using an unsupported locale. This can lead to unexpected behavior of your ioBroker installation as well as data loss. ' +
+        await notificationHandler.addMessage({
+            category: 'system',
+            scope: 'databaseErrors',
+            message:
+                'Your redis server is using an unsupported locale. This can lead to unexpected behavior of your ioBroker installation as well as data loss. ' +
                 'Please configure your Redis Server according to https://forum.iobroker.net/topic/52976/wichtiger-hinweis-f%C3%BCr-redis-installationen?_=1678099836122',
-            `system.host.${hostname}`
-        );
+            instance: `system.host.${hostname}`
+        });
     }
 }
 
@@ -1126,12 +1132,12 @@ async function reportStatus(): Promise<void> {
                 const isDiskWarningActive = percentageFree < diskWarningLevel;
 
                 if (isDiskWarningActive) {
-                    await notificationHandler.addMessage(
-                        'system',
-                        'diskSpaceIssues',
-                        `Your system has only ${percentageFree.toFixed(2)} % of disk space left.`,
-                        `system.host.${hostname}`
-                    );
+                    await notificationHandler.addMessage({
+                        scope: 'system',
+                        category: 'diskSpaceIssues',
+                        message: `Your system has only ${percentageFree.toFixed(2)} % of disk space left.`,
+                        instance: `system.host.${hostname}`
+                    });
                 }
 
                 states.setState(`${id}.diskSize`, {
@@ -1406,7 +1412,7 @@ async function collectDiagInfo(type: DiagInfoType): Promise<void | Record<string
         let err;
 
         try {
-            systemConfig = await objects!.getObjectAsync(SYSTEM_CONFIG_ID);
+            systemConfig = await objects!.getObject(SYSTEM_CONFIG_ID);
         } catch (e) {
             err = e;
         }
@@ -1847,6 +1853,10 @@ async function sendTo(
     message: ioBroker.MessagePayload,
     callback?: ioBroker.ErrorCallback | ioBroker.MessageCallbackInfo
 ): Promise<void> {
+    if (!states) {
+        return;
+    }
+
     if (message === undefined) {
         message = command;
         command = 'send';
@@ -1877,7 +1887,7 @@ async function sendTo(
         }
     }
     try {
-        await states!.pushMessage(objName, obj);
+        await states.pushMessage(objName, obj);
     } catch (e) {
         // do not stringify the object, we had the issue with the invalid string length on serialization
         logger.error(
@@ -1923,13 +1933,11 @@ async function getVersionFromHost(hostId: ioBroker.ObjectIDs.Host): Promise<Host
 }
 
 /**
- * Upload all adapters which are currently in `uploadTasks` queue
+ * Upload given adapter
+ *
+ * @param task The upload task information containing name and an optional message
  */
-async function startAdapterUpload(): Promise<void> {
-    if (!uploadTasks.length) {
-        return;
-    }
-
+async function uploadAdapter(task: UploadTask): Promise<void> {
     if (!upload) {
         upload = new Upload({
             states: states!,
@@ -1937,9 +1945,9 @@ async function startAdapterUpload(): Promise<void> {
         });
     }
 
-    const msg = uploadTasks[0].msg;
+    const msg = task.msg;
 
-    const logger = msg.from
+    const logger = msg?.from
         ? {
               log: (text: string) =>
                   // @ts-expect-error formally text is not allowed in Message, why not wrapped in message payload property?
@@ -1953,18 +1961,13 @@ async function startAdapterUpload(): Promise<void> {
           }
         : undefined;
 
-    // @ts-expect-error yes the logger is missing some levels
-    await upload.uploadAdapter(uploadTasks[0].adapter, true, true, '', logger);
-    // @ts-expect-error the logger is missing some levels
-    await upload.upgradeAdapterObjects(uploadTasks[0].adapter, undefined, logger);
-    // @ts-expect-error yes the logger is missing some levels
-    await upload.uploadAdapter(uploadTasks[0].adapter, false, true, '', logger);
+    await upload.uploadAdapter(task.adapter, true, true, '', logger);
+    await upload.upgradeAdapterObjects(task.adapter, undefined, logger);
+    await upload.uploadAdapter(task.adapter, false, true, '', logger);
     // send response to requester
-    msg.callback && msg.from && sendTo(msg.from, msg.command, { result: 'done' }, msg.callback);
-
-    uploadTasks.shift();
-
-    setImmediate(startAdapterUpload);
+    if (msg?.callback && msg.from) {
+        sendTo(msg.from, msg.command, { result: 'done' }, msg.callback);
+    }
 }
 
 /**
@@ -2078,8 +2081,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
                 // Collect statistics (only if license has been confirmed - user agreed)
                 if (
-                    systemConfig?.common &&
-                    systemConfig.common.diag &&
+                    systemConfig?.common?.diag &&
                     systemConfig.common.licenseConfirmed &&
                     (!lastDiagSend || Date.now() - lastDiagSend > 30_000) // prevent sending of diagnostics by multiple admin instances
                 ) {
@@ -2193,6 +2195,12 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 }
 
                 requestedRepoUpdates = [];
+
+                try {
+                    await checkAvailableDockerUpdate();
+                } catch (e) {
+                    logger.warn(`${hostLogPrefix} Could not check for new Docker image: ${e.message}`);
+                }
 
                 try {
                     await listUpdatableOsPackages();
@@ -2802,9 +2810,7 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
 
         case 'upload': {
             if (msg.message) {
-                uploadTasks.push({ adapter: msg.message, msg });
-                // start upload if no tasks running
-                uploadTasks.length === 1 && startAdapterUpload();
+                uploadAdapter({ adapter: msg.message, msg });
             } else {
                 logger.error(`${hostLogPrefix} No adapter name is specified for upload command from  ${msg.from}`);
             }
@@ -2849,9 +2855,8 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
                 const configFile = tools.getConfigFileName();
                 if (fs.existsSync(configFile)) {
                     try {
-                        let config = fs.readFileSync(configFile).toString('utf8');
+                        const config: ioBroker.IoBrokerJson = fs.readJsonSync(configFile);
                         const stat = fs.lstatSync(configFile);
-                        config = JSON.parse(config);
                         sendTo(msg.from, msg.command, { config, isActive: uptimeStart > stat.mtimeMs }, msg.callback);
                     } catch {
                         const error = `Cannot parse file ${configFile}`;
@@ -2871,65 +2876,69 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             break;
 
         case 'writeBaseSettings': {
-            let error;
-            if (msg.message) {
-                const configFile = tools.getConfigFileName();
-                if (fs.existsSync(configFile)) {
-                    let config;
-                    if (typeof msg.message === 'string') {
-                        try {
-                            config = JSON.parse(msg.message);
-                        } catch {
-                            error = `Cannot parse data ${msg.message}`;
-                        }
-                    } else {
-                        config = msg.message;
-                    }
-
-                    if (!error) {
-                        // todo validate structure, because very important
-                        if (!config.system) {
-                            error = 'Cannot find "system" in data';
-                        } else if (!config.objects) {
-                            error = 'Cannot find "objects" in data';
-                        } else if (!config.states) {
-                            error = 'Cannot find "states" in data';
-                        } else if (!config.log) {
-                            error = 'Cannot find "log" in data';
-                        }
-                    }
-
-                    if (!error) {
-                        try {
-                            fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
-                        } catch {
-                            error = `Cannot write file ${configFile}`;
-                        }
-                    }
-                }
-            } else {
-                error = `No data found for writeBaseSettings ${msg.from}`;
-            }
-
-            if (error) {
+            if (!msg.message) {
+                const error = `No data found on writeBaseSettings from "${msg.from}"`;
                 logger.error(`${hostLogPrefix} ${error}`);
-                if (msg.callback && msg.from) {
-                    sendTo(msg.from, msg.command, { error }, msg.callback);
-                }
-            } else {
-                msg.callback && msg.from && sendTo(msg.from, msg.command, { result: 'ok' }, msg.callback);
+                return sendResponseTo({ receivedMsg: msg, payload: { error } });
             }
 
-            break;
+            const configFile = tools.getConfigFileName();
+
+            if (!fs.existsSync(configFile)) {
+                const error = `No config file exists on writeBaseSettings from "${msg.from}"`;
+                logger.error(`${hostLogPrefix} ${error}`);
+                return sendResponseTo({ receivedMsg: msg, payload: { error } });
+            }
+
+            let config: ioBroker.IoBrokerJson | undefined;
+            if (typeof msg.message === 'string') {
+                try {
+                    config = JSON.parse(msg.message);
+                } catch {
+                    return sendResponseTo({
+                        receivedMsg: msg,
+                        payload: { error: `Cannot parse data: "${msg.message}"` }
+                    });
+                }
+            } else {
+                config = msg.message;
+            }
+
+            if (!config) {
+                return sendResponseTo({ receivedMsg: msg, payload: { error: 'Empty config' } });
+            }
+
+            if (!config.system) {
+                return sendResponseTo({ receivedMsg: msg, payload: { error: 'Cannot find "system" in data' } });
+            }
+            if (!config.objects) {
+                return sendResponseTo({ receivedMsg: msg, payload: { error: 'Cannot find "objects" in data' } });
+            }
+            if (!config.states) {
+                return sendResponseTo({ receivedMsg: msg, payload: { error: 'Cannot find "states" in data' } });
+            }
+            if (!config.log) {
+                return sendResponseTo({ receivedMsg: msg, payload: { error: 'Cannot find "log" in data' } });
+            }
+
+            try {
+                fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
+            } catch {
+                return sendResponseTo({ receivedMsg: msg, payload: { error: `Cannot write file ${configFile}` } });
+            }
+
+            return sendResponseTo({ receivedMsg: msg, payload: { result: 'ok' } });
         }
 
         case 'addNotification':
-            await notificationHandler.addMessage(
-                msg.message.scope,
-                msg.message.category,
-                msg.message.message,
-                msg.message.instance
-            );
+            await notificationHandler.addMessage({
+                scope: msg.message.scope,
+                category: msg.message.category,
+                message: msg.message.message,
+                instance: msg.message.instance,
+                contextData: msg.message.contextData
+            });
+
             if (msg.callback && msg.from) {
                 sendTo(msg.from, msg.command, { result: 'ok' }, msg.callback);
             }
@@ -3034,6 +3043,19 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             });
             break;
         }
+    }
+}
+
+/**
+ * Wrapper around sendTo for message responses
+ *
+ * @param options The received message and response payload
+ */
+async function sendResponseTo(options: SendResponseToOptions): Promise<void> {
+    const { receivedMsg, payload } = options;
+
+    if (receivedMsg.callback && receivedMsg.from) {
+        await sendTo(receivedMsg.from, receivedMsg.command, payload, receivedMsg.callback);
     }
 }
 
@@ -3794,21 +3816,8 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         }
     }
 
-    const isBlocked = await blocklistManager.isAdapterVersionBlocked({
-        version: instance.common.version,
-        adapterName: instance.common.name
-    });
-
-    if (isBlocked) {
-        const message = `Do not start instance "${id}", because the version "${instance.common.version}" has been blocked by the developer`;
-        logger.error(`${hostLogPrefix} ${message}`);
-
-        await notificationHandler.addMessage('system', 'blockedVersions', message, SYSTEM_HOST_PREFIX + hostname);
-        return;
-    }
-
     const adapterDir = tools.getAdapterDir(name);
-    if (!fs.existsSync(adapterDir!)) {
+    if (adapterDir === null || !fs.existsSync(adapterDir)) {
         proc.downloadRetry = proc.downloadRetry || 0;
         logger.debug(`${hostLogPrefix} startInstance Queue ${id} for installation`);
         installQueue.push({
@@ -3851,6 +3860,50 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
         }
     }
 
+    try {
+        // check if the io-package content is uploaded to the database
+        const ioPack = fs.readJSONSync(path.join(adapterDir, 'io-package.json'));
+
+        if (ioPack.common.version !== instance.common.version) {
+            logger.warn(`${hostLogPrefix} Detected missing upload of adapter "${name}" - starting upload now.`);
+            await uploadAdapter({ adapter: name });
+            return;
+        }
+    } catch (e) {
+        logger.error(
+            `${hostLogPrefix} startInstance ${name}.${instanceNo}: Error while ensuring adapter is uploaded: ${e.message}`
+        );
+    }
+
+    const isBlocked = await blocklistManager.isAdapterVersionBlocked({
+        version: instance.common.version,
+        adapterName: instance.common.name
+    });
+
+    if (isBlocked) {
+        const message = `Do not start instance "${id}", because the version "${instance.common.version}" has been blocked by the developer`;
+        logger.error(`${hostLogPrefix} ${message}`);
+
+        await notificationHandler.addMessage({
+            scope: 'system',
+            category: 'blockedVersions',
+            message,
+            instance: SYSTEM_HOST_PREFIX + hostname
+        });
+        return;
+    }
+
+    // Check if all required adapters installed and have a valid version
+    if (instance.common.dependencies || instance.common.globalDependencies) {
+        try {
+            await checkVersions(id, instance.common.dependencies, instance.common.globalDependencies);
+        } catch (e) {
+            logger.error(`${hostLogPrefix} startInstance ${id} ${e.message}`);
+            // Do not start this instance
+            return;
+        }
+    }
+
     // workaround for old vis
     if (instance.common.onlyWWW && name === 'vis') {
         instance.common.onlyWWW = false;
@@ -3878,7 +3931,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
     // read node.js engine requirements
     try {
         // read directly from disk and not via require to allow "on the fly" updates of adapters.
-        const packJSON = fs.readJSONSync(`${adapterDir}/package.json`);
+        const packJSON = fs.readJSONSync(path.join(adapterDir, 'package.json'));
         proc.engine = packJSON?.engines?.node;
     } catch {
         logger.error(
@@ -3893,16 +3946,14 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                 `${hostLogPrefix} startInstance ${name}.${instanceNo}: required Node.js version ${proc.engine}, actual version ${process.version}`
             );
             // disable instance
-            objects.getObject(id, (err, obj) => {
-                if (obj && obj.common && obj.common.enabled) {
-                    obj.common.enabled = false;
-                    objects!.setObject(obj._id, obj, _err =>
-                        logger.warn(
-                            `${hostLogPrefix} startInstance ${name}.${instanceNo}: instance disabled because of Node.js version mismatch`
-                        )
-                    );
-                }
-            });
+            const obj = await objects.getObject(id);
+            if (obj?.common?.enabled) {
+                obj.common.enabled = false;
+                await objects.setObject(obj._id, obj);
+                logger.warn(
+                    `${hostLogPrefix} startInstance ${name}.${instanceNo}: instance disabled because of Node.js version mismatch`
+                );
+            }
             return;
         }
     }
@@ -3944,12 +3995,12 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
 
         // add it to notifications for popup
         try {
-            await notificationHandler.addMessage(
-                'system',
-                'memIssues',
-                `Your system has only ${availableMemMB} MB RAM left available and an additional adapter process is started. Please check your system, settings and active instances to prevent swapping and Out-Of-Memory situations!`,
-                `system.host.${hostname}`
-            );
+            await notificationHandler.addMessage({
+                scope: 'system',
+                category: 'memIssues',
+                message: `Your system has only ${availableMemMB} MB RAM left available and an additional adapter process is started. Please check your system, settings and active instances to prevent swapping and Out-Of-Memory situations!`,
+                instance: `system.host.${hostname}`
+            });
         } catch (e) {
             logger.warn(`${hostLogPrefix} Could not add OOM notification: ${e.message}`);
         }
@@ -4206,12 +4257,12 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                     logger.warn(
                                         `${hostLogPrefix} Do not restart adapter ${id} because restart loop detected`
                                     );
-                                    await notificationHandler.addMessage(
-                                        'system',
-                                        'restartLoop',
-                                        'Restart loop detected',
-                                        id
-                                    );
+                                    await notificationHandler.addMessage({
+                                        scope: 'system',
+                                        category: 'restartLoop',
+                                        message: 'Restart loop detected',
+                                        instance: id
+                                    });
                                     proc.crashCount = 0;
                                     if (proc.crashResetTimer) {
                                         logger.debug(
@@ -4260,7 +4311,7 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                                 stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
                                 // @ts-expect-error missing from types, but we already tested it is needed
                                 windowsHide: true,
-                                cwd: adapterDir!
+                                cwd: adapterDir
                             });
                         } catch (err) {
                             logger.error(`${hostLogPrefix} instance ${instance._id} could not be started: ${err}`);
@@ -4712,9 +4763,9 @@ async function startInstance(id: ioBroker.ObjectIDs.Instance, wakeUp = false): P
                     proc.process = cp.fork(adapterMainFile, args, {
                         // @ts-expect-error if mode !== extension we have ensured it exists
                         execArgv: [...tools.getDefaultNodeArgs(adapterMainFile), ...execArgv],
-                        // @ts-expect-error missing from types, but we already tested it is needed
+                        // @ts-expect-error missing from types, but we already tested it is necessary
                         windowsHide: true,
-                        cwd: adapterDir!
+                        cwd: adapterDir
                     });
                 } catch (e) {
                     logger.info(`${hostLogPrefix} instance ${instance._id} could not be started: ${e.message}`);
@@ -4871,7 +4922,7 @@ async function stopInstance(id: string, force: boolean): Promise<void> {
                         logger.info(
                             `${hostLogPrefix} stopInstance self ${instance._id} killing pid ${
                                 proc.process ? proc.process.pid : 'undefined'
-                            }${result ? `: ${result as any}` : ''}`
+                            }${result ? `: ${result}` : ''}`
                         );
                         if (proc.process && !proc.startedAsCompactGroup) {
                             proc.stopping = true;
@@ -5211,7 +5262,7 @@ export async function init(compactGroupId?: number): Promise<void> {
         stopTimeout += 5_000;
     }
 
-    // If bootstrap file detected, it must be deleted, but give time for a bootstrap process to use this file
+    // If a bootstrap file detected, it must be deleted, but give time for a bootstrap process to use this file
     if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
         setTimeout(() => {
             try {
@@ -5718,6 +5769,38 @@ async function setInstanceOfflineStates(id: ioBroker.ObjectIDs.Instance): Promis
 }
 
 /**
+ * Check if a new Docker Image version is available
+ */
+async function checkAvailableDockerUpdate(): Promise<void> {
+    const dockerInfo = tools.getDockerInformation();
+
+    if (!dockerInfo.isOfficial || !states) {
+        return;
+    }
+
+    const { isNew, lastUpdated, version } = await tools.getNewestDockerImageVersion();
+
+    if (!isNew) {
+        return;
+    }
+
+    const dockerVersionStateId = `${hostObjectPrefix}.availableDockerBuild`;
+    const knownLastUpdated = (await states.getState(dockerVersionStateId))?.val;
+    await states.setState(dockerVersionStateId, { val: lastUpdated, ack: true });
+
+    if (knownLastUpdated === lastUpdated) {
+        return;
+    }
+
+    await notificationHandler.addMessage({
+        scope: 'system',
+        category: 'dockerUpdate',
+        message: `${version} (${lastUpdated})`,
+        instance: `system.host.${hostname}`
+    });
+}
+
+/**
  * Check for updatable OS packages and register them as notification
  */
 async function listUpdatableOsPackages(): Promise<void> {
@@ -5747,7 +5830,12 @@ async function listUpdatableOsPackages(): Promise<void> {
         return;
     }
 
-    await notificationHandler.addMessage('system', 'packageUpdates', packages.join('\n'), `system.host.${hostname}`);
+    await notificationHandler.addMessage({
+        scope: 'system',
+        category: 'packageUpdates',
+        message: packages.join('\n'),
+        instance: `system.host.${hostname}`
+    });
 }
 
 /**
@@ -5831,7 +5919,12 @@ async function checkRebootRequired(): Promise<void> {
         }
     }
 
-    await notificationHandler.addMessage('system', 'systemRebootRequired', message, `system.host.${hostname}`);
+    await notificationHandler.addMessage({
+        scope: 'system',
+        category: 'systemRebootRequired',
+        message,
+        instance: `system.host.${hostname}`
+    });
 }
 
 /**
@@ -5847,21 +5940,25 @@ async function autoUpgradeAdapters(): Promise<void> {
         const { upgradedAdapters, failedAdapters } = await autoUpgradeManager.upgradeAdapters();
 
         if (upgradedAdapters.length) {
-            await notificationHandler.addMessage(
-                'system',
-                'automaticAdapterUpgradeSuccessful',
-                upgradedAdapters.map(entry => `${entry.name}: ${entry.oldVersion} -> ${entry.newVersion}`).join('\n'),
-                `system.host.${hostname}`
-            );
+            await notificationHandler.addMessage({
+                scope: 'system',
+                category: 'automaticAdapterUpgradeSuccessful',
+                message: upgradedAdapters
+                    .map(entry => `${entry.name}: ${entry.oldVersion} -> ${entry.newVersion}`)
+                    .join('\n'),
+                instance: `system.host.${hostname}`
+            });
         }
 
         if (failedAdapters.length) {
-            await notificationHandler.addMessage(
-                'system',
-                'automaticAdapterUpgradeFailed',
-                failedAdapters.map(entry => `${entry.name}: ${entry.oldVersion} -> ${entry.newVersion}`).join('\n'),
-                `system.host.${hostname}`
-            );
+            await notificationHandler.addMessage({
+                scope: 'system',
+                category: 'automaticAdapterUpgradeFailed',
+                message: failedAdapters
+                    .map(entry => `${entry.name}: ${entry.oldVersion} -> ${entry.newVersion}`)
+                    .join('\n'),
+                instance: `system.host.${hostname}`
+            });
         }
     } catch (e) {
         logger.error(`${hostLogPrefix} An error occurred while processing automatic adapter upgrades: ${e.message}`);
@@ -5885,7 +5982,12 @@ async function disableBlocklistedInstances(): Promise<void> {
         const message = `Instance "${disabledInstance._id}" has been stopped and disabled because the version "${disabledInstance.common.version}" has been blocked by the developer`;
         logger.error(`${hostLogPrefix} ${message}`);
 
-        await notificationHandler.addMessage('system', 'blockedVersions', message, SYSTEM_HOST_PREFIX + hostname);
+        await notificationHandler.addMessage({
+            scope: 'system',
+            category: 'blockedVersions',
+            message,
+            instance: SYSTEM_HOST_PREFIX + hostname
+        });
     }
 }
 

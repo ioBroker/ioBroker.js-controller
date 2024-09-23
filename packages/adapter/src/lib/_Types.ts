@@ -607,3 +607,13 @@ export interface InternalInstallNodeModuleOptions extends InstallNodeModuleOptio
     /** Name of the npm module or an installable url ẁorking with `npm install` */
     moduleNameOrUrl: string;
 }
+
+/**
+ * Options for the generated notification
+ */
+export interface NotificationOptions {
+    /**
+     * Additional context for the notification which can be used by notification processing adapters
+     */
+    contextData: ioBroker.NotificationContextData;
+}

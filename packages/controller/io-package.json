@@ -1235,6 +1235,38 @@
           "limit": 1
         },
         {
+          "category": "dockerUpdate",
+          "name": {
+            "en": "New Docker image available",
+            "de": "Neues Docker-Image verfügbar",
+            "ru": "Доступен новый образ Docker",
+            "pt": "Nova imagem do Docker disponível",
+            "nl": "Nieuw Docker-image beschikbaar",
+            "fr": "Nouvelle image Docker disponible",
+            "it": "Nuova immagine Docker disponibile",
+            "es": "Nueva imagen Docker disponible",
+            "pl": "Dostępny jest nowy obraz Docker",
+            "uk": "Доступний новий образ Docker",
+            "zh-cn": "提供新的 Docker 映像"
+          },
+          "severity": "notify",
+          "description": {
+            "en": "A new ioBroker Docker image is available on Docker Hub. Consider an upgrade.",
+            "de": "Ein neues ioBroker-Docker-Image ist auf Docker Hub verfügbar. Ziehen Sie ein Upgrade in Betracht.",
+            "ru": "Новый докер-образ ioBroker доступен на Docker Hub. Рассмотрите возможность обновления.",
+            "pt": "Uma nova imagem do ioBroker Docker está disponível no Docker Hub. Considere uma atualização.",
+            "nl": "Een nieuw ioBroker Docker image is beschikbaar op Docker Hub. Overweeg een upgrade.",
+            "fr": "Une nouvelle image Docker de ioBroker est disponible sur Docker Hub. Envisagez une mise à jour.",
+            "it": "Una nuova immagine Docker di ioBroker è disponibile su Docker Hub. Considerate un aggiornamento.",
+            "es": "Una nueva imagen Docker de ioBroker está disponible en Docker Hub. Considere una actualización.",
+            "pl": "Nowy obraz ioBroker Docker jest dostępny na Docker Hub. Warto rozważyć aktualizację.",
+            "uk": "Новий образ ioBroker Docker доступний на Docker Hub. Подумайте про оновлення.",
+            "zh-cn": "Docker Hub 上有新的 ioBroker Docker 映像。请考虑升级。"
+          },
+          "regex": [],
+          "limit": 1
+        },
+        {
           "category": "systemRebootRequired",
           "name": {
             "en": "System reboot required",
