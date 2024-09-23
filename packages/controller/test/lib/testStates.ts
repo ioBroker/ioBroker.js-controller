@@ -138,7 +138,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 expect(states).to.be.an('object');
 
                 // no states should match
-                expect(Object.keys(states).length).to.be.equal(0);
+                expect(Object.keys(states!).length).to.be.equal(0);
 
                 context.adapter.getStates(gid.substring(0, gid.length - 2) + '*', function (err, states) {
                     expect(err).to.be.not.ok;
@@ -721,7 +721,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 expect(states).to.be.an('object');
 
                 // no states should match
-                expect(Object.keys(states).length).to.be.equal(0);
+                expect(Object.keys(states!).length).to.be.equal(0);
 
                 context.adapter.getForeignStates(
                     context.adapterShortName + '1.0.' + gid.substring(0, gid.length - 2) + '*',

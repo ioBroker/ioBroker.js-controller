@@ -224,7 +224,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             const objects = context.objects;
 
             // get the system.config to save the acl
-            const config = await objects.getObjectAsync('system.config');
+            const config = await objects.getObject('system.config');
 
             config!.common.defaultNewAcl = {
                 object: 1636,
@@ -235,9 +235,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             };
 
             // we change the acl during runtime - it has to be applied on next setObject
-            await objects.setObjectAsync('system.config', config);
+            await objects.setObject('system.config', config!);
 
-            await objects.setObjectAsync(
+            await objects.setObject(
                 'test.aclAdminChange',
                 {
                     type: 'state',
