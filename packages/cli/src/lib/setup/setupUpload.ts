@@ -351,7 +351,8 @@ export class Upload {
         path: string,
         logger: MinimalLogger | typeof console,
     ): Promise<{
-        filesToDelete: File[]         dirs: File[];
+        filesToDelete: File[];
+        dirs: File[];
     }> {
         let _files: File[] = [];
         let _dirs: File[] = [];
