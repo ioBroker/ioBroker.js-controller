@@ -8,8 +8,8 @@ export interface CLIUsersOptions {
     objects: ObjectsRedisClient;
 }
 
-/** Return type of prompt.get() for user */
-type UsernamePromptProps = { password: string; username: string };
+/** Map a prompt.Schema to properties of type string */
+type SchemaPropsToString<TSchema extends prompt.Schema> = { [Property in keyof TSchema['properties']]: string };
 
 export class Users {
     private readonly objects: ObjectsRedisClient;
@@ -286,10 +286,10 @@ export class Users {
                             hidden: true
                         }
                     }
-                };
+                } as const satisfies prompt.Schema;
                 prompt.start();
 
-                prompt.get(schema, (err, result) => {
+                prompt.get<SchemaPropsToString<typeof schema>>(schema, (err, result) => {
                     if (result) {
                         if (result.password !== result.repeatPassword) {
                             console.log('Passwords are not identical!');
@@ -366,10 +366,10 @@ export class Users {
                             hidden: true
                         }
                     }
-                };
+                } as const satisfies prompt.Schema;
                 prompt.start();
 
-                prompt.get(schema, (err, result) => {
+                prompt.get<SchemaPropsToString<typeof schema>>(schema, (err, result) => {
                     if (result) {
                         if (result.password !== result.repeatPassword) {
                             return tools.maybeCallbackWithError(callback, 'Passwords are not identical!');
@@ -442,11 +442,10 @@ export class Users {
      * @param callback
      */
     checkUserPassword(username: string, password: string, callback: ioBroker.ErrorCallback): void {
-        let schema;
         if (!username && !password) {
             prompt.message = '';
             prompt.delimiter = '';
-            schema = {
+            const schema = {
                 properties: {
                     username: {
                         description: 'Enter username to check password:',
@@ -461,10 +460,10 @@ export class Users {
                         hidden: true
                     }
                 }
-            };
+            } as const satisfies prompt.Schema;
             prompt.start();
 
-            prompt.get<UsernamePromptProps>(schema, (err, result) => {
+            prompt.get<SchemaPropsToString<typeof schema>>(schema, (err, result) => {
                 this.checkPassword(result.username, result.password, (err, res) => {
                     if (err || !res) {
                         return tools.maybeCallbackWithError(
@@ -479,7 +478,7 @@ export class Users {
         } else if (!password) {
             prompt.message = '';
             prompt.delimiter = '';
-            schema = {
+            const schema = {
                 properties: {
                     password: {
                         description: 'Enter current password:',
@@ -488,10 +487,10 @@ export class Users {
                         hidden: true
                     }
                 }
-            };
+            } as const satisfies prompt.Schema;
             prompt.start();
 
-            prompt.get<UsernamePromptProps>(schema, (err, result) => {
+            prompt.get<SchemaPropsToString<typeof schema>>(schema, (err, result) => {
                 this.checkPassword(username, result.password, (err, res) => {
                     if (err || !res) {
                         return tools.maybeCallbackWithError(
