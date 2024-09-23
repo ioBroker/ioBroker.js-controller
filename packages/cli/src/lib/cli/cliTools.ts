@@ -57,7 +57,7 @@ export function validateAdapterOrInstanceIdentifier(name: string): boolean {
  * @param name the adapter name or instance
  */
 export function splitAdapterOrInstanceIdentifierWithVersion(
-    name: string
+    name: string,
 ): { name: string; instance: string | null; version: string | null; nameWithVersion: string } | null {
     const res = name.match(/^([a-z0-9\-_]+)\.?(\d+)?@?([a-z0-9\-_.]*)?$/);
     if (!res) {
@@ -67,7 +67,7 @@ export function splitAdapterOrInstanceIdentifierWithVersion(
         name: res[1],
         instance: res[2] || null,
         version: res[3] || null,
-        nameWithVersion: `${res[1]}${res[3] ? `@${res[3]}` : ''}`
+        nameWithVersion: `${res[1]}${res[3] ? `@${res[3]}` : ''}`,
     };
 }
 
@@ -115,7 +115,7 @@ export function enumHosts(objects: ObjectsClient): Promise<ioBroker.InferGetObje
 export function enumObjects<T extends string>(
     objects: ObjectsClient,
     type: T,
-    startkey: string
+    startkey: string,
 ): Promise<ioBroker.InferGetObjectViewItemType<'system', T>[]> {
     return new Promise((resolve, reject) => {
         const endkey = `${startkey}\u9999`;

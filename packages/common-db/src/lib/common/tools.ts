@@ -26,7 +26,7 @@ import { setDefaultResultOrder } from 'node:dns';
 import {
     applyAliasAutoScaling,
     applyAliasConvenienceConversion,
-    applyAliasTransformer
+    applyAliasTransformer,
 } from '@/lib/common/aliasProcessing.js';
 import type * as DiskUsage from 'diskusage';
 import * as url from 'node:url';
@@ -114,7 +114,7 @@ interface DockerHubResponse {
             /** Timestamp of last update of this image, like 2024-08-29T01:26:32.378554Z */
             last_updated: string;
             [other: string]: unknown;
-        }
+        },
     ];
     [other: string]: unknown;
 }
@@ -132,7 +132,7 @@ export enum ERRORS {
     ERROR_NOT_FOUND = 'Not exists',
     ERROR_EMPTY_OBJECT = 'null object',
     ERROR_NO_OBJECT = 'no object',
-    ERROR_DB_CLOSED = 'DB closed'
+    ERROR_DB_CLOSED = 'DB closed',
 }
 
 events.EventEmitter.prototype.setMaxListeners(100);
@@ -179,7 +179,7 @@ export function copyAttributes(
     oldObj: Record<string, any>,
     newObj: Record<string, any>,
     originalObj?: Record<string, any>,
-    isNonEdit?: boolean
+    isNonEdit?: boolean,
 ): void {
     for (const attr of Object.keys(oldObj)) {
         if (
@@ -207,7 +207,7 @@ export function copyAttributes(
                 oldObj[attr],
                 newObj[attr],
                 originalObj && originalObj[attr],
-                isNonEdit || attr === 'nonEdit'
+                isNonEdit || attr === 'nonEdit',
             );
         }
     }
@@ -221,7 +221,7 @@ export function copyAttributes(
  */
 export function checkNonEditable(
     oldObject: ioBroker.SettableObject | null,
-    newObject: ioBroker.SettableObject
+    newObject: ioBroker.SettableObject,
 ): boolean {
     if (!oldObject) {
         return true;
@@ -329,7 +329,7 @@ export function decryptPhrase(password: string, data: any, callback: (decrypted?
 export async function isSingleHost(objects: any): Promise<boolean> {
     const res: { rows: ioBroker.GetObjectListItem<ioBroker.HostObject>[] } = await objects.getObjectList({
         startkey: 'system.host.',
-        endkey: 'system.host.\u9999'
+        endkey: 'system.host.\u9999',
     });
     const hostObjs = res.rows.filter(obj => obj.value && obj.value.type === 'host');
     return hostObjs.length <= 1; // on setup no host object is there yet
@@ -347,7 +347,7 @@ export async function isHostRunning(objects: any, states: any): Promise<boolean>
     // const res = await objects.getObjectViewAsync('system', 'host', { startkey: '', endkey: '\u9999' });
     const res: GetObjectViewResult = await objects.getObjectList({
         startkey: 'system.host.',
-        endkey: 'system.host.\u9999'
+        endkey: 'system.host.\u9999',
     });
 
     // TODO: this check should be redundant as soon as we go back to the object view approach
@@ -630,13 +630,13 @@ async function updateUuid(newUuid: string, _objects: any): Promise<string> {
             type: 'meta',
             common: {
                 name: 'uuid',
-                type: 'uuid'
+                type: 'uuid',
             },
             ts: new Date().getTime(),
             from: `system.host.${getHostName()}.tools`,
             native: {
-                uuid: _uuid
-            }
+                uuid: _uuid,
+            },
         });
     } catch (e) {
         throw new Error(`Object system.meta.uuid cannot be updated: ${e.message}`);
@@ -674,11 +674,11 @@ export async function createUuid(objects: any): Promise<void | string> {
                         name: 'admin',
                         password: res,
                         dontDelete: true,
-                        enabled: true
+                        enabled: true,
                     },
                     ts: new Date().getTime(),
                     from: `system.host.${getHostName()}.tools`,
-                    native: {}
+                    native: {},
                 });
 
                 console.log('object system.user.admin created');
@@ -699,7 +699,7 @@ export async function createUuid(objects: any): Promise<void | string> {
         'deb6f2a8-fe69-5491-0a50-a9f9b8f3419c',
         'ec66c85e-fc36-f6f9-f1c9-f5a2882d23c7',
         'e6203b03-f5f4-253a-e4f6-b295fc543ab7',
-        'd659fa3d-7ef9-202a-ea23-acd0aff67b24'
+        'd659fa3d-7ef9-202a-ea23-acd0aff67b24',
     ];
 
     // check if COMMON invalid docker uuid
@@ -729,7 +729,7 @@ export async function createUuid(objects: any): Promise<void | string> {
             } else {
                 // Show error
                 console.warn(
-                    `Your iobroker.vis license must be updated. Please contact info@iobroker.net to get a new license!`
+                    `Your iobroker.vis license must be updated. Please contact info@iobroker.net to get a new license!`,
                 );
                 console.warn(`Provide following information in email: ${data.email}, invoice: ${data.invoice}`);
             }
@@ -758,8 +758,8 @@ export async function getFile(urlOrPath: string, fileName: string, callback: (fi
                 responseType: 'stream',
                 headers: {
                     'User-Agent': `${appName}, RND: ${randomID}, N: ${process.version}`,
-                    'Accept-Encoding': 'gzip'
-                }
+                    'Accept-Encoding': 'gzip',
+                },
             });
 
             res.data.pipe(fs.createWriteStream(tmpFile)).on('close', () => {
@@ -793,7 +793,7 @@ export async function getFile(urlOrPath: string, fileName: string, callback: (fi
 export async function getJson(
     urlOrPath: string,
     agent: string,
-    callback: (sources?: Record<string, any> | null, urlOrPath?: string | null) => void
+    callback: (sources?: Record<string, any> | null, urlOrPath?: string | null) => void,
 ): Promise<void> {
     if (typeof agent === 'function') {
         callback = agent;
@@ -819,7 +819,7 @@ export async function getJson(
         ) {
             try {
                 const res = await axios.get(urlOrPath, {
-                    headers: { 'Accept-Encoding': 'gzip', timeout: 10000, 'User-Agent': agent }
+                    headers: { 'Accept-Encoding': 'gzip', timeout: 10000, 'User-Agent': agent },
                 });
 
                 if (res.status !== 200 || !res.data) {
@@ -910,7 +910,7 @@ export async function getJsonAsync(urlOrPath: string, agent?: string): Promise<R
                 const result = await axios(urlOrPath, {
                     timeout: 10000,
                     headers: { 'User-Agent': agent },
-                    validateStatus: status => status !== 200
+                    validateStatus: status => status !== 200,
                 });
                 return result.data;
             } catch (e) {
@@ -994,7 +994,7 @@ function scanDirectory(dirName: string, list: Record<string, AdapterInformation>
                             : package_.licenses && package_.licenses.length
                               ? package_.licenses[0].type
                               : '',
-                        licenseUrl: package_.licenses && package_.licenses.length ? package_.licenses[0].url : ''
+                        licenseUrl: package_.licenses && package_.licenses.length ? package_.licenses[0].url : '',
                     };
                 }
             } catch (e) {
@@ -1095,7 +1095,7 @@ export function getInstalledInfo(hostRunningVersion?: string): Record<string, Ad
                 : package_.licenses && package_.licenses.length
                   ? package_.licenses[0].type
                   : '',
-            licenseUrl: package_.licenses && package_.licenses.length ? package_.licenses[0].url : ''
+            licenseUrl: package_.licenses && package_.licenses.length ? package_.licenses[0].url : '',
         };
     }
 
@@ -1138,7 +1138,7 @@ function getNpmVersion(adapter: string, callback?: (err: Error | null, version?:
 function getIoPack(
     sources: Record<string, any>,
     name: string,
-    callback: (sources: Record<string, any>, name: string) => void
+    callback: (sources: Record<string, any>, name: string) => void,
 ): void {
     getJson(sources[name].meta, '', ioPack => {
         const packUrl = sources[name].meta.replace('io-package.json', 'package.json');
@@ -1232,7 +1232,7 @@ function getIoPack(
 function _getRepositoryFile(
     sources: Record<string, any>,
     path: string,
-    callback?: (err?: Error, sources?: Record<string, any>) => void
+    callback?: (err?: Error, sources?: Record<string, any>) => void,
 ): void {
     if (!sources._helper) {
         let count = 0;
@@ -1324,7 +1324,7 @@ function _getRepositoryFile(
 async function _checkRepositoryFileHash(
     urlOrPath: string,
     additionalInfo: Record<string, any>,
-    callback: (err?: null | Error, sources?: Record<string, any> | null, hash?: string | number) => void
+    callback: (err?: null | Error, sources?: Record<string, any> | null, hash?: string | number) => void,
 ): Promise<void> {
     // read hash of file
     if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
@@ -1374,7 +1374,7 @@ async function _checkRepositoryFileHash(
 export function getRepositoryFile(
     urlOrPath: string,
     additionalInfo: Record<string, any>,
-    callback: (err?: Error | null, sources?: Record<string, any>, actualHash?: string | number) => void
+    callback: (err?: Error | null, sources?: Record<string, any>, actualHash?: string | number) => void,
 ): void {
     let sources: Record<string, any> = {};
     let _path = '';
@@ -1456,20 +1456,20 @@ export function getRepositoryFile(
                             _getRepositoryFile(sources, _path, err => {
                                 err && console.error(`[${new Date().toString()}] ${err.message}`);
                                 typeof callback === 'function' && callback(err, sources, actualSourcesHash);
-                            })
+                            }),
                         );
                     } else {
                         // return cached sources, because no sources found
                         console.log(
                             `failed to download new sources, ${
                                 additionalInfo.sources ? 'use cached sources' : 'no cached sources available'
-                            }`
+                            }`,
                         );
                         return maybeCallbackWithError(
                             callback,
                             `Cannot read "${urlOrPath}"`,
                             additionalInfo.sources,
-                            ''
+                            '',
                         );
                     }
                 });
@@ -1496,7 +1496,7 @@ export async function getRepositoryFileAsync(
     url: string,
     hash?: string,
     force?: boolean,
-    _actualRepo?: ioBroker.RepositoryJson | null
+    _actualRepo?: ioBroker.RepositoryJson | null,
 ): Promise<RepositoryFile> {
     let _hash;
     let data;
@@ -1518,7 +1518,7 @@ export async function getRepositoryFileAsync(
                 data = await axios({
                     url,
                     timeout: 10_000,
-                    headers: { 'User-Agent': agent }
+                    headers: { 'User-Agent': agent },
                 });
                 data = data.data;
             } catch (e) {
@@ -1540,7 +1540,7 @@ export async function getRepositoryFileAsync(
     return {
         json: data,
         changed: _hash?.data ? hash !== _hash.data.hash : true,
-        hash: _hash && _hash.data ? _hash.data.hash : ''
+        hash: _hash && _hash.data ? _hash.data.hash : '',
     };
 }
 
@@ -1556,7 +1556,7 @@ export async function sendDiagInfo(obj: Record<string, any>): Promise<void> {
     params.append('data', objStr);
     const config = {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        timeout: 4000
+        timeout: 4000,
     };
 
     try {
@@ -1678,7 +1678,7 @@ function getSystemNpmVersion(callback?: (err?: Error, version?: string | null) =
                     callback(error, stdout);
                     callback = undefined;
                 }
-            }
+            },
         );
     } catch (e) {
         if (callback) {
@@ -1715,8 +1715,8 @@ export async function detectPackageManagerWithFallback(cwd?: string): Promise<Pa
                 : // Otherwise, try to find the ioBroker root dir
                   {
                       cwd: (isDevServerInstallation() && require.main?.path) || thisDir,
-                      setCwdToPackageRoot: true
-                  }
+                      setCwdToPackageRoot: true,
+                  },
         );
     } catch {
         // Lockfile is not found, use default to avoid picking up a wrong package manager
@@ -1739,7 +1739,7 @@ export async function detectPackageManagerWithFallback(cwd?: string): Promise<Pa
  */
 export async function installNodeModule(
     npmUrl: string,
-    options: InstallNodeModuleOptions = {}
+    options: InstallNodeModuleOptions = {},
 ): Promise<CommandResult> {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManagerWithFallback(options.cwd);
@@ -1750,7 +1750,7 @@ export async function installNodeModule(
 
     // And install the module
     const installOpts: WithRequired<InstallOptions, 'additionalArgs'> = {
-        additionalArgs: []
+        additionalArgs: [],
     };
 
     // Set up streams to pass the command output through
@@ -1787,7 +1787,7 @@ export interface UninstallNodeModuleOptions {
  */
 export async function uninstallNodeModule(
     packageName: string,
-    options: UninstallNodeModuleOptions = {}
+    options: UninstallNodeModuleOptions = {},
 ): Promise<CommandResult> {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManagerWithFallback(options.cwd);
@@ -1887,7 +1887,7 @@ export async function getDiskInfo(): Promise<GetDiskInfoResponse | null> {
                     const parts = line.split(/\s+/);
                     return {
                         'Disk size': parseInt(parts[2]),
-                        'Disk free': parseInt(parts[1])
+                        'Disk free': parseInt(parts[1]),
                     };
                 }
             }
@@ -1901,7 +1901,7 @@ export async function getDiskInfo(): Promise<GetDiskInfoResponse | null> {
                     const parts = stdout.split('\n')[1].split(/\s+/);
                     return {
                         'Disk size': parseInt(parts[1]) * 1024,
-                        'Disk free': parseInt(parts[3]) * 1024
+                        'Disk free': parseInt(parts[3]) * 1024,
                     };
                 }
             } catch {
@@ -1979,7 +1979,7 @@ export function getCertificateInfo(cert: string): null | CertificateInfo {
             keyUsage: crt.getExtension('keyUsage'),
             extKeyUsage: crt.getExtension('extKeyUsage'),
             validityNotBefore: crt.validity.notBefore,
-            validityNotAfter: crt.validity.notAfter
+            validityNotAfter: crt.validity.notAfter,
         };
 
         // do not return info about values
@@ -2025,13 +2025,13 @@ export function generateDefaultCertificates(): DefaultCertificates {
     const subAttrs = [
         { name: 'commonName', value: getHostName() },
         { name: 'organizationName', value: 'ioBroker GmbH' },
-        { shortName: 'OU', value: 'iobroker' }
+        { shortName: 'OU', value: 'iobroker' },
     ];
 
     const issAttrs = [
         { name: 'commonName', value: 'iobroker' },
         { name: 'organizationName', value: 'ioBroker GmbH' },
-        { shortName: 'OU', value: 'iobroker' }
+        { shortName: 'OU', value: 'iobroker' },
     ];
 
     cert.setSubject(subAttrs);
@@ -2041,7 +2041,7 @@ export function generateDefaultCertificates(): DefaultCertificates {
         {
             name: 'basicConstraints',
             critical: true,
-            cA: false
+            cA: false,
         },
         {
             name: 'keyUsage',
@@ -2054,19 +2054,19 @@ export function generateDefaultCertificates(): DefaultCertificates {
             keyCertSign: true,
             cRLSign: true,
             encipherOnly: true,
-            decipherOnly: true
+            decipherOnly: true,
         },
         {
             name: 'subjectAltName',
             altNames: [
                 {
                     type: 2,
-                    value: os.hostname()
-                }
-            ]
+                    value: os.hostname(),
+                },
+            ],
         },
         {
-            name: 'subjectKeyIdentifier'
+            name: 'subjectKeyIdentifier',
         },
         {
             name: 'extKeyUsage',
@@ -2074,11 +2074,11 @@ export function generateDefaultCertificates(): DefaultCertificates {
             clientAuth: true,
             codeSigning: false,
             emailProtection: false,
-            timeStamping: false
+            timeStamping: false,
         },
         {
-            name: 'authorityKeyIdentifier'
-        }
+            name: 'authorityKeyIdentifier',
+        },
     ]);
 
     cert.sign(keys.privateKey, forge.md.sha256.create());
@@ -2088,7 +2088,7 @@ export function generateDefaultCertificates(): DefaultCertificates {
 
     return {
         defaultPrivate: pem_pkey,
-        defaultPublic: pem_cert
+        defaultPublic: pem_cert,
     };
 }
 
@@ -2159,7 +2159,7 @@ export async function getHostInfo(objects: any): Promise<HostInfo> {
         time: dateObj.getTime(),
         timeOffset: dateObj.getTimezoneOffset(),
         NPM: npmVersion,
-        'adapters count': Object.keys(allRepos).length
+        'adapters count': Object.keys(allRepos).length,
     };
 
     if (data.Platform === 'win32') {
@@ -2334,7 +2334,7 @@ function sliceArgs(argsObj: IArguments, startIndex = 0): any[] {
 export function promisify(
     fn: (...args: any[]) => void,
     context?: any,
-    returnArgNames?: string[]
+    returnArgNames?: string[],
 ): (...args: any[]) => Promise<any> {
     return function () {
         // eslint-disable-next-line prefer-rest-params
@@ -2378,8 +2378,8 @@ export function promisify(
                                     }
                                 }
                             }
-                        }
-                    ])
+                        },
+                    ]),
                 );
             } catch (e) {
                 reject(e as Error);
@@ -2400,7 +2400,7 @@ export function promisify(
 export function promisifyNoError(
     fn: (...args: any[]) => void,
     context?: any,
-    returnArgNames?: string[]
+    returnArgNames?: string[],
 ): (...args: any[]) => Promise<any> {
     return function () {
         // eslint-disable-next-line prefer-rest-params
@@ -2436,8 +2436,8 @@ export function promisifyNoError(
                                 return resolve(ret);
                             }
                         }
-                    }
-                ])
+                    },
+                ]),
             );
         });
     };
@@ -2461,7 +2461,7 @@ export function setQualityForInstance(objects: any, states: any, namespace: stri
             {
                 startkey: `${namespace}.`,
                 endkey: `${namespace}.\u9999`,
-                include_docs: false
+                include_docs: false,
             },
             (err: Error | null, _states?: GetObjectViewResult<ioBroker.StateObject>) => {
                 if (err) {
@@ -2487,7 +2487,7 @@ export function setQualityForInstance(objects: any, states: any, namespace: stri
                         resolve();
                     });
                 }
-            }
+            },
         );
     });
 }
@@ -2721,7 +2721,7 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
     if (targetCommon?.alias?.read) {
         if (!sourceCommon) {
             logger.error(
-                `${logNamespace}source in "${targetId}" does not exist for "read" function: "${targetCommon.alias.read}"`
+                `${logNamespace}source in "${targetId}" does not exist for "read" function: "${targetCommon.alias.read}"`,
             );
             return null;
         }
@@ -2731,11 +2731,11 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
                 firstCommon: targetCommon,
                 secondCommon: sourceCommon,
                 isRead: true,
-                state
+                state,
             });
         } catch (e) {
             logger.error(
-                `${logNamespace}Invalid read function for "${targetId}": "${targetCommon.alias.read}" => ${e.message}`
+                `${logNamespace}Invalid read function for "${targetId}": "${targetCommon.alias.read}" => ${e.message}`,
             );
             return null;
         }
@@ -2744,7 +2744,7 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
     if (sourceCommon?.alias?.write) {
         if (!targetCommon) {
             logger.error(
-                `${logNamespace}target for "${sourceId}" does not exist for "write" function: "${sourceCommon.alias.write}"`
+                `${logNamespace}target for "${sourceId}" does not exist for "write" function: "${sourceCommon.alias.write}"`,
             );
             return null;
         }
@@ -2754,11 +2754,11 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
                 firstCommon: sourceCommon,
                 secondCommon: targetCommon,
                 isRead: false,
-                state
+                state,
             });
         } catch (e) {
             logger.error(
-                `${logNamespace}Invalid write function for "${sourceId}": "${sourceCommon.alias.write}" => ${e.message}`
+                `${logNamespace}Invalid write function for "${sourceId}": "${sourceCommon.alias.write}" => ${e.message}`,
             );
             return null;
         }
@@ -2812,7 +2812,7 @@ export async function removeIdFromAllEnums(objects: any, id: string, allEnums?: 
  * @returns parsedDeps parsed dependencies
  */
 export function parseDependencies(
-    dependencies: string[] | Record<string, string>[] | string | Record<string, string> | undefined
+    dependencies: string[] | Record<string, string>[] | string | Record<string, string> | undefined,
 ): Record<string, string> {
     let adapters: Record<string, string> = {};
     if (Array.isArray(dependencies)) {
@@ -2874,12 +2874,12 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
         'chart',
         'folder',
         'schedule',
-        'design'
+        'design',
     ];
 
     if (obj.type !== undefined && !allowedObjectTypes.includes(obj.type)) {
         throw new Error(
-            `obj.type has an invalid value (${obj.type}) but has to be one of ${allowedObjectTypes.join(', ')}`
+            `obj.type has an invalid value (${obj.type}) but has to be one of ${allowedObjectTypes.join(', ')}`,
         );
     }
 
@@ -2890,7 +2890,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
 
     if (obj.common.name !== undefined && typeof obj.common.name !== 'string' && typeof obj.common.name !== 'object') {
         throw new Error(
-            `obj.common.name has an invalid type! Expected "string" or "object", received "${typeof obj.common.name}"`
+            `obj.common.name has an invalid type! Expected "string" or "object", received "${typeof obj.common.name}"`,
         );
     } else if (['adapter'].includes(obj.type) && typeof obj.common.name !== 'string') {
         // TODO: we need this for group/user too, but have to solve problems described in #1266
@@ -2901,7 +2901,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
     if (obj.common.type !== undefined) {
         if (typeof obj.common.type !== 'string') {
             throw new Error(
-                `obj.common.type has an invalid type! Expected "string", received "${typeof obj.common.type}"`
+                `obj.common.type has an invalid type! Expected "string", received "${typeof obj.common.type}"`,
             );
         }
 
@@ -2912,7 +2912,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
                 throw new Error(
                     `obj.common.type has an invalid value (${
                         obj.common.type
-                    }) but has to be one of ${allowedStateTypes.join(', ')}`
+                    }) but has to be one of ${allowedStateTypes.join(', ')}`,
                 );
             }
 
@@ -2920,13 +2920,13 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
             if (obj.common.min !== undefined) {
                 if (typeof obj.common.min !== 'number') {
                     throw new Error(
-                        `obj.common.min has an invalid type! Expected "number", received "${typeof obj.common.min}"`
+                        `obj.common.min has an invalid type! Expected "number", received "${typeof obj.common.min}"`,
                     );
                 }
 
                 if (obj.common.type !== 'number' && obj.common.type !== 'mixed') {
                     throw new Error(
-                        `obj.common.min is only allowed on obj.common.type "number" or "mixed", received "${obj.common.type}"`
+                        `obj.common.min is only allowed on obj.common.type "number" or "mixed", received "${obj.common.type}"`,
                     );
                 }
             }
@@ -2934,19 +2934,19 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
             if (obj.common.max !== undefined) {
                 if (typeof obj.common.max !== 'number') {
                     throw new Error(
-                        `obj.common.max has an invalid type! Expected "number", received "${typeof obj.common.max}"`
+                        `obj.common.max has an invalid type! Expected "number", received "${typeof obj.common.max}"`,
                     );
                 }
 
                 if (obj.common.type !== 'number' && obj.common.type !== 'mixed') {
                     throw new Error(
-                        `obj.common.max is only allowed on obj.common.type "number" or "mixed", received "${obj.common.type}"`
+                        `obj.common.max is only allowed on obj.common.type "number" or "mixed", received "${obj.common.type}"`,
                     );
                 }
 
                 if (obj.common.min !== undefined && obj.common.min > obj.common.max) {
                     throw new Error(
-                        `obj.common.min (${obj.common.min}) needs to be less than or equal to obj.common.max (${obj.common.max})`
+                        `obj.common.min (${obj.common.min}) needs to be less than or equal to obj.common.max (${obj.common.max})`,
                     );
                 }
             }
@@ -2967,7 +2967,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
                     // 'array', 'object', 'json' need to be string
                     if (['object', 'json', 'array'].includes(obj.common.type)) {
                         throw new Error(
-                            `Default value has to be stringified but received type "${typeof obj.common.def}"`
+                            `Default value has to be stringified but received type "${typeof obj.common.def}"`,
                         );
                     } else {
                         throw new Error(
@@ -2975,7 +2975,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
                                 obj.common.type === 'mixed'
                                     ? `one of type "string", "number", "boolean"`
                                     : `type "${obj.common.type}"`
-                            } but received type "${typeof obj.common.def}"`
+                            } but received type "${typeof obj.common.def}"`,
                         );
                     }
                 }
@@ -2985,13 +2985,13 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
 
     if (obj.common.read !== undefined && typeof obj.common.read !== 'boolean') {
         throw new Error(
-            `obj.common.read has an invalid type! Expected "boolean", received "${typeof obj.common.read}"`
+            `obj.common.read has an invalid type! Expected "boolean", received "${typeof obj.common.read}"`,
         );
     }
 
     if (obj.common.write !== undefined && typeof obj.common.write !== 'boolean') {
         throw new Error(
-            `obj.common.write has an invalid type! Expected "boolean", received "${typeof obj.common.write}"`
+            `obj.common.write has an invalid type! Expected "boolean", received "${typeof obj.common.write}"`,
         );
     }
 
@@ -3001,7 +3001,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
 
     if (obj.common.desc !== undefined && typeof obj.common.desc !== 'string' && typeof obj.common.desc !== 'object') {
         throw new Error(
-            `obj.common.desc has an invalid type! Expected "string" or "object", received "${typeof obj.common.desc}"`
+            `obj.common.desc has an invalid type! Expected "string" or "object", received "${typeof obj.common.desc}"`,
         );
     }
 
@@ -3012,7 +3012,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
         !isObject(obj.common.custom)
     ) {
         throw new Error(
-            `obj.common.custom has an invalid type! Expected "object", received "${typeof obj.common.custom}"`
+            `obj.common.custom has an invalid type! Expected "object", received "${typeof obj.common.custom}"`,
         );
     }
 
@@ -3024,7 +3024,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
         !Array.isArray(obj.common.states)
     ) {
         throw new Error(
-            `obj.common.states has an invalid type! Expected "object", received "${typeof obj.common.states}"`
+            `obj.common.states has an invalid type! Expected "object", received "${typeof obj.common.states}"`,
         );
     }
 }
@@ -3075,7 +3075,7 @@ export async function getAllEnums(objects: any): Promise<Record<string, ioBroker
     const allEnums: Record<string, any> = {};
     const res: GetObjectViewResult<ioBroker.EnumObject> = await objects.getObjectViewAsync('system', 'enum', {
         startkey: 'enum.',
-        endkey: 'enum.\u9999'
+        endkey: 'enum.\u9999',
     });
     if (res?.rows) {
         for (const row of res.rows) {
@@ -3096,11 +3096,11 @@ export async function getAllEnums(objects: any): Promise<Record<string, ioBroker
 export async function getInstances<TWithObjects extends boolean>(
     adapter: string,
     objects: any,
-    withObjects: TWithObjects
+    withObjects: TWithObjects,
 ): Promise<TWithObjects extends true ? ioBroker.InstanceObject[] : ioBroker.ObjectIDs.Instance[]> {
     const arr = await objects.getObjectListAsync({
         startkey: `system.adapter.${adapter}.`,
-        endkey: `system.adapter.${adapter}.\u9999`
+        endkey: `system.adapter.${adapter}.\u9999`,
     });
 
     const instances = [];
@@ -3134,7 +3134,7 @@ export function execAsync(command: string, execOptions?: ExecOptions): ChildProc
         // we do not want to show the node.js window on Windows
         windowsHide: true,
         // And we want to capture stdout/stderr
-        encoding: 'utf8'
+        encoding: 'utf8',
     };
 
     return cpExecAsync(command, { ...defaultOptions, ...execOptions });
@@ -3149,7 +3149,7 @@ export function execAsync(command: string, execOptions?: ExecOptions): ChildProc
 export function pipeLinewise(input: NodeJS.ReadableStream, output: NodeJS.WritableStream): void {
     const rl = createInterface({
         input,
-        crlfDelay: Infinity
+        crlfDelay: Infinity,
     });
     rl.on('line', line => {
         try {
@@ -3251,7 +3251,7 @@ export function getDefaultNodeArgs(mainFile: string): string[] {
 export function getDefaultRequireResolvePaths(callerModule: NodeModule): string[] {
     const ret: string[] = [
         // This is the default for require.resolve
-        ...callerModule.paths
+        ...callerModule.paths,
     ];
     // If JS-controller was started with --preserve-symlinks, start looking where the process entry point was
     if (process.execArgv.includes('--preserve-symlinks') && require.main) {
@@ -3291,7 +3291,7 @@ export function parseShortGithubUrl(url: string): ParsedGithubUrl | null {
     return {
         user: match.groups.user,
         repo: match.groups.repo,
-        commit: match.groups.commit
+        commit: match.groups.commit,
     };
 }
 
@@ -3321,7 +3321,7 @@ export function parseGithubPathname(pathname: string): ParsedGithubUrl | null {
     return {
         user: match.groups.user,
         repo: match.groups.repo,
-        commit: match.groups.commit
+        commit: match.groups.commit,
     };
 }
 
@@ -3335,7 +3335,7 @@ export function parseGithubPathname(pathname: string): ParsedGithubUrl | null {
 export function removePreservedProperties(
     preserve: Record<string, any>,
     oldObj: Record<string, any>,
-    newObj: Record<string, any>
+    newObj: Record<string, any>,
 ): void {
     for (const prop of Object.keys(preserve)) {
         if (isObject(preserve[prop]) && isObject(newObj[prop])) {
@@ -3375,9 +3375,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 type: 'boolean',
                 read: true,
                 write: true,
-                role: 'indicator.state'
+                role: 'indicator.state',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.connected`,
@@ -3387,9 +3387,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 type: 'boolean',
                 read: true,
                 write: false,
-                role: 'indicator.state'
+                role: 'indicator.state',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.compactMode`,
@@ -3399,9 +3399,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 type: 'boolean',
                 read: true,
                 write: false,
-                role: 'indicator.state'
+                role: 'indicator.state',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.cpu`,
@@ -3412,9 +3412,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 read: true,
                 write: false,
                 role: 'indicator.state',
-                unit: '% of one core'
+                unit: '% of one core',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.cputime`,
@@ -3425,9 +3425,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 read: true,
                 write: false,
                 role: 'indicator.state',
-                unit: 'seconds'
+                unit: 'seconds',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.memHeapUsed`,
@@ -3438,9 +3438,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 read: true,
                 write: false,
                 role: 'indicator.state',
-                unit: 'MB'
+                unit: 'MB',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.memHeapTotal`,
@@ -3451,9 +3451,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 write: false,
                 type: 'number',
                 role: 'indicator.state',
-                unit: 'MB'
+                unit: 'MB',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.memRss`,
@@ -3465,9 +3465,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 write: false,
                 type: 'number',
                 role: 'indicator.state',
-                unit: 'MB'
+                unit: 'MB',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.uptime`,
@@ -3478,9 +3478,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 read: true,
                 write: false,
                 role: 'indicator.state',
-                unit: 'seconds'
+                unit: 'seconds',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.inputCount`,
@@ -3492,9 +3492,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 read: true,
                 write: false,
                 role: 'state',
-                unit: 'events/15 seconds'
+                unit: 'events/15 seconds',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.outputCount`,
@@ -3506,9 +3506,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 read: true,
                 write: false,
                 role: 'state',
-                unit: 'events/15 seconds'
+                unit: 'events/15 seconds',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.eventLoopLag`,
@@ -3520,9 +3520,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 read: true,
                 write: false,
                 role: 'state',
-                unit: 'ms'
+                unit: 'ms',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.sigKill`,
@@ -3533,9 +3533,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 read: true,
                 write: false,
                 desc: 'Process id that must survive. All other IDs must terminate itself',
-                role: 'state'
+                role: 'state',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.logLevel`,
@@ -3546,10 +3546,10 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 read: true,
                 write: true,
                 desc: 'Loglevel of the adapter. Will be set on start with defined value but can be overridden during runtime',
-                role: 'state'
+                role: 'state',
             },
-            native: {}
-        }
+            native: {},
+        },
     ];
 }
 
@@ -3572,7 +3572,7 @@ export function getLogger(log: any): InternalLogger {
             },
             error: function (msg: string) {
                 console.log(msg);
-            }
+            },
         };
     } else if (!log.silly) {
         log.silly = log.debug;
@@ -3594,7 +3594,7 @@ export async function setExecutableCapabilities(
     capabilities: string[],
     modeEffective?: boolean,
     modePermitted?: boolean,
-    modeInherited?: boolean
+    modeInherited?: boolean,
 ): Promise<void> {
     // if not linux do nothing and silent exit
     if (os.platform() !== 'linux') {
@@ -3659,7 +3659,7 @@ export async function setExecutableCapabilities(
 async function _readLicenses(login: string, password: string): Promise<any[]> {
     const config = {
         headers: { Authorization: `Basic ${Buffer.from(`${login}:${password}`).toString('base64')}` },
-        timeout: 4_000
+        timeout: 4_000,
     };
 
     try {
@@ -3670,7 +3670,7 @@ async function _readLicenses(login: string, password: string): Promise<any[]> {
                 (license: { validTill: string | number }) =>
                     !license.validTill ||
                     license.validTill === '0000-00-00 00:00:00' ||
-                    new Date(license.validTill).getTime() > now
+                    new Date(license.validTill).getTime() > now,
             );
         }
 
@@ -3788,7 +3788,7 @@ export interface GZipFileOptions {
 export function compressFileGZip(
     inputFilename: string,
     outputFilename: string,
-    options: GZipFileOptions = {}
+    options: GZipFileOptions = {},
 ): Promise<void> {
     const { deleteInput = false } = options;
 
@@ -3847,7 +3847,7 @@ export function validateDataDir(dataDir: string): DataDirValidation {
     return {
         valid: isValid,
         path: dataDir,
-        reason: isValid ? 'Valid data directory' : 'Data directory is not allowed to point into node_modules folder'
+        reason: isValid ? 'Valid data directory' : 'Data directory is not allowed to point into node_modules folder',
     };
 }
 
@@ -3967,13 +3967,13 @@ export function getHostObject(oldObj?: ioBroker.HostObject | null): ioBroker.Hos
                 .join(' ')}`,
             hostname,
             address: findIPs(),
-            type: ioPackage.common.name
+            type: ioPackage.common.name,
         },
         native: {
             process: {
                 title: process.title,
                 versions: process.versions,
-                env: process.env
+                env: process.env,
             },
             os: {
                 hostname: hostname,
@@ -3982,14 +3982,14 @@ export function getHostObject(oldObj?: ioBroker.HostObject | null): ioBroker.Hos
                 arch: os.arch(),
                 release: os.release(),
                 endianness: os.endianness(),
-                tmpdir: os.tmpdir()
+                tmpdir: os.tmpdir(),
             },
             hardware: {
                 cpus: os.cpus(),
                 totalmem: os.totalmem(),
-                networkInterfaces: {}
-            }
-        }
+                networkInterfaces: {},
+            },
+        },
     };
 
     if (oldObj?.common?.icon) {

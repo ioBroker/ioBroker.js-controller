@@ -83,7 +83,7 @@ export class MHClient {
         timeout: number,
         onReady: () => void,
         onMessage: (msg: ReceivedMessage, rinfo: dgram.RemoteInfo) => boolean,
-        onFinished: (err?: Error) => void
+        onFinished: (err?: Error) => void,
     ): void {
         if (this.server) {
             onFinished(new Error('Some operation still active'));
@@ -146,7 +146,7 @@ export class MHClient {
                 () => {
                     const text = JSON.stringify({
                         cmd: 'browse',
-                        id: ++this.id
+                        id: ++this.id,
                     });
                     this.server!.send(text, 0, text.length, PORT, MULTICAST_ADDR);
                 },
@@ -158,7 +158,7 @@ export class MHClient {
                                 ip: rinfo.address,
                                 hostname: rinfo.address,
                                 info: 'authentication required',
-                                auth: msg.auth
+                                auth: msg.auth,
                             });
                         } else if (msg.result === 'ok') {
                             result.push(msg);
@@ -179,7 +179,7 @@ export class MHClient {
                     }
 
                     resolve(result);
-                }
+                },
             );
         });
     }
@@ -198,8 +198,8 @@ export class MHClient {
             err: Error | undefined,
             objectsConfig?: ioBroker.ObjectsDatabaseOptions,
             statesConfig?: ioBroker.StatesDatabaseOptions,
-            address?: string
-        ) => void
+            address?: string,
+        ) => void,
     ): void {
         let callCb = true;
 
@@ -209,7 +209,7 @@ export class MHClient {
             () => {
                 const text = JSON.stringify({
                     cmd: 'browse',
-                    id: ++this.id
+                    id: ++this.id,
                 });
                 this.server!.send(text, 0, text.length, PORT, ip);
             },
@@ -241,7 +241,7 @@ export class MHClient {
                                 const text = JSON.stringify({
                                     cmd: 'browse',
                                     id: ++this.id,
-                                    password: shaText
+                                    password: shaText,
                                 });
                                 this.server!.send(text, 0, text.length, PORT, ip);
                             });
@@ -267,7 +267,7 @@ export class MHClient {
                     callback(err);
                     callCb = false;
                 }
-            }
+            },
         );
     }
 }

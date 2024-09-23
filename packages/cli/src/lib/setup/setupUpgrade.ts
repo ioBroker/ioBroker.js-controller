@@ -57,7 +57,7 @@ export class Upgrade {
         repo: Record<string, any>,
         list: string[],
         forceDowngrade: boolean,
-        autoConfirm: boolean
+        autoConfirm: boolean,
     ): Promise<void> {
         const relevantAdapters = [];
         // check which adapters are upgradeable and sort them according to their dependencies
@@ -93,7 +93,7 @@ export class Upgrade {
                     } else {
                         const allDeps: Record<string, string> = {
                             ...tools.parseDependencies(repo[relAdapter].dependencies),
-                            ...tools.parseDependencies(repo[relAdapter].globalDependencies)
+                            ...tools.parseDependencies(repo[relAdapter].globalDependencies),
                         };
 
                         // we have to check if the deps are there
@@ -162,9 +162,9 @@ export class Upgrade {
             'instance',
             {
                 startkey: 'system.adapter.',
-                endkey: 'system.adapter.\u9999'
+                endkey: 'system.adapter.\u9999',
             },
-            undefined
+            undefined,
         );
 
         if (objs?.rows?.length) {
@@ -178,16 +178,16 @@ export class Upgrade {
                             if (!semver.satisfies(iopkg_.version, version, { includePrerelease: true })) {
                                 return Promise.reject(
                                     new Error(
-                                        `Invalid version of "${dName}". Installed "${iopkg_.version}", required "${version}`
-                                    )
+                                        `Invalid version of "${dName}". Installed "${iopkg_.version}", required "${version}`,
+                                    ),
                                 );
                             }
                         } catch (e) {
                             console.log(`Can not check js-controller dependency requirement: ${e.message}`);
                             return Promise.reject(
                                 new Error(
-                                    `Invalid version of "${dName}". Installed "${iopkg_.version}", required "${version}`
-                                )
+                                    `Invalid version of "${dName}". Installed "${iopkg_.version}", required "${version}`,
+                                ),
                             );
                         }
                     }
@@ -204,7 +204,7 @@ export class Upgrade {
                             obj =>
                                 obj.value.common &&
                                 obj.value.common.name === dName &&
-                                obj.value.common.host === this.hostname
+                                obj.value.common.host === this.hostname,
                         );
                         if (locInstances.length === 0) {
                             return Promise.reject(new Error(`Required dependency "${dName}" not found on this host.`));
@@ -218,21 +218,21 @@ export class Upgrade {
                         try {
                             if (
                                 !semver.satisfies(instanceVersion, deps[dName], {
-                                    includePrerelease: true
+                                    includePrerelease: true,
                                 })
                             ) {
                                 return Promise.reject(
                                     new Error(
-                                        `Invalid version of "${dName}". Installed "${instanceVersion}", required "${deps[dName]}`
-                                    )
+                                        `Invalid version of "${dName}". Installed "${instanceVersion}", required "${deps[dName]}`,
+                                    ),
                                 );
                             }
                         } catch (e) {
                             console.log(`Can not check dependency requirement: ${e.message}`);
                             return Promise.reject(
                                 new Error(
-                                    `Invalid version of "${dName}". Installed "${instanceVersion}", required "${deps[dName]}`
-                                )
+                                    `Invalid version of "${dName}". Installed "${instanceVersion}", required "${deps[dName]}`,
+                                ),
                             );
                         }
                         isFound = true;
@@ -243,21 +243,21 @@ export class Upgrade {
                         try {
                             if (
                                 !semver.satisfies(instanceVersion, globalDeps[dName], {
-                                    includePrerelease: true
+                                    includePrerelease: true,
                                 })
                             ) {
                                 return Promise.reject(
                                     new Error(
-                                        `Invalid version of "${dName}". Installed "${instanceVersion}", required "${globalDeps[dName]}`
-                                    )
+                                        `Invalid version of "${dName}". Installed "${instanceVersion}", required "${globalDeps[dName]}`,
+                                    ),
                                 );
                             }
                         } catch (e) {
                             console.log(`Can not check dependency requirement: ${e.message}`);
                             return Promise.reject(
                                 new Error(
-                                    `Invalid version of "${dName}". Installed "${instanceVersion}", required "${globalDeps[dName]}`
-                                )
+                                    `Invalid version of "${dName}". Installed "${instanceVersion}", required "${globalDeps[dName]}`,
+                                ),
                             );
                         }
                         isFound = true;
@@ -285,7 +285,7 @@ export class Upgrade {
         adapter: string,
         forceDowngrade: boolean,
         autoConfirm: boolean,
-        upgradeAll: boolean
+        upgradeAll: boolean,
     ): Promise<void> {
         let sources: Record<string, any>;
         if (!repoUrlOrObject || !tools.isObject(repoUrlOrObject)) {
@@ -353,7 +353,7 @@ export class Upgrade {
             return console.log(
                 `Adapter "${adapter}"${
                     adapter.length < 15 ? new Array(15 - adapter.length).join(' ') : ''
-                } is not installed.`
+                } is not installed.`,
             );
         }
         // Get the url of io-package.json or direct the version
@@ -363,7 +363,7 @@ export class Upgrade {
         }
         if (repoAdapter.controller) {
             return console.log(
-                `Cannot update ${adapter} using this command. Please use "iobroker upgrade self" instead!`
+                `Cannot update ${adapter} using this command. Please use "iobroker upgrade self" instead!`,
             );
         }
 
@@ -418,10 +418,10 @@ export class Upgrade {
                                     console.log(
                                         `\nThis upgrade of "${adapter}" will ${
                                             noMissingNews ? '' : 'at least '
-                                        }introduce the following changes:`
+                                        }introduce the following changes:`,
                                     );
                                     console.log(
-                                        '=========================================================================='
+                                        '==========================================================================',
                                     );
                                     first = false;
                                 } else if (first === false) {
@@ -443,10 +443,10 @@ export class Upgrade {
                                     console.log(
                                         `\nThis downgrade of "${adapter}" will ${
                                             noMissingNews ? '' : 'at least '
-                                        }remove the following changes:`
+                                        }remove the following changes:`,
                                     );
                                     console.log(
-                                        '=========================================================================='
+                                        '==========================================================================',
                                     );
                                     first = false;
                                 } else if (first === false) {
@@ -474,7 +474,7 @@ export class Upgrade {
                         console.log(
                             `BE CAREFUL: THIS IS A MAJOR ${
                                 isUpgrade ? 'UPGRADE' : 'DOWNGRADE'
-                            }, WHICH WILL MOST LIKELY INTRODUCE BREAKING CHANGES!`
+                            }, WHICH WILL MOST LIKELY INTRODUCE BREAKING CHANGES!`,
                         );
                     }
                     answer = rl.question(
@@ -484,8 +484,8 @@ export class Upgrade {
                             version || repoAdapter.version
                         } now? [(y)es, (n)o]: `,
                         {
-                            defaultInput: 'n'
-                        }
+                            defaultInput: 'n',
+                        },
                     );
                 } else {
                     answer = rl.question(
@@ -493,8 +493,8 @@ export class Upgrade {
                             version || repoAdapter.version
                         } of ${adapter} now? [(y)es, (n)o]: `,
                         {
-                            defaultInput: 'n'
-                        }
+                            defaultInput: 'n',
+                        },
                     );
                 }
 
@@ -524,7 +524,7 @@ export class Upgrade {
                 return console.log(
                     `Adapter "${adapter}"${
                         adapter.length < 15 ? new Array(15 - adapter.length).join(' ') : ''
-                    } is up to date.`
+                    } is up to date.`,
                 );
             } else {
                 const targetVersion = version || repoAdapter.version;
@@ -532,12 +532,12 @@ export class Upgrade {
                 const isIgnored = await isVersionIgnored({
                     adapterName: adapter,
                     version: targetVersion,
-                    objects: this.objects
+                    objects: this.objects,
                 });
 
                 if (isIgnored) {
                     console.log(
-                        `No upgrade of "${adapter}" desired, because version "${targetVersion}" is configured to be ignored by the user. Run "${tools.appNameLowerCase} version ${adapter} --recognize" to allow this upgrade!`
+                        `No upgrade of "${adapter}" desired, because version "${targetVersion}" is configured to be ignored by the user. Run "${tools.appNameLowerCase} version ${adapter} --recognize" to allow this upgrade!`,
                     );
                     return;
                 }
@@ -565,7 +565,7 @@ export class Upgrade {
                 // Get the adapter from website
                 const { packetName, stoppedList } = await this.install.downloadPacket(
                     sources,
-                    `${adapter}@${targetVersion}`
+                    `${adapter}@${targetVersion}`,
                 );
                 await finishUpgrade(packetName);
                 await this.install.enableInstances(stoppedList, true);
@@ -596,7 +596,7 @@ export class Upgrade {
                 console.log(
                     `Adapter "${adapter}"${
                         adapter.length < 15 ? new Array(15 - adapter.length).join(' ') : ''
-                    } is up to date.`
+                    } is up to date.`,
                 );
             } else {
                 // Get the adapter from website
@@ -605,12 +605,12 @@ export class Upgrade {
                 const isIgnored = await isVersionIgnored({
                     adapterName: adapter,
                     version: targetVersion,
-                    objects: this.objects
+                    objects: this.objects,
                 });
 
                 if (isIgnored) {
                     console.log(
-                        `No upgrade of "${adapter}" desired, because version "${targetVersion}" is configured to be ignored by the user. Run "${tools.appNameLowerCase} version ${adapter} --recognize" to allow this upgrade!`
+                        `No upgrade of "${adapter}" desired, because version "${targetVersion}" is configured to be ignored by the user. Run "${tools.appNameLowerCase} version ${adapter} --recognize" to allow this upgrade!`,
                     );
                     return;
                 }
@@ -626,7 +626,7 @@ export class Upgrade {
                 console.log(`Update ${adapter} from @${installedVersion} to @${targetVersion}`);
                 const { packetName, stoppedList } = await this.install.downloadPacket(
                     sources,
-                    `${adapter}@${targetVersion}`
+                    `${adapter}@${targetVersion}`,
                 );
                 await finishUpgrade(packetName, ioPack);
                 await this.install.enableInstances(stoppedList, true);
@@ -676,7 +676,7 @@ export class Upgrade {
             return console.error(
                 `Host "${this.hostname}"${
                     this.hostname.length < 15 ? ''.padStart(15 - this.hostname.length) : ''
-                } is not installed.`
+                } is not installed.`,
             );
         }
 
@@ -698,7 +698,7 @@ export class Upgrade {
                 console.log(
                     `Host    "${this.hostname}"${
                         this.hostname.length < 15 ? new Array(15 - this.hostname.length).join(' ') : ''
-                    } is up to date.`
+                    } is up to date.`,
                 );
             } else if (controllerRunning) {
                 console.warn(`Controller is running. Please stop ioBroker first.`);
@@ -706,14 +706,14 @@ export class Upgrade {
                 console.log(`Update ${controllerName} from @${installed.common.version} to @${repoController.version}`);
                 // Get the controller from website
                 await this.install.downloadPacket(sources, `${controllerName}@${repoController.version}`, {
-                    stopDb: true
+                    stopDb: true,
                 });
             }
         } else {
             const ioPack = await tools.getJsonAsync(repoController.meta);
             if ((!ioPack || !ioPack.common) && !forceDowngrade) {
                 return console.warn(
-                    `Cannot read version. Write "${tools.appName} upgrade self --force" to upgrade controller anyway.`
+                    `Cannot read version. Write "${tools.appName} upgrade self --force" to upgrade controller anyway.`,
                 );
             }
             let version = ioPack?.common ? ioPack.common.version : '';
@@ -728,7 +728,7 @@ export class Upgrade {
                 console.log(
                     `Host    "${this.hostname}"${
                         this.hostname.length < 15 ? new Array(15 - this.hostname.length).join(' ') : ''
-                    } is up to date.`
+                    } is up to date.`,
                 );
             } else if (controllerRunning) {
                 console.warn(`Controller is running. Please stop ioBroker first.`);

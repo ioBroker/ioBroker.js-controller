@@ -63,7 +63,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             // Wrong password
             context.adapter
                 .checkPasswordAsync('admin', '1234')
-                .should.eventually.deep.equal([false, 'system.user.admin'])
+                .should.eventually.deep.equal([false, 'system.user.admin']),
         ];
 
         return Promise.all(promises);
@@ -136,7 +136,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         testValue = context.adapter.formatValue('1000', ''); //1.000,00
         const testValue2 = context.adapter.formatValue(
             '1000',
-            context.adapter.isFloatComma === undefined ? '.,' : context.adapter.isFloatComma ? '.,' : ',.'
+            context.adapter.isFloatComma === undefined ? '.,' : context.adapter.isFloatComma ? '.,' : ',.',
         ); //1.000,00
         expect(testValue).to.equal(testValue2);
 
@@ -222,7 +222,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             console,
             context.adapter.namespace,
             // @ts-expect-error internal access
-            context.adapter._namespaceRegExp
+            context.adapter._namespaceRegExp,
         );
 
         const adapterName = context.adapter.name;
@@ -240,7 +240,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         //test with Object state
         testString = utils.fixId({
-            state: 'baz'
+            state: 'baz',
         });
         expect(testString).to.be.a('string');
         expect(testString).to.equal(adapterNamespace + '.baz');
@@ -248,7 +248,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         //test with Object state + channel
         testString = utils.fixId({
             state: 'baz',
-            channel: 'bar'
+            channel: 'bar',
         });
         expect(testString).to.be.a('string');
         expect(testString).to.equal(adapterNamespace + '.bar.baz');
@@ -257,7 +257,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         testString = utils.fixId({
             state: 'baz',
             channel: 'bar',
-            device: 'foo'
+            device: 'foo',
         });
         expect(testString).to.be.a('string');
         expect(testString).to.equal(adapterNamespace + '.foo.bar.baz');
@@ -305,7 +305,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             () => {
                 /** pass */
             },
-            2 ** 32 / 2 - 1
+            2 ** 32 / 2 - 1,
         );
         context.adapter.clearTimeout(timeout);
 
@@ -319,7 +319,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 () => {
                     /** pass */
                 },
-                2 ** 32 / 2
+                2 ** 32 / 2,
             );
         }).to.throw(/is larger than/, 'Invalid timeout not thrown');
 
@@ -339,7 +339,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             () => {
                 /** pass */
             },
-            2 ** 32 / 2 - 1
+            2 ** 32 / 2 - 1,
         );
         context.adapter.clearInterval(interval);
 
@@ -355,7 +355,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 () => {
                     /** pass */
                 },
-                2 ** 32 / 2
+                2 ** 32 / 2,
             );
         }).to.throw(/is larger than/, 'Invalid timeout not thrown');
 
@@ -454,14 +454,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         context.name + ' ' + context.adapterShortName + ' adapter: updateConfig needs to respect encryptedNative',
         async () => {
             const oldConfig = await context.adapter.getForeignObjectAsync(
-                `system.adapter.${context.adapter.namespace}`
+                `system.adapter.${context.adapter.namespace}`,
             );
 
             const passphrase = 'SavePassword123';
 
             await context.adapter.updateConfig({ secondPassword: passphrase });
             const newConfig = await context.adapter.getForeignObjectAsync(
-                `system.adapter.${context.adapter.namespace}`
+                `system.adapter.${context.adapter.namespace}`,
             );
 
             // non encrypted and non updated params stay the same
@@ -471,13 +471,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             // encrypted non updated passwords, decrypt to the same value
             expect(newConfig?.native.password).to.exist;
             expect(context.adapter.decrypt(newConfig?.native.password)).to.be.equal(
-                context.adapter.decrypt(oldConfig?.native.password)
+                context.adapter.decrypt(oldConfig?.native.password),
             );
 
             // updated encrypted value is correctly decrypted
             expect(newConfig?.native.secondPassword).to.exist;
             expect(context.adapter.decrypt(newConfig?.native.secondPassword)).to.be.equal(passphrase);
-        }
+        },
     );
 
     // setState object validation

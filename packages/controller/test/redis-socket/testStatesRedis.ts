@@ -38,7 +38,7 @@ describe('States-Redis-Socket: Test states', () => {
                 dataDir: dataDir,
                 onChange: (id: string, _obj: ioBroker.AnyObject) => {
                     console.log(`object changed. ${id}`);
-                }
+                },
             },
             states: {
                 type: 'redis',
@@ -49,8 +49,8 @@ describe('States-Redis-Socket: Test states', () => {
                     if (onStatesChanged) {
                         onStatesChanged(id, state);
                     }
-                }
-            }
+                },
+            },
         });
 
         objects = _objects;

@@ -22,7 +22,7 @@ export class ObjectsInMemoryServerClass extends ObjectsInRedisClient {
             hostname: settings.hostname,
             connected: () => {
                 this.connectDb(); // now that server is connected also connect client
-            }
+            },
         };
         this.objectsServer = new ObjectsInMemoryServer(serverSettings);
     }

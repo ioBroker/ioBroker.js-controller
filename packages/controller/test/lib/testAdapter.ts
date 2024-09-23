@@ -58,7 +58,7 @@ export default function testAdapter(options: Record<string, any>): void {
         testObjectsACL,
         testStates,
         testAliases,
-        testConsole
+        testConsole,
     ];
 
     const context: TestContext = {
@@ -80,7 +80,7 @@ export default function testAdapter(options: Record<string, any>): void {
         name: options.name,
         appName,
         statesConfig,
-        objectsConfig
+        objectsConfig,
     };
 
     function startAdapter(): Promise<void> {
@@ -90,7 +90,7 @@ export default function testAdapter(options: Record<string, any>): void {
                     // @ts-expect-error todo types do not include this yet
                     states: statesConfig,
                     objects: objectsConfig,
-                    consoleOutput: true
+                    consoleOutput: true,
                 },
                 dirname: thisDir + '/',
                 name: context.adapterShortName,
@@ -117,7 +117,7 @@ export default function testAdapter(options: Record<string, any>): void {
                 },
                 compact: true,
                 /** activate the log transporter to be tested */
-                logTransporter: true
+                logTransporter: true,
             });
         });
     }
@@ -205,7 +205,7 @@ export default function testAdapter(options: Record<string, any>): void {
 
             const { objects: _objects, states: _states } = await startController({
                 objects: _objectsConfig,
-                states: _statesConfig
+                states: _statesConfig,
             });
 
             context.objects = _objects!;
@@ -265,7 +265,7 @@ export default function testAdapter(options: Record<string, any>): void {
                     function (err, state) {
                         expect(state!.val).to.be.equal(true);
                         setTimeout(() => !--count && done(), 0);
-                    }
+                    },
                 );
 
                 count++;
@@ -274,7 +274,7 @@ export default function testAdapter(options: Record<string, any>): void {
                     function (err, state) {
                         expect(state!.val).to.be.equal(true);
                         setTimeout(() => !--count && done(), 0);
-                    }
+                    },
                 );
 
                 count++;
@@ -289,7 +289,7 @@ export default function testAdapter(options: Record<string, any>): void {
                     function (err, state) {
                         expect(state!.val).to.be.equal(0);
                         setTimeout(() => !--count && done(), 0);
-                    }
+                    },
                 );
 
                 count++;
@@ -298,7 +298,7 @@ export default function testAdapter(options: Record<string, any>): void {
                     function (err, state) {
                         expect(state!.val).to.be.equal(0);
                         setTimeout(() => !--count && done(), 0);
-                    }
+                    },
                 );
 
                 count++;
@@ -306,7 +306,7 @@ export default function testAdapter(options: Record<string, any>): void {
                     expect(state!.val).to.be.at.least(0);
                     setTimeout(() => !--count && done(), 0);
                 });
-            }
+            },
         );
 
         for (const test of tests) {

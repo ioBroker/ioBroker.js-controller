@@ -358,7 +358,7 @@ declare global {
 
         type GetObjectCallback<T extends string = string> = (
             err?: Error | null,
-            obj?: ObjectIdToObjectType<T> | null
+            obj?: ObjectIdToObjectType<T> | null,
         ) => void;
         type GetObjectPromise<T extends string = string> = Promise<CallbackReturnTypeOf<GetObjectCallback<T>>>;
 
@@ -367,7 +367,7 @@ declare global {
             err?: Error | null,
             result?: {
                 [groupName: string]: Record<string, EnumObject>;
-            }
+            },
         ) => void;
         type GetEnumsPromise = Promise<NonNullCallbackReturnTypeOf<GetEnumsCallback>>;
 
@@ -376,7 +376,7 @@ declare global {
 
         type GetObjectsCallbackTyped<T extends ObjectType> = (
             err?: Error | null,
-            objects?: Record<string, ioBroker.AnyObject & { type: T }>
+            objects?: Record<string, ioBroker.AnyObject & { type: T }>,
         ) => void;
         type GetObjectsPromiseTyped<T extends ObjectType> = Promise<
             NonNullCallbackReturnTypeOf<GetObjectsCallbackTyped<T>>
@@ -388,7 +388,7 @@ declare global {
             /** If an object was found, this contains the ID */
             id?: string,
             /** If an object was found, this contains the common.name */
-            name?: StringOrTranslated
+            name?: StringOrTranslated,
         ) => void;
 
         // This is a version used by GetDevices/GetChannelsOf/GetStatesOf
@@ -428,7 +428,7 @@ declare global {
             err: Error | null,
             result?: GetHistoryResult,
             step?: number,
-            sessionId?: string
+            sessionId?: string,
         ) => void;
 
         /** Contains the return values of readDir */
@@ -492,7 +492,7 @@ declare global {
         }
         type GetObjectViewCallback<T extends AnyObject> = (
             err?: Error | null,
-            result?: { rows: Array<GetObjectViewItem<T>> }
+            result?: { rows: Array<GetObjectViewItem<T>> },
         ) => void;
         type GetObjectViewPromise<T extends AnyObject> = Promise<NonNullCallbackReturnTypeOf<GetObjectViewCallback<T>>>;
 
@@ -504,14 +504,14 @@ declare global {
         }
         type GetObjectListCallback<T extends ioBroker.Object> = (
             err?: Error | null,
-            result?: { rows: GetObjectListItem<T>[] }
+            result?: { rows: GetObjectListItem<T>[] },
         ) => void;
         type GetObjectListPromise = Promise<NonNullCallbackReturnTypeOf<GetObjectListCallback<ioBroker.Object>>>;
 
         type ExtendObjectCallback = (
             err?: Error | null,
             result?: { id: string; value: ioBroker.Object },
-            id?: string
+            id?: string,
         ) => void;
 
         type GetSessionCallback = (session: Session) => void;

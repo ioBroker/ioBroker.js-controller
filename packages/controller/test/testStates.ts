@@ -36,15 +36,15 @@ describe('States: Test states in File-Redis', function () {
         const { objects: _objects, states: _states } = await startController({
             objects: {
                 dataDir: dataDir,
-                onChange: (id: string, _obj: ioBroker.AnyObject) => console.log('object changed. ' + id)
+                onChange: (id: string, _obj: ioBroker.AnyObject) => console.log('object changed. ' + id),
             },
             states: {
                 dataDir: dataDir,
                 onChange: (id: string, state: ioBroker.State) => {
                     console.log('state changed. ' + id);
                     onStatesChanged && onStatesChanged(id, state);
-                }
-            }
+                },
+            },
         });
 
         objects = _objects;

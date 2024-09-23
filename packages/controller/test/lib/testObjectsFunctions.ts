@@ -23,13 +23,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     type: 'number',
                     role: 'level',
                     read: true,
-                    write: true
+                    write: true,
                 },
                 native: {
                     attr1: '1',
                     attr2: '2',
-                    attr3: '3'
-                }
+                    attr3: '3',
+                },
             },
             function (err) {
                 expect(err).to.be.null;
@@ -43,7 +43,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     //expect(obj.acl).to.be.ok;
                     done();
                 });
-            }
+            },
         );
     });
 
@@ -56,11 +56,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             {
                 common: {
                     name: 'test1',
-                    type: 'number'
+                    type: 'number',
                 },
                 native: {},
                 // @ts-expect-error should error as type is missing
-                type_: 'state'
+                type_: 'state',
             },
             (err: any) => {
                 expect(err).to.be.ok;
@@ -70,7 +70,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(obj).to.be.not.ok;
                     done();
                 });
-            }
+            },
         );
     });
 
@@ -92,8 +92,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 native: {
                     attr1: '11', // modify
                     attr2: null, // delete
-                    attr4: '4' // add
-                }
+                    attr4: '4', // add
+                },
             },
             function (err, obj) {
                 expect(err).to.be.not.ok;
@@ -108,7 +108,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(obj!.native.attr4).to.be.equal('4');
                     done();
                 });
-            }
+            },
         );
     });
 
@@ -126,7 +126,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     type: 'number',
                     role: 'level',
                     read: true,
-                    write: true
+                    write: true,
                 },
                 native: {
                     attr1: '1',
@@ -134,8 +134,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     attr3: '3',
                     repositories: ['R1'],
                     certificates: ['C1'],
-                    devices: ['D1']
-                }
+                    devices: ['D1'],
+                },
             },
             function (err) {
                 expect(err).to.be.null;
@@ -150,7 +150,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     //expect(obj.acl).to.be.ok;
                     done();
                 });
-            }
+            },
         );
     });
 
@@ -166,8 +166,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     // special cases for native (obj.native.repositories || obj.native.certificates || obj.native.devices)
                     // and commons (obj.common.members)
                     repositories: ['R2'],
-                    devices: ['D2']
-                }
+                    devices: ['D2'],
+                },
             },
             function (err, obj) {
                 expect(err).to.be.not.ok;
@@ -191,7 +191,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(obj!.native.devices[0]).to.be.equal('D2');
                     done();
                 });
-            }
+            },
         );
     });
 
@@ -309,16 +309,16 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     mode: 'daemon',
                     materialize: true,
                     platform: 'Javascript/Node.js',
-                    installedVersion: '1.0.0'
+                    installedVersion: '1.0.0',
                 },
                 native: {
                     model: 'S P85D',
                     username: 'tesla',
-                    password: 'winning'
+                    password: 'winning',
                 },
                 protectedNative: ['username', 'password'],
                 objects: [],
-                instanceObjects: []
+                instanceObjects: [],
             },
             function (err) {
                 expect(err).to.be.null;
@@ -334,7 +334,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(obj!._id).equal('system.adapter.tesla.0');
                     done();
                 });
-            }
+            },
         );
     });
 
@@ -354,16 +354,16 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     mode: 'daemon',
                     platform: 'Javascript/Node.js',
                     materialize: true,
-                    installedVersion: '1.0.0'
+                    installedVersion: '1.0.0',
                 },
                 native: {
                     model: 'S P85D',
                     username: 'tesla',
-                    password: 'winning'
+                    password: 'winning',
                 },
                 protectedNative: ['username', 'password'],
                 objects: [],
-                instanceObjects: []
+                instanceObjects: [],
             },
             function (err) {
                 expect(err).to.be.null;
@@ -380,9 +380,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         expect(obj!.native.username).equal('tesla');
                         expect(obj!._id).equal('system.adapter.' + context.adapterShortName + '.0');
                         done();
-                    }
+                    },
                 );
-            }
+            },
         );
     });
 
@@ -397,11 +397,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     read: true,
                     write: true,
                     type: 'number',
-                    role: 'state'
+                    role: 'state',
                 },
                 native: {
-                    pparam: 10
-                }
+                    pparam: 10,
+                },
             },
             function (err) {
                 expect(err).to.be.null;
@@ -420,12 +420,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                 read: true,
                                 write: true,
                                 type: 'number',
-                                role: 'state'
+                                role: 'state',
                             },
                             native: {
-                                ppparam: 10
+                                ppparam: 10,
                             },
-                            type: 'state'
+                            type: 'state',
                         },
                         function (err) {
                             expect(err).to.be.null;
@@ -437,10 +437,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                 expect(obj1!.native.ppparam).to.be.equal(10);
                                 done();
                             });
-                        }
+                        },
                     );
                 });
-            }
+            },
         );
     });
 
@@ -454,12 +454,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     read: true,
                     write: true,
                     type: 'number',
-                    role: 'state'
+                    role: 'state',
                 },
                 native: {
-                    ppparam: 11
+                    ppparam: 11,
                 },
-                type: 'state'
+                type: 'state',
             },
             function (err) {
                 expect(err).to.be.null;
@@ -478,12 +478,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                 read: true,
                                 write: true,
                                 type: 'number',
-                                role: 'state'
+                                role: 'state',
                             },
                             native: {
-                                ppparam: 9
+                                ppparam: 9,
                             },
-                            type: 'state'
+                            type: 'state',
                         },
                         function (err) {
                             expect(err).to.be.null;
@@ -496,12 +496,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                     expect(obj1!.native).to.be.ok;
                                     expect(obj1!.native.ppparam).to.be.equal(9);
                                     done();
-                                }
+                                },
                             );
-                        }
+                        },
                     );
                 });
-            }
+            },
         );
     });
 
@@ -518,12 +518,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     write: true,
                     role: 'state',
                     custom: {
-                        history: { enabled: true }
-                    }
+                        history: { enabled: true },
+                    },
                 },
                 native: {
-                    ppparam: 11
-                }
+                    ppparam: 11,
+                },
             },
             err => {
                 expect(err).to.be.null;
@@ -537,13 +537,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             write: true,
                             role: 'state',
                             custom: {
-                                material: { enabled: true }
-                            }
+                                material: { enabled: true },
+                            },
                         },
                         native: {
-                            ppparam: 12
+                            ppparam: 12,
                         },
-                        type: 'state'
+                        type: 'state',
                     },
                     err => {
                         expect(err).to.be.null;
@@ -554,9 +554,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             expect(obj1!.common.custom!.history).to.be.ok;
                             done();
                         });
-                    }
+                    },
                 );
-            }
+            },
         );
     });
 
@@ -573,13 +573,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     write: true,
                     role: 'state',
                     custom: {
-                        history: { enabled: true }
-                    }
+                        history: { enabled: true },
+                    },
                 },
                 native: {
-                    ppparam: 11
+                    ppparam: 11,
                 },
-                type: 'state'
+                type: 'state',
             },
             err => {
                 expect(err).to.be.null;
@@ -592,16 +592,16 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             desc: 'Hello',
                             custom: {
                                 material: null,
-                                history: null
+                                history: null,
                             },
                             read: true,
                             write: true,
-                            role: 'state'
+                            role: 'state',
                         },
                         native: {
-                            bluefox: 14
+                            bluefox: 14,
                         },
-                        type: 'state'
+                        type: 'state',
                     },
                     err => {
                         expect(err).to.be.null;
@@ -611,9 +611,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             expect(obj1!.common.custom).to.be.not.ok;
                             done();
                         });
-                    }
+                    },
                 );
-            }
+            },
         );
     });
 
@@ -631,13 +631,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     write: true,
                     role: 'state',
                     custom: {
-                        history: { enabled: true }
-                    }
+                        history: { enabled: true },
+                    },
                 },
                 native: {
-                    ppparam: 11
+                    ppparam: 11,
                 },
-                type: 'state'
+                type: 'state',
             },
             err => {
                 expect(err).to.be.null;
@@ -650,16 +650,16 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             desc: 'Hello',
                             custom: {
                                 material: null,
-                                history: null
+                                history: null,
                             },
                             read: true,
                             write: true,
-                            role: 'state'
+                            role: 'state',
                         },
                         native: {
-                            bluefox: 14
+                            bluefox: 14,
                         },
-                        type: 'state'
+                        type: 'state',
                     },
                     err => {
                         expect(err).to.be.null;
@@ -669,9 +669,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             expect(obj1!.common.custom).to.be.not.ok;
                             done();
                         });
-                    }
+                    },
                 );
-            }
+            },
         );
     });
 
@@ -684,13 +684,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'design',
                 views: {
                     paramsetDescription: {
-                        map: 'function(doc) {\n  if (doc._id.match(/^hm-rpc\\.meta/) && doc.native.type === "paramsetDescription") {\n   emit(doc._id, doc);\n  }\n}'
-                    }
+                        map: 'function(doc) {\n  if (doc._id.match(/^hm-rpc\\.meta/) && doc.native.type === "paramsetDescription") {\n   emit(doc._id, doc);\n  }\n}',
+                    },
                 },
                 common: {
-                    name: 'HM-RPC Design'
+                    name: 'HM-RPC Design',
                 },
-                native: {}
+                native: {},
             })
             .then(() => {
                 // now let's create an object matching the view
@@ -699,12 +699,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         type: 'meta',
                         common: {
                             type: 'meta.user',
-                            name: 'meta hm-rpc'
+                            name: 'meta hm-rpc',
                         },
                         native: {
                             adapter: 'hm-rpc',
-                            type: 'paramsetDescription'
-                        }
+                            type: 'paramsetDescription',
+                        },
                     })
                     .then(() => {
                         context.adapter.getObjectView(
@@ -712,7 +712,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             'paramsetDescription',
                             {
                                 startkey: 'hm-rpc.meta.VALUES',
-                                endkey: 'hm-rpc.meta.VALUES.\u9999'
+                                endkey: 'hm-rpc.meta.VALUES.\u9999',
                             },
                             (err, doc) => {
                                 // now check that our object view contains our object
@@ -720,10 +720,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                 expect(doc!.rows).to.be.an('array');
                                 expect(doc!.rows.length).to.be.equal(1);
                                 expect(doc!.rows[0].value._id).to.be.equal(
-                                    'hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19'
+                                    'hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19',
                                 );
                                 done();
-                            }
+                            },
                         );
                     });
             });
@@ -737,13 +737,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             type: 'design',
             views: {
                 paramsetDescription: {
-                    map: 'function(doc) {\n  if (doc._id.match(/^hm-rpc\\.meta/) && doc.native.type === "paramsetDescription") {\n   emit(doc._id, doc);\n  }\n}'
-                }
+                    map: 'function(doc) {\n  if (doc._id.match(/^hm-rpc\\.meta/) && doc.native.type === "paramsetDescription") {\n   emit(doc._id, doc);\n  }\n}',
+                },
             },
             common: {
-                name: 'Test'
+                name: 'Test',
             },
-            native: {}
+            native: {},
         });
 
         // now lets create an object matching the view
@@ -751,17 +751,17 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             type: 'meta',
             common: {
                 name: 'test',
-                type: 'meta.user'
+                type: 'meta.user',
             },
             native: {
                 adapter: 'hm-rpc',
-                type: 'paramsetDescription'
-            }
+                type: 'paramsetDescription',
+            },
         });
 
         const doc = await context.adapter.getObjectViewAsync('hm-rpc', 'paramsetDescription', {
             startkey: 'hm-rpc.meta.VALUES',
-            endkey: 'hm-rpc.meta.VALUES.\u9999'
+            endkey: 'hm-rpc.meta.VALUES.\u9999',
         });
 
         // now check that our object view contains our object
@@ -782,8 +782,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 changesRelogInterval: 0,
                 changesMinDelta: 0,
                 maxLength: 10,
-                retention: 31536000
-            }
+                retention: 31536000,
+            },
         };
 
         // lets create an object matching the view
@@ -795,14 +795,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'boolean',
                 read: false,
                 write: true,
-                custom: customObj
+                custom: customObj,
             },
-            native: {}
+            native: {},
         });
 
         const doc = await context.adapter.getObjectViewAsync('system', 'custom', {
             startkey: `${context.adapterShortName}.1.device.channel.`,
-            endkey: `${context.adapterShortName}.1.device.channel.\u9999`
+            endkey: `${context.adapterShortName}.1.device.channel.\u9999`,
         });
 
         // now check that our object view contains our object
@@ -820,25 +820,25 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'meta',
                 common: {
                     type: 'meta.user',
-                    name: 'test'
+                    name: 'test',
                 },
                 native: {
                     adapter: 'hm-rpc',
-                    type: 'paramsetDescription'
-                }
+                    type: 'paramsetDescription',
+                },
             })
             .then(() => {
                 // now lets get our object
                 context.adapter.getObjectList(
                     {
                         startkey: 'hm-rpc.meta.VALUES',
-                        endkey: 'hm-rpc.meta.VALUES.\u9999'
+                        endkey: 'hm-rpc.meta.VALUES.\u9999',
                     },
                     (err, res) => {
                         expect(err).to.be.null;
                         expect(res!.rows.length).to.be.equal(1);
                         expect(res!.rows[0].id).to.be.equal(
-                            'hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19'
+                            'hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19',
                         );
 
                         // and try a non existing pattern
@@ -847,7 +847,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             expect(res!.rows.length).to.be.equal(0);
                             done();
                         });
-                    }
+                    },
                 );
             });
     });
@@ -860,19 +860,19 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'meta',
                 common: {
                     name: 'test',
-                    type: 'meta.user'
+                    type: 'meta.user',
                 },
                 native: {
                     adapter: 'hm-rpc',
-                    type: 'paramsetDescription'
-                }
+                    type: 'paramsetDescription',
+                },
             })
             .then(() => {
                 // now lets get our object
                 context.adapter
                     .getObjectListAsync({
                         startkey: 'hm-rpc.meta.VALUES',
-                        endkey: 'hm-rpc.meta.VALUES.\u9999'
+                        endkey: 'hm-rpc.meta.VALUES.\u9999',
                     })
                     .then(res => {
                         expect(res.rows.length).to.be.equal(1);
@@ -931,10 +931,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         const enumObj: ioBroker.SettableEnumObject = {
             common: {
                 name: 'Wohnzimmer',
-                members: ['tesla.0.model', 'test.0.test']
+                members: ['tesla.0.model', 'test.0.test'],
             },
             native: {},
-            type: 'enum'
+            type: 'enum',
         };
         // create our object
         objects.setObject(
@@ -947,8 +947,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     name: 'Model',
                     read: true,
                     write: true,
-                    role: 'state'
-                }
+                    role: 'state',
+                },
             },
             () => {
                 // now create the enum with object as member
@@ -964,7 +964,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         });
                     });
                 });
-            }
+            },
         );
     });
 
@@ -987,16 +987,16 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         name: 'must be set',
                         read: true,
                         write: true,
-                        role: 'state'
+                        role: 'state',
                     },
                     native: {
-                        pparam: 10
+                        pparam: 10,
                     },
-                    type: 'state'
+                    type: 'state',
                 },
                 err => {
                     expect(err).to.be.null;
-                }
+                },
             );
         });
     });
@@ -1019,19 +1019,19 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         name: 'must be set',
                         read: true,
                         write: true,
-                        role: 'state'
+                        role: 'state',
                     },
                     native: {
-                        pparam: 10
+                        pparam: 10,
                     },
-                    type: 'state'
+                    type: 'state',
                 },
                 function (err) {
                     expect(err).to.be.null;
                     setTimeout(function () {
                         done();
                     }, 2_000);
-                }
+                },
             );
         });
     });
@@ -1055,16 +1055,16 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         name: 'must be set',
                         read: true,
                         write: true,
-                        role: 'state'
+                        role: 'state',
                     },
                     native: {
-                        pparam: 10
+                        pparam: 10,
                     },
-                    type: 'state'
+                    type: 'state',
                 },
                 function (err) {
                     expect(err).to.be.null;
-                }
+                },
             );
         });
     });
@@ -1098,20 +1098,20 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         mode: 'daemon',
                         platform: 'Javascript/Node.js',
                         materialize: true,
-                        installedVersion: '1.0.0'
+                        installedVersion: '1.0.0',
                     },
                     native: {
                         model: 'S P85D',
                         username: 'tesla',
-                        password: 'winning'
+                        password: 'winning',
                     },
                     protectedNative: ['username', 'password'],
                     objects: [],
-                    instanceObjects: []
+                    instanceObjects: [],
                 },
                 function (err) {
                     expect(err).to.be.null;
-                }
+                },
             );
         });
     });
@@ -1145,20 +1145,20 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         mode: 'daemon',
                         platform: 'Javascript/Node.js',
                         materialize: true,
-                        installedVersion: '1.0.0'
+                        installedVersion: '1.0.0',
                     },
                     native: {
                         model: 'S P85D',
                         username: 'tesla',
-                        password: 'winning'
+                        password: 'winning',
                     },
                     protectedNative: ['username', 'password'],
                     objects: [],
-                    instanceObjects: []
+                    instanceObjects: [],
                 },
                 function (err) {
                     expect(err).to.be.null;
-                }
+                },
             );
         });
     });
@@ -1181,19 +1181,19 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         name: 'must be set',
                         read: true,
                         write: true,
-                        role: 'state'
+                        role: 'state',
                     },
                     native: {
-                        pparam: 10
+                        pparam: 10,
                     },
-                    type: 'state'
+                    type: 'state',
                 },
                 function (err) {
                     expect(err).to.be.null;
                     setTimeout(function () {
                         done();
                     }, 2000);
-                }
+                },
             );
         });
     });
@@ -1228,44 +1228,44 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             read: true,
                             write: false,
                             delete: false,
-                            create: false
+                            create: false,
                         },
                         state: {
                             list: false,
                             read: false,
                             write: false,
                             create: false,
-                            delete: false
+                            delete: false,
                         },
                         users: {
                             write: false,
                             create: false,
                             delete: false,
                             list: false,
-                            read: false
+                            read: false,
                         },
                         other: {
                             execute: false,
                             http: false,
-                            sendto: false
+                            sendto: false,
                         },
                         file: {
                             list: false,
                             read: false,
                             write: false,
                             create: false,
-                            delete: false
-                        }
-                    }
+                            delete: false,
+                        },
+                    },
                 },
                 native: {},
                 acl: {
                     object: 1638,
                     owner: 'system.user.admin',
-                    ownerGroup: 'system.group.administrator'
+                    ownerGroup: 'system.group.administrator',
                 },
                 _id: 'system.group.writer',
-                type: 'group'
+                type: 'group',
             },
             function (err) {
                 expect(err).to.be.null;
@@ -1278,15 +1278,15 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             name: 'write-only',
                             enabled: true,
                             password:
-                                'pbkdf2$10000$ab4104d8bb68390ee7e6c9397588e768de6c025f0c732c18806f3d1270c83f83fa86a7bf62583770e5f8d0b405fbb3ad32214ef3584f5f9332478f2506414443a910bf15863b36ebfcaa7cbb19253ae32cd3ca390dab87b29cd31e11be7fa4ea3a01dad625d9de44e412680e1a694227698788d71f1e089e5831dc1bbacfa794b45e1c995214bf71ee4160d98b4305fa4c3e36ee5f8da19b3708f68e7d2e8197375c0f763d90e31143eb04760cc2148c8f54937b9385c95db1742595634ed004fa567655dfe1d9b9fa698074a9fb70c05a252b2d9cf7ca1c9b009f2cd70d6972ccf0ee281d777d66a0346c6c6525436dd7fe3578b28dca2c7adbfde0ecd45148$31c3248ba4dc9600a024b4e0e7c3e585'
+                                'pbkdf2$10000$ab4104d8bb68390ee7e6c9397588e768de6c025f0c732c18806f3d1270c83f83fa86a7bf62583770e5f8d0b405fbb3ad32214ef3584f5f9332478f2506414443a910bf15863b36ebfcaa7cbb19253ae32cd3ca390dab87b29cd31e11be7fa4ea3a01dad625d9de44e412680e1a694227698788d71f1e089e5831dc1bbacfa794b45e1c995214bf71ee4160d98b4305fa4c3e36ee5f8da19b3708f68e7d2e8197375c0f763d90e31143eb04760cc2148c8f54937b9385c95db1742595634ed004fa567655dfe1d9b9fa698074a9fb70c05a252b2d9cf7ca1c9b009f2cd70d6972ccf0ee281d777d66a0346c6c6525436dd7fe3578b28dca2c7adbfde0ecd45148$31c3248ba4dc9600a024b4e0e7c3e585',
                         },
                         _id: 'system.user.write-only',
                         native: {},
                         acl: {
                             object: 1638,
                             owner: 'system.user.admin',
-                            ownerGroup: 'system.group.administrator'
-                        }
+                            ownerGroup: 'system.group.administrator',
+                        },
                     },
                     function (err) {
                         expect(err).to.be.null;
@@ -1300,7 +1300,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                     type: 'number',
                                     role: 'level',
                                     read: true,
-                                    write: true
+                                    write: true,
                                 },
                                 native: {
                                     attr1: '1',
@@ -1308,14 +1308,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                     attr3: '3',
                                     repositories: ['R1'],
                                     certificates: ['C1'],
-                                    devices: ['D1']
+                                    devices: ['D1'],
                                 },
                                 acl: {
                                     object: 1638,
                                     owner: 'system.user.write-only',
                                     ownerGroup: 'system.group.administrator',
-                                    state: 1638
-                                }
+                                    state: 1638,
+                                },
                             },
                             function (err) {
                                 expect(err).to.be.null;
@@ -1332,13 +1332,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                         expect(obj!.type).equal('state');
                                         //expect(obj.acl).to.be.ok;
                                         done();
-                                    }
+                                    },
                                 );
-                            }
+                            },
                         );
-                    }
+                    },
                 );
-            }
+            },
         );
     });
 
@@ -1352,9 +1352,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 def: 'Run Forrest, Run!',
                 read: true,
                 write: true,
-                role: 'state'
+                role: 'state',
             },
-            native: {}
+            native: {},
         });
 
         const state = await context.adapter.getStateAsync('testDefaultVal');
@@ -1370,8 +1370,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             type: 'state',
             common: {
                 type: 'string',
-                def: 'Run Forrest, Run!'
-            }
+                def: 'Run Forrest, Run!',
+            },
         });
 
         expect(obj).to.be.ok;
@@ -1383,8 +1383,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         // when state already exists def should not override
         obj = await context.adapter.extendObjectAsync('testDefaultValExtend', {
             common: {
-                def: 'Please, do not set me up'
-            }
+                def: 'Please, do not set me up',
+            },
         });
 
         expect(obj).to.be.ok;
@@ -1397,8 +1397,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         // extend it again - def should be created again, because state has been removed - now we set a def object
         obj = await context.adapter.extendObjectAsync('testDefaultValExtend', {
             common: {
-                def: { hello: 'world' }
-            }
+                def: { hello: 'world' },
+            },
         });
 
         expect(obj).to.be.ok;
@@ -1415,8 +1415,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             type: 'state',
             common: {
                 type: 'string',
-                def: 'Run Forrest, Run!'
-            }
+                def: 'Run Forrest, Run!',
+            },
         });
 
         expect(obj).to.be.ok;
@@ -1428,8 +1428,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         // when state already exists def should not override
         obj = await context.adapter.extendForeignObjectAsync('foreign.0.testDefaultValExtend', {
             common: {
-                def: 'Please, do not set me up'
-            }
+                def: 'Please, do not set me up',
+            },
         });
 
         expect(obj).to.be.ok;
@@ -1442,8 +1442,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         // extend it again - def should be created again, because state has been removed - now we set a def object
         obj = await context.adapter.extendForeignObjectAsync('foreign.0.testDefaultValExtend', {
             common: {
-                def: { hello: 'world' }
-            }
+                def: { hello: 'world' },
+            },
         });
 
         expect(obj).to.be.ok;
@@ -1460,11 +1460,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             common: {
                 name: "Don't change me",
                 type: 'string',
-                def: 'Run Forrest, Run!'
+                def: 'Run Forrest, Run!',
             },
             native: {
-                bool: false
-            }
+                bool: false,
+            },
         });
 
         expect(obj).to.be.ok;
@@ -1477,14 +1477,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             {
                 common: {
                     def: 'Changed',
-                    name: 'Changed'
+                    name: 'Changed',
                 },
                 native: {
                     existing: 'exists',
-                    bool: true
-                }
+                    bool: true,
+                },
             },
-            options
+            options,
         );
 
         let objGet = await context.adapter.getForeignObjectAsync('foreign.0.testExtendPreserve');
@@ -1504,11 +1504,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 def: 'Run Forrest, Run!',
                 read: true,
                 write: true,
-                role: 'state'
+                role: 'state',
             },
             native: {
-                bool: false
-            }
+                bool: false,
+            },
         });
 
         options = { preserve: { common: true } };
@@ -1521,13 +1521,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 common: {
                     name: 'CHANGED',
                     type: 'number',
-                    def: 1
+                    def: 1,
                 },
                 native: {
-                    bool: false
-                }
+                    bool: false,
+                },
             },
-            options
+            options,
         );
 
         objGet = await context.adapter.getForeignObjectAsync('foreign.0.testExtendPreserve');
@@ -1549,13 +1549,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     name: 'CHANGED',
                     type: 'number',
                     def: 1,
-                    smartName: 'test'
+                    smartName: 'test',
                 },
                 native: {
-                    bool: false
-                }
+                    bool: false,
+                },
             },
-            options
+            options,
         );
 
         objGet = await context.adapter.getForeignObjectAsync('foreign.0.testExtendPreserve');
@@ -1572,13 +1572,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 common: {
                     type: 'number',
                     def: 1,
-                    smartName: 'test'
+                    smartName: 'test',
                 },
                 native: {
-                    bool: false
-                }
+                    bool: false,
+                },
             },
-            options
+            options,
         );
 
         objGet = await context.adapter.getForeignObjectAsync('foreign.0.testExtendPreserve');
@@ -1596,17 +1596,17 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 common: {
                     name: {
                         en: 'Hallo',
-                        de: 'Hello'
+                        de: 'Hello',
                     },
                     type: 'number',
                     def: 1,
-                    smartName: 'test'
+                    smartName: 'test',
                 },
                 native: {
-                    bool: false
-                }
+                    bool: false,
+                },
             },
-            options
+            options,
         );
 
         objGet = await context.adapter.getForeignObjectAsync('foreign.0.testExtendPreserve');
@@ -1621,14 +1621,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'state',
                 common: {
                     type: 'string',
-                    def: 'Run Forrest, Run!'
+                    def: 'Run Forrest, Run!',
                 },
                 // @ts-expect-error force crash
-                native: -3
-            })
+                native: -3,
+            }),
         ).to.be.eventually.rejectedWith(
             `Cannot use 'in' operator to search for 'repositories' in -3`,
-            'Should have thrown'
+            'Should have thrown',
         );
     });
 
@@ -1642,7 +1642,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         await context.adapter.setObjectAsync(id, {
             type: 'meta',
             common: { name: 'meta', type: 'meta.user' },
-            native: {}
+            native: {},
         });
 
         // object should now exist
@@ -1660,7 +1660,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         await context.adapter.setForeignObjectAsync(id, {
             type: 'meta',
             common: { name: 'meta', type: 'meta.user' },
-            native: {}
+            native: {},
         });
 
         // object should now exist
@@ -1674,7 +1674,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         await context.objects.setObjectAsync('fileTest.0', {
             type: 'meta',
             common: { name: 'meta', type: 'meta.user' },
-            native: {}
+            native: {},
         });
 
         // file should not exist

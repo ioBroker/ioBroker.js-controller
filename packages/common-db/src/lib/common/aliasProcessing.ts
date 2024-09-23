@@ -42,7 +42,7 @@ export function applyAliasTransformer(options: ApplyAliasTransformerOptions): io
         `${prefix}Type`,
         `${prefix}Min`,
         `${prefix}Max`,
-        `return ${transformer}`
+        `return ${transformer}`,
     );
 
     return func(
@@ -52,7 +52,7 @@ export function applyAliasTransformer(options: ApplyAliasTransformerOptions): io
         firstCommon.max,
         secondCommon.type,
         secondCommon.min,
-        secondCommon.max
+        secondCommon.max,
     );
 }
 

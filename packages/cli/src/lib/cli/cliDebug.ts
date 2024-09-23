@@ -76,12 +76,12 @@ export class CLIDebug extends CLICommand {
             // --inspect[-brk][=[ip]:[port]]
             `--inspect${params.wait ? '-brk' : ''}${!!params.ip || !!params.port ? '=' : ''}${params.ip || ''}${
                 !!params.ip && !!params.port ? ':' : ''
-            }${params.port || ''}`
+            }${params.port || ''}`,
         ];
         // And wait until the sub process has finished
         const cp = fork(mainFile, adapterArgs, {
             cwd: adapterDir,
-            execArgv: nodeArgs
+            execArgv: nodeArgs,
         });
         cp.on('exit', code => callback(code || 0));
     }

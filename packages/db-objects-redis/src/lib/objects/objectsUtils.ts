@@ -74,30 +74,30 @@ const defaultAcl = {
             read: false,
             write: false,
             create: false,
-            delete: false
+            delete: false,
         },
         object: {
             list: false,
             read: false,
             write: false,
             create: false,
-            delete: false
+            delete: false,
         },
         state: {
             list: false,
             read: false,
             write: false,
             create: false,
-            delete: false
+            delete: false,
         },
         users: {
             list: false,
             read: false,
             write: false,
             create: false,
-            delete: false
-        }
-    }
+            delete: false,
+        },
+    },
 } as const;
 
 // FIXME: This should have better types. Probably Record<string, {acl: ioBroker.ObjectPermissions, [x: string | number | symbol]: any}>
@@ -128,7 +128,7 @@ export function checkFile(
     fileOptions: Record<string, any>,
     options: Record<string, any>,
     flag: any,
-    defaultNewAcl?: ACLObject | null
+    defaultNewAcl?: ACLObject | null,
 ): boolean {
     if (typeof fileOptions.acl !== 'object') {
         fileOptions = {};
@@ -138,7 +138,7 @@ export function checkFile(
             ownerGroup: (defaultNewAcl && defaultNewAcl.ownerGroup) || CONSTS.SYSTEM_ADMIN_GROUP,
             permissions:
                 (defaultNewAcl && defaultNewAcl.file) ||
-                CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ // '0644'
+                CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ, // '0644'
         };
     }
 
@@ -185,7 +185,7 @@ export function checkFileRights(
     name: string | null,
     options: Record<string, any> | null | undefined,
     flag: CONSTS.GenericAccessFlags,
-    callback?: CheckFileRightsCallback
+    callback?: CheckFileRightsCallback,
 ): any {
     const _options = options || {};
     if (!_options.user) {
@@ -228,7 +228,7 @@ export function checkFileRights(
 // For users and groups
 function getDefaultAdminRights(
     acl?: ioBroker.ObjectPermissions,
-    _isState?: boolean
+    _isState?: boolean,
 ): Omit<ioBroker.PermissionSet, 'user' | 'groups'> {
     return {
         ...acl,
@@ -237,34 +237,34 @@ function getDefaultAdminRights(
             read: true,
             write: true,
             create: true,
-            delete: true
+            delete: true,
         },
         object: {
             create: true,
             list: true,
             read: true,
             write: true,
-            delete: true
+            delete: true,
         },
         users: {
             create: true,
             list: true,
             read: true,
             write: true,
-            delete: true
+            delete: true,
         },
         state: {
             read: true,
             write: true,
             delete: true,
             create: true,
-            list: true
+            list: true,
         },
         other: {
             execute: false,
             http: false,
-            sendto: false
-        }
+            sendto: false,
+        },
     };
 }
 
@@ -274,13 +274,13 @@ type GetUserGroupCallback = (
     err: Error | null | undefined,
     user: string,
     groups: string[],
-    acl: ioBroker.ObjectPermissions
+    acl: ioBroker.ObjectPermissions,
 ) => void;
 
 export function getUserGroup(
     objects: any,
     user: ioBroker.ObjectIDs.User,
-    callback?: GetUserGroupCallback
+    callback?: GetUserGroupCallback,
 ): Promise<GetUserGroupPromiseReturn> | void {
     if (!user || typeof user !== 'string' || !user.startsWith(USER_STARTS_WITH)) {
         console.log(`invalid user name: ${user}`);
@@ -290,7 +290,7 @@ export function getUserGroup(
             `invalid user name: ${user}`,
             deepClone(user),
             [],
-            deepClone(defaultAcl.acl)
+            deepClone(defaultAcl.acl),
         );
     }
     if (users[user]) {
@@ -306,7 +306,7 @@ export function getUserGroup(
             err: Error,
             arr: {
                 rows: Array<ioBroker.GetObjectViewItem<ioBroker.GroupObject>>;
-            }
+            },
         ) => {
             if (err) {
                 error = err;
@@ -334,7 +334,7 @@ export function getUserGroup(
                     err?: Error | null,
                     arr?: {
                         rows: ioBroker.GetObjectListItem<ioBroker.UserObject>[];
-                    }
+                    },
                 ) => {
                     if (err) {
                         error = err;
@@ -465,17 +465,17 @@ export function getUserGroup(
                         error,
                         user,
                         users[user] ? users[user].groups : [],
-                        users[user] ? users[user].acl : deepClone(defaultAcl.acl)
+                        users[user] ? users[user].acl : deepClone(defaultAcl.acl),
                     );
-                }
+                },
             );
-        }
+        },
     );
 }
 
 export function sanitizePath(
     id: string,
-    name: string
+    name: string,
 ): {
     id: string;
     name: string;
@@ -515,7 +515,7 @@ export function sanitizePath(
 export function checkObject(
     obj: ioBroker.AnyObject | FileObject | null,
     options: Record<string, any>,
-    flag: CONSTS.GenericAccessFlags
+    flag: CONSTS.GenericAccessFlags,
 ): boolean {
     // read rights of object
     if (!obj || !('common' in obj) || !obj.acl || flag === CONSTS.ACCESS_LIST) {
@@ -568,7 +568,7 @@ export function checkObjectRights(
     object: ioBroker.Object | null,
     options: Record<string, any> | null | undefined,
     flag: CONSTS.GenericAccessFlags,
-    callback: (err: Error | null | undefined, options: Record<string, any>) => void
+    callback: (err: Error | null | undefined, options: Record<string, any>) => void,
 ): void | Promise<Record<string, any>> {
     options = options || {};
 
@@ -579,7 +579,7 @@ export function checkObjectRights(
             params: options,
             group: CONSTS.SYSTEM_ADMIN_GROUP,
             groups: [CONSTS.SYSTEM_ADMIN_GROUP],
-            acl: getDefaultAdminRights()
+            acl: getDefaultAdminRights(),
         };
     }
 

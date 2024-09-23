@@ -5,7 +5,7 @@ import {
     decrypt,
     appNameLowerCase,
     getRootDir,
-    execAsync
+    execAsync,
 } from '@iobroker/js-controller-common-db/tools';
 import { SUPPORTED_FEATURES, type SupportedFeature } from '@/lib/adapter/constants.js';
 import path from 'node:path';
@@ -143,7 +143,7 @@ export async function requestModuleNameByUrl(url: string): Promise<string> {
 
     if (typeof res.stdout !== 'string') {
         throw new Error(
-            `Could not determine module name for url "${url}". Unexpected stdout: "${res.stdout ? res.stdout.toString() : ''}"`
+            `Could not determine module name for url "${url}". Unexpected stdout: "${res.stdout ? res.stdout.toString() : ''}"`,
         );
     }
 

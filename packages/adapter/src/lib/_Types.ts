@@ -5,7 +5,7 @@ export interface AdapterOptions {
             {
                 regex: RegExp;
             }
-        >
+        >,
     ) => void;
     /** If the adapter collects logs from all adapters (experts only). Default: false */
     logTransporter?: boolean;
@@ -141,7 +141,7 @@ export interface UserInterfaceSubscribeInfo {
 }
 
 export type UserInterfaceClientSubscribeHandler = (
-    subscribeInfo: UserInterfaceSubscribeInfo
+    subscribeInfo: UserInterfaceSubscribeInfo,
 ) => UserInterfaceClientSubscribeReturnType | Promise<UserInterfaceClientSubscribeReturnType>;
 
 export interface UserInterfaceClientSubscribeReturnType {
@@ -172,7 +172,7 @@ export type UserInterfaceUnsubscribeInfo = UserInterfaceUnsubscribeInfoBaseObjec
     );
 
 export type UserInterfaceClientUnsubscribeHandler = (
-    unsubscribeInfo: UserInterfaceUnsubscribeInfo
+    unsubscribeInfo: UserInterfaceUnsubscribeInfo,
 ) => void | Promise<void>;
 
 export type UserInterfaceClientRemoveMessage =
@@ -329,7 +329,7 @@ export interface InternalCalculatePermissionsOptions {
 export type GetCertificatesCallback = (
     err?: Error | null,
     certs?: ioBroker.Certificates,
-    useLetsEncryptCert?: boolean
+    useLetsEncryptCert?: boolean,
 ) => void;
 
 export type GetCertificatesPromiseReturnType = [cert: ioBroker.Certificates, useLetsEncryptCert?: boolean];

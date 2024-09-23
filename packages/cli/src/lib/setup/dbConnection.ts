@@ -4,7 +4,7 @@ import {
     getObjectsConstructor,
     getStatesConstructor,
     objectsDbHasServer,
-    statesDbHasServer
+    statesDbHasServer,
 } from '@iobroker/js-controller-common';
 import { EXIT_CODES } from '@iobroker/js-controller-common';
 import { tools } from '@iobroker/js-controller-common';
@@ -39,7 +39,7 @@ export function dbConnect(onlyCheck: boolean, params: Record<string, any>, callb
 export async function dbConnect(
     onlyCheck: boolean | Record<string, any> | DbConnectCallback,
     params?: DbConnectParams | DbConnectCallback,
-    callback?: DbConnectCallback
+    callback?: DbConnectCallback,
 ): Promise<void> {
     if (typeof onlyCheck === 'object') {
         callback = params as DbConnectCallback;
@@ -112,7 +112,7 @@ export async function dbConnect(
                                 /** do not log on this level */
                             },
                             warn: (msg: string) => console.log(msg),
-                            error: (msg: string) => console.log(msg)
+                            error: (msg: string) => console.log(msg),
                         },
                         connected: async () => {
                             isObjectConnected = true;
@@ -127,14 +127,14 @@ export async function dbConnect(
                                     states: states!,
                                     isOffline: true,
                                     objectsDBType: config.objects.type,
-                                    config
+                                    config,
                                 });
                             }
-                        }
+                        },
                     });
                 } else {
                     console.log(
-                        `No connection to objects ${config.objects.host}:${config.objects.port}[${config.objects.type}]`
+                        `No connection to objects ${config.objects.host}:${config.objects.port}[${config.objects.type}]`,
                     );
                     if (onlyCheck) {
                         callback &&
@@ -143,7 +143,7 @@ export async function dbConnect(
                                 states: states!,
                                 isOffline: true,
                                 objectsDBType: config.objects.type,
-                                config
+                                config,
                             });
                         callback = undefined;
                     } else {
@@ -178,7 +178,7 @@ export async function dbConnect(
                                 /** do not log on this level */
                             },
                             warn: (msg: string) => console.log(msg),
-                            error: (msg: string) => console.log(msg)
+                            error: (msg: string) => console.log(msg),
                         },
                         connected: async () => {
                             isStatesConnected = true;
@@ -193,13 +193,13 @@ export async function dbConnect(
                                     states: states!,
                                     isOffline: true,
                                     objectsDBType: config.objects.type,
-                                    config
+                                    config,
                                 });
                             }
                         },
                         // react on change
                         // @ts-expect-error todo according to types and first look states.onchange does not exist
-                        change: (id, msg) => states?.onChange(id, msg)
+                        change: (id, msg) => states?.onChange(id, msg),
                     });
                     // @ts-expect-error todo according to types and first look states.onchange does not exist
                     states.onChange = null; // here the custom onChange handler could be installed
@@ -215,7 +215,7 @@ export async function dbConnect(
                         objects = null;
                     }
                     console.log(
-                        `No connection to states ${config.states.host}:${config.states.port}[${config.states.type}]`
+                        `No connection to states ${config.states.host}:${config.states.port}[${config.states.type}]`,
                     );
                     if (onlyCheck) {
                         callback &&
@@ -224,7 +224,7 @@ export async function dbConnect(
                                 states: states!,
                                 isOffline: true,
                                 objectsDBType: config.objects.type,
-                                config
+                                config,
                             });
                         callback = undefined;
                     } else {
@@ -249,14 +249,14 @@ export async function dbConnect(
                         states: null as any,
                         isOffline: true,
                         objectsDBType: config.objects.type,
-                        config
+                        config,
                     });
                 callback = undefined;
             } else {
                 return void exitApplicationSave(EXIT_CODES.NO_CONNECTION_TO_OBJ_DB);
             }
         },
-        params.timeout || config.objects.connectTimeout * 2
+        params.timeout || config.objects.connectTimeout * 2,
     );
 
     // try to connect as client
@@ -273,7 +273,7 @@ export async function dbConnect(
                 /** do not log on this level */
             },
             warn: (msg: string) => console.log(msg),
-            error: (msg: string) => console.log(msg)
+            error: (msg: string) => console.log(msg),
         },
         connected: async () => {
             if (isObjectConnected) {
@@ -290,7 +290,7 @@ export async function dbConnect(
                 }
                 callback({ objects: objects!, states: states!, isOffline, objectsDBType: config.objects.type, config });
             }
-        }
+        },
     });
 
     states = new States({
@@ -306,7 +306,7 @@ export async function dbConnect(
                 /** do not log on this level */
             },
             warn: (msg: string) => console.log(msg),
-            error: (msg: string) => console.log(msg)
+            error: (msg: string) => console.log(msg),
         },
         connected: async () => {
             if (isStatesConnected) {
@@ -325,7 +325,7 @@ export async function dbConnect(
             }
         },
         // @ts-expect-error todo according to types and first look states.onchange does not exist
-        change: (id, state) => states?.onChange(id, state)
+        change: (id, state) => states?.onChange(id, state),
     });
 }
 
@@ -401,11 +401,11 @@ function initializePlugins(config: Record<string, any>): Promise<void> {
             },
             warn: (msg: string) => console.log(msg),
             error: (msg: string) => console.log(msg),
-            level: 'warn'
+            level: 'warn',
         },
         iobrokerConfig: config,
         parentPackage: packageJson,
-        controllerVersion: ioPackage.common.version
+        controllerVersion: ioPackage.common.version,
     };
 
     pluginHandler = new PluginHandler(pluginSettings);

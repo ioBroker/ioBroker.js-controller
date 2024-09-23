@@ -37,7 +37,7 @@ export interface PasswordReturnValue {
     hash: (
         salt: string | null,
         iterations: number | null,
-        callback: (err?: Error | null, hash?: string) => void
+        callback: (err?: Error | null, hash?: string) => void,
     ) => void;
 }
 
@@ -86,6 +86,6 @@ export function password(pw: string): PasswordReturnValue {
             }
             typeof callback === 'function' && callback(result);
             return result; // true if the complexity OK
-        }
+        },
     };
 }

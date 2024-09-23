@@ -187,7 +187,7 @@ FALLBACK:
                 if (pckg.native && pckg.native.dependencies && pckg.native.dependencies.length) {
                     json.push({
                         name: widgetset,
-                        depends: pckg.native.dependencies
+                        depends: pckg.native.dependencies,
                     });
                 } else {
                     json.push(widgetset);

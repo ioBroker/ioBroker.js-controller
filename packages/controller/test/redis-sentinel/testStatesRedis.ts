@@ -39,7 +39,7 @@ describe('States-Redis-Sentinel: Test states', function () {
                 dataDir: dataDir,
                 onChange: (id: string, _obj: ioBroker.AnyObject) => {
                     console.log('object changed. ' + id);
-                }
+                },
             },
             states: {
                 type: 'redis',
@@ -50,8 +50,8 @@ describe('States-Redis-Sentinel: Test states', function () {
                     if (onStatesChanged) {
                         onStatesChanged(id, state);
                     }
-                }
-            }
+                },
+            },
         });
 
         objects = _objects;

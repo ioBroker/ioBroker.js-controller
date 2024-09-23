@@ -116,7 +116,7 @@ export class CLICompact extends CLICommand {
                 if (!err && obj) {
                     if (!obj.common.compact) {
                         console.log(
-                            'This adapter does not support compact mode. The below settings will have no effect!'
+                            'This adapter does not support compact mode. The below settings will have no effect!',
                         );
                         console.log();
                     } else {
@@ -125,7 +125,7 @@ export class CLICompact extends CLICommand {
                     console.log('Compact mode enabled for instance: ' + !!obj.common.runAsCompactMode);
                     console.log(
                         'Compact group:                     ' +
-                            (obj.common.compactGroup !== undefined ? obj.common.compactGroup : 1)
+                            (obj.common.compactGroup !== undefined ? obj.common.compactGroup : 1),
                     );
                     return void callback();
                 } else {
@@ -189,13 +189,13 @@ export class CLICompact extends CLICommand {
             }
             console.log(
                 'Compact mode enabled for instance: ' +
-                    (newRunAsCompactMode !== undefined ? '--> ' + newRunAsCompactMode : !!obj.common.runAsCompactMode)
+                    (newRunAsCompactMode !== undefined ? '--> ' + newRunAsCompactMode : !!obj.common.runAsCompactMode),
             );
             console.log(
                 'Compact group:                     ' +
                     (newCompactGroup !== undefined && obj.common.compactGroup !== newCompactGroup
                         ? '--> ' + newCompactGroup
-                        : obj.common.compactGroup)
+                        : obj.common.compactGroup),
             );
             if (newRunAsCompactMode !== undefined || newCompactGroup !== undefined) {
                 if (newCompactGroup !== undefined) {

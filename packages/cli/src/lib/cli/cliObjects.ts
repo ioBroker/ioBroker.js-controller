@@ -82,7 +82,7 @@ export class CLIObjects extends CLICommand {
                     console.log(`Successfully migrated ${noMigrated} objects to Redis Sets`);
                 }
                 console.log(
-                    `Successfully activated the usage of Redis Sets. Please make sure to only use js-controller 4.0 or higher on all hosts!`
+                    `Successfully activated the usage of Redis Sets. Please make sure to only use js-controller 4.0 or higher on all hosts!`,
                 );
             } else {
                 console.log('Redis Sets are already activated.');
@@ -135,7 +135,7 @@ export class CLIObjects extends CLICommand {
 
             let answer = rl.question('Changing the protocol version will restart all hosts! Continue? [N/y]', {
                 limit: /^(yes|y|n|no)$/i,
-                defaultInput: 'no'
+                defaultInput: 'no',
             });
 
             answer = answer.toLowerCase();
@@ -195,7 +195,7 @@ export class CLIObjects extends CLICommand {
                 (err, processed) => {
                     // Print the new object rights
                     this.printObjectList(objects, states, err?.message, processed);
-                }
+                },
             );
         });
     }
@@ -237,7 +237,7 @@ export class CLIObjects extends CLICommand {
                 (err, processed) => {
                     // Print the new object rights
                     this.printObjectList(objects, states, err?.message, processed);
-                }
+                },
             );
         });
     }
@@ -262,7 +262,7 @@ export class CLIObjects extends CLICommand {
                     objects,
                     states,
                     err?.message,
-                    processed && processed.rows && processed.rows.map(r => r.value)
+                    processed && processed.rows && processed.rows.map(r => r.value),
                 );
                 return void callback(EXIT_CODES.NO_ERROR);
             });
@@ -389,7 +389,7 @@ export class CLIObjects extends CLICommand {
         objects: ObjectsClient,
         res: ioBroker.AnyObject,
         propPath: string,
-        value: any
+        value: any,
     ): Promise<void> {
         // input: it's an instance object and has encrypted native, was a native value set?
         if (/^native\..+[^.]$/g.test(propPath) && typeof value === 'string') {
@@ -479,7 +479,7 @@ export class CLIObjects extends CLICommand {
             'config',
             'group',
             'user',
-            'script'
+            'script',
         ];
         const result: ioBroker.AnyObject[] = [];
 
@@ -549,7 +549,7 @@ export class CLIObjects extends CLICommand {
             if (id.endsWith('*')) {
                 const params = {
                     startkey: id.replace(/\*/g, ''),
-                    endkey: id.replace(/\*/g, '\u9999')
+                    endkey: id.replace(/\*/g, '\u9999'),
                 };
 
                 const result = await this._collectObjects(objects, params);
@@ -563,7 +563,7 @@ export class CLIObjects extends CLICommand {
                 if (!this.options.f && this.options.y && !this.options.yes) {
                     const rl = (await import('node:readline')).createInterface({
                         input: process.stdin,
-                        output: process.stdout
+                        output: process.stdout,
                     });
                     rl.question(`${result.length} object(s) will be deleted. Are you sure? [y/N]: `, answer => {
                         rl.close();
@@ -617,7 +617,7 @@ export class CLIObjects extends CLICommand {
         objects: ObjectsClient,
         states: StatesClient,
         err: string | undefined,
-        objList?: ioBroker.AnyObject[]
+        objList?: ioBroker.AnyObject[],
     ): Promise<void> {
         // TODO: is this supposed to be here?
         const { callback } = this.options;
@@ -630,7 +630,7 @@ export class CLIObjects extends CLICommand {
             const list = new List({
                 states,
                 objects,
-                processExit: callback
+                processExit: callback,
             });
             list.showObjectHeader();
             objList.forEach(list.showObject);

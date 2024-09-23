@@ -8,7 +8,7 @@ export type DbConnectCallback = (params: DbConnectAsyncReturn) => void;
 export type DbConnect = (
     onlyCheckOrParams?: boolean | Record<string, any>,
     paramsOrCb?: Record<string, any> | DbConnectCallback,
-    callback?: DbConnectCallback
+    callback?: DbConnectCallback,
 ) => void;
 
 export interface DbConnectAsyncReturn {

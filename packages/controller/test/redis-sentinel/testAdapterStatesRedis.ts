@@ -10,12 +10,12 @@ const dataDir = thisDir + '/../../tmp/data-redis';
 const statesConfig = {
     options: {
         auth_pass: null,
-        retry_max_delay: 15000
+        retry_max_delay: 15000,
     },
     type: 'redis',
     redisNamespace: 'testObjectsIo',
     host: ['127.0.0.1', '127.0.0.1', '127.0.0.1'],
-    port: [26380, 26381, 26382]
+    port: [26380, 26381, 26382],
 };
 
 if (!fs.existsSync(thisDir + '/../tmp')) {
@@ -30,12 +30,12 @@ const objectsConfig = {
     user: '',
     pass: '',
     noFileCache: true,
-    connectTimeout: 2000
+    connectTimeout: 2000,
 };
 
 // states in REDIS, objects in files
 testAdapter({
     statesConfig: statesConfig,
     objectsConfig: objectsConfig,
-    name: 'Tests Redis-Sentinel'
+    name: 'Tests Redis-Sentinel',
 });

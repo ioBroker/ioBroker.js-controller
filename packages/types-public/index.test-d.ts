@@ -31,7 +31,7 @@ const adapterOptions: ioBroker.AdapterOptions = {
     error: err => {
         console.log(err);
         return true;
-    }
+    },
 };
 
 function readyHandler(): void {}
@@ -239,12 +239,12 @@ adapter.setObject('id', {
         write: false,
         role: 'some role',
         def: [],
-        defAck: false
+        defAck: false,
     },
     native: {},
     from: 'me',
     user: 'also me',
-    ts: Date.now()
+    ts: Date.now(),
 });
 
 adapter.setObject(
@@ -257,14 +257,14 @@ adapter.setObject(
             name: 'foo',
             read: true,
             write: false,
-            role: 'some role'
+            role: 'some role',
         },
         native: {},
         protectedNative: ['none'],
         encryptedNative: ['none'],
         from: 'me',
-        ts: Date.now()
-    }
+        ts: Date.now(),
+    },
 );
 
 adapter.setObject(
@@ -275,8 +275,8 @@ adapter.setObject(
         type: 'state',
         native: {},
         from: 'me',
-        ts: Date.now()
-    }
+        ts: Date.now(),
+    },
 );
 
 adapter.setObject(
@@ -288,10 +288,10 @@ adapter.setObject(
         common: {
             name: 'foo',
             read: true,
-            write: false
+            write: false,
         },
-        native: {}
-    }
+        native: {},
+    },
 );
 
 // TODO: Cannot enforce this without making it impossible to use interfaces to describe the shape of `native`
@@ -312,9 +312,9 @@ adapter.extendForeignObject('id', {
     common: {
         name: {
             en: 'foobar',
-            fr: 'le foo de bar'
-        }
-    }
+            fr: 'le foo de bar',
+        },
+    },
 });
 
 // Check that `preserve` is typed correctly
@@ -324,22 +324,22 @@ adapter.extendObject(
     {
         preserve: { common: ['name'] },
         // And that undocumented options are allowed
-        undocumented: true
-    }
+        undocumented: true,
+    },
 );
 adapter.extendObject(
     'id',
     {},
     {
-        preserve: { common: { name: true } }
-    }
+        preserve: { common: { name: true } },
+    },
 );
 adapter.extendForeignObject(
     'id',
     {},
     {
-        preserve: { common: { name: { en: true } } }
-    }
+        preserve: { common: { name: { en: true } } },
+    },
 );
 
 // Make sure the return type of getObjectView is inferred correctly
@@ -537,9 +537,9 @@ function _repro2(): void {
     const obj = {
         common: {
             custom: {
-                'adapter.namespace': { start_day: null as any }
-            }
-        }
+                'adapter.namespace': { start_day: null as any },
+            },
+        },
     };
 
     adapter.extendForeignObject('obj.id', obj, _err => {});
@@ -582,9 +582,9 @@ const _folderObj: ioBroker.FolderObject = {
     common: {
         name: 'something',
         // any property is allowed
-        foo: 'bar'
+        foo: 'bar',
     },
-    native: {}
+    native: {},
 };
 
 // This used to be an error: https://github.com/ioBroker/ioBroker.js-controller/issues/782
@@ -676,7 +676,7 @@ adapter
         obj =>
             obj &&
             obj.type === 'state' &&
-            (typeof obj.common.alias?.id === 'string' || typeof obj.common.alias?.id.read === 'string')
+            (typeof obj.common.alias?.id === 'string' || typeof obj.common.alias?.id.read === 'string'),
     );
 
 adapter.getObjectAsync('id').then(obj => {
@@ -768,9 +768,9 @@ adapter.FORBIDDEN_CHARS = /_/;
             write: false,
             type: 'boolean',
             role: 'indicator',
-            color: 'yellow'
+            color: 'yellow',
         },
-        native: config
+        native: config,
     });
 }
 
@@ -792,11 +792,11 @@ const _adapterObject: ioBroker.AdapterObject = {
             link1: '%web_protocol%://%ip%:%web_port%/vis-2/edit.html',
             link2: {
                 name: { en: 'Service' },
-                link: '%web_protocol%://%ip%:%web_port%/vis-2/edit.html'
-            }
+                link: '%web_protocol%://%ip%:%web_port%/vis-2/edit.html',
+            },
         },
         supportedMessages: {
-            deviceManager: true
+            deviceManager: true,
         },
         titleLang: {
             de: 'foo',
@@ -809,18 +809,18 @@ const _adapterObject: ioBroker.AdapterObject = {
             ru: 'foo',
             en: 'foo',
             uk: 'foo',
-            'zh-cn': 'foo'
+            'zh-cn': 'foo',
         },
         version: '1.2.3',
         blockedVersions: ['~3.14.0', '4.0.1'],
         plugins: {
             sentry: {
-                dsn: 'XYZ'
-            }
-        }
+                dsn: 'XYZ',
+            },
+        },
     },
     instanceObjects: [],
-    objects: []
+    objects: [],
 };
 
 if (_adapterObject.common.licenseInformation && _adapterObject.common.licenseInformation.type === 'paid') {
@@ -835,21 +835,21 @@ const _folderObject: ioBroker.FolderObject = {
     _id: '',
     type: 'folder',
     common: { name: 'My Folder' },
-    native: {}
+    native: {},
 };
 
 const _enumObject: ioBroker.EnumObject = {
     _id: '',
     type: 'enum',
     common: { name: 'My Enum', members: [] },
-    native: {}
+    native: {},
 };
 
 const _metaObject: ioBroker.MetaObject = {
     _id: '',
     type: 'meta',
     common: { type: 'meta.folder', name: 'foobar' },
-    native: {}
+    native: {},
 };
 
 const _deviceObject: ioBroker.DeviceObject = {
@@ -860,10 +860,10 @@ const _deviceObject: ioBroker.DeviceObject = {
         statusStates: {
             offlineId: 'device.isOffline',
             onlineId: 'device.isOnline',
-            errorId: 'device.isError'
-        }
+            errorId: 'device.isError',
+        },
     },
-    native: {}
+    native: {},
 };
 
 const _instanceObject: ioBroker.InstanceObject = {
@@ -877,18 +877,18 @@ const _instanceObject: ioBroker.InstanceObject = {
         version: '1.0.0',
         platform: 'Javascript/Node.js',
         materialize: true,
-        installedVersion: '1.0.0'
+        installedVersion: '1.0.0',
     },
     native: {},
     instanceObjects: [],
-    objects: []
+    objects: [],
 };
 
 const _userObject: ioBroker.UserObject = {
     _id: 'system.user.me',
     type: 'user',
     common: { name: 'me', password: '*****', enabled: true },
-    native: {}
+    native: {},
 };
 
 // Ensure that getForeignObject tries to resolve a specific object type
@@ -912,7 +912,7 @@ async () => {
     chnl = await adapter.getForeignObjectAsync('admin.777.info');
 
     const state: ioBroker.StateObject | null | undefined = await adapter.getForeignObjectAsync(
-        'system.adapter.admin.0.foobar'
+        'system.adapter.admin.0.foobar',
     );
 
     let scrChnl: ioBroker.ChannelObject | ioBroker.ScriptObject | null | undefined;
@@ -964,15 +964,15 @@ async () => {
 () => {
     adapter.setForeignObject('system.host.my-hostname', {
         // @ts-expect-error
-        type: 'not-host'
+        type: 'not-host',
     });
 
     adapter.setForeignObject('admin.0.maybe-channel', {
         type: 'channel',
         common: {
-            name: 'A channel'
+            name: 'A channel',
         },
-        native: {}
+        native: {},
     });
 
     adapter.setForeignObject(null! as string, null! as ioBroker.Object);
@@ -989,9 +989,9 @@ async () => {
             role: 'value',
             read: true,
             write: false,
-            unit: '%'
+            unit: '%',
         },
-        native: {}
+        native: {},
     };
 }
 {
@@ -999,9 +999,9 @@ async () => {
         // @ts-expect-error
         type: 'state',
         common: {
-            name: 'Dummy name'
+            name: 'Dummy name',
         },
-        native: {}
+        native: {},
     };
 }
 

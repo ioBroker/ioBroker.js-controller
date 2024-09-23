@@ -15,7 +15,7 @@ const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __
 const context: TestContext = {
     // @ts-expect-error will be filled in time
     objects: null,
-    name: textName
+    name: textName,
 };
 if (!fs.existsSync(thisDir + '/../tmp')) {
     fs.mkdirSync(thisDir + '/../tmp');
@@ -33,7 +33,7 @@ const objectsConfig = {
     connectTimeout: 2000,
     onChange: (id: string, _obj: ioBroker.AnyObject) => {
         console.log(`object changed. ${id}`);
-    }
+    },
 };
 
 describe(textName + 'Test Objects Redis', function () {
@@ -46,8 +46,8 @@ describe(textName + 'Test Objects Redis', function () {
                 dataDir: thisDir + '/../tmp/data',
                 onChange: (id: string, _state: ioBroker.State) => {
                     console.log('state changed. ' + id);
-                }
-            }
+                },
+            },
         });
 
         objects = _objects;

@@ -38,7 +38,7 @@ export class CLILogs extends CLICommand {
         const count = params.lines || 1_000;
 
         const options: CLILogsOptions = {
-            complete: this.options.all
+            complete: this.options.all,
         };
 
         const config = fs.readJSONSync(require.resolve(getConfigFileName()));
@@ -71,7 +71,7 @@ export class CLILogs extends CLICommand {
                 chokidar
                     .watch(`${parts.join('/')}/iobroker*`, {
                         awaitWriteFinish: { stabilityThreshold: 500 },
-                        followSymlinks: false
+                        followSymlinks: false,
                     })
                     .on('all', this.watchHandler.bind(this, options))
                     .on('ready', () => (this.isReady = true));
@@ -127,7 +127,7 @@ export class CLILogs extends CLICommand {
         const input = fs.createReadStream(path, {
             encoding: 'utf8',
             start,
-            autoClose: true
+            autoClose: true,
         });
         if (options.regex) {
             // Read the input line by line and only include the lines matching the filter

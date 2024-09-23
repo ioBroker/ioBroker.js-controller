@@ -15,7 +15,7 @@ function updateIobJSON(): void {
         tsconfig: path.join(thisDir, '..', 'tsconfig.json'),
         type: 'IoBJson',
         skipTypeCheck: true,
-        additionalProperties: false
+        additionalProperties: false,
     };
 
     const schema = tjs.createGenerator(config).createSchema(config.type);

@@ -62,31 +62,31 @@ function initYargs(): ReturnType<typeof yargs> {
         .command('setup', 'Setup ioBroker', {
             redis: {
                 describe: 'Setup as redis',
-                type: 'boolean'
+                type: 'boolean',
             },
             objects: {
                 describe: 'Objects <host>',
                 default: tools.getLocalAddress(),
-                type: 'number'
+                type: 'number',
             },
             states: {
                 describe: 'States <host>',
                 default: tools.getLocalAddress(),
-                type: 'number'
+                type: 'number',
             },
             'port <port>': {
                 describe: 'Port of redis',
                 default: 6379,
-                type: 'number'
+                type: 'number',
             },
             custom: {
                 describe: 'Custom setup',
-                type: 'boolean'
+                type: 'boolean',
             },
             first: {
                 describe: 'Initial setup',
-                type: 'boolean'
-            }
+                type: 'boolean',
+            },
         })
         .command(
             'start [all|<adapter>.<instance>|<adapter>]',
@@ -95,125 +95,125 @@ function initYargs(): ReturnType<typeof yargs> {
                 yargs
                     .command('all', 'Starts js-controller and all adapters')
                     .command('<adapter>[.<instance>]', 'Starts a specified adapter instance');
-            }
+            },
         )
         .command(
             'stop [<adapter>.<instance>|<adapter>]',
             'stops the js-controller or a specified adapter instance or all instances of an adapter',
             yargs => {
                 yargs.command('<adapter>[.<instance>]', 'Stops a specified adapter instance');
-            }
+            },
         )
         .command(
             ['restart [<adapter>.<instance>|<adapter>]', 'r [<adapter>.<instance>|<adapter>]'],
             'Restarts js-controller or a specified adapter instance or all instances of an adapter',
             yargs => {
                 yargs.command('<adapter>[.<instance>]', 'Restarts a specified adapter instance', {});
-            }
+            },
         )
         .command('debug <adapter>[.<instance>]', 'Starts a Node.js debugging session for the adapter instance', {
             ip: {
                 describe: 'IP-address <ip>',
-                type: 'string'
+                type: 'string',
             },
             port: {
                 describe: 'Port <port>',
-                type: 'number'
+                type: 'number',
             },
             wait: {
                 describe: 'Wait',
-                type: 'boolean'
-            }
+                type: 'boolean',
+            },
         })
         .command('info', 'Shows the host info', {})
         .command('logs [<adapter>]', 'Monitor log', {
             'lines=1000': {
                 // TODO: it's the only place we use = we should avoid this
                 describe: 'Number of lines',
-                type: 'string'
+                type: 'string',
             },
             watch: {
                 describe: 'Watch',
-                type: 'boolean'
-            }
+                type: 'boolean',
+            },
         })
         .command(['add <adapter> [desiredNumber]', 'a <adapter> [desiredNumber]'], 'Add instance of adapter', {
             enabled: {
                 describe: 'Enable adapter',
-                type: 'boolean'
+                type: 'boolean',
             },
             host: {
                 describe: 'Host <host>',
-                type: 'string'
+                type: 'string',
             },
             port: {
                 describe: 'Port <port>',
-                type: 'number'
-            }
+                type: 'number',
+            },
         })
         .command(['install <adapter>', 'i <adapter>'], 'Installs a specified adapter', {})
         .command('rebuild [<module>]', 'Rebuild all native modules or path', {
             path: {
                 describe: 'Executes rebuild command in given path',
-                type: 'string'
-            }
+                type: 'string',
+            },
         })
         .command(
             'url <url> [<name>]',
             'Install adapter from specified url, e.g. GitHub, if a package name is provided instead of an url, it will be installed from npm',
-            {}
+            {},
         )
         .command(['del <adapter>', 'delete <adapter>'], 'Remove adapter and all instances from this host', {
             custom: {
                 describe: 'Remove adapter custom attribute from all objects',
-                type: 'boolean'
-            }
+                type: 'boolean',
+            },
         })
         .command(['del <adapter>.<instance>', 'delete <adapter>.<instance>'], 'Remove adapter instance', {
             custom: {
                 describe: 'Remove instance custom attribute from all objects',
-                type: 'boolean'
-            }
+                type: 'boolean',
+            },
         })
         .command('update [<repositoryUrl>]', 'Update repository and list adapters', {
             updatable: {
                 describe: 'Only show updatable adapters',
                 alias: 'u',
-                type: 'boolean'
+                type: 'boolean',
             },
             all: {
                 describe: 'Show all available adapters',
                 alias: 'a',
-                type: 'boolean'
+                type: 'boolean',
             },
             force: {
                 describe: 'Bypass hash check',
                 alias: 'f',
-                type: 'boolean'
-            }
+                type: 'boolean',
+            },
         })
         .command('upgrade', 'Upgrade management', yargs => {
             yargs
                 .option('yes', {
                     describe: 'Bypass questionnaire',
                     alias: 'y',
-                    type: 'boolean'
+                    type: 'boolean',
                 })
                 .command('[<repositoryUrl>]', 'Upgrade all adapters, optionally you can specify the repository url', {})
                 .command(
                     'all [<repositoryUrl>]',
                     'Upgrade all adapters, optionally you can specify the repository url',
-                    {}
+                    {},
                 )
                 .command(
                     'self [<repositoryUrl>]',
                     'Upgrade js-controller, optionally you can specify the repository url',
-                    {}
+                    {},
                 )
                 .command(
                     '<adapter> [<repositoryUrl>]',
                     'Upgrade specified adapter, optionally you can specify the repository url',
-                    {}
+                    {},
                 );
         })
         .command(['upload [all|<adapter>]', 'u [all|<adapter>]'], 'Upload management', yargs => {
@@ -221,7 +221,7 @@ function initYargs(): ReturnType<typeof yargs> {
                 .command(
                     `<pathToLocalFile> <pathIn${tools.appName}>`,
                     'Upload given files to provided path to make them available for instances',
-                    {}
+                    {},
                 )
                 .command('all', 'Upload all adapter files to make them available for instances', {})
                 .command('<adapter>', 'Upload specified adapter files to make them available for instances', {});
@@ -233,19 +233,19 @@ function initYargs(): ReturnType<typeof yargs> {
                 .command(
                     'set <id> propertyname=<value or json-value>',
                     'Update part of the object by providing a new value or partial object',
-                    {}
+                    {},
                 )
                 .command(
                     'extend <id> <json-value>',
                     'Extend object with the given id by providing a new json object',
-                    {}
+                    {},
                 )
                 .command('del <id|pattern>', 'Delete object with given id or all objects matching the pattern', {
                     y: {
                         describe: 'Bypass questionnaire',
                         alias: 'y',
-                        type: 'boolean'
-                    }
+                        type: 'boolean',
+                    },
                 })
                 .command('chmod <object-mode> [state-mode] <id>', 'Change object rights', {})
                 .command('chown <user> <group> <id>', 'Change object ownership', {})
@@ -261,8 +261,8 @@ function initYargs(): ReturnType<typeof yargs> {
                 .command('getPlain <id>', 'Get plain state, specified by id', {
                     pretty: {
                         describe: 'Prettify output',
-                        type: 'boolean'
-                    }
+                        type: 'boolean',
+                    },
                 })
                 .command('getValue <id>', 'Get state value, specified by id', {})
                 .command('set <id> <value> [<ack>]', 'Set state, specified by id', {})
@@ -293,13 +293,13 @@ function initYargs(): ReturnType<typeof yargs> {
                     'files',
                     'f',
                     'hosts',
-                    'h'
-                ]
+                    'h',
+                ],
             });
 
             yargs.positional('filter', {
                 describe: 'Filter for matching pattern e.g. "admin*"',
-                type: 'string'
+                type: 'string',
             });
         })
         .command('chmod <mode> <file>', 'Change file rights', {})
@@ -311,12 +311,12 @@ function initYargs(): ReturnType<typeof yargs> {
                 .command(
                     `read <${tools.appName}-path-to-read> [<filesystem-path-to-write>]`,
                     `Read file from ${tools.appName} path and optionally write to destination`,
-                    {}
+                    {},
                 )
                 .command(
                     `write <filesystem-path-to-read> <${tools.appName}-path-to-write>`,
                     `Read file from path and write it to ${tools.appName} path`,
-                    {}
+                    {},
                 )
                 .command(`rm <${tools.appName}-path-to-delete>`, 'Remove file', {})
                 .command('sync', 'Sync files', {});
@@ -327,18 +327,18 @@ function initYargs(): ReturnType<typeof yargs> {
                     yargs
                         .option('ingroup', {
                             describe: 'User group',
-                            type: 'string'
+                            type: 'string',
                         })
                         .option('password', {
                             describe: 'User password',
-                            type: 'string'
+                            type: 'string',
                         });
                 })
                 .command('del <user>', 'Delete user', {})
                 .command('passwd <user>', 'Change user password', yargs => {
                     yargs.option('password', {
                         describe: 'User password',
-                        type: 'string'
+                        type: 'string',
                     });
                 })
                 .command('enable <user>', 'Enable user', {})
@@ -347,7 +347,7 @@ function initYargs(): ReturnType<typeof yargs> {
                 .command('check <user>', 'Check user password', yargs => {
                     yargs.option('password', {
                         describe: 'User password',
-                        type: 'string'
+                        type: 'string',
                     });
                 });
         })
@@ -371,8 +371,8 @@ function initYargs(): ReturnType<typeof yargs> {
         .command('set <adapter>.<instance>', 'Change settings of adapter config', {
             customOption: {
                 describe:
-                    'Set the name of the parameter you want to change as option followed by its value, e. g. --port 80'
-            }
+                    'Set the name of the parameter you want to change as option followed by its value, e. g. --port 80',
+            },
         })
         .command('license <license.file or license.text>', 'Update license by given file', {})
         .command('cert', 'Certificate management', yargs => {
@@ -386,8 +386,8 @@ function initYargs(): ReturnType<typeof yargs> {
             force: {
                 describe: 'Restore backup of different controller version',
                 alias: 'f',
-                type: 'boolean'
-            }
+                type: 'boolean',
+            },
         })
         .command('validate <backup name or path>', 'Validate a specified backup', {})
         .command(['status [all|<adapter>.<instance>]', 'isrun'], 'Status of ioBroker or adapter instance', yargs => {
@@ -412,12 +412,12 @@ function initYargs(): ReturnType<typeof yargs> {
                 .command('enable', 'Enable multihost discovery', {
                     secure: {
                         describe: 'Use secure connection',
-                        type: 'boolean'
+                        type: 'boolean',
                     },
                     persist: {
                         describe: 'Enable persistent discovery',
-                        type: 'boolean'
-                    }
+                        type: 'boolean',
+                    },
                 })
                 .command('disable', 'Disable multihost discovery')
                 .command('browse', 'Browse for multihost server')
@@ -433,11 +433,11 @@ function initYargs(): ReturnType<typeof yargs> {
                 .command('<adapter>.<instance> group <group-id>', 'Define compact group of a specific adapter')
                 .command(
                     '<adapter>.<instance> <disable|off> [<group-id>]',
-                    'Enable or disable compact mode for specified adapter instance and set compact group optionally'
+                    'Enable or disable compact mode for specified adapter instance and set compact group optionally',
                 )
                 .command(
                     '<adapter>.<instance> <enable|on> [<group-id>]',
-                    'Enable or disable compact mode for specified adapter instance and set compact group optionally'
+                    'Enable or disable compact mode for specified adapter instance and set compact group optionally',
                 );
         })
         .command('plugin', 'Plugin management', yargs => {
@@ -448,13 +448,13 @@ function initYargs(): ReturnType<typeof yargs> {
                     {
                         host: {
                             describe: 'Hostname',
-                            type: 'string'
+                            type: 'string',
                         },
                         instance: {
                             describe: 'Instance, e.g. hm-rpc.0',
-                            type: 'string'
-                        }
-                    }
+                            type: 'string',
+                        },
+                    },
                 )
                 .command(
                     'disable <pluginname>',
@@ -462,13 +462,13 @@ function initYargs(): ReturnType<typeof yargs> {
                     {
                         host: {
                             describe: 'Hostname',
-                            type: 'string'
+                            type: 'string',
                         },
                         instance: {
                             describe: 'Instance, e.g. hm-rpc.0',
-                            type: 'string'
-                        }
-                    }
+                            type: 'string',
+                        },
+                    },
                 )
                 .command(
                     'status <pluginname>',
@@ -476,13 +476,13 @@ function initYargs(): ReturnType<typeof yargs> {
                     {
                         host: {
                             describe: 'Hostname',
-                            type: 'string'
+                            type: 'string',
                         },
                         instance: {
                             describe: 'Instance, e.g. hm-rpc.0',
-                            type: 'string'
-                        }
-                    }
+                            type: 'string',
+                        },
+                    },
                 );
         })
         .command('vendor <passphrase> [<vendor.json>]', 'Update the vendor information using given passphrase')
@@ -490,12 +490,12 @@ function initYargs(): ReturnType<typeof yargs> {
             ignore: {
                 describe:
                     'Ignore specific version of this adapter. The adapter will not be upgradeable to this specific version.',
-                type: 'string'
+                type: 'string',
             },
             recognize: {
                 describe: 'No longer ignore specific versions of this adapter.',
-                type: 'boolean'
-            }
+                type: 'boolean',
+            },
         })
         .wrap(null);
 
@@ -523,7 +523,7 @@ async function processCommand(
     command: string | number,
     args: string[],
     params: Record<string, any>,
-    callback: ExitCodeCb
+    callback: ExitCodeCb,
 ): Promise<void> {
     const commandContext: CLICommandContext = { dbConnect, callback, showHelp };
     const commandOptions: CLICommandOptions = { ...params, ...commandContext };
@@ -569,7 +569,7 @@ async function processCommand(
                 const { Repo } = await import('./setup/setupRepo.js');
                 const repo = new Repo({
                     objects,
-                    states
+                    states,
                 });
 
                 await repo.showRepo(repoUrl, params);
@@ -584,7 +584,7 @@ async function processCommand(
                 processExit: callback,
                 cleanDatabase,
                 restartController,
-                params
+                params,
             });
             if (args[0] === 'custom' || params.custom) {
                 const exitCode = await setup.setupCustom();
@@ -618,7 +618,7 @@ async function processCommand(
                             objects,
                             states,
                             processExit: callback,
-                            params
+                            params,
                         });
                         // Define the necessary instances
                         const initialInstances = ['admin', 'discovery', 'backitup'];
@@ -626,7 +626,7 @@ async function processCommand(
                         for (const instance of initialInstances) {
                             try {
                                 const adapterInstalled = !!require.resolve(
-                                    `${tools.appName.toLowerCase()}.${instance}`
+                                    `${tools.appName.toLowerCase()}.${instance}`,
                                 );
 
                                 if (adapterInstalled) {
@@ -635,7 +635,7 @@ async function processCommand(
                                         // check if another instance exists
                                         const res = await objects.getObjectViewAsync('system', 'instance', {
                                             startkey: `system.adapter.${instance}`,
-                                            endkey: `system.adapter.${instance}\u9999`
+                                            endkey: `system.adapter.${instance}\u9999`,
                                         });
 
                                         otherInstanceExists = !!res.rows.length;
@@ -646,7 +646,7 @@ async function processCommand(
                                     if (!otherInstanceExists) {
                                         await install.createInstance(instance, {
                                             enabled: true,
-                                            ignoreIfExists: true
+                                            ignoreIfExists: true,
                                         });
                                     }
                                 }
@@ -691,7 +691,7 @@ async function processCommand(
 
                         config.objects.options = config.objects.options || {
                             auth_pass: null,
-                            retry_max_delay: 5_000
+                            retry_max_delay: 5_000,
                         };
                         if (
                             config.objects.options.retry_max_delay === 15_000 ||
@@ -701,7 +701,7 @@ async function processCommand(
                         }
                         config.states.options = config.states.options || {
                             auth_pass: null,
-                            retry_max_delay: 5_000
+                            retry_max_delay: 5_000,
                         };
                         if (
                             config.states.options.retry_max_delay === 15_000 ||
@@ -744,14 +744,14 @@ async function processCommand(
                                 objects,
                                 log: console,
                                 logPrefix: '',
-                                host: hostname
+                                host: hostname,
                             };
 
                             const notificationHandler = new NotificationHandler(notificationSettings);
 
                             try {
                                 const ioPackage = fs.readJsonSync(
-                                    path.join(tools.getControllerDir(), 'io-package.json')
+                                    path.join(tools.getControllerDir(), 'io-package.json'),
                                 );
                                 await notificationHandler.addConfig(ioPackage.notifications);
 
@@ -759,7 +759,7 @@ async function processCommand(
                                     scope: 'system',
                                     category: 'fileToJsonl',
                                     message: `Migrated: ${migrated}`,
-                                    instance: `system.host.${hostname}`
+                                    instance: `system.host.${hostname}`,
                                 });
 
                                 notificationHandler.storeNotifications();
@@ -779,7 +779,7 @@ async function processCommand(
                     return void callback();
                 },
                 ignoreIfExist: isFirst,
-                useRedis: isRedis
+                useRedis: isRedis,
             });
             break;
         }
@@ -804,7 +804,7 @@ async function processCommand(
                     objects,
                     states,
                     processExit: callback,
-                    params
+                    params,
                 });
 
                 try {
@@ -829,7 +829,7 @@ async function processCommand(
                         RAM: formatters.formatRam,
                         Speed: formatters.formatSpeed,
                         'Disk size': formatters.formatBytes,
-                        'Disk free': formatters.formatBytes
+                        'Disk free': formatters.formatBytes,
                     };
 
                     for (const attr of Object.keys(data)) {
@@ -837,7 +837,7 @@ async function processCommand(
                             `${attr}${attr.length < 16 ? new Array(16 - attr.length).join(' ') : ''}: ${
                                 // @ts-expect-error todo would need checks
                                 formatInfo[attr] ? formatInfo[attr](data[attr]) : data[attr] || ''
-                            }`
+                            }`,
                         );
                     }
                 } catch (err) {
@@ -896,7 +896,7 @@ async function processCommand(
                     objects,
                     states,
                     processExit: callback,
-                    params
+                    params,
                 });
 
                 if (params.host && params.host !== tools.getHostName()) {
@@ -958,7 +958,7 @@ async function processCommand(
             if (commandOptions.module) {
                 options.module = commandOptions.module;
                 console.log(
-                    `Rebuilding native module "${commandOptions.module}"${options.cwd ? ` in ${options.cwd}` : ''} ...`
+                    `Rebuilding native module "${commandOptions.module}"${options.cwd ? ` in ${options.cwd}` : ''} ...`,
                 );
             } else {
                 console.log(`Rebuilding native modules${options.cwd ? ` in ${options.cwd}` : ''} ...`);
@@ -989,7 +989,7 @@ async function processCommand(
                         try {
                             const objs = await objects.getObjectListAsync({
                                 startkey: 'system.adapter.',
-                                endkey: 'system.adapter.\u9999'
+                                endkey: 'system.adapter.\u9999',
                             });
 
                             if (objs) {
@@ -1003,7 +1003,7 @@ async function processCommand(
                                     adapters.push(
                                         tools.isObject(row.value.common.name)
                                             ? row.value.common.name.en
-                                            : row.value.common.name
+                                            : row.value.common.name,
                                     );
                                 }
 
@@ -1019,7 +1019,7 @@ async function processCommand(
                         if (name.includes('.')) {
                             if (!subTree) {
                                 console.log(
-                                    `Please specify target name, like:\n${tools.appName} upload /file/picture.png /vis-2.0/main/img/picture.png`
+                                    `Please specify target name, like:\n${tools.appName} upload /file/picture.png /vis-2.0/main/img/picture.png`,
                                 );
                                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                             }
@@ -1098,7 +1098,7 @@ async function processCommand(
                         objects,
                         states,
                         processExit: callback,
-                        params
+                        params,
                     });
 
                     console.log(`Delete instance "${adapter}.${instance}"`);
@@ -1112,7 +1112,7 @@ async function processCommand(
                         objects,
                         states,
                         processExit: callback,
-                        params
+                        params,
                     });
                     console.log(`Delete adapter "${adapter}"`);
                     const resultCode = await install.deleteAdapter(adapter);
@@ -1124,7 +1124,7 @@ async function processCommand(
         case 'unsetup': {
             const rl = (await import('node:readline')).createInterface({
                 input: process.stdin,
-                output: process.stdout
+                output: process.stdout,
             });
 
             if (params.yes || params.y || params.Y) {
@@ -1184,7 +1184,7 @@ async function processCommand(
                     objects,
                     states,
                     params,
-                    processExit: callback
+                    processExit: callback,
                 });
 
                 if (adapter) {
@@ -1198,7 +1198,7 @@ async function processCommand(
                                 adapter,
                                 params.force || params.f,
                                 params.y || params.yes,
-                                false
+                                false,
                             );
                         }
                         return void callback();
@@ -1217,7 +1217,7 @@ async function processCommand(
                             links,
                             Object.keys(links).sort(),
                             false,
-                            params.y || params.yes
+                            params.y || params.yes,
                         );
                         return void callback();
                     } catch (e) {
@@ -1233,7 +1233,7 @@ async function processCommand(
             const yes = args[0];
             if (yes !== 'yes') {
                 console.log(
-                    `Command "clean" clears all Objects and States. To execute it write "${tools.appName} clean yes"`
+                    `Command "clean" clears all Objects and States. To execute it write "${tools.appName} clean yes"`,
                 );
             } else {
                 dbConnect(params, async ({ isOffline }) => {
@@ -1270,13 +1270,13 @@ async function processCommand(
                     objects,
                     cleanDatabase,
                     restartController,
-                    processExit: callback
+                    processExit: callback,
                 });
 
                 const { exitCode } = await backup.restoreBackup({
                     name: args[0],
                     force: !!params.force,
-                    dontDeleteAdapters: false
+                    dontDeleteAdapters: false,
                 });
 
                 if (exitCode === EXIT_CODES.NO_ERROR) {
@@ -1297,7 +1297,7 @@ async function processCommand(
                     objects,
                     cleanDatabase,
                     restartController,
-                    processExit: callback
+                    processExit: callback,
                 });
 
                 try {
@@ -1322,7 +1322,7 @@ async function processCommand(
                     objects,
                     cleanDatabase,
                     restartController,
-                    processExit: callback
+                    processExit: callback,
                 });
 
                 try {
@@ -1344,7 +1344,7 @@ async function processCommand(
                 const list = new List({
                     states,
                     objects,
-                    processExit: callback
+                    processExit: callback,
                 });
                 list.list(args[0] as ListType, args[1], params);
             });
@@ -1369,7 +1369,7 @@ async function processCommand(
                     objects.getObjectList(
                         {
                             startkey: 'system.adapter.',
-                            endkey: 'system.adapter.\u9999'
+                            endkey: 'system.adapter.\u9999',
                         },
                         (err, arr) => {
                             if (!err && arr?.rows) {
@@ -1394,7 +1394,7 @@ async function processCommand(
                                                 const list = new List({
                                                     states,
                                                     objects,
-                                                    processExit: callback
+                                                    processExit: callback,
                                                 });
                                                 files.sort((a, b) => a.id.localeCompare(b.id));
 
@@ -1405,7 +1405,7 @@ async function processCommand(
                                                 }
                                                 setTimeout(callback, 1_000);
                                             }
-                                        }
+                                        },
                                     );
                                 }
                                 if (!count) {
@@ -1413,7 +1413,7 @@ async function processCommand(
                                     return void callback();
                                 }
                             }
-                        }
+                        },
                     );
                 } else {
                     const parts = pattern.split('/');
@@ -1430,7 +1430,7 @@ async function processCommand(
                                 const list = new List({
                                     states,
                                     objects,
-                                    processExit: callback
+                                    processExit: callback,
                                 });
                                 for (const processedFile of processed) {
                                     list.showFile(id, processedFile.path, processedFile);
@@ -1462,7 +1462,7 @@ async function processCommand(
                     objects.getObjectList(
                         {
                             startkey: 'system.adapter.',
-                            endkey: 'system.adapter.\u9999'
+                            endkey: 'system.adapter.\u9999',
                         },
                         (err, arr) => {
                             if (!err && arr?.rows) {
@@ -1487,7 +1487,7 @@ async function processCommand(
                                                 const list = new List({
                                                     states,
                                                     objects,
-                                                    processExit: callback
+                                                    processExit: callback,
                                                 });
                                                 files.sort((a, b) => a.id.localeCompare(b.id));
 
@@ -1499,7 +1499,7 @@ async function processCommand(
                                                 }
                                                 setTimeout(callback, 1_000);
                                             }
-                                        }
+                                        },
                                     );
                                 }
                                 if (!count) {
@@ -1507,7 +1507,7 @@ async function processCommand(
                                     return void callback();
                                 }
                             }
-                        }
+                        },
                     );
                 } else {
                     const parts = pattern.split('/');
@@ -1523,7 +1523,7 @@ async function processCommand(
                                 const list = new List({
                                     states,
                                     objects,
-                                    processExit: callback
+                                    processExit: callback,
                                 });
                                 list.showFileHeader();
                                 for (const file of processed) {
@@ -1566,7 +1566,7 @@ async function processCommand(
                     objects.getObjectList(
                         {
                             startkey: 'system.adapter.',
-                            endkey: 'system.adapter.\u9999'
+                            endkey: 'system.adapter.\u9999',
                         },
                         (err, arr) => {
                             if (!err && arr?.rows) {
@@ -1582,7 +1582,7 @@ async function processCommand(
                                         '*',
                                         {
                                             user: 'system.user.admin',
-                                            mode
+                                            mode,
                                         },
                                         // @ts-expect-error todo _id should not exist how to handle
                                         async (err, processed, _id) => {
@@ -1594,7 +1594,7 @@ async function processCommand(
                                                 const list = new List({
                                                     states,
                                                     objects,
-                                                    processExit: callback
+                                                    processExit: callback,
                                                 });
                                                 files.sort((a, b) => a.id.localeCompare(b.id));
 
@@ -1606,7 +1606,7 @@ async function processCommand(
                                                 }
                                                 setTimeout(callback, 1_000);
                                             }
-                                        }
+                                        },
                                     );
                                 }
                                 if (!count) {
@@ -1614,7 +1614,7 @@ async function processCommand(
                                     return void callback();
                                 }
                             }
-                        }
+                        },
                     );
                 } else {
                     const parts = pattern.split('/');
@@ -1630,7 +1630,7 @@ async function processCommand(
                                 const list = new List({
                                     states,
                                     objects,
-                                    processExit: callback
+                                    processExit: callback,
                                 });
                                 list.showFileHeader();
                                 for (const file of processed) {
@@ -1681,7 +1681,7 @@ async function processCommand(
                     objects.getObjectList(
                         {
                             startkey: 'system.adapter.',
-                            endkey: 'system.adapter.\u9999'
+                            endkey: 'system.adapter.\u9999',
                         },
                         (err, arr) => {
                             if (!err && arr?.rows) {
@@ -1698,7 +1698,7 @@ async function processCommand(
                                         {
                                             user: 'system.user.admin',
                                             owner: user as ioBroker.ObjectIDs.User,
-                                            ownerGroup: group
+                                            ownerGroup: group,
                                         },
                                         // @ts-expect-error todo _id should not exist how to handle
                                         async (err, processed, _id) => {
@@ -1710,7 +1710,7 @@ async function processCommand(
                                                 const list = new List({
                                                     states,
                                                     objects,
-                                                    processExit: callback
+                                                    processExit: callback,
                                                 });
                                                 files.sort((a, b) => a.id.localeCompare(b.id));
 
@@ -1720,13 +1720,13 @@ async function processCommand(
                                                         list.showFile(
                                                             files[k].id,
                                                             files[k].processed[t].path,
-                                                            files[k].processed[t]
+                                                            files[k].processed[t],
                                                         );
                                                     }
                                                 }
                                                 setTimeout(callback, 1_000);
                                             }
-                                        }
+                                        },
                                     );
                                 }
                                 if (!count) {
@@ -1734,7 +1734,7 @@ async function processCommand(
                                     return void callback();
                                 }
                             }
-                        }
+                        },
                     );
                 } else {
                     const parts = pattern.split('/');
@@ -1747,7 +1747,7 @@ async function processCommand(
                         {
                             user: 'system.user.admin',
                             owner: user as ioBroker.ObjectIDs.User,
-                            ownerGroup: group
+                            ownerGroup: group,
                         },
                         async (err, processed) => {
                             if (err) {
@@ -1759,7 +1759,7 @@ async function processCommand(
                                     const list = new List({
                                         states,
                                         objects,
-                                        processExit: callback
+                                        processExit: callback,
                                     });
                                     list.showFileHeader();
                                     for (const file of processed) {
@@ -1769,7 +1769,7 @@ async function processCommand(
                                 }
                             }
                             setTimeout(callback, 1_000);
-                        }
+                        },
                     );
                 }
             });
@@ -1788,7 +1788,7 @@ async function processCommand(
                 const { Users } = await import('./setup/setupUsers.js');
                 const users = new Users({
                     objects,
-                    processExit: callback
+                    processExit: callback,
                 });
                 const password = params.password;
                 const group = params.ingroup || 'system.group.administrator';
@@ -1865,7 +1865,7 @@ async function processCommand(
                     });
                 } else {
                     console.warn(
-                        `Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, check, get`
+                        `Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, check, get`,
                     );
                     return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                 }
@@ -1887,7 +1887,7 @@ async function processCommand(
             }
             if (!command) {
                 console.warn(
-                    `Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, list, get`
+                    `Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, list, get`,
                 );
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
@@ -1900,7 +1900,7 @@ async function processCommand(
                 const { Users } = await import('./setup/setupUsers.js');
                 const users = new Users({
                     objects,
-                    processExit: callback
+                    processExit: callback,
                 });
 
                 if (command === 'useradd' || command === 'adduser') {
@@ -1956,7 +1956,7 @@ async function processCommand(
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
                         } else {
                             console.log(
-                                `Group "${group}" is ${isEnabled ? 'enabled' : 'disabled'} and has following members:`
+                                `Group "${group}" is ${isEnabled ? 'enabled' : 'disabled'} and has following members:`,
                             );
                             if (members) {
                                 for (const member of members) {
@@ -1998,7 +1998,7 @@ async function processCommand(
                     });
                 } else {
                     console.warn(
-                        `Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, list, get`
+                        `Unknown command "${command}". Available commands are: add, del, passwd, enable, disable, list, get`,
                     );
                     return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                 }
@@ -2015,7 +2015,7 @@ async function processCommand(
                 const { Users } = await import('./setup/setupUsers.js');
                 const users = new Users({
                     objects,
-                    processExit: callback
+                    processExit: callback,
                 });
                 users.addUserPrompt(user, group, password, (err: any) => {
                     if (err) {
@@ -2037,7 +2037,7 @@ async function processCommand(
                 const { Users } = await import('./setup/setupUsers.js');
                 const users = new Users({
                     objects,
-                    processExit: callback
+                    processExit: callback,
                 });
                 users.setUserPassword(user, password, (err: any) => {
                     if (err) {
@@ -2062,7 +2062,7 @@ async function processCommand(
                 const { Users } = await import('./setup/setupUsers.js');
                 const users = new Users({
                     objects,
-                    processExit: callback
+                    processExit: callback,
                 });
                 users.delUser(user, (err: any) => {
                     if (err) {
@@ -2082,14 +2082,14 @@ async function processCommand(
             const json = {
                 name: tools.appName,
                 engines: {
-                    node: '>=12'
+                    node: '>=12',
                 },
                 optionalDependencies: {} as Record<string, string>,
                 dependencies: {
                     [`${tools.appName.toLowerCase()}.js-controller`]: '*',
-                    [`${tools.appName.toLowerCase()}.admin`]: '*'
+                    [`${tools.appName.toLowerCase()}.admin`]: '*',
                 },
-                author: 'bluefox <dogafox@gmail.com>'
+                author: 'bluefox <dogafox@gmail.com>',
             };
 
             // @ts-expect-error todo fix it
@@ -2210,7 +2210,7 @@ async function processCommand(
             dbConnect(params, ({ objects }) => {
                 const visDebug = new VisDebug({
                     objects,
-                    processExit: callback
+                    processExit: callback,
                 });
 
                 visDebug.enableDebug(widgetset);
@@ -2232,19 +2232,19 @@ async function processCommand(
                 cmd !== 'del'
             ) {
                 console.log(
-                    'Invalid parameters: write "file read /vis-2.0/main/img/picture.png /opt/picture/image.png" to read the file'
+                    'Invalid parameters: write "file read /vis-2.0/main/img/picture.png /opt/picture/image.png" to read the file',
                 );
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
             if (cmd !== 'sync' && !args[1]) {
                 console.log(
-                    'Invalid parameters: write "file read /vis-2.0/main/img/picture.png /opt/picture/image.png" to read the file from DB and store it on disk'
+                    'Invalid parameters: write "file read /vis-2.0/main/img/picture.png /opt/picture/image.png" to read the file from DB and store it on disk',
                 );
                 console.log(
-                    'or                        "file write /opt/SOURCE/image.png /vis-2.0/main/DESTINATION/picture.png" to write the file into DB from disk'
+                    'or                        "file write /opt/SOURCE/image.png /vis-2.0/main/DESTINATION/picture.png" to write the file into DB from disk',
                 );
                 console.log(
-                    'or                        "file rm /vis-2.0/main/img/picture.png" to delete the file in DB'
+                    'or                        "file rm /vis-2.0/main/img/picture.png" to delete the file in DB',
                 );
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
@@ -2310,14 +2310,14 @@ async function processCommand(
                     }
                     if (!fileSrc || !fs.existsSync(toRead)) {
                         console.log(
-                            `Please provide a valid file name as source file: "file write /opt/SOURCE/script.js /vis-2/DESTINATION/script.js"`
+                            `Please provide a valid file name as source file: "file write /opt/SOURCE/script.js /vis-2/DESTINATION/script.js"`,
                         );
                         return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                     }
                     const srcStat = fs.statSync(toRead);
                     if (!srcStat.isFile()) {
                         console.log(
-                            `Please provide a valid file name as source file: "file write /opt/SOURCE/script.js /vis-2/DESTINATION/script.js"`
+                            `Please provide a valid file name as source file: "file write /opt/SOURCE/script.js /vis-2/DESTINATION/script.js"`,
                         );
                         return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                     }
@@ -2380,7 +2380,7 @@ async function processCommand(
                     if (!objects.syncFileDirectory || !objects.dirExists) {
                         // functionality only exists in server class
                         console.log(
-                            'Please stop ioBroker before syncing files and only use this command on the ioBroker master host!'
+                            'Please stop ioBroker before syncing files and only use this command on the ioBroker master host!',
                         );
                         return void callback(EXIT_CODES.CONTROLLER_RUNNING);
                     }
@@ -2418,13 +2418,13 @@ async function processCommand(
                     }
                 } else {
                     console.log(
-                        'Invalid parameters: write "file read /vis-2.0/main/img/picture.png /opt/picture/image.png" to read the file from DB and store it on disk'
+                        'Invalid parameters: write "file read /vis-2.0/main/img/picture.png /opt/picture/image.png" to read the file from DB and store it on disk',
                     );
                     console.log(
-                        'or                        "file write /opt/SOURCE/image.png /vis-2.0/main/DESTINATION/picture.png" to write the file into DB from disk'
+                        'or                        "file write /opt/SOURCE/image.png /vis-2.0/main/DESTINATION/picture.png" to write the file into DB from disk',
                     );
                     console.log(
-                        'or                        "file rm /vis-2.0/main/img/picture.png" to delete the file in DB'
+                        'or                        "file rm /vis-2.0/main/img/picture.png" to delete the file in DB',
                     );
                     return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                 }
@@ -2509,7 +2509,7 @@ async function processCommand(
                     objects.getObjectList(
                         {
                             startkey: 'system.host.',
-                            endkey: `system.host.\u9999`
+                            endkey: `system.host.\u9999`,
                         },
                         null,
                         (err, res) => {
@@ -2521,13 +2521,13 @@ async function processCommand(
                                         states.pushMessage(row.id, {
                                             command: 'checkLogging',
                                             message: null,
-                                            from: 'console'
+                                            from: 'console',
                                         });
                                     }
                                 }
                             }
                             setTimeout(callback, 200);
-                        }
+                        },
                     );
                 }
             });
@@ -2554,7 +2554,7 @@ async function processCommand(
                 const { Repo } = await import('./setup/setupRepo.js');
                 const repo = new Repo({
                     objects,
-                    states
+                    states,
                 });
 
                 if (repoUrlOrCommand === 'show') {
@@ -2579,7 +2579,7 @@ async function processCommand(
                         if (repoUrlOrCommand === 'add' || repoUrlOrCommand === 'addset') {
                             if (!repoUrl) {
                                 console.warn(
-                                    `Please define repository URL or path: ${tools.appName.toLowerCase()} add <repoName> <repoUrlOrPath>`
+                                    `Please define repository URL or path: ${tools.appName.toLowerCase()} add <repoName> <repoUrlOrPath>`,
                                 );
                                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                             } else {
@@ -2663,7 +2663,7 @@ async function processCommand(
                     const { Multihost } = await import('./setup/setupMultihost.js');
                     const mh = new Multihost({
                         params,
-                        objects
+                        objects,
                     });
 
                     if (cmd === 's' || cmd === 'status') {
@@ -2687,7 +2687,7 @@ async function processCommand(
                                 await states.pushMessage(`system.host.${tools.getHostName()}`, {
                                     command: 'updateMultihost',
                                     message: null,
-                                    from: 'setup'
+                                    from: 'setup',
                                 });
 
                                 callback();
@@ -2702,7 +2702,7 @@ async function processCommand(
                                 await states.pushMessage(`system.host.${tools.getHostName()}`, {
                                     command: 'updateMultihost',
                                     message: null,
-                                    from: 'setup'
+                                    from: 'setup',
                                 });
 
                                 callback();
@@ -2726,7 +2726,7 @@ async function processCommand(
             const file = args[1];
             if (!password) {
                 console.warn(
-                    `Please specify the password to update the vendor information!\n${tools.appName.toLowerCase()} vendor <PASS_PHRASE> <vendor.json>`
+                    `Please specify the password to update the vendor information!\n${tools.appName.toLowerCase()} vendor <PASS_PHRASE> <vendor.json>`,
                 );
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             }
@@ -2767,7 +2767,7 @@ async function processCommand(
             const file = args[0];
             if (!file) {
                 console.warn(
-                    `Please specify the path to the license file or place license text directly!\n${tools.appName.toLowerCase()} license <license.file or license.text>`
+                    `Please specify the path to the license file or place license text directly!\n${tools.appName.toLowerCase()} license <license.file or license.text>`,
                 );
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
             } else {
@@ -2818,7 +2818,7 @@ const OBJECTS_THAT_CANNOT_BE_DELETED = [
     'system.group.administrator',
     'system.group.user',
     'system.repositories',
-    'system.user.admin'
+    'system.user.admin',
 ];
 
 /**
@@ -2945,7 +2945,7 @@ async function restartController(): Promise<void> {
     const child = spawn('node', [`${thisDir}/restart.js`], {
         detached: true,
         stdio: ['ignore', 'ignore', 'ignore'],
-        windowsHide: true
+        windowsHide: true,
     });
 
     child.unref();

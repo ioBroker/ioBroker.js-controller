@@ -13,9 +13,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             type: 'meta',
             common: {
                 name: 'Files and more',
-                type: 'meta.user'
+                type: 'meta.user',
             },
-            native: {}
+            native: {},
         });
 
         await context.adapter.subscribeForeignFiles(objId, '*');
@@ -50,9 +50,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             type: 'meta',
             common: {
                 name: 'Files and more',
-                type: 'meta.user'
+                type: 'meta.user',
             },
-            native: {}
+            native: {},
         });
 
         // now we write a file state
@@ -74,9 +74,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             type: 'meta',
             common: {
                 name: 'Files and more',
-                type: 'meta.user'
+                type: 'meta.user',
             },
-            native: {}
+            native: {},
         });
 
         // now we write a file state
@@ -99,9 +99,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             type: 'meta',
             common: {
                 name: 'Files and more',
-                type: 'meta.user'
+                type: 'meta.user',
             },
-            native: {}
+            native: {},
         });
 
         // now we write a file state
@@ -146,9 +146,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'meta',
                 common: {
                     name: 'Meta',
-                    type: 'meta.user'
+                    type: 'meta.user',
                 },
-                native: {}
+                native: {},
             },
             err => {
                 expect(err).to.be.not.ok;
@@ -172,7 +172,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         });
                     });
                 });
-            }
+            },
         );
     });
 
@@ -185,7 +185,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         await objects.setObject(testId, {
             type: 'meta',
             common: { name: 'test', type: 'meta.user' },
-            native: {}
+            native: {},
         });
 
         await objects.writeFile(testId, fullFileName, 'dataInFile');
@@ -259,11 +259,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                                 expect(err).to.be.not.ok;
                                                 expect(data).to.be.equal('dataInFile');
                                                 done();
-                                            }
+                                            },
                                         );
-                                    }
+                                    },
                                 );
-                            }
+                            },
                         );
                     });
                 });

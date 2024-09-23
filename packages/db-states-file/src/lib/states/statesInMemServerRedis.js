@@ -69,7 +69,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
                 this.log.debug(
                     `${this.namespace} ${settings.secure ? 'Secure ' : ''} Redis inMem-states listening on port ${
                         this.settings.port || 9000
-                    }`
+                    }`,
                 );
 
                 if (typeof this.settings.connected === 'function') {
@@ -78,7 +78,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
             })
             .catch(e => {
                 this.log.error(
-                    `${this.namespace} Cannot start inMem-states on port ${this.settings.port || 9000}: ${e.message}`
+                    `${this.namespace} Cannot start inMem-states on port ${this.settings.port || 9000}: ${e.message}`,
                 );
                 process.exit(EXIT_CODES.NO_CONNECTION_TO_STATES_DB);
             });
@@ -221,7 +221,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
             } else {
                 handler.sendError(
                     responseId,
-                    new Error(`MGET-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`)
+                    new Error(`MGET-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`),
                 );
             }
         });
@@ -257,7 +257,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
             } else {
                 handler.sendError(
                     responseId,
-                    new Error(`GET-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`)
+                    new Error(`GET-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`),
                 );
             }
         });
@@ -279,7 +279,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
             } else {
                 handler.sendError(
                     responseId,
-                    new Error(`SET-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`)
+                    new Error(`SET-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`),
                 );
             }
         });
@@ -295,7 +295,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
                     if (isNaN(expire)) {
                         return void handler.sendError(
                             responseId,
-                            new Error(`ERROR parsing expire value ${data[1].toString('utf-8')}`)
+                            new Error(`ERROR parsing expire value ${data[1].toString('utf-8')}`),
                         );
                     }
                     this._setStateDirect(id, state, expire);
@@ -310,7 +310,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
                     if (isNaN(expire)) {
                         return void handler.sendError(
                             responseId,
-                            new Error(`ERROR parsing expire value ${data[1].toString('utf-8')}`)
+                            new Error(`ERROR parsing expire value ${data[1].toString('utf-8')}`),
                         );
                     }
                     this._setSession(id, expire, state);
@@ -321,7 +321,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
             } else {
                 handler.sendError(
                     responseId,
-                    new Error(`SETEX-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`)
+                    new Error(`SETEX-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`),
                 );
             }
         });
@@ -338,7 +338,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
             } else {
                 handler.sendError(
                     responseId,
-                    new Error(`DEL-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`)
+                    new Error(`DEL-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`),
                 );
             }
         });
@@ -361,7 +361,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
             } else {
                 handler.sendError(
                     responseId,
-                    new Error(`KEYS-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`)
+                    new Error(`KEYS-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`),
                 );
             }
         });
@@ -388,7 +388,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
             } else {
                 handler.sendError(
                     responseId,
-                    new Error(`PSUBSCRIBE-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`)
+                    new Error(`PSUBSCRIBE-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`),
                 );
             }
         });
@@ -408,7 +408,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
             } else {
                 handler.sendError(
                     responseId,
-                    new Error(`PUNSUBSCRIBE-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`)
+                    new Error(`PUNSUBSCRIBE-UNSUPPORTED for namespace ${namespace}: Data=${JSON.stringify(data)}`),
                 );
             }
         });
@@ -505,7 +505,7 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
             log: this.log,
             logScope: this.namespace + ' States',
             handleAsBuffers: true,
-            enhancedLogging: this.settings.connection.enhancedLogging
+            enhancedLogging: this.settings.connection.enhancedLogging,
         };
         const handler = new RedisHandler(socket, options);
         this._socketEvents(handler);
@@ -536,15 +536,15 @@ export class StatesInMemoryServer extends StatesInMemoryFileDB {
                     this.log.info(
                         `${this.namespace} ${settings.secure ? 'Secure ' : ''} Error inMem-objects listening on port ${
                             settings.port || 9001
-                        }: ${err}`
-                    )
+                        }: ${err}`,
+                    ),
                 );
                 this.server.on('connection', socket => this._initSocket(socket));
 
                 this.server.listen(
                     settings.port || 9000,
                     settings.host === 'localhost' ? getLocalAddress() : settings.host ? settings.host : undefined,
-                    () => resolve()
+                    () => resolve(),
                 );
             } catch (err) {
                 reject(err);

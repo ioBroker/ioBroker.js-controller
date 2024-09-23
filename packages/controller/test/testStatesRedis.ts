@@ -35,7 +35,7 @@ describe('States-Redis: Test states in Redis', function () {
         const { objects: _objects, states: _states } = await startController({
             objects: {
                 dataDir: dataDir,
-                onChange: (id: string, _obj: ioBroker.AnyObject) => console.log('object changed. ' + id)
+                onChange: (id: string, _obj: ioBroker.AnyObject) => console.log('object changed. ' + id),
             },
             states: {
                 type: 'redis',
@@ -46,8 +46,8 @@ describe('States-Redis: Test states in Redis', function () {
                     if (onStatesChanged) {
                         onStatesChanged(id, state);
                     }
-                }
-            }
+                },
+            },
         });
 
         objects = _objects;

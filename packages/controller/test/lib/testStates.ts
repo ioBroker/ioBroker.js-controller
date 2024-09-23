@@ -17,10 +17,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     type: 'number',
                     role: 'level',
                     min: -100,
-                    max: 100
+                    max: 100,
                 },
                 native: {},
-                type: 'state'
+                type: 'state',
             },
             function (err) {
                 expect(err).to.be.null;
@@ -82,14 +82,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                                                             expect(state!.val).to.equal(3);
                                                                             expect(state!.ack).to.equal(true);
                                                                             done();
-                                                                        }
+                                                                        },
                                                                     );
-                                                                }
+                                                                },
                                                             );
-                                                        }
+                                                        },
                                                     );
                                                 });
-                                            }
+                                            },
                                         );
                                     });
                                 });
@@ -97,7 +97,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         });
                     });
                 });
-            }
+            },
         );
     });
 
@@ -185,10 +185,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     type: 'number',
                     role: 'level',
                     min: -100,
-                    max: 100
+                    max: 100,
                 },
                 native: {},
-                type: 'state'
+                type: 'state',
             },
             function (err) {
                 expect(err).to.be.null;
@@ -222,7 +222,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         });
                     });
                 });
-            }
+            },
         );
     });
 
@@ -241,10 +241,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     type: 'number',
                     role: 'level',
                     min: -100,
-                    max: 100
+                    max: 100,
                 },
                 native: {},
-                type: 'state'
+                type: 'state',
             },
             function (err) {
                 expect(err).to.be.null;
@@ -267,7 +267,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         });
                     });
                 });
-            }
+            },
         );
     });
 
@@ -283,10 +283,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'number',
                 role: 'level',
                 min: -100,
-                max: 100
+                max: 100,
             },
             native: {},
-            type: 'state'
+            type: 'state',
         });
 
         await context.adapter.subscribeStatesAsync([sGid]);
@@ -347,10 +347,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     type: 'number',
                     role: 'level',
                     min: -100,
-                    max: 100
+                    max: 100,
                 },
                 native: {},
-                type: 'state'
+                type: 'state',
             },
             function (err) {
                 expect(err).to.be.null;
@@ -392,7 +392,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         });
                     });
                 });
-            }
+            },
         );
     });
 
@@ -412,44 +412,44 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             read: true, // required to read permissions
                             write: false,
                             delete: false,
-                            create: false
+                            create: false,
                         },
                         state: {
                             list: false,
                             read: false,
                             write: true,
                             create: false,
-                            delete: false
+                            delete: false,
                         },
                         users: {
                             write: false,
                             create: false,
                             delete: false,
                             read: false,
-                            list: false
+                            list: false,
                         },
                         other: {
                             execute: false,
                             http: false,
-                            sendto: false
+                            sendto: false,
                         },
                         file: {
                             list: false,
                             read: false,
                             write: false,
                             create: false,
-                            delete: false
-                        }
-                    }
+                            delete: false,
+                        },
+                    },
                 },
                 native: {},
                 acl: {
                     object: 1638, // 0666
                     owner: 'system.user.admin',
-                    ownerGroup: 'system.group.administrator'
+                    ownerGroup: 'system.group.administrator',
                 },
                 _id: 'system.group.writer2',
-                type: 'group'
+                type: 'group',
             },
             function (err) {
                 expect(err).to.be.null;
@@ -462,15 +462,15 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             name: 'write-only2',
                             enabled: true,
                             password:
-                                'pbkdf2$10000$ab4104d8bb68390ee7e6c9397588e768de6c025f0c732c18806f3d1270c83f83fa86a7bf62583770e5f8d0b405fbb3ad32214ef3584f5f9332478f2506414443a910bf15863b36ebfcaa7cbb19253ae32cd3ca390dab87b29cd31e11be7fa4ea3a01dad625d9de44e412680e1a694227698788d71f1e089e5831dc1bbacfa794b45e1c995214bf71ee4160d98b4305fa4c3e36ee5f8da19b3708f68e7d2e8197375c0f763d90e31143eb04760cc2148c8f54937b9385c95db1742595634ed004fa567655dfe1d9b9fa698074a9fb70c05a252b2d9cf7ca1c9b009f2cd70d6972ccf0ee281d777d66a0346c6c6525436dd7fe3578b28dca2c7adbfde0ecd45148$31c3248ba4dc9600a024b4e0e7c3e585'
+                                'pbkdf2$10000$ab4104d8bb68390ee7e6c9397588e768de6c025f0c732c18806f3d1270c83f83fa86a7bf62583770e5f8d0b405fbb3ad32214ef3584f5f9332478f2506414443a910bf15863b36ebfcaa7cbb19253ae32cd3ca390dab87b29cd31e11be7fa4ea3a01dad625d9de44e412680e1a694227698788d71f1e089e5831dc1bbacfa794b45e1c995214bf71ee4160d98b4305fa4c3e36ee5f8da19b3708f68e7d2e8197375c0f763d90e31143eb04760cc2148c8f54937b9385c95db1742595634ed004fa567655dfe1d9b9fa698074a9fb70c05a252b2d9cf7ca1c9b009f2cd70d6972ccf0ee281d777d66a0346c6c6525436dd7fe3578b28dca2c7adbfde0ecd45148$31c3248ba4dc9600a024b4e0e7c3e585',
                         },
                         _id: 'system.user.write-only2',
                         native: {},
                         acl: {
                             owner: 'system.user.admin',
                             ownerGroup: 'system.group.administrator',
-                            object: 1638 // 0666
-                        }
+                            object: 1638, // 0666
+                        },
                     },
                     function (_err) {
                         context.objects.setObject(
@@ -484,7 +484,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                     role: 'level',
                                     min: -100,
                                     def: 10,
-                                    max: 100
+                                    max: 100,
                                 },
                                 native: {},
                                 type: 'state',
@@ -492,8 +492,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                     object: 1638, // 0666
                                     owner: 'system.user.write-only2',
                                     ownerGroup: 'system.group.administrator',
-                                    state: 1638 // 0666
-                                }
+                                    state: 1638, // 0666
+                                },
                             },
                             function (err) {
                                 expect(err).to.be.null;
@@ -523,18 +523,18 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                                             expect(err).to.be.ok;
                                                             expect(state).to.be.not.ok;
                                                             done();
-                                                        }
+                                                        },
                                                     );
                                                 });
-                                            }
+                                            },
                                         );
                                     });
                                 });
-                            }
+                            },
                         );
-                    }
+                    },
                 );
-            }
+            },
         );
     });
 
@@ -553,7 +553,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     type: 'number',
                     role: 'level',
                     min: -100,
-                    max: 100
+                    max: 100,
                 },
                 native: {},
                 type: 'state',
@@ -561,8 +561,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     object: 102,
                     owner: 'system.user.write-only',
                     ownerGroup: 'system.group.administrator',
-                    state: 102
-                }
+                    state: 102,
+                },
             },
             function (err) {
                 expect(err).to.be.null;
@@ -575,7 +575,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         done();
                     });
                 });
-            }
+            },
         );
     });
 
@@ -593,7 +593,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     type: 'number',
                     role: 'level',
                     min: -100,
-                    max: 100
+                    max: 100,
                 },
                 native: {},
                 type: 'state',
@@ -601,8 +601,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     object: 1126,
                     owner: 'system.user.write-only2',
                     ownerGroup: 'system.group.administrator',
-                    state: 614
-                }
+                    state: 614,
+                },
             },
             function (err) {
                 expect(err).to.be.null;
@@ -625,10 +625,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                 expect(state!.ack).to.equal(false);
                                 done();
                             });
-                        }
+                        },
                     );
                 });
-            }
+            },
         );
     });
 
@@ -646,10 +646,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     type: 'number',
                     role: 'level',
                     min: -100,
-                    max: 100
+                    max: 100,
                 },
                 native: {},
-                type: 'state'
+                type: 'state',
             },
             function (err) {
                 expect(err).to.be.null;
@@ -683,7 +683,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         });
                     });
                 });
-            }
+            },
         );
     });
 
@@ -733,7 +733,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         expect(states![context.adapterShortName + '1.0.' + gid].ack).equal(true);
 
                         done();
-                    }
+                    },
                 );
             });
         });
@@ -785,10 +785,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     type: 'number',
                     role: 'level',
                     min: -100,
-                    max: 100
+                    max: 100,
                 },
                 native: {},
-                type: 'state'
+                type: 'state',
             },
             function (err) {
                 expect(err).to.be.null;
@@ -811,7 +811,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         });
                     });
                 });
-            }
+            },
         );
     });
 
@@ -820,7 +820,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         const stateIds = [
             `${context.adapterShortName}3.0.${gid}76`,
             `${context.adapterShortName}3.0.${gid}77`,
-            `${context.adapterShortName}3.0.${gid}78`
+            `${context.adapterShortName}3.0.${gid}78`,
         ];
 
         for (const id of stateIds) {
@@ -832,10 +832,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     type: 'number',
                     role: 'level',
                     min: -100,
-                    max: 100
+                    max: 100,
                 },
                 native: {},
-                type: 'state'
+                type: 'state',
             });
         }
 
@@ -889,7 +889,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         context.onAdapterStateChanged = null;
                         done();
                     }, 1000);
-                })
+                }),
             );
         });
     });
@@ -909,10 +909,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     type: 'number',
                     role: 'level',
                     min: -100,
-                    max: 100
+                    max: 100,
                 },
                 native: {},
-                type: 'state'
+                type: 'state',
             },
             function (err) {
                 expect(err).to.be.null;
@@ -949,7 +949,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         });
                     });
                 });
-            }
+            },
         );
     });
 
@@ -1001,12 +1001,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     it(testName + 'Should also set object id', async () => {
         // set state with device, channel, state it is supported (legacy) but not recommended, so pass as any
         await context.adapter.setStateAsync({ device: `${gid}derGeraet`, channel: 'donau', state: 'awake' } as any, {
-            val: 5
+            val: 5,
         });
         const state = await context.adapter.getStateAsync({
             device: `${gid}derGeraet`,
             channel: 'donau',
-            state: 'awake'
+            state: 'awake',
         } as any);
         expect(state!.val).to.equal(5);
         // check with string
@@ -1026,10 +1026,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 role: 'level',
                 min: -100,
                 max: 100,
-                step: 5
+                step: 5,
             },
             native: {},
-            type: 'state'
+            type: 'state',
         });
 
         // now the state should be rounded
@@ -1048,14 +1048,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     it(testName + 'Should throw on invalid subscribe', async () => {
         expect(context.adapter.subscribeStatesAsync('hm-rpc.0.§.test')).to.be.rejectedWith(
             /is not a valid ID pattern/g,
-            'Should throw on invalid pattern'
+            'Should throw on invalid pattern',
         );
         await context.adapter.subscribeStatesAsync('*hm-rpc.0._.**test/*');
     });
 
     it(testName + 'sendTo with timeout should reject in time', () => {
         return expect(
-            context.adapter.sendToAsync('testInstance.0', 'test', {}, { timeout: 500 })
+            context.adapter.sendToAsync('testInstance.0', 'test', {}, { timeout: 500 }),
         ).to.be.eventually.rejectedWith('Timeout exceeded', 'Should have thrown after timeout is over');
     });
 }

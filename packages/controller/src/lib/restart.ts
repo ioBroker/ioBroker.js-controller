@@ -44,7 +44,7 @@ export default async function restart(callback?: () => void): Promise<void> {
         const child = spawn(cmd, args, {
             detached: true,
             stdio: ['ignore', 'ignore', 'ignore'],
-            windowsHide: true
+            windowsHide: true,
         });
         child.unref();
     }

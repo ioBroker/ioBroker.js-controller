@@ -8,7 +8,7 @@ function _getAllFilesInDir(
     name: string,
     options: any,
     callback: (errs: null | string[], res: string[]) => void,
-    result?: string[]
+    result?: string[],
 ): void {
     objects.readDir(id, name, options, (err, files) => {
         result = result || [];
@@ -30,7 +30,7 @@ function _getAllFilesInDir(
                                 callback(errors.length ? errors : null, _result);
                             }
                         },
-                        result
+                        result,
                     );
                 } else {
                     result.push(`${name}/${file.file}`);
@@ -50,7 +50,7 @@ function _addFile(
     name: string,
     options: any,
     zip: JSZip,
-    callback: (err: Error | null | undefined) => void
+    callback: (err: Error | null | undefined) => void,
 ): void {
     objects.readFile(id, name, options, (err, data, _mime) => {
         if (err) {
@@ -86,7 +86,7 @@ export async function readDirAsZip(
     id: string,
     name: string,
     options: any,
-    callback: (err?: Error | null, base64?: string) => void
+    callback: (err?: Error | null, base64?: string) => void,
 ): Promise<void> {
     if (typeof options === 'function') {
         callback = options;
@@ -173,7 +173,7 @@ async function _writeOneFile(
     id: string,
     name: string,
     filename: string,
-    options: any
+    options: any,
 ): Promise<void> {
     let data = await zip.files[filename].async('nodebuffer');
 
@@ -193,7 +193,7 @@ export async function writeDirAsZip(
     id: string,
     name: string,
     data: Buffer,
-    options: any
+    options: any,
 ): Promise<void> {
     const zip = new JSZip();
 
@@ -236,7 +236,7 @@ export async function readObjectsAsZip(
     objects: ObjectsClient,
     rootId: string,
     adapter: string,
-    options: any = {}
+    options: any = {},
 ): Promise<string> {
     if (adapter) {
         // try to load processor of adapter
@@ -284,7 +284,7 @@ async function _writeOneObject(
     rootId: string,
     filename: string,
     options: any,
-    callback: (err?: Error | null) => void
+    callback: (err?: Error | null) => void,
 ): Promise<void> {
     try {
         const bufferData = await zip.files[filename].async('nodebuffer');
@@ -329,7 +329,7 @@ export async function writeObjectsAsZip(
     adapter: string,
     data: Buffer,
     options: any,
-    callback: (err?: Error | null) => void
+    callback: (err?: Error | null) => void,
 ): Promise<void> {
     options = options || {};
 

@@ -40,7 +40,7 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
         settings = settings || {};
         settings.fileDB = settings.fileDB || {
             fileName: 'states.json',
-            backupDirName: 'backup-objects'
+            backupDirName: 'backup-objects',
         };
         super(settings);
 
@@ -291,7 +291,7 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
                 timeout: setTimeout(() => {
                     this.sessionExpires[id].timeout = null;
                     this._expireSession(id);
-                }, expireDate)
+                }, expireDate),
             };
         } else {
             this.sessionExpires[id] = {
@@ -299,7 +299,7 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
                 timeout: setTimeout(() => {
                     this.sessionExpires[id].timeout = null;
                     this._handleSessionExpire(id, expireDate);
-                }, this.ONE_DAY_IN_SECS)
+                }, this.ONE_DAY_IN_SECS),
             };
         }
     }

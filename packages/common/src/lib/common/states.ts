@@ -44,7 +44,7 @@ export async function statesDbHasServer(dbType: string): Promise<boolean> {
 export async function isLocalStatesDbServer(
     dbType: string,
     host: string | string[],
-    checkIfLocalOnly = false
+    checkIfLocalOnly = false,
 ): Promise<boolean> {
     const hasServer = await statesDbHasServer(dbType);
     if (!hasServer) {
@@ -78,7 +78,7 @@ interface PerformStatesInterviewOptions {
  * @returns the database options obtained by the answered questionnaire
  */
 export async function performStatesInterview(
-    options: PerformStatesInterviewOptions
+    options: PerformStatesInterviewOptions,
 ): Promise<ioBroker.StatesDatabaseOptions> {
     const { dbType, config } = options;
 

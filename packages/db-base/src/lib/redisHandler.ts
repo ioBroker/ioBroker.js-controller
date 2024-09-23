@@ -123,7 +123,7 @@ export class RedisHandler extends EventEmitter {
                                   .replace(/[\r\n]+/g, '')
                                   .substring(0, 100)} -- ${data.length} bytes`
                             : data.toString().replace(/[\r\n]+/g, '')
-                    }`
+                    }`,
                 );
             }
             this.resp.write(data);
@@ -173,7 +173,7 @@ export class RedisHandler extends EventEmitter {
                     JSON.stringify(data).length > 1024
                         ? `${JSON.stringify(data).substring(0, 100)} -- ${JSON.stringify(data).length} bytes`
                         : JSON.stringify(data)
-                }`
+                }`,
             );
         }
 
@@ -243,7 +243,7 @@ export class RedisHandler extends EventEmitter {
                             response.data.length > 1024
                                 ? `${data.length} bytes`
                                 : response.data.toString().replace(/[\r\n]+/g, '')
-                        }`
+                        }`,
                     );
                 }
 
@@ -488,7 +488,7 @@ export class RedisHandler extends EventEmitter {
             responseIds: [],
             execCalled: false,
             responseCount: 0,
-            responseMap: new Map()
+            responseMap: new Map(),
         });
     }
 
@@ -524,7 +524,7 @@ export class RedisHandler extends EventEmitter {
 
         this._sendQueued(
             multiObj.execId,
-            Buffer.concat([OK_STR_BUF, ...queuedStrArr, Resp.encodeArray(Array.from(multiObj.responseMap.values()))])
+            Buffer.concat([OK_STR_BUF, ...queuedStrArr, Resp.encodeArray(Array.from(multiObj.responseMap.values()))]),
         );
     }
 

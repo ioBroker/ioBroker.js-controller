@@ -9,12 +9,12 @@ import fs from 'node:fs';
 const statesConfig = {
     options: {
         auth_pass: null,
-        retry_max_delay: 15000
+        retry_max_delay: 15000,
     },
     type: 'redis',
     redisNamespace: 'testObjectsIo',
     host: '/var/run/redis.sock',
-    port: 0
+    port: 0,
 };
 
 if (!fs.existsSync(thisDir + '/../tmp')) {
@@ -29,12 +29,12 @@ const objectsConfig = {
     user: '',
     pass: '',
     noFileCache: true,
-    connectTimeout: 2000
+    connectTimeout: 2000,
 };
 
 // states in REDIS, objects in files
 testAdapter({
     statesConfig: statesConfig,
     objectsConfig: objectsConfig,
-    name: 'Tests REDIS-Socket'
+    name: 'Tests REDIS-Socket',
 });

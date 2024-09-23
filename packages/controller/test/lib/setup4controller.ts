@@ -91,7 +91,7 @@ export async function startController(options: Record<string, any>): Promise<Sta
                 noFileCache: options.objects.noFileCache === undefined ? options.objects.noFileCache : true,
                 connectTimeout: options.objects.connectTimeout || 2000,
                 dataDir: options.objects.dataDir || '',
-                enhancedLogging: true
+                enhancedLogging: true,
             },
             logger: options.objects.logger ||
                 options.logger || {
@@ -99,7 +99,7 @@ export async function startController(options: Record<string, any>): Promise<Sta
                     debug: (msg: string) => console.log(msg),
                     info: (msg: string) => console.log(msg),
                     warn: (msg: string) => console.warn(msg),
-                    error: (msg: string) => console.error(msg)
+                    error: (msg: string) => console.error(msg),
                 },
             connected: () => {
                 // clear all objects
@@ -114,7 +114,7 @@ export async function startController(options: Record<string, any>): Promise<Sta
                     }
                 });
             },
-            change: options.objects.onChange || null
+            change: options.objects.onChange || null,
         };
 
         objects = new Objects(settingsObjects);
@@ -123,7 +123,7 @@ export async function startController(options: Record<string, any>): Promise<Sta
             connection: {
                 options: {
                     auth_pass: null,
-                    retry_max_delay: 15000
+                    retry_max_delay: 15000,
                 },
                 type: options.states.type || 'file',
                 host: options.states.host || '127.0.0.1',
@@ -131,7 +131,7 @@ export async function startController(options: Record<string, any>): Promise<Sta
                 user: options.states.user || '',
                 pass: options.states.pass || '',
                 dataDir: options.states.dataDir || '',
-                enhancedLogging: true
+                enhancedLogging: true,
             },
             logger: options.states.logger ||
                 options.logger || {
@@ -139,7 +139,7 @@ export async function startController(options: Record<string, any>): Promise<Sta
                     debug: (msg: string) => console.log(msg),
                     info: (msg: string) => console.log(msg),
                     warn: (msg: string) => console.warn(msg),
-                    error: (msg: string) => console.error(msg)
+                    error: (msg: string) => console.error(msg),
                 },
             connected: () => {
                 if (settingsStates.connection.type === 'redis') {
@@ -160,7 +160,7 @@ export async function startController(options: Record<string, any>): Promise<Sta
                     }
                 }
             },
-            change: options.states.onChange || null
+            change: options.states.onChange || null,
         };
 
         states = new States(settingsStates);

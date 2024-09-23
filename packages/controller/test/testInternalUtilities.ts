@@ -18,14 +18,14 @@ describe('test internal helpers', () => {
                 dataDir: `${thisDir}/../tmp/data`,
                 onChange: function (id: string, _obj: ioBroker.AnyObject) {
                     console.log('object changed. ' + id);
-                }
+                },
             },
             states: {
                 dataDir: `${thisDir}/../tmp/data`,
                 onChange: function (id: string, _state: ioBroker.State) {
                     console.log('state changed. ' + id);
-                }
-            }
+                },
+            },
         });
 
         if (!_objects) {
@@ -49,7 +49,7 @@ describe('test internal helpers', () => {
         // no delay for connection types different from cloud
         const cronSecondsWrongConnectionType = getCronExpression({
             cronExpression: cronWithoutSeconds,
-            connectionType: 'local'
+            connectionType: 'local',
         });
         expect(cronSecondsWrongConnectionType).to.be.equal(cronWithoutSeconds);
     });
@@ -68,15 +68,15 @@ describe('test internal helpers', () => {
         expect(
             isInstalledFromNpm({
                 adapterName: 'admin',
-                installedFrom: 'iobroker.admin@6.13.16' as ioBroker.InstalledFrom
-            })
+                installedFrom: 'iobroker.admin@6.13.16' as ioBroker.InstalledFrom,
+            }),
         ).to.be.true;
 
         expect(
             isInstalledFromNpm({
                 adapterName: 'benchmark',
-                installedFrom: 'foxriver76/ioBroker.benchmark' as ioBroker.InstalledFrom
-            })
+                installedFrom: 'foxriver76/ioBroker.benchmark' as ioBroker.InstalledFrom,
+            }),
         ).to.be.false;
     });
 

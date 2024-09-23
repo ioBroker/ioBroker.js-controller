@@ -17,13 +17,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         let res;
 
         res = await execAsync(
-            `"${process.execPath}" "${iobExecutable}" passwd admin --password ${context.appName.toLowerCase()}`
+            `"${process.execPath}" "${iobExecutable}" passwd admin --password ${context.appName.toLowerCase()}`,
         );
         expect(res.stderr).to.be.not.ok;
 
         // check password
         res = await execAsync(
-            `"${process.execPath}" "${iobExecutable}" user check admin --password ${context.appName.toLowerCase()}`
+            `"${process.execPath}" "${iobExecutable}" user check admin --password ${context.appName.toLowerCase()}`,
         );
         expect(res.stderr).to.be.not.ok;
         // negative check
@@ -31,7 +31,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             await execAsync(
                 `"${
                     process.execPath
-                }" "${iobExecutable}" user check admin --password ${`${context.appName.toLowerCase()}2`}`
+                }" "${iobExecutable}" user check admin --password ${`${context.appName.toLowerCase()}2`}`,
             );
             expect(true, 'should throw').to.be.false;
         } catch {
@@ -41,14 +41,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         res = await execAsync(
             `"${
                 process.execPath
-            }" "${iobExecutable}" user passwd admin --password ${`${context.appName.toLowerCase()}1`}`
+            }" "${iobExecutable}" user passwd admin --password ${`${context.appName.toLowerCase()}1`}`,
         );
         expect(res.stderr).to.be.not.ok;
         // check new Password
         res = await execAsync(
             `"${
                 process.execPath
-            }" "${iobExecutable}" user check admin --password ${`${context.appName.toLowerCase()}1`}`
+            }" "${iobExecutable}" user check admin --password ${`${context.appName.toLowerCase()}1`}`,
         );
         expect(res.stderr).to.be.not.ok;
 
@@ -56,12 +56,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         res = await execAsync(
             `"${
                 process.execPath
-            }" "${iobExecutable}" user passwd admin --password ${`${context.appName.toLowerCase()}`}`
+            }" "${iobExecutable}" user passwd admin --password ${`${context.appName.toLowerCase()}`}`,
         );
         expect(res.stderr).to.be.not.ok;
         // check password
         res = await execAsync(
-            `"${process.execPath}" "${iobExecutable}" user check admin --password ${`${context.appName.toLowerCase()}`}`
+            `"${process.execPath}" "${iobExecutable}" user check admin --password ${`${context.appName.toLowerCase()}`}`,
         );
         expect(res.stderr).to.be.not.ok;
 
@@ -70,7 +70,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             await execAsync(
                 `"${
                     process.execPath
-                }" "${iobExecutable}" user passwd uuuser --password ${`${context.appName.toLowerCase()}1`}`
+                }" "${iobExecutable}" user passwd uuuser --password ${`${context.appName.toLowerCase()}1`}`,
             );
             expect(true, 'should throw').to.be.false;
         } catch {
@@ -82,7 +82,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             await execAsync(
                 `"${
                     process.execPath
-                }" "${iobExecutable}" user check uuuser --password ${`${context.appName.toLowerCase()}1`}`
+                }" "${iobExecutable}" user check uuuser --password ${`${context.appName.toLowerCase()}1`}`,
             );
             expect(true, 'should throw').to.be.false;
         } catch {
@@ -140,7 +140,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         // add user
         res = await execAsync(
-            `"${process.execPath}" "${iobExecutable}" user add newUser --password user --ingroup user`
+            `"${process.execPath}" "${iobExecutable}" user add newUser --password user --ingroup user`,
         );
         expect(res.stderr).to.be.not.ok;
 
@@ -721,12 +721,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 mode: 'daemon',
                 platform: 'Javascript/Node.js',
                 materialize: true,
-                installedVersion: '1.0.0'
+                installedVersion: '1.0.0',
             },
             native: {},
             type: 'instance',
             instanceObjects: [],
-            objects: []
+            objects: [],
         });
         // license must be taken
         res = await execAsync(`"${process.execPath}" "${iobExecutable}" license ${licenseFile}`);

@@ -21,9 +21,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     name: 'test2',
                     read: true,
                     write: true,
-                    role: 'state'
+                    role: 'state',
                 },
-                native: {}
+                native: {},
             },
             (err, res) => {
                 expect(err).to.be.not.ok;
@@ -38,7 +38,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     console.log(JSON.stringify(obj));
                     done();
                 });
-            }
+            },
         );
     });
 
@@ -52,9 +52,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     name: 'test1a',
                     read: true,
                     write: true,
-                    role: 'state'
+                    role: 'state',
                 },
-                native: {}
+                native: {},
             })
             .then(res => {
                 expect(res).to.be.ok;
@@ -360,13 +360,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             language: 'javascript',
             views: {
                 test: {
-                    map: 'function(doc) {\n  if (doc._id.match(/^testAdapter/) && doc.meta.type === "test") {\n   emit(doc._id, doc);\n  }\n}'
-                }
+                    map: 'function(doc) {\n  if (doc._id.match(/^testAdapter/) && doc.meta.type === "test") {\n   emit(doc._id, doc);\n  }\n}',
+                },
             },
             common: {
-                name: 'Test Design'
+                name: 'Test Design',
             },
-            native: {}
+            native: {},
         });
 
         // now let's create an object matching the view
@@ -374,18 +374,18 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             type: 'meta',
             common: {
                 type: 'meta.user',
-                name: 'Test Meta Object'
+                name: 'Test Meta Object',
             },
             meta: {
                 adapter: 'testAdapter',
-                type: 'test'
+                type: 'test',
             },
-            native: {}
+            native: {},
         } as ioBroker.SettableMetaObject);
 
         const doc = await context.objects.getObjectViewAsync('testAdapter', 'test', {
             startkey: 'testAdapter',
-            endkey: 'testAdapter\u9999'
+            endkey: 'testAdapter\u9999',
         });
 
         // now check that our object view contains our object
@@ -406,7 +406,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         // create object
         await context.objects.setObjectAsync('test.0.objectExistenceCheck', {
             type: 'meta',
-            native: {}
+            native: {},
         } as ioBroker.SettableMetaObject);
 
         // object should now exist

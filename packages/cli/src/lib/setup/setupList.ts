@@ -191,7 +191,7 @@ export class List {
         adapter: string,
         path: string | null | undefined,
         allFiles?: File[] | ((allFiles: File[]) => void),
-        callback?: (allFiles: File[]) => void
+        callback?: (allFiles: File[]) => void,
     ): void {
         if (typeof path === 'function') {
             callback = path;
@@ -301,7 +301,7 @@ export class List {
         lines: IdValueObject[],
         flags: FlagObject,
         cb: (res: any[]) => void,
-        _result?: any[]
+        _result?: any[],
     ): void {
         const result = _result || [];
         if (!lines || !lines.length) {
@@ -381,7 +381,7 @@ export class List {
                                 console.log(
                                     `${id.padEnd(39)}: from [${from.padEnd(29)}] (${type.padEnd(9)}) ${
                                         state.ack ? '    ack' : 'not ack'
-                                    } ${JSON.stringify(state.val)}`
+                                    } ${JSON.stringify(state.val)}`,
                                 );
                             }
                             this.processExit();
@@ -420,14 +420,14 @@ export class List {
                                         id,
                                         name,
                                         version: obj.value.common.version,
-                                        'upgrade policy': obj.value.common.automaticUpgrade ?? 'none'
+                                        'upgrade policy': obj.value.common.automaticUpgrade ?? 'none',
                                     });
                                 }
                             }
 
                             console.table(adapterList);
                             this.processExit();
-                        }
+                        },
                     );
                     break;
 
@@ -528,7 +528,7 @@ export class List {
                                 console.log('\n+ instance is alive');
                                 this.processExit();
                             });
-                        }
+                        },
                     );
                     break;
 
@@ -548,10 +548,10 @@ export class List {
                                         ? new RegExp(tools.pattern2RegEx('system.user.' + filter))
                                         : null;
                                     console.log(
-                                        '    ID                                 | Name        | Active   | Groups'
+                                        '    ID                                 | Name        | Active   | Groups',
                                     );
                                     console.log(
-                                        '---------------------------------------+-------------+----------+--------------'
+                                        '---------------------------------------+-------------+----------+--------------',
                                     );
                                     for (const obj of objs.rows) {
                                         if (obj.value.type !== 'user') {
@@ -565,7 +565,7 @@ export class List {
                                                 reg.test(
                                                     tools.isObject(obj.value.common.name)
                                                         ? obj.value.common.name[lang] || obj.value.common.name.en
-                                                        : obj.value.common.name
+                                                        : obj.value.common.name,
                                                 ))
                                         ) {
                                             const id = obj.value._id;
@@ -593,9 +593,9 @@ export class List {
                                         }
                                     }
                                     this.processExit();
-                                }
+                                },
                             );
-                        }
+                        },
                     );
                     break;
 
@@ -611,13 +611,13 @@ export class List {
                             const reg = filter ? new RegExp(tools.pattern2RegEx('system.group.' + filter)) : null;
                             console.log('');
                             console.log(
-                                '  system.group      | object  | state   | file      | user  | others                 | users'
+                                '  system.group      | object  | state   | file      | user  | others                 | users',
                             );
                             console.log(
-                                '                    | l r w d | l r w d | l r w c d | w c d |                        |'
+                                '                    | l r w d | l r w d | l r w c d | w c d |                        |',
                             );
                             console.log(
-                                '--------------------+---------+---------+-----------+-------+------------------------+---------'
+                                '--------------------+---------+---------+-----------+-------+------------------------+---------',
                             );
                             for (const obj of objs.rows) {
                                 if (obj.value.type !== 'group') {
@@ -630,7 +630,7 @@ export class List {
                                         reg.test(
                                             tools.isObject(obj.value.common.name)
                                                 ? obj.value.common.name[lang] || obj.value.common.name.en
-                                                : obj.value.common.name
+                                                : obj.value.common.name,
                                         ))
                                 ) {
                                     const id = obj.value._id.substring(13);
@@ -641,34 +641,34 @@ export class List {
                                                 write: true,
                                                 delete: true,
                                                 create: true,
-                                                list: true
+                                                list: true,
                                             },
                                             object: {
                                                 read: true,
                                                 write: true,
                                                 create: true,
                                                 delete: true,
-                                                list: true
+                                                list: true,
                                             },
                                             state: {
                                                 read: true,
                                                 write: true,
                                                 delete: true,
                                                 create: true,
-                                                list: true
+                                                list: true,
                                             },
                                             users: {
                                                 write: true,
                                                 create: true,
                                                 delete: true,
                                                 list: true,
-                                                read: true
+                                                read: true,
                                             },
                                             other: {
                                                 execute: true,
                                                 http: true,
-                                                sendto: true
-                                            }
+                                                sendto: true,
+                                            },
                                         };
                                     }
 
@@ -728,7 +728,7 @@ export class List {
                                     if (obj.value.common.members) {
                                         for (let m = 0; m < obj.value.common.members.length; m++) {
                                             obj.value.common.members[m] = obj.value.common.members[m].substring(
-                                                12
+                                                12,
                                             ) as ioBroker.ObjectIDs.User;
                                         }
                                         text += ` ${obj.value.common.members.join(', ')}`;
@@ -738,11 +738,11 @@ export class List {
                             }
 
                             console.log(
-                                '--------------------+---------+---------+-----------+-------+------------------------+---------'
+                                '--------------------+---------+---------+-----------+-------+------------------------+---------',
                             );
                             console.log('Legend: (l)ist, (r)ead, (w)rite, (c)reate, (d)elete');
                             this.processExit();
-                        }
+                        },
                     );
                     break;
 
@@ -804,9 +804,9 @@ export class List {
                                                 uptime = '-';
                                             }
                                             const text = `${id.padEnd(
-                                                19
+                                                19,
                                             )} ${name} (version: ${version}, hostname: ${hostname.padEnd(
-                                                14
+                                                14,
                                             )}, ${alive}, uptime: ${uptime})`;
                                             // todo
                                             console.log(text);
@@ -816,7 +816,7 @@ export class List {
                                     this.processExit();
                                 });
                             });
-                        }
+                        },
                     );
                     break;
 
@@ -840,13 +840,13 @@ export class List {
 
                             if (!reg || reg.test(obj.value._id) || (name && reg.test(name))) {
                                 console.log(
-                                    '\n====================================================================================='
+                                    '\n=====================================================================================',
                                 );
                                 const id = obj.value._id.substring(5);
 
                                 console.log(`${id.padEnd(19)}(${name})`);
                                 console.log(
-                                    '-------------------------------------------------------------------------------------'
+                                    '-------------------------------------------------------------------------------------',
                                 );
 
                                 if (obj.value.common.members) {
@@ -881,7 +881,7 @@ export class List {
                                         adapter &&
                                         row.value._id !== names[0] &&
                                         !row.value._id.startsWith(`${names[0]}.`)
-                                    )
+                                    ),
                             )
                             .map(row => row.value._id);
 

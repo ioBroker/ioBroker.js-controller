@@ -53,7 +53,7 @@ export class AdapterAutoUpgradeManager {
         none: '',
         patch: '~',
         minor: '^',
-        major: '>'
+        major: '>',
     } as const;
     /** Prefix for log messages */
     private readonly logPrefix: string;
@@ -114,7 +114,7 @@ export class AdapterAutoUpgradeManager {
                 semver.satisfies(
                     repoAdapterInfo.version,
                     `${this.SEMVER_RANGE_MAPPING[adapterConfig.upgradePolicy]}${adapterConfig.version}`,
-                    { includePrerelease: true }
+                    { includePrerelease: true },
                 )
             ) {
                 try {
@@ -122,19 +122,19 @@ export class AdapterAutoUpgradeManager {
                     upgradedAdapters.push({
                         name: repoAdapterInfo.name,
                         newVersion: repoAdapterInfo.version,
-                        oldVersion: adapterConfig.version
+                        oldVersion: adapterConfig.version,
                     });
                     this.logger.info(
-                        `${this.logPrefix} Successfully upgraded adapter "${repoAdapterInfo.name}" to ${repoAdapterInfo.version}`
+                        `${this.logPrefix} Successfully upgraded adapter "${repoAdapterInfo.name}" to ${repoAdapterInfo.version}`,
                     );
                 } catch (e) {
                     this.logger.error(
-                        `${this.logPrefix} Could not upgrade adapter "${repoAdapterInfo.name}" to ${repoAdapterInfo.version}: ${e.message}`
+                        `${this.logPrefix} Could not upgrade adapter "${repoAdapterInfo.name}" to ${repoAdapterInfo.version}: ${e.message}`,
                     );
                     failedAdapters.push({
                         name: repoAdapterInfo.name,
                         newVersion: repoAdapterInfo.version,
-                        oldVersion: adapterConfig.version
+                        oldVersion: adapterConfig.version,
                     });
                 }
             }
@@ -157,7 +157,7 @@ export class AdapterAutoUpgradeManager {
             objects: this.objects,
             states: this.states,
             params: {},
-            processExit: () => undefined
+            processExit: () => undefined,
         });
 
         await upgrade.upgradeAdapter(repoName, `${name}@${version}`, false, true, false);
@@ -205,7 +205,7 @@ export class AdapterAutoUpgradeManager {
     private async getAutoUpdateConfiguration(): Promise<AdapterUpgradeConfiguration[]> {
         const res = await this.objects.getObjectViewAsync('system', 'adapter', {
             startkey: 'system.adapter.',
-            endkey: 'system.adapter.\u9999'
+            endkey: 'system.adapter.\u9999',
         });
 
         if (!res) {
@@ -218,14 +218,14 @@ export class AdapterAutoUpgradeManager {
             .filter(
                 row =>
                     (defaultPolicy && defaultPolicy !== 'none') ||
-                    (row.value?.common.automaticUpgrade && row.value.common.automaticUpgrade !== 'none')
+                    (row.value?.common.automaticUpgrade && row.value.common.automaticUpgrade !== 'none'),
             )
             .map(row => {
                 return {
                     // ts can not infer, that we filtered out falsy row.value entries
                     name: row.value.common.name,
                     version: row.value.common.version,
-                    upgradePolicy: row.value.common.automaticUpgrade! || defaultPolicy
+                    upgradePolicy: row.value.common.automaticUpgrade! || defaultPolicy,
                 };
             });
     }

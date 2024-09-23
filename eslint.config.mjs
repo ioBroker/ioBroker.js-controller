@@ -2,7 +2,7 @@ import config, { esmConfig } from '@iobroker/eslint-config';
 
 export default [
     {
-        ignores: ['**/build/*']
+        ignores: ['**/build/*'],
     },
     ...config,
     ...esmConfig,
@@ -10,7 +10,7 @@ export default [
         files: ['**/*.test-d.ts'],
         rules: {
             '@typescript-eslint/no-unused-vars': 'off',
-            '@typescript-eslint/no-base-to-string': 'off'
-        }
-    }
+            '@typescript-eslint/no-base-to-string': 'off',
+        },
+    },
 ];

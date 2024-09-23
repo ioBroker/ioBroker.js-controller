@@ -14,14 +14,14 @@ const textName = 'Jsonl-File';
 const context: TestContext = {
     // @ts-expect-error fix later
     objects: null,
-    name: textName
+    name: textName,
 };
 
 const objectsConfig = {
     options: {
         auth_pass: null,
         retry_max_delay: 100,
-        retry_max_count: 2
+        retry_max_count: 2,
     },
     dataDir: thisDir + '/../tmp/data',
     type: 'jsonl',
@@ -33,7 +33,7 @@ const objectsConfig = {
     connectTimeout: 2000,
     onChange: (id: string, _obj: ioBroker.AnyObject) => {
         console.log('object changed. ' + id);
-    }
+    },
 };
 
 describe(textName + ' Test Objects File-Redis', function () {
@@ -46,8 +46,8 @@ describe(textName + ' Test Objects File-Redis', function () {
                 dataDir: `${thisDir}/../tmp/data`,
                 onChange: function (id: string, _state: ioBroker.State) {
                     console.log('state changed. ' + id);
-                }
-            }
+                },
+            },
         });
 
         objects = _objects;

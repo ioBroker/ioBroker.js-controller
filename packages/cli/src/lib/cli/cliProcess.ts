@@ -8,7 +8,7 @@ import { setTimeout as wait } from 'node:timers/promises';
 import {
     isLocalStatesDbServer,
     isLocalObjectsDbServer,
-    getInstancesOrderedByStartPrio
+    getInstancesOrderedByStartPrio,
 } from '@iobroker/js-controller-common';
 import { tools, EXIT_CODES } from '@iobroker/js-controller-common';
 import * as CLI from '@/lib/cli/messages.js';
@@ -184,7 +184,7 @@ export class CLIProcess extends CLICommand {
         } catch {
             console.warn('Cannot read memoryLimitMB');
             console.warn(
-                `May be config file does not exist.\nPlease call "${tools.appName} setup first" to initialize the settings.`
+                `May be config file does not exist.\nPlease call "${tools.appName} setup first" to initialize the settings.`,
             );
         }
 
@@ -210,7 +210,7 @@ export class CLIProcess extends CLICommand {
             detached: true,
             stdio: ['ignore', 'ignore', 'ignore', 'ipc'],
             windowsHide: true,
-            cwd: rootDir
+            cwd: rootDir,
         });
 
         child.unref();
@@ -317,7 +317,7 @@ export class CLIProcess extends CLICommand {
                     if (adapterInstances.length > 1) {
                         CLI.error.specifyInstance(
                             adapterName,
-                            adapterInstances.map(obj => obj._id.substring('system.adapter.'.length))
+                            adapterInstances.map(obj => obj._id.substring('system.adapter.'.length)),
                         );
                         return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
                     } else if (adapterInstances.length === 0) {
@@ -402,7 +402,7 @@ async function setInstanceEnabled(
     objects: ObjectsClient,
     instanceObj: ioBroker.InstanceObject,
     enabled: boolean,
-    force?: boolean
+    force?: boolean,
 ): Promise<void> {
     if (!force && instanceObj.common.enabled === enabled) {
         return;

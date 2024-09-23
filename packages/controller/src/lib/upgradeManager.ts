@@ -67,7 +67,7 @@ class UpgradeManager {
     private readonly response: ServerResponse = {
         running: true,
         stderr: [],
-        stdout: []
+        stdout: [],
     };
     /** Used to stop the stop shutdown timeout */
     private shutdownAbortController?: AbortController;
@@ -172,7 +172,7 @@ class UpgradeManager {
     async npmInstall(): Promise<void> {
         const res = await tools.installNodeModule(`iobroker.js-controller@${this.version}`, {
             cwd: '/opt/iobroker',
-            debug: true
+            debug: true,
         });
 
         this.response.stderr.push(...res.stderr.split('\n'));
@@ -238,7 +238,7 @@ class UpgradeManager {
      */
     webServerCallback(res: http.ServerResponse): void {
         res.writeHead(200, {
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': '*',
         });
 
         res.end(JSON.stringify(this.response));
@@ -339,20 +339,20 @@ class UpgradeManager {
             const { certPublic, certPrivate } = await this.getCertificates({
                 objects,
                 certPublicName,
-                certPrivateName
+                certPrivateName,
             });
 
             return {
                 useHttps: obj.native.secure,
                 port: obj.native.port,
                 certPublic,
-                certPrivate
+                certPrivate,
             };
         }
 
         return {
             useHttps: false,
-            port: obj.native.port
+            port: obj.native.port,
         };
     }
 

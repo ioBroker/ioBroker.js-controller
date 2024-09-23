@@ -224,14 +224,14 @@ export class CLIHost extends CLICommand {
                     Object.assign(host, {
                         _id: `system.host.${newHostname}`,
                         from: getObjectFrom(),
-                        ts: Date.now()
+                        ts: Date.now(),
                     });
                     Object.assign(host.common, {
                         name: host._id,
                         hostname: newHostname,
                         address: [],
                         cmd: '',
-                        native: { process: {}, os: {}, hardware: {} }
+                        native: { process: {}, os: {}, hardware: {} },
                     });
                     // And save it
                     try {
@@ -257,7 +257,7 @@ export class CLIHost extends CLICommand {
                         Object.assign(object, {
                             _id: object._id.replace(`system.host.${prevHostname}`, `system.host.${newHostname}`),
                             from: getObjectFrom(),
-                            ts: Date.now()
+                            ts: Date.now(),
                         });
 
                         // And save it
@@ -302,7 +302,7 @@ export class CLIHost extends CLICommand {
 async function changeInstanceHost(
     objects: ObjectsClient,
     instance: ioBroker.InstanceObject,
-    newHostname: string
+    newHostname: string,
 ): Promise<void> {
     const oldInstanceHost = instance.common.host;
     instance.from = getObjectFrom();

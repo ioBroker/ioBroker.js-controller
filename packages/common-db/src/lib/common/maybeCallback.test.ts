@@ -145,7 +145,7 @@ async () => {
         'calling',
         'me',
         'with',
-        'arguments'
+        'arguments',
     );
 };
 

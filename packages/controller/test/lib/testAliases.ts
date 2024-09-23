@@ -17,37 +17,37 @@ async function prepareGroupsAndUsers(objects: ObjectsInRedisClient): Promise<voi
                     read: true,
                     write: false,
                     delete: false,
-                    create: false
+                    create: false,
                 },
                 state: {
                     list: true,
                     read: true,
                     write: true,
                     create: true,
-                    delete: false
+                    delete: false,
                 },
                 users: {
                     list: true,
                     read: true,
                     write: false,
                     create: false,
-                    delete: false
+                    delete: false,
                 },
                 other: {
                     execute: false,
                     http: true,
-                    sendto: false
+                    sendto: false,
                 },
                 file: {
                     list: true,
                     read: true,
                     write: false,
                     create: false,
-                    delete: false
-                }
-            }
+                    delete: false,
+                },
+            },
         },
-        native: {}
+        native: {},
     });
 
     await objects.setObject('system.user.userC', {
@@ -58,7 +58,7 @@ async function prepareGroupsAndUsers(objects: ObjectsInRedisClient): Promise<voi
             color: '#44d8f1',
             enabled: true,
             password:
-                'pbkdf2$10000$47785e10d8e468765c06b371f45981d625274dec3f8f6261b12d67320d07e7844e1e30df575f55ed3686804fbbae442ee9503c9c93fdcff4c46b8243200e1839b77fa18f769c9f71b13f12c4002e1cee03e6fa54878a2d6a9629589bd9169459989fc63abddce94690e5744e69658be43e1a9c7b38f1535eb9946a05394ee16f3724b75e0829ece04a05ef8848509d27b7944a9e064bba9341350d39d7a7e5bc4fe1980ae6da737c9e5e79e5a5a7e969825e94302c047a6054f3524b71c52acd33f2f83b1ed026c05af514da0a2e57c2267aeb10021f9503b5db02d8cc946421604f73548ceecc2a10b44be6a5b859e43e706cc86ee36b21984fc33abf9b2d66$0c4a5d538c84116846aac1c20fdc3fdd'
+                'pbkdf2$10000$47785e10d8e468765c06b371f45981d625274dec3f8f6261b12d67320d07e7844e1e30df575f55ed3686804fbbae442ee9503c9c93fdcff4c46b8243200e1839b77fa18f769c9f71b13f12c4002e1cee03e6fa54878a2d6a9629589bd9169459989fc63abddce94690e5744e69658be43e1a9c7b38f1535eb9946a05394ee16f3724b75e0829ece04a05ef8848509d27b7944a9e064bba9341350d39d7a7e5bc4fe1980ae6da737c9e5e79e5a5a7e969825e94302c047a6054f3524b71c52acd33f2f83b1ed026c05af514da0a2e57c2267aeb10021f9503b5db02d8cc946421604f73548ceecc2a10b44be6a5b859e43e706cc86ee36b21984fc33abf9b2d66$0c4a5d538c84116846aac1c20fdc3fdd',
         },
         type: 'user',
         native: {},
@@ -68,8 +68,8 @@ async function prepareGroupsAndUsers(objects: ObjectsInRedisClient): Promise<voi
         acl: {
             object: PERMISSIONS['0664'],
             owner: 'system.user.admin',
-            ownerGroup: 'system.group.administrator'
-        }
+            ownerGroup: 'system.group.administrator',
+        },
     });
 
     await objects.setObject('system.group.userD', {
@@ -85,37 +85,37 @@ async function prepareGroupsAndUsers(objects: ObjectsInRedisClient): Promise<voi
                     read: true,
                     write: false,
                     delete: false,
-                    create: false
+                    create: false,
                 },
                 state: {
                     list: true,
                     read: true,
                     write: true,
                     create: true,
-                    delete: false
+                    delete: false,
                 },
                 users: {
                     list: true,
                     read: true,
                     write: false,
                     create: false,
-                    delete: false
+                    delete: false,
                 },
                 other: {
                     execute: false,
                     http: true,
-                    sendto: false
+                    sendto: false,
                 },
                 file: {
                     list: true,
                     read: true,
                     write: false,
                     create: false,
-                    delete: false
-                }
-            }
+                    delete: false,
+                },
+            },
         },
-        native: {}
+        native: {},
     });
 
     await objects.setObject('system.user.userD', {
@@ -126,7 +126,7 @@ async function prepareGroupsAndUsers(objects: ObjectsInRedisClient): Promise<voi
             color: '#44d8f1',
             enabled: true,
             password:
-                'pbkdf2$10000$47785e10d8e468765c06b371f45981d625274dec3f8f6261b12d67320d07e7844e1e30df575f55ed3686804fbbae442ee9503c9c93fdcff4c46b8243200e1839b77fa18f769c9f71b13f12c4002e1cee03e6fa54878a2d6a9629589bd9169459989fc63abddce94690e5744e69658be43e1a9c7b38f1535eb9946a05394ee16f3724b75e0829ece04a05ef8848509d27b7944a9e064bba9341350d39d7a7e5bc4fe1980ae6da737c9e5e79e5a5a7e969825e94302c047a6054f3524b71c52acd33f2f83b1ed026c05af514da0a2e57c2267aeb10021f9503b5db02d8cc946421604f73548ceecc2a10b44be6a5b859e43e706cc86ee36b21984fc33abf9b2d66$0c4a5d538c84116846aac1c20fdc3fdd'
+                'pbkdf2$10000$47785e10d8e468765c06b371f45981d625274dec3f8f6261b12d67320d07e7844e1e30df575f55ed3686804fbbae442ee9503c9c93fdcff4c46b8243200e1839b77fa18f769c9f71b13f12c4002e1cee03e6fa54878a2d6a9629589bd9169459989fc63abddce94690e5744e69658be43e1a9c7b38f1535eb9946a05394ee16f3724b75e0829ece04a05ef8848509d27b7944a9e064bba9341350d39d7a7e5bc4fe1980ae6da737c9e5e79e5a5a7e969825e94302c047a6054f3524b71c52acd33f2f83b1ed026c05af514da0a2e57c2267aeb10021f9503b5db02d8cc946421604f73548ceecc2a10b44be6a5b859e43e706cc86ee36b21984fc33abf9b2d66$0c4a5d538c84116846aac1c20fdc3fdd',
         },
         type: 'user',
         native: {},
@@ -136,8 +136,8 @@ async function prepareGroupsAndUsers(objects: ObjectsInRedisClient): Promise<voi
         acl: {
             object: PERMISSIONS['0664'],
             owner: 'system.user.admin',
-            ownerGroup: 'system.group.administrator'
-        }
+            ownerGroup: 'system.group.administrator',
+        },
     });
 }
 
@@ -158,7 +158,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     min: -100,
                     max: 100,
                     read: true,
-                    write: true
+                    write: true,
                 },
                 native: {},
                 type: 'state',
@@ -166,8 +166,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     state: PERMISSIONS['0666'],
                     object: PERMISSIONS['0600'],
                     owner: 'system.user.userC',
-                    ownerGroup: 'system.group.user1'
-                }
+                    ownerGroup: 'system.group.user1',
+                },
             },
             err => {
                 expect(err).to.be.not.ok;
@@ -186,10 +186,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                 max: 100,
                                 unit: '%',
                                 alias: {
-                                    id: gid
+                                    id: gid,
                                 },
                                 read: true,
-                                write: true
+                                write: true,
                             },
                             native: {},
                             type: 'state',
@@ -197,8 +197,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                 state: PERMISSIONS['0666'],
                                 object: PERMISSIONS['0600'],
                                 owner: 'system.user.userC',
-                                ownerGroup: 'system.group.user1'
-                            }
+                                ownerGroup: 'system.group.user1',
+                            },
                         },
                         () => {
                             context.adapter.getForeignState(gAliasID, (err, state) => {
@@ -208,10 +208,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                 expect(state!.ack).to.be.true;
                                 done();
                             });
-                        }
+                        },
                     );
                 });
-            }
+            },
         );
     }).timeout(3_000);
 
@@ -226,9 +226,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'number',
                 role: 'level',
                 read: true,
-                write: true
+                write: true,
             },
-            native: {}
+            native: {},
         });
 
         // create some non-alias data to check that it works with mixed ids
@@ -239,9 +239,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'number',
                 role: 'level',
                 read: true,
-                write: true
+                write: true,
             },
-            native: {}
+            native: {},
         });
 
         await context.adapter.setForeignObjectAsync(gid + '1', {
@@ -250,7 +250,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'number',
                 role: 'level',
                 read: true,
-                write: true
+                write: true,
             },
             native: {},
             type: 'state',
@@ -258,8 +258,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 state: PERMISSIONS['0666'],
                 object: PERMISSIONS['0600'],
                 owner: 'system.user.userC',
-                ownerGroup: 'system.group.user1'
-            }
+                ownerGroup: 'system.group.user1',
+            },
         });
 
         await context.adapter.setForeignStateAsync(gid + '1', 5, true);
@@ -275,10 +275,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 min: -10,
                 max: 10,
                 alias: {
-                    id: gid + '1'
+                    id: gid + '1',
                 },
                 read: true,
-                write: true
+                write: true,
             },
             native: {},
             type: 'state',
@@ -286,8 +286,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 state: PERMISSIONS['0666'],
                 object: PERMISSIONS['0666'],
                 owner: 'system.user.userC',
-                ownerGroup: 'system.group.user1'
-            }
+                ownerGroup: 'system.group.user1',
+            },
         });
 
         let states = await context.adapter.getForeignStatesAsync(gAliasID + '1');
@@ -338,10 +338,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     min: -100,
                     max: 100,
                     read: true,
-                    write: true
+                    write: true,
                 },
                 native: {},
-                type: 'state'
+                type: 'state',
             },
             () => {
                 context.adapter.setForeignState(gid + 'C', 2, true, err => {
@@ -362,11 +362,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                 alias: {
                                     id: gid + 'C',
                                     read: 'val * 10 + 1',
-                                    write: '(val - 1) / 10'
-                                }
+                                    write: '(val - 1) / 10',
+                                },
                             },
                             native: {},
-                            type: 'state'
+                            type: 'state',
                         },
                         () => {
                             context.adapter.getForeignState(gAliasID + 'C', (err, state) => {
@@ -385,10 +385,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                     });
                                 });
                             });
-                        }
+                        },
                     );
                 });
-            }
+            },
         );
     }).timeout(3_000);
 
@@ -441,7 +441,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         };
 
         context.adapter.subscribeForeignStates(gAliasID, () =>
-            context.states.setState(gid, 10, err => expect(err).to.be.not.ok)
+            context.states.setState(gid, 10, err => expect(err).to.be.not.ok),
         );
     }).timeout(3_000);
 
@@ -473,7 +473,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         parts.pop();
 
         context.adapter.subscribeForeignStates(parts.join('.') + '.*', () =>
-            context.states.setState(gid, 10, err => expect(err).to.be.not.ok)
+            context.states.setState(gid, 10, err => expect(err).to.be.not.ok),
         );
     }).timeout(3_000);
 
@@ -561,7 +561,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         };
 
         context.adapter.subscribeForeignStates([gAliasID, gid], () =>
-            context.states.setState(gid, 10, err => expect(err).to.be.not.ok)
+            context.states.setState(gid, 10, err => expect(err).to.be.not.ok),
         );
     }).timeout(3_000);
 
@@ -597,10 +597,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             max: 100,
                             unit: '%',
                             alias: {
-                                id: gid + 'A'
+                                id: gid + 'A',
                             },
                             read: true,
-                            write: true
+                            write: true,
                         },
                         native: {},
                         type: 'state',
@@ -608,8 +608,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             object: PERMISSIONS['0666'],
                             state: PERMISSIONS['0666'],
                             owner: 'system.user.userC',
-                            ownerGroup: 'system.group.user1'
-                        }
+                            ownerGroup: 'system.group.user1',
+                        },
                     },
                     () => {
                         context.onAdapterStateChanged = function (id, state) {
@@ -633,7 +633,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                 context.states.setState(gid + 'A', 10);
                             });
                         }, 100);
-                    }
+                    },
                 );
             }
         };
@@ -649,15 +649,15 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     min: -200,
                     max: 200,
                     read: true,
-                    write: true
+                    write: true,
                 },
                 native: {},
-                type: 'state'
+                type: 'state',
             },
             () =>
                 context.adapter.subscribeForeignStates(gAliasID, () =>
-                    context.states.setState(gid, 10, err => expect(err).to.be.not.ok)
-                )
+                    context.states.setState(gid, 10, err => expect(err).to.be.not.ok),
+                ),
         ); // => GOTO A:
     }).timeout(3_000);
 
@@ -680,10 +680,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     min: 0,
                     max: 100,
                     read: true,
-                    write: true
+                    write: true,
                 },
                 native: {},
-                type: 'state'
+                type: 'state',
             },
             () =>
                 context.adapter.setForeignObject(
@@ -696,13 +696,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             min: -10,
                             max: 10,
                             alias: {
-                                id: gid + 'Star'
+                                id: gid + 'Star',
                             },
                             read: true,
-                            write: true
+                            write: true,
                         },
                         native: {},
-                        type: 'state'
+                        type: 'state',
                     },
                     () =>
                         // 2. Create normal state (independent from alias)
@@ -716,10 +716,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                     min: 0,
                                     max: 10,
                                     read: true,
-                                    write: true
+                                    write: true,
                                 },
                                 native: {},
-                                type: 'state'
+                                type: 'state',
                             },
                             () =>
                                 context.adapter.subscribeForeignStates('*', () => {
@@ -749,9 +749,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                             context.adapter.unsubscribeForeignStates('*', () =>
                                                 context.states.setState(gid + 'NotAlias', 3, () =>
                                                     context.states.setState(gAliasID + 'Star', 5, () =>
-                                                        setTimeout(() => done(), 500)
-                                                    )
-                                                )
+                                                        setTimeout(() => done(), 500),
+                                                    ),
+                                                ),
                                             );
                                         }
                                     };
@@ -760,11 +760,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                     context.states.setState(gid + 'NotAlias', 2, () =>
                                         context.states.setState(gid + 'Star', 10, () => {
                                             // go to B:
-                                        })
+                                        }),
                                     );
-                                })
-                        )
-                )
+                                }),
+                        ),
+                ),
         );
     }).timeout(3_000);
 
@@ -783,10 +783,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         min: 0,
                         max: 100,
                         read: true,
-                        write: true
+                        write: true,
                     },
                     native: {},
-                    type: 'state'
+                    type: 'state',
                 },
                 err => {
                     expect(err).to.be.not.ok;
@@ -801,13 +801,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                 min: -10,
                                 max: 10,
                                 alias: {
-                                    id: `${gid}afterSub`
+                                    id: `${gid}afterSub`,
                                 },
                                 read: true,
-                                write: true
+                                write: true,
                             },
                             native: {},
-                            type: 'state'
+                            type: 'state',
                         },
                         err => {
                             expect(err).to.be.not.ok;
@@ -823,9 +823,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             setTimeout(() => {
                                 context.states.setState(`${gid}afterSub`, 50);
                             }, 100);
-                        }
+                        },
                     );
-                }
+                },
             );
         });
     }).timeout(3_000);
@@ -846,10 +846,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             min: 0,
                             max: 100,
                             read: true,
-                            write: true
+                            write: true,
                         },
                         native: {},
-                        type: 'state'
+                        type: 'state',
                     },
                     err => {
                         expect(err).to.be.not.ok;
@@ -864,13 +864,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                     min: -10,
                                     max: 10,
                                     alias: {
-                                        id: `${gid}partialOrig`
+                                        id: `${gid}partialOrig`,
                                     },
                                     read: true,
-                                    write: true
+                                    write: true,
                                 },
                                 native: {},
-                                type: 'state'
+                                type: 'state',
                             },
                             err => {
                                 expect(err).to.be.not.ok;
@@ -890,9 +890,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                 setTimeout(() => {
                                     context.states.setState(`${gid}partialOrig`, 50);
                                 }, 100);
-                            }
+                            },
                         );
-                    }
+                    },
                 );
             });
         });
@@ -917,12 +917,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         alias: {
                             id: {
                                 read: `${gid}readOrig`,
-                                write: `${gid}writeOrig`
-                            }
-                        }
+                                write: `${gid}writeOrig`,
+                            },
+                        },
                     },
                     native: {},
-                    type: 'state'
+                    type: 'state',
                 },
                 err => {
                     expect(err).to.not.be.ok;
@@ -937,10 +937,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                 min: -10,
                                 max: 10,
                                 read: true,
-                                write: true
+                                write: true,
                             },
                             native: {},
-                            type: 'state'
+                            type: 'state',
                         },
                         err => {
                             expect(err).to.not.be.ok;
@@ -955,10 +955,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                         min: -10,
                                         max: 10,
                                         read: true,
-                                        write: true
+                                        write: true,
                                     },
                                     native: {},
-                                    type: 'state'
+                                    type: 'state',
                                 },
                                 err => {
                                     expect(err).to.not.be.ok;
@@ -980,11 +980,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                             });
                                         });
                                     });
-                                }
+                                },
                             );
-                        }
+                        },
                     );
-                }
+                },
             );
         });
     }).timeout(3_000);
@@ -1000,10 +1000,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 min: -10,
                 max: 10,
                 read: true,
-                write: true
+                write: true,
             },
             native: {},
-            type: 'state'
+            type: 'state',
         });
 
         await context.adapter.setForeignObjectAsync(`${gid}writeGetStates`, {
@@ -1015,10 +1015,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 max: 10,
                 def: 10,
                 read: true,
-                write: true
+                write: true,
             },
             native: {},
-            type: 'state'
+            type: 'state',
         });
 
         // set write object
@@ -1032,14 +1032,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 alias: {
                     id: {
                         read: `${gid}readGetStates`,
-                        write: `${gid}writeGetStates`
-                    }
+                        write: `${gid}writeGetStates`,
+                    },
                 },
                 read: true,
-                write: true
+                write: true,
             },
             native: {},
-            type: 'state'
+            type: 'state',
         });
 
         // now perform getStates with pattern
@@ -1067,7 +1067,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'number',
                 role: 'level',
                 read: true,
-                write: true
+                write: true,
             },
             native: {},
             type: 'state',
@@ -1075,8 +1075,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 state: PERMISSIONS['0600'], // 0600 only owner is allowed to write
                 object: PERMISSIONS['0600'],
                 owner: 'system.user.user',
-                ownerGroup: 'system.group.user1'
-            }
+                ownerGroup: 'system.group.user1',
+            },
         });
 
         // we create an alias objects, where we have permissions for
@@ -1089,10 +1089,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 max: 100,
                 unit: '%',
                 alias: {
-                    id: nonAliasId
+                    id: nonAliasId,
                 },
                 read: true,
-                write: true
+                write: true,
             },
             native: {},
             type: 'state',
@@ -1100,8 +1100,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 state: PERMISSIONS['0666'],
                 object: PERMISSIONS['0666'],
                 owner: 'system.user.userC',
-                ownerGroup: 'system.group.user1'
-            }
+                ownerGroup: 'system.group.user1',
+            },
         });
 
         // we use the user which is allowed to modify alias but not the source object
@@ -1111,7 +1111,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(state?.val).to.be.equal(val);
         // reading the source obj should not be ok
         expect(
-            context.adapter.getForeignStateAsync(nonAliasId, { user: 'system.user.userD' })
+            context.adapter.getForeignStateAsync(nonAliasId, { user: 'system.user.userD' }),
         ).to.be.eventually.rejectedWith('permissionError', 'Should have thrown a permission error');
     });
 

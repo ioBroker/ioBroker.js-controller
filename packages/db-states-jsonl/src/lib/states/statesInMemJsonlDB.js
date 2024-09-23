@@ -49,12 +49,12 @@ function normalizeJsonlOptions(conf = {}) {
             sizeFactorMinimumSize: 50000,
             // Compress at least daily to avoid a huge file when DBs have few objects
             // but big binary states are updated regularly
-            intervalMs: 1000 * 60 * 60 * 23
+            intervalMs: 1000 * 60 * 60 * 23,
         },
         ignoreReadErrors: true,
         throttleFS: {
             intervalMs: 60000,
-            maxBufferedCommands: 2000
+            maxBufferedCommands: 2000,
         },
         lockfile: {
             // 5 retries starting at 250ms add up to just above 2s,
@@ -62,8 +62,8 @@ function normalizeJsonlOptions(conf = {}) {
             retries: 5,
             retryMinTimeoutMs: 250,
             // This makes sure the DB stays locked for maximum 2s even if the process crashes
-            staleMs: 2000
-        }
+            staleMs: 2000,
+        },
     };
 
     // Be really careful what we allow here. Incorrect settings may cause problems in production.
@@ -111,12 +111,12 @@ export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
         // Not really used
         settings.fileDB = {
             fileName: 'states.json',
-            backupDirName: 'backup-objects'
+            backupDirName: 'backup-objects',
         };
 
         const jsonlOptions = normalizeJsonlOptions(settings.connection.jsonlOptions);
         settings.jsonlDB = {
-            fileName: 'states.jsonl'
+            fileName: 'states.jsonl',
         };
         super(settings);
 
@@ -175,9 +175,9 @@ export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
                     configurable: true,
                     enumerable: true,
                     writable: true,
-                    value: target.get(prop)
+                    value: target.get(prop),
                 };
-            }
+            },
         });
 
         if (this.settings.backup && this.settings.backup.period && !this.settings.backup.disabled) {
@@ -273,7 +273,7 @@ export class StatesInMemoryJsonlDB extends StatesInMemoryFileDB {
         const tmpBackupFileName = path.join(os.tmpdir(), `${this.getTimeStr(now)}_${this.settings.jsonlDB.fileName}`);
         const backupFileName = path.join(
             this.backupDir,
-            `${this.getTimeStr(now)}_${this.settings.jsonlDB.fileName}.gz`
+            `${this.getTimeStr(now)}_${this.settings.jsonlDB.fileName}.gz`,
         );
 
         if (!this._db.isOpen) {

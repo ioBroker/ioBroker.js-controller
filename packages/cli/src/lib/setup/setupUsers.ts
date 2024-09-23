@@ -48,11 +48,11 @@ export class Users {
                         common: {
                             name: username,
                             enabled: true,
-                            password: ''
+                            password: '',
                         },
                         from: `system.host.${tools.getHostName()}.cli`,
                         ts: Date.now(),
-                        native: {}
+                        native: {},
                     },
                     err => {
                         if (!err) {
@@ -60,7 +60,7 @@ export class Users {
                         } else {
                             return tools.maybeCallbackWithError(callback, err);
                         }
-                    }
+                    },
                 );
             }
         });
@@ -174,7 +174,7 @@ export class Users {
                                             groups.rows[i].value.common.members.indexOf('system.user.' + _user) !== -1
                                         ) {
                                             const pos = groups.rows[i].value.common.members.indexOf(
-                                                'system.user.' + _user
+                                                'system.user.' + _user,
                                             );
                                             groups.rows[i].value.common.members.splice(pos, 1);
                                             count++;
@@ -187,14 +187,14 @@ export class Users {
                                                     if (!--count) {
                                                         return tools.maybeCallbackWithError(callback, err);
                                                     }
-                                                }
+                                                },
                                             );
                                         }
                                     }
                                     if (!count) {
                                         return tools.maybeCallback(callback);
                                     }
-                                }
+                                },
                             );
                         } else {
                             return tools.maybeCallbackWithError(callback, err);
@@ -277,15 +277,15 @@ export class Users {
                             description: 'Enter your password:',
                             pattern: /^[^'"]+$/,
                             message: 'No " are allowed',
-                            hidden: true
+                            hidden: true,
                         },
                         repeatPassword: {
                             description: 'Repeat your password:',
                             pattern: /^[^'"]+$/,
                             message: 'No " are allowed',
-                            hidden: true
-                        }
-                    }
+                            hidden: true,
+                        },
+                    },
                 } as const satisfies prompt.Schema;
                 prompt.start();
 
@@ -357,15 +357,15 @@ export class Users {
                             description: 'Enter your password:',
                             pattern: /^[^'"]*$/,
                             message: 'No " are allowed',
-                            hidden: true
+                            hidden: true,
                         },
                         repeatPassword: {
                             description: 'Repeat your password:',
                             pattern: /^[^'"]*$/,
                             message: 'No " are allowed',
-                            hidden: true
-                        }
-                    }
+                            hidden: true,
+                        },
+                    },
                 } as const satisfies prompt.Schema;
                 prompt.start();
 
@@ -451,15 +451,15 @@ export class Users {
                         description: 'Enter username to check password:',
                         pattern: /^[^'"]+$/,
                         message: 'No " are allowed',
-                        hidden: false
+                        hidden: false,
                     },
                     password: {
                         description: 'Enter current password:',
                         pattern: /^[^'"]+$/,
                         message: 'No " are allowed',
-                        hidden: true
-                    }
-                }
+                        hidden: true,
+                    },
+                },
             } as const satisfies prompt.Schema;
             prompt.start();
 
@@ -468,7 +468,7 @@ export class Users {
                     if (err || !res) {
                         return tools.maybeCallbackWithError(
                             callback,
-                            `Password for user "${result.username}" does not match${err ? `: ${err.message}` : ''}`
+                            `Password for user "${result.username}" does not match${err ? `: ${err.message}` : ''}`,
                         );
                     } else {
                         return tools.maybeCallbackWithError(callback, null);
@@ -484,9 +484,9 @@ export class Users {
                         description: 'Enter current password:',
                         pattern: /^[^'"]+$/,
                         message: 'No " are allowed',
-                        hidden: true
-                    }
-                }
+                        hidden: true,
+                    },
+                },
             } as const satisfies prompt.Schema;
             prompt.start();
 
@@ -495,7 +495,7 @@ export class Users {
                     if (err || !res) {
                         return tools.maybeCallbackWithError(
                             callback,
-                            `Password for user "${username}" does not match${err ? `: ${err.message}` : ''}`
+                            `Password for user "${username}" does not match${err ? `: ${err.message}` : ''}`,
                         );
                     } else {
                         return tools.maybeCallbackWithError(callback, null);
@@ -507,7 +507,7 @@ export class Users {
                 if (err || !res) {
                     return tools.maybeCallbackWithError(
                         callback,
-                        `Password for user "${username}" does not match${err ? `: ${err.message}` : ''}`
+                        `Password for user "${username}" does not match${err ? `: ${err.message}` : ''}`,
                     );
                 } else {
                     return tools.maybeCallbackWithError(callback, null);
@@ -607,11 +607,11 @@ export class Users {
                 common: {
                     name: group,
                     enabled: true,
-                    members: []
+                    members: [],
                 },
                 from: `system.host.${tools.getHostName()}.cli`,
                 ts: Date.now(),
-                native: {}
+                native: {},
             } as any);
         }
     }

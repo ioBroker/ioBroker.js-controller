@@ -13,7 +13,7 @@ const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __
 const context: TestContext = {
     // @ts-expect-error will be filled before usage
     objects: null,
-    name: textName
+    name: textName,
 };
 
 describe(textName + ' Test Objects File-Redis', function () {
@@ -25,14 +25,14 @@ describe(textName + ' Test Objects File-Redis', function () {
                 dataDir: `${thisDir}/../tmp/data`,
                 onChange: function (id: string, _obj: ioBroker.AnyObject) {
                     console.log('object changed. ' + id);
-                }
+                },
             },
             states: {
                 dataDir: `${thisDir}/../tmp/data`,
                 onChange: function (id: string, _state: ioBroker.State) {
                     console.log('state changed. ' + id);
-                }
-            }
+                },
+            },
         });
 
         objects = _objects;

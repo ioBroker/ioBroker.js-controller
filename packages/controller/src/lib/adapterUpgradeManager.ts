@@ -72,7 +72,7 @@ export class AdapterUpgradeManager {
     private readonly response: ServerResponse = {
         running: true,
         stderr: [],
-        stdout: []
+        stdout: [],
     };
     /** Used to stop the stop shutdown timeout */
     private shutdownAbortController?: AbortController;
@@ -142,10 +142,10 @@ export class AdapterUpgradeManager {
         for (const instance of instances) {
             const updatedObj = {
                 common: {
-                    enabled
+                    enabled,
                 },
                 from: `system.host.${this.hostname}`,
-                ts
+                ts,
             } as Partial<ioBroker.InstanceObject>;
 
             await this.objects.extendObjectAsync(instance, updatedObj);
@@ -164,7 +164,7 @@ export class AdapterUpgradeManager {
             objects: this.objects,
             processExit: processExitHandler,
             states: this.states,
-            params: {}
+            params: {},
         });
 
         try {
@@ -188,7 +188,7 @@ export class AdapterUpgradeManager {
                 certPublicName: this.certPublicName,
                 certPrivateName: this.certPrivateName,
                 port: this.port,
-                useHttps: true
+                useHttps: true,
             });
         } else {
             this.startInsecureWebServer({ port: this.port, useHttps: false });
@@ -247,7 +247,7 @@ export class AdapterUpgradeManager {
     async getAllEnabledInstances(): Promise<string[]> {
         const res = await this.objects.getObjectListAsync({
             startkey: `system.adapter.${this.adapterName}.`,
-            endkey: `system.adapter.${this.adapterName}.\u9999`
+            endkey: `system.adapter.${this.adapterName}.\u9999`,
         });
 
         let enabledInstances: string[] = [];

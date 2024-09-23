@@ -29,7 +29,7 @@ const errorMessages = Object.freeze({
     invalidInstance: (instance: string) => `The instance "${instance}" does not exist!`,
     specifyInstance: (adapter: string, adapterInstances: string[]) =>
         `The adapter "${adapter}" has multiple instances! Please specify which one should be started: "${adapterInstances.join(
-            '", "'
+            '", "',
         )}".`,
     adapterDirNotFound: (adapter: string) => `Cannot find the installation dir for adapter "${adapter}"!`,
     mainFileNotFound: (adapter: string) => `Cannot find the main file for adapter "${adapter}"!`,
@@ -52,7 +52,7 @@ const errorMessages = Object.freeze({
 
     cert: (certName: string) => `Certificate "${certName}" not found or error parsing certificate information.`,
     instanceAlreadyRunning: (instance: string) =>
-        `The instance "${instance}" is already running, please stop instance first.`
+        `The instance "${instance}" is already running, please stop instance first.`,
 });
 
 const successMessages = Object.freeze({
@@ -81,12 +81,12 @@ const successMessages = Object.freeze({
     pluginStatus: (pluginName: string, host: string, instance: string, status: boolean) =>
         `The plugin "${pluginName}" is ${status ? 'enabled' : 'disabled'} for ${
             host ? `host "${host}"` : `instance "${instance}"`
-        }.`
+        }.`,
 });
 
 const warnings = Object.freeze({
     noInstancesFoundOnHost: (hostname?: string) =>
-        hostname ? `No instances found for host "${hostname}"!` : `No instances found!`
+        hostname ? `No instances found for host "${hostname}"!` : `No instances found!`,
 });
 
 // Capsule success messages in console.log

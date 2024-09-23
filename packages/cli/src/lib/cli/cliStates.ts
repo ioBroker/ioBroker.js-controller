@@ -86,7 +86,7 @@ export class CLIStates extends CLICommand {
 
             let answer = rl.question('Changing the protocol version will restart all hosts! Continue? [N/y]', {
                 limit: /^(yes|y|n|no)$/i,
-                defaultInput: 'no'
+                defaultInput: 'no',
             });
 
             answer = answer.toLowerCase();
@@ -165,7 +165,7 @@ export class CLIStates extends CLICommand {
                                         logger: console,
                                         logNamespace: '',
                                         sourceId: sourceObj?._id,
-                                        targetId: targetObj._id
+                                        targetId: targetObj._id,
                                     });
                                     console.log(resultTransform(state));
                                 }
@@ -272,7 +272,7 @@ export class CLIStates extends CLICommand {
                                     logger: console,
                                     logNamespace: '',
                                     sourceId: obj._id,
-                                    targetId: targetObj?._id
+                                    targetId: targetObj?._id,
                                 }),
                                 err => {
                                     if (err) {
@@ -282,7 +282,7 @@ export class CLIStates extends CLICommand {
                                         CLI.success.stateUpdated(id, val, !!ack);
                                         return void callback(0);
                                     }
-                                }
+                                },
                             );
                         });
                     } else {

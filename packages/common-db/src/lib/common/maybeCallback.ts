@@ -11,7 +11,7 @@ type MaybeCbErrCallback<T extends any[]> = (error: Error | null | undefined, ...
 type MaybeCbErrReturnType<
     TCb extends MaybeCbErrCallback<any> | null | undefined,
     TErr extends Error | string | null | undefined,
-    TArgs extends any[]
+    TArgs extends any[],
 > =
     TCb extends MaybeCbErrCallback<any>
         ? void
@@ -31,7 +31,7 @@ type MaybeCbErrReturnType<
 // If a callback is given, they must match its arguments. Otherwise, they are inferred and default to any[]
 type MaybeCbErrCallbackParameters<
     CB extends MaybeCbErrCallback<any> | null | undefined,
-    TErr extends Error | string | null | undefined
+    TErr extends Error | string | null | undefined,
 > =
     Exclude<CB, undefined | null> extends MaybeCbErrCallback<infer U>
         ? // If the error argument is given,
@@ -71,7 +71,7 @@ export function maybeCallback<
     // Limit the callback type to a valid callback type
     TCb extends MaybeCbCallback<any> | null | undefined,
     // The callback arguments must match the callback args
-    TArgs extends MaybeCbCallbackParameters<TCb> = MaybeCbCallbackParameters<TCb>
+    TArgs extends MaybeCbCallbackParameters<TCb> = MaybeCbCallbackParameters<TCb>,
 >(
     callback: TCb,
     // Infer the arguments with lower priority than the callback - they need to match it.
@@ -102,7 +102,7 @@ export function maybeCallbackWithError<
     // And the error to either an error or sting, or null/undefined
     TErr extends Error | string | null | undefined,
     // The callback arguments must match the callback args
-    TArgs extends MaybeCbErrCallbackParameters<TCb, TErr> = MaybeCbErrCallbackParameters<TCb, TErr>
+    TArgs extends MaybeCbErrCallbackParameters<TCb, TErr> = MaybeCbErrCallbackParameters<TCb, TErr>,
 >(
     callback: TCb,
     error: TErr,
@@ -147,7 +147,7 @@ export function maybeCallbackWithRedisError<
     // And the error to either an error or sting, or null/undefined
     TErr extends Error | string | null | undefined,
     // The callback arguments must match the callback args
-    TArgs extends MaybeCbErrCallbackParameters<TCb, TErr> = MaybeCbErrCallbackParameters<TCb, TErr>
+    TArgs extends MaybeCbErrCallbackParameters<TCb, TErr> = MaybeCbErrCallbackParameters<TCb, TErr>,
 >(
     callback: TCb,
     error: TErr,

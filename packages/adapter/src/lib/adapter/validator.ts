@@ -36,7 +36,7 @@ export class Validator {
         namespaceLog: string,
         logger: any,
         namespace: string,
-        namespaceRegExp: RegExp
+        namespaceRegExp: RegExp,
     ) {
         this.objects = objects;
         this.states = states;
@@ -67,7 +67,7 @@ export class Validator {
             // at first check object existence
             if (!obj) {
                 this.log.warn(
-                    `${this.namespaceLog} State "${id}" has no existing object, this might lead to an error in future versions`
+                    `${this.namespaceLog} State "${id}" has no existing object, this might lead to an error in future versions`,
                 );
                 return;
             }
@@ -77,7 +77,7 @@ export class Validator {
                 // check if we are allowed to write (read-only can only be written with ack: true)
                 if (!state.ack && obj.common.write === false) {
                     this.log.warn(
-                        `${this.namespaceLog} Read-only state "${id}" has been written without ack-flag with value "${state.val}"`
+                        `${this.namespaceLog} Read-only state "${id}" has been written without ack-flag with value "${state.val}"`,
                     );
                 }
 
@@ -98,7 +98,7 @@ export class Validator {
                             this.log.info(
                                 `${
                                     this.namespaceLog
-                                } State value to set for "${id}" has to be stringified but received type "${typeof state.val}"`
+                                } State value to set for "${id}" has to be stringified but received type "${typeof state.val}"`,
                             );
                         } else {
                             this.log.info(
@@ -106,7 +106,7 @@ export class Validator {
                                     obj.common.type === 'mixed'
                                         ? `one of type "string", "number", "boolean"`
                                         : `type "${obj.common.type}"`
-                                } but received type "${typeof state.val}" `
+                                } but received type "${typeof state.val}" `,
                             );
                         }
                     }
@@ -121,20 +121,20 @@ export class Validator {
 
                         if (obj.common.max !== undefined && state.val > obj.common.max) {
                             this.log.warn(
-                                `${this.namespaceLog} State value to set for "${id}" has value "${state.val}" greater than max "${obj.common.max}"`
+                                `${this.namespaceLog} State value to set for "${id}" has value "${state.val}" greater than max "${obj.common.max}"`,
                             );
                         }
 
                         if (obj.common.min !== undefined && state.val < obj.common.min) {
                             this.log.warn(
-                                `${this.namespaceLog} State value to set for "${id}" has value "${state.val}" less than min "${obj.common.min}"`
+                                `${this.namespaceLog} State value to set for "${id}" has value "${state.val}" less than min "${obj.common.min}"`,
                             );
                         }
                     }
                 }
             } else {
                 this.log.warn(
-                    `${this.namespaceLog} Object of state "${id}" is missing the required property "common.type"`
+                    `${this.namespaceLog} Object of state "${id}" is missing the required property "common.type"`,
                 );
             }
         } catch (e) {
@@ -164,10 +164,10 @@ export class Validator {
 
         if (!isForeignId && type === 'number') {
             this.log.warn(
-                `${this.namespaceLog} The id "${id}" has an invalid type! Expected "string" or "object", received "number".`
+                `${this.namespaceLog} The id "${id}" has an invalid type! Expected "string" or "object", received "number".`,
             );
             this.log.warn(
-                `${this.namespaceLog} This will be refused in future versions. Please report this to the developer.`
+                `${this.namespaceLog} This will be refused in future versions. Please report this to the developer.`,
             );
         } else if (type !== 'string' && !tools.isObject(id)) {
             throw new Error(`The id "${id}" has an invalid type! Expected "string" or "object", received "${type}".`);
@@ -182,16 +182,16 @@ export class Validator {
                     if (typeof id[reqProperty] !== 'string') {
                         throw new Error(
                             `The id's property "${reqProperty}" of "${JSON.stringify(
-                                id
-                            )}" has an invalid type! Expected "string", received "${typeof id[reqProperty]}".`
+                                id,
+                            )}" has an invalid type! Expected "string", received "${typeof id[reqProperty]}".`,
                         );
                     }
 
                     if (id[reqProperty].includes('.')) {
                         throw new Error(
                             `The id's property "${reqProperty}" of "${JSON.stringify(
-                                id
-                            )}" contains the invalid character "."!`
+                                id,
+                            )}" contains the invalid character "."!`,
                         );
                     }
                     found = true;
@@ -200,14 +200,14 @@ export class Validator {
             if (!found) {
                 throw new Error(
                     `The id "${JSON.stringify(
-                        id
-                    )}" is an invalid object! Expected at least one of the properties "device", "channel" or "state" to exist.`
+                        id,
+                    )}" is an invalid object! Expected at least one of the properties "device", "channel" or "state" to exist.`,
                 );
             }
         } else {
             if (type !== 'string') {
                 throw new Error(
-                    `The id "${JSON.stringify(id)}" has an invalid type! Expected "string", received "${type}".`
+                    `The id "${JSON.stringify(id)}" has an invalid type! Expected "string", received "${type}".`,
                 );
             }
             if (id.endsWith('.')) {
@@ -236,7 +236,7 @@ export class Validator {
     static assertString(value: unknown, name: string): asserts value is string {
         if (typeof value !== 'string') {
             throw new Error(
-                `Parameter "${name}" needs to be of type "string" but type "${typeof value}" has been passed`
+                `Parameter "${name}" needs to be of type "string" but type "${typeof value}" has been passed`,
             );
         }
     }
@@ -250,13 +250,13 @@ export class Validator {
     static assertPattern(value: unknown, name: string): asserts value is Pattern {
         if (typeof value !== 'string' && !Array.isArray(value)) {
             throw new Error(
-                `Parameter "${name}" needs to be of type "string" or an array of type "string", "${typeof value}" has been passed`
+                `Parameter "${name}" needs to be of type "string" or an array of type "string", "${typeof value}" has been passed`,
             );
         } else if (Array.isArray(value)) {
             for (const entry of value) {
                 if (typeof entry !== 'string') {
                     throw new Error(
-                        `Parameter "${name}" needs to be of type "string" or an array of type "string", but the array contains a value of type "${typeof value}"`
+                        `Parameter "${name}" needs to be of type "string" or an array of type "string", but the array contains a value of type "${typeof value}"`,
                     );
                 }
             }
@@ -272,7 +272,7 @@ export class Validator {
     static assertBoolean(value: unknown, name: string): asserts value is boolean {
         if (typeof value !== 'boolean') {
             throw new Error(
-                `Parameter "${name}" needs to be of type "boolean" but type "${typeof value}" has been passed`
+                `Parameter "${name}" needs to be of type "boolean" but type "${typeof value}" has been passed`,
             );
         }
     }
@@ -286,7 +286,7 @@ export class Validator {
     static assertNumber(value: unknown, name: string): asserts value is number {
         if (typeof value !== 'number') {
             throw new Error(
-                `Parameter "${name}" needs to be of type "number" but type "${typeof value}" has been passed`
+                `Parameter "${name}" needs to be of type "number" but type "${typeof value}" has been passed`,
             );
         }
     }
@@ -299,7 +299,7 @@ export class Validator {
      */
     static assertObject<T extends Record<string, any> = Record<string, any>>(
         value: unknown,
-        name: string
+        name: string,
     ): asserts value is T {
         if (!tools.isObject(value)) {
             throw new Error(`Parameter "${name}" needs to be a real object but type "${typeof value}" has been passed`);
@@ -327,7 +327,7 @@ export class Validator {
     static assertOptionalCallback(value: unknown, name: string): asserts value is OptionalCallback {
         if (value && typeof value !== 'function') {
             throw new Error(
-                `Parameter "${name}" needs to be of type "null", "undefined" or "function" but type "${typeof value}" has been passed`
+                `Parameter "${name}" needs to be of type "null", "undefined" or "function" but type "${typeof value}" has been passed`,
             );
         }
     }
@@ -341,7 +341,7 @@ export class Validator {
     static assertCallback(value: unknown, name: string): asserts value is Callback {
         if (typeof value !== 'function') {
             throw new Error(
-                `Parameter "${name}" needs to be of type "function" but type "${typeof value}" has been passed`
+                `Parameter "${name}" needs to be of type "function" but type "${typeof value}" has been passed`,
             );
         }
     }
@@ -413,7 +413,7 @@ export class Validator {
             c: 'string',
             expire: 'number',
             lc: 'number',
-            user: 'string'
+            user: 'string',
         };
 
         // Are there any forbidden properties?
@@ -433,7 +433,7 @@ export class Validator {
             }
             if (type !== typeof obj[key]) {
                 throw new Error(
-                    `The state property "${key}" has the wrong type "${typeof obj[key]}" (should be "${type}")!`
+                    `The state property "${key}" has the wrong type "${typeof obj[key]}" (should be "${type}")!`,
                 );
             }
         }

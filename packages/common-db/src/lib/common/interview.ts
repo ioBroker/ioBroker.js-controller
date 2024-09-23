@@ -19,13 +19,13 @@ interface DefaultRedisInterviewOptions<TConfig extends SharedDatabaseOptions> {
  * @param options config and type information
  */
 export async function defaultRedisInterview<TConfig extends SharedDatabaseOptions>(
-    options: DefaultRedisInterviewOptions<TConfig>
+    options: DefaultRedisInterviewOptions<TConfig>,
 ): Promise<TConfig> {
     const { type, config } = options;
 
     let answer = rl.question(`Do you use a TLS connection for your "${type}" redis-server? [y/N]:`, {
         limit: YES_NO_REGEX,
-        defaultInput: 'N'
+        defaultInput: 'N',
     });
 
     if (answer.toLowerCase() === 'n') {
@@ -36,7 +36,7 @@ export async function defaultRedisInterview<TConfig extends SharedDatabaseOption
 
     answer = rl.question(`Do you use a self-signed certificate for your "${type}" redis-server? [y/N]:`, {
         limit: YES_NO_REGEX,
-        defaultInput: 'N'
+        defaultInput: 'N',
     });
 
     if (answer.toLowerCase() === 'y') {

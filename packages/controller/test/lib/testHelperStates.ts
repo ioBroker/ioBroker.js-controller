@@ -15,7 +15,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         // @ts-expect-error invalid test case
         return expect(context.adapter.deleteStateAsync({})).to.be.eventually.rejectedWith(
             /needs to be of type "string" but type "object"/g,
-            'Should have thrown on invalid input'
+            'Should have thrown on invalid input',
         );
     });
 

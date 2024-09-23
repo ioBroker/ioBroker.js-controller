@@ -56,7 +56,7 @@ async function calcProject(options: CalculateProjectOptions): Promise<Calculated
         if (dps?.IDs) {
             result.push({
                 id: `${visAdapter}.${instance}.datapoints.${project.file.replace(/[.\\s]/g, '_')}`,
-                val: dps.IDs.length
+                val: dps.IDs.length,
             });
         }
     }

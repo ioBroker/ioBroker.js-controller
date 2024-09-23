@@ -163,10 +163,10 @@ export class NotificationHandler {
                             es: 'Notificaciones',
                             pl: 'Powiadomienia',
                             uk: 'Сповіщення',
-                            'zh-cn': '通知事项'
-                        }
+                            'zh-cn': '通知事项',
+                        },
                     },
-                    native: {}
+                    native: {},
                 });
             } catch (e) {
                 this.log.error(`${this.logPrefix} Could not create notifications object: ${e.message}`);
@@ -178,7 +178,7 @@ export class NotificationHandler {
         try {
             const res = await this.objects.getObjectViewAsync('system', 'instance', {
                 startkey: 'system.adapter.',
-                endkey: 'system.adapter.\u9999'
+                endkey: 'system.adapter.\u9999',
             });
 
             for (const entry of res.rows) {
@@ -240,13 +240,13 @@ export class NotificationHandler {
                                 read: true,
                                 write: false,
                                 name: scopeObj.name,
-                                desc: scopeObj.description
+                                desc: scopeObj.description,
                             },
-                            native: {}
+                            native: {},
                         });
                     } catch (e) {
                         this.log.error(
-                            `${this.logPrefix} Could not create notifications object for scope "${scopeObj.scope}": ${e.message}`
+                            `${this.logPrefix} Could not create notifications object for scope "${scopeObj.scope}": ${e.message}`,
                         );
                     }
                 }
@@ -256,7 +256,7 @@ export class NotificationHandler {
                     this.setup[scopeObj.scope] = this.setup[scopeObj.scope] || {
                         name: scopeObj.name,
                         description: scopeObj.description,
-                        categories: {}
+                        categories: {},
                     };
 
                     for (const categoryObj of scopeObj.categories) {
@@ -279,13 +279,13 @@ export class NotificationHandler {
                                 limit: categoryObj.limit,
                                 name: categoryObj.name,
                                 severity: categoryObj.severity,
-                                description: categoryObj.description
+                                description: categoryObj.description,
                             };
                         } catch (e) {
                             this.log.error(
                                 `${this.logPrefix} Cannot store ${JSON.stringify(categoryObj.regex)} for scope "${
                                     scopeObj.scope
-                                }", category "${categoryObj.category}": ${e.message}`
+                                }", category "${categoryObj.category}": ${e.message}`,
                             );
                         }
                     }
@@ -305,7 +305,7 @@ export class NotificationHandler {
 
         if (typeof instance !== 'string') {
             this.log.error(
-                `${this.logPrefix} [addMessage] Instance has to be of type "string", got "${typeof instance}"`
+                `${this.logPrefix} [addMessage] Instance has to be of type "string", got "${typeof instance}"`,
             );
             return;
         }
@@ -341,7 +341,7 @@ export class NotificationHandler {
                 if (!this.setup[scope]?.categories[_category]) {
                     // no setup for this instance/category combination found - so we have nothing to add
                     this.log.warn(
-                        `${this.logPrefix} No configuration found for scope "${scope}" and category "${_category}"`
+                        `${this.logPrefix} No configuration found for scope "${scope}" and category "${_category}"`,
                     );
                     continue;
                 }
@@ -372,7 +372,7 @@ export class NotificationHandler {
         try {
             await this.states.setState(`system.host.${this.host}.notifications.${scope}`, {
                 val: JSON.stringify(stateVal),
-                ack: true
+                ack: true,
             });
         } catch (e) {
             this.log.error(`${this.logPrefix} Could not set notifications state for scope "${scope}": ${e.message}`);
@@ -396,11 +396,11 @@ export class NotificationHandler {
             try {
                 await this.states.setStateAsync(`system.host.${this.host}.notifications.${scope}`, {
                     val: JSON.stringify(stateVal),
-                    ack: true
+                    ack: true,
                 });
             } catch (e) {
                 this.log.error(
-                    `${this.logPrefix} Could not set notifications state for scope "${scope}": ${e.message}`
+                    `${this.logPrefix} Could not set notifications state for scope "${scope}": ${e.message}`,
                 );
             }
         }
@@ -464,7 +464,7 @@ export class NotificationHandler {
     getFilteredInformation(
         scopeFilter: string | null | undefined,
         categoryFilter: string | null | undefined,
-        instanceFilter: string | null | undefined
+        instanceFilter: string | null | undefined,
     ): FilteredNotificationInformation {
         const res: FilteredNotificationInformation = {};
         for (const scope of Object.keys(this.currentNotifications)) {
@@ -481,7 +481,7 @@ export class NotificationHandler {
             res[scope] = {
                 categories: {},
                 description: this.setup[scope].description,
-                name: this.setup[scope].name
+                name: this.setup[scope].name,
             };
 
             for (const category of Object.keys(this.currentNotifications[scope])) {
@@ -501,7 +501,7 @@ export class NotificationHandler {
                     instances: {},
                     description: categoryObj.description,
                     name: categoryObj.name,
-                    severity: categoryObj.severity
+                    severity: categoryObj.severity,
                 };
 
                 for (const instance of Object.keys(this.currentNotifications[scope][category])) {
@@ -511,7 +511,7 @@ export class NotificationHandler {
                     }
 
                     res[scope].categories[category].instances[instance] = {
-                        messages: this.currentNotifications[scope][category][instance]
+                        messages: this.currentNotifications[scope][category][instance],
                     };
                 }
             }
@@ -529,7 +529,7 @@ export class NotificationHandler {
     async clearNotifications(
         scopeFilter: string | null | undefined,
         categoryFilter: string | null | undefined,
-        instanceFilter: string | null | undefined
+        instanceFilter: string | null | undefined,
     ): Promise<void> {
         for (const scope of Object.keys(this.currentNotifications)) {
             if (!this.currentNotifications[scope]) {
@@ -585,11 +585,11 @@ export class NotificationHandler {
             try {
                 await this.states.setStateAsync(`system.host.${this.host}.notifications.${scope}`, {
                     val: JSON.stringify(stateVal),
-                    ack: true
+                    ack: true,
                 });
             } catch (e) {
                 this.log.error(
-                    `${this.logPrefix} Could not set notifications state for scope "${scope}": ${e.message}`
+                    `${this.logPrefix} Could not set notifications state for scope "${scope}": ${e.message}`,
                 );
             }
         }
