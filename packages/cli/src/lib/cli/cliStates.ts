@@ -278,10 +278,9 @@ export class CLIStates extends CLICommand {
                                     if (err) {
                                         CLI.error.unknown(err.message);
                                         return void callback(1); // ?
-                                    } else {
-                                        CLI.success.stateUpdated(id, val, !!ack);
-                                        return void callback(0);
                                     }
+                                    CLI.success.stateUpdated(id, val, !!ack);
+                                    return void callback(0);
                                 },
                             );
                         });
@@ -326,10 +325,9 @@ export class CLIStates extends CLICommand {
                         if (err) {
                             CLI.error.unknown(err.message);
                             return void callback(1); // ?
-                        } else {
-                            CLI.success.stateUpdated(id, val, !!ack);
-                            return void callback(0);
                         }
+                        CLI.success.stateUpdated(id, val, !!ack);
+                        return void callback(0);
                     });
                 });
             }
@@ -356,10 +354,9 @@ export class CLIStates extends CLICommand {
                 if (err) {
                     CLI.error.stateNotFound(id, err.message);
                     return void callback(3);
-                } else {
-                    CLI.success.stateDeleted(id);
-                    return void callback(0);
                 }
+                CLI.success.stateDeleted(id);
+                return void callback(0);
             });
         });
     }

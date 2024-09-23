@@ -372,7 +372,7 @@ export class Validator {
         } else if (tools.isObject(id)) {
             // If ID is an object
             // Add namespace + device + channel
-            result = `${this.namespace}.${id.device ? id.device + '.' : ''}${id.channel ? id.channel + '.' : ''}${
+            result = `${this.namespace}.${id.device ? `${id.device}.` : ''}${id.channel ? `${id.channel}.` : ''}${
                 id.state ? id.state : ''
             }`;
         }

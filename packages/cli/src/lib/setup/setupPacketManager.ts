@@ -110,10 +110,9 @@ export class PacketManager {
                 (err.stderr && err.stderr.includes('dpkg --help'))
             ) {
                 return true;
-            } else {
-                this.logger.error(`Cannot detect dpkg: ${err.stderr || err.stdout || err}`);
-                return false;
             }
+            this.logger.error(`Cannot detect dpkg: ${err.stderr || err.stdout || err}`);
+            return false;
         }
     }
 
@@ -125,10 +124,9 @@ export class PacketManager {
             // non zero exit code, however lets check if ok
             if ((err.stdout && err.stdout.includes('sudo -h')) || (err.stderr && err.stderr.includes('sudo -h'))) {
                 return true;
-            } else {
-                this.logger.error(`Cannot detect sudo: ${err.stderr || err.stdout || err}`);
-                return false;
             }
+            this.logger.error(`Cannot detect sudo: ${err.stderr || err.stdout || err}`);
+            return false;
         }
     }
 

@@ -526,50 +526,49 @@ export class Upgrade {
                         adapter.length < 15 ? new Array(15 - adapter.length).join(' ') : ''
                     } is up to date.`,
                 );
-            } else {
-                const targetVersion = version || repoAdapter.version;
+            }
+            const targetVersion = version || repoAdapter.version;
 
-                const isIgnored = await isVersionIgnored({
-                    adapterName: adapter,
-                    version: targetVersion,
-                    objects: this.objects,
-                });
+            const isIgnored = await isVersionIgnored({
+                adapterName: adapter,
+                version: targetVersion,
+                objects: this.objects,
+            });
 
-                if (isIgnored) {
-                    console.log(
-                        `No upgrade of "${adapter}" desired, because version "${targetVersion}" is configured to be ignored by the user. Run "${tools.appNameLowerCase} version ${adapter} --recognize" to allow this upgrade!`,
-                    );
+            if (isIgnored) {
+                console.log(
+                    `No upgrade of "${adapter}" desired, because version "${targetVersion}" is configured to be ignored by the user. Run "${tools.appNameLowerCase} version ${adapter} --recognize" to allow this upgrade!`,
+                );
+                return;
+            }
+
+            try {
+                if (!showUpgradeDialog(installedVersion, targetVersion, adapter)) {
+                    console.log(`No upgrade of "${adapter}" desired.`);
                     return;
                 }
-
-                try {
-                    if (!showUpgradeDialog(installedVersion, targetVersion, adapter)) {
-                        console.log(`No upgrade of "${adapter}" desired.`);
-                        return;
-                    }
-                } catch (e) {
-                    console.log(`Can not check version information to display upgrade infos: ${e.message}`);
-                }
-                console.log(`Update ${adapter} from @${installedVersion} to @${targetVersion}`);
-                const npmPacketName = `${tools.appNameLowerCase}.${adapter}`;
-
-                try {
-                    if (!semver.diff(installedVersion, targetVersion)) {
-                        console.log(`Uninstall npm packet "${npmPacketName}" for a clean re-installation`);
-                        await tools.uninstallNodeModule(npmPacketName, { debug: process.argv.includes('--debug') });
-                    }
-                } catch (e) {
-                    console.warn(`Could not uninstall npm packet "${npmPacketName}": ${e.message}`);
-                }
-
-                // Get the adapter from website
-                const { packetName, stoppedList } = await this.install.downloadPacket(
-                    sources,
-                    `${adapter}@${targetVersion}`,
-                );
-                await finishUpgrade(packetName);
-                await this.install.enableInstances(stoppedList, true);
+            } catch (e) {
+                console.log(`Can not check version information to display upgrade infos: ${e.message}`);
             }
+            console.log(`Update ${adapter} from @${installedVersion} to @${targetVersion}`);
+            const npmPacketName = `${tools.appNameLowerCase}.${adapter}`;
+
+            try {
+                if (!semver.diff(installedVersion, targetVersion)) {
+                    console.log(`Uninstall npm packet "${npmPacketName}" for a clean re-installation`);
+                    await tools.uninstallNodeModule(npmPacketName, { debug: process.argv.includes('--debug') });
+                }
+            } catch (e) {
+                console.warn(`Could not uninstall npm packet "${npmPacketName}": ${e.message}`);
+            }
+
+            // Get the adapter from website
+            const { packetName, stoppedList } = await this.install.downloadPacket(
+                sources,
+                `${adapter}@${targetVersion}`,
+            );
+            await finishUpgrade(packetName);
+            await this.install.enableInstances(stoppedList, true);
         } else if (repoAdapter.meta) {
             // Read repository from url or file
             const ioPack = (await tools.getJsonAsync(repoAdapter.meta)) as ioBroker.AdapterObject;

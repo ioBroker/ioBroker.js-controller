@@ -26,7 +26,7 @@ import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constan
 import { createRequire } from 'node:module';
 
 // eslint-disable-next-line unicorn/prefer-module
-const require = createRequire(import.meta.url || 'file://' + __filename);
+const require = createRequire(import.meta.url || `file://${__filename}`);
 
 const hostname = tools.getHostName();
 const osPlatform = process.platform;
@@ -438,15 +438,14 @@ export class Install {
 
             // command succeeded
             return { _url: npmUrl, installDir: path.dirname(installDir) };
-        } else {
-            if (!isRetry && result.stderr.includes('ENOTEMPTY')) {
-                return this.handleNpmNotEmptyError({ npmUrl, options, debug, result });
-            }
-
-            console.error(result.stderr);
-            console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
-            return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
         }
+        if (!isRetry && result.stderr.includes('ENOTEMPTY')) {
+            return this.handleNpmNotEmptyError({ npmUrl, options, debug, result });
+        }
+
+        console.error(result.stderr);
+        console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
+        return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
     }
 
     /**
@@ -537,9 +536,8 @@ export class Install {
                                 `host.${hostname} Invalid version of "${dName}". Installed "${packJson.version}", required "${version}"`,
                             );
                             return this.processExit(EXIT_CODES.INVALID_DEPENDENCY_VERSION);
-                        } else {
-                            isFound = true;
                         }
+                        isFound = true;
                     } else {
                         isFound = true;
                     }
@@ -577,9 +575,8 @@ export class Install {
                                 `host.${hostname} Invalid version of "${dName}". Installed "${instanceVersion}", required "${deps[dName]}"`,
                             );
                             return this.processExit(EXIT_CODES.INVALID_DEPENDENCY_VERSION);
-                        } else {
-                            isFound = true;
                         }
+                        isFound = true;
                     }
 
                     for (const instance of gInstances) {
@@ -593,9 +590,8 @@ export class Install {
                                 `host.${hostname} Invalid version of "${dName}". Installed "${instanceVersion}", required "${globalDeps[dName]}"`,
                             );
                             return this.processExit(EXIT_CODES.INVALID_DEPENDENCY_VERSION);
-                        } else {
-                            isFound = true;
                         }
+                        isFound = true;
                     }
                 }
 
@@ -944,7 +940,7 @@ export class Install {
                 _id: `system.adapter.${adapter}.upload`,
                 type: 'state',
                 common: {
-                    name: adapter + '.upload',
+                    name: `${adapter}.upload`,
                     type: 'number',
                     read: true,
                     write: false,
@@ -1100,12 +1096,11 @@ export class Install {
                 .filter(row => {
                     if (instance !== undefined || !row.value.common?.host || row.value.common?.host === hostname) {
                         return true;
-                    } else {
-                        if (!notDeleted.includes(row.value._id)) {
-                            notDeleted.push(row.value._id);
-                        }
-                        return false;
                     }
+                    if (!notDeleted.includes(row.value._id)) {
+                        notDeleted.push(row.value._id);
+                    }
+                    return false;
                 })
                 .map(row => row.value._id)
                 .filter(id => !knownObjIDs.includes(id));
@@ -1184,13 +1179,12 @@ export class Install {
                     await this.objects.setObjectAsync(obj._id, obj);
 
                     return EXIT_CODES.CANNOT_DELETE_NON_DELETABLE;
-                } else {
-                    // The adapter is deletable, remember it for deletion
-                    knownObjIDs.push(obj._id);
-                    console.log(`host.${hostname} Counted 1 adapter for ${adapter}`);
-
-                    return EXIT_CODES.NO_ERROR;
                 }
+                // The adapter is deletable, remember it for deletion
+                knownObjIDs.push(obj._id);
+                console.log(`host.${hostname} Counted 1 adapter for ${adapter}`);
+
+                return EXIT_CODES.NO_ERROR;
             }
         } catch (err) {
             console.error(`host.${hostname} Cannot enumerate adapters: ${err.message}`);
@@ -1395,11 +1389,11 @@ export class Install {
      */
     async _enumerateAdapterStates(knownStateIDs: string[], adapter: string, instance?: number): Promise<void> {
         for (const pattern of [
-            `io.${adapter}.${instance !== undefined ? instance + '.' : ''}*`,
-            `messagebox.${adapter}.${instance !== undefined ? instance + '.' : ''}*`,
-            `log.${adapter}.${instance !== undefined ? instance + '.' : ''}*`,
-            `${adapter}.${instance !== undefined ? instance + '.' : ''}*`,
-            `system.adapter.${adapter}.${instance !== undefined ? instance + '.' : ''}*`,
+            `io.${adapter}.${instance !== undefined ? `${instance}.` : ''}*`,
+            `messagebox.${adapter}.${instance !== undefined ? `${instance}.` : ''}*`,
+            `log.${adapter}.${instance !== undefined ? `${instance}.` : ''}*`,
+            `${adapter}.${instance !== undefined ? `${instance}.` : ''}*`,
+            `system.adapter.${adapter}.${instance !== undefined ? `${instance}.` : ''}*`,
         ]) {
             try {
                 const ids = await this.states.getKeys(pattern);
@@ -1892,14 +1886,13 @@ export class Install {
                         if (instance === undefined) {
                             // this adapter needs us locally and all instances should be deleted
                             return `${row.value.common.name}.${row.id.split('.').pop()}`;
+                        }
+                        // check if another instance of us exists on this host
+                        if (this._checkDependencyFulfilledThisHost(adapter, instance, doc.rows, scopedHostname)) {
+                            // there are other instances of our adapter - ok
+                            break;
                         } else {
-                            // check if another instance of us exists on this host
-                            if (this._checkDependencyFulfilledThisHost(adapter, instance, doc.rows, scopedHostname)) {
-                                // there are other instances of our adapter - ok
-                                break;
-                            } else {
-                                return `${row.value.common.name}.${row.id.split('.').pop()}`;
-                            }
+                            return `${row.value.common.name}.${row.id.split('.').pop()}`;
                         }
                     }
                 }

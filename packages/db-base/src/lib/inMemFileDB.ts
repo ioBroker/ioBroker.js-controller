@@ -365,7 +365,7 @@ export class InMemoryFileDB {
         files.sort();
         const limit = Date.now() - this.settings.backup.hours * 3600000;
 
-        files = files.filter(f => f.endsWith(baseFilename + '.gz'));
+        files = files.filter(f => f.endsWith(`${baseFilename}.gz`));
 
         while (files.length > this.settings.backup.files) {
             const file = files.shift();
@@ -389,24 +389,24 @@ export class InMemoryFileDB {
     getTimeStr(date: number): string {
         const dateObj = new Date(date);
 
-        let text = dateObj.getFullYear().toString() + '-';
+        let text = `${dateObj.getFullYear().toString()}-`;
         let v = dateObj.getMonth() + 1;
         if (v < 10) {
             text += '0';
         }
-        text += v.toString() + '-';
+        text += `${v.toString()}-`;
 
         v = dateObj.getDate();
         if (v < 10) {
             text += '0';
         }
-        text += v.toString() + '_';
+        text += `${v.toString()}_`;
 
         v = dateObj.getHours();
         if (v < 10) {
             text += '0';
         }
-        text += v.toString() + '-';
+        text += `${v.toString()}-`;
 
         v = dateObj.getMinutes();
         if (v < 10) {
@@ -507,7 +507,7 @@ export class InMemoryFileDB {
             this.lastSave = now;
             const backFileName = path.join(
                 this.backupDir,
-                this.getTimeStr(now) + '_' + this.settings.fileDB.fileName + '.gz',
+                `${this.getTimeStr(now)}_${this.settings.fileDB.fileName}.gz`,
             );
 
             try {

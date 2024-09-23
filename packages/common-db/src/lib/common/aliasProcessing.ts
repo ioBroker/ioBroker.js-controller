@@ -69,10 +69,9 @@ export function applyAliasConvenienceConversion(options: ApplyAliasConvenienceCo
             const lowerVal = typeof state.val === 'string' ? state.val.toLowerCase() : state.val;
             if (lowerVal === 'off' || lowerVal === 'aus' || state.val === '0') {
                 return false;
-            } else {
-                // this also handles strings like "EIN" or such that will be true
-                return !!state.val;
             }
+            // this also handles strings like "EIN" or such that will be true
+            return !!state.val;
         } else if (targetCommon.type === 'number' && typeof state.val === 'string') {
             return parseFloat(state.val);
         } else if (targetCommon.type === 'string') {

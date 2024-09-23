@@ -218,10 +218,10 @@ export class CLIObjects extends CLICommand {
             CLI.error.requiredArgumentMissing('user', 'object chown user system.*');
             return void callback(1);
         } else if (!user.startsWith('system.user.')) {
-            user = 'system.user.' + user;
+            user = `system.user.${user}`;
         }
         if (group && !group.startsWith('system.group.')) {
-            group = 'system.group.' + group;
+            group = `system.group.${group}`;
         }
 
         if (!pattern) {
@@ -292,19 +292,18 @@ export class CLIObjects extends CLICommand {
                 if (err || !res) {
                     CLI.error.objectNotFound(id, err?.message);
                     return void callback(3);
-                } else {
-                    if (typeof propPath === 'string') {
-                        // We want to select a part of the object
-                        try {
-                            res = deepSelectProperty(res, propPath);
-                        } catch {
-                            CLI.error.objectPropertyNotFound(id, propPath);
-                            return void callback(3);
-                        }
-                    }
-                    console.log(formatValue(res, pretty));
-                    return void callback(EXIT_CODES.NO_ERROR);
                 }
+                if (typeof propPath === 'string') {
+                    // We want to select a part of the object
+                    try {
+                        res = deepSelectProperty(res, propPath);
+                    } catch {
+                        CLI.error.objectPropertyNotFound(id, propPath);
+                        return void callback(3);
+                    }
+                }
+                console.log(formatValue(res, pretty));
+                return void callback(EXIT_CODES.NO_ERROR);
             });
         });
     }
@@ -338,10 +337,9 @@ export class CLIObjects extends CLICommand {
                     if (err) {
                         CLI.error.cannotUpdateObject(id, err.message);
                         return void callback(1);
-                    } else {
-                        CLI.success.objectUpdated(id);
-                        return void callback(EXIT_CODES.NO_ERROR);
                     }
+                    CLI.success.objectUpdated(id);
+                    return void callback(EXIT_CODES.NO_ERROR);
                 });
             };
             if (!propPath) {
@@ -452,10 +450,9 @@ export class CLIObjects extends CLICommand {
                 if (err) {
                     CLI.error.cannotUpdateObject(id, err.message);
                     return void callback(1);
-                } else {
-                    CLI.success.objectUpdated(id);
-                    return void callback(EXIT_CODES.NO_ERROR);
                 }
+                CLI.success.objectUpdated(id);
+                return void callback(EXIT_CODES.NO_ERROR);
             });
         });
     }
@@ -508,26 +505,25 @@ export class CLIObjects extends CLICommand {
     async _deleteObjects(objects: ObjectsClient, ids: string[], callback: (exitCode: number) => void): Promise<void> {
         if (!ids || !ids.length) {
             return tools.maybeCallback(callback, EXIT_CODES.NO_ERROR);
-        } else {
-            let allEnums;
-
-            try {
-                // cache all enums, else it will be slow to delete many objects
-                allEnums = await tools.getAllEnums(objects);
-            } catch (e) {
-                console.error(`Could not retrieve all enums: ${e.message}`);
-            }
-
-            for (const id of ids) {
-                try {
-                    await objects.delObjectAsync(id);
-                    await tools.removeIdFromAllEnums(objects, id, allEnums);
-                } catch (e) {
-                    console.warn(`Could not delete object or remove "${id}" from enums: ${e.message}`);
-                }
-            }
-            return tools.maybeCallback(callback, EXIT_CODES.NO_ERROR);
         }
+        let allEnums;
+
+        try {
+            // cache all enums, else it will be slow to delete many objects
+            allEnums = await tools.getAllEnums(objects);
+        } catch (e) {
+            console.error(`Could not retrieve all enums: ${e.message}`);
+        }
+
+        for (const id of ids) {
+            try {
+                await objects.delObjectAsync(id);
+                await tools.removeIdFromAllEnums(objects, id, allEnums);
+            } catch (e) {
+                console.warn(`Could not delete object or remove "${id}" from enums: ${e.message}`);
+            }
+        }
+        return tools.maybeCallback(callback, EXIT_CODES.NO_ERROR);
     }
 
     /**
@@ -755,17 +751,16 @@ function parsePropPathAndAssignment(arg: string): ParsedPropPathAndAssignment | 
         // For partial assignments, allow strings as the value
         const value = parseCLIValue(valueString);
         return { propPath, value };
-    } else {
-        // This is a full assignment, allow only objects
-        try {
-            const value = JSON.parse(arg);
-            if (!tools.isObject(value)) {
-                return undefined;
-            }
-            return { value };
-        } catch {
-            // nope!
+    }
+    // This is a full assignment, allow only objects
+    try {
+        const value = JSON.parse(arg);
+        if (!tools.isObject(value)) {
             return undefined;
         }
+        return { value };
+    } catch {
+        // nope!
+        return undefined;
     }
 }

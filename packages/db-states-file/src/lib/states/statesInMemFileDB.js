@@ -253,22 +253,22 @@ export class StatesInMemoryFileDB extends InMemoryFileDB {
 
     // needed by Server
     _subscribeMessageForClient(client, id) {
-        this.handleSubscribe(client, 'messagebox', 'messagebox.' + id);
+        this.handleSubscribe(client, 'messagebox', `messagebox.${id}`);
     }
 
     // needed by Server
     _unsubscribeMessageForClient(client, id) {
-        this.handleUnsubscribe(client, 'messagebox', 'messagebox.' + id);
+        this.handleUnsubscribe(client, 'messagebox', `messagebox.${id}`);
     }
 
     // needed by Server
     _subscribeLogForClient(client, id) {
-        this.handleSubscribe(client, 'log', 'log.' + id);
+        this.handleSubscribe(client, 'log', `log.${id}`);
     }
 
     // needed by Server
     _unsubscribeLogForClient(client, id) {
-        this.handleUnsubscribe(client, 'log', 'log.' + id);
+        this.handleUnsubscribe(client, 'log', `log.${id}`);
     }
 
     // needed by Server

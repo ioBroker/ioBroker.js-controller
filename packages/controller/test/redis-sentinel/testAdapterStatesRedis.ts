@@ -3,9 +3,9 @@ import fs from 'node:fs';
 
 import * as url from 'node:url';
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 
-const dataDir = thisDir + '/../../tmp/data-redis';
+const dataDir = `${thisDir}/../../tmp/data-redis`;
 
 const statesConfig = {
     options: {
@@ -18,8 +18,8 @@ const statesConfig = {
     port: [26380, 26381, 26382],
 };
 
-if (!fs.existsSync(thisDir + '/../tmp')) {
-    fs.mkdirSync(thisDir + '/../tmp');
+if (!fs.existsSync(`${thisDir}/../tmp`)) {
+    fs.mkdirSync(`${thisDir}/../tmp`);
 }
 
 const objectsConfig = {

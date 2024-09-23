@@ -36,9 +36,9 @@ import { createRequire } from 'node:module';
 import * as url from 'node:url';
 
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 // eslint-disable-next-line unicorn/prefer-module
-const require = createRequire(import.meta.url || 'file://' + __filename);
+const require = createRequire(import.meta.url || `file://${__filename}`);
 
 const COLOR_RED = '\x1b[31m';
 const COLOR_YELLOW = '\x1b[33m';
@@ -1487,7 +1487,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`,
             // copy scripts to root directory
             if (fs.existsSync(path.join(CONTROLLER_DIR, '..', '..', 'node_modules'))) {
                 const startFile = `#!/usr/bin/env node
-require('${path.normalize(thisDir + '/..')}/setup').execute();`;
+require('${path.normalize(`${thisDir}/..`)}/setup').execute();`;
 
                 try {
                     if (fs.existsSync(path.join(CONTROLLER_DIR, 'killall.sh'))) {

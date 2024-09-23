@@ -112,7 +112,7 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
         const ts = new Date().getTime();
         checkAuthList(ts);
 
-        const id = rinfo.address + ':' + rinfo.port;
+        const id = `${rinfo.address}:${rinfo.port}`;
 
         switch (msg.cmd) {
             case 'browse':
@@ -208,14 +208,14 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
 
         if (count > 10) {
             return logger.warn(
-                'host.' + hostname + ' Multi-host discovery server: Port ' + PORT + ' is occupied. Service stopped.',
+                `host.${hostname} Multi-host discovery server: Port ${PORT} is occupied. Service stopped.`,
             );
         }
 
         server = dgram.createSocket({ type: 'udp4', reuseAddr: true });
 
         server.on('error', err => {
-            logger.error('host.' + hostname + ' Multi-host discovery server: error: ' + err.stack);
+            logger.error(`host.${hostname} Multi-host discovery server: error: ${err.stack}`);
             server.close();
             server = null;
 
@@ -242,7 +242,7 @@ export function MHServer(hostname, logger, config, info, ips, secret) {
             // following messages are allowed
             const text = msg.toString();
             const now = new Date().getTime();
-            const id = rinfo.address + ':' + rinfo.port;
+            const id = `${rinfo.address}:${rinfo.port}`;
 
             for (const ids in buffer) {
                 if (!lastFrame[ids]) {

@@ -7,7 +7,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 // eslint-disable-next-line unicorn/prefer-module
-const require = createRequire(import.meta.url || 'file://' + __filename);
+const require = createRequire(import.meta.url || `file://${__filename}`);
 
 const controllerIoPackPath = require.resolve('iobroker.js-controller/io-package.json');
 

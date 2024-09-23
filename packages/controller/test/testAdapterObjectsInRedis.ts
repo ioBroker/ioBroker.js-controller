@@ -10,19 +10,19 @@ import { register } from './lib/testObjects.js';
 import * as url from 'node:url';
 import type { TestContext } from './_Types.js';
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 
 const context: TestContext = {
     // @ts-expect-error will be filled in time
     objects: null,
     name: textName,
 };
-if (!fs.existsSync(thisDir + '/../tmp')) {
-    fs.mkdirSync(thisDir + '/../tmp');
+if (!fs.existsSync(`${thisDir}/../tmp`)) {
+    fs.mkdirSync(`${thisDir}/../tmp`);
 }
 
 const objectsConfig = {
-    dataDir: thisDir + '/../tmp/data',
+    dataDir: `${thisDir}/../tmp/data`,
     type: 'redis',
     host: '127.0.0.1',
     port: 6379,
@@ -36,16 +36,16 @@ const objectsConfig = {
     },
 };
 
-describe(textName + 'Test Objects Redis', function () {
-    before(textName + 'Start js-controller', async function () {
+describe(`${textName}Test Objects Redis`, function () {
+    before(`${textName}Start js-controller`, async function () {
         this.timeout(23_000);
 
         const { objects: _objects, states: _states } = await startController({
             objects: objectsConfig,
             states: {
-                dataDir: thisDir + '/../tmp/data',
+                dataDir: `${thisDir}/../tmp/data`,
                 onChange: (id: string, _state: ioBroker.State) => {
-                    console.log('state changed. ' + id);
+                    console.log(`state changed. ${id}`);
                 },
             },
         });
@@ -60,7 +60,7 @@ describe(textName + 'Test Objects Redis', function () {
 
     register(it, expect, context);
 
-    after(textName + 'Stop js-controller', async function () {
+    after(`${textName}Stop js-controller`, async function () {
         this.timeout(5_000);
         await stopController();
         await new Promise<void>(resolve => {

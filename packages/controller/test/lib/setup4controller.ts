@@ -5,7 +5,7 @@ import type { Client as StateRedisClient } from '@iobroker/db-states-redis';
 import * as url from 'node:url';
 import { appNameLowerCase } from '@iobroker/js-controller-common-db/tools';
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 
 export const rootDir = path.normalize(`${thisDir}/../../`);
 
@@ -33,7 +33,7 @@ export async function startController(options: Record<string, any>): Promise<Sta
     console.log('startController...');
 
     // adjust db for the cli tests
-    const iobrokerJSON = fs.readJSONSync(path.join(rootDir, 'data', appName + '.json'));
+    const iobrokerJSON = fs.readJSONSync(path.join(rootDir, 'data', `${appName}.json`));
     iobrokerJSON.objects.type = options.objects.type || 'file';
     iobrokerJSON.objects.port = options.objects.port === undefined ? 19001 : options.objects.port;
     iobrokerJSON.objects.host = options.objects.host || '127.0.0.1';
@@ -41,7 +41,7 @@ export async function startController(options: Record<string, any>): Promise<Sta
     iobrokerJSON.states.type = options.states.type || 'file';
     iobrokerJSON.states.port = options.states.port === undefined ? 19000 : options.states.port;
     iobrokerJSON.states.host = options.states.host || '127.0.0.1';
-    fs.writeJSONSync(path.join(rootDir, 'data', appName + '.json'), iobrokerJSON, { spaces: 2 });
+    fs.writeJSONSync(path.join(rootDir, 'data', `${appName}.json`), iobrokerJSON, { spaces: 2 });
 
     let Objects;
 

@@ -92,12 +92,12 @@ export class StateRedisClient {
 
     constructor(settings: StatesSettings) {
         this.settings = settings || {};
-        this.namespaceRedis = (this.settings.redisNamespace || 'io') + '.';
+        this.namespaceRedis = `${this.settings.redisNamespace || 'io'}.`;
         this.namespaceRedisL = this.namespaceRedis.length;
-        this.namespaceMsg = (this.settings.namespaceMsg || 'messagebox') + '.';
-        this.namespaceLog = (this.settings.namespaceLog || 'log') + '.';
-        this.namespaceSession = (this.settings.namespaceSession || 'session') + '.';
-        this.metaNamespace = (this.settings.metaNamespace || 'meta') + '.';
+        this.namespaceMsg = `${this.settings.namespaceMsg || 'messagebox'}.`;
+        this.namespaceLog = `${this.settings.namespaceLog || 'log'}.`;
+        this.namespaceSession = `${this.settings.namespaceSession || 'session'}.`;
+        this.metaNamespace = `${this.settings.metaNamespace || 'meta'}.`;
 
         this.globalMessageId = Math.round(Math.random() * 100_000_000);
         this.globalLogId = Math.round(Math.random() * 100_000_000);
@@ -982,21 +982,20 @@ export class StateRedisClient {
     async _destroyDBHelper(keys: string[], callback?: ioBroker.ErrorCallback): Promise<void> {
         if (!keys || !keys.length) {
             return tools.maybeCallback(callback);
-        } else {
-            if (!this.client) {
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            for (const id of keys) {
-                try {
-                    await this.client.del(id);
-                } catch {
-                    // ignore
-                }
-            }
-
-            return tools.maybeCallback(callback);
         }
+        if (!this.client) {
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        for (const id of keys) {
+            try {
+                await this.client.del(id);
+            } catch {
+                // ignore
+            }
+        }
+
+        return tools.maybeCallback(callback);
     }
 
     /**
@@ -1005,15 +1004,14 @@ export class StateRedisClient {
     async destroyDB(callback?: ioBroker.ErrorCallback): Promise<void> {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        } else {
-            let keys;
-            try {
-                keys = await this.client.keys(`${this.namespaceRedis}*`);
-            } catch {
-                //ignore
-            }
-            return this._destroyDBHelper(keys || [], callback);
         }
+        let keys;
+        try {
+            keys = await this.client.keys(`${this.namespaceRedis}*`);
+        } catch {
+            //ignore
+        }
+        return this._destroyDBHelper(keys || [], callback);
     }
 
     // Destructor of the class. Called by shutting down.

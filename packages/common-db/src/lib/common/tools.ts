@@ -34,9 +34,9 @@ import { createRequire } from 'node:module';
 import type { WithRequired } from '@iobroker/types-dev';
 
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 // eslint-disable-next-line unicorn/prefer-module
-const require = createRequire(import.meta.url || 'file://' + __filename);
+const require = createRequire(import.meta.url || `file://${__filename}`);
 
 type DockerInformation =
     | {
@@ -238,13 +238,12 @@ export function checkNonEditable(
             if (oldObject.nonEdit.passHash !== hash) {
                 delete newObject.nonEdit;
                 return false;
-            } else {
-                oldObject.nonEdit = deepClone(newObject.nonEdit);
-                delete oldObject.nonEdit.password;
-                delete newObject.nonEdit.password;
-                oldObject.nonEdit.passHash = hash;
-                newObject.nonEdit.passHash = hash;
             }
+            oldObject.nonEdit = deepClone(newObject.nonEdit);
+            delete oldObject.nonEdit.password;
+            delete newObject.nonEdit.password;
+            oldObject.nonEdit.passHash = hash;
+            newObject.nonEdit.passHash = hash;
 
             copyAttributes(newObject.nonEdit, newObject, newObject);
 
@@ -256,9 +255,8 @@ export function checkNonEditable(
             }
 
             return true;
-        } else {
-            newObject.nonEdit = oldObject.nonEdit;
         }
+        newObject.nonEdit = oldObject.nonEdit;
     } else if (newObject.nonEdit) {
         oldObject.nonEdit = deepClone(newObject.nonEdit);
         if (newObject.nonEdit.password) {
@@ -410,17 +408,14 @@ function findPath(path: string, url: string): string {
     }
     if (url.startsWith('http://') || url.startsWith('https://')) {
         return url;
-    } else {
-        if (path.startsWith('http://') || path.startsWith('https://')) {
-            return (path + url).replace(/\/\//g, '/').replace('http:/', 'http://').replace('https:/', 'https://');
-        } else {
-            if (url[0] === '/') {
-                return `${thisDir}/..${url}`;
-            } else {
-                return `${thisDir}/../${path}${url}`;
-            }
-        }
     }
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+        return (path + url).replace(/\/\//g, '/').replace('http:/', 'http://').replace('https:/', 'https://');
+    }
+    if (url[0] === '/') {
+        return `${thisDir}/..${url}`;
+    }
+    return `${thisDir}/../${path}${url}`;
 }
 
 /**
@@ -711,30 +706,25 @@ export async function createUuid(objects: any): Promise<void | string> {
     const licObj: ioBroker.Object = objects.getObject('system.adapter.vis.0');
     if (!licObj || !licObj.native || !licObj.native.license) {
         return updateUuid('', objects);
-    } else {
-        // decode obj.native.license
-        let data;
-        try {
-            data = jwt.decode(licObj.native.license);
-        } catch {
-            data = null;
-        }
-
-        if (!data || typeof data === 'string' || !data.uuid) {
-            // generate new UUID
-            return updateUuid('', objects);
-        } else {
-            if (data.uuid !== obj.native.uuid) {
-                return updateUuid(data.correct ? data.uuid : '', objects);
-            } else {
-                // Show error
-                console.warn(
-                    `Your iobroker.vis license must be updated. Please contact info@iobroker.net to get a new license!`,
-                );
-                console.warn(`Provide following information in email: ${data.email}, invoice: ${data.invoice}`);
-            }
-        }
     }
+    // decode obj.native.license
+    let data;
+    try {
+        data = jwt.decode(licObj.native.license);
+    } catch {
+        data = null;
+    }
+
+    if (!data || typeof data === 'string' || !data.uuid) {
+        // generate new UUID
+        return updateUuid('', objects);
+    }
+    if (data.uuid !== obj.native.uuid) {
+        return updateUuid(data.correct ? data.uuid : '', objects);
+    }
+    // Show error
+    console.warn(`Your iobroker.vis license must be updated. Please contact info@iobroker.net to get a new license!`);
+    console.warn(`Provide following information in email: ${data.email}, invoice: ${data.invoice}`);
 }
 
 /**
@@ -904,48 +894,46 @@ export async function getJsonAsync(urlOrPath: string, agent?: string): Promise<R
     } else if (!urlOrPath) {
         console.log('Empty url!');
         return null;
-    } else {
-        if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
-            try {
-                const result = await axios(urlOrPath, {
-                    timeout: 10000,
-                    headers: { 'User-Agent': agent },
-                    validateStatus: status => status !== 200,
-                });
-                return result.data;
-            } catch (e) {
-                console.warn(`Cannot download json from ${urlOrPath}. Error: ${e.message}`);
-                return null;
-            }
-        } else {
-            if (fs.existsSync(urlOrPath)) {
-                try {
-                    sources = fs.readJSONSync(urlOrPath);
-                } catch (e) {
-                    console.warn(`Cannot parse json file from ${urlOrPath}. Error: ${e.message}`);
-                    return null;
-                }
-                return sources;
-            } else if (fs.existsSync(thisDir + '/../' + urlOrPath)) {
-                try {
-                    sources = fs.readJSONSync(`${thisDir}/../${urlOrPath}`);
-                } catch (e) {
-                    console.warn(`Cannot parse json file from ${thisDir}/../${urlOrPath}. Error: ${e.message}`);
-                    return null;
-                }
-                return sources;
-            } else if (fs.existsSync(`${thisDir}/../tmp/${urlOrPath}`)) {
-                try {
-                    sources = fs.readJSONSync(`${thisDir}/../tmp/${urlOrPath}`);
-                } catch (e) {
-                    console.log(`Cannot parse json file from ${thisDir}/../tmp/${urlOrPath}. Error: ${e.message}`);
-                    return null;
-                }
-                return sources;
-            } else {
-                return null;
-            }
+    }
+    if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
+        try {
+            const result = await axios(urlOrPath, {
+                timeout: 10000,
+                headers: { 'User-Agent': agent },
+                validateStatus: status => status !== 200,
+            });
+            return result.data;
+        } catch (e) {
+            console.warn(`Cannot download json from ${urlOrPath}. Error: ${e.message}`);
+            return null;
         }
+    } else {
+        if (fs.existsSync(urlOrPath)) {
+            try {
+                sources = fs.readJSONSync(urlOrPath);
+            } catch (e) {
+                console.warn(`Cannot parse json file from ${urlOrPath}. Error: ${e.message}`);
+                return null;
+            }
+            return sources;
+        } else if (fs.existsSync(`${thisDir}/../${urlOrPath}`)) {
+            try {
+                sources = fs.readJSONSync(`${thisDir}/../${urlOrPath}`);
+            } catch (e) {
+                console.warn(`Cannot parse json file from ${thisDir}/../${urlOrPath}. Error: ${e.message}`);
+                return null;
+            }
+            return sources;
+        } else if (fs.existsSync(`${thisDir}/../tmp/${urlOrPath}`)) {
+            try {
+                sources = fs.readJSONSync(`${thisDir}/../tmp/${urlOrPath}`);
+            } catch (e) {
+                console.log(`Cannot parse json file from ${thisDir}/../tmp/${urlOrPath}. Error: ${e.message}`);
+                return null;
+            }
+            return sources;
+        }
+        return null;
     }
 }
 
@@ -1605,11 +1593,10 @@ export function getAdapterDir(adapter: string): string | null {
 
     if (!adapterPath) {
         return null; // inactive
-    } else {
-        const parts = path.normalize(adapterPath).split(/[\\/]/g);
-        parts.pop();
-        return parts.join('/');
     }
+    const parts = path.normalize(adapterPath).split(/[\\/]/g);
+    parts.pop();
+    return parts.join('/');
 }
 
 /**
@@ -2352,30 +2339,29 @@ export function promisify(
                         function (error: string | Error, result: any) {
                             if (error) {
                                 return reject(error instanceof Error ? error : new Error(error));
-                            } else {
-                                // decide on how we want to return the callback arguments
-                                switch (arguments.length) {
-                                    case 1: // only an error was given
-                                        return resolve(); // Promise<void>
-                                    case 2: // a single value (result) was returned
-                                        return resolve(result);
-                                    default: {
-                                        // multiple values should be returned
-                                        let ret: Record<string, any> | any[];
-                                        // eslint-disable-next-line prefer-rest-params
-                                        const extraArgs = sliceArgs(arguments, 1);
-                                        if (returnArgNames && returnArgNames.length === extraArgs.length) {
-                                            // we can build an object
-                                            ret = {};
-                                            for (let i = 0; i < returnArgNames.length; i++) {
-                                                ret[returnArgNames[i]] = extraArgs[i];
-                                            }
-                                        } else {
-                                            // we return the raw array
-                                            ret = extraArgs;
+                            }
+                            // decide on how we want to return the callback arguments
+                            switch (arguments.length) {
+                                case 1: // only an error was given
+                                    return resolve(); // Promise<void>
+                                case 2: // a single value (result) was returned
+                                    return resolve(result);
+                                default: {
+                                    // multiple values should be returned
+                                    let ret: Record<string, any> | any[];
+                                    // eslint-disable-next-line prefer-rest-params
+                                    const extraArgs = sliceArgs(arguments, 1);
+                                    if (returnArgNames && returnArgNames.length === extraArgs.length) {
+                                        // we can build an object
+                                        ret = {};
+                                        for (let i = 0; i < returnArgNames.length; i++) {
+                                            ret[returnArgNames[i]] = extraArgs[i];
                                         }
-                                        return resolve(ret);
+                                    } else {
+                                        // we return the raw array
+                                        ret = extraArgs;
                                     }
+                                    return resolve(ret);
                                 }
                             }
                         },
@@ -3420,7 +3406,7 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
             _id: `${id}.cputime`,
             type: 'state',
             common: {
-                name: namespace + '.cputime',
+                name: `${namespace}.cputime`,
                 type: 'number',
                 read: true,
                 write: false,
@@ -3699,78 +3685,74 @@ export async function updateLicenses(objects: any, login: string, password: stri
     // if login and password provided in the message, just try to read without saving it in system.licenses
     if (login && password) {
         return _readLicenses(login, password);
-    } else {
-        // get actual object
-        const systemLicenses: ioBroker.Object = await objects.getObjectAsync('system.licenses');
-        // If password and login exist
-        if (systemLicenses && systemLicenses.native && systemLicenses.native.password && systemLicenses.native.login) {
+    }
+    // get actual object
+    const systemLicenses: ioBroker.Object = await objects.getObjectAsync('system.licenses');
+    // If password and login exist
+    if (systemLicenses && systemLicenses.native && systemLicenses.native.password && systemLicenses.native.login) {
+        try {
+            // get the secret to decode the password
+            const systemConfig: ioBroker.Object = await objects.getObjectAsync('system.config');
+
+            // decode the password
+            let password;
             try {
-                // get the secret to decode the password
-                const systemConfig: ioBroker.Object = await objects.getObjectAsync('system.config');
-
-                // decode the password
-                let password;
-                try {
-                    password = decrypt(systemConfig.native.secret, systemLicenses.native.password);
-                } catch (err) {
-                    throw new Error(`Cannot decode password: ${err.message}`);
-                }
-
-                // read licenses from iobroker.net
-                const licenses = await _readLicenses(systemLicenses.native.login, password);
-                // save licenses to system.licenses and remember the time.
-                // merge the information together
-                const oldLicenses: any[] = systemLicenses.native.licenses || [];
-                systemLicenses.native.licenses = licenses;
-                oldLicenses.forEach(oldLicense => {
-                    if (oldLicense.usedBy) {
-                        const newLicense = licenses.find(item => item.json === oldLicense.json);
-                        if (newLicense) {
-                            newLicense.usedBy = oldLicense.usedBy;
-                        }
-                    }
-                });
-
-                systemLicenses.native.readTime = new Date().toISOString();
-
-                // update read time
-                await objects.setObjectAsync('system.licenses', systemLicenses);
-                return licenses;
+                password = decrypt(systemConfig.native.secret, systemLicenses.native.password);
             } catch (err) {
-                // if password is invalid
-                if (
-                    err.message.includes('Authentication required') ||
-                    err.message.includes('Cannot decode password:')
-                ) {
-                    // clear existing licenses if exist
-                    if (
-                        systemLicenses &&
-                        systemLicenses.native &&
-                        systemLicenses.native.licenses &&
-                        systemLicenses.native.licenses.length
-                    ) {
-                        systemLicenses.native.licenses = [];
-                        systemLicenses.native.readTime = new Date().toISOString();
-                        await objects.setObjectAsync('system.licenses', systemLicenses);
+                throw new Error(`Cannot decode password: ${err.message}`);
+            }
+
+            // read licenses from iobroker.net
+            const licenses = await _readLicenses(systemLicenses.native.login, password);
+            // save licenses to system.licenses and remember the time.
+            // merge the information together
+            const oldLicenses: any[] = systemLicenses.native.licenses || [];
+            systemLicenses.native.licenses = licenses;
+            oldLicenses.forEach(oldLicense => {
+                if (oldLicense.usedBy) {
+                    const newLicense = licenses.find(item => item.json === oldLicense.json);
+                    if (newLicense) {
+                        newLicense.usedBy = oldLicense.usedBy;
                     }
                 }
+            });
 
-                throw err;
+            systemLicenses.native.readTime = new Date().toISOString();
+
+            // update read time
+            await objects.setObjectAsync('system.licenses', systemLicenses);
+            return licenses;
+        } catch (err) {
+            // if password is invalid
+            if (err.message.includes('Authentication required') || err.message.includes('Cannot decode password:')) {
+                // clear existing licenses if exist
+                if (
+                    systemLicenses &&
+                    systemLicenses.native &&
+                    systemLicenses.native.licenses &&
+                    systemLicenses.native.licenses.length
+                ) {
+                    systemLicenses.native.licenses = [];
+                    systemLicenses.native.readTime = new Date().toISOString();
+                    await objects.setObjectAsync('system.licenses', systemLicenses);
+                }
             }
-        } else {
-            // if password or login are empty => clear existing licenses if exist
-            if (
-                systemLicenses &&
-                systemLicenses.native &&
-                systemLicenses.native.licenses &&
-                systemLicenses.native.licenses.length
-            ) {
-                systemLicenses.native.licenses = [];
-                systemLicenses.native.readTime = new Date().toISOString();
-                await objects.setObjectAsync('system.licenses', systemLicenses);
-            }
-            throw new Error('No password or login');
+
+            throw err;
         }
+    } else {
+        // if password or login are empty => clear existing licenses if exist
+        if (
+            systemLicenses &&
+            systemLicenses.native &&
+            systemLicenses.native.licenses &&
+            systemLicenses.native.licenses.length
+        ) {
+            systemLicenses.native.licenses = [];
+            systemLicenses.native.readTime = new Date().toISOString();
+            await objects.setObjectAsync('system.licenses', systemLicenses);
+        }
+        throw new Error('No password or login');
     }
 }
 

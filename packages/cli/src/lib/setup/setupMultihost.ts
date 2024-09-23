@@ -278,7 +278,7 @@ export class Multihost {
                         break;
 
                     default:
-                        process.stdout.write('\x1B[2K\x1B[200D' + query + new Array(rl.line.length + 1).join('*'));
+                        process.stdout.write(`\x1B[2K\x1B[200D${query}${new Array(rl.line.length + 1).join('*')}`);
                         break;
                 }
             });

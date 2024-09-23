@@ -259,19 +259,9 @@ export class BackupRestore {
     async createBackup(name: string, noConfig?: boolean): Promise<string> {
         if (!name) {
             const d = new Date();
-            name =
-                d.getFullYear() +
-                '_' +
-                ('0' + (d.getMonth() + 1)).slice(-2) +
-                '_' +
-                ('0' + d.getDate()).slice(-2) +
-                '-' +
-                ('0' + d.getHours()).slice(-2) +
-                '_' +
-                ('0' + d.getMinutes()).slice(-2) +
-                '_' +
-                ('0' + d.getSeconds()).slice(-2) +
-                `_backup${tools.appName}`;
+            name = `${d.getFullYear()}_${`0${d.getMonth() + 1}`.slice(-2)}_${`0${d.getDate()}`.slice(-2)}-${`0${d.getHours()}`.slice(
+                -2,
+            )}_${`0${d.getMinutes()}`.slice(-2)}_${`0${d.getSeconds()}`.slice(-2)}_backup${tools.appName}`;
         }
 
         name = name.toString().replace(/\\/g, '/');
@@ -328,7 +318,7 @@ export class BackupRestore {
                     hostname,
                     thisHostNameStartsWith,
                 });
-                await objectsFd.write(JSON.stringify(preprocessedValue) + '\n');
+                await objectsFd.write(`${JSON.stringify(preprocessedValue)}\n`);
             }
 
             console.log(`host.${hostname} ${res.rows.length || 'no'} objects saved`);
@@ -365,7 +355,7 @@ export class BackupRestore {
                         }
                     }
 
-                    await statesFd.write(JSON.stringify({ id: keys[i], state: obj }) + '\n');
+                    await statesFd.write(`${JSON.stringify({ id: keys[i], state: obj })}\n`);
                 }
 
                 await statesFd.close();
@@ -947,11 +937,10 @@ export class BackupRestore {
                     );
 
                     return EXIT_CODES.CANNOT_RESTORE_BACKUP;
-                } else {
-                    console.info('The current version of js-controller differs from the version in the backup.');
-                    console.info('The js-controller version of the backup can not be restored automatically.');
-                    console.info('Note, that your backup might differ in behavior due to this version change!');
                 }
+                console.info('The current version of js-controller differs from the version in the backup.');
+                console.info('The js-controller version of the backup can not be restored automatically.');
+                console.info('Note, that your backup might differ in behavior due to this version change!');
             }
         } catch {
             // ignore
@@ -972,9 +961,8 @@ export class BackupRestore {
                 }
             }
             return result;
-        } else {
-            return result;
         }
+        return result;
     }
 
     /**
@@ -1078,9 +1066,8 @@ export class BackupRestore {
                     console.log(`No existing backups. Create a backup, using "${tools.appName} backup" first`);
                 }
                 return void this.processExit(EXIT_CODES.INVALID_ARGUMENTS);
-            } else {
-                console.log(`host.${this.hostname} Using backup file ${name}`);
             }
+            console.log(`host.${this.hostname} Using backup file ${name}`);
         }
 
         name = name.toString().replace(/\\/g, '/');

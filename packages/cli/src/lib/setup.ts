@@ -28,10 +28,10 @@ import * as url from 'node:url';
 import * as events from 'node:events';
 
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 import { createRequire } from 'node:module';
 // eslint-disable-next-line unicorn/prefer-module
-const require = createRequire(import.meta.url || 'file://' + __filename);
+const require = createRequire(import.meta.url || `file://${__filename}`);
 
 tools.ensureDNSOrder();
 
@@ -841,7 +841,7 @@ async function processCommand(
                         );
                     }
                 } catch (err) {
-                    console.error('Cannot read host info: ' + (typeof err === 'object' ? JSON.stringify(err) : err));
+                    console.error(`Cannot read host info: ${typeof err === 'object' ? JSON.stringify(err) : err}`);
                     return callback(EXIT_CODES.CANNOT_GET_HOST_INFO);
                 }
 
@@ -970,10 +970,9 @@ async function processCommand(
                 console.log();
                 console.log(`Rebuilding native modules done`);
                 return void callback();
-            } else {
-                console.error('Rebuilding native modules failed');
-                return void exitApplicationSave(result.exitCode);
             }
+            console.error('Rebuilding native modules failed');
+            return void exitApplicationSave(result.exitCode);
         }
 
         case 'upload':
@@ -1546,10 +1545,9 @@ async function processCommand(
             if (!mode) {
                 CLIError.requiredArgumentMissing('mode', 'chmod 777 /vis-2.0/main/*');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-            } else {
-                // yargs has converted it to number
-                mode = parseInt(mode.toString(), 16);
             }
+            // yargs has converted it to number
+            mode = parseInt(mode.toString(), 16);
 
             if (!pattern) {
                 CLIError.requiredArgumentMissing('file path', 'chmod 777 /vis-2.0/main/*');
@@ -1798,70 +1796,63 @@ async function processCommand(
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        } else {
-                            console.log(`User "${user}" created (Group: ${group.replace('system.group.', '')})`);
-                            return void callback();
                         }
+                        console.log(`User "${user}" created (Group: ${group.replace('system.group.', '')})`);
+                        return void callback();
                     });
                 } else if (command === 'del' || command === 'delete') {
                     users.delUser(user, (err: any) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        } else {
-                            console.log(`User "${user}" deleted`);
-                            return void callback();
                         }
+                        console.log(`User "${user}" deleted`);
+                        return void callback();
                     });
                 } else if (command === 'check') {
                     users.checkUserPassword(user, password, err => {
                         if (err) {
                             console.error(err.message);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        } else {
-                            console.log(`Password for user "${user}" matches.`);
-                            return void callback();
                         }
+                        console.log(`Password for user "${user}" matches.`);
+                        return void callback();
                     });
                 } else if (command === 'set' || command === 'passwd') {
                     users.setUserPassword(user, password, err => {
                         if (err) {
                             console.error(err.message);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        } else {
-                            console.log(`Password for "${user}" was successfully set.`);
-                            return void callback();
                         }
+                        console.log(`Password for "${user}" was successfully set.`);
+                        return void callback();
                     });
                 } else if (command === 'enable' || command === 'e') {
                     users.enableUser(user, true, err => {
                         if (err) {
                             console.error(err.message);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        } else {
-                            console.log(`User "${user}" was successfully enabled.`);
-                            return void callback();
                         }
+                        console.log(`User "${user}" was successfully enabled.`);
+                        return void callback();
                     });
                 } else if (command === 'disable' || command === 'd') {
                     users.enableUser(user, false, err => {
                         if (err) {
                             console.error(err.message);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        } else {
-                            console.log(`User "${user}" was successfully disabled.`);
-                            return void callback();
                         }
+                        console.log(`User "${user}" was successfully disabled.`);
+                        return void callback();
                     });
                 } else if (command === 'get') {
                     users.getUser(user, (err, isEnabled) => {
                         if (err) {
                             console.error(err.message);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        } else {
-                            console.log(`User "${user}" is ${isEnabled ? 'enabled' : 'disabled'}`);
-                            return void callback();
                         }
+                        console.log(`User "${user}" is ${isEnabled ? 'enabled' : 'disabled'}`);
+                        return void callback();
                     });
                 } else {
                     console.warn(
@@ -1912,10 +1903,9 @@ async function processCommand(
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        } else {
-                            console.log(`User "${user}" was added to group "${group}"`);
-                            return void callback();
                         }
+                        console.log(`User "${user}" was added to group "${group}"`);
+                        return void callback();
                     });
                 } else if (command === 'userdel' || command === 'deluser') {
                     if (!user) {
@@ -1926,10 +1916,9 @@ async function processCommand(
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        } else {
-                            console.log(`User "${user}" was deleted from group "${group}"`);
-                            return void callback();
                         }
+                        console.log(`User "${user}" was deleted from group "${group}"`);
+                        return void callback();
                     });
                 } else if (command === 'add') {
                     try {
@@ -1944,57 +1933,52 @@ async function processCommand(
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        } else {
-                            console.log(`Group "${group}" was deleted`);
-                            return void callback();
                         }
+                        console.log(`Group "${group}" was deleted`);
+                        return void callback();
                     });
                 } else if (command === 'list' || command === 'l') {
                     users.getGroup(group, (err, isEnabled, members) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        } else {
-                            console.log(
-                                `Group "${group}" is ${isEnabled ? 'enabled' : 'disabled'} and has following members:`,
-                            );
-                            if (members) {
-                                for (const member of members) {
-                                    console.log(member.substring('system.user.'.length));
-                                }
-                            }
-                            return void callback();
                         }
+                        console.log(
+                            `Group "${group}" is ${isEnabled ? 'enabled' : 'disabled'} and has following members:`,
+                        );
+                        if (members) {
+                            for (const member of members) {
+                                console.log(member.substring('system.user.'.length));
+                            }
+                        }
+                        return void callback();
                     });
                 } else if (command === 'enable' || command === 'e') {
                     users.enableGroup(group, true, (err: any) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        } else {
-                            console.log(`Group "${group}" was successfully enabled.`);
-                            return void callback();
                         }
+                        console.log(`Group "${group}" was successfully enabled.`);
+                        return void callback();
                     });
                 } else if (command === 'disable' || command === 'd') {
                     users.enableGroup(group, false, (err: any) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        } else {
-                            console.log(`Group "${group}" was successfully disabled.`);
-                            return void callback();
                         }
+                        console.log(`Group "${group}" was successfully disabled.`);
+                        return void callback();
                     });
                 } else if (command === 'get') {
                     users.getGroup(group, (err, isEnabled) => {
                         if (err) {
                             console.error(err);
                             return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        } else {
-                            console.log(`Group "${group}" is ${isEnabled ? 'enabled' : 'disabled'}`);
-                            return void callback();
                         }
+                        console.log(`Group "${group}" is ${isEnabled ? 'enabled' : 'disabled'}`);
+                        return void callback();
                     });
                 } else {
                     console.warn(
@@ -2021,10 +2005,9 @@ async function processCommand(
                     if (err) {
                         console.error(err);
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                    } else {
-                        console.log(`User "${user}" created (Group: ${group.replace('system.group.', '')})`);
-                        return void callback();
                     }
+                    console.log(`User "${user}" created (Group: ${group.replace('system.group.', '')})`);
+                    return void callback();
                 });
             });
             break;
@@ -2043,10 +2026,9 @@ async function processCommand(
                     if (err) {
                         console.error(err);
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                    } else {
-                        console.log(`Password for "${user}" was successfully set.`);
-                        return void callback();
                     }
+                    console.log(`Password for "${user}" was successfully set.`);
+                    return void callback();
                 });
             });
             break;
@@ -2068,10 +2050,9 @@ async function processCommand(
                     if (err) {
                         console.error(err);
                         return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                    } else {
-                        console.log(`User "${user}" deleted`);
-                        return void callback();
                     }
+                    console.log(`User "${user}" deleted`);
+                    return void callback();
                 });
             });
             break;
@@ -2098,12 +2079,12 @@ async function processCommand(
                     for (const s in sources) {
                         if (Object.prototype.hasOwnProperty.call(sources, s)) {
                             if (sources[s].url) {
-                                if (!json.dependencies[tools.appName + '.' + s]) {
-                                    json.optionalDependencies[tools.appName + '.' + s] = sources[s].url;
+                                if (!json.dependencies[`${tools.appName}.${s}`]) {
+                                    json.optionalDependencies[`${tools.appName}.${s}`] = sources[s].url;
                                 }
                             } else {
-                                if (!json.dependencies[tools.appName + '.' + s]) {
-                                    json.optionalDependencies[tools.appName + '.' + s] = '*';
+                                if (!json.dependencies[`${tools.appName}.${s}`]) {
+                                    json.optionalDependencies[`${tools.appName}.${s}`] = '*';
                                 }
                             }
                         }
@@ -2409,7 +2390,7 @@ async function processCommand(
                         if (notifications.length) {
                             console.log();
                             console.log('The following notifications happened during sync: ');
-                            notifications.forEach((el: string) => console.log('- ' + el));
+                            notifications.forEach((el: string) => console.log(`- ${el}`));
                         }
                         return void callback(EXIT_CODES.NO_ERROR);
                     } catch (err) {
@@ -2443,10 +2424,9 @@ async function processCommand(
                     if (obj?.native) {
                         console.log(obj.native.uuid);
                         return void callback();
-                    } else {
-                        console.error('Error: no UUID found');
-                        return void callback(EXIT_CODES.CANNOT_GET_UUID);
                     }
+                    console.error('Error: no UUID found');
+                    return void callback(EXIT_CODES.CANNOT_GET_UUID);
                 });
             });
             break;
@@ -2504,32 +2484,31 @@ async function processCommand(
                 if (isOffline && hasLocalObjectsServer) {
                     console.log(`${tools.appName} is not running`);
                     return void callback(EXIT_CODES.CONTROLLER_NOT_RUNNING);
-                } else {
-                    console.log(`${tools.appName} is running`);
-                    objects.getObjectList(
-                        {
-                            startkey: 'system.host.',
-                            endkey: `system.host.\u9999`,
-                        },
-                        null,
-                        (err, res) => {
-                            if (!err && res?.rows.length) {
-                                for (const row of res.rows) {
-                                    const parts = row.id.split('.');
-                                    // ignore system.host.name.alive and so on
-                                    if (parts.length === 3) {
-                                        states.pushMessage(row.id, {
-                                            command: 'checkLogging',
-                                            message: null,
-                                            from: 'console',
-                                        });
-                                    }
+                }
+                console.log(`${tools.appName} is running`);
+                objects.getObjectList(
+                    {
+                        startkey: 'system.host.',
+                        endkey: `system.host.\u9999`,
+                    },
+                    null,
+                    (err, res) => {
+                        if (!err && res?.rows.length) {
+                            for (const row of res.rows) {
+                                const parts = row.id.split('.');
+                                // ignore system.host.name.alive and so on
+                                if (parts.length === 3) {
+                                    states.pushMessage(row.id, {
+                                        command: 'checkLogging',
+                                        message: null,
+                                        from: 'console',
+                                    });
                                 }
                             }
-                            setTimeout(callback, 200);
-                        },
-                    );
-                }
+                        }
+                        setTimeout(callback, 200);
+                    },
+                );
             });
             break;
         }
@@ -2575,66 +2554,63 @@ async function processCommand(
                     if (!repoName || !repoName.match(/[-_\w\d]+/)) {
                         console.error(`Invalid repository name: "${repoName}"`);
                         return void callback();
-                    } else {
-                        if (repoUrlOrCommand === 'add' || repoUrlOrCommand === 'addset') {
-                            if (!repoUrl) {
-                                console.warn(
-                                    `Please define repository URL or path: ${tools.appName.toLowerCase()} add <repoName> <repoUrlOrPath>`,
-                                );
-                                return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-                            } else {
-                                try {
-                                    await repo.add(repoName, repoUrl);
-
-                                    if (repoUrlOrCommand === 'addset') {
-                                        await repo.setActive(repoName);
-                                        console.log(`Repository "${repoName}" set as active: "${repoUrl}"`);
-                                        await repo.showRepoStatus();
-                                        return void callback();
-                                    } else {
-                                        console.log(`Repository "${repoName}" added as "${repoUrl}"`);
-                                        await repo.showRepoStatus();
-                                        return void callback();
-                                    }
-                                } catch (err) {
-                                    console.error(`Cannot add repository location: ${err.message}`);
-                                    return void callback(EXIT_CODES.INVALID_REPO);
-                                }
-                            }
-                        } else if (repoUrlOrCommand === 'set') {
-                            try {
-                                await repo.setActive(repoName);
-                                console.log(`Repository "${repoName}" set as active.`);
-                                await repo.showRepoStatus();
-                                return void callback();
-                            } catch (err) {
-                                console.error(`Cannot activate repository: ${err.message}`);
-                                return void callback(EXIT_CODES.INVALID_REPO);
-                            }
-                        } else if (repoUrlOrCommand === 'del') {
-                            try {
-                                await repo.del(repoName);
-                                console.log(`Repository "${repoName}" deleted.`);
-                                await repo.showRepoStatus();
-                                return void callback();
-                            } catch (err) {
-                                console.error(`Cannot remove repository: ${err.message}`);
-                                return void callback(EXIT_CODES.INVALID_REPO);
-                            }
-                        } else if (repoUrlOrCommand === 'unset') {
-                            try {
-                                await repo.setInactive(repoName);
-                                console.log(`Repository "${repoName}" deactivated.`);
-                                await repo.showRepoStatus();
-                                return void callback();
-                            } catch (err) {
-                                console.error(`Cannot deactivate repository: ${err.message}`);
-                                return void callback(EXIT_CODES.INVALID_REPO);
-                            }
-                        } else {
-                            console.warn(`Unknown repo command: ${repoUrlOrCommand as string}`);
+                    }
+                    if (repoUrlOrCommand === 'add' || repoUrlOrCommand === 'addset') {
+                        if (!repoUrl) {
+                            console.warn(
+                                `Please define repository URL or path: ${tools.appName.toLowerCase()} add <repoName> <repoUrlOrPath>`,
+                            );
                             return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                         }
+                        try {
+                            await repo.add(repoName, repoUrl);
+
+                            if (repoUrlOrCommand === 'addset') {
+                                await repo.setActive(repoName);
+                                console.log(`Repository "${repoName}" set as active: "${repoUrl}"`);
+                                await repo.showRepoStatus();
+                                return void callback();
+                            }
+                            console.log(`Repository "${repoName}" added as "${repoUrl}"`);
+                            await repo.showRepoStatus();
+                            return void callback();
+                        } catch (err) {
+                            console.error(`Cannot add repository location: ${err.message}`);
+                            return void callback(EXIT_CODES.INVALID_REPO);
+                        }
+                    } else if (repoUrlOrCommand === 'set') {
+                        try {
+                            await repo.setActive(repoName);
+                            console.log(`Repository "${repoName}" set as active.`);
+                            await repo.showRepoStatus();
+                            return void callback();
+                        } catch (err) {
+                            console.error(`Cannot activate repository: ${err.message}`);
+                            return void callback(EXIT_CODES.INVALID_REPO);
+                        }
+                    } else if (repoUrlOrCommand === 'del') {
+                        try {
+                            await repo.del(repoName);
+                            console.log(`Repository "${repoName}" deleted.`);
+                            await repo.showRepoStatus();
+                            return void callback();
+                        } catch (err) {
+                            console.error(`Cannot remove repository: ${err.message}`);
+                            return void callback(EXIT_CODES.INVALID_REPO);
+                        }
+                    } else if (repoUrlOrCommand === 'unset') {
+                        try {
+                            await repo.setInactive(repoName);
+                            console.log(`Repository "${repoName}" deactivated.`);
+                            await repo.showRepoStatus();
+                            return void callback();
+                        } catch (err) {
+                            console.error(`Cannot deactivate repository: ${err.message}`);
+                            return void callback(EXIT_CODES.INVALID_REPO);
+                        }
+                    } else {
+                        console.warn(`Unknown repo command: ${repoUrlOrCommand as string}`);
+                        return void callback(EXIT_CODES.INVALID_ARGUMENTS);
                     }
                 }
             });
@@ -2658,66 +2634,64 @@ async function processCommand(
             ) {
                 console.log('Invalid parameters. Following is possible: enable, browse, connect, status');
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-            } else {
-                dbConnect(params, async ({ objects, states }) => {
-                    const { Multihost } = await import('./setup/setupMultihost.js');
-                    const mh = new Multihost({
-                        params,
-                        objects,
-                    });
-
-                    if (cmd === 's' || cmd === 'status') {
-                        mh.status();
-                        return void callback();
-                    } else if (cmd === 'b' || cmd === 'browse') {
-                        try {
-                            const list = await mh.browse();
-                            mh.showHosts(list);
-                            return void callback();
-                        } catch (e) {
-                            console.error(e.message);
-                            return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
-                        }
-                    } else if (cmd === 'e' || cmd === 'enable') {
-                        mh.enable(true, async (err: any) => {
-                            if (err) {
-                                console.error(err);
-                                return void callback(EXIT_CODES.CANNOT_ENABLE_MULTIHOST);
-                            } else {
-                                await states.pushMessage(`system.host.${tools.getHostName()}`, {
-                                    command: 'updateMultihost',
-                                    message: null,
-                                    from: 'setup',
-                                });
-
-                                callback();
-                            }
-                        });
-                    } else if (cmd === 'd' || cmd === 'disable') {
-                        mh.enable(false, async (err: any) => {
-                            if (err) {
-                                console.error(err);
-                                return void callback(EXIT_CODES.CANNOT_ENABLE_MULTIHOST);
-                            } else {
-                                await states.pushMessage(`system.host.${tools.getHostName()}`, {
-                                    command: 'updateMultihost',
-                                    message: null,
-                                    from: 'setup',
-                                });
-
-                                callback();
-                            }
-                        });
-                    } else if (cmd === 'c' || cmd === 'connect') {
-                        mh.connect(parseInt(args[1]), args[2], (err: any) => {
-                            if (err) {
-                                console.error(err);
-                            }
-                            return void callback(err ? 1 : 0);
-                        });
-                    }
-                });
             }
+            dbConnect(params, async ({ objects, states }) => {
+                const { Multihost } = await import('./setup/setupMultihost.js');
+                const mh = new Multihost({
+                    params,
+                    objects,
+                });
+
+                if (cmd === 's' || cmd === 'status') {
+                    mh.status();
+                    return void callback();
+                } else if (cmd === 'b' || cmd === 'browse') {
+                    try {
+                        const list = await mh.browse();
+                        mh.showHosts(list);
+                        return void callback();
+                    } catch (e) {
+                        console.error(e.message);
+                        return void callback(EXIT_CODES.CANNOT_CREATE_USER_OR_GROUP);
+                    }
+                } else if (cmd === 'e' || cmd === 'enable') {
+                    mh.enable(true, async (err: any) => {
+                        if (err) {
+                            console.error(err);
+                            return void callback(EXIT_CODES.CANNOT_ENABLE_MULTIHOST);
+                        }
+                        await states.pushMessage(`system.host.${tools.getHostName()}`, {
+                            command: 'updateMultihost',
+                            message: null,
+                            from: 'setup',
+                        });
+
+                        callback();
+                    });
+                } else if (cmd === 'd' || cmd === 'disable') {
+                    mh.enable(false, async (err: any) => {
+                        if (err) {
+                            console.error(err);
+                            return void callback(EXIT_CODES.CANNOT_ENABLE_MULTIHOST);
+                        }
+                        await states.pushMessage(`system.host.${tools.getHostName()}`, {
+                            command: 'updateMultihost',
+                            message: null,
+                            from: 'setup',
+                        });
+
+                        callback();
+                    });
+                } else if (cmd === 'c' || cmd === 'connect') {
+                    mh.connect(parseInt(args[1]), args[2], (err: any) => {
+                        if (err) {
+                            console.error(err);
+                        }
+                        return void callback(err ? 1 : 0);
+                    });
+                }
+            });
+
             break;
         }
 
@@ -2770,20 +2744,20 @@ async function processCommand(
                     `Please specify the path to the license file or place license text directly!\n${tools.appName.toLowerCase()} license <license.file or license.text>`,
                 );
                 return void callback(EXIT_CODES.INVALID_ARGUMENTS);
-            } else {
-                dbConnect(params, async ({ objects }) => {
-                    const { License } = await import('./setup/setupLicense.js');
-                    const license = new License({ objects });
-                    try {
-                        await license.setLicense(file);
-                        console.log(`License updated.`);
-                        return void callback();
-                    } catch (err) {
-                        console.error(`Cannot update license: ${err.message}`);
-                        return void callback(EXIT_CODES.CANNOT_UPDATE_LICENSE);
-                    }
-                });
             }
+            dbConnect(params, async ({ objects }) => {
+                const { License } = await import('./setup/setupLicense.js');
+                const license = new License({ objects });
+                try {
+                    await license.setLicense(file);
+                    console.log(`License updated.`);
+                    return void callback();
+                } catch (err) {
+                    console.error(`Cannot update license: ${err.message}`);
+                    return void callback(EXIT_CODES.CANNOT_UPDATE_LICENSE);
+                }
+            });
+
             break;
         }
 
@@ -2875,25 +2849,24 @@ async function cleanDatabase(isDeleteDb: boolean): Promise<number> {
         // Clean up states
         const keysCount = await delStates();
         return keysCount;
-    } else {
-        // Clean only objects, not the views
-        let ids: string[] = [];
-
-        try {
-            const res = await objects.getObjectListAsync({ startkey: '\u0000', endkey: '\u9999' });
-            if (res.rows.length) {
-                console.log(`clean ${res.rows.length} objects...`);
-                ids = res.rows.map(e => e.id);
-            }
-        } catch {
-            // ignore
-        }
-
-        await delObjects(ids);
-        // Clean up states
-        const keysCount = await delStates();
-        return keysCount;
     }
+    // Clean only objects, not the views
+    let ids: string[] = [];
+
+    try {
+        const res = await objects.getObjectListAsync({ startkey: '\u0000', endkey: '\u9999' });
+        if (res.rows.length) {
+            console.log(`clean ${res.rows.length} objects...`);
+            ids = res.rows.map(e => e.id);
+        }
+    } catch {
+        // ignore
+    }
+
+    await delObjects(ids);
+    // Clean up states
+    const keysCount = await delStates();
+    return keysCount;
 }
 
 function unsetup(params: Record<string, any>, callback: ExitCodeCb): void {
@@ -2921,10 +2894,9 @@ function unsetup(params: Record<string, any>, callback: ExitCodeCb): void {
                         if (err) {
                             console.log(`not found: ${err.message}`);
                             return void callback(EXIT_CODES.CANNOT_SET_OBJECT);
-                        } else {
-                            console.log('system.config reset');
-                            return void callback();
                         }
+                        console.log('system.config reset');
+                        return void callback();
                     });
                 } else {
                     console.log('system.config is OK');

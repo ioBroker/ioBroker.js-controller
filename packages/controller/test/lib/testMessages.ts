@@ -1,9 +1,9 @@
 import type { TestContext } from '../_Types.js';
 
 export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
-    const testName = context.name + ' ' + context.adapterShortName + ' adapter: ';
-    const gid = 'system.adapter.' + context.adapterShortName + '.0';
-    it(testName + 'check pushMessage', function (done) {
+    const testName = `${context.name} ${context.adapterShortName} adapter: `;
+    const gid = `system.adapter.${context.adapterShortName}.0`;
+    it(`${testName}check pushMessage`, function (done) {
         context.states.subscribeMessage(gid, function (err) {
             expect(err).to.be.not.ok;
 
@@ -21,7 +21,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             });
         });
     });
-    it(testName + 'check pushMessage Buffer', function (done) {
+    it(`${testName}check pushMessage Buffer`, function (done) {
         context.states.subscribeMessage(gid, function (err) {
             expect(err).to.be.not.ok;
 
@@ -40,14 +40,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             });
         });
     });
-    it(testName + 'check unsubscribeMessage', function (done) {
+    it(`${testName}check unsubscribeMessage`, function (done) {
         context.states.unsubscribeMessage(gid, function (err) {
             expect(err).to.be.not.ok;
             done();
         });
     });
 
-    it(testName + 'check pushLog', function (done) {
+    it(`${testName}check pushLog`, function (done) {
         context.states.subscribeLog(gid, function (err) {
             expect(err).to.be.not.ok;
             context.states.pushLog(
@@ -62,7 +62,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 
-    it(testName + 'check unsubscribeLog', function (done) {
+    it(`${testName}check unsubscribeLog`, function (done) {
         context.states.unsubscribeLog(gid, function (err) {
             expect(err).to.be.not.ok;
             done();

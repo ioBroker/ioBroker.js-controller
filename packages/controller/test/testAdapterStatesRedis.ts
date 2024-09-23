@@ -1,7 +1,7 @@
 import testAdapter from './lib/testAdapter.js';
 import * as url from 'node:url';
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 
 const statesConfig = {
     options: {
@@ -15,7 +15,7 @@ const statesConfig = {
 };
 
 const objectsConfig = {
-    dataDir: thisDir + '/../tmp/data',
+    dataDir: `${thisDir}/../tmp/data`,
     options: {
         auth_pass: null,
         retry_max_delay: 100,

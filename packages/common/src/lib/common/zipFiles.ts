@@ -154,7 +154,7 @@ async function _checkDir(_options: CheckDirOptions): Promise<void> {
         return;
     }
 
-    root += '/' + parts.shift();
+    root += `/${parts.shift()}`;
 
     try {
         await objects.readDirAsync(id, root, options);
@@ -262,10 +262,10 @@ export async function readObjectsAsZip(
             try {
                 data = options.stringify(data, options ? options.settings : null);
             } catch {
-                data.id = keys[f].replace(/\./g, '/').substring(rootId.length + 1) + '.json';
+                data.id = `${keys[f].replace(/\./g, '/').substring(rootId.length + 1)}.json`;
             }
         } else {
-            data.id = keys[f].replace(/\./g, '/').substring(rootId.length + 1) + '.json';
+            data.id = `${keys[f].replace(/\./g, '/').substring(rootId.length + 1)}.json`;
         }
         if (typeof data.data === 'object') {
             data.data = JSON.stringify(data.data, null, 2);

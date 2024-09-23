@@ -142,12 +142,12 @@ async function prepareGroupsAndUsers(objects: ObjectsInRedisClient): Promise<voi
 }
 
 export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
-    const testName = context.name + ' ' + context.adapterShortName + ' aliases: ';
+    const testName = `${context.name} ${context.adapterShortName} aliases: `;
     const gid = 'someAdapter.0.testStates';
     const gAliasID = 'alias.0.testStates';
 
     // Scaling of aliases - when unit % is set to target or source
-    it(testName + 'Read alias state', done => {
+    it(`${testName}Read alias state`, done => {
         context.adapter.setForeignObject(
             gid,
             {
@@ -215,7 +215,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         );
     }).timeout(3_000);
 
-    it(testName + 'Read alias states', async () => {
+    it(`${testName}Read alias states`, async () => {
         const nonAliasId1 = `${gid}nonAlias1`;
         const nonAliasId2 = `${gid}nonAlias2`;
         // create some non-alias data to check that it works with mixed ids
@@ -244,7 +244,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             native: {},
         });
 
-        await context.adapter.setForeignObjectAsync(gid + '1', {
+        await context.adapter.setForeignObjectAsync(`${gid}1`, {
             common: {
                 name: 'forAlias1',
                 type: 'number',
@@ -262,12 +262,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             },
         });
 
-        await context.adapter.setForeignStateAsync(gid + '1', 5, true);
+        await context.adapter.setForeignStateAsync(`${gid}1`, 5, true);
         await context.adapter.setForeignStateAsync(nonAliasId1, 3, true);
         await context.adapter.setForeignStateAsync(nonAliasId2, 2, true);
 
         // create alias
-        await context.adapter.setForeignObjectAsync(gAliasID + '1', {
+        await context.adapter.setForeignObjectAsync(`${gAliasID}1`, {
             common: {
                 name: 'Test Alias1',
                 type: 'number',
@@ -275,7 +275,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 min: -10,
                 max: 10,
                 alias: {
-                    id: gid + '1',
+                    id: `${gid}1`,
                 },
                 read: true,
                 write: true,
@@ -290,13 +290,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             },
         });
 
-        let states = await context.adapter.getForeignStatesAsync(gAliasID + '1');
+        let states = await context.adapter.getForeignStatesAsync(`${gAliasID}1`);
         // No scaling because no % and no min, max in source object
-        expect(states[gAliasID + '1'].val).to.be.equal(5);
-        expect(states[gAliasID + '1'].ack).to.be.true;
+        expect(states[`${gAliasID}1`].val).to.be.equal(5);
+        expect(states[`${gAliasID}1`].ack).to.be.true;
 
         // original array should not be changed
-        const ids = [nonAliasId1, gAliasID + '1', nonAliasId2];
+        const ids = [nonAliasId1, `${gAliasID}1`, nonAliasId2];
 
         states = await context.adapter.getForeignStatesAsync(ids);
         expect(ids[0]).to.be.equal(nonAliasId1);
@@ -305,16 +305,16 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         // It must be scaled from -100, 2, 100
         // to                     -10, 0.2, 10
-        expect(ids[1]).to.be.equal(gAliasID + '1');
-        expect(states[gAliasID + '1'].val).to.be.equal(5);
-        expect(states[gAliasID + '1'].ack).to.be.true;
+        expect(ids[1]).to.be.equal(`${gAliasID}1`);
+        expect(states[`${gAliasID}1`].val).to.be.equal(5);
+        expect(states[`${gAliasID}1`].ack).to.be.true;
 
         expect(ids[2]).to.be.equal(nonAliasId2);
         expect(states[nonAliasId2].val).to.be.equal(2);
         expect(states[nonAliasId2].ack).to.be.true;
     }).timeout(3_000);
 
-    it(testName + 'Write alias state', done => {
+    it(`${testName}Write alias state`, done => {
         context.adapter.setForeignState(gAliasID, 10, false, () => {
             context.adapter.getForeignState(gid, (err, state) => {
                 // It must be scaled from 0, 10, 100
@@ -327,9 +327,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     }).timeout(3_000);
 
     // custom read/write functions
-    it(testName + 'Use convert state', done => {
+    it(`${testName}Use convert state`, done => {
         context.adapter.setForeignObject(
-            gid + 'C',
+            `${gid}C`,
             {
                 common: {
                     name: 'forAliasC',
@@ -344,12 +344,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'state',
             },
             () => {
-                context.adapter.setForeignState(gid + 'C', 2, true, err => {
+                context.adapter.setForeignState(`${gid}C`, 2, true, err => {
                     expect(err).to.be.not.ok;
 
                     // create alias
                     context.adapter.setForeignObject(
-                        gAliasID + 'C',
+                        `${gAliasID}C`,
                         {
                             common: {
                                 name: 'Test AliasC',
@@ -360,7 +360,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                 read: true,
                                 write: true,
                                 alias: {
-                                    id: gid + 'C',
+                                    id: `${gid}C`,
                                     read: 'val * 10 + 1',
                                     write: '(val - 1) / 10',
                                 },
@@ -369,15 +369,15 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             type: 'state',
                         },
                         () => {
-                            context.adapter.getForeignState(gAliasID + 'C', (err, state) => {
+                            context.adapter.getForeignState(`${gAliasID}C`, (err, state) => {
                                 // It must be converted 2 * 10 + 1
                                 expect((state!.val as number).toFixed(3)).to.be.equal('21.000');
 
                                 expect(state!.ack).to.be.true;
 
-                                context.adapter.setForeignState(gAliasID + 'C', 41, true, err => {
+                                context.adapter.setForeignState(`${gAliasID}C`, 41, true, err => {
                                     expect(err).to.be.not.ok;
-                                    context.adapter.getForeignState(gid + 'C', (err, state) => {
+                                    context.adapter.getForeignState(`${gid}C`, (err, state) => {
                                         expect((state!.val as number).toFixed(3)).to.be.equal('4.000');
 
                                         expect(state!.ack).to.be.true;
@@ -392,7 +392,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         );
     }).timeout(3_000);
 
-    it(testName + 'Read alias state by not admin', async () => {
+    it(`${testName}Read alias state by not admin`, async () => {
         await prepareGroupsAndUsers(context.objects);
         await context.adapter.setForeignStateAsync(gAliasID, 10, false, { user: 'system.user.userC' });
         let state = await context.adapter.getForeignStateAsync(gid, { user: 'system.user.userC' });
@@ -409,7 +409,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(state!.ack).to.be.false;
     }).timeout(3_000);
 
-    it(testName + 'Read alias state by not admin without rights', async () => {
+    it(`${testName}Read alias state by not admin without rights`, async () => {
         await prepareGroupsAndUsers(context.objects);
 
         try {
@@ -429,7 +429,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
     // test subscriptions
     // subscribeForeignStates
-    it(testName + 'Test subscribe aliases', done => {
+    it(`${testName}Test subscribe aliases`, done => {
         context.onAdapterStateChanged = (id, state) => {
             if (id === gAliasID) {
                 expect(state).to.be.ok;
@@ -445,7 +445,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         );
     }).timeout(3_000);
 
-    it(testName + 'Test unsubscribe aliases', done => {
+    it(`${testName}Test unsubscribe aliases`, done => {
         context.onAdapterStateChanged = () => {
             expect(true).to.be.false;
         };
@@ -458,7 +458,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     }).timeout(3_000);
 
-    it(testName + 'Test subscribe aliases pattern', done => {
+    it(`${testName}Test subscribe aliases pattern`, done => {
         context.onAdapterStateChanged = (id, state) => {
             if (id === gAliasID) {
                 expect(state).to.be.ok;
@@ -472,12 +472,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         const parts = gAliasID.split('.');
         parts.pop();
 
-        context.adapter.subscribeForeignStates(parts.join('.') + '.*', () =>
+        context.adapter.subscribeForeignStates(`${parts.join('.')}.*`, () =>
             context.states.setState(gid, 10, err => expect(err).to.be.not.ok),
         );
     }).timeout(3_000);
 
-    it(testName + 'Test unsubscribe aliases pattern', done => {
+    it(`${testName}Test unsubscribe aliases pattern`, done => {
         context.onAdapterStateChanged = () => {
             expect(true).to.be.false;
         };
@@ -485,7 +485,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         const parts = gAliasID.split('.');
         parts.pop();
 
-        context.adapter.unsubscribeForeignStates(parts.join('.') + '.*', () => {
+        context.adapter.unsubscribeForeignStates(`${parts.join('.')}.*`, () => {
             context.states.setState(gid, 10, err => {
                 expect(err).to.be.not.ok;
                 setTimeout(() => done(), 500);
@@ -494,7 +494,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     }).timeout(3_000);
 
     // Avoid Issue 2753
-    it(testName + 'Test subscribe alias multiple times should only publish once', async () => {
+    it(`${testName}Test subscribe alias multiple times should only publish once`, async () => {
         let noTriggered = 0;
 
         context.onAdapterStateChanged = (id, state) => {
@@ -513,10 +513,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(noTriggered).to.equal(1);
     }).timeout(3_000);
 
-    it(testName + 'Test negative subscribe aliases regex', done => {
+    it(`${testName}Test negative subscribe aliases regex`, done => {
         const parts = gAliasID.split('.');
         parts.pop();
-        const regexp = new RegExp(parts.join('\\.') + '\\..*');
+        const regexp = new RegExp(`${parts.join('\\.')}\\..*`);
 
         // @ts-expect-error we are passing a regexp which is not allowed
         context.adapter.subscribeForeignStates(regexp, err => {
@@ -526,10 +526,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     }).timeout(3_000);
 
-    it(testName + 'Test unsubscribe aliases regex', done => {
+    it(`${testName}Test unsubscribe aliases regex`, done => {
         const parts = gAliasID.split('.');
         parts.pop();
-        const regexp = new RegExp(parts.join('\\.') + '\\..*');
+        const regexp = new RegExp(`${parts.join('\\.')}\\..*`);
 
         // @ts-expect-error we are passing a regexp which is not allowed
         context.adapter.unsubscribeForeignStates(regexp, err => {
@@ -538,7 +538,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     }).timeout(3_000);
 
-    it(testName + 'Test subscribe aliases array', done => {
+    it(`${testName}Test subscribe aliases array`, done => {
         let count = 0;
         context.onAdapterStateChanged = (id, state) => {
             if (id === gAliasID) {
@@ -565,7 +565,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         );
     }).timeout(3_000);
 
-    it(testName + 'Test unsubscribe aliases array', done => {
+    it(`${testName}Test unsubscribe aliases array`, done => {
         context.onAdapterStateChanged = () => {
             expect(true).to.be.false;
         };
@@ -578,7 +578,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     }).timeout(3_000);
 
-    it(testName + 'Test change subscribed aliases', done => {
+    it(`${testName}Test change subscribed aliases`, done => {
         context.onAdapterStateChanged = (id, state) => {
             if (id === gAliasID) {
                 // A:
@@ -597,7 +597,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             max: 100,
                             unit: '%',
                             alias: {
-                                id: gid + 'A',
+                                id: `${gid}A`,
                             },
                             read: true,
                             write: true,
@@ -619,7 +619,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                 // -200, 10 , 200 => 0, 52.5, 100
                                 expect(state!.val).to.equal(52.5);
                                 context.adapter.unsubscribeForeignStates(gAliasID, () => {
-                                    context.states.setState(gid + 'A', 11, () => {
+                                    context.states.setState(`${gid}A`, 11, () => {
                                         done();
                                     });
                                 });
@@ -630,7 +630,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         setTimeout(() => {
                             // this change must be ignored
                             context.states.setState(gid, 20, () => {
-                                context.states.setState(gid + 'A', 10);
+                                context.states.setState(`${gid}A`, 10);
                             });
                         }, 100);
                     },
@@ -640,7 +640,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         // create new alias
         context.adapter.setForeignObject(
-            gid + 'A',
+            `${gid}A`,
             {
                 common: {
                     name: 'forAliasA',
@@ -661,7 +661,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         ); // => GOTO A:
     }).timeout(3_000);
 
-    it(testName + 'Test subscribe "*"', done => {
+    it(`${testName}Test subscribe "*"`, done => {
         // 1. Create alias
         // 2. Create normal state (independent from alias)
         // 3. subscribe "*"
@@ -671,7 +671,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         // 1. create new alias
         context.adapter.setForeignObject(
-            gid + 'Star',
+            `${gid}Star`,
             {
                 common: {
                     name: 'forAliasStar',
@@ -687,7 +687,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             },
             () =>
                 context.adapter.setForeignObject(
-                    gAliasID + 'Star',
+                    `${gAliasID}Star`,
                     {
                         common: {
                             name: 'Test Alias',
@@ -696,7 +696,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             min: -10,
                             max: 10,
                             alias: {
-                                id: gid + 'Star',
+                                id: `${gid}Star`,
                             },
                             read: true,
                             write: true,
@@ -707,7 +707,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     () =>
                         // 2. Create normal state (independent from alias)
                         context.adapter.setForeignObject(
-                            gid + 'NotAlias',
+                            `${gid}NotAlias`,
                             {
                                 common: {
                                     name: 'NotForAliasStar',
@@ -726,14 +726,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                     let count = 0;
                                     context.onAdapterStateChanged = (id, state) => {
                                         // B:
-                                        if (id === gid + 'NotAlias') {
+                                        if (id === `${gid}NotAlias`) {
                                             expect(state!.val).to.be.equal(2);
                                             count++;
-                                        } else if (id === gAliasID + 'Star') {
+                                        } else if (id === `${gAliasID}Star`) {
                                             count++;
                                             // no % -> no scaling
                                             expect(state!.val).to.be.equal(10);
-                                        } else if (id === gid + 'Star') {
+                                        } else if (id === `${gid}Star`) {
                                             count++;
                                             expect(state!.val).to.be.equal(10);
                                         }
@@ -747,8 +747,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
                                             // 5. unsubscribe "*"
                                             context.adapter.unsubscribeForeignStates('*', () =>
-                                                context.states.setState(gid + 'NotAlias', 3, () =>
-                                                    context.states.setState(gAliasID + 'Star', 5, () =>
+                                                context.states.setState(`${gid}NotAlias`, 3, () =>
+                                                    context.states.setState(`${gAliasID}Star`, 5, () =>
                                                         setTimeout(() => done(), 500),
                                                     ),
                                                 ),
@@ -757,8 +757,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                     };
 
                                     // 4. changes must come for alias and independent state
-                                    context.states.setState(gid + 'NotAlias', 2, () =>
-                                        context.states.setState(gid + 'Star', 10, () => {
+                                    context.states.setState(`${gid}NotAlias`, 2, () =>
+                                        context.states.setState(`${gid}Star`, 10, () => {
                                             // go to B:
                                         }),
                                     );
@@ -768,7 +768,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         );
     }).timeout(3_000);
 
-    it(testName + 'Test newly created alias after subscribe', done => {
+    it(`${testName}Test newly created alias after subscribe`, done => {
         // at first we subscribe
         context.adapter.subscribeForeignStates('*', err => {
             // create orig object
@@ -830,7 +830,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     }).timeout(3_000);
 
-    it(testName + 'Test newly created alias after partial subscribe', done => {
+    it(`${testName}Test newly created alias after partial subscribe`, done => {
         // at first we subscribe, but only partial
         context.adapter.unsubscribeForeignStates('*', () => {
             context.adapter.subscribeForeignStates(`${gAliasID}okay*`, err => {
@@ -898,7 +898,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     }).timeout(3_000);
 
-    it(testName + 'should respect different read and write ids', done => {
+    it(`${testName}should respect different read and write ids`, done => {
         // first we subscribe to all
         context.adapter.subscribeForeignStates('*', err => {
             expect(err).to.not.be.ok;
@@ -989,7 +989,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     }).timeout(3_000);
 
-    it(testName + 'should respect alias read id on getForeignStates', async () => {
+    it(`${testName}should respect alias read id on getForeignStates`, async () => {
         // set our alias read obj
         await context.adapter.setForeignObjectAsync(`${gid}readGetStates`, {
             common: {
@@ -1049,13 +1049,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(states[`${gAliasID}aliasReadWriteGetStates`].val).to.be.equal(5);
     }).timeout(3_000);
 
-    it(testName + 'Read alias states via getStates should apply permissions', async () => {
+    it(`${testName}Read alias states via getStates should apply permissions`, async () => {
         const states = await context.adapter.getForeignStatesAsync(`${gAliasID}*`, { user: 'system.user.queen' });
         // on permission problems, we will receive only an id with null, ensure that this does not happen
         expect(states[`${gAliasID}C`]).to.be.ok;
     });
 
-    it(testName + 'Alias setState ignores source permissions', async () => {
+    it(`${testName}Alias setState ignores source permissions`, async () => {
         const nonAliasId = `${gid}.permissionNonAlias`;
         const aliasId = `${gAliasID}.permissionOnlyAlias`;
         const val = 3;
@@ -1115,7 +1115,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         ).to.be.eventually.rejectedWith('permissionError', 'Should have thrown a permission error');
     });
 
-    it(testName + 'Non-existing alias should return a null value just like other state', async () => {
+    it(`${testName}Non-existing alias should return a null value just like other state`, async () => {
         const normalState = await context.adapter.getForeignStateAsync(`${gid}.isNotExisting`);
         const aliasState = await context.adapter.getForeignStateAsync(`${gAliasID}.isNotExisting`);
 

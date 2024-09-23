@@ -7,7 +7,7 @@ import type { Client as StateRedisClient } from '@iobroker/db-states-redis';
 import { startController, stopController } from '../lib/setup4controller.js';
 import * as url from 'node:url';
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 
 const dataDir = path.join(thisDir, '..', '..', 'tmp', 'data');
 let objects: ObjectsInRedisClient | null = null;
@@ -38,7 +38,7 @@ describe('States-Redis-Sentinel: Test states', function () {
             objects: {
                 dataDir: dataDir,
                 onChange: (id: string, _obj: ioBroker.AnyObject) => {
-                    console.log('object changed. ' + id);
+                    console.log(`object changed. ${id}`);
                 },
             },
             states: {
@@ -46,7 +46,7 @@ describe('States-Redis-Sentinel: Test states', function () {
                 host: ['127.0.0.1', '127.0.0.1', '127.0.0.1'],
                 port: [26380, 26381, 26382],
                 onChange: (id: string, state: ioBroker.State) => {
-                    console.log('Redis-state-Sentinel changed. ' + id);
+                    console.log(`Redis-state-Sentinel changed. ${id}`);
                     if (onStatesChanged) {
                         onStatesChanged(id, state);
                     }
@@ -101,7 +101,7 @@ describe('States-Redis-Sentinel: Test states', function () {
         const testID = 'testObject.0.test1';
         onStatesChanged = (id, state) => {
             if (id === testID) {
-                console.log('Receive state value: ' + state!.val);
+                console.log(`Receive state value: ${state!.val}`);
                 expect(state).to.be.ok;
                 if (state!.val !== sendCounter - 1) {
                     // timing special case for failover ... sometimes we loose some resubmits
@@ -120,7 +120,7 @@ describe('States-Redis-Sentinel: Test states', function () {
                     expect(state!.ack).to.be.false;
                     expect(state!.ts).to.be.ok;
                     expect(state!.q).to.be.equal(0);
-                    console.log('Get state: ' + state!.val);
+                    console.log(`Get state: ${state!.val}`);
 
                     if (receiveCounter === 30) {
                         // eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -143,7 +143,7 @@ describe('States-Redis-Sentinel: Test states', function () {
         };
 
         const stateInterval = setInterval(() => {
-            console.log('Set state: ' + sendCounter);
+            console.log(`Set state: ${sendCounter}`);
             states!.setState(testID, sendCounter++, function (err) {
                 expect(err).to.be.not.ok;
             });

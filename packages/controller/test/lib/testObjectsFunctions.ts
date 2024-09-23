@@ -12,7 +12,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     const gid = 'myTestObject';
 
     // setObject positive
-    it(testName + 'Check if objects will be created', function (done) {
+    it(`${testName}Check if objects will be created`, function (done) {
         this.timeout(3_000);
         context.adapter.setObject(
             gid,
@@ -48,7 +48,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // setObject negative
-    it(testName + 'Check if objects will not be created without mandatory attribute type', function (done) {
+    it(`${testName}Check if objects will not be created without mandatory attribute type`, function (done) {
         this.timeout(3_000);
         const id = 'myTestObjectNoType';
         context.adapter.setObject(
@@ -65,7 +65,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             (err: any) => {
                 expect(err).to.be.ok;
 
-                context.objects.getObject(context.adapterShortName + '.0.' + id, function (err, obj) {
+                context.objects.getObject(`${context.adapterShortName}.0.${id}`, function (err, obj) {
                     expect(err).to.be.not.ok; // there is no message, that object does not exist. Errors will be given back only if no access rights
                     expect(obj).to.be.not.ok;
                     done();
@@ -75,7 +75,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // getAdapterObjects
-    it(testName + 'Read all objects of adapter', function (done) {
+    it(`${testName}Read all objects of adapter`, function (done) {
         context.adapter.getAdapterObjects(objects => {
             expect(objects).to.be.ok;
             expect(objects[`${context.adapterShortName}.0.${gid}`]).to.be.ok;
@@ -85,7 +85,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     //extendObject
-    it(testName + 'Check if objects will be extended', function (done) {
+    it(`${testName}Check if objects will be extended`, function (done) {
         context.adapter.extendObject(
             gid,
             {
@@ -113,12 +113,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // setForeignObject
-    it(testName + 'Check if foreign objects will be created', function (done) {
+    it(`${testName}Check if foreign objects will be created`, function (done) {
         this.timeout(3_000);
         // create testf.0.myTestObject
 
         context.adapter.setForeignObject(
-            context.adapterShortName + 'f.0.' + gid,
+            `${context.adapterShortName}f.0.${gid}`,
             {
                 type: 'state',
                 common: {
@@ -144,7 +144,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(err).to.be.not.ok;
                     expect(obj).to.be.ok;
                     expect(obj!.native).to.be.ok;
-                    expect(obj!._id).equal(context.adapterShortName + 'f.0.' + gid);
+                    expect(obj!._id).equal(`${context.adapterShortName}f.0.${gid}`);
                     expect(obj!.common.name).equal('test1');
                     expect(obj!.type).equal('state');
                     //expect(obj.acl).to.be.ok;
@@ -155,7 +155,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // extendForeignObject
-    it(testName + 'Check if foreign objects will be extended', function (done) {
+    it(`${testName}Check if foreign objects will be extended`, function (done) {
         context.adapter.extendForeignObject(
             `${context.adapterShortName}f.0.${gid}`,
             {
@@ -196,7 +196,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // getObject
-    it(testName + 'Check get object', function (done) {
+    it(`${testName}Check get object`, function (done) {
         context.adapter.getObject(`${context.adapterShortName}.0.${gid}`, function (err, obj) {
             expect(err).to.be.null;
 
@@ -214,18 +214,18 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // getForeignObjects
-    it(testName + 'Check get foreign objects (pattern)', done => {
-        context.adapter.getForeignObjects(context.adapterShortName + 'f.0.*', (err, objs) => {
+    it(`${testName}Check get foreign objects (pattern)`, done => {
+        context.adapter.getForeignObjects(`${context.adapterShortName}f.0.*`, (err, objs) => {
             expect(err).to.be.null;
 
             expect(objs).to.be.ok;
-            expect(objs![context.adapterShortName + 'f.0.' + gid].type).to.be.equal('state');
-            expect(objs![context.adapterShortName + 'f.0.' + gid].native.attr1).to.be.equal('11');
+            expect(objs![`${context.adapterShortName}f.0.${gid}`].type).to.be.equal('state');
+            expect(objs![`${context.adapterShortName}f.0.${gid}`].native.attr1).to.be.equal('11');
             done();
         });
     });
 
-    it(testName + 'Check get foreign objects (array)', async () => {
+    it(`${testName}Check get foreign objects (array)`, async () => {
         const id = `${context.adapterShortName}f.0.${gid}`;
         const id2 = `${context.adapterShortName}.0.${gid}`;
 
@@ -237,7 +237,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(objs[id2].type).to.be.equal('state');
     });
 
-    it(testName + 'Check get foreign objects - default enum functionality', async () => {
+    it(`${testName}Check get foreign objects - default enum functionality`, async () => {
         const id = `${context.adapterShortName}.0.${gid}`;
 
         // add the state to the enum, so we can check enum functionality
@@ -257,14 +257,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // findForeignObject
-    it(testName + 'Check find foreign object', function (done) {
+    it(`${testName}Check find foreign object`, function (done) {
         context.adapter.findForeignObject('test1', null, function (err, id) {
             expect(err).to.be.null;
-            expect(id).to.be.equal(context.adapterShortName + '.0.' + gid);
+            expect(id).to.be.equal(`${context.adapterShortName}.0.${gid}`);
 
             context.adapter.findForeignObject('test1', 'number', function (err, id) {
                 expect(err).to.be.null;
-                expect(id).to.be.equal(context.adapterShortName + '.0.' + gid);
+                expect(id).to.be.equal(`${context.adapterShortName}.0.${gid}`);
 
                 context.adapter.findForeignObject('test1', 'channel', function (err, id) {
                     expect(err).to.be.null;
@@ -277,8 +277,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // getForeignObject
-    it(testName + 'Check get foreign object', function (done) {
-        context.adapter.getForeignObject(context.adapterShortName + 'f.0.' + gid, function (err, obj) {
+    it(`${testName}Check get foreign object`, function (done) {
+        context.adapter.getForeignObject(`${context.adapterShortName}f.0.${gid}`, function (err, obj) {
             expect(err).to.be.null;
 
             expect(obj).to.be.ok;
@@ -294,7 +294,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // protection check for getForeignObject
-    it(testName + 'Check if foreign system adapters protectedNative is not accessible', function (done) {
+    it(`${testName}Check if foreign system adapters protectedNative is not accessible`, function (done) {
         this.timeout(3_000);
         // create a system.adapter object of another adapter
         context.adapter.setForeignObject(
@@ -339,11 +339,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // own protectedNative should be available
-    it(testName + 'Check if own system adapters protectedNative is available via getForeignObject', function (done) {
+    it(`${testName}Check if own system adapters protectedNative is available via getForeignObject`, function (done) {
         this.timeout(3_000);
         // create a system.adapter object of own adapter
         context.adapter.setForeignObject(
-            'system.adapter.' + context.adapterShortName + '.0',
+            `system.adapter.${context.adapterShortName}.0`,
             {
                 type: 'instance',
                 common: {
@@ -368,26 +368,23 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             function (err) {
                 expect(err).to.be.null;
 
-                context.adapter.getForeignObject(
-                    'system.adapter.' + context.adapterShortName + '.0',
-                    function (err, obj) {
-                        expect(err).to.be.not.ok;
-                        expect(obj).to.be.ok;
-                        expect(obj!.native).to.be.ok;
-                        expect(obj!.common.name).equal('tesla');
-                        expect(obj!.native.model).equal('S P85D');
-                        expect(obj!.native.password).equal('winning');
-                        expect(obj!.native.username).equal('tesla');
-                        expect(obj!._id).equal('system.adapter.' + context.adapterShortName + '.0');
-                        done();
-                    },
-                );
+                context.adapter.getForeignObject(`system.adapter.${context.adapterShortName}.0`, function (err, obj) {
+                    expect(err).to.be.not.ok;
+                    expect(obj).to.be.ok;
+                    expect(obj!.native).to.be.ok;
+                    expect(obj!.common.name).equal('tesla');
+                    expect(obj!.native.model).equal('S P85D');
+                    expect(obj!.native.password).equal('winning');
+                    expect(obj!.native.username).equal('tesla');
+                    expect(obj!._id).equal(`system.adapter.${context.adapterShortName}.0`);
+                    done();
+                });
             },
         );
     });
 
     // setObjectNotExists
-    it(testName + 'Try to set existing object', function (done) {
+    it(`${testName}Try to set existing object`, function (done) {
         context.adapter.setObjectNotExists(
             gid,
             {
@@ -413,7 +410,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(obj1!.native.pparam).to.be.not.ok;
 
                     context.adapter.setObjectNotExists(
-                        gid + 'A',
+                        `${gid}A`,
                         {
                             common: {
                                 name: 'must be set',
@@ -430,7 +427,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         function (err) {
                             expect(err).to.be.null;
 
-                            context.adapter.getObject(gid + 'A', function (err, obj1) {
+                            context.adapter.getObject(`${gid}A`, function (err, obj1) {
                                 expect(err).to.be.null;
 
                                 expect(obj1!.native).to.be.ok;
@@ -445,9 +442,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // setForeignObjectNotExists
-    it(testName + 'Try to set existing foreign object', function (done) {
+    it(`${testName}Try to set existing foreign object`, function (done) {
         context.adapter.setForeignObjectNotExists(
-            context.adapterShortName + '.0.' + gid,
+            `${context.adapterShortName}.0.${gid}`,
             {
                 common: {
                     name: 'not must be set',
@@ -464,14 +461,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             function (err) {
                 expect(err).to.be.null;
 
-                context.adapter.getForeignObject(context.adapterShortName + '.0.' + gid, function (err, obj1) {
+                context.adapter.getForeignObject(`${context.adapterShortName}.0.${gid}`, function (err, obj1) {
                     expect(err).to.be.null;
 
                     expect(obj1!.native).to.be.ok;
                     expect(obj1!.native.ppparam).to.be.not.ok;
 
                     context.adapter.setForeignObjectNotExists(
-                        context.adapterShortName + 'ff.0.' + gid,
+                        `${context.adapterShortName}ff.0.${gid}`,
                         {
                             common: {
                                 name: 'must be set',
@@ -489,7 +486,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             expect(err).to.be.null;
 
                             context.adapter.getForeignObject(
-                                context.adapterShortName + 'ff.0.' + gid,
+                                `${context.adapterShortName}ff.0.${gid}`,
                                 function (err, obj1) {
                                     expect(err).to.be.null;
 
@@ -506,9 +503,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // setForeignObject merge of custom settings
-    it(testName + 'Try to merge custom settings', done => {
+    it(`${testName}Try to merge custom settings`, done => {
         context.adapter.setForeignObject(
-            context.adapterShortName + '.0.' + gid,
+            `${context.adapterShortName}.0.${gid}`,
             {
                 type: 'state',
                 common: {
@@ -528,7 +525,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             err => {
                 expect(err).to.be.null;
                 context.adapter.setForeignObject(
-                    context.adapterShortName + '.0.' + gid,
+                    `${context.adapterShortName}.0.${gid}`,
                     {
                         common: {
                             type: 'string',
@@ -547,7 +544,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     },
                     err => {
                         expect(err).to.be.null;
-                        context.adapter.getForeignObject(context.adapterShortName + '.0.' + gid, (err, obj1) => {
+                        context.adapter.getForeignObject(`${context.adapterShortName}.0.${gid}`, (err, obj1) => {
                             expect(err).to.be.null;
 
                             expect(obj1!.common.custom!.material).to.be.ok;
@@ -561,8 +558,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // setForeignObject merge of custom settings
-    it(testName + 'Try to delete custom settings', done => {
-        const id = context.adapterShortName + '.0.' + gid;
+    it(`${testName}Try to delete custom settings`, done => {
+        const id = `${context.adapterShortName}.0.${gid}`;
         context.adapter.setForeignObject(
             id,
             {
@@ -618,8 +615,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // setForeignObject merge of custom settings
-    it(testName + 'Try to delete custom settings in new object', done => {
-        const id = context.adapterShortName + '.0.' + gid + '6';
+    it(`${testName}Try to delete custom settings in new object`, done => {
+        const id = `${context.adapterShortName}.0.${gid}6`;
 
         context.adapter.setForeignObject(
             id,
@@ -676,7 +673,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // getObjectView
-    it(testName + 'Try to get object view', done => {
+    it(`${testName}Try to get object view`, done => {
         // create the view
         context.adapter
             .setForeignObjectAsync('_design/hm-rpc', {
@@ -730,7 +727,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // getObjectViewAsync
-    it(testName + 'Try to get object view in async setup', async () => {
+    it(`${testName}Try to get object view in async setup`, async () => {
         // create the view
         await context.adapter.setForeignObjectAsync('_design/hm-rpc', {
             language: 'javascript',
@@ -770,7 +767,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(doc.rows[0].value._id).to.be.equal('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19');
     });
 
-    it(testName + 'Try to get object view with custom', async function () {
+    it(`${testName}Try to get object view with custom`, async function () {
         this.timeout(3_000);
 
         const customObj = {
@@ -813,7 +810,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // getObjectList
-    it(testName + 'Try to get object list', done => {
+    it(`${testName}Try to get object list`, done => {
         // let's create an object matching the list
         context.adapter
             .setForeignObjectAsync('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19', {
@@ -853,7 +850,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // getObjectListAsync
-    it(testName + 'Try to get object list async', done => {
+    it(`${testName}Try to get object list async`, done => {
         // let's create an object matching the list
         context.adapter
             .setForeignObjectAsync('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19', {
@@ -888,7 +885,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // delObject
-    it(testName + 'Try to delete existing object', done => {
+    it(`${testName}Try to delete existing object`, done => {
         context.adapter.delObject(gid, err => {
             expect(err).to.not.be.ok;
 
@@ -907,17 +904,17 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // delForeignObject
-    it(testName + 'Try to delete foreign existing object', function (done) {
-        context.adapter.delForeignObject(context.adapterShortName + 'f.0.' + gid, function (err) {
+    it(`${testName}Try to delete foreign existing object`, function (done) {
+        context.adapter.delForeignObject(`${context.adapterShortName}f.0.${gid}`, function (err) {
             expect(err).to.not.be.ok;
 
-            context.adapter.getForeignObject(context.adapterShortName + 'f.0.' + gid, function (err, obj) {
+            context.adapter.getForeignObject(`${context.adapterShortName}f.0.${gid}`, function (err, obj) {
                 expect(err).to.be.not.ok;
 
                 expect(obj).to.be.null;
 
                 // deleting non existing object should not result in an error
-                context.adapter.delForeignObject(context.adapterShortName + 'f.0.' + gid, function (err) {
+                context.adapter.delForeignObject(`${context.adapterShortName}f.0.${gid}`, function (err) {
                     expect(err).to.be.not.ok;
                     done();
                 });
@@ -926,7 +923,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // check that enum membership is removed on delForeignObject
-    it(testName + 'should delete enum membership on object deletion', done => {
+    it(`${testName}should delete enum membership on object deletion`, done => {
         const objects = context.objects;
         const enumObj: ioBroker.SettableEnumObject = {
             common: {
@@ -969,10 +966,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // subscribeObjects
-    it(testName + 'Try to subscribe on objects changes', done => {
+    it(`${testName}Try to subscribe on objects changes`, done => {
         context.adapter.subscribeObjects('*', () => {
             context.onAdapterObjectChanged = (id, obj) => {
-                if (id === context.adapterShortName + '.0.' + gid) {
+                if (id === `${context.adapterShortName}.0.${gid}`) {
                     expect(obj).to.be.ok;
                     expect(obj!.common.name).to.equal('must be set');
                     context.onAdapterObjectChanged = null;
@@ -1002,11 +999,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // unsubscribeObjects
-    it(testName + 'Try to unsubscribe on objects changes', function (done) {
+    it(`${testName}Try to unsubscribe on objects changes`, function (done) {
         this.timeout(3_000);
         context.adapter.unsubscribeObjects('*', () => {
             context.onAdapterObjectChanged = function (id, obj) {
-                if (id === context.adapterShortName + '.0.' + gid) {
+                if (id === `${context.adapterShortName}.0.${gid}`) {
                     expect(obj).to.be.ok;
                     expect(obj).to.be.not.ok;
                 }
@@ -1037,10 +1034,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // subscribeForeignObjects
-    it(testName + 'Try to subscribe on foreign objects changes', function (done) {
-        context.adapter.subscribeForeignObjects(context.adapterShortName + 'f.*', () => {
+    it(`${testName}Try to subscribe on foreign objects changes`, function (done) {
+        context.adapter.subscribeForeignObjects(`${context.adapterShortName}f.*`, () => {
             context.onAdapterObjectChanged = function (id, obj) {
-                if (id === context.adapterShortName + 'f.0.' + gid) {
+                if (id === `${context.adapterShortName}f.0.${gid}`) {
                     expect(obj).to.be.ok;
                     expect(obj!.common.name).to.equal('must be set');
                     context.onAdapterObjectChanged = null;
@@ -1048,7 +1045,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 }
             };
             context.adapter.setForeignObject(
-                context.adapterShortName + 'f.0.' + gid,
+                `${context.adapterShortName}f.0.${gid}`,
                 {
                     common: {
                         type: 'string',
@@ -1070,7 +1067,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // check proteciton for subscribeForeignObjects
-    it(testName + 'Check if protectedNative is protected in subscribeForeignObjects', function (done) {
+    it(`${testName}Check if protectedNative is protected in subscribeForeignObjects`, function (done) {
         context.adapter.subscribeForeignObjects('system.adapter.tesla.0', () => {
             context.onAdapterObjectChanged = function (id, obj) {
                 if (id === 'system.adapter.tesla.0') {
@@ -1116,11 +1113,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 
-    it(testName + 'Check if own protectedNative is available in subscribeForeignObjects', function (done) {
+    it(`${testName}Check if own protectedNative is available in subscribeForeignObjects`, function (done) {
         // If own adapter, protectedNative has to be available
-        context.adapter.subscribeForeignObjects('system.adapter.' + context.adapterShortName + '.0', () => {
+        context.adapter.subscribeForeignObjects(`system.adapter.${context.adapterShortName}.0`, () => {
             context.onAdapterObjectChanged = (id, obj) => {
-                if (id === 'system.adapter.' + context.adapterShortName + '.0') {
+                if (id === `system.adapter.${context.adapterShortName}.0`) {
                     expect(obj).to.be.ok;
                     expect(obj!.common.name).to.equal('tesla');
                     expect(obj!.native).to.be.ok;
@@ -1128,13 +1125,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(obj!.native.model).equal('S P85D');
                     expect(obj!.native.username).to.equal('tesla');
                     expect(obj!.native.password).to.equal('winning');
-                    expect(obj!._id).equal('system.adapter.' + context.adapterShortName + '.0');
+                    expect(obj!._id).equal(`system.adapter.${context.adapterShortName}.0`);
                     context.onAdapterObjectChanged = null;
                     done();
                 }
             };
             context.adapter.setForeignObject(
-                'system.adapter.' + context.adapterShortName + '.0',
+                `system.adapter.${context.adapterShortName}.0`,
                 {
                     type: 'instance',
                     common: {
@@ -1164,17 +1161,17 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // unsubscribeForeignObjects
-    it(testName + 'Try to unsubscribe on foreign objects changes', function (done) {
+    it(`${testName}Try to unsubscribe on foreign objects changes`, function (done) {
         this.timeout(3_000);
-        context.adapter.unsubscribeForeignObjects(context.adapterShortName + 'f.*', () => {
+        context.adapter.unsubscribeForeignObjects(`${context.adapterShortName}f.*`, () => {
             context.onAdapterObjectChanged = function (id, obj) {
-                if (id === context.adapterShortName + 'f.0.' + gid) {
+                if (id === `${context.adapterShortName}f.0.${gid}`) {
                     expect(obj).to.be.ok;
                     expect(obj).to.be.not.ok;
                 }
             };
             context.adapter.setForeignObject(
-                context.adapterShortName + 'f.0.' + gid,
+                `${context.adapterShortName}f.0.${gid}`,
                 {
                     common: {
                         type: 'string',
@@ -1199,7 +1196,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // Try to access system configuration
-    it(testName + 'Try to access system configuration', function (done) {
+    it(`${testName}Try to access system configuration`, function (done) {
         this.timeout(3_000);
 
         context.adapter.getForeignObject('system.config', (err, obj) => {
@@ -1212,7 +1209,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // getObject with acls
-    it(testName + 'Check getObjects with ACLs', function (done) {
+    it(`${testName}Check getObjects with ACLs`, function (done) {
         this.timeout(3_000);
         // create testf.0.myTestObject
 
@@ -1292,7 +1289,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         expect(err).to.be.null;
 
                         context.adapter.setForeignObject(
-                            context.adapterShortName + 'f.0.' + gid,
+                            `${context.adapterShortName}f.0.${gid}`,
                             {
                                 type: 'state',
                                 common: {
@@ -1321,13 +1318,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                 expect(err).to.be.null;
 
                                 context.objects.getObject(
-                                    context.adapterShortName + 'f.0.' + gid,
+                                    `${context.adapterShortName}f.0.${gid}`,
                                     { user: 'system.user.write-only' },
                                     function (err, obj) {
                                         expect(err).to.be.not.ok;
                                         expect(obj).to.be.ok;
                                         expect(obj!.native).to.be.ok;
-                                        expect(obj!._id).equal(context.adapterShortName + 'f.0.' + gid);
+                                        expect(obj!._id).equal(`${context.adapterShortName}f.0.${gid}`);
                                         expect(obj!.common.name).equal('test1');
                                         expect(obj!.type).equal('state');
                                         //expect(obj.acl).to.be.ok;
@@ -1343,7 +1340,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // should use def as default state value
-    it(testName + 'Check setObject state with def', async () => {
+    it(`${testName}Check setObject state with def`, async () => {
         await context.adapter.setObjectNotExistsAsync('testDefaultVal', {
             type: 'state',
             common: {
@@ -1364,7 +1361,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // should use def as default state value on extendObject when obj non-existing
-    it(testName + 'Check extendObject state with def', async function () {
+    it(`${testName}Check extendObject state with def`, async function () {
         this.timeout(3_000);
         let obj = await context.adapter.extendObjectAsync('testDefaultValExtend', {
             type: 'state',
@@ -1410,7 +1407,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // should use def as default state value on extendForeignObject when obj non-existing
-    it(testName + 'Check extendForeignObject state with def', async () => {
+    it(`${testName}Check extendForeignObject state with def`, async () => {
         let obj = await context.adapter.extendForeignObjectAsync('foreign.0.testDefaultValExtend', {
             type: 'state',
             common: {
@@ -1454,7 +1451,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(state!.ack).to.equal(true);
     });
 
-    it(testName + 'Check extendForeignObject with preserve option', async () => {
+    it(`${testName}Check extendForeignObject with preserve option`, async () => {
         const obj = await context.adapter.extendForeignObjectAsync('foreign.0.testExtendPreserve', {
             type: 'state',
             common: {
@@ -1615,7 +1612,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // test that real errors of methods promisified via tools.promisify are propagated, can be adapted to a more generic test
-    it(testName + 'Check that crashes of promisified methods are propagated', function () {
+    it(`${testName}Check that crashes of promisified methods are propagated`, function () {
         return expect(
             context.adapter.extendObjectAsync('testDefaultValExtend', {
                 type: 'state',
@@ -1632,7 +1629,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         );
     });
 
-    it(testName + 'Should check object existence', async () => {
+    it(`${testName}Should check object existence`, async () => {
         const id = 'objectExistenceCheckAdapter';
         // object should not exist
         let exists = await context.adapter.objectExists(id);
@@ -1650,7 +1647,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(exists).to.be.true;
     });
 
-    it(testName + 'Should check foreign object existence', async () => {
+    it(`${testName}Should check foreign object existence`, async () => {
         const id = `${context.adapterShortName}.0.objectForeignExistenceCheckAdapter`;
         // object should not exist
         let exists = await context.adapter.foreignObjectExists(id);
@@ -1669,7 +1666,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // files
-    it(testName + 'Should check file existence', async () => {
+    it(`${testName}Should check file existence`, async () => {
         // create meta object
         await context.objects.setObjectAsync('fileTest.0', {
             type: 'meta',
@@ -1688,7 +1685,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // write file meta check
-    it(testName + 'Should not write file w/o meta', async () => {
+    it(`${testName}Should not write file w/o meta`, async () => {
         try {
             await context.adapter.writeFileAsync('nonExisting.0', 'test.txt', '...');
         } catch (e) {

@@ -141,7 +141,7 @@ import type { CommandResult } from '@alcalzone/pak';
 
 import * as url from 'node:url';
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 tools.ensureDNSOrder();
 
 /**
@@ -1613,9 +1613,8 @@ export class AdapterClass extends EventEmitter {
     supportsFeature(featureName: unknown): boolean {
         if (typeof featureName === 'string') {
             return this.SUPPORTED_FEATURES.includes(featureName as SupportedFeature);
-        } else {
-            return false;
         }
+        return false;
     }
 
     // external signature
@@ -1693,11 +1692,10 @@ export class AdapterClass extends EventEmitter {
         this.getForeignObject(user, options, (err, obj) => {
             if (err || !obj || !obj.common || (!obj.common.enabled && user !== SYSTEM_ADMIN_USER)) {
                 return tools.maybeCallback(callback, false, user);
-            } else {
-                password(pw).check(obj.common.password, (err, res) => {
-                    return tools.maybeCallback(callback, !!res, user);
-                });
             }
+            password(pw).check(obj.common.password, (err, res) => {
+                return tools.maybeCallback(callback, !!res, user);
+            });
         });
     }
 
@@ -1936,9 +1934,8 @@ export class AdapterClass extends EventEmitter {
                 }
                 if (obj.common.members.includes(options.user)) {
                     return tools.maybeCallback(options.callback, true);
-                } else {
-                    return tools.maybeCallback(options.callback, false);
                 }
+                return tools.maybeCallback(options.callback, false);
             });
         });
     }
@@ -2454,35 +2451,34 @@ export class AdapterClass extends EventEmitter {
             }
 
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_NOT_FOUND);
-        } else {
-            let ca: string | undefined;
-            if (chainedName) {
-                const chained = this._readFileCertificate(obj.native.certificates[chainedName]).split(
-                    '-----END CERTIFICATE-----\r\n',
-                );
-                // it is still a file name, and the file maybe does not exist, but we can omit this error
-                if (chained.join('').length >= 512) {
-                    const caArr = [];
-                    for (const cert of chained) {
-                        if (cert.replace(/(\r\n|\r|\n)/g, '').trim()) {
-                            caArr.push(`${cert}-----END CERTIFICATE-----\r\n`);
-                        }
-                    }
-                    ca = caArr.join('');
-                }
-            }
-
-            return tools.maybeCallbackWithError(
-                callback,
-                null,
-                {
-                    key: this._readFileCertificate(obj.native.certificates[privateName]),
-                    cert: this._readFileCertificate(obj.native.certificates[publicName]),
-                    ca,
-                },
-                obj.native.letsEncrypt,
-            );
         }
+        let ca: string | undefined;
+        if (chainedName) {
+            const chained = this._readFileCertificate(obj.native.certificates[chainedName]).split(
+                '-----END CERTIFICATE-----\r\n',
+            );
+            // it is still a file name, and the file maybe does not exist, but we can omit this error
+            if (chained.join('').length >= 512) {
+                const caArr = [];
+                for (const cert of chained) {
+                    if (cert.replace(/(\r\n|\r|\n)/g, '').trim()) {
+                        caArr.push(`${cert}-----END CERTIFICATE-----\r\n`);
+                    }
+                }
+                ca = caArr.join('');
+            }
+        }
+
+        return tools.maybeCallbackWithError(
+            callback,
+            null,
+            {
+                key: this._readFileCertificate(obj.native.certificates[privateName]),
+                cert: this._readFileCertificate(obj.native.certificates[publicName]),
+                ca,
+            },
+            obj.native.letsEncrypt,
+        );
     }
 
     /**
@@ -2595,9 +2591,8 @@ export class AdapterClass extends EventEmitter {
         if (typeof value === 'string') {
             const secret = await this.getSystemSecret();
             return tools.maybeCallbackWithError(callback, null, tools.decrypt(secret, value));
-        } else {
-            return tools.maybeCallbackWithError(callback, `Attribute "${attribute}" not found`);
         }
+        return tools.maybeCallbackWithError(callback, `Attribute "${attribute}" not found`);
     }
 
     /**
@@ -3259,78 +3254,77 @@ export class AdapterClass extends EventEmitter {
 
             // @ts-expect-error TODO we are returning type Object for ease of use to devs, but formally these are AnyObjects, e.g. not guaranteed to have common
             return this.#objects.setObject(options.id, options.obj, options.options, options.callback);
-        } else {
-            options.obj.from = options.obj.from || `system.adapter.${this.namespace}`;
-            options.obj.user = options.obj.user || (options.options ? options.options.user : '') || SYSTEM_ADMIN_USER;
-            options.obj.ts = options.obj.ts || Date.now();
+        }
+        options.obj.from = options.obj.from || `system.adapter.${this.namespace}`;
+        options.obj.user = options.obj.user || (options.options ? options.options.user : '') || SYSTEM_ADMIN_USER;
+        options.obj.ts = options.obj.ts || Date.now();
 
+        if (
+            (options.obj.type && options.obj.type === 'state') ||
+            (!options.obj.type && oldObj && oldObj.type === 'state')
+        ) {
             if (
-                (options.obj.type && options.obj.type === 'state') ||
-                (!options.obj.type && oldObj && oldObj.type === 'state')
+                options.obj.common &&
+                'custom' in options.obj.common &&
+                options.obj.common.custom !== null &&
+                !tools.isObject(options.obj.common.custom)
             ) {
-                if (
-                    options.obj.common &&
-                    'custom' in options.obj.common &&
-                    options.obj.common.custom !== null &&
-                    !tools.isObject(options.obj.common.custom)
-                ) {
-                    this._logger.error(
-                        `${this.namespaceLog} extendObject ${options.id} (type=${
-                            options.obj.type
-                        }) property common.custom is of type ${typeof options.obj.common.custom}, expected object.`,
-                    );
-                    return tools.maybeCallbackWithError(options.callback, 'common.custom needs to be an object');
-                }
-            } else {
-                if (options.obj.common && 'custom' in options.obj.common && options.obj.common.custom !== null) {
-                    this._logger.warn(
-                        `${this.namespaceLog} setObject ${options.id} (type=${options.obj.type}) property common.custom must not exist.`,
-                    );
-                    delete options.obj.common.custom;
+                this._logger.error(
+                    `${this.namespaceLog} extendObject ${options.id} (type=${
+                        options.obj.type
+                    }) property common.custom is of type ${typeof options.obj.common.custom}, expected object.`,
+                );
+                return tools.maybeCallbackWithError(options.callback, 'common.custom needs to be an object');
+            }
+        } else {
+            if (options.obj.common && 'custom' in options.obj.common && options.obj.common.custom !== null) {
+                this._logger.warn(
+                    `${this.namespaceLog} setObject ${options.id} (type=${options.obj.type}) property common.custom must not exist.`,
+                );
+                delete options.obj.common.custom;
+            }
+        }
+
+        if (!oldObj) {
+            // if old object is not existing we behave like setObject
+            return this.setForeignObject(options.id, options.obj, options.options, options.callback);
+        }
+
+        try {
+            const cbObj = await this.#objects.extendObjectAsync(options.id, options.obj, options.options || {});
+            let defState;
+            if (options.obj.type === 'state' || oldObj.type === 'state') {
+                if (options.obj.common && 'def' in options.obj.common && options.obj.common.def !== undefined) {
+                    defState = options.obj.common.def;
+                } else if (oldObj.common && oldObj.common.def !== undefined) {
+                    defState = oldObj.common.def;
                 }
             }
 
-            if (!oldObj) {
-                // if old object is not existing we behave like setObject
-                return this.setForeignObject(options.id, options.obj, options.options, options.callback);
-            }
-
-            try {
-                const cbObj = await this.#objects.extendObjectAsync(options.id, options.obj, options.options || {});
-                let defState;
-                if (options.obj.type === 'state' || oldObj.type === 'state') {
-                    if (options.obj.common && 'def' in options.obj.common && options.obj.common.def !== undefined) {
-                        defState = options.obj.common.def;
-                    } else if (oldObj.common && oldObj.common.def !== undefined) {
-                        defState = oldObj.common.def;
-                    }
+            if (defState !== undefined) {
+                let currentStateObj;
+                try {
+                    currentStateObj = await this.getForeignStateAsync(options.id);
+                } catch {
+                    // do nothing
                 }
-
-                if (defState !== undefined) {
-                    let currentStateObj;
+                if (!currentStateObj) {
                     try {
-                        currentStateObj = await this.getForeignStateAsync(options.id);
-                    } catch {
-                        // do nothing
-                    }
-                    if (!currentStateObj) {
-                        try {
-                            await this.setForeignStateAsync(options.id, {
-                                val: defState,
-                                q: this.constants.STATE_QUALITY.SUBSTITUTE_INITIAL_VALUE,
-                                ack: true,
-                            });
-                        } catch (e) {
-                            this._logger.info(
-                                `${this.namespaceLog} Default value for state "${options.id}" could not be set: ${e.message}`,
-                            );
-                        }
+                        await this.setForeignStateAsync(options.id, {
+                            val: defState,
+                            q: this.constants.STATE_QUALITY.SUBSTITUTE_INITIAL_VALUE,
+                            ack: true,
+                        });
+                    } catch (e) {
+                        this._logger.info(
+                            `${this.namespaceLog} Default value for state "${options.id}" could not be set: ${e.message}`,
+                        );
                     }
                 }
-                return tools.maybeCallbackWithError(options.callback, null, cbObj);
-            } catch (e) {
-                return tools.maybeCallbackWithError(options.callback, e);
             }
+            return tools.maybeCallbackWithError(options.callback, null, cbObj);
+        } catch (e) {
+            return tools.maybeCallbackWithError(options.callback, e);
         }
     }
 
@@ -3563,75 +3557,74 @@ export class AdapterClass extends EventEmitter {
 
             // @ts-expect-error TODO we are returning type Object for ease of use to devs, but formally these are AnyObjects, e.g. not guaranteed to have common
             return this.#objects.setObject(id, obj, options, callback);
+        }
+        obj.from = obj.from || `system.adapter.${this.namespace}`;
+        obj.user = obj.user || options?.user || SYSTEM_ADMIN_USER;
+        obj.ts = obj.ts || Date.now();
+
+        if ((obj.type && obj.type === 'state') || (!obj.type && oldObj && oldObj.type === 'state')) {
+            if (
+                obj.common &&
+                'custom' in obj.common &&
+                obj.common.custom !== null &&
+                !tools.isObject(obj.common.custom)
+            ) {
+                this._logger.error(
+                    `${this.namespaceLog} extendObject ${id} (type=${
+                        obj.type
+                    }) property common.custom is of type ${typeof obj.common.custom}, expected object.`,
+                );
+                return tools.maybeCallbackWithError(callback, 'common.custom needs to be an object');
+            }
         } else {
-            obj.from = obj.from || `system.adapter.${this.namespace}`;
-            obj.user = obj.user || options?.user || SYSTEM_ADMIN_USER;
-            obj.ts = obj.ts || Date.now();
-
-            if ((obj.type && obj.type === 'state') || (!obj.type && oldObj && oldObj.type === 'state')) {
-                if (
-                    obj.common &&
-                    'custom' in obj.common &&
-                    obj.common.custom !== null &&
-                    !tools.isObject(obj.common.custom)
-                ) {
-                    this._logger.error(
-                        `${this.namespaceLog} extendObject ${id} (type=${
-                            obj.type
-                        }) property common.custom is of type ${typeof obj.common.custom}, expected object.`,
-                    );
-                    return tools.maybeCallbackWithError(callback, 'common.custom needs to be an object');
-                }
-            } else {
-                if (obj.common && 'custom' in obj.common && obj.common.custom !== null) {
-                    this._logger.warn(
-                        `${this.namespaceLog} setObject ${id} (type=${obj.type}) property common.custom must not exist.`,
-                    );
-                    delete obj.common.custom;
-                }
+            if (obj.common && 'custom' in obj.common && obj.common.custom !== null) {
+                this._logger.warn(
+                    `${this.namespaceLog} setObject ${id} (type=${obj.type}) property common.custom must not exist.`,
+                );
+                delete obj.common.custom;
             }
+        }
 
-            if (!oldObj) {
-                // if old object is not existing we behave like setObject
-                return this.setForeignObject(id, obj, options, callback);
-            }
+        if (!oldObj) {
+            // if old object is not existing we behave like setObject
+            return this.setForeignObject(id, obj, options, callback);
+        }
 
-            try {
-                const cbObj = await this.#objects.extendObjectAsync(id, obj, options || {});
-                if (cbObj?.value.type === 'state') {
-                    let defState;
-                    if (obj.common && 'def' in obj.common && obj.common.def !== undefined) {
-                        defState = obj.common.def;
-                    } else if (oldObj.common && oldObj.common.def !== undefined) {
-                        defState = oldObj.common.def;
+        try {
+            const cbObj = await this.#objects.extendObjectAsync(id, obj, options || {});
+            if (cbObj?.value.type === 'state') {
+                let defState;
+                if (obj.common && 'def' in obj.common && obj.common.def !== undefined) {
+                    defState = obj.common.def;
+                } else if (oldObj.common && oldObj.common.def !== undefined) {
+                    defState = oldObj.common.def;
+                }
+                if (defState !== undefined) {
+                    let currentStateObj;
+                    try {
+                        currentStateObj = await this.getForeignStateAsync(id);
+                    } catch {
+                        // do nothing
                     }
-                    if (defState !== undefined) {
-                        let currentStateObj;
+                    if (!currentStateObj) {
                         try {
-                            currentStateObj = await this.getForeignStateAsync(id);
-                        } catch {
-                            // do nothing
-                        }
-                        if (!currentStateObj) {
-                            try {
-                                await this.setForeignStateAsync(id, {
-                                    val: defState,
-                                    q: this.constants.STATE_QUALITY.SUBSTITUTE_INITIAL_VALUE,
-                                    ack: true,
-                                });
-                            } catch (e) {
-                                this._logger.info(
-                                    `${this.namespaceLog} Default value for state "${id}" could not be set: ${e.message}`,
-                                );
-                            }
+                            await this.setForeignStateAsync(id, {
+                                val: defState,
+                                q: this.constants.STATE_QUALITY.SUBSTITUTE_INITIAL_VALUE,
+                                ack: true,
+                            });
+                        } catch (e) {
+                            this._logger.info(
+                                `${this.namespaceLog} Default value for state "${id}" could not be set: ${e.message}`,
+                            );
                         }
                     }
                 }
-
-                return tools.maybeCallbackWithError(callback, null, cbObj);
-            } catch (e) {
-                return tools.maybeCallbackWithError(callback, e);
             }
+
+            return tools.maybeCallbackWithError(callback, null, cbObj);
+        } catch (e) {
+            return tools.maybeCallbackWithError(callback, e);
         }
     }
 
@@ -4545,27 +4538,26 @@ export class AdapterClass extends EventEmitter {
     ): void | Promise<void> {
         if (!tasks || !tasks.length) {
             return tools.maybeCallback(cb);
-        } else {
-            const task = tasks.shift();
-            this.#objects!.delObject(task!.id, options, async err => {
-                if (err) {
-                    return tools.maybeCallbackWithError(cb, err);
-                }
-                if (task!.state) {
-                    try {
-                        await this.delForeignStateAsync(task!.id, options);
-                    } catch (e) {
-                        this._logger.warn(`${this.namespaceLog} Could not remove state of ${task!.id}: ${e.message}`);
-                    }
-                }
-                try {
-                    await tools.removeIdFromAllEnums(this.#objects, task!.id, this.enums);
-                } catch (e) {
-                    this._logger.warn(`${this.namespaceLog} Could not remove ${task!.id} from enums: ${e.message}`);
-                }
-                setImmediate(() => this._deleteObjects(tasks, options, cb));
-            });
         }
+        const task = tasks.shift();
+        this.#objects!.delObject(task!.id, options, async err => {
+            if (err) {
+                return tools.maybeCallbackWithError(cb, err);
+            }
+            if (task!.state) {
+                try {
+                    await this.delForeignStateAsync(task!.id, options);
+                } catch (e) {
+                    this._logger.warn(`${this.namespaceLog} Could not remove state of ${task!.id}: ${e.message}`);
+                }
+            }
+            try {
+                await tools.removeIdFromAllEnums(this.#objects, task!.id, this.enums);
+            } catch (e) {
+                this._logger.warn(`${this.namespaceLog} Could not remove ${task!.id} from enums: ${e.message}`);
+            }
+            setImmediate(() => this._deleteObjects(tasks, options, cb));
+        });
     }
 
     delForeignObject(id: string, callback?: ioBroker.ErrorCallback): void;
@@ -4996,9 +4988,8 @@ export class AdapterClass extends EventEmitter {
             }
 
             return this._setObjectWithDefaultValue(options.id, options.obj, null, options.callback);
-        } else {
-            return tools.maybeCallbackWithError(options.callback, null);
         }
+        return tools.maybeCallbackWithError(options.callback, null);
     }
 
     // external signatures
@@ -5091,9 +5082,8 @@ export class AdapterClass extends EventEmitter {
             }
 
             return this._setObjectWithDefaultValue(id, obj, null, callback);
-        } else {
-            return tools.maybeCallbackWithError(callback, null);
         }
+        return tools.maybeCallbackWithError(callback, null);
     }
 
     private _DCS2ID(device: string, channel: string, stateOrPoint?: boolean | string): string {
@@ -5457,9 +5447,8 @@ export class AdapterClass extends EventEmitter {
                         err = `Wrong type of ${id}.common.min`;
                         this._logger.error(`${this.namespaceLog} ${err}`);
                         return tools.maybeCallbackWithError(callback, err);
-                    } else {
-                        common.min = min;
                     }
+                    common.min = min;
                 }
             }
             if (common.max !== undefined) {
@@ -5470,9 +5459,8 @@ export class AdapterClass extends EventEmitter {
                         err = `Wrong type of ${id}.common.max`;
                         this._logger.error(`${this.namespaceLog} ${err}`);
                         return tools.maybeCallbackWithError(callback, err);
-                    } else {
-                        common.max = max;
                     }
+                    common.max = max;
                 }
             }
             if (common.def !== undefined) {
@@ -5483,9 +5471,8 @@ export class AdapterClass extends EventEmitter {
                         err = new Error(`Wrong type of ${id}.common.def`);
                         this._logger.error(`${this.namespaceLog} ${err.message}`);
                         return tools.maybeCallbackWithError(callback, err);
-                    } else {
-                        common.def = def;
                     }
+                    common.def = def;
                 }
             }
             if (common.min !== undefined && common.max !== undefined && min > max) {
@@ -7919,116 +7906,115 @@ export class AdapterClass extends EventEmitter {
             // User does not exists
             this._logger.error(`${this.namespaceLog} unknown user "${options.user}"`);
             return options;
-        } else {
-            let groups;
-            try {
-                groups = await this.getForeignObjectsAsync('*', 'group', null, null);
-            } catch {
-                // ignore
-            }
-
-            // aggregate all groups permissions, where this user is
-            if (groups) {
-                for (const group of Object.values(groups)) {
-                    if (group.common.members.includes(options.user)) {
-                        options.groups.push(group._id);
-                    }
-                }
-            }
-
-            // read all groups for this user
-            this.users[options.user] = {
-                groups: options.groups,
-                // @ts-expect-error TODO: UserCommon has no acl
-                acl: userAcl.common?.acl || {},
-            };
-            await this._getGroups(options.groups);
-            // combine all rights
-            const user = this.users[options.user];
-            for (const gName of options.groups) {
-                if (!this.groups[gName].common?.acl) {
-                    continue;
-                }
-                const group = this.groups[gName];
-
-                if (group.common?.acl?.file) {
-                    if (!user.acl || !user.acl.file) {
-                        user.acl = user.acl || {};
-                        user.acl.file = user.acl.file || {};
-
-                        user.acl.file.create = group.common.acl.file.create;
-                        user.acl.file.read = group.common.acl.file.read;
-                        user.acl.file.write = group.common.acl.file.write;
-                        user.acl.file.delete = group.common.acl.file.delete;
-                        user.acl.file.list = group.common.acl.file.list;
-                    } else {
-                        user.acl.file.create = user.acl.file.create || group.common.acl.file.create;
-                        user.acl.file.read = user.acl.file.read || group.common.acl.file.read;
-                        user.acl.file.write = user.acl.file.write || group.common.acl.file.write;
-                        user.acl.file.delete = user.acl.file.delete || group.common.acl.file.delete;
-                        user.acl.file.list = user.acl.file.list || group.common.acl.file.list;
-                    }
-                }
-
-                if (group.common?.acl?.object) {
-                    if (!user.acl || !user.acl.object) {
-                        user.acl = user.acl || {};
-                        user.acl.object = user.acl.object || {};
-
-                        user.acl.object.create = group.common.acl.object.create;
-                        user.acl.object.read = group.common.acl.object.read;
-                        user.acl.object.write = group.common.acl.object.write;
-                        user.acl.object.delete = group.common.acl.object.delete;
-                        user.acl.object.list = group.common.acl.object.list;
-                    } else {
-                        user.acl.object.create = user.acl.object.create || group.common.acl.object.create;
-                        user.acl.object.read = user.acl.object.read || group.common.acl.object.read;
-                        user.acl.object.write = user.acl.object.write || group.common.acl.object.write;
-                        user.acl.object.delete = user.acl.object.delete || group.common.acl.object.delete;
-                        user.acl.object.list = user.acl.object.list || group.common.acl.object.list;
-                    }
-                }
-
-                if (group.common?.acl?.users) {
-                    if (!user.acl || !user.acl.users) {
-                        user.acl = user.acl || {};
-                        user.acl.users = user.acl.users || {};
-
-                        user.acl.users.create = group.common.acl.users.create;
-                        user.acl.users.read = group.common.acl.users.read;
-                        user.acl.users.write = group.common.acl.users.write;
-                        user.acl.users.delete = group.common.acl.users.delete;
-                        user.acl.users.list = group.common.acl.users.list;
-                    } else {
-                        user.acl.users.create = user.acl.users.create || group.common.acl.users.create;
-                        user.acl.users.read = user.acl.users.read || group.common.acl.users.read;
-                        user.acl.users.write = user.acl.users.write || group.common.acl.users.write;
-                        user.acl.users.delete = user.acl.users.delete || group.common.acl.users.delete;
-                        user.acl.users.list = user.acl.users.list || group.common.acl.users.list;
-                    }
-                }
-                if (group.common?.acl?.state) {
-                    if (!user.acl || !user.acl.state) {
-                        user.acl = user.acl || {};
-                        user.acl.state = user.acl.state || {};
-
-                        user.acl.state.create = group.common.acl.state.create;
-                        user.acl.state.read = group.common.acl.state.read;
-                        user.acl.state.write = group.common.acl.state.write;
-                        user.acl.state.delete = group.common.acl.state.delete;
-                        user.acl.state.list = group.common.acl.state.list;
-                    } else {
-                        user.acl.state.create = user.acl.state.create || group.common.acl.state.create;
-                        user.acl.state.read = user.acl.state.read || group.common.acl.state.read;
-                        user.acl.state.write = user.acl.state.write || group.common.acl.state.write;
-                        user.acl.state.delete = user.acl.state.delete || group.common.acl.state.delete;
-                        user.acl.state.list = user.acl.state.list || group.common.acl.state.list;
-                    }
-                }
-            }
-            options.acl = user.acl;
-            return options;
         }
+        let groups;
+        try {
+            groups = await this.getForeignObjectsAsync('*', 'group', null, null);
+        } catch {
+            // ignore
+        }
+
+        // aggregate all groups permissions, where this user is
+        if (groups) {
+            for (const group of Object.values(groups)) {
+                if (group.common.members.includes(options.user)) {
+                    options.groups.push(group._id);
+                }
+            }
+        }
+
+        // read all groups for this user
+        this.users[options.user] = {
+            groups: options.groups,
+            // @ts-expect-error TODO: UserCommon has no acl
+            acl: userAcl.common?.acl || {},
+        };
+        await this._getGroups(options.groups);
+        // combine all rights
+        const user = this.users[options.user];
+        for (const gName of options.groups) {
+            if (!this.groups[gName].common?.acl) {
+                continue;
+            }
+            const group = this.groups[gName];
+
+            if (group.common?.acl?.file) {
+                if (!user.acl || !user.acl.file) {
+                    user.acl = user.acl || {};
+                    user.acl.file = user.acl.file || {};
+
+                    user.acl.file.create = group.common.acl.file.create;
+                    user.acl.file.read = group.common.acl.file.read;
+                    user.acl.file.write = group.common.acl.file.write;
+                    user.acl.file.delete = group.common.acl.file.delete;
+                    user.acl.file.list = group.common.acl.file.list;
+                } else {
+                    user.acl.file.create = user.acl.file.create || group.common.acl.file.create;
+                    user.acl.file.read = user.acl.file.read || group.common.acl.file.read;
+                    user.acl.file.write = user.acl.file.write || group.common.acl.file.write;
+                    user.acl.file.delete = user.acl.file.delete || group.common.acl.file.delete;
+                    user.acl.file.list = user.acl.file.list || group.common.acl.file.list;
+                }
+            }
+
+            if (group.common?.acl?.object) {
+                if (!user.acl || !user.acl.object) {
+                    user.acl = user.acl || {};
+                    user.acl.object = user.acl.object || {};
+
+                    user.acl.object.create = group.common.acl.object.create;
+                    user.acl.object.read = group.common.acl.object.read;
+                    user.acl.object.write = group.common.acl.object.write;
+                    user.acl.object.delete = group.common.acl.object.delete;
+                    user.acl.object.list = group.common.acl.object.list;
+                } else {
+                    user.acl.object.create = user.acl.object.create || group.common.acl.object.create;
+                    user.acl.object.read = user.acl.object.read || group.common.acl.object.read;
+                    user.acl.object.write = user.acl.object.write || group.common.acl.object.write;
+                    user.acl.object.delete = user.acl.object.delete || group.common.acl.object.delete;
+                    user.acl.object.list = user.acl.object.list || group.common.acl.object.list;
+                }
+            }
+
+            if (group.common?.acl?.users) {
+                if (!user.acl || !user.acl.users) {
+                    user.acl = user.acl || {};
+                    user.acl.users = user.acl.users || {};
+
+                    user.acl.users.create = group.common.acl.users.create;
+                    user.acl.users.read = group.common.acl.users.read;
+                    user.acl.users.write = group.common.acl.users.write;
+                    user.acl.users.delete = group.common.acl.users.delete;
+                    user.acl.users.list = group.common.acl.users.list;
+                } else {
+                    user.acl.users.create = user.acl.users.create || group.common.acl.users.create;
+                    user.acl.users.read = user.acl.users.read || group.common.acl.users.read;
+                    user.acl.users.write = user.acl.users.write || group.common.acl.users.write;
+                    user.acl.users.delete = user.acl.users.delete || group.common.acl.users.delete;
+                    user.acl.users.list = user.acl.users.list || group.common.acl.users.list;
+                }
+            }
+            if (group.common?.acl?.state) {
+                if (!user.acl || !user.acl.state) {
+                    user.acl = user.acl || {};
+                    user.acl.state = user.acl.state || {};
+
+                    user.acl.state.create = group.common.acl.state.create;
+                    user.acl.state.read = group.common.acl.state.read;
+                    user.acl.state.write = group.common.acl.state.write;
+                    user.acl.state.delete = group.common.acl.state.delete;
+                    user.acl.state.list = group.common.acl.state.list;
+                } else {
+                    user.acl.state.create = user.acl.state.create || group.common.acl.state.create;
+                    user.acl.state.read = user.acl.state.read || group.common.acl.state.read;
+                    user.acl.state.write = user.acl.state.write || group.common.acl.state.write;
+                    user.acl.state.delete = user.acl.state.delete || group.common.acl.state.delete;
+                    user.acl.state.list = user.acl.state.list || group.common.acl.state.list;
+                }
+            }
+        }
+        options.acl = user.acl;
+        return options;
     }
 
     private _checkState(obj: ioBroker.StateObject, options: Record<string, any>, command: CheckStateCommand): boolean {
@@ -8172,43 +8158,42 @@ export class AdapterClass extends EventEmitter {
             }
 
             return { ids, objs };
-        } else {
-            const objs: ioBroker.StateObject[] = [];
+        }
+        const objs: ioBroker.StateObject[] = [];
 
-            for (const id of ids) {
-                let originalChecked: boolean | undefined;
+        for (const id of ids) {
+            let originalChecked: boolean | undefined;
 
-                if (options.checked !== undefined) {
-                    originalChecked = options.checked;
-                }
-
-                options.checked = true;
-
-                if (!this.#objects) {
-                    this._logger.info(
-                        `${this.namespaceLog} checkStates not processed because Objects database not connected`,
-                    );
-
-                    throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
-                }
-
-                const obj = (await this.#objects.getObject(id, options)) as ioBroker.StateObject;
-
-                objs.push(obj);
-
-                if (originalChecked !== undefined) {
-                    options.checked = originalChecked;
-                } else {
-                    options.checked = undefined;
-                }
-
-                if (!this._checkState(obj, options, command)) {
-                    throw new Error(ERROR_PERMISSION);
-                }
+            if (options.checked !== undefined) {
+                originalChecked = options.checked;
             }
 
-            return { ids, objs };
+            options.checked = true;
+
+            if (!this.#objects) {
+                this._logger.info(
+                    `${this.namespaceLog} checkStates not processed because Objects database not connected`,
+                );
+
+                throw new Error(tools.ERRORS.ERROR_DB_CLOSED);
+            }
+
+            const obj = (await this.#objects.getObject(id, options)) as ioBroker.StateObject;
+
+            objs.push(obj);
+
+            if (originalChecked !== undefined) {
+                options.checked = originalChecked;
+            } else {
+                options.checked = undefined;
+            }
+
+            if (!this._checkState(obj, options, command)) {
+                throw new Error(ERROR_PERMISSION);
+            }
         }
+
+        return { ids, objs };
     }
 
     private async _getGroups(ids: string[]): Promise<void> {
@@ -8246,10 +8231,9 @@ export class AdapterClass extends EventEmitter {
                 // id can be string or can have attribute write
                 const aliasId = tools.isObject(obj.common.alias.id) ? obj.common.alias.id.write : obj.common.alias.id;
                 return this._setStateChangedHelper(aliasId, state);
-            } else {
-                this._logger.warn(`${this.namespaceLog} ${err ? err.message : `Alias ${id} has no target 1`}`);
-                throw new Error(err ? err.message : `Alias ${id} has no target`);
             }
+            this._logger.warn(`${this.namespaceLog} ${err ? err.message : `Alias ${id} has no target 1`}`);
+            throw new Error(err ? err.message : `Alias ${id} has no target`);
         } else {
             const oldState = await this.getForeignStateAsync(id, null);
 
@@ -8283,9 +8267,8 @@ export class AdapterClass extends EventEmitter {
                 this.outputCount++;
                 await this.#states!.setState(id, state);
                 return { id, notChanged: false };
-            } else {
-                return { id, notChanged: true };
             }
+            return { id, notChanged: true };
         }
     }
 
@@ -8425,11 +8408,10 @@ export class AdapterClass extends EventEmitter {
             const res = await this._setStateChangedHelper(fixedId, stateObj);
             // @ts-expect-error todo fix it
             return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
-        } else {
-            const res = await this._setStateChangedHelper(fixedId, stateObj);
-            // @ts-expect-error todo fix it
-            return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
         }
+        const res = await this._setStateChangedHelper(fixedId, stateObj);
+        // @ts-expect-error todo fix it
+        return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
     }
 
     setForeignState(
@@ -8876,10 +8858,9 @@ export class AdapterClass extends EventEmitter {
 
             const res = await this._setStateChangedHelper(id, state);
             return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
-        } else {
-            const res = await this._setStateChangedHelper(id, state);
-            return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
         }
+        const res = await this._setStateChangedHelper(id, state);
+        return tools.maybeCallbackWithError(callback, null, res.id, res.notChanged);
     }
 
     getState(id: string, callback: ioBroker.GetStateCallback): void;
@@ -9051,9 +9032,8 @@ export class AdapterClass extends EventEmitter {
         } else {
             if (this.oStates && this.oStates[id]) {
                 return tools.maybeCallbackWithError(callback, null, this.oStates[id]);
-            } else {
-                return this.#states.getState(id, callback);
             }
+            return this.#states.getState(id, callback);
         }
     }
 
@@ -9184,9 +9164,8 @@ export class AdapterClass extends EventEmitter {
                 // read default history instance from system.config
                 await this._getDefaultHistory();
                 return this.getHistory(id, options, callback);
-            } else {
-                options.instance = this.defaultHistory;
             }
+            options.instance = this.defaultHistory;
         }
 
         this.sendTo(options.instance || 'history.0', 'getHistory', { id: id, options: options }, res => {
@@ -9467,9 +9446,8 @@ export class AdapterClass extends EventEmitter {
             const srcObjs = (await this._getObjectsByArray(keys)) as (ioBroker.StateObject | null)[];
 
             return this._processStatesSecondary(keys, fullTargetObjs, srcObjs);
-        } else {
-            return this._processStatesSecondary(keys, null, null);
         }
+        return this._processStatesSecondary(keys, null, null);
     }
 
     getForeignStates(pattern: Pattern, callback: ioBroker.GetStatesCallback): void;
@@ -9901,10 +9879,9 @@ export class AdapterClass extends EventEmitter {
 
                     if (promises.length && pattern !== '*') {
                         return tools.maybeCallback(callback);
-                    } else {
-                        // no alias objects found or pattern *
-                        this.#states.subscribeUser(pattern, callback);
                     }
+                    // no alias objects found or pattern *
+                    this.#states.subscribeUser(pattern, callback);
                 } catch (e) {
                     this._logger.warn(`${this.namespaceLog} Cannot subscribe to ${pattern}: ${e.message}`);
                     return tools.maybeCallbackWithError(callback, e);
@@ -9924,9 +9901,8 @@ export class AdapterClass extends EventEmitter {
                 if (aliasObj) {
                     await this._addAliasSubscribe(aliasObj, pattern);
                     return tools.maybeCallback(callback);
-                } else {
-                    return tools.maybeCallback(callback);
                 }
+                return tools.maybeCallback(callback);
             } catch (e) {
                 this._logger.warn(`${this.namespaceLog} cannot subscribe on alias "${pattern}": ${e.message}`);
             }
@@ -10231,13 +10207,12 @@ export class AdapterClass extends EventEmitter {
         try {
             const obj = await this.getForeignObjectAsync('system.licenses');
             const uuidObj = await this.getForeignObjectAsync('system.meta.uuid');
-            let uuid: string;
             if (!uuidObj?.native?.uuid) {
                 this._logger.warn(`${this.namespaceLog} No UUID found!`);
                 return licenses;
-            } else {
-                uuid = uuidObj.native.uuid;
             }
+
+            const uuid: string = uuidObj.native.uuid;
 
             if (obj?.native?.licenses?.length) {
                 const now = Date.now();
@@ -10765,9 +10740,8 @@ export class AdapterClass extends EventEmitter {
                         }
                     }
                     return tools.maybeCallback(cb);
-                } else {
-                    return tools.maybeCallback(cb);
                 }
+                return tools.maybeCallback(cb);
             },
             logger: this._logger,
             change: async (id, stateOrMessage) => {
@@ -11316,57 +11290,56 @@ export class AdapterClass extends EventEmitter {
 
         if (this._options.instance !== undefined) {
             return this._initAdapter(this._options);
+        }
+        const resAlive = await this.#states.getState(`system.adapter.${this.namespace}.alive`);
+        const killRes = await this.#states.getState(`system.adapter.${this.namespace}.sigKill`);
+
+        if (killRes?.val !== undefined) {
+            killRes.val = parseInt(killRes.val as any, 10);
+        }
+        if (!this._config.isInstall && this.startedInCompactMode && killRes && !killRes.ack && killRes.val === -1) {
+            this._logger.error(
+                `${this.namespaceLog} ${this.namespace} needs to be stopped because not correctly started in compact mode`,
+            );
+            this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+        } else if (
+            !this._config.forceIfDisabled &&
+            !this._config.isInstall &&
+            !this.startedInCompactMode &&
+            killRes &&
+            killRes.from?.startsWith('system.host.') &&
+            killRes.ack &&
+            !isNaN(killRes.val as any) &&
+            killRes.val !== process.pid
+        ) {
+            this._logger.error(
+                `${this.namespaceLog} ${this.namespace} invalid process id scenario ${killRes.val} vs. own ID ${process.pid}. Stopping`,
+            );
+            this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+        } else if (
+            !this._config.isInstall &&
+            resAlive &&
+            resAlive.val === true &&
+            resAlive.ack &&
+            !this._config.forceIfDisabled
+        ) {
+            this._logger.error(`${this.namespaceLog} ${this.namespace} already running`);
+            this.terminate(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
         } else {
-            const resAlive = await this.#states.getState(`system.adapter.${this.namespace}.alive`);
-            const killRes = await this.#states.getState(`system.adapter.${this.namespace}.sigKill`);
-
-            if (killRes?.val !== undefined) {
-                killRes.val = parseInt(killRes.val as any, 10);
+            let res: ioBroker.InstanceObject | null | undefined;
+            try {
+                res = await this.#objects.getObject(`system.adapter.${this.namespace}`);
+            } catch (e) {
+                this._logger.error(
+                    `${this.namespaceLog} ${this.namespace} Could not get instance object: ${e.message}`,
+                );
             }
-            if (!this._config.isInstall && this.startedInCompactMode && killRes && !killRes.ack && killRes.val === -1) {
-                this._logger.error(
-                    `${this.namespaceLog} ${this.namespace} needs to be stopped because not correctly started in compact mode`,
-                );
-                this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
-            } else if (
-                !this._config.forceIfDisabled &&
-                !this._config.isInstall &&
-                !this.startedInCompactMode &&
-                killRes &&
-                killRes.from?.startsWith('system.host.') &&
-                killRes.ack &&
-                !isNaN(killRes.val as any) &&
-                killRes.val !== process.pid
-            ) {
-                this._logger.error(
-                    `${this.namespaceLog} ${this.namespace} invalid process id scenario ${killRes.val} vs. own ID ${process.pid}. Stopping`,
-                );
-                this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
-            } else if (
-                !this._config.isInstall &&
-                resAlive &&
-                resAlive.val === true &&
-                resAlive.ack &&
-                !this._config.forceIfDisabled
-            ) {
-                this._logger.error(`${this.namespaceLog} ${this.namespace} already running`);
-                this.terminate(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
-            } else {
-                let res: ioBroker.InstanceObject | null | undefined;
-                try {
-                    res = await this.#objects.getObject(`system.adapter.${this.namespace}`);
-                } catch (e) {
-                    this._logger.error(
-                        `${this.namespaceLog} ${this.namespace} Could not get instance object: ${e.message}`,
-                    );
-                }
 
-                if (!res && !this._config.isInstall) {
-                    this._logger.error(`${this.namespaceLog} ${this.namespace} invalid config`);
-                    this.terminate(EXIT_CODES.INVALID_ADAPTER_CONFIG);
-                } else {
-                    return this._initAdapter(res);
-                }
+            if (!res && !this._config.isInstall) {
+                this._logger.error(`${this.namespaceLog} ${this.namespace} invalid config`);
+                this.terminate(EXIT_CODES.INVALID_ADAPTER_CONFIG);
+            } else {
+                return this._initAdapter(res);
             }
         }
     }

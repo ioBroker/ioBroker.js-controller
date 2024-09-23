@@ -17,13 +17,13 @@ describe('test internal helpers', () => {
             objects: {
                 dataDir: `${thisDir}/../tmp/data`,
                 onChange: function (id: string, _obj: ioBroker.AnyObject) {
-                    console.log('object changed. ' + id);
+                    console.log(`object changed. ${id}`);
                 },
             },
             states: {
                 dataDir: `${thisDir}/../tmp/data`,
                 onChange: function (id: string, _state: ioBroker.State) {
-                    console.log('state changed. ' + id);
+                    console.log(`state changed. ${id}`);
                 },
             },
         });

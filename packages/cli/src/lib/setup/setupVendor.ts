@@ -178,7 +178,7 @@ export class Vendor {
                     const arr = await this.objects.getObjectListAsync(
                         {
                             startkey: id,
-                            endkey: id + '\u9999',
+                            endkey: `${id}\u9999`,
                         },
                         { checked: true },
                     );

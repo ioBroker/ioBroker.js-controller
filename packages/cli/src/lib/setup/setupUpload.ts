@@ -40,7 +40,7 @@ type MinimalLogger = Omit<Logger, 'info' | 'silly' | 'debug'>;
 export class Upload {
     private readonly states: StatesRedisClient;
     private readonly objects: ObjectsRedisClient;
-    private readonly regApp = new RegExp('/' + tools.appName.replace(/\./g, '\\.') + '\\.', 'i');
+    private readonly regApp = new RegExp(`/${tools.appName.replace(/\./g, '\\.')}\\.`, 'i');
     private callbackId = 1;
     private readonly sendToHostFromCliAsync: (...args: any[]) => Promise<any>;
     private callbacks: Record<string, any> = {};
@@ -96,9 +96,8 @@ export class Upload {
 
         if (onlyAlive) {
             return this.checkHostsIfAlive(hosts);
-        } else {
-            return hosts;
         }
+        return hosts;
     }
 
     // Check if some adapters must be restarted and restart them
@@ -540,10 +539,9 @@ export class Upload {
 
             if (isAdmin) {
                 return adapter;
-            } else {
-                await this.checkRestartOther(adapter);
-                return adapter;
             }
+            await this.checkRestartOther(adapter);
+            return adapter;
         }
 
         // check for common.wwwDontUpload (required for legacy adapters and admin)

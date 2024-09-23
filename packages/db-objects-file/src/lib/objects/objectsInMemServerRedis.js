@@ -54,12 +54,12 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         super(settings);
 
         this.serverConnections = {};
-        this.namespaceObjects =
-            (this.settings.redisNamespace || (settings.connection && settings.connection.redisNamespace) || 'cfg') +
-            '.';
-        this.namespaceFile = this.namespaceObjects + 'f.';
-        this.namespaceObj = this.namespaceObjects + 'o.';
-        this.namespaceSet = this.namespaceObjects + 's.';
+        this.namespaceObjects = `${
+            this.settings.redisNamespace || (settings.connection && settings.connection.redisNamespace) || 'cfg'
+        }.`;
+        this.namespaceFile = `${this.namespaceObjects}f.`;
+        this.namespaceObj = `${this.namespaceObjects}o.`;
+        this.namespaceSet = `${this.namespaceObjects}s.`;
         this.namespaceSetLen = this.namespaceSet.length;
 
         // this.namespaceObjectsLen   = this.namespaceObjects.length;
@@ -79,11 +79,9 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             })
             .then(() => {
                 this.log.debug(
-                    this.namespace +
-                        ' ' +
-                        (settings.secure ? 'Secure ' : '') +
-                        ' Redis inMem-objects listening on port ' +
-                        (settings.port || 9001),
+                    `${this.namespace} ${settings.secure ? 'Secure ' : ''} Redis inMem-objects listening on port ${
+                        settings.port || 9001
+                    }`,
                 );
 
                 if (typeof this.settings.connected === 'function') {
@@ -223,7 +221,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
             }
         }
 
-        return this.namespaceFile + id + '$%$' + name + (isMeta !== undefined ? (isMeta ? '$%$meta' : '$%$data') : '');
+        return `${this.namespaceFile + id}$%$${name}${isMeta !== undefined ? (isMeta ? '$%$meta' : '$%$data') : ''}`;
     }
 
     /**
@@ -253,7 +251,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
 
         // Handle Redis "QUIT" request
         handler.on('quit', (_data, responseId) => {
-            this.log.silly(namespaceLog + ' Redis QUIT received, close connection');
+            this.log.silly(`${namespaceLog} Redis QUIT received, close connection`);
             handler.sendString(responseId, 'OK');
             handler.close();
         });
@@ -418,7 +416,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                 try {
                     result = this._getObjects(keys);
                 } catch (err) {
-                    return void handler.sendError(responseId, new Error('ERROR _getObjects: ' + err.message));
+                    return void handler.sendError(responseId, new Error(`ERROR _getObjects: ${err.message}`));
                 }
                 result = result.map(el => (el ? JSON.stringify(el) : null));
                 handler.sendArray(responseId, result);
@@ -820,7 +818,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
                 // we ignore these type of commands for now, irrelevant
                 handler.sendString(responseId, 'OK');
             } else {
-                handler.sendError(responseId, new Error('CONFIG-UNSUPPORTED for ' + JSON.stringify(data)));
+                handler.sendError(responseId, new Error(`CONFIG-UNSUPPORTED for ${JSON.stringify(data)}`));
             }
         });
 
@@ -973,7 +971,7 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
      */
     _initSocket(socket) {
         if (this.settings.connection.enhancedLogging) {
-            this.log.silly(this.namespace + ' Handling new Redis Objects connection');
+            this.log.silly(`${this.namespace} Handling new Redis Objects connection`);
         }
         const options = {
             log: this.log,
@@ -984,10 +982,10 @@ export class ObjectsInMemoryServer extends ObjectsInMemoryFileDB {
         const handler = new RedisHandler(socket, options);
         this._socketEvents(handler);
 
-        this.serverConnections[socket.remoteAddress + ':' + socket.remotePort] = handler;
+        this.serverConnections[`${socket.remoteAddress}:${socket.remotePort}`] = handler;
         socket.on('close', () => {
-            if (this.serverConnections[socket.remoteAddress + ':' + socket.remotePort]) {
-                delete this.serverConnections[socket.remoteAddress + ':' + socket.remotePort];
+            if (this.serverConnections[`${socket.remoteAddress}:${socket.remotePort}`]) {
+                delete this.serverConnections[`${socket.remoteAddress}:${socket.remotePort}`];
             }
         });
     }

@@ -40,29 +40,28 @@ export class Users {
         this.objects.getObject(`system.user.${_user}`, (err, obj) => {
             if (obj) {
                 return tools.maybeCallbackWithError(callback, 'User yet exists');
-            } else {
-                this.objects.setObject(
-                    `system.user.${_user}`,
-                    {
-                        type: 'user',
-                        common: {
-                            name: username,
-                            enabled: true,
-                            password: '',
-                        },
-                        from: `system.host.${tools.getHostName()}.cli`,
-                        ts: Date.now(),
-                        native: {},
-                    },
-                    err => {
-                        if (!err) {
-                            this.setPassword(username, pw, callback);
-                        } else {
-                            return tools.maybeCallbackWithError(callback, err);
-                        }
-                    },
-                );
             }
+            this.objects.setObject(
+                `system.user.${_user}`,
+                {
+                    type: 'user',
+                    common: {
+                        name: username,
+                        enabled: true,
+                        password: '',
+                    },
+                    from: `system.host.${tools.getHostName()}.cli`,
+                    ts: Date.now(),
+                    native: {},
+                },
+                err => {
+                    if (!err) {
+                        this.setPassword(username, pw, callback);
+                    } else {
+                        return tools.maybeCallbackWithError(callback, err);
+                    }
+                },
+            );
         });
     }
 
@@ -149,59 +148,51 @@ export class Users {
         this.objects.getObject(`system.user.${_user}`, (err, obj) => {
             if (err || !obj) {
                 return tools.maybeCallbackWithError(callback, 'User does not exist');
-            } else {
-                if (obj.common.dontDelete) {
-                    return tools.maybeCallbackWithError(callback, 'Cannot delete user, while is system user');
-                } else {
-                    this.objects.delObject('system.user.' + _user, err => {
-                        // Remove this user from all groups
-                        if (!err) {
-                            this.objects.getObjectList(
-                                { startkey: 'system.group.', endkey: 'system.group.\u9999' },
-                                (err, groups) => {
-                                    if (!groups) {
-                                        return tools.maybeCallback(callback);
-                                    }
-
-                                    let count = 0;
-                                    for (let i = 0; i < groups.rows.length; i++) {
-                                        if (groups.rows[i].value.type !== 'group') {
-                                            continue;
-                                        }
-                                        // find all groups
-                                        if (
-                                            groups.rows[i].value.common.members &&
-                                            groups.rows[i].value.common.members.indexOf('system.user.' + _user) !== -1
-                                        ) {
-                                            const pos = groups.rows[i].value.common.members.indexOf(
-                                                'system.user.' + _user,
-                                            );
-                                            groups.rows[i].value.common.members.splice(pos, 1);
-                                            count++;
-                                            groups.rows[i].value.from = 'system.host.' + tools.getHostName() + '.cli';
-                                            groups.rows[i].value.ts = Date.now();
-                                            this.objects.setObject(
-                                                groups.rows[i].value._id,
-                                                groups.rows[i].value,
-                                                err => {
-                                                    if (!--count) {
-                                                        return tools.maybeCallbackWithError(callback, err);
-                                                    }
-                                                },
-                                            );
-                                        }
-                                    }
-                                    if (!count) {
-                                        return tools.maybeCallback(callback);
-                                    }
-                                },
-                            );
-                        } else {
-                            return tools.maybeCallbackWithError(callback, err);
-                        }
-                    });
-                }
             }
+            if (obj.common.dontDelete) {
+                return tools.maybeCallbackWithError(callback, 'Cannot delete user, while is system user');
+            }
+            this.objects.delObject(`system.user.${_user}`, err => {
+                // Remove this user from all groups
+                if (!err) {
+                    this.objects.getObjectList(
+                        { startkey: 'system.group.', endkey: 'system.group.\u9999' },
+                        (err, groups) => {
+                            if (!groups) {
+                                return tools.maybeCallback(callback);
+                            }
+
+                            let count = 0;
+                            for (let i = 0; i < groups.rows.length; i++) {
+                                if (groups.rows[i].value.type !== 'group') {
+                                    continue;
+                                }
+                                // find all groups
+                                if (
+                                    groups.rows[i].value.common.members &&
+                                    groups.rows[i].value.common.members.indexOf(`system.user.${_user}`) !== -1
+                                ) {
+                                    const pos = groups.rows[i].value.common.members.indexOf(`system.user.${_user}`);
+                                    groups.rows[i].value.common.members.splice(pos, 1);
+                                    count++;
+                                    groups.rows[i].value.from = `system.host.${tools.getHostName()}.cli`;
+                                    groups.rows[i].value.ts = Date.now();
+                                    this.objects.setObject(groups.rows[i].value._id, groups.rows[i].value, err => {
+                                        if (!--count) {
+                                            return tools.maybeCallbackWithError(callback, err);
+                                        }
+                                    });
+                                }
+                            }
+                            if (!count) {
+                                return tools.maybeCallback(callback);
+                            }
+                        },
+                    );
+                } else {
+                    return tools.maybeCallbackWithError(callback, err);
+                }
+            });
         });
     }
 
@@ -234,7 +225,7 @@ export class Users {
 
                 if (obj.common.members.indexOf(_user) === -1) {
                     obj.common.members.push(_user);
-                    obj.from = 'system.host.' + tools.getHostName() + '.cli';
+                    obj.from = `system.host.${tools.getHostName()}.cli`;
                     obj.ts = Date.now();
                     this.objects.setObject(groupName, obj, err => {
                         return tools.maybeCallbackWithError(callback, err);
@@ -299,15 +290,13 @@ export class Users {
                         this.addUser(username, result.password, err => {
                             if (err) {
                                 return tools.maybeCallbackWithError(callback, err);
-                            } else {
-                                this.addUserToGroup(username, groupName, err => {
-                                    if (err) {
-                                        return tools.maybeCallbackWithError(callback, err);
-                                    } else {
-                                        return tools.maybeCallback(callback);
-                                    }
-                                });
                             }
+                            this.addUserToGroup(username, groupName, err => {
+                                if (err) {
+                                    return tools.maybeCallbackWithError(callback, err);
+                                }
+                                return tools.maybeCallback(callback);
+                            });
                         });
                     } else {
                         return tools.maybeCallbackWithError(callback, err);
@@ -317,15 +306,13 @@ export class Users {
                 this.addUser(username, password, err => {
                     if (err) {
                         return tools.maybeCallbackWithError(callback, err);
-                    } else {
-                        this.addUserToGroup(username, groupName, err => {
-                            if (err) {
-                                return tools.maybeCallbackWithError(callback, err);
-                            } else {
-                                return tools.maybeCallback(callback);
-                            }
-                        });
                     }
+                    this.addUserToGroup(username, groupName, err => {
+                        if (err) {
+                            return tools.maybeCallbackWithError(callback, err);
+                        }
+                        return tools.maybeCallback(callback);
+                    });
                 });
             }
         });
@@ -346,55 +333,52 @@ export class Users {
         const isExisting = await this.isUser(username);
         if (!isExisting) {
             return tools.maybeCallbackWithError(callback, `User "${username}" does not exist.`);
-        } else {
-            // Check group
-            if (!password) {
-                prompt.message = '';
-                prompt.delimiter = '';
-                const schema = {
-                    properties: {
-                        password: {
-                            description: 'Enter your password:',
-                            pattern: /^[^'"]*$/,
-                            message: 'No " are allowed',
-                            hidden: true,
-                        },
-                        repeatPassword: {
-                            description: 'Repeat your password:',
-                            pattern: /^[^'"]*$/,
-                            message: 'No " are allowed',
-                            hidden: true,
-                        },
+        }
+        // Check group
+        if (!password) {
+            prompt.message = '';
+            prompt.delimiter = '';
+            const schema = {
+                properties: {
+                    password: {
+                        description: 'Enter your password:',
+                        pattern: /^[^'"]*$/,
+                        message: 'No " are allowed',
+                        hidden: true,
                     },
-                } as const satisfies prompt.Schema;
-                prompt.start();
+                    repeatPassword: {
+                        description: 'Repeat your password:',
+                        pattern: /^[^'"]*$/,
+                        message: 'No " are allowed',
+                        hidden: true,
+                    },
+                },
+            } as const satisfies prompt.Schema;
+            prompt.start();
 
-                prompt.get<SchemaPropsToString<typeof schema>>(schema, (err, result) => {
-                    if (result) {
-                        if (result.password !== result.repeatPassword) {
-                            return tools.maybeCallbackWithError(callback, 'Passwords are not identical!');
+            prompt.get<SchemaPropsToString<typeof schema>>(schema, (err, result) => {
+                if (result) {
+                    if (result.password !== result.repeatPassword) {
+                        return tools.maybeCallbackWithError(callback, 'Passwords are not identical!');
+                    }
+
+                    this.setPassword(username, result.password, err => {
+                        if (err) {
+                            return tools.maybeCallbackWithError(callback, err);
                         }
-
-                        this.setPassword(username, result.password, err => {
-                            if (err) {
-                                return tools.maybeCallbackWithError(callback, err);
-                            } else {
-                                return tools.maybeCallback(callback);
-                            }
-                        });
-                    } else {
-                        return tools.maybeCallbackWithError(callback, 'No password entered!');
-                    }
-                });
-            } else {
-                this.setPassword(username, password, err => {
-                    if (err) {
-                        return tools.maybeCallbackWithError(callback, err);
-                    } else {
                         return tools.maybeCallback(callback);
-                    }
-                });
-            }
+                    });
+                } else {
+                    return tools.maybeCallbackWithError(callback, 'No password entered!');
+                }
+            });
+        } else {
+            this.setPassword(username, password, err => {
+                if (err) {
+                    return tools.maybeCallbackWithError(callback, err);
+                }
+                return tools.maybeCallback(callback);
+            });
         }
     }
 
@@ -423,14 +407,13 @@ export class Users {
             }
             if (!obj) {
                 return tools.maybeCallbackWithError(callback, `User "${username}" not found`);
-            } else {
-                obj.common.enabled = enable;
-                obj.from = `system.host.${tools.getHostName()}.cli`;
-                obj.ts = Date.now();
-                this.objects.setObject(obj._id, obj, err => {
-                    return tools.maybeCallbackWithError(callback, err);
-                });
             }
+            obj.common.enabled = enable;
+            obj.from = `system.host.${tools.getHostName()}.cli`;
+            obj.ts = Date.now();
+            this.objects.setObject(obj._id, obj, err => {
+                return tools.maybeCallbackWithError(callback, err);
+            });
         });
     }
 
@@ -470,9 +453,8 @@ export class Users {
                             callback,
                             `Password for user "${result.username}" does not match${err ? `: ${err.message}` : ''}`,
                         );
-                    } else {
-                        return tools.maybeCallbackWithError(callback, null);
                     }
+                    return tools.maybeCallbackWithError(callback, null);
                 });
             });
         } else if (!password) {
@@ -497,9 +479,8 @@ export class Users {
                             callback,
                             `Password for user "${username}" does not match${err ? `: ${err.message}` : ''}`,
                         );
-                    } else {
-                        return tools.maybeCallbackWithError(callback, null);
                     }
+                    return tools.maybeCallbackWithError(callback, null);
                 });
             });
         } else {
@@ -509,9 +490,8 @@ export class Users {
                         callback,
                         `Password for user "${username}" does not match${err ? `: ${err.message}` : ''}`,
                     );
-                } else {
-                    return tools.maybeCallbackWithError(callback, null);
                 }
+                return tools.maybeCallbackWithError(callback, null);
             });
         }
     }
@@ -529,9 +509,8 @@ export class Users {
             }
             if (!obj) {
                 return tools.maybeCallbackWithError(callback, `User "${username}" not found`);
-            } else {
-                return tools.maybeCallbackWithError(callback, null, obj.common.enabled);
             }
+            return tools.maybeCallbackWithError(callback, null, obj.common.enabled);
         });
     }
 
@@ -548,9 +527,8 @@ export class Users {
             }
             if (!obj) {
                 return tools.maybeCallbackWithError(callback, `Group "${group}" not found`);
-            } else {
-                return tools.maybeCallbackWithError(callback, null, obj.common.enabled, obj.common.members);
             }
+            return tools.maybeCallbackWithError(callback, null, obj.common.enabled, obj.common.members);
         });
     }
 
@@ -579,14 +557,13 @@ export class Users {
             }
             if (!obj) {
                 return tools.maybeCallbackWithError(callback, `Group "${group}" not found`);
-            } else {
-                obj.common.enabled = enable;
-                obj.from = `system.host.${tools.getHostName()}.cli`;
-                obj.ts = Date.now();
-                this.objects.setObject(obj._id, obj, err => {
-                    return tools.maybeCallbackWithError(callback, err);
-                });
             }
+            obj.common.enabled = enable;
+            obj.from = `system.host.${tools.getHostName()}.cli`;
+            obj.ts = Date.now();
+            this.objects.setObject(obj._id, obj, err => {
+                return tools.maybeCallbackWithError(callback, err);
+            });
         });
     }
 
@@ -627,17 +604,15 @@ export class Users {
 
         if (group === 'administrator') {
             return tools.maybeCallbackWithError(callback, 'Group "administrator" cannot be deleted');
-        } else {
-            this.objects.getObject(`system.group.${_group}`, (err, obj) => {
-                if (!obj) {
-                    return tools.maybeCallbackWithError(callback, 'Group does not exists');
-                } else {
-                    this.objects.delObject(`system.group.${_group}`, err => {
-                        return tools.maybeCallbackWithError(callback, err);
-                    });
-                }
-            });
         }
+        this.objects.getObject(`system.group.${_group}`, (err, obj) => {
+            if (!obj) {
+                return tools.maybeCallbackWithError(callback, 'Group does not exists');
+            }
+            this.objects.delObject(`system.group.${_group}`, err => {
+                return tools.maybeCallbackWithError(callback, err);
+            });
+        });
     }
 
     /**
@@ -652,19 +627,17 @@ export class Users {
         this.objects.getObject(`system.group.${_group}`, (err, obj) => {
             if (!obj) {
                 return tools.maybeCallbackWithError(callback, 'Group does not exists');
-            } else {
-                const pos = obj.common.members.indexOf(`system.user.${username}`);
-                if (pos === -1) {
-                    return tools.maybeCallbackWithError(callback, 'User not in group');
-                } else {
-                    obj.common.members.splice(pos, 1);
-                    obj.from = `system.host.${tools.getHostName()}.cli`;
-                    obj.ts = Date.now();
-                    this.objects.setObject(obj._id, obj, err => {
-                        return tools.maybeCallbackWithError(callback, err);
-                    });
-                }
             }
+            const pos = obj.common.members.indexOf(`system.user.${username}`);
+            if (pos === -1) {
+                return tools.maybeCallbackWithError(callback, 'User not in group');
+            }
+            obj.common.members.splice(pos, 1);
+            obj.from = `system.host.${tools.getHostName()}.cli`;
+            obj.ts = Date.now();
+            this.objects.setObject(obj._id, obj, err => {
+                return tools.maybeCallbackWithError(callback, err);
+            });
         });
     }
 }

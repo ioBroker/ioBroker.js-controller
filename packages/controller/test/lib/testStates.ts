@@ -1,11 +1,11 @@
 import type { TestContext } from '../_Types.js';
 
 export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
-    const testName = context.name + ' ' + context.adapterShortName + ' adapter: ';
+    const testName = `${context.name} ${context.adapterShortName} adapter: `;
     const gid = 'testStates';
 
     // setState
-    it(testName + 'Set local state', function (done) {
+    it(`${testName}Set local state`, function (done) {
         this.timeout(3_000);
         context.adapter.setObject(
             gid,
@@ -25,13 +25,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             function (err) {
                 expect(err).to.be.null;
 
-                context.states.getState(context.adapterShortName + '.0.' + gid, function (err, _state) {
+                context.states.getState(`${context.adapterShortName}.0.${gid}`, function (err, _state) {
                     expect(err).to.be.null;
 
                     context.adapter.setState(gid, 1, function (err) {
                         expect(err).to.be.not.ok;
 
-                        context.states.getState(context.adapterShortName + '.0.' + gid, function (err, state) {
+                        context.states.getState(`${context.adapterShortName}.0.${gid}`, function (err, state) {
                             expect(err).to.be.null;
                             expect(state).to.be.ok;
                             expect(state!.val).to.equal(1);
@@ -40,7 +40,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             context.adapter.setState(gid, 2, true, function (err) {
                                 expect(err).to.be.not.ok;
 
-                                context.states.getState(context.adapterShortName + '.0.' + gid, function (err, state) {
+                                context.states.getState(`${context.adapterShortName}.0.${gid}`, function (err, state) {
                                     expect(err).to.be.null;
                                     expect(state).to.be.ok;
                                     expect(state!.val).to.equal(2);
@@ -50,7 +50,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                         expect(err).to.be.not.ok;
 
                                         context.states.getState(
-                                            context.adapterShortName + '.0.' + gid,
+                                            `${context.adapterShortName}.0.${gid}`,
                                             function (err, state) {
                                                 expect(err).to.be.null;
                                                 expect(state).to.be.ok;
@@ -61,7 +61,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                                     expect(err).to.be.not.ok;
 
                                                     context.states.getState(
-                                                        context.adapterShortName + '.0.' + gid,
+                                                        `${context.adapterShortName}.0.${gid}`,
                                                         function (err, state) {
                                                             expect(err).to.be.null;
                                                             expect(state).to.be.ok;
@@ -75,7 +75,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                                                     expect(err).to.be.not.ok;
 
                                                                     context.states.getState(
-                                                                        context.adapterShortName + '.0.' + gid,
+                                                                        `${context.adapterShortName}.0.${gid}`,
                                                                         function (err, state) {
                                                                             expect(err).to.be.null;
                                                                             expect(state).to.be.ok;
@@ -102,19 +102,19 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // getState
-    it(testName + 'Get local state', function (done) {
+    it(`${testName}Get local state`, function (done) {
         this.timeout(3_000);
         context.adapter.getState(gid, function (err) {
             expect(err).to.be.not.ok;
 
-            context.adapter.getState(context.adapterShortName + '.0.' + gid, function (err, state) {
+            context.adapter.getState(`${context.adapterShortName}.0.${gid}`, function (err, state) {
                 expect(err).to.be.null;
                 expect(state).to.be.ok;
                 expect(state!.val).to.equal(3);
                 expect(state!.ack).to.equal(true);
 
                 // ask for non-existing state
-                context.adapter.getState(gid + '6', function (err, state) {
+                context.adapter.getState(`${gid}6`, function (err, state) {
                     expect(err).to.be.not.ok;
                     expect(state).to.be.null;
                     done();
@@ -124,14 +124,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // getStates
-    it(testName + 'Get local states', function (done) {
+    it(`${testName}Get local states`, function (done) {
         this.timeout(3_000);
         context.adapter.getStates('*', function (err, states) {
             expect(err).to.be.not.ok;
             expect(states).to.be.an('object');
-            expect(states![context.adapterShortName + '.0.' + gid]).to.be.an('object');
-            expect(states![context.adapterShortName + '.0.' + gid].val).to.equal(3);
-            expect(states![context.adapterShortName + '.0.' + gid].ack).equal(true);
+            expect(states![`${context.adapterShortName}.0.${gid}`]).to.be.an('object');
+            expect(states![`${context.adapterShortName}.0.${gid}`].val).to.equal(3);
+            expect(states![`${context.adapterShortName}.0.${gid}`].ack).equal(true);
 
             context.adapter.getStates('abc*', function (err, states) {
                 expect(err).to.be.not.ok;
@@ -140,12 +140,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 // no states should match
                 expect(Object.keys(states!).length).to.be.equal(0);
 
-                context.adapter.getStates(gid.substring(0, gid.length - 2) + '*', function (err, states) {
+                context.adapter.getStates(`${gid.substring(0, gid.length - 2)}*`, function (err, states) {
                     expect(err).to.be.not.ok;
                     expect(states).to.be.an('object');
-                    expect(states![context.adapterShortName + '.0.' + gid]).to.be.an('object');
-                    expect(states![context.adapterShortName + '.0.' + gid].val).to.equal(3);
-                    expect(states![context.adapterShortName + '.0.' + gid].ack).equal(true);
+                    expect(states![`${context.adapterShortName}.0.${gid}`]).to.be.an('object');
+                    expect(states![`${context.adapterShortName}.0.${gid}`].val).to.equal(3);
+                    expect(states![`${context.adapterShortName}.0.${gid}`].ack).equal(true);
 
                     done();
                 });
@@ -154,7 +154,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // delState
-    it(testName + 'Delete local state', function (done) {
+    it(`${testName}Delete local state`, function (done) {
         this.timeout(3_000);
         context.adapter.delState(gid, function (err) {
             expect(err).to.be.not.ok;
@@ -173,7 +173,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // setStateChanged
-    it(testName + 'Set local state if changed', function (done) {
+    it(`${testName}Set local state if changed`, function (done) {
         // create object
         context.adapter.setObject(
             gid,
@@ -198,20 +198,20 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     context.adapter.setStateChanged(gid, 1, function (err, id, notChanged) {
                         expect(err).to.be.not.ok;
                         // redis do not return ID
-                        expect(id).to.be.equal(context.adapterShortName + '.0.' + gid);
+                        expect(id).to.be.equal(`${context.adapterShortName}.0.${gid}`);
                         expect(notChanged).to.be.true;
 
-                        context.states.getState(context.adapterShortName + '.0.' + gid, function (err, state) {
+                        context.states.getState(`${context.adapterShortName}.0.${gid}`, function (err, state) {
                             expect(err).to.be.not.ok;
                             expect(state).to.be.ok;
                             expect(state!.ts).to.be.equal(ts);
 
                             context.adapter.setStateChanged(gid, 1, true, function (err, id, notChanged) {
                                 expect(err).to.be.not.ok;
-                                expect(id).to.be.equal(context.adapterShortName + '.0.' + gid);
+                                expect(id).to.be.equal(`${context.adapterShortName}.0.${gid}`);
                                 expect(notChanged).to.be.false;
 
-                                context.states.getState(context.adapterShortName + '.0.' + gid, function (err, state) {
+                                context.states.getState(`${context.adapterShortName}.0.${gid}`, function (err, state) {
                                     expect(err).to.be.not.ok;
                                     expect(state).to.be.ok;
                                     expect(state!.ack).to.be.true;
@@ -227,9 +227,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // subscribeStates
-    it(testName + 'Test subscribe local states', function (done) {
+    it(`${testName}Test subscribe local states`, function (done) {
         this.timeout(3_000);
-        const sGid = gid + '5';
+        const sGid = `${gid}5`;
 
         context.adapter.setObject(
             sGid,
@@ -249,11 +249,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             function (err) {
                 expect(err).to.be.null;
 
-                context.states.setState(context.adapterShortName + '.0.' + sGid, 9, function (err) {
+                context.states.setState(`${context.adapterShortName}.0.${sGid}`, 9, function (err) {
                     expect(err).to.be.not.ok;
 
                     context.onAdapterStateChanged = function (id, state) {
-                        if (id === context.adapterShortName + '.0.' + sGid) {
+                        if (id === `${context.adapterShortName}.0.${sGid}`) {
                             expect(state).to.be.ok;
                             expect(state!.val).to.equal(10);
                             context.onAdapterStateChanged = null;
@@ -262,7 +262,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     };
 
                     context.adapter.subscribeStates('*', function () {
-                        context.states.setState(context.adapterShortName + '.0.' + sGid, 10, function (err) {
+                        context.states.setState(`${context.adapterShortName}.0.${sGid}`, 10, function (err) {
                             expect(err).to.be.not.ok;
                         });
                     });
@@ -271,7 +271,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         );
     });
 
-    it(testName + 'Test subscribe local states on array', async () => {
+    it(`${testName}Test subscribe local states on array`, async () => {
         const sGid = `${gid}subscribeArray`;
         const testVal = 50;
 
@@ -306,22 +306,22 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // unsubscribeStates
-    it(testName + 'Test unsubscribe local states', function (done) {
+    it(`${testName}Test unsubscribe local states`, function (done) {
         this.timeout(3_000);
-        const sGid = gid + '5';
+        const sGid = `${gid}5`;
 
         context.onAdapterStateChanged = function (id, state) {
-            if (id === context.adapterShortName + '.0.' + sGid) {
+            if (id === `${context.adapterShortName}.0.${sGid}`) {
                 expect(state).to.be.ok;
                 expect(state!.val).to.equal(9);
             }
         };
 
-        context.states.setState(context.adapterShortName + '.0.' + sGid, 9, function (err) {
+        context.states.setState(`${context.adapterShortName}.0.${sGid}`, 9, function (err) {
             expect(err).to.be.not.ok;
 
             context.adapter.unsubscribeStates('*', function () {
-                context.states.setState(context.adapterShortName + '.0.' + sGid, 10, function (err) {
+                context.states.setState(`${context.adapterShortName}.0.${sGid}`, 10, function (err) {
                     expect(err).to.be.not.ok;
                 });
                 setTimeout(function () {
@@ -334,9 +334,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
     // -------------------------------------------------------------------------------------
     // setForeignState
-    it(testName + 'Set foreign state', function (done) {
+    it(`${testName}Set foreign state`, function (done) {
         this.timeout(3_000);
-        const fGid = context.adapterShortName + '1.0.' + gid;
+        const fGid = `${context.adapterShortName}1.0.${gid}`;
         context.objects.setObject(
             fGid,
             {
@@ -397,9 +397,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // setForeignState with acl all
-    it(testName + 'Set foreign state with acl', function (done) {
+    it(`${testName}Set foreign state with acl`, function (done) {
         this.timeout(3_000);
-        const fGid = context.adapterShortName + '3.0.' + gid;
+        const fGid = `${context.adapterShortName}3.0.${gid}`;
         context.adapter.setForeignObject(
             'system.group.writer2',
             {
@@ -539,9 +539,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // setForeignState with acl failure
-    it(testName + 'Set foreign state with acl failure', function (done) {
+    it(`${testName}Set foreign state with acl failure`, function (done) {
         this.timeout(3_000);
-        const fGid = context.adapterShortName + '3.1.' + gid;
+        const fGid = `${context.adapterShortName}3.1.${gid}`;
 
         context.objects.setObject(
             fGid,
@@ -580,9 +580,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // setForeignState with acl write only
-    it(testName + 'Set foreign state with acl write only', function (done) {
+    it(`${testName}Set foreign state with acl write only`, function (done) {
         this.timeout(3_000);
-        const fGid = context.adapterShortName + '3.0.' + gid;
+        const fGid = `${context.adapterShortName}3.0.${gid}`;
         context.objects.setObject(
             fGid,
             {
@@ -633,9 +633,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // setForeignStateChanged
-    it(testName + 'Set foreign state if changed', function (done) {
+    it(`${testName}Set foreign state if changed`, function (done) {
         // create object
-        const fGid = context.adapterShortName + '1.0.1' + gid;
+        const fGid = `${context.adapterShortName}1.0.1${gid}`;
         context.adapter.setForeignObject(
             fGid,
             {
@@ -688,9 +688,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // getForeignState
-    it(testName + 'Get foreign state', function (done) {
+    it(`${testName}Get foreign state`, function (done) {
         this.timeout(3_000);
-        const fGid = context.adapterShortName + '1.0.' + gid;
+        const fGid = `${context.adapterShortName}1.0.${gid}`;
         context.adapter.getForeignState(fGid, function (err, state) {
             expect(err).to.be.null;
             expect(state).to.be.ok;
@@ -698,7 +698,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             expect(state!.ack).to.equal(true);
 
             // ask for non-existing state
-            context.adapter.getForeignState(fGid + '5', function (err, state) {
+            context.adapter.getForeignState(`${fGid}5`, function (err, state) {
                 expect(err).to.be.not.ok;
                 expect(state).to.be.null;
                 done();
@@ -707,16 +707,16 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // getForeignStates
-    it(testName + 'Get foreign states', function (done) {
+    it(`${testName}Get foreign states`, function (done) {
         this.timeout(3_000);
-        context.adapter.getForeignStates(context.adapterShortName + '1.0.*', function (err, states) {
+        context.adapter.getForeignStates(`${context.adapterShortName}1.0.*`, function (err, states) {
             expect(err).to.be.not.ok;
             expect(states).to.be.an('object');
-            expect(states![context.adapterShortName + '1.0.' + gid]).to.be.ok;
-            expect(states![context.adapterShortName + '1.0.' + gid].val).to.equal(3);
-            expect(states![context.adapterShortName + '1.0.' + gid].ack).equal(true);
+            expect(states![`${context.adapterShortName}1.0.${gid}`]).to.be.ok;
+            expect(states![`${context.adapterShortName}1.0.${gid}`].val).to.equal(3);
+            expect(states![`${context.adapterShortName}1.0.${gid}`].ack).equal(true);
 
-            context.adapter.getForeignStates(context.adapterShortName + '1.0.abc*', function (err, states) {
+            context.adapter.getForeignStates(`${context.adapterShortName}1.0.abc*`, function (err, states) {
                 expect(err).to.be.not.ok;
                 expect(states).to.be.an('object');
 
@@ -724,13 +724,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 expect(Object.keys(states!).length).to.be.equal(0);
 
                 context.adapter.getForeignStates(
-                    context.adapterShortName + '1.0.' + gid.substring(0, gid.length - 2) + '*',
+                    `${context.adapterShortName}1.0.${gid.substring(0, gid.length - 2)}*`,
                     function (err, states) {
                         expect(err).to.be.not.ok;
                         expect(states).to.be.an('object');
-                        expect(states![context.adapterShortName + '1.0.' + gid]).to.be.ok;
-                        expect(states![context.adapterShortName + '1.0.' + gid].val).to.equal(3);
-                        expect(states![context.adapterShortName + '1.0.' + gid].ack).equal(true);
+                        expect(states![`${context.adapterShortName}1.0.${gid}`]).to.be.ok;
+                        expect(states![`${context.adapterShortName}1.0.${gid}`].val).to.equal(3);
+                        expect(states![`${context.adapterShortName}1.0.${gid}`].ack).equal(true);
 
                         done();
                     },
@@ -740,16 +740,16 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // delForeignState
-    it(testName + 'Delete foreign state', function (done) {
+    it(`${testName}Delete foreign state`, function (done) {
         this.timeout(3_000);
-        context.adapter.delForeignState(context.adapterShortName + '1.0.' + gid, function (err) {
+        context.adapter.delForeignState(`${context.adapterShortName}1.0.${gid}`, function (err) {
             expect(err).to.be.not.ok;
 
-            context.adapter.getForeignState(context.adapterShortName + '1.0.' + gid, function (err, state) {
+            context.adapter.getForeignState(`${context.adapterShortName}1.0.${gid}`, function (err, state) {
                 expect(err).to.be.not.ok;
                 expect(state).to.be.not.ok;
 
-                context.adapter.delForeignState(context.adapterShortName + '1.0.' + gid, function (err) {
+                context.adapter.delForeignState(`${context.adapterShortName}1.0.${gid}`, function (err) {
                     expect(err).to.be.not.ok;
 
                     done();
@@ -759,7 +759,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // get foreign system state
-    it(testName + 'Get System State', function (done) {
+    it(`${testName}Get System State`, function (done) {
         this.timeout(3_000);
 
         context.adapter.getForeignState('system.adapter.test.0.memRss', (err, state) => {
@@ -771,7 +771,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // subscribeForeignStates
-    it(testName + 'Test subscribe foreign states', function (done) {
+    it(`${testName}Test subscribe foreign states`, function (done) {
         this.timeout(3_000);
         const sGid = `${context.adapterShortName}2.0.${gid}6`;
 
@@ -805,7 +805,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         }
                     };
 
-                    context.adapter.subscribeForeignStates(context.adapterShortName + '2.0.*', function () {
+                    context.adapter.subscribeForeignStates(`${context.adapterShortName}2.0.*`, function () {
                         context.states.setState(sGid, 10, function (err) {
                             expect(err).to.be.not.ok;
                         });
@@ -816,7 +816,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // subscribeForeignStates with array
-    it(testName + 'Test subscribe foreign states with array', async () => {
+    it(`${testName}Test subscribe foreign states with array`, async () => {
         const stateIds = [
             `${context.adapterShortName}3.0.${gid}76`,
             `${context.adapterShortName}3.0.${gid}77`,
@@ -867,9 +867,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     }).timeout(3_000);
 
     // unsubscribeForeignStates
-    it(testName + 'Test unsubscribe foreign states', function (done) {
+    it(`${testName}Test unsubscribe foreign states`, function (done) {
         this.timeout(3_000);
-        const sGid = context.adapterShortName + '2.0.' + gid + '6';
+        const sGid = `${context.adapterShortName}2.0.${gid}6`;
 
         context.onAdapterStateChanged = function (id, state) {
             if (id === sGid) {
@@ -882,7 +882,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         context.states.setState(sGid, 9, err => {
             expect(err).to.be.not.ok;
 
-            context.adapter.unsubscribeForeignStates(context.adapterShortName + '2.0.*', () =>
+            context.adapter.unsubscribeForeignStates(`${context.adapterShortName}2.0.*`, () =>
                 context.states.setState(sGid, 10, err => {
                     expect(err).to.be.not.ok;
                     setTimeout(() => {
@@ -895,10 +895,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // getState
-    it(testName + 'Set/Get local state wit expiry', function (done) {
+    it(`${testName}Set/Get local state wit expiry`, function (done) {
         this.timeout(10000);
 
-        const eGid = context.adapterShortName + '.0.' + gid + '_expire';
+        const eGid = `${context.adapterShortName}.0.${gid}_expire`;
         context.adapter.setForeignObject(
             eGid,
             {
@@ -926,10 +926,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     }
                 };
 
-                context.adapter.setState(gid + '_expire', { val: 1, expire: 4, ack: true }, function (err) {
+                context.adapter.setState(`${gid}_expire`, { val: 1, expire: 4, ack: true }, function (err) {
                     expect(err).to.be.not.ok;
 
-                    context.adapter.getState(gid + '_expire', function (err, state) {
+                    context.adapter.getState(`${gid}_expire`, function (err, state) {
                         // read directly, should work
                         expect(err).to.be.null;
                         expect(state).to.be.ok;
@@ -939,7 +939,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         context.adapter.subscribeForeignStates(eGid, function () {
                             setTimeout(() => {
                                 // read after timeout, should not work
-                                context.adapter.getState(gid + '_expire', function (err, state) {
+                                context.adapter.getState(`${gid}_expire`, function (err, state) {
                                     expect(err).to.be.not.ok;
                                     expect(state).to.be.null;
                                     expect(published).to.be.true;
@@ -953,7 +953,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         );
     });
 
-    it(testName + 'Should respect from', done => {
+    it(`${testName}Should respect from`, done => {
         // we set a state and set a custom from property
         context.adapter.setState(`${gid}stateWithFrom`, { val: 1, from: 'Paris with love' }, err => {
             expect(err).to.be.not.ok;
@@ -965,7 +965,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 
-    it(testName + 'Should use default from', done => {
+    it(`${testName}Should use default from`, done => {
         // we set a state without providing `from` property
         context.adapter.setState(`${gid}stateWithFrom`, { val: 1 }, err => {
             expect(err).to.be.not.ok;
@@ -998,7 +998,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
      */
 
-    it(testName + 'Should also set object id', async () => {
+    it(`${testName}Should also set object id`, async () => {
         // set state with device, channel, state it is supported (legacy) but not recommended, so pass as any
         await context.adapter.setStateAsync({ device: `${gid}derGeraet`, channel: 'donau', state: 'awake' } as any, {
             val: 5,
@@ -1015,7 +1015,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         return Promise.resolve();
     });
 
-    it(testName + 'Should round to next 5', async () => {
+    it(`${testName}Should round to next 5`, async () => {
         // we test the step attribute here
         await context.adapter.setObjectAsync(`${gid}step`, {
             common: {
@@ -1045,7 +1045,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(state!.val).to.equal(-20);
     });
 
-    it(testName + 'Should throw on invalid subscribe', async () => {
+    it(`${testName}Should throw on invalid subscribe`, async () => {
         expect(context.adapter.subscribeStatesAsync('hm-rpc.0.§.test')).to.be.rejectedWith(
             /is not a valid ID pattern/g,
             'Should throw on invalid pattern',
@@ -1053,7 +1053,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         await context.adapter.subscribeStatesAsync('*hm-rpc.0._.**test/*');
     });
 
-    it(testName + 'sendTo with timeout should reject in time', () => {
+    it(`${testName}sendTo with timeout should reject in time`, () => {
         return expect(
             context.adapter.sendToAsync('testInstance.0', 'test', {}, { timeout: 500 }),
         ).to.be.eventually.rejectedWith('Timeout exceeded', 'Should have thrown after timeout is over');

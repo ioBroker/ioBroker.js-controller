@@ -160,7 +160,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
             let results = [];
             const list = fs.readdirSync(dir);
             list.forEach(file => {
-                file = dir + '/' + file;
+                file = `${dir}/${file}`;
                 const stat = fs.statSync(file);
                 if (stat && stat.isDirectory()) {
                     /* Recurse into a subdirectory */
@@ -539,7 +539,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
 
             if (stat.isDirectory()) {
                 // read all entries and delete every one
-                fs.readdirSync(location).forEach(dir => this._unlink(id, name + '/' + dir));
+                fs.readdirSync(location).forEach(dir => this._unlink(id, `${name}/${dir}`));
 
                 this.log.debug(`Delete directory ${path.join(id, name)}`);
                 try {
@@ -556,7 +556,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
                     delete this.files[id];
                 }
             } else {
-                this.log.debug('Delete file ' + path.join(id, name));
+                this.log.debug(`Delete file ${path.join(id, name)}`);
                 try {
                     fs.removeSync(location);
                 } catch (e) {
@@ -950,7 +950,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
             result.rows.push({ id: id, value: obj });
         }
 
-        const f = eval('(' + func.map.replace(/emit/g, '_emit_') + ')');
+        const f = eval(`(${func.map.replace(/emit/g, '_emit_')})`);
 
         for (const [id, obj] of Object.entries(this.dataset)) {
             if (params) {

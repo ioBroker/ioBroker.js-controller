@@ -29,7 +29,7 @@ import type { ConnectionOptions, DbStatus } from '@iobroker/db-base/inMemFileDB'
 
 import * as url from 'node:url';
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 
 const ERRORS = CONSTS.ERRORS;
 
@@ -262,9 +262,8 @@ export class ObjectsInRedisClient {
 
             if (!ready) {
                 return 300;
-            } else {
-                return retry_max_delay;
             }
+            return retry_max_delay;
         };
 
         delete this.settings.connection.options.retry_max_delay;
@@ -735,9 +734,8 @@ export class ObjectsInRedisClient {
                 if (!e.message.includes('UNSUPPORTED')) {
                     this.log.error(`${this.namespace} Cannot determine Set feature status: ${e.message}`);
                     return;
-                } else {
-                    this.useSets = false;
                 }
+                this.useSets = false;
             }
 
             try {
@@ -950,9 +948,8 @@ export class ObjectsInRedisClient {
             const fileOptions = { notExists: true };
             if (utils.checkFile(fileOptions, options, flag, this.defaultNewAcl)) {
                 return tools.maybeCallback(callback, false, options, fileOptions); // NO error
-            } else {
-                return tools.maybeCallback(callback, true, options); // error
             }
+            return tools.maybeCallback(callback, true, options); // error
         }
         if (!this.client) {
             // @ts-expect-error TODO: not in specs, better just maybe cb check false?
@@ -973,9 +970,8 @@ export class ObjectsInRedisClient {
         }
         if (utils.checkFile(fileOptions, options, flag, this.defaultNewAcl)) {
             return tools.maybeCallback(callback, false, options, fileOptions); // NO error
-        } else {
-            return tools.maybeCallback(callback, true, options); // error
         }
+        return tools.maybeCallback(callback, true, options); // error
     }
 
     checkFileRights(
@@ -1181,9 +1177,8 @@ export class ObjectsInRedisClient {
         return this.checkFileRights(id, name, options, CONSTS.ACCESS_WRITE, (err, options, meta) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
-            } else {
-                return this._writeFile(id, name, data, options, callback, meta);
             }
+            return this._writeFile(id, name, data, options, callback, meta);
         });
     }
 
@@ -1256,13 +1251,12 @@ export class ObjectsInRedisClient {
         this.checkFileRights(id, name, options, CONSTS.ACCESS_READ, async (err, options, meta) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
-            } else {
-                try {
-                    const { file, mimeType } = await this._readFile(id, name, meta);
-                    return tools.maybeCallbackWithError(callback, null, file, mimeType);
-                } catch (e) {
-                    return tools.maybeCallbackWithError(callback, e);
-                }
+            }
+            try {
+                const { file, mimeType } = await this._readFile(id, name, meta);
+                return tools.maybeCallbackWithError(callback, null, file, mimeType);
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
             }
         });
     }
@@ -1350,12 +1344,11 @@ export class ObjectsInRedisClient {
         }
         if (meta && meta.notExists) {
             return this._rm(id, name, options);
-        } else {
-            const metaID = this.getFileId(id, name, true);
-            const dataID = this.getFileId(id, name, false);
-            await this._delBinaryState(dataID);
-            await this.client.del(metaID);
         }
+        const metaID = this.getFileId(id, name, true);
+        const dataID = this.getFileId(id, name, false);
+        await this._delBinaryState(dataID);
+        await this.client.del(metaID);
     }
 
     unlink(id: string, name: string, options: CallOptions | null | undefined, callback?: ioBroker.RmCallback): void {
@@ -1378,17 +1371,15 @@ export class ObjectsInRedisClient {
         this.checkFileRights(id, name, options, CONSTS.ACCESS_DELETE, async (err, options, meta) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
-            } else {
-                if (!options.acl.file.delete) {
-                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
-                } else {
-                    try {
-                        const files = await this._unlink(id, name, options, meta);
-                        return tools.maybeCallbackWithError(callback, null, files);
-                    } catch (e) {
-                        return tools.maybeCallbackWithError(callback, e);
-                    }
-                }
+            }
+            if (!options.acl.file.delete) {
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
+            }
+            try {
+                const files = await this._unlink(id, name, options, meta);
+                return tools.maybeCallbackWithError(callback, null, files);
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
             }
         });
     }
@@ -1478,11 +1469,10 @@ export class ObjectsInRedisClient {
                 const parts = key.substr(start, key.length - end).split('/');
                 if (parts.length === deepLevel) {
                     return !key.includes('/_data.json$%$') && key !== '_data.json'; // sort out "virtual" files that are used to mark directories
-                } else {
-                    const dir = parts[deepLevel - 1];
-                    if (dirs.indexOf(dir) === -1) {
-                        dirs.push(dir);
-                    }
+                }
+                const dir = parts[deepLevel - 1];
+                if (dirs.indexOf(dir) === -1) {
+                    dirs.push(dir);
                 }
             }
         });
@@ -1594,13 +1584,11 @@ export class ObjectsInRedisClient {
         this.checkFileRights(id, name, options, CONSTS.ACCESS_READ, (err, options) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
-            } else {
-                if (!options.acl.file.list) {
-                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
-                } else {
-                    this._readDir(id, name, options, callback);
-                }
             }
+            if (!options.acl.file.list) {
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
+            }
+            this._readDir(id, name, options, callback);
         });
     }
 
@@ -1618,30 +1606,29 @@ export class ObjectsInRedisClient {
     ): Promise<void> {
         if (!keys || !keys.length) {
             return tools.maybeCallback(callback);
-        } else {
-            if (!this.client) {
-                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
-            }
-            for (const id of keys) {
-                try {
-                    try {
-                        await this.client.rename(
-                            id.replace(/\$%\$meta$/, '$%$data'),
-                            id.replace(oldBase, newBase).replace(/\$%\$meta$/, '$%$data'),
-                        );
-                    } catch (e) {
-                        // _data.json is not having a data key, so ignore error
-                        if (!(id.endsWith('/_data.json$%$meta') && e.message.includes('no such key'))) {
-                            throw e;
-                        }
-                    }
-                    await this.client.rename(id, id.replace(oldBase, newBase));
-                } catch (e) {
-                    return tools.maybeCallbackWithRedisError(callback, e);
-                }
-            }
-            return tools.maybeCallback(callback);
         }
+        if (!this.client) {
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
+        }
+        for (const id of keys) {
+            try {
+                try {
+                    await this.client.rename(
+                        id.replace(/\$%\$meta$/, '$%$data'),
+                        id.replace(oldBase, newBase).replace(/\$%\$meta$/, '$%$data'),
+                    );
+                } catch (e) {
+                    // _data.json is not having a data key, so ignore error
+                    if (!(id.endsWith('/_data.json$%$meta') && e.message.includes('no such key'))) {
+                        throw e;
+                    }
+                }
+                await this.client.rename(id, id.replace(oldBase, newBase));
+            } catch (e) {
+                return tools.maybeCallbackWithRedisError(callback, e);
+            }
+        }
+        return tools.maybeCallback(callback);
     }
 
     private async _rename(
@@ -1729,14 +1716,13 @@ export class ObjectsInRedisClient {
                 result = keys;
             }
             return this._renameHelper(result, oldBase, newBase, callback);
-        } else {
-            try {
-                await this.client.rename(oldDataID, newDataID);
-                await this.client.rename(oldMetaID, newMetaID);
-                return tools.maybeCallback(callback);
-            } catch (e) {
-                return tools.maybeCallbackWithRedisError(callback, e);
-            }
+        }
+        try {
+            await this.client.rename(oldDataID, newDataID);
+            await this.client.rename(oldMetaID, newMetaID);
+            return tools.maybeCallback(callback);
+        } catch (e) {
+            return tools.maybeCallbackWithRedisError(callback, e);
         }
     }
 
@@ -1782,13 +1768,11 @@ export class ObjectsInRedisClient {
         this.checkFileRights(id, oldName, options, CONSTS.ACCESS_WRITE, (err, options, meta) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
-            } else {
-                if (!options.acl.file.write) {
-                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
-                } else {
-                    this._rename(id, oldName, newName, options, callback, meta);
-                }
             }
+            if (!options.acl.file.write) {
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
+            }
+            this._rename(id, oldName, newName, options, callback, meta);
         });
     }
 
@@ -1835,9 +1819,8 @@ export class ObjectsInRedisClient {
         this.checkFileRights(id, name, options, CONSTS.ACCESS_WRITE, (err, options, meta) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
-            } else {
-                return this._touch(id, name, callback, meta);
             }
+            return this._touch(id, name, callback, meta);
         });
     }
 
@@ -1848,15 +1831,14 @@ export class ObjectsInRedisClient {
     private async _rmHelper(keys: string[]): Promise<void> {
         if (!keys.length) {
             return;
-        } else {
-            if (!this.client) {
-                throw new Error(ERRORS.ERROR_DB_CLOSED);
-            }
+        }
+        if (!this.client) {
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
+        }
 
-            for (const id of keys) {
-                await this._delBinaryState(id.replace(/\$%\$meta$/, '$%$data'));
-                await this.client.del(id);
-            }
+        for (const id of keys) {
+            await this._delBinaryState(id.replace(/\$%\$meta$/, '$%$data'));
+            await this.client.del(id);
         }
     }
 
@@ -1933,9 +1915,8 @@ export class ObjectsInRedisClient {
                 const pos = name.lastIndexOf('/');
                 if (pos !== -1) {
                     return { file: name.substring(pos + 1), path: name.substring(0, pos) };
-                } else {
-                    return { file: id, path: '' };
                 }
+                return { file: id, path: '' };
             });
 
             try {
@@ -1964,17 +1945,15 @@ export class ObjectsInRedisClient {
         this.checkFileRights(id, null, options, CONSTS.ACCESS_DELETE, async (err, options, meta) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
-            } else {
-                if (!options.acl.file.delete) {
-                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
-                } else {
-                    try {
-                        const files = await this._rm(id, name, options, meta && meta.notExists ? null : meta);
-                        return tools.maybeCallbackWithError(callback, null, files);
-                    } catch (e) {
-                        return tools.maybeCallbackWithError(callback, e);
-                    }
-                }
+            }
+            if (!options.acl.file.delete) {
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
+            }
+            try {
+                const files = await this._rm(id, name, options, meta && meta.notExists ? null : meta);
+                return tools.maybeCallbackWithError(callback, null, files);
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
             }
         });
     }
@@ -2002,16 +1981,14 @@ export class ObjectsInRedisClient {
         this.checkFileRights(id, dirName, options, CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
-            } else {
-                if (!options.acl.file.write) {
-                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
-                } else {
-                    // we create a dummy file (for file this file exists to store meta data) - do not override passed options
-                    options = { ...options, virtualFile: true };
-                    const realName = dirName + (dirName.endsWith('/') ? '' : '/');
-                    this.writeFile(id, `${realName}_data.json`, '', options, callback);
-                }
             }
+            if (!options.acl.file.write) {
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
+            }
+            // we create a dummy file (for file this file exists to store meta data) - do not override passed options
+            options = { ...options, virtualFile: true };
+            const realName = dirName + (dirName.endsWith('/') ? '' : '/');
+            this.writeFile(id, `${realName}_data.json`, '', options, callback);
         });
     }
 
@@ -2199,9 +2176,9 @@ export class ObjectsInRedisClient {
             this.getUserGroup(options.owner, (user, groups) => {
                 if (!groups || !groups[0]) {
                     return tools.maybeCallbackWithError(callback, `user "${options.owner}" belongs to no group`);
-                } else {
-                    options.ownerGroup = groups[0];
                 }
+                options.ownerGroup = groups[0];
+
                 this.chownFile(id, name, options, callback);
             });
             return;
@@ -2210,13 +2187,11 @@ export class ObjectsInRedisClient {
         this.checkFileRights(id, name, options, CONSTS.ACCESS_WRITE, (err, options, meta) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
-            } else {
-                if (!options.acl.file.write) {
-                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
-                } else {
-                    return this._chownFile(id, name, options, callback, meta);
-                }
             }
+            if (!options.acl.file.write) {
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
+            }
+            return this._chownFile(id, name, options, callback, meta);
         });
     }
 
@@ -2410,13 +2385,11 @@ export class ObjectsInRedisClient {
         this.checkFileRights(id, name, options, CONSTS.ACCESS_WRITE, (err, options, meta) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
-            } else {
-                if (!options.acl.file.write) {
-                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
-                } else {
-                    return this._chmodFile(id, name, options, callback, meta);
-                }
             }
+            if (!options.acl.file.write) {
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
+            }
+            return this._chmodFile(id, name, options, callback, meta);
         });
     }
 
@@ -2455,10 +2428,9 @@ export class ObjectsInRedisClient {
         utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, _options) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
-            } else {
-                // cache cannot be enabled
-                return tools.maybeCallbackWithError(callback, null, false);
             }
+            // cache cannot be enabled
+            return tools.maybeCallbackWithError(callback, null, false);
         });
     }
 
@@ -2592,9 +2564,8 @@ export class ObjectsInRedisClient {
         utils.checkObjectRights(this, null, null, options, 'list', err => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
-            } else {
-                return this._subscribe(pattern, false, callback);
             }
+            return this._subscribe(pattern, false, callback);
         });
     }
 
@@ -2630,9 +2601,8 @@ export class ObjectsInRedisClient {
         utils.checkObjectRights(this, null, null, options, 'list', err => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
-            } else {
-                return this._subscribe(pattern, true, callback);
             }
+            return this._subscribe(pattern, true, callback);
         });
     }
 
@@ -2675,13 +2645,12 @@ export class ObjectsInRedisClient {
         utils.checkObjectRights(this, null, null, options, 'list', async err => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
-            } else {
-                try {
-                    await this._unsubscribe(pattern, false);
-                    return tools.maybeCallback(callback);
-                } catch (e) {
-                    return tools.maybeCallbackWithRedisError(callback, e);
-                }
+            }
+            try {
+                await this._unsubscribe(pattern, false);
+                return tools.maybeCallback(callback);
+            } catch (e) {
+                return tools.maybeCallbackWithRedisError(callback, e);
             }
         });
     }
@@ -2717,13 +2686,12 @@ export class ObjectsInRedisClient {
         utils.checkObjectRights(this, null, null, options, 'list', async err => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
-            } else {
-                try {
-                    await this._unsubscribe(pattern, true);
-                    return tools.maybeCallback(callback);
-                } catch (e) {
-                    return tools.maybeCallbackWithRedisError(callback, e);
-                }
+            }
+            try {
+                await this._unsubscribe(pattern, true);
+                return tools.maybeCallback(callback);
+            } catch (e) {
+                return tools.maybeCallbackWithRedisError(callback, e);
             }
         });
     }
@@ -2737,37 +2705,36 @@ export class ObjectsInRedisClient {
     private async _objectHelper(keys: string[], objs: any[]): Promise<void> {
         if (!keys.length) {
             return;
-        } else {
-            if (!this.client) {
-                throw new Error(ERRORS.ERROR_DB_CLOSED);
-            }
-            for (const id of keys) {
-                const obj = objs.shift();
-                const message = JSON.stringify(obj);
-                const commands = [];
-                if (this.useSets) {
-                    if (obj.type) {
-                        // e.g. _design/ has no type
-                        // add the object to the set + set object atomic
-                        commands.push(['sadd', `${this.setNamespace}object.type.${obj.type}`, id]);
-                    }
-
-                    if (obj.common?.custom) {
-                        // add to "common" set
-                        commands.push(['sadd', `${this.setNamespace}object.common.custom`, id]);
-                    }
+        }
+        if (!this.client) {
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
+        }
+        for (const id of keys) {
+            const obj = objs.shift();
+            const message = JSON.stringify(obj);
+            const commands = [];
+            if (this.useSets) {
+                if (obj.type) {
+                    // e.g. _design/ has no type
+                    // add the object to the set + set object atomic
+                    commands.push(['sadd', `${this.setNamespace}object.type.${obj.type}`, id]);
                 }
 
-                if (!commands.length) {
-                    // only set
-                    await this.client.set(id, message);
-                } else {
-                    // set all commands atomic
-                    commands.push(['set', id, message]);
-                    await this.client.multi(commands).exec();
+                if (obj.common?.custom) {
+                    // add to "common" set
+                    commands.push(['sadd', `${this.setNamespace}object.common.custom`, id]);
                 }
-                await this.client.publish(id, message);
             }
+
+            if (!commands.length) {
+                // only set
+                await this.client.set(id, message);
+            } else {
+                // set all commands atomic
+                commands.push(['set', id, message]);
+                await this.client.multi(commands).exec();
+            }
+            await this.client.publish(id, message);
         }
     }
 
@@ -2869,9 +2836,9 @@ export class ObjectsInRedisClient {
             this.getUserGroup(options.owner, (user, groups /* , permissions*/) => {
                 if (!groups || !groups[0]) {
                     return tools.maybeCallbackWithError(callback, `user "${options.owner}" belongs to no group`);
-                } else {
-                    options.ownerGroup = groups[0];
                 }
+                options.ownerGroup = groups[0];
+
                 this.chownObject(pattern, options, callback);
             });
             return;
@@ -2880,13 +2847,11 @@ export class ObjectsInRedisClient {
         utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
-            } else {
-                if (!options.acl.object || !options.acl.object.write) {
-                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
-                } else {
-                    return this._chownObject(pattern, options, callback);
-                }
             }
+            if (!options.acl.object || !options.acl.object.write) {
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
+            }
+            return this._chownObject(pattern, options, callback);
         });
     }
 
@@ -3003,13 +2968,11 @@ export class ObjectsInRedisClient {
         utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
-            } else {
-                if (!options.acl.file.write) {
-                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
-                } else {
-                    return this._chmodObject(pattern, options, callback);
-                }
             }
+            if (!options.acl.file.write) {
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
+            }
+            return this._chmodObject(pattern, options, callback);
         });
     }
 
@@ -3051,12 +3014,10 @@ export class ObjectsInRedisClient {
             // Check permissions
             if (utils.checkObject(obj, options, CONSTS.ACCESS_READ)) {
                 return tools.maybeCallbackWithError(callback, null, obj);
-            } else {
-                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
             }
-        } else {
-            return tools.maybeCallbackWithRedisError(callback, err, obj);
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
         }
+        return tools.maybeCallbackWithRedisError(callback, err, obj);
     }
 
     // cb version with options
@@ -3092,9 +3053,8 @@ export class ObjectsInRedisClient {
             utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_READ, (err, options) => {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
-                } else {
-                    return this._getObject(id, options, callback);
                 }
+                return this._getObject(id, options, callback);
             });
         }
     }
@@ -3161,38 +3121,36 @@ export class ObjectsInRedisClient {
                     }
                 }
                 return tools.maybeCallbackWithError(callback, null, result);
-            } else {
-                // Check permissions
-                let metas: (string | null)[];
-                try {
-                    metas = await this.client.mget(keys);
-                } catch (e) {
-                    return tools.maybeCallbackWithRedisError(callback, e);
-                }
-                metas = metas || [];
-                for (let i = 0; i < keys.length; i++) {
-                    const metaStr = metas[i];
-                    let meta: ioBroker.AnyObject;
-                    try {
-                        meta = metaStr ? JSON.parse(metaStr) : null;
-                    } catch {
-                        this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${metaStr}`);
-                        continue;
-                    }
-
-                    if (r.test(keys[i]) && utils.checkObject(meta, options, CONSTS.ACCESS_READ)) {
-                        if (!dontModify) {
-                            result.push(keys[i].substring(this.objNamespaceL));
-                        } else {
-                            result.push(keys[i]);
-                        }
-                    }
-                }
-                return tools.maybeCallbackWithError(callback, null, result);
             }
-        } else {
+            // Check permissions
+            let metas: (string | null)[];
+            try {
+                metas = await this.client.mget(keys);
+            } catch (e) {
+                return tools.maybeCallbackWithRedisError(callback, e);
+            }
+            metas = metas || [];
+            for (let i = 0; i < keys.length; i++) {
+                const metaStr = metas[i];
+                let meta: ioBroker.AnyObject;
+                try {
+                    meta = metaStr ? JSON.parse(metaStr) : null;
+                } catch {
+                    this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${metaStr}`);
+                    continue;
+                }
+
+                if (r.test(keys[i]) && utils.checkObject(meta, options, CONSTS.ACCESS_READ)) {
+                    if (!dontModify) {
+                        result.push(keys[i].substring(this.objNamespaceL));
+                    } else {
+                        result.push(keys[i]);
+                    }
+                }
+            }
             return tools.maybeCallbackWithError(callback, null, result);
         }
+        return tools.maybeCallbackWithError(callback, null, result);
     }
 
     // User has provided a callback, thus we call the callback function
@@ -3230,9 +3188,8 @@ export class ObjectsInRedisClient {
             utils.checkObjectRights(this, null, null, options, 'list', (err, options) => {
                 if (err) {
                     return tools.maybeCallbackWithRedisError(callback, err);
-                } else {
-                    return this._getKeys(pattern, options, callback, dontModify);
                 }
+                return this._getKeys(pattern, options, callback, dontModify);
             });
         }
     }
@@ -3351,9 +3308,8 @@ export class ObjectsInRedisClient {
             utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_READ, (err, options) => {
                 if (err) {
                     return tools.maybeCallbackWithRedisError(callback, err);
-                } else {
-                    return this._getObjects(keys, options, callback, dontModify);
                 }
+                return this._getObjects(keys, options, callback, dontModify);
             });
         }
     }
@@ -3417,9 +3373,8 @@ export class ObjectsInRedisClient {
             utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_READ, (err, options) => {
                 if (err) {
                     return tools.maybeCallbackWithRedisError(callback, err);
-                } else {
-                    return this._getObjectsByPattern(pattern, options, callback);
                 }
+                return this._getObjectsByPattern(pattern, options, callback);
             });
         }
     }
@@ -3685,13 +3640,12 @@ export class ObjectsInRedisClient {
             // do not use options from checkObjectRights because this will mess up configured default acl
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
-            } else {
-                try {
-                    const res = await this._setObject(id, obj, options || {});
-                    return tools.maybeCallbackWithError(callback, null, res);
-                } catch (e) {
-                    return tools.maybeCallbackWithError(callback, e);
-                }
+            }
+            try {
+                const res = await this._setObject(id, obj, options || {});
+                return tools.maybeCallbackWithError(callback, null, res);
+            } catch (e) {
+                return tools.maybeCallbackWithError(callback, e);
             }
         });
     }
@@ -3805,13 +3759,12 @@ export class ObjectsInRedisClient {
         utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_DELETE, async (err, options) => {
             if (err) {
                 return tools.maybeCallbackWithError(callback, err);
-            } else {
-                try {
-                    await this._delObject(id, options);
-                    return tools.maybeCallback(callback);
-                } catch (e) {
-                    return tools.maybeCallbackWithRedisError(callback, e);
-                }
+            }
+            try {
+                await this._delObject(id, options);
+                return tools.maybeCallback(callback);
+            } catch (e) {
+                return tools.maybeCallbackWithRedisError(callback, e);
             }
         });
     }
@@ -3862,17 +3815,15 @@ export class ObjectsInRedisClient {
                 return arr.filter(obj => {
                     if (included.has(obj.id) || obj.value === null) {
                         return false;
-                    } else {
-                        included.set(obj.id, true);
-                        return true;
                     }
-                });
-            } else {
-                return arr.filter(obj => {
-                    // only filter parse Errors
-                    return obj.value !== null;
+                    included.set(obj.id, true);
+                    return true;
                 });
             }
+            return arr.filter(obj => {
+                // only filter parse Errors
+                return obj.value !== null;
+            });
         };
 
         params = params || {};
@@ -3948,16 +3899,13 @@ export class ObjectsInRedisClient {
                         if (typeof obj.common.name === 'object') {
                             if (obj.common.name.en) {
                                 return { id: obj.common.name.en, value: obj };
-                            } else {
-                                return { id: JSON.stringify(obj.common.name), value: obj };
                             }
-                        } else {
-                            return { id: obj.common.name, value: obj };
+                            return { id: JSON.stringify(obj.common.name), value: obj };
                         }
-                    } else {
-                        this.log.error(`${this.namespace} Cannot filter "${matches[2]}": ${JSON.stringify(obj)}`);
-                        return { id: 'parseError', value: null };
+                        return { id: obj.common.name, value: obj };
                     }
+                    this.log.error(`${this.namespace} Cannot filter "${matches[2]}": ${JSON.stringify(obj)}`);
+                    return { id: 'parseError', value: null };
                 });
                 if (currRows.length) {
                     result.rows = [...result.rows, ...currRows];
@@ -4210,102 +4158,100 @@ export class ObjectsInRedisClient {
             // apply filter if needed
             result.rows = filterEntries(result.rows, filterRequired);
             return result;
-        } else {
-            if (!wildCardLastPos) {
-                this.log.debug(
-                    `${this.namespace} Search can't be optimized because wildcard not at the end, fallback to keys!: ${func.map}`,
-                );
-            } else {
-                this.log.debug(`${this.namespace} No suitable Lua script, fallback to keys!: ${func.map}`);
-            }
-
-            let searchKeys = `${this.objNamespace}*`;
-            if (wildcardPos !== -1) {
-                // Wildcard included
-                searchKeys = this.objNamespace + params.endkey.replace(/\u9999/g, '*');
-            }
-
-            let keys;
-            keys = await this._getKeysViaScan(searchKeys);
-
-            if (!this.client) {
-                throw new Error(ERRORS.ERROR_DB_CLOSED);
-            }
-
-            const endAfterWildcard = params.endkey.substr(wildcardPos + 1);
-            params.startkey = this.objNamespace + params.startkey;
-            params.endkey = this.objNamespace + params.endkey;
-
-            keys = keys.sort().filter(key => {
-                if (key && !utils.REG_CHECK_ID.test(key)) {
-                    if (params && wildcardPos > 0) {
-                        if (params.startkey && key < params.startkey) {
-                            return false;
-                        }
-                        if (params.endkey && key > params.endkey) {
-                            return false;
-                        }
-                    } else if (params && wildcardPos === 0) {
-                        if (!key.endsWith(endAfterWildcard)) {
-                            return false;
-                        }
-                    }
-                    return true;
-                } else {
-                    return false;
-                }
-            });
-
-            let objs: (null | string)[];
-            try {
-                objs = await this.client.mget(keys);
-            } catch {
-                objs = [];
-            }
-
-            const _emit_ = (id: string, obj: ioBroker.AnyObject): void => {
-                result.rows.push({ id: id, value: obj });
-            };
-
-            const f = eval(`(${func.map.replace(/^function\(([a-z0-9A-Z_]+)\)/g, 'function($1, emit)')})`);
-
-            for (let i = 0; i < keys.length; i++) {
-                const strObj = objs[i];
-                let obj: ioBroker.AnyObject | null;
-                try {
-                    obj = strObj !== null ? JSON.parse(strObj) : null;
-                } catch {
-                    this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${objs[i]}`);
-                    continue;
-                }
-                if (!utils.checkObject(obj, options, CONSTS.ACCESS_READ)) {
-                    continue;
-                }
-
-                if (obj) {
-                    try {
-                        f(obj, _emit_);
-                    } catch (e) {
-                        this.log.error(`${this.namespace} Cannot execute map: ${e.message}`);
-                    }
-                }
-            }
-            // Calculate max
-            if (func.reduce === '_stats') {
-                let max = null;
-                for (let i = 0; i < result.rows.length; i++) {
-                    if (max === null || result.rows[i].value > max) {
-                        max = result.rows[i].value;
-                    }
-                }
-                if (max !== null) {
-                    result.rows = [{ id: '_stats', value: { max: max } }];
-                } else {
-                    result.rows = [];
-                }
-            }
-            return result;
         }
+        if (!wildCardLastPos) {
+            this.log.debug(
+                `${this.namespace} Search can't be optimized because wildcard not at the end, fallback to keys!: ${func.map}`,
+            );
+        } else {
+            this.log.debug(`${this.namespace} No suitable Lua script, fallback to keys!: ${func.map}`);
+        }
+
+        let searchKeys = `${this.objNamespace}*`;
+        if (wildcardPos !== -1) {
+            // Wildcard included
+            searchKeys = this.objNamespace + params.endkey.replace(/\u9999/g, '*');
+        }
+
+        let keys;
+        keys = await this._getKeysViaScan(searchKeys);
+
+        if (!this.client) {
+            throw new Error(ERRORS.ERROR_DB_CLOSED);
+        }
+
+        const endAfterWildcard = params.endkey.substr(wildcardPos + 1);
+        params.startkey = this.objNamespace + params.startkey;
+        params.endkey = this.objNamespace + params.endkey;
+
+        keys = keys.sort().filter(key => {
+            if (key && !utils.REG_CHECK_ID.test(key)) {
+                if (params && wildcardPos > 0) {
+                    if (params.startkey && key < params.startkey) {
+                        return false;
+                    }
+                    if (params.endkey && key > params.endkey) {
+                        return false;
+                    }
+                } else if (params && wildcardPos === 0) {
+                    if (!key.endsWith(endAfterWildcard)) {
+                        return false;
+                    }
+                }
+                return true;
+            }
+            return false;
+        });
+
+        let objs: (null | string)[];
+        try {
+            objs = await this.client.mget(keys);
+        } catch {
+            objs = [];
+        }
+
+        const _emit_ = (id: string, obj: ioBroker.AnyObject): void => {
+            result.rows.push({ id: id, value: obj });
+        };
+
+        const f = eval(`(${func.map.replace(/^function\(([a-z0-9A-Z_]+)\)/g, 'function($1, emit)')})`);
+
+        for (let i = 0; i < keys.length; i++) {
+            const strObj = objs[i];
+            let obj: ioBroker.AnyObject | null;
+            try {
+                obj = strObj !== null ? JSON.parse(strObj) : null;
+            } catch {
+                this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${objs[i]}`);
+                continue;
+            }
+            if (!utils.checkObject(obj, options, CONSTS.ACCESS_READ)) {
+                continue;
+            }
+
+            if (obj) {
+                try {
+                    f(obj, _emit_);
+                } catch (e) {
+                    this.log.error(`${this.namespace} Cannot execute map: ${e.message}`);
+                }
+            }
+        }
+        // Calculate max
+        if (func.reduce === '_stats') {
+            let max = null;
+            for (let i = 0; i < result.rows.length; i++) {
+                if (max === null || result.rows[i].value > max) {
+                    max = result.rows[i].value;
+                }
+            }
+            if (max !== null) {
+                result.rows = [{ id: '_stats', value: { max: max } }];
+            } else {
+                result.rows = [];
+            }
+        }
+        return result;
     }
 
     private async _getObjectView<Design extends string = string, Search extends string = string>(
@@ -4336,10 +4282,9 @@ export class ObjectsInRedisClient {
 
             if (obj.views?.[search]) {
                 return this._applyViewFunc(obj.views[search], params, options);
-            } else {
-                this.log.error(`${this.namespace} Cannot find search "${search}" in "${design}"`);
-                throw new Error(`Cannot find search "${search}" in "${design}"`);
             }
+            this.log.error(`${this.namespace} Cannot find search "${search}" in "${design}"`);
+            throw new Error(`Cannot find search "${search}" in "${design}"`);
         } else {
             this.log.error(`${this.namespace} Cannot find view "${design}" for search "${search}"`);
             throw new Error(`Cannot find view "${design}"`);
@@ -4396,13 +4341,12 @@ export class ObjectsInRedisClient {
             utils.checkObjectRights(this, null, null, options, 'list', async (err, options) => {
                 if (err) {
                     return tools.maybeCallbackWithRedisError(callback, err);
-                } else {
-                    try {
-                        const res = await this._getObjectView(design, search, params, options);
-                        return tools.maybeCallbackWithError(callback, null, res);
-                    } catch (e) {
-                        return tools.maybeCallbackWithRedisError(callback, e);
-                    }
+                }
+                try {
+                    const res = await this._getObjectView(design, search, params, options);
+                    return tools.maybeCallbackWithError(callback, null, res);
+                } catch (e) {
+                    return tools.maybeCallbackWithRedisError(callback, e);
                 }
             });
         }
@@ -4531,13 +4475,12 @@ export class ObjectsInRedisClient {
             utils.checkObjectRights(this, null, null, options, 'list', async (err, options) => {
                 if (err) {
                     return tools.maybeCallbackWithRedisError(callback, err);
-                } else {
-                    try {
-                        const res = await this._getObjectList(params, options || {});
-                        return tools.maybeCallbackWithError(callback, null, res);
-                    } catch (e) {
-                        return tools.maybeCallbackWithError(callback, e);
-                    }
+                }
+                try {
+                    const res = await this._getObjectList(params, options || {});
+                    return tools.maybeCallbackWithError(callback, null, res);
+                } catch (e) {
+                    return tools.maybeCallbackWithError(callback, e);
                 }
             });
         }
@@ -4743,10 +4686,9 @@ export class ObjectsInRedisClient {
         utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
-            } else {
-                // @ts-expect-error TODO we are returning type Object for ease of use to devs, but formally these are AnyObjects, e.g. not guaranteed to have common
-                return this._extendObject(id, obj, options, callback);
             }
+            // @ts-expect-error TODO we are returning type Object for ease of use to devs, but formally these are AnyObjects, e.g. not guaranteed to have common
+            return this._extendObject(id, obj, options, callback);
         });
     }
 
@@ -4782,49 +4724,48 @@ export class ObjectsInRedisClient {
                 (!type || (obj.common && obj.common.type === type))
             ) {
                 return tools.maybeCallbackWithError(callback, null, idOrName, obj.common.name);
-            } else {
-                this._getKeys(
-                    '*',
-                    options,
-                    async (err, keys) => {
-                        if (!this.client) {
-                            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
-                        }
-
-                        if (!keys || err) {
-                            return tools.maybeCallbackWithError(callback, err);
-                        }
-
-                        let objs;
-                        try {
-                            objs = await this.client.mget(keys);
-                        } catch (e) {
-                            return tools.maybeCallbackWithRedisError(callback, e);
-                        }
-                        objs = objs || [];
-                        // Assume it is name
-                        for (let i = 0; i < keys.length; i++) {
-                            const strObj = objs[i];
-                            let obj: ioBroker.AnyObject | null;
-                            try {
-                                obj = strObj ? JSON.parse(strObj) : null;
-                            } catch {
-                                this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${objs[i]}`);
-                                continue;
-                            }
-                            if (
-                                obj?.common &&
-                                obj.common.name === idOrName &&
-                                (!type || ('type' in obj.common && obj.common.type === type))
-                            ) {
-                                return tools.maybeCallbackWithError(callback, null, obj._id, idOrName);
-                            }
-                        }
-                        return tools.maybeCallbackWithError(callback, null, undefined, idOrName);
-                    },
-                    true,
-                );
             }
+            this._getKeys(
+                '*',
+                options,
+                async (err, keys) => {
+                    if (!this.client) {
+                        return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
+                    }
+
+                    if (!keys || err) {
+                        return tools.maybeCallbackWithError(callback, err);
+                    }
+
+                    let objs;
+                    try {
+                        objs = await this.client.mget(keys);
+                    } catch (e) {
+                        return tools.maybeCallbackWithRedisError(callback, e);
+                    }
+                    objs = objs || [];
+                    // Assume it is name
+                    for (let i = 0; i < keys.length; i++) {
+                        const strObj = objs[i];
+                        let obj: ioBroker.AnyObject | null;
+                        try {
+                            obj = strObj ? JSON.parse(strObj) : null;
+                        } catch {
+                            this.log.error(`${this.namespace} Cannot parse JSON ${keys[i]}: ${objs[i]}`);
+                            continue;
+                        }
+                        if (
+                            obj?.common &&
+                            obj.common.name === idOrName &&
+                            (!type || ('type' in obj.common && obj.common.type === type))
+                        ) {
+                            return tools.maybeCallbackWithError(callback, null, obj._id, idOrName);
+                        }
+                    }
+                    return tools.maybeCallbackWithError(callback, null, undefined, idOrName);
+                },
+                true,
+            );
         });
     }
 
@@ -4875,9 +4816,8 @@ export class ObjectsInRedisClient {
             utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_LIST, (err, options) => {
                 if (err) {
                     return tools.maybeCallbackWithError(callback, err);
-                } else {
-                    return this._findObject(idOrName, type, options, callback);
                 }
+                return this._findObject(idOrName, type, options, callback);
             });
         }
     }
@@ -4900,33 +4840,31 @@ export class ObjectsInRedisClient {
     private async _destroyDBHelper(keys: string[], callback: ioBroker.ErrorCallback): Promise<void> {
         if (!keys || !keys.length) {
             return tools.maybeCallback(callback);
-        } else {
-            if (!this.client) {
-                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
-            }
-
-            for (const id of keys) {
-                try {
-                    await this.client.del(id);
-                } catch {
-                    // ignore
-                }
-            }
-
-            return tools.maybeCallback(callback);
         }
+        if (!this.client) {
+            return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
+        }
+
+        for (const id of keys) {
+            try {
+                await this.client.del(id);
+            } catch {
+                // ignore
+            }
+        }
+
+        return tools.maybeCallback(callback);
     }
 
     private async _destroyDB(callback: ioBroker.ErrorCallback): Promise<void> {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_DB_CLOSED);
-        } else {
-            try {
-                const keys = await this._getKeysViaScan(`${this.redisNamespace}*`);
-                return this._destroyDBHelper(keys, callback);
-            } catch (e) {
-                return tools.maybeCallbackWithRedisError(callback, e);
-            }
+        }
+        try {
+            const keys = await this._getKeysViaScan(`${this.redisNamespace}*`);
+            return this._destroyDBHelper(keys, callback);
+        } catch (e) {
+            return tools.maybeCallbackWithRedisError(callback, e);
         }
     }
 
@@ -4940,13 +4878,11 @@ export class ObjectsInRedisClient {
         utils.checkObjectRights(this, null, null, options, CONSTS.ACCESS_WRITE, (err, options) => {
             if (err) {
                 return tools.maybeCallbackWithRedisError(callback, err);
-            } else {
-                if (!options.acl.file.write || options.user !== CONSTS.SYSTEM_ADMIN_USER) {
-                    return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
-                } else {
-                    return this._destroyDB(callback);
-                }
             }
+            if (!options.acl.file.write || options.user !== CONSTS.SYSTEM_ADMIN_USER) {
+                return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION);
+            }
+            return this._destroyDB(callback);
         });
     }
 

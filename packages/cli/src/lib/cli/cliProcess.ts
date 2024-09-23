@@ -248,9 +248,8 @@ export class CLIProcess extends CLICommand {
                         resolve();
                     });
                 });
-            } else {
-                console.log('No "killall.sh" script found. Just stop.');
             }
+            console.log('No "killall.sh" script found. Just stop.');
         }
 
         try {
@@ -305,31 +304,29 @@ export class CLIProcess extends CLICommand {
                     console.log(`States  type: ${config.states.type}`);
                 }
                 return void callback(isOffline ? EXIT_CODES.CONTROLLER_NOT_RUNNING : undefined);
-            } else {
-                // we want to know the status of an adapter
-                if (/\.\d+$/.test(adapterName)) {
-                    // instance specified
-                    await showInstanceStatus(states, adapterName);
-                    return void callback();
-                } else {
-                    const adapterInstances = await enumInstances(objects, adapterName);
-                    // If there are multiple instances of this adapter, ask the user to specify which one
-                    if (adapterInstances.length > 1) {
-                        CLI.error.specifyInstance(
-                            adapterName,
-                            adapterInstances.map(obj => obj._id.substring('system.adapter.'.length)),
-                        );
-                        return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
-                    } else if (adapterInstances.length === 0) {
-                        CLI.error.noInstancesFound(adapterName);
-                        return void callback(EXIT_CODES.UNKNOWN_ERROR);
-                    }
-
-                    const instanceId = adapterInstances[0]._id.split('.').pop();
-                    await showInstanceStatus(states, `${adapterName}.${instanceId}`);
-                    return void callback();
-                }
             }
+            // we want to know the status of an adapter
+            if (/\.\d+$/.test(adapterName)) {
+                // instance specified
+                await showInstanceStatus(states, adapterName);
+                return void callback();
+            }
+            const adapterInstances = await enumInstances(objects, adapterName);
+            // If there are multiple instances of this adapter, ask the user to specify which one
+            if (adapterInstances.length > 1) {
+                CLI.error.specifyInstance(
+                    adapterName,
+                    adapterInstances.map(obj => obj._id.substring('system.adapter.'.length)),
+                );
+                return void callback(EXIT_CODES.INVALID_ADAPTER_ID);
+            } else if (adapterInstances.length === 0) {
+                CLI.error.noInstancesFound(adapterName);
+                return void callback(EXIT_CODES.UNKNOWN_ERROR);
+            }
+
+            const instanceId = adapterInstances[0]._id.split('.').pop();
+            await showInstanceStatus(states, `${adapterName}.${instanceId}`);
+            return void callback();
         });
     }
 }

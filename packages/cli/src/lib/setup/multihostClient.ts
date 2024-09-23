@@ -256,9 +256,8 @@ export class MHClient {
                         console.log(msg.result);
                     }
                     return true;
-                } else {
-                    console.warn(`Multihost discovery client: Unexpected message: ${JSON.stringify(msg)}`);
                 }
+                console.warn(`Multihost discovery client: Unexpected message: ${JSON.stringify(msg)}`);
 
                 return false;
             },

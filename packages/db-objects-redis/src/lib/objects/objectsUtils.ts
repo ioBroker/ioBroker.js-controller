@@ -119,9 +119,8 @@ export function getMimeType(ext: string, isTextData: boolean): FileMimeInformati
     const mimeInfo = getKnownMimeType(ext);
     if (mimeInfo) {
         return mimeInfo;
-    } else {
-        return { mimeType: isTextData ? 'text/plain' : 'application/octet-stream', isBinary: !isTextData };
     }
+    return { mimeType: isTextData ? 'text/plain' : 'application/octet-stream', isBinary: !isTextData };
 }
 
 export function checkFile(
@@ -219,9 +218,8 @@ export function checkFileRights(
     objects.checkFile(id, name, _options, flag, (err: Error, options: Record<string, any>, opt: any) => {
         if (err) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION, options);
-        } else {
-            return tools.maybeCallbackWithError(callback, null, options, opt);
         }
+        return tools.maybeCallbackWithError(callback, null, options, opt);
     });
 }
 
@@ -495,12 +493,12 @@ export function sanitizePath(
     id = id.replace(/\.\./g, ''); // do not allow to write in parent directories
 
     if (name.includes('..')) {
-        name = path.normalize('/' + name);
+        name = path.normalize(`/${name}`);
     }
     if (name.includes('..')) {
         // Also after normalization we still have .. in it - should not happen if normalize worked correctly
         name = name.replace(/\.\./g, '');
-        name = path.normalize('/' + name);
+        name = path.normalize(`/${name}`);
     }
 
     name = name.replace(/\\/g, '/'); // replace win path backslashes
@@ -673,7 +671,6 @@ export function checkObjectRights(
 
     if (id && !checkObject(object, options, flag)) {
         return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION, options);
-    } else {
-        return tools.maybeCallbackWithError(callback, null, options);
     }
+    return tools.maybeCallbackWithError(callback, null, options);
 }

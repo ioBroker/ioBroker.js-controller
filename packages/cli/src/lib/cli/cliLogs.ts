@@ -6,7 +6,7 @@ import os from 'node:os';
 import es from 'event-stream';
 import { createRequire } from 'node:module';
 // eslint-disable-next-line unicorn/prefer-module
-const require = createRequire(import.meta.url || 'file://' + __filename);
+const require = createRequire(import.meta.url || `file://${__filename}`);
 
 const { getConfigFileName } = tools;
 

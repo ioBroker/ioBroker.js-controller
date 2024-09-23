@@ -174,7 +174,7 @@ export class ObjectsInMemoryJsonlDB extends ObjectsInMemoryFileDB {
     async _maybeMigrateFileDB() {
         const jsonlFileName = path.join(this.dataDir, this.settings.jsonlDB.fileName);
         const jsonFileName = path.join(this.dataDir, this.settings.fileDB.fileName);
-        const bakFileName = path.join(this.dataDir, this.settings.fileDB.fileName + '.bak');
+        const bakFileName = path.join(this.dataDir, `${this.settings.fileDB.fileName}.bak`);
 
         // Check the timestamps of each file, defaulting to 0 if they don't exist
         let jsonlTimeStamp = 0;

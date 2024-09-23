@@ -245,7 +245,7 @@ export class Repo {
             text = text.padEnd(11 + 15);
 
             if (sources[name].version) {
-                text += ': ' + sources[name].version;
+                text += `: ${sources[name].version}`;
             }
             text = text.padEnd(11 + 15 + 11);
 

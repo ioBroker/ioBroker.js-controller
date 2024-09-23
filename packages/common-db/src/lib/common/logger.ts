@@ -13,10 +13,10 @@ import * as url from 'node:url';
 import { createRequire } from 'node:module';
 
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 
 // eslint-disable-next-line unicorn/prefer-module
-const require = createRequire(import.meta.url || 'file://' + __filename);
+const require = createRequire(import.meta.url || `file://${__filename}`);
 
 const hostname = tools.getHostName();
 
@@ -197,7 +197,7 @@ export function logger(
                 transport.level = transport.level || level;
 
                 if (transport.type === 'file' && transport.enabled !== false) {
-                    transport.filename = transport.filename || 'log/' + tools.appName;
+                    transport.filename = transport.filename || `log/${tools.appName}`;
 
                     if (!transport.fileext && transport.filename.indexOf('.log') === -1) {
                         transport.fileext = '.log';
@@ -419,9 +419,8 @@ export function logger(
             transport = transport.transport ? transport.transport : transport;
             /** @ts-expect-error we use undocumented stuff here TODO */
             return `${transport.dirname}/${transport.filename.replace('%DATE%', getDate())}`;
-        } else {
-            return '';
         }
+        return '';
     };
 
     log.on('error', error => {

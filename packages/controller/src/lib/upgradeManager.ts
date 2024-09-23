@@ -428,7 +428,7 @@ function registerErrorHandlers(upgradeManager: UpgradeManager): void {
  * else it will be canceled when the file itself stops the controller
  */
 // eslint-disable-next-line unicorn/prefer-module
-const modulePath = url.fileURLToPath(import.meta.url || 'file://' + __filename);
+const modulePath = url.fileURLToPath(import.meta.url || `file://${__filename}`);
 if (process.argv[1] === modulePath) {
     main();
 }
