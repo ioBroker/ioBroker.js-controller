@@ -130,7 +130,7 @@ function messageHandler(msg: ioBroker.Message): void {
 }
 
 function unloadHandler(callback: ioBroker.EmptyCallback): void {
-    adapter.log!.info('shutting down');
+    adapter.log.info('shutting down');
     callback();
 }
 
@@ -415,13 +415,13 @@ adapter.unsubscribeForeignStates('*');
 adapter.encrypt('top secret').toLocaleLowerCase();
 adapter.decrypt('garbled nonsense').toLocaleLowerCase();
 
-adapter.log!.info('msg');
-adapter.log!.debug('msg');
-adapter.log!.warn('msg');
-adapter.log!.error('msg');
-adapter.log!.silly('msg');
+adapter.log.info('msg');
+adapter.log.debug('msg');
+adapter.log.warn('msg');
+adapter.log.error('msg');
+adapter.log.silly('msg');
 
-switch (adapter.log!.level) {
+switch (adapter.log.level) {
     case 'debug':
     case 'error':
     case 'info':
@@ -429,7 +429,7 @@ switch (adapter.log!.level) {
     case 'warn':
         break;
     default:
-        assertNever(adapter.log!.level as never);
+        assertNever(adapter.log.level);
 }
 
 adapter.sendTo('foo.0', 'command', 'message');
