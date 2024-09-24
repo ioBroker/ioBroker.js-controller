@@ -585,7 +585,7 @@ function createStates(onConnect: () => void): void {
                     state.val !== currentLevel &&
                     ['silly', 'debug', 'info', 'warn', 'error'].includes(state.val)
                 ) {
-                    config.log.level = state.val;
+                    config.log.level = state.val as ioBroker.LogLevel;
                     for (const transport in logger.transports) {
                         if (
                             logger.transports[transport].level === currentLevel &&
@@ -596,7 +596,7 @@ function createStates(onConnect: () => void): void {
                         }
                     }
                     logger.info(`${hostLogPrefix} Loglevel changed from "${currentLevel}" to "${state.val}"`);
-                    currentLevel = state.val;
+                    currentLevel = state.val as ioBroker.LogLevel;
                 } else if (state.val && state.val !== currentLevel) {
                     logger.info(`${hostLogPrefix} Got invalid loglevel "${state.val}", ignoring`);
                 }
