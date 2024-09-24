@@ -40,7 +40,7 @@ type MinimalLogger = Omit<Logger, 'info' | 'silly' | 'debug'>;
 export class Upload {
     private readonly states: StatesRedisClient;
     private readonly objects: ObjectsRedisClient;
-    private readonly regApp = new RegExp('/' + tools.appName.replace(/\./g, '\\.') + '\\.', 'i');
+    private readonly regApp = new RegExp(`/${tools.appName.replace(/\./g, '\\.')}\\.`, 'i');
     private callbackId = 1;
     private readonly sendToHostFromCliAsync: (...args: any[]) => Promise<any>;
     private callbacks: Record<string, any> = {};
@@ -79,7 +79,7 @@ export class Upload {
         try {
             const arr = await this.objects.getObjectListAsync({
                 startkey: 'system.host.',
-                endkey: 'system.host.\u9999'
+                endkey: 'system.host.\u9999',
             });
             if (arr?.rows) {
                 for (const row of arr.rows) {
@@ -96,9 +96,8 @@ export class Upload {
 
         if (onlyAlive) {
             return this.checkHostsIfAlive(hosts);
-        } else {
-            return hosts;
         }
+        return hosts;
     }
 
     // Check if some adapters must be restarted and restart them
@@ -158,7 +157,7 @@ export class Upload {
         host: string,
         command: string,
         message: ioBroker.MessagePayload,
-        callback: ioBroker.MessageCallback | null
+        callback: ioBroker.MessageCallback | null,
     ): void {
         const time = Date.now();
         const from = `system.host.${hostname}_cli_${time}`;
@@ -199,8 +198,8 @@ export class Upload {
                     message,
                     id: this.callbackId++,
                     ack: false,
-                    time
-                }
+                    time,
+                },
             } as const;
 
             if (this.callbackId > 0xffffffff) {
@@ -245,7 +244,7 @@ export class Upload {
                         const adapterDir = tools.getAdapterDir(adapter);
                         if (!adapterDir || !fs.existsSync(adapterDir)) {
                             console.warn(
-                                `No alive host found which has the adapter ${adapter} installed! No upload possible. Skipped.`
+                                `No alive host found which has the adapter ${adapter} installed! No upload possible. Skipped.`,
                             );
                             continue;
                         }
@@ -289,7 +288,7 @@ export class Upload {
             try {
                 const result = await axios(source, {
                     responseType: 'arraybuffer',
-                    validateStatus: status => status === 200
+                    validateStatus: status => status === 200,
                 });
                 if (result?.data) {
                     await this.objects.writeFileAsync(adapter, target, result.data);
@@ -349,8 +348,11 @@ export class Upload {
     async collectExistingFilesToDelete(
         adapter: string,
         path: string,
-        logger: MinimalLogger | typeof console
-    ): Promise<{ filesToDelete: File[]; dirs: File[] }> {
+        logger: MinimalLogger | typeof console,
+    ): Promise<{
+        filesToDelete: File[];
+        dirs: File[];
+    }> {
         let _files: File[] = [];
         let _dirs: File[] = [];
         let files: ioBroker.ReadDirResult[];
@@ -395,7 +397,7 @@ export class Upload {
         isAdmin: boolean,
         files: string[],
         id: string,
-        logger: MinimalLogger | typeof console
+        logger: MinimalLogger | typeof console,
     ): Promise<string> {
         const uploadID = `system.adapter.${adapter}.upload`;
 
@@ -436,9 +438,9 @@ export class Upload {
                 const now = Date.now();
                 if (now - this.lastProgressUpdate > 1_000) {
                     this.lastProgressUpdate = now;
-                    await this.states.setStateAsync(uploadID, {
+                    await this.states.setState(uploadID, {
                         val: Math.round((1_000 * (files.length - f)) / files.length) / 10,
-                        ack: true
+                        ack: true,
                     });
                 }
             }
@@ -453,7 +455,7 @@ export class Upload {
 
         // Set upload progress to 0;
         if (!isAdmin && files.length) {
-            await this.states.setStateAsync(uploadID, { val: 0, ack: true });
+            await this.states.setState(uploadID, { val: 0, ack: true });
         }
 
         return adapter;
@@ -497,7 +499,7 @@ export class Upload {
         isAdmin: boolean,
         forceUpload: boolean,
         subTree?: string,
-        _logger?: MinimalLogger
+        _logger?: MinimalLogger,
     ): Promise<string> {
         const id = adapter + (isAdmin ? '.admin' : '');
         const adapterDir = tools.getAdapterDir(adapter);
@@ -512,7 +514,7 @@ export class Upload {
             console.log(
                 `INFO: Directory "${
                     adapterDir || `for ${adapter}${isAdmin ? '.admin' : ''}`
-                }" does not exist. Nothing was uploaded or deleted.`
+                }" does not exist. Nothing was uploaded or deleted.`,
             );
             return adapter;
         }
@@ -532,15 +534,14 @@ export class Upload {
                 console.log(
                     `INFO: Directory "${
                         dir || `for ${adapter}${isAdmin ? '.admin' : ''}`
-                    }" was not found! Nothing was uploaded or deleted.`
+                    }" was not found! Nothing was uploaded or deleted.`,
                 );
 
             if (isAdmin) {
                 return adapter;
-            } else {
-                await this.checkRestartOther(adapter);
-                return adapter;
             }
+            await this.checkRestartOther(adapter);
+            return adapter;
         }
 
         // check for common.wwwDontUpload (required for legacy adapters and admin)
@@ -553,12 +554,12 @@ export class Upload {
             let obj;
             const uploadID = `system.adapter.${adapter}.upload`;
             try {
-                obj = await this.objects.getObjectAsync(uploadID);
+                obj = await this.objects.getObject(uploadID);
             } catch {
                 // ignore
             }
             if (!obj) {
-                await this.objects.setObjectAsync(uploadID, {
+                await this.objects.setObject(uploadID, {
                     _id: uploadID,
                     type: 'state',
                     common: {
@@ -571,11 +572,11 @@ export class Upload {
                         def: 0,
                         desc: 'Upload process indicator',
                         read: true,
-                        write: false
+                        write: false,
                     },
                     from: `system.host.${tools.getHostName()}.cli`,
                     ts: Date.now(),
-                    native: {}
+                    native: {},
                 });
             }
             // Set indicator to 0
@@ -596,11 +597,11 @@ export class Upload {
                 type: 'meta',
                 common: {
                     name: id.split('.').pop()!,
-                    type: isAdmin ? 'admin' : 'www'
+                    type: isAdmin ? 'admin' : 'www',
                 },
                 from: `system.host.${tools.getHostName()}.cli`,
                 ts: Date.now(),
-                native: {}
+                native: {},
             });
             forceUpload = true;
         }
@@ -616,7 +617,7 @@ export class Upload {
                 const { filesToDelete } = await this.collectExistingFilesToDelete(
                     isAdmin ? `${adapter}.admin` : adapter,
                     '/',
-                    logger
+                    logger,
                 );
                 // delete old files, before upload of new
                 await this.eraseFiles(filesToDelete, logger);
@@ -655,7 +656,7 @@ export class Upload {
     extendCommon(
         target: Record<string, any>,
         additional: Record<string, any>,
-        instance: string
+        instance: string,
     ): ioBroker.InstanceCommon {
         if (tools.isObject(additional)) {
             const preserveAttributes = [
@@ -666,7 +667,7 @@ export class Upload {
                 'loglevel',
                 'enabled',
                 'custom',
-                'tier'
+                'tier',
             ];
 
             for (const [attr, attrData] of Object.entries(additional)) {
@@ -711,18 +712,18 @@ export class Upload {
         name: string,
         ioPack: ioBroker.AdapterObject,
         hostname: string,
-        logger: MinimalLogger | typeof console
+        logger: MinimalLogger | typeof console,
     ): Promise<string> {
         // Update all instances of this host
         const res = await this.objects.getObjectViewAsync('system', 'instance', {
             startkey: `system.adapter.${name}.`,
-            endkey: `system.adapter.${name}.\u9999`
+            endkey: `system.adapter.${name}.\u9999`,
         });
 
         if (res) {
             for (const row of res.rows) {
                 if (row.value?.common.host === hostname) {
-                    const _obj = await this.objects.getObjectAsync(row.id);
+                    const _obj = await this.objects.getObject(row.id);
                     const newObject = deepClone(_obj) as ioBroker.InstanceObject;
 
                     // TODO: refactor the following assignments into a method, where we can define which attributes need a real override and their defaults
@@ -731,7 +732,7 @@ export class Upload {
                     newObject.common = this.extendCommon(
                         newObject.common,
                         ioPack.common,
-                        newObject._id.split('.').pop()!
+                        newObject._id.split('.').pop()!,
                     );
                     newObject.native = this.extendNative(newObject.native, ioPack.native);
 
@@ -808,7 +809,7 @@ export class Upload {
     async upgradeAdapterObjects(
         name: string,
         ioPack?: ioBroker.AdapterObject,
-        logger: MinimalLogger | typeof console = console
+        logger: MinimalLogger | typeof console = console,
     ): Promise<string> {
         const adapterDir = tools.getAdapterDir(name);
         let ioPackFile;
@@ -822,9 +823,13 @@ export class Upload {
             }
             ioPackFile = null;
         }
+
         ioPack = ioPack || ioPackFile;
 
         if (ioPack) {
+            logger.log(
+                `Updating objects from io-package.json for adapter "${name}" with version "${ioPack.common.version}"`,
+            );
             // Always update installedFrom from File on disk if exists and set
             if (ioPackFile?.common?.installedFrom) {
                 ioPack.common = ioPack.common || {};
@@ -842,7 +847,7 @@ export class Upload {
                 native: ioPack.native,
                 type: 'adapter',
                 instanceObjects: [],
-                objects: []
+                objects: [],
             };
 
             obj.common = ioPack.common || {};
@@ -869,11 +874,11 @@ export class Upload {
             obj.ts = Date.now();
 
             try {
-                await this.objects.setObjectAsync(`system.adapter.${name}`, obj);
-                await this.objects.setObjectAsync(`system.host.${hostname}.adapter.${name}`, obj);
+                await this.objects.setObject(`system.adapter.${name}`, obj);
+                await this.objects.setObject(`system.host.${hostname}.adapter.${name}`, obj);
             } catch (e) {
                 logger.error(
-                    `Cannot set "system.adapter.${name}" and "system.host.${hostname}.adapters.${name}": ${e.message}`
+                    `Cannot set "system.adapter.${name}" and "system.host.${hostname}.adapters.${name}": ${e.message}`,
                 );
             }
 

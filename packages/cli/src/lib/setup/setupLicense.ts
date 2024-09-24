@@ -40,9 +40,9 @@ export class License {
         const arr = await this.objects.getObjectListAsync(
             {
                 startkey: `system.adapter.${adapter}.`,
-                endkey: `system.adapter.${adapter}.\u9999`
+                endkey: `system.adapter.${adapter}.\u9999`,
             },
-            { checked: true }
+            { checked: true },
         );
 
         let updated = 0;

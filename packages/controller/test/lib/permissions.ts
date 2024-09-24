@@ -8,5 +8,5 @@ export const PERMISSIONS = {
     // Everyone can read/write
     '0666': 1638,
     // User outside group can only write
-    '0664': 1636
+    '0664': 1636,
 } as const;

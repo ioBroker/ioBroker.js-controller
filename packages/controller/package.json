@@ -1,7 +1,7 @@
 {
     "name": "iobroker.js-controller",
     "type": "module",
-    "version": "6.0.12-alpha.0-20240920-4149909bc",
+    "version": "6.0.12-alpha.0-20240924-4e8189ae0",
     "engines": {
         "node": ">=18.0.0"
     },
@@ -29,7 +29,6 @@
         "deep-clone": "^3.0.3",
         "fs-extra": "^11.1.0",
         "jsonwebtoken": "^9.0.0",
-        "jszip": "^3.10.1",
         "loadavg-windows": "^1.1.1",
         "node-schedule": "^2.1.1",
         "pidusage": "^3.0.2",

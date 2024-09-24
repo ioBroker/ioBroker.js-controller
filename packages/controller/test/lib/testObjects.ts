@@ -5,12 +5,12 @@ import type { TestContext } from '../_Types.js';
  */
 
 export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, context: TestContext): void {
-    const testName = context.name + ' objects: ';
+    const testName = `${context.name} objects: `;
 
     const namespace = 'testObject.0';
-    const testId = namespace + '.test2';
+    const testId = `${namespace}.test2`;
 
-    it(testName + 'should create and read object', done => {
+    it(`${testName}should create and read object`, done => {
         const objects = context.objects;
         objects.setObject(
             testId,
@@ -21,9 +21,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     name: 'test2',
                     read: true,
                     write: true,
-                    role: 'state'
+                    role: 'state',
                 },
-                native: {}
+                native: {},
             },
             (err, res) => {
                 expect(err).to.be.not.ok;
@@ -38,27 +38,27 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     console.log(JSON.stringify(obj));
                     done();
                 });
-            }
+            },
         );
     });
 
-    it(testName + 'should create object async', done => {
+    it(`${testName}should create object async`, done => {
         const objects = context.objects;
         objects
-            .setObjectAsync(testId + 'async', {
+            .setObjectAsync(`${testId}async`, {
                 type: 'state',
                 common: {
                     type: 'string',
                     name: 'test1a',
                     read: true,
                     write: true,
-                    role: 'state'
+                    role: 'state',
                 },
-                native: {}
+                native: {},
             })
             .then(res => {
                 expect(res).to.be.ok;
-                expect(res!.id).to.be.equal(testId + 'async');
+                expect(res!.id).to.be.equal(`${testId}async`);
                 done();
             })
             .catch(err => {
@@ -66,14 +66,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             });
     });
 
-    it(testName + 'should read object async', done => {
+    it(`${testName}should read object async`, done => {
         const objects = context.objects;
         objects
-            .getObjectAsync(testId + 'async')
+            .getObjectAsync(`${testId}async`)
             .then(obj => {
                 expect(obj).to.be.ok;
                 expect(obj!.common.name).to.be.equal('test1a');
-                expect(obj!._id).to.be.equal(testId + 'async');
+                expect(obj!._id).to.be.equal(`${testId}async`);
                 console.log(JSON.stringify(obj));
                 done();
             })
@@ -82,7 +82,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             });
     }).timeout(3_000);
 
-    it(testName + 'should find object', done => {
+    it(`${testName}should find object`, done => {
         const objects = context.objects;
         objects.findObject(testId, null, (err, id, idOrName) => {
             expect(err).to.be.not.ok;
@@ -110,7 +110,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 
-    it(testName + 'should find object async', done => {
+    it(`${testName}should find object async`, done => {
         const objects = context.objects;
         objects
             .findObject(testId)
@@ -137,7 +137,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             });
     });
 
-    it(testName + 'should read objects by pattern', done => {
+    it(`${testName}should read objects by pattern`, done => {
         const objects = context.objects;
         objects.getObjectsByPattern(`${testId}*`, null, (err, objs) => {
             expect(err).to.be.not.ok;
@@ -149,7 +149,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 expect(typeof objs![0]).to.be.equal('object');
                 expect(objs![0]._id).to.be.equal(testId);
 
-                objects.getObjectsByPattern(testId + 'non', null, (err, objs) => {
+                objects.getObjectsByPattern(`${testId}non`, null, (err, objs) => {
                     expect(err).to.be.not.ok;
                     expect(objs?.length).to.be.equal(0);
 
@@ -159,7 +159,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 
-    it(testName + 'should read objects by pattern async', done => {
+    it(`${testName}should read objects by pattern async`, done => {
         const objects = context.objects;
         objects
             .getObjectsByPattern(`${testId}*`, null)
@@ -185,9 +185,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             });
     });
 
-    it(testName + 'should read keys', done => {
+    it(`${testName}should read keys`, done => {
         const objects = context.objects;
-        objects.getKeys(testId + '*', (err, keys) => {
+        objects.getKeys(`${testId}*`, (err, keys) => {
             expect(err).to.be.not.ok;
             expect(keys?.length).to.be.equal(2);
 
@@ -196,7 +196,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 expect(keys?.length).to.be.equal(1);
                 expect(keys![0]).to.be.equal(testId);
 
-                objects.getKeys(testId + 'non', (err, keys) => {
+                objects.getKeys(`${testId}non`, (err, keys) => {
                     expect(err).to.be.not.ok;
                     expect(keys?.length).to.be.equal(0);
 
@@ -206,10 +206,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 
-    it(testName + 'should read keys async', done => {
+    it(`${testName}should read keys async`, done => {
         const objects = context.objects;
         objects
-            .getKeys(testId + '*')
+            .getKeys(`${testId}*`)
             .then(keys => {
                 expect(keys?.length).to.be.equal(2);
 
@@ -219,7 +219,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 expect(keys?.length).to.be.equal(1);
                 expect(keys![0]).to.be.equal(testId);
 
-                return objects.getKeys(testId + 'non');
+                return objects.getKeys(`${testId}non`);
             })
             .then(keys => {
                 expect(keys?.length).to.be.equal(0);
@@ -231,9 +231,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             });
     });
 
-    it(testName + 'should read objects', done => {
+    it(`${testName}should read objects`, done => {
         const objects = context.objects;
-        objects.getKeys(testId + '*', (err, keys) => {
+        objects.getKeys(`${testId}*`, (err, keys) => {
             expect(err).to.be.not.ok;
             objects.getObjects(keys!, (err, objs) => {
                 expect(err).to.be.not.ok;
@@ -245,11 +245,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 
-    it(testName + 'should read objects async', done => {
+    it(`${testName}should read objects async`, done => {
         const objects = context.objects;
         let gKeys: string[] | undefined;
         objects
-            .getKeys(testId + '*')
+            .getKeys(`${testId}*`)
             .then(keys => {
                 gKeys = keys;
                 return objects.getObjects(keys!);
@@ -265,7 +265,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             });
     });
 
-    it(testName + 'should extend object', done => {
+    it(`${testName}should extend object`, done => {
         const objects = context.objects;
         objects.extendObject(testId, { common: { def: 'default' } }, null, (err, res, id) => {
             expect(err).to.be.not.ok;
@@ -276,13 +276,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             objects.getObject(testId, (err, obj) => {
                 expect(err).to.be.not.ok;
                 expect(obj!._id).to.be.equal(testId);
-                expect(obj!.common.def).to.be.equal('default');
+                expect((obj!.common as ioBroker.StateCommon).def).to.be.equal('default');
                 expect(obj!.common.name).to.be.equal('test2');
 
-                objects.extendObject(namespace + '.other', { common: { def: 'default' } }, null, (err, res, id) => {
+                objects.extendObject(`${namespace}.other`, { common: { def: 'default' } }, null, (err, res, id) => {
                     expect(err).to.be.not.ok;
-                    expect(id).to.be.equal(namespace + '.other');
-                    expect(res!.id).to.be.equal(namespace + '.other');
+                    expect(id).to.be.equal(`${namespace}.other`);
+                    expect(res!.id).to.be.equal(`${namespace}.other`);
                     expect(res!.value.common.def).to.be.equal('default');
 
                     done();
@@ -291,17 +291,17 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 
-    it(testName + 'should extend object async', done => {
+    it(`${testName}should extend object async`, done => {
         const objects = context.objects;
         objects
             .extendObject(testId, { common: { def: 'default' } })
             .then(res => {
                 expect(res!.id).to.be.equal(testId);
                 expect(res!.value.common.def).to.be.equal('default');
-                return objects.extendObject(namespace + '.otherAsync', { common: { def: 'default' } });
+                return objects.extendObject(`${namespace}.otherAsync`, { common: { def: 'default' } });
             })
             .then(res => {
-                expect(res!.id).to.be.equal(namespace + '.otherAsync');
+                expect(res!.id).to.be.equal(`${namespace}.otherAsync`);
                 expect(res!.value.common.def).to.be.equal('default');
                 done();
             })
@@ -310,7 +310,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             });
     });
 
-    it(testName + 'should getObjectList', done => {
+    it(`${testName}should getObjectList`, done => {
         const objects = context.objects;
         objects.getObjectList({ startkey: namespace, endkey: testId }, (err, res) => {
             console.log(res!.rows.map(e => e.id));
@@ -328,20 +328,20 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 
-    it(testName + 'should getObjectList async', done => {
+    it(`${testName}should getObjectList async`, done => {
         const objects = context.objects;
         objects
             .getObjectList({ startkey: namespace, endkey: testId })
             .then(res => {
-                expect(res!.rows.length).to.be.equal(3);
-                const obj = res!.rows.find(val => val.value._id === testId);
+                expect(res.rows.length).to.be.equal(3);
+                const obj = res.rows.find(val => val.value._id === testId);
                 expect(obj!.id).to.be.equal(testId);
                 expect(obj!.value._id).to.be.equal(testId);
                 return objects.getObjectList({ startkey: '', endkey: ' ' });
             })
             .then(res => {
                 console.log(JSON.stringify(res));
-                expect(res!.rows.length).to.be.equal(0);
+                expect(res.rows.length).to.be.equal(0);
                 done();
             })
             .catch(err => {
@@ -350,7 +350,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             });
     });
 
-    it(testName + 'should getObjectView without sets', async () => {
+    it(`${testName}should getObjectView without sets`, async () => {
         // @ts-expect-error turn off useSets and reinitialize scripts, thus we will have old scripts and do not use SADD on setting objects
         context.objects.useSets = false;
         await context.objects.loadLuaScripts();
@@ -360,13 +360,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             language: 'javascript',
             views: {
                 test: {
-                    map: 'function(doc) {\n  if (doc._id.match(/^testAdapter/) && doc.meta.type === "test") {\n   emit(doc._id, doc);\n  }\n}'
-                }
+                    map: 'function(doc) {\n  if (doc._id.match(/^testAdapter/) && doc.meta.type === "test") {\n   emit(doc._id, doc);\n  }\n}',
+                },
             },
             common: {
-                name: 'Test Design'
+                name: 'Test Design',
             },
-            native: {}
+            native: {},
         });
 
         // now let's create an object matching the view
@@ -374,31 +374,31 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             type: 'meta',
             common: {
                 type: 'meta.user',
-                name: 'Test Meta Object'
+                name: 'Test Meta Object',
             },
             meta: {
                 adapter: 'testAdapter',
-                type: 'test'
+                type: 'test',
             },
-            native: {}
+            native: {},
         } as ioBroker.SettableMetaObject);
 
         const doc = await context.objects.getObjectViewAsync('testAdapter', 'test', {
             startkey: 'testAdapter',
-            endkey: 'testAdapter\u9999'
+            endkey: 'testAdapter\u9999',
         });
 
         // now check that our object view contains our object
-        expect(doc!.rows).to.be.an('array');
-        expect(doc!.rows.length).to.be.equal(1);
-        expect(doc!.rows[0].value._id).to.be.equal('testAdapter.test');
+        expect(doc.rows).to.be.an('array');
+        expect(doc.rows.length).to.be.equal(1);
+        expect(doc.rows[0].value._id).to.be.equal('testAdapter.test');
 
         // @ts-expect-error put it back on
         context.objects.useSets = true;
         await context.objects.loadLuaScripts();
     });
 
-    it(testName + 'Should check object existence', async () => {
+    it(`${testName}Should check object existence`, async () => {
         // object should not exist
         let exists = await context.objects.objectExists('test.0.objectExistenceCheck');
         expect(exists).to.be.false;
@@ -406,7 +406,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         // create object
         await context.objects.setObjectAsync('test.0.objectExistenceCheck', {
             type: 'meta',
-            native: {}
+            native: {},
         } as ioBroker.SettableMetaObject);
 
         // object should now exist
@@ -417,7 +417,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     // todo chmod
     // tofo chown
 
-    it(testName + 'should delete object', done => {
+    it(`${testName}should delete object`, done => {
         const objects = context.objects;
         objects.delObject(testId, err => {
             expect(err).to.be.not.ok;
@@ -425,10 +425,10 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 
-    it(testName + 'should delete object async', done => {
+    it(`${testName}should delete object async`, done => {
         const objects = context.objects;
         objects
-            .delObjectAsync(testId + 'async')
+            .delObjectAsync(`${testId}async`)
             .then(() => {
                 done();
             })
@@ -437,18 +437,18 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             });
     });
 
-    it(testName + 'should not delete non existing object', done => {
+    it(`${testName}should not delete non existing object`, done => {
         const objects = context.objects;
-        objects.delObject(testId + 'not', err => {
+        objects.delObject(`${testId}not`, err => {
             expect(err).to.be.not.ok;
             done();
         });
     });
 
-    it(testName + 'should not delete non existing object async', done => {
+    it(`${testName}should not delete non existing object async`, done => {
         const objects = context.objects;
         objects
-            .delObjectAsync(testId + 'async1')
+            .delObjectAsync(`${testId}async1`)
             .then(() => {
                 done();
             })
@@ -457,7 +457,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             });
     });
 
-    it(testName + 'should close DB', () => {
+    it(`${testName}should close DB`, () => {
         const objects = context.objects;
         // we're running as a server, so nothing should happen
         return objects.destroy();

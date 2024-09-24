@@ -20,7 +20,7 @@ import {
     isLocalObjectsDbServer,
     objectsDbHasServer,
     performObjectsInterview,
-    performStatesInterview
+    performStatesInterview,
 } from '@iobroker/js-controller-common';
 import { resetDbConnect, dbConnectAsync } from '@/lib/setup/dbConnection.js';
 import { BackupRestore } from '@/lib/setup/setupBackup.js';
@@ -36,9 +36,9 @@ import { createRequire } from 'node:module';
 import * as url from 'node:url';
 
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 // eslint-disable-next-line unicorn/prefer-module
-const require = createRequire(import.meta.url || 'file://' + __filename);
+const require = createRequire(import.meta.url || `file://${__filename}`);
 
 const COLOR_RED = '\x1b[31m';
 const COLOR_YELLOW = '\x1b[33m';
@@ -144,7 +144,7 @@ export class Setup {
             let enabledState;
             try {
                 enabledState = await this.states.getStateAsync(
-                    `system.host.${tools.getHostName()}.plugins.${plugin}.enabled`
+                    `system.host.${tools.getHostName()}.plugins.${plugin}.enabled`,
                 );
             } catch {
                 // ignore
@@ -174,7 +174,7 @@ export class Setup {
      */
     async setupReady(
         systemConfig: ioBroker.SystemConfigObject | undefined | null,
-        callback: () => void
+        callback: () => void,
     ): Promise<void> {
         if (!callback) {
             console.log(`database setup done. You can add adapters and start ${tools.appName} now`);
@@ -240,7 +240,7 @@ export class Setup {
             numberSuccess &&
                 console.log(
                     `${numberSuccess} file(s) successfully synchronized with ioBroker storage.
-Please DO NOT copy files manually into ioBroker storage directories!`
+Please DO NOT copy files manually into ioBroker storage directories!`,
                 );
             if (notifications.length) {
                 console.log();
@@ -337,8 +337,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             configObj.common.adapterAutoUpgrade = {
                 defaultPolicy: 'none',
                 repositories: {
-                    [repoName]: true
-                }
+                    [repoName]: true,
+                },
             };
         }
 
@@ -394,11 +394,11 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                             // generate new certificates
                             if (cert.certificateFilename) {
                                 console.log(
-                                    `Existing file certificate (${cert.certificateFilename}) is invalid (too old, validity longer then 345 days or keylength too short). Please check it!`
+                                    `Existing file certificate (${cert.certificateFilename}) is invalid (too old, validity longer then 345 days or keylength too short). Please check it!`,
                                 );
                             } else {
                                 console.log(
-                                    'Existing earlier generated certificate is invalid (too old, validity longer then 365 days or keylength too short). Generating new Certificate!'
+                                    'Existing earlier generated certificate is invalid (too old, validity longer then 365 days or keylength too short). Generating new Certificate!',
                                 );
                                 cert = null;
                             }
@@ -471,8 +471,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                         `Please choose if this is a Master/single host (enter "m") or a Slave host (enter "S") you are about to edit. For Slave hosts the data migration will be skipped. [S/m]: `,
                         {
                             limit: /^[SsMm]?$/,
-                            defaultInput: 'S'
-                        }
+                            defaultInput: 'S',
+                        },
                     );
                     allowMigration = !(answer === 'S' || answer === 's');
                 } else {
@@ -480,8 +480,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                         `This host appears to be a Master or a Single host system. Is this correct? [Y/n]: `,
                         {
                             limit: /^[YyNnJj]?$/,
-                            defaultInput: 'Y'
-                        }
+                            defaultInput: 'Y',
+                        },
                     );
                     allowMigration = answer === 'Y' || answer === 'y' || answer === 'J' || answer === 'j';
                 }
@@ -491,8 +491,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                         `It appears that you want to convert this slave host into a Master or Single host system. Is this correct? [Y/n]: `,
                         {
                             limit: /^[YyNnJj]?$/,
-                            defaultInput: 'Y'
-                        }
+                            defaultInput: 'Y',
+                        },
                     );
                     allowMigration = answer === 'Y' || answer === 'y' || answer === 'J' || answer === 'j';
                 } else {
@@ -500,8 +500,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                         `This host appears to be an ioBroker SLAVE system. Migration will be skipped. Is this correct? [Y/n]: `,
                         {
                             limit: /^[YyNnJj]?$/,
-                            defaultInput: 'Y'
-                        }
+                            defaultInput: 'Y',
+                        },
                     );
                     allowMigration = !(answer === 'Y' || answer === 'y' || answer === 'J' || answer === 'j');
                 }
@@ -547,8 +547,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                     `Do you want to migrate objects and states from "${oldConfig.objects.type}/${oldConfig.states.type}" to "${newConfig.objects.type}/${newConfig.states.type}" [y/N]: `,
                     {
                         limit: /^[YyNnJj]?$/,
-                        defaultInput: 'N'
-                    }
+                        defaultInput: 'N',
+                    },
                 );
 
                 if (
@@ -560,8 +560,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                         `Migrating the objects database will overwrite all objects! Are you sure that this is not a slave host and you want to migrate the data? [y/N]: `,
                         {
                             limit: /^[YyNnJj]?$/,
-                            defaultInput: 'N'
-                        }
+                            defaultInput: 'N',
+                        },
                     );
                     console.log(COLOR_RESET);
                 }
@@ -587,14 +587,14 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                         objects: objectsOld,
                         cleanDatabase: this.cleanDatabase,
                         restartController: this.restartController,
-                        processExit: resolve
+                        processExit: resolve,
                     });
 
                     console.log('Creating backup ...');
                     console.log(`${COLOR_GREEN}This can take some time ... please be patient!${COLOR_RESET}`);
 
                     // TODO: this can call processExit internally we want to get rid of this in the future
-                    let filePath = (await backupCreate.createBackup('', true))!;
+                    let filePath = await backupCreate.createBackup('', true);
                     const origBackupPath = filePath;
                     filePath = filePath.replace('.tar.gz', '-migration.tar.gz');
                     try {
@@ -613,12 +613,12 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
                     console.log('');
                     console.log(
-                        `Connecting to new DB "${newConfig.states.type}/${newConfig.objects.type}" (can take up to 20s) ...`
+                        `Connecting to new DB "${newConfig.states.type}/${newConfig.objects.type}" (can take up to 20s) ...`,
                     );
 
                     const { objects: objectsNew, states: statesNew } = await dbConnectAsync(true, {
                         ...this.params,
-                        timeout: 20_000
+                        timeout: 20_000,
                     });
 
                     this.objects = objectsNew;
@@ -627,7 +627,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                     if (!statesNew || !objectsNew) {
                         console.error(COLOR_RED);
                         console.log(
-                            `New Database could not be connected. Please check your settings. No settings have been changed.${COLOR_RESET}`
+                            `New Database could not be connected. Please check your settings. No settings have been changed.${COLOR_RESET}`,
                         );
 
                         console.log(`restoring conf/${tools.appName.toLowerCase()}.json`);
@@ -643,14 +643,14 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                         cleanDatabase: this.cleanDatabase,
                         restartController: this.restartController,
                         processExit: resolve,
-                        dbMigration: true
+                        dbMigration: true,
                     });
                     console.log('Restore backup ...');
                     console.log(`${COLOR_GREEN}This can take some time ... please be patient!${COLOR_RESET}`);
                     const { objects, states, exitCode } = await backupRestore.restoreBackup({
                         name: filePath,
                         force: false,
-                        dontDeleteAdapters: true
+                        dontDeleteAdapters: true,
                     });
 
                     this.objects = objects;
@@ -678,7 +678,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 console.log('');
                 console.log('No Database migration was done.');
                 console.log(
-                    `${COLOR_YELLOW}If this was done on your master host please execute "iobroker setup first" to newly initialize all objects.${COLOR_RESET}`
+                    `${COLOR_YELLOW}If this was done on your master host please execute "iobroker setup first" to newly initialize all objects.${COLOR_RESET}`,
                 );
                 console.log('');
             }
@@ -716,7 +716,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                     originalConfig.objects.sentinelName
                         ? originalConfig.objects.sentinelName
                         : this.DEFAULT_SENTINEL_NAME
-                }`
+                }`,
             );
         }
         console.log('- States database:');
@@ -727,7 +727,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             console.log(
                 `  - Sentinel-Master-Name: ${
                     originalConfig.states.sentinelName ? originalConfig.states.sentinelName : this.DEFAULT_SENTINEL_NAME
-                }`
+                }`,
             );
         }
 
@@ -745,8 +745,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         let otype = rl.question(
             `Type of objects DB [(j)sonl, (f)ile, (r)edis, ...], default [${currentObjectsType}]: `,
             {
-                defaultInput: currentObjectsType
-            }
+                defaultInput: currentObjectsType,
+            },
         );
         otype = otype.toLowerCase();
 
@@ -780,7 +780,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             console.log('When Objects and Files are stored in a Redis database please consider the following:');
             console.log('1. All data will be stored in RAM, make sure to have enough free RAM available!');
             console.log(
-                '2. Make sure to check Redis persistence options to make sure a Redis problem will not cause data loss!'
+                '2. Make sure to check Redis persistence options to make sure a Redis problem will not cause data loss!',
             );
             console.log('3. The Redis persistence files can get big, make sure not to use an SD card to store them.');
             console.log(COLOR_RESET);
@@ -793,8 +793,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 Array.isArray(defaultObjectsHost) ? defaultObjectsHost.join(',') : defaultObjectsHost
             }]: `,
             {
-                defaultInput: Array.isArray(defaultObjectsHost) ? defaultObjectsHost.join(',') : defaultObjectsHost
-            }
+                defaultInput: Array.isArray(defaultObjectsHost) ? defaultObjectsHost.join(',') : defaultObjectsHost,
+            },
         );
         oHost = oHost.toLowerCase();
 
@@ -816,8 +816,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             }]: `,
             {
                 defaultInput: Array.isArray(defaultObjectsPort) ? defaultObjectsPort.join(',') : defaultObjectsPort,
-                limit: /^[0-9, ]+$/
-            }
+                limit: /^[0-9, ]+$/,
+            },
         );
         let oPort: number | number[];
         if (userObjPort.includes(',')) {
@@ -850,7 +850,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 ? originalConfig.objects.sentinelName
                 : this.DEFAULT_SENTINEL_NAME;
             oSentinelName = rl.question(`Objects Redis Sentinel Master Name [${defaultSentinelName}]: `, {
-                defaultInput: defaultSentinelName
+                defaultInput: defaultSentinelName,
             });
         }
 
@@ -865,8 +865,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         let stype = rl.question(
             `Type of states DB [(j)sonl, (f)file, (r)edis, ...], default [${defaultStatesType}]: `,
             {
-                defaultInput: defaultStatesType
-            }
+                defaultInput: defaultStatesType,
+            },
         );
         stype = stype.toLowerCase();
 
@@ -912,8 +912,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 Array.isArray(defaultStatesHost) ? defaultStatesHost.join(',') : defaultStatesHost
             }]: `,
             {
-                defaultInput: Array.isArray(defaultStatesHost) ? defaultStatesHost.join(',') : defaultStatesHost
-            }
+                defaultInput: Array.isArray(defaultStatesHost) ? defaultStatesHost.join(',') : defaultStatesHost,
+            },
         );
         sHost = sHost.toLowerCase();
 
@@ -940,8 +940,8 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             }]: `,
             {
                 defaultInput: Array.isArray(defaultStatesPort) ? defaultStatesPort.join(',') : defaultStatesPort,
-                limit: /^[0-9, ]+$/
-            }
+                limit: /^[0-9, ]+$/,
+            },
         );
         let sPort: number | number[];
         if (userStatePort.includes(',')) {
@@ -977,7 +977,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                   ? oSentinelName
                   : this.DEFAULT_SENTINEL_NAME;
             sSentinelName = rl.question(`States Redis Sentinel Master Name [${defaultSentinelName}]: `, {
-                defaultInput: defaultSentinelName
+                defaultInput: defaultSentinelName,
             });
         }
 
@@ -992,7 +992,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
             while (!validDataDir) {
                 dir = rl.question(`Data directory (file), default[${tools.getDefaultDataDir()}]: `, {
-                    defaultInput: tools.getDefaultDataDir()
+                    defaultInput: tools.getDefaultDataDir(),
                 });
 
                 const validationInfo = tools.validateDataDir(dir);
@@ -1001,7 +1001,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
                 if (!validDataDir) {
                     console.warn(
-                        `${COLOR_YELLOW}The data directory is invalid. ${validationInfo.reason}${COLOR_RESET}`
+                        `${COLOR_YELLOW}The data directory is invalid. ${validationInfo.reason}${COLOR_RESET}`,
                     );
                     console.warn(`The current directory resolves to "${validationInfo.path}"`);
                 }
@@ -1014,12 +1014,12 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                         : os.hostname()
                 }]: `,
                 {
-                    defaultInput: (originalConfig && originalConfig.system && originalConfig.system.hostname) || ''
-                }
+                    defaultInput: (originalConfig && originalConfig.system && originalConfig.system.hostname) || '',
+                },
             );
         } else {
             hname = rl.question(`Host name of this machine [${os.hostname()}]: `, {
-                defaultInput: ''
+                defaultInput: '',
             });
         }
 
@@ -1121,7 +1121,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
         if (packJson.overrides?.['@iobroker/adapter-core'] === this.SUPPORTED_ADAPTER_CORE_VERSION) {
             console.log(
-                `The supported version of "@iobroker/adapter-core" is already specified as "${this.SUPPORTED_ADAPTER_CORE_VERSION}"`
+                `The supported version of "@iobroker/adapter-core" is already specified as "${this.SUPPORTED_ADAPTER_CORE_VERSION}"`,
             );
             return;
         }
@@ -1131,7 +1131,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
         await fs.writeFile(packPath, JSON.stringify(packJson));
 
         console.log(
-            `Successfully specified supported "@iobroker/adapter-core" version as "${this.SUPPORTED_ADAPTER_CORE_VERSION}"`
+            `Successfully specified supported "@iobroker/adapter-core" version as "${this.SUPPORTED_ADAPTER_CORE_VERSION}"`,
         );
     }
 
@@ -1172,7 +1172,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                     es: 'Adaptadores instalados',
                     pl: 'Zainstalowane adaptery',
                     uk: 'Встановлені адаптери',
-                    'zh-cn': '已安装的适配器'
+                    'zh-cn': '已安装的适配器',
                 },
                 desc: {
                     en: 'Installed adapters on this host',
@@ -1185,15 +1185,15 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                     es: 'Adaptadores instalados en este host',
                     pl: 'Zainstalowane karty na tym hoście',
                     uk: 'Встановлені адаптери на цьому хості',
-                    'zh-cn': '该主机上已安装的适配器'
-                }
+                    'zh-cn': '该主机上已安装的适配器',
+                },
             },
-            native: {}
+            native: {},
         });
 
         const adaptersView = await this.objects.getObjectViewAsync('system', 'adapter', {
             startkey: SYSTEM_ADAPTER_PREFIX,
-            endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
+            endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`,
         });
 
         const rootPackJson = await fs.readJSON(path.join(tools.getRootDir(), 'package.json'));
@@ -1275,7 +1275,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
         const hostsView = await this.objects.getObjectViewAsync('system', 'host', {
             startkey: SYSTEM_HOST_PREFIX,
-            endkey: `${SYSTEM_HOST_PREFIX}\u9999`
+            endkey: `${SYSTEM_HOST_PREFIX}\u9999`,
         });
 
         const hostIds = hostsView.rows.map(row => row.id);
@@ -1285,7 +1285,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
             if (!hasAdapters) {
                 console.log(
-                    `Skipping cleanup leftover adapters, because host "${hostId}" is not yet migrated to a supporting controller version`
+                    `Skipping cleanup leftover adapters, because host "${hostId}" is not yet migrated to a supporting controller version`,
                 );
                 return;
             }
@@ -1293,14 +1293,14 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
         const adaptersViewPerHost = await this.objects.getObjectViewAsync('system', 'adapter', {
             startkey: SYSTEM_HOST_PREFIX,
-            endkey: `${SYSTEM_HOST_PREFIX}\u9999`
+            endkey: `${SYSTEM_HOST_PREFIX}\u9999`,
         });
 
         const installedAdapterNames = adaptersViewPerHost.rows.map(row => row.value.common.name);
 
         const adaptersView = await this.objects.getObjectViewAsync('system', 'adapter', {
             startkey: SYSTEM_ADAPTER_PREFIX,
-            endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
+            endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`,
         });
 
         for (const row of adaptersView.rows) {
@@ -1378,7 +1378,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
         const hostsView = await this.objects.getObjectViewAsync('system', 'host', {
             startkey: SYSTEM_HOST_PREFIX,
-            endkey: `${SYSTEM_HOST_PREFIX}\u9999`
+            endkey: `${SYSTEM_HOST_PREFIX}\u9999`,
         });
 
         const hostIds = hostsView.rows.map(row => row.id);
@@ -1397,7 +1397,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
         const statesView = await this.objects.getObjectViewAsync('system', 'state', {
             startkey: '',
-            endkey: '\u9999'
+            endkey: '\u9999',
         });
 
         for (const row of statesView.rows) {
@@ -1424,11 +1424,11 @@ Please DO NOT copy files manually into ioBroker storage directories!`
 
         for (const group of groupView.rows) {
             // reference for readability
-            const groupMembers = group.value!.common.members;
+            const groupMembers = group.value.common.members;
 
             if (!Array.isArray(groupMembers)) {
                 // fix legacy objects
-                const obj = group.value!;
+                const obj = group.value;
                 obj.common.members = [];
                 await this.objects.setObjectAsync(obj._id, obj);
                 continue;
@@ -1440,13 +1440,13 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 if (!existingUsers.includes(groupMembers[i])) {
                     // we have found a non-existing user, so remove it
                     changed = true;
-                    console.log(`Removed non-existing user "${groupMembers[i]}" from group "${group.value!._id}"`);
+                    console.log(`Removed non-existing user "${groupMembers[i]}" from group "${group.value._id}"`);
                     groupMembers.splice(i, 1);
                 }
             }
 
             if (changed) {
-                await this.objects.setObjectAsync(group.value!._id, group.value!);
+                await this.objects.setObjectAsync(group.value._id, group.value);
             }
         }
     }
@@ -1470,7 +1470,7 @@ Please DO NOT copy files manually into ioBroker storage directories!`
                 if (fs.existsSync(path.join(CONTROLLER_DIR, 'reinstall.js'))) {
                     fs.writeFileSync(
                         path.join(CONTROLLER_DIR, '..', '..', 'reinstall.js'),
-                        fs.readFileSync(path.join(CONTROLLER_DIR, 'reinstall.js'))
+                        fs.readFileSync(path.join(CONTROLLER_DIR, 'reinstall.js')),
                     );
                 }
             } catch (e) {
@@ -1487,21 +1487,21 @@ Please DO NOT copy files manually into ioBroker storage directories!`
             // copy scripts to root directory
             if (fs.existsSync(path.join(CONTROLLER_DIR, '..', '..', 'node_modules'))) {
                 const startFile = `#!/usr/bin/env node
-require('${path.normalize(thisDir + '/..')}/setup').execute();`;
+require('${path.normalize(`${thisDir}/..`)}/setup').execute();`;
 
                 try {
                     if (fs.existsSync(path.join(CONTROLLER_DIR, 'killall.sh'))) {
                         fs.writeFileSync(
                             path.join(CONTROLLER_DIR, '..', '..', 'killall.sh'),
                             fs.readFileSync(path.join(CONTROLLER_DIR, 'killall.sh')),
-                            { mode: 492 /* 0754 */ }
+                            { mode: 492 /* 0754 */ },
                         );
                     }
                     if (fs.existsSync(path.join(CONTROLLER_DIR, 'reinstall.sh'))) {
                         fs.writeFileSync(
                             path.join(CONTROLLER_DIR, '..', '..', 'reinstall.sh'),
                             fs.readFileSync(path.join(CONTROLLER_DIR, 'reinstall.sh')),
-                            { mode: 492 /* 0754 */ }
+                            { mode: 492 /* 0754 */ },
                         );
                     }
                     if (!fs.existsSync(path.join(CONTROLLER_DIR, '..', '..', `${tools.appName.substring(0, 3)}`))) {
@@ -1509,13 +1509,13 @@ require('${path.normalize(thisDir + '/..')}/setup').execute();`;
                             path.join(CONTROLLER_DIR, '..', '..', `${tools.appName.substring(0, 3)}`),
                             startFile,
                             {
-                                mode: 492 /* 0754 */
-                            }
+                                mode: 492 /* 0754 */,
+                            },
                         );
                     }
                     if (!fs.existsSync(path.join(CONTROLLER_DIR, '..', '..', `${tools.appName}`))) {
                         fs.writeFileSync(path.join(CONTROLLER_DIR, '..', '..', `${tools.appName}`), startFile, {
-                            mode: 492 /* 0754 */
+                            mode: 492 /* 0754 */,
                         });
                     }
                 } catch (e) {

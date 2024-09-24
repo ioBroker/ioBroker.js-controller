@@ -74,30 +74,30 @@ const defaultAcl = {
             read: false,
             write: false,
             create: false,
-            delete: false
+            delete: false,
         },
         object: {
             list: false,
             read: false,
             write: false,
             create: false,
-            delete: false
+            delete: false,
         },
         state: {
             list: false,
             read: false,
             write: false,
             create: false,
-            delete: false
+            delete: false,
         },
         users: {
             list: false,
             read: false,
             write: false,
             create: false,
-            delete: false
-        }
-    }
+            delete: false,
+        },
+    },
 } as const;
 
 // FIXME: This should have better types. Probably Record<string, {acl: ioBroker.ObjectPermissions, [x: string | number | symbol]: any}>
@@ -119,16 +119,15 @@ export function getMimeType(ext: string, isTextData: boolean): FileMimeInformati
     const mimeInfo = getKnownMimeType(ext);
     if (mimeInfo) {
         return mimeInfo;
-    } else {
-        return { mimeType: isTextData ? 'text/plain' : 'application/octet-stream', isBinary: !isTextData };
     }
+    return { mimeType: isTextData ? 'text/plain' : 'application/octet-stream', isBinary: !isTextData };
 }
 
 export function checkFile(
     fileOptions: Record<string, any>,
     options: Record<string, any>,
     flag: any,
-    defaultNewAcl?: ACLObject | null
+    defaultNewAcl?: ACLObject | null,
 ): boolean {
     if (typeof fileOptions.acl !== 'object') {
         fileOptions = {};
@@ -138,7 +137,7 @@ export function checkFile(
             ownerGroup: (defaultNewAcl && defaultNewAcl.ownerGroup) || CONSTS.SYSTEM_ADMIN_GROUP,
             permissions:
                 (defaultNewAcl && defaultNewAcl.file) ||
-                CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ // '0644'
+                CONSTS.ACCESS_USER_RW | CONSTS.ACCESS_GROUP_READ | CONSTS.ACCESS_EVERY_READ, // '0644'
         };
     }
 
@@ -185,7 +184,7 @@ export function checkFileRights(
     name: string | null,
     options: Record<string, any> | null | undefined,
     flag: CONSTS.GenericAccessFlags,
-    callback?: CheckFileRightsCallback
+    callback?: CheckFileRightsCallback,
 ): any {
     const _options = options || {};
     if (!_options.user) {
@@ -219,16 +218,15 @@ export function checkFileRights(
     objects.checkFile(id, name, _options, flag, (err: Error, options: Record<string, any>, opt: any) => {
         if (err) {
             return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION, options);
-        } else {
-            return tools.maybeCallbackWithError(callback, null, options, opt);
         }
+        return tools.maybeCallbackWithError(callback, null, options, opt);
     });
 }
 
 // For users and groups
 function getDefaultAdminRights(
     acl?: ioBroker.ObjectPermissions,
-    _isState?: boolean
+    _isState?: boolean,
 ): Omit<ioBroker.PermissionSet, 'user' | 'groups'> {
     return {
         ...acl,
@@ -237,34 +235,34 @@ function getDefaultAdminRights(
             read: true,
             write: true,
             create: true,
-            delete: true
+            delete: true,
         },
         object: {
             create: true,
             list: true,
             read: true,
             write: true,
-            delete: true
+            delete: true,
         },
         users: {
             create: true,
             list: true,
             read: true,
             write: true,
-            delete: true
+            delete: true,
         },
         state: {
             read: true,
             write: true,
             delete: true,
             create: true,
-            list: true
+            list: true,
         },
         other: {
             execute: false,
             http: false,
-            sendto: false
-        }
+            sendto: false,
+        },
     };
 }
 
@@ -274,13 +272,13 @@ type GetUserGroupCallback = (
     err: Error | null | undefined,
     user: string,
     groups: string[],
-    acl: ioBroker.ObjectPermissions
+    acl: ioBroker.ObjectPermissions,
 ) => void;
 
 export function getUserGroup(
     objects: any,
     user: ioBroker.ObjectIDs.User,
-    callback?: GetUserGroupCallback
+    callback?: GetUserGroupCallback,
 ): Promise<GetUserGroupPromiseReturn> | void {
     if (!user || typeof user !== 'string' || !user.startsWith(USER_STARTS_WITH)) {
         console.log(`invalid user name: ${user}`);
@@ -290,7 +288,7 @@ export function getUserGroup(
             `invalid user name: ${user}`,
             deepClone(user),
             [],
-            deepClone(defaultAcl.acl)
+            deepClone(defaultAcl.acl),
         );
     }
     if (users[user]) {
@@ -302,7 +300,12 @@ export function getUserGroup(
     objects.getObjectList(
         { startkey: 'system.group.', endkey: 'system.group.\u9999' },
         { checked: true },
-        (err: Error, arr: { rows: Array<ioBroker.GetObjectViewItem<ioBroker.GroupObject>> }) => {
+        (
+            err: Error,
+            arr: {
+                rows: Array<ioBroker.GetObjectViewItem<ioBroker.GroupObject>>;
+            },
+        ) => {
             if (err) {
                 error = err;
             }
@@ -325,7 +328,12 @@ export function getUserGroup(
             objects.getObjectList(
                 { startkey: 'system.user.', endkey: 'system.user.\u9999' },
                 { checked: true },
-                (err?: Error | null, arr?: { rows: ioBroker.GetObjectListItem<ioBroker.UserObject>[] }) => {
+                (
+                    err?: Error | null,
+                    arr?: {
+                        rows: ioBroker.GetObjectListItem<ioBroker.UserObject>[];
+                    },
+                ) => {
                     if (err) {
                         error = err;
                     }
@@ -455,15 +463,21 @@ export function getUserGroup(
                         error,
                         user,
                         users[user] ? users[user].groups : [],
-                        users[user] ? users[user].acl : deepClone(defaultAcl.acl)
+                        users[user] ? users[user].acl : deepClone(defaultAcl.acl),
                     );
-                }
+                },
             );
-        }
+        },
     );
 }
 
-export function sanitizePath(id: string, name: string): { id: string; name: string } {
+export function sanitizePath(
+    id: string,
+    name: string,
+): {
+    id: string;
+    name: string;
+} {
     if (!name) {
         name = '';
     }
@@ -479,12 +493,12 @@ export function sanitizePath(id: string, name: string): { id: string; name: stri
     id = id.replace(/\.\./g, ''); // do not allow to write in parent directories
 
     if (name.includes('..')) {
-        name = path.normalize('/' + name);
+        name = path.normalize(`/${name}`);
     }
     if (name.includes('..')) {
         // Also after normalization we still have .. in it - should not happen if normalize worked correctly
         name = name.replace(/\.\./g, '');
-        name = path.normalize('/' + name);
+        name = path.normalize(`/${name}`);
     }
 
     name = name.replace(/\\/g, '/'); // replace win path backslashes
@@ -499,7 +513,7 @@ export function sanitizePath(id: string, name: string): { id: string; name: stri
 export function checkObject(
     obj: ioBroker.AnyObject | FileObject | null,
     options: Record<string, any>,
-    flag: CONSTS.GenericAccessFlags
+    flag: CONSTS.GenericAccessFlags,
 ): boolean {
     // read rights of object
     if (!obj || !('common' in obj) || !obj.acl || flag === CONSTS.ACCESS_LIST) {
@@ -552,7 +566,7 @@ export function checkObjectRights(
     object: ioBroker.Object | null,
     options: Record<string, any> | null | undefined,
     flag: CONSTS.GenericAccessFlags,
-    callback: (err: Error | null | undefined, options: Record<string, any>) => void
+    callback: (err: Error | null | undefined, options: Record<string, any>) => void,
 ): void | Promise<Record<string, any>> {
     options = options || {};
 
@@ -563,7 +577,7 @@ export function checkObjectRights(
             params: options,
             group: CONSTS.SYSTEM_ADMIN_GROUP,
             groups: [CONSTS.SYSTEM_ADMIN_GROUP],
-            acl: getDefaultAdminRights()
+            acl: getDefaultAdminRights(),
         };
     }
 
@@ -657,7 +671,6 @@ export function checkObjectRights(
 
     if (id && !checkObject(object, options, flag)) {
         return tools.maybeCallbackWithError(callback, ERRORS.ERROR_PERMISSION, options);
-    } else {
-        return tools.maybeCallbackWithError(callback, null, options);
     }
+    return tools.maybeCallbackWithError(callback, null, options);
 }

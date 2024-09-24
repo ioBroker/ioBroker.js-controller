@@ -76,14 +76,12 @@ export class CLICert extends CLICommand {
                     if (certInfo) {
                         console.log(JSON.stringify(certInfo, null, 2));
                         return void callback(EXIT_CODES.NO_ERROR);
-                    } else {
-                        messages.error.cert(certName);
-                        return void callback(3);
                     }
-                } else {
                     messages.error.cert(certName);
                     return void callback(3);
                 }
+                messages.error.cert(certName);
+                return void callback(3);
             });
         });
     }

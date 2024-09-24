@@ -13,8 +13,8 @@ function deepClone(obj) {
 /**
  * Determine if the string is of form identifier:ioBrokerId, like, val:hm-rpc.0.device.channel.state
  *
- * @param {string} assignment the possible assignment to check
- * @return {boolean}
+ * @param assignment the possible assignment to check
+ * @returns
  */
 function isIdBinding(assignment) {
     return !!assignment.match(/^[\d\w_]+:\s?[-.\d\w_#]+$/);
@@ -91,9 +91,9 @@ function extractBinding(format) {
                         {
                             name: xx[0],
                             visOid,
-                            systemOid
-                        }
-                    ]
+                            systemOid,
+                        },
+                    ],
                 });
             }
 
@@ -128,7 +128,7 @@ function extractBinding(format) {
                         operations[0].arg.push({
                             name: argParts[0].trim(),
                             visOid: _visOid,
-                            systemOid: _systemOid
+                            systemOid: _systemOid,
                         });
                     } else {
                         parts[u] = parts[u].replace(/::/g, ':');
@@ -233,7 +233,7 @@ function extractBinding(format) {
                 token: oid[p],
                 operations: operations || undefined,
                 format,
-                isSeconds
+                isSeconds,
             });
         }
     }
@@ -380,15 +380,15 @@ function getUsedObjectIDsInWidget(views, view, wid, linkContext) {
                 views[view].widgets[gId] = {
                     tpl: '_tplGroup',
                     data: {
-                        members: [wid]
+                        members: [wid],
                     },
                     style: {
                         top: '100px',
                         left: '100px',
                         width: '200px',
-                        height: '200px'
+                        height: '200px',
                     },
-                    widgetSet: null
+                    widgetSet: null,
                 };
             }
         }
@@ -533,7 +533,7 @@ function getUsedObjectIDsInWidget(views, view, wid, linkContext) {
                         linkContext.signals[sid].push({
                             view,
                             widget: wid,
-                            index: parseInt(attr.substring(12), 10) // 'signals-oid-'.length = 12
+                            index: parseInt(attr.substring(12), 10), // 'signals-oid-'.length = 12
                         });
                     } else if (attr === 'lc-oid') {
                         let lcSid = data[attr];
@@ -629,7 +629,7 @@ export function getUsedObjectIDs(views, isByViews) {
         visibility: {},
         bindings: {},
         lastChanges: {},
-        signals: {}
+        signals: {},
     };
 
     if (isByViews) {

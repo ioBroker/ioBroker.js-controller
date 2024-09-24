@@ -3,16 +3,16 @@ import fs from 'node:fs';
 
 import * as url from 'node:url';
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 
 describe('Test package.json and io-package.json', () => {
     it('Test package files', done => {
         console.log();
 
-        const fileContentIOPackage = fs.readFileSync(thisDir + '/../io-package.json', 'utf8');
+        const fileContentIOPackage = fs.readFileSync(`${thisDir}/../io-package.json`, 'utf8');
         const ioPackage = JSON.parse(fileContentIOPackage);
 
-        const fileContentNPMPackage = fs.readFileSync(thisDir + '/../package.json', 'utf8');
+        const fileContentNPMPackage = fs.readFileSync(`${thisDir}/../package.json`, 'utf8');
         const npmPackage = JSON.parse(fileContentNPMPackage);
 
         expect(ioPackage).to.be.an('object');
@@ -26,12 +26,12 @@ describe('Test package.json and io-package.json', () => {
 
         expect(
             ioPackage.common.version,
-            'ERROR: Version numbers in package.json and io-package.json needs to match'
+            'ERROR: Version numbers in package.json and io-package.json needs to match',
         ).to.be.equal(npmVersion);
 
         if (!ioPackage.common.news || !ioPackage.common.news[ioPackage.common.version]) {
             console.log(
-                'WARNING: No news entry for current version exists in io-package.json, no rollback in Admin possible!'
+                'WARNING: No news entry for current version exists in io-package.json, no rollback in Admin possible!',
             );
             console.log();
         }
@@ -45,18 +45,18 @@ describe('Test package.json and io-package.json', () => {
             if (Array.isArray(ioPackage.common.authors)) {
                 expect(
                     ioPackage.common.authors.length,
-                    'ERROR: Author in io-package.json needs to be set'
+                    'ERROR: Author in io-package.json needs to be set',
                 ).to.not.be.equal(0);
                 if (ioPackage.common.authors.length === 1) {
                     expect(
                         ioPackage.common.authors[0],
-                        'ERROR: Author in io-package.json needs to be a real name'
+                        'ERROR: Author in io-package.json needs to be a real name',
                     ).to.not.be.equal('my Name <my@email.com>');
                 }
             } else {
                 expect(
                     ioPackage.common.authors,
-                    'ERROR: Author in io-package.json needs to be a real name'
+                    'ERROR: Author in io-package.json needs to be a real name',
                 ).to.not.be.equal('my Name <my@email.com>');
             }
         } else {
@@ -64,8 +64,8 @@ describe('Test package.json and io-package.json', () => {
             console.log();
         }
         expect(
-            fs.existsSync(thisDir + '/../README.md'),
-            'ERROR: README.md needs to exist! Please create one with description, detail information and changelog. English is mandatory.'
+            fs.existsSync(`${thisDir}/../README.md`),
+            'ERROR: README.md needs to exist! Please create one with description, detail information and changelog. English is mandatory.',
         ).to.be.true;
         if (!ioPackage.common.titleLang || typeof ioPackage.common.titleLang !== 'object') {
             console.log('WARNING: titleLang is not existing in io-package.json. Please add');
@@ -78,7 +78,7 @@ describe('Test package.json and io-package.json', () => {
             ioPackage.common.title.indexOf('Adapter') !== -1
         ) {
             console.log(
-                'WARNING: title contains Adapter or ioBroker. It is clear anyway, that it is adapter for ioBroker.'
+                'WARNING: title contains Adapter or ioBroker. It is clear anyway, that it is adapter for ioBroker.',
             );
             console.log();
         }
@@ -86,29 +86,29 @@ describe('Test package.json and io-package.json', () => {
         if (!ioPackage.common.controller && !ioPackage.common.onlyWWW && !ioPackage.common.noConfig) {
             if (
                 !ioPackage.common.materialize ||
-                !fs.existsSync(thisDir + '/../admin/index_m.html') ||
-                !fs.existsSync(thisDir + '/../gulpfile.js')
+                !fs.existsSync(`${thisDir}/../admin/index_m.html`) ||
+                !fs.existsSync(`${thisDir}/../gulpfile.js`)
             ) {
                 console.log('WARNING: Admin3 support is missing! Please add it');
                 console.log();
             }
             if (ioPackage.common.materialize) {
                 expect(
-                    fs.existsSync(thisDir + '/../admin/index_m.html'),
-                    'Admin3 support is enabled in io-package.json, but index_m.html is missing!'
+                    fs.existsSync(`${thisDir}/../admin/index_m.html`),
+                    'Admin3 support is enabled in io-package.json, but index_m.html is missing!',
                 ).to.be.true;
             }
         }
 
-        const licenseFileExists = fs.existsSync(thisDir + '/../LICENSE');
-        const fileContentReadme = fs.readFileSync(thisDir + '/../README.md', 'utf8');
+        const licenseFileExists = fs.existsSync(`${thisDir}/../LICENSE`);
+        const fileContentReadme = fs.readFileSync(`${thisDir}/../README.md`, 'utf8');
         if (fileContentReadme.indexOf('## Changelog') === -1) {
             console.log('Warning: The README.md should have a section ## Changelog');
             console.log();
         }
         expect(
             licenseFileExists || fileContentReadme.includes('## License'),
-            'A LICENSE must exist as LICENSE file or as part of the README.md'
+            'A LICENSE must exist as LICENSE file or as part of the README.md',
         ).to.be.true;
         if (!licenseFileExists) {
             console.log('Warning: The License should also exist as LICENSE file');

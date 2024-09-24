@@ -130,7 +130,7 @@ export class List {
             const ts = new Date(file.modifiedAt);
             time = ts.toISOString();
             time = time.replace('T', ' ');
-            time = time.substring(0, 16) + ' ';
+            time = `${time.substring(0, 16)} `;
         }
         text += time.padEnd(17);
 
@@ -146,7 +146,7 @@ export class List {
             group = group.substring(13);
             text += ` ${group.padStart(14)}`;
         } else {
-            text += (file.isDir ? 'd' : '-') + '?????????' + new Array(31).join(' ');
+            text += `${file.isDir ? 'd' : '-'}?????????${new Array(31).join(' ')}`;
         }
         const size = file.stats && file.stats.size ? file.stats.size.toString() : '';
 
@@ -191,7 +191,7 @@ export class List {
         adapter: string,
         path: string | null | undefined,
         allFiles?: File[] | ((allFiles: File[]) => void),
-        callback?: (allFiles: File[]) => void
+        callback?: (allFiles: File[]) => void,
     ): void {
         if (typeof path === 'function') {
             callback = path;
@@ -259,11 +259,11 @@ export class List {
     sortFiles(a: File, b: File): number {
         let a1 = a.path + a.file.file;
         if (a1[0] !== '/') {
-            a1 = '/' + a1;
+            a1 = `/${a1}`;
         }
         let b1 = b.path + b.file.file;
         if (b1[0] !== '/') {
-            b1 = '/' + b1;
+            b1 = `/${b1}`;
         }
         return a1.localeCompare(b1);
     }
@@ -301,7 +301,7 @@ export class List {
         lines: IdValueObject[],
         flags: FlagObject,
         cb: (res: any[]) => void,
-        _result?: any[]
+        _result?: any[],
     ): void {
         const result = _result || [];
         if (!lines || !lines.length) {
@@ -338,7 +338,7 @@ export class List {
                                 name = name[lang] || name.en;
                             }
 
-                            if (!reg || reg.test(obj.value._id) || (name && reg.test(name as string))) {
+                            if (!reg || reg.test(obj.value._id) || (name && reg.test(name))) {
                                 if (obj.value.type) {
                                     const id = obj.value._id;
                                     const type = obj.value.type;
@@ -381,7 +381,7 @@ export class List {
                                 console.log(
                                     `${id.padEnd(39)}: from [${from.padEnd(29)}] (${type.padEnd(9)}) ${
                                         state.ack ? '    ack' : 'not ack'
-                                    } ${JSON.stringify(state.val)}`
+                                    } ${JSON.stringify(state.val)}`,
                                 );
                             }
                             this.processExit();
@@ -398,7 +398,7 @@ export class List {
                                 this.processExit();
                                 return;
                             }
-                            const reg = filter ? new RegExp(tools.pattern2RegEx('system.adapter.' + filter)) : null;
+                            const reg = filter ? new RegExp(tools.pattern2RegEx(`system.adapter.${filter}`)) : null;
                             const adapterList: AdapterListEntry[] = [];
                             for (const obj of objs.rows) {
                                 if (obj.value.type !== 'adapter') {
@@ -420,14 +420,14 @@ export class List {
                                         id,
                                         name,
                                         version: obj.value.common.version,
-                                        'upgrade policy': obj.value.common.automaticUpgrade ?? 'none'
+                                        'upgrade policy': obj.value.common.automaticUpgrade ?? 'none',
                                     });
                                 }
                             }
 
                             console.table(adapterList);
                             this.processExit();
-                        }
+                        },
                     );
                     break;
 
@@ -497,15 +497,15 @@ export class List {
                                     }`;
 
                                     if (this.config.system && this.config.system.compact && row.value.common.compact) {
-                                        text +=
-                                            ', compact ' +
-                                            (row.value.common.compact && row.value.common.runAsCompactMode
+                                        text += `, compact ${
+                                            row.value.common.compact && row.value.common.runAsCompactMode
                                                 ? `enabled (group ${
                                                       row.value.common.compactGroup !== undefined
                                                           ? row.value.common.compactGroup
                                                           : 1
                                                   })`
-                                                : 'disabled');
+                                                : 'disabled'
+                                        }`;
                                     }
 
                                     if (row.value.native && row.value.native.port) {
@@ -528,7 +528,7 @@ export class List {
                                 console.log('\n+ instance is alive');
                                 this.processExit();
                             });
-                        }
+                        },
                     );
                     break;
 
@@ -545,13 +545,13 @@ export class List {
                                         return;
                                     }
                                     const reg = filter
-                                        ? new RegExp(tools.pattern2RegEx('system.user.' + filter))
+                                        ? new RegExp(tools.pattern2RegEx(`system.user.${filter}`))
                                         : null;
                                     console.log(
-                                        '    ID                                 | Name        | Active   | Groups'
+                                        '    ID                                 | Name        | Active   | Groups',
                                     );
                                     console.log(
-                                        '---------------------------------------+-------------+----------+--------------'
+                                        '---------------------------------------+-------------+----------+--------------',
                                     );
                                     for (const obj of objs.rows) {
                                         if (obj.value.type !== 'user') {
@@ -565,7 +565,7 @@ export class List {
                                                 reg.test(
                                                     tools.isObject(obj.value.common.name)
                                                         ? obj.value.common.name[lang] || obj.value.common.name.en
-                                                        : obj.value.common.name
+                                                        : obj.value.common.name,
                                                 ))
                                         ) {
                                             const id = obj.value._id;
@@ -593,9 +593,9 @@ export class List {
                                         }
                                     }
                                     this.processExit();
-                                }
+                                },
                             );
-                        }
+                        },
                     );
                     break;
 
@@ -608,16 +608,16 @@ export class List {
                                 this.processExit();
                                 return;
                             }
-                            const reg = filter ? new RegExp(tools.pattern2RegEx('system.group.' + filter)) : null;
+                            const reg = filter ? new RegExp(tools.pattern2RegEx(`system.group.${filter}`)) : null;
                             console.log('');
                             console.log(
-                                '  system.group      | object  | state   | file      | user  | others                 | users'
+                                '  system.group      | object  | state   | file      | user  | others                 | users',
                             );
                             console.log(
-                                '                    | l r w d | l r w d | l r w c d | w c d |                        |'
+                                '                    | l r w d | l r w d | l r w c d | w c d |                        |',
                             );
                             console.log(
-                                '--------------------+---------+---------+-----------+-------+------------------------+---------'
+                                '--------------------+---------+---------+-----------+-------+------------------------+---------',
                             );
                             for (const obj of objs.rows) {
                                 if (obj.value.type !== 'group') {
@@ -630,7 +630,7 @@ export class List {
                                         reg.test(
                                             tools.isObject(obj.value.common.name)
                                                 ? obj.value.common.name[lang] || obj.value.common.name.en
-                                                : obj.value.common.name
+                                                : obj.value.common.name,
                                         ))
                                 ) {
                                     const id = obj.value._id.substring(13);
@@ -641,74 +641,74 @@ export class List {
                                                 write: true,
                                                 delete: true,
                                                 create: true,
-                                                list: true
+                                                list: true,
                                             },
                                             object: {
                                                 read: true,
                                                 write: true,
                                                 create: true,
                                                 delete: true,
-                                                list: true
+                                                list: true,
                                             },
                                             state: {
                                                 read: true,
                                                 write: true,
                                                 delete: true,
                                                 create: true,
-                                                list: true
+                                                list: true,
                                             },
                                             users: {
                                                 write: true,
                                                 create: true,
                                                 delete: true,
                                                 list: true,
-                                                read: true
+                                                read: true,
                                             },
                                             other: {
                                                 execute: true,
                                                 http: true,
-                                                sendto: true
-                                            }
+                                                sendto: true,
+                                            },
                                         };
                                     }
 
                                     let text = id.padEnd(19);
                                     text += ' | ';
                                     if (obj.value.common.acl?.object) {
-                                        text += (obj.value.common.acl.object.list ? '+' : '-') + ' ';
-                                        text += (obj.value.common.acl.object.read ? '+' : '-') + ' ';
-                                        text += (obj.value.common.acl.object.write ? '+' : '-') + ' ';
-                                        text += (obj.value.common.acl.object.delete ? '+' : '-') + ' ';
+                                        text += `${obj.value.common.acl.object.list ? '+' : '-'} `;
+                                        text += `${obj.value.common.acl.object.read ? '+' : '-'} `;
+                                        text += `${obj.value.common.acl.object.write ? '+' : '-'} `;
+                                        text += `${obj.value.common.acl.object.delete ? '+' : '-'} `;
                                         text += '|';
                                     } else {
                                         text += '        |';
                                     }
                                     if (obj.value.common.acl?.state) {
                                         text += ' ';
-                                        text += (obj.value.common.acl.state.list ? '+' : '-') + ' ';
-                                        text += (obj.value.common.acl.state.read ? '+' : '-') + ' ';
-                                        text += (obj.value.common.acl.state.write ? '+' : '-') + ' ';
-                                        text += (obj.value.common.acl.state.delete ? '+' : '-') + ' ';
+                                        text += `${obj.value.common.acl.state.list ? '+' : '-'} `;
+                                        text += `${obj.value.common.acl.state.read ? '+' : '-'} `;
+                                        text += `${obj.value.common.acl.state.write ? '+' : '-'} `;
+                                        text += `${obj.value.common.acl.state.delete ? '+' : '-'} `;
                                         text += '|';
                                     } else {
                                         text += '         |';
                                     }
                                     if (obj.value.common.acl?.file) {
                                         text += ' ';
-                                        text += (obj.value.common.acl.file.list ? '+' : '-') + ' ';
-                                        text += (obj.value.common.acl.file.read ? '+' : '-') + ' ';
-                                        text += (obj.value.common.acl.file.write ? '+' : '-') + ' ';
-                                        text += (obj.value.common.acl.file.create ? '+' : '-') + ' ';
-                                        text += (obj.value.common.acl.file.delete ? '+' : '-') + ' ';
+                                        text += `${obj.value.common.acl.file.list ? '+' : '-'} `;
+                                        text += `${obj.value.common.acl.file.read ? '+' : '-'} `;
+                                        text += `${obj.value.common.acl.file.write ? '+' : '-'} `;
+                                        text += `${obj.value.common.acl.file.create ? '+' : '-'} `;
+                                        text += `${obj.value.common.acl.file.delete ? '+' : '-'} `;
                                         text += '|';
                                     } else {
                                         text += '           |';
                                     }
                                     if (obj.value.common.acl?.users) {
                                         text += ' ';
-                                        text += (obj.value.common.acl.users.write ? '+' : '-') + ' ';
-                                        text += (obj.value.common.acl.users.create ? '+' : '-') + ' ';
-                                        text += (obj.value.common.acl.users.delete ? '+' : '-') + ' ';
+                                        text += `${obj.value.common.acl.users.write ? '+' : '-'} `;
+                                        text += `${obj.value.common.acl.users.create ? '+' : '-'} `;
+                                        text += `${obj.value.common.acl.users.delete ? '+' : '-'} `;
                                         text += '|';
                                     } else {
                                         text += '       |';
@@ -717,18 +717,18 @@ export class List {
                                         text += ' ';
                                         let others = '';
                                         for (const [r, otherPerm] of Object.entries(obj.value.common.acl.other)) {
-                                            others += r + (otherPerm ? '+' : '-') + ' ';
+                                            others += `${r + (otherPerm ? '+' : '-')} `;
                                         }
 
                                         text += `${others.padEnd(22)}|`;
                                     } else {
-                                        text += new Array(25).join(' ') + '|';
+                                        text += `${new Array(25).join(' ')}|`;
                                     }
 
                                     if (obj.value.common.members) {
                                         for (let m = 0; m < obj.value.common.members.length; m++) {
                                             obj.value.common.members[m] = obj.value.common.members[m].substring(
-                                                12
+                                                12,
                                             ) as ioBroker.ObjectIDs.User;
                                         }
                                         text += ` ${obj.value.common.members.join(', ')}`;
@@ -738,11 +738,11 @@ export class List {
                             }
 
                             console.log(
-                                '--------------------+---------+---------+-----------+-------+------------------------+---------'
+                                '--------------------+---------+---------+-----------+-------+------------------------+---------',
                             );
                             console.log('Legend: (l)ist, (r)ead, (w)rite, (c)reate, (d)elete');
                             this.processExit();
-                        }
+                        },
                     );
                     break;
 
@@ -767,7 +767,7 @@ export class List {
                                     }
 
                                     const reg = filter
-                                        ? new RegExp(tools.pattern2RegEx('system.host.' + filter))
+                                        ? new RegExp(tools.pattern2RegEx(`system.host.${filter}`))
                                         : null;
 
                                     for (const obj of objs.rows) {
@@ -804,9 +804,9 @@ export class List {
                                                 uptime = '-';
                                             }
                                             const text = `${id.padEnd(
-                                                19
+                                                19,
                                             )} ${name} (version: ${version}, hostname: ${hostname.padEnd(
-                                                14
+                                                14,
                                             )}, ${alive}, uptime: ${uptime})`;
                                             // todo
                                             console.log(text);
@@ -816,7 +816,7 @@ export class List {
                                     this.processExit();
                                 });
                             });
-                        }
+                        },
                     );
                     break;
 
@@ -840,13 +840,13 @@ export class List {
 
                             if (!reg || reg.test(obj.value._id) || (name && reg.test(name))) {
                                 console.log(
-                                    '\n====================================================================================='
+                                    '\n=====================================================================================',
                                 );
                                 const id = obj.value._id.substring(5);
 
                                 console.log(`${id.padEnd(19)}(${name})`);
                                 console.log(
-                                    '-------------------------------------------------------------------------------------'
+                                    '-------------------------------------------------------------------------------------',
                                 );
 
                                 if (obj.value.common.members) {
@@ -881,7 +881,7 @@ export class List {
                                         adapter &&
                                         row.value._id !== names[0] &&
                                         !row.value._id.startsWith(`${names[0]}.`)
-                                    )
+                                    ),
                             )
                             .map(row => row.value._id);
 

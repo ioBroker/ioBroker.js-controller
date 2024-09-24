@@ -9,7 +9,7 @@ describe('test tools.js helpers', () => {
             { input: 'ⴃ', expected: 'ⴃ' }, // Georgian Small Letter Don (is a lowercase letter)
             { input: 'Ϣ', expected: 'Ϣ' }, // Coptic Capital Letter Shei (is a uppercase letter)
             { input: 'ok﹏﹏ok', expected: 'ok_ok' }, // multiple disallowed characters are replaced with one "_"
-            { input: 'Th1s-IS_0.k4y', expected: 'Th1s-IS_0.k4y' }
+            { input: 'Th1s-IS_0.k4y', expected: 'Th1s-IS_0.k4y' },
         ];
         for (const { input, expected } of tests) {
             expect(input.replace(FORBIDDEN_CHARS, '_')).to.equal(expected);

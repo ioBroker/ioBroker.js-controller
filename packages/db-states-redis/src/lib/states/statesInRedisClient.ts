@@ -92,12 +92,12 @@ export class StateRedisClient {
 
     constructor(settings: StatesSettings) {
         this.settings = settings || {};
-        this.namespaceRedis = (this.settings.redisNamespace || 'io') + '.';
+        this.namespaceRedis = `${this.settings.redisNamespace || 'io'}.`;
         this.namespaceRedisL = this.namespaceRedis.length;
-        this.namespaceMsg = (this.settings.namespaceMsg || 'messagebox') + '.';
-        this.namespaceLog = (this.settings.namespaceLog || 'log') + '.';
-        this.namespaceSession = (this.settings.namespaceSession || 'session') + '.';
-        this.metaNamespace = (this.settings.metaNamespace || 'meta') + '.';
+        this.namespaceMsg = `${this.settings.namespaceMsg || 'messagebox'}.`;
+        this.namespaceLog = `${this.settings.namespaceLog || 'log'}.`;
+        this.namespaceSession = `${this.settings.namespaceSession || 'session'}.`;
+        this.metaNamespace = `${this.settings.metaNamespace || 'meta'}.`;
 
         this.globalMessageId = Math.round(Math.random() * 100_000_000);
         this.globalLogId = Math.round(Math.random() * 100_000_000);
@@ -218,7 +218,7 @@ export class StateRedisClient {
             // initiate a unix socket connection
             this.settings.connection.options.path = this.settings.connection.host;
             this.log.debug(
-                `${this.namespace} Redis States: Use File Socket for connection: ${this.settings.connection.options.path}`
+                `${this.namespace} Redis States: Use File Socket for connection: ${this.settings.connection.options.path}`,
             );
         } else if (Array.isArray(this.settings.connection.host)) {
             // Host is an array means we use a sentinel
@@ -226,7 +226,7 @@ export class StateRedisClient {
                 host: redisNode,
                 port: Array.isArray(this.settings.connection.port)
                     ? this.settings.connection.port[idx]
-                    : this.settings.connection.port
+                    : this.settings.connection.port,
             }));
             this.settings.connection.options.name = this.settings.connection.sentinelName
                 ? this.settings.connection.sentinelName
@@ -234,13 +234,13 @@ export class StateRedisClient {
             this.log.debug(
                 `${this.namespace} Redis States: Use Sentinel for connection: ${
                     this.settings.connection.options.name
-                }, ${JSON.stringify(this.settings.connection.options.sentinels)}`
+                }, ${JSON.stringify(this.settings.connection.options.sentinels)}`,
             );
         } else {
             this.settings.connection.options.host = this.settings.connection.host;
             this.settings.connection.options.port = this.settings.connection.port;
             this.log.debug(
-                `${this.namespace} Redis States: Use Redis connection: ${this.settings.connection.options.host}:${this.settings.connection.options.port}`
+                `${this.namespace} Redis States: Use Redis connection: ${this.settings.connection.options.host}:${this.settings.connection.options.port}`,
             );
         }
         if (this.settings.connection.options.db === undefined) {
@@ -260,7 +260,7 @@ export class StateRedisClient {
         this.client.on('error', error => {
             this.settings.connection.enhancedLogging &&
                 this.log.silly(
-                    `${this.namespace} Redis ERROR States: (${this.stop}) ${error.message} / ${error.stack}`
+                    `${this.namespace} Redis ERROR States: (${this.stop}) ${error.message} / ${error.stack}`,
                 );
             if (this.stop) {
                 return;
@@ -270,7 +270,7 @@ export class StateRedisClient {
                 // Seems we have a socket.io server
                 if (error.message.startsWith('Protocol error, got "H" as reply type byte.')) {
                     this.log.error(
-                        `${this.namespace} Could not connect to states database at ${this.settings.connection.options.host}:${this.settings.connection.options.port} (invalid protocol). Please make sure the configured IP and port points to a host running JS-Controller >= 2.0. and that the port is not occupied by other software!`
+                        `${this.namespace} Could not connect to states database at ${this.settings.connection.options.host}:${this.settings.connection.options.port} (invalid protocol). Please make sure the configured IP and port points to a host running JS-Controller >= 2.0. and that the port is not occupied by other software!`,
                     );
                 }
                 return;
@@ -309,12 +309,12 @@ export class StateRedisClient {
             }
             this.settings.connection.enhancedLogging &&
                 this.log.silly(
-                    `${this.namespace} States-Redis Event reconnect (reconnectCounter=${reconnectCounter}, stop=${this.stop})`
+                    `${this.namespace} States-Redis Event reconnect (reconnectCounter=${reconnectCounter}, stop=${this.stop})`,
                 );
             if (reconnectCounter > 2) {
                 // fallback logic for nodejs <10
                 this.log.error(
-                    `${this.namespace} The DB port  ${this.settings.connection.options.port} is occupied by something that is not a Redis protocol server. Please check other software running on this port or, if you use iobroker, make sure to update to js-controller 2.0 or higher!`
+                    `${this.namespace} The DB port  ${this.settings.connection.options.port} is occupied by something that is not a Redis protocol server. Please check other software running on this port or, if you use iobroker, make sure to update to js-controller 2.0 or higher!`,
                 );
                 return;
             }
@@ -337,7 +337,7 @@ export class StateRedisClient {
                     await this.client.config('SET', 'notify-keyspace-events', 'Exe'); // enable Expiry/Evicted events in server
                 } catch (e) {
                     this.log.warn(
-                        `${this.namespace} Unable to enable Expiry Keyspace events from Redis Server: ${e.message}`
+                        `${this.namespace} Unable to enable Expiry Keyspace events from Redis Server: ${e.message}`,
                     );
                 }
 
@@ -348,7 +348,7 @@ export class StateRedisClient {
                     this.subSystem.on('pmessage', (pattern, channel, message) => {
                         setImmediate(() => {
                             this.log.silly(
-                                `${this.namespace} States system redis pmessage ${pattern}/${channel}:${message}`
+                                `${this.namespace} States system redis pmessage ${pattern}/${channel}:${message}`,
                             );
 
                             if (channel.startsWith(this.metaNamespace)) {
@@ -359,7 +359,7 @@ export class StateRedisClient {
                                     if (typeof this.settings.disconnected === 'function') {
                                         // protocol version has changed, restart controller
                                         this.log.info(
-                                            `${this.namespace} States protocol version has changed, disconnecting!`
+                                            `${this.namespace} States protocol version has changed, disconnecting!`,
                                         );
                                         this.settings.disconnected();
                                     }
@@ -386,7 +386,7 @@ export class StateRedisClient {
                                 this.log.warn(
                                     `${this.namespace} States system pmessage ${channel} ${JSON.stringify(message)} ${
                                         e.message
-                                    }`
+                                    }`,
                                 );
                                 this.log.warn(`${this.namespace} ${e.stack}`);
                             }
@@ -401,7 +401,7 @@ export class StateRedisClient {
                             try {
                                 if (channel === `__keyevent@${this.settings.connection.options.db}__:evicted`) {
                                     this.log.warn(
-                                        `${this.namespace} Redis has evicted state ${message}. Please check your maxMemory settings for your redis instance!`
+                                        `${this.namespace} Redis has evicted state ${message}. Please check your maxMemory settings for your redis instance!`,
                                     );
                                 } else if (channel !== `__keyevent@${this.settings.connection.options.db}__:expired`) {
                                     this.log.warn(`${this.namespace} Unknown user message ${channel} ${message}`);
@@ -410,14 +410,14 @@ export class StateRedisClient {
                                 if (typeof onChange === 'function') {
                                     // Find deleted states and notify user
                                     const found = Object.values(this.systemSubscriptions).find(
-                                        regex => regex !== true && regex.test(message)
+                                        regex => regex !== true && regex.test(message),
                                     );
                                     found && onChange(message.substring(this.namespaceRedisL), null);
                                 }
                                 if (typeof onChangeUser === 'function' && this.sub) {
                                     // Find deleted states and notify user
                                     const found = Object.values(this.userSubscriptions).find(regex =>
-                                        regex.test(message)
+                                        regex.test(message),
                                     );
                                     found && onChangeUser(message.substring(this.namespaceRedisL), null);
                                 }
@@ -425,7 +425,7 @@ export class StateRedisClient {
                                 this.log.warn(`${this.namespace} user message ${channel} ${message} ${e.message}`);
                                 this.log.warn(`${this.namespace} ${e.stack}`);
                             }
-                        })
+                        }),
                     );
                 }
                 this.subSystem.on('end', () => {
@@ -440,27 +440,27 @@ export class StateRedisClient {
                     }
                     this.settings.connection.enhancedLogging &&
                         this.log.silly(
-                            `${this.namespace} Sub-Client States System No redis connection: ${JSON.stringify(error)}`
+                            `${this.namespace} Sub-Client States System No redis connection: ${JSON.stringify(error)}`,
                         );
                 });
 
                 if (this.settings.connection.enhancedLogging) {
                     this.subSystem.on('connect', () =>
                         this.log.silly(
-                            `${this.namespace} PubSub client States-Redis System Event connect (stop=${this.stop})`
-                        )
+                            `${this.namespace} PubSub client States-Redis System Event connect (stop=${this.stop})`,
+                        ),
                     );
 
                     this.subSystem.on('close', () =>
                         this.log.silly(
-                            `${this.namespace} PubSub client States-Redis System Event close (stop=${this.stop})`
-                        )
+                            `${this.namespace} PubSub client States-Redis System Event close (stop=${this.stop})`,
+                        ),
                     );
 
                     this.subSystem.on('reconnecting', reconnectCounter =>
                         this.log.silly(
-                            `${this.namespace} PubSub client States-Redis System Event reconnect (reconnectCounter=${reconnectCounter}, stop=${this.stop})`
-                        )
+                            `${this.namespace} PubSub client States-Redis System Event reconnect (reconnectCounter=${reconnectCounter}, stop=${this.stop})`,
+                        ),
                     );
                 }
 
@@ -468,22 +468,22 @@ export class StateRedisClient {
                     try {
                         this.subSystem &&
                             (await this.subSystem.subscribe(
-                                `__keyevent@${this.settings.connection.options.db}__:expired`
+                                `__keyevent@${this.settings.connection.options.db}__:expired`,
                             ));
                     } catch (e) {
                         this.log.warn(
-                            `${this.namespace} Unable to subscribe to expiry Keyspace events from Redis Server: ${e.message}`
+                            `${this.namespace} Unable to subscribe to expiry Keyspace events from Redis Server: ${e.message}`,
                         );
                     }
 
                     try {
                         this.subSystem &&
                             (await this.subSystem.subscribe(
-                                `__keyevent@${this.settings.connection.options.db}__:evicted`
+                                `__keyevent@${this.settings.connection.options.db}__:evicted`,
                             ));
                     } catch (e) {
                         this.log.warn(
-                            `${this.namespace} Unable to subscribe to evicted Keyspace events from Redis Server: ${e.message}`
+                            `${this.namespace} Unable to subscribe to evicted Keyspace events from Redis Server: ${e.message}`,
                         );
                     }
 
@@ -492,7 +492,7 @@ export class StateRedisClient {
                         this.subSystem && (await this.subSystem.psubscribe(`${this.metaNamespace}*`));
                     } catch (e) {
                         this.log.warn(
-                            `${this.namespace} Unable to subscribe to meta namespace "${this.metaNamespace}" changes: ${e.message}`
+                            `${this.namespace} Unable to subscribe to meta namespace "${this.metaNamespace}" changes: ${e.message}`,
                         );
                     }
 
@@ -501,15 +501,15 @@ export class StateRedisClient {
                             this.log.debug(
                                 `${this.namespace} States ${
                                     ready ? 'system re' : ''
-                                }connected to redis: ${tools.maybeArrayToString(this.settings.connection.host)}`
+                                }connected to redis: ${tools.maybeArrayToString(this.settings.connection.host)}`,
                             );
                         } else {
                             this.log.debug(
                                 `${this.namespace} States ${
                                     ready ? 'system re' : ''
                                 }connected to redis: ${tools.maybeArrayToString(
-                                    this.settings.connection.host
-                                )}:${tools.maybeArrayToString(this.settings.connection.port)}`
+                                    this.settings.connection.host,
+                                )}:${tools.maybeArrayToString(this.settings.connection.port)}`,
                             );
                         }
                         !ready && typeof this.settings.connected === 'function' && this.settings.connected();
@@ -557,7 +557,7 @@ export class StateRedisClient {
                             this.log.warn(
                                 `${this.namespace} States user pmessage ${channel} ${JSON.stringify(message)} ${
                                     e.message
-                                }`
+                                }`,
                             );
                             this.log.warn(`${this.namespace} ${e.stack}`);
                         }
@@ -578,7 +578,7 @@ export class StateRedisClient {
                     }
                     if (this.settings.connection.enhancedLogging) {
                         this.log.silly(
-                            `${this.namespace} Sub-Client States User No redis connection: ${JSON.stringify(error)}`
+                            `${this.namespace} Sub-Client States User No redis connection: ${JSON.stringify(error)}`,
                         );
                     }
                 });
@@ -586,19 +586,19 @@ export class StateRedisClient {
                 if (this.settings.connection.enhancedLogging) {
                     this.sub.on('connect', () => {
                         this.log.silly(
-                            `${this.namespace} PubSub client States-Redis User Event connect (stop=${this.stop})`
+                            `${this.namespace} PubSub client States-Redis User Event connect (stop=${this.stop})`,
                         );
                     });
 
                     this.sub.on('close', () => {
                         this.log.silly(
-                            `${this.namespace} PubSub client States-Redis User Event close (stop=${this.stop})`
+                            `${this.namespace} PubSub client States-Redis User Event close (stop=${this.stop})`,
                         );
                     });
 
                     this.sub.on('reconnecting', reconnectCounter => {
                         this.log.silly(
-                            `${this.namespace} PubSub client States-Redis User Event reconnect (reconnectCounter=${reconnectCounter}, stop=${this.stop})`
+                            `${this.namespace} PubSub client States-Redis User Event reconnect (reconnectCounter=${reconnectCounter}, stop=${this.stop})`,
                         );
                     });
                 }
@@ -614,15 +614,15 @@ export class StateRedisClient {
                             this.log.debug(
                                 `${this.namespace} States ${
                                     ready ? 'user re' : ''
-                                }connected to redis: ${tools.maybeArrayToString(this.settings.connection.host)}`
+                                }connected to redis: ${tools.maybeArrayToString(this.settings.connection.host)}`,
                             );
                         } else {
                             this.log.debug(
                                 `${this.namespace} States ${
                                     ready ? 'user re' : ''
                                 }connected to redis: ${tools.maybeArrayToString(
-                                    this.settings.connection.host
-                                )}:${tools.maybeArrayToString(this.settings.connection.port)}`
+                                    this.settings.connection.host,
+                                )}:${tools.maybeArrayToString(this.settings.connection.port)}`,
                             );
                         }
                         !ready && typeof this.settings.connected === 'function' && this.settings.connected();
@@ -651,15 +651,15 @@ export class StateRedisClient {
                     this.log.debug(
                         `${this.namespace} States ${
                             ready ? 'client re' : ''
-                        }connected to redis: ${tools.maybeArrayToString(this.settings.connection.host)}`
+                        }connected to redis: ${tools.maybeArrayToString(this.settings.connection.host)}`,
                     );
                 } else {
                     this.log.debug(
                         `${this.namespace} States ${
                             ready ? 'client re' : ''
                         }connected to redis: ${tools.maybeArrayToString(
-                            this.settings.connection.host
-                        )}:${tools.maybeArrayToString(this.settings.connection.port)}`
+                            this.settings.connection.host,
+                        )}:${tools.maybeArrayToString(this.settings.connection.port)}`,
                     );
                 }
                 !ready && typeof this.settings.connected === 'function' && this.settings.connected();
@@ -678,7 +678,7 @@ export class StateRedisClient {
     setState(
         id: string,
         state: ioBroker.SettableState | ioBroker.StateValue,
-        callback: (err: Error | null | undefined, id: string) => void
+        callback: (err: Error | null | undefined, id: string) => void,
     ): Promise<void>;
 
     /**
@@ -708,7 +708,7 @@ export class StateRedisClient {
     async setState(
         id: string,
         state: ioBroker.SettableState | ioBroker.StateValue,
-        callback?: (err: Error | null | undefined, id: string) => void
+        callback?: (err: Error | null | undefined, id: string) => void,
     ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
@@ -720,7 +720,7 @@ export class StateRedisClient {
 
         if (!tools.isObject(state)) {
             state = {
-                val: state
+                val: state,
             };
         }
 
@@ -867,7 +867,7 @@ export class StateRedisClient {
     getState(id: string): ioBroker.GetStatePromise;
     getState(
         id: string,
-        callback?: (err: Error | null | undefined, state?: ioBroker.State | null) => void
+        callback?: (err: Error | null | undefined, state?: ioBroker.State | null) => void,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetStateCallback> | void>;
 
     /**
@@ -878,7 +878,7 @@ export class StateRedisClient {
      */
     async getState(
         id: string,
-        callback?: (err: Error | null | undefined, state?: ioBroker.State | null) => void
+        callback?: (err: Error | null | undefined, state?: ioBroker.State | null) => void,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetStateCallback> | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
@@ -921,18 +921,18 @@ export class StateRedisClient {
     getStates(
         keys: string[],
         callback: (err: Error | undefined | null, states?: (ioBroker.State | null)[]) => void,
-        dontModify?: boolean
+        dontModify?: boolean,
     ): Promise<void>;
     getStates(
         keys: string[],
         callback: (err: Error | undefined | null, states?: (ioBroker.State | null)[]) => void,
-        dontModify?: boolean
+        dontModify?: boolean,
     ): Promise<void>;
 
     async getStates(
         keys: string[],
         callback?: (err: Error | undefined | null, states?: (ioBroker.State | null)[]) => void,
-        dontModify?: boolean
+        dontModify?: boolean,
     ): Promise<(ioBroker.State | null)[] | void> {
         if (!keys || !Array.isArray(keys)) {
             return tools.maybeCallbackWithError(callback, 'no keys');
@@ -966,7 +966,7 @@ export class StateRedisClient {
                 result.push(state ? JSON.parse(state) : null);
             } catch (e) {
                 this.log.error(
-                    `Parsing error on getStates("${_keys[i]}"), returning "null" for "${state}": ${e.message}`
+                    `Parsing error on getStates("${_keys[i]}"), returning "null" for "${state}": ${e.message}`,
                 );
                 result.push(null);
             }
@@ -982,21 +982,20 @@ export class StateRedisClient {
     async _destroyDBHelper(keys: string[], callback?: ioBroker.ErrorCallback): Promise<void> {
         if (!keys || !keys.length) {
             return tools.maybeCallback(callback);
-        } else {
-            if (!this.client) {
-                return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-            }
-
-            for (const id of keys) {
-                try {
-                    await this.client.del(id);
-                } catch {
-                    // ignore
-                }
-            }
-
-            return tools.maybeCallback(callback);
         }
+        if (!this.client) {
+            return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
+        }
+
+        for (const id of keys) {
+            try {
+                await this.client.del(id);
+            } catch {
+                // ignore
+            }
+        }
+
+        return tools.maybeCallback(callback);
     }
 
     /**
@@ -1005,15 +1004,14 @@ export class StateRedisClient {
     async destroyDB(callback?: ioBroker.ErrorCallback): Promise<void> {
         if (!this.client) {
             return tools.maybeCallbackWithError(callback, tools.ERRORS.ERROR_DB_CLOSED);
-        } else {
-            let keys;
-            try {
-                keys = await this.client.keys(`${this.namespaceRedis}*`);
-            } catch {
-                //ignore
-            }
-            return this._destroyDBHelper(keys || [], callback);
         }
+        let keys;
+        try {
+            keys = await this.client.keys(`${this.namespaceRedis}*`);
+        } catch {
+            //ignore
+        }
+        return this._destroyDBHelper(keys || [], callback);
     }
 
     // Destructor of the class. Called by shutting down.
@@ -1050,7 +1048,7 @@ export class StateRedisClient {
 
     async delState(
         id: string,
-        callback?: ioBroker.DeleteStateCallback
+        callback?: ioBroker.DeleteStateCallback,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.DeleteStateCallback> | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
@@ -1074,14 +1072,14 @@ export class StateRedisClient {
     getKeys(
         pattern: string,
         callback?: undefined,
-        dontModify?: boolean
+        dontModify?: boolean,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetKeysCallback>>;
     getKeys(pattern: string, callback: ioBroker.GetKeysCallback, dontModify?: boolean): Promise<void>;
 
     async getKeys(
         pattern: string,
         callback?: ioBroker.GetKeysCallback,
-        dontModify?: boolean
+        dontModify?: boolean,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.GetKeysCallback> | void> {
         if (!pattern || typeof pattern !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid pattern ${JSON.stringify(pattern)}`);
@@ -1117,7 +1115,7 @@ export class StateRedisClient {
     async subscribe(
         pattern: string,
         asUser?: boolean | ioBroker.ErrorCallback,
-        callback?: ioBroker.ErrorCallback
+        callback?: ioBroker.ErrorCallback,
     ): Promise<void> {
         if (!pattern || typeof pattern !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid pattern ${JSON.stringify(pattern)}`);
@@ -1139,11 +1137,11 @@ export class StateRedisClient {
             await subClient.psubscribe(this.namespaceRedis + pattern);
             if (asUser) {
                 this.userSubscriptions[this.namespaceRedis + pattern] = new RegExp(
-                    tools.pattern2RegEx(this.namespaceRedis + pattern)
+                    tools.pattern2RegEx(this.namespaceRedis + pattern),
                 );
             } else {
                 this.systemSubscriptions[this.namespaceRedis + pattern] = new RegExp(
-                    tools.pattern2RegEx(this.namespaceRedis + pattern)
+                    tools.pattern2RegEx(this.namespaceRedis + pattern),
                 );
             }
             return tools.maybeCallback(callback);
@@ -1172,7 +1170,7 @@ export class StateRedisClient {
     async unsubscribe(
         pattern: string,
         asUser?: boolean | ioBroker.ErrorCallback,
-        callback?: ioBroker.ErrorCallback
+        callback?: ioBroker.ErrorCallback,
     ): Promise<void> {
         if (!pattern || typeof pattern !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid pattern ${JSON.stringify(pattern)}`);
@@ -1284,14 +1282,14 @@ export class StateRedisClient {
     async pushLog(
         id: string,
         log: LogObject,
-        callback?: (err: Error | undefined | null, id?: string) => void
+        callback?: (err: Error | undefined | null, id?: string) => void,
     ): Promise<string | void>;
 
     // implementation uses an modified pushLog with internal _id
     async pushLog(
         id: string,
         log: InternalLogObject,
-        callback?: (err: Error | undefined | null, id?: string) => void
+        callback?: (err: Error | undefined | null, id?: string) => void,
     ): Promise<string | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
@@ -1357,7 +1355,7 @@ export class StateRedisClient {
     // TODO: types session obj
     async getSession(
         id: string,
-        callback: (err: Error | undefined | null, session?: Record<string, any> | null) => void
+        callback: (err: Error | undefined | null, session?: Record<string, any> | null) => void,
     ): Promise<Record<string, any> | null | void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);
@@ -1389,7 +1387,7 @@ export class StateRedisClient {
         id: string,
         expireS: number,
         obj: Record<string, any>,
-        callback?: ioBroker.ErrorCallback
+        callback?: ioBroker.ErrorCallback,
     ): Promise<void> {
         if (!id || typeof id !== 'string') {
             return tools.maybeCallbackWithError(callback, `invalid id ${JSON.stringify(id)}`);

@@ -9,21 +9,21 @@ let states: StateRedisClient | null = null;
 let onStatesChanged: ioBroker.StateChangeHandler | null = null;
 import * as url from 'node:url';
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 const dataDir = path.join(thisDir, '..', 'tmp', 'data');
 
 function cleanDbs(): void {
-    if (fs.existsSync(dataDir + '/objects.json')) {
-        fs.unlinkSync(dataDir + '/objects.json');
+    if (fs.existsSync(`${dataDir}/objects.json`)) {
+        fs.unlinkSync(`${dataDir}/objects.json`);
     }
-    if (fs.existsSync(dataDir + '/objects.json.bak')) {
-        fs.unlinkSync(dataDir + '/objects.json.bak');
+    if (fs.existsSync(`${dataDir}/objects.json.bak`)) {
+        fs.unlinkSync(`${dataDir}/objects.json.bak`);
     }
-    if (fs.existsSync(dataDir + '/states.json')) {
-        fs.unlinkSync(dataDir + '/states.json');
+    if (fs.existsSync(`${dataDir}/states.json`)) {
+        fs.unlinkSync(`${dataDir}/states.json`);
     }
-    if (fs.existsSync(dataDir + '/states.json.bak')) {
-        fs.unlinkSync(dataDir + '/states.json.bak');
+    if (fs.existsSync(`${dataDir}/states.json.bak`)) {
+        fs.unlinkSync(`${dataDir}/states.json.bak`);
     }
 }
 
@@ -35,19 +35,19 @@ describe('States-Redis: Test states in Redis', function () {
         const { objects: _objects, states: _states } = await startController({
             objects: {
                 dataDir: dataDir,
-                onChange: (id: string, _obj: ioBroker.AnyObject) => console.log('object changed. ' + id)
+                onChange: (id: string, _obj: ioBroker.AnyObject) => console.log(`object changed. ${id}`),
             },
             states: {
                 type: 'redis',
                 host: '127.0.0.1',
                 port: 6379,
                 onChange: (id: string, state: ioBroker.State) => {
-                    console.log('Redis-state changed. ' + id);
+                    console.log(`Redis-state changed. ${id}`);
                     if (onStatesChanged) {
                         onStatesChanged(id, state);
                     }
-                }
-            }
+                },
+            },
         });
 
         objects = _objects;

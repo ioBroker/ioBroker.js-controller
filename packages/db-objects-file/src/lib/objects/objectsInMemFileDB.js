@@ -17,13 +17,13 @@ import deepClone from 'deep-clone';
 /**
  * This class inherits InMemoryFileDB class and adds all relevant logic for objects
  * including the available methods for use by js-controller directly
- **/
+ */
 export class ObjectsInMemoryFileDB extends InMemoryFileDB {
     constructor(settings) {
         settings = settings || {};
         settings.fileDB = settings.fileDB || {
             fileName: 'objects.json',
-            backupDirName: 'backup-objects'
+            backupDirName: 'backup-objects',
         };
         super(settings);
 
@@ -34,11 +34,9 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         }
 
         this.META_ID = '**META**';
-        /** @type {Record<string, any>} */
         this.fileOptions = {};
         this.files = {};
         this.writeTimer = null;
-        /** @type {string[]} */
         this.writeIds = [];
         this.preserveSettings = ['custom'];
         this.defaultNewAcl = this.settings.defaultNewAcl || null;
@@ -162,7 +160,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
             let results = [];
             const list = fs.readdirSync(dir);
             list.forEach(file => {
-                file = dir + '/' + file;
+                file = `${dir}/${file}`;
                 const stat = fs.statSync(file);
                 if (stat && stat.isDirectory()) {
                     /* Recurse into a subdirectory */
@@ -183,7 +181,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         if (!fs.existsSync(this.objectsDir)) {
             return {
                 numberSuccess: resSynced,
-                notifications: resNotifies
+                notifications: resNotifies,
             };
         }
         const baseDirs = fs.readdirSync(this.objectsDir);
@@ -202,7 +200,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
             }
             if (!metaIds.includes(dir)) {
                 resNotifies.push(
-                    `Ignoring Directory "${dir}" because officially not created as meta object. Please remove directory!`
+                    `Ignoring Directory "${dir}" because officially not created as meta object. Please remove directory!`,
                 );
                 return;
             }
@@ -231,11 +229,11 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
                                 (this.defaultNewAcl && this.defaultNewAcl.file) ||
                                 utils.CONSTS.ACCESS_USER_RW |
                                     utils.CONSTS.ACCESS_GROUP_READ |
-                                    utils.CONSTS.ACCESS_EVERY_READ // 0x644
+                                    utils.CONSTS.ACCESS_EVERY_READ, // 0x644
                         },
                         mimeType: _mimeType,
                         binary: isBinary,
-                        modifiedAt: fileStat.mtimeMs
+                        modifiedAt: fileStat.mtimeMs,
                     };
                     dirSynced++;
                 }
@@ -246,7 +244,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         });
         return {
             numberSuccess: resSynced,
-            notifications: resNotifies
+            notifications: resNotifies,
         };
     }
 
@@ -278,10 +276,10 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
             }
         } catch (e) {
             this.log.error(
-                `${this.namespace} Cannot create directories: ${path.join(this.objectsDir, id)}: ${e.message}`
+                `${this.namespace} Cannot create directories: ${path.join(this.objectsDir, id)}: ${e.message}`,
             );
             this.log.error(
-                `${this.namespace} Check the permissions! Or run installation fixer or "iobroker fix" command!`
+                `${this.namespace} Check the permissions! Or run installation fixer or "iobroker fix" command!`,
             );
             throw e;
         }
@@ -301,7 +299,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
             permissions:
                 options.mode ||
                 (this.defaultNewAcl && this.defaultNewAcl.file) ||
-                utils.CONSTS.ACCESS_USER_RW | utils.CONSTS.ACCESS_GROUP_READ | utils.CONSTS.ACCESS_EVERY_READ // 0x644
+                utils.CONSTS.ACCESS_USER_RW | utils.CONSTS.ACCESS_GROUP_READ | utils.CONSTS.ACCESS_EVERY_READ, // 0x644
         };
 
         this.fileOptions[id][name].mimeType = options.mimeType || _mimeType;
@@ -318,7 +316,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
             // Store file
             fs.writeFileSync(path.join(this.objectsDir, id, name), data, {
                 flag: 'w',
-                encoding: isBinary ? 'binary' : 'utf8'
+                encoding: isBinary ? 'binary' : 'utf8',
             });
 
             if (isBinary) {
@@ -332,7 +330,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
             this._saveFileSettings(id);
         } catch (e) {
             this.log.error(
-                `${this.namespace} Cannot write files: ${path.join(this.objectsDir, id, name)}: ${e.message}`
+                `${this.namespace} Cannot write files: ${path.join(this.objectsDir, id, name)}: ${e.message}`,
             );
             throw e;
         }
@@ -344,7 +342,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
                 this.publishAll('files', `${id}$%$${name}`, size);
             },
             name,
-            data.byteLength
+            data.byteLength,
         );
     }
 
@@ -378,8 +376,8 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
                                 (this.defaultNewAcl && this.defaultNewAcl.file.permissions) ||
                                 utils.CONSTS.ACCESS_USER_ALL |
                                     utils.CONSTS.ACCESS_GROUP_ALL |
-                                    utils.CONSTS.ACCESS_EVERY_ALL // 777
-                        }
+                                    utils.CONSTS.ACCESS_EVERY_ALL, // 777
+                        },
                     };
                     if (typeof this.fileOptions[id][name] !== 'object') {
                         this.fileOptions[id][name] = {
@@ -394,8 +392,8 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
                                     (this.defaultNewAcl && this.defaultNewAcl.file.permissions) ||
                                     utils.CONSTS.ACCESS_USER_ALL |
                                         utils.CONSTS.ACCESS_GROUP_ALL |
-                                        utils.CONSTS.ACCESS_EVERY_ALL // 777
-                            }
+                                        utils.CONSTS.ACCESS_EVERY_ALL, // 777
+                            },
                         };
                     }
 
@@ -430,7 +428,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
                         (this.defaultNewAcl && this.defaultNewAcl.ownerGroup) || utils.CONSTS.SYSTEM_ADMIN_GROUP,
                     permissions:
                         (this.defaultNewAcl && this.defaultNewAcl.file.permissions) ||
-                        utils.CONSTS.ACCESS_USER_ALL | utils.CONSTS.ACCESS_GROUP_ALL | utils.CONSTS.ACCESS_EVERY_RW // 776
+                        utils.CONSTS.ACCESS_USER_ALL | utils.CONSTS.ACCESS_GROUP_ALL | utils.CONSTS.ACCESS_EVERY_RW, // 776
                 };
             }
 
@@ -442,7 +440,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
                 }
                 return {
                     fileContent: this.files[id][name],
-                    fileMime: this.fileOptions[id][name].mimeType
+                    fileMime: this.fileOptions[id][name].mimeType,
                 };
             }
         } catch (e) {
@@ -455,12 +453,11 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
     /**
      * Check if given object exists
      *
-     * @param {string} id id of the object
-     * @param {object} [_options] optional user context
-     * @return {boolean}
+     * @param id id of the object
+     * @returns if the object exists
      */
     // needed by server
-    _objectExists(id, _options) {
+    _objectExists(id) {
         if (!id || typeof id !== 'string') {
             throw new Error(`invalid id ${JSON.stringify(id)}`);
         }
@@ -477,9 +474,9 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
     /**
      * Check if given file exists
      *
-     * @param {string} id id of the namespace
-     * @param {string} [name] name of the file
-     * @returns {boolean}
+     * @param id id of the namespace
+     * @param [name] name of the file
+     * @returns
      */
     // needed by server
     _fileExists(id, name) {
@@ -504,9 +501,9 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
     /**
      * Check if given directory exists
      *
-     * @param {string} id id of the namespace
-     * @param {string} [name] name of the directory
-     * @returns {boolean}
+     * @param id id of the namespace
+     * @param [name] name of the directory
+     * @returns
      */
     // special functionality only for Server (used together with SyncFileDirectory)
     dirExists(id, name) {
@@ -542,7 +539,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
 
             if (stat.isDirectory()) {
                 // read all entries and delete every one
-                fs.readdirSync(location).forEach(dir => this._unlink(id, name + '/' + dir));
+                fs.readdirSync(location).forEach(dir => this._unlink(id, `${name}/${dir}`));
 
                 this.log.debug(`Delete directory ${path.join(id, name)}`);
                 try {
@@ -559,7 +556,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
                     delete this.files[id];
                 }
             } else {
-                this.log.debug('Delete file ' + path.join(id, name));
+                this.log.debug(`Delete file ${path.join(id, name)}`);
                 try {
                     fs.removeSync(location);
                 } catch (e) {
@@ -582,12 +579,12 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
                 (id, name) => {
                     // publish event in states
                     this.log.silly(
-                        `${this.namespace} memory publish ${id} ${JSON.stringify({ name, file: true, size: null })}`
+                        `${this.namespace} memory publish ${id} ${JSON.stringify({ name, file: true, size: null })}`,
                     );
                     this.publishAll('files', `${id}$%$${name}`, null);
                 },
                 id,
-                name
+                name,
             );
         }
     }
@@ -621,7 +618,6 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
         const len = name ? name.length : 0;
         for (const f of Object.keys(this.fileOptions[id])) {
             if (!name || f.substring(0, len) === name) {
-                /** @type {string|string[]} */
                 let rest = f.substring(len);
                 rest = rest.split('/', 2);
                 if (rest[0] && _files.indexOf(rest[0]) === -1) {
@@ -670,7 +666,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
                                       (this.defaultNewAcl && this.defaultNewAcl.file.permissions) ||
                                       utils.CONSTS.ACCESS_USER_RW |
                                           utils.CONSTS.ACCESS_GROUP_READ |
-                                          utils.CONSTS.ACCESS_EVERY_READ
+                                          utils.CONSTS.ACCESS_EVERY_READ,
                               };
 
                     // if filter for user
@@ -739,13 +735,13 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
                             : undefined,
                         createdAt: this.fileOptions[id][name + file]
                             ? this.fileOptions[id][name + file].createdAt
-                            : undefined
+                            : undefined,
                     });
                 } catch (e) {
                     this.log.error(
                         `${this.namespace} Cannot read permissions of ${path.join(this.objectsDir, id, name, file)}: ${
                             e.message
-                        }`
+                        }`,
                     );
                 }
             }
@@ -868,8 +864,8 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
     /**
      * Get value of given meta id
      *
-     * @param {string} id
-     * @returns {*}
+     * @param id
+     * @returns
      */
     getMeta(id) {
         const meta = this._ensureMetaDict();
@@ -879,8 +875,8 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
     /**
      * Sets given value to id in metaNamespace
      *
-     * @param {string} id
-     * @param {string} value
+     * @param id
+     * @param value
      */
     setMeta(id, value) {
         const meta = this._ensureMetaDict();
@@ -916,8 +912,7 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
     /**
      * Delete the given object from the dataset
      *
-     * @param  {string} id unique id of the object
-     * @private
+     * @param id unique id of the object
      */
     _delObject(id) {
         const obj = this.dataset[id];
@@ -947,15 +942,15 @@ export class ObjectsInMemoryFileDB extends InMemoryFileDB {
     // internal functionality
     _applyView(func, params) {
         const result = {
-            rows: []
+            rows: [],
         };
 
-        // eslint-disable-next-line no-unused-vars
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
         function _emit_(id, obj) {
             result.rows.push({ id: id, value: obj });
         }
 
-        const f = eval('(' + func.map.replace(/emit/g, '_emit_') + ')');
+        const f = eval(`(${func.map.replace(/emit/g, '_emit_')})`);
 
         for (const [id, obj] of Object.entries(this.dataset)) {
             if (params) {

@@ -82,7 +82,7 @@ export class CLIObjects extends CLICommand {
                     console.log(`Successfully migrated ${noMigrated} objects to Redis Sets`);
                 }
                 console.log(
-                    `Successfully activated the usage of Redis Sets. Please make sure to only use js-controller 4.0 or higher on all hosts!`
+                    `Successfully activated the usage of Redis Sets. Please make sure to only use js-controller 4.0 or higher on all hosts!`,
                 );
             } else {
                 console.log('Redis Sets are already activated.');
@@ -135,7 +135,7 @@ export class CLIObjects extends CLICommand {
 
             let answer = rl.question('Changing the protocol version will restart all hosts! Continue? [N/y]', {
                 limit: /^(yes|y|n|no)$/i,
-                defaultInput: 'no'
+                defaultInput: 'no',
             });
 
             answer = answer.toLowerCase();
@@ -195,7 +195,7 @@ export class CLIObjects extends CLICommand {
                 (err, processed) => {
                     // Print the new object rights
                     this.printObjectList(objects, states, err?.message, processed);
-                }
+                },
             );
         });
     }
@@ -218,10 +218,10 @@ export class CLIObjects extends CLICommand {
             CLI.error.requiredArgumentMissing('user', 'object chown user system.*');
             return void callback(1);
         } else if (!user.startsWith('system.user.')) {
-            user = 'system.user.' + user;
+            user = `system.user.${user}`;
         }
         if (group && !group.startsWith('system.group.')) {
-            group = 'system.group.' + group;
+            group = `system.group.${group}`;
         }
 
         if (!pattern) {
@@ -237,7 +237,7 @@ export class CLIObjects extends CLICommand {
                 (err, processed) => {
                     // Print the new object rights
                     this.printObjectList(objects, states, err?.message, processed);
-                }
+                },
             );
         });
     }
@@ -262,7 +262,7 @@ export class CLIObjects extends CLICommand {
                     objects,
                     states,
                     err?.message,
-                    processed && processed.rows && processed.rows.map(r => r.value)
+                    processed && processed.rows && processed.rows.map(r => r.value),
                 );
                 return void callback(EXIT_CODES.NO_ERROR);
             });
@@ -292,19 +292,18 @@ export class CLIObjects extends CLICommand {
                 if (err || !res) {
                     CLI.error.objectNotFound(id, err?.message);
                     return void callback(3);
-                } else {
-                    if (typeof propPath === 'string') {
-                        // We want to select a part of the object
-                        try {
-                            res = deepSelectProperty(res, propPath);
-                        } catch {
-                            CLI.error.objectPropertyNotFound(id, propPath);
-                            return void callback(3);
-                        }
-                    }
-                    console.log(formatValue(res, pretty));
-                    return void callback(EXIT_CODES.NO_ERROR);
                 }
+                if (typeof propPath === 'string') {
+                    // We want to select a part of the object
+                    try {
+                        res = deepSelectProperty(res, propPath);
+                    } catch {
+                        CLI.error.objectPropertyNotFound(id, propPath);
+                        return void callback(3);
+                    }
+                }
+                console.log(formatValue(res, pretty));
+                return void callback(EXIT_CODES.NO_ERROR);
             });
         });
     }
@@ -338,10 +337,9 @@ export class CLIObjects extends CLICommand {
                     if (err) {
                         CLI.error.cannotUpdateObject(id, err.message);
                         return void callback(1);
-                    } else {
-                        CLI.success.objectUpdated(id);
-                        return void callback(EXIT_CODES.NO_ERROR);
                     }
+                    CLI.success.objectUpdated(id);
+                    return void callback(EXIT_CODES.NO_ERROR);
                 });
             };
             if (!propPath) {
@@ -389,7 +387,7 @@ export class CLIObjects extends CLICommand {
         objects: ObjectsClient,
         res: ioBroker.AnyObject,
         propPath: string,
-        value: any
+        value: any,
     ): Promise<void> {
         // input: it's an instance object and has encrypted native, was a native value set?
         if (/^native\..+[^.]$/g.test(propPath) && typeof value === 'string') {
@@ -413,8 +411,8 @@ export class CLIObjects extends CLICommand {
                     res.encryptedNative?.includes(prop)
                 ) {
                     try {
-                        config = config || (await objects.getObjectAsync('system.config'));
-                        res.native[prop] = tools.encrypt(config!.native.secret, res.native[prop]);
+                        config = config || (await objects.getObjectAsync('system.config'))!;
+                        res.native[prop] = tools.encrypt(config.native.secret, res.native[prop]);
                     } catch (e) {
                         console.error(`Could not auto-encrypt property "${prop}": ${e.message}`);
                     }
@@ -452,10 +450,9 @@ export class CLIObjects extends CLICommand {
                 if (err) {
                     CLI.error.cannotUpdateObject(id, err.message);
                     return void callback(1);
-                } else {
-                    CLI.success.objectUpdated(id);
-                    return void callback(EXIT_CODES.NO_ERROR);
                 }
+                CLI.success.objectUpdated(id);
+                return void callback(EXIT_CODES.NO_ERROR);
             });
         });
     }
@@ -479,7 +476,7 @@ export class CLIObjects extends CLICommand {
             'config',
             'group',
             'user',
-            'script'
+            'script',
         ];
         const result: ioBroker.AnyObject[] = [];
 
@@ -508,26 +505,25 @@ export class CLIObjects extends CLICommand {
     async _deleteObjects(objects: ObjectsClient, ids: string[], callback: (exitCode: number) => void): Promise<void> {
         if (!ids || !ids.length) {
             return tools.maybeCallback(callback, EXIT_CODES.NO_ERROR);
-        } else {
-            let allEnums;
-
-            try {
-                // cache all enums, else it will be slow to delete many objects
-                allEnums = await tools.getAllEnums(objects);
-            } catch (e) {
-                console.error(`Could not retrieve all enums: ${e.message}`);
-            }
-
-            for (const id of ids) {
-                try {
-                    await objects.delObjectAsync(id);
-                    await tools.removeIdFromAllEnums(objects, id, allEnums);
-                } catch (e) {
-                    console.warn(`Could not delete object or remove "${id}" from enums: ${e.message}`);
-                }
-            }
-            return tools.maybeCallback(callback, EXIT_CODES.NO_ERROR);
         }
+        let allEnums;
+
+        try {
+            // cache all enums, else it will be slow to delete many objects
+            allEnums = await tools.getAllEnums(objects);
+        } catch (e) {
+            console.error(`Could not retrieve all enums: ${e.message}`);
+        }
+
+        for (const id of ids) {
+            try {
+                await objects.delObjectAsync(id);
+                await tools.removeIdFromAllEnums(objects, id, allEnums);
+            } catch (e) {
+                console.warn(`Could not delete object or remove "${id}" from enums: ${e.message}`);
+            }
+        }
+        return tools.maybeCallback(callback, EXIT_CODES.NO_ERROR);
     }
 
     /**
@@ -549,7 +545,7 @@ export class CLIObjects extends CLICommand {
             if (id.endsWith('*')) {
                 const params = {
                     startkey: id.replace(/\*/g, ''),
-                    endkey: id.replace(/\*/g, '\u9999')
+                    endkey: id.replace(/\*/g, '\u9999'),
                 };
 
                 const result = await this._collectObjects(objects, params);
@@ -563,7 +559,7 @@ export class CLIObjects extends CLICommand {
                 if (!this.options.f && this.options.y && !this.options.yes) {
                     const rl = (await import('node:readline')).createInterface({
                         input: process.stdin,
-                        output: process.stdout
+                        output: process.stdout,
                     });
                     rl.question(`${result.length} object(s) will be deleted. Are you sure? [y/N]: `, answer => {
                         rl.close();
@@ -617,7 +613,7 @@ export class CLIObjects extends CLICommand {
         objects: ObjectsClient,
         states: StatesClient,
         err: string | undefined,
-        objList?: ioBroker.AnyObject[]
+        objList?: ioBroker.AnyObject[],
     ): Promise<void> {
         // TODO: is this supposed to be here?
         const { callback } = this.options;
@@ -630,7 +626,7 @@ export class CLIObjects extends CLICommand {
             const list = new List({
                 states,
                 objects,
-                processExit: callback
+                processExit: callback,
             });
             list.showObjectHeader();
             objList.forEach(list.showObject);
@@ -755,17 +751,16 @@ function parsePropPathAndAssignment(arg: string): ParsedPropPathAndAssignment | 
         // For partial assignments, allow strings as the value
         const value = parseCLIValue(valueString);
         return { propPath, value };
-    } else {
-        // This is a full assignment, allow only objects
-        try {
-            const value = JSON.parse(arg);
-            if (!tools.isObject(value)) {
-                return undefined;
-            }
-            return { value };
-        } catch {
-            // nope!
+    }
+    // This is a full assignment, allow only objects
+    try {
+        const value = JSON.parse(arg);
+        if (!tools.isObject(value)) {
             return undefined;
         }
+        return { value };
+    } catch {
+        // nope!
+        return undefined;
     }
 }

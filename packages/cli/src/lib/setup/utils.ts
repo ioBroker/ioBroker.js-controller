@@ -22,13 +22,13 @@ export async function getRepository(options: GetRepositoryOptions): Promise<Reco
 
     let repoNameOrArray: string | string[] | undefined = repoName;
     if (!repoName || repoName === 'auto') {
-        const systemConfig = await objects!.getObjectAsync('system.config');
+        const systemConfig = await objects.getObjectAsync('system.config');
         repoNameOrArray = systemConfig!.common.activeRepo;
     }
 
     const repoArr = !Array.isArray(repoNameOrArray) ? [repoNameOrArray!] : repoNameOrArray;
 
-    const systemRepos = (await objects!.getObjectAsync('system.repositories'))!;
+    const systemRepos = (await objects.getObjectAsync('system.repositories'))!;
 
     const allSources = {};
     let changed = false;
@@ -39,7 +39,7 @@ export async function getRepository(options: GetRepositoryOptions): Promise<Reco
             if (typeof repo === 'string') {
                 systemRepos.native.repositories[repo] = {
                     link: repo,
-                    json: null
+                    json: null,
                 };
                 changed = true;
             }
@@ -70,13 +70,13 @@ export async function getRepository(options: GetRepositoryOptions): Promise<Reco
         let message: string;
         if (repoArr.length) {
             message = `ERROR: No repositories defined matching "${repoArr.join(
-                ' | '
+                ' | ',
             )}". Please use one of ${Object.keys(systemRepos.native.repositories)
                 .map(repo => `"${repo}"`)
                 .join(', ')}.`;
         } else {
             message = `ERROR: No repositories defined. Please define one repository as active: "iob repo set <${Object.keys(
-                systemRepos.native.repositories
+                systemRepos.native.repositories,
             ).join(' | ')}>"`;
         }
 

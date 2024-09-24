@@ -4,7 +4,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     const testName = `${context.name} ${context.adapterShortName} files: `;
     const testId = `testFilesObject.0`;
 
-    it(testName + 'writeFile with binary content and subscription', async () => {
+    it(`${testName}writeFile with binary content and subscription`, async () => {
         const objId = `vis.0`;
         const fileName = 'testFile.bin';
         const dataBinary = Buffer.from('1234');
@@ -13,9 +13,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             type: 'meta',
             common: {
                 name: 'Files and more',
-                type: 'meta.user'
+                type: 'meta.user',
             },
-            native: {}
+            native: {},
         });
 
         await context.adapter.subscribeForeignFiles(objId, '*');
@@ -40,7 +40,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(file.toString('utf8')).to.be.equal(dataBinary.toString('utf8'));
     });
 
-    it(testName + 'writeFile with textual content', async () => {
+    it(`${testName}writeFile with textual content`, async () => {
         const objId = `vis.0`;
         /** unknown extension but string content should lead to plain text */
         const fileName = 'testFile.fn';
@@ -50,9 +50,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             type: 'meta',
             common: {
                 name: 'Files and more',
-                type: 'meta.user'
+                type: 'meta.user',
             },
-            native: {}
+            native: {},
         });
 
         // now we write a file state
@@ -64,7 +64,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(file).to.be.equal(dataText);
     });
 
-    it(testName + 'writeFile without extension should infer text from string content', async () => {
+    it(`${testName}writeFile without extension should infer text from string content`, async () => {
         const objId = `vis.0`;
         /** no extension but string content should lead to plain text */
         const fileName = 'testFile';
@@ -74,9 +74,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             type: 'meta',
             common: {
                 name: 'Files and more',
-                type: 'meta.user'
+                type: 'meta.user',
             },
-            native: {}
+            native: {},
         });
 
         // now we write a file state
@@ -88,7 +88,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(file).to.be.equal(dataText);
     });
 
-    it(testName + 'writeFile with known extension should be inferred', async () => {
+    it(`${testName}writeFile with known extension should be inferred`, async () => {
         const objId = `vis.0`;
         /** no extension but string content should lead to plain text */
         const fileName = 'testFile.json';
@@ -99,9 +99,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             type: 'meta',
             common: {
                 name: 'Files and more',
-                type: 'meta.user'
+                type: 'meta.user',
             },
-            native: {}
+            native: {},
         });
 
         // now we write a file state
@@ -113,7 +113,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(file).to.be.equal(content);
     });
 
-    it(testName + 'deleteFile', async () => {
+    it(`${testName}deleteFile`, async () => {
         const objId = `vis.0`;
         const fileName = 'testFile.bin';
 
@@ -138,7 +138,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         }
     });
 
-    it(testName + 'should create and read file with callback', done => {
+    it(`${testName}should create and read file with callback`, done => {
         const objects = context.objects;
         objects.setObject(
             testId,
@@ -146,9 +146,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'meta',
                 common: {
                     name: 'Meta',
-                    type: 'meta.user'
+                    type: 'meta.user',
                 },
-                native: {}
+                native: {},
             },
             err => {
                 expect(err).to.be.not.ok;
@@ -172,11 +172,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         });
                     });
                 });
-            }
+            },
         );
     });
 
-    it(testName + 'should create and read file async', async () => {
+    it(`${testName}should create and read file async`, async () => {
         const fileDir = 'myFile';
         const fileName = 'abc2.txt';
         const fullFileName = `${fileDir}/${fileName}`;
@@ -185,7 +185,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         await objects.setObject(testId, {
             type: 'meta',
             common: { name: 'test', type: 'meta.user' },
-            native: {}
+            native: {},
         });
 
         await objects.writeFile(testId, fullFileName, 'dataInFile');
@@ -205,7 +205,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         }
     });
 
-    it(testName + 'should read directory', done => {
+    it(`${testName}should read directory`, done => {
         const objects = context.objects;
         objects.writeFile(testId, 'myFileA/abc1.txt', 'dataInFile', err => {
             expect(err).to.be.not.ok;
@@ -223,7 +223,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 
-    it(testName + 'should read file and prevent path traversing', done => {
+    it(`${testName}should read file and prevent path traversing`, done => {
         const objects = context.objects;
         objects.readFile(testId, '../../myFileA/abc1.txt', null, (err, data, _mimeType) => {
             expect(err).to.be.not.ok;
@@ -259,11 +259,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                                 expect(err).to.be.not.ok;
                                                 expect(data).to.be.equal('dataInFile');
                                                 done();
-                                            }
+                                            },
                                         );
-                                    }
+                                    },
                                 );
-                            }
+                            },
                         );
                     });
                 });
@@ -271,7 +271,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 
-    it(testName + 'should unlink file', done => {
+    it(`${testName}should unlink file`, done => {
         const objects = context.objects;
         objects.unlink(testId, 'myFileA/abc1.txt', null, err => {
             expect(err).to.be.not.ok;
@@ -282,7 +282,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 
-    it(testName + 'should rename file', done => {
+    it(`${testName}should rename file`, done => {
         const objects = context.objects;
         objects.writeFile(testId, 'myFile1/abcRename.txt', Buffer.from('abcd'), err => {
             expect(err).to.be.not.ok;
@@ -300,7 +300,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 
-    it(testName + 'should touch file', done => {
+    it(`${testName}should touch file`, done => {
         const objects = context.objects;
         objects.readDir(testId, 'myFileA', null, (err, files) => {
             expect(err).to.be.not.ok;
@@ -319,15 +319,15 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 
-    it(testName + 'should create directory', done => {
+    it(`${testName}should create directory`, done => {
         const objects = context.objects;
-        objects.mkdir(testId, 'myFile' + Math.round(Math.random() * 100_000), null, err => {
+        objects.mkdir(testId, `myFile${Math.round(Math.random() * 100_000)}`, null, err => {
             expect(err).to.be.not.ok;
             done();
         });
     });
 
-    it(testName + 'should enable file cache', done => {
+    it(`${testName}should enable file cache`, done => {
         const objects = context.objects;
         objects.enableFileCache(true, err => {
             expect(err).to.be.not.ok;

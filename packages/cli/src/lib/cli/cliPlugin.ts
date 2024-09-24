@@ -7,7 +7,7 @@ import path from 'node:path';
 import { createRequire } from 'node:module';
 
 // eslint-disable-next-line unicorn/prefer-module
-const require = createRequire(import.meta.url || 'file://' + __filename);
+const require = createRequire(import.meta.url || `file://${__filename}`);
 
 const controllerIoPackPath = require.resolve('iobroker.js-controller/io-package.json');
 
@@ -115,9 +115,9 @@ export class CLIPlugin extends CLICommand<CLIPluginOptions> {
                     await objects.setObject(pluginsFolderId, {
                         type: 'folder',
                         common: {
-                            name: `${hostname ? 'host' : 'instance'}: plugin states`
+                            name: `${hostname ? 'host' : 'instance'}: plugin states`,
                         },
-                        native: {}
+                        native: {},
                     });
                 }
                 const pluginFolderId = `${objectNamespace}.plugins.${pluginName}`;
@@ -125,9 +125,9 @@ export class CLIPlugin extends CLICommand<CLIPluginOptions> {
                     await objects.setObject(pluginFolderId, {
                         type: 'folder',
                         common: {
-                            name: `${pluginName}: plugin states`
+                            name: `${pluginName}: plugin states`,
                         },
-                        native: {}
+                        native: {},
                     });
                 }
                 const pluginEnabledId = `${pluginFolderId}.enabled`;
@@ -139,16 +139,16 @@ export class CLIPlugin extends CLICommand<CLIPluginOptions> {
                             type: 'boolean',
                             read: true,
                             write: true,
-                            role: 'value'
+                            role: 'value',
                         },
-                        native: {}
+                        native: {},
                     });
                 }
 
                 // Update the state
                 await states.setStateAsync(pluginEnabledId, {
                     val: enabled,
-                    from: getObjectFrom()
+                    from: getObjectFrom(),
                 });
 
                 // Notify the user that we are done
@@ -238,7 +238,7 @@ export class CLIPlugin extends CLICommand<CLIPluginOptions> {
                     pluginName,
                     instance,
                     await objects.getObjectAsync('system.config'),
-                    iobrokerJson
+                    iobrokerJson,
                 );
                 CLI.success.pluginStatus(pluginName, hostname, instance, enabled);
                 return void callback();
@@ -285,7 +285,7 @@ function pluginEnabled(
     pluginName: string,
     adapter?: string,
     systemConfig?: ioBroker.SystemConfigObject | null,
-    iobrokerJson?: ioBroker.IoBrokerJson
+    iobrokerJson?: ioBroker.IoBrokerJson,
 ): boolean {
     // 1. check if diagnostics are disabled in ioBroker
     if (systemConfig?.common?.diag === 'none') {

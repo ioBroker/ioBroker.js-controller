@@ -26,7 +26,7 @@ import { setDefaultResultOrder } from 'node:dns';
 import {
     applyAliasAutoScaling,
     applyAliasConvenienceConversion,
-    applyAliasTransformer
+    applyAliasTransformer,
 } from '@/lib/common/aliasProcessing.js';
 import type * as DiskUsage from 'diskusage';
 import * as url from 'node:url';
@@ -34,9 +34,9 @@ import { createRequire } from 'node:module';
 import type { WithRequired } from '@iobroker/types-dev';
 
 // eslint-disable-next-line unicorn/prefer-module
-const thisDir = url.fileURLToPath(new URL('.', import.meta.url || 'file://' + __filename));
+const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 // eslint-disable-next-line unicorn/prefer-module
-const require = createRequire(import.meta.url || 'file://' + __filename);
+const require = createRequire(import.meta.url || `file://${__filename}`);
 
 type DockerInformation =
     | {
@@ -102,11 +102,37 @@ interface FormatAliasValueOptions {
     targetId?: string;
 }
 
+/**
+ * Response from DOCKER_INFO_URL
+ */
+interface DockerHubResponse {
+    /** Results, filtered to one entry */
+    results: [
+        {
+            /** Contains the version like v1.5.3 */
+            name: string;
+            /** Timestamp of last update of this image, like 2024-08-29T01:26:32.378554Z */
+            last_updated: string;
+            [other: string]: unknown;
+        },
+    ];
+    [other: string]: unknown;
+}
+
+export interface DockerImageInformation {
+    /** The official version like v10.0.0 */
+    version: string;
+    /** Time of last image update */
+    lastUpdated: string;
+    /** If the version is newer than the one currently running */
+    isNew: boolean;
+}
+
 export enum ERRORS {
     ERROR_NOT_FOUND = 'Not exists',
     ERROR_EMPTY_OBJECT = 'null object',
     ERROR_NO_OBJECT = 'no object',
-    ERROR_DB_CLOSED = 'DB closed'
+    ERROR_DB_CLOSED = 'DB closed',
 }
 
 events.EventEmitter.prototype.setMaxListeners(100);
@@ -117,6 +143,10 @@ const randomID = Math.round(Math.random() * 10_000_000_000_000); // Used for cre
 const VENDOR_FILE = '/etc/iob-vendor.json';
 /** This file contains the version string in an official docker image */
 const OFFICIAL_DOCKER_FILE = '/opt/scripts/.docker_config/.thisisdocker';
+/** URL to fetch information of the latest docker image */
+const DOCKER_INFO_URL = 'https://hub.docker.com/v2/namespaces/iobroker/repositories/iobroker/tags?page_size=1';
+/** Time the image approx. needs to be built and published to DockerHub */
+const DOCKER_HUB_BUILD_TIME_MS = 6 * 60 * 60 * 1_000;
 /** Version of official Docker image which started to support UI upgrade */
 const DOCKER_VERSION_UI_UPGRADE = '8.1.0';
 
@@ -149,7 +179,7 @@ export function copyAttributes(
     oldObj: Record<string, any>,
     newObj: Record<string, any>,
     originalObj?: Record<string, any>,
-    isNonEdit?: boolean
+    isNonEdit?: boolean,
 ): void {
     for (const attr of Object.keys(oldObj)) {
         if (
@@ -177,7 +207,7 @@ export function copyAttributes(
                 oldObj[attr],
                 newObj[attr],
                 originalObj && originalObj[attr],
-                isNonEdit || attr === 'nonEdit'
+                isNonEdit || attr === 'nonEdit',
             );
         }
     }
@@ -191,7 +221,7 @@ export function copyAttributes(
  */
 export function checkNonEditable(
     oldObject: ioBroker.SettableObject | null,
-    newObject: ioBroker.SettableObject
+    newObject: ioBroker.SettableObject,
 ): boolean {
     if (!oldObject) {
         return true;
@@ -208,13 +238,12 @@ export function checkNonEditable(
             if (oldObject.nonEdit.passHash !== hash) {
                 delete newObject.nonEdit;
                 return false;
-            } else {
-                oldObject.nonEdit = deepClone(newObject.nonEdit);
-                delete oldObject.nonEdit.password;
-                delete newObject.nonEdit.password;
-                oldObject.nonEdit.passHash = hash;
-                newObject.nonEdit.passHash = hash;
             }
+            oldObject.nonEdit = deepClone(newObject.nonEdit);
+            delete oldObject.nonEdit.password;
+            delete newObject.nonEdit.password;
+            oldObject.nonEdit.passHash = hash;
+            newObject.nonEdit.passHash = hash;
 
             copyAttributes(newObject.nonEdit, newObject, newObject);
 
@@ -226,9 +255,8 @@ export function checkNonEditable(
             }
 
             return true;
-        } else {
-            newObject.nonEdit = oldObject.nonEdit;
         }
+        newObject.nonEdit = oldObject.nonEdit;
     } else if (newObject.nonEdit) {
         oldObject.nonEdit = deepClone(newObject.nonEdit);
         if (newObject.nonEdit.password) {
@@ -299,7 +327,7 @@ export function decryptPhrase(password: string, data: any, callback: (decrypted?
 export async function isSingleHost(objects: any): Promise<boolean> {
     const res: { rows: ioBroker.GetObjectListItem<ioBroker.HostObject>[] } = await objects.getObjectList({
         startkey: 'system.host.',
-        endkey: 'system.host.\u9999'
+        endkey: 'system.host.\u9999',
     });
     const hostObjs = res.rows.filter(obj => obj.value && obj.value.type === 'host');
     return hostObjs.length <= 1; // on setup no host object is there yet
@@ -317,7 +345,7 @@ export async function isHostRunning(objects: any, states: any): Promise<boolean>
     // const res = await objects.getObjectViewAsync('system', 'host', { startkey: '', endkey: '\u9999' });
     const res: GetObjectViewResult = await objects.getObjectList({
         startkey: 'system.host.',
-        endkey: 'system.host.\u9999'
+        endkey: 'system.host.\u9999',
     });
 
     // TODO: this check should be redundant as soon as we go back to the object view approach
@@ -380,50 +408,68 @@ function findPath(path: string, url: string): string {
     }
     if (url.startsWith('http://') || url.startsWith('https://')) {
         return url;
-    } else {
-        if (path.startsWith('http://') || path.startsWith('https://')) {
-            return (path + url).replace(/\/\//g, '/').replace('http:/', 'http://').replace('https:/', 'https://');
-        } else {
-            if (url[0] === '/') {
-                return `${thisDir}/..${url}`;
-            } else {
-                return `${thisDir}/../${path}${url}`;
-            }
-        }
     }
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+        return (path + url).replace(/\/\//g, '/').replace('http:/', 'http://').replace('https:/', 'https://');
+    }
+    if (url[0] === '/') {
+        return `${thisDir}/..${url}`;
+    }
+    return `${thisDir}/../${path}${url}`;
 }
 
-function getMac(callback: (e?: Error | null, mac?: string) => void): void {
+/**
+ * Get MAC address of this host
+ */
+async function getMac(): Promise<string> {
     const macRegex = /(?:[a-z0-9]{2}[:-]){5}[a-z0-9]{2}/gi;
     const zeroRegex = /(?:[0]{2}[:-]){5}[0]{2}/;
     const command = process.platform.indexOf('win') === 0 ? 'getmac' : 'ifconfig || ip link';
 
-    exec(command, { windowsHide: true }, (err, stdout, _stderr) => {
-        if (err) {
-            callback(err);
-        } else {
-            let macAddress;
-            let match;
-            let result = null;
+    const { stdout, stderr } = await execAsync(command);
 
-            while (true) {
-                match = macRegex.exec(stdout);
-                if (!match) {
-                    break;
-                }
-                macAddress = match[0];
-                if (!zeroRegex.test(macAddress) && !result) {
-                    result = macAddress;
-                }
-            }
+    if (typeof stderr === 'string') {
+        throw new Error(stderr);
+    }
 
-            if (result === null) {
-                callback(new Error(`could not determine the mac address from:\n${stdout}`));
-            } else {
-                callback(null, result.replace(/-/g, ':').toLowerCase());
-            }
+    if (typeof stdout !== 'string') {
+        throw new Error(`Unexpected stdout: ${stdout?.toString()}`);
+    }
+
+    let macAddress;
+    let match;
+    let result = null;
+
+    while (true) {
+        match = macRegex.exec(stdout);
+        if (!match) {
+            break;
         }
-    });
+        macAddress = match[0];
+        if (!zeroRegex.test(macAddress) && !result) {
+            result = macAddress;
+        }
+    }
+
+    if (result === null) {
+        throw new Error(`Could not determine the mac address from:\n${stdout}`);
+    }
+
+    return result.replace(/-/g, ':').toLowerCase();
+}
+
+/**
+ * Fetch the image information of the newest available (official) ioBroker Docker image from DockerHub
+ */
+export async function getNewestDockerImageVersion(): Promise<DockerImageInformation> {
+    const res = await axios.get<DockerHubResponse>(DOCKER_INFO_URL);
+
+    const dockerResult = res.data.results[0];
+    const isNew =
+        new Date(dockerResult.last_updated).getTime() >
+        new Date(process.env.BUILD).getTime() + DOCKER_HUB_BUILD_TIME_MS;
+
+    return { version: dockerResult.name, lastUpdated: dockerResult.last_updated, isNew };
 }
 
 /**
@@ -492,19 +538,18 @@ export function isDocker(): boolean {
     }
 }
 
-// Build unique uuid based on MAC address if possible
-function uuid(givenMac: string | null, callback: (uuid: string) => void): void {
-    if (typeof givenMac === 'function') {
-        callback = givenMac;
-        givenMac = '';
-    }
-
+/**
+ * Build unique uuid based on MAC address if possible
+ *
+ * @param givenMac the given MAC address
+ */
+async function uuid(givenMac?: string): Promise<string> {
+    givenMac = givenMac ?? '';
     const _isDocker = isDocker();
 
     // return constant UUID for all CI environments to keep the statistics clean
-
     if (require('ci-info').isCI) {
-        return callback('55travis-pipe-line-cior-githubaction');
+        return '55travis-pipe-line-cior-githubaction';
     }
 
     let mac = givenMac !== null ? givenMac || '' : null;
@@ -531,23 +576,15 @@ function uuid(givenMac: string | null, callback: (uuid: string) => void): void {
     }
 
     if (!_isDocker && mac === '') {
-        return getMac((_err, mac) => uuid(mac || null, callback));
+        const mac = await getMac();
+        return uuid(mac);
     }
 
     if (!_isDocker && mac) {
         const md5sum = crypto.createHash('md5');
         md5sum.update(mac);
         mac = md5sum.digest('hex');
-        u =
-            mac.substring(0, 8) +
-            '-' +
-            mac.substring(8, 12) +
-            '-' +
-            mac.substring(12, 16) +
-            '-' +
-            mac.substring(16, 20) +
-            '-' +
-            mac.substring(20);
+        u = `${mac.substring(0, 8)}-${mac.substring(8, 12)}-${mac.substring(12, 16)}-${mac.substring(16, 20)}-${mac.substring(20)}`;
     } else {
         // Returns a RFC4122 compliant v4 UUID https://gist.github.com/LeverOne/1308368 (DO WTF YOU WANT TO PUBLIC LICENSE)
         let a: any;
@@ -559,55 +596,56 @@ function uuid(givenMac: string | null, callback: (uuid: string) => void): void {
         u = b;
     }
 
-    callback(u);
+    return u;
 }
 
-function updateUuid(newUuid: string, _objects: any, callback: (uuid?: string) => void): void {
-    uuid('', async _uuid => {
-        _uuid = newUuid || _uuid;
-        // Add vendor prefix to UUID
-        if (fs.existsSync(VENDOR_FILE)) {
-            try {
-                const vendor = await fs.readJSON(VENDOR_FILE);
-                if (vendor.vendor?.uuidPrefix?.length === 2 && !_uuid.startsWith(vendor.vendor.uuidPrefix)) {
-                    _uuid = vendor.vendor.uuidPrefix + _uuid;
-                }
-            } catch {
-                console.error(`Cannot parse ${VENDOR_FILE}`);
+/**
+ * Update the installation UUID
+ *
+ * @param newUuid the new UUID to set
+ * @param _objects the objects DB instance
+ */
+async function updateUuid(newUuid: string, _objects: any): Promise<string> {
+    let _uuid = await uuid('');
+    _uuid = newUuid || _uuid;
+    // Add vendor prefix to UUID
+    if (fs.existsSync(VENDOR_FILE)) {
+        try {
+            const vendor = await fs.readJSON(VENDOR_FILE);
+            if (vendor.vendor?.uuidPrefix?.length === 2 && !_uuid.startsWith(vendor.vendor.uuidPrefix)) {
+                _uuid = vendor.vendor.uuidPrefix + _uuid;
             }
+        } catch {
+            console.error(`Cannot parse ${VENDOR_FILE}`);
         }
+    }
 
-        _objects.setObject(
-            'system.meta.uuid',
-            {
-                type: 'meta',
-                common: {
-                    name: 'uuid',
-                    type: 'uuid'
-                },
-                ts: new Date().getTime(),
-                from: `system.host.${getHostName()}.tools`,
-                native: {
-                    uuid: _uuid
-                }
+    try {
+        await _objects.setObject('system.meta.uuid', {
+            type: 'meta',
+            common: {
+                name: 'uuid',
+                type: 'uuid',
             },
-            (err: Error | null) => {
-                if (err) {
-                    console.error(`object system.meta.uuid cannot be updated: ${err.message}`);
-                    callback();
-                } else {
-                    _objects.getObject('system.meta.uuid', (err: Error | null, obj: ioBroker.Object) => {
-                        if (obj.native.uuid !== _uuid) {
-                            console.error('object system.meta.uuid cannot be updated: write protected');
-                        } else {
-                            console.log(`object system.meta.uuid created: ${_uuid}`);
-                        }
-                        callback(_uuid);
-                    });
-                }
-            }
-        );
-    });
+            ts: new Date().getTime(),
+            from: `system.host.${getHostName()}.tools`,
+            native: {
+                uuid: _uuid,
+            },
+        });
+    } catch (e) {
+        throw new Error(`Object system.meta.uuid cannot be updated: ${e.message}`);
+    }
+
+    const obj: ioBroker.Object = await _objects.getObject('system.meta.uuid');
+
+    if (obj.native.uuid !== _uuid) {
+        console.error('object system.meta.uuid cannot be updated: write protected');
+    } else {
+        console.log(`object system.meta.uuid created: ${_uuid}`);
+    }
+
+    return _uuid;
 }
 
 /**
@@ -617,101 +655,85 @@ function updateUuid(newUuid: string, _objects: any, callback: (uuid?: string) =>
  * @returns uuid if successfully created/updated
  */
 export async function createUuid(objects: any): Promise<void | string> {
-    const promiseCheckPassword = new Promise<void>(resolve =>
-        objects.getObject('system.user.admin', (err: Error | null, obj: ioBroker.UserObject) => {
-            if (err || !obj) {
-                // Default Password for user 'admin' is application name in lower case
-                password(appName).hash(null, null, (err, res) => {
-                    err && console.error(err);
+    const userObj: ioBroker.UserObject = await objects.getObject('system.user.admin');
+    if (!userObj) {
+        await new Promise<void>(resolve => {
+            // Default Password for user 'admin' is application name in lower case
+            password(appName).hash(null, null, async (err, res) => {
+                err && console.error(err);
 
-                    // Create user here and not in io-package.js because of hash password
-                    objects.setObject(
-                        'system.user.admin',
-                        {
-                            type: 'user',
-                            common: {
-                                name: 'admin',
-                                password: res,
-                                dontDelete: true,
-                                enabled: true
-                            },
-                            ts: new Date().getTime(),
-                            from: `system.host.${getHostName()}.tools`,
-                            native: {}
-                        },
-                        () => {
-                            console.log('object system.user.admin created');
-                            resolve();
-                        }
-                    );
+                // Create user here and not in io-package.js because of hash password
+                await objects.setObject('system.user.admin', {
+                    type: 'user',
+                    common: {
+                        name: 'admin',
+                        password: res,
+                        dontDelete: true,
+                        enabled: true,
+                    },
+                    ts: new Date().getTime(),
+                    from: `system.host.${getHostName()}.tools`,
+                    native: {},
                 });
-            } else {
+
+                console.log('object system.user.admin created');
                 resolve();
-            }
-        })
-    );
-    const promiseCheckUuid = new Promise<void | string>(resolve =>
-        objects.getObject('system.meta.uuid', (err: Error | null, obj: ioBroker.Object) => {
-            if (!err && obj?.native?.uuid) {
-                const PROBLEM_UUIDS = [
-                    'ab265f4a-67f9-a46a-c0b2-61e4b95cefe5',
-                    '7abd3182-d399-f7bd-da19-9550d8babede',
-                    'deb6f2a8-fe69-5491-0a50-a9f9b8f3419c',
-                    'ec66c85e-fc36-f6f9-f1c9-f5a2882d23c7',
-                    'e6203b03-f5f4-253a-e4f6-b295fc543ab7',
-                    'd659fa3d-7ef9-202a-ea23-acd0aff67b24'
-                ];
+            });
+        });
+    }
 
-                // if COMMON invalid docker uuid
-                if (PROBLEM_UUIDS.includes(obj.native.uuid)) {
-                    // Read vis license
-                    objects.getObject('system.adapter.vis.0', (err: Error | null, licObj: ioBroker.Object) => {
-                        if (!licObj || !licObj.native || !licObj.native.license) {
-                            // generate new UUID
-                            updateUuid('', objects, _uuid => resolve(_uuid));
-                        } else {
-                            // decode obj.native.license
-                            let data;
-                            try {
-                                data = jwt.decode(licObj.native.license);
-                            } catch {
-                                data = null;
-                            }
+    const obj: ioBroker.Object = await objects.getObject('system.meta.uuid');
+    if (!obj?.native?.uuid) {
+        // generate new UUID
+        return updateUuid('', objects);
+    }
 
-                            if (!data || typeof data === 'string' || !data.uuid) {
-                                // generate new UUID
-                                updateUuid('', objects, __uuid => resolve(__uuid));
-                            } else {
-                                if (data.uuid !== obj.native.uuid) {
-                                    updateUuid(data.correct ? data.uuid : '', objects, _uuid => resolve(_uuid));
-                                } else {
-                                    // Show error
-                                    console.warn(
-                                        `Your iobroker.vis license must be updated. Please contact info@iobroker.net to get a new license!`
-                                    );
-                                    console.warn(
-                                        `Provide following information in email: ${data.email}, invoice: ${data.invoice}`
-                                    );
-                                    resolve();
-                                }
-                            }
-                        }
-                    });
-                } else {
-                    resolve();
-                }
-            } else {
-                // generate new UUID
-                updateUuid('', objects, _uuid => resolve(_uuid));
-            }
-        })
-    );
+    const PROBLEM_UUIDS = [
+        'ab265f4a-67f9-a46a-c0b2-61e4b95cefe5',
+        '7abd3182-d399-f7bd-da19-9550d8babede',
+        'deb6f2a8-fe69-5491-0a50-a9f9b8f3419c',
+        'ec66c85e-fc36-f6f9-f1c9-f5a2882d23c7',
+        'e6203b03-f5f4-253a-e4f6-b295fc543ab7',
+        'd659fa3d-7ef9-202a-ea23-acd0aff67b24',
+    ];
 
-    const result = await Promise.all([promiseCheckPassword, promiseCheckUuid]);
-    return result[1];
+    // check if COMMON invalid docker uuid
+    if (!PROBLEM_UUIDS.includes(obj.native.uuid)) {
+        return;
+    }
+
+    // Read vis license
+    const licObj: ioBroker.Object = objects.getObject('system.adapter.vis.0');
+    if (!licObj || !licObj.native || !licObj.native.license) {
+        return updateUuid('', objects);
+    }
+    // decode obj.native.license
+    let data;
+    try {
+        data = jwt.decode(licObj.native.license);
+    } catch {
+        data = null;
+    }
+
+    if (!data || typeof data === 'string' || !data.uuid) {
+        // generate new UUID
+        return updateUuid('', objects);
+    }
+    if (data.uuid !== obj.native.uuid) {
+        return updateUuid(data.correct ? data.uuid : '', objects);
+    }
+    // Show error
+    console.warn(`Your iobroker.vis license must be updated. Please contact info@iobroker.net to get a new license!`);
+    console.warn(`Provide following information in email: ${data.email}, invoice: ${data.invoice}`);
 }
 
-// Download file to tmp or return file name directly
+/**
+ * Download file to tmp or return file name directly
+ *
+ * @param urlOrPath
+ * @param fileName
+ * @param callback
+ */
 export async function getFile(urlOrPath: string, fileName: string, callback: (file?: string) => void): Promise<void> {
     // If object was read
     if (
@@ -726,8 +748,8 @@ export async function getFile(urlOrPath: string, fileName: string, callback: (fi
                 responseType: 'stream',
                 headers: {
                     'User-Agent': `${appName}, RND: ${randomID}, N: ${process.version}`,
-                    'Accept-Encoding': 'gzip'
-                }
+                    'Accept-Encoding': 'gzip',
+                },
             });
 
             res.data.pipe(fs.createWriteStream(tmpFile)).on('close', () => {
@@ -761,7 +783,7 @@ export async function getFile(urlOrPath: string, fileName: string, callback: (fi
 export async function getJson(
     urlOrPath: string,
     agent: string,
-    callback: (sources?: Record<string, any> | null, urlOrPath?: string | null) => void
+    callback: (sources?: Record<string, any> | null, urlOrPath?: string | null) => void,
 ): Promise<void> {
     if (typeof agent === 'function') {
         callback = agent;
@@ -787,7 +809,7 @@ export async function getJson(
         ) {
             try {
                 const res = await axios.get(urlOrPath, {
-                    headers: { 'Accept-Encoding': 'gzip', timeout: 10000, 'User-Agent': agent }
+                    headers: { 'Accept-Encoding': 'gzip', timeout: 10000, 'User-Agent': agent },
                 });
 
                 if (res.status !== 200 || !res.data) {
@@ -872,48 +894,46 @@ export async function getJsonAsync(urlOrPath: string, agent?: string): Promise<R
     } else if (!urlOrPath) {
         console.log('Empty url!');
         return null;
-    } else {
-        if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
-            try {
-                const result = await axios(urlOrPath, {
-                    timeout: 10000,
-                    headers: { 'User-Agent': agent },
-                    validateStatus: status => status !== 200
-                });
-                return result.data;
-            } catch (e) {
-                console.warn(`Cannot download json from ${urlOrPath}. Error: ${e.message}`);
-                return null;
-            }
-        } else {
-            if (fs.existsSync(urlOrPath)) {
-                try {
-                    sources = fs.readJSONSync(urlOrPath);
-                } catch (e) {
-                    console.warn(`Cannot parse json file from ${urlOrPath}. Error: ${e.message}`);
-                    return null;
-                }
-                return sources;
-            } else if (fs.existsSync(thisDir + '/../' + urlOrPath)) {
-                try {
-                    sources = fs.readJSONSync(`${thisDir}/../${urlOrPath}`);
-                } catch (e) {
-                    console.warn(`Cannot parse json file from ${thisDir}/../${urlOrPath}. Error: ${e.message}`);
-                    return null;
-                }
-                return sources;
-            } else if (fs.existsSync(`${thisDir}/../tmp/${urlOrPath}`)) {
-                try {
-                    sources = fs.readJSONSync(`${thisDir}/../tmp/${urlOrPath}`);
-                } catch (e) {
-                    console.log(`Cannot parse json file from ${thisDir}/../tmp/${urlOrPath}. Error: ${e.message}`);
-                    return null;
-                }
-                return sources;
-            } else {
-                return null;
-            }
+    }
+    if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
+        try {
+            const result = await axios(urlOrPath, {
+                timeout: 10000,
+                headers: { 'User-Agent': agent },
+                validateStatus: status => status !== 200,
+            });
+            return result.data;
+        } catch (e) {
+            console.warn(`Cannot download json from ${urlOrPath}. Error: ${e.message}`);
+            return null;
         }
+    } else {
+        if (fs.existsSync(urlOrPath)) {
+            try {
+                sources = fs.readJSONSync(urlOrPath);
+            } catch (e) {
+                console.warn(`Cannot parse json file from ${urlOrPath}. Error: ${e.message}`);
+                return null;
+            }
+            return sources;
+        } else if (fs.existsSync(`${thisDir}/../${urlOrPath}`)) {
+            try {
+                sources = fs.readJSONSync(`${thisDir}/../${urlOrPath}`);
+            } catch (e) {
+                console.warn(`Cannot parse json file from ${thisDir}/../${urlOrPath}. Error: ${e.message}`);
+                return null;
+            }
+            return sources;
+        } else if (fs.existsSync(`${thisDir}/../tmp/${urlOrPath}`)) {
+            try {
+                sources = fs.readJSONSync(`${thisDir}/../tmp/${urlOrPath}`);
+            } catch (e) {
+                console.log(`Cannot parse json file from ${thisDir}/../tmp/${urlOrPath}. Error: ${e.message}`);
+                return null;
+            }
+            return sources;
+        }
+        return null;
     }
 }
 
@@ -962,7 +982,7 @@ function scanDirectory(dirName: string, list: Record<string, AdapterInformation>
                             : package_.licenses && package_.licenses.length
                               ? package_.licenses[0].type
                               : '',
-                        licenseUrl: package_.licenses && package_.licenses.length ? package_.licenses[0].url : ''
+                        licenseUrl: package_.licenses && package_.licenses.length ? package_.licenses[0].url : '',
                     };
                 }
             } catch (e) {
@@ -1063,7 +1083,7 @@ export function getInstalledInfo(hostRunningVersion?: string): Record<string, Ad
                 : package_.licenses && package_.licenses.length
                   ? package_.licenses[0].type
                   : '',
-            licenseUrl: package_.licenses && package_.licenses.length ? package_.licenses[0].url : ''
+            licenseUrl: package_.licenses && package_.licenses.length ? package_.licenses[0].url : '',
         };
     }
 
@@ -1106,7 +1126,7 @@ function getNpmVersion(adapter: string, callback?: (err: Error | null, version?:
 function getIoPack(
     sources: Record<string, any>,
     name: string,
-    callback: (sources: Record<string, any>, name: string) => void
+    callback: (sources: Record<string, any>, name: string) => void,
 ): void {
     getJson(sources[name].meta, '', ioPack => {
         const packUrl = sources[name].meta.replace('io-package.json', 'package.json');
@@ -1200,7 +1220,7 @@ function getIoPack(
 function _getRepositoryFile(
     sources: Record<string, any>,
     path: string,
-    callback?: (err?: Error, sources?: Record<string, any>) => void
+    callback?: (err?: Error, sources?: Record<string, any>) => void,
 ): void {
     if (!sources._helper) {
         let count = 0;
@@ -1292,7 +1312,7 @@ function _getRepositoryFile(
 async function _checkRepositoryFileHash(
     urlOrPath: string,
     additionalInfo: Record<string, any>,
-    callback: (err?: null | Error, sources?: Record<string, any> | null, hash?: string | number) => void
+    callback: (err?: null | Error, sources?: Record<string, any> | null, hash?: string | number) => void,
 ): Promise<void> {
     // read hash of file
     if (urlOrPath.startsWith('http://') || urlOrPath.startsWith('https://')) {
@@ -1342,7 +1362,7 @@ async function _checkRepositoryFileHash(
 export function getRepositoryFile(
     urlOrPath: string,
     additionalInfo: Record<string, any>,
-    callback: (err?: Error | null, sources?: Record<string, any>, actualHash?: string | number | undefined) => void
+    callback: (err?: Error | null, sources?: Record<string, any>, actualHash?: string | number) => void,
 ): void {
     let sources: Record<string, any> = {};
     let _path = '';
@@ -1424,20 +1444,20 @@ export function getRepositoryFile(
                             _getRepositoryFile(sources, _path, err => {
                                 err && console.error(`[${new Date().toString()}] ${err.message}`);
                                 typeof callback === 'function' && callback(err, sources, actualSourcesHash);
-                            })
+                            }),
                         );
                     } else {
                         // return cached sources, because no sources found
                         console.log(
                             `failed to download new sources, ${
                                 additionalInfo.sources ? 'use cached sources' : 'no cached sources available'
-                            }`
+                            }`,
                         );
                         return maybeCallbackWithError(
                             callback,
                             `Cannot read "${urlOrPath}"`,
                             additionalInfo.sources,
-                            ''
+                            '',
                         );
                     }
                 });
@@ -1464,7 +1484,7 @@ export async function getRepositoryFileAsync(
     url: string,
     hash?: string,
     force?: boolean,
-    _actualRepo?: ioBroker.RepositoryJson | null
+    _actualRepo?: ioBroker.RepositoryJson | null,
 ): Promise<RepositoryFile> {
     let _hash;
     let data;
@@ -1486,7 +1506,7 @@ export async function getRepositoryFileAsync(
                 data = await axios({
                     url,
                     timeout: 10_000,
-                    headers: { 'User-Agent': agent }
+                    headers: { 'User-Agent': agent },
                 });
                 data = data.data;
             } catch (e) {
@@ -1508,7 +1528,7 @@ export async function getRepositoryFileAsync(
     return {
         json: data,
         changed: _hash?.data ? hash !== _hash.data.hash : true,
-        hash: _hash && _hash.data ? _hash.data.hash : ''
+        hash: _hash && _hash.data ? _hash.data.hash : '',
     };
 }
 
@@ -1524,7 +1544,7 @@ export async function sendDiagInfo(obj: Record<string, any>): Promise<void> {
     params.append('data', objStr);
     const config = {
         headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        timeout: 4000
+        timeout: 4000,
     };
 
     try {
@@ -1573,21 +1593,20 @@ export function getAdapterDir(adapter: string): string | null {
 
     if (!adapterPath) {
         return null; // inactive
-    } else {
-        const parts = path.normalize(adapterPath).split(/[\\/]/g);
-        parts.pop();
-        return parts.join('/');
     }
+    const parts = path.normalize(adapterPath).split(/[\\/]/g);
+    parts.pop();
+    return parts.join('/');
 }
 
 /**
  * Returns the hostname of this host
  */
 export function getHostName(): string {
-    // for tests purposes
     if (process.env.IOB_HOSTNAME) {
         return process.env.IOB_HOSTNAME;
     }
+
     try {
         const configName = getConfigFileName();
         const config = fs.readJSONSync(configName);
@@ -1646,7 +1665,7 @@ function getSystemNpmVersion(callback?: (err?: Error, version?: string | null) =
                     callback(error, stdout);
                     callback = undefined;
                 }
-            }
+            },
         );
     } catch (e) {
         if (callback) {
@@ -1683,8 +1702,8 @@ export async function detectPackageManagerWithFallback(cwd?: string): Promise<Pa
                 : // Otherwise, try to find the ioBroker root dir
                   {
                       cwd: (isDevServerInstallation() && require.main?.path) || thisDir,
-                      setCwdToPackageRoot: true
-                  }
+                      setCwdToPackageRoot: true,
+                  },
         );
     } catch {
         // Lockfile is not found, use default to avoid picking up a wrong package manager
@@ -1707,7 +1726,7 @@ export async function detectPackageManagerWithFallback(cwd?: string): Promise<Pa
  */
 export async function installNodeModule(
     npmUrl: string,
-    options: InstallNodeModuleOptions = {}
+    options: InstallNodeModuleOptions = {},
 ): Promise<CommandResult> {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManagerWithFallback(options.cwd);
@@ -1718,7 +1737,7 @@ export async function installNodeModule(
 
     // And install the module
     const installOpts: WithRequired<InstallOptions, 'additionalArgs'> = {
-        additionalArgs: []
+        additionalArgs: [],
     };
 
     // Set up streams to pass the command output through
@@ -1755,7 +1774,7 @@ export interface UninstallNodeModuleOptions {
  */
 export async function uninstallNodeModule(
     packageName: string,
-    options: UninstallNodeModuleOptions = {}
+    options: UninstallNodeModuleOptions = {},
 ): Promise<CommandResult> {
     // Figure out which package manager is in charge (probably npm at this point)
     const pak = await detectPackageManagerWithFallback(options.cwd);
@@ -1855,7 +1874,7 @@ export async function getDiskInfo(): Promise<GetDiskInfoResponse | null> {
                     const parts = line.split(/\s+/);
                     return {
                         'Disk size': parseInt(parts[2]),
-                        'Disk free': parseInt(parts[1])
+                        'Disk free': parseInt(parts[1]),
                     };
                 }
             }
@@ -1869,7 +1888,7 @@ export async function getDiskInfo(): Promise<GetDiskInfoResponse | null> {
                     const parts = stdout.split('\n')[1].split(/\s+/);
                     return {
                         'Disk size': parseInt(parts[1]) * 1024,
-                        'Disk free': parseInt(parts[3]) * 1024
+                        'Disk free': parseInt(parts[3]) * 1024,
                     };
                 }
             } catch {
@@ -1896,7 +1915,10 @@ export interface CertificateInfo {
     /** subject that is signed */
     subject: Record<string, any>;
     /** server name this certificate belong to */
-    dnsNames: { type: number; value: string }[];
+    dnsNames: {
+        type: number;
+        value: string;
+    }[];
     /** this certificate can be used for the following purposes */
     keyUsage: Record<string, any>;
     /** usable or client, server or ... */
@@ -1944,7 +1966,7 @@ export function getCertificateInfo(cert: string): null | CertificateInfo {
             keyUsage: crt.getExtension('keyUsage'),
             extKeyUsage: crt.getExtension('extKeyUsage'),
             validityNotBefore: crt.validity.notBefore,
-            validityNotAfter: crt.validity.notAfter
+            validityNotAfter: crt.validity.notAfter,
         };
 
         // do not return info about values
@@ -1990,13 +2012,13 @@ export function generateDefaultCertificates(): DefaultCertificates {
     const subAttrs = [
         { name: 'commonName', value: getHostName() },
         { name: 'organizationName', value: 'ioBroker GmbH' },
-        { shortName: 'OU', value: 'iobroker' }
+        { shortName: 'OU', value: 'iobroker' },
     ];
 
     const issAttrs = [
         { name: 'commonName', value: 'iobroker' },
         { name: 'organizationName', value: 'ioBroker GmbH' },
-        { shortName: 'OU', value: 'iobroker' }
+        { shortName: 'OU', value: 'iobroker' },
     ];
 
     cert.setSubject(subAttrs);
@@ -2006,7 +2028,7 @@ export function generateDefaultCertificates(): DefaultCertificates {
         {
             name: 'basicConstraints',
             critical: true,
-            cA: false
+            cA: false,
         },
         {
             name: 'keyUsage',
@@ -2019,19 +2041,19 @@ export function generateDefaultCertificates(): DefaultCertificates {
             keyCertSign: true,
             cRLSign: true,
             encipherOnly: true,
-            decipherOnly: true
+            decipherOnly: true,
         },
         {
             name: 'subjectAltName',
             altNames: [
                 {
                     type: 2,
-                    value: os.hostname()
-                }
-            ]
+                    value: os.hostname(),
+                },
+            ],
         },
         {
-            name: 'subjectKeyIdentifier'
+            name: 'subjectKeyIdentifier',
         },
         {
             name: 'extKeyUsage',
@@ -2039,11 +2061,11 @@ export function generateDefaultCertificates(): DefaultCertificates {
             clientAuth: true,
             codeSigning: false,
             emailProtection: false,
-            timeStamping: false
+            timeStamping: false,
         },
         {
-            name: 'authorityKeyIdentifier'
-        }
+            name: 'authorityKeyIdentifier',
+        },
     ]);
 
     cert.sign(keys.privateKey, forge.md.sha256.create());
@@ -2053,7 +2075,7 @@ export function generateDefaultCertificates(): DefaultCertificates {
 
     return {
         defaultPrivate: pem_pkey,
-        defaultPublic: pem_cert
+        defaultPublic: pem_cert,
     };
 }
 
@@ -2124,7 +2146,7 @@ export async function getHostInfo(objects: any): Promise<HostInfo> {
         time: dateObj.getTime(),
         timeOffset: dateObj.getTimezoneOffset(),
         NPM: npmVersion,
-        'adapters count': Object.keys(allRepos).length
+        'adapters count': Object.keys(allRepos).length,
     };
 
     if (data.Platform === 'win32') {
@@ -2299,7 +2321,7 @@ function sliceArgs(argsObj: IArguments, startIndex = 0): any[] {
 export function promisify(
     fn: (...args: any[]) => void,
     context?: any,
-    returnArgNames?: string[]
+    returnArgNames?: string[],
 ): (...args: any[]) => Promise<any> {
     return function () {
         // eslint-disable-next-line prefer-rest-params
@@ -2310,43 +2332,43 @@ export function promisify(
         return new Promise<void | Record<string, any> | any[]>(async (resolve, reject) => {
             try {
                 // await this to allow streamlining errors not passed via callback by async methods
+                // eslint-disable-next-line @typescript-eslint/await-thenable
                 await fn.apply(
                     context,
                     args.concat([
                         function (error: string | Error, result: any) {
                             if (error) {
                                 return reject(error instanceof Error ? error : new Error(error));
-                            } else {
-                                // decide on how we want to return the callback arguments
-                                switch (arguments.length) {
-                                    case 1: // only an error was given
-                                        return resolve(); // Promise<void>
-                                    case 2: // a single value (result) was returned
-                                        return resolve(result);
-                                    default: {
-                                        // multiple values should be returned
-                                        let ret: Record<string, any> | any[];
-                                        // eslint-disable-next-line prefer-rest-params
-                                        const extraArgs = sliceArgs(arguments, 1);
-                                        if (returnArgNames && returnArgNames.length === extraArgs.length) {
-                                            // we can build an object
-                                            ret = {};
-                                            for (let i = 0; i < returnArgNames.length; i++) {
-                                                ret[returnArgNames[i]] = extraArgs[i];
-                                            }
-                                        } else {
-                                            // we return the raw array
-                                            ret = extraArgs;
+                            }
+                            // decide on how we want to return the callback arguments
+                            switch (arguments.length) {
+                                case 1: // only an error was given
+                                    return resolve(); // Promise<void>
+                                case 2: // a single value (result) was returned
+                                    return resolve(result);
+                                default: {
+                                    // multiple values should be returned
+                                    let ret: Record<string, any> | any[];
+                                    // eslint-disable-next-line prefer-rest-params
+                                    const extraArgs = sliceArgs(arguments, 1);
+                                    if (returnArgNames && returnArgNames.length === extraArgs.length) {
+                                        // we can build an object
+                                        ret = {};
+                                        for (let i = 0; i < returnArgNames.length; i++) {
+                                            ret[returnArgNames[i]] = extraArgs[i];
                                         }
-                                        return resolve(ret);
+                                    } else {
+                                        // we return the raw array
+                                        ret = extraArgs;
                                     }
+                                    return resolve(ret);
                                 }
                             }
-                        }
-                    ])
+                        },
+                    ]),
                 );
             } catch (e) {
-                reject(e);
+                reject(e as Error);
             }
         });
     };
@@ -2364,7 +2386,7 @@ export function promisify(
 export function promisifyNoError(
     fn: (...args: any[]) => void,
     context?: any,
-    returnArgNames?: string[]
+    returnArgNames?: string[],
 ): (...args: any[]) => Promise<any> {
     return function () {
         // eslint-disable-next-line prefer-rest-params
@@ -2400,8 +2422,8 @@ export function promisifyNoError(
                                 return resolve(ret);
                             }
                         }
-                    }
-                ])
+                    },
+                ]),
             );
         });
     };
@@ -2425,7 +2447,7 @@ export function setQualityForInstance(objects: any, states: any, namespace: stri
             {
                 startkey: `${namespace}.`,
                 endkey: `${namespace}.\u9999`,
-                include_docs: false
+                include_docs: false,
             },
             (err: Error | null, _states?: GetObjectViewResult<ioBroker.StateObject>) => {
                 if (err) {
@@ -2451,7 +2473,7 @@ export function setQualityForInstance(objects: any, states: any, namespace: stri
                         resolve();
                     });
                 }
-            }
+            },
         );
     });
 }
@@ -2608,7 +2630,7 @@ export function decrypt(key: string, value: string): string {
  * @param it The variable to test
  * @returns true if it is Record<string, any>
  */
-export function isObject(it: any): it is Record<string, any> {
+export function isObject(it: unknown): it is Record<string, any> {
     // This is necessary because:
     // typeof null === 'object'
     // typeof [] === 'object'
@@ -2622,8 +2644,8 @@ export function isObject(it: any): it is Record<string, any> {
  *
  * @param it The variable to test
  */
-export function isArray(it: any): it is any[] {
-    return Array.isArray(it); // from node 0.1 is a part of engine
+export function isArray(it: unknown): it is any[] {
+    return Array.isArray(it);
 }
 
 /**
@@ -2685,7 +2707,7 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
     if (targetCommon?.alias?.read) {
         if (!sourceCommon) {
             logger.error(
-                `${logNamespace}source in "${targetId}" does not exist for "read" function: "${targetCommon.alias.read}"`
+                `${logNamespace}source in "${targetId}" does not exist for "read" function: "${targetCommon.alias.read}"`,
             );
             return null;
         }
@@ -2695,11 +2717,11 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
                 firstCommon: targetCommon,
                 secondCommon: sourceCommon,
                 isRead: true,
-                state
+                state,
             });
         } catch (e) {
             logger.error(
-                `${logNamespace}Invalid read function for "${targetId}": "${targetCommon.alias.read}" => ${e.message}`
+                `${logNamespace}Invalid read function for "${targetId}": "${targetCommon.alias.read}" => ${e.message}`,
             );
             return null;
         }
@@ -2708,7 +2730,7 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
     if (sourceCommon?.alias?.write) {
         if (!targetCommon) {
             logger.error(
-                `${logNamespace}target for "${sourceId}" does not exist for "write" function: "${sourceCommon.alias.write}"`
+                `${logNamespace}target for "${sourceId}" does not exist for "write" function: "${sourceCommon.alias.write}"`,
             );
             return null;
         }
@@ -2718,11 +2740,11 @@ export function formatAliasValue(options: FormatAliasValueOptions): ioBroker.Sta
                 firstCommon: sourceCommon,
                 secondCommon: targetCommon,
                 isRead: false,
-                state
+                state,
             });
         } catch (e) {
             logger.error(
-                `${logNamespace}Invalid write function for "${sourceId}": "${sourceCommon.alias.write}" => ${e.message}`
+                `${logNamespace}Invalid write function for "${sourceId}": "${sourceCommon.alias.write}" => ${e.message}`,
             );
             return null;
         }
@@ -2776,7 +2798,7 @@ export async function removeIdFromAllEnums(objects: any, id: string, allEnums?: 
  * @returns parsedDeps parsed dependencies
  */
 export function parseDependencies(
-    dependencies: string[] | Record<string, string>[] | string | Record<string, string> | undefined
+    dependencies: string[] | Record<string, string>[] | string | Record<string, string> | undefined,
 ): Record<string, string> {
     let adapters: Record<string, string> = {};
     if (Array.isArray(dependencies)) {
@@ -2838,12 +2860,12 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
         'chart',
         'folder',
         'schedule',
-        'design'
+        'design',
     ];
 
     if (obj.type !== undefined && !allowedObjectTypes.includes(obj.type)) {
         throw new Error(
-            `obj.type has an invalid value (${obj.type}) but has to be one of ${allowedObjectTypes.join(', ')}`
+            `obj.type has an invalid value (${obj.type}) but has to be one of ${allowedObjectTypes.join(', ')}`,
         );
     }
 
@@ -2854,7 +2876,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
 
     if (obj.common.name !== undefined && typeof obj.common.name !== 'string' && typeof obj.common.name !== 'object') {
         throw new Error(
-            `obj.common.name has an invalid type! Expected "string" or "object", received "${typeof obj.common.name}"`
+            `obj.common.name has an invalid type! Expected "string" or "object", received "${typeof obj.common.name}"`,
         );
     } else if (['adapter'].includes(obj.type) && typeof obj.common.name !== 'string') {
         // TODO: we need this for group/user too, but have to solve problems described in #1266
@@ -2865,7 +2887,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
     if (obj.common.type !== undefined) {
         if (typeof obj.common.type !== 'string') {
             throw new Error(
-                `obj.common.type has an invalid type! Expected "string", received "${typeof obj.common.type}"`
+                `obj.common.type has an invalid type! Expected "string", received "${typeof obj.common.type}"`,
             );
         }
 
@@ -2876,7 +2898,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
                 throw new Error(
                     `obj.common.type has an invalid value (${
                         obj.common.type
-                    }) but has to be one of ${allowedStateTypes.join(', ')}`
+                    }) but has to be one of ${allowedStateTypes.join(', ')}`,
                 );
             }
 
@@ -2884,13 +2906,13 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
             if (obj.common.min !== undefined) {
                 if (typeof obj.common.min !== 'number') {
                     throw new Error(
-                        `obj.common.min has an invalid type! Expected "number", received "${typeof obj.common.min}"`
+                        `obj.common.min has an invalid type! Expected "number", received "${typeof obj.common.min}"`,
                     );
                 }
 
                 if (obj.common.type !== 'number' && obj.common.type !== 'mixed') {
                     throw new Error(
-                        `obj.common.min is only allowed on obj.common.type "number" or "mixed", received "${obj.common.type}"`
+                        `obj.common.min is only allowed on obj.common.type "number" or "mixed", received "${obj.common.type}"`,
                     );
                 }
             }
@@ -2898,19 +2920,19 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
             if (obj.common.max !== undefined) {
                 if (typeof obj.common.max !== 'number') {
                     throw new Error(
-                        `obj.common.max has an invalid type! Expected "number", received "${typeof obj.common.max}"`
+                        `obj.common.max has an invalid type! Expected "number", received "${typeof obj.common.max}"`,
                     );
                 }
 
                 if (obj.common.type !== 'number' && obj.common.type !== 'mixed') {
                     throw new Error(
-                        `obj.common.max is only allowed on obj.common.type "number" or "mixed", received "${obj.common.type}"`
+                        `obj.common.max is only allowed on obj.common.type "number" or "mixed", received "${obj.common.type}"`,
                     );
                 }
 
                 if (obj.common.min !== undefined && obj.common.min > obj.common.max) {
                     throw new Error(
-                        `obj.common.min (${obj.common.min}) needs to be less than or equal to obj.common.max (${obj.common.max})`
+                        `obj.common.min (${obj.common.min}) needs to be less than or equal to obj.common.max (${obj.common.max})`,
                     );
                 }
             }
@@ -2931,7 +2953,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
                     // 'array', 'object', 'json' need to be string
                     if (['object', 'json', 'array'].includes(obj.common.type)) {
                         throw new Error(
-                            `Default value has to be stringified but received type "${typeof obj.common.def}"`
+                            `Default value has to be stringified but received type "${typeof obj.common.def}"`,
                         );
                     } else {
                         throw new Error(
@@ -2939,7 +2961,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
                                 obj.common.type === 'mixed'
                                     ? `one of type "string", "number", "boolean"`
                                     : `type "${obj.common.type}"`
-                            } but received type "${typeof obj.common.def}"`
+                            } but received type "${typeof obj.common.def}"`,
                         );
                     }
                 }
@@ -2949,13 +2971,13 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
 
     if (obj.common.read !== undefined && typeof obj.common.read !== 'boolean') {
         throw new Error(
-            `obj.common.read has an invalid type! Expected "boolean", received "${typeof obj.common.read}"`
+            `obj.common.read has an invalid type! Expected "boolean", received "${typeof obj.common.read}"`,
         );
     }
 
     if (obj.common.write !== undefined && typeof obj.common.write !== 'boolean') {
         throw new Error(
-            `obj.common.write has an invalid type! Expected "boolean", received "${typeof obj.common.write}"`
+            `obj.common.write has an invalid type! Expected "boolean", received "${typeof obj.common.write}"`,
         );
     }
 
@@ -2965,7 +2987,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
 
     if (obj.common.desc !== undefined && typeof obj.common.desc !== 'string' && typeof obj.common.desc !== 'object') {
         throw new Error(
-            `obj.common.desc has an invalid type! Expected "string" or "object", received "${typeof obj.common.desc}"`
+            `obj.common.desc has an invalid type! Expected "string" or "object", received "${typeof obj.common.desc}"`,
         );
     }
 
@@ -2976,7 +2998,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
         !isObject(obj.common.custom)
     ) {
         throw new Error(
-            `obj.common.custom has an invalid type! Expected "object", received "${typeof obj.common.custom}"`
+            `obj.common.custom has an invalid type! Expected "object", received "${typeof obj.common.custom}"`,
         );
     }
 
@@ -2988,7 +3010,7 @@ export function validateGeneralObjectProperties(obj: any, extend?: boolean): voi
         !Array.isArray(obj.common.states)
     ) {
         throw new Error(
-            `obj.common.states has an invalid type! Expected "object", received "${typeof obj.common.states}"`
+            `obj.common.states has an invalid type! Expected "object", received "${typeof obj.common.states}"`,
         );
     }
 }
@@ -3039,7 +3061,7 @@ export async function getAllEnums(objects: any): Promise<Record<string, ioBroker
     const allEnums: Record<string, any> = {};
     const res: GetObjectViewResult<ioBroker.EnumObject> = await objects.getObjectViewAsync('system', 'enum', {
         startkey: 'enum.',
-        endkey: 'enum.\u9999'
+        endkey: 'enum.\u9999',
     });
     if (res?.rows) {
         for (const row of res.rows) {
@@ -3060,11 +3082,11 @@ export async function getAllEnums(objects: any): Promise<Record<string, ioBroker
 export async function getInstances<TWithObjects extends boolean>(
     adapter: string,
     objects: any,
-    withObjects: TWithObjects
+    withObjects: TWithObjects,
 ): Promise<TWithObjects extends true ? ioBroker.InstanceObject[] : ioBroker.ObjectIDs.Instance[]> {
     const arr = await objects.getObjectListAsync({
         startkey: `system.adapter.${adapter}.`,
-        endkey: `system.adapter.${adapter}.\u9999`
+        endkey: `system.adapter.${adapter}.\u9999`,
     });
 
     const instances = [];
@@ -3098,7 +3120,7 @@ export function execAsync(command: string, execOptions?: ExecOptions): ChildProc
         // we do not want to show the node.js window on Windows
         windowsHide: true,
         // And we want to capture stdout/stderr
-        encoding: 'utf8'
+        encoding: 'utf8',
     };
 
     return cpExecAsync(command, { ...defaultOptions, ...execOptions });
@@ -3113,7 +3135,7 @@ export function execAsync(command: string, execOptions?: ExecOptions): ChildProc
 export function pipeLinewise(input: NodeJS.ReadableStream, output: NodeJS.WritableStream): void {
     const rl = createInterface({
         input,
-        crlfDelay: Infinity
+        crlfDelay: Infinity,
     });
     rl.on('line', line => {
         try {
@@ -3215,7 +3237,7 @@ export function getDefaultNodeArgs(mainFile: string): string[] {
 export function getDefaultRequireResolvePaths(callerModule: NodeModule): string[] {
     const ret: string[] = [
         // This is the default for require.resolve
-        ...callerModule.paths
+        ...callerModule.paths,
     ];
     // If JS-controller was started with --preserve-symlinks, start looking where the process entry point was
     if (process.execArgv.includes('--preserve-symlinks') && require.main) {
@@ -3255,7 +3277,7 @@ export function parseShortGithubUrl(url: string): ParsedGithubUrl | null {
     return {
         user: match.groups.user,
         repo: match.groups.repo,
-        commit: match.groups.commit
+        commit: match.groups.commit,
     };
 }
 
@@ -3285,7 +3307,7 @@ export function parseGithubPathname(pathname: string): ParsedGithubUrl | null {
     return {
         user: match.groups.user,
         repo: match.groups.repo,
-        commit: match.groups.commit
+        commit: match.groups.commit,
     };
 }
 
@@ -3299,7 +3321,7 @@ export function parseGithubPathname(pathname: string): ParsedGithubUrl | null {
 export function removePreservedProperties(
     preserve: Record<string, any>,
     oldObj: Record<string, any>,
-    newObj: Record<string, any>
+    newObj: Record<string, any>,
 ): void {
     for (const prop of Object.keys(preserve)) {
         if (isObject(preserve[prop]) && isObject(newObj[prop])) {
@@ -3339,9 +3361,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 type: 'boolean',
                 read: true,
                 write: true,
-                role: 'indicator.state'
+                role: 'indicator.state',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.connected`,
@@ -3351,9 +3373,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 type: 'boolean',
                 read: true,
                 write: false,
-                role: 'indicator.state'
+                role: 'indicator.state',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.compactMode`,
@@ -3363,9 +3385,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 type: 'boolean',
                 read: true,
                 write: false,
-                role: 'indicator.state'
+                role: 'indicator.state',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.cpu`,
@@ -3376,22 +3398,22 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 read: true,
                 write: false,
                 role: 'indicator.state',
-                unit: '% of one core'
+                unit: '% of one core',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.cputime`,
             type: 'state',
             common: {
-                name: namespace + '.cputime',
+                name: `${namespace}.cputime`,
                 type: 'number',
                 read: true,
                 write: false,
                 role: 'indicator.state',
-                unit: 'seconds'
+                unit: 'seconds',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.memHeapUsed`,
@@ -3402,9 +3424,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 read: true,
                 write: false,
                 role: 'indicator.state',
-                unit: 'MB'
+                unit: 'MB',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.memHeapTotal`,
@@ -3415,9 +3437,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 write: false,
                 type: 'number',
                 role: 'indicator.state',
-                unit: 'MB'
+                unit: 'MB',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.memRss`,
@@ -3429,9 +3451,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 write: false,
                 type: 'number',
                 role: 'indicator.state',
-                unit: 'MB'
+                unit: 'MB',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.uptime`,
@@ -3442,9 +3464,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 read: true,
                 write: false,
                 role: 'indicator.state',
-                unit: 'seconds'
+                unit: 'seconds',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.inputCount`,
@@ -3456,9 +3478,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 read: true,
                 write: false,
                 role: 'state',
-                unit: 'events/15 seconds'
+                unit: 'events/15 seconds',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.outputCount`,
@@ -3470,9 +3492,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 read: true,
                 write: false,
                 role: 'state',
-                unit: 'events/15 seconds'
+                unit: 'events/15 seconds',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.eventLoopLag`,
@@ -3484,9 +3506,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 read: true,
                 write: false,
                 role: 'state',
-                unit: 'ms'
+                unit: 'ms',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.sigKill`,
@@ -3497,9 +3519,9 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 read: true,
                 write: false,
                 desc: 'Process id that must survive. All other IDs must terminate itself',
-                role: 'state'
+                role: 'state',
             },
-            native: {}
+            native: {},
         },
         {
             _id: `${id}.logLevel`,
@@ -3510,10 +3532,10 @@ export function getInstanceIndicatorObjects(namespace: string): ioBroker.StateOb
                 read: true,
                 write: true,
                 desc: 'Loglevel of the adapter. Will be set on start with defined value but can be overridden during runtime',
-                role: 'state'
+                role: 'state',
             },
-            native: {}
-        }
+            native: {},
+        },
     ];
 }
 
@@ -3536,7 +3558,7 @@ export function getLogger(log: any): InternalLogger {
             },
             error: function (msg: string) {
                 console.log(msg);
-            }
+            },
         };
     } else if (!log.silly) {
         log.silly = log.debug;
@@ -3558,7 +3580,7 @@ export async function setExecutableCapabilities(
     capabilities: string[],
     modeEffective?: boolean,
     modePermitted?: boolean,
-    modeInherited?: boolean
+    modeInherited?: boolean,
 ): Promise<void> {
     // if not linux do nothing and silent exit
     if (os.platform() !== 'linux') {
@@ -3623,7 +3645,7 @@ export async function setExecutableCapabilities(
 async function _readLicenses(login: string, password: string): Promise<any[]> {
     const config = {
         headers: { Authorization: `Basic ${Buffer.from(`${login}:${password}`).toString('base64')}` },
-        timeout: 4_000
+        timeout: 4_000,
     };
 
     try {
@@ -3634,7 +3656,7 @@ async function _readLicenses(login: string, password: string): Promise<any[]> {
                 (license: { validTill: string | number }) =>
                     !license.validTill ||
                     license.validTill === '0000-00-00 00:00:00' ||
-                    new Date(license.validTill).getTime() > now
+                    new Date(license.validTill).getTime() > now,
             );
         }
 
@@ -3663,78 +3685,74 @@ export async function updateLicenses(objects: any, login: string, password: stri
     // if login and password provided in the message, just try to read without saving it in system.licenses
     if (login && password) {
         return _readLicenses(login, password);
-    } else {
-        // get actual object
-        const systemLicenses: ioBroker.Object = await objects.getObjectAsync('system.licenses');
-        // If password and login exist
-        if (systemLicenses && systemLicenses.native && systemLicenses.native.password && systemLicenses.native.login) {
+    }
+    // get actual object
+    const systemLicenses: ioBroker.Object = await objects.getObjectAsync('system.licenses');
+    // If password and login exist
+    if (systemLicenses && systemLicenses.native && systemLicenses.native.password && systemLicenses.native.login) {
+        try {
+            // get the secret to decode the password
+            const systemConfig: ioBroker.Object = await objects.getObjectAsync('system.config');
+
+            // decode the password
+            let password;
             try {
-                // get the secret to decode the password
-                const systemConfig: ioBroker.Object = await objects.getObjectAsync('system.config');
-
-                // decode the password
-                let password;
-                try {
-                    password = decrypt(systemConfig.native.secret, systemLicenses.native.password);
-                } catch (err) {
-                    throw new Error(`Cannot decode password: ${err.message}`);
-                }
-
-                // read licenses from iobroker.net
-                const licenses = await _readLicenses(systemLicenses.native.login, password);
-                // save licenses to system.licenses and remember the time.
-                // merge the information together
-                const oldLicenses: any[] = systemLicenses.native.licenses || [];
-                systemLicenses.native.licenses = licenses;
-                oldLicenses.forEach(oldLicense => {
-                    if (oldLicense.usedBy) {
-                        const newLicense = licenses.find(item => item.json === oldLicense.json);
-                        if (newLicense) {
-                            newLicense.usedBy = oldLicense.usedBy;
-                        }
-                    }
-                });
-
-                systemLicenses.native.readTime = new Date().toISOString();
-
-                // update read time
-                await objects.setObjectAsync('system.licenses', systemLicenses);
-                return licenses;
+                password = decrypt(systemConfig.native.secret, systemLicenses.native.password);
             } catch (err) {
-                // if password is invalid
-                if (
-                    err.message.includes('Authentication required') ||
-                    err.message.includes('Cannot decode password:')
-                ) {
-                    // clear existing licenses if exist
-                    if (
-                        systemLicenses &&
-                        systemLicenses.native &&
-                        systemLicenses.native.licenses &&
-                        systemLicenses.native.licenses.length
-                    ) {
-                        systemLicenses.native.licenses = [];
-                        systemLicenses.native.readTime = new Date().toISOString();
-                        await objects.setObjectAsync('system.licenses', systemLicenses);
+                throw new Error(`Cannot decode password: ${err.message}`);
+            }
+
+            // read licenses from iobroker.net
+            const licenses = await _readLicenses(systemLicenses.native.login, password);
+            // save licenses to system.licenses and remember the time.
+            // merge the information together
+            const oldLicenses: any[] = systemLicenses.native.licenses || [];
+            systemLicenses.native.licenses = licenses;
+            oldLicenses.forEach(oldLicense => {
+                if (oldLicense.usedBy) {
+                    const newLicense = licenses.find(item => item.json === oldLicense.json);
+                    if (newLicense) {
+                        newLicense.usedBy = oldLicense.usedBy;
                     }
                 }
+            });
 
-                throw err;
+            systemLicenses.native.readTime = new Date().toISOString();
+
+            // update read time
+            await objects.setObjectAsync('system.licenses', systemLicenses);
+            return licenses;
+        } catch (err) {
+            // if password is invalid
+            if (err.message.includes('Authentication required') || err.message.includes('Cannot decode password:')) {
+                // clear existing licenses if exist
+                if (
+                    systemLicenses &&
+                    systemLicenses.native &&
+                    systemLicenses.native.licenses &&
+                    systemLicenses.native.licenses.length
+                ) {
+                    systemLicenses.native.licenses = [];
+                    systemLicenses.native.readTime = new Date().toISOString();
+                    await objects.setObjectAsync('system.licenses', systemLicenses);
+                }
             }
-        } else {
-            // if password or login are empty => clear existing licenses if exist
-            if (
-                systemLicenses &&
-                systemLicenses.native &&
-                systemLicenses.native.licenses &&
-                systemLicenses.native.licenses.length
-            ) {
-                systemLicenses.native.licenses = [];
-                systemLicenses.native.readTime = new Date().toISOString();
-                await objects.setObjectAsync('system.licenses', systemLicenses);
-            }
-            throw new Error('No password or login');
+
+            throw err;
         }
+    } else {
+        // if password or login are empty => clear existing licenses if exist
+        if (
+            systemLicenses &&
+            systemLicenses.native &&
+            systemLicenses.native.licenses &&
+            systemLicenses.native.licenses.length
+        ) {
+            systemLicenses.native.licenses = [];
+            systemLicenses.native.readTime = new Date().toISOString();
+            await objects.setObjectAsync('system.licenses', systemLicenses);
+        }
+        throw new Error('No password or login');
     }
 }
 
@@ -3752,7 +3770,7 @@ export interface GZipFileOptions {
 export function compressFileGZip(
     inputFilename: string,
     outputFilename: string,
-    options: GZipFileOptions = {}
+    options: GZipFileOptions = {},
 ): Promise<void> {
     const { deleteInput = false } = options;
 
@@ -3811,7 +3829,7 @@ export function validateDataDir(dataDir: string): DataDirValidation {
     return {
         valid: isValid,
         path: dataDir,
-        reason: isValid ? 'Valid data directory' : 'Data directory is not allowed to point into node_modules folder'
+        reason: isValid ? 'Valid data directory' : 'Data directory is not allowed to point into node_modules folder',
     };
 }
 
@@ -3931,13 +3949,13 @@ export function getHostObject(oldObj?: ioBroker.HostObject | null): ioBroker.Hos
                 .join(' ')}`,
             hostname,
             address: findIPs(),
-            type: ioPackage.common.name
+            type: ioPackage.common.name,
         },
         native: {
             process: {
                 title: process.title,
                 versions: process.versions,
-                env: process.env
+                env: process.env,
             },
             os: {
                 hostname: hostname,
@@ -3946,14 +3964,14 @@ export function getHostObject(oldObj?: ioBroker.HostObject | null): ioBroker.Hos
                 arch: os.arch(),
                 release: os.release(),
                 endianness: os.endianness(),
-                tmpdir: os.tmpdir()
+                tmpdir: os.tmpdir(),
             },
             hardware: {
                 cpus: os.cpus(),
                 totalmem: os.totalmem(),
-                networkInterfaces: {}
-            }
-        }
+                networkInterfaces: {},
+            },
+        },
     };
 
     if (oldObj?.common?.icon) {

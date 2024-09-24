@@ -45,7 +45,7 @@ export enum STATE_QUALITY {
     /** The device has reported an error */
     DEVICE_ERROR_REPORT = 0x44,
     /** The sensor has reported an error */
-    SENSOR_ERROR_REPORT = 0x84
+    SENSOR_ERROR_REPORT = 0x84,
 }
 
 /** Using the const array just for type inference */
@@ -67,7 +67,7 @@ const SUPPORTED_FEATURES_INTERNAL = [
     'CUSTOM_FULL_VIEW', // `getObjectView('system', 'custom-full', ...)` will return full objects and not only `common.custom` part. Since `js-controller` 5.0
     'ADAPTER_GET_OBJECTS_BY_ARRAY', // getForeignObjects supports an array of ids too. Since js-controller 5.0
     'CONTROLLER_UI_UPGRADE', // Controller can be updated via sendToHost('upgradeController', ...)
-    'ADAPTER_WEBSERVER_UPGRADE' // Controller supports upgrading adapter and provides a webserver (triggered via sendToHost). Since `js-controller` 5.0
+    'ADAPTER_WEBSERVER_UPGRADE', // Controller supports upgrading adapter and provides a webserver (triggered via sendToHost). Since `js-controller` 5.0
 ] as const;
 
 export const SUPPORTED_FEATURES = [...SUPPORTED_FEATURES_INTERNAL];

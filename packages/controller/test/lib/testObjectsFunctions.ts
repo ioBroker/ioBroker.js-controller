@@ -12,7 +12,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     const gid = 'myTestObject';
 
     // setObject positive
-    it(testName + 'Check if objects will be created', function (done) {
+    it(`${testName}Check if objects will be created`, function (done) {
         this.timeout(3_000);
         context.adapter.setObject(
             gid,
@@ -23,13 +23,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     type: 'number',
                     role: 'level',
                     read: true,
-                    write: true
+                    write: true,
                 },
                 native: {
                     attr1: '1',
                     attr2: '2',
-                    attr3: '3'
-                }
+                    attr3: '3',
+                },
             },
             function (err) {
                 expect(err).to.be.null;
@@ -43,12 +43,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     //expect(obj.acl).to.be.ok;
                     done();
                 });
-            }
+            },
         );
     });
 
     // setObject negative
-    it(testName + 'Check if objects will not be created without mandatory attribute type', function (done) {
+    it(`${testName}Check if objects will not be created without mandatory attribute type`, function (done) {
         this.timeout(3_000);
         const id = 'myTestObjectNoType';
         context.adapter.setObject(
@@ -56,26 +56,26 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             {
                 common: {
                     name: 'test1',
-                    type: 'number'
+                    type: 'number',
                 },
                 native: {},
                 // @ts-expect-error should error as type is missing
-                type_: 'state'
+                type_: 'state',
             },
             (err: any) => {
                 expect(err).to.be.ok;
 
-                context.objects.getObject(context.adapterShortName + '.0.' + id, function (err, obj) {
+                context.objects.getObject(`${context.adapterShortName}.0.${id}`, function (err, obj) {
                     expect(err).to.be.not.ok; // there is no message, that object does not exist. Errors will be given back only if no access rights
                     expect(obj).to.be.not.ok;
                     done();
                 });
-            }
+            },
         );
     });
 
     // getAdapterObjects
-    it(testName + 'Read all objects of adapter', function (done) {
+    it(`${testName}Read all objects of adapter`, function (done) {
         context.adapter.getAdapterObjects(objects => {
             expect(objects).to.be.ok;
             expect(objects[`${context.adapterShortName}.0.${gid}`]).to.be.ok;
@@ -85,15 +85,15 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     //extendObject
-    it(testName + 'Check if objects will be extended', function (done) {
+    it(`${testName}Check if objects will be extended`, function (done) {
         context.adapter.extendObject(
             gid,
             {
                 native: {
                     attr1: '11', // modify
                     attr2: null, // delete
-                    attr4: '4' // add
-                }
+                    attr4: '4', // add
+                },
             },
             function (err, obj) {
                 expect(err).to.be.not.ok;
@@ -108,17 +108,17 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(obj!.native.attr4).to.be.equal('4');
                     done();
                 });
-            }
+            },
         );
     });
 
     // setForeignObject
-    it(testName + 'Check if foreign objects will be created', function (done) {
+    it(`${testName}Check if foreign objects will be created`, function (done) {
         this.timeout(3_000);
         // create testf.0.myTestObject
 
         context.adapter.setForeignObject(
-            context.adapterShortName + 'f.0.' + gid,
+            `${context.adapterShortName}f.0.${gid}`,
             {
                 type: 'state',
                 common: {
@@ -126,7 +126,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     type: 'number',
                     role: 'level',
                     read: true,
-                    write: true
+                    write: true,
                 },
                 native: {
                     attr1: '1',
@@ -134,8 +134,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     attr3: '3',
                     repositories: ['R1'],
                     certificates: ['C1'],
-                    devices: ['D1']
-                }
+                    devices: ['D1'],
+                },
             },
             function (err) {
                 expect(err).to.be.null;
@@ -144,18 +144,18 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(err).to.be.not.ok;
                     expect(obj).to.be.ok;
                     expect(obj!.native).to.be.ok;
-                    expect(obj!._id).equal(context.adapterShortName + 'f.0.' + gid);
+                    expect(obj!._id).equal(`${context.adapterShortName}f.0.${gid}`);
                     expect(obj!.common.name).equal('test1');
                     expect(obj!.type).equal('state');
                     //expect(obj.acl).to.be.ok;
                     done();
                 });
-            }
+            },
         );
     });
 
     // extendForeignObject
-    it(testName + 'Check if foreign objects will be extended', function (done) {
+    it(`${testName}Check if foreign objects will be extended`, function (done) {
         context.adapter.extendForeignObject(
             `${context.adapterShortName}f.0.${gid}`,
             {
@@ -166,8 +166,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     // special cases for native (obj.native.repositories || obj.native.certificates || obj.native.devices)
                     // and commons (obj.common.members)
                     repositories: ['R2'],
-                    devices: ['D2']
-                }
+                    devices: ['D2'],
+                },
             },
             function (err, obj) {
                 expect(err).to.be.not.ok;
@@ -191,12 +191,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(obj!.native.devices[0]).to.be.equal('D2');
                     done();
                 });
-            }
+            },
         );
     });
 
     // getObject
-    it(testName + 'Check get object', function (done) {
+    it(`${testName}Check get object`, function (done) {
         context.adapter.getObject(`${context.adapterShortName}.0.${gid}`, function (err, obj) {
             expect(err).to.be.null;
 
@@ -214,18 +214,18 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // getForeignObjects
-    it(testName + 'Check get foreign objects (pattern)', done => {
-        context.adapter.getForeignObjects(context.adapterShortName + 'f.0.*', (err, objs) => {
+    it(`${testName}Check get foreign objects (pattern)`, done => {
+        context.adapter.getForeignObjects(`${context.adapterShortName}f.0.*`, (err, objs) => {
             expect(err).to.be.null;
 
             expect(objs).to.be.ok;
-            expect(objs![context.adapterShortName + 'f.0.' + gid].type).to.be.equal('state');
-            expect(objs![context.adapterShortName + 'f.0.' + gid].native.attr1).to.be.equal('11');
+            expect(objs![`${context.adapterShortName}f.0.${gid}`].type).to.be.equal('state');
+            expect(objs![`${context.adapterShortName}f.0.${gid}`].native.attr1).to.be.equal('11');
             done();
         });
     });
 
-    it(testName + 'Check get foreign objects (array)', async () => {
+    it(`${testName}Check get foreign objects (array)`, async () => {
         const id = `${context.adapterShortName}f.0.${gid}`;
         const id2 = `${context.adapterShortName}.0.${gid}`;
 
@@ -237,7 +237,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(objs[id2].type).to.be.equal('state');
     });
 
-    it(testName + 'Check get foreign objects - default enum functionality', async () => {
+    it(`${testName}Check get foreign objects - default enum functionality`, async () => {
         const id = `${context.adapterShortName}.0.${gid}`;
 
         // add the state to the enum, so we can check enum functionality
@@ -257,14 +257,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // findForeignObject
-    it(testName + 'Check find foreign object', function (done) {
+    it(`${testName}Check find foreign object`, function (done) {
         context.adapter.findForeignObject('test1', null, function (err, id) {
             expect(err).to.be.null;
-            expect(id).to.be.equal(context.adapterShortName + '.0.' + gid);
+            expect(id).to.be.equal(`${context.adapterShortName}.0.${gid}`);
 
             context.adapter.findForeignObject('test1', 'number', function (err, id) {
                 expect(err).to.be.null;
-                expect(id).to.be.equal(context.adapterShortName + '.0.' + gid);
+                expect(id).to.be.equal(`${context.adapterShortName}.0.${gid}`);
 
                 context.adapter.findForeignObject('test1', 'channel', function (err, id) {
                     expect(err).to.be.null;
@@ -277,8 +277,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // getForeignObject
-    it(testName + 'Check get foreign object', function (done) {
-        context.adapter.getForeignObject(context.adapterShortName + 'f.0.' + gid, function (err, obj) {
+    it(`${testName}Check get foreign object`, function (done) {
+        context.adapter.getForeignObject(`${context.adapterShortName}f.0.${gid}`, function (err, obj) {
             expect(err).to.be.null;
 
             expect(obj).to.be.ok;
@@ -294,7 +294,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // protection check for getForeignObject
-    it(testName + 'Check if foreign system adapters protectedNative is not accessible', function (done) {
+    it(`${testName}Check if foreign system adapters protectedNative is not accessible`, function (done) {
         this.timeout(3_000);
         // create a system.adapter object of another adapter
         context.adapter.setForeignObject(
@@ -309,16 +309,16 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     mode: 'daemon',
                     materialize: true,
                     platform: 'Javascript/Node.js',
-                    installedVersion: '1.0.0'
+                    installedVersion: '1.0.0',
                 },
                 native: {
                     model: 'S P85D',
                     username: 'tesla',
-                    password: 'winning'
+                    password: 'winning',
                 },
                 protectedNative: ['username', 'password'],
                 objects: [],
-                instanceObjects: []
+                instanceObjects: [],
             },
             function (err) {
                 expect(err).to.be.null;
@@ -334,16 +334,16 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(obj!._id).equal('system.adapter.tesla.0');
                     done();
                 });
-            }
+            },
         );
     });
 
     // own protectedNative should be available
-    it(testName + 'Check if own system adapters protectedNative is available via getForeignObject', function (done) {
+    it(`${testName}Check if own system adapters protectedNative is available via getForeignObject`, function (done) {
         this.timeout(3_000);
         // create a system.adapter object of own adapter
         context.adapter.setForeignObject(
-            'system.adapter.' + context.adapterShortName + '.0',
+            `system.adapter.${context.adapterShortName}.0`,
             {
                 type: 'instance',
                 common: {
@@ -354,40 +354,37 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     mode: 'daemon',
                     platform: 'Javascript/Node.js',
                     materialize: true,
-                    installedVersion: '1.0.0'
+                    installedVersion: '1.0.0',
                 },
                 native: {
                     model: 'S P85D',
                     username: 'tesla',
-                    password: 'winning'
+                    password: 'winning',
                 },
                 protectedNative: ['username', 'password'],
                 objects: [],
-                instanceObjects: []
+                instanceObjects: [],
             },
             function (err) {
                 expect(err).to.be.null;
 
-                context.adapter.getForeignObject(
-                    'system.adapter.' + context.adapterShortName + '.0',
-                    function (err, obj) {
-                        expect(err).to.be.not.ok;
-                        expect(obj).to.be.ok;
-                        expect(obj!.native).to.be.ok;
-                        expect(obj!.common.name).equal('tesla');
-                        expect(obj!.native.model).equal('S P85D');
-                        expect(obj!.native.password).equal('winning');
-                        expect(obj!.native.username).equal('tesla');
-                        expect(obj!._id).equal('system.adapter.' + context.adapterShortName + '.0');
-                        done();
-                    }
-                );
-            }
+                context.adapter.getForeignObject(`system.adapter.${context.adapterShortName}.0`, function (err, obj) {
+                    expect(err).to.be.not.ok;
+                    expect(obj).to.be.ok;
+                    expect(obj!.native).to.be.ok;
+                    expect(obj!.common.name).equal('tesla');
+                    expect(obj!.native.model).equal('S P85D');
+                    expect(obj!.native.password).equal('winning');
+                    expect(obj!.native.username).equal('tesla');
+                    expect(obj!._id).equal(`system.adapter.${context.adapterShortName}.0`);
+                    done();
+                });
+            },
         );
     });
 
     // setObjectNotExists
-    it(testName + 'Try to set existing object', function (done) {
+    it(`${testName}Try to set existing object`, function (done) {
         context.adapter.setObjectNotExists(
             gid,
             {
@@ -397,11 +394,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     read: true,
                     write: true,
                     type: 'number',
-                    role: 'state'
+                    role: 'state',
                 },
                 native: {
-                    pparam: 10
-                }
+                    pparam: 10,
+                },
             },
             function (err) {
                 expect(err).to.be.null;
@@ -413,102 +410,102 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(obj1!.native.pparam).to.be.not.ok;
 
                     context.adapter.setObjectNotExists(
-                        gid + 'A',
+                        `${gid}A`,
                         {
                             common: {
                                 name: 'must be set',
                                 read: true,
                                 write: true,
                                 type: 'number',
-                                role: 'state'
+                                role: 'state',
                             },
                             native: {
-                                ppparam: 10
+                                ppparam: 10,
                             },
-                            type: 'state'
+                            type: 'state',
                         },
                         function (err) {
                             expect(err).to.be.null;
 
-                            context.adapter.getObject(gid + 'A', function (err, obj1) {
+                            context.adapter.getObject(`${gid}A`, function (err, obj1) {
                                 expect(err).to.be.null;
 
                                 expect(obj1!.native).to.be.ok;
                                 expect(obj1!.native.ppparam).to.be.equal(10);
                                 done();
                             });
-                        }
+                        },
                     );
                 });
-            }
+            },
         );
     });
 
     // setForeignObjectNotExists
-    it(testName + 'Try to set existing foreign object', function (done) {
+    it(`${testName}Try to set existing foreign object`, function (done) {
         context.adapter.setForeignObjectNotExists(
-            context.adapterShortName + '.0.' + gid,
+            `${context.adapterShortName}.0.${gid}`,
             {
                 common: {
                     name: 'not must be set',
                     read: true,
                     write: true,
                     type: 'number',
-                    role: 'state'
+                    role: 'state',
                 },
                 native: {
-                    ppparam: 11
+                    ppparam: 11,
                 },
-                type: 'state'
+                type: 'state',
             },
             function (err) {
                 expect(err).to.be.null;
 
-                context.adapter.getForeignObject(context.adapterShortName + '.0.' + gid, function (err, obj1) {
+                context.adapter.getForeignObject(`${context.adapterShortName}.0.${gid}`, function (err, obj1) {
                     expect(err).to.be.null;
 
                     expect(obj1!.native).to.be.ok;
                     expect(obj1!.native.ppparam).to.be.not.ok;
 
                     context.adapter.setForeignObjectNotExists(
-                        context.adapterShortName + 'ff.0.' + gid,
+                        `${context.adapterShortName}ff.0.${gid}`,
                         {
                             common: {
                                 name: 'must be set',
                                 read: true,
                                 write: true,
                                 type: 'number',
-                                role: 'state'
+                                role: 'state',
                             },
                             native: {
-                                ppparam: 9
+                                ppparam: 9,
                             },
-                            type: 'state'
+                            type: 'state',
                         },
                         function (err) {
                             expect(err).to.be.null;
 
                             context.adapter.getForeignObject(
-                                context.adapterShortName + 'ff.0.' + gid,
+                                `${context.adapterShortName}ff.0.${gid}`,
                                 function (err, obj1) {
                                     expect(err).to.be.null;
 
                                     expect(obj1!.native).to.be.ok;
                                     expect(obj1!.native.ppparam).to.be.equal(9);
                                     done();
-                                }
+                                },
                             );
-                        }
+                        },
                     );
                 });
-            }
+            },
         );
     });
 
     // setForeignObject merge of custom settings
-    it(testName + 'Try to merge custom settings', done => {
+    it(`${testName}Try to merge custom settings`, done => {
         context.adapter.setForeignObject(
-            context.adapterShortName + '.0.' + gid,
+            `${context.adapterShortName}.0.${gid}`,
             {
                 type: 'state',
                 common: {
@@ -518,17 +515,17 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     write: true,
                     role: 'state',
                     custom: {
-                        history: { enabled: true }
-                    }
+                        history: { enabled: true },
+                    },
                 },
                 native: {
-                    ppparam: 11
-                }
+                    ppparam: 11,
+                },
             },
             err => {
                 expect(err).to.be.null;
                 context.adapter.setForeignObject(
-                    context.adapterShortName + '.0.' + gid,
+                    `${context.adapterShortName}.0.${gid}`,
                     {
                         common: {
                             type: 'string',
@@ -537,32 +534,32 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             write: true,
                             role: 'state',
                             custom: {
-                                material: { enabled: true }
-                            }
+                                material: { enabled: true },
+                            },
                         },
                         native: {
-                            ppparam: 12
+                            ppparam: 12,
                         },
-                        type: 'state'
+                        type: 'state',
                     },
                     err => {
                         expect(err).to.be.null;
-                        context.adapter.getForeignObject(context.adapterShortName + '.0.' + gid, (err, obj1) => {
+                        context.adapter.getForeignObject(`${context.adapterShortName}.0.${gid}`, (err, obj1) => {
                             expect(err).to.be.null;
 
                             expect(obj1!.common.custom!.material).to.be.ok;
                             expect(obj1!.common.custom!.history).to.be.ok;
                             done();
                         });
-                    }
+                    },
                 );
-            }
+            },
         );
     });
 
     // setForeignObject merge of custom settings
-    it(testName + 'Try to delete custom settings', done => {
-        const id = context.adapterShortName + '.0.' + gid;
+    it(`${testName}Try to delete custom settings`, done => {
+        const id = `${context.adapterShortName}.0.${gid}`;
         context.adapter.setForeignObject(
             id,
             {
@@ -573,13 +570,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     write: true,
                     role: 'state',
                     custom: {
-                        history: { enabled: true }
-                    }
+                        history: { enabled: true },
+                    },
                 },
                 native: {
-                    ppparam: 11
+                    ppparam: 11,
                 },
-                type: 'state'
+                type: 'state',
             },
             err => {
                 expect(err).to.be.null;
@@ -592,16 +589,16 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             desc: 'Hello',
                             custom: {
                                 material: null,
-                                history: null
+                                history: null,
                             },
                             read: true,
                             write: true,
-                            role: 'state'
+                            role: 'state',
                         },
                         native: {
-                            bluefox: 14
+                            bluefox: 14,
                         },
-                        type: 'state'
+                        type: 'state',
                     },
                     err => {
                         expect(err).to.be.null;
@@ -611,15 +608,15 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             expect(obj1!.common.custom).to.be.not.ok;
                             done();
                         });
-                    }
+                    },
                 );
-            }
+            },
         );
     });
 
     // setForeignObject merge of custom settings
-    it(testName + 'Try to delete custom settings in new object', done => {
-        const id = context.adapterShortName + '.0.' + gid + '6';
+    it(`${testName}Try to delete custom settings in new object`, done => {
+        const id = `${context.adapterShortName}.0.${gid}6`;
 
         context.adapter.setForeignObject(
             id,
@@ -631,13 +628,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     write: true,
                     role: 'state',
                     custom: {
-                        history: { enabled: true }
-                    }
+                        history: { enabled: true },
+                    },
                 },
                 native: {
-                    ppparam: 11
+                    ppparam: 11,
                 },
-                type: 'state'
+                type: 'state',
             },
             err => {
                 expect(err).to.be.null;
@@ -650,16 +647,16 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             desc: 'Hello',
                             custom: {
                                 material: null,
-                                history: null
+                                history: null,
                             },
                             read: true,
                             write: true,
-                            role: 'state'
+                            role: 'state',
                         },
                         native: {
-                            bluefox: 14
+                            bluefox: 14,
                         },
-                        type: 'state'
+                        type: 'state',
                     },
                     err => {
                         expect(err).to.be.null;
@@ -669,14 +666,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             expect(obj1!.common.custom).to.be.not.ok;
                             done();
                         });
-                    }
+                    },
                 );
-            }
+            },
         );
     });
 
     // getObjectView
-    it(testName + 'Try to get object view', done => {
+    it(`${testName}Try to get object view`, done => {
         // create the view
         context.adapter
             .setForeignObjectAsync('_design/hm-rpc', {
@@ -684,13 +681,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'design',
                 views: {
                     paramsetDescription: {
-                        map: 'function(doc) {\n  if (doc._id.match(/^hm-rpc\\.meta/) && doc.native.type === "paramsetDescription") {\n   emit(doc._id, doc);\n  }\n}'
-                    }
+                        map: 'function(doc) {\n  if (doc._id.match(/^hm-rpc\\.meta/) && doc.native.type === "paramsetDescription") {\n   emit(doc._id, doc);\n  }\n}',
+                    },
                 },
                 common: {
-                    name: 'HM-RPC Design'
+                    name: 'HM-RPC Design',
                 },
-                native: {}
+                native: {},
             })
             .then(() => {
                 // now let's create an object matching the view
@@ -699,12 +696,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         type: 'meta',
                         common: {
                             type: 'meta.user',
-                            name: 'meta hm-rpc'
+                            name: 'meta hm-rpc',
                         },
                         native: {
                             adapter: 'hm-rpc',
-                            type: 'paramsetDescription'
-                        }
+                            type: 'paramsetDescription',
+                        },
                     })
                     .then(() => {
                         context.adapter.getObjectView(
@@ -712,7 +709,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             'paramsetDescription',
                             {
                                 startkey: 'hm-rpc.meta.VALUES',
-                                endkey: 'hm-rpc.meta.VALUES.\u9999'
+                                endkey: 'hm-rpc.meta.VALUES.\u9999',
                             },
                             (err, doc) => {
                                 // now check that our object view contains our object
@@ -720,30 +717,30 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                 expect(doc!.rows).to.be.an('array');
                                 expect(doc!.rows.length).to.be.equal(1);
                                 expect(doc!.rows[0].value._id).to.be.equal(
-                                    'hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19'
+                                    'hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19',
                                 );
                                 done();
-                            }
+                            },
                         );
                     });
             });
     });
 
     // getObjectViewAsync
-    it(testName + 'Try to get object view in async setup', async () => {
+    it(`${testName}Try to get object view in async setup`, async () => {
         // create the view
         await context.adapter.setForeignObjectAsync('_design/hm-rpc', {
             language: 'javascript',
             type: 'design',
             views: {
                 paramsetDescription: {
-                    map: 'function(doc) {\n  if (doc._id.match(/^hm-rpc\\.meta/) && doc.native.type === "paramsetDescription") {\n   emit(doc._id, doc);\n  }\n}'
-                }
+                    map: 'function(doc) {\n  if (doc._id.match(/^hm-rpc\\.meta/) && doc.native.type === "paramsetDescription") {\n   emit(doc._id, doc);\n  }\n}',
+                },
             },
             common: {
-                name: 'Test'
+                name: 'Test',
             },
-            native: {}
+            native: {},
         });
 
         // now lets create an object matching the view
@@ -751,17 +748,17 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             type: 'meta',
             common: {
                 name: 'test',
-                type: 'meta.user'
+                type: 'meta.user',
             },
             native: {
                 adapter: 'hm-rpc',
-                type: 'paramsetDescription'
-            }
+                type: 'paramsetDescription',
+            },
         });
 
         const doc = await context.adapter.getObjectViewAsync('hm-rpc', 'paramsetDescription', {
             startkey: 'hm-rpc.meta.VALUES',
-            endkey: 'hm-rpc.meta.VALUES.\u9999'
+            endkey: 'hm-rpc.meta.VALUES.\u9999',
         });
 
         // now check that our object view contains our object
@@ -770,7 +767,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(doc.rows[0].value._id).to.be.equal('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19');
     });
 
-    it(testName + 'Try to get object view with custom', async function () {
+    it(`${testName}Try to get object view with custom`, async function () {
         this.timeout(3_000);
 
         const customObj = {
@@ -782,8 +779,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 changesRelogInterval: 0,
                 changesMinDelta: 0,
                 maxLength: 10,
-                retention: 31536000
-            }
+                retention: 31536000,
+            },
         };
 
         // lets create an object matching the view
@@ -795,14 +792,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 type: 'boolean',
                 read: false,
                 write: true,
-                custom: customObj
+                custom: customObj,
             },
-            native: {}
+            native: {},
         });
 
         const doc = await context.adapter.getObjectViewAsync('system', 'custom', {
             startkey: `${context.adapterShortName}.1.device.channel.`,
-            endkey: `${context.adapterShortName}.1.device.channel.\u9999`
+            endkey: `${context.adapterShortName}.1.device.channel.\u9999`,
         });
 
         // now check that our object view contains our object
@@ -813,32 +810,32 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // getObjectList
-    it(testName + 'Try to get object list', done => {
+    it(`${testName}Try to get object list`, done => {
         // let's create an object matching the list
         context.adapter
             .setForeignObjectAsync('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19', {
                 type: 'meta',
                 common: {
                     type: 'meta.user',
-                    name: 'test'
+                    name: 'test',
                 },
                 native: {
                     adapter: 'hm-rpc',
-                    type: 'paramsetDescription'
-                }
+                    type: 'paramsetDescription',
+                },
             })
             .then(() => {
                 // now lets get our object
                 context.adapter.getObjectList(
                     {
                         startkey: 'hm-rpc.meta.VALUES',
-                        endkey: 'hm-rpc.meta.VALUES.\u9999'
+                        endkey: 'hm-rpc.meta.VALUES.\u9999',
                     },
                     (err, res) => {
                         expect(err).to.be.null;
                         expect(res!.rows.length).to.be.equal(1);
                         expect(res!.rows[0].id).to.be.equal(
-                            'hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19'
+                            'hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19',
                         );
 
                         // and try a non existing pattern
@@ -847,32 +844,32 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             expect(res!.rows.length).to.be.equal(0);
                             done();
                         });
-                    }
+                    },
                 );
             });
     });
 
     // getObjectListAsync
-    it(testName + 'Try to get object list async', done => {
+    it(`${testName}Try to get object list async`, done => {
         // let's create an object matching the list
         context.adapter
             .setForeignObjectAsync('hm-rpc.meta.VALUES.HM-CC-RT-DN.CLIMATECONTROL_RECEIVER.19', {
                 type: 'meta',
                 common: {
                     name: 'test',
-                    type: 'meta.user'
+                    type: 'meta.user',
                 },
                 native: {
                     adapter: 'hm-rpc',
-                    type: 'paramsetDescription'
-                }
+                    type: 'paramsetDescription',
+                },
             })
             .then(() => {
                 // now lets get our object
                 context.adapter
                     .getObjectListAsync({
                         startkey: 'hm-rpc.meta.VALUES',
-                        endkey: 'hm-rpc.meta.VALUES.\u9999'
+                        endkey: 'hm-rpc.meta.VALUES.\u9999',
                     })
                     .then(res => {
                         expect(res.rows.length).to.be.equal(1);
@@ -888,7 +885,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // delObject
-    it(testName + 'Try to delete existing object', done => {
+    it(`${testName}Try to delete existing object`, done => {
         context.adapter.delObject(gid, err => {
             expect(err).to.not.be.ok;
 
@@ -907,17 +904,17 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // delForeignObject
-    it(testName + 'Try to delete foreign existing object', function (done) {
-        context.adapter.delForeignObject(context.adapterShortName + 'f.0.' + gid, function (err) {
+    it(`${testName}Try to delete foreign existing object`, function (done) {
+        context.adapter.delForeignObject(`${context.adapterShortName}f.0.${gid}`, function (err) {
             expect(err).to.not.be.ok;
 
-            context.adapter.getForeignObject(context.adapterShortName + 'f.0.' + gid, function (err, obj) {
+            context.adapter.getForeignObject(`${context.adapterShortName}f.0.${gid}`, function (err, obj) {
                 expect(err).to.be.not.ok;
 
                 expect(obj).to.be.null;
 
                 // deleting non existing object should not result in an error
-                context.adapter.delForeignObject(context.adapterShortName + 'f.0.' + gid, function (err) {
+                context.adapter.delForeignObject(`${context.adapterShortName}f.0.${gid}`, function (err) {
                     expect(err).to.be.not.ok;
                     done();
                 });
@@ -926,15 +923,15 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // check that enum membership is removed on delForeignObject
-    it(testName + 'should delete enum membership on object deletion', done => {
+    it(`${testName}should delete enum membership on object deletion`, done => {
         const objects = context.objects;
         const enumObj: ioBroker.SettableEnumObject = {
             common: {
                 name: 'Wohnzimmer',
-                members: ['tesla.0.model', 'test.0.test']
+                members: ['tesla.0.model', 'test.0.test'],
             },
             native: {},
-            type: 'enum'
+            type: 'enum',
         };
         // create our object
         objects.setObject(
@@ -947,8 +944,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     name: 'Model',
                     read: true,
                     write: true,
-                    role: 'state'
-                }
+                    role: 'state',
+                },
             },
             () => {
                 // now create the enum with object as member
@@ -964,15 +961,15 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         });
                     });
                 });
-            }
+            },
         );
     });
 
     // subscribeObjects
-    it(testName + 'Try to subscribe on objects changes', done => {
+    it(`${testName}Try to subscribe on objects changes`, done => {
         context.adapter.subscribeObjects('*', () => {
             context.onAdapterObjectChanged = (id, obj) => {
-                if (id === context.adapterShortName + '.0.' + gid) {
+                if (id === `${context.adapterShortName}.0.${gid}`) {
                     expect(obj).to.be.ok;
                     expect(obj!.common.name).to.equal('must be set');
                     context.onAdapterObjectChanged = null;
@@ -987,26 +984,26 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         name: 'must be set',
                         read: true,
                         write: true,
-                        role: 'state'
+                        role: 'state',
                     },
                     native: {
-                        pparam: 10
+                        pparam: 10,
                     },
-                    type: 'state'
+                    type: 'state',
                 },
                 err => {
                     expect(err).to.be.null;
-                }
+                },
             );
         });
     });
 
     // unsubscribeObjects
-    it(testName + 'Try to unsubscribe on objects changes', function (done) {
+    it(`${testName}Try to unsubscribe on objects changes`, function (done) {
         this.timeout(3_000);
         context.adapter.unsubscribeObjects('*', () => {
             context.onAdapterObjectChanged = function (id, obj) {
-                if (id === context.adapterShortName + '.0.' + gid) {
+                if (id === `${context.adapterShortName}.0.${gid}`) {
                     expect(obj).to.be.ok;
                     expect(obj).to.be.not.ok;
                 }
@@ -1019,28 +1016,28 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         name: 'must be set',
                         read: true,
                         write: true,
-                        role: 'state'
+                        role: 'state',
                     },
                     native: {
-                        pparam: 10
+                        pparam: 10,
                     },
-                    type: 'state'
+                    type: 'state',
                 },
                 function (err) {
                     expect(err).to.be.null;
                     setTimeout(function () {
                         done();
                     }, 2_000);
-                }
+                },
             );
         });
     });
 
     // subscribeForeignObjects
-    it(testName + 'Try to subscribe on foreign objects changes', function (done) {
-        context.adapter.subscribeForeignObjects(context.adapterShortName + 'f.*', () => {
+    it(`${testName}Try to subscribe on foreign objects changes`, function (done) {
+        context.adapter.subscribeForeignObjects(`${context.adapterShortName}f.*`, () => {
             context.onAdapterObjectChanged = function (id, obj) {
-                if (id === context.adapterShortName + 'f.0.' + gid) {
+                if (id === `${context.adapterShortName}f.0.${gid}`) {
                     expect(obj).to.be.ok;
                     expect(obj!.common.name).to.equal('must be set');
                     context.onAdapterObjectChanged = null;
@@ -1048,29 +1045,29 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 }
             };
             context.adapter.setForeignObject(
-                context.adapterShortName + 'f.0.' + gid,
+                `${context.adapterShortName}f.0.${gid}`,
                 {
                     common: {
                         type: 'string',
                         name: 'must be set',
                         read: true,
                         write: true,
-                        role: 'state'
+                        role: 'state',
                     },
                     native: {
-                        pparam: 10
+                        pparam: 10,
                     },
-                    type: 'state'
+                    type: 'state',
                 },
                 function (err) {
                     expect(err).to.be.null;
-                }
+                },
             );
         });
     });
 
     // check proteciton for subscribeForeignObjects
-    it(testName + 'Check if protectedNative is protected in subscribeForeignObjects', function (done) {
+    it(`${testName}Check if protectedNative is protected in subscribeForeignObjects`, function (done) {
         context.adapter.subscribeForeignObjects('system.adapter.tesla.0', () => {
             context.onAdapterObjectChanged = function (id, obj) {
                 if (id === 'system.adapter.tesla.0') {
@@ -1098,29 +1095,29 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         mode: 'daemon',
                         platform: 'Javascript/Node.js',
                         materialize: true,
-                        installedVersion: '1.0.0'
+                        installedVersion: '1.0.0',
                     },
                     native: {
                         model: 'S P85D',
                         username: 'tesla',
-                        password: 'winning'
+                        password: 'winning',
                     },
                     protectedNative: ['username', 'password'],
                     objects: [],
-                    instanceObjects: []
+                    instanceObjects: [],
                 },
                 function (err) {
                     expect(err).to.be.null;
-                }
+                },
             );
         });
     });
 
-    it(testName + 'Check if own protectedNative is available in subscribeForeignObjects', function (done) {
+    it(`${testName}Check if own protectedNative is available in subscribeForeignObjects`, function (done) {
         // If own adapter, protectedNative has to be available
-        context.adapter.subscribeForeignObjects('system.adapter.' + context.adapterShortName + '.0', () => {
+        context.adapter.subscribeForeignObjects(`system.adapter.${context.adapterShortName}.0`, () => {
             context.onAdapterObjectChanged = (id, obj) => {
-                if (id === 'system.adapter.' + context.adapterShortName + '.0') {
+                if (id === `system.adapter.${context.adapterShortName}.0`) {
                     expect(obj).to.be.ok;
                     expect(obj!.common.name).to.equal('tesla');
                     expect(obj!.native).to.be.ok;
@@ -1128,13 +1125,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     expect(obj!.native.model).equal('S P85D');
                     expect(obj!.native.username).to.equal('tesla');
                     expect(obj!.native.password).to.equal('winning');
-                    expect(obj!._id).equal('system.adapter.' + context.adapterShortName + '.0');
+                    expect(obj!._id).equal(`system.adapter.${context.adapterShortName}.0`);
                     context.onAdapterObjectChanged = null;
                     done();
                 }
             };
             context.adapter.setForeignObject(
-                'system.adapter.' + context.adapterShortName + '.0',
+                `system.adapter.${context.adapterShortName}.0`,
                 {
                     type: 'instance',
                     common: {
@@ -1145,61 +1142,61 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                         mode: 'daemon',
                         platform: 'Javascript/Node.js',
                         materialize: true,
-                        installedVersion: '1.0.0'
+                        installedVersion: '1.0.0',
                     },
                     native: {
                         model: 'S P85D',
                         username: 'tesla',
-                        password: 'winning'
+                        password: 'winning',
                     },
                     protectedNative: ['username', 'password'],
                     objects: [],
-                    instanceObjects: []
+                    instanceObjects: [],
                 },
                 function (err) {
                     expect(err).to.be.null;
-                }
+                },
             );
         });
     });
 
     // unsubscribeForeignObjects
-    it(testName + 'Try to unsubscribe on foreign objects changes', function (done) {
+    it(`${testName}Try to unsubscribe on foreign objects changes`, function (done) {
         this.timeout(3_000);
-        context.adapter.unsubscribeForeignObjects(context.adapterShortName + 'f.*', () => {
+        context.adapter.unsubscribeForeignObjects(`${context.adapterShortName}f.*`, () => {
             context.onAdapterObjectChanged = function (id, obj) {
-                if (id === context.adapterShortName + 'f.0.' + gid) {
+                if (id === `${context.adapterShortName}f.0.${gid}`) {
                     expect(obj).to.be.ok;
                     expect(obj).to.be.not.ok;
                 }
             };
             context.adapter.setForeignObject(
-                context.adapterShortName + 'f.0.' + gid,
+                `${context.adapterShortName}f.0.${gid}`,
                 {
                     common: {
                         type: 'string',
                         name: 'must be set',
                         read: true,
                         write: true,
-                        role: 'state'
+                        role: 'state',
                     },
                     native: {
-                        pparam: 10
+                        pparam: 10,
                     },
-                    type: 'state'
+                    type: 'state',
                 },
                 function (err) {
                     expect(err).to.be.null;
                     setTimeout(function () {
                         done();
                     }, 2000);
-                }
+                },
             );
         });
     });
 
     // Try to access system configuration
-    it(testName + 'Try to access system configuration', function (done) {
+    it(`${testName}Try to access system configuration`, function (done) {
         this.timeout(3_000);
 
         context.adapter.getForeignObject('system.config', (err, obj) => {
@@ -1212,7 +1209,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // getObject with acls
-    it(testName + 'Check getObjects with ACLs', function (done) {
+    it(`${testName}Check getObjects with ACLs`, function (done) {
         this.timeout(3_000);
         // create testf.0.myTestObject
 
@@ -1228,44 +1225,44 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             read: true,
                             write: false,
                             delete: false,
-                            create: false
+                            create: false,
                         },
                         state: {
                             list: false,
                             read: false,
                             write: false,
                             create: false,
-                            delete: false
+                            delete: false,
                         },
                         users: {
                             write: false,
                             create: false,
                             delete: false,
                             list: false,
-                            read: false
+                            read: false,
                         },
                         other: {
                             execute: false,
                             http: false,
-                            sendto: false
+                            sendto: false,
                         },
                         file: {
                             list: false,
                             read: false,
                             write: false,
                             create: false,
-                            delete: false
-                        }
-                    }
+                            delete: false,
+                        },
+                    },
                 },
                 native: {},
                 acl: {
                     object: 1638,
                     owner: 'system.user.admin',
-                    ownerGroup: 'system.group.administrator'
+                    ownerGroup: 'system.group.administrator',
                 },
                 _id: 'system.group.writer',
-                type: 'group'
+                type: 'group',
             },
             function (err) {
                 expect(err).to.be.null;
@@ -1278,21 +1275,21 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                             name: 'write-only',
                             enabled: true,
                             password:
-                                'pbkdf2$10000$ab4104d8bb68390ee7e6c9397588e768de6c025f0c732c18806f3d1270c83f83fa86a7bf62583770e5f8d0b405fbb3ad32214ef3584f5f9332478f2506414443a910bf15863b36ebfcaa7cbb19253ae32cd3ca390dab87b29cd31e11be7fa4ea3a01dad625d9de44e412680e1a694227698788d71f1e089e5831dc1bbacfa794b45e1c995214bf71ee4160d98b4305fa4c3e36ee5f8da19b3708f68e7d2e8197375c0f763d90e31143eb04760cc2148c8f54937b9385c95db1742595634ed004fa567655dfe1d9b9fa698074a9fb70c05a252b2d9cf7ca1c9b009f2cd70d6972ccf0ee281d777d66a0346c6c6525436dd7fe3578b28dca2c7adbfde0ecd45148$31c3248ba4dc9600a024b4e0e7c3e585'
+                                'pbkdf2$10000$ab4104d8bb68390ee7e6c9397588e768de6c025f0c732c18806f3d1270c83f83fa86a7bf62583770e5f8d0b405fbb3ad32214ef3584f5f9332478f2506414443a910bf15863b36ebfcaa7cbb19253ae32cd3ca390dab87b29cd31e11be7fa4ea3a01dad625d9de44e412680e1a694227698788d71f1e089e5831dc1bbacfa794b45e1c995214bf71ee4160d98b4305fa4c3e36ee5f8da19b3708f68e7d2e8197375c0f763d90e31143eb04760cc2148c8f54937b9385c95db1742595634ed004fa567655dfe1d9b9fa698074a9fb70c05a252b2d9cf7ca1c9b009f2cd70d6972ccf0ee281d777d66a0346c6c6525436dd7fe3578b28dca2c7adbfde0ecd45148$31c3248ba4dc9600a024b4e0e7c3e585',
                         },
                         _id: 'system.user.write-only',
                         native: {},
                         acl: {
                             object: 1638,
                             owner: 'system.user.admin',
-                            ownerGroup: 'system.group.administrator'
-                        }
+                            ownerGroup: 'system.group.administrator',
+                        },
                     },
                     function (err) {
                         expect(err).to.be.null;
 
                         context.adapter.setForeignObject(
-                            context.adapterShortName + 'f.0.' + gid,
+                            `${context.adapterShortName}f.0.${gid}`,
                             {
                                 type: 'state',
                                 common: {
@@ -1300,7 +1297,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                     type: 'number',
                                     role: 'level',
                                     read: true,
-                                    write: true
+                                    write: true,
                                 },
                                 native: {
                                     attr1: '1',
@@ -1308,42 +1305,42 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                                     attr3: '3',
                                     repositories: ['R1'],
                                     certificates: ['C1'],
-                                    devices: ['D1']
+                                    devices: ['D1'],
                                 },
                                 acl: {
                                     object: 1638,
                                     owner: 'system.user.write-only',
                                     ownerGroup: 'system.group.administrator',
-                                    state: 1638
-                                }
+                                    state: 1638,
+                                },
                             },
                             function (err) {
                                 expect(err).to.be.null;
 
                                 context.objects.getObject(
-                                    context.adapterShortName + 'f.0.' + gid,
+                                    `${context.adapterShortName}f.0.${gid}`,
                                     { user: 'system.user.write-only' },
                                     function (err, obj) {
                                         expect(err).to.be.not.ok;
                                         expect(obj).to.be.ok;
                                         expect(obj!.native).to.be.ok;
-                                        expect(obj!._id).equal(context.adapterShortName + 'f.0.' + gid);
+                                        expect(obj!._id).equal(`${context.adapterShortName}f.0.${gid}`);
                                         expect(obj!.common.name).equal('test1');
                                         expect(obj!.type).equal('state');
                                         //expect(obj.acl).to.be.ok;
                                         done();
-                                    }
+                                    },
                                 );
-                            }
+                            },
                         );
-                    }
+                    },
                 );
-            }
+            },
         );
     });
 
     // should use def as default state value
-    it(testName + 'Check setObject state with def', async () => {
+    it(`${testName}Check setObject state with def`, async () => {
         await context.adapter.setObjectNotExistsAsync('testDefaultVal', {
             type: 'state',
             common: {
@@ -1352,9 +1349,9 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 def: 'Run Forrest, Run!',
                 read: true,
                 write: true,
-                role: 'state'
+                role: 'state',
             },
-            native: {}
+            native: {},
         });
 
         const state = await context.adapter.getStateAsync('testDefaultVal');
@@ -1364,14 +1361,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // should use def as default state value on extendObject when obj non-existing
-    it(testName + 'Check extendObject state with def', async function () {
+    it(`${testName}Check extendObject state with def`, async function () {
         this.timeout(3_000);
         let obj = await context.adapter.extendObjectAsync('testDefaultValExtend', {
             type: 'state',
             common: {
                 type: 'string',
-                def: 'Run Forrest, Run!'
-            }
+                def: 'Run Forrest, Run!',
+            },
         });
 
         expect(obj).to.be.ok;
@@ -1383,8 +1380,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         // when state already exists def should not override
         obj = await context.adapter.extendObjectAsync('testDefaultValExtend', {
             common: {
-                def: 'Please, do not set me up'
-            }
+                def: 'Please, do not set me up',
+            },
         });
 
         expect(obj).to.be.ok;
@@ -1397,8 +1394,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         // extend it again - def should be created again, because state has been removed - now we set a def object
         obj = await context.adapter.extendObjectAsync('testDefaultValExtend', {
             common: {
-                def: { hello: 'world' }
-            }
+                def: { hello: 'world' },
+            },
         });
 
         expect(obj).to.be.ok;
@@ -1410,13 +1407,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // should use def as default state value on extendForeignObject when obj non-existing
-    it(testName + 'Check extendForeignObject state with def', async () => {
+    it(`${testName}Check extendForeignObject state with def`, async () => {
         let obj = await context.adapter.extendForeignObjectAsync('foreign.0.testDefaultValExtend', {
             type: 'state',
             common: {
                 type: 'string',
-                def: 'Run Forrest, Run!'
-            }
+                def: 'Run Forrest, Run!',
+            },
         });
 
         expect(obj).to.be.ok;
@@ -1428,8 +1425,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         // when state already exists def should not override
         obj = await context.adapter.extendForeignObjectAsync('foreign.0.testDefaultValExtend', {
             common: {
-                def: 'Please, do not set me up'
-            }
+                def: 'Please, do not set me up',
+            },
         });
 
         expect(obj).to.be.ok;
@@ -1442,8 +1439,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         // extend it again - def should be created again, because state has been removed - now we set a def object
         obj = await context.adapter.extendForeignObjectAsync('foreign.0.testDefaultValExtend', {
             common: {
-                def: { hello: 'world' }
-            }
+                def: { hello: 'world' },
+            },
         });
 
         expect(obj).to.be.ok;
@@ -1454,17 +1451,17 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(state!.ack).to.equal(true);
     });
 
-    it(testName + 'Check extendForeignObject with preserve option', async () => {
+    it(`${testName}Check extendForeignObject with preserve option`, async () => {
         const obj = await context.adapter.extendForeignObjectAsync('foreign.0.testExtendPreserve', {
             type: 'state',
             common: {
                 name: "Don't change me",
                 type: 'string',
-                def: 'Run Forrest, Run!'
+                def: 'Run Forrest, Run!',
             },
             native: {
-                bool: false
-            }
+                bool: false,
+            },
         });
 
         expect(obj).to.be.ok;
@@ -1477,14 +1474,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
             {
                 common: {
                     def: 'Changed',
-                    name: 'Changed'
+                    name: 'Changed',
                 },
                 native: {
                     existing: 'exists',
-                    bool: true
-                }
+                    bool: true,
+                },
             },
-            options
+            options,
         );
 
         let objGet = await context.adapter.getForeignObjectAsync('foreign.0.testExtendPreserve');
@@ -1504,11 +1501,11 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 def: 'Run Forrest, Run!',
                 read: true,
                 write: true,
-                role: 'state'
+                role: 'state',
             },
             native: {
-                bool: false
-            }
+                bool: false,
+            },
         });
 
         options = { preserve: { common: true } };
@@ -1521,13 +1518,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 common: {
                     name: 'CHANGED',
                     type: 'number',
-                    def: 1
+                    def: 1,
                 },
                 native: {
-                    bool: false
-                }
+                    bool: false,
+                },
             },
-            options
+            options,
         );
 
         objGet = await context.adapter.getForeignObjectAsync('foreign.0.testExtendPreserve');
@@ -1549,13 +1546,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                     name: 'CHANGED',
                     type: 'number',
                     def: 1,
-                    smartName: 'test'
+                    smartName: 'test',
                 },
                 native: {
-                    bool: false
-                }
+                    bool: false,
+                },
             },
-            options
+            options,
         );
 
         objGet = await context.adapter.getForeignObjectAsync('foreign.0.testExtendPreserve');
@@ -1572,13 +1569,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 common: {
                     type: 'number',
                     def: 1,
-                    smartName: 'test'
+                    smartName: 'test',
                 },
                 native: {
-                    bool: false
-                }
+                    bool: false,
+                },
             },
-            options
+            options,
         );
 
         objGet = await context.adapter.getForeignObjectAsync('foreign.0.testExtendPreserve');
@@ -1596,17 +1593,17 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
                 common: {
                     name: {
                         en: 'Hallo',
-                        de: 'Hello'
+                        de: 'Hello',
                     },
                     type: 'number',
                     def: 1,
-                    smartName: 'test'
+                    smartName: 'test',
                 },
                 native: {
-                    bool: false
-                }
+                    bool: false,
+                },
             },
-            options
+            options,
         );
 
         objGet = await context.adapter.getForeignObjectAsync('foreign.0.testExtendPreserve');
@@ -1615,24 +1612,24 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // test that real errors of methods promisified via tools.promisify are propagated, can be adapted to a more generic test
-    it(testName + 'Check that crashes of promisified methods are propagated', function () {
+    it(`${testName}Check that crashes of promisified methods are propagated`, function () {
         return expect(
             context.adapter.extendObjectAsync('testDefaultValExtend', {
                 type: 'state',
                 common: {
                     type: 'string',
-                    def: 'Run Forrest, Run!'
+                    def: 'Run Forrest, Run!',
                 },
                 // @ts-expect-error force crash
-                native: -3
-            })
+                native: -3,
+            }),
         ).to.be.eventually.rejectedWith(
             `Cannot use 'in' operator to search for 'repositories' in -3`,
-            'Should have thrown'
+            'Should have thrown',
         );
     });
 
-    it(testName + 'Should check object existence', async () => {
+    it(`${testName}Should check object existence`, async () => {
         const id = 'objectExistenceCheckAdapter';
         // object should not exist
         let exists = await context.adapter.objectExists(id);
@@ -1642,7 +1639,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         await context.adapter.setObjectAsync(id, {
             type: 'meta',
             common: { name: 'meta', type: 'meta.user' },
-            native: {}
+            native: {},
         });
 
         // object should now exist
@@ -1650,7 +1647,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         expect(exists).to.be.true;
     });
 
-    it(testName + 'Should check foreign object existence', async () => {
+    it(`${testName}Should check foreign object existence`, async () => {
         const id = `${context.adapterShortName}.0.objectForeignExistenceCheckAdapter`;
         // object should not exist
         let exists = await context.adapter.foreignObjectExists(id);
@@ -1660,7 +1657,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         await context.adapter.setForeignObjectAsync(id, {
             type: 'meta',
             common: { name: 'meta', type: 'meta.user' },
-            native: {}
+            native: {},
         });
 
         // object should now exist
@@ -1669,12 +1666,12 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // files
-    it(testName + 'Should check file existence', async () => {
+    it(`${testName}Should check file existence`, async () => {
         // create meta object
         await context.objects.setObjectAsync('fileTest.0', {
             type: 'meta',
             common: { name: 'meta', type: 'meta.user' },
-            native: {}
+            native: {},
         });
 
         // file should not exist
@@ -1688,7 +1685,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     });
 
     // write file meta check
-    it(testName + 'Should not write file w/o meta', async () => {
+    it(`${testName}Should not write file w/o meta`, async () => {
         try {
             await context.adapter.writeFileAsync('nonExisting.0', 'test.txt', '...');
         } catch (e) {

@@ -525,9 +525,9 @@ When a regex is defined then `console.error` output from the adapter is always c
 The host supports the __message__ command `getNotifications` to query the stored notifications together with the localized names and descriptions.
 
 The message needs to take the following parameters in the message object:
-* scopeFilter - scope of notifications
-* categoryFilter - category of notifications
-* instanceFilter - instance of notifications
+* `scope` - scope of notifications
+* `category` - category of notifications
+* `instance` - instance of notifications
 
 All three are optional and can be a string or null/undefined if omitted.
 
@@ -537,9 +537,9 @@ The host supports the __message__ command `clearNotifications` to clear specific
 **Please only clear notifications that really were handled and displayed to the user especially for "system" scope!**
 
 The message needs to take the following parameters in the message object:
-* scopeFilter - scope of notifications
-* categoryFilter - category of notifications
-* instanceFilter - instance of notifications
+* `scope` - scope of notifications
+* `category` - category of notifications
+* `instance` - instance of notifications
 
 All three are optional and can be a string or null/undefined if omitted.
 

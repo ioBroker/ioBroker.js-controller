@@ -3,7 +3,7 @@ import {
     HIGHEST_UNICODE_SYMBOL,
     SYSTEM_ADAPTER_PREFIX,
     SYSTEM_CONFIG_ID,
-    SYSTEM_REPOSITORIES_ID
+    SYSTEM_REPOSITORIES_ID,
 } from '@iobroker/js-controller-common-db/constants';
 import semver from 'semver';
 
@@ -52,7 +52,7 @@ export class BlocklistManager {
 
         const instancesView = await this.objects.getObjectViewAsync('system', 'instance', {
             startkey: SYSTEM_ADAPTER_PREFIX,
-            endkey: SYSTEM_ADAPTER_PREFIX + HIGHEST_UNICODE_SYMBOL
+            endkey: SYSTEM_ADAPTER_PREFIX + HIGHEST_UNICODE_SYMBOL,
         });
 
         for (const row of instancesView.rows) {
@@ -66,7 +66,7 @@ export class BlocklistManager {
                 systemConfigObj,
                 systemRepoObj,
                 adapterName: obj.common.name,
-                version: obj.common.version
+                version: obj.common.version,
             });
 
             if (!isBlocked) {

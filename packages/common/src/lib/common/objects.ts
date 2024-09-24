@@ -29,7 +29,7 @@ export async function getObjectsConstructor(): Promise<typeof ObjectsClient> {
 export async function isLocalObjectsDbServer(
     dbType: string,
     host: string | string[],
-    checkIfLocalOnly: boolean = false
+    checkIfLocalOnly: boolean = false,
 ): Promise<boolean> {
     const hasServer = await objectsDbHasServer(dbType);
     if (!hasServer) {
@@ -79,7 +79,7 @@ interface PerformObjectsInterviewOptions {
  * @returns the database options obtained by the answered questionnaire
  */
 export async function performObjectsInterview(
-    options: PerformObjectsInterviewOptions
+    options: PerformObjectsInterviewOptions,
 ): Promise<ioBroker.ObjectsDatabaseOptions> {
     const { dbType, config } = options;
 

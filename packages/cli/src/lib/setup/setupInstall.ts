@@ -26,7 +26,7 @@ import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constan
 import { createRequire } from 'node:module';
 
 // eslint-disable-next-line unicorn/prefer-module
-const require = createRequire(import.meta.url || 'file://' + __filename);
+const require = createRequire(import.meta.url || `file://${__filename}`);
 
 const hostname = tools.getHostName();
 const osPlatform = process.platform;
@@ -133,10 +133,10 @@ export class Install {
             for (const instance of instances) {
                 const updatedObj = {
                     common: {
-                        enabled
+                        enabled,
                     },
                     from: `system.host.${hostname}.cli`,
-                    ts
+                    ts,
                 };
                 console.log(`host.${hostname} Adapter "${instance._id}" is ${enabled ? 'started' : 'stopped.'}`);
                 // @ts-expect-error should be fixed with #1917
@@ -157,7 +157,7 @@ export class Install {
         repoUrl: string | undefined | Record<string, any>,
         packetName: string,
         options?: CLIDownloadPacketOptions,
-        stoppedList?: ioBroker.InstanceObject[]
+        stoppedList?: ioBroker.InstanceObject[],
     ): Promise<DownloadPacketReturnObject> {
         let url;
         if (!options || typeof options !== 'object') {
@@ -221,7 +221,7 @@ export class Install {
                 url &&
                 packetName === 'js-controller' &&
                 fs.pathExistsSync(
-                    `${tools.getControllerDir()}/../../node_modules/${tools.appName.toLowerCase()}.js-controller`
+                    `${tools.getControllerDir()}/../../node_modules/${tools.appName.toLowerCase()}.js-controller`,
                 )
             ) {
                 url = null;
@@ -243,7 +243,7 @@ export class Install {
                 await this._npmInstallWithCheck(
                     `${tools.appName.toLowerCase()}.${packetName}${version ? `@${version}` : ''}`,
                     options,
-                    debug
+                    debug,
                 );
 
                 return { packetName, stoppedList };
@@ -265,18 +265,18 @@ export class Install {
             } else if (!url) {
                 // Adapter
                 console.warn(
-                    `host.${hostname} Adapter "${packetName}" can be updated only together with ${tools.appName.toLowerCase()}.js-controller`
+                    `host.${hostname} Adapter "${packetName}" can be updated only together with ${tools.appName.toLowerCase()}.js-controller`,
                 );
                 return { packetName, stoppedList };
             }
         }
 
         console.error(
-            `host.${hostname} Unknown packet name ${packetName}. Please install packages from outside the repository using "${tools.appNameLowerCase} url <url-or-package>"!`
+            `host.${hostname} Unknown packet name ${packetName}. Please install packages from outside the repository using "${tools.appNameLowerCase} url <url-or-package>"!`,
         );
         throw new IoBrokerError({
             code: EXIT_CODES.UNKNOWN_PACKET_NAME,
-            message: `Unknown packetName ${packetName}. Please install packages from outside the repository using npm!`
+            message: `Unknown packetName ${packetName}. Please install packages from outside the repository using npm!`,
         });
     }
 
@@ -290,7 +290,7 @@ export class Install {
     private async _npmInstallWithCheck(
         npmUrl: string,
         options: CLIDownloadPacketOptions,
-        debug: boolean
+        debug: boolean,
     ): Promise<void | NpmInstallResult> {
         // Get npm version
         try {
@@ -310,10 +310,10 @@ export class Install {
                 console.error('Aborting install because the npm version could not be checked!');
                 console.error('Please check that npm is installed correctly.');
                 console.error(
-                    `Use "npm install -g npm@${RECOMMENDED_NPM_VERSION}" or "npm install -g npm@latest" to install a supported version.`
+                    `Use "npm install -g npm@${RECOMMENDED_NPM_VERSION}" or "npm install -g npm@latest" to install a supported version.`,
                 );
                 console.error(
-                    'You need to make sure to repeat this step after installing an update to NodeJS and/or npm'
+                    'You need to make sure to repeat this step after installing an update to NodeJS and/or npm',
                 );
                 console.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
                 return this.processExit(EXIT_CODES.INVALID_NPM_VERSION);
@@ -321,11 +321,11 @@ export class Install {
                 console.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
                 console.error('NPM 5 is only supported starting with version 5.7.1!');
                 console.error(
-                    `Please use "npm install -g npm@${RECOMMENDED_NPM_VERSION}" to upgrade npm to ${RECOMMENDED_NPM_VERSION}.x or `
+                    `Please use "npm install -g npm@${RECOMMENDED_NPM_VERSION}" to upgrade npm to ${RECOMMENDED_NPM_VERSION}.x or `,
                 );
                 console.error('use "npm install -g npm@latest" to install a supported version of npm!');
                 console.error(
-                    'You need to make sure to repeat this step after installing an update to NodeJS and/or npm'
+                    'You need to make sure to repeat this step after installing an update to NodeJS and/or npm',
                 );
                 console.error('!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
                 return this.processExit(EXIT_CODES.INVALID_NPM_VERSION);
@@ -394,7 +394,7 @@ export class Install {
 
         const result = await tools.installNodeModule(npmUrl, {
             debug: !!debug,
-            unsafePerm: !!options.unsafePerm
+            unsafePerm: !!options.unsafePerm,
         });
 
         // code 1 is sometimes a real error and sometimes a strange error, where everything is installed but still the error
@@ -438,15 +438,14 @@ export class Install {
 
             // command succeeded
             return { _url: npmUrl, installDir: path.dirname(installDir) };
-        } else {
-            if (!isRetry && result.stderr.includes('ENOTEMPTY')) {
-                return this.handleNpmNotEmptyError({ npmUrl, options, debug, result });
-            }
-
-            console.error(result.stderr);
-            console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
-            return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
         }
+        if (!isRetry && result.stderr.includes('ENOTEMPTY')) {
+            return this.handleNpmNotEmptyError({ npmUrl, options, debug, result });
+        }
+
+        console.error(result.stderr);
+        console.error(`host.${hostname} Cannot install ${npmUrl}: ${result.exitCode}`);
+        return this.processExit(EXIT_CODES.CANNOT_INSTALL_NPM_PACKET);
     }
 
     /**
@@ -455,7 +454,7 @@ export class Install {
      * @param notEmptyErrorOptions options of package to install
      */
     private handleNpmNotEmptyError(
-        notEmptyErrorOptions: NotEmptyErrorOptions
+        notEmptyErrorOptions: NotEmptyErrorOptions,
     ): Promise<void | NpmInstallResult> | void {
         const { debug, npmUrl, options, result } = notEmptyErrorOptions;
 
@@ -505,7 +504,7 @@ export class Install {
     private async _checkDependencies(
         deps: Dependencies,
         globalDeps: Dependencies,
-        _options: Record<string, any>
+        _options: Record<string, any>,
     ): Promise<void> {
         if (!deps && !globalDeps) {
             return;
@@ -520,7 +519,7 @@ export class Install {
         // Get all installed adapters
         const objs = await this.objects.getObjectViewAsync('system', 'instance', {
             startkey: SYSTEM_ADAPTER_PREFIX,
-            endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`
+            endkey: `${SYSTEM_ADAPTER_PREFIX}\u9999`,
         });
 
         if (objs.rows.length) {
@@ -534,12 +533,11 @@ export class Install {
                         const packJson = fs.readJSONSync(`${tools.getControllerDir()}/package.json`);
                         if (!semver.satisfies(packJson.version, version, { includePrerelease: true })) {
                             console.error(
-                                `host.${hostname} Invalid version of "${dName}". Installed "${packJson.version}", required "${version}"`
+                                `host.${hostname} Invalid version of "${dName}". Installed "${packJson.version}", required "${version}"`,
                             );
                             return this.processExit(EXIT_CODES.INVALID_DEPENDENCY_VERSION);
-                        } else {
-                            isFound = true;
                         }
+                        isFound = true;
                     } else {
                         isFound = true;
                     }
@@ -558,7 +556,7 @@ export class Install {
                             obj =>
                                 obj.value.common &&
                                 obj.value.common.name === dName &&
-                                obj.value.common.host === hostname
+                                obj.value.common.host === hostname,
                         );
                         if (locInstances.length === 0) {
                             console.error(`host.${hostname} Required dependency "${dName}" not found on this host.`);
@@ -570,32 +568,30 @@ export class Install {
                         const instanceVersion = instance.value.common.version;
                         if (
                             !semver.satisfies(instanceVersion, deps[dName], {
-                                includePrerelease: true
+                                includePrerelease: true,
                             })
                         ) {
                             console.error(
-                                `host.${hostname} Invalid version of "${dName}". Installed "${instanceVersion}", required "${deps[dName]}"`
+                                `host.${hostname} Invalid version of "${dName}". Installed "${instanceVersion}", required "${deps[dName]}"`,
                             );
                             return this.processExit(EXIT_CODES.INVALID_DEPENDENCY_VERSION);
-                        } else {
-                            isFound = true;
                         }
+                        isFound = true;
                     }
 
                     for (const instance of gInstances) {
                         const instanceVersion = instance.value.common.version;
                         if (
                             !semver.satisfies(instanceVersion, globalDeps[dName], {
-                                includePrerelease: true
+                                includePrerelease: true,
                             })
                         ) {
                             console.error(
-                                `host.${hostname} Invalid version of "${dName}". Installed "${instanceVersion}", required "${globalDeps[dName]}"`
+                                `host.${hostname} Invalid version of "${dName}". Installed "${instanceVersion}", required "${globalDeps[dName]}"`,
                             );
                             return this.processExit(EXIT_CODES.INVALID_DEPENDENCY_VERSION);
-                        } else {
-                            isFound = true;
                         }
+                        isFound = true;
                     }
                 }
 
@@ -638,7 +634,7 @@ export class Install {
         await this._checkDependencies(
             adapterConf.common.dependencies,
             adapterConf.common.globalDependencies,
-            this.params
+            this.params,
         );
         adapterConf.common.installedVersion = adapterConf.common.version;
 
@@ -650,7 +646,7 @@ export class Install {
             _id: `system.adapter.${adapterConf.common.name}`,
             type: 'adapter',
             common: adapterConf.common,
-            native: adapterConf.native
+            native: adapterConf.native,
         });
 
         if (objs?.length) {
@@ -712,14 +708,14 @@ export class Install {
         if (adapterConf.common && adapterConf.common.os) {
             if (typeof adapterConf.common.os === 'string' && adapterConf.common.os !== osPlatform) {
                 console.error(
-                    `host.${hostname} Adapter does not support current os. Required ${adapterConf.common.os}. Actual platform: ${osPlatform}`
+                    `host.${hostname} Adapter does not support current os. Required ${adapterConf.common.os}. Actual platform: ${osPlatform}`,
                 );
                 return this.processExit(EXIT_CODES.INVALID_OS);
             } else if (Array.isArray(adapterConf.common.os) && !adapterConf.common.os.includes(osPlatform as any)) {
                 console.error(
                     `host.${hostname} Adapter does not support current os. Required one of ${adapterConf.common.os.join(
-                        ', '
-                    )}. Actual platform: ${osPlatform}`
+                        ', ',
+                    )}. Actual platform: ${osPlatform}`,
                 );
                 return this.processExit(EXIT_CODES.INVALID_OS);
             }
@@ -738,7 +734,7 @@ export class Install {
         if (engineVersion) {
             if (!semver.satisfies(process.version.replace(/^v/, ''), engineVersion)) {
                 console.error(
-                    `host.${hostname} Adapter does not support current nodejs version. Required ${engineVersion}. Actual version: ${process.version}`
+                    `host.${hostname} Adapter does not support current nodejs version. Required ${engineVersion}. Actual version: ${process.version}`,
                 );
                 return this.processExit(EXIT_CODES.INVALID_NODE_VERSION);
             }
@@ -834,7 +830,7 @@ export class Install {
 
         const res = await this.objects.getObjectViewAsync('system', 'instance', {
             startkey: `${SYSTEM_ADAPTER_PREFIX}${adapter}.`,
-            endkey: `${SYSTEM_ADAPTER_PREFIX}${adapter}.\u9999`
+            endkey: `${SYSTEM_ADAPTER_PREFIX}${adapter}.\u9999`,
         });
         const systemConfig = await this.objects.getObject('system.config');
         const defaultLogLevel = systemConfig?.common?.defaultLogLevel;
@@ -894,7 +890,7 @@ export class Install {
             ...obj,
             common: { ...obj.common, host: options.host },
             type: 'instance',
-            _id: `system.adapter.${adapter}.${instance}`
+            _id: `system.adapter.${adapter}.${instance}`,
         };
 
         if (instanceObj.common.news) {
@@ -944,16 +940,16 @@ export class Install {
                 _id: `system.adapter.${adapter}.upload`,
                 type: 'state',
                 common: {
-                    name: adapter + '.upload',
+                    name: `${adapter}.upload`,
                     type: 'number',
                     read: true,
                     write: false,
                     role: 'indicator.state',
                     unit: '%',
                     def: 0,
-                    desc: 'Upload process indicator'
+                    desc: 'Upload process indicator',
                 },
-                native: {}
+                native: {},
             });
         }
 
@@ -984,8 +980,8 @@ export class Install {
                             lang =>
                                 (instanceObject.common.name[lang] = instanceObject.common.name[lang].replace(
                                     '%INSTANCE%',
-                                    instance
-                                ))
+                                    instance,
+                                )),
                         );
                     } else {
                         instanceObject.common.name = instanceObject.common.name.replace('%INSTANCE%', instance);
@@ -998,8 +994,8 @@ export class Install {
                             lang =>
                                 (instanceObject.common.desc[lang] = instanceObject.common.desc[lang].replace(
                                     '%INSTANCE%',
-                                    instance
-                                ))
+                                    instance,
+                                )),
                         );
                     } else {
                         instanceObject.common.desc = instanceObject.common.desc.replace('%INSTANCE%', instance);
@@ -1010,7 +1006,7 @@ export class Install {
             objs.push(instanceObject);
             if (instanceObject.common && instanceObject.common.def !== undefined) {
                 defStates.set(instanceObject._id, {
-                    val: instanceObject.common.def
+                    val: instanceObject.common.def,
                 });
             }
         }
@@ -1069,7 +1065,7 @@ export class Install {
         knownObjIDs: string[],
         notDeleted: string[],
         adapter: string,
-        instance?: number
+        instance?: number,
     ): Promise<void> {
         if (!notDeleted) {
             notDeleted = [];
@@ -1087,7 +1083,7 @@ export class Install {
         try {
             const doc = await this.objects.getObjectView('system', 'instance', {
                 startkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}`,
-                endkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
+                endkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`,
             });
 
             // add non-duplicates to the list (if instance not given -> only for this host)
@@ -1100,12 +1096,11 @@ export class Install {
                 .filter(row => {
                     if (instance !== undefined || !row.value.common?.host || row.value.common?.host === hostname) {
                         return true;
-                    } else {
-                        if (!notDeleted.includes(row.value._id)) {
-                            notDeleted.push(row.value._id);
-                        }
-                        return false;
                     }
+                    if (!notDeleted.includes(row.value._id)) {
+                        notDeleted.push(row.value._id);
+                    }
+                    return false;
                 })
                 .map(row => row.value._id)
                 .filter(id => !knownObjIDs.includes(id));
@@ -1116,7 +1111,7 @@ export class Install {
                 console.log(
                     `host.${hostname} Counted ${newObjIDs.length} instances of ${adapter}${
                         instance !== undefined ? `.${instance}` : ''
-                    }`
+                    }`,
                 );
             }
         } catch (err) {
@@ -1137,7 +1132,7 @@ export class Install {
         try {
             const doc = await this.objects.getObjectViewAsync('system', 'meta', {
                 startkey: `${adapter}.`,
-                endkey: `${adapter}.\u9999`
+                endkey: `${adapter}.\u9999`,
             });
 
             if (doc.rows.length) {
@@ -1166,7 +1161,7 @@ export class Install {
 
     private async _enumerateAdapters(
         knownObjIDs: string[],
-        adapter: string
+        adapter: string,
     ): Promise<EXIT_CODES.CANNOT_DELETE_NON_DELETABLE | EXIT_CODES.NO_ERROR | void> {
         // This does not really enumerate the adapters, but finds the adapter object
         // if it exists and adds it to the list
@@ -1176,7 +1171,7 @@ export class Install {
                 if (obj.common && obj.common.nondeletable) {
                     // If the adapter is non-deletable, mark it as not installed
                     console.log(
-                        `host.${hostname} Adapter ${adapter} cannot be deleted completely, because it is marked non-deletable.`
+                        `host.${hostname} Adapter ${adapter} cannot be deleted completely, because it is marked non-deletable.`,
                     );
                     obj.common.installedVersion = '';
                     obj.from = `system.host.${hostname}.cli`;
@@ -1184,13 +1179,12 @@ export class Install {
                     await this.objects.setObjectAsync(obj._id, obj);
 
                     return EXIT_CODES.CANNOT_DELETE_NON_DELETABLE;
-                } else {
-                    // The adapter is deletable, remember it for deletion
-                    knownObjIDs.push(obj._id);
-                    console.log(`host.${hostname} Counted 1 adapter for ${adapter}`);
-
-                    return EXIT_CODES.NO_ERROR;
                 }
+                // The adapter is deletable, remember it for deletion
+                knownObjIDs.push(obj._id);
+                console.log(`host.${hostname} Counted 1 adapter for ${adapter}`);
+
+                return EXIT_CODES.NO_ERROR;
             }
         } catch (err) {
             console.error(`host.${hostname} Cannot enumerate adapters: ${err.message}`);
@@ -1210,7 +1204,7 @@ export class Install {
         try {
             const doc = await this.objects.getObjectViewAsync('system', 'device', {
                 startkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}`,
-                endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
+                endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`,
             });
 
             if (doc.rows.length) {
@@ -1226,7 +1220,7 @@ export class Install {
                     console.log(
                         `host.${hostname} Counted ${newObjs.length} devices of ${adapter}${
                             instance !== undefined ? `.${instance}` : ''
-                        }`
+                        }`,
                     );
                 }
             }
@@ -1249,7 +1243,7 @@ export class Install {
         try {
             const doc = await this.objects.getObjectViewAsync('system', 'channel', {
                 startkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}`,
-                endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
+                endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`,
             });
 
             if (doc.rows.length) {
@@ -1265,7 +1259,7 @@ export class Install {
                     console.log(
                         `host.${hostname} Counted ${newObjs.length} channels of ${adapter}${
                             instance !== undefined ? `.${instance}` : ''
-                        }`
+                        }`,
                     );
                 }
             }
@@ -1286,13 +1280,13 @@ export class Install {
     async _enumerateAdapterStateObjects(knownObjIDs: string[], adapter: string, instance?: number): Promise<void> {
         const adapterRegex = new RegExp(`^${adapter}${instance !== undefined ? `\\.${instance}` : ''}\\.`);
         const sysAdapterRegex = new RegExp(
-            `^system\\.adapter\\.${adapter}${instance !== undefined ? `\\.${instance}` : ''}\\.`
+            `^system\\.adapter\\.${adapter}${instance !== undefined ? `\\.${instance}` : ''}\\.`,
         );
 
         try {
             let doc = await this.objects.getObjectViewAsync('system', 'state', {
                 startkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}`,
-                endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
+                endkey: `${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`,
             });
 
             if (doc.rows.length) {
@@ -1309,14 +1303,14 @@ export class Install {
                     console.log(
                         `host.${hostname} Counted ${newObjs.length} states of ${adapter}${
                             instance !== undefined ? `.${instance}` : ''
-                        }`
+                        }`,
                     );
                 }
             }
 
             doc = await this.objects.getObjectViewAsync('system', 'state', {
                 startkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}`,
-                endkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`
+                endkey: `system.adapter.${adapter}${instance !== undefined ? `.${instance}` : ''}\u9999`,
             });
 
             if (doc.rows.length) {
@@ -1333,7 +1327,7 @@ export class Install {
                     console.log(
                         `host.${hostname} Counted ${newObjs.length} states of system.adapter.${adapter}${
                             instance !== undefined ? `.${instance}` : ''
-                        }`
+                        }`,
                     );
                 }
             }
@@ -1354,7 +1348,7 @@ export class Install {
     private async _enumerateAdapterDocs(knownObjIDs: string[], adapter: string, instance?: number): Promise<void> {
         const adapterRegex = new RegExp(`^${adapter}${instance !== undefined ? `\\.${instance}` : ''}\\.`);
         const sysAdapterRegex = new RegExp(
-            `^system\\.adapter\\.${adapter}${instance !== undefined ? `\\.${instance}` : ''}\\.`
+            `^system\\.adapter\\.${adapter}${instance !== undefined ? `\\.${instance}` : ''}\\.`,
         );
 
         if (instance === undefined) {
@@ -1375,7 +1369,7 @@ export class Install {
                     console.log(
                         `host.${hostname} Counted ${newObjs.length} objects of ${adapter}${
                             instance !== undefined ? `.${instance}` : ''
-                        }`
+                        }`,
                     );
                 }
             }
@@ -1395,11 +1389,11 @@ export class Install {
      */
     async _enumerateAdapterStates(knownStateIDs: string[], adapter: string, instance?: number): Promise<void> {
         for (const pattern of [
-            `io.${adapter}.${instance !== undefined ? instance + '.' : ''}*`,
-            `messagebox.${adapter}.${instance !== undefined ? instance + '.' : ''}*`,
-            `log.${adapter}.${instance !== undefined ? instance + '.' : ''}*`,
-            `${adapter}.${instance !== undefined ? instance + '.' : ''}*`,
-            `system.adapter.${adapter}.${instance !== undefined ? instance + '.' : ''}*`
+            `io.${adapter}.${instance !== undefined ? `${instance}.` : ''}*`,
+            `messagebox.${adapter}.${instance !== undefined ? `${instance}.` : ''}*`,
+            `log.${adapter}.${instance !== undefined ? `${instance}.` : ''}*`,
+            `${adapter}.${instance !== undefined ? `${instance}.` : ''}*`,
+            `system.adapter.${adapter}.${instance !== undefined ? `${instance}.` : ''}*`,
         ]) {
             try {
                 const ids = await this.states.getKeys(pattern);
@@ -1434,7 +1428,7 @@ export class Install {
             { id: 'vis-2', name: `widgets/${adapter}.html` },
             { id: adapter },
             { id: `${adapter}.admin` },
-            ...metaFilesToDelete.map(id => ({ id }))
+            ...metaFilesToDelete.map(id => ({ id })),
         ];
 
         for (const file of filesToDelete) {
@@ -1606,7 +1600,7 @@ export class Install {
 
                 if (dependentInstance) {
                     console.log(
-                        `Cannot remove adapter "${adapter}", because instance "${dependentInstance}" depends on it!`
+                        `Cannot remove adapter "${adapter}", because instance "${dependentInstance}" depends on it!`,
                     );
                     return EXIT_CODES.CANNOT_DELETE_DEPENDENCY;
                 }
@@ -1653,7 +1647,7 @@ export class Install {
 
         if (dependentInstance) {
             console.log(
-                `Cannot remove instance "${adapter}.${instance}", because instance "${dependentInstance}" depends on it!`
+                `Cannot remove instance "${adapter}.${instance}", because instance "${dependentInstance}" depends on it!`,
             );
             return EXIT_CODES.CANNOT_DELETE_DEPENDENCY;
         }
@@ -1685,7 +1679,7 @@ export class Install {
         const packJson = fs.readJSONSync(path.join(tools.getRootDir(), 'package.json'));
         const regex = new RegExp(
             `^@${tools.appNameLowerCase}-${adapter}.${instance !== undefined ? instance : '\\d+'}\\/.*`,
-            'g'
+            'g',
         );
 
         for (const packageName of Object.keys(packJson.dependencies)) {
@@ -1705,7 +1699,7 @@ export class Install {
         // get all objects that have a custom attribute
         const res = await this.objects.getObjectViewAsync('system', 'custom', {
             startkey: '',
-            endkey: '\u9999'
+            endkey: '\u9999',
         });
 
         if (res && res.rows) {
@@ -1764,20 +1758,20 @@ export class Install {
                         headers: {
                             'User-Agent': 'ioBroker Adapter install',
                             // @ts-expect-error should be okay...
-                            validateStatus: status => status === 200
-                        }
+                            validateStatus: status => status === 200,
+                        },
                     });
                     if (result.data && Array.isArray(result.data) && result.data.length >= 1 && result.data[0].sha) {
                         url = `${user}/${repo}#${result.data[0].sha}`;
                     } else {
                         console.log(
-                            `Info: Can not get current GitHub commit, only remember that we installed from GitHub.`
+                            `Info: Can not get current GitHub commit, only remember that we installed from GitHub.`,
                         );
                         url = `${user}/${repo}`;
                     }
                 } catch (err) {
                     console.log(
-                        `Info: Can not get current GitHub commit, only remember that we installed from GitHub: ${err.message}`
+                        `Info: Can not get current GitHub commit, only remember that we installed from GitHub: ${err.message}`,
                     );
                     // Install using the npm GitHub URL syntax `npm i user/repo_name`:
                     url = `${user}/${repo}`;
@@ -1827,7 +1821,7 @@ export class Install {
         }
 
         const options = {
-            packetName: name
+            packetName: name,
         };
 
         /** list of stopped instances for windows */
@@ -1864,7 +1858,7 @@ export class Install {
             // lets get all instances
             const doc = await this.objects.getObjectViewAsync('system', 'instance', {
                 startkey: 'system.adapter.',
-                endkey: 'system.adapter.\u9999'
+                endkey: 'system.adapter.\u9999',
             });
 
             let scopedHostname: string | undefined;
@@ -1873,7 +1867,7 @@ export class Install {
                 // we need to respect host relative to the instance
                 [scopedHostname] = doc.rows
                     .filter(row => row.id === `system.adapter.${adapter}.${instance}`)
-                    .map(row => row.value!.common.host);
+                    .map(row => row.value.common.host);
             }
 
             // fallback is this host
@@ -1892,19 +1886,18 @@ export class Install {
                         if (instance === undefined) {
                             // this adapter needs us locally and all instances should be deleted
                             return `${row.value.common.name}.${row.id.split('.').pop()}`;
+                        }
+                        // check if another instance of us exists on this host
+                        if (this._checkDependencyFulfilledThisHost(adapter, instance, doc.rows, scopedHostname)) {
+                            // there are other instances of our adapter - ok
+                            break;
                         } else {
-                            // check if another instance of us exists on this host
-                            if (this._checkDependencyFulfilledThisHost(adapter, instance, doc.rows, scopedHostname)) {
-                                // there are other instances of our adapter - ok
-                                break;
-                            } else {
-                                return `${row.value.common.name}.${row.id.split('.').pop()}`;
-                            }
+                            return `${row.value.common.name}.${row.id.split('.').pop()}`;
                         }
                     }
                 }
 
-                const globalDeps = tools.parseDependencies(row.value!.common.globalDependencies);
+                const globalDeps = tools.parseDependencies(row.value.common.globalDependencies);
 
                 for (const globalDep of Object.keys(globalDeps)) {
                     if (globalDep === adapter) {
@@ -1913,7 +1906,7 @@ export class Install {
                             if (this._checkDependencyFulfilledForeignHosts(adapter, doc.rows, scopedHostname)) {
                                 break;
                             } else {
-                                return row.value!.common.name;
+                                return row.value.common.name;
                             }
                         } else if (
                             this._checkDependencyFulfilledForeignHosts(adapter, doc.rows, scopedHostname) ||
@@ -1922,7 +1915,7 @@ export class Install {
                             // another instance of our adapter is on another host or on ours, no need to search further
                             break;
                         } else {
-                            return row.value!.common.name;
+                            return row.value.common.name;
                         }
                     }
                 }
@@ -1943,7 +1936,7 @@ export class Install {
     private _checkDependencyFulfilledForeignHosts(
         adapter: string,
         instancesRows: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[],
-        scopedHostname: string
+        scopedHostname: string,
     ): boolean {
         for (const row of instancesRows) {
             if (row.value && row.value.common.name === adapter && row.value.common.host !== scopedHostname) {
@@ -1967,7 +1960,7 @@ export class Install {
         adapter: string,
         instance: number,
         instancesRows: ioBroker.GetObjectViewItem<ioBroker.InstanceObject>[],
-        scopedHostname: string
+        scopedHostname: string,
     ): boolean {
         for (const row of instancesRows) {
             if (
@@ -1992,7 +1985,7 @@ export class Install {
         const instances = [];
         const doc = await this.objects.getObjectListAsync({
             startkey: `system.adapter.${adapter}.`,
-            endkey: `system.adapter.${adapter}.\u9999`
+            endkey: `system.adapter.${adapter}.\u9999`,
         });
 
         if (doc) {
