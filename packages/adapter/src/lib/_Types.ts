@@ -73,7 +73,7 @@ type Invoice = 'free' | (string & {});
 export interface SuitableLicense {
     /** Name of the license type, not necessarily matching adapter */
     product: string;
-    /** E-Mail of license owner */
+    /** E-Mail of a license owner */
     email: string;
     /** Unique id of this license */
     id: string;

@@ -11331,12 +11331,7 @@ export class AdapterClass extends EventEmitter {
                 `${this.namespaceLog} ${this.namespace} invalid process id scenario ${killRes.val} vs. own ID ${process.pid}. Stopping`,
             );
             this.terminate(EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
-        } else if (
-            !this._config.isInstall &&
-            resAlive?.val === true &&
-            resAlive.ack &&
-            !this._config.forceIfDisabled
-        ) {
+        } else if (!this._config.isInstall && resAlive?.val === true && resAlive.ack && !this._config.forceIfDisabled) {
             this._logger.error(`${this.namespaceLog} ${this.namespace} already running`);
             this.terminate(EXIT_CODES.ADAPTER_ALREADY_RUNNING);
         } else {
