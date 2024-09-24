@@ -149,6 +149,8 @@ export interface UserInterfaceClientSubscribeReturnType {
     accepted: boolean;
     /** Optional heartbeat, if set, the client needs to re-subscribe every heartbeat interval */
     heartbeat?: number;
+    /** Optional error if not accepted */
+    error?: string;
 }
 
 type UserInterfaceUnsubscribeInfoBaseObject = {
