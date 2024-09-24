@@ -4,12 +4,14 @@
 	## **WORK IN PROGRESS**
 -->
 ## **WORK IN PROGRESS** - Lucy
+**Breaking changes**
+* Backups created with 6.1.x cannot be restored with previous version
+
 **Features**
 * (@GermanBluefox) Added support for dynamic notification data 
 (with this feature developers can create interactive notifications in the Admin adapter)
 * (@GermanBluefox/@foxriver76) implemented automatic upload on adapter start if version mismatch is detected
-* (@foxriver76) improved backup/restore process to work for arbitrary large installations 
-(Note: Backups created with 6.1.x cannot be restored with previous version)
+* (@foxriver76) improved backup/restore process to work for arbitrary large installations
 * (@foxriver76) added notification if new image is available on Docker Hub (for official docker systems)
 
 **Optimizations and fixes**
