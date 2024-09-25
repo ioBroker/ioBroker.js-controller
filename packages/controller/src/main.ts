@@ -5286,11 +5286,13 @@ export async function init(compactGroupId?: number): Promise<void> {
         States = await getStatesConstructor();
     }
 
-    // Detect if outputs to console are forced. By default, they are disabled and redirected to log file
+    // Detect if outputs to console are forced. By default, they are disabled and redirected to the log file
     if (
         config.log.noStdout &&
         process.argv &&
-        (process.argv.indexOf('--console') !== -1 || process.argv.indexOf('--logs') !== -1)
+        (process.argv.indexOf('--console') !== -1 ||
+            process.argv.indexOf('--logs') !== -1 ||
+            process.argv.indexOf('--debug') !== -1)
     ) {
         config.log.noStdout = false;
     }
