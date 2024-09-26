@@ -512,7 +512,7 @@ This method takes the following parameters:
 * scope: scope to be addressed
 * category: category to be addressed, if a null message will be checked by regex of given scope
 * message: message to be stored/checked
-* options: Available with js-controller version 6.1. Additional options for the notification, currently you can provide additional `contextData` which is also stored with the notification information. Notification processing adapters can use this data
+* options: Available with js-controller version 7.0. Additional options for the notification, currently you can provide additional `contextData` which is also stored with the notification information. Notification processing adapters can use this data
 
 Note, that the structure of the `contextData` which can be stored via the options object is not defined by the controller. Adapters which handle messages can use individual data attributes. 
 Currently, it is planned to support individual notification customization in the `admin` adapter. More information will be available in the `admin` adapter as soon as this feature is ready.
@@ -1309,7 +1309,7 @@ Feature status: **stable**
 
 There are several environment variables which are respected by the js-controller. 
 
-#### `IOB_NO_SETCAP` (up from js-controller 6.1.X)
+#### `IOB_NO_SETCAP` (up from js-controller 7.0.X)
 By default, the js-controller sets some capabilities on the Node.js executable. 
 Currently, `cap_net_admin`, `cap_net_bind_service`, `cap_net_raw` are set to e.g. allow Node.js to start/stop BLE advertising without root privileges. On installation these are set by the ioBroker installer. 
 However, on upgrades of Node.js these get lost. If js-controller detects a Node.js upgrade, it will ensure that these capabilities are set again.
