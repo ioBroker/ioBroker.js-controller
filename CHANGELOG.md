@@ -5,7 +5,7 @@
 -->
 ## **WORK IN PROGRESS** - Lucy
 **Breaking changes**
-* Backups created with 6.1.x cannot be restored with previous version
+* Backups created with 7.0.x cannot be restored with previous version
 
 **Features**
 * (@GermanBluefox) Added support for dynamic notification data 
