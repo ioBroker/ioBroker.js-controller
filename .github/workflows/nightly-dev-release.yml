@@ -108,7 +108,7 @@ jobs:
 
           // Figure out the next version
           const versionBump = process.env.VERSION_BUMP || 'prerelease';
-          const nightlyVersion = `${parsed.inc(process.env.VERSION_BUMP, prereleaseIdentifier)}-${dateStr}-${sha}`;
+          const nightlyVersion = `${parsed.inc(versionBump, prereleaseIdentifier)}-${dateStr}-${sha}`;
 
           // ensure that io-pack is in sync
           const fs = require('fs');
