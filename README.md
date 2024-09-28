@@ -21,6 +21,7 @@ The ioBroker.js-controller is the heart of any ioBroker installation. The contro
 - [License](#license)
 
 ## Compatibility
+* js-controller 7.x (Lucy) works with Node.js 18.x, 20.x and probably 22.x
 * js-controller 6.x (Kiera) works with Node.js 18.x, 20.x and probably 22.x
 * js-controller 5.x works with Node.js 16.x, 18.x and probably 20.x
 * js-controller 4.x works with Node.js 12.x, 14.x, 16.x (incl. up to NPM 8) and probably 18.x
@@ -517,9 +518,9 @@ This method takes the following parameters:
 Note, that the structure of the `contextData` which can be stored via the options object is not defined by the controller. Adapters which handle messages can use individual data attributes. 
 Currently, it is planned to support individual notification customization in the `admin` adapter. More information will be available in the `admin` adapter as soon as this feature is ready.
 
-As a best practice the top-level of `contextData` should not be populated with individual data belonging to instances. Use a `key` specific to the adapter or if a feature is supported by all adapters of a type, the type (e.g. `messaging`) is also fine.
+The top-level of `contextData` should not be populated with individual data. The only allowed key on top-level is the name of the adapter which consumes these data, e.g. `contextData.admin` for the `admin` adapter.
 
-When a regex is defined then `console.error` output from the adapter is always checked by the regex and notifications are registered automatically when the regex matches! 
+When a regex is defined for a category then `console.error` output from the adapter is always checked by the regex and notifications are registered automatically when the regex matches!
 
 #### How to read notifications?
 The host supports the __message__ command `getNotifications` to query the stored notifications together with the localized names and descriptions.
