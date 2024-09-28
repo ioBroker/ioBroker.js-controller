@@ -520,7 +520,7 @@ Currently, it is planned to support individual notification customization in the
 
 The top-level of `contextData` should not be populated with individual data. The only allowed key on top-level is the name of the adapter which consumes these data, e.g. `contextData.admin` for the `admin` adapter.
 
-When a regex is defined for a category then `console.error` output from the adapter is always checked by the regex and notifications are registered automatically when the regex matches!
+When a regex is then `console.error` output from the adapter is always checked by the regex and notifications are registered automatically when the regex matches!
 
 #### How to read notifications?
 The host supports the __message__ command `getNotifications` to query the stored notifications together with the localized names and descriptions.
