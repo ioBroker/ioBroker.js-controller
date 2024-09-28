@@ -519,6 +519,7 @@ Note, that the structure of the `contextData` which can be stored via the option
 Currently, it is planned to support individual notification customization in the `admin` adapter. More information will be available in the `admin` adapter as soon as this feature is ready.
 
 The top-level of `contextData` should not be populated with individual data. The only allowed key on top-level is the name of the adapter which consumes these data, e.g. `contextData.admin` for the `admin` adapter.
+The structure inside the adapter property needs to be defined by the consuming adapter itself and is not specified by the `js-controller`. Please consult the adapter docs of the corresponding adapter for these information.
 
 When a regex is defined then `console.error` output from the adapter is always checked by the regex and notifications are registered automatically when the regex matches!
 
