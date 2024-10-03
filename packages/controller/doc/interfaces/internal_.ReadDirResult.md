@@ -27,7 +27,7 @@ Access rights
 
 #### Defined in
 
-[types-dev/index.d.ts:443](https://github.com/ioBroker/ioBroker.js-controller/blob/91f9b082f16aa9a511b440c286768c78810f47d7/packages/types-dev/index.d.ts#L443)
+[types-dev/index.d.ts:443](https://github.com/ioBroker/ioBroker.js-controller/blob/61327866b90efaa299b3a560327c6e11c31c7707/packages/types-dev/index.d.ts#L443)
 
 ___
 
@@ -39,7 +39,7 @@ Date of creation
 
 #### Defined in
 
-[types-dev/index.d.ts:447](https://github.com/ioBroker/ioBroker.js-controller/blob/91f9b082f16aa9a511b440c286768c78810f47d7/packages/types-dev/index.d.ts#L447)
+[types-dev/index.d.ts:447](https://github.com/ioBroker/ioBroker.js-controller/blob/61327866b90efaa299b3a560327c6e11c31c7707/packages/types-dev/index.d.ts#L447)
 
 ___
 
@@ -51,7 +51,7 @@ Name of the file or directory
 
 #### Defined in
 
-[types-dev/index.d.ts:437](https://github.com/ioBroker/ioBroker.js-controller/blob/91f9b082f16aa9a511b440c286768c78810f47d7/packages/types-dev/index.d.ts#L437)
+[types-dev/index.d.ts:437](https://github.com/ioBroker/ioBroker.js-controller/blob/61327866b90efaa299b3a560327c6e11c31c7707/packages/types-dev/index.d.ts#L437)
 
 ___
 
@@ -63,7 +63,7 @@ Whether this is a directory or a file
 
 #### Defined in
 
-[types-dev/index.d.ts:441](https://github.com/ioBroker/ioBroker.js-controller/blob/91f9b082f16aa9a511b440c286768c78810f47d7/packages/types-dev/index.d.ts#L441)
+[types-dev/index.d.ts:441](https://github.com/ioBroker/ioBroker.js-controller/blob/61327866b90efaa299b3a560327c6e11c31c7707/packages/types-dev/index.d.ts#L441)
 
 ___
 
@@ -75,7 +75,7 @@ Date of last modification
 
 #### Defined in
 
-[types-dev/index.d.ts:445](https://github.com/ioBroker/ioBroker.js-controller/blob/91f9b082f16aa9a511b440c286768c78810f47d7/packages/types-dev/index.d.ts#L445)
+[types-dev/index.d.ts:445](https://github.com/ioBroker/ioBroker.js-controller/blob/61327866b90efaa299b3a560327c6e11c31c7707/packages/types-dev/index.d.ts#L445)
 
 ___
 
@@ -87,4 +87,4 @@ File system stats
 
 #### Defined in
 
-[types-dev/index.d.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/91f9b082f16aa9a511b440c286768c78810f47d7/packages/types-dev/index.d.ts#L439)
+[types-dev/index.d.ts:439](https://github.com/ioBroker/ioBroker.js-controller/blob/61327866b90efaa299b3a560327c6e11c31c7707/packages/types-dev/index.d.ts#L439)
