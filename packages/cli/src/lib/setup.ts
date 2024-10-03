@@ -2514,9 +2514,9 @@ async function processCommand(
         }
 
         case 'repo': {
-            let repoUrlOrCommand = args[0]; // Repo url or name or "add" / "del" / "set" / "show" / "addset" / "unset"
-            const repoName = args[1]; // Repo url or name
-            let repoUrl = args[2]; // Repo url or name
+            let repoUrlOrCommand: string | undefined = args[0]; // Repo url or name or "add" / "del" / "set" / "show" / "addset" / "unset"
+            let repoName: string | undefined = args[1]; // Repo url or name
+            let repoUrl: string | undefined = args[2]; // Repo url or name
             if (
                 repoUrlOrCommand !== 'add' &&
                 repoUrlOrCommand !== 'del' &&
@@ -2555,6 +2555,17 @@ async function processCommand(
                         console.error(`Invalid repository name: "${repoName}"`);
                         return void callback();
                     }
+
+                    // If repository set as number in the list
+                    if (repoName.match(/\d+/)) {
+                        const obj = await objects.getObject('system.repositories');
+                        if (obj?.native?.repositories) {
+                            if (Object.keys(obj.native.repositories)[parseInt(repoName, 10)]) {
+                                repoName = Object.keys(obj.native.repositories)[parseInt(repoName, 10)];
+                            }
+                        }
+                    }
+
                     if (repoUrlOrCommand === 'add' || repoUrlOrCommand === 'addset') {
                         if (!repoUrl) {
                             console.warn(

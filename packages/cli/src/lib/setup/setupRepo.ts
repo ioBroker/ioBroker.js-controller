@@ -70,8 +70,8 @@ export class Repo {
      *
      * @param repoName name of the repository
      * @param force force update even if same hash
-     * @param systemConfig content of system.config object
-     * @param systemRepos content of system.repositories object
+     * @param systemConfig content of `system.config` object
+     * @param systemRepos content of `system.repositories` object
      */
     private async updateRepo(
         repoName: string,
@@ -231,7 +231,7 @@ export class Repo {
     /**
      * Show the repo result on CLI
      *
-     * @param sources Repo json sources
+     * @param sources Repo JSON sources
      * @param flags CLI flags
      */
     private async showRepoResult(sources: Record<string, any>, flags: RepoFlags): Promise<void> {
@@ -256,7 +256,7 @@ export class Repo {
             if (installed[name]?.version) {
                 text += `, installed ${installed[name].version}`;
                 try {
-                    // tools.upToDate can throw if version is invalid
+                    // tools.upToDate can throw if a version is invalid
                     if (
                         sources[name].version !== installed[name].version &&
                         sources[name].version &&
@@ -295,12 +295,12 @@ export class Repo {
         for (const name of Object.keys(sources)) {
             if (installed[name] && installed[name].version && sources[name].version) {
                 try {
-                    // tools.upToDate can throw if version is invalid
+                    // tools.upToDate can throw if a version is invalid
                     if (
                         sources[name].version !== installed[name].version &&
                         !tools.upToDate(sources[name].version, installed[name].version)
                     ) {
-                        // remove first part of the name
+                        // remove the first part of the name
                         const n = name.indexOf('.');
                         list.push(n === -1 ? name : name.substring(n + 1));
                     }
@@ -327,7 +327,7 @@ export class Repo {
     }
 
     /**
-     * Show current status of Repo on CLI
+     * Show the current status of Repo on CLI
      */
     async showRepoStatus(): Promise<number> {
         try {
@@ -373,19 +373,25 @@ export class Repo {
      * @param repoUrl url of new repo
      */
     async add(repoName: string, repoUrl: string): Promise<void> {
-        const sysRepoObj = await this.objects.getObjectAsync('system.repositories');
+        const sysRepoObj = await this.objects.getObject('system.repositories');
         const obj = sysRepoObj || this.defaultSystemRepo;
 
         if (obj.native.repositories[repoName]) {
             throw new Error(`Repository "${repoName}" yet exists: ${obj.native.repositories[repoName].link}`);
         } else {
+            if (repoName && repoName.length < 3 && repoName.match(/\d+/)) {
+                throw new Error(
+                    `Name "${repoName}" of repository cannot contain only numbers as it could be confused with an index`,
+                );
+            }
+
             obj.native.repositories[repoName] = {
                 link: repoUrl,
                 json: null,
             };
             obj.from = `system.host.${tools.getHostName()}.cli`;
             obj.ts = Date.now();
-            await this.objects.setObjectAsync('system.repositories', obj);
+            await this.objects.setObject('system.repositories', obj);
         }
     }
 
@@ -395,7 +401,7 @@ export class Repo {
      * @param repoName name of repository to remove
      */
     async del(repoName: string): Promise<void> {
-        const obj = await this.objects.getObjectAsync('system.config');
+        const obj = await this.objects.getObject('system.config');
         if (
             (obj?.common.activeRepo &&
                 typeof obj.common.activeRepo === 'string' &&
@@ -404,7 +410,7 @@ export class Repo {
         ) {
             throw new Error(`Cannot delete active repository: ${repoName}`);
         } else {
-            const repoObj = await this.objects.getObjectAsync('system.repositories');
+            const repoObj = await this.objects.getObject('system.repositories');
             if (repoObj) {
                 if (!repoObj.native.repositories[repoName]) {
                     throw new Error(`Repository "${repoName}" not found.`);
@@ -421,25 +427,46 @@ export class Repo {
     /**
      * Set specific repo as active one
      *
-     * @param repoName name of the respository to activate
+     * @param repoName name of the repository to activate
      */
     async setActive(repoName: string): Promise<void> {
-        const sysRepoObj = await this.objects.getObjectAsync('system.repositories');
+        const sysRepoObj = await this.objects.getObject('system.repositories');
         const obj = sysRepoObj || this.defaultSystemRepo;
 
         if (!obj.native.repositories[repoName]) {
             throw new Error(`Repository "${repoName}" not found.`);
         } else {
-            const confObj = await this.objects.getObjectAsync('system.config');
+            const confObj = await this.objects.getObject('system.config');
             if (typeof confObj?.common.activeRepo === 'string') {
                 confObj.common.activeRepo = [confObj.common.activeRepo];
             }
 
             if (confObj && !confObj.common.activeRepo.includes(repoName)) {
                 confObj.common.activeRepo.push(repoName);
+
+                // Check that stable and beta repositories cannot be active at the same time.
+                if (repoName.toLowerCase().includes('beta')) {
+                    // Stable repository could be "stable", "Stable (default)"
+                    const pos = confObj.common.activeRepo.findIndex(item => item.toLowerCase().includes('stable'));
+                    if (pos !== -1) {
+                        confObj.common.activeRepo.splice(pos, 1);
+                    }
+                } else if (repoName.toLowerCase().includes('stable')) {
+                    // Beta repository could be "beta" or "Beta (latest)"
+                    const pos = confObj.common.activeRepo.findIndex(item => item.toLowerCase().includes('beta'));
+                    if (pos !== -1) {
+                        confObj.common.activeRepo.splice(pos, 1);
+                    }
+                }
+                if (confObj.common.activeRepo.length > 1) {
+                    console.warn(
+                        'More than one repository is active. Please be sure, that this is a desired constellation',
+                    );
+                }
+
                 confObj.from = `system.host.${tools.getHostName()}.cli`;
                 confObj.ts = Date.now();
-                await this.objects.setObjectAsync('system.config', confObj);
+                await this.objects.setObject('system.config', confObj);
             }
         }
     }
@@ -450,7 +477,7 @@ export class Repo {
      * @param repoName name of the repository
      */
     async setInactive(repoName: string): Promise<void> {
-        const confObj = (await this.objects.getObjectAsync('system.config'))!;
+        const confObj = (await this.objects.getObject('system.config'))!;
         if (typeof confObj?.common.activeRepo === 'string') {
             confObj.common.activeRepo = [confObj.common.activeRepo];
         }
@@ -460,12 +487,27 @@ export class Repo {
             confObj.common.activeRepo.splice(pos, 1);
             confObj.from = `system.host.${tools.getHostName()}.cli`;
             confObj.ts = Date.now();
-            await this.objects.setObjectAsync('system.config', confObj);
+            // If no one repository is active set stable as active
+            if (!confObj.common.activeRepo.length) {
+                const sysRepoObj = await this.objects.getObject('system.repositories');
+                const obj = sysRepoObj || this.defaultSystemRepo;
+                // find a stable repository
+                const stableName = Object.keys(obj?.native?.repositories).find(name => name.includes('stable'));
+                if (stableName) {
+                    confObj.common.activeRepo.push(stableName);
+                }
+                if (!confObj.common.activeRepo.length) {
+                    console.warn(
+                        'Actually no one repository is active! Update of adapter will not be possible. Please define some repository as active',
+                    );
+                }
+            }
+            await this.objects.setObject('system.config', confObj);
         }
     }
 
     /**
-     * Renames existing repository if old name and link matches, renaming will not be performed if an repo with the new name already exists
+     * Renames existing repository if old name and link matches, renaming will not be performed if a repo with the new name already exists
      *
      * @param oldName - name of the current repository
      * @param newName - target name
@@ -475,13 +517,19 @@ export class Repo {
         let repoObj;
         let sysConfigObj;
         try {
-            sysConfigObj = await this.objects.getObjectAsync('system.config');
-            repoObj = await this.objects.getObjectAsync('system.repositories');
+            sysConfigObj = await this.objects.getObject('system.config');
+            repoObj = await this.objects.getObject('system.repositories');
         } catch (err) {
             throw new Error(`Could not rename repository "${oldName}" to "${newName}": ${err.message}`);
         }
 
-        if (repoObj && repoObj.native && repoObj.native.repositories) {
+        if (newName && newName.length < 3 && newName.match(/\d+/)) {
+            throw new Error(
+                `Name "${newName}" of repository cannot contain only numbers as it could be confused with an index`,
+            );
+        }
+
+        if (repoObj?.native?.repositories) {
             if (
                 repoObj.native.repositories[oldName] &&
                 repoObj.native.repositories[oldName].link === repoUrl &&
@@ -491,7 +539,7 @@ export class Repo {
                 delete repoObj.native.repositories[oldName];
 
                 try {
-                    await this.objects.setObjectAsync('system.repositories', repoObj);
+                    await this.objects.setObject('system.repositories', repoObj);
                     console.log(`Renamed repository "${oldName} to "${newName}"`);
                 } catch (err) {
                     throw new Error(`Could not rename repository "${oldName}" to "${newName}": ${err.message}`);
@@ -513,7 +561,7 @@ export class Repo {
                     sysConfigObj.common.activeRepo.splice(pos, 1, newName);
 
                     try {
-                        await this.objects.setObjectAsync('system.config', sysConfigObj);
+                        await this.objects.setObject('system.config', sysConfigObj);
                     } catch (err) {
                         throw new Error(`Could not set "${newName}" as active repository: ${err.message}`);
                     }
