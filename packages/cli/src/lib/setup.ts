@@ -395,12 +395,12 @@ function initYargs(): ReturnType<typeof yargs> {
                 .command('all', 'Show entire config')
                 .command('<adapter>[.<instance>]', 'Status of a specified adapter instance');
         })
-        .command('repo [<name>]', 'Show repo information', yargs => {
+        .command('repo [<name/index>]', 'Show repo information', yargs => {
             yargs
-                .command('set <name>', 'Set active repository')
-                .command('del <name>', 'Remove repository')
-                .command('add <name> <url>', 'Add repository')
-                .command('addset <name> <url>', 'Add repository and set it as active one')
+                .command('set <name/index>', 'Set active repository')
+                .command('del <name/index>', 'Remove repository')
+                .command('add <name/index> <url>', 'Add repository')
+                .command('addset <name/index> <url>', 'Add repository and set it as active one')
                 .command('show', 'List repositories');
         })
         .command(['uuid', 'id'], 'Show uuid of the installation', {})
