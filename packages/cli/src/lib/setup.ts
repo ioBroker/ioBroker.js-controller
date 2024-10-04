@@ -395,12 +395,12 @@ function initYargs(): ReturnType<typeof yargs> {
                 .command('all', 'Show entire config')
                 .command('<adapter>[.<instance>]', 'Status of a specified adapter instance');
         })
-        .command('repo [<name>]', 'Show repo information', yargs => {
+        .command('repo [<name/index>]', 'Show repo information', yargs => {
             yargs
-                .command('set <name>', 'Set active repository')
-                .command('del <name>', 'Remove repository')
-                .command('add <name> <url>', 'Add repository')
-                .command('addset <name> <url>', 'Add repository and set it as active one')
+                .command('set <name/index>', 'Set active repository')
+                .command('del <name/index>', 'Remove repository')
+                .command('add <name/index> <url>', 'Add repository')
+                .command('addset <name/index> <url>', 'Add repository and set it as active one')
                 .command('show', 'List repositories');
         })
         .command(['uuid', 'id'], 'Show uuid of the installation', {})
@@ -2514,9 +2514,9 @@ async function processCommand(
         }
 
         case 'repo': {
-            let repoUrlOrCommand = args[0]; // Repo url or name or "add" / "del" / "set" / "show" / "addset" / "unset"
-            const repoName = args[1]; // Repo url or name
-            let repoUrl = args[2]; // Repo url or name
+            let repoUrlOrCommand: string | undefined = args[0]; // Repo url or name or "add" / "del" / "set" / "show" / "addset" / "unset"
+            let repoName: string | undefined = args[1]; // Repo url or name
+            let repoUrl: string | undefined = args[2]; // Repo url or name
             if (
                 repoUrlOrCommand !== 'add' &&
                 repoUrlOrCommand !== 'del' &&
@@ -2555,6 +2555,18 @@ async function processCommand(
                         console.error(`Invalid repository name: "${repoName}"`);
                         return void callback();
                     }
+
+                    // If repository set as number in the list
+                    if (repoName.match(/^\d+$/)) {
+                        const repoIndexName: number = parseInt(repoName, 10);
+                        const obj = await objects.getObject('system.repositories');
+                        if (obj?.native?.repositories) {
+                            if (Object.keys(obj.native.repositories)[repoIndexName]) {
+                                repoName = Object.keys(obj.native.repositories)[repoIndexName];
+                            }
+                        }
+                    }
+
                     if (repoUrlOrCommand === 'add' || repoUrlOrCommand === 'addset') {
                         if (!repoUrl) {
                             console.warn(
