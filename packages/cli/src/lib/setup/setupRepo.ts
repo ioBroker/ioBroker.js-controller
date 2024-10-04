@@ -379,7 +379,7 @@ export class Repo {
         if (obj.native.repositories[repoName]) {
             throw new Error(`Repository "${repoName}" yet exists: ${obj.native.repositories[repoName].link}`);
         } else {
-            if (repoName && repoName.length < 3 && repoName.match(/\d+/)) {
+            if (repoName && repoName.length < 3 && repoName.match(/^\d+$/)) {
                 throw new Error(
                     `Name "${repoName}" of repository cannot contain only numbers as it could be confused with an index`,
                 );
@@ -445,15 +445,15 @@ export class Repo {
                 confObj.common.activeRepo.push(repoName);
 
                 // Check that stable and beta repositories cannot be active at the same time.
-                if (repoName.toLowerCase().includes('beta')) {
+                if (repoName.toLowerCase().startsWith('beta')) {
                     // Stable repository could be "stable", "Stable (default)"
-                    const pos = confObj.common.activeRepo.findIndex(item => item.toLowerCase().includes('stable'));
+                    const pos = confObj.common.activeRepo.findIndex(item => item.toLowerCase().startsWith('stable'));
                     if (pos !== -1) {
                         confObj.common.activeRepo.splice(pos, 1);
                     }
-                } else if (repoName.toLowerCase().includes('stable')) {
+                } else if (repoName.toLowerCase().startsWith('stable')) {
                     // Beta repository could be "beta" or "Beta (latest)"
-                    const pos = confObj.common.activeRepo.findIndex(item => item.toLowerCase().includes('beta'));
+                    const pos = confObj.common.activeRepo.findIndex(item => item.toLowerCase().startsWith('beta'));
                     if (pos !== -1) {
                         confObj.common.activeRepo.splice(pos, 1);
                     }
@@ -492,7 +492,7 @@ export class Repo {
                 const sysRepoObj = await this.objects.getObject('system.repositories');
                 const obj = sysRepoObj || this.defaultSystemRepo;
                 // find a stable repository
-                const stableName = Object.keys(obj?.native?.repositories).find(name => name.includes('stable'));
+                const stableName = Object.keys(obj?.native?.repositories).find(name => name.startsWith('stable'));
                 if (stableName) {
                     confObj.common.activeRepo.push(stableName);
                 }
@@ -523,7 +523,7 @@ export class Repo {
             throw new Error(`Could not rename repository "${oldName}" to "${newName}": ${err.message}`);
         }
 
-        if (newName && newName.length < 3 && newName.match(/\d+/)) {
+        if (newName && newName.length < 3 && newName.match(/^\d+$/)) {
             throw new Error(
                 `Name "${newName}" of repository cannot contain only numbers as it could be confused with an index`,
             );

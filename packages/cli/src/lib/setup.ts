@@ -2557,11 +2557,12 @@ async function processCommand(
                     }
 
                     // If repository set as number in the list
-                    if (repoName.match(/\d+/)) {
+                    if (repoName.match(/^\d+$/)) {
+                        const repoIndexName: number = parseInt(repoName, 10);
                         const obj = await objects.getObject('system.repositories');
                         if (obj?.native?.repositories) {
-                            if (Object.keys(obj.native.repositories)[parseInt(repoName, 10)]) {
-                                repoName = Object.keys(obj.native.repositories)[parseInt(repoName, 10)];
+                            if (Object.keys(obj.native.repositories)[repoIndexName]) {
+                                repoName = Object.keys(obj.native.repositories)[repoIndexName];
                             }
                         }
                     }
