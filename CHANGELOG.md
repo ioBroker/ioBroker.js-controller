@@ -1,9 +1,9 @@
 # Changelog
 <!--
 	Placeholder for the next version (at the beginning of the line):
-	## **WORK IN PROGRESS**
+	## __WORK IN PROGRESS__
 -->
-## **WORK IN PROGRESS** - Lucy
+## __WORK IN PROGRESS__ - Lucy
 **Breaking changes**
 * Backups created with 7.0.x cannot be restored with previous version
 
