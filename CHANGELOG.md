@@ -3,7 +3,7 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
-## __WORK IN PROGRESS__ - Lucy
+## 7.0.0 (2024-10-06) - Lucy
 **Breaking changes**
 * Backups created with 7.0.x cannot be restored with previous version
 
