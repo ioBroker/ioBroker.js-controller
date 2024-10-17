@@ -196,23 +196,22 @@ export class Install {
 
         const source = sources[packetName];
 
-        options.packetName = packetName;
-        options.unsafePerm = source?.unsafePerm;
-
-        // Check if flag stopBeforeUpdate is true or on windows we stop because of issue #1436
-        if ((source?.stopBeforeUpdate || osPlatform === 'win32') && !stoppedList.length) {
-            stoppedList = await this._getInstancesOfAdapter(packetName);
-            await this.enableInstances(stoppedList, false);
-        }
-
         if (!source) {
-            console.error(
-                `host.${hostname} Unknown packet name ${packetName}. Please install packages from outside the repository using "${tools.appNameLowerCase} url <url-or-package>"!`,
-            );
+            const errMessage = `Unknown packet name ${packetName}. Please install packages from outside the repository using "${tools.appNameLowerCase} url <url-or-package>"!`;
+            console.error(`host.${hostname} ${errMessage}`);
             throw new IoBrokerError({
                 code: EXIT_CODES.UNKNOWN_PACKET_NAME,
-                message: `Unknown packetName ${packetName}. Please install packages from outside the repository using npm!`,
+                message: errMessage,
             });
+        }
+
+        options.packetName = packetName;
+        options.unsafePerm = source.unsafePerm;
+
+        // Check if flag stopBeforeUpdate is true or on windows we stop because of issue #1436
+        if ((source.stopBeforeUpdate || osPlatform === 'win32') && !stoppedList.length) {
+            stoppedList = await this._getInstancesOfAdapter(packetName);
+            await this.enableInstances(stoppedList, false);
         }
 
         if (options.stopDb) {
