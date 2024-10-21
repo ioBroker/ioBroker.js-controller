@@ -1,5 +1,5 @@
 {
-  "extends": "../../tsconfig.json",
+  "extends": "./tsconfig.migration.json",
   "compilerOptions": {
     "outDir": "build/esm",
     "module": "NodeNext",
