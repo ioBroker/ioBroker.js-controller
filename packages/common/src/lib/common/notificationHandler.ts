@@ -13,14 +13,21 @@ import type Winston from 'winston';
 
 type MultilingualObject = Exclude<ioBroker.StringOrTranslated, string>;
 
+/** Settings to configure an instance of NotificationHandler */
 export interface NotificationHandlerSettings {
+    /** Name of the host (not id - hence, without `system.host.` prefix) */
     host: string;
+    /** States DB instance */
     states: StatesInRedisClient;
+    /** Objects DB instance */
     objects: ObjectsInRedisClient;
+    /** Logger instance */
     log: Winston.Logger | Console;
+    /** Prefix for the log messages */
     logPrefix: string;
 }
 
+/** A notification config entry represents the top level of the notification structure */
 export interface NotificationsConfigEntry {
     /** e.g. system */
     scope: string;
@@ -28,18 +35,25 @@ export interface NotificationsConfigEntry {
     name: MultilingualObject;
     /** multilingual description */
     description: MultilingualObject;
+    /** The notification categories inside this scope */
     categories: CategoryConfigEntry[];
 }
 
 export type Severity = 'info' | 'notify' | 'alert';
 
+/** A notification category entry represents one of the categories of a scope */
 export interface CategoryConfigEntry {
+    /** Id of the category */
     category: string;
+    /** Name of the category */
     name: MultilingualObject;
     /** Allows defining the severity of the notification with `info` being the lowest, `notify` representing middle priority, `alert` representing high priority and often containing critical information */
     severity: Severity;
+    /** Description of the category */
     description: MultilingualObject;
+    /** Regex where `console.error` output is parsed against to check if a notification of this category should be generated */
     regex: string[];
+    /** Restrict the maximum number of messages for this category */
     limit: number;
 }
 
@@ -49,31 +63,38 @@ interface NotificationMessageObject {
     contextData?: ioBroker.NotificationContextData;
 }
 
+interface NotificationsCategory {
+    [category: string]: {
+        [instance: string]: NotificationMessageObject[];
+    };
+}
+
 interface NotificationsObject {
-    [scope: string]: {
-        [category: string]: {
-            [instance: string]: NotificationMessageObject[];
+    [scope: string]: NotificationsCategory;
+}
+
+interface FilteredNotificationCategory {
+    description: MultilingualObject;
+    name: MultilingualObject;
+    severity: Severity;
+    instances: {
+        [instance: string]: {
+            messages: NotificationMessageObject[];
         };
     };
 }
 
-export interface FilteredNotificationInformation {
-    [scope: string]: {
-        description: MultilingualObject;
-        name: MultilingualObject;
-        categories: {
-            [category: string]: {
-                description: MultilingualObject;
-                name: MultilingualObject;
-                severity: Severity;
-                instances: {
-                    [instance: string]: {
-                        messages: NotificationMessageObject[];
-                    };
-                };
-            };
-        };
+interface FilteredNotificationScope {
+    description: MultilingualObject;
+    name: MultilingualObject;
+    categories: {
+        [category: string]: FilteredNotificationCategory;
     };
+}
+
+/** The filtered information as a response for `getFilteredInformation` */
+export interface FilteredNotificationInformation {
+    [scope: string]: FilteredNotificationScope;
 }
 
 interface NotificationSetupCategory {
@@ -113,6 +134,9 @@ interface AddMessageOptions {
     contextData?: ioBroker.NotificationContextData;
 }
 
+/**
+ * The Notification handler class provides an interface to manage the ioBroker notification system
+ */
 export class NotificationHandler {
     private states: StatesInRedisClient;
     private objects: ObjectsInRedisClient;
@@ -124,6 +148,11 @@ export class NotificationHandler {
     private readonly logPrefix: string;
     private readonly host: string;
 
+    /**
+     * Creates a new instance of the notification handler class
+     *
+     * @param settings settings to configure the handler instance
+     */
     constructor(settings: NotificationHandlerSettings) {
         this.states = settings.states;
         this.objects = settings.objects;
@@ -197,9 +226,9 @@ export class NotificationHandler {
         }
 
         // now clear up all notifications that do not belong to our host anymore
-        for (const scope of Object.keys(this.currentNotifications)) {
-            for (const category of Object.keys(this.currentNotifications[scope])) {
-                for (const instance of Object.keys(this.currentNotifications[scope][category])) {
+        for (const notificationsCategory of Object.values(this.currentNotifications)) {
+            for (const instancesInfo of Object.values(notificationsCategory)) {
+                for (const instance of Object.keys(instancesInfo)) {
                     if (!instancesOnHost.includes(instance) && instance !== `system.host.${this.host}`) {
                         // instance no longer on host
                         this.log.info(`${this.logPrefix} Instance ${instance} removed from host, clear notifications`);
@@ -252,16 +281,25 @@ export class NotificationHandler {
                 }
 
                 if (Array.isArray(scopeObj.categories) && scopeObj.categories.length) {
-                    // only if scope has at least one category
-                    this.setup[scopeObj.scope] = this.setup[scopeObj.scope] || {
+                    const setupScope = this.setup[scopeObj.scope] || {
                         name: scopeObj.name,
                         description: scopeObj.description,
                         categories: {},
                     };
 
+                    // only if scope has at least one category
+                    this.setup[scopeObj.scope] = setupScope;
+
                     for (const categoryObj of scopeObj.categories) {
-                        this.setup[scopeObj.scope].categories[categoryObj.category] =
-                            this.setup[scopeObj.scope].categories[categoryObj.category] || {};
+                        const setupCategory = setupScope.categories[categoryObj.category] || {
+                            regex: [],
+                            limit: categoryObj.limit,
+                            name: categoryObj.name,
+                            severity: categoryObj.severity,
+                            description: categoryObj.description,
+                        };
+                        setupScope.categories[categoryObj.category] = setupCategory;
+
                         try {
                             let regex: RegExp[] = [];
                             if (Array.isArray(categoryObj.regex)) {
@@ -273,17 +311,10 @@ export class NotificationHandler {
                                 regex = [new RegExp(categoryObj.regex)];
                             }
 
-                            // we overwrite config, maybe it would also make sense to only add the new regex to existing ones
-                            this.setup[scopeObj.scope].categories[categoryObj.category] = {
-                                regex,
-                                limit: categoryObj.limit,
-                                name: categoryObj.name,
-                                severity: categoryObj.severity,
-                                description: categoryObj.description,
-                            };
+                            setupCategory.regex = regex;
                         } catch (e) {
                             this.log.error(
-                                `${this.logPrefix} Cannot store ${JSON.stringify(categoryObj.regex)} for scope "${
+                                `${this.logPrefix} Cannot store regex "${JSON.stringify(categoryObj.regex)}" for scope "${
                                     scopeObj.scope
                                 }", category "${categoryObj.category}": ${e.message}`,
                             );
@@ -330,41 +361,46 @@ export class NotificationHandler {
             categories = this._parseText(scope, message);
         }
 
+        const currentScopeObj = this.currentNotifications[scope] || {};
+        this.currentNotifications[scope] = currentScopeObj;
+
         for (const _category of categories) {
-            if (_category) {
-                this.currentNotifications[scope] = this.currentNotifications[scope] || {};
-                this.currentNotifications[scope][_category] = this.currentNotifications[scope][_category] || {};
-                // array of all messages for instance/category
-                this.currentNotifications[scope][_category][instance] =
-                    this.currentNotifications[scope][_category][instance] || [];
-
-                if (!this.setup[scope]?.categories[_category]) {
-                    // no setup for this instance/category combination found - so we have nothing to add
-                    this.log.warn(
-                        `${this.logPrefix} No configuration found for scope "${scope}" and category "${_category}"`,
-                    );
-                    continue;
-                }
-
-                // if limit exceeded, remove last element - use while if it somehow grew too big
-                while (
-                    this.setup[scope].categories[_category].limit <
-                    this.currentNotifications[scope][_category][instance].length + 1
-                ) {
-                    this.currentNotifications[scope][_category][instance].pop();
-                }
-
-                // add a new element at the beginning
-                this.currentNotifications[scope][_category][instance].unshift({ message, ts: Date.now(), contextData });
+            if (!_category) {
+                continue;
             }
+
+            const currentCategoryObj = currentScopeObj[_category] || {};
+            currentScopeObj[_category] = currentCategoryObj;
+
+            // array of all messages for instance/category
+            const currentInstances = currentCategoryObj[instance] || [];
+            currentCategoryObj[instance] = currentInstances;
+
+            const setupCategory = this.setup[scope]?.categories[_category];
+
+            if (!setupCategory) {
+                // no setup for this instance/category combination found - so we have nothing to add
+                this.log.warn(
+                    `${this.logPrefix} No configuration found for scope "${scope}" and category "${_category}"`,
+                );
+                continue;
+            }
+
+            // if limit exceeded, remove last element - use while if it somehow grew too big
+            while (setupCategory.limit < currentInstances.length + 1) {
+                currentInstances.pop();
+            }
+
+            // add a new element at the beginning
+            currentInstances.unshift({ message, ts: Date.now(), contextData });
         }
 
         // now count all messages of this scope - if nothing matched it can be undefined, and we can skip
         if (tools.isObject(this.currentNotifications[scope])) {
-            for (const _category of Object.keys(this.currentNotifications[scope])) {
-                const categoryCounter = Object.keys(this.currentNotifications[scope][_category]).length;
+            for (const [categoryName, category] of Object.entries(currentScopeObj)) {
+                const categoryCounter = Object.keys(category).length;
 
-                stateVal[_category] = { count: categoryCounter };
+                stateVal[categoryName] = { count: categoryCounter };
             }
         }
 
@@ -383,18 +419,18 @@ export class NotificationHandler {
      * Updates all scope states by current notifications in RAM
      */
     private async _updateScopeStates(): Promise<void> {
-        for (const scope of Object.keys(this.currentNotifications)) {
+        for (const [scope, scopeObj] of Object.entries(this.currentNotifications)) {
             const stateVal: ScopeStateValue = {};
 
-            for (const category of Object.keys(this.currentNotifications[scope])) {
+            for (const [category, categoryObj] of Object.entries(scopeObj)) {
                 // count the number of instances with this error
-                const catCounter = Object.keys(this.currentNotifications[scope][category]).length;
+                const catCounter = Object.keys(categoryObj).length;
                 stateVal[category] = { count: catCounter };
             }
 
             // set updated scope state
             try {
-                await this.states.setStateAsync(`system.host.${this.host}.notifications.${scope}`, {
+                await this.states.setState(`system.host.${this.host}.notifications.${scope}`, {
                     val: JSON.stringify(stateVal),
                     ack: true,
                 });
@@ -413,17 +449,22 @@ export class NotificationHandler {
      * @param message - message to check
      */
     private _parseText(scope: string, message: string): string[] {
-        const categories = [];
-        if (this.setup[scope]) {
-            for (const [categoryId, categoryObj] of Object.entries(this.setup[scope].categories)) {
-                // check all regular expressions for this category
-                for (const regex of categoryObj.regex) {
-                    if (regex.test(message)) {
-                        // matching category
-                        categories.push(categoryId);
-                        // no further testing needed for this category
-                        break;
-                    }
+        const categories: string[] = [];
+
+        const scopeObj = this.setup[scope];
+
+        if (!scopeObj) {
+            return categories;
+        }
+
+        for (const [categoryId, categoryObj] of Object.entries(scopeObj.categories)) {
+            // check all regular expressions for this category
+            for (const regex of categoryObj.regex) {
+                if (regex.test(message)) {
+                    // matching category
+                    categories.push(categoryId);
+                    // no further testing needed for this category
+                    break;
                 }
             }
         }
@@ -467,51 +508,57 @@ export class NotificationHandler {
         instanceFilter: string | null | undefined,
     ): FilteredNotificationInformation {
         const res: FilteredNotificationInformation = {};
-        for (const scope of Object.keys(this.currentNotifications)) {
+        for (const [scope, currentNotification] of Object.entries(this.currentNotifications)) {
             if (scopeFilter && scopeFilter !== scope) {
                 // scope filtered out
                 continue;
             }
 
-            if (!this.setup[scope]) {
+            const scopeObj = this.setup[scope];
+
+            if (!scopeObj) {
                 // no scope set up
                 continue;
             }
 
-            res[scope] = {
+            const scopeResult: FilteredNotificationScope = {
                 categories: {},
-                description: this.setup[scope].description,
-                name: this.setup[scope].name,
+                description: scopeObj.description,
+                name: scopeObj.name,
             };
 
-            for (const category of Object.keys(this.currentNotifications[scope])) {
+            res[scope] = scopeResult;
+
+            for (const [category, currentCategoryObj] of Object.entries(currentNotification)) {
                 if (categoryFilter && categoryFilter !== category) {
                     // category filtered out
                     continue;
                 }
 
-                const categoryObj = this.setup[scope].categories[category];
+                const categoryObj = scopeObj.categories[category];
 
                 if (!categoryObj) {
                     // no category set up
                     continue;
                 }
 
-                res[scope].categories[category] = {
+                const resultCategories: FilteredNotificationCategory = {
                     instances: {},
                     description: categoryObj.description,
                     name: categoryObj.name,
                     severity: categoryObj.severity,
                 };
 
-                for (const instance of Object.keys(this.currentNotifications[scope][category])) {
+                scopeResult.categories[category] = resultCategories;
+
+                for (const [instance, instanceObj] of Object.entries(currentCategoryObj)) {
                     if (instanceFilter && instanceFilter !== instance) {
                         // instance filtered out
                         continue;
                     }
 
-                    res[scope].categories[category].instances[instance] = {
-                        messages: this.currentNotifications[scope][category][instance],
+                    resultCategories.instances[instance] = {
+                        messages: instanceObj,
                     };
                 }
             }
@@ -532,7 +579,9 @@ export class NotificationHandler {
         instanceFilter: string | null | undefined,
     ): Promise<void> {
         for (const scope of Object.keys(this.currentNotifications)) {
-            if (!this.currentNotifications[scope]) {
+            const currentNotificationScope = this.currentNotifications[scope];
+
+            if (!currentNotificationScope) {
                 delete this.currentNotifications[scope];
                 continue;
             }
@@ -549,14 +598,14 @@ export class NotificationHandler {
                 this.log.error(`${this.logPrefix} Could not get state for scope "${scope}": ${e.message}`);
             }
 
-            for (const category of Object.keys(this.currentNotifications[scope])) {
+            for (const [category, categoryObj] of Object.entries(currentNotificationScope)) {
                 if (categoryFilter && categoryFilter !== category) {
                     // category filtered out
                     continue;
                 }
 
                 let categoryCounter = 0;
-                for (const instance of Object.keys(this.currentNotifications[scope][category])) {
+                for (const instance of Object.keys(categoryObj)) {
                     if (instanceFilter && instanceFilter !== instance) {
                         // instance filtered out - message counter remains
                         categoryCounter += 1;
@@ -564,26 +613,26 @@ export class NotificationHandler {
                     }
 
                     // not filtered out -> remove
-                    delete this.currentNotifications[scope][category][instance];
+                    delete categoryObj[instance];
                 }
 
                 stateVal[category] = { count: categoryCounter };
 
                 // check if all instances of this category deleted
-                if (!Object.keys(this.currentNotifications[scope][category]).length) {
-                    delete this.currentNotifications[scope][category];
+                if (!Object.keys(categoryObj).length) {
+                    delete currentNotificationScope[category];
                     delete stateVal[category];
                 }
             }
 
             // check if all categories of this scope deleted
-            if (!Object.keys(this.currentNotifications[scope]).length) {
+            if (!Object.keys(currentNotificationScope).length) {
                 delete this.currentNotifications[scope];
             }
 
             // set updated state
             try {
-                await this.states.setStateAsync(`system.host.${this.host}.notifications.${scope}`, {
+                await this.states.setState(`system.host.${this.host}.notifications.${scope}`, {
                     val: JSON.stringify(stateVal),
                     ack: true,
                 });

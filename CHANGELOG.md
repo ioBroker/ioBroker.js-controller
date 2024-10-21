@@ -6,6 +6,7 @@
 
 ## __WORK IN PROGRESS__ - Lucy
 * (@foxriver76) fixed crash case on database migration
+* (@foxriver76) fixed edge case crash cases if notifications are processed nearly simultaneously
 
 ## 7.0.0 (2024-10-06) - Lucy
 **Breaking changes**
