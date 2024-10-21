@@ -148,29 +148,28 @@ export class Install {
     /**
      * Download given packet
      *
-     * @param repoUrl
-     * @param packetName
+     * @param repoUrlOrRepo repository url or already the repository object
+     * @param packetName name of the package to install
      * @param options options.stopDb will stop the db before upgrade ONLY use it for controller upgrade - db is gone afterwards, does not work with stoppedList
-     * @param stoppedList
+     * @param stoppedList list of stopped instances (as instance objects)
      */
     async downloadPacket(
-        repoUrl: string | undefined | Record<string, any>,
+        repoUrlOrRepo: string | undefined | Record<string, any>,
         packetName: string,
         options?: CLIDownloadPacketOptions,
         stoppedList?: ioBroker.InstanceObject[],
     ): Promise<DownloadPacketReturnObject> {
-        let url;
         if (!options || typeof options !== 'object') {
             options = {};
         }
 
         stoppedList = stoppedList || [];
-        let sources: Record<string, any>;
+        let sources: Record<string, ioBroker.RepositoryJsonAdapterContent>;
 
-        if (!repoUrl || !tools.isObject(repoUrl)) {
-            sources = await getRepository({ repoName: repoUrl, objects: this.objects });
+        if (!repoUrlOrRepo || !tools.isObject(repoUrlOrRepo)) {
+            sources = await getRepository({ repoName: repoUrlOrRepo, objects: this.objects });
         } else {
-            sources = repoUrl;
+            sources = repoUrlOrRepo;
         }
 
         if (options.stopDb && stoppedList.length) {
@@ -194,97 +193,54 @@ export class Install {
                 version = '';
             }
         }
-        options.packetName = packetName;
 
-        options.unsafePerm = sources[packetName]?.unsafePerm;
+        const source = sources[packetName];
+
+        if (!source) {
+            const errMessage = `Unknown packet name ${packetName}. Please install packages from outside the repository using "${tools.appNameLowerCase} url <url-or-package>"!`;
+            console.error(`host.${hostname} ${errMessage}`);
+            throw new IoBrokerError({
+                code: EXIT_CODES.UNKNOWN_PACKET_NAME,
+                message: errMessage,
+            });
+        }
+
+        options.packetName = packetName;
+        options.unsafePerm = source.unsafePerm;
 
         // Check if flag stopBeforeUpdate is true or on windows we stop because of issue #1436
-        if ((sources[packetName]?.stopBeforeUpdate || osPlatform === 'win32') && !stoppedList.length) {
+        if ((source.stopBeforeUpdate || osPlatform === 'win32') && !stoppedList.length) {
             stoppedList = await this._getInstancesOfAdapter(packetName);
             await this.enableInstances(stoppedList, false);
         }
 
-        // try to extract the information from local sources-dist.json
-        if (!sources[packetName]) {
-            try {
-                const sourcesDist = fs.readJsonSync(`${tools.getControllerDir()}/conf/sources-dist.json`);
-                sources[packetName] = sourcesDist[packetName];
-            } catch {
-                // OK
+        if (options.stopDb) {
+            if (this.objects.destroy) {
+                await this.objects.destroy();
+                console.log('Stopped Objects DB');
+            }
+            if (this.states.destroy) {
+                await this.states.destroy();
+                console.log('Stopped States DB');
             }
         }
 
-        if (sources[packetName]) {
-            url = sources[packetName].url;
+        // vendor packages could be scoped and thus differ in the package name
+        const npmPacketName = source.packetName
+            ? `${tools.appName.toLowerCase()}.${packetName}@npm:${source.packetName}`
+            : `${tools.appName.toLowerCase()}.${packetName}`;
 
-            if (
-                url &&
-                packetName === 'js-controller' &&
-                fs.pathExistsSync(
-                    `${tools.getControllerDir()}/../../node_modules/${tools.appName.toLowerCase()}.js-controller`,
-                )
-            ) {
-                url = null;
-            }
+        // Install node modules
+        await this._npmInstallWithCheck(`${npmPacketName}${version ? `@${version}` : ''}`, options, debug);
 
-            if (!url && packetName !== 'example') {
-                if (options.stopDb) {
-                    if (this.objects.destroy) {
-                        await this.objects.destroy();
-                        console.log('Stopped Objects DB');
-                    }
-                    if (this.states.destroy) {
-                        await this.states.destroy();
-                        console.log('Stopped States DB');
-                    }
-                }
-
-                // Install node modules
-                await this._npmInstallWithCheck(
-                    `${tools.appName.toLowerCase()}.${packetName}${version ? `@${version}` : ''}`,
-                    options,
-                    debug,
-                );
-
-                return { packetName, stoppedList };
-            } else if (url && url.match(this.tarballRegex)) {
-                if (options.stopDb) {
-                    if (this.objects.destroy) {
-                        await this.objects.destroy();
-                        console.log('Stopped Objects DB');
-                    }
-                    if (this.states.destroy) {
-                        await this.states.destroy();
-                        console.log('Stopped States DB');
-                    }
-                }
-
-                // Install node modules
-                await this._npmInstallWithCheck(url, options, debug);
-                return { packetName, stoppedList };
-            } else if (!url) {
-                // Adapter
-                console.warn(
-                    `host.${hostname} Adapter "${packetName}" can be updated only together with ${tools.appName.toLowerCase()}.js-controller`,
-                );
-                return { packetName, stoppedList };
-            }
-        }
-
-        console.error(
-            `host.${hostname} Unknown packet name ${packetName}. Please install packages from outside the repository using "${tools.appNameLowerCase} url <url-or-package>"!`,
-        );
-        throw new IoBrokerError({
-            code: EXIT_CODES.UNKNOWN_PACKET_NAME,
-            message: `Unknown packetName ${packetName}. Please install packages from outside the repository using npm!`,
-        });
+        return { packetName, stoppedList };
     }
 
     /**
      * Install npm module from url
      *
-     * @param npmUrl
-     * @param options
+     * @param npmUrl parameter passed to `npm install <npmUrl>`
+     * @param options additional packet download options
      * @param debug if debug output should be printed
      */
     private async _npmInstallWithCheck(
@@ -337,8 +293,8 @@ export class Install {
 
         try {
             return await this._npmInstall({ npmUrl, options, debug, isRetry: false });
-        } catch (err) {
-            console.error(`Could not install ${npmUrl}: ${err.message}`);
+        } catch (e) {
+            console.error(`Could not install ${npmUrl}: ${e.message}`);
         }
     }
 
@@ -379,7 +335,7 @@ export class Install {
         const { npmUrl, debug, isRetry } = installOptions;
         let { options } = installOptions;
 
-        if (typeof options !== 'object') {
+        if (!tools.isObject(options)) {
             options = {};
         }
 
