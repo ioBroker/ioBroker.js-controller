@@ -367,7 +367,7 @@ export class BackupRestore {
 
         console.log(`host.${hostname} Validating backup ...`);
         try {
-            await this._validateBackupAfterCreation();
+            await this._validateTempDirectory();
             console.log(`host.${hostname} The backup is valid!`);
 
             return await this._packBackup(name);
@@ -966,21 +966,29 @@ export class BackupRestore {
     }
 
     /**
-     * Validates the backup.json and all json files inside the backup after (in temporary directory), here we only abort if backup.json is corrupted
+     * Validates a JSONL-style backup and all json files inside the backup (in temporary directory)
      */
-    private async _validateBackupAfterCreation(): Promise<void> {
+    private async _validateTempDirectory(): Promise<void> {
         const backupBaseDir = path.join(this.tmpDir, 'backup');
         await fs.readJSON(path.join(backupBaseDir, 'config.json'));
+
+        console.log(`host.${this.hostname} "config.json" is valid`);
 
         if (!(await fs.pathExists(path.join(backupBaseDir, 'objects.jsonl')))) {
             throw new Error('Backup does not contain valid objects');
         }
 
+        console.log(`host.${this.hostname} "objects.jsonl" exists`);
+
         if (!(await fs.pathExists(path.join(backupBaseDir, 'states.jsonl')))) {
             throw new Error('Backup does not contain valid states');
         }
 
+        console.log(`host.${this.hostname} "states.jsonl" exists`);
+
         await this._validateDatabaseFiles();
+
+        console.log(`host.${this.hostname} JSONL lines are valid`);
 
         // we check all other json files, we assume them as optional, because user created files may be no valid json
         try {
@@ -1029,7 +1037,7 @@ export class BackupRestore {
      *
      * @param _name - index or name of the backup
      */
-    validateBackup(_name: string | number): Promise<void> | undefined {
+    async validateBackup(_name: string | number): Promise<void> {
         let backups;
         let name = typeof _name === 'number' ? _name.toString() : _name;
 
@@ -1090,64 +1098,65 @@ export class BackupRestore {
             fs.unlinkSync(`${this.tmpDir}/backup/backup.json`);
         }
 
-        return new Promise(resolve => {
-            tar.extract(
-                {
-                    file: name,
-                    cwd: this.tmpDir,
-                },
-                undefined,
-                err => {
-                    if (err) {
-                        console.error(`host.${this.hostname} Cannot extract from file "${name}": ${err.message}`);
-                        return void this.processExit(EXIT_CODES.INVALID_ARGUMENTS);
-                    }
-                    if (!fs.existsSync(`${this.tmpDir}/backup/backup.json`)) {
-                        console.error(
-                            `host.${this.hostname} Validation failed. Cannot find extracted file from file "${this.tmpDir}/backup/backup.json"`,
-                        );
-                        return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
-                    }
+        try {
+            await tar.extract({
+                file: name,
+                cwd: this.tmpDir,
+            });
+        } catch (e) {
+            console.error(`host.${this.hostname} Cannot extract from file "${name}": ${e.message}`);
+            return void this.processExit(EXIT_CODES.INVALID_ARGUMENTS);
+        }
 
-                    console.log(`host.${this.hostname} Starting validation ...`);
-                    let backupJSON;
-                    try {
-                        backupJSON = fs.readJSONSync(`${this.tmpDir}/backup/backup.json`);
-                    } catch (err) {
-                        console.error(
-                            `host.${this.hostname} Backup corrupted. Backup ${name} does not contain a valid backup.json file: ${err.message}`,
-                        );
-                        this.removeTempBackupDir();
+        try {
+            if (fs.existsSync(`${this.tmpDir}/backup/backup.json`)) {
+                this._validateLegacyTempDir();
+            } else {
+                await this._validateTempDirectory();
+            }
+        } catch (e) {
+            console.error(`host.${this.hostname} ${e.message}`);
 
-                        return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
-                    }
+            try {
+                this.removeTempBackupDir();
+            } catch (e) {
+                console.error(`host.${this.hostname} Cannot clear temporary backup directory: ${e.message}`);
+            }
 
-                    if (!backupJSON || !backupJSON.objects || !backupJSON.objects.length) {
-                        console.error(`host.${this.hostname} Backup corrupted. Backup does not contain valid objects`);
-                        try {
-                            this.removeTempBackupDir();
-                        } catch (e) {
-                            console.error(
-                                `host.${this.hostname} Cannot clear temporary backup directory: ${e.message}`,
-                            );
-                        }
-                        return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
-                    }
+            return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
+        }
 
-                    console.log(`host.${this.hostname} backup.json OK`);
+        try {
+            this.removeTempBackupDir();
+        } catch (e) {
+            console.error(`host.${this.hostname} Cannot clear temporary backup directory: ${e.message}`);
+            return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
+        }
+    }
 
-                    try {
-                        this._checkDirectory(`${this.tmpDir}/backup/files`, true);
-                        this.removeTempBackupDir();
+    /**
+     * Validate an unpacked legacy backup in the temporary directory
+     */
+    private _validateLegacyTempDir(): void {
+        console.log(`host.${this.hostname} Starting validation ...`);
+        let backupJSON;
+        try {
+            backupJSON = fs.readJSONSync(`${this.tmpDir}/backup/backup.json`);
+        } catch (e) {
+            throw new Error(`Backup corrupted. Backup does not contain a valid backup.json file: ${e.message}`);
+        }
 
-                        resolve();
-                    } catch (err) {
-                        console.error(`host.${this.hostname} Backup corrupted: ${err.message}`);
-                        return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
-                    }
-                },
-            );
-        });
+        if (!backupJSON || !backupJSON.objects || !backupJSON.objects.length) {
+            throw new Error(`host.${this.hostname} Backup corrupted. Backup does not contain valid objects`);
+        }
+
+        console.log(`host.${this.hostname} backup.json OK`);
+
+        try {
+            this._checkDirectory(`${this.tmpDir}/backup/files`, true);
+        } catch (e) {
+            throw new Error(`Backup corrupted: ${e.message}`);
+        }
     }
 
     /**
