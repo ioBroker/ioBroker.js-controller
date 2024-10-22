@@ -19,7 +19,9 @@ export interface UpgradeArguments {
     version: string;
     /** Admin instance which triggered the upgrade */
     adminInstance: number;
+    /** User id the process should run as */
     uid: number;
+    /** Group id the process should run as */
     gid: number;
 }
 
