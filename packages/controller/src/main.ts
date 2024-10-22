@@ -5859,9 +5859,6 @@ async function startUpgradeManager(options: UpgradeArguments): Promise<void> {
 
     const isSystemd = await tools.isIoBrokerInstalledAsSystemd();
 
-    logger.error(`${hostLogPrefix} ${process.getuid ? process.getuid().toString() : 'asfasfasfasf'}`);
-    logger.error(`${hostLogPrefix} ${process.getgid ? process.getgid().toString() : 'asfasfasfasf'}`);
-
     if (isSystemd) {
         upgradeProcess = spawn(
             'sudo',

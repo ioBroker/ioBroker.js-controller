@@ -101,6 +101,9 @@ class UpgradeManager {
         this.applyUser();
     }
 
+    /**
+     * To prevent commands (including npm) running as root, we apply the passed in gid and uid
+     */
     applyUser(): void {
         if (!process.setuid || !process.setgid) {
             const errMessage = 'Cannot ensure user and group ids on this system, because no POSIX platform';
