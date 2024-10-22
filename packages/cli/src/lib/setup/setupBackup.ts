@@ -1066,7 +1066,7 @@ export class BackupRestore {
             } else {
                 console.warn(`No backups found. Create a backup, using "${tools.appName} backup" first`);
             }
-            return void this.processExit(EXIT_CODES.INVALID_ARGUMENTS);
+            throw new IoBrokerError({ message: 'Backup not found', code: EXIT_CODES.INVALID_ARGUMENTS });
         }
         // If number
         if (parseInt(name, 10).toString() === name.toString()) {
@@ -1085,7 +1085,8 @@ export class BackupRestore {
                 } else {
                     console.log(`No existing backups. Create a backup, using "${tools.appName} backup" first`);
                 }
-                return void this.processExit(EXIT_CODES.INVALID_ARGUMENTS);
+
+                throw new IoBrokerError({ message: 'Backup not found', code: EXIT_CODES.INVALID_ARGUMENTS });
             }
             console.log(`host.${this.hostname} Using backup file ${name}`);
         }
@@ -1103,7 +1104,7 @@ export class BackupRestore {
         }
         if (!fs.existsSync(name)) {
             console.error(`host.${this.hostname} Cannot find ${name}`);
-            return void this.processExit(EXIT_CODES.INVALID_ARGUMENTS);
+            throw new IoBrokerError({ message: 'Backup not found', code: EXIT_CODES.INVALID_ARGUMENTS });
         }
 
         if (fs.existsSync(`${this.tmpDir}/backup/backup.json`)) {
@@ -1116,8 +1117,9 @@ export class BackupRestore {
                 cwd: this.tmpDir,
             });
         } catch (e) {
-            console.error(`host.${this.hostname} Cannot extract from file "${name}": ${e.message}`);
-            return void this.processExit(EXIT_CODES.INVALID_ARGUMENTS);
+            const errMessage = `Cannot extract from file "${name}": ${e.message}`;
+            console.error(`host.${this.hostname} ${errMessage}`);
+            throw new IoBrokerError({ message: 'Backup not found', code: EXIT_CODES.INVALID_ARGUMENTS });
         }
 
         try {
@@ -1135,14 +1137,14 @@ export class BackupRestore {
                 console.error(`host.${this.hostname} Cannot clear temporary backup directory: ${e.message}`);
             }
 
-            return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
+            throw new IoBrokerError({ message: e.message, code: EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP });
         }
 
         try {
             this.removeTempBackupDir();
         } catch (e) {
             console.error(`host.${this.hostname} Cannot clear temporary backup directory: ${e.message}`);
-            return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
+            throw new IoBrokerError({ message: e.message, code: EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP });
         }
     }
 
