@@ -2760,7 +2760,12 @@ async function processMessage(msg: ioBroker.SendableMessage): Promise<null | voi
             const { version, adminInstance } = msg.message;
 
             logger.info(`${hostLogPrefix} Controller will upgrade itself to version ${version}`);
-            await startUpgradeManager({ version, adminInstance });
+            await startUpgradeManager({
+                version,
+                adminInstance,
+                uid: process.getuid ? process.getuid() : 0,
+                gid: process.getgid ? process.getgid() : 0,
+            });
 
             if (msg.callback) {
                 sendTo(msg.from, msg.command, { result: true }, msg.callback);
@@ -5848,11 +5853,14 @@ async function upgradeOsPackages(packages: UpgradePacket[]): Promise<void> {
  * @param options Arguments passed to the UpgradeManager process
  */
 async function startUpgradeManager(options: UpgradeArguments): Promise<void> {
-    const { version, adminInstance } = options;
+    const { version, adminInstance, uid, gid } = options;
     const upgradeProcessPath = require.resolve('./lib/upgradeManager');
     let upgradeProcess: cp.ChildProcess;
 
     const isSystemd = await tools.isIoBrokerInstalledAsSystemd();
+
+    logger.error(`${hostLogPrefix} ${process.getuid ? process.getuid().toString() : 'asfasfasfasf'}`);
+    logger.error(`${hostLogPrefix} ${process.getgid ? process.getgid().toString() : 'asfasfasfasf'}`);
 
     if (isSystemd) {
         upgradeProcess = spawn(
@@ -5864,6 +5872,8 @@ async function startUpgradeManager(options: UpgradeArguments): Promise<void> {
                 upgradeProcessPath,
                 version,
                 adminInstance.toString(),
+                uid.toString(),
+                gid.toString(),
             ],
             {
                 detached: true,
