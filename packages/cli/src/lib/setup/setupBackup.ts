@@ -658,8 +658,14 @@ export class BackupRestore {
 
         const backupBaseDir = path.join(this.tmpDir, 'backup');
 
-        const config: ioBroker.IoBrokerJson = await fs.readJSON(path.join(backupBaseDir, 'config.json'));
-        const backupHostName = config.system?.hostname || hostname;
+        let backupHostName = hostname;
+        // Note: on backups created during migration no config exists
+        let config: ioBroker.IoBrokerJson | undefined;
+
+        if (await fs.pathExists(path.join(backupBaseDir, 'config.json'))) {
+            config = (await fs.readJSON(path.join(backupBaseDir, 'config.json'))) as ioBroker.IoBrokerJson;
+            backupHostName = config.system?.hostname || hostname;
+        }
 
         // we need to find the host obj for the compatibility check
         const objFd = await open(path.join(backupBaseDir, 'objects.jsonl'));
@@ -692,8 +698,10 @@ export class BackupRestore {
         }
 
         // restore ioBroker.json
-        fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(config, null, 2));
-        await this.connectToNewDatabase(config);
+        if (config) {
+            fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(config, null, 2));
+            await this.connectToNewDatabase(config);
+        }
 
         console.log(`host.${hostname} Clear all objects and states...`);
         await this.cleanDatabase(false);
@@ -746,7 +754,7 @@ export class BackupRestore {
         const { force, restartOnFinish, dontDeleteAdapters } = options;
 
         const backupBaseDir = path.join(this.tmpDir, 'backup');
-        const isJsonl = await fs.pathExists(path.join(backupBaseDir, 'config.json'));
+        const isJsonl = await fs.pathExists(path.join(backupBaseDir, 'objects.jsonl'));
 
         if (isJsonl) {
             const exitCode = await this._restoreJsonlBackup(options);
@@ -1113,7 +1121,7 @@ export class BackupRestore {
         }
 
         try {
-            if (fs.existsSync(`${this.tmpDir}/backup/backup.json`)) {
+            if (fs.existsSync(path.join(this.tmpDir, 'backup', 'backup.json'))) {
                 this._validateLegacyTempDir();
             } else {
                 await this._validateTempDirectory();
@@ -1280,10 +1288,10 @@ export class BackupRestore {
 
         if (
             !(await fs.pathExists(path.join(backupBasePath, 'backup.json'))) &&
-            !(await fs.pathExists(path.join(backupBasePath, 'config.json')))
+            !(await fs.pathExists(path.join(backupBasePath, 'objects.jsonl')))
         ) {
             console.error(
-                `host.${this.hostname} Cannot find extracted file "${path.join(backupBasePath, 'backup.json')}" or "${path.join(backupBasePath, 'config.json')}"`,
+                `host.${this.hostname} Cannot find extracted file "${path.join(backupBasePath, 'backup.json')}" or "${path.join(backupBasePath, 'objects.jsonl')}"`,
             );
             return { exitCode: EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP, objects: this.objects, states: this.states };
         }
