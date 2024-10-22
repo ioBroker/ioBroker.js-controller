@@ -581,10 +581,16 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         // expect(found).to.be.true;
 
-        const name = Math.round(Math.random() * 10000).toString();
+        const name = Math.round(Math.random() * 10_000).toString();
         res = await execAsync(`"${process.execPath}" "${iobExecutable}" backup ${name}`);
         expect(res.stderr).to.be.not.ok;
         expect(fs.existsSync(`${BackupRestore.getBackupDir() + name}.tar.gz`)).to.be.true;
+    }).timeout(20_000);
+
+    it(`${testName}validates backup`, async () => {
+        const res = await execAsync(`"${process.execPath}" "${iobExecutable}" validate 0`);
+        expect(res.stderr).to.be.not.ok;
+        expect(res.stdout).to.include('Backup OK');
     }).timeout(20_000);
 
     // list l
