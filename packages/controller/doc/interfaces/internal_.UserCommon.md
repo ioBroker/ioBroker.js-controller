@@ -39,7 +39,7 @@ Color attribute used in UI
 
 #### Defined in
 
-[types-dev/objects.d.ts:179](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L179)
+[types-dev/objects.d.ts:179](https://github.com/ioBroker/ioBroker.js-controller/blob/610f8794837c90e96c314dec3a8f4af930e84d94/packages/types-dev/objects.d.ts#L179)
 
 ___
 
@@ -49,7 +49,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:437](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L437)
+[types-dev/objects.d.ts:437](https://github.com/ioBroker/ioBroker.js-controller/blob/610f8794837c90e96c314dec3a8f4af930e84d94/packages/types-dev/objects.d.ts#L437)
 
 ___
 
@@ -65,7 +65,7 @@ Description of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:171](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L171)
+[types-dev/objects.d.ts:171](https://github.com/ioBroker/ioBroker.js-controller/blob/610f8794837c90e96c314dec3a8f4af930e84d94/packages/types-dev/objects.d.ts#L171)
 
 ___
 
@@ -81,7 +81,7 @@ When set to true, this object may not be deleted
 
 #### Defined in
 
-[types-dev/objects.d.ts:174](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L174)
+[types-dev/objects.d.ts:174](https://github.com/ioBroker/ioBroker.js-controller/blob/610f8794837c90e96c314dec3a8f4af930e84d94/packages/types-dev/objects.d.ts#L174)
 
 ___
 
@@ -93,7 +93,7 @@ Whether this user is enabled
 
 #### Defined in
 
-[types-dev/objects.d.ts:434](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L434)
+[types-dev/objects.d.ts:434](https://github.com/ioBroker/ioBroker.js-controller/blob/610f8794837c90e96c314dec3a8f4af930e84d94/packages/types-dev/objects.d.ts#L434)
 
 ___
 
@@ -109,7 +109,7 @@ When set to true, this object is only visible when expert mode is turned on in a
 
 #### Defined in
 
-[types-dev/objects.d.ts:177](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L177)
+[types-dev/objects.d.ts:177](https://github.com/ioBroker/ioBroker.js-controller/blob/610f8794837c90e96c314dec3a8f4af930e84d94/packages/types-dev/objects.d.ts#L177)
 
 ___
 
@@ -125,7 +125,7 @@ Icon for this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:184](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L184)
+[types-dev/objects.d.ts:184](https://github.com/ioBroker/ioBroker.js-controller/blob/610f8794837c90e96c314dec3a8f4af930e84d94/packages/types-dev/objects.d.ts#L184)
 
 ___
 
@@ -141,7 +141,7 @@ The username
 
 #### Defined in
 
-[types-dev/objects.d.ts:430](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L430)
+[types-dev/objects.d.ts:430](https://github.com/ioBroker/ioBroker.js-controller/blob/610f8794837c90e96c314dec3a8f4af930e84d94/packages/types-dev/objects.d.ts#L430)
 
 ___
 
@@ -153,7 +153,7 @@ The hashed password
 
 #### Defined in
 
-[types-dev/objects.d.ts:432](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L432)
+[types-dev/objects.d.ts:432](https://github.com/ioBroker/ioBroker.js-controller/blob/610f8794837c90e96c314dec3a8f4af930e84d94/packages/types-dev/objects.d.ts#L432)
 
 ___
 
@@ -169,4 +169,4 @@ role of the object
 
 #### Defined in
 
-[types-dev/objects.d.ts:186](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L186)
+[types-dev/objects.d.ts:186](https://github.com/ioBroker/ioBroker.js-controller/blob/610f8794837c90e96c314dec3a8f4af930e84d94/packages/types-dev/objects.d.ts#L186)
