@@ -90,6 +90,8 @@ export class BackupRestore {
     private readonly HOSTNAME_PLACEHOLDER_REPLACE = '$$$$__hostname__$$$$';
     /** Regex to replace all occurrences of the HOSTNAME_PLACEHOLDER */
     private readonly HOSTNAME_PLACEHOLDER_REGEX = /\$\$__hostname__\$\$/g;
+    /** Postfix for backup name */
+    private readonly BACKUP_POSTFIX = `_backup${tools.appName}`;
 
     constructor(options: CLIBackupRestoreOptions) {
         options = options || {};
@@ -261,7 +263,9 @@ export class BackupRestore {
             const d = new Date();
             name = `${d.getFullYear()}_${`0${d.getMonth() + 1}`.slice(-2)}_${`0${d.getDate()}`.slice(-2)}-${`0${d.getHours()}`.slice(
                 -2,
-            )}_${`0${d.getMinutes()}`.slice(-2)}_${`0${d.getSeconds()}`.slice(-2)}_backup${tools.appName}`;
+            )}_${`0${d.getMinutes()}`.slice(-2)}_${`0${d.getSeconds()}`.slice(-2)}${this.BACKUP_POSTFIX}`;
+        } else if (!name.endsWith(this.BACKUP_POSTFIX) && !name.endsWith(`${this.BACKUP_POSTFIX}.tar.gz`)) {
+            name += this.BACKUP_POSTFIX;
         }
 
         name = name.toString().replace(/\\/g, '/');
@@ -1061,7 +1065,7 @@ export class BackupRestore {
                 console.log('Please specify one of the backup names:');
 
                 for (const t in backups) {
-                    console.log(`${backups[t]} or ${backups[t].replace(`_backup${tools.appName}.tar.gz`, '')} or ${t}`);
+                    console.log(`${backups[t]} or ${backups[t].replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${t}`);
                 }
             } else {
                 console.warn(`No backups found. Create a backup, using "${tools.appName} backup" first`);
@@ -1079,7 +1083,7 @@ export class BackupRestore {
                     console.log('Please specify one of the backup names:');
                     for (const t in backups) {
                         console.log(
-                            `${backups[t]} or ${backups[t].replace(`_backup${tools.appName}.tar.gz`, '')} or ${t}`,
+                            `${backups[t]} or ${backups[t].replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${t}`,
                         );
                     }
                 } else {
@@ -1094,9 +1098,9 @@ export class BackupRestore {
         name = name.toString().replace(/\\/g, '/');
         if (!name.includes('/')) {
             name = BackupRestore.getBackupDir() + name;
-            const regEx = new RegExp(`_backup${tools.appName}`, 'i');
+            const regEx = new RegExp(this.BACKUP_POSTFIX, 'i');
             if (!regEx.test(name)) {
-                name += `_backup${tools.appName}`;
+                name += this.BACKUP_POSTFIX;
             }
             if (!name.match(/\.tar\.gz$/i)) {
                 name += '.tar.gz';
@@ -1222,7 +1226,7 @@ export class BackupRestore {
             backups.sort((a, b) => (b > a ? 1 : b === a ? 0 : -1));
             if (backups.length) {
                 backups.forEach((backup, i) =>
-                    console.log(`${backup} or ${backup.replace(`_backup${tools.appName}.tar.gz`, '')} or ${i}`),
+                    console.log(`${backup} or ${backup.replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${i}`),
                 );
             } else {
                 console.warn('No backups found');
@@ -1247,7 +1251,7 @@ export class BackupRestore {
                 if (backups.length) {
                     console.log('Please specify one of the backup names:');
                     backups.forEach((backup, i) =>
-                        console.log(`${backup} or ${backup.replace(`_backup${tools.appName}.tar.gz`, '')} or ${i}`),
+                        console.log(`${backup} or ${backup.replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${i}`),
                     );
                 }
             } else {
@@ -1258,9 +1262,9 @@ export class BackupRestore {
         name = name.toString().replace(/\\/g, '/');
         if (!name.includes('/')) {
             name = BackupRestore.getBackupDir() + name;
-            const regEx = new RegExp(`_backup${tools.appName}`, 'i');
+            const regEx = new RegExp(this.BACKUP_POSTFIX, 'i');
             if (!regEx.test(name)) {
-                name += `_backup${tools.appName}`;
+                name += this.BACKUP_POSTFIX;
             }
             if (!name.match(/\.tar\.gz$/i)) {
                 name += '.tar.gz';
