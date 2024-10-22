@@ -91,7 +91,7 @@ export class BackupRestore {
     /** Regex to replace all occurrences of the HOSTNAME_PLACEHOLDER */
     private readonly HOSTNAME_PLACEHOLDER_REGEX = /\$\$__hostname__\$\$/g;
     /** Postfix for backup name */
-    private readonly BACKUP_POSTFIX = `_backup${tools.appName}`;
+    private readonly BACKUP_POSTFIX = `_backup${tools.appNameLowerCase}`;
 
     constructor(options: CLIBackupRestoreOptions) {
         options = options || {};
