@@ -581,7 +581,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         // expect(found).to.be.true;
 
-        const name = Math.round(Math.random() * 10_000).toString();
+        const name = `${Math.round(Math.random() * 10_000).toString()}iob`;
         res = await execAsync(`"${process.execPath}" "${iobExecutable}" backup ${name}`);
         expect(res.stderr).to.be.not.ok;
         expect(fs.existsSync(`${BackupRestore.getBackupDir() + name}.tar.gz`)).to.be.true;
