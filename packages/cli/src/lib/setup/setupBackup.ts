@@ -256,7 +256,7 @@ export class BackupRestore {
      * @param name - name of the backup
      * @param noConfig - do not store configs (used by setup custom migration)
      */
-    async createBackup(name: string, noConfig?: boolean): Promise<string> {
+    async createBackup(name: string, noConfig = false): Promise<string> {
         if (!name) {
             const d = new Date();
             name = `${d.getFullYear()}_${`0${d.getMonth() + 1}`.slice(-2)}_${`0${d.getDate()}`.slice(-2)}-${`0${d.getHours()}`.slice(
@@ -367,7 +367,7 @@ export class BackupRestore {
 
         console.log(`host.${hostname} Validating backup ...`);
         try {
-            await this._validateTempDirectory();
+            await this._validateTempDirectory(noConfig);
             console.log(`host.${hostname} The backup is valid!`);
 
             return await this._packBackup(name);
@@ -967,12 +967,16 @@ export class BackupRestore {
 
     /**
      * Validates a JSONL-style backup and all json files inside the backup (in temporary directory)
+     *
+     * @param noConfig if the backup does not contain a `config.json` (used by setup custom migration)
      */
-    private async _validateTempDirectory(): Promise<void> {
+    private async _validateTempDirectory(noConfig = false): Promise<void> {
         const backupBaseDir = path.join(this.tmpDir, 'backup');
-        await fs.readJSON(path.join(backupBaseDir, 'config.json'));
 
-        console.log(`host.${this.hostname} "config.json" is valid`);
+        if (!noConfig) {
+            await fs.readJSON(path.join(backupBaseDir, 'config.json'));
+            console.log(`host.${this.hostname} "config.json" is valid`);
+        }
 
         if (!(await fs.pathExists(path.join(backupBaseDir, 'objects.jsonl')))) {
             throw new Error('Backup does not contain valid objects');

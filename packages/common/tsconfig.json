@@ -1,6 +1,8 @@
 {
   "extends": "../../tsconfig.json",
   "compilerOptions": {
+    // we migrated this package to have stricter checks
+    "noUncheckedIndexedAccess": true,
     "outDir": "build/esm",
     "module": "NodeNext",
     "rootDir": "src",
