@@ -11,12 +11,18 @@ import fs from 'fs-extra';
 import type { Socket } from 'node:net';
 import type { Duplex } from 'node:stream';
 import url from 'node:url';
+import process from 'node:process';
 
+/** The upgrade arguments provided to the constructor of the UpgradeManager */
 export interface UpgradeArguments {
     /** Version of controller to upgrade too */
     version: string;
     /** Admin instance which triggered the upgrade */
     adminInstance: number;
+    /** User id the process should run as */
+    uid: number;
+    /** Group id the process should run as */
+    gid: number;
 }
 
 interface Certificates {
@@ -63,6 +69,10 @@ class UpgradeManager {
     private readonly adminInstance: number;
     /** Desired controller version */
     private readonly version: string;
+    /** Group id the process should run as */
+    private readonly gid: number;
+    /** User id the process should run as */
+    private readonly uid: number;
     /** Response send by webserver */
     private readonly response: ServerResponse = {
         running: true,
@@ -85,6 +95,30 @@ class UpgradeManager {
         this.adminInstance = args.adminInstance;
         this.version = args.version;
         this.logger = this.setupLogger();
+        this.gid = args.gid;
+        this.uid = args.uid;
+
+        this.applyUser();
+    }
+
+    /**
+     * To prevent commands (including npm) running as root, we apply the passed in gid and uid
+     */
+    private applyUser(): void {
+        if (!process.setuid || !process.setgid) {
+            const errMessage = 'Cannot ensure user and group ids on this system, because no POSIX platform';
+            this.log(errMessage, true);
+            throw new Error(errMessage);
+        }
+
+        try {
+            process.setgid(this.gid);
+            process.setuid(this.uid);
+        } catch (e) {
+            const errMessage = `Could not ensure user and group ids on this system: ${e.message}`;
+            this.log(errMessage, true);
+            throw new Error(errMessage);
+        }
     }
 
     /**
@@ -103,6 +137,8 @@ class UpgradeManager {
 
         const version = additionalArgs[0];
         const adminInstance = parseInt(additionalArgs[1]);
+        const uid = parseInt(additionalArgs[2]);
+        const gid = parseInt(additionalArgs[3]);
 
         const isValid = !!valid(version);
 
@@ -116,7 +152,17 @@ class UpgradeManager {
             throw new Error('Please provide a valid admin instance');
         }
 
-        return { version, adminInstance };
+        if (isNaN(uid)) {
+            UpgradeManager.printUsage();
+            throw new Error('Please provide a valid uid');
+        }
+
+        if (isNaN(gid)) {
+            UpgradeManager.printUsage();
+            throw new Error('Please provide a valid gid');
+        }
+
+        return { version, adminInstance, uid, gid };
     }
 
     /**
@@ -163,7 +209,7 @@ class UpgradeManager {
      * Print how the module should be used
      */
     static printUsage(): void {
-        console.info('Example usage: "node upgradeManager.js <version> <adminInstance>"');
+        console.info('Example usage: "node upgradeManager.js <version> <adminInstance> <uid> <gid>"');
     }
 
     /**
