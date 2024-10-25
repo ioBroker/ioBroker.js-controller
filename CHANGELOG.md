@@ -6,6 +6,7 @@
 
 ## __WORK IN PROGRESS__ - Lucy
 * (@foxriver76) the UI upgrade now runs as the same user as the js-controller
+* (@foxriver76) fixed `iob validate` command and `setup custom` migration
 
 ## 7.0.1 (2024-10-21) - Lucy
 * (@foxriver76) fixed crash case on database migration
