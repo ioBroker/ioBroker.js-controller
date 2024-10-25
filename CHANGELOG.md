@@ -4,6 +4,9 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (@foxriver76) fixed `iob validate` command and `setup custom` migration
+
 ## 7.0.1 (2024-10-21) - Lucy
 * (@foxriver76) fixed crash case on database migration
 * (@foxriver76) fixed edge case crash cases if notifications are processed nearly simultaneously

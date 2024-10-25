@@ -90,6 +90,8 @@ export class BackupRestore {
     private readonly HOSTNAME_PLACEHOLDER_REPLACE = '$$$$__hostname__$$$$';
     /** Regex to replace all occurrences of the HOSTNAME_PLACEHOLDER */
     private readonly HOSTNAME_PLACEHOLDER_REGEX = /\$\$__hostname__\$\$/g;
+    /** Postfix for backup name */
+    private readonly BACKUP_POSTFIX = `_backup${tools.appNameLowerCase}`;
 
     constructor(options: CLIBackupRestoreOptions) {
         options = options || {};
@@ -261,7 +263,9 @@ export class BackupRestore {
             const d = new Date();
             name = `${d.getFullYear()}_${`0${d.getMonth() + 1}`.slice(-2)}_${`0${d.getDate()}`.slice(-2)}-${`0${d.getHours()}`.slice(
                 -2,
-            )}_${`0${d.getMinutes()}`.slice(-2)}_${`0${d.getSeconds()}`.slice(-2)}_backup${tools.appName}`;
+            )}_${`0${d.getMinutes()}`.slice(-2)}_${`0${d.getSeconds()}`.slice(-2)}${this.BACKUP_POSTFIX}`;
+        } else if (!name.endsWith(this.BACKUP_POSTFIX) && !name.endsWith(`${this.BACKUP_POSTFIX}.tar.gz`)) {
+            name += this.BACKUP_POSTFIX;
         }
 
         name = name.toString().replace(/\\/g, '/');
@@ -367,7 +371,7 @@ export class BackupRestore {
 
         console.log(`host.${hostname} Validating backup ...`);
         try {
-            await this._validateBackupAfterCreation(noConfig);
+            await this._validateTempDirectory(noConfig);
             console.log(`host.${hostname} The backup is valid!`);
 
             return await this._packBackup(name);
@@ -658,8 +662,14 @@ export class BackupRestore {
 
         const backupBaseDir = path.join(this.tmpDir, 'backup');
 
-        const config: ioBroker.IoBrokerJson = await fs.readJSON(path.join(backupBaseDir, 'config.json'));
-        const backupHostName = config.system?.hostname || hostname;
+        let backupHostName = hostname;
+        // Note: on backups created during migration no config exists
+        let config: ioBroker.IoBrokerJson | undefined;
+
+        if (await fs.pathExists(path.join(backupBaseDir, 'config.json'))) {
+            config = (await fs.readJSON(path.join(backupBaseDir, 'config.json'))) as ioBroker.IoBrokerJson;
+            backupHostName = config.system?.hostname || hostname;
+        }
 
         // we need to find the host obj for the compatibility check
         const objFd = await open(path.join(backupBaseDir, 'objects.jsonl'));
@@ -692,8 +702,10 @@ export class BackupRestore {
         }
 
         // restore ioBroker.json
-        fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(config, null, 2));
-        await this.connectToNewDatabase(config);
+        if (config) {
+            fs.writeFileSync(tools.getConfigFileName(), JSON.stringify(config, null, 2));
+            await this.connectToNewDatabase(config);
+        }
 
         console.log(`host.${hostname} Clear all objects and states...`);
         await this.cleanDatabase(false);
@@ -746,7 +758,7 @@ export class BackupRestore {
         const { force, restartOnFinish, dontDeleteAdapters } = options;
 
         const backupBaseDir = path.join(this.tmpDir, 'backup');
-        const isJsonl = await fs.pathExists(path.join(backupBaseDir, 'config.json'));
+        const isJsonl = await fs.pathExists(path.join(backupBaseDir, 'objects.jsonl'));
 
         if (isJsonl) {
             const exitCode = await this._restoreJsonlBackup(options);
@@ -966,26 +978,33 @@ export class BackupRestore {
     }
 
     /**
-     * Validates the backup.json and all json files inside the backup after (in temporary directory), here we only abort if backup.json is corrupted
+     * Validates a JSONL-style backup and all json files inside the backup (in temporary directory)
      *
      * @param noConfig if the backup does not contain a `config.json` (used by setup custom migration)
      */
-    private async _validateBackupAfterCreation(noConfig = false): Promise<void> {
+    private async _validateTempDirectory(noConfig = false): Promise<void> {
         const backupBaseDir = path.join(this.tmpDir, 'backup');
 
         if (!noConfig) {
             await fs.readJSON(path.join(backupBaseDir, 'config.json'));
+            console.log(`host.${this.hostname} "config.json" is valid`);
         }
 
         if (!(await fs.pathExists(path.join(backupBaseDir, 'objects.jsonl')))) {
             throw new Error('Backup does not contain valid objects');
         }
 
+        console.log(`host.${this.hostname} "objects.jsonl" exists`);
+
         if (!(await fs.pathExists(path.join(backupBaseDir, 'states.jsonl')))) {
             throw new Error('Backup does not contain valid states');
         }
 
+        console.log(`host.${this.hostname} "states.jsonl" exists`);
+
         await this._validateDatabaseFiles();
+
+        console.log(`host.${this.hostname} JSONL lines are valid`);
 
         // we check all other json files, we assume them as optional, because user created files may be no valid json
         try {
@@ -1034,7 +1053,7 @@ export class BackupRestore {
      *
      * @param _name - index or name of the backup
      */
-    validateBackup(_name: string | number): Promise<void> | undefined {
+    async validateBackup(_name: string | number): Promise<void> {
         let backups;
         let name = typeof _name === 'number' ? _name.toString() : _name;
 
@@ -1046,12 +1065,12 @@ export class BackupRestore {
                 console.log('Please specify one of the backup names:');
 
                 for (const t in backups) {
-                    console.log(`${backups[t]} or ${backups[t].replace(`_backup${tools.appName}.tar.gz`, '')} or ${t}`);
+                    console.log(`${backups[t]} or ${backups[t].replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${t}`);
                 }
             } else {
                 console.warn(`No backups found. Create a backup, using "${tools.appName} backup" first`);
             }
-            return void this.processExit(EXIT_CODES.INVALID_ARGUMENTS);
+            throw new IoBrokerError({ message: 'Backup not found', code: EXIT_CODES.INVALID_ARGUMENTS });
         }
         // If number
         if (parseInt(name, 10).toString() === name.toString()) {
@@ -1064,13 +1083,14 @@ export class BackupRestore {
                     console.log('Please specify one of the backup names:');
                     for (const t in backups) {
                         console.log(
-                            `${backups[t]} or ${backups[t].replace(`_backup${tools.appName}.tar.gz`, '')} or ${t}`,
+                            `${backups[t]} or ${backups[t].replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${t}`,
                         );
                     }
                 } else {
                     console.log(`No existing backups. Create a backup, using "${tools.appName} backup" first`);
                 }
-                return void this.processExit(EXIT_CODES.INVALID_ARGUMENTS);
+
+                throw new IoBrokerError({ message: 'Backup not found', code: EXIT_CODES.INVALID_ARGUMENTS });
             }
             console.log(`host.${this.hostname} Using backup file ${name}`);
         }
@@ -1078,9 +1098,9 @@ export class BackupRestore {
         name = name.toString().replace(/\\/g, '/');
         if (!name.includes('/')) {
             name = BackupRestore.getBackupDir() + name;
-            const regEx = new RegExp(`_backup${tools.appName}`, 'i');
+            const regEx = new RegExp(this.BACKUP_POSTFIX, 'i');
             if (!regEx.test(name)) {
-                name += `_backup${tools.appName}`;
+                name += this.BACKUP_POSTFIX;
             }
             if (!name.match(/\.tar\.gz$/i)) {
                 name += '.tar.gz';
@@ -1088,71 +1108,73 @@ export class BackupRestore {
         }
         if (!fs.existsSync(name)) {
             console.error(`host.${this.hostname} Cannot find ${name}`);
-            return void this.processExit(EXIT_CODES.INVALID_ARGUMENTS);
+            throw new IoBrokerError({ message: 'Backup not found', code: EXIT_CODES.INVALID_ARGUMENTS });
         }
 
         if (fs.existsSync(`${this.tmpDir}/backup/backup.json`)) {
             fs.unlinkSync(`${this.tmpDir}/backup/backup.json`);
         }
 
-        return new Promise(resolve => {
-            tar.extract(
-                {
-                    file: name,
-                    cwd: this.tmpDir,
-                },
-                undefined,
-                err => {
-                    if (err) {
-                        console.error(`host.${this.hostname} Cannot extract from file "${name}": ${err.message}`);
-                        return void this.processExit(EXIT_CODES.INVALID_ARGUMENTS);
-                    }
-                    if (!fs.existsSync(`${this.tmpDir}/backup/backup.json`)) {
-                        console.error(
-                            `host.${this.hostname} Validation failed. Cannot find extracted file from file "${this.tmpDir}/backup/backup.json"`,
-                        );
-                        return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
-                    }
+        try {
+            await tar.extract({
+                file: name,
+                cwd: this.tmpDir,
+            });
+        } catch (e) {
+            const errMessage = `Cannot extract from file "${name}": ${e.message}`;
+            console.error(`host.${this.hostname} ${errMessage}`);
+            throw new IoBrokerError({ message: 'Backup not found', code: EXIT_CODES.INVALID_ARGUMENTS });
+        }
 
-                    console.log(`host.${this.hostname} Starting validation ...`);
-                    let backupJSON;
-                    try {
-                        backupJSON = fs.readJSONSync(`${this.tmpDir}/backup/backup.json`);
-                    } catch (err) {
-                        console.error(
-                            `host.${this.hostname} Backup corrupted. Backup ${name} does not contain a valid backup.json file: ${err.message}`,
-                        );
-                        this.removeTempBackupDir();
+        try {
+            if (fs.existsSync(path.join(this.tmpDir, 'backup', 'backup.json'))) {
+                this._validateLegacyTempDir();
+            } else {
+                await this._validateTempDirectory();
+            }
+        } catch (e) {
+            console.error(`host.${this.hostname} ${e.message}`);
 
-                        return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
-                    }
+            try {
+                this.removeTempBackupDir();
+            } catch (e) {
+                console.error(`host.${this.hostname} Cannot clear temporary backup directory: ${e.message}`);
+            }
 
-                    if (!backupJSON || !backupJSON.objects || !backupJSON.objects.length) {
-                        console.error(`host.${this.hostname} Backup corrupted. Backup does not contain valid objects`);
-                        try {
-                            this.removeTempBackupDir();
-                        } catch (e) {
-                            console.error(
-                                `host.${this.hostname} Cannot clear temporary backup directory: ${e.message}`,
-                            );
-                        }
-                        return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
-                    }
+            throw new IoBrokerError({ message: e.message, code: EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP });
+        }
 
-                    console.log(`host.${this.hostname} backup.json OK`);
+        try {
+            this.removeTempBackupDir();
+        } catch (e) {
+            console.error(`host.${this.hostname} Cannot clear temporary backup directory: ${e.message}`);
+            throw new IoBrokerError({ message: e.message, code: EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP });
+        }
+    }
 
-                    try {
-                        this._checkDirectory(`${this.tmpDir}/backup/files`, true);
-                        this.removeTempBackupDir();
+    /**
+     * Validate an unpacked legacy backup in the temporary directory
+     */
+    private _validateLegacyTempDir(): void {
+        console.log(`host.${this.hostname} Starting validation ...`);
+        let backupJSON;
+        try {
+            backupJSON = fs.readJSONSync(`${this.tmpDir}/backup/backup.json`);
+        } catch (e) {
+            throw new Error(`Backup corrupted. Backup does not contain a valid backup.json file: ${e.message}`);
+        }
 
-                        resolve();
-                    } catch (err) {
-                        console.error(`host.${this.hostname} Backup corrupted: ${err.message}`);
-                        return void this.processExit(EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP);
-                    }
-                },
-            );
-        });
+        if (!backupJSON || !backupJSON.objects || !backupJSON.objects.length) {
+            throw new Error(`host.${this.hostname} Backup corrupted. Backup does not contain valid objects`);
+        }
+
+        console.log(`host.${this.hostname} backup.json OK`);
+
+        try {
+            this._checkDirectory(`${this.tmpDir}/backup/files`, true);
+        } catch (e) {
+            throw new Error(`Backup corrupted: ${e.message}`);
+        }
     }
 
     /**
@@ -1204,7 +1226,7 @@ export class BackupRestore {
             backups.sort((a, b) => (b > a ? 1 : b === a ? 0 : -1));
             if (backups.length) {
                 backups.forEach((backup, i) =>
-                    console.log(`${backup} or ${backup.replace(`_backup${tools.appName}.tar.gz`, '')} or ${i}`),
+                    console.log(`${backup} or ${backup.replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${i}`),
                 );
             } else {
                 console.warn('No backups found');
@@ -1229,7 +1251,7 @@ export class BackupRestore {
                 if (backups.length) {
                     console.log('Please specify one of the backup names:');
                     backups.forEach((backup, i) =>
-                        console.log(`${backup} or ${backup.replace(`_backup${tools.appName}.tar.gz`, '')} or ${i}`),
+                        console.log(`${backup} or ${backup.replace(`${this.BACKUP_POSTFIX}.tar.gz`, '')} or ${i}`),
                     );
                 }
             } else {
@@ -1240,9 +1262,9 @@ export class BackupRestore {
         name = name.toString().replace(/\\/g, '/');
         if (!name.includes('/')) {
             name = BackupRestore.getBackupDir() + name;
-            const regEx = new RegExp(`_backup${tools.appName}`, 'i');
+            const regEx = new RegExp(this.BACKUP_POSTFIX, 'i');
             if (!regEx.test(name)) {
-                name += `_backup${tools.appName}`;
+                name += this.BACKUP_POSTFIX;
             }
             if (!name.match(/\.tar\.gz$/i)) {
                 name += '.tar.gz';
@@ -1272,10 +1294,10 @@ export class BackupRestore {
 
         if (
             !(await fs.pathExists(path.join(backupBasePath, 'backup.json'))) &&
-            !(await fs.pathExists(path.join(backupBasePath, 'config.json')))
+            !(await fs.pathExists(path.join(backupBasePath, 'objects.jsonl')))
         ) {
             console.error(
-                `host.${this.hostname} Cannot find extracted file "${path.join(backupBasePath, 'backup.json')}" or "${path.join(backupBasePath, 'config.json')}"`,
+                `host.${this.hostname} Cannot find extracted file "${path.join(backupBasePath, 'backup.json')}" or "${path.join(backupBasePath, 'objects.jsonl')}"`,
             );
             return { exitCode: EXIT_CODES.CANNOT_EXTRACT_FROM_ZIP, objects: this.objects, states: this.states };
         }

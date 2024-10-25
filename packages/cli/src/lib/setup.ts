@@ -1328,9 +1328,9 @@ async function processCommand(
                     await backup.validateBackup(name);
                     console.log('Backup OK');
                     return void exitApplicationSave(0);
-                } catch (err) {
-                    console.log(`Backup check failed: ${err.message}`);
-                    return void exitApplicationSave(1);
+                } catch (e) {
+                    console.log(`Backup check failed: ${e.message}`);
+                    return void exitApplicationSave(e instanceof IoBrokerError ? e.code : 1);
                 }
             });
             break;
