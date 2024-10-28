@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__ - Lucy
+## 7.0.2 (2024-10-28) - Lucy
 * (@foxriver76) the UI upgrade now runs as the same user as the js-controller
 * (@foxriver76) fixed `iob validate` command and `setup custom` migration
 
