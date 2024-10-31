@@ -26,4 +26,4 @@ Information about the repository: creation time, name, is it stable
 
 #### Defined in
 
-[types-dev/objects.d.ts:1017](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L1017)
+[types-dev/objects.d.ts:1017](https://github.com/ioBroker/ioBroker.js-controller/blob/a0d19f0c12f79a792741858b32ef9d3886c117c5/packages/types-dev/objects.d.ts#L1017)

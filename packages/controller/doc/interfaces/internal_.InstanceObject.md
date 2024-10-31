@@ -46,7 +46,7 @@ The ID of this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:1048](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L1048)
+[types-dev/objects.d.ts:1048](https://github.com/ioBroker/ioBroker.js-controller/blob/a0d19f0c12f79a792741858b32ef9d3886c117c5/packages/types-dev/objects.d.ts#L1048)
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:908](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L908)
+[types-dev/objects.d.ts:908](https://github.com/ioBroker/ioBroker.js-controller/blob/a0d19f0c12f79a792741858b32ef9d3886c117c5/packages/types-dev/objects.d.ts#L908)
 
 ___
 
@@ -74,7 +74,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:1050](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L1050)
+[types-dev/objects.d.ts:1050](https://github.com/ioBroker/ioBroker.js-controller/blob/a0d19f0c12f79a792741858b32ef9d3886c117c5/packages/types-dev/objects.d.ts#L1050)
 
 ___
 
@@ -90,7 +90,7 @@ Omit.encryptedNative
 
 #### Defined in
 
-[types-dev/objects.d.ts:1108](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L1108)
+[types-dev/objects.d.ts:1108](https://github.com/ioBroker/ioBroker.js-controller/blob/a0d19f0c12f79a792741858b32ef9d3886c117c5/packages/types-dev/objects.d.ts#L1108)
 
 ___
 
@@ -104,7 +104,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:907](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L907)
+[types-dev/objects.d.ts:907](https://github.com/ioBroker/ioBroker.js-controller/blob/a0d19f0c12f79a792741858b32ef9d3886c117c5/packages/types-dev/objects.d.ts#L907)
 
 ___
 
@@ -118,7 +118,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:909](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L909)
+[types-dev/objects.d.ts:909](https://github.com/ioBroker/ioBroker.js-controller/blob/a0d19f0c12f79a792741858b32ef9d3886c117c5/packages/types-dev/objects.d.ts#L909)
 
 ___
 
@@ -134,7 +134,7 @@ Omit.instanceObjects
 
 #### Defined in
 
-[types-dev/objects.d.ts:1112](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L1112)
+[types-dev/objects.d.ts:1112](https://github.com/ioBroker/ioBroker.js-controller/blob/a0d19f0c12f79a792741858b32ef9d3886c117c5/packages/types-dev/objects.d.ts#L1112)
 
 ___
 
@@ -148,7 +148,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:905](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L905)
+[types-dev/objects.d.ts:905](https://github.com/ioBroker/ioBroker.js-controller/blob/a0d19f0c12f79a792741858b32ef9d3886c117c5/packages/types-dev/objects.d.ts#L905)
 
 ___
 
@@ -164,7 +164,7 @@ These properties can only be edited if the correct password is provided
 
 #### Defined in
 
-[types-dev/objects.d.ts:914](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L914)
+[types-dev/objects.d.ts:914](https://github.com/ioBroker/ioBroker.js-controller/blob/a0d19f0c12f79a792741858b32ef9d3886c117c5/packages/types-dev/objects.d.ts#L914)
 
 ___
 
@@ -180,7 +180,7 @@ Omit.notifications
 
 #### Defined in
 
-[types-dev/objects.d.ts:1110](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L1110)
+[types-dev/objects.d.ts:1110](https://github.com/ioBroker/ioBroker.js-controller/blob/a0d19f0c12f79a792741858b32ef9d3886c117c5/packages/types-dev/objects.d.ts#L1110)
 
 ___
 
@@ -196,7 +196,7 @@ Omit.objects
 
 #### Defined in
 
-[types-dev/objects.d.ts:1114](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L1114)
+[types-dev/objects.d.ts:1114](https://github.com/ioBroker/ioBroker.js-controller/blob/a0d19f0c12f79a792741858b32ef9d3886c117c5/packages/types-dev/objects.d.ts#L1114)
 
 ___
 
@@ -212,7 +212,7 @@ Omit.protectedNative
 
 #### Defined in
 
-[types-dev/objects.d.ts:1106](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L1106)
+[types-dev/objects.d.ts:1106](https://github.com/ioBroker/ioBroker.js-controller/blob/a0d19f0c12f79a792741858b32ef9d3886c117c5/packages/types-dev/objects.d.ts#L1106)
 
 ___
 
@@ -226,7 +226,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:912](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L912)
+[types-dev/objects.d.ts:912](https://github.com/ioBroker/ioBroker.js-controller/blob/a0d19f0c12f79a792741858b32ef9d3886c117c5/packages/types-dev/objects.d.ts#L912)
 
 ___
 
@@ -240,7 +240,7 @@ ___
 
 #### Defined in
 
-[types-dev/objects.d.ts:1049](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L1049)
+[types-dev/objects.d.ts:1049](https://github.com/ioBroker/ioBroker.js-controller/blob/a0d19f0c12f79a792741858b32ef9d3886c117c5/packages/types-dev/objects.d.ts#L1049)
 
 ___
 
@@ -256,4 +256,4 @@ The user who created or updated this object
 
 #### Defined in
 
-[types-dev/objects.d.ts:911](https://github.com/ioBroker/ioBroker.js-controller/blob/4bb5c35cf45e53dab9bd7581dbeecc877dc3cbeb/packages/types-dev/objects.d.ts#L911)
+[types-dev/objects.d.ts:911](https://github.com/ioBroker/ioBroker.js-controller/blob/a0d19f0c12f79a792741858b32ef9d3886c117c5/packages/types-dev/objects.d.ts#L911)

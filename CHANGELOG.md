@@ -3,6 +3,15 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+
+## 7.0.2 (2024-10-28) - Lucy
+* (@foxriver76) the UI upgrade now runs as the same user as the js-controller
+* (@foxriver76) fixed `iob validate` command and `setup custom` migration
+
+## 7.0.1 (2024-10-21) - Lucy
+* (@foxriver76) fixed crash case on database migration
+* (@foxriver76) fixed edge case crash cases if notifications are processed nearly simultaneously
+
 ## 7.0.0 (2024-10-06) - Lucy
 **Breaking changes**
 * Backups created with 7.0.x cannot be restored with previous version
