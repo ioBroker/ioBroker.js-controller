@@ -541,7 +541,7 @@ export class Repo {
         }
 
         if (confObj.common.activeRepo.length > 1) {
-            console.info('More than one repository is active. Please be sure, that this is a desired constellation');
+            console.info('More than one repository is active. Please be sure, that this is a desired constellation!');
         }
 
         confObj.from = `system.host.${tools.getHostName()}.cli`;
@@ -565,21 +565,6 @@ export class Repo {
             confObj.common.activeRepo.splice(pos, 1);
             confObj.from = `system.host.${tools.getHostName()}.cli`;
             confObj.ts = Date.now();
-            // If no one repository is active set stable as active
-            if (!confObj.common.activeRepo.length) {
-                const sysRepoObj = await this.objects.getObject(SYSTEM_REPOSITORIES_ID);
-                const obj = sysRepoObj || this.defaultSystemRepo;
-                // find a stable repository
-                const stableName = Object.keys(obj?.native?.repositories).find(name => name.startsWith('stable'));
-                if (stableName) {
-                    confObj.common.activeRepo.push(stableName);
-                }
-                if (!confObj.common.activeRepo.length) {
-                    console.warn(
-                        'Actually no one repository is active! Update of adapter will not be possible. Please define some repository as active',
-                    );
-                }
-            }
             await this.objects.setObject(SYSTEM_CONFIG_ID, confObj);
         }
     }
