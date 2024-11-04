@@ -151,3 +151,18 @@ export async function recognizeVersion(options: VersionOptions): Promise<void> {
 
     await objects.setObject(id, obj);
 }
+
+/**
+ * Check if user input is an integer
+ *
+ * @param input input string to check
+ */
+export function isIntegerLikeInput(input: string): boolean {
+    return /^\d+$/.test(input);
+}
+
+/** URL of the official stable repository */
+export const STABLE_REPO_URL = 'http://download.iobroker.net/sources-dist.json';
+
+/** URL of the official beta repository */
+export const BETA_REPO_URL = 'http://download.iobroker.net/sources-dist-latest.json';
