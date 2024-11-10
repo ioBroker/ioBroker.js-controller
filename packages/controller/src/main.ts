@@ -1,14 +1,4 @@
-/**
- *      application.controller
- *
- *      Controls Adapter-Processes
- *
- *      Copyright 2013-2024 bluefox <dogafox@gmail.com>,
- *                2013-2014 hobbyquaker <hq@ccu.io>
- *      MIT License
- *
- */
-
+/// <reference types="@iobroker/types-dev" />
 import schedule from 'node-schedule';
 import os from 'node:os';
 import fs from 'fs-extra';
