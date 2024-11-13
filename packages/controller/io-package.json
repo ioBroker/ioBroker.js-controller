@@ -1,7 +1,7 @@
 {
   "common": {
     "name": "js-controller",
-    "version": "7.0.2",
+    "version": "7.0.3",
     "platform": "Javascript/Node.js",
     "controller": true,
     "mode": "daemon",
@@ -20,7 +20,7 @@
       "zh-cn": "JS控制器"
     },
     "news": {
-      "7.0.2": {
+      "7.0.3": {
         "en": "see CHANGELOG.md",
         "de": "siehe CHANGELOG.md",
         "ru": "см. CHANGELOG.md",
