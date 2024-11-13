@@ -1,3 +1,4 @@
+/// <reference types="@iobroker/types-dev" />
 export {
     getStatesConstructor,
     statesDbHasServer,

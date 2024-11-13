@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - master
-      - 4.0.x
     tags: # for automatic releases
       # normal versions
       - "v[0-9]+.[0-9]+.[0-9]+"
@@ -43,7 +42,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [windows-latest, ubuntu-20.04, macos-latest]
-        node: [18, 20]
+        node: [18, 20, 22]
 
     steps:
       - uses: actions/checkout@v4
@@ -123,11 +122,11 @@ jobs:
         if: steps.automerge.outputs.mergeResult == 'merged'
         uses: actions/checkout@v4
 
-      - name: Use Node.js 18
+      - name: Use Node.js
         if: steps.automerge.outputs.mergeResult == 'merged'
         uses: actions/setup-node@v4
         with:
-          node-version: 18
+          node-version-file: '.nvmrc'
 
       - name: Determine version
         if: steps.automerge.outputs.mergeResult == 'merged'
