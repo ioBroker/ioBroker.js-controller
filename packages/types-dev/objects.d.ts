@@ -453,7 +453,7 @@ declare global {
         interface ScriptCommon extends ObjectCommon {
             name: string;
             /** Defines the type of the script, e.g., TypeScript/ts, JavaScript/js or Blockly */
-            engineType: string;
+            engineType: 'TypeScript/ts' | 'Blockly' | 'Rules' | 'JavaScript/js';
             /** The instance id of the instance which executes this script */
             engine: string;
             /** The source code of this script */

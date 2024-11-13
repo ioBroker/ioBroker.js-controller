@@ -161,14 +161,14 @@ export interface AdapterClass {
     /**
      * Extend an object and create it if it might not exist
      *
-     * @deprecated use `adapter.extendObject` without callback instead
+     * @deprecated use `adapter.extendObject` without a callback instead
      */
     extendObjectAsync(
         id: string,
         objPart: ioBroker.PartialObject,
         options?: ioBroker.ExtendObjectOptions,
     ): ioBroker.SetObjectPromise;
-    /** Set capabilities of the given executable. Only works on Linux systems. */
+    /** Set the capabilities of the given executable. Only works on Linux systems. */
     setExecutableCapabilities(
         execPath: string,
         capabilities: string[],
@@ -1606,7 +1606,7 @@ export class AdapterClass extends EventEmitter {
      *         ...
      *     }
      * ```
-     
+
      * @param featureName the name of the feature to check
      * @returns true/false if the feature is in the list of supported features
      */
@@ -2596,7 +2596,7 @@ export class AdapterClass extends EventEmitter {
     }
 
     /**
-     * Get the system secret, after retrived once it will be read from cache
+     * Get the system secret, after retrieved once it will be read from the cache
      */
     private async getSystemSecret(): Promise<string> {
         if (this._systemSecret !== undefined) {
@@ -2624,7 +2624,7 @@ export class AdapterClass extends EventEmitter {
     ): ioBroker.Timeout | undefined;
     /**
      * Same as setTimeout,
-     * but it clears the running timers during the unload process
+     * but it clears the running timers during the unloading process
      * does not work after unload has been called
      *
      * @param cb - timer callback
