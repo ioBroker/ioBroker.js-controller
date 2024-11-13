@@ -102,6 +102,7 @@ The main configuration is stored in `iobroker-data/iobroker.json`. Normally, the
 - [js-controller Host Messages](#js-controller-host-messages)
 - [Adapter Development](#adapter-development)
 - [Environment Variables](#environment-variables)
+- [Vendor Packages Workflow](#vendor-packages-workflow)
 
 ### Admin UI
 **Feature status:** stable
@@ -1317,6 +1318,74 @@ Currently, `cap_net_admin`, `cap_net_bind_service`, `cap_net_raw` are set to e.g
 However, on upgrades of Node.js these get lost. If js-controller detects a Node.js upgrade, it will ensure that these capabilities are set again.
 
 In some scenarios, e.g. during development it may be useful to deactivate this feature. You can do so by settings the `IOB_NO_SETCAP` environment variable to `true`.
+
+### Vendor Packages Workflow
+Feature status: New in 7.0.0
+
+This feature is only of interest for vendors which aim to provide a package which is published to a private package registry (e.g. GitHub Packages).
+This may be desirable if the adapter is only relevant for a specific customer and/or contains business logic which needs to be kept secret.
+
+In the following, information is provided how private packages can be installed into the ioBroker ecosystem.
+The information is tested with GitHub packages. However, it should work in a similar fashion with other registries, like GitLab Packages.
+
+#### Package Registry
+You can use e.g. the GitHub package registry. Simply scope your adapter to your organization or personal scope by changing the package name in the `package.json` 
+and configuring the `publishConfig`:
+
+```json
+{
+  "name": "@org/vendorAdapter",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  }
+}
+```
+
+Note, that you need to configure `npm` to authenticate via your registry.
+Find more information in the [documentation](https://docs.npmjs.com/cli/v9/configuring-npm/npmrc#auth-related-configuration).
+
+Example `.npmrc` file (can be in your project or in the users home directory):
+
+```
+//npm.pkg.github.com/:_authToken=<YOUR_TOKEN>
+@org:registry=https://npm.pkg.github.com
+```
+
+Where `YOUR_TOKEN` is an access token which has the permissions to write packages.
+
+If you then execute `npm publish`, the package will be published to your custom registry instead of the `npm` registry.
+
+#### Vendor Repository
+In your vendor-specific repository, each adapter can have a separate field called `packetName`.
+This represents the real name of the npm packet. E.g.
+
+```json
+{
+  "vendorAdapter": {
+    "version": "1.0.0",
+    "name": "vendorAdapter",
+    "packetName": "@org/vendorAdapter"
+  }
+}
+```
+
+The js-controller will alias the package name to the adapter name on installation.
+This has one drawback, which is normally not relevant for vendor setups. You can not install the adapter via the `npm url` command, meaning no installation from GitHub or local tarballs.
+
+#### Token setup
+On the customers ioBroker host, create a `.npmrc` file inside of `/home/iobroker/`.
+It should look like: 
+
+```
+//npm.pkg.github.com/:_authToken=<YOUR_TOKEN>
+@org:registry=https://npm.pkg.github.com
+```
+
+Where `YOUR_TOKEN` is an access token which has the permissions to read packages.
+A best practice working with multiple customers is, to create an organization for each customer instead of using your personal scope. 
+Hence, you can scope them to not have access to packages of other customers or your own.
+
+Find more information in the [documentation](https://docs.npmjs.com/cli/v9/configuring-npm/npmrc#auth-related-configuration).
 
 ## Release cycle and Development process overview
 The goal is to release an update for the js-controller roughly all 6 months (April/September). The main reasons for this are shorter iterations and fewer changes that can be problematic for the users (and getting fast feedback) and also trying to stay up-to-date with the dependencies.

@@ -1,3 +1,4 @@
+/// <reference types="@iobroker/types-dev" />
 export { execute } from '@/lib/setup.js';
 export { dbConnectAsync } from '@/lib/setup/dbConnection.js';
 export { Vendor } from '@/lib/setup/setupVendor.js';

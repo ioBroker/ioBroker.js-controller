@@ -31,3 +31,4 @@ ioBroker
 /packages/controller/iob-vendor.json
 build
 lerna-debug.log
+.nx
