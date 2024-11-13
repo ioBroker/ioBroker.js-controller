@@ -1302,7 +1302,7 @@ async function processCommand(
                 try {
                     const filePath = await backup.createBackup(name);
                     console.log(`Backup created: ${filePath}`);
-                    console.log('This backup can only be restored with js-controller version 6.1 or higher');
+                    console.log('This backup can only be restored with js-controller version 7.0 or higher');
                     return void callback(EXIT_CODES.NO_ERROR);
                 } catch (e) {
                     console.log(`Cannot create backup: ${e.message}`);
@@ -1328,9 +1328,9 @@ async function processCommand(
                     await backup.validateBackup(name);
                     console.log('Backup OK');
                     return void exitApplicationSave(0);
-                } catch (err) {
-                    console.log(`Backup check failed: ${err.message}`);
-                    return void exitApplicationSave(1);
+                } catch (e) {
+                    console.log(`Backup check failed: ${e.message}`);
+                    return void exitApplicationSave(e instanceof IoBrokerError ? e.code : 1);
                 }
             });
             break;

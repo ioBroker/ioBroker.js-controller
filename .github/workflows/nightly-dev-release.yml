@@ -4,6 +4,17 @@ on:
   schedule:
     - cron: 0 2 * * * # Every day at 02:00
   workflow_dispatch: # Manually on demand
+    inputs:
+      versionBump:
+        description: 'Type of version bump'
+        required: true
+        default: 'prerelease'
+        type: choice
+        options:
+          - prerelease
+          - prepatch
+          - preminor
+          - premajor
 
 jobs:
   publish-config:
@@ -65,6 +76,8 @@ jobs:
 
     - name: Determine the version bump
       if: steps.changes.outputs.result == 'ok'
+      env:
+        VERSION_BUMP: ${{ inputs.versionBump }}
       id: version
       uses: actions/github-script@v7
       with:
@@ -94,12 +107,13 @@ jobs:
           }
 
           // Figure out the next version
-          const nightlyVersion =  `${semver.inc(parsed, "prerelease", prereleaseIdentifier)}-${dateStr}-${sha}`;
+          const versionBump = process.env.VERSION_BUMP || 'prerelease';
+          const nightlyVersion = `${parsed.inc(versionBump, prereleaseIdentifier)}-${dateStr}-${sha}`;
 
           // ensure that io-pack is in sync
           const fs = require('fs');
           const ioPack = JSON.parse(fs.readFileSync(`${process.env.GITHUB_WORKSPACE}/packages/controller/io-package.json`));
-          ioPack.common.version = semver.inc(nightlyVersion, 'patch');;
+          ioPack.common.version = semver.inc(nightlyVersion, 'patch');
           fs.writeFileSync(`${process.env.GITHUB_WORKSPACE}/packages/controller/io-package.json`, JSON.stringify(ioPack, null, 2));
 
           return nightlyVersion;

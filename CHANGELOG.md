@@ -1,17 +1,40 @@
 # Changelog
 <!--
 	Placeholder for the next version (at the beginning of the line):
-	## **WORK IN PROGRESS**
+	## __WORK IN PROGRESS__
 -->
-## **WORK IN PROGRESS**
-* (bluefox) Added support for dynamic notification layout (in Admin)
-* (@foxriver76) updated plugin base and sentry plugin to version 2
-* (@foxriver76) enhanced translations for the `diskSpaceIssues` notification category
-* (@foxriver76) added notification if new image is available on Docker Hub (for official docker systems)
-* (@foxriver76) extend the time to wait until controller is stopped on controller UI upgrade
-* (@foxriver76) improved backup/restore process to work for arbitrary large installations
+
+## 7.0.2 (2024-10-28) - Lucy
+* (@foxriver76) the UI upgrade now runs as the same user as the js-controller
+* (@foxriver76) fixed `iob validate` command and `setup custom` migration
+
+## 7.0.1 (2024-10-21) - Lucy
+* (@foxriver76) fixed crash case on database migration
+* (@foxriver76) fixed edge case crash cases if notifications are processed nearly simultaneously
+
+## 7.0.0 (2024-10-06) - Lucy
+**Breaking changes**
+* Backups created with 7.0.x cannot be restored with previous version
+
+**Features**
+* (@GermanBluefox) Added support for dynamic notification data 
+(with this feature developers can create interactive notifications in the Admin adapter)
 * (@GermanBluefox/@foxriver76) implemented automatic upload on adapter start if version mismatch is detected
+* (@foxriver76) improved backup/restore process to work for arbitrary large installations
+* (@foxriver76) added notification if new image is available on Docker Hub (for official docker systems)
+
+**Optimizations and fixes**
+* (@foxriver76) extend the time to wait until controller is stopped on controller UI upgrade
+* (@foxriver76) enhanced translations for the `diskSpaceIssues` notification category
 * (@foxriver76) enriched logging on upload with version information
+
+**Developer relevant new features**
+* (@GermanBluefox) On `registerNotification` developers can now pass additional context data 
+e.g. for dynamic notifications with Admin adapter
+
+**Developer relevant Optimizations and Fixes**
+* (@foxriver76) updated plugin base and sentry plugin to version 2
+* (@GermanBluefox/@foxriver76) multiple improvements on type level
 
 ## 6.0.11 (2024-08-21) - Kiera
 * (foxriver76) only generate `packageUpdates` notification, if new updates detected
@@ -171,7 +194,7 @@
 * (foxriver76) new `io-package` flag `common.supportedMessages` to replace `messagebox` and other messagebox-related properties
 * (foxriver76) `adapter.sendTo` now accepts an optional `timeout` argument
 
-* **Developer relevant Optimizations and Fixes**
+**Developer relevant Optimizations and Fixes**
 * (foxriver76) Ensure setObjectNotExists returns id on success
 * (foxriver76) Fix Typings for sendTo/sendToHost
 * (Bluefox) Add User permission check to requireLog

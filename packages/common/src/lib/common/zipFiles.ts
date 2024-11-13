@@ -97,8 +97,8 @@ export async function readDirAsZip(
     }
     options = options || {};
     let adapter = id;
-    if (adapter.indexOf('.') !== -1) {
-        adapter = id.split('.')[0];
+    if (adapter.includes('.')) {
+        adapter = id.split('.')[0]!;
     }
 
     // try to load processor of adapter
@@ -175,7 +175,13 @@ async function _writeOneFile(
     filename: string,
     options: any,
 ): Promise<void> {
-    let data = await zip.files[filename].async('nodebuffer');
+    const zipFile = zip.files[filename];
+
+    if (!zipFile) {
+        throw new Error(`Cannot write file "${filename}", because JSZip instance is incomplete`);
+    }
+
+    let data = await zipFile.async('nodebuffer');
 
     if (options.parse) {
         data = options.parse(name, filename, data, options ? options.settings : null);
@@ -201,7 +207,7 @@ export async function writeDirAsZip(
 
     let adapter = id;
     if (adapter.includes('.')) {
-        adapter = id.split('.')[0];
+        adapter = id.split('.')[0]!;
     }
 
     // try to load processor of adapter
@@ -222,8 +228,8 @@ export async function writeDirAsZip(
         }
         try {
             await _writeOneFile(objects, zip, id, name, filename, options);
-        } catch (error) {
-            errors.push(`Cannot write file "${filename}": ${error.toString()}`);
+        } catch (e) {
+            errors.push(`Cannot write file "${filename}": ${e.toString()}`);
         }
     }
     if (errors.length) {
@@ -255,17 +261,19 @@ export async function readObjectsAsZip(
     const objs = await objects.getObjectsAsync(keys, options);
     const zip = new JSZip();
 
-    for (let f = 0; f < objs.length; f++) {
-        let data: Record<string, any> = { id: keys[f], data: objs[f] };
+    for (const obj of objs) {
+        const id = obj._id;
+
+        let data: Record<string, any> = { id, data: obj };
 
         if (options.stringify) {
             try {
                 data = options.stringify(data, options ? options.settings : null);
             } catch {
-                data.id = `${keys[f].replace(/\./g, '/').substring(rootId.length + 1)}.json`;
+                data.id = `${id.replace(/\./g, '/').substring(rootId.length + 1)}.json`;
             }
         } else {
-            data.id = `${keys[f].replace(/\./g, '/').substring(rootId.length + 1)}.json`;
+            data.id = `${id.replace(/\./g, '/').substring(rootId.length + 1)}.json`;
         }
         if (typeof data.data === 'object') {
             data.data = JSON.stringify(data.data, null, 2);
@@ -284,42 +292,40 @@ async function _writeOneObject(
     rootId: string,
     filename: string,
     options: any,
-    callback: (err?: Error | null) => void,
 ): Promise<void> {
-    try {
-        const bufferData = await zip.files[filename].async('nodebuffer');
-        let data: Record<string, any> = { data: bufferData.toString(), id: filename };
-        if (options.parse) {
-            try {
-                data = options.parse(data, options ? options.settings : null);
-            } catch (e) {
-                callback(new Error(`Cannot custom parse "${data.id}": ${e}`));
-                return;
-            }
-        } else {
-            data.id = (rootId ? `${rootId}.` : '') + data.id.replace(/\//g, '.').replace(/\.json$/, '');
+    const zipFile = zip.files[filename];
+
+    if (!zipFile) {
+        throw new Error(`Cannot write file "${filename}", because JSZip instance is incomplete`);
+    }
+
+    const bufferData = await zipFile.async('nodebuffer');
+    let data: Record<string, any> = { data: bufferData.toString(), id: filename };
+    if (options.parse) {
+        try {
+            data = options.parse(data, options ? options.settings : null);
+        } catch (e) {
+            throw new Error(`Cannot custom parse "${data.id}": ${e}`);
         }
-        if (data && typeof data.data !== 'object') {
-            try {
-                data.data = JSON.parse(data.data);
-            } catch (e) {
-                callback(new Error(`Cannot parse "${data.id}": ${e.message}`));
-                return;
-            }
+    } else {
+        data.id = (rootId ? `${rootId}.` : '') + data.id.replace(/\//g, '.').replace(/\.json$/, '');
+    }
+    if (data && typeof data.data !== 'object') {
+        try {
+            data.data = JSON.parse(data.data);
+        } catch (e) {
+            throw new Error(`Cannot parse "${data.id}": ${e.message}`);
         }
-        if (data && data.id && data.data) {
-            options.ts = new Date().getTime();
-            options.from = `system.host.${tools.getHostName()}.cli`;
-            objects.setObject(data.id, data.data, options, err => callback(err));
-        } else {
-            if (data?.error) {
-                callback(data.error);
-            } else {
-                callback();
-            }
-        }
-    } catch (e) {
-        callback(new Error(`Cannot parse unzip: ${e.message}`));
+    }
+    if (data && data.id && data.data) {
+        options.ts = new Date().getTime();
+        options.from = `system.host.${tools.getHostName()}.cli`;
+        await objects.setObject(data.id, data.data, options);
+        return;
+    }
+
+    if (data?.error) {
+        throw data.error;
     }
 }
 
@@ -343,31 +349,25 @@ export async function writeObjectsAsZip(
     }
 
     const zip = new JSZip();
+    const error: string[] = [];
+
     try {
         await zip.loadAsync(data);
-        let count = 0;
-        const error: string[] = [];
         for (const filename of Object.keys(zip.files)) {
             if (filename[filename.length - 1] === '/') {
                 continue;
             }
-            count++;
-            _writeOneObject(objects, zip, rootId, filename, options, err => {
-                if (err) {
-                    error.push(err.toString());
-                }
-                if (!--count && callback) {
-                    callback(error.length ? new Error(error.join(', ')) : null);
-                    // @ts-expect-error promisify later on
-                    callback = null;
-                }
-            });
+
+            try {
+                await _writeOneObject(objects, zip, rootId, filename, options);
+            } catch (e) {
+                error.push(e.toString());
+            }
         }
     } catch (e) {
-        if (callback) {
-            callback(e.toString());
-            // @ts-expect-error promisify later on
-            callback = null;
-        }
+        callback(e.toString());
+        return;
     }
+
+    callback(error.length ? new Error(error.join(', ')) : null);
 }

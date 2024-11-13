@@ -1,3 +1,4 @@
+/// <reference types="@iobroker/types-dev" />
 /**
  * Get the default port for the database
  *
