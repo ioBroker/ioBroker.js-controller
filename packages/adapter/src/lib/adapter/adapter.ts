@@ -35,7 +35,7 @@ import type NodeSchedule from 'node-schedule';
 import yargs from 'yargs/yargs';
 
 // local version is always the same as controller version, since lerna exact: true is used
-import packJson from '@iobroker/js-controller-adapter/package.json' assert { type: 'json' };
+import packJson from '@iobroker/js-controller-adapter/package.json' with { type: 'json' };
 
 const controllerVersion = packJson.version;
 
