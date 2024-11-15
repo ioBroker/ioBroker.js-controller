@@ -1,13 +1,21 @@
 import { createServer } from 'node:net';
-import { pathExistsSync, readJsonSync, existsSync, readJSONSync, watch, readFileSync } from 'fs-extra';
 import { hostname, networkInterfaces } from 'node:os';
-import { verify } from 'jsonwebtoken';
 import { EventEmitter } from 'node:events';
+import { join } from 'node:path';
+import jwt from 'jsonwebtoken';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
-import { PluginHandler } from '@iobroker/plugin-base';
 import { major } from 'semver';
-import { join } from 'node:path';
+// @ts-expect-error no ts file
+import extend from 'node.extend';
+import type Winston from 'winston';
+import type NodeSchedule from 'node-schedule';
+import yargs from 'yargs/yargs';
+import fs from 'fs-extra';
+import type { CommandResult } from '@alcalzone/pak';
+import * as url from 'node:url';
+
+import { PluginHandler } from '@iobroker/plugin-base';
 import {
     EXIT_CODES,
     getObjectsConstructor,
@@ -26,13 +34,9 @@ import {
     listInstalledNodeModules,
     requestModuleNameByUrl,
 } from '@/lib/adapter/utils.js';
-// @ts-expect-error no ts file
-import extend from 'node.extend';
+
 import type { Client as StatesInRedisClient } from '@iobroker/db-states-redis';
 import type { Client as ObjectsInRedisClient } from '@iobroker/db-objects-redis';
-import type Winston from 'winston';
-import type NodeSchedule from 'node-schedule';
-import yargs from 'yargs/yargs';
 
 // local version is always the same as controller version, since lerna exact: true is used
 import packJson from '@iobroker/js-controller-adapter/package.json' with { type: 'json' };
@@ -132,9 +136,6 @@ import type {
 } from '@/lib/_Types.js';
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
-import type { CommandResult } from '@alcalzone/pak';
-
-import * as url from 'node:url';
 
 const controllerVersion = packJson.version;
 
@@ -749,8 +750,8 @@ export class AdapterClass extends EventEmitter {
 
         const configFileName = tools.getConfigFileName();
 
-        if (pathExistsSync(configFileName)) {
-            this._config = readJsonSync(configFileName);
+        if (fs.pathExistsSync(configFileName)) {
+            this._config = fs.readJsonSync(configFileName);
             this._config.states = this._config.states || { type: 'jsonl' };
             this._config.objects = this._config.objects || { type: 'jsonl' };
             // Make sure the DB has enough time (5s). JsonL can take a bit longer if the process just crashed before
@@ -885,8 +886,8 @@ export class AdapterClass extends EventEmitter {
             this.adapterDir = adapterDir;
         }
 
-        if (existsSync(`${this.adapterDir}/io-package.json`)) {
-            this.ioPack = readJSONSync(`${this.adapterDir}/io-package.json`);
+        if (fs.existsSync(`${this.adapterDir}/io-package.json`)) {
+            this.ioPack = fs.readJSONSync(`${this.adapterDir}/io-package.json`);
         } else {
             this._logger.error(`${this.namespaceLog} Cannot find: ${this.adapterDir}/io-package.json`);
             this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
@@ -2323,11 +2324,11 @@ export class AdapterClass extends EventEmitter {
         if (typeof cert === 'string') {
             try {
                 // if length < 1024 it's no valid cert, so we assume a path to a valid certificate
-                if (cert.length < 1024 && existsSync(cert)) {
+                if (cert.length < 1024 && fs.existsSync(cert)) {
                     const certFile = cert;
-                    cert = readFileSync(certFile, 'utf8');
+                    cert = fs.readFileSync(certFile, 'utf8');
                     // start watcher of this file
-                    watch(certFile, (eventType, filename) => {
+                    fs.watch(certFile, (eventType, filename) => {
                         this._logger.warn(
                             `${this.namespaceLog} New certificate "${filename}" detected. Restart adapter`,
                         );
@@ -10214,7 +10215,7 @@ export class AdapterClass extends EventEmitter {
 
             if (obj?.native?.licenses?.length) {
                 const now = Date.now();
-                const cert = readFileSync(join(thisDir, '..', '..', 'cert', 'cloudCert.crt'));
+                const cert = fs.readFileSync(join(thisDir, '..', '..', 'cert', 'cloudCert.crt'));
                 let adapterObj: ioBroker.AdapterObject | null | undefined;
                 if (adapterName) {
                     try {
@@ -10228,7 +10229,7 @@ export class AdapterClass extends EventEmitter {
 
                 for (const license of obj.native.licenses as Omit<SuitableLicense, 'decoded'>[]) {
                     try {
-                        const decoded: any = verify(license.json, cert);
+                        const decoded: any = jwt.verify(license.json, cert);
                         if (
                             decoded.name &&
                             (!decoded.valid_till ||
@@ -12004,8 +12005,8 @@ export class AdapterClass extends EventEmitter {
             });
         };
 
-        if (existsSync(`${this.adapterDir}/package.json`)) {
-            this.pack = readJSONSync(`${this.adapterDir}/package.json`);
+        if (fs.existsSync(`${this.adapterDir}/package.json`)) {
+            this.pack = fs.readJSONSync(`${this.adapterDir}/package.json`);
         } else {
             this._logger.info(`${this.namespaceLog} Non npm module. No package.json`);
         }
