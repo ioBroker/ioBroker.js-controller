@@ -1,3 +1,5 @@
+type LogFunction = (msg: string) => void;
+
 /**
  * Log class for adapter.js
  *
@@ -7,7 +9,13 @@ export class Log implements ioBroker.Logger {
     private readonly namespaceLog: string;
     readonly level: ioBroker.LogLevel;
     // TODO: this should be a winston.Logger, but the exported types will mess up because of https://github.com/microsoft/rushstack/issues/2220
-    private readonly logger: any;
+    private readonly logger: {
+        silly: LogFunction;
+        debug: LogFunction;
+        info: LogFunction;
+        warn: LogFunction;
+        error: LogFunction;
+    };
 
     /**
      * @param namespaceLog Logging namespace to prefix
