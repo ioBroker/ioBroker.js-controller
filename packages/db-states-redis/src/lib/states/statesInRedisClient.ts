@@ -20,30 +20,14 @@ type JSONDecoderValue = Record<string, any>;
 /**
  * Decodes a JSON with buffer value
  *
- * @param key
+ * @param _key
  * @param value
  */
-function bufferJsonDecoder(key: string, value: JSONDecoderValue): Buffer | JSONDecoderValue {
+function bufferJsonDecoder(_key: string, value: JSONDecoderValue): Buffer | JSONDecoderValue {
     if (tools.isObject(value) && value.type === 'Buffer' && value.data && Array.isArray(value.data)) {
         return Buffer.from(value.data);
     }
     return value;
-}
-
-interface LogObject {
-    /** id of the source instance */
-    from: string;
-    /** log level */
-    severity: string;
-    /** timestamp */
-    ts: number;
-    /** actual content */
-    message: string;
-}
-
-interface InternalLogObject extends LogObject {
-    /** internal id */
-    _id: number;
 }
 
 type UserChangeFunction = (id: string, state: ioBroker.State | null) => void;
@@ -1281,14 +1265,14 @@ export class StateRedisClient {
 
     async pushLog(
         id: string,
-        log: LogObject,
+        log: ioBroker.LogObject,
         callback?: (err: Error | undefined | null, id?: string) => void,
     ): Promise<string | void>;
 
-    // implementation uses an modified pushLog with internal _id
+    // implementation uses a modified pushLog with internal _id
     async pushLog(
         id: string,
-        log: InternalLogObject,
+        log: ioBroker.InternalLogObject,
         callback?: (err: Error | undefined | null, id?: string) => void,
     ): Promise<string | void> {
         if (!id || typeof id !== 'string') {

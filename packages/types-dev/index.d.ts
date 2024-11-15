@@ -219,6 +219,25 @@ declare global {
             level: LogLevel;
         }
 
+        /** Log message */
+        interface LogObject {
+            /** id of the source instance */
+            from: string;
+            /** log level */
+            severity: string;
+            /** timestamp */
+            ts: number;
+            /** actual content */
+            message: string;
+        }
+
+        interface InternalLogObject extends LogObject {
+            /** internal id */
+            _id: number;
+        }
+
+        type LogMessage = InternalLogObject;
+
         interface Certificates {
             /** private key file */
             key: string;

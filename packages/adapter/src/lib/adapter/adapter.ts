@@ -1,28 +1,28 @@
-import net from 'node:net';
-import fs from 'fs-extra';
-import os from 'node:os';
-import jwt from 'jsonwebtoken';
+import { createServer } from 'node:net';
+import { pathExistsSync, readJsonSync, existsSync, readJSONSync, watch, readFileSync } from 'fs-extra';
+import { hostname, networkInterfaces } from 'node:os';
+import { verify } from 'jsonwebtoken';
 import { EventEmitter } from 'node:events';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
 import { PluginHandler } from '@iobroker/plugin-base';
-import semver from 'semver';
-import path from 'node:path';
+import { major } from 'semver';
+import { join } from 'node:path';
 import {
+    EXIT_CODES,
     getObjectsConstructor,
     getStatesConstructor,
-    tools,
-    EXIT_CODES,
-    password,
-    logger,
     isInstalledFromNpm,
+    logger,
+    password,
+    tools,
 } from '@iobroker/js-controller-common';
 import {
     decryptArray,
     encryptArray,
+    getAdapterScopedPackageIdentifier,
     getSupportedFeatures,
     isMessageboxSupported,
-    getAdapterScopedPackageIdentifier,
     listInstalledNodeModules,
     requestModuleNameByUrl,
 } from '@/lib/adapter/utils.js';
@@ -36,41 +36,42 @@ import yargs from 'yargs/yargs';
 
 // local version is always the same as controller version, since lerna exact: true is used
 import packJson from '@iobroker/js-controller-adapter/package.json' with { type: 'json' };
-
-const controllerVersion = packJson.version;
-
 import { Log } from '@/lib/adapter/log.js';
 import { Validator } from './validator.js';
-
-const { FORBIDDEN_CHARS } = tools;
 import {
-    DEFAULT_SECRET,
-    ALIAS_STARTS_WITH,
-    SYSTEM_ADMIN_USER,
-    SYSTEM_ADMIN_GROUP,
-    ERROR_PERMISSION,
     ACCESS_EVERY_READ,
     ACCESS_EVERY_WRITE,
-    ACCESS_GROUP_WRITE,
     ACCESS_GROUP_READ,
-    ACCESS_USER_WRITE,
+    ACCESS_GROUP_WRITE,
     ACCESS_USER_READ,
+    ACCESS_USER_WRITE,
+    ALIAS_STARTS_WITH,
+    DEFAULT_SECRET,
+    ERROR_PERMISSION,
     NO_PROTECT_ADAPTERS,
     STATE_QUALITY,
     type SupportedFeature,
+    SYSTEM_ADMIN_GROUP,
+    SYSTEM_ADMIN_USER,
 } from '@/lib/adapter/constants.js';
 import type { PluginHandlerSettings } from '@iobroker/plugin-base/types';
 import type {
     AdapterOptions,
     AliasDetails,
+    AliasTargetEntry,
+    AllPropsUnknown,
     CalculatePermissionsCallback,
     CheckGroupCallback,
     CheckPasswordCallback,
     CheckStateCommand,
+    CheckStatesResult,
     CommandsPermissions,
     GetCertificatesCallback,
+    GetCertificatesPromiseReturnType,
     GetEncryptedConfigCallback,
     GetUserGroupsOptions,
+    InstallNodeModuleOptions,
+    InternalAdapterConfig,
     InternalAddChannelToEnumOptions,
     InternalAddStateToEnumOptions,
     InternalCalculatePermissionsOptions,
@@ -104,6 +105,8 @@ import type {
     InternalGetStatesOfOptions,
     InternalGetStatesOptions,
     InternalGetUserIDOptions,
+    InternalInstallNodeModuleOptions,
+    InternalReportDeprecationOption,
     InternalSendToHostOptions,
     InternalSendToOptions,
     InternalSetObjectOptions,
@@ -111,35 +114,31 @@ import type {
     InternalSetSessionOptions,
     InternalSetStateChangedOptions,
     InternalSetStateOptions,
+    InternalStopParameters,
     InternalSubscribeOptions,
     InternalUpdateConfigOptions,
-    TimeoutCallback,
-    MaybePromise,
-    SetStateChangedResult,
-    CheckStatesResult,
-    Pattern,
-    MessageCallbackObject,
-    SendToOptions,
-    GetCertificatesPromiseReturnType,
-    InternalAdapterConfig,
-    UserInterfaceClientRemoveMessage,
-    SendToUserInterfaceClientOptions,
-    AllPropsUnknown,
     IoPackageInstanceObject,
-    AliasTargetEntry,
-    InternalReportDeprecationOption,
-    SuitableLicense,
-    InstallNodeModuleOptions,
-    InternalInstallNodeModuleOptions,
-    StopParameters,
-    InternalStopParameters,
+    MaybePromise,
+    MessageCallbackObject,
     NotificationOptions,
+    Pattern,
+    SendToOptions,
+    SendToUserInterfaceClientOptions,
+    SetStateChangedResult,
+    StopParameters,
+    SuitableLicense,
+    TimeoutCallback,
+    UserInterfaceClientRemoveMessage,
 } from '@/lib/_Types.js';
 import { UserInterfaceMessagingController } from '@/lib/adapter/userInterfaceMessagingController.js';
 import { SYSTEM_ADAPTER_PREFIX } from '@iobroker/js-controller-common-db/constants';
 import type { CommandResult } from '@alcalzone/pak';
 
 import * as url from 'node:url';
+
+const controllerVersion = packJson.version;
+
+const { FORBIDDEN_CHARS } = tools;
 // eslint-disable-next-line unicorn/prefer-module
 const thisDir = url.fileURLToPath(new URL('.', import.meta.url || `file://${__filename}`));
 tools.ensureDNSOrder();
@@ -157,7 +156,7 @@ export interface AdapterClass {
     on(event: 'message', listener: ioBroker.MessageHandler): this;
     /** Only emitted for compact instances */
     on(event: 'exit', listener: (exitCode: number, reason: string) => Promise<void> | void): this;
-    on(event: 'log', listener: (info: any) => Promise<void> | void): this;
+    on(event: 'log', listener: (message: ioBroker.LogMessage) => Promise<void> | void): this;
     /**
      * Extend an object and create it if it might not exist
      *
@@ -714,7 +713,7 @@ export class AdapterClass extends EventEmitter {
     version?: string;
     /** Stop the adapter only defined in compact, not for external usage */
     protected kill?: () => Promise<void>;
-    processLog?: (msg: any) => void;
+    processLog?: (msg: ioBroker.LogMessage) => void;
     /**
      * Start or stop subscribing to log messages
      * The method is only available if logTransporter is active via io-pack or adapter options
@@ -750,8 +749,8 @@ export class AdapterClass extends EventEmitter {
 
         const configFileName = tools.getConfigFileName();
 
-        if (fs.pathExistsSync(configFileName)) {
-            this._config = fs.readJsonSync(configFileName);
+        if (pathExistsSync(configFileName)) {
+            this._config = readJsonSync(configFileName);
             this._config.states = this._config.states || { type: 'jsonl' };
             this._config.objects = this._config.objects || { type: 'jsonl' };
             // Make sure the DB has enough time (5s). JsonL can take a bit longer if the process just crashed before
@@ -886,8 +885,8 @@ export class AdapterClass extends EventEmitter {
             this.adapterDir = adapterDir;
         }
 
-        if (fs.existsSync(`${this.adapterDir}/io-package.json`)) {
-            this.ioPack = fs.readJSONSync(`${this.adapterDir}/io-package.json`);
+        if (existsSync(`${this.adapterDir}/io-package.json`)) {
+            this.ioPack = readJSONSync(`${this.adapterDir}/io-package.json`);
         } else {
             this._logger.error(`${this.namespaceLog} Cannot find: ${this.adapterDir}/io-package.json`);
             this.terminate(EXIT_CODES.CANNOT_FIND_ADAPTER_DIR);
@@ -1437,8 +1436,7 @@ export class AdapterClass extends EventEmitter {
         options?: Record<string, any> | null,
     ): Promise<(ioBroker.AnyObject | null)[]> {
         try {
-            const res = await this.#objects!.getObjects(keys, options);
-            return res;
+            return await this.#objects!.getObjects(keys, options);
         } catch (e) {
             this._logger.error(`Could not get objects by array: ${e.message}`);
             return [];
@@ -1579,7 +1577,7 @@ export class AdapterClass extends EventEmitter {
 
     private _getPort(options: InternalGetPortOptions): void {
         this.getPortRunning = options;
-        const server = net.createServer();
+        const server = createServer();
         try {
             server.listen({ port: options.port, host: options.host }, () => {
                 server.once('close', () => {
@@ -2325,11 +2323,11 @@ export class AdapterClass extends EventEmitter {
         if (typeof cert === 'string') {
             try {
                 // if length < 1024 it's no valid cert, so we assume a path to a valid certificate
-                if (cert.length < 1024 && fs.existsSync(cert)) {
+                if (cert.length < 1024 && existsSync(cert)) {
                     const certFile = cert;
-                    cert = fs.readFileSync(certFile, 'utf8');
+                    cert = readFileSync(certFile, 'utf8');
                     // start watcher of this file
-                    fs.watch(certFile, (eventType, filename) => {
+                    watch(certFile, (eventType, filename) => {
                         this._logger.warn(
                             `${this.namespaceLog} New certificate "${filename}" detected. Restart adapter`,
                         );
@@ -10216,7 +10214,7 @@ export class AdapterClass extends EventEmitter {
 
             if (obj?.native?.licenses?.length) {
                 const now = Date.now();
-                const cert = fs.readFileSync(path.join(thisDir, '..', '..', 'cert', 'cloudCert.crt'));
+                const cert = readFileSync(join(thisDir, '..', '..', 'cert', 'cloudCert.crt'));
                 let adapterObj: ioBroker.AdapterObject | null | undefined;
                 if (adapterName) {
                     try {
@@ -10226,11 +10224,11 @@ export class AdapterClass extends EventEmitter {
                     }
                 }
 
-                const version = semver.major(adapterObj?.common?.version || this.pack!.version);
+                const version = major(adapterObj?.common?.version || this.pack!.version);
 
                 for (const license of obj.native.licenses as Omit<SuitableLicense, 'decoded'>[]) {
                     try {
-                        const decoded: any = jwt.verify(license.json, cert);
+                        const decoded: any = verify(license.json, cert);
                         if (
                             decoded.name &&
                             (!decoded.valid_till ||
@@ -10521,14 +10519,13 @@ export class AdapterClass extends EventEmitter {
         }
 
         // temporary log buffer
-        let messages: null | any[] = [];
+        let messages: null | ioBroker.LogMessage[] = [];
 
         // If some message from logger
         // find our notifier transport
-        // @ts-expect-error
+        // @ts-expect-error name is private
         const ts = this._logger.transports.find(t => t.name === 'NT');
-        // @ts-expect-error
-        ts.on('logged', info => {
+        ts?.on('logged', (info: ioBroker.LogMessage): void => {
             info.from = this.namespace;
             // emit to itself
             if (this._options.logTransporter && this.logRequired && !this._stopInProgress) {
@@ -10653,7 +10650,7 @@ export class AdapterClass extends EventEmitter {
                 }
             };
 
-            this.processLog = msg => {
+            this.processLog = (msg: ioBroker.LogMessage): void => {
                 if (msg && !this._stopInProgress) {
                     this.emit('log', msg);
                 }
@@ -10856,7 +10853,10 @@ export class AdapterClass extends EventEmitter {
                     this._logger.silly(`${this.namespaceLog} ${instance}: logging ${state ? state.val : false}`);
                     this.logRedirect(state ? !!state.val : false, instance);
                 } else if (id === `log.system.adapter.${this.namespace}`) {
-                    this._options.logTransporter && this.processLog && this.processLog(state);
+                    this._options.logTransporter &&
+                        this.processLog &&
+                        state &&
+                        this.processLog(state as unknown as ioBroker.InternalLogObject);
                 } else if (id === `messagebox.system.adapter.${this.namespace}` && state) {
                     // If this is messagebox
                     const obj = state as unknown as ioBroker.Message;
@@ -11502,7 +11502,7 @@ export class AdapterClass extends EventEmitter {
             this.config = adapterConfig.native || {};
             // @ts-expect-error
             this.common = adapterConfig.common || {};
-            this.host = this.common?.host || tools.getHostName() || os.hostname();
+            this.host = this.common?.host || tools.getHostName() || hostname();
         }
 
         this.adapterConfig = adapterConfig;
@@ -11719,7 +11719,7 @@ export class AdapterClass extends EventEmitter {
                 err ? err.message : err
             }`,
         );
-        if (err && err.stack) {
+        if (err?.stack) {
             this._logger.error(`${this.namespaceLog} ${err.stack}`);
         }
 
@@ -12004,8 +12004,8 @@ export class AdapterClass extends EventEmitter {
             });
         };
 
-        if (fs.existsSync(`${this.adapterDir}/package.json`)) {
-            this.pack = fs.readJSONSync(`${this.adapterDir}/package.json`);
+        if (existsSync(`${this.adapterDir}/package.json`)) {
+            this.pack = readJSONSync(`${this.adapterDir}/package.json`);
         } else {
             this._logger.info(`${this.namespaceLog} Non npm module. No package.json`);
         }
@@ -12040,7 +12040,7 @@ export class AdapterClass extends EventEmitter {
             this.Objects = await getObjectsConstructor();
         }
 
-        const ifaces = os.networkInterfaces();
+        const ifaces = networkInterfaces();
         const ipArr = [];
         for (const iface of Object.values(ifaces)) {
             if (iface) {
