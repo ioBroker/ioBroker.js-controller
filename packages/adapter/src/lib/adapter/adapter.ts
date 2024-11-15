@@ -1,11 +1,11 @@
-import { createServer } from 'node:net';
-import { hostname, networkInterfaces } from 'node:os';
+import net from 'node:net';
+import os from 'node:os';
 import { EventEmitter } from 'node:events';
 import { join } from 'node:path';
 import jwt from 'jsonwebtoken';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
-import { major } from 'semver';
+import semver from 'semver';
 // @ts-expect-error no ts file
 import extend from 'node.extend';
 import type Winston from 'winston';
@@ -1542,7 +1542,7 @@ export class AdapterClass extends EventEmitter {
      * ```
      *
      * @param port port number to start the search for free port
-     * @param [host] optional hostname for the port search
+     * @param [host] optional os.hostname for the port search
      * @param callback return result
      *        ```js
      *        function (port) {}
@@ -1578,7 +1578,7 @@ export class AdapterClass extends EventEmitter {
 
     private _getPort(options: InternalGetPortOptions): void {
         this.getPortRunning = options;
-        const server = createServer();
+        const server = net.createServer();
         try {
             server.listen({ port: options.port, host: options.host }, () => {
                 server.once('close', () => {
@@ -10225,7 +10225,7 @@ export class AdapterClass extends EventEmitter {
                     }
                 }
 
-                const version = major(adapterObj?.common?.version || this.pack!.version);
+                const version = semver.major(adapterObj?.common?.version || this.pack!.version);
 
                 for (const license of obj.native.licenses as Omit<SuitableLicense, 'decoded'>[]) {
                     try {
@@ -11503,7 +11503,7 @@ export class AdapterClass extends EventEmitter {
             this.config = adapterConfig.native || {};
             // @ts-expect-error
             this.common = adapterConfig.common || {};
-            this.host = this.common?.host || tools.getHostName() || hostname();
+            this.host = this.common?.host || tools.getHostName() || os.hostname();
         }
 
         this.adapterConfig = adapterConfig;
@@ -12041,7 +12041,7 @@ export class AdapterClass extends EventEmitter {
             this.Objects = await getObjectsConstructor();
         }
 
-        const ifaces = networkInterfaces();
+        const ifaces = os.networkInterfaces();
         const ipArr = [];
         for (const iface of Object.values(ifaces)) {
             if (iface) {
