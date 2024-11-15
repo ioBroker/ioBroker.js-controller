@@ -219,8 +219,10 @@ declare global {
             level: LogLevel;
         }
 
-        /** Internal Log message */
-        interface LogMessageInternal {
+        /** Log message */
+        interface LogMessage {
+            /** unique ID */
+            _id: number;
             /** id of the source instance */
             from: string;
             /** log level */
@@ -229,12 +231,6 @@ declare global {
             ts: number;
             /** actual content */
             message: string;
-        }
-
-        /** Published Log message */
-        interface LogMessage extends LogMessageInternal {
-            /** unique ID */
-            _id: number;
         }
 
         interface Certificates {

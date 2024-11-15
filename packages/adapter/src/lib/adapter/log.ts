@@ -1,3 +1,5 @@
+type LogFunction = (msg: string) => void;
+
 /**
  * Log class for adapter.js
  *
@@ -8,11 +10,11 @@ export class Log implements ioBroker.Logger {
     readonly level: ioBroker.LogLevel;
     // TODO: this should be a winston.Logger, but the exported types will mess up because of https://github.com/microsoft/rushstack/issues/2220
     private readonly logger: {
-        silly: (msg: string) => void;
-        debug: (msg: string) => void;
-        info: (msg: string) => void;
-        warn: (msg: string) => void;
-        error: (msg: string) => void;
+        silly: LogFunction;
+        debug: LogFunction;
+        info: LogFunction;
+        warn: LogFunction;
+        error: LogFunction;
     };
 
     /**

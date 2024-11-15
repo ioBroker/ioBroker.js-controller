@@ -50,6 +50,9 @@ export interface StatesSettings {
     redisNamespace?: string;
 }
 
+/** The internal log message does not have an _id parameter */
+type LogMessageInternal = Omit<ioBroker.LogMessage, '_id'>;
+
 export class StateRedisClient {
     private settings: StatesSettings;
     private readonly namespaceRedis: string;
@@ -1265,11 +1268,10 @@ export class StateRedisClient {
 
     async pushLog(
         id: string,
-        log: ioBroker.LogMessageInternal,
+        log: LogMessageInternal,
         callback?: (err: Error | undefined | null, id?: string) => void,
     ): Promise<string | void>;
 
-    // implementation uses a modified pushLog with internal _id
     async pushLog(
         id: string,
         log: ioBroker.LogMessage,

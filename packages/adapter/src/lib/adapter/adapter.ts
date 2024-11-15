@@ -1437,7 +1437,8 @@ export class AdapterClass extends EventEmitter {
         options?: Record<string, any> | null,
     ): Promise<(ioBroker.AnyObject | null)[]> {
         try {
-            return await this.#objects!.getObjects(keys, options);
+            const res = await this.#objects!.getObjects(keys, options);
+            return res;
         } catch (e) {
             this._logger.error(`Could not get objects by array: ${e.message}`);
             return [];
@@ -1542,7 +1543,7 @@ export class AdapterClass extends EventEmitter {
      * ```
      *
      * @param port port number to start the search for free port
-     * @param [host] optional os.hostname for the port search
+     * @param host optional hostname for the port search
      * @param callback return result
      *        ```js
      *        function (port) {}
@@ -1605,7 +1606,7 @@ export class AdapterClass extends EventEmitter {
      *         ...
      *     }
      * ```
-
+     
      * @param featureName the name of the feature to check
      * @returns true/false if the feature is in the list of supported features
      */
