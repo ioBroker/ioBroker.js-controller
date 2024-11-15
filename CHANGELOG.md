@@ -3,6 +3,10 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+
+## __WORK IN PROGRESS__
+* (Apollon77) Fixes async usage of setObject and extendObject methods
+
 ## 7.0.3 (2024-11-13) - Lucy
 * (@foxriver76) Introduce "Vendor Packages Workflow" (only relevant for vendors - see README.md)
 

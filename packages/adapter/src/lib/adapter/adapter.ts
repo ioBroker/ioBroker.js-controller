@@ -2921,7 +2921,7 @@ export class AdapterClass extends EventEmitter {
             options.obj.user = options.obj.user || (options.options ? options.options.user : '') || SYSTEM_ADMIN_USER;
             options.obj.ts = options.obj.ts || Date.now();
 
-            this._setObjectWithDefaultValue(options.id, options.obj, options.options, options.callback);
+            return this._setObjectWithDefaultValue(options.id, options.obj, options.options, options.callback);
         } else {
             this._logger.error(`${this.namespaceLog} setObject ${options.id} mandatory property type missing!`);
             return tools.maybeCallbackWithError(options.callback, 'mandatory property type missing!');
@@ -3426,7 +3426,7 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
-        this._setObjectWithDefaultValue(id, obj, options, callback);
+        return this._setObjectWithDefaultValue(id, obj, options, callback);
     }
 
     // external signatures
