@@ -1602,11 +1602,11 @@ export class AdapterClass extends EventEmitter {
      *
      * Use it like ...
      * ```js
-     *     if (adapter.supportsFeature && adapter.supportsFeature('ALIAS')) {
-     *         ...
-     *     }
+     * if (adapter.supportsFeature && adapter.supportsFeature('ALIAS')) {
+     * ...
+     * }
      * ```
-     
+     *
      * @param featureName the name of the feature to check
      * @returns true/false if the feature is in the list of supported features
      */
