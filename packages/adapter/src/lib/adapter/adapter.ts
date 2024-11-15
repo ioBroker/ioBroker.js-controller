@@ -10857,7 +10857,7 @@ export class AdapterClass extends EventEmitter {
                     this._options.logTransporter &&
                         this.processLog &&
                         state &&
-                        this.processLog(state as unknown as ioBroker.InternalLogObject);
+                        this.processLog(state as unknown as ioBroker.LogMessage);
                 } else if (id === `messagebox.system.adapter.${this.namespace}` && state) {
                     // If this is messagebox
                     const obj = state as unknown as ioBroker.Message;

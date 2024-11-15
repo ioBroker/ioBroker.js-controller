@@ -1265,14 +1265,14 @@ export class StateRedisClient {
 
     async pushLog(
         id: string,
-        log: ioBroker.LogObject,
+        log: ioBroker.LogMessageInternal,
         callback?: (err: Error | undefined | null, id?: string) => void,
     ): Promise<string | void>;
 
     // implementation uses a modified pushLog with internal _id
     async pushLog(
         id: string,
-        log: ioBroker.InternalLogObject,
+        log: ioBroker.LogMessage,
         callback?: (err: Error | undefined | null, id?: string) => void,
     ): Promise<string | void> {
         if (!id || typeof id !== 'string') {

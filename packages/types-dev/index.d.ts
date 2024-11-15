@@ -219,8 +219,8 @@ declare global {
             level: LogLevel;
         }
 
-        /** Log message */
-        interface LogObject {
+        /** Internal Log message */
+        interface LogMessageInternal {
             /** id of the source instance */
             from: string;
             /** log level */
@@ -231,12 +231,11 @@ declare global {
             message: string;
         }
 
-        interface InternalLogObject extends LogObject {
-            /** internal id */
+        /** Published Log message */
+        interface LogMessage extends LogMessageInternal {
+            /** unique ID */
             _id: number;
         }
-
-        type LogMessage = InternalLogObject;
 
         interface Certificates {
             /** private key file */
