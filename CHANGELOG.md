@@ -5,7 +5,8 @@
 -->
 
 ## __WORK IN PROGRESS__
-* (Apollon77) Fixes async usage of setObject and extendObject methods
+* (Apollon77) Fixes async usage of extendObject
+* (Apollon77) Makes setObject async save
 
 ## 7.0.3 (2024-11-13) - Lucy
 * (@foxriver76) Introduce "Vendor Packages Workflow" (only relevant for vendors - see README.md)
