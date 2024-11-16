@@ -18,7 +18,7 @@ If ack is false, it means the message is a request. If ack is true, it means the
 
 #### Defined in
 
-[types-dev/index.d.ts:240](https://github.com/ioBroker/ioBroker.js-controller/blob/dae94f706cc75e41fc7f1fe6bb283f8c8f9ede06/packages/types-dev/index.d.ts#L240)
+[types-dev/index.d.ts:254](https://github.com/ioBroker/ioBroker.js-controller/blob/db3148f4f009815e1f45f53311ac77bd26045ce1/packages/types-dev/index.d.ts#L254)
 
 ***
 
@@ -30,7 +30,7 @@ ID of this callback
 
 #### Defined in
 
-[types-dev/index.d.ts:238](https://github.com/ioBroker/ioBroker.js-controller/blob/dae94f706cc75e41fc7f1fe6bb283f8c8f9ede06/packages/types-dev/index.d.ts#L238)
+[types-dev/index.d.ts:252](https://github.com/ioBroker/ioBroker.js-controller/blob/db3148f4f009815e1f45f53311ac77bd26045ce1/packages/types-dev/index.d.ts#L252)
 
 ***
 
@@ -42,7 +42,7 @@ The original message payload
 
 #### Defined in
 
-[types-dev/index.d.ts:236](https://github.com/ioBroker/ioBroker.js-controller/blob/dae94f706cc75e41fc7f1fe6bb283f8c8f9ede06/packages/types-dev/index.d.ts#L236)
+[types-dev/index.d.ts:250](https://github.com/ioBroker/ioBroker.js-controller/blob/db3148f4f009815e1f45f53311ac77bd26045ce1/packages/types-dev/index.d.ts#L250)
 
 ***
 
@@ -54,4 +54,4 @@ Timestamp of this message
 
 #### Defined in
 
-[types-dev/index.d.ts:242](https://github.com/ioBroker/ioBroker.js-controller/blob/dae94f706cc75e41fc7f1fe6bb283f8c8f9ede06/packages/types-dev/index.d.ts#L242)
+[types-dev/index.d.ts:256](https://github.com/ioBroker/ioBroker.js-controller/blob/db3148f4f009815e1f45f53311ac77bd26045ce1/packages/types-dev/index.d.ts#L256)

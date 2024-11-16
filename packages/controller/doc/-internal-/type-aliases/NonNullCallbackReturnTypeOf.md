@@ -16,4 +16,4 @@ Infers the return type from a callback-style API and strips out null and undefin
 
 ## Defined in
 
-[types-dev/index.d.ts:405](https://github.com/ioBroker/ioBroker.js-controller/blob/dae94f706cc75e41fc7f1fe6bb283f8c8f9ede06/packages/types-dev/index.d.ts#L405)
+[types-dev/index.d.ts:419](https://github.com/ioBroker/ioBroker.js-controller/blob/db3148f4f009815e1f45f53311ac77bd26045ce1/packages/types-dev/index.d.ts#L419)

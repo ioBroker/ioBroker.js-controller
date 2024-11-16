@@ -14,7 +14,7 @@
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:30
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:20
 
 ***
 
@@ -24,7 +24,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:30
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:28
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:18
 
 ***
 
@@ -34,7 +34,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:28
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:27
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:17
 
 ***
 
@@ -48,7 +48,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:27
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:25
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:15
 
 ***
 
@@ -58,7 +58,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:25
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:29
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:19
 
 ***
 
@@ -72,7 +72,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:29
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:26
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:16
 
 ***
 
@@ -82,7 +82,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:26
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:32
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:22
 
 ***
 
@@ -92,7 +92,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:32
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:31
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:21
 
 ***
 
@@ -102,7 +102,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:31
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:34
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:24
 
 ***
 
@@ -112,7 +112,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:34
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:33
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:23
 
 ***
 
@@ -122,7 +122,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:33
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:36
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:26
 
 ***
 
@@ -132,7 +132,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:36
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:37
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:27
 
 ***
 
@@ -142,7 +142,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:37
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:35
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:25
 
 ***
 
@@ -152,4 +152,4 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:35
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:38
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:28
