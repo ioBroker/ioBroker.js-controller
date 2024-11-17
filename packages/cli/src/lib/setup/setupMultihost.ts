@@ -1,10 +1,11 @@
 import fs from 'fs-extra';
 import path from 'node:path';
+import readline from 'node:readline';
 import { tools } from '@iobroker/js-controller-common';
 import { isLocalObjectsDbServer, isLocalStatesDbServer } from '@iobroker/js-controller-common';
 import type { Client as ObjectsRedisClient } from '@iobroker/db-objects-redis';
 import { MHClient, type BrowseResultEntry } from './multihostClient.js';
-import readline from 'node:readline';
+import readlineSync from 'readline-sync';
 import prompt from 'prompt';
 
 interface MHParams {
@@ -30,7 +31,7 @@ export class Multihost {
     }
 
     /**
-     * Retrive config (iobroker.json content)
+     * Retrieve config (iobroker.json content)
      */
     getConfig(): ioBroker.IoBrokerJson {
         let config;
@@ -257,38 +258,9 @@ export class Multihost {
 
     /**
      * Read password from cli
-     *
-     * @param callback
      */
-    readPassword(callback: (password: string) => void): void {
-        const rl = readline.createInterface({
-            input: process.stdin,
-            output: process.stdout,
-        });
-
-        function hidden(query: string, callback: (pw: string) => void): void {
-            const stdin = process.openStdin();
-            process.stdin.on('data', _char => {
-                const char = _char.toString();
-                switch (char) {
-                    case '\n':
-                    case '\r':
-                    case '\u0004':
-                        stdin.pause();
-                        break;
-
-                    default:
-                        process.stdout.write(`\x1B[2K\x1B[200D${query}${new Array(rl.line.length + 1).join('*')}`);
-                        break;
-                }
-            });
-
-            rl.question(query, value => {
-                callback(value);
-            });
-        }
-
-        hidden('Enter secret phrase for connection: ', password => callback(password));
+    readPassword(): string {
+        return readlineSync.question('Enter secret phrase for connection: ', { hideEchoBack: true });
     }
 
     /**
@@ -400,13 +372,12 @@ export class Multihost {
                     callback(new Error(`Invalid index: ${answer}`));
                 } else {
                     if (listEntry.auth) {
-                        this.readPassword(password => {
-                            if (password) {
-                                this.connectHelper(mhClient, listEntry.ip!, password, callback);
-                            } else {
-                                callback(new Error('No password entered!'));
-                            }
-                        });
+                        const password = this.readPassword();
+                        if (password) {
+                            this.connectHelper(mhClient, listEntry.ip!, password, callback);
+                        } else {
+                            callback(new Error('No password entered!'));
+                        }
                     } else {
                         this.connectHelper(mhClient, listEntry.ip!, '', callback);
                     }
