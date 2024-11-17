@@ -22,7 +22,7 @@
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:63
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:55
 
 ## Properties
 
@@ -32,7 +32,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:63
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:44
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:36
 
 ## Methods
 
@@ -56,7 +56,7 @@ function to be executed after keys have been deleted
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:98
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:90
 
 ***
 
@@ -72,7 +72,7 @@ Checks if we are allowed to start and sets the protocol version accordingly
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:68
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:60
 
 ***
 
@@ -86,7 +86,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:68
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:69
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:61
 
 ***
 
@@ -106,7 +106,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:69
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:104
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:96
 
 ***
 
@@ -120,7 +120,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:104
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:103
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:95
 
 ***
 
@@ -140,7 +140,7 @@ cb function to be executed after DB has been destroyed
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:102
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:94
 
 ***
 
@@ -160,7 +160,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:102
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:129
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:121
 
 ***
 
@@ -184,7 +184,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:129
 
 ##### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:105
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:97
 
 #### getKeys(pattern, callback, dontModify)
 
@@ -204,7 +204,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:105
 
 ##### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:106
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:98
 
 ***
 
@@ -220,7 +220,7 @@ Returns the protocol version from DB
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:134
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:126
 
 ***
 
@@ -240,7 +240,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:134
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:127
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:119
 
 ***
 
@@ -260,7 +260,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:127
 
 ##### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:83
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:75
 
 #### getState(id, callback)
 
@@ -278,7 +278,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:83
 
 ##### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:84
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:76
 
 ***
 
@@ -298,7 +298,7 @@ Promise-version of getState
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:90
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:82
 
 ***
 
@@ -322,7 +322,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:90
 
 ##### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:91
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:83
 
 #### getStates(keys, callback, dontModify)
 
@@ -342,7 +342,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:91
 
 ##### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:92
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:84
 
 #### getStates(keys, callback, dontModify)
 
@@ -362,7 +362,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:92
 
 ##### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:93
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:85
 
 ***
 
@@ -376,7 +376,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:93
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:70
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:62
 
 ***
 
@@ -388,7 +388,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:70
 
 • **id**: `string`
 
-• **log**: [`LogObject`](../interfaces/LogObject.md)
+• **log**: [`LogMessageInternal`](../type-aliases/LogMessageInternal.md)
 
 • **callback?**
 
@@ -398,7 +398,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:70
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:124
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:116
 
 ***
 
@@ -418,7 +418,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:124
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:121
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:113
 
 ***
 
@@ -440,7 +440,7 @@ protocol version
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:140
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:132
 
 ***
 
@@ -460,7 +460,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:140
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:82
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:74
 
 ***
 
@@ -484,7 +484,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:82
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:128
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:120
 
 ***
 
@@ -506,7 +506,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:128
 
 ##### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:71
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:63
 
 #### setState(id, state, callback)
 
@@ -530,7 +530,7 @@ migrate to promisified version (without callback)
 
 ##### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:73
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:65
 
 ***
 
@@ -556,7 +556,7 @@ use version without `Async` postfix
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:81
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:73
 
 ***
 
@@ -578,7 +578,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:81
 
 ##### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:107
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:99
 
 #### subscribe(pattern, asUser, callback)
 
@@ -598,7 +598,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:107
 
 ##### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:108
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:100
 
 ***
 
@@ -618,7 +618,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:108
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:125
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:117
 
 ***
 
@@ -638,7 +638,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:125
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:122
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:114
 
 ***
 
@@ -660,7 +660,7 @@ callback function (optional)
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:113
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:105
 
 ***
 
@@ -684,7 +684,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:113
 
 ##### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:114
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:106
 
 #### unsubscribe(pattern, callback)
 
@@ -702,7 +702,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:114
 
 ##### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:115
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:107
 
 ***
 
@@ -722,7 +722,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:115
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:126
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:118
 
 ***
 
@@ -742,7 +742,7 @@ db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:126
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:123
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:115
 
 ***
 
@@ -764,4 +764,4 @@ callback function (optional)
 
 #### Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:120
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:112

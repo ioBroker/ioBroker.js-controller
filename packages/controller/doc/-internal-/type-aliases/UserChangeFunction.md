@@ -20,4 +20,4 @@
 
 ## Defined in
 
-db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:22
+db-states-redis/build/esm/lib/states/statesInRedisClient.d.ts:12
