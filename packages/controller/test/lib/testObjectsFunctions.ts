@@ -104,7 +104,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
 
         expect(res).to.be.ok;
-        expect(res.id).to.be.equal(id);
+        expect(res.id).to.be.equal(`${context.adapter.namespace}.${id}`);
     });
 
     it(`${testName}setForeignObject without callback is async`, async () => {
