@@ -319,9 +319,17 @@ export interface AdapterClass {
         commandsPermissions: CommandsPermissions,
         options?: unknown,
     ): Promise<ioBroker.PermissionSet>;
-    /** Creates or overwrites an object in the object db */
+    /**
+     * Creates or overwrites an object in the object db
+     *
+     * @deprecated use `adapter.setObject` without a callback instead
+     */
     setObjectAsync(id: string, obj: ioBroker.SettableObject, options?: unknown): ioBroker.SetObjectPromise;
-    /** Creates or overwrites an object (which might not belong to this adapter) in the object db */
+    /**
+     * Creates or overwrites an object (which might not belong to this adapter) in the object db
+     *
+     * @deprecated use `adapter.setForeignObject` without a callback instead
+     */
     setForeignObjectAsync<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
