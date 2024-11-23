@@ -797,6 +797,15 @@ declare global {
             ignoreVersion?: string;
             /** Sentry and other plugins */
             plugins?: { [pluginName: string]: Record<string, any> };
+            /** Rules blocks for Javascript rules */
+            javascriptRules?: {
+                /** Translations */
+                i18n?: boolean | Record<string, Record<ioBroker.Languages, string>> | Record<string, string>;
+                /** Where to load the blocks */
+                url: string;
+                /** Blocks names */
+                name: string;
+            };
 
             // Make it possible to narrow the object type using the custom property
             custom?: undefined;
