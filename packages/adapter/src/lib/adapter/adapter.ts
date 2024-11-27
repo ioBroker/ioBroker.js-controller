@@ -319,9 +319,17 @@ export interface AdapterClass {
         commandsPermissions: CommandsPermissions,
         options?: unknown,
     ): Promise<ioBroker.PermissionSet>;
-    /** Creates or overwrites an object in the object db */
+    /**
+     * Creates or overwrites an object in the object db
+     *
+     * @deprecated use `adapter.setObject` without a callback instead
+     */
     setObjectAsync(id: string, obj: ioBroker.SettableObject, options?: unknown): ioBroker.SetObjectPromise;
-    /** Creates or overwrites an object (which might not belong to this adapter) in the object db */
+    /**
+     * Creates or overwrites an object (which might not belong to this adapter) in the object db
+     *
+     * @deprecated use `adapter.setForeignObject` without a callback instead
+     */
     setForeignObjectAsync<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
@@ -2768,19 +2776,14 @@ export class AdapterClass extends EventEmitter {
     setObject(
         id: string,
         obj: ioBroker.SettableObject,
-        callback?: ioBroker.SetObjectCallback,
-    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback> | void>;
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
+    setObject(id: string, obj: ioBroker.SettableObject, callback: ioBroker.SetObjectCallback): void;
+    setObject(id: string, obj: ioBroker.SettableObject, options: unknown, callback: ioBroker.SetObjectCallback): void;
     setObject(
         id: string,
         obj: ioBroker.SettableObject,
         options: unknown,
-        callback?: ioBroker.SetObjectCallback,
-    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback> | void>;
-    setObject(
-        id: string,
-        obj: ioBroker.SettableObject,
-        callback?: ioBroker.SetObjectCallback,
-    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback> | void>;
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
     /**
      * Creates or overwrites an object in objectDB.
      *
@@ -2814,7 +2817,7 @@ export class AdapterClass extends EventEmitter {
     setObject(
         id: unknown,
         obj: unknown,
-        options: unknown,
+        options?: unknown,
         callback?: unknown,
     ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback> | void> {
         if (typeof options === 'function') {
@@ -3348,14 +3351,23 @@ export class AdapterClass extends EventEmitter {
     setForeignObject<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        callback?: ioBroker.SetObjectCallback,
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
+    setForeignObject<T extends string>(
+        id: T,
+        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        callback: ioBroker.SetObjectCallback,
     ): void;
     setForeignObject<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         options: unknown,
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
+    setForeignObject<T extends string>(
+        id: T,
+        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        options: unknown,
         callback?: ioBroker.SetObjectCallback,
-    ): void;
+    ): void | Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
 
     /**
      * Same as {@link AdapterClass.setObject}, but for any object.
@@ -3376,7 +3388,7 @@ export class AdapterClass extends EventEmitter {
     setForeignObject(
         id: unknown,
         obj: unknown,
-        options: unknown,
+        options?: unknown,
         callback?: unknown,
     ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback> | void> | void {
         if (typeof options === 'function') {
@@ -3456,14 +3468,23 @@ export class AdapterClass extends EventEmitter {
     extendForeignObject<T extends string>(
         id: T,
         objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        callback?: ioBroker.SetObjectCallback,
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
+    extendForeignObject<T extends string>(
+        id: T,
+        objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        callback: ioBroker.SetObjectCallback,
     ): void;
     extendForeignObject<T extends string>(
         id: T,
         objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         options: ioBroker.ExtendObjectOptions,
-        callback?: ioBroker.SetObjectCallback,
+        callback: ioBroker.SetObjectCallback,
     ): void;
+    extendForeignObject<T extends string>(
+        id: T,
+        objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        options: ioBroker.ExtendObjectOptions,
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
 
     /**
      * Same as {@link AdapterClass.extendObject}, but for any object.
@@ -3484,7 +3505,7 @@ export class AdapterClass extends EventEmitter {
     extendForeignObject(
         id: unknown,
         obj: unknown,
-        options: unknown,
+        options?: unknown,
         callback?: unknown,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback> | void> | void {
         if (typeof options === 'function') {
