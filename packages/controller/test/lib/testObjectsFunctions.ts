@@ -84,7 +84,53 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
     });
 
-    //extendObject
+    it(`${testName}setObject without callback is async`, async () => {
+        const id = `${gid}AsyncNoCb`;
+
+        const res = await context.adapter.setObject(id, {
+            type: 'state',
+            common: {
+                name: 'test1',
+                type: 'number',
+                role: 'level',
+                read: true,
+                write: true,
+            },
+            native: {
+                attr1: '1',
+                attr2: '2',
+                attr3: '3',
+            },
+        });
+
+        expect(res).to.be.ok;
+        expect(res.id).to.be.equal(`${context.adapter.namespace}.${id}`);
+    });
+
+    it(`${testName}setForeignObject without callback is async`, async () => {
+        const id = `${context.adapterShortName}.0.${gid}ForeignAsyncNoCb`;
+
+        const res = await context.adapter.setForeignObject(id, {
+            type: 'state',
+            common: {
+                name: 'test1',
+                type: 'number',
+                role: 'level',
+                read: true,
+                write: true,
+            },
+            native: {
+                attr1: '1',
+                attr2: '2',
+                attr3: '3',
+            },
+        });
+
+        expect(res).to.be.ok;
+        expect(res.id).to.be.equal(id);
+    });
+
+    // extendObject
     it(`${testName}Check if objects will be extended`, function (done) {
         context.adapter.extendObject(
             gid,
@@ -1363,7 +1409,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
     // should use def as default state value on extendObject when obj non-existing
     it(`${testName}Check extendObject state with def`, async function () {
         this.timeout(3_000);
-        let obj = await context.adapter.extendObjectAsync('testDefaultValExtend', {
+        let obj = await context.adapter.extendObject('testDefaultValExtend', {
             type: 'state',
             common: {
                 type: 'string',
@@ -1392,7 +1438,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         // delete state but not object
         await context.adapter.delStateAsync('testDefaultValExtend');
         // extend it again - def should be created again, because state has been removed - now we set a def object
-        obj = await context.adapter.extendObjectAsync('testDefaultValExtend', {
+        obj = await context.adapter.extendObject('testDefaultValExtend', {
             common: {
                 def: { hello: 'world' },
             },
@@ -1408,7 +1454,8 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
     // should use def as default state value on extendForeignObject when obj non-existing
     it(`${testName}Check extendForeignObject state with def`, async () => {
-        let obj = await context.adapter.extendForeignObjectAsync('foreign.0.testDefaultValExtend', {
+        const id = 'foreign.0.testDefaultValExtend';
+        let obj = await context.adapter.extendForeignObject(id, {
             type: 'state',
             common: {
                 type: 'string',
@@ -1417,13 +1464,14 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
         });
 
         expect(obj).to.be.ok;
+        expect(obj?.id).to.be.equal(id);
 
-        let state = await context.adapter.getForeignStateAsync('foreign.0.testDefaultValExtend');
+        let state = await context.adapter.getForeignStateAsync(id);
         expect(state!.val).to.equal('Run Forrest, Run!');
         expect(state!.ack).to.equal(true);
 
         // when state already exists def should not override
-        obj = await context.adapter.extendForeignObjectAsync('foreign.0.testDefaultValExtend', {
+        obj = await context.adapter.extendForeignObjectAsync(id, {
             common: {
                 def: 'Please, do not set me up',
             },
@@ -1431,13 +1479,13 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         expect(obj).to.be.ok;
 
-        state = await context.adapter.getForeignStateAsync('foreign.0.testDefaultValExtend');
+        state = await context.adapter.getForeignStateAsync(id);
         expect(state!.val).to.equal('Run Forrest, Run!');
 
         // delete state but not object
-        await context.adapter.delForeignStateAsync('foreign.0.testDefaultValExtend');
+        await context.adapter.delForeignStateAsync(id);
         // extend it again - def should be created again, because state has been removed - now we set a def object
-        obj = await context.adapter.extendForeignObjectAsync('foreign.0.testDefaultValExtend', {
+        obj = await context.adapter.extendForeignObjectAsync(id, {
             common: {
                 def: { hello: 'world' },
             },
@@ -1445,7 +1493,7 @@ export function register(it: Mocha.TestFunction, expect: Chai.ExpectStatic, cont
 
         expect(obj).to.be.ok;
 
-        state = await context.adapter.getForeignStateAsync('foreign.0.testDefaultValExtend');
+        state = await context.adapter.getForeignStateAsync(id);
         // @ts-expect-error TODO do we want this auto parsing?
         expect(state!.val!.hello).to.equal('world');
         expect(state!.ack).to.equal(true);

@@ -319,9 +319,17 @@ export interface AdapterClass {
         commandsPermissions: CommandsPermissions,
         options?: unknown,
     ): Promise<ioBroker.PermissionSet>;
-    /** Creates or overwrites an object in the object db */
+    /**
+     * Creates or overwrites an object in the object db
+     *
+     * @deprecated use `adapter.setObject` without a callback instead
+     */
     setObjectAsync(id: string, obj: ioBroker.SettableObject, options?: unknown): ioBroker.SetObjectPromise;
-    /** Creates or overwrites an object (which might not belong to this adapter) in the object db */
+    /**
+     * Creates or overwrites an object (which might not belong to this adapter) in the object db
+     *
+     * @deprecated use `adapter.setForeignObject` without a callback instead
+     */
     setForeignObjectAsync<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
@@ -2765,14 +2773,17 @@ export class AdapterClass extends EventEmitter {
         this._intervals.delete(interval as NodeJS.Timeout);
     }
 
-    setObject(id: string, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
+    setObject(
+        id: string,
+        obj: ioBroker.SettableObject,
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
+    setObject(id: string, obj: ioBroker.SettableObject, callback: ioBroker.SetObjectCallback): void;
+    setObject(id: string, obj: ioBroker.SettableObject, options: unknown, callback: ioBroker.SetObjectCallback): void;
     setObject(
         id: string,
         obj: ioBroker.SettableObject,
         options: unknown,
-        callback?: ioBroker.SetObjectCallback,
-    ): Promise<void>;
-    setObject(id: string, obj: ioBroker.SettableObject, callback?: ioBroker.SetObjectCallback): Promise<void>;
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
     /**
      * Creates or overwrites an object in objectDB.
      *
@@ -2803,7 +2814,12 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    setObject(id: unknown, obj: unknown, options: unknown, callback?: unknown): Promise<void> | void {
+    setObject(
+        id: unknown,
+        obj: unknown,
+        options?: unknown,
+        callback?: unknown,
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback> | void> {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -2819,7 +2835,9 @@ export class AdapterClass extends EventEmitter {
         return this._setObject({ id, obj: obj as ioBroker.SettableObject, options, callback });
     }
 
-    private async _setObject(options: InternalSetObjectOptions): Promise<void> {
+    private async _setObject(
+        options: InternalSetObjectOptions,
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback> | void> {
         if (!this._defaultObjs) {
             this._defaultObjs = (await import('./defaultObjs.js')).createDefaults();
         }
@@ -2844,6 +2862,7 @@ export class AdapterClass extends EventEmitter {
                 this._utils.validateId(options.id, false, null);
             } catch (e) {
                 this._logger.error(tools.appendStackTrace(`${this.namespaceLog} ${e.message}`));
+                // Error is logged and silently ignored to not break older adapters
                 return;
             }
         }
@@ -2921,11 +2940,11 @@ export class AdapterClass extends EventEmitter {
             options.obj.user = options.obj.user || (options.options ? options.options.user : '') || SYSTEM_ADMIN_USER;
             options.obj.ts = options.obj.ts || Date.now();
 
-            this._setObjectWithDefaultValue(options.id, options.obj, options.options, options.callback);
-        } else {
-            this._logger.error(`${this.namespaceLog} setObject ${options.id} mandatory property type missing!`);
-            return tools.maybeCallbackWithError(options.callback, 'mandatory property type missing!');
+            return this._setObjectWithDefaultValue(options.id, options.obj, options.options, options.callback);
         }
+
+        this._logger.error(`${this.namespaceLog} setObject ${options.id} mandatory property type missing!`);
+        return tools.maybeCallbackWithError(options.callback, 'mandatory property type missing!');
     }
 
     /**
@@ -3332,14 +3351,23 @@ export class AdapterClass extends EventEmitter {
     setForeignObject<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        callback?: ioBroker.SetObjectCallback,
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
+    setForeignObject<T extends string>(
+        id: T,
+        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        callback: ioBroker.SetObjectCallback,
     ): void;
     setForeignObject<T extends string>(
         id: T,
         obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         options: unknown,
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
+    setForeignObject<T extends string>(
+        id: T,
+        obj: ioBroker.SettableObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        options: unknown,
         callback?: ioBroker.SetObjectCallback,
-    ): void;
+    ): void | Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
 
     /**
      * Same as {@link AdapterClass.setObject}, but for any object.
@@ -3357,7 +3385,12 @@ export class AdapterClass extends EventEmitter {
      *            }
      *        ```
      */
-    setForeignObject(id: unknown, obj: unknown, options: unknown, callback?: unknown): MaybePromise {
+    setForeignObject(
+        id: unknown,
+        obj: unknown,
+        options?: unknown,
+        callback?: unknown,
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback> | void> | void {
         if (typeof options === 'function') {
             callback = options;
             options = null;
@@ -3386,7 +3419,9 @@ export class AdapterClass extends EventEmitter {
         return this._setForeignObject({ id, obj: obj as ioBroker.SettableObject, options, callback });
     }
 
-    private _setForeignObject(_options: InternalSetObjectOptions): MaybePromise {
+    private _setForeignObject(
+        _options: InternalSetObjectOptions,
+    ): Promise<ioBroker.NonNullCallbackReturnTypeOf<ioBroker.SetObjectCallback> | void> | void {
         const { options, callback, obj } = _options;
         let { id } = _options;
 
@@ -3426,21 +3461,30 @@ export class AdapterClass extends EventEmitter {
             }
         }
 
-        this._setObjectWithDefaultValue(id, obj, options, callback);
+        return this._setObjectWithDefaultValue(id, obj, options, callback);
     }
 
     // external signatures
     extendForeignObject<T extends string>(
         id: T,
         objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
-        callback?: ioBroker.SetObjectCallback,
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
+    extendForeignObject<T extends string>(
+        id: T,
+        objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        callback: ioBroker.SetObjectCallback,
     ): void;
     extendForeignObject<T extends string>(
         id: T,
         objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
         options: ioBroker.ExtendObjectOptions,
-        callback?: ioBroker.SetObjectCallback,
+        callback: ioBroker.SetObjectCallback,
     ): void;
+    extendForeignObject<T extends string>(
+        id: T,
+        objPart: ioBroker.PartialObject<ioBroker.ObjectIdToObjectType<T, 'write'>>,
+        options: ioBroker.ExtendObjectOptions,
+    ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback>>;
 
     /**
      * Same as {@link AdapterClass.extendObject}, but for any object.
@@ -3461,7 +3505,7 @@ export class AdapterClass extends EventEmitter {
     extendForeignObject(
         id: unknown,
         obj: unknown,
-        options: unknown,
+        options?: unknown,
         callback?: unknown,
     ): Promise<ioBroker.CallbackReturnTypeOf<ioBroker.SetObjectCallback> | void> | void {
         if (typeof options === 'function') {
@@ -9316,7 +9360,7 @@ export class AdapterClass extends EventEmitter {
                 return tools.maybeCallbackWithError(callback, e);
             }
         }
-        this.#states.delState(id, callback);
+        await this.#states.delState(id, callback);
     }
 
     // external signature
@@ -9784,7 +9828,7 @@ export class AdapterClass extends EventEmitter {
 
                 subs[pattern][this.namespace]++;
                 this.outputCount++;
-                this.#states.setState(`system.adapter.${autoSubEntry}.subscribes`, JSON.stringify(subs));
+                await this.#states.setState(`system.adapter.${autoSubEntry}.subscribes`, JSON.stringify(subs));
             }
         }
 
@@ -10013,7 +10057,7 @@ export class AdapterClass extends EventEmitter {
                         delete subs[pattern];
                     }
                     this.outputCount++;
-                    this.#states.setState(`system.adapter.${autoSub}.subscribes`, JSON.stringify(subs));
+                    await this.#states.setState(`system.adapter.${autoSub}.subscribes`, JSON.stringify(subs));
                 }
             }
         }
