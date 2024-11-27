@@ -16,7 +16,7 @@ Verbosity of the log output
 
 #### Defined in
 
-[types-dev/index.d.ts:219](https://github.com/ioBroker/ioBroker.js-controller/blob/db3148f4f009815e1f45f53311ac77bd26045ce1/packages/types-dev/index.d.ts#L219)
+[types-dev/index.d.ts:219](https://github.com/ioBroker/ioBroker.js-controller/blob/1e3f92f91943b544535e021f5e14acf9ed5c82e5/packages/types-dev/index.d.ts#L219)
 
 ## Methods
 
@@ -36,7 +36,7 @@ log a message with debug level
 
 #### Defined in
 
-[types-dev/index.d.ts:210](https://github.com/ioBroker/ioBroker.js-controller/blob/db3148f4f009815e1f45f53311ac77bd26045ce1/packages/types-dev/index.d.ts#L210)
+[types-dev/index.d.ts:210](https://github.com/ioBroker/ioBroker.js-controller/blob/1e3f92f91943b544535e021f5e14acf9ed5c82e5/packages/types-dev/index.d.ts#L210)
 
 ***
 
@@ -56,7 +56,7 @@ log a message with error severity
 
 #### Defined in
 
-[types-dev/index.d.ts:216](https://github.com/ioBroker/ioBroker.js-controller/blob/db3148f4f009815e1f45f53311ac77bd26045ce1/packages/types-dev/index.d.ts#L216)
+[types-dev/index.d.ts:216](https://github.com/ioBroker/ioBroker.js-controller/blob/1e3f92f91943b544535e021f5e14acf9ed5c82e5/packages/types-dev/index.d.ts#L216)
 
 ***
 
@@ -76,7 +76,7 @@ log a message with info level (default output level for all adapters)
 
 #### Defined in
 
-[types-dev/index.d.ts:212](https://github.com/ioBroker/ioBroker.js-controller/blob/db3148f4f009815e1f45f53311ac77bd26045ce1/packages/types-dev/index.d.ts#L212)
+[types-dev/index.d.ts:212](https://github.com/ioBroker/ioBroker.js-controller/blob/1e3f92f91943b544535e021f5e14acf9ed5c82e5/packages/types-dev/index.d.ts#L212)
 
 ***
 
@@ -96,7 +96,7 @@ log a message with silly level
 
 #### Defined in
 
-[types-dev/index.d.ts:208](https://github.com/ioBroker/ioBroker.js-controller/blob/db3148f4f009815e1f45f53311ac77bd26045ce1/packages/types-dev/index.d.ts#L208)
+[types-dev/index.d.ts:208](https://github.com/ioBroker/ioBroker.js-controller/blob/1e3f92f91943b544535e021f5e14acf9ed5c82e5/packages/types-dev/index.d.ts#L208)
 
 ***
 
@@ -116,4 +116,4 @@ log a message with warning severity
 
 #### Defined in
 
-[types-dev/index.d.ts:214](https://github.com/ioBroker/ioBroker.js-controller/blob/db3148f4f009815e1f45f53311ac77bd26045ce1/packages/types-dev/index.d.ts#L214)
+[types-dev/index.d.ts:214](https://github.com/ioBroker/ioBroker.js-controller/blob/1e3f92f91943b544535e021f5e14acf9ed5c82e5/packages/types-dev/index.d.ts#L214)
