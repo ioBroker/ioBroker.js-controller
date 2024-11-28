@@ -18,4 +18,4 @@
 
 ## Defined in
 
-[adapter/src/lib/adapter/validator.ts:4](https://github.com/ioBroker/ioBroker.js-controller/blob/1e3f92f91943b544535e021f5e14acf9ed5c82e5/packages/adapter/src/lib/adapter/validator.ts#L4)
+[adapter/src/lib/adapter/validator.ts:4](https://github.com/ioBroker/ioBroker.js-controller/blob/664d3c56250ad4e09c02e3cf6b90746a581d9f55/packages/adapter/src/lib/adapter/validator.ts#L4)
