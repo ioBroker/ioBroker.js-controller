@@ -24,6 +24,17 @@ interface CLIUpgradeOptions {
     params: Record<string, any>;
 }
 
+interface UpgradeControllerOptions {
+    /** The repo or url */
+    repoUrl?: string;
+    /** If downgrades are allowed */
+    forceDowngrade: boolean;
+    /** If controller is currently running */
+    controllerRunning: boolean;
+    /** Version to upgrade controller too */
+    version?: string;
+}
+
 export class Upgrade {
     private readonly hostname = tools.getHostName();
     private readonly upload: Upload;
@@ -652,23 +663,11 @@ export class Upgrade {
     /**
      * Upgrade the js-controller
      *
-     * @param repoUrl the repo or url
-     * @param forceDowngrade if downgrades are allowed
-     * @param controllerRunning if controller is currently running
+     * @param options additional information like if controller running, optional url, version
      */
-    async upgradeController(repoUrl: string, forceDowngrade: boolean, controllerRunning: boolean): Promise<void> {
-        let sources: Record<string, any>;
-
-        try {
-            const result = await getRepository({ repoName: repoUrl, objects: this.objects });
-            if (!result) {
-                return console.warn(`Cannot get repository under "${repoUrl}"`);
-            }
-            sources = result;
-        } catch (e) {
-            console.error(e.message);
-            return this.processExit(e instanceof IoBrokerError ? e.code : e);
-        }
+    async upgradeController(options: UpgradeControllerOptions): Promise<void> {
+        const { repoUrl, forceDowngrade, controllerRunning, version } = options;
+        let targetVersion = version;
 
         const installed = fs.readJSONSync(`${tools.getControllerDir()}/io-package.json`);
         if (!installed || !installed.common || !installed.common.version) {
@@ -680,63 +679,47 @@ export class Upgrade {
         }
 
         const controllerName = installed.common.name;
-        /** Repository entry of the controller */
-        const repoController = sources[controllerName];
+        let sources: Record<string, ioBroker.RepositoryJsonAdapterContent> | undefined;
 
-        if (!repoController) {
+        if (targetVersion === undefined) {
+            try {
+                const result = await getRepository({ repoName: repoUrl, objects: this.objects });
+                if (!result) {
+                    return console.warn(`Cannot get repository under "${repoUrl}"`);
+                }
+                sources = result;
+            } catch (e) {
+                console.error(e.message);
+                return this.processExit(e instanceof IoBrokerError ? e.code : e);
+            }
+
+            /** Repository entry of the controller */
+            const repoController = sources[controllerName];
+            targetVersion = version ?? repoController.version;
+        }
+
+        if (!targetVersion) {
             // no info for controller
             return console.error(`Cannot find this controller "${controllerName}" in repository.`);
         }
 
-        if (repoController.version) {
-            if (
-                !forceDowngrade &&
-                (repoController.version === installed.common.version ||
-                    tools.upToDate(repoController.version, installed.common.version))
-            ) {
-                console.log(
-                    `Host    "${this.hostname}"${
-                        this.hostname.length < 15 ? new Array(15 - this.hostname.length).join(' ') : ''
-                    } is up to date.`,
-                );
-            } else if (controllerRunning) {
-                console.warn(`Controller is running. Please stop ioBroker first.`);
-            } else {
-                console.log(`Update ${controllerName} from @${installed.common.version} to @${repoController.version}`);
-                // Get the controller from website
-                await this.install.downloadPacket(sources, `${controllerName}@${repoController.version}`, {
-                    stopDb: true,
-                });
-            }
+        if (
+            !forceDowngrade &&
+            (targetVersion === installed.common.version || tools.upToDate(targetVersion, installed.common.version))
+        ) {
+            console.log(
+                `Host    "${this.hostname}"${
+                    this.hostname.length < 15 ? new Array(15 - this.hostname.length).join(' ') : ''
+                } is up to date.`,
+            );
+        } else if (controllerRunning) {
+            console.warn(`Controller is running. Please stop ioBroker first.`);
         } else {
-            const ioPack = await tools.getJsonAsync(repoController.meta);
-            if ((!ioPack || !ioPack.common) && !forceDowngrade) {
-                return console.warn(
-                    `Cannot read version. Write "${tools.appName} upgrade self --force" to upgrade controller anyway.`,
-                );
-            }
-            let version = ioPack?.common ? ioPack.common.version : '';
-            if (version) {
-                version = `@${version}`;
-            }
-
-            if (
-                (ioPack?.common && ioPack.common.version === installed.common.version) ||
-                (!forceDowngrade && ioPack?.common && tools.upToDate(ioPack.common.version, installed.common.version))
-            ) {
-                console.log(
-                    `Host    "${this.hostname}"${
-                        this.hostname.length < 15 ? new Array(15 - this.hostname.length).join(' ') : ''
-                    } is up to date.`,
-                );
-            } else if (controllerRunning) {
-                console.warn(`Controller is running. Please stop ioBroker first.`);
-            } else {
-                const name = ioPack?.common?.name || controllerName;
-                console.log(`Update ${name} from @${installed.common.version} to ${version}`);
-                // Get the controller from website
-                await this.install.downloadPacket(sources, name + version, { stopDb: true });
-            }
+            console.log(`Update ${controllerName} from @${installed.common.version} to @${targetVersion}`);
+            // Get the controller from website
+            await this.install.downloadPacket(sources, `${controllerName}@${targetVersion}`, {
+                stopDb: true,
+            });
         }
     }
 }
