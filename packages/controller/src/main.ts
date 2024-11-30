@@ -265,9 +265,10 @@ function getConfig(): ioBroker.IoBrokerJson | never {
 }
 
 /**
+ * Starts the multihost discovery server
  *
- * @param _config
- * @param secret
+ * @param _config Configuration fron iobroker.json
+ * @param secret MultiHost communication password
  */
 async function _startMultihost(_config: ioBroker.IoBrokerJson, secret: string | false): Promise<void> {
     const MHService = await import('./lib/multihostServer.js');
@@ -284,7 +285,6 @@ async function _startMultihost(_config: ioBroker.IoBrokerJson, secret: string | 
             mem: os.totalmem(),
             ostype: os.type(),
         },
-        tools.findIPs(),
         secret,
     );
 }
