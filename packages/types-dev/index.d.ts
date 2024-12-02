@@ -300,7 +300,7 @@ declare global {
             addID?: boolean;
             limit?: number;
             ignoreNull?: boolean;
-            sessionId?: any;
+            sessionId?: number;
             aggregate?: 'minmax' | 'min' | 'max' | 'average' | 'total' | 'count' | 'none';
             /** Returned data is normally sorted ascending by date, this option lets you return the newest instead of the oldest values if the number of returned points is limited */
             returnNewestEntries?: boolean;
@@ -442,7 +442,7 @@ declare global {
             err: Error | null,
             result?: GetHistoryResult,
             step?: number,
-            sessionId?: string,
+            sessionId?: number,
         ) => void;
 
         /** Contains the return values of readDir */
