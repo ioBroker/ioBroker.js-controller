@@ -311,7 +311,7 @@ declare global {
             /** round result to number of digits after decimal point */
             round?: number;
             /** if null values should be included (false), replaced by last not null value (true) or replaced with 0 (0) */
-            ignoreNull?: boolean;
+            ignoreNull?: boolean | 0;
             /** This number will be returned in answer, so the client can assign the request for it */
             sessionId?: number;
             /** aggregate method (Default: 'average') */
