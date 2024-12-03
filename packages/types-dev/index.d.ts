@@ -316,6 +316,7 @@ declare global {
             sessionId?: number;
             /** aggregate method (Default: 'average') */
             aggregate?:
+                | 'onchange'
                 | 'minmax'
                 | 'min'
                 | 'max'
