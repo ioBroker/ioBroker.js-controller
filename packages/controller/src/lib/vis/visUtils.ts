@@ -464,7 +464,7 @@ function replaceGroupAttr(inputStr: string, groupAttrList: WidgetData): { doesMa
     }
 
     // new style: %html%, %myAttr%, ...
-    ms = inputStr.match(/%([-_a-zA-Z0-9]+)+?%/g);
+    ms = inputStr.match(/%([_a-zA-Z0-9-]+)+?%/g);
     if (ms) {
         match = true;
         ms.forEach((m: string) => {
