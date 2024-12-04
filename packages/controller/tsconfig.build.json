@@ -3,7 +3,7 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "rootDir": "src",
-    "allowJs": true,
+    "allowJs": false,
     "checkJs": false,
     "noEmit": false
   },
@@ -40,8 +40,7 @@
     },
   ],
   "include": [
-    "src/**/*.ts",
-    "src/**/*.js" // currently, we have js too
+    "src/**/*.ts"
   ],
   "exclude": [
     "test/**",
