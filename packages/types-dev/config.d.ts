@@ -75,6 +75,8 @@ export interface DatabaseOptions {
     };
     backup: DatabaseBackupOptions;
     jsonlOptions: JsonlOptions;
+    /** do not let messages grow without a limit */
+    maxQueue: number;
 }
 
 export interface ObjectsDatabaseOptions extends DatabaseOptions {
@@ -121,7 +123,7 @@ export interface IoBJson {
     objects: ObjectsDatabaseOptions;
     states: DatabaseOptions;
     log: {
-        level: string;
+        level: ioBroker.LogLevel;
         maxDays: number;
         noStdout: boolean;
         transport: Record<string, any>;

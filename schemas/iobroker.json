@@ -116,7 +116,14 @@
           "type": "object",
           "properties": {
             "level": {
-              "type": "string"
+              "type": "string",
+              "enum": [
+                "silly",
+                "debug",
+                "info",
+                "warn",
+                "error"
+              ]
             },
             "maxDays": {
               "type": "number"
@@ -272,11 +279,12 @@
         "jsonlOptions": {
           "$ref": "#/definitions/JsonlOptions"
         },
+        "maxQueue": {
+          "type": "number",
+          "description": "do not let messages grow without a limit"
+        },
         "noFileCache": {
           "type": "boolean"
-        },
-        "maxQueue": {
-          "type": "number"
         }
       },
       "required": [
@@ -513,6 +521,10 @@
         },
         "jsonlOptions": {
           "$ref": "#/definitions/JsonlOptions"
+        },
+        "maxQueue": {
+          "type": "number",
+          "description": "do not let messages grow without a limit"
         }
       },
       "required": [
@@ -525,7 +537,8 @@
         "dataDir",
         "options",
         "backup",
-        "jsonlOptions"
+        "jsonlOptions",
+        "maxQueue"
       ],
       "additionalProperties": false
     }
