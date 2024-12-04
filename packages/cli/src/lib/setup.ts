@@ -214,7 +214,7 @@ function initYargs(): ReturnType<typeof yargs> {
                     {},
                 )
                 .command(
-                    'self [<repositoryUrl>]',
+                    'self[@<version>] [<repositoryUrl>]',
                     'Upgrade js-controller, optionally you can specify the repository url',
                     {},
                 )
@@ -1196,9 +1196,15 @@ async function processCommand(
 
                 if (adapter) {
                     try {
-                        if (adapter === 'self') {
+                        if (adapter.split('@')[0] === 'self') {
                             const hostAlive = await states.getStateAsync(`system.host.${tools.getHostName()}.alive`);
-                            await upgrade.upgradeController('', params.force || params.f, !!hostAlive?.val);
+                            const version = adapter.split('@')[1];
+
+                            await upgrade.upgradeController({
+                                forceDowngrade: params.force || params.f,
+                                controllerRunning: !!hostAlive?.val,
+                                version,
+                            });
                         } else {
                             await upgrade.upgradeAdapter(
                                 '',

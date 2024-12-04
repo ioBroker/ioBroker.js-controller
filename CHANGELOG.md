@@ -8,6 +8,7 @@
 * (@Apollon77) Fixes async usage of extendObject
 * (@Apollon77) Makes setObject async save
 * (@foxriver76) deprecated `set(Foreign)ObjectAsync` as the non async methods are now working correctly with promises
+* (@foxriver76) allow to specify a version on `iob upgrade self` command
 
 ## 7.0.3 (2024-11-13) - Lucy
 * (@foxriver76) Introduce "Vendor Packages Workflow" (only relevant for vendors - see README.md)
