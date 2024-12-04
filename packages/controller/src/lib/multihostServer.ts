@@ -15,14 +15,14 @@ import { isLocalObjectsDbServer } from '@iobroker/js-controller-common';
 
 type MHCommand = 'browse';
 
-type MHInfo = {
+interface MHInfo {
     node: string;
     arch: string;
     model: string;
     cpus: number;
     mem: number;
     ostype: string;
-};
+}
 
 interface BaseCommand {
     cmd: MHCommand;
@@ -66,7 +66,7 @@ export class MHServer {
         }
     > = {};
     private readonly config: ioBroker.IoBrokerJson;
-    private readonly logger: InternalLogger | typeof console;
+    private readonly logger: InternalLogger;
     private readonly info: MHInfo;
     private readonly secret: string | false;
     private readonly hostname: string;
@@ -77,16 +77,16 @@ export class MHServer {
 
     constructor(
         hostname: string,
-        logger: InternalLogger | typeof console,
+        logger: InternalLogger,
         config: ioBroker.IoBrokerJson,
         info: MHInfo,
         secret: string | false,
     ) {
-        this.hostname = hostname; // make a copy
-        this.config = config; // make a copy
-        this.logger = logger; // make a copy
-        this.info = info; // make a copy
-        this.secret = secret; // make a copy
+        this.hostname = hostname;
+        this.config = config;
+        this.logger = logger;
+        this.info = info;
+        this.secret = secret;
 
         this.init();
     }

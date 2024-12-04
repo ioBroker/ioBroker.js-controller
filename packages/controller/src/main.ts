@@ -9,6 +9,7 @@ import restart from '@/lib/restart.js';
 import pidUsage from 'pidusage';
 import deepClone from 'deep-clone';
 import { isDeepStrictEqual, inspect } from 'node:util';
+import { MHServer } from '@/lib/multihostServer.js';
 import {
     tools,
     EXIT_CODES,
@@ -270,10 +271,9 @@ function getConfig(): ioBroker.IoBrokerJson | never {
  * @param _config Configuration fron iobroker.json
  * @param secret MultiHost communication password
  */
-async function _startMultihost(_config: ioBroker.IoBrokerJson, secret: string | false): Promise<void> {
-    const MHService = await import('./lib/multihostServer.js');
+function _startMultihost(_config: ioBroker.IoBrokerJson, secret: string | false): void {
     const cpus = os.cpus();
-    mhService = new MHService.MHServer(
+    mhService = new MHServer(
         hostname,
         logger,
         _config,

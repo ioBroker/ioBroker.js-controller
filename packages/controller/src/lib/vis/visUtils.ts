@@ -1,3 +1,7 @@
+/**
+ * Note big parts of this file are copied from https://github.com/ioBroker/ioBroker.vis-2/blob/c8eba766c5a7587135817a5e87f3e90bc4796cdb/packages/iobroker.vis-2/src-vis/src/Vis/visUtils.tsx#L95
+ */
+
 type StateID = string;
 type SingleWidgetId = `w${string}`;
 type GroupWidgetId = `g${string}`;
