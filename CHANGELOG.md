@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 7.0.4 (2024-12-04)
 * (@Apollon77) Fixes async usage of extendObject
 * (@Apollon77) Makes setObject async save
 * (@foxriver76) deprecated `set(Foreign)ObjectAsync` as the non async methods are now working correctly with promises
